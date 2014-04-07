@@ -1,0 +1,1 @@
+java -jar selenium-server-standalone-2.39.0.jar -Dwebdriver.chrome.driver="chromedriver.exe" -Dwebdriver.ie.driver="IEDriverServer.exe" -log nodeLogFile -role node -hub http://10.100.1.81:4444/grid/register -nodeConfig nodeConfig.json

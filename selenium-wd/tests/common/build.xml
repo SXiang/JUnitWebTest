@@ -1,0 +1,34 @@
+<project name="common" default="dist" basedir=".">
+	<property name="proj_name" value="common"/>
+	<property name="dist" location="dist"/>
+	<property name="source" location= "source"/>
+	<property name="build" location="build"/>
+	<property name="jar_name" value="${proj_name}.jar"/>
+
+	<target name="init" depends="clean" description="Initialize build environment">
+		<!--	<tstamp/>	-->
+		<mkdir dir="${build}"/>
+		<mkdir dir="${dist}"/>
+	</target>
+
+	<target name="clean" description="Clean up">
+		<delete dir="${build}"/>
+		<delete dir="${dist}"/>
+		<delete file = "${basedir}/../../lib/${jar_name}"/>
+	</target>
+
+	<target name="compile" depends="init" description="Compile common source code">
+		<javac srcdir="${source}" destdir="${build}">
+			<classpath>
+				<!--	<pathelement path = "${basedir}/../../lib"/>	-->
+				<fileset dir="${basedir}/../../lib">
+					<include name="**/*.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name = "dist" depends="compile">
+		<jar jarfile="${basedir}/../../lib/${jar_name}" basedir="${build}"/>
+	</target>
+</project>
