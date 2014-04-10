@@ -34,6 +34,12 @@ public class SurveyorWebSanityTest {
     
 	driver.get(this.baseUrl);
 	
+	if (driver.getTitle().contains("Problem loading page")) {
+		
+		fail("Site Error: Problem loading page");
+		
+	}
+	
 	if (driver.getTitle().compareTo("Login") != 0) {
 		
 	    driver.findElement(By.linkText("Log out")).click();
