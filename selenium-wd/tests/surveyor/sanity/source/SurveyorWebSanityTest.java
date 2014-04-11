@@ -30,7 +30,7 @@ public class SurveyorWebSanityTest {
   }
 
   @Test
-  public void testUntitled() throws Exception {
+  public void SurveyorWebBuildGUISanityTest() throws Exception {
     
 	driver.get(this.baseUrl);
 	
@@ -75,7 +75,8 @@ public class SurveyorWebSanityTest {
     
     sleep(3);
     
-    this.browsingPrimeSettings();
+    //UI changed so comment out for now until more stable 
+    //this.browsingPrimeSettings();
     
     sleep(3);
     
