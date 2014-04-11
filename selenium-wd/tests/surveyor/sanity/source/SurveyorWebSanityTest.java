@@ -64,7 +64,8 @@ public class SurveyorWebSanityTest {
     
     sleep(3);
     
-    driver.findElement(By.cssSelector("a.btn.btn-default")).click();
+    //driver.findElement(By.cssSelector("a.btn.btn-default")).click();
+    driver.findElement(By.xpath("/html/body/div/div/div/a/img")).click();
     assertEquals("Home - Surveyor", driver.getTitle());
     
     sleep(3);
