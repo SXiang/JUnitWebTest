@@ -5,6 +5,8 @@ package surveyor.scommon.source;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
@@ -25,6 +27,19 @@ public class AdministrationPage extends BasePage {
 	
 	@FindBy(how = How.CSS, using = "[href='/PicarroAdministration']")
 	private WebElement btnAdministration;
+	
+	//temporary for testing on the following tree nodes 
+	@FindBy(how = How.XPATH, using = "/html/body/div[2]/div[2]/div/div/div/ul/li/ul/li/ul/li/ul/li/ul/li/ul/li/a")
+	public WebElement nodePicarroManufacturing;
+	
+	@FindBy(how = How.XPATH, using = "/html/body/div[2]/div[2]/div/div/div/ul/li/ul/li/ul/li/ul/li/ul/li/ul/li/ul/li[3]/a")
+	public WebElement nodePSQA01;
+	
+	@FindBy(how = How.XPATH, using = "/html/body/div[2]/div[2]/div/div/div/ul/li/ul/li/ul/li[2]/ul/li/ul/li/ul/li/ul/li[2]/a")
+	public WebElement nodePSQA01_;
+	
+	@FindBy(how = How.XPATH, using = "/html/body/div[2]/div[2]/div/div/div/ul/li/ul/li/ul/li[2]/ul/li/ul/li/ul/li/a")
+	public WebElement nodePGEUnit1;
 
 	/**
 	 * @param driver
@@ -47,5 +62,23 @@ public class AdministrationPage extends BasePage {
 		LoginPage loginPage = new LoginPage(this.driver, this.strBaseURL, this.testSetup);
 		
 		return loginPage;
+	}
+	
+	public boolean dragAndDropNode(WebElement source, WebElement target) {
+		
+		Actions action = new Actions(driver);
+		
+		try {
+			
+			action.dragAndDrop(source, target).perform();
+			
+		} catch (Exception e) {
+			
+			return false;
+			
+		}
+		
+		return true;
+		
 	}
 }
