@@ -114,4 +114,47 @@ public class AdministrationPageTest {
 		
 		ImagingUtility.takeScreenShot(driver, screenShotsDir, "administrationPage_TC001");
 	}
+	
+	/**
+	 * Test Case: administrationPage_TC002, drag and drop
+	 */
+	@Test
+	public void administrationPage_TC002() {
+
+		System.out.println("\nRunning test case of administrationPage_TC002...");
+		
+		administrationPage.open();
+		
+		assertTrue(driver.getTitle().compareTo(AdministrationPage.STRPageTitle) == 0);
+		
+		if (debug)
+			testSetup.slowdownInSeconds(3);
+		
+		if (!administrationPage.dragAndDropNode(administrationPage.nodePSQA01, administrationPage.nodePGEUnit1))
+			fail("Drag and Drop failed.");
+		
+		if (debug)
+			testSetup.slowdownInSeconds(3);
+		
+		driver.navigate().refresh();
+		
+		if (debug)
+			testSetup.slowdownInSeconds(3);
+		
+		ImagingUtility.takeScreenShot(driver, screenShotsDir, "administrationPage_TC002_firstD&D");
+		
+		if (!administrationPage.dragAndDropNode(administrationPage.nodePSQA01_, administrationPage.nodePicarroManufacturing))
+			fail("Drag and Drop failed");
+		
+		if (debug)
+			testSetup.slowdownInSeconds(3);
+			
+		driver.navigate().refresh();
+		
+		if (debug)
+			testSetup.slowdownInSeconds(3);
+		
+		ImagingUtility.takeScreenShot(driver, screenShotsDir, "administrationPage_TC002_secondD&D");
+		
+	}
 }
