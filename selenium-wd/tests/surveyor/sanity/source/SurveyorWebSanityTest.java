@@ -80,6 +80,10 @@ public class SurveyorWebSanityTest {
     
     sleep(3);
     
+    driver.navigate().refresh();
+    
+    sleep(30);
+    
     //driver.get("http://p3int.picarro.com");
     driver.navigate().back();
     assertEquals("Home - Surveyor", driver.getTitle());
