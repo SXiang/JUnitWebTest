@@ -15,8 +15,10 @@ public class SurveyorWebSanityTest {
   private boolean acceptNextAlert = true;
   private StringBuffer verificationErrors = new StringBuffer();
   
-  private String user = "testaccount";
-  private String pwd = "winning123!";
+  //private String user = "testaccount";
+  //private String pwd = "winning123!";
+  private String user = "Administrator";
+  private String pwd = "Administrator";
 
   @Before
   public void setUp() throws Exception {
