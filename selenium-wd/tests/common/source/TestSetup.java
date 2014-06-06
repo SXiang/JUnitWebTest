@@ -167,7 +167,8 @@ public class TestSetup {
 					ChromeOptions options = new ChromeOptions();
 					options.addArguments(Arrays.asList(
 							"allow-running-insecure-content",
-							"ignore-certificate-errors"));
+							"ignore-certificate-errors", 
+							"test-type"));
 					capabilities.setCapability(ChromeOptions.CAPABILITY,
 							options);
 					driver = new RemoteWebDriver(new URL("http://"
