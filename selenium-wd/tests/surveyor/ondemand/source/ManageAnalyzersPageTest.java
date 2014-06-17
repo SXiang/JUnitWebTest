@@ -16,86 +16,19 @@ import org.openqa.selenium.support.PageFactory;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageAnalyzersPage;
 import surveyor.scommon.source.ManageSurveyorPage;
+import surveyor.scommon.source.SurveyorBaseTest;
 import common.source.TestSetup;
 
 /**
  * @author zlu
  *
  */
-public class ManageAnalyzersPageTest {
-	public static final String BASECUSTOMERNAME = "CustomerSQA";  //temp solution for now
-	public static final String BASELOCATIONNAME = "LocationSQA";
-	public static final String BASESURVEYORNAME = "SurveyorSQA";
-	public static final String BASEANALYZERNAME = "";
-	public static final String ANALYZERSHAREDKEY = "sqa#Picarro$0";
-	public static final int CUSTOMERNUM = 10;  //temp solution for now
-	public static final int LOCATIONNUM = 5;
-	public static final int SURVEYORNUM = 2;
-	public static final int ANALYZERNUM = 1;
-	
-	private static WebDriver driver;
-	private static TestSetup testSetup;
-	private static String baseURL;
-	private static String screenShotsDir;
-	private static boolean debug;
-	
+public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	private static ManageAnalyzersPage manageAnalyzersPage;
-	private static LoginPage loginPage;	
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		System.out.println("\nRunning ManageAnalyzersPageTest...");
-		
-		testSetup = new TestSetup();
-		driver = testSetup.getDriver();
-		baseURL = testSetup.getBaseUrl();
-		screenShotsDir = "./screenshots/";
-		debug = testSetup.isRunningDebug();
-		driver.manage().deleteAllCookies();
-		driver.manage().window().maximize();
-		
+	
+	public ManageAnalyzersPageTest() {
 		manageAnalyzersPage = new ManageAnalyzersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageAnalyzersPage);
-		
-		loginPage = new LoginPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  loginPage);
-		
-		loginPage.open();
-		if (debug)
-			testSetup.slowdownInSeconds(3);		
-		loginPage.loginNormalAs(testSetup.getLoginUser0000(), testSetup.getLoginPwd0000());
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-		manageAnalyzersPage.open();
-		
-		if (debug)
-			testSetup.slowdownInSeconds(3);
-		
-		manageAnalyzersPage.logout();
-		
-		driver.quit();		
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
+		PageFactory.initElements(driver,  manageAnalyzersPage);		
 	}
 	
 	/**
@@ -120,13 +53,12 @@ public class ManageAnalyzersPageTest {
 			String strLocDigits;
 			String strSurDigits;
 			
-			int customerNum = CUSTOMERNUM;
-			int locationNum = LOCATIONNUM;
-			int surveyorNum = SURVEYORNUM;
-			int analyzerNum = ANALYZERNUM;
-			
-			for (int i = 0; i < customerNum; i++) {
-				if (i < 10) {
+			for (int i = 0; i < CUSTOMERNUM; i++) {
+				if (i >= 0 && i < 10) {
+					strCustomerName = BASECUSTOMERNAME + "00" + Integer.toString(i);
+					strCusDigits = "00" + Integer.toString(i);
+				}
+				else if (i >= 10 && i < 100) {
 					strCustomerName = BASECUSTOMERNAME + "0" + Integer.toString(i);
 					strCusDigits = "0" + Integer.toString(i);
 				}
@@ -135,8 +67,12 @@ public class ManageAnalyzersPageTest {
 					strCusDigits = Integer.toString(i);
 				}
 				
-				for (int ii = 0; ii < locationNum; ii++) {
-					if (ii < 10) {
+				for (int ii = 0; ii < LOCATIONNUM; ii++) {
+					if (ii >= 0 && ii < 10) {
+						strLocation = strCustomerName + "_" + "00" + Integer.toString(ii) + BASELOCATIONNAME;
+						strLocDigits = "00" + Integer.toString(ii);
+					}
+					else if (ii >= 10 && ii < 100) {
 						strLocation = strCustomerName + "_" + "0" + Integer.toString(ii) + BASELOCATIONNAME;
 						strLocDigits = "0" + Integer.toString(ii);
 					}
@@ -145,8 +81,12 @@ public class ManageAnalyzersPageTest {
 						strLocDigits = Integer.toString(ii);
 					}
 					
-					for (int iii = 0; iii < surveyorNum; iii++) {
-						if (iii < 10) {
+					for (int iii = 0; iii < SURVEYORNUM; iii++) {
+						if (iii >= 0 && iii < 10) {
+							strSurveyorDesc = strLocation + "_" + "00" + Integer.toString(iii) + BASESURVEYORNAME;
+							strSurDigits = "00" + Integer.toString(iii);
+						}
+						else if (iii >= 10 && iii < 100) {
 							strSurveyorDesc = strLocation + "_" + "0" + Integer.toString(iii) + BASESURVEYORNAME;
 							strSurDigits = "0" + Integer.toString(iii);
 						}
@@ -155,11 +95,16 @@ public class ManageAnalyzersPageTest {
 							strSurDigits = Integer.toString(iii);
 						}
 						
-						for (int iiii = 1; iiii < analyzerNum + 1; iiii++) {
-							if (iiii < 10)
+						for (int iiii = 0; iiii < ANALYZERNUM; iiii++) {
+							if (iiii >= 0 && iiii < 10) {
+							 	strAnalyzer = strCusDigits + strLocDigits + strSurDigits + "00" + Integer.toString(iiii);
+							}
+							else if (iiii >= 10 && iiii < 100) {
 								strAnalyzer = strCusDigits + strLocDigits + strSurDigits + "0" + Integer.toString(iiii);
-							else
+							}
+							else {
 								strAnalyzer = strCusDigits + strLocDigits + strSurDigits + Integer.toString(iiii);
+							}
 							
 							manageAnalyzersPage.addNewAnalyzer(strAnalyzer, ANALYZERSHAREDKEY, strSurveyorDesc);
 						}
