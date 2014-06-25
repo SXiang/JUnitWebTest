@@ -79,24 +79,16 @@ public class ManageSurveyorPage extends BasePage {
 		
 		this.btnAddNewSurveyor.click();
 		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(3);
-		
 		this.inputSurveyorDesc.sendKeys(surveyorDesc);
-		this.dropDownLocation.sendKeys(location);
 		
-//		Select select = new Select(this.dropDownLocation);
-//		List <WebElement> items =  select.getOptions();
-//		
-//		for (int i = 0; i < items.size(); i++) {
-//			System.out.println("\nThe item text is: " + items.get(i).getText());
-//			System.out.println("The i is: " + Integer.toString(i));
-//			
-//			if (items.get(i).getText().contains(location)) {
-//				select.selectByIndex(i);
-//				break;
-//			}
-//		}		
+		List<WebElement> options = this.dropDownLocation.findElements(By.tagName("option"));
+		for (WebElement option : options) {
+			if(location.equals(option.getText().trim()))
+				option.click();		
+		}
+		
+		if (this.testSetup.isRunningDebug())
+			this.testSetup.slowdownInSeconds(5);		
 		
 		this.btnOK.click();
 	}

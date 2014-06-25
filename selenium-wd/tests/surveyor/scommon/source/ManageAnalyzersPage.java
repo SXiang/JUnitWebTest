@@ -3,6 +3,8 @@
  */
 package surveyor.scommon.source;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -85,7 +87,15 @@ public class ManageAnalyzersPage extends BasePage {
 		
 		this.inputSerialNumber.sendKeys(serialNumber);
 		this.inputSharedKey.sendKeys(sharedKey);
-		this.dropDownSurveyor.sendKeys(surveyor);
+		
+		List<WebElement> options = this.dropDownSurveyor.findElements(By.tagName("option"));
+		for (WebElement option : options) {
+			if(surveyor.equals(option.getText().trim()))
+				option.click();		
+		}		
+		
+		if (this.testSetup.isRunningDebug())
+			this.testSetup.slowdownInSeconds(8);
 		
 		this.btnOK.click();		
 	}

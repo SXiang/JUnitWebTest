@@ -67,12 +67,12 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 					for (int iii = 0; iii < SURVEYORNUM; iii++) {
 						if (iii >= 0 && iii < 10)
 							strSurveyorDesc = strLocation + "_" + "00" + Integer.toString(iii) + BASESURVEYORNAME;
-						else if (iii >= 10 && iii > 100)
+						else if (iii >= 10 && iii < 100)
 							strSurveyorDesc = strLocation + "_" + "0" + Integer.toString(iii) + BASESURVEYORNAME;
 						else
 							strSurveyorDesc = strLocation + "_" + Integer.toString(iii) + BASESURVEYORNAME;
 						
-						manageSurveyorPage.addNewSurveyor(strSurveyorDesc, strLocation);
+						manageSurveyorPage.addNewSurveyor(strSurveyorDesc, strCustomerName + " - " + strLocation);
 					}
 				}
 			}

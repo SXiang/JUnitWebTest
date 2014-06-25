@@ -106,7 +106,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 								strAnalyzer = strCusDigits + strLocDigits + strSurDigits + Integer.toString(iiii);
 							}
 							
-							manageAnalyzersPage.addNewAnalyzer(strAnalyzer, ANALYZERSHAREDKEY, strSurveyorDesc);
+							manageAnalyzersPage.addNewAnalyzer(strAnalyzer, ANALYZERSHAREDKEY, strCustomerName + " - " + strLocation 
+									+ " - " + strSurveyorDesc);
 						}
 					}
 				}
