@@ -29,10 +29,10 @@ public class SurveyorBaseTest {
 	public static final String BASEUSERNAME = "SQA@picarro.com";
 	public static final String USERPASSWORD = "sqa#Picarro$0";
 	
-	public static final int CUSTOMERNUM = 100; //Should be set less than 100 otherwise need review the code
-	public static final int LOCATIONNUM = 25; //Should be set less than 100 otherwise need review the code
-	public static final int SURVEYORNUM = 2; //Should be set less than 100 otherwise need review the code
-	public static final int ANALYZERNUM = 2; //Should be set less than 100 otherwise need review the code
+	public static final int CUSTOMERNUM = 50; //Should be set less than 100 otherwise need review the code
+	public static final int LOCATIONNUM = 5; //Should be set less than 100 otherwise need review the code
+	public static final int SURVEYORNUM = 30; //Should be set less than 100 otherwise need review the code
+	public static final int ANALYZERNUM = 1; //Should be set less than 100 otherwise need review the code
 	public static final int USERNUM = 100;    //Should be set less than 100 otherwise need review the code
 	
 	public static WebDriver driver;
