@@ -31,9 +31,9 @@ public class SurveyorBaseTest {
 	
 	public static final int CUSTOMERNUM = 50; //Should be set less than 100 otherwise need review the code
 	public static final int LOCATIONNUM = 5; //Should be set less than 100 otherwise need review the code
-	public static final int SURVEYORNUM = 6; //Should be set less than 100 otherwise need review the code
+	public static final int SURVEYORNUM = 1; //Should be set less than 100 otherwise need review the code
 	public static final int ANALYZERNUM = 1; //Should be set less than 100 otherwise need review the code
-	public static final int USERNUM = 100;    //Should be set less than 100 otherwise need review the code
+	public static final int USERNUM = 5;    //Should be set less than 100 otherwise need review the code
 	
 	public static WebDriver driver;
 	public static TestSetup testSetup;
