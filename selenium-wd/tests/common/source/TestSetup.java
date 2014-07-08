@@ -279,6 +279,10 @@ public class TestSetup {
 		else
 			return false;
 	}
+	
+	public String getRandomNumber() {
+		return this.randomNumber;
+	}
 
 	public static void main(String[] args) {
 		//for code testing
