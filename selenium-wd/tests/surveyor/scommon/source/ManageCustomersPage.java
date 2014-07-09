@@ -101,6 +101,7 @@ public class ManageCustomersPage extends BasePage {
 	public boolean findExistingCustomer(String customerName) {
 		paginationInput.sendKeys("100");
 		
+		//More generic code should be implemented for iterating the table elements
 		List<WebElement> rows = customerTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 		
 		int rowSize = rows.size();
@@ -139,6 +140,49 @@ public class ManageCustomersPage extends BasePage {
 		}
 		
 		return false;
+	}
+	
+	public void editExistingCustomerName(String customerName, String newCustomerName) {
+		paginationInput.sendKeys("100");
+		
+		//More generic code should be implemented for iterating the table elements
+		List<WebElement> rows = customerTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		
+		int rowNum = 1;
+		for (WebElement row : rows) {
+			if (rowNum > rows.size())
+				break;
+			
+			List<WebElement> cols = row.findElements(By.xpath("//*[@id='datatable']/tbody/tr["+rowNum+"]/td"));
+			
+			int colNum = 1;
+			for (WebElement col : cols) {
+				if (testSetup.isRunningDebug()) {
+					System.out.println("Row "+ rowNum + " Col " + colNum + ": " + col.getText());
+				}
+				
+				if (colNum == 1 && col.getText().equalsIgnoreCase(customerName)) {
+					String strEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]/a";
+					WebElement editBtn = driver.findElement(By.xpath(strEditXPath));
+					editBtn.click();
+					
+					if (testSetup.isRunningDebug()) {
+						testSetup.slowdownInSeconds(3);
+					}
+
+					this.inputCustomerName.clear();
+					this.inputCustomerName.sendKeys(newCustomerName);
+					this.okButton.click();
+					
+					rowNum = rows.size();
+					break;
+				}
+				
+				colNum = colNum + 1;
+			}
+			
+			rowNum = rowNum + 1;
+		}
 	}
 
 	/**

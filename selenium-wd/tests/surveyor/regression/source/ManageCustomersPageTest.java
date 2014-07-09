@@ -42,11 +42,11 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void ADM001() {
-		System.out.println("\nRunning ADM001...");
-		
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber();
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "ADM001";
 		String customerStatus = CUSTOMERSTATUS;
-		String eula = EULASTRING;
+		String eula = customerName + ": " + EULASTRING;
+		
+		System.out.println("\nRunning ADM001...");
 		
 		if (debug) {
 			System.out.format("The customer name is: %s\n", customerName);
@@ -68,6 +68,43 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		}
 		catch (Exception e) {
 			System.out.format("Exception on test case \"ADM001\": %s\n", e.getMessage());
+		}
+	}
+	
+	/**
+	 * Test Case ID: ADM002
+	 * Test Description: Editing Customer
+	 * 
+	 */
+	@Test
+	public void ADM002() {
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "ADM002";
+		String customerStatus = CUSTOMERSTATUS;
+		String eula = customerName + ": " + EULASTRING;
+		String newCustomerName = customerName + "NEW";		
+		
+		System.out.println("\nRunning ADM002...");
+		
+		try {
+			manageCustomersPage.open();
+			
+			if (debug)
+				testSetup.slowdownInSeconds(3);
+			
+			manageCustomersPage.addNewCustomer(customerName, eula);
+			
+			if (debug)
+				testSetup.slowdownInSeconds(3);
+			
+			manageCustomersPage.editExistingCustomerName(customerName, newCustomerName);
+			
+			if (debug)
+				testSetup.slowdownInSeconds(3);
+			
+			assertTrue(manageCustomersPage.findExistingCustomer(newCustomerName));
+		}
+		catch (Exception e) {
+			System.out.format("Exception on test case \"ADM002\": %s\n", e.getMessage());
 		}
 	}
 }
