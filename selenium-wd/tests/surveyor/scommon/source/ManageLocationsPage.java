@@ -127,6 +127,7 @@ public class ManageLocationsPage extends BasePage {
 			
 			if (rowNum == 100 && this.nextBtn.isEnabled()) {
 				this.nextBtn.click();
+				rowNum = 1;
 			}
 			else {
 				rowNum = rowNum + 1;
@@ -135,6 +136,54 @@ public class ManageLocationsPage extends BasePage {
 		
 		return false;
 	}
+	
+	public void editExistingLocation(String customerName, String locationName, String newLocationName) {
+		paginationInput.sendKeys("100");
+		
+		//For time being, more generic code should be implemented for iterating the table elements
+		List<WebElement> rows = locationTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		
+		int rowNum = 1;
+		for (WebElement row : rows) {
+			if (rowNum > rows.size())
+				break;
+			
+			List<WebElement> cols = row.findElements(By.xpath("//*[@id='datatable']/tbody/tr["+rowNum+"]/td"));
+			
+			int colNum = 1;
+			for (WebElement col : cols) {
+				if (colNum == 1 && col.getText().equalsIgnoreCase(customerName)) {
+					String strLocationXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+					WebElement location = locationTB.findElement(By.xpath(strLocationXPath));
+					if (location.getText().equalsIgnoreCase(locationName)) {
+						String strEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]/a";
+						WebElement editBtn = locationTB.findElement(By.xpath(strEditXPath));
+						editBtn.click();
+						
+						if (testSetup.isRunningDebug()) {
+							testSetup.slowdownInSeconds(3);
+						}
+						
+						this.inputLocationDesc.clear();
+						this.inputLocationDesc.sendKeys(newLocationName);
+						this.btnOK.click();
+						
+						return;
+					}
+				}
+				
+				colNum = colNum + 1;
+			}
+			
+			if (rowNum == 100 && this.nextBtn.isEnabled()) {
+				this.nextBtn.click();
+				rowNum = 1;
+			}
+			else {
+				rowNum = rowNum + 1;
+			}
+		}
+	}		
 	
 	/**
 	 * @param args
