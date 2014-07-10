@@ -3,6 +3,8 @@
  */
 package surveyor.scommon.source;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -38,6 +40,15 @@ public class ManageLocationsPage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
 	private WebElement btnOK;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody")
+	private WebElement locationTB;	
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable_length']/label/select")
+	private WebElement paginationInput;
+	
+	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Next')]")
+	private WebElement nextBtn;
+	
 	//add more @FindBy here later
 	
 	/**
@@ -69,20 +80,60 @@ public class ManageLocationsPage extends BasePage {
 	}
 	
 	public void addNewLocation(String locationDesc, String customer) {
-		if (this.testSetup.isRunningDebug()) {
-			System.out.println(locationDesc);
-			System.out.println(customer);
-		}
-		
 		this.btnAddNewLocation.click();
 		
 		if (this.testSetup.isRunningDebug())
 			this.testSetup.slowdownInSeconds(3);
 		
 		this.inputLocationDesc.sendKeys(locationDesc);
-		this.dropDownCustomer.sendKeys(customer);
+		
+		List<WebElement> options = this.dropDownCustomer.findElements(By.tagName("option"));
+		for (WebElement option : options) {
+			if(customer.equalsIgnoreCase(option.getText().trim()))
+				option.click();
+		}
+		
+		if (this.testSetup.isRunningDebug())
+			this.testSetup.slowdownInSeconds(3);
 		
 		this.btnOK.click();
+	}
+	
+	public boolean findExistingLocation(String customerName, String locationName) {
+		paginationInput.sendKeys("100");
+		
+		//For time being, more generic code should be implemented for iterating the table elements
+		List<WebElement> rows = locationTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		
+		int rowNum = 1;
+		for (WebElement row : rows) {
+			if (rowNum > rows.size())
+				break;
+			
+			List<WebElement> cols = row.findElements(By.xpath("//*[@id='datatable']/tbody/tr["+rowNum+"]/td"));
+			
+			int colNum = 1;
+			for (WebElement col : cols) {
+				if (colNum == 1 && col.getText().equalsIgnoreCase(customerName)) {
+					String strEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+					WebElement location = driver.findElement(By.xpath(strEditXPath));
+					if (location.getText().equalsIgnoreCase(locationName)) {
+						return true;
+					}
+				}
+				
+				colNum = colNum + 1;
+			}
+			
+			if (rowNum == 100 && this.nextBtn.isEnabled()) {
+				this.nextBtn.click();
+			}
+			else {
+				rowNum = rowNum + 1;
+			}
+		}
+		
+		return false;
 	}
 	
 	/**

@@ -104,13 +104,11 @@ public class ManageCustomersPage extends BasePage {
 		//More generic code should be implemented for iterating the table elements
 		List<WebElement> rows = customerTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 		
-		int rowSize = rows.size();
-		if (testSetup.isRunningDebug()) {
-			System.out.println("The rowSize is: " + rowSize);
-		}
-		
 		int rowNum = 1;
 		for (WebElement row : rows) {
+			if (rowNum > rows.size())
+				break;
+			
 			List<WebElement> cols = row.findElements(By.xpath("//*[@id='datatable']/tbody/tr["+rowNum+"]/td"));
 			
 			int colNum = 1;

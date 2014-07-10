@@ -39,7 +39,11 @@ public class SurveyorBaseTest {
 	public static TestSetup testSetup;
 	public static String baseURL;
 	public static String screenShotsDir;
-	public static boolean debug;	
+	public static boolean debug;
+	
+	public static final String CUSTOMERNAMEPREFIX = "RegCus";
+	public static final String CUSTOMERSTATUS = "Enabled";
+	public static final String EULASTRING = "For testing on adding new customer here and the testing coverage on EULA should be in the seperated test cases";
 	
 	public static LoginPage loginPage;
 	public static ManageCustomersPage manageCustomersPage;
