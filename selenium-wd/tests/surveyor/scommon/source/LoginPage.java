@@ -3,6 +3,7 @@
  */
 package surveyor.scommon.source;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -17,7 +18,6 @@ import common.source.TestSetup;
  *
  */
 public class LoginPage extends BasePage {
-	
 	public static final String STRURLPath = "/Account/Login";
 	public static final String STRPageTitle = "Login";		
 
@@ -28,24 +28,34 @@ public class LoginPage extends BasePage {
 	private WebElement tbPassword;
 
 	@FindBy(how = How.CSS, using = "[type='submit']")
-	private WebElement btnLogin;	
-
+	private WebElement btnLogin;
+	
+	@FindBy(how = How.XPATH, using = "//button[@type='submit']")
+	private WebElement btnAccept;
+	
+	/**
+	 * @param driver
+	 * @param testSetup
+	 * @param strBaseURL
+	 * @param strPageURL
+	 */
 	public LoginPage(WebDriver driver, String baseURL, TestSetup testSetup) {
-		
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 		
 		System.out.println("\nThe Login Page URL is: " + this.strPageURL);
 	}
-	
-	//Login from Login URL 
+	 
 	public HomePage loginNormalAs(String userName, String password) {
-		
 		tbUserName.sendKeys(userName);
 		tbPassword.sendKeys(password);
 		btnLogin.click();
 		
 		if (this.testSetup.isRunningDebug())
 			this.testSetup.slowdownInSeconds(3);
+		
+		if (driver.getCurrentUrl().contains("Eula") && driver.getTitle().contains("Eula")) {
+			btnAccept.click();
+		}		
 			
 		HomePage homePage = new HomePage(this.driver, this.strBaseURL, this.testSetup);
 		PageFactory.initElements(driver, homePage);

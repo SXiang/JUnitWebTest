@@ -3,6 +3,9 @@
  */
 package surveyor.scommon.source;
 
+import java.util.List;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -45,6 +48,15 @@ public class ManageUsersPage extends BasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
 	private WebElement btnOk;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody")
+	private WebElement userTB;	
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable_length']/label/select")
+	private WebElement paginationInput;
+	
+	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Next')]")
+	private WebElement nextBtn;	
 	
 	//add more web elements here later
 
@@ -89,14 +101,54 @@ public class ManageUsersPage extends BasePage {
 		if (this.testSetup.isRunningDebug())
 			this.testSetup.slowdownInSeconds(3);
 		
-		this.dropDownCustomer.sendKeys(customerName);
+		List<WebElement> options = this.dropDownCustomer.findElements(By.tagName("option"));
+		for (WebElement option : options) {
+			if(customerName.equalsIgnoreCase(option.getText().trim()))
+				option.click();
+		}		
 		this.inputEmail.sendKeys(email);
 		this.inputPassword.sendKeys(password);
 		this.inputPasswordConfirm.sendKeys(password);
 		
 		//ignore role for now since Admin is the only choice
-		
 		this.btnOk.click();
+	}
+	
+	public boolean findExistingUser(String customerName, String userName) {
+		paginationInput.sendKeys("100");
+		
+		//For time being, more generic code should be implemented for iterating the table elements
+		List<WebElement> rows = userTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		
+		int rowNum = 1;
+		for (WebElement row : rows) {
+			List<WebElement> cols = row.findElements(By.xpath("//*[@id='datatable']/tbody/tr["+rowNum+"]/td"));
+			
+			int colNum = 1;
+			for (WebElement col : cols) {
+				if (colNum == 1 && col.getText().equalsIgnoreCase(customerName)) {
+					String strUserXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+					WebElement user = driver.findElement(By.xpath(strUserXPath));
+					if (user.getText().equalsIgnoreCase(userName)) {
+						if (testSetup.isRunningDebug())
+							System.out.format("The user name found is: %s", user.getText());
+						return true;
+					}
+				}
+				
+				colNum = colNum + 1;
+			}
+			
+			if (rowNum == 100 && this.nextBtn.isEnabled()) {
+				this.nextBtn.click();
+				rowNum = 1;
+			}
+			else {
+				rowNum = rowNum + 1;
+			}
+		}
+		
+		return false;
 	}
 
 	/**

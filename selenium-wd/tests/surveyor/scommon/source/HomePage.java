@@ -17,29 +17,48 @@ import common.source.TestSetup;
  *
  */
 public class HomePage extends BasePage {
-	
-	public static final String STRURLPath = "/home";
+	public static final String STRURLPath = "";
 	public static final String STRPageTitle = "Home - Surveyor";
+	public static final String STRSurveyorDashboard = "Surveyor Dashboard";
 	
-	@FindBy(how = How.CSS, using = "[href='/Account/Logout']")
-	private WebElement btnLogout;
+	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Administrator')]")
+	private WebElement dropDownAdministrator;
 	
-	@FindBy(how = How.CSS, using = "[href='/PicarroAdministration']")
-	private WebElement btnAdministration;
+	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Log Out')]")
+	private WebElement linkLogOut;
 	
-	@FindBy(how = How.XPATH, using = "/html/body/div[2]/div[2]/div/div/p[2]/a")
-	private WebElement linkFollowASurveyor;
+	@FindBy(how = How.CSS, using = "css=h1")
+	private WebElement dbLabel; 
 	
+//  commented out the follwoing code because of UI changes
+//	@FindBy(how = How.CSS, using = "[href='/PicarroAdministration']")
+//	private WebElement btnAdministration;
+	
+//	@FindBy(how = How.XPATH, using = "/html/body/div[2]/div[2]/div/div/p[2]/a")
+//	private WebElement linkFollowASurveyor;
+	
+//	@FindBy(how = How.CSS, using = "[href='/Account/Logout']")
+//	private WebElement btnLogout;	
+	
+	/**
+	 * @param driver
+	 * @param testSetup
+	 * @param strBaseURL
+	 * @param strPageURL
+	 */
 	public HomePage(WebDriver driver, String baseURL, TestSetup testSetup) {
-		
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
-
+		
 		System.out.println("\nThe Home Page URL is: " + this.strPageURL);
 	}
 	
 	public LoginPage logout() {
+		this.dropDownAdministrator.click();
 		
-		this.btnLogout.click();
+		if (this.testSetup.isRunningDebug())
+			this.testSetup.slowdownInSeconds(3);
+		
+		this.linkLogOut.click();
 		
 		if (this.testSetup.isRunningDebug())
 			this.testSetup.slowdownInSeconds(3);
@@ -49,29 +68,37 @@ public class HomePage extends BasePage {
 		return loginPage;
 	}
 	
-	public AdministrationPage navigateToAdministationPage() {
+	public boolean checkIfAtHomePage() {
+		if (driver.getTitle().equalsIgnoreCase(STRPageTitle))
+			return true;
 		
-		this.btnAdministration.click();
-		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(3);
-		
-		AdministrationPage administrationPage = new AdministrationPage(this.driver, this.strBaseURL, this.testSetup);
-		PageFactory.initElements(this.driver,  administrationPage);
-		
-		return administrationPage;
+		return false;
 	}
 	
-	public PrimePage navigateToPrimePage() {
-		
-		this.linkFollowASurveyor.click();
-		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(3);
-		
-		PrimePage primePage = new PrimePage(this.driver, this.strBaseURL, this.testSetup);
-		PageFactory.initElements(this.driver,  primePage);
-		
-		return primePage;
-	}
+//  commented out the following code because of UI changes 	
+//	public AdministrationPage navigateToAdministationPage() {
+//		
+//		this.btnAdministration.click();
+//		
+//		if (this.testSetup.isRunningDebug())
+//			this.testSetup.slowdownInSeconds(3);
+//		
+//		AdministrationPage administrationPage = new AdministrationPage(this.driver, this.strBaseURL, this.testSetup);
+//		PageFactory.initElements(this.driver,  administrationPage);
+//		
+//		return administrationPage;
+//	}
+//	
+//	public PrimePage navigateToPrimePage() {
+//		
+//		this.linkFollowASurveyor.click();
+//		
+//		if (this.testSetup.isRunningDebug())
+//			this.testSetup.slowdownInSeconds(3);
+//		
+//		PrimePage primePage = new PrimePage(this.driver, this.strBaseURL, this.testSetup);
+//		PageFactory.initElements(this.driver,  primePage);
+//		
+//		return primePage;
+//	}
 }
