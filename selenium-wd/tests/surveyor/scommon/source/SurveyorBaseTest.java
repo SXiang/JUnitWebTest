@@ -73,7 +73,7 @@ public class SurveyorBaseTest {
 		if (debug)
 			testSetup.slowdownInSeconds(3);
 		loginPage.loginNormalAs(testSetup.getLoginUser0000(), testSetup.getLoginPwd0000());
-		testSetup.slowdownInSeconds(10); // temporary solution for now
+		//testSetup.slowdownInSeconds(10); // temporary solution for now
 	}
 
 	/**

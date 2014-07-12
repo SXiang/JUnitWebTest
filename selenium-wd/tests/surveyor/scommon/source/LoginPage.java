@@ -56,6 +56,16 @@ public class LoginPage extends BasePage {
 		if (driver.getCurrentUrl().contains("Eula") && driver.getTitle().contains("Eula")) {
 			btnAccept.click();
 		}		
+		
+		try {
+			//temporary solution for now
+			while(driver.getCurrentUrl().contains("Detect")) {
+				continue;
+			}
+		}
+		catch (Exception e) {
+			System.out.format("\n\n\nException on loginNormalAs: %s\n\n\n", e.getMessage());
+		}
 			
 		HomePage homePage = new HomePage(this.driver, this.strBaseURL, this.testSetup);
 		PageFactory.initElements(driver, homePage);

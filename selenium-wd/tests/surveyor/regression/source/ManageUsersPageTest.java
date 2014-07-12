@@ -78,7 +78,6 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 			
 			loginPage.open();
 			HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
-			testSetup.slowdownInSeconds(10); //temporary solution for now
 			
 			assertTrue(homePage.checkIfAtHomePage());
 		}

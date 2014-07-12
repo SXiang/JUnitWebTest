@@ -115,8 +115,8 @@ public class ManageLocationsPage extends BasePage {
 			int colNum = 1;
 			for (WebElement col : cols) {
 				if (colNum == 1 && col.getText().equalsIgnoreCase(customerName)) {
-					String strEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
-					WebElement location = driver.findElement(By.xpath(strEditXPath));
+					String strLocationXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+					WebElement location = driver.findElement(By.xpath(strLocationXPath));
 					if (location.getText().equalsIgnoreCase(locationName)) {
 						return true;
 					}

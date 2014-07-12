@@ -12,7 +12,6 @@ import org.openqa.selenium.WebDriver;
  * 
  */
 public class BasePage {
-
 	protected String strBaseURL;
 	protected String strPageURL;
 	protected WebDriver driver;
@@ -20,20 +19,17 @@ public class BasePage {
 	protected TestSetup testSetup;
 
 	public BasePage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
-
 		this.driver = driver;
 		this.testSetup = testSetup;
 		this.strBaseURL = strBaseURL;
 		this.strPageURL = strPageURL;
 	}
 
-	public void open() {
-		
+	public void open() {	
 		driver.get(strPageURL);
 	}
 
 	public String getStrPageURL() {
-		
 		return this.strPageURL;
 	}
 	
