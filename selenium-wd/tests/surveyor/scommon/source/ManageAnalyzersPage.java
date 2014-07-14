@@ -43,6 +43,15 @@ public class ManageAnalyzersPage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
 	private WebElement btnOK;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody")
+	private WebElement analyzerTB;	
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable_length']/label/select")
+	private WebElement paginationInput;
+	
+	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Next')]")
+	private WebElement nextBtn;	
+	
 	//add more @FindBy here later
 	
 	/**
@@ -98,6 +107,81 @@ public class ManageAnalyzersPage extends BasePage {
 			this.testSetup.slowdownInSeconds(8);
 		
 		this.btnOK.click();		
+	}
+	
+	public void addNewAnalyzer(String serialNumber, String sharedKey, String surveyor, String customerName, String locationName) {
+		if (this.testSetup.isRunningDebug()) {
+			System.out.println(serialNumber);
+			System.out.println(sharedKey);
+			System.out.println(surveyor);
+			System.out.println(customerName);
+			System.out.println(locationName);
+		}
+		
+		this.btnAddNewAnalyzer.click();
+		
+		if (this.testSetup.isRunningDebug())
+			this.testSetup.slowdownInSeconds(3);
+		
+		this.inputSerialNumber.sendKeys(serialNumber);
+		this.inputSharedKey.sendKeys(sharedKey);
+		
+		List<WebElement> options = this.dropDownSurveyor.findElements(By.tagName("option"));
+		for (WebElement option : options) {
+			if ((customerName + " - " + locationName + " - " + surveyor).equalsIgnoreCase(option.getText().trim())) {
+				option.click();
+			}
+		}
+		
+		if (this.testSetup.isRunningDebug())
+			this.testSetup.slowdownInSeconds(3);
+		
+		this.btnOK.click();
+	}
+	
+	public boolean findExistingAnalyzer(String customerName, String locationName, String surveyorName, String analyzerName) {
+		paginationInput.sendKeys("100");
+		
+		//For time being, more generic code should be implemented for iterating the table elements
+		List<WebElement> rows = analyzerTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		
+		int rowNum = 1;
+		for (WebElement row : rows) {
+			List<WebElement> cols = analyzerTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr["+rowNum+"]/td"));
+			
+			int colNum = 1;
+			for (WebElement col : cols) {
+				if (colNum == 1 && col.getText().equalsIgnoreCase(customerName)) {
+					String strLocationXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+					WebElement location = analyzerTB.findElement(By.xpath(strLocationXPath));
+					if (location.getText().equalsIgnoreCase(locationName)) {
+						String strSurveyorXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
+						WebElement surveyor = analyzerTB.findElement(By.xpath(strSurveyorXPath));
+						if (surveyor.getText().equalsIgnoreCase(surveyorName)) {
+							String strAnalyzerXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]";
+							WebElement analyzer = analyzerTB.findElement(By.xpath(strAnalyzerXPath));
+							if (analyzer.getText().equalsIgnoreCase(analyzerName)) {
+								if (testSetup.isRunningDebug())
+									System.out.format("The analyzer found is: %s", analyzer.getText());
+								return true;
+							}	
+						}
+					}	
+				}
+				
+				colNum = colNum + 1;
+			}
+			
+			if (rowNum == 100 && this.nextBtn.isEnabled()) {
+				this.nextBtn.click();
+				rowNum = 1;
+			}
+			else {
+				rowNum = rowNum + 1;
+			}
+		}		
+		
+		return false;
 	}
 
 	/**

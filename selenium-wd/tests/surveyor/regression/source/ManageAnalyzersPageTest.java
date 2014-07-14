@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import surveyor.scommon.source.ManageAnalyzersPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageSurveyorPage;
@@ -17,12 +18,13 @@ import surveyor.scommon.source.SurveyorBaseTest;
  * @author zlu
  *
  */
-public class ManageSurveyorPageTest extends SurveyorBaseTest {
+public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageLocationsPage manageLocationsPage;
 	private static ManageSurveyorPage manageSurveyorPage;
+	private static ManageAnalyzersPage manageAnalyzersPage;
 	
-	public ManageSurveyorPageTest() {
+	public ManageAnalyzersPageTest() {
 		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageCustomersPage);
 		
@@ -31,25 +33,29 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		
 		manageSurveyorPage = new ManageSurveyorPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageSurveyorPage);
+		
+		manageAnalyzersPage = new ManageAnalyzersPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver,  manageAnalyzersPage);
 	}
 	
 	/**
-	 * Test Case ID: ADM007
-	 * Test Description: Adding Surveyor
+	 * Test Case ID: ADM010
+	 * Test Description: Adding Analyzer
 	 * 
-	 */
+	 */	
 	@Test
-	public void ADM007() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "ADM007";
+	public void ADM010() {
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "ADM010";
 		String eula = customerName + ": " + EULASTRING;
 		String locationName = customerName + "Loc";
 		String surveyorName = locationName + "Sur";
+		String analyzerName = surveyorName + "Ana";
 		
-		System.out.println("\nRunning ADM007...");
+		System.out.println("\nRunning ADM010...");
 		
 		if (debug) {
-			System.out.format("\nThe customer name is \"%s\", the location name is \"%s\" and the surveyor name is \"%s\"\n", customerName, locationName, surveyorName);
-		}		
+			System.out.format("\nThe analyzer name is \"%s\"", analyzerName);
+		}
 		
 		try {
 			manageCustomersPage.open();
@@ -77,16 +83,25 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 			if (debug)
 				testSetup.slowdownInSeconds(3);
 			
-			
 			manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName);
 			
 			if (debug)
 				testSetup.slowdownInSeconds(3);
 			
-			assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorName));
+			manageAnalyzersPage.open();
+			
+			if (debug)
+				testSetup.slowdownInSeconds(3);
+			
+			manageAnalyzersPage.addNewAnalyzer(analyzerName, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
+			
+			if (debug)
+				testSetup.slowdownInSeconds(3);
+			
+			assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName));
 		}
 		catch (Exception e) {
-			System.out.format("Exception on test case \"ADM007\": %s\n", e.getMessage());
-		}
+			System.out.format("Exception on test case \"ADM010\": %s\n", e.getMessage());
+		}		
 	}
 }

@@ -35,7 +35,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		System.out.println("\nRunning ADM001...");
 		
 		if (debug) {
-			System.out.format("The customer name is: %s\n", customerName);
+			System.out.format("\nThe customer name is: %s\n", customerName);
 		}
 	
 		try {

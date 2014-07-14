@@ -3,9 +3,9 @@
  */
 package surveyor.regression.source;
 
+import org.junit.Test;
 import static org.junit.Assert.*;
 
-import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.scommon.source.HomePage;
@@ -48,7 +48,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		System.out.println("\nRunning ADM013...");
 		
 		if (debug) {
-			System.out.format("The customer name is \"%s\" and the user name is \"%s\"\n", customerName, userName);
+			System.out.format("\nThe customer name is \"%s\" and the user name is \"%s\"\n", customerName, userName);
 		}
 		
 		try {

@@ -42,8 +42,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		System.out.println("\nRunning ADM004...");
 		
 		if (debug) {
-			System.out.format("The customer name is: %s\n", customerName);
-			System.out.format("The customer status is: %s\n", locationName);
+			System.out.format("\nThe location is: %s\n", locationName);
 		}
 	
 		try {

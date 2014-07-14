@@ -115,7 +115,6 @@ public class ManageSurveyorPage extends BasePage {
 		
 		List<WebElement> options = this.dropDownLocation.findElements(By.tagName("option"));
 		for (WebElement option : options) {
-//			if(location.equals(option.getText().trim()))
 			if ((customerName + " - " + locationName).equalsIgnoreCase(option.getText().trim()))
 				option.click();		
 		}
