@@ -43,7 +43,7 @@ public class SurveyorBaseTest {
 	
 	public static final String CUSTOMERNAMEPREFIX = "RegCus";
 	public static final String CUSTOMERSTATUS = "Enabled";
-	public static final String EULASTRING = "For testing on adding new customer here and the testing coverage on EULA should be in the seperated test cases";
+	public static final String EULASTRING = "Testing";
 	public static final String REGBASEUSERNAME = "@picarro.com";
 	public static final String USERROLEADMIN = "Administrator";
 	
@@ -72,7 +72,7 @@ public class SurveyorBaseTest {
 		loginPage.open();
 		if (debug)
 			testSetup.slowdownInSeconds(3);
-		loginPage.loginNormalAs(testSetup.getLoginUser0000(), testSetup.getLoginPwd0000());
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		//testSetup.slowdownInSeconds(10); // temporary solution for now
 	}
 

@@ -27,20 +27,30 @@ import common.source.TestSetup;
  *
  */
 public class ManageCusLocSurAnaUserTest extends SurveyorBaseTest {
-	public static final String CUSTOMER = "CusA";
-	public static final String LOCATION = "Loc";
+	//public static final String CUSTOMER = "CusA";
+	//public static final String LOCATION = "Loc";
+	public static final String CUSTOMER = "Picarro";
+	public static final String LOCATION = "Default";
+	
 	public static final String SURVEYOR = "Sur";
 	public static final String ANALYZER = "A";
 	public static final String ANALYZERSHAREDKEY = "sqa#Picarro$0";	
 	
-	public static final String USER = "@email.com";
+	//public static final String USER = "@email.com";
+	public static final String USER = "@picarro.com";
 	public static final String PASSWORD = "sqa#Picarro$0";
 	
-	public static final int CUSNUM = 5;
-	public static final int LOCNUM = 5;
-	public static final int SURNUM = 10;
-	public static final int ANANUM = 1;
-	public static final int UNUM = 100;	
+//	public static final int CUSNUM = 5;
+//	public static final int LOCNUM = 5;
+//	public static final int SURNUM = 10;
+//	public static final int ANANUM = 1;
+//	public static final int UNUM = 100;
+	
+	public static final int CUSNUM = 1;
+	public static final int LOCNUM = 0;
+	public static final int SURNUM = 0;
+	public static final int ANANUM = 0;
+	public static final int UNUM = 110;	
 	
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageLocationsPage manageLocationsPage;
@@ -73,8 +83,8 @@ public class ManageCusLocSurAnaUserTest extends SurveyorBaseTest {
 		System.out.println("\nRunning ManageCusLocSurAnaUserTest_addingCusLocSurAnaUser...");
 		
 		try {
-			manageCustomersPage.open();
-			manageCustomersPage.addNewCustomer(CUSTOMER, CUSTOMER + " eula");
+			//manageCustomersPage.open();
+			//manageCustomersPage.addNewCustomer(CUSTOMER, CUSTOMER + " eula");
 			
 			String strLocationName = "";
 			String strSurveyorName = "";
