@@ -49,6 +49,9 @@ public class TestSetup {
 	private String runningOnRemoteServer;
 	private String remoteServerHost;
 	private String remoteServerPort;
+	
+	private String loginUser;
+	private String loginPwd;
 
 	private String loginUser0000;
 	private String loginPwd0000;
@@ -61,6 +64,7 @@ public class TestSetup {
 	private String ieDriverPath;
 
 	private String implicitlyWaitTimeOutInSeconds;
+	private String implicitlyWaitSpecialTimeOutInSeconds;
 	private String implicitlyWaitSpecialTimeOutInMS;
 
 	private String language;
@@ -100,6 +104,9 @@ public class TestSetup {
 					.getProperty("remoteServerHost");
 			this.remoteServerPort = this.testProp
 					.getProperty("remoteServerPort");
+			
+			this.loginUser = this.testProp.getProperty("loginUser");
+			this.loginPwd = this.testProp.getProperty("loginPwd");
 
 			this.loginUser0000 = this.testProp.getProperty("loginUser0000");
 			this.loginPwd0000 = this.testProp.getProperty("loginPwd0000");
@@ -116,6 +123,8 @@ public class TestSetup {
 
 			this.implicitlyWaitTimeOutInSeconds = this.testProp
 					.getProperty("implicitlyWaitTimeOutInSeconds");
+			this.implicitlyWaitSpecialTimeOutInSeconds = this.
+					testProp.getProperty("implicitlyWaitSpecialTimeOutInSeconds");
 			this.implicitlyWaitSpecialTimeOutInMS = this.testProp
 					.getProperty("implicitlyWaitSpecialTimeOutInMS");
 
@@ -248,17 +257,23 @@ public class TestSetup {
 	public String getBaseUrl() {
 		return this.baseURL;
 	}
-
-	public String getLoginUser0000() {
-		
-		return this.loginUser0000;
-		
+	
+	public String getLoginUser() {
+		return this.loginUser;
+	}
+	
+	public String getLoginPwd() {
+		return this.loginPwd;
 	}
 
-	public String getLoginPwd0000() {
-		
-		return this.loginPwd0000;
-	}
+//	public String getLoginUser0000() {
+//		return this.loginUser0000;
+//	}
+//
+//	public String getLoginPwd0000() {
+//		
+//		return this.loginPwd0000;
+//	}
 
 	public String getLoginUserDisplayName() {
 		return this.loginUserDisplayName;
@@ -282,6 +297,14 @@ public class TestSetup {
 	
 	public String getRandomNumber() {
 		return this.randomNumber;
+	}
+	
+	public long getImplicitlyWaitTimeOutInSeconds() {
+		return Long.parseLong(this.implicitlyWaitTimeOutInSeconds.trim());
+	}
+	
+	public long getImplicitlySpecialWaitTimeOutinSeconds() {
+		return Long.parseLong(this.implicitlyWaitSpecialTimeOutInSeconds.trim());
 	}
 
 	public static void main(String[] args) {
