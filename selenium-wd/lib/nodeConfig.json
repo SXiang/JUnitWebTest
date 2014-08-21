@@ -3,19 +3,19 @@
       [
         {
           "browserName": "firefox",
-          "maxInstances": 5,
+          "maxInstances": 12,
           "seleniumProtocol": "WebDriver"
         },
         {
           "browserName": "chrome",
-          "maxInstances": 5,
+          "maxInstances": 12,
           "seleniumProtocol": "WebDriver"
         }
       ],
   "configuration":
   {
     "proxy": "org.openqa.grid.selenium.proxy.DefaultRemoteProxy",
-    "maxSession": 5,
+    "maxSession": 12,
     "port": 5555,
     "host": ip,
     "register": true,
