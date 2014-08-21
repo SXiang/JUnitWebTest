@@ -46,7 +46,7 @@ public class ComplianceReportsPage extends ReportsBasePage implements Reports {
 	}
 	
 	//Temporary solution for now and should pass the params by a data structure
-	public boolean addNewReport(String title, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, 
+	public void addNewReport(String title, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, 
 			String NELat, String NELong, String SWLat, String SWLong, String surUnit, String tag, String startDate, String endDate, String surModeFilter) {
 		this.btnNewComplianceRpt.click();
 		
@@ -135,10 +135,10 @@ public class ComplianceReportsPage extends ReportsBasePage implements Reports {
 		if (testSetup.isRunningDebug())
 			testSetup.slowdownInSeconds(3);
 		
-		if (this.checkActionStatus(this.getReportTitle(),  testSetup.getLoginUser()))
-			return true;
-		
-		return false;
+//		if (this.checkActionStatus(this.getReportTitle(),  testSetup.getLoginUser()))
+//			return true;
+//		
+//		return false;
 	}
 	
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy) {
@@ -239,8 +239,8 @@ public class ComplianceReportsPage extends ReportsBasePage implements Reports {
 	}
 	
 	//Temporary solution for now and should pass the params by a data structure	
-	public boolean addNewPDReport() {
-		return this.addNewReport(this.getReportTitle(), TIMEZONE, EXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, 
+	public void addNewPDReport() {
+		this.addNewReport(this.getReportTitle(), TIMEZONE, EXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, 
 				NELAT, NELON, SWLAT, SWLON, SURVEYORUNIT, TAG, STARTDATE, ENDDATE, REPORTMODES1);
 	}
 	

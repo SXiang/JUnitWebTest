@@ -40,12 +40,12 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 			if (debug)
 				testSetup.slowdownInSeconds(3);
 			
-			assertTrue(complianceReportsPage.addNewPDReport());
+			complianceReportsPage.addNewPDReport();
+			
+			assertTrue(complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()));
 			
 			if (debug)
 				testSetup.slowdownInSeconds(3);
-			
-			//assertTrue(complianceReportsPage.findExistingReport(rptTitle, testSetup.getLoginUser()));
 		}
 		catch (Exception e) {
 			System.out.format("\nException on test case \"RPT000\": %s", e.getMessage());
