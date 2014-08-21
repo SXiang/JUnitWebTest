@@ -34,7 +34,8 @@ public class ManageUsersPage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='User_CustomerId']")
 	private WebElement dropDownCustomer;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='User_UserName']")
+	//@FindBy(how = How.XPATH, using = "//*[@id='User_UserName']")
+	@FindBy(how = How.XPATH, using = "//*[@id='User.UserName']")
 	private WebElement inputEmail;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='User_Password']")

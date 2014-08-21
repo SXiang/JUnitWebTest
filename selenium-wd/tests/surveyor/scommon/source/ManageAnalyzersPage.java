@@ -183,6 +183,10 @@ public class ManageAnalyzersPage extends BasePage {
 		
 		return false;
 	}
+	
+	public void editExistingAnalyzer(String customerName, String locationName, String surveyorName) {
+		
+	}
 
 	/**
 	 * @param args
