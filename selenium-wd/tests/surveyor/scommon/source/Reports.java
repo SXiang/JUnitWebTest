@@ -23,6 +23,7 @@ public interface Reports {
 	
 	public static final String SURVEYORUNIT = "Picarro - Default - pdFDDS2037a";
 	public static final String TAG = "dmcs1-sqa01";
+	//public static final String TAG = "dmcs1-Aug21-1946-01";
 	
 	public static final String STARTDATE = "01/01/2014";
 	public static final String ENDDATE = "08/14/2014";
