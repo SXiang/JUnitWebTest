@@ -219,7 +219,7 @@ public class ComplianceReportsPage extends ReportsBasePage implements Reports {
 						return true;
 				}
 				catch (Exception e) {
-					System.out.format("Exception on report generation: \n%s", e.getMessage());
+					System.out.format("\nException on report generation: \n%s", e.getMessage());
 					return false;
 				}
 				
