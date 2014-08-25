@@ -17,8 +17,10 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
@@ -96,7 +98,7 @@ public class TestSetup {
 					+ "\n");
 
 			this.baseURL = this.testProp.getProperty("baseURL");
-			System.out.println("The baseURL is: " + this.baseURL + "\n");
+			System.out.println("\nThe baseURL is: " + this.baseURL + "\n");
 
 			this.runningOnRemoteServer = this.testProp
 					.getProperty("runningOnRemoteServer");
@@ -115,7 +117,7 @@ public class TestSetup {
 					.getProperty("loginUserDisplayName");
 
 			this.browser = this.testProp.getProperty("browser");
-			System.out.println("The browser is: " + this.browser + "\n");
+			System.out.println("\nThe browser is: " + this.browser + "\n");
 
 			this.ieDriverPath = this.testProp.getProperty("ieDriverPath");
 			this.chromeDriverPath = this.testProp
@@ -144,7 +146,7 @@ public class TestSetup {
 					.getProperty("slowdownInSeconds");
 
 			this.randomNumber = Long.toString((new Random()).nextInt(1000000));
-			System.out.println("The random number is: " + this.randomNumber
+			System.out.println("\nThe random number is: " + this.randomNumber
 					+ "\n");
 
 			driverSetup();
@@ -167,19 +169,16 @@ public class TestSetup {
 		try {
 			if (this.runningOnRemoteServer != null
 					&& this.runningOnRemoteServer.trim()
-							.equalsIgnoreCase("Yes")) {
+							.equalsIgnoreCase("Yes") && this.browser != null) {
 				switch (this.browser.trim()) {
 				case "chrome":
-
-					DesiredCapabilities capabilities = DesiredCapabilities
-							.chrome();
+					DesiredCapabilities capabilities = DesiredCapabilities.chrome();
 					ChromeOptions options = new ChromeOptions();
 					options.addArguments(Arrays.asList(
 							"allow-running-insecure-content",
 							"ignore-certificate-errors", 
 							"test-type"));
-					capabilities.setCapability(ChromeOptions.CAPABILITY,
-							options);
+					capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 					driver = new RemoteWebDriver(new URL("http://"
 							+ this.remoteServerHost + ":4444/wd/hub/"),
 							capabilities);
@@ -201,25 +200,31 @@ public class TestSetup {
 					break;
 				}
 
-				System.out.println("The server is running remote on: "
+				System.out.println("\nThe server is running remote on: "
 						+ this.remoteServerHost + "\n");
-			} else {
-				
+			} else if (this.browser != null && (this.ieDriverPath != null || this.chromeDriverPath != null)) {
 				switch (this.browser.trim()) {
 				case "chrome":
+					DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+					ChromeOptions options = new ChromeOptions();
+					options.addArguments(Arrays.asList(
+						"allow-running-insecure-content",
+						"ignore-certificate-errors", 
+						"test-type"));
+					capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+					
 					System.setProperty("webdriver.chrome.driver",
 							this.chromeDriverPath);
-					System.out
-							.println("The System Propery 'webdriver.chrome.driver' is: "
+					System.out.println("\nThe System Propery 'webdriver.chrome.driver' is: "
 									+ System.getProperty(
 											"webdriver.chrome.driver")
 											.toString() + "\n");
-					driver = new ChromeDriver();
+					driver = new ChromeDriver(capabilities);
 					break;
 				case "ie":
 					System.setProperty("webdriver.ie.driver", this.ieDriverPath);
 					System.out
-							.println("The System Propery 'webdriver.ie.driver' is: "
+							.println("\nThe System Propery 'webdriver.ie.driver' is: "
 									+ System.getProperty("webdriver.ie.driver")
 											.toString() + "\n");
 					driver = new InternetExplorerDriver();
@@ -229,7 +234,10 @@ public class TestSetup {
 					break;
 				}
 
-				System.out.println("Running local without server\n");
+				System.out.println("\nRunning local\n");
+			} else {
+				System.out.println("\nWebDriver setup failed, please check the config setting in test.properites file.\n");
+				System.exit(1);
 			}
 
 			driver.manage()
@@ -238,9 +246,9 @@ public class TestSetup {
 							Long.parseLong(this.implicitlyWaitTimeOutInSeconds
 									.trim()), TimeUnit.SECONDS);
 			System.out
-					.println("The default implicitlyWaitTimeOut has been set to "
+					.println("\nThe default implicitlyWaitTimeOut has been set to "
 							+ this.implicitlyWaitTimeOutInSeconds.trim()
-							+ " seconds" + "\n\n");
+							+ " seconds" + "\n");
 
 		} catch (Exception e) {
 			
