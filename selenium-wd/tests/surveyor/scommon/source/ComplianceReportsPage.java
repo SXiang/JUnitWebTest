@@ -125,7 +125,7 @@ public class ComplianceReportsPage extends ReportsBasePage implements Reports {
 		this.inputViewAnno.click();
 		this.inputViewAssets.click();
 		this.inputViewBoundaries.click();
-		this.inputViewBaseMap.click();
+		//this.inputViewBaseMap.click();
 		
 		if (testSetup.isRunningDebug())
 			testSetup.slowdownInSeconds(3);
