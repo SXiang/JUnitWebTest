@@ -25,7 +25,8 @@ public class ManageCustomersPage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a")
 	private WebElement btnAddNewCustomer;
 	
-	@FindBy(how = How.XPATH, using = "//a[contains(@href, '#')]")
+	//@FindBy(how = How.XPATH, using = "//a[contains(@href, '#')]")
+	@FindBy(how = How.XPATH, using = "/html/body/div[1]/div/ul/li")
 	private WebElement dropDownAdministrator;
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Log Out')]")
