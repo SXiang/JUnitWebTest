@@ -23,7 +23,8 @@ public class ManageSurveyorPage extends BasePage {
 	public static final String STRURLPath = "/Picarro/ManageSurveyors";
 	public static final String STRPageTitle = "Manage Surveyors - Surveyor";
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a")
+	//@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	private WebElement btnAddNewSurveyor;
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Administrator')]")
@@ -127,6 +128,8 @@ public class ManageSurveyorPage extends BasePage {
 	
 	public boolean findExistingSurveyor(String customerName, String locationName, String surveyorName) {
 		paginationInput.sendKeys("100");
+		
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
 		//For time being, more generic code should be implemented for iterating the table elements
 		List<WebElement> rows = surveyorTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));

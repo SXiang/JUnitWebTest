@@ -62,7 +62,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 					else
 						strUserName = strCustomerName + "_" + Integer.toString(ii) + BASEUSERNAME;
 					
-					manageUsersPage.addNewUser(strCustomerName, strUserName, USERPASSWORD, "Administrator");
+					//manageUsersPage.addNewUser(strCustomerName, strUserName, USERPASSWORD, "Administrator");
+					
+					//???
+					
 				}
 			}
 		}

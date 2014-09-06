@@ -22,7 +22,8 @@ public class ManageLocationsPage extends BasePage {
 	public static final String STRURLPath = "/Picarro/ManageLocations";
 	public static final String STRPageTitle = "Manage Locations - Surveyor";
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a")
+	//@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	private WebElement btnAddNewLocation;
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Administrator')]")
@@ -102,6 +103,8 @@ public class ManageLocationsPage extends BasePage {
 	public boolean findExistingLocation(String customerName, String locationName) {
 		paginationInput.sendKeys("100");
 		
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		
 		//For time being, more generic code should be implemented for iterating the table elements
 		List<WebElement> rows = locationTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 		
@@ -139,6 +142,8 @@ public class ManageLocationsPage extends BasePage {
 	
 	public void editExistingLocation(String customerName, String locationName, String newLocationName) {
 		paginationInput.sendKeys("100");
+		
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
 		//For time being, more generic code should be implemented for iterating the table elements
 		List<WebElement> rows = locationTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));

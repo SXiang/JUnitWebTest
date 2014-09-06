@@ -3,6 +3,7 @@
  */
 package common.source;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -31,6 +32,16 @@ public class BasePage {
 
 	public String getStrPageURL() {
 		return this.strPageURL;
+	}
+	
+	public boolean isElementPresent(String strXPath) {
+		try {
+			this.driver.findElement(By.xpath(strXPath));
+			return true;
+		}
+		catch (org.openqa.selenium.NoSuchElementException e) {
+			return false;
+		}
 	}
 	
 	//more generic code will be followed

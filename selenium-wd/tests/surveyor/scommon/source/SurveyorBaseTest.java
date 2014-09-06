@@ -44,8 +44,14 @@ public class SurveyorBaseTest {
 	public static final String CUSTOMERNAMEPREFIX = "RegCus";
 	public static final String CUSTOMERSTATUS = "Enabled";
 	public static final String EULASTRING = "Testing";
-	public static final String REGBASEUSERNAME = "@picarro.com";
+	public static final String REGBASEUSERNAME = "@email.com";
+	
 	public static final String USERROLEADMIN = "Administrator";
+	
+	public static final String CUSUSERROLEUA = "Utility Administrator";
+	//public static final String CUSUSERROLEUA = "Utility Administator"; //temporary for now because of the typo bug
+	public static final String CUSUSERROLESU = "Supervisor";
+	public static final String CUSUSERROLEDR = "Driver";
 	
 	public static LoginPage loginPage;
 	public static ManageCustomersPage manageCustomersPage;
@@ -61,7 +67,7 @@ public class SurveyorBaseTest {
 		screenShotsDir = "./screenshots/";
 		debug = testSetup.isRunningDebug();
 		driver.manage().deleteAllCookies();
-		driver.manage().window().maximize();
+		//driver.manage().window().maximize();
 		
 		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageCustomersPage);		
@@ -86,7 +92,8 @@ public class SurveyorBaseTest {
 		if (debug)
 			testSetup.slowdownInSeconds(3);
 		
-		manageCustomersPage.logout();
+		if (!driver.getTitle().equalsIgnoreCase("Login"))
+			manageCustomersPage.logout();
 		
 		driver.quit();		
 	}

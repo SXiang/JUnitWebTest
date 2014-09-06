@@ -19,7 +19,8 @@ import common.source.TestSetup;
  *
  */
 public class ReportsBasePage extends BasePage {
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a")
+	//@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	protected WebElement btnNewComplianceRpt;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='report-title']")
@@ -31,7 +32,9 @@ public class ReportsBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='report-exclusion-radius']")
 	protected WebElement inputExclusionRadius;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[1]/div/div/fieldset/div[3]/div[2]/div/label/input")
+	//@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[1]/div/div/fieldset/div[3]/div[2]/div/label/input")
+	//@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[2]/div/div/fieldset/div[3]/div[2]/div/label/input")
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div[3]/div/div/fieldset/div[3]/div[2]/div/label")
 	protected WebElement inputReportModeS1;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[1]/div/div/fieldset/div[3]/div[3]/div/label/input")
@@ -45,6 +48,9 @@ public class ReportsBasePage extends BasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='report-survey-mode-minimum-amplitude']")
 	protected WebElement inputMinAmp;
+	
+//	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[2]/div/fieldset/div[1]/div/div/div[1]/label")
+//	protected WebElement inputCusBoundary;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[2]/div/fieldset/div[1]/div/div/div[1]/label")
 	protected WebElement inputCusBoundary;
@@ -118,6 +124,9 @@ public class ReportsBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='report-survey-end-dt']")
 	protected WebElement cbEndDate;
   
+//	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[5]/div/div[1]/fieldset/div[5]/div/div[1]/div/label/input")
+//	protected WebElement inputSurModeFilterS1;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[5]/div/div[1]/fieldset/div[5]/div/div[1]/div/label/input")
 	protected WebElement inputSurModeFilterS1;
 	

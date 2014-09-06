@@ -51,57 +51,50 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		String surveyorName = locationName + "Sur";
 		String analyzerName = surveyorName + "Ana";
 		
-		System.out.println("\nRunning ADM010...");
+		System.out.println("\nRunning ADM010 - Test Description: Adding Analyzer");
 		
-		if (debug) {
-			System.out.format("\nThe analyzer name is \"%s\"", analyzerName);
-		}
+		manageCustomersPage.open();
 		
-		try {
-			manageCustomersPage.open();
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageCustomersPage.addNewCustomer(customerName, eula);
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageLocationsPage.open();
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageLocationsPage.addNewLocation(locationName, customerName);
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageSurveyorPage.open();
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName);
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageAnalyzersPage.open();
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageAnalyzersPage.addNewAnalyzer(analyzerName, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName));
-		}
-		catch (Exception e) {
-			System.out.format("Exception on test case \"ADM010\": %s\n", e.getMessage());
-		}		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		manageCustomersPage.addNewCustomer(customerName, eula);
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		manageLocationsPage.open();
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		manageLocationsPage.addNewLocation(locationName, customerName);
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		manageSurveyorPage.open();
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName);
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		manageAnalyzersPage.open();
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		manageAnalyzersPage.addNewAnalyzer(analyzerName, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		System.out.format("\ncustomerName: %s, locationName: %s, surveyorName: %s, analyzerName: %s", customerName, locationName, surveyorName, analyzerName);
+		
+		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName));		
 	}
 }

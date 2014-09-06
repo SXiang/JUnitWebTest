@@ -175,6 +175,7 @@ public class TestSetup {
 					DesiredCapabilities capabilities = DesiredCapabilities.chrome();
 					ChromeOptions options = new ChromeOptions();
 					options.addArguments(Arrays.asList(
+							"--incognito",
 							"allow-running-insecure-content",
 							"ignore-certificate-errors", 
 							"test-type"));
@@ -200,7 +201,7 @@ public class TestSetup {
 					break;
 				}
 
-				System.out.println("\nThe server is running remote on: "
+				System.out.println("\nRunning Selenium Server for use with RemoteDrivers and the server is running on: "
 						+ this.remoteServerHost + "\n");
 			} else if (this.browser != null && (this.ieDriverPath != null || this.chromeDriverPath != null)) {
 				switch (this.browser.trim()) {
@@ -208,6 +209,7 @@ public class TestSetup {
 					DesiredCapabilities capabilities = DesiredCapabilities.chrome();
 					ChromeOptions options = new ChromeOptions();
 					options.addArguments(Arrays.asList(
+						"--incognito",
 						"allow-running-insecure-content",
 						"ignore-certificate-errors", 
 						"test-type"));
@@ -234,7 +236,7 @@ public class TestSetup {
 					break;
 				}
 
-				System.out.println("\nRunning local\n");
+				System.out.println("\nRunning WebDriver API\n");
 			} else {
 				System.out.println("\nWebDriver setup failed, please check the config setting in test.properites file.\n");
 				System.exit(1);
@@ -294,6 +296,10 @@ public class TestSetup {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public int getSlowdownInSeconds() {
+		return Integer.parseInt(this.slowdownInSeconds);
 	}
 
 	public boolean isRunningDebug() {

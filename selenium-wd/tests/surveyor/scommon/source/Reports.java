@@ -28,5 +28,6 @@ public interface Reports {
 	public static final String STARTDATE = "01/01/2014";
 	public static final String ENDDATE = "08/14/2014";
 	
-	public static final int ACTIONTIMEOUT = 660; //in seconds
+	//public static final int ACTIONTIMEOUT = 660; //in seconds
+	public static final int ACTIONTIMEOUT = 300; //in seconds
 }

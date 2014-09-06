@@ -35,21 +35,30 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	}
 	
 	/**
-	 * Test Case ID: ADM013
-	 * Test Description: Adding User
+	 * Test Case ID: ADM000
+	 * Test Description: skipping for now for some special test case here later
 	 * 
 	 */
 	@Test
 	public void ADM000() {
-		System.out.println("\nRunning ADM00...");
+		System.out.println("\nRunning ADM00 and skipping for now for some special test case here later...");
+	}	
+	
+	/**
+	 * Test Case ID: ADM013
+	 * Test Description: Adding User
+	 * 
+	 */	
+	@Test
+	public void ADM013() {
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "ADM013";
+		String eula = customerName + ": " + EULASTRING;
+		String userName = customerName + REGBASEUSERNAME;
+		
+		System.out.println("\nRunning ADM013...");
+		
+		System.out.println("\nStill working on it and will be ready soon\n");
 	}
-	//temporay comment out
-//	public void ADM013() {
-//		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "ADM013";
-//		String eula = customerName + ": " + EULASTRING;
-//		String userName = customerName + REGBASEUSERNAME;
-//		
-//		System.out.println("\nRunning ADM013...");
 //		
 //		if (debug) {
 //			System.out.format("\nThe customer name is \"%s\" and the user name is \"%s\"\n", customerName, userName);
@@ -71,19 +80,25 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 //			if (debug)
 //				testSetup.slowdownInSeconds(3);
 //			
-//			manageUsersPage.addNewUser(customerName, userName, USERPASSWORD, USERROLEADMIN);
+//			manageUsersPage.addNewCustomerUser(customerName, userName, USERROLEADMIN, USERROLEADMIN);
+//			
+//			(customerName, userName, USERPASSWORD, USERROLEADMIN);
 //			
 //			if (debug)
 //				testSetup.slowdownInSeconds(3);
 //			
 //			assertTrue(manageUsersPage.findExistingUser(customerName, userName));
 //			
-//			manageUsersPage.logout();
+//			//tempoary comment out the following code and will be add back after have the roles defined
+////			manageUsersPage.logout();
+////			
+////			loginPage.open();
+////			HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
+////			
+////			assertTrue(homePage.checkIfAtHomePage());
 //			
-//			loginPage.open();
-//			HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
-//			
-//			//assertTrue(homePage.checkIfAtHomePage()); //temporary comment it out and should add it back when the right role setup is ready
+//			if (debug)
+//				testSetup.slowdownInSeconds(3);
 //		}
 //		catch (Exception e) {
 //			System.out.format("Exception on test case \"ADM013\": %s\n", e.getMessage());

@@ -16,13 +16,7 @@ import surveyor.scommon.source.SurveyorBaseTest;
  *
  */
 public class ComplianceReportsPageTest extends SurveyorBaseTest {
-	private static ComplianceReportsPage complianceReportsPage;
-	
-	String rptTitle = ComplianceReportsPage.TITLENAMEBASE + testSetup.getRandomNumber();
-	
 	public ComplianceReportsPageTest() {
-		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup, rptTitle);
-		PageFactory.initElements(driver,  complianceReportsPage);
 	}
 	
 	/**
@@ -32,25 +26,29 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 */	
 	@Test
 	public void RPT000() {
-		System.out.format("\nTestcase - RPT000: Create a new compliance report %s\n", rptTitle);
+		String rptTitle = ComplianceReportsPage.TITLENAMEBASE + testSetup.getRandomNumber();
+		System.out.format("\nRunning - RPT000 - Test Description: Create a new compliance report %s\n", rptTitle);
 		
-		try {
-			complianceReportsPage.open();
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-//			Temporary comment out the following code
-//			complianceReportsPage.addNewPDReport();
-//			
-//			assertTrue(complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()));
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-		}
-		catch (Exception e) {
-			System.out.format("\nException on test case \"RPT000\": %s\n", e.getMessage());
-			fail("\nTestcase RPT000 failed: \n" + e.getMessage());
-		}		
-	}
+		ComplianceReportsPage complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver,  complianceReportsPage);
+		
+		complianceReportsPage.open();
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		complianceReportsPage.addNewPDReport(rptTitle);
+		
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		//complianceReportsPage.open();
+		
+		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser())))
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle, testSetup.getLoginUser()));
+		else
+			fail("\nTestcase RPT000 - Test Description: Create a new compliance report, failed.\n");
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+	}		
 }

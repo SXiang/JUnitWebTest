@@ -29,20 +29,17 @@ public class ComplianceReportsPage extends ReportsBasePage implements Reports {
 	public static final String STRURLPath = "/Reports/ComplianceReports";
 	public static final String STRPageTitle = "Compliance Reports - Surveyor";
 	
-	private String rptTitle;
+	//private String rptTitle;
 
 	/**
 	 * @param driver
 	 * @param strBaseURL
 	 * @param testSetup
 	 */
-	public ComplianceReportsPage(WebDriver driver, String strBaseURL, TestSetup testSetup, String title) {
+	public ComplianceReportsPage(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup, strBaseURL + STRURLPath);
 		
-		System.out.println("\nThe Manager Users Page URL is: " + this.strPageURL);
-		
-		this.rptTitle = title;
-		System.out.format("\nThe report title is: %s", this.rptTitle);
+		System.out.format("\nThe Compliance Reports Page URL is: %s\n", this.strPageURL);
 	}
 	
 	//Temporary solution for now and should pass the params by a data structure
@@ -64,8 +61,9 @@ public class ComplianceReportsPage extends ReportsBasePage implements Reports {
 
 		this.inputExclusionRadius.clear();
 		this.inputExclusionRadius.sendKeys(exclusionRadius);
-		this.inputReportModeS1.click();
-		this.inputCusBoundary.click();
+		//this.inputReportModeS1.click();
+		
+		//this.inputCusBoundary.click();
 		
 		this.inputImgMapHeight.sendKeys(imageMapHeight);
 		this.inputImgMapWidth.sendKeys(imageMapWidth);
@@ -97,9 +95,9 @@ public class ComplianceReportsPage extends ReportsBasePage implements Reports {
 		}
 		
 		List<WebElement> optionsTAG = this.cbTag.findElements(By.tagName("option"));
-		for (WebElement option : optionsTAG) {
-			if ((tag).equalsIgnoreCase(option.getText().trim())) {
-				option.click();
+		for (WebElement optionTAG : optionsTAG) {
+			if ((tag).equalsIgnoreCase(optionTAG.getText().trim())) {
+				optionTAG.click();
 			}
 		}
 		
@@ -108,7 +106,7 @@ public class ComplianceReportsPage extends ReportsBasePage implements Reports {
 		
 //		this.cbStartDate.sendKeys(startDate);
 //		this.cbEndDate.sendKeys(endDate);
-		this.inputSurModeFilterS1.click();
+		//this.inputSurModeFilterS1.click();
 		
 		this.btnSruveySearch.click();
 		this.checkboxSurFirst.click();
@@ -144,17 +142,19 @@ public class ComplianceReportsPage extends ReportsBasePage implements Reports {
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy) {
 		paginationInput.sendKeys("100");
 		
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		
 		String reportTitleXPath;
 		String createdByXPath;
 		String errorSpanXPath;
 		String actionStatusXPath;
 		String pdfImgXPath;
 		
-		WebElement rptTitleCell = null;
-		WebElement createdByCell = null;
-		WebElement errorSpan = null;
-		WebElement actionStatus = null;
-		WebElement pdfImg = null;
+		WebElement rptTitleCell;
+		WebElement createdByCell;
+		WebElement errorSpan;
+		WebElement actionStatus;
+		WebElement pdfImg;
 		
 		List<WebElement> rows = rptTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 		
@@ -166,33 +166,35 @@ public class ComplianceReportsPage extends ReportsBasePage implements Reports {
 		else
 			loopCount = 100; 
 		
-		driver.manage().timeouts().implicitlyWait(this.testSetup.getImplicitlySpecialWaitTimeOutinSeconds(),TimeUnit.SECONDS);
+		System.out.format("\nThe rowSize is: %d\n", rowSize);
 		
-		for (int i = 1; i < loopCount; i++) {
-			actionStatusXPath = "//*[@id='datatable']/tbody/tr["+i+"]/td[4]/img";
-			
-			long startTime = System.currentTimeMillis();
-			long elapsedTime = 0;
-			
-			boolean bContinue = true;
-			while (bContinue) {
-				try {
-					actionStatus = driver.findElement(By.xpath(actionStatusXPath));
-					
-					elapsedTime = System.currentTimeMillis() - startTime;
-					if (elapsedTime >= (ACTIONTIMEOUT * 1000)) {
-						driver.manage().timeouts().implicitlyWait(testSetup.getImplicitlyWaitTimeOutInSeconds(), TimeUnit.SECONDS);
-						return false;
-					}
-				}
-				catch (org.openqa.selenium.NoSuchElementException e) {
-					bContinue = false;
-					continue;
-				}
-			}
-		}
-
-		driver.manage().timeouts().implicitlyWait(testSetup.getImplicitlyWaitTimeOutInSeconds(), TimeUnit.SECONDS);
+//		driver.manage().timeouts().implicitlyWait(this.testSetup.getImplicitlySpecialWaitTimeOutinSeconds(),TimeUnit.SECONDS);
+//		
+//		for (int i = 1; i < loopCount; i++) {
+//			actionStatusXPath = "//*[@id='datatable']/tbody/tr["+i+"]/td[4]/img";
+//			
+//			long startTime = System.currentTimeMillis();
+//			long elapsedTime = 0;
+//			
+//			boolean bContinue = true;
+//			while (bContinue) {
+//				try {
+//					actionStatus = driver.findElement(By.xpath(actionStatusXPath));
+//					
+//					elapsedTime = System.currentTimeMillis() - startTime;
+//					if (elapsedTime >= (ACTIONTIMEOUT * 1000)) {
+//						driver.manage().timeouts().implicitlyWait(testSetup.getImplicitlyWaitTimeOutInSeconds(), TimeUnit.SECONDS);
+//						return false;
+//					}
+//				}
+//				catch (org.openqa.selenium.NoSuchElementException e) {
+//					bContinue = false;
+//					continue;
+//				}
+//			}
+//		}
+//
+//		driver.manage().timeouts().implicitlyWait(testSetup.getImplicitlyWaitTimeOutInSeconds(), TimeUnit.SECONDS);
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath =  "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
@@ -208,48 +210,59 @@ public class ComplianceReportsPage extends ReportsBasePage implements Reports {
 			createdByCell = rptTB.findElement(By.xpath(createdByXPath));
 			
 			if (rptTitleCell.getText().equalsIgnoreCase(rptTitle) && createdByCell.getText().equalsIgnoreCase(strCreatedBy)) {
-				try {
-					pdfImg = rptTB.findElement(By.xpath(pdfImgXPath));
-					String src = pdfImg.getAttribute("src");
-					
-					if (testSetup.isRunningDebug())
-						System.out.print("The src is: " + src);
-					
-					if (src.contains("pdf"))
-						return true;
-				}
-				catch (Exception e) {
-					System.out.format("\nException on report generation: \n%s", e.getMessage());
-					return false;
-				}
+				long startTime = System.currentTimeMillis();
+				long elapsedTime = 0;
+				boolean bContinue = true;
 				
-				return true;
+				while (bContinue) {
+					try {
+						pdfImg = rptTB.findElement(By.xpath(pdfImgXPath));
+						String src = pdfImg.getAttribute("src");
+						
+						System.out.print("The src is: " + src);
+						
+						if (src.contains("pdf"))   //temporary for now
+							return true;
+					}
+					catch (org.openqa.selenium.NoSuchElementException e) {
+						elapsedTime = System.currentTimeMillis() - startTime;
+						if (elapsedTime >= (ACTIONTIMEOUT * 1000)) {
+							return false;
+						}
+						
+						continue;
+					}
+				}
 			}
 			
 			if (rowNum == 100 && this.nextBtn.isEnabled()) {
-				this.nextBtn.click();
-				rowNum = 1;
+					this.nextBtn.click();
+					
+					this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+					
+					List<WebElement> newRows = rptTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+					rowSize = newRows.size();
+					if (rowSize < 100)
+						loopCount = rowSize;
+					else
+						loopCount = 100;
+					rowNum = 1;
 			}
-			else {
-				rowNum = rowNum + 1;
-			}			
 		}
 		
 		return false;
 	}
 	
 	//Temporary solution for now and should pass the params by a data structure	
-	public void addNewPDReport() {
-		this.addNewReport(this.getReportTitle(), TIMEZONE, EXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, 
+	public void addNewPDReport(String reportTitle) {
+		this.addNewReport(reportTitle, TIMEZONE, EXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, 
 				NELAT, NELON, SWLAT, SWLON, SURVEYORUNIT, TAG, STARTDATE, ENDDATE, REPORTMODES1);
-	}
-	
-	public String getReportTitle() {
-		return this.rptTitle;
 	}
 	
 	public boolean findExistingReport(String rptTitle, String strCreatedBy) { 
 		paginationInput.sendKeys("100");
+		
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
 		String reportTitleXPath;
 		String createdByXPath;
@@ -281,6 +294,9 @@ public class ComplianceReportsPage extends ReportsBasePage implements Reports {
 			
 			if (rowNum == 100 && this.nextBtn.isEnabled()) {
 				this.nextBtn.click();
+				
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				
 				List<WebElement> newRows = rptTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
 				if (rowSize < 100)

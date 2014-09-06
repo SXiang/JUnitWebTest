@@ -39,39 +39,32 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		String eula = customerName + ": " + EULASTRING;
 		String locationName = customerName + "Loc";
 		
-		System.out.println("\nRunning ADM004...");
+		System.out.println("\nRunning ADM004 - Test Description: Adding Location");
 		
-		if (debug) {
-			System.out.format("\nThe location is: %s\n", locationName);
-		}
+		System.out.format("\nThe customer name is: %s\n", customerName);
+		System.out.format("\nThe location is: %s\n", locationName);
 	
-		try {
-			manageCustomersPage.open();
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageCustomersPage.addNewCustomer(customerName, eula);
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageLocationsPage.open();
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);			
-			
-			manageLocationsPage.addNewLocation(locationName,  customerName);
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			assertTrue(manageLocationsPage.findExistingLocation(customerName, locationName));
-			
-		}
-		catch (Exception e) {
-			System.out.format("Exception on test case \"ADM004\": %s\n", e.getMessage());
-		}
+		manageCustomersPage.open();
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		manageCustomersPage.addNewCustomer(customerName, eula);
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		manageLocationsPage.open();
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());			
+		
+		manageLocationsPage.addNewLocation(locationName,  customerName);
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		assertTrue(manageLocationsPage.findExistingLocation(customerName, locationName));
 	}
 	
 	/**
@@ -86,43 +79,36 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		String locationName = customerName + "Loc";
 		String newLocationName = locationName + "NEW";
 		
-		System.out.println("\nRunning ADM005...");
+		System.out.println("\nRunning ADM005 - Test Description: Editing Location");
 		
-		if (debug) {
-			System.out.format("The customer name is: %s\n", customerName);
-			System.out.format("The customer status is: %s\n", locationName);
-		}
-	
-		try {
-			manageCustomersPage.open();
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageCustomersPage.addNewCustomer(customerName, eula);
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageLocationsPage.open();
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);			
-			
-			manageLocationsPage.addNewLocation(locationName,  customerName);
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageLocationsPage.editExistingLocation(customerName, locationName, newLocationName);
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			assertTrue(manageLocationsPage.findExistingLocation(customerName, newLocationName));
-		}
-		catch (Exception e) {
-			System.out.format("Exception on test case \"ADM005\": %s\n", e.getMessage());
-		}
+		System.out.format("\nThe customer name is: %s\n", customerName);
+		System.out.format("\nThe location is: %s\n", locationName);
+
+		manageCustomersPage.open();
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		manageCustomersPage.addNewCustomer(customerName, eula);
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		manageLocationsPage.open();
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		manageLocationsPage.addNewLocation(locationName,  customerName);
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		manageLocationsPage.editExistingLocation(customerName, locationName, newLocationName);
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		assertTrue(manageLocationsPage.findExistingLocation(customerName, newLocationName));
 	}	
 }
