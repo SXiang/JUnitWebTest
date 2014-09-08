@@ -136,14 +136,123 @@ public class HomePage extends BasePage {
 	}
 	
 	public boolean checkVisitilityForPicarroDR(String loginUser) {
+		if (!this.picarroLogo.isDisplayed())
+			return false;
+		
+		if (!this.dropDownLoginUser.getText().trim().equalsIgnoreCase(loginUser))
+			return false;
+		
+		if (!this.linkDashboard.isDisplayed())
+			return false;
+		
+		if (this.isElementPresent(this.strLinkCusAdminXPath)) {
+			System.out.format("\nlinkCusAdmin\n");
+			return false;
+		}
+			
+		if (this.isElementPresent(this.strLinkPicarroAdminXPath)) {
+			System.out.format("\nlinkPicarroAdmin\n");
+			return false;
+		}
+		
+		if (!this.linkDrivingSurveys.isDisplayed())
+			return false;
+		
+		if (!this.linkSurveyors.isDisplayed())
+			return false;
+		
+		if (!this.linkFleetMap.isDisplayed())
+			return false;
+		
+		if (this.isElementPresent(this.strLinkReportsXPath))
+			return false;
+		
+		if (!this.linkSendFeedback.isDisplayed())
+			return false;
+		
+		if (!this.labelFooter.isDisplayed())
+			return false;
+		
 		return true;
 	}
 	
 	public boolean checkVisitilityForPicarroSU(String loginUser) {
+		if (!this.picarroLogo.isDisplayed())
+			return false;
+		
+		if (!this.dropDownLoginUser.getText().trim().equalsIgnoreCase(loginUser))
+			return false;
+		
+		if (!this.linkDashboard.isDisplayed())
+			return false;
+		
+		if (this.isElementPresent(this.strLinkCusAdminXPath)) {
+			System.out.format("\nlinkCusAdmin\n");
+			return false;
+		}
+			
+		if (this.isElementPresent(this.strLinkPicarroAdminXPath)) {
+			System.out.format("\nlinkPicarroAdmin\n");
+			return false;
+		}
+		
+		if (!this.linkDrivingSurveys.isDisplayed())
+			return false;
+		
+		if (!this.linkSurveyors.isDisplayed())
+			return false;
+		
+		if (!this.linkFleetMap.isDisplayed())
+			return false;
+		
+		if (!this.linkReports.isDisplayed())
+			return false;
+		
+		if (!this.linkSendFeedback.isDisplayed())
+			return false;
+		
+		if (!this.labelFooter.isDisplayed())
+			return false;
+		
 		return true;
 	}
 	
 	public boolean checkVisitilityForPicarroUA(String loginUser) {
+		if (!this.picarroLogo.isDisplayed())
+			return false;
+		
+		if (!this.dropDownLoginUser.getText().trim().equalsIgnoreCase(loginUser))
+			return false;
+		
+		if (!this.linkDashboard.isDisplayed())
+			return false;
+			
+		if (this.isElementPresent(this.strLinkPicarroAdminXPath)) {
+			System.out.format("\nlinkPicarroAdmin\n");
+			return false;
+		}
+		
+		if (!this.linkDrivingSurveys.isDisplayed())
+			return false;
+		
+		if (!this.linkSurveyors.isDisplayed())
+			return false;
+		
+		if (!this.linkFleetMap.isDisplayed())
+			return false;
+		
+		if (!this.linkReports.isDisplayed())
+			return false;
+		
+		if (!this.linkCusAdmin.isDisplayed() && !this.linkCusAdmin.getText().trim().equalsIgnoreCase("Administration"))
+			return false;
+		
+		if (!this.linkSendFeedback.isDisplayed())
+			return false;
+		
+		if (!this.labelFooter.isDisplayed())
+			return false;
+		
 		return true;
 	}
 	
