@@ -46,10 +46,11 @@ public class SurveyorBaseTest {
 	public static final String EULASTRING = "Testing";
 	public static final String REGBASEUSERNAME = "@email.com";
 	
-	public static final String USERROLEADMIN = "Administrator";
+	public static final String PICNAMEPREFIX = "sqapic";
+	public static final String REGBASEPICUSERNAME = "@picarro.com";
 	
+	public static final String USERROLEADMIN = "Administrator";
 	public static final String CUSUSERROLEUA = "Utility Administrator";
-	//public static final String CUSUSERROLEUA = "Utility Administator"; //temporary for now because of the typo bug
 	public static final String CUSUSERROLESU = "Supervisor";
 	public static final String CUSUSERROLEDR = "Driver";
 	
@@ -77,7 +78,7 @@ public class SurveyorBaseTest {
 		
 		loginPage.open();
 		if (debug)
-			testSetup.slowdownInSeconds(3);
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		//testSetup.slowdownInSeconds(10); // temporary solution for now
 	}
@@ -90,7 +91,7 @@ public class SurveyorBaseTest {
 		manageCustomersPage.open();
 		
 		if (debug)
-			testSetup.slowdownInSeconds(3);
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
 		if (!driver.getTitle().equalsIgnoreCase("Login"))
 			manageCustomersPage.logout();

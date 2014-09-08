@@ -19,24 +19,24 @@ import surveyor.scommon.source.SurveyorBaseTest;
  *
  */
 public class ACLandVisibilityTest extends SurveyorBaseTest {	
-	private static ManageCustomersPage manageCustomersPage;
-	private static ManageUsersPage manageUsersPage;
-//	private static LoginPage loginPage;
-//	private static HomePage homePage;
-	
-	public ACLandVisibilityTest() {
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageCustomersPage);
-		
-		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageUsersPage);
-		
-//		homePage = new HomePage(driver, baseURL, testSetup);
-//		PageFactory.initElements(driver,  homePage);
+////	private static ManageCustomersPage manageCustomersPage;
+////	private static ManageUsersPage manageUsersPage;
+////	private static LoginPage loginPage;
+////	private static HomePage homePage;
+//	
+//	public ACLandVisibilityTest() {
+////		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
+////		PageFactory.initElements(driver,  manageCustomersPage);
+////		
+////		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
+////		PageFactory.initElements(driver,  manageUsersPage);
 //		
-//		loginPage = new LoginPage(driver, baseURL, testSetup);
-//		PageFactory.initElements(driver,  loginPage);
-	}
+////		homePage = new HomePage(driver, baseURL, testSetup);
+////		PageFactory.initElements(driver,  homePage);
+////		
+////		loginPage = new LoginPage(driver, baseURL, testSetup);
+////		PageFactory.initElements(driver,  loginPage);
+//	}
 	
 	/**
 	 * Test Case ID: ACLV000A
@@ -51,74 +51,67 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		
 		System.out.println("\nRunning ACLV000A - Test Description: Check ACLV for customer user with Utility Administrator role");
 		
-//		try {
-			manageCustomersPage.open();
-			
-			if (driver.getTitle().equalsIgnoreCase("Login")) {
-				LoginPage loginPage = new LoginPage(driver, baseURL, testSetup);
-				PageFactory.initElements(driver,  loginPage);
-				
-				loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-			}			
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageCustomersPage.addNewCustomer(customerName, eula);
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			assertTrue(manageCustomersPage.findExistingCustomer(customerName));
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageUsersPage.open();
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEUA);
-			
-			System.out.format("\nThe customer name is: %s, the userName is: %s, the role is: %s\n", customerName, userName, CUSUSERROLEUA);
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			assertTrue(manageUsersPage.findExistingUser(customerName, userName));
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			ManageCustomersPage cusPage = new ManageCustomersPage(driver, baseURL, testSetup);
-			PageFactory.initElements(driver,  cusPage);
-			
-			cusPage.open();
-			cusPage.logout();
-			
+		manageCustomersPage.open();
+		
+		if (driver.getTitle().equalsIgnoreCase("Login")) {
 			LoginPage loginPage = new LoginPage(driver, baseURL, testSetup);
 			PageFactory.initElements(driver,  loginPage);
 			
-			loginPage.loginNormalAs(userName, USERPASSWORD);
-			
-			HomePage homePage = new HomePage(driver, baseURL, testSetup);
-			PageFactory.initElements(driver,  homePage);
-			homePage.open();
-			
-			assertTrue(homePage.checkIfAtHomePage());
-			
-			assertTrue(homePage.checkVisitilityForCusUA(userName));
-			
-			homePage.logout();
-//		}
-//		catch (Exception e) {
-//			System.out.format("\nException on test case ACLV000A: %s\n", e.getMessage());
-//			
-//			e.printStackTrace();
-//			
-//			fail("\nTestcase ACLV000A failed: \n" + e.getMessage());
-//		}				
+			loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		}			
+		
+		if (debug)
+			testSetup.slowdownInSeconds(3);
+		
+		manageCustomersPage.addNewCustomer(customerName, eula);
+		
+		if (debug)
+			testSetup.slowdownInSeconds(3);
+		
+		assertTrue(manageCustomersPage.findExistingCustomer(customerName));
+		
+		if (debug)
+			testSetup.slowdownInSeconds(3);
+		
+		ManageUsersPage manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver,  manageUsersPage);
+		manageUsersPage.open();
+		
+		if (debug)
+			testSetup.slowdownInSeconds(3);
+		
+		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEUA);
+		
+		System.out.format("\nThe customer name is: %s, the userName is: %s, the role is: %s\n", customerName, userName, CUSUSERROLEUA);
+		
+		if (debug)
+			testSetup.slowdownInSeconds(3);
+		
+		assertTrue(manageUsersPage.findExistingUser(customerName, userName));
+		
+		if (debug)
+			testSetup.slowdownInSeconds(3);
+		
+		ManageCustomersPage cusPage = new ManageCustomersPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver,  cusPage);
+		
+		cusPage.open();
+		cusPage.logout();
+		
+		LoginPage loginPage = new LoginPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver,  loginPage);
+		
+		loginPage.loginNormalAs(userName, USERPASSWORD);
+		
+		HomePage homePage = new HomePage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver,  homePage);
+		homePage.open();
+		
+		assertTrue(homePage.checkIfAtHomePage());
+		
+		assertTrue(homePage.checkVisitilityForCusUA(userName));
+		
+		homePage.logout();
 	}
 	
 	/**
@@ -155,7 +148,9 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		
 		if (debug)
 			testSetup.slowdownInSeconds(3);
-		
+
+		ManageUsersPage manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver,  manageUsersPage);
 		manageUsersPage.open();
 		
 		if (debug)
@@ -230,6 +225,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		if (debug)
 			testSetup.slowdownInSeconds(3);
 		
+		ManageUsersPage manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver,  manageUsersPage);
 		manageUsersPage.open();
 		
 		if (debug)
@@ -267,5 +264,77 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		assertTrue(homePage.checkVisitilityForCusDR(userName));
 		
 		homePage.logout();				
+	}
+	
+	/**
+	 * Test Case ID: ACLV000D
+	 * Test Description: Check ACLV for Picarro Administrator role, default Administrator account
+	 * 
+	 */
+	@Test
+	public void ACLV000D() {
+		System.out.println("\nRunning ACLV000D - Test Description: Check ACLV for Picarro Administrator role, default Administrator account");
+		
+		HomePage homePage = new HomePage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver,  homePage);
+		
+		homePage.open();
+		
+		if (driver.getTitle().equalsIgnoreCase("Login")) {
+			LoginPage loginPage = new LoginPage(driver, baseURL, testSetup);
+			PageFactory.initElements(driver,  loginPage);
+			
+			loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		}
+		
+		assertTrue(homePage.checkVisitilityForPicarroAdministrator("Administrator"));
+		
+		homePage.logout();
+	}
+	
+	/**
+	 * Test Case ID: ACLV000E
+	 * Test Description: Check ACLV for Picarro Administrator role, non-default Administrator account
+	 * 
+	 */
+	@Test
+	public void ACLV000E() {
+		String userName = PICNAMEPREFIX + "ad" + testSetup.getRandomNumber() + REGBASEPICUSERNAME;
+		
+		System.out.println("\nRunning ACLV000E - Test Description: Check ACLV for Picarro Administrator role, non-default Administrator account");
+		
+		ManageUsersPage manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver,  manageUsersPage);
+		manageUsersPage.open();
+		
+		if (driver.getTitle().equalsIgnoreCase("Login")) {
+			LoginPage loginPage = new LoginPage(driver, baseURL, testSetup);
+			PageFactory.initElements(driver,  loginPage);
+			
+			loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		}
+		
+		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, USERROLEADMIN);
+		
+		System.out.format("\nThe customer name is: %s, the userName is: %s, the role is: %s\n", "Picarro", userName, USERROLEADMIN);
+		
+		if (!manageUsersPage.findExistingUser("Picarro", userName))
+			fail("\nACLV000E: failed to create a non-default Picarro Administrator user.\n");
+		
+		manageUsersPage.logout();
+			
+		LoginPage loginPage = new LoginPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver,  loginPage);
+		
+		loginPage.loginNormalAs(userName, USERPASSWORD);		
+		
+		HomePage homePage = new HomePage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver,  homePage);
+		
+		homePage.open();
+		
+		assertTrue(homePage.checkVisitilityForPicarroAdministrator(userName));
+		
+		homePage.logout();
 	}	
 }

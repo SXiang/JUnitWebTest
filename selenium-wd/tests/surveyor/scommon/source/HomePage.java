@@ -135,6 +135,52 @@ public class HomePage extends BasePage {
 		return loginPage;
 	}
 	
+	public boolean checkVisitilityForPicarroDR(String loginUser) {
+		return true;
+	}
+	
+	public boolean checkVisitilityForPicarroSU(String loginUser) {
+		return true;
+	}
+	
+	public boolean checkVisitilityForPicarroUA(String loginUser) {
+		return true;
+	}
+	
+	public boolean checkVisitilityForPicarroAdministrator(String loginUser) {
+		if (!this.picarroLogo.isDisplayed())
+			return false;
+		
+		if (!this.dropDownAdministrator.getText().trim().equalsIgnoreCase(loginUser))
+			return false;
+		
+		if (!this.linkDashboard.isDisplayed())
+			return false;
+		
+		if (!this.linkPicarroAdmin.isDisplayed())
+			return false;
+		
+		if (!this.linkDrivingSurveys.isDisplayed())
+			return false;
+		
+		if (!this.linkSurveyors.isDisplayed())
+			return false;
+		
+		if (!this.linkFleetMap.isDisplayed())
+			return false;
+		
+		if (!this.linkReports.isDisplayed())
+			return false;
+		
+		if (!this.linkSendFeedback.isDisplayed())
+			return false;
+		
+		if (!this.labelFooter.isDisplayed())
+			return false;
+		
+		return true;		
+	}
+	
 	public boolean checkVisitilityForCusDR(String loginUser) {
 		if (!this.dropDownLoginUser.getText().trim().equalsIgnoreCase(loginUser))
 			return false;
@@ -247,21 +293,6 @@ public class HomePage extends BasePage {
 			return false;
 		
 		return true;
-	}   
-	
-	public boolean checkVisitilityForPicarroAdmin(String loginUser) {
-		if (loginUser.equalsIgnoreCase("Administrator")) {
-			if (!this.dropDownAdministrator.getText().trim().equalsIgnoreCase(loginUser))
-				return false;
-		}
-		else {
-			if (!this.dropDownLoginUser.getText().trim().equalsIgnoreCase(loginUser))
-				return false;
-		}
-			
-		return false;
-		
-		//???
 	}
 	
 	public boolean checkAdministratorHomePage() {
@@ -361,32 +392,5 @@ public class HomePage extends BasePage {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		TestSetup testSetup = new TestSetup();
-		WebDriver driver = testSetup.getDriver();
-		String baseURL = testSetup.getBaseUrl();
-		boolean debug = testSetup.isRunningDebug();
-		driver.manage().deleteAllCookies();
-		driver.manage().window().maximize();
-		
-		HomePage homePage = new HomePage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, homePage);		
-		
-		LoginPage loginPage = new LoginPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  loginPage);
-		
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		
-		if (homePage.checkDashBoardViewAllDrivingSurveysLink())
-			System.out.println("\nThe test passed");
-		
-		ManageCustomersPage manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageCustomersPage);		
-		
-		manageCustomersPage.open();
-		
-		manageCustomersPage.logout();
-		
-		driver.quit();
 	}	
 }

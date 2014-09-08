@@ -26,15 +26,17 @@ public class ManageUsersPage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a[1]")
 	private WebElement btnAddNewCustomerUser;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a[2]")
+	//@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a[2]")
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a[2]")
 	private WebElement btnAddNewPicarroUser;
 	
-	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Administrator')]")
-	private WebElement dropDownAdministrator;
-	
-	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Log Out')]")
-	private WebElement linkLogOut;	
-	
+//	//@FindBy(how = How.XPATH, using = "//a[contains(text(),'Administrator')]")
+//	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/a")
+//	private WebElement dropDownAdministrator;
+//	
+//	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Log Out')]")
+//	private WebElement linkLogOut;	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='User_CustomerId']")
 	private WebElement dropDownCustomer;
 	
@@ -78,20 +80,21 @@ public class ManageUsersPage extends BasePage {
 		System.out.println("\nThe Manager Users Page URL is: " + this.strPageURL);
 	}
 	
-	public LoginPage logout() {
-		this.dropDownAdministrator.click();
+	public void addNewPicarroUser(String email, String password, String role) {
+		this.btnAddNewPicarroUser.click();
 		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(1);
+		this.inputEmail.clear();
+		this.inputEmail.sendKeys(email);
+		this.inputPassword.sendKeys(password);
+		this.inputPasswordConfirm.sendKeys(password);
 		
-		this.linkLogOut.click();
+		List<WebElement> roleOptions = this.dropDownRole.findElements(By.tagName("option"));
+		for (WebElement roleOption : roleOptions) {
+			if (roleOption.getText().trim().equalsIgnoreCase(role))
+				roleOption.click();
+		}
 		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(3);
-		
-		LoginPage loginPage = new LoginPage(this.driver, this.strBaseURL, this.testSetup);
-		
-		return loginPage;
+		this.btnOk.click();
 	}
 	
 	public void addNewCustomerUser(String customerName, String email, String password, String role) {
@@ -105,7 +108,7 @@ public class ManageUsersPage extends BasePage {
 		this.btnAddNewCustomerUser.click();
 		
 		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(3);
+			this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
 		List<WebElement> options = this.dropDownCustomer.findElements(By.tagName("option"));
 		for (WebElement option : options) { 	
@@ -120,8 +123,7 @@ public class ManageUsersPage extends BasePage {
 		
 		List<WebElement> roleOptions = this.dropDownRole.findElements(By.tagName("option"));
 		for (WebElement roleOption : roleOptions) {
-			//if (role.equalsIgnoreCase(roleOption.getText().trim()))
-			if (roleOption.getText().trim().contains(role))  //typo bug so hard code this for now without failing the execution
+			if (roleOption.getText().trim().equalsIgnoreCase(role))
 				roleOption.click();
 		}
 		
