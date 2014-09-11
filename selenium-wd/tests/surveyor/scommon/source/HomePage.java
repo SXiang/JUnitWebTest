@@ -461,6 +461,8 @@ public class HomePage extends BasePage {
 	
 	public boolean checkDashBoardViewAllSurveyorsLink() {
 		//high level check for now and more details should be added later
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
 		this.linkDashboard.click();
 		
 		this.linkViewAllSurveyors.click();
