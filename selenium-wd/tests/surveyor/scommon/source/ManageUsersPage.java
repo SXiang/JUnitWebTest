@@ -18,7 +18,7 @@ import common.source.TestSetup;
  * @author zlu
  *
  */
-public class ManageUsersPage extends BasePage {
+public class ManageUsersPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageUsers";
 	public static final String STRPageTitle = "Manage Users - Surveyor";
 	

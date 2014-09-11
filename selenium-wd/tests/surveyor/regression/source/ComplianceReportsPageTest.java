@@ -29,26 +29,28 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		String rptTitle = ComplianceReportsPage.TITLENAMEBASE + testSetup.getRandomNumber();
 		System.out.format("\nRunning - RPT000 - Test Description: Create a new compliance report %s\n", rptTitle);
 		
-		ComplianceReportsPage complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  complianceReportsPage);
+		fail("\nKnown issue for the compliance reports so failed it manually without running the tests...\n");
 		
-		complianceReportsPage.open();
-		
-		if (debug)
-			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
-		complianceReportsPage.addNewPDReport(rptTitle);
-		
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
-		//complianceReportsPage.open();
-		
-		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser())))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle, testSetup.getLoginUser()));
-		else
-			fail("\nTestcase RPT000 - Test Description: Create a new compliance report, failed.\n");
-		
-		if (debug)
-			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+//		ComplianceReportsPage complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
+//		PageFactory.initElements(driver,  complianceReportsPage);
+//		
+//		complianceReportsPage.open();
+//		
+//		if (debug)
+//			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+//		
+//		complianceReportsPage.addNewPDReport(rptTitle);
+//		
+//		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+//		
+//		//complianceReportsPage.open();
+//		
+//		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser())))
+//			assertTrue(complianceReportsPage.findExistingReport(rptTitle, testSetup.getLoginUser()));
+//		else
+//			fail("\nTestcase RPT000 - Test Description: Create a new compliance report, failed.\n");
+//		
+//		if (debug)
+//			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 	}		
 }

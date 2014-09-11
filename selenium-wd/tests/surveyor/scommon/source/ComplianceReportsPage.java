@@ -45,6 +45,7 @@ public class ComplianceReportsPage extends ReportsBasePage implements Reports {
 	//Temporary solution for now and should pass the params by a data structure
 	public void addNewReport(String title, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, 
 			String NELat, String NELong, String SWLat, String SWLong, String surUnit, String tag, String startDate, String endDate, String surModeFilter) {
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		this.btnNewComplianceRpt.click();
 		
 		if (this.testSetup.isRunningDebug())

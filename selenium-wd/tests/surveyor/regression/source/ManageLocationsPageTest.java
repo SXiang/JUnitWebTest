@@ -11,6 +11,7 @@ import org.openqa.selenium.support.PageFactory;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.SurveyorBaseTest;
+import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
  * @author zlu
