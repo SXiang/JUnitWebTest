@@ -20,7 +20,7 @@ import common.source.TestSetup;
  * @author zlu
  *
  */
-public class ManageCustomersPage extends BasePage {
+public class ManageCustomersPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageCustomers";
 	public static final String STRPageTitle = "Manage Customers - Surveyor";
 	
@@ -35,8 +35,8 @@ public class ManageCustomersPage extends BasePage {
 	//@FindBy(how = How.XPATH, using = "//a[contains(@href, '#')]")
 	//@FindBy(how = How.XPATH, using = "/html/body/div[1]/div/ul/li")
 	//@FindBy(how = How.XPATH, using = "/html/body/div[1]/div/ul/li/a")
-	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/a")
-	private WebElement dropDownAdministrator;
+//	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/a")
+//	private WebElement dropDownAdministrator;
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Log Out')]")
 	private WebElement linkLogOut;
@@ -56,12 +56,12 @@ public class ManageCustomersPage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody")
 	private WebElement customerTB;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_length']/label/select")
-	private WebElement paginationInput;
+//	@FindBy(how = How.XPATH, using = "//*[@id='datatable_length']/label/select")
+//	private WebElement paginationInput;
 	
 	//@FindBy(how = How.XPATH, using = "//a[contains(text(),'Next')]")
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_next']")
-	private WebElement nextBtn;
+//	@FindBy(how = How.XPATH, using = "//*[@id='datatable_next']")
+//	private WebElement nextBtn;
 	
 	/**
 	 * @param driver
@@ -75,21 +75,21 @@ public class ManageCustomersPage extends BasePage {
 		System.out.println("\nThe Manager Customers Page URL is: " + this.strPageURL);
 	}
 	
-	public LoginPage logout() {
-		this.dropDownAdministrator.click();
-		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(3);
-		
-		this.linkLogOut.click();
-		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(3);
-		
-		LoginPage loginPage = new LoginPage(this.driver, this.strBaseURL, this.testSetup);
-		
-		return loginPage;
-	}
+//	public LoginPage logout() {
+//		this.dropDownAdministrator.click();
+//		
+//		if (this.testSetup.isRunningDebug())
+//			this.testSetup.slowdownInSeconds(3);
+//		
+//		this.linkLogOut.click();
+//		
+//		if (this.testSetup.isRunningDebug())
+//			this.testSetup.slowdownInSeconds(3);
+//		
+//		LoginPage loginPage = new LoginPage(this.driver, this.strBaseURL, this.testSetup);
+//		
+//		return loginPage;
+//	}
 	
 	public void addNewCustomer(String customerName, String eula) {
 		if (this.testSetup.isRunningDebug()) {
@@ -221,52 +221,7 @@ public class ManageCustomersPage extends BasePage {
 				rowNum = 1;
 			}			
 		}
-	}	
-	
-//	public void editExistingCustomerName(String customerName, String newCustomerName) {
-//		paginationInput.sendKeys("100");
-//		
-//		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-//		
-//		//More generic code should be implemented for iterating the table elements
-//		List<WebElement> rows = customerTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
-//		
-//		int rowNum = 1;
-//		for (WebElement row : rows) {
-//			if (rowNum > rows.size())
-//				break;
-//			
-//			List<WebElement> cols = row.findElements(By.xpath("//*[@id='datatable']/tbody/tr["+rowNum+"]/td"));
-//			
-//			int colNum = 1;
-//			for (WebElement col : cols) {
-//				if (testSetup.isRunningDebug()) {
-//					System.out.println("Row "+ rowNum + " Col " + colNum + ": " + col.getText());
-//				}
-//				
-//				if (colNum == 1 && col.getText().equalsIgnoreCase(customerName)) {
-//					String strEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]/a";
-//					WebElement editBtn = driver.findElement(By.xpath(strEditXPath));
-//					editBtn.click();
-//					
-//					if (testSetup.isRunningDebug()) {
-//						testSetup.slowdownInSeconds(3);
-//					}
-//
-//					this.inputCustomerName.clear();
-//					this.inputCustomerName.sendKeys(newCustomerName);
-//					this.okButton.click();
-//					
-//					rowNum = rows.size();
-//					break;
-//				}
-//				
-//				colNum = colNum + 1;
-//			}
-//			
-//			rowNum = rowNum + 1;
-//		}
-//	}
+	}
 
 	/**
 	 * @param args
