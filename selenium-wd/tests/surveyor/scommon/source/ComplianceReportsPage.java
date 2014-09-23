@@ -141,6 +141,8 @@ public class ComplianceReportsPage extends ReportsBasePage implements Reports {
 	}
 	
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy) {
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		
 		paginationInput.sendKeys("100");
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
