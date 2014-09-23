@@ -37,11 +37,17 @@ public final class SurveyorConstants {
 	public static final String PICNAMEPREFIX = "sqapic";
 	public static final String REGBASEPICUSERNAME = "@picarro.com";
 	
+	public static final String CUSNAMEBASE = "sqacus";
+	public static final String CUSNAMEBASELOC = "sqacusloc";
+	public static final String CUSNAMEBASESUR = "sqacuslocsur";
+	public static final String CUSNAMEBASEANA = "sqacuslocsurana";
+	
 	public static final String USERROLEADMIN = "Administrator";
 	public static final String CUSUSERROLEUA = "Utility Administrator";
 	public static final String CUSUSERROLESU = "Supervisor";
 	public static final String CUSUSERROLEDR = "Driver";
 	
+	public static final String PICDFADMIN = "Administrator";
 	public static final String SQACUSUA = "sqacusua@email.com";
 	public static final String SQACUSSU = "sqacussu@email.com";
 	public static final String SQACUSDR = "sqacusdr@email.com";
@@ -58,6 +64,9 @@ public final class SurveyorConstants {
 	public static final String SQAPICADTAG = "dmcs1-sqapicad";
 	public static final String SQAPICUATAG = "dmcs1-sqapicua";
 	public static final String SQAPICSUTAG = "dmcs1-sqapicsu";
-	public static final String SQAPICDRTAG = "dmcs1-sqapicdr";	
+	public static final String SQAPICDRTAG = "dmcs1-sqapicdr";
 	
+	public static final String RGBNAMEBASE = "rgb";
+	
+	public static String STRFEEDBACK = "This is sqa test feedback message";
 }

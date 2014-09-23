@@ -30,6 +30,10 @@ public class ManageUsersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a[2]")
 	private WebElement btnAddNewPicarroUser;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
+	private WebElement panelDupUserError;
+	private String panelDupUserErrorXPath = "//*[@id='page-wrapper']/div/div[2]/div[1]";
+	
 //	//@FindBy(how = How.XPATH, using = "//a[contains(text(),'Administrator')]")
 //	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/a")
 //	private WebElement dropDownAdministrator;
@@ -55,6 +59,9 @@ public class ManageUsersPage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
 	private WebElement btnOk;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='user-form']/fieldset/div[9]/div[2]/a")
+	private WebElement cancelBtn;	
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody")
 	private WebElement userTB;	
@@ -95,6 +102,12 @@ public class ManageUsersPage extends SurveyorBasePage {
 		}
 		
 		this.btnOk.click();
+		
+		if (isElementPresent(this.panelDupUserErrorXPath)){
+			WebElement panelError = driver.findElement(By.xpath(this.panelDupUserErrorXPath));
+			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
+				this.cancelBtn.click();
+		}
 	}
 	
 	public void addNewCustomerUser(String customerName, String email, String password, String role) {
@@ -128,6 +141,12 @@ public class ManageUsersPage extends SurveyorBasePage {
 		}
 		
 		this.btnOk.click();
+		
+		if (isElementPresent(this.panelDupUserErrorXPath)){
+			WebElement panelError = driver.findElement(By.xpath(this.panelDupUserErrorXPath));
+			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
+				this.cancelBtn.click();
+		}		
 	}	
 	
 	public boolean findExistingUser(String customerName, String userName) {

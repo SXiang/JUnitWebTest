@@ -27,6 +27,17 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/ul/li[6]/a")
 	protected WebElement linkLogOut;
 	
+//	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-menu']/a")
+//	protected WebElement linkPicarroAdmin;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-menu']/a")
+	protected WebElement linkPicarroAdmin;
+	protected String strLinkPicarroAdminXPath = "//*[@id='picarro-administration-menu']/a";
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-menu']/a")
+	protected WebElement linkCusAdmin;
+	protected String strLinkCusAdminXPath = "//*[@id='customer-administration-menu']/a";	
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_length']/label/select")
 	protected WebElement paginationInput;
 	

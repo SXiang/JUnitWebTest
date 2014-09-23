@@ -27,6 +27,10 @@ public class ManageSurveyorPage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	private WebElement btnAddNewSurveyor;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
+	private WebElement panelDupSurError;
+	private String panelDupSurErrorXPath = "//*[@id='page-wrapper']/div/div[2]/div[1]";
+	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Administrator')]")
 	private WebElement dropDownAdministrator;
 	
@@ -41,6 +45,9 @@ public class ManageSurveyorPage extends BasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
 	private WebElement btnOK;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='surveyor-form']/fieldset/div[3]/div[2]/a")
+	private WebElement btnCancel;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody")
 	private WebElement surveyorTB;	
@@ -116,7 +123,7 @@ public class ManageSurveyorPage extends BasePage {
 		
 		List<WebElement> options = this.dropDownLocation.findElements(By.tagName("option"));
 		for (WebElement option : options) {
-			if ((customerName + " - " + locationName).equalsIgnoreCase(option.getText().trim()))
+			if (option.getText().trim().equalsIgnoreCase(customerName + " - " + locationName))
 				option.click();		
 		}
 		
@@ -124,6 +131,12 @@ public class ManageSurveyorPage extends BasePage {
 			this.testSetup.slowdownInSeconds(3);		
 		
 		this.btnOK.click();
+		
+		if (isElementPresent(this.panelDupSurErrorXPath)){
+			WebElement panelError = driver.findElement(By.xpath(this.panelDupSurErrorXPath));
+			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
+				this.btnCancel.click();
+		}		
 	}	
 	
 	public boolean findExistingSurveyor(String customerName, String locationName, String surveyorName) {

@@ -28,6 +28,10 @@ public class ManageCustomersPage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	private WebElement btnAddNewCustomer;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
+	private WebElement panelDupCusError;
+	private String panelDupCusErrorXPath = "//*[@id='page-wrapper']/div/div[2]/div[1]";
+	
 	//@FindBy(how = How.XPATH, using = "//a[contains(@href, '#')]")
 	//@FindBy(how = How.XPATH, using = "/html/body/div[1]/div/ul/li")
 	//@FindBy(how = How.XPATH, using = "/html/body/div[1]/div/ul/li/a")
@@ -45,6 +49,9 @@ public class ManageCustomersPage extends BasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
 	private WebElement okButton;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='customer-form']/fieldset/div[4]/div[2]/a")
+	private WebElement cancelBtn;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody")
 	private WebElement customerTB;
@@ -103,6 +110,12 @@ public class ManageCustomersPage extends BasePage {
 			this.testSetup.slowdownInSeconds(3);
 		
 		this.okButton.click();
+		
+		if (isElementPresent(this.panelDupCusErrorXPath)){
+			WebElement panelError = driver.findElement(By.xpath(this.panelDupCusErrorXPath));
+			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
+				this.cancelBtn.click();
+		}
 	}
 	
 	public boolean findExistingCustomer(String customerName) {

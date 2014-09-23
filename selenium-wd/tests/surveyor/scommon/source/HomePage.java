@@ -16,7 +16,7 @@ import common.source.TestSetup;
  * @author zlu
  *
  */
-public class HomePage extends BasePage {
+public class HomePage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Home";
 	public static final String STRPageTitle = "Home - Surveyor";
 	
@@ -66,13 +66,13 @@ public class HomePage extends BasePage {
 	private WebElement linkReports;
 	private String strLinkReportsXPath = "//*[@id='report-menu']/a";
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-menu']/a")
-	private WebElement linkPicarroAdmin;
-	private String strLinkPicarroAdminXPath = "//*[@id='picarro-administration-menu']/a";
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-menu']/a")
-	private WebElement linkCusAdmin;
-	private String strLinkCusAdminXPath = "//*[@id='customer-administration-menu']/a";
+//	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-menu']/a")
+//	private WebElement linkPicarroAdmin;
+//	private String strLinkPicarroAdminXPath = "//*[@id='picarro-administration-menu']/a";
+//	
+//	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-menu']/a")
+//	private WebElement linkCusAdmin;
+//	private String strLinkCusAdminXPath = "//*[@id='customer-administration-menu']/a";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='user-feedback']/a")
 	private WebElement linkSendFeedback;
@@ -437,6 +437,7 @@ public class HomePage extends BasePage {
 	
 	public boolean checkAdministratorDashboard() {
 		this.linkDashboard.click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
 		if (!this.labelSurveyorDashboard.isDisplayed())
 			return false;
@@ -461,9 +462,10 @@ public class HomePage extends BasePage {
 	
 	public boolean checkDashBoardViewAllSurveyorsLink() {
 		//high level check for now and more details should be added later
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		//testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
 		this.linkDashboard.click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
 		this.linkViewAllSurveyors.click();
 		
@@ -485,6 +487,7 @@ public class HomePage extends BasePage {
 	
 	public boolean checkDashBoardViewAllDrivingSurveysLink() {
 		this.linkDashboard.click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
 		this.linkViewAllDrivingSurveys.click();
 		

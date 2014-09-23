@@ -30,6 +30,10 @@ public class ManageAnalyzersPage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	private WebElement btnAddNewAnalyzer;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
+	private WebElement panelDupAnaError;
+	private String panelDupAnaErrorXPath = "//*[@id='page-wrapper']/div/div[2]/div[1]";	
+	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Administrator')]")
 	private WebElement dropDownAdministrator;
 	
@@ -47,6 +51,9 @@ public class ManageAnalyzersPage extends BasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
 	private WebElement btnOK;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='analyzer-form']/fieldset/div[4]/div[2]/a")
+	private WebElement btnCancel;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody")
 	private WebElement analyzerTB;	
@@ -68,7 +75,7 @@ public class ManageAnalyzersPage extends BasePage {
 	public ManageAnalyzersPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 		
-		System.out.println("\nThe Manager Analyzers Page URL is: \n" + this.strPageURL);
+		System.out.format("\nThe Manager Analyzers Page URL is: %s\n", this.strPageURL);
 	}
 	
 	public LoginPage logout() {
@@ -133,7 +140,8 @@ public class ManageAnalyzersPage extends BasePage {
 		
 		List<WebElement> options = this.dropDownSurveyor.findElements(By.tagName("option"));
 		for (WebElement option : options) {
-			if ((customerName + " - " + locationName + " - " + surveyor).equalsIgnoreCase(option.getText().trim())) {
+			//if ((customerName + " - " + locationName + " - " + surveyor).equalsIgnoreCase(option.getText().trim())) {
+			if (option.getText().trim().equalsIgnoreCase(customerName + " - " + locationName + " - " + surveyor)) {
 				option.click();
 			}
 		}
@@ -142,6 +150,12 @@ public class ManageAnalyzersPage extends BasePage {
 			this.testSetup.slowdownInSeconds(3);
 		
 		this.btnOK.click();
+		
+		if (isElementPresent(this.panelDupAnaErrorXPath)){
+			WebElement panelError = driver.findElement(By.xpath(this.panelDupAnaErrorXPath));
+			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
+				this.btnCancel.click();
+		}		
 	}
 	
 	public boolean findExistingAnalyzer(String customerName, String locationName, String surveyorName, String analyzerName) {

@@ -171,26 +171,6 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		
 		return strListTag;
 	}	
-	
-//	private List<String> getTagNameList() {
-//		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-//		
-//		List<WebElement> rows = this.table.findElements(By.xpath(this.strTRXPath));
-//		
-//		List<String> strListTag = new ArrayList<String>();
-//		WebElement col1;
-//		
-//		for (int i = 1; i <= rows.size(); i++) {
-//			List<WebElement> cols = this.table.findElements(By.xpath(this.strTRXPath + "["+i+"]"));
-//			
-//			//tempoary for now and just get the first column data for the tag name and adding pagenation handling later
-//			col1 = this.table.findElement(By.xpath(this.strTRXPath + "["+i+"]/td[1]"));
-//			
-//			strListTag.add(col1.getText().trim());
-//		}
-//		
-//		return strListTag;
-//	}	
 
 	/**
 	 * @param args
