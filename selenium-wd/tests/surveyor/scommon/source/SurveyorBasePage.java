@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 
 import common.source.BasePage;
 import common.source.TestSetup;
@@ -63,19 +64,21 @@ public class SurveyorBasePage extends BasePage {
 	
 	public LoginPage logout() {
 		this.dropDownUser.click();
-		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
 		this.linkLogOut.click();
-		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
 		LoginPage loginPage = new LoginPage(this.driver, this.strBaseURL, this.testSetup);
 		
 		return loginPage;
-	}	
+	}
+	
+	public void login(String user, String password) {
+		LoginPage loginPage = new LoginPage(driver, strBaseURL, testSetup);
+		PageFactory.initElements(driver,  loginPage);
+		
+		loginPage.open();
+		
+		loginPage.loginNormalAs(user, password);
+	}
 
 	/**
 	 * @param args

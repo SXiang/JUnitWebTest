@@ -20,12 +20,12 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.TestSetup;
-
+import static surveyor.scommon.source.SurveyorConstants.*;
 /**
  * @author zlu
  *
  */
-public class ComplianceReportsPage extends ReportsBasePage implements Reports {
+public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String STRURLPath = "/Reports/ComplianceReports";
 	public static final String STRPageTitle = "Compliance Reports - Surveyor";
 	
@@ -88,17 +88,21 @@ public class ComplianceReportsPage extends ReportsBasePage implements Reports {
 //		this.checkBoxLevel1.click();
 //		this.checkBoxLevel6.click();
 		
-		List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
-		for (WebElement option : optionsSU) {
-			if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
-				option.click();
+		if (surUnit != "") {
+			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
+			for (WebElement option : optionsSU) {
+				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
 			}
 		}
 		
-		List<WebElement> optionsTAG = this.cbTag.findElements(By.tagName("option"));
-		for (WebElement optionTAG : optionsTAG) {
-			if ((tag).equalsIgnoreCase(optionTAG.getText().trim())) {
-				optionTAG.click();
+		if (tag != "") {
+			List<WebElement> optionsTAG = this.cbTag.findElements(By.tagName("option"));
+			for (WebElement optionTAG : optionsTAG) {
+				if ((tag).equalsIgnoreCase(optionTAG.getText().trim())) {
+					optionTAG.click();
+				}
 			}
 		}
 		
@@ -111,10 +115,8 @@ public class ComplianceReportsPage extends ReportsBasePage implements Reports {
 		
 		this.btnSruveySearch.click();
 		this.checkboxSurFirst.click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		this.btnAddSurveys.click();
-		
-		if (testSetup.isRunningDebug())
-			testSetup.slowdownInSeconds(3);
 		
 		this.inputViewLisa.click();
 		this.inputViewFOV.click();
@@ -260,6 +262,12 @@ public class ComplianceReportsPage extends ReportsBasePage implements Reports {
 	public void addNewPDReport(String reportTitle) {
 		this.addNewReport(reportTitle, TIMEZONE, EXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, 
 				NELAT, NELON, SWLAT, SWLON, SURVEYORUNIT, TAG, STARTDATE, ENDDATE, REPORTMODES1);
+	}
+	
+	//Temporary solution for now and should pass the params by a data structure	
+	public void addNewPDReport(String reportTitle, String surveyor, String tag) {
+		this.addNewReport(reportTitle, TIMEZONE, EXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, 
+				NELAT, NELON, SWLAT, SWLON, surveyor, tag, STARTDATE, ENDDATE, REPORTMODES1);
 	}
 	
 	public boolean findExistingReport(String rptTitle, String strCreatedBy) { 

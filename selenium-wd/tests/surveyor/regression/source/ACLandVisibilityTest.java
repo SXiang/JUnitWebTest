@@ -46,7 +46,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void ACLV000A() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "ACLV000A";
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "aclv000a";
 		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + REGBASEUSERNAME;
 		
@@ -122,7 +122,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void ACLV000B() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "ACLV000B";
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "aclv000b";
 		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + REGBASEUSERNAME;
 		
@@ -198,7 +198,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void ACLV000C() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "ACLV000C";
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "aclv000c";
 		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + REGBASEUSERNAME;
 		

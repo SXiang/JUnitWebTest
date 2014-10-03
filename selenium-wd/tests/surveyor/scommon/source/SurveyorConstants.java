@@ -29,7 +29,7 @@ public final class SurveyorConstants {
 	public static final int ANALYZERNUM = 1; //Should be set less than 100 otherwise need review the code
 	public static final int USERNUM = 5;    //Should be set less than 100 otherwise need review the code
 	
-	public static final String CUSTOMERNAMEPREFIX = "RegCus";
+	public static final String CUSTOMERNAMEPREFIX = "regcus";
 	public static final String CUSTOMERSTATUS = "Enabled";
 	public static final String EULASTRING = "Testing";
 	public static final String REGBASEUSERNAME = "@email.com";
@@ -42,25 +42,47 @@ public final class SurveyorConstants {
 	public static final String CUSNAMEBASESUR = "sqacuslocsur";
 	public static final String CUSNAMEBASEANA = "sqacuslocsurana";
 	
+	public static final String SQACUS = "sqacus";
+	public static final String SQACUSLOC = "sqacusloc";
+	public static final String SQAPIC = "sqapic";
+	public static final String SQAPICLOC = "sqapicloc";
+	
 	public static final String USERROLEADMIN = "Administrator";
 	public static final String CUSUSERROLEUA = "Utility Administrator";
 	public static final String CUSUSERROLESU = "Supervisor";
 	public static final String CUSUSERROLEDR = "Driver";
 	
 	public static final String PICDFADMIN = "Administrator";
+	public static final String SQACUSUAUSER = "sqacusua";
+	public static final String SQACUSSUUSER = "sqacussu";
+	public static final String SQACUSDRUSER = "sqacusdr";
+	public static final String SQAPICADUSER = "sqapicad";
+	public static final String SQAPICUAUSER = "sqapicua";
+	public static final String SQAPICSUUSER = "sqapicsu";
+	public static final String SQAPICDRUSER = "sqapicdr";
+	
 	public static final String SQACUSUA = "sqacusua@email.com";
 	public static final String SQACUSSU = "sqacussu@email.com";
 	public static final String SQACUSDR = "sqacusdr@email.com";
-	
 	public static final String SQAPICAD = "sqapicad@picarro.com";
 	public static final String SQAPICUA = "sqapicua@picarro.com";
 	public static final String SQAPICSU = "sqapicsu@picarro.com";
 	public static final String SQAPICDR = "sqapicdr@picarro.com";
 	
+	public static final String SQAPICLOCSUR = "sqapiclocsur";
+	public static final String SQAPICLOC0SUR = "sqapicloc0sur";
+	public static final String SQAPICLOC1SUR = "sqapicloc1sur";
+	public static final String SQAPICLOC2SUR = "sqapicloc2sur";
+	public static final String SQAPICLOC3SUR = "sqapicloc3sur";
+	public static final String SQACUSLOCSUR = "sqacuslocsur";
+	public static final String SQACUSLOC0SUR = "sqacusloc0sur";
+	public static final String SQACUSLOC1SUR = "sqacusloc1sur";
+	public static final String SQACUSLOC2SUR = "sqacusloc2sur";
+	public static final String SQACUSLOC3SUR = "sqacusloc3sur";
+	
 	public static final String SQACUSUATAG = "dmcs1-sqacusua";
 	public static final String SQACUSSUTAG = "dmcs1-sqacussu";
 	public static final String SQACUSDRTAG = "dmcs1-sqacusdr";
-	
 	public static final String SQAPICADTAG = "dmcs1-sqapicad";
 	public static final String SQAPICUATAG = "dmcs1-sqapicua";
 	public static final String SQAPICSUTAG = "dmcs1-sqapicsu";
@@ -69,4 +91,25 @@ public final class SurveyorConstants {
 	public static final String RGBNAMEBASE = "rgb";
 	
 	public static String STRFEEDBACK = "This is sqa test feedback message";
+	
+	public static final String TITLENAMEBASE = "sqacrpt";
+	public static final String TIMEZONE = "Pacific Standard Time";
+	public static final String EXCLUSIONRADIUS = "3";
+	public static final String REPORTMODES1 = "S1";
+	
+	public static final String CUSBOUNDARY = "Custom Boundary";
+	public static final String IMGMAPHEIGHT = "5";
+	public static final String IMGMAPWIDTH = "5";
+	public static final String NELAT = "37.4353397926825";
+	public static final String NELON = "-121.84696197509766";
+	public static final String SWLAT = "37.33058362073965";
+	public static final String SWLON = "-122.04883575439453";
+	
+	public static final String SURVEYORUNIT = "sqacus - sqacusloc - sqacuslocsur";
+	public static final String TAG = "dmcs1-sqa01";
+	
+	public static final String STARTDATE = "01/01/2014";
+	public static final String ENDDATE = "08/14/2014";
+	
+	public static final int ACTIONTIMEOUT = 300; //in seconds	
 }
