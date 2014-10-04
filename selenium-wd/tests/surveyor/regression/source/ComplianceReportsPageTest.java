@@ -32,7 +32,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	
 	/**
 	 * Test Case ID: RPT000
-	 * Test Description: Create a new compliance report, basic and generic
+	 * Test Description: Create a new compliance report, basic and generic by default Administrator
 	 * 
 	 */	
 	@Test
@@ -222,6 +222,230 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 			assertTrue(complianceReportsPage.findExistingReport(rptTitle, SQACUSSU));
 		else
 			fail("\nTestcase RPT000B2 - Test Description: Create a compliance report by a user with Customer Supervisor Role, utility admin survey, failed.\n");
+		
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+	
+	/**
+	 * Test Case ID: RPT000C
+	 * Test Description: Create a compliance report by a user with Administrator Role, survey owner 
+	 * 
+	 */	
+	@Test
+	public void RPT000C() {
+		String rptTitle = SQAPICADUSER + testSetup.getRandomNumber();
+		System.out.format("\nRunning - RPT000C - Test Description: Create a compliance report by a user with Administrator Role, survey owner, %s\n", rptTitle);
+		
+		complianceReportsPage.login(SQAPICAD, USERPASSWORD);
+		complianceReportsPage.open();
+		
+		String surUnit = "";
+		
+		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICADTAG);
+		
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICAD)))
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle, SQAPICAD));
+		else
+			fail("\nTestcase RPT000C failed.\n");
+		
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+	
+	/**
+	 * Test Case ID: RPT000C1
+	 * Test Description: Create a compliance report by a user with Administrator Role, utility admin survey 
+	 * 
+	 */	
+	@Test
+	public void RPT000C1() {
+		String rptTitle = SQAPICADUSER + testSetup.getRandomNumber();
+		System.out.format("\nRunning - RPT000C1 - Test Description: Create a compliance report by a user with Administrator Role, utility admin survey, %s\n", rptTitle);
+		
+		complianceReportsPage.login(SQAPICAD, USERPASSWORD);
+		complianceReportsPage.open();
+		
+		String surUnit = "";
+		
+		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICUATAG);
+		
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICAD)))
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle, SQAPICAD));
+		else
+			fail("\nTestcase RPT000C1 failed.\n");
+		
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+	
+	/**
+	 * Test Case ID: RPT000C2
+	 * Test Description: Create a compliance report by a user with Administrator Role, supervisor survey 
+	 * 
+	 */	
+	@Test
+	public void RPT000C2() {
+		String rptTitle = SQAPICADUSER + testSetup.getRandomNumber();
+		System.out.format("\nRunning - RPT000C2 - Test Description: Create a compliance report by a user with Administrator Role, supervisor survey, %s\n", rptTitle);
+		
+		complianceReportsPage.login(SQAPICAD, USERPASSWORD);
+		complianceReportsPage.open();
+		
+		String surUnit = "";
+		
+		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICSUTAG);
+		
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICAD)))
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle, SQAPICAD));
+		else
+			fail("\nTestcase RPT000C2 failed.\n");
+		
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+	
+	/**
+	 * Test Case ID: RPT000C3
+	 * Test Description: Create a compliance report by a user with Administrator Role, driver survey 
+	 * 
+	 */	
+	@Test
+	public void RPT000C3() {
+		String rptTitle = SQAPICADUSER + testSetup.getRandomNumber();
+		System.out.format("\nRunning - RPT000C3 - Test Description: Create a compliance report by a user with Administrator Role, driver survey, %s\n", rptTitle);
+		
+		complianceReportsPage.login(SQAPICAD, USERPASSWORD);
+		complianceReportsPage.open();
+		
+		String surUnit = "";
+		
+		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICDRTAG);
+		
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICAD)))
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle, SQAPICAD));
+		else
+			fail("\nTestcase RPT000C3 failed.\n");
+		
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+	
+	/**
+	 * Test Case ID: RPT000D
+	 * Test Description: Create a compliance report by a user with Picarro Utility Admin Role, survey owner 
+	 * 
+	 */	
+	@Test
+	public void RPT000D() {
+		String rptTitle = SQAPICUAUSER + testSetup.getRandomNumber();
+		System.out.format("\nRunning - RPT000D - Test Description: Create a compliance report by a user with Picarro Utility Admin Role, survey owner, %s\n", rptTitle);
+		
+		complianceReportsPage.login(SQAPICUA, USERPASSWORD);
+		complianceReportsPage.open();
+		
+		String surUnit = "";
+		
+		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICUATAG);
+		
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICUA)))
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle, SQAPICUA));
+		else
+			fail("\nTestcase RPT000D failed.\n");
+		
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+	
+	/**
+	 * Test Case ID: RPT000D1
+	 * Test Description: Create a compliance report by a user with Picarro Utility Admin Role, admin survey 
+	 * 
+	 */	
+	@Test
+	public void RPT000D1() {
+		String rptTitle = SQAPICUAUSER + testSetup.getRandomNumber();
+		System.out.format("\nRunning - RPT000D1 - Test Description: Create a compliance report by a user with Picarro Utility Admin Role, admin survey, %s\n", rptTitle);
+		
+		complianceReportsPage.login(SQAPICUA, USERPASSWORD);
+		complianceReportsPage.open();
+		
+		String surUnit = "";
+		
+		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICADTAG);
+		
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICUA)))
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle, SQAPICUA));
+		else
+			fail("\nTestcase RPT000D1 failed.\n");
+		
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+	
+	/**
+	 * Test Case ID: RPT000D2
+	 * Test Description: Create a compliance report by a user with Picarro Utility Admin Role, supervisor survey 
+	 * 
+	 */	
+	@Test
+	public void RPT000D2() {
+		String rptTitle = SQAPICUAUSER + testSetup.getRandomNumber();
+		System.out.format("\nRunning - RPT000D2 - Test Description: Create a compliance report by a user with Picarro Utility Admin Role, supervisor survey, %s\n", rptTitle);
+		
+		complianceReportsPage.login(SQAPICUA, USERPASSWORD);
+		complianceReportsPage.open();
+		
+		String surUnit = "";
+		
+		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICSUTAG);
+		
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICUA)))
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle, SQAPICUA));
+		else
+			fail("\nTestcase RPT000D2 failed.\n");
+		
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+	
+	/**
+	 * Test Case ID: RPT000D3
+	 * Test Description: Create a compliance report by a user with Picarro Utility Admin Role, driver survey 
+	 * 
+	 */	
+	@Test
+	public void RPT000D3() {
+		String rptTitle = SQAPICUAUSER + testSetup.getRandomNumber();
+		System.out.format("\nRunning - RPT000D3 - Test Description: Create a compliance report by a user with Picarro Utility Admin Role, driver survey, %s\n", rptTitle);
+		
+		complianceReportsPage.login(SQAPICUA, USERPASSWORD);
+		complianceReportsPage.open();
+		
+		String surUnit = "";
+		
+		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICDRTAG);
+		
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICUA)))
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle, SQAPICUA));
+		else
+			fail("\nTestcase RPT000D3 failed.\n");
 		
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
