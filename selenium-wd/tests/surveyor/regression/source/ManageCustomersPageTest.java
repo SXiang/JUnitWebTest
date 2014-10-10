@@ -9,6 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.SurveyorBaseTest;
+import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
  * @author zlu
@@ -32,28 +33,19 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "ADM001";
 		String eula = customerName + ": " + EULASTRING;
 		
-		System.out.println("\nRunning ADM001...");
+		System.out.println("\nRunning ADM001 - Test Description: Adding Customer");
+
+		manageCustomersPage.open();
 		
-		if (debug) {
-			System.out.format("\nThe customer name is: %s\n", customerName);
-		}
-	
-		try {
-			manageCustomersPage.open();
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageCustomersPage.addNewCustomer(customerName, eula);
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			assertTrue(manageCustomersPage.findExistingCustomer(customerName));
-		}
-		catch (Exception e) {
-			System.out.format("Exception on test case \"ADM001\": %s\n", e.getMessage());
-		}
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		manageCustomersPage.addNewCustomer(customerName, eula);
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		assertTrue(manageCustomersPage.findExistingCustomer(customerName));
 	}
 	
 	/**
@@ -67,28 +59,23 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		String eula = customerName + ": " + EULASTRING;
 		String newCustomerName = customerName + "NEW";		
 		
-		System.out.println("\nRunning ADM002...");
+		System.out.println("\nRunning ADM002 - Test Description: Editing Customer");
 		
-		try {
-			manageCustomersPage.open();
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageCustomersPage.addNewCustomer(customerName, eula);
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageCustomersPage.editExistingCustomerName(customerName, newCustomerName);
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			assertTrue(manageCustomersPage.findExistingCustomer(newCustomerName));
-		}
-		catch (Exception e) {
-			System.out.format("Exception on test case \"ADM002\": %s\n", e.getMessage());
-		}
+		manageCustomersPage.open();
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		manageCustomersPage.addNewCustomer(customerName, eula);
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		manageCustomersPage.editExistingCustomerName(customerName, newCustomerName);
+		
+		if (debug)
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		assertTrue(manageCustomersPage.findExistingCustomer(newCustomerName));
 	}
 }

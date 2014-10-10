@@ -3,7 +3,13 @@
  */
 package common.source;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+
+import surveyor.scommon.source.LoginPage;
 
 /**
  * @author zlu
@@ -15,7 +21,6 @@ public class BasePage {
 	protected String strBaseURL;
 	protected String strPageURL;
 	protected WebDriver driver;
-	
 	protected TestSetup testSetup;
 
 	public BasePage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
@@ -31,6 +36,16 @@ public class BasePage {
 
 	public String getStrPageURL() {
 		return this.strPageURL;
+	}
+	
+	public boolean isElementPresent(String strXPath) {
+		try {
+			this.driver.findElement(By.xpath(strXPath));
+			return true;
+		}
+		catch (org.openqa.selenium.NoSuchElementException e) {
+			return false;
+		}
 	}
 	
 	//more generic code will be followed

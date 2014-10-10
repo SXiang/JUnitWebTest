@@ -22,8 +22,13 @@ public class ManageLocationsPage extends BasePage {
 	public static final String STRURLPath = "/Picarro/ManageLocations";
 	public static final String STRPageTitle = "Manage Locations - Surveyor";
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a")
+	//@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	private WebElement btnAddNewLocation;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
+	private WebElement panelDupLocError;
+	private String panelDupLocErrorXPath = "//*[@id='page-wrapper']/div/div[2]/div[1]";	
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Administrator')]")
 	private WebElement dropDownAdministrator;
@@ -39,6 +44,9 @@ public class ManageLocationsPage extends BasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
 	private WebElement btnOK;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='location-form']/fieldset/div[3]/div[2]/a")
+	private WebElement btnCancel;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody")
 	private WebElement locationTB;	
@@ -97,10 +105,18 @@ public class ManageLocationsPage extends BasePage {
 			this.testSetup.slowdownInSeconds(3);
 		
 		this.btnOK.click();
+		
+		if (isElementPresent(this.panelDupLocErrorXPath)){
+			WebElement panelError = driver.findElement(By.xpath(this.panelDupLocErrorXPath));
+			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
+				this.btnCancel.click();
+		}		
 	}
 	
 	public boolean findExistingLocation(String customerName, String locationName) {
 		paginationInput.sendKeys("100");
+		
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
 		//For time being, more generic code should be implemented for iterating the table elements
 		List<WebElement> rows = locationTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
@@ -139,6 +155,8 @@ public class ManageLocationsPage extends BasePage {
 	
 	public void editExistingLocation(String customerName, String locationName, String newLocationName) {
 		paginationInput.sendKeys("100");
+		
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
 		//For time being, more generic code should be implemented for iterating the table elements
 		List<WebElement> rows = locationTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));

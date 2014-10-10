@@ -1,0 +1,141 @@
+/**
+ * 
+ */
+package surveyor.scommon.source;
+
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+
+import common.source.TestSetup;
+import static surveyor.scommon.source.SurveyorConstants.*;
+
+/**
+ * @author zlu
+ *
+ */
+public class ManageRefGasBottlesPage extends SurveyorBasePage {
+	public static final String STRURLPATH = "/Picarro/ManageRefGasBottles";
+	public static final String STRPAGETITLE = "Manage Reference Gas Bottles - Surveyor";
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
+	private WebElement btnAddNewRefGasBottle;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
+	private WebElement panelDupRgbError;
+	private String panelDupRgbErrorXPath = "//*[@id='page-wrapper']/div/div[2]/div[1]";	
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='SerialNumber']")
+	private WebElement inputItemNumber;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='BatchId']")
+	private WebElement inputLotNumber;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='IsotopicValue']")
+	private WebElement inputIsoValue;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='SurveyorUnitId']")
+	private WebElement dropdownSurveyor;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
+	private WebElement btnOK;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='ref-gas-bottle-form']/fieldset/div[5]/div[2]/a")
+	private WebElement btnCancel;
+
+	
+	/**
+	 * @param driver
+	 * @param testSetup
+	 * @param strBaseURL
+	 * @param strPageURL
+	 */
+	public ManageRefGasBottlesPage(WebDriver driver, TestSetup testSetup,
+			String strBaseURL) {
+		super(driver, testSetup, strBaseURL, strBaseURL + STRURLPATH);
+		
+		System.out.format("\nThe Manage Ref Gas Bottles Page URL is: %s\n", this.strPageURL);
+	}
+	
+	public void addNewRefGasBottle(String strItemNumber, String strLotNumber, String strIsoValue, String strCusName, String strLocName, String strSurveyor) {
+		this.btnAddNewRefGasBottle.click();
+		
+		this.inputItemNumber.sendKeys(strItemNumber);
+		this.inputLotNumber.sendKeys(strLotNumber);
+		this.inputIsoValue.clear();
+		this.inputIsoValue.sendKeys(strIsoValue);
+		
+		List<WebElement> options = this.dropdownSurveyor.findElements(By.tagName("option"));
+		for (WebElement option : options) { 	
+			if (option.getText().trim().equalsIgnoreCase(strCusName + " - " + strLocName + " - " + strSurveyor))
+				option.click();
+		}
+		
+		this.btnOK.click();
+		
+		if (isElementPresent(this.panelDupRgbErrorXPath)){
+			WebElement panelError = driver.findElement(By.xpath(this.panelDupRgbErrorXPath));
+			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
+				this.btnCancel.click();
+		}
+	}
+	
+	public boolean findExistingRefGasBottle(String strItemNumber, String strSurveyor) {
+		this.paginationInput.sendKeys("100");
+		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		String strSurveyorXPath;
+		String strRGBXPath;
+		WebElement surveyorCell;
+		WebElement rgbCell;
+		
+		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
+		
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < 100)
+			loopCount = rowSize;
+		else
+			loopCount = 100;		
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			strSurveyorXPath = strTRXPath + "["+rowNum+"]/td[3]";
+			strRGBXPath = strTRXPath + "["+rowNum+"]/td[4]";
+			
+			surveyorCell = table.findElement(By.xpath(strSurveyorXPath));
+			rgbCell = table.findElement(By.xpath(strRGBXPath));
+			
+			if (surveyorCell.getText().equalsIgnoreCase(strSurveyor) && rgbCell.getText().equalsIgnoreCase(strItemNumber)) {				
+				return true;
+			}
+			
+			if (rowNum == 100 && this.nextBtn.isEnabled()) {
+				this.nextBtn.click();
+				
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				
+				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
+				rowSize = newRows.size();
+				if (rowSize < 100)
+					loopCount = rowSize;
+				else
+					loopCount = 100;
+				rowNum = 1;
+			}
+		}
+		
+		return false;
+	}	
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+
+	}
+}

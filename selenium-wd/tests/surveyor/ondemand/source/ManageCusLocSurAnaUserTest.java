@@ -110,7 +110,9 @@ public class ManageCusLocSurAnaUserTest extends SurveyorBaseTest {
 			for (int i = 0; i < UNUM; i++) {
 				manageUsersPage.open();
 				strUserName = CUSTOMER + Integer.toString(i) + USER;
-				manageUsersPage.addNewUser(CUSTOMER, strUserName, PASSWORD, "Administrator");
+				//manageUsersPage.addNewUser(CUSTOMER, strUserName, PASSWORD, "Administrator");
+				
+				//???
 			}
 		}
 		catch (Exception e) {

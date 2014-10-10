@@ -21,12 +21,14 @@ public interface Reports {
 	public static final String SWLAT = "37.32908214394206";
 	public static final String SWLON = "-122.12385177612305";
 	
-	public static final String SURVEYORUNIT = "Picarro - Default - pdFDDS2037a";
+	//public static final String SURVEYORUNIT = "Picarro - Default - pdFDDS2037a";
+	public static final String SURVEYORUNIT = "sqacus - sqacusloc - sqacuslocsur";
 	public static final String TAG = "dmcs1-sqa01";
 	//public static final String TAG = "dmcs1-Aug21-1946-01";
 	
 	public static final String STARTDATE = "01/01/2014";
 	public static final String ENDDATE = "08/14/2014";
 	
-	public static final int ACTIONTIMEOUT = 660; //in seconds
+	//public static final int ACTIONTIMEOUT = 660; //in seconds
+	public static final int ACTIONTIMEOUT = 300; //in seconds
 }

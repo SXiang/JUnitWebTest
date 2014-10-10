@@ -17,6 +17,7 @@ import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import common.source.TestSetup;
+import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
  * @author zlu

@@ -1,116 +1,121 @@
 <project name="sanity" default="test" basedir=".">
-	<property name="proj_name" value="sanity"/>
-	<property name="dist" location="dist"/>
-	<property name="source" location= "source"/>
-	<property name="build" location="build"/>
-	<property name="reports" location="reports"/>
-	<property name="screenshots" location="screenshots"/>
-	<property name="jar_name" value="${proj_name}.jar"/>
-	<property name="common_jar" value="common.jar"/>
-	<property name="scommon_jar" value="scommon.jar"/>
+	<property name="proj_name" value="sanity" />
+	<property name="dist" location="dist" />
+	<property name="source" location="source" />
+	<property name="build" location="build" />
+	<property name="reports" location="reports" />
+	<property name="screenshots" location="screenshots" />
+	<property name="jar_name" value="${proj_name}.jar" />
+	<property name="common_jar" value="common.jar" />
+	<property name="scommon_jar" value="scommon.jar" />
 
 	<target name="init" depends="clean" description="Initialize build environment">
-		<mkdir dir="${build}"/>
-		<mkdir dir="${dist}"/>
-		<mkdir dir="${screenshots}"/>
-		<mkdir dir="${reports}"/>
-		<mkdir dir="${reports}/html/"/>
-		<mkdir dir="${reports}/xml/"/>
-		
-		<mkdir dir="${basedir}/../../common/build"/>
-		<mkdir dir="${basedir}/../../common/dist"/>
-		
-		<mkdir dir="${basedir}/../scommon/build"/>
-		<mkdir dir="${basedir}/../scommon/dist"/>
+		<mkdir dir="${build}" />
+		<mkdir dir="${dist}" />
+		<mkdir dir="${screenshots}" />
+		<mkdir dir="${reports}" />
+		<mkdir dir="${reports}/html/" />
+		<mkdir dir="${reports}/xml/" />
+
+		<mkdir dir="${basedir}/../../common/build" />
+		<mkdir dir="${basedir}/../../common/dist" />
+
+		<mkdir dir="${basedir}/../scommon/build" />
+		<mkdir dir="${basedir}/../scommon/dist" />
 	</target>
 
 	<target name="clean" description="Clean up">
-		<move file="${reports}" tofile="${reports}.old" failonerror="false"/>
-		<move file="${screenshots}" tofile="${screenshots}.old" failonerror="false"/>
-		
-		<delete dir="${build}"/>
-		<delete dir="${reports}"/>
-		<delete dir="${dist}"/>
-		
-		<delete dir="${basedir}/../../common/build"/>
-		<delete dir="${basedir}/../../common/dist"/>
-		<delete file="${basedir}/../../../lib/${common_jar}"/>
-		
-		<delete dir="${basedir}/../scommon/build"/>
-		<delete dir="${basedir}/../scommon/dist"/>
-		<delete file="${basedir}/../../../lib/${scommon_jar}"/>
-	</target>
-	
-	<target name="compile_common" depends="init" description="Compile common source code">
-		<javac srcdir="${basedir}/../../common/source" destdir="${basedir}/../../common/build">
-			<classpath>
-				<!--     <pathelement path="${basedir}/../../../lib"/>     -->
-				<fileset dir="${basedir}/../../../lib">
-					<include name="**/*.jar"/>
-				</fileset>
-			</classpath>
-		</javac>
-		
-		<jar jarfile="${basedir}/../../../lib/${common_jar}" basedir="${basedir}/../../common/build"/>
-	
-	</target>
-	
-	<target name="compile_scommon" depends="compile_common" description="Compile scommon source code">
-		<javac srcdir="${basedir}/../scommon/source" destdir="${basedir}/../scommon/build" debug="on">
-			<classpath>
-				<fileset dir="${basedir}/../../../lib">
-					<include name="**/*.jar"/>
-				</fileset>
-			</classpath>
-		</javac>
-		
-		<jar jarfile="${basedir}/../../../lib/${scommon_jar}" basedir="${basedir}/../scommon/build"/>
-				
-	</target>
-	
-	<target name="compile" depends="compile_scommon" description="Compile sanity source code">
-		<javac srcdir="${source}" destdir="${build}">
-			<classpath>
-				<!--     <pathelement path = "${basedir}/../../../lib"/>     -->
-				<fileset dir="${basedir}/../../../lib">
-					<include name="**/*.jar"/>
-				</fileset>
-			</classpath>
-		</javac>
-		
-		<jar jarfile="${dist}/${jar_name}" basedir="${build}"/>
-		
+		<move file="${reports}" tofile="${reports}.old" failonerror="false" />
+		<move file="${screenshots}" tofile="${screenshots}.old"
+			failonerror="false" />
+
+		<delete dir="${build}" />
+		<delete dir="${reports}" />
+		<delete dir="${dist}" />
+
+		<delete dir="${basedir}/../../common/build" />
+		<delete dir="${basedir}/../../common/dist" />
+		<delete file="${basedir}/../../../lib/${common_jar}" />
+
+		<delete dir="${basedir}/../scommon/build" />
+		<delete dir="${basedir}/../scommon/dist" />
+		<delete file="${basedir}/../../../lib/${scommon_jar}" />
 	</target>
 
-	<target name = "tests" depends = "compile" description = "Run test suite">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+	<target name="compile_common" depends="init"
+		description="Compile common source code">
+		<javac srcdir="${basedir}/../../common/source:${basedir}/../../surveyor/scommon/source" includeantruntime="false" destdir="${basedir}/../../common/build">
 			<classpath>
-				<pathelement path = "${build}"/>
-				<!--	<pathelement path = "${basedir}/../../../lib"/>		-->
-				<!--     <pathelement path = "${basedir}/../../common"/>     -->
+				<!-- <pathelement path="${basedir}/../../../lib"/> -->
 				<fileset dir="${basedir}/../../../lib">
-					<include name = "**/*.jar"/>
+					<include name="**/*.jar" />
 				</fileset>
-				<!--     <fileset dir = "${basedir}/../../common">     -->
-				<!--     	<include name = "**/*.jar"/>     -->
-				<!--     </fileset>	-->
 			</classpath>
-			
-			<batchtest fork = "yes" todir = "${reports}/xml">
-				<formatter type = "xml"/>
+		</javac>
+
+		<jar jarfile="${basedir}/../../../lib/${common_jar}" basedir="${basedir}/../../common/build" />
+
+	</target>
+
+	<target name="compile_scommon" depends="compile_common"
+		description="Compile scommon source code">
+		<javac srcdir="${basedir}/../scommon/source" includeantruntime="false" destdir="${basedir}/../scommon/build"
+			debug="on">
+			<classpath>
+				<fileset dir="${basedir}/../../../lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+
+		<jar jarfile="${basedir}/../../../lib/${scommon_jar}" basedir="${basedir}/../scommon/build" />
+
+	</target>
+
+	<target name="compile" depends="compile_scommon" description="Compile sanity source code">
+		<javac srcdir="${source}" includeantruntime="false" destdir="${build}">
+			<classpath>
+				<!-- <pathelement path = "${basedir}/../../../lib"/> -->
+				<fileset dir="${basedir}/../../../lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+
+		<jar jarfile="${dist}/${jar_name}" basedir="${build}" />
+
+	</target>
+
+	<target name="tests" depends="compile" description="Run test suite">
+		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
+			showoutput="yes">
+			<classpath>
+				<pathelement path="${build}" />
+				<!-- <pathelement path = "${basedir}/../../../lib"/> -->
+				<!-- <pathelement path = "${basedir}/../../common"/> -->
+				<fileset dir="${basedir}/../../../lib">
+					<include name="**/*.jar" />
+				</fileset>
+				<!-- <fileset dir = "${basedir}/../../common"> -->
+				<!-- <include name = "**/*.jar"/> -->
+				<!-- </fileset> -->
+			</classpath>
+
+			<batchtest fork="yes" todir="${reports}/xml">
+				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/*Test.class"/>
+					<include name="**/*Test.class" />
 				</fileset>
 			</batchtest>
 		</junit>
 	</target>
 
-	<target name = "test" depends = "tests">
+	<target name="test" depends="tests">
 		<junitreport todir="${reports}/xml">
-			<fileset dir = "${reports}/xml">
-				<include name = "*TEST-*.xml"/>
+			<fileset dir="${reports}/xml">
+				<include name="*TEST-*.xml" />
 			</fileset>
-			<report format = "frames" todir = "${reports}/html"/>
+			<report format="frames" todir="${reports}/html" />
 		</junitreport>
 	</target>
 
