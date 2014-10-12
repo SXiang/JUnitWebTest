@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.scommon.source.LoginPage;
+import surveyor.scommon.source.ManageRefGasBottlesAdminPage;
 import surveyor.scommon.source.ManageRefGasBottlesPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import static surveyor.scommon.source.SurveyorConstants.*;
@@ -69,6 +70,33 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 		mrgbp.addNewRefGasBottle(strItemNumber, testSetup.getRandomNumber(), "-32", CUSNAMEBASE, CUSNAMEBASELOC, CUSNAMEBASESUR);
 		
 		assertTrue(mrgbp.findExistingRefGasBottle(strItemNumber, CUSNAMEBASESUR));
+		
+		mrgbp.logout();
+	}
+	
+	/**
+	 * Test Case ID: MRGBP000C
+	 * Test Description: Adding a Ref Gas Bottle to a customer surveyor by Customer User with Utility Administrator Role
+	 * 
+	 */
+	@Test
+	public void MRGBP000C() {
+		System.out.println("\nRunning MRGBP000C - Test Description: Adding a Ref Gas Bottle to a customer surveyor by Customer User with Utility Administrator Role");
+		
+		LoginPage lpg = new LoginPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver,  lpg);
+		
+		lpg.open();
+		lpg.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		ManageRefGasBottlesAdminPage mrgbp = new ManageRefGasBottlesAdminPage(driver, testSetup, baseURL);
+		PageFactory.initElements(driver,  mrgbp);
+		
+		mrgbp.open();
+		String strItemNumber = "Reg" + RGBNAMEBASE + testSetup.getRandomNumber();
+		mrgbp.addNewRefGasBottle(strItemNumber, testSetup.getRandomNumber(), "-32", CUSNAMEBASE, CUSNAMEBASELOC, CUSNAMEBASESUR);
+		
+		assertTrue(mrgbp.findExistingRefGasBottle(strItemNumber, CUSNAMEBASESUR, CUSNAMEBASELOC));
 		
 		mrgbp.logout();
 	}	

@@ -54,12 +54,15 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	 * @param strBaseURL
 	 * @param strPageURL
 	 */
-	public ManageRefGasBottlesPage(WebDriver driver, TestSetup testSetup,
-			String strBaseURL) {
+	public ManageRefGasBottlesPage(WebDriver driver, TestSetup testSetup, String strBaseURL) {
 		super(driver, testSetup, strBaseURL, strBaseURL + STRURLPATH);
 		
 		System.out.format("\nThe Manage Ref Gas Bottles Page URL is: %s\n", this.strPageURL);
 	}
+	
+	public ManageRefGasBottlesPage(WebDriver driver, TestSetup testSetup, String baseURL, String urlPath) {
+		super(driver, testSetup, baseURL, baseURL + urlPath);
+	}	
 	
 	public void addNewRefGasBottle(String strItemNumber, String strLotNumber, String strIsoValue, String strCusName, String strLocName, String strSurveyor) {
 		this.btnAddNewRefGasBottle.click();
@@ -85,7 +88,8 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	}
 	
 	public boolean findExistingRefGasBottle(String strItemNumber, String strSurveyor) {
-		this.paginationInput.sendKeys("100");
+		this.paginationInput.sendKeys(PAGINATIONSETTING);
+		
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
 		String strSurveyorXPath;
@@ -98,10 +102,10 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 		
-		if (rowSize < 100)
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 			loopCount = rowSize;
 		else
-			loopCount = 100;		
+			loopCount = Integer.parseInt(PAGINATIONSETTING);		
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			strSurveyorXPath = strTRXPath + "["+rowNum+"]/td[3]";
@@ -114,17 +118,17 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 				return true;
 			}
 			
-			if (rowNum == 100 && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				
 				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
 				rowSize = newRows.size();
-				if (rowSize < 100)
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 					loopCount = rowSize;
 				else
-					loopCount = 100;
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				rowNum = 1;
 			}
 		}
@@ -132,6 +136,65 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		return false;
 	}	
 
+	public boolean findExistingRefGasBottle(String strItemNumber, String strSurveyor, String location, String customer) {
+		this.paginationInput.sendKeys(PAGINATIONSETTING);
+		
+		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		String customerXPath;
+		String locationXPath;
+		String strSurveyorXPath;
+		String strRGBXPath;
+		
+		WebElement customerCell;
+		WebElement locationCell;
+		WebElement surveyorCell;
+		WebElement rgbCell;
+		
+		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
+		
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);		
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			customerXPath = strTRXPath + "["+rowNum+"]/td[1]";
+			locationXPath = strTRXPath + "["+rowNum+"]/td[2]";
+			strSurveyorXPath = strTRXPath + "["+rowNum+"]/td[3]";
+			strRGBXPath = strTRXPath + "["+rowNum+"]/td[4]";
+			
+			customerCell = table.findElement(By.xpath(customerXPath));
+			locationCell = table.findElement(By.xpath(locationXPath));
+			surveyorCell = table.findElement(By.xpath(strSurveyorXPath));
+			rgbCell = table.findElement(By.xpath(strRGBXPath));
+			
+			if (customerCell.getText().trim().equalsIgnoreCase(customer) && locationCell.getText().trim().equalsIgnoreCase(location) &&
+					surveyorCell.getText().trim().equalsIgnoreCase(strSurveyor) && rgbCell.getText().trim().equalsIgnoreCase(strItemNumber)) {				
+				return true;
+			}
+			
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+				this.nextBtn.click();
+				
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				
+				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+				rowNum = 1;
+			}
+		}
+		
+		return false;
+	}
+	
 	/**
 	 * @param args
 	 */
