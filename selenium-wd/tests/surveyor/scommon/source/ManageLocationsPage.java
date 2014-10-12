@@ -26,25 +26,25 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	
 	//@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a")
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
-	private WebElement btnAddNewLocation;	
+	protected WebElement btnAddNewLocation;	
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Administrator')]")
-	private WebElement dropDownAdministrator;
+	protected WebElement dropDownAdministrator;
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Log Out')]")
-	private WebElement linkLogOut;
+	protected WebElement linkLogOut;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='Description']")
-	private WebElement inputLocationDesc;
+	protected WebElement inputLocationDesc;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='CustomerId']")
-	private WebElement dropDownCustomer;
+	protected WebElement dropDownCustomer;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
-	private WebElement btnOK;
+	protected WebElement btnOK;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='location-form']/fieldset/div[3]/div[2]/a")
-	private WebElement btnCancel;
+	protected WebElement btnCancel;
 	
 	//add more @FindBy here later
 	
@@ -60,28 +60,29 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		System.out.println("\nThe Manager Locations Page URL is: " + this.strPageURL);
 	}
 	
-	public LoginPage logout() {
-		this.dropDownAdministrator.click();
-		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(1);
-		
-		this.linkLogOut.click();
-		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(3);
-		
-		LoginPage loginPage = new LoginPage(this.driver, this.strBaseURL, this.testSetup);
-		
-		return loginPage;
+	public ManageLocationsPage(WebDriver driver, String baseURL, TestSetup testSetup, String urlPath) {
+		super(driver, testSetup, baseURL, baseURL + urlPath);
 	}
+	
+//	public LoginPage logout() {
+//		this.dropDownAdministrator.click();
+//		
+//		if (this.testSetup.isRunningDebug())
+//			this.testSetup.slowdownInSeconds(1);
+//		
+//		this.linkLogOut.click();
+//		
+//		if (this.testSetup.isRunningDebug())
+//			this.testSetup.slowdownInSeconds(3);
+//		
+//		LoginPage loginPage = new LoginPage(this.driver, this.strBaseURL, this.testSetup);
+//		
+//		return loginPage;
+//	}
 	
 	public void addNewLocation(String locationDesc, String customer) {
 		this.btnAddNewLocation.click();
-		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(3);
-		
+				
 		this.inputLocationDesc.sendKeys(locationDesc);
 		
 		List<WebElement> options = this.dropDownCustomer.findElements(By.tagName("option"));
@@ -89,9 +90,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			if(customer.equalsIgnoreCase(option.getText().trim()))
 				option.click();
 		}
-		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(3);
 		
 		this.btnOK.click();
 		
@@ -109,11 +107,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		
 		String customerNameXPath;
 		String locationNameXPath;
-		String actionEditXPath;
 		
 		WebElement customerNameCell;
 		WebElement locationNameCell;
-		WebElement actionEditCell;
 		
 		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 		
