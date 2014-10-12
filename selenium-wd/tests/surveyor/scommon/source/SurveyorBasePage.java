@@ -11,6 +11,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import common.source.BasePage;
 import common.source.TestSetup;
+import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
  * @author zlu
@@ -47,10 +48,17 @@ public class SurveyorBasePage extends BasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody")
 	protected WebElement table;
-	protected String strTRXPath = "//*[@id='datatable']/tbody/tr";
+	protected String strTRXPath = "//*[@id='datatable']/tbody/tr";		
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_next']")
 	protected WebElement nextBtn;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
+	protected WebElement btnOk;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
+	protected WebElement panelDuplicationError;
+	protected String panelDuplicationErrorXPath = "//*[@id='page-wrapper']/div/div[2]/div[1]";
 
 	/**
 	 * @param driver

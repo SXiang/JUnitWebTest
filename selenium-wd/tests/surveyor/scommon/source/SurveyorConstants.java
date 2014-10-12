@@ -111,5 +111,20 @@ public final class SurveyorConstants {
 	public static final String STARTDATE = "01/01/2014";
 	public static final String ENDDATE = "08/14/2014";
 	
-	public static final int ACTIONTIMEOUT = 300; //in seconds	
+	public static final int ACTIONTIMEOUT = 300; //in seconds
+	
+	public static final String PAGINATIONSETTING = "100";
+	
+	public static final String USERENABLED = "Enabled";
+	public static final String USERDISABLED = "Disabled";
+	
+	public static final String TIMEZONEPT = "Pacific Time (US and Canada)";
+	public static final String TIMEZONEMT = "Mountain Time (US and Canada)";
+	public static final String TIMEZONECT = "Central Time (US and Canada)";
+	public static final String TIMEZONEET = "Eastern Time (US and Canada)";
+	
+	public static final String TIMEZONEPTUA = "Pacific Standard Time";
+	public static final String TIMEZONEMTUA = "Mountain Standard Time (Mexico)";
+	public static final String TIMEZONECTUA = "Central Standard Time";
+	public static final String TIMEZONEETUA = "Eastern Standard Time";
 }

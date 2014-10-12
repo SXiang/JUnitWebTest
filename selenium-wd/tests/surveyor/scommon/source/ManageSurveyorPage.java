@@ -11,52 +11,54 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 import common.source.BasePage;
 import common.source.TestSetup;
+import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
  * @author zlu
  *
  */
-public class ManageSurveyorPage extends BasePage {
+public class ManageSurveyorPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageSurveyors";
 	public static final String STRPageTitle = "Manage Surveyors - Surveyor";
 	
 	//@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a")
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
-	private WebElement btnAddNewSurveyor;
+	protected WebElement btnAddNewSurveyor;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
-	private WebElement panelDupSurError;
-	private String panelDupSurErrorXPath = "//*[@id='page-wrapper']/div/div[2]/div[1]";
+	protected WebElement panelDupSurError;
+	protected String panelDupSurErrorXPath = "//*[@id='page-wrapper']/div/div[2]/div[1]";
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Administrator')]")
-	private WebElement dropDownAdministrator;
+	protected WebElement dropDownAdministrator;
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Log Out')]")
-	private WebElement linkLogOut;
+	protected WebElement linkLogOut;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='Description']")
-	private WebElement inputSurveyorDesc;
+	protected WebElement inputSurveyorDesc;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='LocationId']")
-	private WebElement dropDownLocation;
+	protected WebElement dropDownLocation;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
-	private WebElement btnOK;
+	protected WebElement btnOK;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyor-form']/fieldset/div[3]/div[2]/a")
-	private WebElement btnCancel;
+	protected WebElement btnCancel;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody")
-	private WebElement surveyorTB;	
+	protected WebElement surveyorTB;	
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_length']/label/select")
-	private WebElement paginationInput;
+//	@FindBy(how = How.XPATH, using = "//*[@id='datatable_length']/label/select")
+//	protected WebElement paginationInput;
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Next')]")
-	private WebElement nextBtn;	
+	protected WebElement nextBtn;
 	
 	//add more @FindBy here later
 	
@@ -71,6 +73,10 @@ public class ManageSurveyorPage extends BasePage {
 		
 		System.out.println("\nThe Manager Surveyor Page URL is: " + this.strPageURL);
 	}
+	
+	public ManageSurveyorPage(WebDriver driver, String baseURL, TestSetup testSetup, String urlPath) {
+		super(driver, testSetup, baseURL, baseURL + urlPath);
+	}	
 	
 	public LoginPage logout() {
 		this.dropDownAdministrator.click();
@@ -140,43 +146,140 @@ public class ManageSurveyorPage extends BasePage {
 	}	
 	
 	public boolean findExistingSurveyor(String customerName, String locationName, String surveyorName) {
-		paginationInput.sendKeys("100");
+		paginationInput.sendKeys(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
-		//For time being, more generic code should be implemented for iterating the table elements
-		List<WebElement> rows = surveyorTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		String customerNameXPath;
+		String locationNameXPath;
+		String surveyorNameXPath;
+		String actionEditXPath;
 		
-		int rowNum = 1;
-		for (WebElement row : rows) {
-			List<WebElement> cols = surveyorTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr["+rowNum+"]/td"));
+		WebElement customerNameCell;
+		WebElement locationNameCell;
+		WebElement surveyorNameCell;
+		WebElement actionEditCell;
+		
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			customerNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
+			locationNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+			surveyorNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
 			
-			int colNum = 1;
-			for (WebElement col : cols) {
-				if (colNum == 1 && col.getText().equalsIgnoreCase(customerName)) {
-					String strLocationXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
-					WebElement location = surveyorTB.findElement(By.xpath(strLocationXPath));
-					if (location.getText().equalsIgnoreCase(locationName)) {
-						String strSurveyorXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
-						WebElement surveyor = surveyorTB.findElement(By.xpath(strSurveyorXPath));
-						if (surveyor.getText().equalsIgnoreCase(surveyorName)) {
-							if (testSetup.isRunningDebug())
-								System.out.format("The surveyor found is: %s",  surveyor.getText());
-							return true;
-						}
-					}
+			customerNameCell = table.findElement(By.xpath(customerNameXPath));
+			locationNameCell = table.findElement(By.xpath(locationNameXPath));
+			surveyorNameCell = table.findElement(By.xpath(surveyorNameXPath));
+			
+			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName) && (locationNameCell.getText().trim()).equalsIgnoreCase(locationName) 
+					&& (surveyorNameCell.getText().trim()).equalsIgnoreCase(surveyorName)) {
+				return true;
+			}
+				
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+				this.nextBtn.click();
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				
+				rowSize = newRows.size();
+				
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+				
+				rowNum = 1;
+			}	
+		}
+		
+		return false;
+	}
+	
+	public boolean editExistingSurveyor(String customerName, String locationName, String surveyorName, String surveyorNameNew) {
+		paginationInput.sendKeys(PAGINATIONSETTING);
+		
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		
+		String customerNameXPath;
+		String locationNameXPath;
+		String surveyorNameXPath;
+		String actionEditXPath;
+		
+		WebElement customerNameCell;
+		WebElement locationNameCell;
+		WebElement surveyorNameCell;
+		WebElement actionEditCell;
+		
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			customerNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
+			locationNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+			surveyorNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
+			
+			customerNameCell = table.findElement(By.xpath(customerNameXPath));
+			locationNameCell = table.findElement(By.xpath(locationNameXPath));
+			surveyorNameCell = table.findElement(By.xpath(surveyorNameXPath));
+			
+			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName) && (locationNameCell.getText().trim()).equalsIgnoreCase(locationName) 
+					&& (surveyorNameCell.getText().trim()).equalsIgnoreCase(surveyorName)) {
+				actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]";
+				actionEditCell = table.findElement(By.xpath(actionEditXPath));
+				
+				actionEditCell.click();
+				
+				this.inputSurveyorDesc.clear();
+				this.inputSurveyorDesc.sendKeys(surveyorNameNew);
+				
+				List<WebElement> options = this.dropDownLocation.findElements(By.tagName("option"));
+				for (WebElement option : options) {
+					if (option.getText().trim().equalsIgnoreCase(customerName + " - " + locationName))
+						option.click();
 				}
 				
-				colNum = colNum + 1;
+				this.btnOK.click();
+				
+				if (isElementPresent(this.panelDuplicationErrorXPath)) {
+					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
+					if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:")) {
+						this.btnCancel.click();
+						return false;
+					}
+				}
+
+				return true;
 			}
-			
-			if (rowNum == 100 && this.nextBtn.isEnabled()) {
+				
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
 				this.nextBtn.click();
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				
+				rowSize = newRows.size();
+				
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+				
 				rowNum = 1;
-			}
-			else {
-				rowNum = rowNum + 1;
-			}
+			}	
 		}
 		
 		return false;
@@ -186,6 +289,6 @@ public class ManageSurveyorPage extends BasePage {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-
+		
 	}
 }

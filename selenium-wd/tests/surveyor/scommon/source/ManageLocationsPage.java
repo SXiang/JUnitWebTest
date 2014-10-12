@@ -3,6 +3,8 @@
  */
 package surveyor.scommon.source;
 
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
+
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -18,17 +20,13 @@ import common.source.TestSetup;
  * @author zlu
  *
  */
-public class ManageLocationsPage extends BasePage {
+public class ManageLocationsPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageLocations";
 	public static final String STRPageTitle = "Manage Locations - Surveyor";
 	
 	//@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a")
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
-	private WebElement btnAddNewLocation;
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
-	private WebElement panelDupLocError;
-	private String panelDupLocErrorXPath = "//*[@id='page-wrapper']/div/div[2]/div[1]";	
+	private WebElement btnAddNewLocation;	
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Administrator')]")
 	private WebElement dropDownAdministrator;
@@ -47,15 +45,6 @@ public class ManageLocationsPage extends BasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='location-form']/fieldset/div[3]/div[2]/a")
 	private WebElement btnCancel;
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody")
-	private WebElement locationTB;	
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_length']/label/select")
-	private WebElement paginationInput;
-	
-	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Next')]")
-	private WebElement nextBtn;
 	
 	//add more @FindBy here later
 	
@@ -106,101 +95,135 @@ public class ManageLocationsPage extends BasePage {
 		
 		this.btnOK.click();
 		
-		if (isElementPresent(this.panelDupLocErrorXPath)){
-			WebElement panelError = driver.findElement(By.xpath(this.panelDupLocErrorXPath));
+		if (isElementPresent(this.panelDuplicationErrorXPath)){
+			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
 			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
 				this.btnCancel.click();
 		}		
 	}
 	
 	public boolean findExistingLocation(String customerName, String locationName) {
-		paginationInput.sendKeys("100");
+		paginationInput.sendKeys(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
-		//For time being, more generic code should be implemented for iterating the table elements
-		List<WebElement> rows = locationTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		String customerNameXPath;
+		String locationNameXPath;
+		String actionEditXPath;
 		
-		int rowNum = 1;
-		for (WebElement row : rows) {
-			if (rowNum > rows.size())
-				break;
+		WebElement customerNameCell;
+		WebElement locationNameCell;
+		WebElement actionEditCell;
+		
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			customerNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
+			locationNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
 			
-			List<WebElement> cols = row.findElements(By.xpath("//*[@id='datatable']/tbody/tr["+rowNum+"]/td"));
+			customerNameCell = table.findElement(By.xpath(customerNameXPath));
+			locationNameCell = table.findElement(By.xpath(locationNameXPath));
 			
-			int colNum = 1;
-			for (WebElement col : cols) {
-				if (colNum == 1 && col.getText().equalsIgnoreCase(customerName)) {
-					String strLocationXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
-					WebElement location = driver.findElement(By.xpath(strLocationXPath));
-					if (location.getText().equalsIgnoreCase(locationName)) {
-						return true;
-					}
-				}
+			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName) && (locationNameCell.getText().trim()).equalsIgnoreCase(locationName)) {
+				return true;
+			}
 				
-				colNum = colNum + 1;
-			}
-			
-			if (rowNum == 100 && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
 				this.nextBtn.click();
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				
+				rowSize = newRows.size();
+				
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+				
 				rowNum = 1;
-			}
-			else {
-				rowNum = rowNum + 1;
-			}
+			}	
 		}
 		
 		return false;
 	}
 	
-	public void editExistingLocation(String customerName, String locationName, String newLocationName) {
-		paginationInput.sendKeys("100");
+	public boolean editExistingLocation(String customerName, String locationName, String newLocationName) {
+		paginationInput.sendKeys(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
-		//For time being, more generic code should be implemented for iterating the table elements
-		List<WebElement> rows = locationTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		String customerNameXPath;
+		String locationNameXPath;
+		String actionEditXPath;
 		
-		int rowNum = 1;
-		for (WebElement row : rows) {
-			if (rowNum > rows.size())
-				break;
+		WebElement customerNameCell;
+		WebElement locationNameCell;
+		WebElement actionEditCell;
+		
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			customerNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
+			locationNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
 			
-			List<WebElement> cols = row.findElements(By.xpath("//*[@id='datatable']/tbody/tr["+rowNum+"]/td"));
+			customerNameCell = table.findElement(By.xpath(customerNameXPath));
+			locationNameCell = table.findElement(By.xpath(locationNameXPath));
 			
-			int colNum = 1;
-			for (WebElement col : cols) {
-				if (colNum == 1 && col.getText().equalsIgnoreCase(customerName)) {
-					String strLocationXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
-					WebElement location = locationTB.findElement(By.xpath(strLocationXPath));
-					if (location.getText().equalsIgnoreCase(locationName)) {
-						String strEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]/a";
-						WebElement editBtn = locationTB.findElement(By.xpath(strEditXPath));
-						editBtn.click();
-						
-						if (testSetup.isRunningDebug()) {
-							testSetup.slowdownInSeconds(3);
-						}
-						
-						this.inputLocationDesc.clear();
-						this.inputLocationDesc.sendKeys(newLocationName);
-						this.btnOK.click();
-						
-						return;
+			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName) && (locationNameCell.getText().trim()).equalsIgnoreCase(locationName)) {
+				actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
+				actionEditCell = table.findElement(By.xpath(actionEditXPath));
+				
+				actionEditCell.click();
+				
+				this.inputLocationDesc.clear();
+				this.inputLocationDesc.sendKeys(newLocationName);
+				
+				this.btnOK.click();
+				
+				if (isElementPresent(this.panelDuplicationErrorXPath)) {
+					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
+					if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:")) {
+						this.btnCancel.click();
+						return false;
 					}
 				}
+
+				return true;
+			}
 				
-				colNum = colNum + 1;
-			}
-			
-			if (rowNum == 100 && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
 				this.nextBtn.click();
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				
+				rowSize = newRows.size();
+				
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+				
 				rowNum = 1;
-			}
-			else {
-				rowNum = rowNum + 1;
-			}
+			}	
 		}
+		
+		return false;
 	}		
 	
 	/**
