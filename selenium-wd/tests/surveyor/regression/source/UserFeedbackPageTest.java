@@ -9,9 +9,12 @@ import static surveyor.scommon.source.SurveyorConstants.CUSNAMEBASELOC;
 import static surveyor.scommon.source.SurveyorConstants.CUSNAMEBASESUR;
 import static surveyor.scommon.source.SurveyorConstants.RGBNAMEBASE;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageRefGasBottlesPage;
 import surveyor.scommon.source.SurveyorBaseTest;
@@ -23,6 +26,20 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  *
  */
 public class UserFeedbackPageTest extends SurveyorBaseTest {
+	private HomePage homePage;
+	private UserFeedbackPage userFeedbackPage;
+	private LoginPage loginPage;
+	
+	public UserFeedbackPageTest() {
+		homePage = new HomePage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver, homePage);
+		
+		userFeedbackPage = new UserFeedbackPage(driver, testSetup, baseURL);
+		PageFactory.initElements(driver,  userFeedbackPage);
+		
+		loginPage = new LoginPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver, loginPage);
+	}
 	
 	/**
 	 * Test Case ID: UFBP000A
@@ -32,21 +49,27 @@ public class UserFeedbackPageTest extends SurveyorBaseTest {
 	@Test
 	public void UFBP000A() {
 		System.out.println("\nRunning UFBP000A - Test Description: Sending feedback from Picarro Default Administrator");
+		String feedbackNote = testSetup.getRandomNumber() + ": " + STRFEEDBACK;
 		
-		LoginPage lpg = new LoginPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  lpg);
+		boolean bFound = false;
 		
-		lpg.open();
-		lpg.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		userFeedbackPage.sendFeedback(testSetup.getLoginUser(),  feedbackNote);
 		
-		UserFeedbackPage ufbp = new UserFeedbackPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver,  ufbp);
+		userFeedbackPage.open();
 		
-		ufbp.sendFeedback(testSetup.getLoginUser(), STRFEEDBACK);
+		List<String> list = userFeedbackPage.getUserFeedbackNotes("Picarro",  testSetup.getLoginUser());
 		
-		assertTrue(ufbp.checkUserFeedback(testSetup.getLoginUser(),  STRFEEDBACK));
+		for (String note : list) {
+			if (note.equalsIgnoreCase(feedbackNote)) {
+				bFound = true;
+				break;
+			}
+		}
 		
-		ufbp.logout();
+		if (!bFound)
+			fail("\nTese case UFBP000A failed.\n");
+		
+		userFeedbackPage.logout();
 	}
 	
 	/**
@@ -57,45 +80,28 @@ public class UserFeedbackPageTest extends SurveyorBaseTest {
 	@Test
 	public void UFBP000B() {
 		System.out.println("\nRunning UFBP000B - Test Description: Sending feedback from Picarro User with Administrator Role");
+		String feedbackNote = testSetup.getRandomNumber() + ": " + STRFEEDBACK;
+		boolean bFound = false;
 		
-		LoginPage lpg = new LoginPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  lpg);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
 		
-		lpg.open();
-		lpg.loginNormalAs(SQAPICAD, USERPASSWORD);
+		userFeedbackPage.sendFeedback(SQAPICAD, feedbackNote);
 		
-		UserFeedbackPage ufbp = new UserFeedbackPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver,  ufbp);
+		userFeedbackPage.open();
 		
-		ufbp.sendFeedback(SQAPICAD, STRFEEDBACK);
+		List<String> list = userFeedbackPage.getUserFeedbackNotes("Picarro",  SQAPICAD);
 		
-		assertTrue(ufbp.checkUserFeedback(SQAPICAD,  STRFEEDBACK));
+		for (String note : list) {
+			if (note.equalsIgnoreCase(feedbackNote)) {
+				bFound = true;
+				break;
+			}
+		}
 		
-		ufbp.logout();
-	}
-	
-	/**
-	 * Test Case ID: UFBP000C
-	 * Test Description: Sending feedback from Customer User with Utility Administrator Role
-	 * 
-	 */
-	@Test
-	public void UFBP000C() {
-		System.out.println("\nRunning UFBP000C - Test Description: Sending feedback from Customer User with Utility Administrator Role");
+		if (!bFound)
+			fail("\nTese case UFBP000B failed.\n");
 		
-		LoginPage lpg = new LoginPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  lpg);
-		
-		lpg.open();
-		lpg.loginNormalAs(SQACUSUA, USERPASSWORD);
-		
-		UserFeedbackPage ufbp = new UserFeedbackPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver,  ufbp);
-		
-		ufbp.sendFeedback(SQACUSUA, STRFEEDBACK);
-		
-		assertTrue(ufbp.checkUserFeedback(SQACUSUA,  STRFEEDBACK));
-		
-		ufbp.logout();
+		userFeedbackPage.logout();
 	}	
 }

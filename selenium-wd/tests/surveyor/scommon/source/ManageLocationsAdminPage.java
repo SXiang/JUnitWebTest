@@ -16,7 +16,7 @@ import common.source.TestSetup;
  *
  */
 public class ManageLocationsAdminPage extends ManageLocationsPage {
-	public static final String STRURLPATH = "/Admin/ManageLocations";
+	public static final String STRURLPath = "/Admin/ManageLocations";
 	public static final String STRPageTitle = "Manage Locations - Surveyor";
 
 	/**
@@ -25,9 +25,9 @@ public class ManageLocationsAdminPage extends ManageLocationsPage {
 	 * @param testSetup
 	 */
 	public ManageLocationsAdminPage(WebDriver driver, String baseURL, TestSetup testSetup) {
-		super(driver, baseURL, testSetup, STRURLPATH);
+		super(driver, baseURL, testSetup, STRURLPath);
 		
-		System.out.format("\nThe Manage Locations Admin Page URL is: %s\n", baseURL + STRURLPATH);
+		System.out.format("\nThe Manage Locations Admin Page URL is: %s\n", baseURL + STRURLPath);
 	}
 
 	public void addNewLocation(String locationDesc) {
