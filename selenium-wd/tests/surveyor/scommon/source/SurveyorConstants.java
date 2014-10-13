@@ -31,7 +31,7 @@ public final class SurveyorConstants {
 	
 	public static final String CUSTOMERNAMEPREFIX = "regcus";
 	public static final String CUSTOMERSTATUS = "Enabled";
-	public static final String EULASTRING = "Testing";
+	public static final String EULASTRING = "Testing eula string, TBD";
 	public static final String REGBASEUSERNAME = "@email.com";
 	
 	public static final String PICNAMEPREFIX = "sqapic";

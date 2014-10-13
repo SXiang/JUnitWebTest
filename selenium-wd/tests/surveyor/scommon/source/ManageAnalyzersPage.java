@@ -3,7 +3,7 @@
  */
 package surveyor.scommon.source;
 
-import static org.junit.Assert.assertTrue;
+import static surveyor.scommon.source.SurveyorConstants.*;
 
 import java.util.List;
 
@@ -12,33 +12,22 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import common.source.BasePage;
 import common.source.TestSetup;
-import surveyor.scommon.source.*;
 
 /**
  * @author zlu
  *
  */
-public class ManageAnalyzersPage extends BasePage {
+public class ManageAnalyzersPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageAnalyzers";
 	public static final String STRPageTitle = "Manage Analyzers - Surveyor";
 	
-	//@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a")
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
-	private WebElement btnAddNewAnalyzer;
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
-	private WebElement panelDupAnaError;
-	private String panelDupAnaErrorXPath = "//*[@id='page-wrapper']/div/div[2]/div[1]";	
+	private WebElement btnAddNewAnalyzer;	
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Administrator')]")
 	private WebElement dropDownAdministrator;
-	
-	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Log Out')]")
-	private WebElement linkLogOut;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='SerialNumber']")
 	private WebElement inputSerialNumber;
@@ -49,22 +38,11 @@ public class ManageAnalyzersPage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='SurveyorUnitId']")
 	private WebElement dropDownSurveyor;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
-	private WebElement btnOK;
-	
 	@FindBy(how = How.XPATH, using = "//*[@id='analyzer-form']/fieldset/div[4]/div[2]/a")
 	private WebElement btnCancel;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody")
-	private WebElement analyzerTB;	
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_length']/label/select")
-	private WebElement paginationInput;
-	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Next')]")
-	private WebElement nextBtn;	
-	
-	//add more @FindBy here later
+	private WebElement nextBtn;
 	
 	/**
 	 * @param driver
@@ -77,136 +55,279 @@ public class ManageAnalyzersPage extends BasePage {
 		
 		System.out.format("\nThe Manager Analyzers Page URL is: %s\n", this.strPageURL);
 	}
-	
-	public LoginPage logout() {
-		this.dropDownAdministrator.click();
 		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(1);
-		
-		this.linkLogOut.click();
-		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(3);
-		
-		LoginPage loginPage = new LoginPage(this.driver, this.strBaseURL, this.testSetup);
-		
-		return loginPage;
-	}
-	
-	public void addNewAnalyzer(String serialNumber, String sharedKey, String surveyor) {
-		if (this.testSetup.isRunningDebug()) {
-			System.out.println(serialNumber);
-			System.out.println(sharedKey);
-			System.out.println(surveyor);
-		}
-		
+	public void addNewAnalyzer(String serialNumber, String sharedKey, String cuslocsur) {
 		this.btnAddNewAnalyzer.click();
-		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(3);
-		
+				
 		this.inputSerialNumber.sendKeys(serialNumber);
 		this.inputSharedKey.sendKeys(sharedKey);
 		
 		List<WebElement> options = this.dropDownSurveyor.findElements(By.tagName("option"));
 		for (WebElement option : options) {
-			if(surveyor.equals(option.getText().trim()))
+			if(cuslocsur.equals(option.getText().trim()))
 				option.click();		
 		}		
 		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(8);
-		
-		this.btnOK.click();		
-	}
+		this.btnOk.click();		
+	}	
 	
 	public void addNewAnalyzer(String serialNumber, String sharedKey, String surveyor, String customerName, String locationName) {
-		if (this.testSetup.isRunningDebug()) {
-			System.out.println(serialNumber);
-			System.out.println(sharedKey);
-			System.out.println(surveyor);
-			System.out.println(customerName);
-			System.out.println(locationName);
-		}
-		
 		this.btnAddNewAnalyzer.click();
-		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(3);
 		
 		this.inputSerialNumber.sendKeys(serialNumber);
 		this.inputSharedKey.sendKeys(sharedKey);
 		
 		List<WebElement> options = this.dropDownSurveyor.findElements(By.tagName("option"));
 		for (WebElement option : options) {
-			//if ((customerName + " - " + locationName + " - " + surveyor).equalsIgnoreCase(option.getText().trim())) {
 			if (option.getText().trim().equalsIgnoreCase(customerName + " - " + locationName + " - " + surveyor)) {
 				option.click();
 			}
 		}
 		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(3);
+		this.btnOk.click();
 		
-		this.btnOK.click();
-		
-		if (isElementPresent(this.panelDupAnaErrorXPath)){
-			WebElement panelError = driver.findElement(By.xpath(this.panelDupAnaErrorXPath));
+		if (isElementPresent(this.panelDuplicationErrorXPath)) {
+			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
 			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
 				this.btnCancel.click();
 		}		
 	}
 	
 	public boolean findExistingAnalyzer(String customerName, String locationName, String surveyorName, String analyzerName) {
-		paginationInput.sendKeys("100");
+		paginationInput.sendKeys(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
-		//For time being, more generic code should be implemented for iterating the table elements
-		List<WebElement> rows = analyzerTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		String customerXPath;
+		String locationXPath;
+		String surveyorXPath;
+		String analyzerXPath;
 		
-		int rowNum = 1;
-		for (WebElement row : rows) {
-			List<WebElement> cols = analyzerTB.findElements(By.xpath("//*[@id='datatable']/tbody/tr["+rowNum+"]/td"));
+		WebElement customerCell;
+		WebElement locationCell;
+		WebElement surveyorCell;
+		WebElement analyzerCell;
+		
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			customerXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
+			locationXPath     = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+			surveyorXPath     = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
+			analyzerXPath     = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]";
+
+			customerCell = table.findElement(By.xpath(customerXPath));
+			locationCell = table.findElement(By.xpath(locationXPath));
+			surveyorCell = table.findElement(By.xpath(surveyorXPath));
+			analyzerCell = table.findElement(By.xpath(analyzerXPath));    
 			
-			int colNum = 1;
-			for (WebElement col : cols) {
-				if (colNum == 1 && col.getText().equalsIgnoreCase(customerName)) {
-					String strLocationXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
-					WebElement location = analyzerTB.findElement(By.xpath(strLocationXPath));
-					if (location.getText().equalsIgnoreCase(locationName)) {
-						String strSurveyorXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
-						WebElement surveyor = analyzerTB.findElement(By.xpath(strSurveyorXPath));
-						if (surveyor.getText().equalsIgnoreCase(surveyorName)) {
-							String strAnalyzerXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]";
-							WebElement analyzer = analyzerTB.findElement(By.xpath(strAnalyzerXPath));
-							if (analyzer.getText().equalsIgnoreCase(analyzerName)) {
-								if (testSetup.isRunningDebug())
-									System.out.format("\nThe analyzer found is: %s\n", analyzer.getText());
-								return true;
-							}	
-						}
-					}	
-				}
+			if ((customerCell.getText().trim()).equalsIgnoreCase(customerName) && (locationCell.getText().trim()).equalsIgnoreCase(locationName) 
+					&& (surveyorCell.getText().trim()).equalsIgnoreCase(surveyorName) && analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
+				return true;
+			}
 				
-				colNum = colNum + 1;
-			}
-			
-			if (rowNum == 100 && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
 				this.nextBtn.click();
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				
+				rowSize = newRows.size();
+				
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+				
 				rowNum = 1;
-			}
-			else {
-				rowNum = rowNum + 1;
-			}
-		}		
+			}	
+		}
 		
-		return false;
+		return false;		
 	}
 	
-	public void editExistingAnalyzer(String customerName, String locationName, String surveyorName) {
+	public boolean associateAnalyzerToOtherSurveyor (String customerName, String locationName, String surveyorName, 
+			String analyzerName, String cuslocsur) {
+		paginationInput.sendKeys(PAGINATIONSETTING);
 		
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		
+		String customerXPath;
+		String locationXPath;
+		String surveyorXPath;
+		String analyzerXPath;
+		String actionXPath;
+		
+		WebElement customerCell;
+		WebElement locationCell;
+		WebElement surveyorCell;
+		WebElement analyzerCell;
+		WebElement actionCell;
+		
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			customerXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
+			locationXPath     = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+			surveyorXPath     = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
+			analyzerXPath     = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]";
+
+			customerCell = table.findElement(By.xpath(customerXPath));
+			locationCell = table.findElement(By.xpath(locationXPath));
+			surveyorCell = table.findElement(By.xpath(surveyorXPath));
+			analyzerCell = table.findElement(By.xpath(analyzerXPath));    
+			
+			if ((customerCell.getText().trim()).equalsIgnoreCase(customerName) && 
+					(locationCell.getText().trim()).equalsIgnoreCase(locationName) && 
+					(surveyorCell.getText().trim()).equalsIgnoreCase(surveyorName) && 
+					analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
+				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[5]";
+				actionCell = table.findElement(By.xpath(actionXPath));
+				
+				actionCell.click();
+				
+				List<WebElement> options = this.dropDownSurveyor.findElements(By.tagName("option"));
+				for (WebElement option : options) {
+					if(cuslocsur.equals(option.getText().trim()))
+						option.click();		
+				}
+				
+				this.btnOk.click();
+				
+				if (table.isDisplayed())
+					return true;
+				
+				if (isElementPresent(this.panelDuplicationErrorXPath)){
+					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
+					if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:")) {
+						this.btnCancel.click();
+						return false;
+					}
+				}				
+			}
+				
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+				this.nextBtn.click();
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				
+				rowSize = newRows.size();
+				
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+				
+				rowNum = 1;
+			}	
+		}
+		
+		return false;
+	}	
+	
+	public boolean editExistingAnalyzer(String customerName, String locationName, String surveyorName, String analyzerName, 
+			String keyNew, String cuslocsur) {
+		paginationInput.sendKeys(PAGINATIONSETTING);
+		
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		
+		String customerXPath;
+		String locationXPath;
+		String surveyorXPath;
+		String analyzerXPath;
+		String actionXPath;
+		
+		WebElement customerCell;
+		WebElement locationCell;
+		WebElement surveyorCell;
+		WebElement analyzerCell;
+		WebElement actionCell;
+		
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			customerXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
+			locationXPath     = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+			surveyorXPath     = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
+			analyzerXPath     = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]";
+
+			customerCell = table.findElement(By.xpath(customerXPath));
+			locationCell = table.findElement(By.xpath(locationXPath));
+			surveyorCell = table.findElement(By.xpath(surveyorXPath));
+			analyzerCell = table.findElement(By.xpath(analyzerXPath));    
+			
+			if ((customerCell.getText().trim()).equalsIgnoreCase(customerName) && 
+					(locationCell.getText().trim()).equalsIgnoreCase(locationName) && 
+					(surveyorCell.getText().trim()).equalsIgnoreCase(surveyorName) && 
+					analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
+				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[5]";
+				actionCell = table.findElement(By.xpath(actionXPath));
+				
+				actionCell.click();
+				
+				this.inputSharedKey.clear();
+				this.inputSharedKey.sendKeys(keyNew);
+				
+				List<WebElement> options = this.dropDownSurveyor.findElements(By.tagName("option"));
+				for (WebElement option : options) {
+					if(cuslocsur.equals(option.getText().trim()))
+						option.click();		
+				}
+				
+				this.btnOk.click();
+				
+				if (table.isDisplayed())
+					return true;
+				
+				if (isElementPresent(this.panelDuplicationErrorXPath)){
+					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
+					if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:")) {
+						this.btnCancel.click();
+						return false;
+					}
+				}				
+			}
+				
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+				this.nextBtn.click();
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				
+				rowSize = newRows.size();
+				
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+				
+				rowNum = 1;
+			}	
+		}
+		
+		return false;
 	}
 
 	/**
