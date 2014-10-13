@@ -7,9 +7,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 
 import common.source.BasePage;
 import common.source.TestSetup;
+import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
  * @author zlu
@@ -46,10 +48,17 @@ public class SurveyorBasePage extends BasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody")
 	protected WebElement table;
-	protected String strTRXPath = "//*[@id='datatable']/tbody/tr";
+	protected String strTRXPath = "//*[@id='datatable']/tbody/tr";		
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_next']")
 	protected WebElement nextBtn;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
+	protected WebElement btnOk;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
+	protected WebElement panelDuplicationError;
+	protected String panelDuplicationErrorXPath = "//*[@id='page-wrapper']/div/div[2]/div[1]";
 
 	/**
 	 * @param driver
@@ -63,19 +72,21 @@ public class SurveyorBasePage extends BasePage {
 	
 	public LoginPage logout() {
 		this.dropDownUser.click();
-		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
 		this.linkLogOut.click();
-		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
 		LoginPage loginPage = new LoginPage(this.driver, this.strBaseURL, this.testSetup);
 		
 		return loginPage;
-	}	
+	}
+	
+	public void login(String user, String password) {
+		LoginPage loginPage = new LoginPage(driver, strBaseURL, testSetup);
+		PageFactory.initElements(driver,  loginPage);
+		
+		loginPage.open();
+		
+		loginPage.loginNormalAs(user, password);
+	}
 
 	/**
 	 * @param args

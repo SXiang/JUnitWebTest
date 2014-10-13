@@ -4,6 +4,7 @@
 package surveyor.regression.source;
 
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 import org.openqa.selenium.support.PageFactory;
@@ -47,62 +48,32 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	
 	/**
 	 * Test Case ID: ADM013
-	 * Test Description: Adding User
+	 * Test Description: Adding User, utility admin role
 	 * 
 	 */	
 	@Test
 	public void ADM013() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "ADM013";
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "adm013";
 		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + REGBASEUSERNAME;
 		
-		System.out.println("\nRunning ADM013...");
+		System.out.println("\nRunning ADM013 - Test Description: Adding User, utility admin role");
 		
-		System.out.println("\nStill working on it and will be ready soon\n");
+		manageCustomersPage.open();
+		
+		manageCustomersPage.addNewCustomer(customerName, eula);
+		
+		manageUsersPage.open();
+		
+		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEUA);
+		
+		assertTrue(manageUsersPage.findExistingUser(customerName, userName));
+			
+		manageUsersPage.logout();
+		
+		loginPage.open();
+		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
+		
+		assertTrue(homePage.checkIfAtHomePage());
 	}
-//		
-//		if (debug) {
-//			System.out.format("\nThe customer name is \"%s\" and the user name is \"%s\"\n", customerName, userName);
-//		}
-//		
-//		try {
-//			manageCustomersPage.open();
-//			
-//			if (debug)
-//				testSetup.slowdownInSeconds(3);
-//			
-//			manageCustomersPage.addNewCustomer(customerName, eula);
-//			
-//			if (debug)
-//				testSetup.slowdownInSeconds(3);
-//			
-//			manageUsersPage.open();
-//			
-//			if (debug)
-//				testSetup.slowdownInSeconds(3);
-//			
-//			manageUsersPage.addNewCustomerUser(customerName, userName, USERROLEADMIN, USERROLEADMIN);
-//			
-//			(customerName, userName, USERPASSWORD, USERROLEADMIN);
-//			
-//			if (debug)
-//				testSetup.slowdownInSeconds(3);
-//			
-//			assertTrue(manageUsersPage.findExistingUser(customerName, userName));
-//			
-//			//tempoary comment out the following code and will be add back after have the roles defined
-////			manageUsersPage.logout();
-////			
-////			loginPage.open();
-////			HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
-////			
-////			assertTrue(homePage.checkIfAtHomePage());
-//			
-//			if (debug)
-//				testSetup.slowdownInSeconds(3);
-//		}
-//		catch (Exception e) {
-//			System.out.format("Exception on test case \"ADM013\": %s\n", e.getMessage());
-//		}
-//	}
 }

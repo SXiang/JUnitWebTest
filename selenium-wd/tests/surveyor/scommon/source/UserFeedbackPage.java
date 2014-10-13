@@ -3,6 +3,7 @@
  */
 package surveyor.scommon.source;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -13,7 +14,6 @@ import org.openqa.selenium.support.How;
 
 import common.source.BasePage;
 import common.source.TestSetup;
-
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
@@ -21,29 +21,29 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  *
  */
 public class UserFeedbackPage extends SurveyorBasePage {
-	public static final String STRURLPath = "/UserFeedback";
-	public static final String STRPageTitle = "Feedback - Surveyor";
+	public static final String STRURLPath = "/Picarro/UserFeedback";
+	public static final String STRPageTitle = "User Feedback - Surveyor";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='user-feedback']/a")
-	WebElement linkSendFeedback;
+	protected WebElement linkSendFeedback;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='Note']")
-	WebElement inputFBNote;
+	protected WebElement inputFBNote;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
-	WebElement btnSend;
+	protected WebElement btnSend;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='feedback-form']/fieldset/div[3]/div[2]/a")
-	WebElement btnCancel;
+	protected WebElement btnCancel;
 	
 	@FindBy(how = How.XPATH, using = "/html/body/div/div[2]/div/div/div[3]/a")
-	WebElement linkToHomePage;
+	protected WebElement linkToHomePage;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-user-feedback']/a")
-	WebElement linkViewUserFeedback;
+	protected WebElement linkViewUserFeedback;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-user-feedback']/a")
-	WebElement linkCusAdminViewUserFB;	
+	protected WebElement linkCusAdminViewUserFB;	
 
 	/**
 	 * @param driver
@@ -54,7 +54,13 @@ public class UserFeedbackPage extends SurveyorBasePage {
 	public UserFeedbackPage(WebDriver driver, TestSetup testSetup,
 			String strBaseURL) {
 		super(driver, testSetup, strBaseURL, strBaseURL + STRURLPath);
+		
+		System.out.println("\nThe User Feedback Page URL is: " + strBaseURL + STRURLPath);
 	}
+	
+	public UserFeedbackPage(WebDriver driver, TestSetup testSetup, String strBaseURL, String urlPath) {
+		super(driver, testSetup, strBaseURL, strBaseURL + urlPath);
+	}	
 	
 	public void sendFeedback(String strLoginUser, String strFeedback) {
 		this.linkSendFeedback.click();
@@ -63,17 +69,8 @@ public class UserFeedbackPage extends SurveyorBasePage {
 		this.linkToHomePage.click();
 	}
 	
-	public boolean checkUserFeedback(String strLoginUser, String strFeedback) {
-		if (!strLoginUser.contains(REGBASEPICUSERNAME) && !strLoginUser.equalsIgnoreCase(PICDFADMIN)) {
-			this.linkCusAdmin.click();
-			this.linkCusAdminViewUserFB.click();
-		}
-		else {
-			linkPicarroAdmin.click();
-			linkViewUserFeedback.click();
-		}
-		
-		this.paginationInput.sendKeys("100");
+	public boolean checkUserFeedback(String user, String strFeedback) {
+		this.paginationInput.sendKeys(PAGINATIONSETTING);
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
 		String strUserXPath;
@@ -86,10 +83,10 @@ public class UserFeedbackPage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 		
-		if (rowSize < 100)
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 			loopCount = rowSize;
 		else
-			loopCount = 100;		
+			loopCount = Integer.parseInt(PAGINATIONSETTING);		
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			strUserXPath = strTRXPath + "["+rowNum+"]/td[2]";
@@ -98,27 +95,140 @@ public class UserFeedbackPage extends SurveyorBasePage {
 			userCell = table.findElement(By.xpath(strUserXPath));
 			noteCell = table.findElement(By.xpath(strNoteXPath));
 			
-			if (userCell.getText().equalsIgnoreCase(strLoginUser) && noteCell.getText().equalsIgnoreCase(strFeedback)) {				
+			if (userCell.getText().equalsIgnoreCase(user) && noteCell.getText().equalsIgnoreCase(strFeedback)) {				
 				return true;
 			}
 			
-			if (rowNum == 100 && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				
 				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
 				rowSize = newRows.size();
-				if (rowSize < 100)
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 					loopCount = rowSize;
 				else
-					loopCount = 100;
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				rowNum = 1;
 			}
 		}
 		
 		return false;
 	}
+	
+	public String getUserFeedbackNote(String customer, String user) {
+		this.paginationInput.sendKeys(PAGINATIONSETTING);
+		
+		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		String customerXPath;
+		String strUserXPath;
+		String strNoteXPath;
+		
+		WebElement customerCell;
+		WebElement userCell;
+		WebElement noteCell;
+		
+		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
+		
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);		
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			customerXPath = strTRXPath + "["+rowNum+"]/td[1]";
+			strUserXPath = strTRXPath + "["+rowNum+"]/td[2]";
+			
+			customerCell = table.findElement(By.xpath(customerXPath));
+			userCell = table.findElement(By.xpath(strUserXPath));
+			
+			if (customerCell.getText().trim().equalsIgnoreCase(customer) && userCell.getText().trim().equalsIgnoreCase(user)) {				
+				strNoteXPath = strTRXPath + "["+rowNum+"]/td[3]";
+				noteCell = table.findElement(By.xpath(strNoteXPath));
+				
+				return noteCell.getText().trim();
+			}
+			
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+				this.nextBtn.click();
+				
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				
+				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+				rowNum = 1;
+			}
+		}
+		
+		return null;		
+		
+	}
+	
+	public List<String> getUserFeedbackNotes(String customer, String user) {
+		List<String> list = new ArrayList<String>();		
+		
+		this.paginationInput.sendKeys(PAGINATIONSETTING);
+		
+		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		String customerXPath;
+		String strUserXPath;
+		String strNoteXPath;
+		
+		WebElement customerCell;
+		WebElement userCell;
+		WebElement noteCell;
+		
+		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
+		
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);		
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			customerXPath = strTRXPath + "["+rowNum+"]/td[1]";
+			strUserXPath = strTRXPath + "["+rowNum+"]/td[2]";
+			
+			customerCell = table.findElement(By.xpath(customerXPath));
+			userCell = table.findElement(By.xpath(strUserXPath));
+			
+			if (customerCell.getText().trim().equalsIgnoreCase(customer) && userCell.getText().trim().equalsIgnoreCase(user)) {				
+				strNoteXPath = strTRXPath + "["+rowNum+"]/td[3]";
+				noteCell = table.findElement(By.xpath(strNoteXPath));
+				
+				list.add(noteCell.getText().trim());
+			}
+			
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+				this.nextBtn.click();
+				
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				
+				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+				rowNum = 1;
+			}
+		}	
+		
+		return list; 
+	}	
 
 	/**
 	 * @param args

@@ -46,10 +46,7 @@ public class SurveyorBaseTest {
 		PageFactory.initElements(driver,  loginPage);
 		
 		loginPage.open();
-		if (debug)
-			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		//testSetup.slowdownInSeconds(10); // temporary solution for now
 	}
 
 	/**
