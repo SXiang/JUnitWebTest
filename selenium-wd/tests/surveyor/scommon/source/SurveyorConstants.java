@@ -118,6 +118,9 @@ public final class SurveyorConstants {
 	public static final String USERENABLED = "Enabled";
 	public static final String USERDISABLED = "Disabled";
 	
+	public static final String CUSTOMERENABLED = "Enabled";
+	public static final String CUSTOMERDISABLED = "Disabled";
+	
 	public static final String TIMEZONEPT = "Pacific Time (US and Canada)";
 	public static final String TIMEZONEMT = "Mountain Time (US and Canada)";
 	public static final String TIMEZONECT = "Central Time (US and Canada)";
