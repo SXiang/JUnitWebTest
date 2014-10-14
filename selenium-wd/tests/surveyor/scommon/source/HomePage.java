@@ -161,8 +161,9 @@ public class HomePage extends SurveyorBasePage {
 		if (!this.linkSurveyors.isDisplayed())
 			return false;
 		
-		if (!this.linkFleetMap.isDisplayed())
-			return false;
+		//Need check with Chris Vale if "Fleet Map" should be invisible to driver?		
+//		if (!this.linkFleetMap.isDisplayed())
+//			return false;
 		
 		if (this.isElementPresent(this.strLinkReportsXPath))
 			return false;
@@ -313,8 +314,9 @@ public class HomePage extends SurveyorBasePage {
 		if (!this.linkSurveyors.isDisplayed())
 			return false;
 		
-		if (!this.linkFleetMap.isDisplayed())
-			return false;
+		//Need check with Chris Vale if "Fleet Map" should be invisible to driver?
+//		if (!this.linkFleetMap.isDisplayed())
+//			return false;
 		
 		if (this.isElementPresent(this.strLinkReportsXPath))
 			return false;

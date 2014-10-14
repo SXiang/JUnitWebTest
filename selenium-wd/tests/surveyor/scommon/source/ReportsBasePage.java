@@ -13,12 +13,13 @@ import org.openqa.selenium.support.How;
 
 import common.source.BasePage;
 import common.source.TestSetup;
+import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
  * @author zlu
  *
  */
-public class ReportsBasePage extends BasePage {
+public class ReportsBasePage extends SurveyorBasePage {
 	//@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a")
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	protected WebElement btnNewComplianceRpt;

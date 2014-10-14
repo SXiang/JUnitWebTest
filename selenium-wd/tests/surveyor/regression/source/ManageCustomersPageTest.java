@@ -37,13 +37,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 		manageCustomersPage.open();
 		
-		if (debug)
-			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
 		manageCustomersPage.addNewCustomer(customerName, eula);
-		
-		if (debug)
-			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
 		assertTrue(manageCustomersPage.findExistingCustomer(customerName));
 	}
@@ -63,19 +57,72 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		
 		manageCustomersPage.open();
 		
-		if (debug)
-			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
 		manageCustomersPage.addNewCustomer(customerName, eula);
-		
-		if (debug)
-			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
 		manageCustomersPage.editExistingCustomerName(customerName, newCustomerName);
 		
-		if (debug)
-			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		assertTrue(manageCustomersPage.findExistingCustomer(newCustomerName));
+	}
+	
+	/**
+	 * Test Case ID: MCP000A
+	 * Test Description: Editing Customer with eula change only
+	 * 
+	 */
+	@Test
+	public void MCP000A() {
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "MCP000A";
+		String eula = customerName + ": " + EULASTRING;
+		String newCustomerName = customerName + "NEW";
+		String eulaNew = customerName + ": " + EULASTRING + "NEW";
+		
+		System.out.println("\nRunning MCP000A - Test Description: Editing Customer with eula change only");
+		
+		manageCustomersPage.open();
+		
+		manageCustomersPage.addNewCustomer(customerName, eula);
+		
+		manageCustomersPage.editExistingCustomerName(customerName, newCustomerName, eulaNew);
 		
 		assertTrue(manageCustomersPage.findExistingCustomer(newCustomerName));
 	}
+	
+	/**
+	 * Test Case ID: MCP000B
+	 * Test Description: Checking Customer Account Status
+	 * 
+	 */
+	@Test
+	public void MCP000B() {
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "MCP000B";
+		String eula = customerName + ": " + EULASTRING;
+		
+		System.out.println("\nRunning MCP000B - Test Description: Checking Customer Account Status");
+		
+		manageCustomersPage.open();
+		
+		manageCustomersPage.addNewCustomer(customerName, eula);
+		
+		assertTrue(manageCustomersPage.getCustomerStatus(customerName).equalsIgnoreCase(CUSTOMERENABLED));
+	}
+	
+	/**
+	 * Test Case ID: MCP000C
+	 * Test Description: Changing Customer Account Status
+	 * 
+	 */
+	@Test
+	public void MCP000C() {
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "MCP000C";
+		String eula = customerName + ": " + EULASTRING;
+		
+		System.out.println("\nRunning MCP000C - Test Description: Changing Customer Account Status");
+		
+		manageCustomersPage.open();
+		
+		manageCustomersPage.addNewCustomer(customerName, eula);
+		
+		if (manageCustomersPage.changeCustomerAccountStatus(customerName, false))
+			assertTrue(manageCustomersPage.getCustomerStatus(customerName).equalsIgnoreCase(CUSTOMERDISABLED));
+	}	
 }
