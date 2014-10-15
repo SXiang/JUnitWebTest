@@ -38,7 +38,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: MLAP000A
-	 * Test Description: Adding a Customer and Location by Customer Utility Administrator
+	 * Test Description: Adding a Customer by Administrator then add Location by Customer Utility Administrator
 	 * 
 	 */
 	@Test
@@ -48,7 +48,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		String userName = customerName + "_ua" + REGBASEUSERNAME;
 		String locationName = customerName + "Loc";
 		
-		System.out.println("\nRunning MLAP000A - Test Description: Adding a Customer and Location by Customer Utility Administrator");
+		System.out.println("\nRunning MLAP000A - Test Description: Adding a Customer by Administrator then add Location by Customer Utility Administrator");
 	
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);
@@ -69,19 +69,19 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	
 	/**
 	 * Test Case ID: MLAP000B
-	 * Test Description: Adding a Location by Picarro Utility Administrator
+	 * Test Description: Adding a Location for Picarro by Picarro Utility Administrator
 	 * 
 	 */
 	@Test
 	public void MLAP000B() {
 		String customerName = "Picarro";
-		String eula = customerName + ": " + EULASTRING;
 		String strRandomNum = testSetup.getRandomNumber();
 		String userName = "picarro" + strRandomNum + "mlap000b" + "_ua" + REGBASEPICUSERNAME;
 		String locationName = strRandomNum + "mlap000b" + "Loc";
 		
-		System.out.println("\nRunning MLAP000B - Test Description: Adding a Location by Picarro Utility Administrator");
+		System.out.println("\nRunning MLAP000B - Test Description: Adding a Location for Picarro by Picarro Utility Administrator");
 		
+		manageUsersPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		manageUsersPage.open();
 		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, CUSUSERROLEUA);
 		

@@ -45,7 +45,7 @@ public class SurveyorBasePage extends BasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody")
 	protected WebElement table;
-	protected String strTRXPath = "//*[@id='datatable']/tbody/tr";		
+	protected String strTRXPath = "//*[@id='datatable']/tbody/tr";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_next']")
 	protected WebElement nextBtn;
