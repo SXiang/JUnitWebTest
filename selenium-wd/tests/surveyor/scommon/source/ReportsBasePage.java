@@ -3,17 +3,12 @@
  */
 package surveyor.scommon.source;
 
-import java.util.List;
-
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import common.source.BasePage;
 import common.source.TestSetup;
-import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
  * @author zlu
@@ -197,16 +192,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_length']/label/select")
 	protected WebElement paginationInput;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody")
-	protected WebElement rptTB;
-	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/img")
 	protected WebElement actionStatus;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/span")
 	protected WebElement errorSpan;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_wrapper']/div[2]/div[2]/div/ul/li[3]/a")
+	//@FindBy(how = How.XPATH, using = "//*[@id='datatable_wrapper']/div[2]/div[2]/div/ul/li[3]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable_next']")
 	protected WebElement nextBtn;
 	
 	/**
