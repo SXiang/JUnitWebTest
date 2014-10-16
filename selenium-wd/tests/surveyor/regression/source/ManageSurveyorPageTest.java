@@ -19,14 +19,10 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  *
  */
 public class ManageSurveyorPageTest extends SurveyorBaseTest {
-	private static ManageCustomersPage manageCustomersPage;
 	private static ManageLocationsPage manageLocationsPage;
 	private static ManageSurveyorPage manageSurveyorPage;
 	
 	public ManageSurveyorPageTest() {
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageCustomersPage);
-		
 		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageLocationsPage);
 		
@@ -48,46 +44,18 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		
 		System.out.println("\nRunning ADM007...");
 		
-		if (debug) {
-			System.out.format("\nThe customer name is \"%s\", the location name is \"%s\" and the surveyor name is \"%s\"\n", customerName, locationName, surveyorName);
-		}		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		
-		try {
-			manageCustomersPage.open();
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageCustomersPage.addNewCustomer(customerName, eula);
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageLocationsPage.open();
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageLocationsPage.addNewLocation(locationName, customerName);
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			manageSurveyorPage.open();
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			
-			manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName);
-			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
-			
-			assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorName));
-		}
-		catch (Exception e) {
-			System.out.format("Exception on test case \"ADM007\": %s\n", e.getMessage());
-		}
+		manageCustomersPage.open();
+		manageCustomersPage.addNewCustomer(customerName, eula);
+		
+		manageLocationsPage.open();
+		manageLocationsPage.addNewLocation(locationName, customerName);
+		
+		manageSurveyorPage.open();
+		manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName);
+		
+		assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorName));
 	}
 }

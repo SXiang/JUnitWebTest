@@ -19,10 +19,14 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  *
  */
 public class MeasurementSessionsPageTest extends SurveyorBaseTest {
+	private MeasurementSessionsPage measurementSessionsPage;
 	private List<String> strListTagCus = null;
 	private List<String> strListTagPic = null;
 	
 	public MeasurementSessionsPageTest() {
+		measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
+		PageFactory.initElements(driver,  measurementSessionsPage);
+		
 		strListTagCus = new ArrayList<String>();
 		strListTagPic = new ArrayList<String>();
 		
@@ -45,19 +49,11 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	public void DSMS000A() {
 		System.out.println("\nRunning DSMS000A - Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Driver role");
 		
-		LoginPage lpg = new LoginPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  lpg);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);		
 		
-		lpg.open();
-		lpg.loginNormalAs(SQACUSDR, USERPASSWORD);
-		
-		MeasurementSessionsPage dsmsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver,  dsmsPage);		
-		
-		dsmsPage.open();
-		assertTrue(dsmsPage.checkVisibilityForDrivingSurveys(SQACUSDR, CUSUSERROLEDR, strListTagCus, strListTagPic));
-		
-		dsmsPage.logout();
+		measurementSessionsPage.open();
+		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(SQACUSDR, CUSUSERROLEDR, strListTagCus, strListTagPic));
 	}
 	
 	/**
@@ -69,19 +65,11 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	public void DSMS000B() {
 		System.out.println("\nRunning DSMS000B - Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Supervisor role");
 		
-		LoginPage lpg = new LoginPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  lpg);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);		
 		
-		lpg.open();
-		lpg.loginNormalAs(SQACUSSU, USERPASSWORD);
-		
-		MeasurementSessionsPage dsmsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver,  dsmsPage);		
-		
-		dsmsPage.open();
-		assertTrue(dsmsPage.checkVisibilityForDrivingSurveys(SQACUSSU, CUSUSERROLESU, strListTagCus, strListTagPic));
-		
-		dsmsPage.logout();
+		measurementSessionsPage.open();
+		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(SQACUSSU, CUSUSERROLESU, strListTagCus, strListTagPic));
 	}
 	
 	/**
@@ -93,19 +81,11 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	public void DSMS000C() {
 		System.out.println("\nRunning DSMS000C - Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Utility Administrator role");
 		
-		LoginPage lpg = new LoginPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  lpg);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);		
 		
-		lpg.open();
-		lpg.loginNormalAs(SQACUSUA, USERPASSWORD);
-		
-		MeasurementSessionsPage dsmsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver,  dsmsPage);		
-		
-		dsmsPage.open();
-		assertTrue(dsmsPage.checkVisibilityForDrivingSurveys(SQACUSUA, CUSUSERROLEUA, strListTagCus, strListTagPic));
-		
-		dsmsPage.logout();
+		measurementSessionsPage.open();
+		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(SQACUSUA, CUSUSERROLEUA, strListTagCus, strListTagPic));
 	}
 	
 	/**
@@ -117,19 +97,12 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	public void DSMS000D() {
 		System.out.println("\nRunning DSMS000D - Test Description: Visibility check of Driving Surveys Measurement Sessions for Picarro user with Administrator role");
 		
-		LoginPage lpg = new LoginPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  lpg);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);		
 		
-		lpg.open();
-		lpg.loginNormalAs(SQAPICAD, USERPASSWORD);
+		measurementSessionsPage.open();
 		
-		MeasurementSessionsPage dsmsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver,  dsmsPage);		
-		
-		dsmsPage.open();
-		assertTrue(dsmsPage.checkVisibilityForDrivingSurveys(SQAPICAD, USERROLEADMIN, strListTagCus, strListTagPic));
-		
-		dsmsPage.logout();
+		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(SQAPICAD, USERROLEADMIN, strListTagCus, strListTagPic));
 	}
 	
 	/**
@@ -141,19 +114,12 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	public void DSMS000E() {
 		System.out.println("\nRunning DSMS000E - Test Description: Visibility check of Driving Surveys Measurement Sessions for Picarro user with Utility Administrator role");
 		
-		LoginPage lpg = new LoginPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  lpg);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICUA, USERPASSWORD);		
 		
-		lpg.open();
-		lpg.loginNormalAs(SQAPICUA, USERPASSWORD);
+		measurementSessionsPage.open();
 		
-		MeasurementSessionsPage dsmsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver,  dsmsPage);		
-		
-		dsmsPage.open();
-		assertTrue(dsmsPage.checkVisibilityForDrivingSurveys(SQAPICUA, CUSUSERROLEUA, strListTagCus, strListTagPic));
-		
-		dsmsPage.logout();
+		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(SQAPICUA, CUSUSERROLEUA, strListTagCus, strListTagPic));
 	}
 	
 	/**
@@ -165,19 +131,12 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	public void DSMS000F() {
 		System.out.println("\nRunning DSMS000F - Test Description: Visibility check of Driving Surveys Measurement Sessions for Picarro user with Supervisor role");
 		
-		LoginPage lpg = new LoginPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  lpg);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSU, USERPASSWORD);
+
+		measurementSessionsPage.open();
 		
-		lpg.open();
-		lpg.loginNormalAs(SQAPICSU, USERPASSWORD);
-		
-		MeasurementSessionsPage dsmsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver,  dsmsPage);		
-		
-		dsmsPage.open();
-		assertTrue(dsmsPage.checkVisibilityForDrivingSurveys(SQAPICSU, CUSUSERROLESU, strListTagCus, strListTagPic));
-		
-		dsmsPage.logout();
+		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(SQAPICSU, CUSUSERROLESU, strListTagCus, strListTagPic));
 	}
 	
 	/**
@@ -189,18 +148,11 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	public void DSMS000G() {
 		System.out.println("\nRunning DSMS000G - Test Description: Visibility check of Driving Surveys Measurement Sessions for Picarro user with Driver role");
 		
-		LoginPage lpg = new LoginPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  lpg);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICDR, USERPASSWORD);
 		
-		lpg.open();
-		lpg.loginNormalAs(SQAPICDR, USERPASSWORD);
+		measurementSessionsPage.open();
 		
-		MeasurementSessionsPage dsmsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver,  dsmsPage);		
-		
-		dsmsPage.open();
-		assertTrue(dsmsPage.checkVisibilityForDrivingSurveys(SQAPICDR, CUSUSERROLEDR, strListTagCus, strListTagPic));
-		
-		dsmsPage.logout();
+		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(SQAPICDR, CUSUSERROLEDR, strListTagCus, strListTagPic));
 	}
 }

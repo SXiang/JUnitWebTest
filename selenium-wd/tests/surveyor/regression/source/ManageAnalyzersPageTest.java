@@ -26,8 +26,6 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	private ManageLocationsPage manageLocationsPage;
 	private ManageSurveyorPage manageSurveyorPage;
 	private ManageAnalyzersPage manageAnalyzersPage;
-	private LoginPage loginPage;
-	private HomePage homePage;
 	
 	public ManageAnalyzersPageTest() {
 		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
@@ -41,12 +39,6 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		
 		manageAnalyzersPage = new ManageAnalyzersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageAnalyzersPage);
-		
-		loginPage = new LoginPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  loginPage);
-		
-		homePage = new HomePage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  homePage);
 	}
 	
 	/**
@@ -64,15 +56,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		
 		System.out.println("\nRunning ADM010 - Test Description: Adding Analyzer");
 		
-		homePage.open();
-		if (driver.getCurrentUrl().contains("Login")) {
-			loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		}
-		else {
-			homePage.logout();
-			loginPage.open();
-			loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		}
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		
 		manageCustomersPage.open();
 		
@@ -89,8 +74,6 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		manageAnalyzersPage.open();
 		
 		manageAnalyzersPage.addNewAnalyzer(analyzerName, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
-		
-		System.out.format("\ncustomerName: %s, locationName: %s, surveyorName: %s, analyzerName: %s", customerName, locationName, surveyorName, analyzerName);
 		
 		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName));		
 	}
@@ -109,15 +92,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		
 		System.out.println("\nRunning MAP000A - Test Description: Adding Analyzer for Picarro by Picarro default Administrator");
 		
-		homePage.open();
-		if (driver.getCurrentUrl().contains("Login")) {
-			loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		}
-		else {
-			homePage.logout();
-			loginPage.open();
-			loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		}		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
 		
 		manageLocationsPage.open();
 		
@@ -149,15 +125,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		
 		System.out.println("\nRunning MAP000B - Test Description: Editing Analyzer for Picarro, changing the Analyzer Name, by Picarro default Administrator");
 		
-		homePage.open();
-		if (driver.getCurrentUrl().contains("Login")) {
-			loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		}
-		else {
-			homePage.logout();
-			loginPage.open();
-			loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		}		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
 		
 		manageLocationsPage.open();
 
@@ -176,9 +145,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 			manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationName, surveyorName, analyzerName, 
 					customerName + " - " + locationName + " - " + surveyorNameNew );
 		
-		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorNameNew, analyzerName));
-		
-		manageAnalyzersPage.logout();		
+		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorNameNew, analyzerName));		
 	}
 	
 	/**
@@ -195,15 +162,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		
 		System.out.println("\nRunning MAP000C - Test Description: Adding Analyzer for Picarro by Picarro user with Administrator Role");
 		
-		homePage.open();
-		if (driver.getCurrentUrl().contains("Login")) {
-			loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
-		}
-		else {
-			homePage.logout();
-			loginPage.open();
-			loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
-		}
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
 		
 		manageLocationsPage.open();
 		
@@ -218,8 +178,6 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		manageAnalyzersPage.addNewAnalyzer(analyzerName, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
 		
 		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName));
-		
-		manageAnalyzersPage.logout();
 	}
 	
 	/**
@@ -237,15 +195,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		
 		System.out.println("\nRunning MAP000D - Test Description: Editing Analyzer for Picarro, associating an analyzer to a different surveyor, by Picarro user with Administrator Role");
 
-		homePage.open();
-		if (driver.getCurrentUrl().contains("Login")) {
-			loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
-		}
-		else {
-			homePage.logout();
-			loginPage.open();
-			loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
-		}
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
 		
 		manageLocationsPage.open();
 		
@@ -265,7 +216,5 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 					customerName + " - " + locationName + " - " + surveyorNameNew );
 		
 		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorNameNew, analyzerName));
-		
-		manageAnalyzersPage.logout();
 	}
 }

@@ -21,19 +21,11 @@ import surveyor.scommon.source.UserFeedbackAdminPage;
  *
  */
 public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
-	private HomePage homePage;
 	private UserFeedbackAdminPage userFeedbackAdminPage;
-	private LoginPage loginPage;
-	
+
 	public UserFeedbackAdminPageTest() {
-		homePage = new HomePage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, homePage);
-		
 		userFeedbackAdminPage = new UserFeedbackAdminPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver,  userFeedbackAdminPage);
-		
-		loginPage = new LoginPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, loginPage);
 	}
 	
 	/**
@@ -43,12 +35,11 @@ public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void UFBAP000A() {
-		System.out.println("\nRunning UFBAP000A - Test Description: Sending feedback from Picarro Utility Administrator");
-		String feedbackNote = testSetup.getRandomNumber() + ": " + STRFEEDBACK;
+		String feedbackNote = testSetup.getRandomNumber() + ": " + STRFEEDBACK + " - UFBAP000A";
 		boolean bFound = false;
 		
-		homePage.logout();
-		
+		System.out.println("\nRunning UFBAP000A - Test Description: Sending feedback from Picarro Utility Administrator");
+
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICUA, USERPASSWORD);
 		
@@ -67,8 +58,6 @@ public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
 		
 		if (!bFound)
 			fail("\nTese case UFBAP000A failed.\n");
-		
-		userFeedbackAdminPage.logout();
 	}	
 
 	/**
@@ -78,9 +67,10 @@ public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void UFBAP000B() {
-		System.out.println("\nRunning UFBAP000B - Test Description: Sending feedback from Customer Utility Administrator");
-		String feedbackNote = testSetup.getRandomNumber() + ": " + STRFEEDBACK;
+		String feedbackNote = testSetup.getRandomNumber() + ": " + STRFEEDBACK + " - UFBAP000B";
 		boolean bFound = false;
+		
+		System.out.println("\nRunning UFBAP000B - Test Description: Sending feedback from Customer Utility Administrator");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);

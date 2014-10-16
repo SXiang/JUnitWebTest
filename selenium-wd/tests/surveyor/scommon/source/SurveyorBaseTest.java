@@ -24,6 +24,7 @@ public class SurveyorBaseTest {
 	public static boolean debug;
 
 	public static LoginPage loginPage;
+	public static HomePage homePage;
 	public static ManageCustomersPage manageCustomersPage;
 
 	/**
@@ -37,16 +38,15 @@ public class SurveyorBaseTest {
 		screenShotsDir = "./screenshots/";
 		debug = testSetup.isRunningDebug();
 		driver.manage().deleteAllCookies();
-		//driver.manage().window().maximize();
-		
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageCustomersPage);		
 		
 		loginPage = new LoginPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  loginPage);
 		
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		homePage = new HomePage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver,  homePage);
+		
+		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver,  manageCustomersPage);
 	}
 
 	/**
@@ -55,10 +55,7 @@ public class SurveyorBaseTest {
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 		manageCustomersPage.open();
-		
-		if (debug)
-			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
+				
 		if (!driver.getTitle().equalsIgnoreCase("Login"))
 			manageCustomersPage.logout();
 		

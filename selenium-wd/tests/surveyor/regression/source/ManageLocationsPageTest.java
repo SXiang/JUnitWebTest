@@ -18,13 +18,9 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  *
  */
 public class ManageLocationsPageTest extends SurveyorBaseTest {
-	private static ManageCustomersPage manageCustomersPage;
 	private static ManageLocationsPage manageLocationsPage;
 	
 	public ManageLocationsPageTest() {
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageCustomersPage);
-		
 		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageLocationsPage);
 	}
@@ -42,28 +38,14 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		
 		System.out.println("\nRunning ADM004 - Test Description: Adding Location");
 		
-		System.out.format("\nThe customer name is: %s\n", customerName);
-		System.out.format("\nThe location is: %s\n", locationName);
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
 	
 		manageCustomersPage.open();
-		
-		if (debug)
-			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
 		manageCustomersPage.addNewCustomer(customerName, eula);
 		
-		if (debug)
-			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
-		manageLocationsPage.open();
-		
-		if (debug)
-			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());			
-		
+		manageLocationsPage.open();			
 		manageLocationsPage.addNewLocation(locationName,  customerName);
-		
-		if (debug)
-			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
 		assertTrue(manageLocationsPage.findExistingLocation(customerName, locationName));
 	}
@@ -82,33 +64,16 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		
 		System.out.println("\nRunning ADM005 - Test Description: Editing Location");
 		
-		System.out.format("\nThe customer name is: %s\n", customerName);
-		System.out.format("\nThe location is: %s\n", locationName);
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
 		manageCustomersPage.open();
-		
-		if (debug)
-			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
 		manageCustomersPage.addNewCustomer(customerName, eula);
 		
-		if (debug)
-			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
 		manageLocationsPage.open();
-		
-		if (debug)
-			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
 		manageLocationsPage.addNewLocation(locationName,  customerName);
 		
-		if (debug)
-			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
 		manageLocationsPage.editExistingLocation(customerName, locationName, newLocationName);
-		
-		if (debug)
-			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
 		assertTrue(manageLocationsPage.findExistingLocation(customerName, newLocationName));
 	}	
