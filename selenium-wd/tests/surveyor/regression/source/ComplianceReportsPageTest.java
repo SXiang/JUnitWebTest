@@ -22,12 +22,6 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	public ComplianceReportsPageTest() {
 		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  complianceReportsPage);
-		
-		complianceReportsPage.open();
-		
-		if (driver.getTitle().equalsIgnoreCase(complianceReportsPage.STRPageTitle)) {
-			complianceReportsPage.logout();
-		}
 	}
 	
 	/**
@@ -40,9 +34,10 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		String rptTitle = TITLENAMEBASE + testSetup.getRandomNumber() + "RPT000";
 		System.out.format("\nRunning - RPT000 - Test Description: Create a new compliance report, basic and generic, %s\n", rptTitle);
 		
-		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		complianceReportsPage.open();
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		
+		complianceReportsPage.open();
 		complianceReportsPage.addNewPDReport(rptTitle);
 		
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
@@ -66,7 +61,9 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		String rptTitle = SQACUSUAUSER + testSetup.getRandomNumber() + "RPT000A";
 		System.out.format("\nRunning - RPT000A - Test Description: Create a compliance report by a user with Customer Utility Admin Role, survey owner, %s\n", rptTitle);
 		
-		complianceReportsPage.login(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
 		complianceReportsPage.open();
 		
 		String surUnit = SQACUS + " - " + SQACUSLOC + "1" + " - " + SQACUSLOC1SUR;
@@ -94,7 +91,9 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		String rptTitle = SQACUSUAUSER + testSetup.getRandomNumber() + "RPT000A1";
 		System.out.format("\nRunning - RPT000A1 - Test Description: Create a compliance report by a user with Customer Utility Admin Role, supervisor survey, %s\n", rptTitle);
 		
-		complianceReportsPage.login(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
 		complianceReportsPage.open();
 		
 		String surUnit = SQACUS + " - " + SQACUSLOC + "2" + " - " + SQACUSLOC2SUR;

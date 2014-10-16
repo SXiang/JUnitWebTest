@@ -16,11 +16,9 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  *
  */
 public class ManageCustomersPageTest extends SurveyorBaseTest {
-	private static ManageCustomersPage manageCustomersPage;
 	
 	public ManageCustomersPageTest() {
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageCustomersPage);		
+		
 	}
 
 	/**
@@ -34,6 +32,9 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		String eula = customerName + ": " + EULASTRING;
 		
 		System.out.println("\nRunning ADM001 - Test Description: Adding Customer");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
 
 		manageCustomersPage.open();
 		
@@ -54,6 +55,9 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		String newCustomerName = customerName + "NEW";		
 		
 		System.out.println("\nRunning ADM002 - Test Description: Editing Customer");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
 		
 		manageCustomersPage.open();
 		
@@ -78,6 +82,9 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		
 		System.out.println("\nRunning MCP000A - Test Description: Editing Customer with eula change only");
 		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		
 		manageCustomersPage.open();
 		
 		manageCustomersPage.addNewCustomer(customerName, eula);
@@ -99,6 +106,9 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		
 		System.out.println("\nRunning MCP000B - Test Description: Checking Customer Account Status");
 		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		
 		manageCustomersPage.open();
 		
 		manageCustomersPage.addNewCustomer(customerName, eula);
@@ -118,11 +128,16 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		
 		System.out.println("\nRunning MCP000C - Test Description: Changing Customer Account Status");
 		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		
 		manageCustomersPage.open();
 		
 		manageCustomersPage.addNewCustomer(customerName, eula);
 		
 		if (manageCustomersPage.changeCustomerAccountStatus(customerName, false))
 			assertTrue(manageCustomersPage.getCustomerStatus(customerName).equalsIgnoreCase(CUSTOMERDISABLED));
+		else
+			fail("\nTest case MCP000C failed!\n");
 	}	
 }
