@@ -21,19 +21,11 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  *
  */
 public class ManageUsersPageTest extends SurveyorBaseTest {
-	private static ManageCustomersPage manageCustomersPage;
 	private static ManageUsersPage manageUsersPage;
-	private static LoginPage loginPage;
 	
 	public ManageUsersPageTest() {
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageCustomersPage);
-		
 		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageUsersPage);
-		
-		loginPage = new LoginPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  loginPage);
 	}
 	
 	/**
@@ -48,7 +40,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	
 	/**
 	 * Test Case ID: ADM013
-	 * Test Description: Adding User, utility admin role
+	 * Test Description: Adding a customer and a User with Utility Administrator role
 	 * 
 	 */	
 	@Test
@@ -57,19 +49,18 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + REGBASEUSERNAME;
 		
-		System.out.println("\nRunning ADM013 - Test Description: Adding User, utility admin role");
+		System.out.println("\nRunning ADM013 - Test Description: Adding a customer and a User with Utility Administrator role");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		
 		manageCustomersPage.open();
-		
 		manageCustomersPage.addNewCustomer(customerName, eula);
 		
 		manageUsersPage.open();
-		
 		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEUA);
 		
 		assertTrue(manageUsersPage.findExistingUser(customerName, userName));
-			
-		manageUsersPage.logout();
 		
 		loginPage.open();
 		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);

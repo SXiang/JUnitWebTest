@@ -26,19 +26,11 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  *
  */
 public class UserFeedbackPageTest extends SurveyorBaseTest {
-	private HomePage homePage;
 	private UserFeedbackPage userFeedbackPage;
-	private LoginPage loginPage;
 	
 	public UserFeedbackPageTest() {
-		homePage = new HomePage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, homePage);
-		
 		userFeedbackPage = new UserFeedbackPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver,  userFeedbackPage);
-		
-		loginPage = new LoginPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, loginPage);
 	}
 	
 	/**
@@ -48,15 +40,17 @@ public class UserFeedbackPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void UFBP000A() {
-		System.out.println("\nRunning UFBP000A - Test Description: Sending feedback from Picarro Default Administrator");
-		String feedbackNote = testSetup.getRandomNumber() + ": " + STRFEEDBACK;
-		
+		String feedbackNote = testSetup.getRandomNumber() + ": " + STRFEEDBACK + " - UFBP000A";
 		boolean bFound = false;
+		
+		System.out.println("\nRunning UFBP000A - Test Description: Sending feedback from Picarro Default Administrator");
+
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
 		
 		userFeedbackPage.sendFeedback(testSetup.getLoginUser(),  feedbackNote);
 		
 		userFeedbackPage.open();
-		
 		List<String> list = userFeedbackPage.getUserFeedbackNotes("Picarro",  testSetup.getLoginUser());
 		
 		for (String note : list) {
@@ -68,8 +62,6 @@ public class UserFeedbackPageTest extends SurveyorBaseTest {
 		
 		if (!bFound)
 			fail("\nTese case UFBP000A failed.\n");
-		
-		userFeedbackPage.logout();
 	}
 	
 	/**
@@ -79,17 +71,17 @@ public class UserFeedbackPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void UFBP000B() {
-		System.out.println("\nRunning UFBP000B - Test Description: Sending feedback from Picarro User with Administrator Role");
-		String feedbackNote = testSetup.getRandomNumber() + ": " + STRFEEDBACK;
+		String feedbackNote = testSetup.getRandomNumber() + ": " + STRFEEDBACK + " - UFBP000B";
 		boolean bFound = false;
 		
+		System.out.println("\nRunning UFBP000B - Test Description: Sending feedback from Picarro User with Administrator Role");
+
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
 		
 		userFeedbackPage.sendFeedback(SQAPICAD, feedbackNote);
 		
 		userFeedbackPage.open();
-		
 		List<String> list = userFeedbackPage.getUserFeedbackNotes("Picarro",  SQAPICAD);
 		
 		for (String note : list) {
@@ -101,7 +93,5 @@ public class UserFeedbackPageTest extends SurveyorBaseTest {
 		
 		if (!bFound)
 			fail("\nTese case UFBP000B failed.\n");
-		
-		userFeedbackPage.logout();
 	}	
 }

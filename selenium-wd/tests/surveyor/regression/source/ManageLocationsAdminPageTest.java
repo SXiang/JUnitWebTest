@@ -21,14 +21,10 @@ import surveyor.scommon.source.SurveyorBaseTest;
  *
  */
 public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
-	private static ManageCustomersPage manageCustomersPage;
 	private static ManageUsersPage manageUsersPage;
 	private static ManageLocationsAdminPage manageLocationsAdminPage;
 	
 	public ManageLocationsAdminPageTest() {
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageCustomersPage);
-		
 		manageLocationsAdminPage = new ManageLocationsAdminPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageLocationsAdminPage);
 		
@@ -50,6 +46,9 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		
 		System.out.println("\nRunning MLAP000A - Test Description: Adding a Customer by Administrator then add Location by Customer Utility Administrator");
 	
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);
 		
@@ -58,13 +57,13 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		
 		manageUsersPage.logout();
 		
-		manageLocationsAdminPage.login(userName, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(userName, USERPASSWORD);
+		
 		manageLocationsAdminPage.open();
 		manageLocationsAdminPage.addNewLocation(locationName);
 		
 		assertTrue(manageLocationsAdminPage.findExistingLocation(customerName, locationName));
-		
-		manageLocationsAdminPage.logout();
 	}
 	
 	/**
@@ -79,21 +78,22 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		String userName = "picarro" + strRandomNum + "mlap000b" + "_ua" + REGBASEPICUSERNAME;
 		String locationName = strRandomNum + "mlap000b" + "Loc";
 		
-		System.out.println("\nRunning MLAP000B - Test Description: Adding a Location for Picarro by Picarro Utility Administrator");
+		System.out.println("\nRunning MLAP000B - Test Description: Adding a Location for Picarro by Picarro Utility Administrator");		
 		
-		manageUsersPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		
 		manageUsersPage.open();
 		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, CUSUSERROLEUA);
 		
 		manageUsersPage.logout();
 		
-		manageLocationsAdminPage.login(userName, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(userName, USERPASSWORD);
+		
 		manageLocationsAdminPage.open();
 		manageLocationsAdminPage.addNewLocation(locationName);
 		
 		assertTrue(manageLocationsAdminPage.findExistingLocation(customerName, locationName));
-		
-		manageLocationsAdminPage.logout();
-	}	
-
+	}
 }

@@ -132,10 +132,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String reportTitleXPath;
 		String createdByXPath;
 		String pdfImgXPath;
+		String zipImgXPath;
 		
 		WebElement rptTitleCell;
 		WebElement createdByCell;
 		WebElement pdfImg;
+		WebElement zipImg;
 		
 		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 		
@@ -148,9 +150,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath =  "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
-			createdByXPath =    "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
-			pdfImgXPath =       "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]/a[3]/img";
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
+			createdByXPath   = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
 						
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
@@ -162,10 +163,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				
 				while (bContinue) {
 					try {
+						pdfImgXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]/a[3]/img";
 						pdfImg = table.findElement(By.xpath(pdfImgXPath));
-						String src = pdfImg.getAttribute("src");
+						String srcPdfImg = pdfImg.getAttribute("src");
 						
-						if (src.contains("pdf"))   //temporary for now
+						zipImgXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]/a[4]/img";
+						zipImg = table.findElement(By.xpath(zipImgXPath));
+						String srcZipImg = zipImg.getAttribute("src");
+						
+						if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip"))
 							return true;
 					}
 					catch (org.openqa.selenium.NoSuchElementException e) {
@@ -296,7 +302,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				deleteImg.click();
 				
 				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 				
 				this.btnDeleteReport.click();
 				
@@ -390,6 +395,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-
+		
 	}
 }

@@ -119,22 +119,6 @@ public class HomePage extends SurveyorBasePage {
 		return false;
 	}
 	
-	public LoginPage logout() {
-		this.dropDownAdministrator.click();
-		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(3);
-		
-		this.linkLogOut.click();
-		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(3);
-		
-		LoginPage loginPage = new LoginPage(this.driver, this.strBaseURL, this.testSetup);
-		
-		return loginPage;
-	}
-	
 	public boolean checkVisitilityForPicarroDR(String loginUser) {
 		if (!this.picarroLogo.isDisplayed())
 			return false;
