@@ -188,7 +188,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	@Test
 	public void MAP000D() {
 		String customerName = "Picarro";
-		String locationName = customerName + testSetup.getRandomNumber() + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "loc" + "MAP000D";
 		String surveyorName = locationName + "sur";
 		String surveyorNameNew = locationName + "surnew";
 		String analyzerName = surveyorName + "ana";
@@ -211,10 +211,14 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		
 		manageAnalyzersPage.addNewAnalyzer(analyzerName, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
 		
-		if (manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
-			manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationName, surveyorName, analyzerName, 
-					customerName + " - " + locationName + " - " + surveyorNameNew );
-		
-		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorNameNew, analyzerName));
+		if (manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName)) {
+			if (manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationName, surveyorName, analyzerName, 
+					customerName + " - " + locationName + " - " + surveyorNameNew ))
+				assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorNameNew, analyzerName));
+			else
+				fail("\nTest case MAP000D failed\n");
+		}
+		else 
+			fail("\nTest case MAP000D failed\n");
 	}
 }

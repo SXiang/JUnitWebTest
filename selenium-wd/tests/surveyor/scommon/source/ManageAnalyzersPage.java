@@ -41,9 +41,6 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='analyzer-form']/fieldset/div[4]/div[2]/a")
 	private WebElement btnCancel;
 	
-	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Next')]")
-	private WebElement nextBtn;
-	
 	/**
 	 * @param driver
 	 * @param testSetup

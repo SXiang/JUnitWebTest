@@ -302,6 +302,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				deleteImg.click();
 				
 				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 				
 				this.btnDeleteReport.click();
 				
