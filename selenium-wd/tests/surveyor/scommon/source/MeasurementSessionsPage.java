@@ -130,7 +130,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	}
 	
 	private List<String> getTagNameList() {
-		paginationInput.sendKeys("100");
+		setPagination(PAGINATIONSETTING);
 		
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -142,17 +142,17 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 		
-		if (rowSize < 100)
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 			loopCount = rowSize;
 		else
-			loopCount = 100;
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			col1 = this.table.findElement(By.xpath(this.strTRXPath + "["+rowNum+"]/td[1]"));
 			
 			strListTag.add(col1.getText().trim());
 			
-			if (rowNum == 100 && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -160,12 +160,12 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 				List<WebElement> newRows = this.table.findElements(By.xpath(this.strTRXPath));
 				rowSize = newRows.size();
 				
-				if (rowSize < 100)
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 					loopCount = rowSize;
 				else
-					loopCount = 100;
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}
 		}
 		

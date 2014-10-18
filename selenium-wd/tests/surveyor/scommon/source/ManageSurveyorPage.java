@@ -146,7 +146,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	}	
 	
 	public boolean findExistingSurveyor(String customerName, String locationName, String surveyorName) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -196,7 +196,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		
@@ -204,7 +204,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	}
 	
 	public boolean editExistingSurveyor(String customerName, String locationName, String surveyorName, String surveyorNameNew) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -278,7 +278,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		

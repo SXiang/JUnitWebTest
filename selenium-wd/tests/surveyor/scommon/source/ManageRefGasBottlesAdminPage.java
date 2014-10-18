@@ -33,7 +33,7 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 	}
 	
 	public boolean findExistingRefGasBottle(String strItemNumber, String strSurveyor, String location) {
-		this.paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -80,7 +80,8 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 					loopCount = rowSize;
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
-				rowNum = 1;
+				
+				rowNum = 0;
 			}
 		}
 		

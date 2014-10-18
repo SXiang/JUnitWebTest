@@ -70,7 +70,8 @@ public class UserFeedbackPage extends SurveyorBasePage {
 	}
 	
 	public boolean checkUserFeedback(String user, String strFeedback) {
-		this.paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
+		
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
 		String strUserXPath;
@@ -110,7 +111,8 @@ public class UserFeedbackPage extends SurveyorBasePage {
 					loopCount = rowSize;
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
-				rowNum = 1;
+				
+				rowNum = 0;
 			}
 		}
 		
@@ -118,7 +120,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 	}
 	
 	public String getUserFeedbackNote(String customer, String user) {
-		this.paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -165,7 +167,8 @@ public class UserFeedbackPage extends SurveyorBasePage {
 					loopCount = rowSize;
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
-				rowNum = 1;
+				
+				rowNum = 0;
 			}
 		}
 		
@@ -176,7 +179,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 	public List<String> getUserFeedbackNotes(String customer, String user) {
 		List<String> list = new ArrayList<String>();		
 		
-		this.paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -223,7 +226,8 @@ public class UserFeedbackPage extends SurveyorBasePage {
 					loopCount = rowSize;
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
-				rowNum = 1;
+				
+				rowNum = 0;
 			}
 		}	
 		

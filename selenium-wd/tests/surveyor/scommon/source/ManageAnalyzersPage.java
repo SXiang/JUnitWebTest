@@ -91,7 +91,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	}
 	
 	public boolean findExistingAnalyzer(String customerName, String locationName, String surveyorName, String analyzerName) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -143,7 +143,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		
@@ -152,7 +152,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	
 	public boolean associateAnalyzerToOtherSurveyor (String customerName, String locationName, String surveyorName, 
 			String analyzerName, String cuslocsur) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -230,7 +230,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		
@@ -239,7 +239,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	
 	public boolean editExistingAnalyzer(String customerName, String locationName, String surveyorName, String analyzerName, 
 			String keyNew, String cuslocsur) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -320,7 +320,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		

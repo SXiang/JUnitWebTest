@@ -34,7 +34,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 	}
 	
 	public boolean findExistingSurveyor(String locationName, String surveyorName) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -80,7 +80,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		
@@ -88,7 +88,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 	}	
 	
 	public boolean editExistingSurveyor(String locationName, String surveyorName, String surveyorNameNew) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -158,7 +158,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		
