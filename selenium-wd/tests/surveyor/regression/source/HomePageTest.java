@@ -4,11 +4,8 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
-
 import org.junit.Test;
-import org.openqa.selenium.support.PageFactory;
 
-import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.SurveyorBaseTest;
 
 /**
@@ -16,10 +13,6 @@ import surveyor.scommon.source.SurveyorBaseTest;
  *
  */
 public class HomePageTest extends SurveyorBaseTest {
-	
-	public HomePageTest() {
-		
-	}
 	
 	/**
 	 * Test Case ID: HOME000
