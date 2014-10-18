@@ -14,7 +14,6 @@ import org.openqa.selenium.support.PageFactory;
 
 import common.source.BasePage;
 import common.source.TestSetup;
-import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
  * @author zlu

@@ -10,7 +10,6 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.PageFactory;
 
 import common.source.TestSetup;
 
@@ -40,11 +39,9 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 		
 		String locationNameXPath;
 		String surveyorNameXPath;
-		String actionEditXPath;
 		
 		WebElement locationNameCell;
 		WebElement surveyorNameCell;
-		WebElement actionEditCell;
 		
 		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 		

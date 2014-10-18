@@ -12,7 +12,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import common.source.BasePage;
 import common.source.TestSetup;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
