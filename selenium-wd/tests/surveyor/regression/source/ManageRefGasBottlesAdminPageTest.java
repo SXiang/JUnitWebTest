@@ -11,6 +11,7 @@ import static surveyor.scommon.source.SurveyorConstants.RGBNAMEBASE;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
@@ -22,13 +23,13 @@ import surveyor.scommon.source.SurveyorBaseTest;
  *
  */
 public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
-	private ManageRefGasBottlesAdminPage manageRefGasBottlesAdminPage;
+	private static ManageRefGasBottlesAdminPage manageRefGasBottlesAdminPage;
 	
-	public ManageRefGasBottlesAdminPageTest () {
+	@BeforeClass
+	public static void setupManageRefGasBottlesAdminPageTest () {
 		manageRefGasBottlesAdminPage = new ManageRefGasBottlesAdminPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver,  manageRefGasBottlesAdminPage);
 	}
-
 
 	/**
 	 * Test Case ID: MRGBP000C

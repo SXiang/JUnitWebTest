@@ -10,7 +10,6 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.PageFactory;
 
 import common.source.TestSetup;
 
@@ -34,17 +33,15 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 	}
 	
 	public boolean findExistingSurveyor(String locationName, String surveyorName) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
 		String locationNameXPath;
 		String surveyorNameXPath;
-		String actionEditXPath;
 		
 		WebElement locationNameCell;
 		WebElement surveyorNameCell;
-		WebElement actionEditCell;
 		
 		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 		
@@ -80,7 +77,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		
@@ -88,7 +85,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 	}	
 	
 	public boolean editExistingSurveyor(String locationName, String surveyorName, String surveyorNameNew) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -158,7 +155,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		

@@ -113,7 +113,8 @@ public final class SurveyorConstants {
 	
 	public static final int ACTIONTIMEOUT = 300; //in seconds
 	
-	public static final String PAGINATIONSETTING = "100";
+	//public static final String PAGINATIONSETTING = "100";
+	public static final String PAGINATIONSETTING = "10"; //Selenium WebDriver issues so set it to 10 only for now
 	
 	public static final String USERENABLED = "Enabled";
 	public static final String USERDISABLED = "Disabled";

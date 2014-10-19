@@ -88,7 +88,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	}
 	
 	public boolean findExistingRefGasBottle(String strItemNumber, String strSurveyor) {
-		this.paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -129,7 +129,8 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 					loopCount = rowSize;
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
-				rowNum = 1;
+				
+				rowNum = 0;
 			}
 		}
 		
@@ -137,7 +138,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	}	
 
 	public boolean findExistingRefGasBottle(String strItemNumber, String strSurveyor, String location, String customer) {
-		this.paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -188,7 +189,8 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 					loopCount = rowSize;
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
-				rowNum = 1;
+				
+				rowNum = 0;
 			}
 		}
 		

@@ -8,11 +8,10 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 
 import java.util.List;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
-import surveyor.scommon.source.HomePage;
-import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.UserFeedbackAdminPage;
 
@@ -21,9 +20,10 @@ import surveyor.scommon.source.UserFeedbackAdminPage;
  *
  */
 public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
-	private UserFeedbackAdminPage userFeedbackAdminPage;
+	private static UserFeedbackAdminPage userFeedbackAdminPage;
 
-	public UserFeedbackAdminPageTest() {
+	@BeforeClass
+	public static void setupUserFeedbackAdminPageTest() {
 		userFeedbackAdminPage = new UserFeedbackAdminPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver,  userFeedbackAdminPage);
 	}

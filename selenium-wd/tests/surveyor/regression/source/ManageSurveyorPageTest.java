@@ -5,6 +5,7 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.*;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
@@ -21,13 +22,18 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 public class ManageSurveyorPageTest extends SurveyorBaseTest {
 	private static ManageLocationsPage manageLocationsPage;
 	private static ManageSurveyorPage manageSurveyorPage;
+	private static ManageCustomersPage manageCustomersPage;
 	
-	public ManageSurveyorPageTest() {
+	@BeforeClass
+	public static void setupManageSurveyorPageTest() {
 		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageLocationsPage);
 		
 		manageSurveyorPage = new ManageSurveyorPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageSurveyorPage);
+		
+		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver,  manageCustomersPage);
 	}
 	
 	/**

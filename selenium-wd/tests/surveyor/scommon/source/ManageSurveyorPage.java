@@ -5,15 +5,12 @@ package surveyor.scommon.source;
 
 import java.util.List;
 
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import common.source.BasePage;
 import common.source.TestSetup;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
@@ -50,15 +47,6 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyor-form']/fieldset/div[3]/div[2]/a")
 	protected WebElement btnCancel;
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody")
-	protected WebElement surveyorTB;	
-	
-//	@FindBy(how = How.XPATH, using = "//*[@id='datatable_length']/label/select")
-//	protected WebElement paginationInput;
-	
-	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Next')]")
-	protected WebElement nextBtn;
 	
 	//add more @FindBy here later
 	
@@ -146,19 +134,17 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	}	
 	
 	public boolean findExistingSurveyor(String customerName, String locationName, String surveyorName) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
 		String customerNameXPath;
 		String locationNameXPath;
 		String surveyorNameXPath;
-		String actionEditXPath;
 		
 		WebElement customerNameCell;
 		WebElement locationNameCell;
 		WebElement surveyorNameCell;
-		WebElement actionEditCell;
 		
 		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 		
@@ -196,7 +182,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		
@@ -204,7 +190,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	}
 	
 	public boolean editExistingSurveyor(String customerName, String locationName, String surveyorName, String surveyorNameNew) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -278,7 +264,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		

@@ -41,9 +41,6 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='analyzer-form']/fieldset/div[4]/div[2]/a")
 	private WebElement btnCancel;
 	
-	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Next')]")
-	private WebElement nextBtn;
-	
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -94,7 +91,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	}
 	
 	public boolean findExistingAnalyzer(String customerName, String locationName, String surveyorName, String analyzerName) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -146,7 +143,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		
@@ -155,7 +152,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	
 	public boolean associateAnalyzerToOtherSurveyor (String customerName, String locationName, String surveyorName, 
 			String analyzerName, String cuslocsur) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -233,7 +230,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		
@@ -242,7 +239,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	
 	public boolean editExistingAnalyzer(String customerName, String locationName, String surveyorName, String analyzerName, 
 			String keyNew, String cuslocsur) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -323,7 +320,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		

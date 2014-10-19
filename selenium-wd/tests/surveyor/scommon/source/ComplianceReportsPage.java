@@ -24,6 +24,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='myModal']/div/div/div[3]/a[1]")
 	WebElement btnDeleteReport;
+	private String btnDeleteReportXPath = "//*[@id='myModal']/div/div/div[3]/a[1]";
 
 	/**
 	 * @param driver
@@ -125,7 +126,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy) {
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -196,7 +197,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					loopCount = rowSize;
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
-				rowNum = 1;
+				
+				rowNum = 0;
 			}
 		}
 		
@@ -216,7 +218,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 	
 	public boolean findExistingReport(String rptTitle, String strCreatedBy) { 
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -258,7 +260,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					loopCount = rowSize;
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
-				rowNum = 1;
+				
+				rowNum = 0;
 			}			
 		}
 		
@@ -266,7 +269,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 	
 	public boolean deleteReport(String rptTitle, String strCreatedBy) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -303,7 +306,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				
 				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 				
-				this.btnDeleteReport.click();
+				if (this.isElementPresent(btnDeleteReportXPath))
+					btnDeleteReport.click();
+				else
+					return false;
 				
 				return true;
 			}
@@ -319,7 +325,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					loopCount = rowSize;
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
-				rowNum = 1;
+				
+				rowNum = 0;
 			}			
 		}
 		
@@ -327,7 +334,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 	
 	public boolean copyReport(String rptTitle, String strCreatedBy, String rptTitleNew) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -383,7 +390,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					loopCount = rowSize;
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
-				rowNum = 1;
+				
+				rowNum = 0;
 			}			
 		}
 		
