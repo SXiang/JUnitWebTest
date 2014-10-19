@@ -25,7 +25,6 @@ public class SurveyorBaseTest {
 
 	public static LoginPage loginPage;
 	public static HomePage homePage;
-	public static ManageCustomersPage manageCustomersPage;
 
 	/**
 	 * @throws java.lang.Exception
@@ -44,9 +43,6 @@ public class SurveyorBaseTest {
 		
 		homePage = new HomePage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  homePage);
-		
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageCustomersPage);
 	}
 
 	/**
@@ -54,10 +50,10 @@ public class SurveyorBaseTest {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		manageCustomersPage.open();
-				
+		homePage.open();
+		
 		if (!driver.getTitle().equalsIgnoreCase("Login"))
-			manageCustomersPage.logout();
+			homePage.logout();
 		
 		driver.quit();		
 	}

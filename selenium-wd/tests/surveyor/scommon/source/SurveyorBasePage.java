@@ -3,6 +3,9 @@
  */
 package surveyor.scommon.source;
 
+import java.util.List;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,7 +14,6 @@ import org.openqa.selenium.support.PageFactory;
 
 import common.source.BasePage;
 import common.source.TestSetup;
-import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
  * @author zlu
@@ -83,6 +85,14 @@ public class SurveyorBasePage extends BasePage {
 		loginPage.open();
 		
 		loginPage.loginNormalAs(user, password);
+	}
+	
+	public void setPagination(String str) {
+		List<WebElement> options = paginationInput.findElements(By.tagName("option"));
+		for (WebElement option : options) {
+			if(str.equals(option.getText().trim()))
+				option.click();		
+		}
 	}
 
 	/**

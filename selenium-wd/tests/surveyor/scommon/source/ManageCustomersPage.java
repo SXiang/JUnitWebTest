@@ -65,7 +65,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	}
 	
 	public boolean findExistingCustomer(String customerName) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -101,7 +101,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}			
 		}
 		
@@ -109,7 +109,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	}
 
 	public boolean editExistingCustomerName(String customerName, String newCustomerName) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -168,7 +168,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}			
 		}
 		
@@ -176,7 +176,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	}
 
 	public boolean editExistingCustomerName(String customerName, String newCustomerName, String eulaNew) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -238,7 +238,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}			
 		}
 		
@@ -246,7 +246,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	}
 	
 	public String getCustomerStatus(String customerName) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -290,7 +290,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}			
 		}		
 		
@@ -298,7 +298,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	}
 	
 	public boolean changeCustomerAccountStatus (String customerName, boolean bEnabled) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -354,7 +354,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}			
 		}
 		

@@ -12,9 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.PageFactory;
 
-import common.source.BasePage;
 import common.source.TestSetup;
 
 /**
@@ -223,7 +221,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}	
 	
 	public boolean findExistingUser(String userName) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -262,7 +260,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		
@@ -270,7 +268,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}	
 	
 	public boolean findExistingUser(String customerName, String userName) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -314,7 +312,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		
@@ -322,7 +320,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}	
 	
 	public boolean findExistingUser(String customerName, String userName, String roleName) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -370,7 +368,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		
@@ -378,7 +376,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 	
 	public String getUserRole(String userName) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -422,7 +420,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		
@@ -430,7 +428,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 	
 	public String getUserStatus (String userName) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -474,7 +472,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		
@@ -482,7 +480,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 	
 	public boolean editUser(String userName, String role, String timeZone, boolean accountEnable) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -555,7 +553,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		
@@ -563,7 +561,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 	
 	public boolean resetUserPassword(String userName, String newPassword) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -618,7 +616,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		

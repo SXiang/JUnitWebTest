@@ -7,9 +7,11 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
-import surveyor.scommon.source.LoginPage;
+
 import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import static surveyor.scommon.source.SurveyorConstants.*;
@@ -19,11 +21,12 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  *
  */
 public class MeasurementSessionsPageTest extends SurveyorBaseTest {
-	private MeasurementSessionsPage measurementSessionsPage;
-	private List<String> strListTagCus = null;
-	private List<String> strListTagPic = null;
+	private static MeasurementSessionsPage measurementSessionsPage;
+	private static List<String> strListTagCus = null;
+	private static List<String> strListTagPic = null;
 	
-	public MeasurementSessionsPageTest() {
+	@BeforeClass
+	public static void setupMeasurementSessionsPageTest() {
 		measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver,  measurementSessionsPage);
 		

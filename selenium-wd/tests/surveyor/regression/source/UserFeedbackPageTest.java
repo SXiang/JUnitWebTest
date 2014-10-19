@@ -4,19 +4,13 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
-import static surveyor.scommon.source.SurveyorConstants.CUSNAMEBASE;
-import static surveyor.scommon.source.SurveyorConstants.CUSNAMEBASELOC;
-import static surveyor.scommon.source.SurveyorConstants.CUSNAMEBASESUR;
-import static surveyor.scommon.source.SurveyorConstants.RGBNAMEBASE;
 
 import java.util.List;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
-import surveyor.scommon.source.HomePage;
-import surveyor.scommon.source.LoginPage;
-import surveyor.scommon.source.ManageRefGasBottlesPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.UserFeedbackPage;
 import static surveyor.scommon.source.SurveyorConstants.*;
@@ -26,9 +20,10 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  *
  */
 public class UserFeedbackPageTest extends SurveyorBaseTest {
-	private UserFeedbackPage userFeedbackPage;
+	private static UserFeedbackPage userFeedbackPage;
 	
-	public UserFeedbackPageTest() {
+	@BeforeClass
+	public static void setupUserFeedbackPageTest() {
 		userFeedbackPage = new UserFeedbackPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver,  userFeedbackPage);
 	}

@@ -13,7 +13,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.FindBy;
 
-import common.source.BasePage;
 import common.source.TestSetup;
 
 /**
@@ -64,22 +63,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		super(driver, testSetup, baseURL, baseURL + urlPath);
 	}
 	
-//	public LoginPage logout() {
-//		this.dropDownAdministrator.click();
-//		
-//		if (this.testSetup.isRunningDebug())
-//			this.testSetup.slowdownInSeconds(1);
-//		
-//		this.linkLogOut.click();
-//		
-//		if (this.testSetup.isRunningDebug())
-//			this.testSetup.slowdownInSeconds(3);
-//		
-//		LoginPage loginPage = new LoginPage(this.driver, this.strBaseURL, this.testSetup);
-//		
-//		return loginPage;
-//	}
-	
 	public void addNewLocation(String locationDesc, String customer) {
 		this.btnAddNewLocation.click();
 				
@@ -101,7 +84,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 	
 	public boolean findExistingLocation(String customerName, String locationName) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -128,7 +111,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			customerNameCell = table.findElement(By.xpath(customerNameXPath));
 			locationNameCell = table.findElement(By.xpath(locationNameXPath));
 			
-			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName) && (locationNameCell.getText().trim()).equalsIgnoreCase(locationName)) {
+			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName) 
+					&& (locationNameCell.getText().trim()).equalsIgnoreCase(locationName)) {
 				return true;
 			}
 				
@@ -144,15 +128,15 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
-			}	
+				rowNum = 0;
+			}
 		}
 		
 		return false;
 	}
 	
 	public boolean editExistingLocation(String customerName, String locationName, String newLocationName) {
-		paginationInput.sendKeys(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -168,11 +152,11 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		
 		int rowSize = rows.size();
 		int loopCount = 0;
-		
+
 		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
+			loopCount = Integer.parseInt(PAGINATIONSETTING);		
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			customerNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
@@ -215,7 +199,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
 				
-				rowNum = 1;
+				rowNum = 0;
 			}	
 		}
 		
