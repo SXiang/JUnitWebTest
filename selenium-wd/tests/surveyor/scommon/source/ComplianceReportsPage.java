@@ -6,10 +6,9 @@ package surveyor.scommon.source;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
 import common.source.TestSetup;
 import static surveyor.scommon.source.SurveyorConstants.*;
@@ -21,10 +20,6 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String STRURLPath = "/Reports/ComplianceReports";
 	public static final String STRPageTitle = "Compliance Reports - Surveyor";
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='myModal']/div/div/div[3]/a[1]")
-	WebElement btnDeleteReport;
-	private String btnDeleteReportXPath = "//*[@id='myModal']/div/div/div[3]/a[1]";
 
 	/**
 	 * @param driver
@@ -38,12 +33,33 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 	
 	//Temporary solution for now and should pass the params by a data structure
-	public void addNewReport(String title, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, 
+	private void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, 
 			String NELat, String NELong, String SWLat, String SWLong, String surUnit, String tag, String startDate, String endDate, String surModeFilter) {
+		
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
 		this.btnNewComplianceRpt.click();
 		
+		this.inputTitle.clear();
 		this.inputTitle.sendKeys(title);
+		
+		if (customer != null && customer != "Picarro") {
+			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
+			for (WebElement option : optionsCustomer) {
+				if ((customer).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+			
+			if (this.isElementPresent(btnChangeModeXPath)) {
+				JavascriptExecutor js = (JavascriptExecutor)driver; 
+				js.executeScript("arguments[0].click();", btnChangeMode);  				
+				
+				//temporary bypass the issue DE456
+				this.inputTitle.clear();
+				this.inputTitle.sendKeys(title);
+			}
+		}
 		
 		List<WebElement> optionsTZ = this.cBoxTimezone.findElements(By.tagName("option"));
 		for (WebElement option : optionsTZ) {
@@ -204,16 +220,24 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		
 		return false;
 	}
-	
-	//Temporary solution for now and should pass the params by a data structure	
+		
 	public void addNewPDReport(String reportTitle) {
-		this.addNewReport(reportTitle, TIMEZONE, EXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, 
+		this.addNewReport(reportTitle, null, TIMEZONE, EXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, 
 				NELAT, NELON, SWLAT, SWLON, SURVEYORUNIT, TAG, STARTDATE, ENDDATE, REPORTMODES1);
 	}
 	
-	//Temporary solution for now and should pass the params by a data structure	
+	public void addNewPDReport(String reportTitle, String customer) {
+		this.addNewReport(reportTitle, customer, TIMEZONE, EXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, 
+				NELAT, NELON, SWLAT, SWLON, SURVEYORUNIT, TAG, STARTDATE, ENDDATE, REPORTMODES1);
+	}
+		
 	public void addNewPDReport(String reportTitle, String surveyor, String tag) {
-		this.addNewReport(reportTitle, TIMEZONE, EXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, 
+		this.addNewReport(reportTitle, null, TIMEZONE, EXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, 
+				NELAT, NELON, SWLAT, SWLON, surveyor, tag, STARTDATE, ENDDATE, REPORTMODES1);
+	}
+		
+	public void addNewPDReport(String reportTitle, String customer, String surveyor, String tag) {
+		this.addNewReport(reportTitle, customer, TIMEZONE, EXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, 
 				NELAT, NELON, SWLAT, SWLON, surveyor, tag, STARTDATE, ENDDATE, REPORTMODES1);
 	}
 	
@@ -306,12 +330,19 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				
 				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 				
-				if (this.isElementPresent(btnDeleteReportXPath))
-					btnDeleteReport.click();
+				if (this.isElementPresent(btnDeleteReportXPath)) {
+					JavascriptExecutor js = (JavascriptExecutor)driver; 
+					js.executeScript("arguments[0].click();", btnDeleteReport);
+					
+					if (this.isElementPresent(errorMsgDeleteCompliacneReportXPath)) {
+						this.btnReturnToHomePage.click();
+						return false;
+					}
+					else
+						return true;
+				}
 				else
 					return false;
-				
-				return true;
 			}
 			
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
@@ -403,6 +434,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
+
 	}
 }
