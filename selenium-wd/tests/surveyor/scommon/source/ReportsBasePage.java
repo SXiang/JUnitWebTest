@@ -198,9 +198,26 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/span")
 	protected WebElement errorSpan;
 	
-	//@FindBy(how = How.XPATH, using = "//*[@id='datatable_wrapper']/div[2]/div[2]/div/ul/li[3]/a")
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_next']")
 	protected WebElement nextBtn;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='myModal']/div/div/div[3]/a[1]")
+	protected WebElement btnDeleteReport;
+	protected String btnDeleteReportXPath = "//*[@id='myModal']/div/div/div[3]/a[1]";
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='report-customer']")
+	protected WebElement dropdownCustomer;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='customerModal']/div/div/div[3]/a[1]")
+	protected WebElement btnChangeMode;
+	protected String btnChangeModeXPath = "//*[@id='customerModal']/div/div/div[3]/a[1]";
+	
+	@FindBy(how = How.XPATH, using = "/html/body/div/div[2]/div/div/div[2]/p[1]")
+	protected WebElement errorMsgDeleteCompliacneReport;
+	protected String errorMsgDeleteCompliacneReportXPath = "/html/body/div/div[2]/div/div/div[2]/p[1]";
+	
+	@FindBy(how = How.XPATH, using = "/html/body/div/div[2]/div/div/div[3]/a[2]")
+	protected WebElement btnReturnToHomePage;
 	
 	/**
 	 * @param driver
