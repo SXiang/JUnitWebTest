@@ -40,7 +40,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		
 		complianceReportsPage.open();
-		complianceReportsPage.addNewPDReport(rptTitle);
+		complianceReportsPage.addNewPDReport(rptTitle, SQACUS);
 		
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -512,6 +512,62 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 			assertTrue(complianceReportsPage.findExistingReport(rptTitle + "COPY", PICDFADMIN));
 		else
 			fail("\nTestcase RPT000F failed.\n");
+		
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+	
+	/**
+	 * Test Case ID: RPT000G
+	 * Test Description: Create a compliance report by Administrator for a Picarro Survey 
+	 * 
+	 */	
+	@Test
+	public void RPT000G() {
+		String rptTitle = PICDFADMIN + testSetup.getRandomNumber() + "RPT000G";
+		System.out.format("\nRunning - RPT000G - Test Description: Create a compliance report by Administrator for a Picarro Survey, %s\n", rptTitle);
+		
+		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		complianceReportsPage.open();
+		
+		String surUnit = "";
+		
+		complianceReportsPage.addNewPDReport(rptTitle, "Picarro", surUnit, SQAPICDRTAG);
+		
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle, PICDFADMIN));
+		else
+			fail("\nTestcase RPT000G failed.\n");
+		
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+	
+	/**
+	 * Test Case ID: RPT000H
+	 * Test Description: Create a compliance report by Administrator for a customer Survey 
+	 * 
+	 */	
+	@Test
+	public void RPT000H() {
+		String rptTitle = PICDFADMIN + testSetup.getRandomNumber() + "RPT000H";
+		System.out.format("\nRunning - RPT000H - Test Description: Create a compliance report by Administrator for a customer Survey, %s\n", rptTitle);
+		
+		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		complianceReportsPage.open();
+		
+		String surUnit = "";
+		
+		complianceReportsPage.addNewPDReport(rptTitle, SQACUS, surUnit, SQACUSDRTAG);
+		
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle, PICDFADMIN));
+		else
+			fail("\nTestcase RPT000H failed.\n");
 		
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
