@@ -77,13 +77,12 @@ public class TestSetup {
 	private String randomNumber;
 
 	private WebDriver driver;
-	private String slowdownInSeconds; // For debugging the code and not
-										// recommended to use in real test case
+	private String slowdownInSeconds; // For debugging the code and not recommended to use in real test case
+	
+	private String downloadPath;
 	
 	public TestSetup() {
-
 		try {
-
 			InputStream inputStream = new FileInputStream(testPropFileName);
 
 			testProp = new Properties();
@@ -131,6 +130,8 @@ public class TestSetup {
 					.getProperty("implicitlyWaitSpecialTimeOutInMS");
 
 			this.language = this.testProp.getProperty("language");
+			
+			this.downloadPath = this.testProp.getProperty("downloadPath");
 
 			if (this.testProp.getProperty("debug").equals("true")) {
 				
@@ -319,6 +320,10 @@ public class TestSetup {
 	
 	public long getImplicitlySpecialWaitTimeOutinSeconds() {
 		return Long.parseLong(this.implicitlyWaitSpecialTimeOutInSeconds.trim());
+	}
+	
+	public String getDownloadPath() {
+		return downloadPath;
 	}
 
 	public static void main(String[] args) {
