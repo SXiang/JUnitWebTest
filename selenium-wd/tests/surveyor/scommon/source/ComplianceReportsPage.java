@@ -3,6 +3,8 @@
  */
 package surveyor.scommon.source;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -10,6 +12,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import common.source.BaseHelper;
 import common.source.TestSetup;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
@@ -188,8 +191,19 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						zipImg = table.findElement(By.xpath(zipImgXPath));
 						String srcZipImg = zipImg.getAttribute("src");
 						
-						if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip"))
-							return true;
+						if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip")) {
+							pdfImg.click();
+							zipImg.click();
+							
+							testSetup.slowdownInSeconds(15);
+							
+							if (validatePdfFiles(rptTitle, testSetup.getDownloadPath()))
+								return true;
+							else
+								return false;
+						}
+						else
+							return false;
 					}
 					catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
@@ -428,6 +442,37 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		
 		return false;		
 
+	}
+	
+	private boolean validatePdfFiles(String rptTitle, String downloadPath) {
+		try {
+			BaseHelper.deCompressZipFile(rptTitle, downloadPath);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		String pdfFile1 = downloadPath + rptTitle + ".pdf";
+		String pdfFile2 = downloadPath + rptTitle + File.separator + rptTitle + "_View 1.pdf";
+		String pdfFile3 = downloadPath + rptTitle + File.separator + rptTitle + ".pdf";
+		
+		System.out.format("\npdfFile1 is: %s\n", pdfFile1);
+		System.out.format("\npdfFile2 is: %s\n", pdfFile2);
+		System.out.format("\npdfFile3 is: %s\n", pdfFile3);
+		
+		if (BaseHelper.validatePdfFile(pdfFile1) && BaseHelper.validatePdfFile(pdfFile2)) {
+			try {
+				if (BaseHelper.compareTwoFilesByContent(pdfFile1, pdfFile3))
+					return true;
+			} 
+			catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+
+		return false;
 	}
 	
 	/**
