@@ -3,29 +3,119 @@
  */
 package surveyor.scommon.source;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author zlu
  *
  */
-public interface Reports {
-	public static final String TITLENAMEBASE = "sqacrpt";
-	public static final String TIMEZONE = "Pacific Standard Time";
-	public static final String EXCLUSIONRADIUS = "3";
-	public static final String REPORTMODES1 = "S1";
+public class Reports {
+	protected String rptTitle;
+	protected String strCreatedBy;
+	protected String customer;
+	protected String timeZone;
+	protected String exclusionRadius;
 	
-	public static final String CUSBOUNDARY = "Custom Boundary";
-	public static final String IMGMAPHEIGHT = "5";
-	public static final String IMGMAPWIDTH = "5";
-	public static final String NELAT = "37.46368606459705";
-	public static final String NELON = "-121.84524536132811";
-	public static final String SWLAT = "37.32908214394206";
-	public static final String SWLON = "-122.12385177612305";
+	protected List<String> listBoundary;
+	protected String imageMapHeight;
+	protected String imageMapWidth;
+	protected String NELat;
+	protected String NELong;
+	protected String SWLat;
+	protected String SWLong;
 	
-	public static final String SURVEYORUNIT = "sqacus - sqacusloc - sqacuslocsur";
-	public static final String TAG = "dmcs1-sqa01";
+	protected String surveyorUnit;
+	protected String tag;
 	
-	public static final String STARTDATE = "01/01/2014";
-	public static final String ENDDATE = "08/14/2014";
+	protected List<Map<String, String>> viewList;
+
+	/**
+	 * 
+	 */
+	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, 
+			String surveyorUnit, String tag, List<Map<String, String>> viewList) {
+		this.rptTitle = rptTitle;
+		this.strCreatedBy = strCreatedBy;
+		this.customer = customer;
+		this.timeZone = timeZone;
+		this.exclusionRadius = exclusionRadius;
+		
+		this.listBoundary = listBoundary;
+		this.imageMapHeight = listBoundary.get(0);
+		this.imageMapWidth  = listBoundary.get(1);
+		this.NELat          = listBoundary.get(2);
+		this.NELong         = listBoundary.get(3);
+		this.SWLat          = listBoundary.get(4);
+		this.SWLong         = listBoundary.get(5);
+		
+		this.surveyorUnit = surveyorUnit;
+		this.tag = tag;
+		
+		this.viewList = viewList;
+	}
 	
-	public static final int ACTIONTIMEOUT = 300; //in seconds
+	public String getRptTitle() {
+		return this.rptTitle;
+	}
+	
+	public String getCustomer() {
+		return this.customer;
+	}
+	
+	public String getTimeZone() {
+		return this.timeZone;
+	}
+	
+	public String getExclusionRadius() {
+		return this.exclusionRadius;
+	}
+	
+	public List<String> getListBoundary() {
+		return this.listBoundary;
+	}
+
+	public String getImageMapHeight() {
+		return this.imageMapHeight;
+	}
+	
+	public String getImageMapWidth() {
+		return this.imageMapWidth;
+	}
+	
+	public String getNELat() {
+		return this.NELat;
+	}
+	
+	public String getNELong() {
+		return this.NELong;
+	}
+	
+	public String getSWLat() {
+		return this.SWLat;
+	}
+
+	public String getSWLong() {
+		return this.SWLong;
+	}
+	
+	public String getSurveyorUnit() {
+		return this.surveyorUnit;
+	}
+	
+	public String getTag() {
+		return this.tag;
+	}
+	
+	public List<Map<String, String>> getViewList() {
+		return this.viewList;
+	}
+	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+
+	}
+
 }

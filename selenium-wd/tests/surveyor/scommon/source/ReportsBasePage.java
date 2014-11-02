@@ -141,7 +141,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonAddSurveys']")
 	protected WebElement btnAddSurveys;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='buttonAddViews']") 
+	@FindBy(how = How.XPATH, using = "//*[@id='buttonAddViews']/span[2]")
 	protected WebElement btnAddViews;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr[1]/td[2]/input")
@@ -150,7 +150,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='deleteView2']/span")
 	protected WebElement btnDeleteView2;	
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[3]/input")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[2]/input")
+	protected WebElement inputViewName;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[3]/input") 
 	protected WebElement inputViewLisa;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[4]/input")
@@ -168,17 +171,17 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[8]/input")
 	protected WebElement inputViewAnno;
 	
-//	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr[1]/td[9]/input")
-//	protected WebElement inputViewGaps;
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[9]/input")
-	protected WebElement inputViewAssets;
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr[1]/td[9]/input")
+	protected WebElement inputViewGaps;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[10]/input")
+	protected WebElement inputViewAssets;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[11]/input")
 	protected WebElement inputViewBoundaries;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[11]/input")
-	protected WebElement inputViewBaseMap;
+//	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[11]/input")
+//	protected WebElement inputViewBaseMap;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[12]/select")
 	protected WebElement cbMapSatellite;
