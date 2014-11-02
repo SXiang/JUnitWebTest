@@ -131,4 +131,16 @@ public final class SurveyorConstants {
 	public static final String TIMEZONEMTUA = "Mountain Standard Time (Mexico)";
 	public static final String TIMEZONECTUA = "Central Standard Time";
 	public static final String TIMEZONEETUA = "Eastern Standard Time";
+	
+	public static final String KEYVIEWNAME = "ViewName";
+	public static final String KEYLISA = "Lisa";
+	public static final String KEYFOV = "FOV";
+	public static final String KEYBREADCRUMB = "Bread Crumb";
+	public static final String KEYINDICATIONS = "Indications";
+	public static final String KEYISOTOPICCAPTURE = "Isotopic Capture";
+	public static final String KEYANNOTATION = "Annotation";
+	public static final String KEYGAPS = "Gaps";
+	public static final String KEYASSETS = "Assets";
+	public static final String KEYBOUNDARIES = "Boundaries";
+	public static final String KEYBASEMAP = "Base Map";
 }
