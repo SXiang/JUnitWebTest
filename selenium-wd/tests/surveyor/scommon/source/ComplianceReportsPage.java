@@ -6,6 +6,7 @@ package surveyor.scommon.source;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -35,6 +36,189 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		System.out.format("\nThe Compliance Reports Page URL is: %s\n", this.strPageURL);
 	}
 	
+	//more generic interface and implementation, more details will be added into the reports objects
+	public void addNewReport(Reports reportsCompliance) {
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		this.btnNewComplianceRpt.click();
+		
+		this.inputTitle.clear();
+		this.inputTitle.sendKeys(reportsCompliance.getRptTitle());
+		
+		if (reportsCompliance.getCustomer() != null && reportsCompliance.getCustomer()  != "Picarro") {
+			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
+			for (WebElement option : optionsCustomer) {
+				if ((reportsCompliance.getCustomer()).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+			
+			if (this.isElementPresent(btnChangeModeXPath)) {
+				JavascriptExecutor js = (JavascriptExecutor)driver; 
+				js.executeScript("arguments[0].click();", btnChangeMode);  				
+				
+				//temporary bypass the issue DE456
+				this.inputTitle.clear();
+				this.inputTitle.sendKeys(reportsCompliance.getRptTitle());
+			}
+		}
+		
+		List<WebElement> optionsTZ = this.cBoxTimezone.findElements(By.tagName("option"));
+		for (WebElement option : optionsTZ) {
+			if ((reportsCompliance.getTimeZone()).equalsIgnoreCase(option.getText().trim())) {
+				option.click();
+			}
+		}		
+
+		this.inputExclusionRadius.clear();
+		this.inputExclusionRadius.sendKeys(reportsCompliance.getExclusionRadius());
+		//this.inputReportModeS1.click();
+		
+		//this.inputCusBoundary.click();
+		
+		this.inputImgMapHeight.sendKeys(reportsCompliance.getImageMapHeight());
+		this.inputImgMapWidth.sendKeys(reportsCompliance.getImageMapWidth());
+		this.inputNELat.sendKeys(reportsCompliance.getNELat());
+		this.inputNELong.sendKeys(reportsCompliance.getNELong());
+		this.inputSWLat.sendKeys(reportsCompliance.getSWLat());
+		this.inputSWLong.sendKeys(reportsCompliance.getSWLong());
+		
+		this.checkBoxIndTb.click();
+		this.checkBoxIsoAna.click();
+		this.checkBoxPCA.click();
+		this.checkBoxPCRA.click();
+		
+		this.checkBoxOtherPla.click();
+		this.checkBoxPEPla.click();
+		this.checkBoxProtectedSteel.click();
+		this.checkBoxUnProtectedSteel.click();
+		this.checkBoxCastIron.click();
+		this.checkBoxCopper.click();
+		
+//		this.checkBoxLevel1.click();
+//		this.checkBoxLevel6.click();
+		
+		if (reportsCompliance.getSurveyorUnit() != "") {
+			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
+			for (WebElement option : optionsSU) {
+				if ((reportsCompliance.getSurveyorUnit()).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+		}
+		
+		if (reportsCompliance.getTag() != "") {
+			List<WebElement> optionsTAG = this.cbTag.findElements(By.tagName("option"));
+			for (WebElement optionTAG : optionsTAG) {
+				if ((reportsCompliance.getTag()).equalsIgnoreCase(optionTAG.getText().trim())) {
+					optionTAG.click();
+				}
+			}
+		}
+		
+		if (testSetup.isRunningDebug())
+			testSetup.slowdownInSeconds(3);
+		
+//		this.cbStartDate.sendKeys(startDate);
+//		this.cbEndDate.sendKeys(endDate);
+		//this.inputSurModeFilterS1.click();
+		
+		this.btnSruveySearch.click();
+		this.checkboxSurFirst.click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		this.btnAddSurveys.click();
+		
+		addViews(reportsCompliance.getViewList());
+		
+		this.btnOK.click();
+	}
+	
+	private void addViews(List<Map<String, String>> viewList) {
+		int rowNum; 
+		int colNum;  
+		String strBaseXPath;
+		
+		for (int i = 0; i < viewList.size(); i++) {
+			if (i != 0) {
+				this.btnAddViews.click();
+			}
+			
+			rowNum = i + 1;
+			if (viewList.get(i).get(KEYVIEWNAME) != null) {
+				colNum = 2;
+				strBaseXPath = "//*[@id='datatableViews']/tbody/tr["+rowNum+"]/td["+colNum+"]/input";
+				driver.findElement(By.xpath(strBaseXPath)).clear();
+				driver.findElement(By.xpath(strBaseXPath)).sendKeys(viewList.get(i).get(KEYVIEWNAME));
+			}
+			
+			if (viewList.get(i).get(KEYLISA).equalsIgnoreCase("1")) {
+				colNum = 3;
+				strBaseXPath = "//*[@id='datatableViews']/tbody/tr["+rowNum+"]/td["+colNum+"]/input";
+				driver.findElement(By.xpath(strBaseXPath)).click();
+			}
+			
+			if (viewList.get(i).get(KEYFOV).equalsIgnoreCase("1")) {
+				colNum = 4;
+				strBaseXPath = "//*[@id='datatableViews']/tbody/tr["+rowNum+"]/td["+colNum+"]/input";
+				driver.findElement(By.xpath(strBaseXPath)).click();
+			}
+			
+			if (viewList.get(i).get(KEYBREADCRUMB).equalsIgnoreCase("1")) {
+				colNum = 5;
+				strBaseXPath = "//*[@id='datatableViews']/tbody/tr["+rowNum+"]/td["+colNum+"]/input";
+				driver.findElement(By.xpath(strBaseXPath)).click();
+			}
+			
+			if (viewList.get(i).get(KEYINDICATIONS).equalsIgnoreCase("1")) {
+				colNum = 6;
+				strBaseXPath = "//*[@id='datatableViews']/tbody/tr["+rowNum+"]/td["+colNum+"]/input";
+				driver.findElement(By.xpath(strBaseXPath)).click();
+			}
+			
+			if (viewList.get(i).get(KEYISOTOPICCAPTURE).equalsIgnoreCase("1")) {
+				colNum = 7;
+				strBaseXPath = "//*[@id='datatableViews']/tbody/tr["+rowNum+"]/td["+colNum+"]/input";
+				driver.findElement(By.xpath(strBaseXPath)).click();
+			}
+			
+			if (viewList.get(i).get(KEYANNOTATION).equalsIgnoreCase("1")) {
+				colNum = 8;
+				strBaseXPath = "//*[@id='datatableViews']/tbody/tr["+rowNum+"]/td["+colNum+"]/input";
+				driver.findElement(By.xpath(strBaseXPath)).click();
+			}
+			
+			if (viewList.get(i).get(KEYGAPS).equalsIgnoreCase("1")) {
+				colNum = 9;
+				strBaseXPath = "//*[@id='datatableViews']/tbody/tr["+rowNum+"]/td["+colNum+"]/input";
+				driver.findElement(By.xpath(strBaseXPath)).click();
+			}
+			
+			if (viewList.get(i).get(KEYASSETS).equalsIgnoreCase("1")) {
+				colNum = 10;
+				strBaseXPath = "//*[@id='datatableViews']/tbody/tr["+rowNum+"]/td["+colNum+"]/input";
+				driver.findElement(By.xpath(strBaseXPath)).click();
+			}			
+			
+			if (viewList.get(i).get(KEYBOUNDARIES).equalsIgnoreCase("1")) {
+				colNum = 11;
+				strBaseXPath = "//*[@id='datatableViews']/tbody/tr["+rowNum+"]/td["+colNum+"]/input";
+				driver.findElement(By.xpath(strBaseXPath)).click();
+			}
+			
+			colNum = 12;
+			strBaseXPath = "//*[@id='datatableViews']/tbody/tr["+rowNum+"]/td["+colNum+"]/select";
+			WebElement dropdownBaseMap = driver.findElement(By.xpath(strBaseXPath));
+			
+			List<WebElement> options = dropdownBaseMap.findElements(By.tagName("option"));
+			for (WebElement option : options) {
+				if ((viewList.get(i).get(KEYBASEMAP)).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+		}
+	}
+	
+	//Nov. 1, 2014, this is obsolete and try not to call this for generating a compliance report.
 	//Temporary solution for now and should pass the params by a data structure
 	private void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, 
 			String NELat, String NELong, String SWLat, String SWLong, String surUnit, String tag, String startDate, String endDate, String surModeFilter) {
@@ -193,14 +377,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						
 						if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip")) {
 							pdfImg.click();
+							
+							testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 							zipImg.click();
 							
 							testSetup.slowdownInSeconds(15);
 							
-							if (validatePdfFiles(rptTitle, testSetup.getDownloadPath()))
-								return true;
-							else
-								return false;
+							return true;
 						}
 						else
 							return false;
@@ -444,35 +627,48 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	}
 	
-	private boolean validatePdfFiles(String rptTitle, String downloadPath) {
+	public boolean validatePdfFiles(ReportsCompliance reportsCompliance, String downloadPath) {
 		try {
-			BaseHelper.deCompressZipFile(rptTitle, downloadPath);
+			BaseHelper.deCompressZipFile(reportsCompliance.getRptTitle(), downloadPath);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
 		
-		String pdfFile1 = downloadPath + rptTitle + ".pdf";
-		String pdfFile2 = downloadPath + rptTitle + File.separator + rptTitle + "_View 1.pdf";
-		String pdfFile3 = downloadPath + rptTitle + File.separator + rptTitle + ".pdf";
+		String nameBase = reportsCompliance.getRptTitle();
+		String viewName;
+		String pdfFile1;
+		String pdfFile2;
+		String pdfFile3;
 		
-		System.out.format("\npdfFile1 is: %s\n", pdfFile1);
-		System.out.format("\npdfFile2 is: %s\n", pdfFile2);
-		System.out.format("\npdfFile3 is: %s\n", pdfFile3);
+		List<Map<String, String>> viewList = reportsCompliance.getViewList();
 		
-		if (BaseHelper.validatePdfFile(pdfFile1) && BaseHelper.validatePdfFile(pdfFile2)) {
+		pdfFile1 = downloadPath + nameBase + ".pdf";
+		pdfFile3 = downloadPath + nameBase + File.separator + nameBase + ".pdf";
+		
+		if (BaseHelper.validatePdfFile(pdfFile1) && BaseHelper.validatePdfFile(pdfFile3)) {
 			try {
-				if (BaseHelper.compareTwoFilesByContent(pdfFile1, pdfFile3))
-					return true;
+				if (!BaseHelper.compareTwoFilesByContent(pdfFile1, pdfFile3))
+					return false;
 			} 
 			catch (IOException e) {
 				e.printStackTrace();
 				return false;
 			}
 		}
-
-		return false;
+		else
+			return false;
+		
+		for (int i = 0; i < viewList.size(); i++) {
+			viewName = viewList.get(i).get(KEYVIEWNAME);
+			pdfFile2 = downloadPath + nameBase + File.separator + nameBase + "_" + viewName + ".pdf";
+			
+			if (!BaseHelper.validatePdfFile(pdfFile2))
+				return false;
+		}
+		
+		return true;
 	}
 	
 	/**
