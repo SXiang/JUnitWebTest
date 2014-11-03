@@ -572,4 +572,37 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
 	}	
+	
+	/**
+	 * Test Case ID: RPT001 Test Description: Generate compliance report with
+	 * all default values/filters selected and download it
+	 * 
+	 */
+	@Test
+	public void RPT001() {
+		String rptTitle = "RPT001" + testSetup.getRandomNumber();
+		System.out
+				.format("\nRunning RPT001- Test Description: Generate compliance report with all default values/filters selected and download it, %s\n",
+						rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		String surUnit = "";
+
+		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICDRTAG);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))){
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+					PICDFADMIN));
+		}
+		else
+			fail("\nTestcase RPT001 failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
 }
