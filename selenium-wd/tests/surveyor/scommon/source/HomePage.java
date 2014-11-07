@@ -3,6 +3,10 @@
  */
 package surveyor.scommon.source;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -63,7 +67,7 @@ public class HomePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='report-menu']/a")
 	private WebElement linkReports;
 	private String strLinkReportsXPath = "//*[@id='report-menu']/a";
-	
+
 //	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-menu']/a")
 //	private WebElement linkPicarroAdmin;
 //	private String strLinkPicarroAdminXPath = "//*[@id='picarro-administration-menu']/a";
@@ -97,7 +101,47 @@ public class HomePage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='footer']/div/footer/p")
 	private WebElement labelFooter;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='report-compliance']")
+	private WebElement linkCompliance;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='report-investigation']")
+	private WebElement linkInvestigation;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='report-reference-gas']")
+	private WebElement linkReferenceGas;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='report-system-history']")
+	private WebElement linkSystemHistory;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session']/tbody")
+	private WebElement tableRecentDrivingSurveys;
+	private String tableRecentDrivingSurveysXPath = "//*[@id='datatable-Session']/tbody";
+	private String strTRRDSXPath = "//*[@id='datatable-Session']/tbody/tr";
 
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Surveyor']/tbody")
+	private WebElement tableActiveSurveyors;
+//	private String tableActiveSurveyorsXPath = "//*[@id='datatable-Surveyor']/tbody";
+//	private String strTRASXPath = "//*[@id='datatable-Surveyor']/tbody/tr";
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session_length']/label/select")
+	private WebElement paginationInputRDS;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Surveyor_length']/label/select")
+	private WebElement paginationInputAS;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session_info']")
+	private WebElement labelRDSPagesInfo;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Surveyor_info']")
+	private WebElement lableASPagesInfo;
+	
+	private String pageNumLinkBaseXPath = "//*[@id='datatable-Session_paginate']/span";
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session_next']")
+	private WebElement btnPageNext;
+	
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -484,6 +528,86 @@ public class HomePage extends SurveyorBasePage {
 		this.linkDashboard.click();
 		
 		return true;
+	}
+	
+	public WebElement getLinkSurveyors() {
+		return this.linkSurveyors;
+	}
+	
+	public WebElement getLinkSendFB() {
+		return this.linkSendFeedback;
+	}
+	
+	public WebElement getLinkReports() {
+		return this.linkReports;
+	}
+	
+	public WebElement getLinkCompliance() {
+		return this.linkCompliance;
+	}
+	
+	public WebElement getLinkInvestigation() {
+		return this.linkInvestigation;
+	}
+	
+	public WebElement getLinkReferenceGas() {
+		return this.linkReferenceGas;
+	}
+	
+	public WebElement getLinkSystemHistory() {
+		return this.linkSystemHistory;
+	}
+	
+	public WebElement getLinkDrivingSurveys() {
+		return this.linkDrivingSurveys;
+	}
+	
+	public WebElement getLinkFleetMap() {
+		return this.linkFleetMap;
+	}
+	
+	public String getPageNumLinkBaseXPath() {
+		return this.pageNumLinkBaseXPath;
+	}
+	
+	public WebElement getLabelRDSPagesInfo() {
+		return this.labelRDSPagesInfo;
+	}
+	
+	public WebElement getLabelActiveSurveyors() {
+		return this.labelActiveSurveyors;
+	}
+	
+	public WebElement getBtnPageNext() {
+		return this.btnPageNext;
+	}
+	
+	public void setPagination(String str) {
+		List<WebElement> options = this.paginationInputRDS.findElements(By.tagName("option"));
+		for (WebElement option : options) {
+			if(str.equals(option.getText().trim()))
+				option.click();		
+		}
+	}	
+	
+	public List<String> getTagListRecentDrivingSurveys() {
+		List<String> tagList = new ArrayList<String>();
+		
+		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		String tagXPath;
+		WebElement tagCell;
+		
+		List<WebElement> rows = this.tableRecentDrivingSurveys.findElements(By.xpath(this.strTRRDSXPath));
+		
+		for (int rowNum = 1; rowNum <= rows.size(); rowNum++) {
+			tagXPath = this.strTRRDSXPath + "["+rowNum+"]/td[1]";
+			tagCell = this.tableRecentDrivingSurveys.findElement(By.xpath(tagXPath));
+			
+			tagList.add(tagCell.getText().trim());
+		}
+		
+		return tagList;
 	}
 	
 	/**
