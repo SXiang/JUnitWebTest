@@ -105,6 +105,8 @@ public class HomePageTest extends SurveyorBaseTest {
 		
 		homePage.getLinkSurveyors().click();
 		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(testSetup.getBaseUrl() + SURVEYORS));
+		assertTrue(homePage.getSubTitleSurveyors().isDisplayed() && 
+				homePage.getSubTitleSurveyors().getText().trim().equalsIgnoreCase("Surveyors"));
 	}
 	
 	/**
@@ -191,6 +193,8 @@ public class HomePageTest extends SurveyorBaseTest {
 		
 		homePage.getLinkDrivingSurveys().click();
 		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(testSetup.getBaseUrl() + DRIVINGSURVEYS));
+		assertTrue(homePage.getSubTitleDrivingSurveys().isDisplayed() && 
+				homePage.getSubTitleDrivingSurveys().getText().trim().equalsIgnoreCase("Driving Surveys"));
 	}
 	
 	/**

@@ -116,7 +116,7 @@ public class HomePage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session']/tbody")
 	private WebElement tableRecentDrivingSurveys;
-	private String tableRecentDrivingSurveysXPath = "//*[@id='datatable-Session']/tbody";
+	//private String tableRecentDrivingSurveysXPath = "//*[@id='datatable-Session']/tbody";
 	private String strTRRDSXPath = "//*[@id='datatable-Session']/tbody/tr";
 
 	
@@ -141,6 +141,12 @@ public class HomePage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session_next']")
 	private WebElement btnPageNext;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[1]/div/h1/strong")
+	private WebElement subTitleSurveyors;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[1]/div/h1/strong")
+	private WebElement subTitileDrivingSurveys;
 	
 	/**
 	 * @param driver
@@ -581,6 +587,14 @@ public class HomePage extends SurveyorBasePage {
 	public WebElement getBtnPageNext() {
 		return this.btnPageNext;
 	}
+	
+	public WebElement getSubTitleSurveyors() {
+		return this.subTitleSurveyors;
+	}
+	
+	public WebElement getSubTitleDrivingSurveys() {
+		return this.subTitileDrivingSurveys;
+	}	
 	
 	public void setPagination(String str) {
 		List<WebElement> options = this.paginationInputRDS.findElements(By.tagName("option"));
