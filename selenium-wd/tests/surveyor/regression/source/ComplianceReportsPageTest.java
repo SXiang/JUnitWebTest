@@ -657,7 +657,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	public void RPT001() {
 		String rptTitle = "RPT001" + testSetup.getRandomNumber();
 		System.out
-				.format("\nRunning RPT001- Test Description: Generate compliance report with all default values/filters selected and download it, %s\n",
+				.format("\nRunning RPT001: Generate compliance report with all default values/filters selected and download it, %s\n",
 						rptTitle);
 
 		complianceReportsPage.login(testSetup.getLoginUser(),
@@ -676,6 +676,419 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		}
 		else
 			fail("\nTestcase RPT001 failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+	
+	/**
+	 * Test Case ID: RPT003 Test Description: Generate compliance report by
+	 * selecting custom boundary using date range and tag filters for more than
+	 * one view and export the report
+	 * 
+	 */
+	@Test
+	public void RPT003() {
+		String rptTitle = "RPT003 Report" + testSetup.getRandomNumber();
+		System.out
+				.format("\nRunning RPT003: Generate compliance report by selecting custom boundary using date range and tag filters for more than one view and export the report, %s\n",
+						rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add("5");
+		listBoundary.add("5");
+		listBoundary.add("37.4353397926825");
+		listBoundary.add("-121.84696197509766");
+		listBoundary.add("37.33058362073965");
+		listBoundary.add("-122.04883575439453");
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+		Map<String, String> viewMap2 = new HashMap<String, String>();
+		Map<String, String> viewMap3 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "0");
+		viewMap1.put(KEYFOV, "0");
+		viewMap1.put(KEYBREADCRUMB, "1");
+		viewMap1.put(KEYINDICATIONS, "0");
+		viewMap1.put(KEYISOTOPICCAPTURE, "0");
+		viewMap1.put(KEYANNOTATION, "0");
+		viewMap1.put(KEYGAPS, "0");
+		viewMap1.put(KEYASSETS, "1");
+		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBASEMAP, "Map");
+
+		viewMap2.put(KEYVIEWNAME, "Second View");
+		viewMap2.put(KEYLISA, "1");
+		viewMap2.put(KEYFOV, "1");
+		viewMap2.put(KEYBREADCRUMB, "1");
+		viewMap2.put(KEYINDICATIONS, "1");
+		viewMap2.put(KEYISOTOPICCAPTURE, "1");
+		viewMap2.put(KEYANNOTATION, "0");
+		viewMap2.put(KEYGAPS, "0");
+		viewMap2.put(KEYASSETS, "0");
+		viewMap2.put(KEYBOUNDARIES, "0");
+		viewMap2.put(KEYBASEMAP, "Satellite");
+
+		viewMap3.put(KEYVIEWNAME, "Third View");
+		viewMap3.put(KEYLISA, "0");
+		viewMap3.put(KEYFOV, "0");
+		viewMap3.put(KEYBREADCRUMB, "0");
+		viewMap3.put(KEYINDICATIONS, "1");
+		viewMap3.put(KEYISOTOPICCAPTURE, "0");
+		viewMap3.put(KEYANNOTATION, "1");
+		viewMap3.put(KEYGAPS, "0");
+		viewMap3.put(KEYASSETS, "1");
+		viewMap3.put(KEYBOUNDARIES, "1");
+		viewMap3.put(KEYBASEMAP, "Satellite");
+
+		viewList.add(viewMap1);
+		viewList.add(viewMap2);
+		viewList.add(viewMap3);
+
+		// Date Range filter remaining
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle,
+				testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0",
+				listBoundary, "", SQAPICDRTAG, viewList);
+		complianceReportsPage.addNewReport(rpt);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle,
+				testSetup.getLoginUser()))) {
+			if (complianceReportsPage.validatePdfFiles(rpt,
+					testSetup.getDownloadPath())) {
+				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+						testSetup.getLoginUser()));
+			}
+		} else
+			fail("\nTestcase RPT003 failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+
+	/**
+	 * Test Case ID: RPT003A Test Description: Generate compliance report using
+	 * surveyor unit and tag filters for more than one view and download the
+	 * report
+	 * 
+	 */
+	@Test
+	public void RPT003A() {
+		String rptTitle = "RPT003A Report" + testSetup.getRandomNumber();
+		System.out
+				.format("\nRunning RPT003A: Generate compliance report using surveyor unit and tag filters for more than one view and download the report, %s\n",
+						rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add("5");
+		listBoundary.add("5");
+		listBoundary.add("37.4353397926825");
+		listBoundary.add("-121.84696197509766");
+		listBoundary.add("37.33058362073965");
+		listBoundary.add("-122.04883575439453");
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+		Map<String, String> viewMap2 = new HashMap<String, String>();
+		Map<String, String> viewMap3 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "0");
+		viewMap1.put(KEYFOV, "0");
+		viewMap1.put(KEYBREADCRUMB, "0");
+		viewMap1.put(KEYINDICATIONS, "0");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYGAPS, "0");
+		viewMap1.put(KEYASSETS, "1");
+		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBASEMAP, "Map");
+
+		viewMap2.put(KEYVIEWNAME, "Second View");
+		viewMap2.put(KEYLISA, "1");
+		viewMap2.put(KEYFOV, "1");
+		viewMap2.put(KEYBREADCRUMB, "0");
+		viewMap2.put(KEYINDICATIONS, "0");
+		viewMap2.put(KEYISOTOPICCAPTURE, "0");
+		viewMap2.put(KEYANNOTATION, "0");
+		viewMap2.put(KEYGAPS, "0");
+		viewMap2.put(KEYASSETS, "0");
+		viewMap2.put(KEYBOUNDARIES, "0");
+		viewMap2.put(KEYBASEMAP, "Satellite");
+		
+		viewMap3.put(KEYVIEWNAME, "Third View");
+		viewMap3.put(KEYLISA, "0");
+		viewMap3.put(KEYFOV, "0");
+		viewMap3.put(KEYBREADCRUMB, "1");
+		viewMap3.put(KEYINDICATIONS, "1");
+		viewMap3.put(KEYISOTOPICCAPTURE, "0");
+		viewMap3.put(KEYANNOTATION, "1");
+		viewMap3.put(KEYGAPS, "0");
+		viewMap3.put(KEYASSETS, "0");
+		viewMap3.put(KEYBOUNDARIES, "0");
+		viewMap3.put(KEYBASEMAP, "Map");
+
+		viewList.add(viewMap1);
+		viewList.add(viewMap2);
+		viewList.add(viewMap3);
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle,
+				testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0",
+				listBoundary, "", SQAPICDRTAG, viewList);
+		complianceReportsPage.addNewReport(rpt);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle,
+				testSetup.getLoginUser()))) {
+			if (complianceReportsPage.validatePdfFiles(rpt,
+					testSetup.getDownloadPath())) {
+				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+						testSetup.getLoginUser()));
+			}
+		} else
+			fail("\nTestcase RPT003A failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+	
+	/**
+	 * Test Case ID: RPT004 Test Description: Generate Compliance Report and
+	 * include Picarro Surveyor Unit filter
+	 * 
+	 */
+	@Test
+	public void RPT004() {
+		String rptTitle = "RPT004 Report" + testSetup.getRandomNumber();
+		System.out
+				.format("\nRunning RPT004: Generate Compliance Report and include Picarro Surveyor Unit filter, %s\n",
+						rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add("5");
+		listBoundary.add("5");
+		listBoundary.add("37.4353397926825");
+		listBoundary.add("-121.84696197509766");
+		listBoundary.add("37.33058362073965");
+		listBoundary.add("-122.04883575439453");
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYGAPS, "0");
+		viewMap1.put(KEYASSETS, "0");
+		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBASEMAP, "Map");
+
+		viewList.add(viewMap1);
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle,
+				testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0",
+				listBoundary, SQAPICLOC3SUR, SQAPICDRTAG, viewList);
+		complianceReportsPage.addNewReport(rpt);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle,
+				testSetup.getLoginUser()))) {
+			if (complianceReportsPage.validatePdfFiles(rpt,
+					testSetup.getDownloadPath())) {
+				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+						testSetup.getLoginUser()));
+			}
+		} else
+			fail("\nTestcase RPT004 failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+	
+	/**
+	 * Test Case ID: RPT005 Test Description: Generate report by providing tag
+	 * filter
+	 * 
+	 */
+	@Test
+	public void RPT005() {
+		String rptTitle = "RPT005 Report" + testSetup.getRandomNumber();
+		System.out
+				.format("\nRunning RPT005: Generate report by providing tag filter, %s\n",
+						rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add("5");
+		listBoundary.add("5");
+		listBoundary.add("37.4353397926825");
+		listBoundary.add("-121.84696197509766");
+		listBoundary.add("37.33058362073965");
+		listBoundary.add("-122.04883575439453");
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "0");
+		viewMap1.put(KEYFOV, "0");
+		viewMap1.put(KEYBREADCRUMB, "0");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYGAPS, "0");
+		viewMap1.put(KEYASSETS, "0");
+		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBASEMAP, "Map");
+
+		viewList.add(viewMap1);
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle,
+				testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0",
+				listBoundary, "", SQAPICDRTAG, viewList);
+		complianceReportsPage.addNewReport(rpt);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle,
+				testSetup.getLoginUser()))) {
+			if (complianceReportsPage.validatePdfFiles(rpt,
+					testSetup.getDownloadPath())) {
+				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+						testSetup.getLoginUser()));
+			}
+		} else
+			fail("\nTestcase RPT005 failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+	
+	/**
+	 * Test Case ID: RPT006 Test Description: Generate compliance report using
+	 * date range and surveyor unit filters for more than one view and download
+	 * the report
+	 * 
+	 */
+	@Test
+	public void RPT006() {
+		String rptTitle = "RPT006 Report" + testSetup.getRandomNumber();
+		System.out
+				.format("\nRunning RPT006: Generate compliance report using date range and surveyor unit filters for more than one view and download the report, %s\n",
+						rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add("5");
+		listBoundary.add("5");
+		listBoundary.add("37.4353397926825");
+		listBoundary.add("-121.84696197509766");
+		listBoundary.add("37.33058362073965");
+		listBoundary.add("-122.04883575439453");
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "0");
+		viewMap1.put(KEYFOV, "0");
+		viewMap1.put(KEYBREADCRUMB, "0");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYGAPS, "0");
+		viewMap1.put(KEYASSETS, "0");
+		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBASEMAP, "Map");
+
+		viewList.add(viewMap1);
+
+		// Start and end date filter insertion remaining
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle,
+				testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0",
+				listBoundary, SQAPICLOC3SUR, SQAPICDRTAG, viewList);
+		complianceReportsPage.addNewReport(rpt);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle,
+				testSetup.getLoginUser()))) {
+			if (complianceReportsPage.validatePdfFiles(rpt,
+					testSetup.getDownloadPath())) {
+				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+						testSetup.getLoginUser()));
+			}
+		} else
+			fail("\nTestcase RPT006 failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+
+	/**
+	 * Test Case ID: RPT007 Test Description: Copy and modify report from
+	 * previously run reports
+	 * 
+	 */
+	@Test
+	public void RPT007() {
+		String rptTitle = "RPT007 Report" + testSetup.getRandomNumber();
+		System.out
+				.format("\nRunning RPT007: Copy and modify report from previously run reports, %s\n",
+						rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		String surUnit = "";
+
+		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICDRTAG);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+					PICDFADMIN));
+		else
+			fail("\nNew Report Generation failed.\n");
+
+		complianceReportsPage.copyReport(rptTitle, PICDFADMIN, rptTitle
+				+ "COPY");
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle + "COPY",
+				PICDFADMIN)))
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle
+					+ "COPY", PICDFADMIN));
+		else
+			fail("\nTestcase RPT007 failed.\n");
 
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
