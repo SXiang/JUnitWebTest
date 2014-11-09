@@ -20,7 +20,6 @@ import common.source.TestSetup;
  *
  */
 public class SurveyorBasePage extends BasePage {
-	
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/a")
 	protected WebElement dropDownAdministrator;
 	
@@ -58,7 +57,18 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
 	protected WebElement panelDuplicationError;
 	protected String panelDuplicationErrorXPath = "//*[@id='page-wrapper']/div/div[2]/div[1]";
-
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-customers']/a")
+	protected WebElement linkPicAdminManageCus;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='myModalLabel']")
+	protected WebElement popupConfirmationBox;
+	protected String popupConfirmationBoxXPath = "//*[@id='myModalLabel']";
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='myModal']/div/div/div[3]/a[1]")
+	protected WebElement btnDelete;
+	protected String btnDeleteXPath = "//*[@id='myModal']/div/div/div[3]/a[1]";
+	
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -93,6 +103,14 @@ public class SurveyorBasePage extends BasePage {
 			if(str.equals(option.getText().trim()))
 				option.click();		
 		}
+	}
+	
+	public WebElement getLinkPicarroAdmin() {
+		return this.linkPicarroAdmin;
+	}
+	
+	public WebElement getLinkPicAdminManageCus() {
+		return this.linkPicAdminManageCus;
 	}
 
 	/**

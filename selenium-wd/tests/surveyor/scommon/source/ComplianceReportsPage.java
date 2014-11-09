@@ -417,6 +417,87 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		
 		return false;
 	}
+	
+	public boolean checkActionStatusInSeconds(String rptTitle, String strCreatedBy, int seconds) {
+		this.testSetup.slowdownInSeconds(seconds);
+		
+		setPagination(PAGINATIONSETTING);
+		
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		
+		String reportTitleXPath;
+		String createdByXPath;
+		String pdfImgXPath;
+		String zipImgXPath;
+		
+		WebElement rptTitleCell;
+		WebElement createdByCell;
+		WebElement pdfImg;
+		WebElement zipImg;
+		
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
+			createdByXPath   = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+						
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+			
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				try {
+					pdfImgXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]/a[3]/img";
+					pdfImg = table.findElement(By.xpath(pdfImgXPath));
+					String srcPdfImg = pdfImg.getAttribute("src");
+					
+					zipImgXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]/a[4]/img";
+					zipImg = table.findElement(By.xpath(zipImgXPath));
+					String srcZipImg = zipImg.getAttribute("src");
+					
+					if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip")) {
+						pdfImg.click();
+						
+						testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+						zipImg.click();
+						
+						testSetup.slowdownInSeconds(15);
+						
+						return true;
+					}
+					else
+						return false;
+				}
+				catch (org.openqa.selenium.NoSuchElementException e) {
+						return false;
+				}
+			}
+			
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+				this.nextBtn.click();
+				
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+				
+				rowNum = 0;
+			}
+		}
+		
+		return false;
+	}
 		
 	public void addNewPDReport(String reportTitle) {
 		this.addNewReport(reportTitle, null, TIMEZONE, EXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, 

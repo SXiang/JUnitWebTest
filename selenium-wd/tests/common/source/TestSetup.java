@@ -177,8 +177,8 @@ public class TestSetup {
 					ChromeOptions options = new ChromeOptions();
 					options.addArguments(Arrays.asList(
 							"--incognito",
-							"allow-running-insecure-content",
-							"ignore-certificate-errors", 
+//							"allow-running-insecure-content",
+//							"ignore-certificate-errors", 
 							"test-type"));
 					capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 					driver = new RemoteWebDriver(new URL("http://"
@@ -211,8 +211,8 @@ public class TestSetup {
 					ChromeOptions options = new ChromeOptions();
 					options.addArguments(Arrays.asList(
 						"--incognito",
-						"allow-running-insecure-content",
-						"ignore-certificate-errors", 
+//						"allow-running-insecure-content",
+//						"ignore-certificate-errors", 
 						"test-type"));
 					capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 					
