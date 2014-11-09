@@ -113,12 +113,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='report-survey-tag']")
 	protected WebElement cbTag;
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='report-survey-start-dt']")
-	protected WebElement cbStartDate;
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='report-survey-end-dt']")
-	protected WebElement cbEndDate;
   
 //	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[5]/div/div[1]/fieldset/div[5]/div/div[1]/div/label/input")
 //	protected WebElement inputSurModeFilterS1;
@@ -222,6 +216,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "/html/body/div/div[2]/div/div/div[3]/a[2]")
 	protected WebElement btnReturnToHomePage;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='report-survey-start-dt']")
+	protected WebElement inputStartData;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='report-survey-end-dt']")
+	protected WebElement inputEndData;
+	
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -230,7 +230,19 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 */
 	public ReportsBasePage(WebDriver driver, String strBaseURL, TestSetup testSetup, String strPageURL) {
 		super(driver, testSetup, strBaseURL, strPageURL);
-	}	
+	}
+	
+	public WebElement getInputStartData() {
+		return this.inputStartData;
+	}
+	
+	public WebElement getInputEndData() {
+		return this.inputEndData;
+	}
+	
+	public WebElement getBtnNewComplianceRpt() {
+		return this.btnNewComplianceRpt;
+	}
 	
 	/**
 	 * @param args
