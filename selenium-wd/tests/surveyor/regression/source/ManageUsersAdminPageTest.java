@@ -63,4 +63,35 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	
 		assertTrue(homePage.checkIfAtHomePage());
 	}
+	
+	/**
+	 * Test Case ID: CUSTADM002
+	 * Test Description: edit user
+	 * Test Script: - On Home Page, click Administration -> Manage Users
+	     		    - Click on Edit link of the desired user
+				    - Modify user details and click OK
+	 * Expected Results: - User details are modified successfully 
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM002() {
+		String customerName = SQACUS;
+		String userName = customerName + testSetup.getRandomNumber() + "custadm002" + REGBASEUSERNAME;
+		
+		System.out.println("\nRunning - CUSTADM002 - edit user\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		homePage.getLinkCusAdmin().click();
+		homePage.getLinkAdminManageUsers().click();
+		
+		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONECTUA);
+		assertTrue(manageUsersAdminPage.findExistingUser(SQACUS, userName, CUSUSERROLEDR));
+		
+		manageUsersAdminPage.editUser(userName, CUSUSERROLESU, TIMEZONEETUA, true);
+		assertTrue(manageUsersAdminPage.findExistingUser(SQACUS, userName, CUSUSERROLESU));
+		assertTrue(manageUsersAdminPage.getUserRole(userName).equalsIgnoreCase(CUSUSERROLESU));
+		assertTrue(manageUsersAdminPage.getUserStatus(userName).equalsIgnoreCase("Enabled"));
+	}
 }

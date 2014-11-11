@@ -399,7 +399,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				}
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -480,7 +480,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				}
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -551,7 +551,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				return true;
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -623,7 +623,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					return false;
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -688,7 +688,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				return true;
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());

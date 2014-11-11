@@ -203,7 +203,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 				tagList.add(tagCell.getText().trim());
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -268,7 +268,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 					return false;
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
