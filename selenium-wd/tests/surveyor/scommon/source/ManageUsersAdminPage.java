@@ -90,6 +90,10 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		}
 	}
 	
+	public WebElement getBtnAddNewUser() {
+		return this.btnAddNewUser;
+	}
+	
 	/**
 	 * @param args
 	 */
