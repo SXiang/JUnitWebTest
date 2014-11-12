@@ -7,7 +7,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.PageFactory;
 
 import common.source.BasePage;
 import common.source.TestSetup;
@@ -49,26 +48,33 @@ public class LoginPage extends BasePage {
 		tbPassword.sendKeys(password);
 		btnLogin.click();
 		
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(3);
-		
 		if (driver.getCurrentUrl().contains("Eula") && driver.getTitle().contains("Eula")) {
 			btnAccept.click();
 		}		
 		
 		try {
 			//temporary solution for now
-			while(driver.getCurrentUrl().contains("Detect")) {
+			while (driver.getCurrentUrl().contains("Detect")) {
 				continue;
 			}
 		}
 		catch (Exception e) {
 			System.out.format("\n\n\nException on loginNormalAs: %s\n\n\n", e.getMessage());
+			return null;
 		}
-			
+		
 		HomePage homePage = new HomePage(this.driver, this.strBaseURL, this.testSetup);
-		PageFactory.initElements(driver, homePage);
+		long startTime = System.currentTimeMillis();
+		long elapsedTime = 0;
+		
+		while (true) {
+			if (homePage.checkIfAtHomePage())
+				return homePage;
 			
-		return homePage;
+			elapsedTime = System.currentTimeMillis() - startTime;
+			if (elapsedTime >= (30 * 1000)) {
+				return null;
+			} 
+		}
 	}
 }

@@ -94,4 +94,57 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		assertTrue(manageUsersAdminPage.getUserRole(userName).equalsIgnoreCase(CUSUSERROLESU));
 		assertTrue(manageUsersAdminPage.getUserStatus(userName).equalsIgnoreCase("Enabled"));
 	}
+	
+	/**
+	 * Test Case ID: CUSTADM003
+	 * Test Description: Customer specific user can change its password
+	 * Test Script: - On Home Page, click on Reset Password
+	 *				- Change the user password
+	 *				- Login with modified user password
+	 * Expected Results: - Message should be displayed as : User password modified successfully
+	 *					 - User can login the application successfully
+	 * Current implementation: User will be brought to the "ManageUsers" page after clicking "OK" button on resetting 
+	 * 						   password without message displayed as "User password modified successfully"
+	 * Current Issue: New password can be reset to the same as the current one
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM003() {
+		String customerName = SQACUS;
+		String userName = customerName + testSetup.getRandomNumber() + "custadm003" + REGBASEUSERNAME;
+		
+		System.out.println("\nRunning - CUSTADM003 - Customer specific user can change its password\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		manageUsersAdminPage.open();
+		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONECTUA);
+		
+		assertTrue(manageUsersAdminPage.findExistingUser(userName));
+		
+		manageUsersAdminPage.logout();
+		
+		loginPage.open();
+		loginPage.loginNormalAs(userName, USERPASSWORD);
+		
+		assertTrue(homePage.checkIfAtHomePage());
+		
+		manageUsersAdminPage.logout();
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		manageUsersAdminPage.open();
+		if (!manageUsersAdminPage.resetUserPassword(userName, USERPASSWORD + "1"))
+			fail("\nTestcase CUSTADM003 - failed to reset user password.\n");
+		
+		manageUsersAdminPage.logout();
+		
+		loginPage.open();
+		if (loginPage.loginNormalAs(userName, USERPASSWORD + "1") != null)
+			assertTrue(homePage.checkIfAtHomePage());
+		else
+			fail("\nTestcase CUSTADM003 - failed to login by the new password.\n");
+	}
 }
