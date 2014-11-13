@@ -147,4 +147,37 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		else
 			fail("\nTestcase CUSTADM003 - failed to login by the new password.\n");
 	}
+	
+	/**
+	 * Test Case ID: CUSTADM004
+	 * Test Description: Disabled User
+	 * Test Script: - On Home Page, and click Administration -> Users
+				    - Click on 'Add New User' button
+					- Provide user details and check the Disabled checkbox. Click OK
+	 * Expected Results: - Disabled User will not be able login the application
+	 * Current implementation:
+	 * Current Issue:
+     * Future Improvement: Adding user with disabled status by Picarro default Admin, Picarro Admin and Picarro Utility Admin
+	 */	
+	@Test
+	public void CUSTADM004() {
+		String customerName = SQACUS;
+		String userName = customerName + testSetup.getRandomNumber() + "custadm004" + REGBASEUSERNAME;
+		
+		System.out.println("\nRunning - CUSTADM004 - Test Description: Disabled User\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		homePage.getLinkCusAdmin().click();
+		homePage.getLinkAdminManageUsers().click();
+		
+		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONECTUA, false);
+		assertTrue(manageUsersAdminPage.findExistingUser(SQACUS, userName, CUSUSERROLEDR));
+		
+		manageUsersAdminPage.logout();
+		
+		loginPage.open();
+		assertTrue(loginPage.loginNormalAs(userName, USERPASSWORD) == null);
+	}
 }

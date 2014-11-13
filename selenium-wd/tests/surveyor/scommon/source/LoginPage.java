@@ -70,6 +70,8 @@ public class LoginPage extends BasePage {
 		while (true) {
 			if (homePage.checkIfAtHomePage())
 				return homePage;
+			else if (driver.getCurrentUrl().equalsIgnoreCase(this.strPageURL) && driver.getTitle().equalsIgnoreCase(LoginPage.STRPageTitle))
+				return null;
 			
 			elapsedTime = System.currentTimeMillis() - startTime;
 			if (elapsedTime >= (30 * 1000)) {

@@ -90,6 +90,44 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		}
 	}
 	
+	public void addNewUser(String email, String password, String role, String timeZone, boolean accountEnabled) {
+		this.btnAddNewUser.click();
+		
+		this.inputEmail.clear();
+		this.inputEmail.sendKeys(email);
+		this.inputPassword.sendKeys(password);
+		this.inputPasswordConfirm.sendKeys(password);
+		
+		List<WebElement> roleOptions = this.dropDownRole.findElements(By.tagName("option"));
+		for (WebElement roleOption : roleOptions) {
+			if (roleOption.getText().trim().equalsIgnoreCase(role))
+				roleOption.click();
+		}
+		
+		List<WebElement> tzOptions = this.dropDownRole.findElements(By.tagName("option"));
+		for (WebElement tzOption : tzOptions) {
+			if (tzOption.getText().trim().equalsIgnoreCase(timeZone))
+				tzOption.click();
+		}
+		
+		if (accountEnabled) {
+			if (!inputAccountEnabled.isSelected())
+				inputAccountEnabled.click();
+		}
+		else {
+			if (inputAccountEnabled.isSelected())
+				inputAccountEnabled.click();
+		}		
+		
+		this.btnOk.click();
+		
+		if (isElementPresent(this.panelDuplicationErrorXPath)){
+			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
+			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
+				this.cancelBtn.click();
+		}
+	}	
+	
 	public WebElement getBtnAddNewUser() {
 		return this.btnAddNewUser;
 	}

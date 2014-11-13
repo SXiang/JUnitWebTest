@@ -588,7 +588,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 */	
 	@Test
 	public void RPT000I() {
-		String rptTitle = PICDFADMIN + testSetup.getRandomNumber() + "RPT000I";
+		String rptTitle = PICDFADMIN + " " + testSetup.getRandomNumber() + "RPT000I";
 		System.out.format("\nRunning - RPT000I - Test Description: Create a compliance report by Administrator with more general options, %s\n", rptTitle);
 		
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -642,6 +642,8 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findExistingReport(rptTitle, testSetup.getLoginUser()));	
 			}
+			else
+				fail("\nTestcase RPT000I failed.\n");
 		}
 		else
 			fail("\nTestcase RPT000I failed.\n");
