@@ -399,7 +399,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				}
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -480,7 +480,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				}
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -551,7 +551,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				return true;
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -623,7 +623,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					return false;
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -688,7 +688,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				return true;
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -710,14 +710,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	
 	public boolean validatePdfFiles(ReportsCompliance reportsCompliance, String downloadPath) {
 		try {
-			BaseHelper.deCompressZipFile(reportsCompliance.getRptTitle(), downloadPath);
+			BaseHelper.deCompressZipFile(reportsCompliance.getRptTitle().trim().replaceAll(" ", "_"), downloadPath);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
 		
-		String nameBase = reportsCompliance.getRptTitle();
+		String nameBase = reportsCompliance.getRptTitle().trim().replaceAll(" ", "_");
 		String viewName;
 		String pdfFile1;
 		String pdfFile2;
@@ -726,7 +726,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		List<Map<String, String>> viewList = reportsCompliance.getViewList();
 		
 		pdfFile1 = downloadPath + nameBase + ".pdf";
-		pdfFile3 = downloadPath + nameBase + File.separator + nameBase + ".pdf";
+		pdfFile3 = downloadPath + nameBase + File.separator + nameBase.replaceAll("_", "") + ".pdf";
 		
 		if (BaseHelper.validatePdfFile(pdfFile1) && BaseHelper.validatePdfFile(pdfFile3)) {
 			try {
@@ -743,7 +743,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		
 		for (int i = 0; i < viewList.size(); i++) {
 			viewName = viewList.get(i).get(KEYVIEWNAME);
-			pdfFile2 = downloadPath + nameBase + File.separator + nameBase + "_" + viewName + ".pdf";
+			pdfFile2 = downloadPath + nameBase + File.separator + nameBase.replaceAll("_", "") + "_" + viewName + ".pdf";
 			
 			if (!BaseHelper.validatePdfFile(pdfFile2))
 				return false;
