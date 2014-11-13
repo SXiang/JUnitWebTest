@@ -31,33 +31,35 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  complianceReportsPage);
 	}
-	
-	/**
-	 * Test Case ID: RPT000
-	 * Test Description: Create a new compliance report, basic and generic by default Administrator
-	 * 
-	 */	
-	@Test
-	public void RPT000() {
-		String rptTitle = TITLENAMEBASE + testSetup.getRandomNumber() + "RPT000";
-		System.out.format("\nRunning - RPT000 - Test Description: Create a new compliance report, basic and generic, %s\n", rptTitle);
-		
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		
-		complianceReportsPage.open();
-		complianceReportsPage.addNewPDReport(rptTitle, SQACUS);
-		
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
-		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser())))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle, testSetup.getLoginUser()));
-		else
-			fail("\nTestcase RPT000 - Test Description: Create a new compliance report, basic and generic, failed.\n");
-		
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
-	}
+
+//	Comment out Test Case ID: RPT000. It was created for testing the code and the scenario was covered by other test cases
+//	tag dmcs1-sqa01 survey need to be generated first to run this sample test code 
+//	/**
+//	 * Test Case ID: RPT000
+//	 * Test Description: Create a new compliance report, basic and generic by default Administrator
+//	 * 
+//	 */	
+//	@Test
+//	public void RPT000() {
+//		String rptTitle = TITLENAMEBASE + testSetup.getRandomNumber() + "RPT000";
+//		System.out.format("\nRunning - RPT000 - Test Description: Create a new compliance report, basic and generic, %s\n", rptTitle);
+//		
+//		loginPage.open();
+//		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+//		
+//		complianceReportsPage.open();
+//		complianceReportsPage.addNewPDReport(rptTitle, SQACUS);
+//		
+//		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+//		
+//		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser())))
+//			assertTrue(complianceReportsPage.findExistingReport(rptTitle, testSetup.getLoginUser()));
+//		else
+//			fail("\nTestcase RPT000 - Test Description: Create a new compliance report, basic and generic, failed.\n");
+//		
+//		complianceReportsPage.open();
+//		complianceReportsPage.logout();
+//	}
 	
 	/**
 	 * Test Case ID: RPT000A
@@ -586,7 +588,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 */	
 	@Test
 	public void RPT000I() {
-		String rptTitle = PICDFADMIN + testSetup.getRandomNumber() + "RPT000I";
+		String rptTitle = PICDFADMIN + " " + testSetup.getRandomNumber() + "RPT000I";
 		System.out.format("\nRunning - RPT000I - Test Description: Create a compliance report by Administrator with more general options, %s\n", rptTitle);
 		
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -640,6 +642,8 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findExistingReport(rptTitle, testSetup.getLoginUser()));	
 			}
+			else
+				fail("\nTestcase RPT000I failed.\n");
 		}
 		else
 			fail("\nTestcase RPT000I failed.\n");

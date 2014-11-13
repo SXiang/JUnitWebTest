@@ -99,7 +99,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 				return true;
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -155,7 +155,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 				return noteCell.getText().trim();
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -214,7 +214,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 				list.add(noteCell.getText().trim());
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());

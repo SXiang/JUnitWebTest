@@ -43,7 +43,6 @@ public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICUA, USERPASSWORD);
 		
-		userFeedbackAdminPage.open();
 		userFeedbackAdminPage.sendFeedback(SQAPICUA,  feedbackNote);
 		
 		userFeedbackAdminPage.open();
@@ -74,8 +73,7 @@ public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		
-		userFeedbackAdminPage.open();
+
 		userFeedbackAdminPage.sendFeedback(SQACUSUA,  feedbackNote);
 		
 		userFeedbackAdminPage.open();

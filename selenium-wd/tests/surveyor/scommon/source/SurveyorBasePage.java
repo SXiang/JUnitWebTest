@@ -61,6 +61,9 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-customers']/a")
 	protected WebElement linkPicAdminManageCus;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-manage-users']/a")
+	protected WebElement linkAdminManageUsers;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='myModalLabel']")
 	protected WebElement popupConfirmationBox;
 	protected String popupConfirmationBoxXPath = "//*[@id='myModalLabel']";
@@ -111,6 +114,14 @@ public class SurveyorBasePage extends BasePage {
 	
 	public WebElement getLinkPicAdminManageCus() {
 		return this.linkPicAdminManageCus;
+	}
+	
+	public WebElement getLinkCusAdmin() {
+		return this.linkCusAdmin;
+	}
+	
+	public WebElement getLinkAdminManageUsers() {
+		return this.linkAdminManageUsers;
 	}
 
 	/**
