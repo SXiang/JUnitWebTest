@@ -770,6 +770,8 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
 						testSetup.getLoginUser()));
 			}
+			else
+				fail("\nTestcase RPT003 failed.\n");
 		} else
 			fail("\nTestcase RPT003 failed.\n");
 
@@ -861,6 +863,8 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
 						testSetup.getLoginUser()));
 			}
+			else
+				fail("\nTestcase RPT003A failed.\n");
 		} else
 			fail("\nTestcase RPT003A failed.\n");
 
@@ -923,6 +927,8 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
 						testSetup.getLoginUser()));
 			}
+			else
+				fail("\nTestcase RPT004 failed.\n");
 		} else
 			fail("\nTestcase RPT004 failed.\n");
 
@@ -985,6 +991,8 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
 						testSetup.getLoginUser()));
 			}
+			else
+				fail("\nTestcase RPT005 failed.\n");
 		} else
 			fail("\nTestcase RPT005 failed.\n");
 
@@ -1049,6 +1057,8 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
 						testSetup.getLoginUser()));
 			}
+			else
+				fail("\nTestcase RPT006 failed.\n");
 		} else
 			fail("\nTestcase RPT006 failed.\n");
 
