@@ -786,8 +786,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 					testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
 						testSetup.getLoginUser()));
-			}
-			else
+			} else
 				fail("\nTestcase RPT003 failed.\n");
 		} else
 			fail("\nTestcase RPT003 failed.\n");
@@ -888,8 +887,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 					testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
 						testSetup.getLoginUser()));
-			}
-			else
+			} else
 				fail("\nTestcase RPT003A failed.\n");
 		} else
 			fail("\nTestcase RPT003A failed.\n");
@@ -961,8 +959,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 					testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
 						testSetup.getLoginUser()));
-			}
-			else
+			} else
 				fail("\nTestcase RPT004 failed.\n");
 		} else
 			fail("\nTestcase RPT004 failed.\n");
@@ -1034,8 +1031,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 					testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
 						testSetup.getLoginUser()));
-			}
-			else
+			} else
 				fail("\nTestcase RPT005 failed.\n");
 		} else
 			fail("\nTestcase RPT005 failed.\n");
@@ -1109,8 +1105,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 					testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
 						testSetup.getLoginUser()));
-			}
-			else
+			} else
 				fail("\nTestcase RPT006 failed.\n");
 		} else
 			fail("\nTestcase RPT006 failed.\n");
@@ -1225,7 +1220,8 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 					testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
 						testSetup.getLoginUser()));
-			}
+			} else
+				fail("\nTestcase RPT008 failed.\n");
 		} else
 			fail("\nTestcase RPT008 failed.\n");
 
@@ -1297,7 +1293,8 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 					testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
 						testSetup.getLoginUser()));
-			}
+			} else
+				fail("\nTestcase RPT009 failed.\n");
 		} else
 			fail("\nTestcase RPT009 failed.\n");
 
@@ -1367,9 +1364,128 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 					testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
 						testSetup.getLoginUser()));
-			}
+			} else
+				fail("\nTestcase RPT010 failed.\n");
 		} else
 			fail("\nTestcase RPT010 failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+
+	/**
+	 * Test Case ID: RPT019 Test Description: Picarro Administrator can delete
+	 * the specified report
+	 * 
+	 */
+	@Test
+	public void RPT019() {
+		String rptTitle = "RPT019 Report" + testSetup.getRandomNumber();
+		System.out.format(
+				"\nRunning RPT019: User can delete the specified report, %s\n",
+				rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		String surUnit = "";
+
+		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICDRTAG);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle,
+				testSetup.getLoginUser())))
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+					testSetup.getLoginUser()));
+		else
+			fail("\nNew Compliance report creation failed.\n");
+
+		if (complianceReportsPage.deleteReport(rptTitle,
+				testSetup.getLoginUser()))
+			assertTrue(!complianceReportsPage.findExistingReport(rptTitle,
+					testSetup.getLoginUser()));
+		else
+			fail("\nTestcase RPT019 failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+
+	/**
+	 * Test Case ID: RPT019A Test Description: RPT019A Test Description:
+	 * Customer Utility Administrator can delete the specified
+	 * 
+	 */
+	@Test
+	public void RPT019A() {
+		String rptTitle = "RPT019A Report" + testSetup.getRandomNumber();
+		System.out
+				.format("\nRunning RPT019A: Customer Utility Administrator can delete the specified report, %s\n",
+						rptTitle);
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+
+		complianceReportsPage.open();
+
+		String surUnit = SQACUS + " - " + SQACUSLOC + "1" + " - "
+				+ SQACUSLOC1SUR;
+
+		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQACUSUATAG);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSUA)))
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+					SQACUSUA));
+		else
+			fail("\nNew Compliance report creation failed.\n");
+
+		if (complianceReportsPage.deleteReport(rptTitle, SQACUSUA))
+			assertTrue(!complianceReportsPage.findExistingReport(rptTitle,
+					SQACUSUA));
+		else
+			fail("\nTestcase RPT019A failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+
+	/**
+	 * Test Case ID: RPT019B Test Description: RPT019A Test Description:
+	 * Supervisor can delete the specified
+	 * 
+	 */
+	@Test
+	public void RPT019B() {
+		String rptTitle = "RPT019B Report" + testSetup.getRandomNumber();
+		System.out
+				.format("\nRunning RPT019B: Supervisor can delete the specified report, %s\n",
+						rptTitle);
+
+		complianceReportsPage.login(SQACUSSU, USERPASSWORD);
+		complianceReportsPage.open();
+
+		String surUnit = SQACUS + " - " + SQACUSLOC + "2" + " - "
+				+ SQACUSLOC2SUR;
+
+		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQACUSSUTAG);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSSU)))
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+					SQACUSSU));
+		else
+			fail("\nNew Compliance report creation failed.\n");
+
+		if (complianceReportsPage.deleteReport(rptTitle, SQACUSSU))
+			assertTrue(!complianceReportsPage.findExistingReport(rptTitle,
+					SQACUSSU));
+		else
+			fail("\nTestcase RPT019B failed.\n");
 
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
