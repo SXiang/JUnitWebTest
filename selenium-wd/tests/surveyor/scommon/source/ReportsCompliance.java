@@ -24,10 +24,12 @@ public class ReportsCompliance extends Reports {
 	/**
 	 * 
 	 */
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, 
+	public ReportsCompliance(String rptTitle, String strCreatedBy,
+			String customer, String timeZone, String exclusionRadius,
+			List<String> listBoundary, List<Map<String, String>> tablesList,
 			String surveyorUnit, String tag, List<Map<String, String>> viewList) {
-		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, listBoundary, 
-				surveyorUnit, tag, viewList);
+		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius,
+				listBoundary, tablesList, surveyorUnit, tag, viewList);
 	}
 
 	/**

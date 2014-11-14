@@ -631,7 +631,16 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewList.add(viewMap1);
 		viewList.add(viewMap2);
 		
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "3", listBoundary, "", SQAPICDRTAG, viewList);
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "1");
+		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYPCA, "1");
+		tableMap.put(KEYPCRA, "1");
+		tablesList.add(tableMap);
+		
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "3", listBoundary, tablesList, "", SQAPICDRTAG, viewList);
 		complianceReportsPage.addNewReport(rpt);
 		
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
@@ -666,21 +675,20 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		String surUnit = "";
 
-		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICDRTAG);
+		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICSUTAG);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))){
+		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
 			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
 					PICDFADMIN));
-		}
-		else
+		} else
 			fail("\nTestcase RPT001 failed.\n");
 
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
 	}
-	
+
 	/**
 	 * Test Case ID: RPT003 Test Description: Generate compliance report by
 	 * selecting custom boundary using date range and tag filters for more than
@@ -699,12 +707,12 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		complianceReportsPage.open();
 
 		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add("5");
-		listBoundary.add("5");
-		listBoundary.add("37.4353397926825");
-		listBoundary.add("-121.84696197509766");
-		listBoundary.add("37.33058362073965");
-		listBoundary.add("-122.04883575439453");
+		listBoundary.add("10");
+		listBoundary.add("10");
+		listBoundary.add("37.42279859267848");
+		listBoundary.add("-121.93553924560548");
+		listBoundary.add("37.37493189292912");
+		listBoundary.add("-122.08797454833983");
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();
@@ -751,10 +759,19 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewList.add(viewMap2);
 		viewList.add(viewMap3);
 
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "1");
+		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYPCA, "0");
+		tableMap.put(KEYPCRA, "0");
+		tablesList.add(tableMap);
+
 		// Date Range filter remaining
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle,
 				testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0",
-				listBoundary, "", SQAPICDRTAG, viewList);
+				listBoundary, tablesList, "", SQAPICSUTAG, viewList);
 		complianceReportsPage.addNewReport(rpt);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
@@ -791,12 +808,12 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		complianceReportsPage.open();
 
 		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add("5");
-		listBoundary.add("5");
-		listBoundary.add("37.4353397926825");
-		listBoundary.add("-121.84696197509766");
-		listBoundary.add("37.33058362073965");
-		listBoundary.add("-122.04883575439453");
+		listBoundary.add("10");
+		listBoundary.add("10");
+		listBoundary.add("37.42279859267848");
+		listBoundary.add("-121.93553924560548");
+		listBoundary.add("37.37493189292912");
+		listBoundary.add("-122.08797454833983");
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();
@@ -826,7 +843,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap2.put(KEYASSETS, "0");
 		viewMap2.put(KEYBOUNDARIES, "0");
 		viewMap2.put(KEYBASEMAP, "Satellite");
-		
+
 		viewMap3.put(KEYVIEWNAME, "Third View");
 		viewMap3.put(KEYLISA, "0");
 		viewMap3.put(KEYFOV, "0");
@@ -843,9 +860,18 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewList.add(viewMap2);
 		viewList.add(viewMap3);
 
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "1");
+		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYPCA, "0");
+		tableMap.put(KEYPCRA, "0");
+		tablesList.add(tableMap);
+
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle,
 				testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0",
-				listBoundary, "", SQAPICDRTAG, viewList);
+				listBoundary, tablesList, "", SQAPICSUTAG, viewList);
 		complianceReportsPage.addNewReport(rpt);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
@@ -863,7 +889,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
 	}
-	
+
 	/**
 	 * Test Case ID: RPT004 Test Description: Generate Compliance Report and
 	 * include Picarro Surveyor Unit filter
@@ -881,12 +907,12 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		complianceReportsPage.open();
 
 		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add("5");
-		listBoundary.add("5");
-		listBoundary.add("37.4353397926825");
-		listBoundary.add("-121.84696197509766");
-		listBoundary.add("37.33058362073965");
-		listBoundary.add("-122.04883575439453");
+		listBoundary.add("10");
+		listBoundary.add("10");
+		listBoundary.add("37.42279859267848");
+		listBoundary.add("-121.93553924560548");
+		listBoundary.add("37.37493189292912");
+		listBoundary.add("-122.08797454833983");
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();
@@ -905,9 +931,18 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		viewList.add(viewMap1);
 
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "1");
+		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYPCA, "0");
+		tableMap.put(KEYPCRA, "0");
+		tablesList.add(tableMap);
+
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle,
 				testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0",
-				listBoundary, SQAPICLOC3SUR, SQAPICDRTAG, viewList);
+				listBoundary, tablesList, SQAPICLOC3SUR, SQAPICSUTAG, viewList);
 		complianceReportsPage.addNewReport(rpt);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
@@ -925,7 +960,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
 	}
-	
+
 	/**
 	 * Test Case ID: RPT005 Test Description: Generate report by providing tag
 	 * filter
@@ -943,12 +978,21 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		complianceReportsPage.open();
 
 		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add("5");
-		listBoundary.add("5");
-		listBoundary.add("37.4353397926825");
-		listBoundary.add("-121.84696197509766");
-		listBoundary.add("37.33058362073965");
-		listBoundary.add("-122.04883575439453");
+		listBoundary.add("10");
+		listBoundary.add("10");
+		listBoundary.add("37.42279859267848");
+		listBoundary.add("-121.93553924560548");
+		listBoundary.add("37.37493189292912");
+		listBoundary.add("-122.08797454833983");
+
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "1");
+		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYPCA, "0");
+		tableMap.put(KEYPCRA, "0");
+		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();
@@ -969,7 +1013,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle,
 				testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0",
-				listBoundary, "", SQAPICDRTAG, viewList);
+				listBoundary, tablesList, "", SQAPICSUTAG, viewList);
 		complianceReportsPage.addNewReport(rpt);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
@@ -987,7 +1031,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
 	}
-	
+
 	/**
 	 * Test Case ID: RPT006 Test Description: Generate compliance report using
 	 * date range and surveyor unit filters for more than one view and download
@@ -1006,12 +1050,21 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		complianceReportsPage.open();
 
 		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add("5");
-		listBoundary.add("5");
-		listBoundary.add("37.4353397926825");
-		listBoundary.add("-121.84696197509766");
-		listBoundary.add("37.33058362073965");
-		listBoundary.add("-122.04883575439453");
+		listBoundary.add("10");
+		listBoundary.add("10");
+		listBoundary.add("37.42279859267848");
+		listBoundary.add("-121.93553924560548");
+		listBoundary.add("37.37493189292912");
+		listBoundary.add("-122.08797454833983");
+
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "1");
+		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYPCA, "0");
+		tableMap.put(KEYPCRA, "0");
+		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();
@@ -1033,7 +1086,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		// Start and end date filter insertion remaining
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle,
 				testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0",
-				listBoundary, SQAPICLOC3SUR, SQAPICDRTAG, viewList);
+				listBoundary, tablesList, SQAPICLOC3SUR, SQAPICSUTAG, viewList);
 		complianceReportsPage.addNewReport(rpt);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
@@ -1070,7 +1123,260 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		String surUnit = "";
 
-		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICDRTAG);
+		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICSUTAG);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+					PICDFADMIN));
+		else
+			fail("\nNew Report Generation failed.\n");
+
+		complianceReportsPage.copyReportAndModifyDetails(rptTitle, PICDFADMIN,
+				rptTitle + "COPY");
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle + "COPY",
+				PICDFADMIN)))
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle
+					+ "COPY", PICDFADMIN));
+		else
+			fail("\nTestcase RPT007 failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+
+	/**
+	 * Test Case ID: RPT008 Test Description: Generate Compliance Report and
+	 * include Coverage Percentage of the assets
+	 * 
+	 */
+	@Test
+	public void RPT008() {
+		String rptTitle = "RPT008 Report" + testSetup.getRandomNumber();
+		System.out
+				.format("\nRunning RPT008: Generate Compliance Report and include Coverage Percentage of the assets, %s\n",
+						rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add("10");
+		listBoundary.add("10");
+		listBoundary.add("37.42279859267848");
+		listBoundary.add("-121.93553924560548");
+		listBoundary.add("37.37493189292912");
+		listBoundary.add("-122.08797454833983");
+
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "0");
+		tableMap.put(KEYISOANA, "0");
+		tableMap.put(KEYPCA, "1");
+		tableMap.put(KEYPCRA, "0");
+		tablesList.add(tableMap);
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "0");
+		viewMap1.put(KEYFOV, "0");
+		viewMap1.put(KEYBREADCRUMB, "0");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYGAPS, "0");
+		viewMap1.put(KEYASSETS, "1");
+		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBASEMAP, "Map");
+
+		viewList.add(viewMap1);
+
+		// Start and end date filter insertion remaining
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle,
+				testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0",
+				listBoundary, tablesList, SQAPICLOC3SUR, SQAPICSUTAG, viewList);
+		complianceReportsPage.addNewReport(rpt);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle,
+				testSetup.getLoginUser()))) {
+			if (complianceReportsPage.validatePdfFiles(rpt,
+					testSetup.getDownloadPath())) {
+				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+						testSetup.getLoginUser()));
+			}
+		} else
+			fail("\nTestcase RPT008 failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+
+	/**
+	 * Test Case ID: RPT009 Test Description: Generate Compliance Report and
+	 * include Coverage Percentage by area
+	 * 
+	 */
+	@Test
+	public void RPT009() {
+		String rptTitle = "RPT009 Report" + testSetup.getRandomNumber();
+		System.out
+				.format("\nRunning RPT009: Generate Compliance Report and include Coverage Percentage by area, %s\n",
+						rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add("10");
+		listBoundary.add("10");
+		listBoundary.add("37.42279859267848");
+		listBoundary.add("-121.93553924560548");
+		listBoundary.add("37.37493189292912");
+		listBoundary.add("-122.08797454833983");
+
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "0");
+		tableMap.put(KEYISOANA, "0");
+		tableMap.put(KEYPCA, "0");
+		tableMap.put(KEYPCRA, "1");
+		tablesList.add(tableMap);
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYGAPS, "0");
+		viewMap1.put(KEYASSETS, "0");
+		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBASEMAP, "Map");
+
+		viewList.add(viewMap1);
+
+		// Start and end date filter insertion remaining
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle,
+				testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0",
+				listBoundary, tablesList, SQAPICLOC3SUR, SQAPICSUTAG, viewList);
+		complianceReportsPage.addNewReport(rpt);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle,
+				testSetup.getLoginUser()))) {
+			if (complianceReportsPage.validatePdfFiles(rpt,
+					testSetup.getDownloadPath())) {
+				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+						testSetup.getLoginUser()));
+			}
+		} else
+			fail("\nTestcase RPT009 failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+
+	/**
+	 * Test Case ID: RPT010 Generate reports showing gaps that are not covered
+	 * 
+	 */
+	@Test
+	public void RPT010() {
+		String rptTitle = "RPT010 Report" + testSetup.getRandomNumber();
+		System.out
+				.format("\nRunning RPT010: Generate reports showing gaps that are not covered, %s\n",
+						rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add("10");
+		listBoundary.add("10");
+		listBoundary.add("37.40418739795187");
+		listBoundary.add("-121.97484970092772");
+		listBoundary.add("37.385435182627226");
+		listBoundary.add("-121.99742317199707");
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "0");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "0");
+		viewMap1.put(KEYINDICATIONS, "0");
+		viewMap1.put(KEYISOTOPICCAPTURE, "0");
+		viewMap1.put(KEYANNOTATION, "0");
+		viewMap1.put(KEYGAPS, "1");
+		viewMap1.put(KEYASSETS, "0");
+		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBASEMAP, "Map");
+
+		viewList.add(viewMap1);
+
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "1");
+		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYPCA, "0");
+		tableMap.put(KEYPCRA, "0");
+		tablesList.add(tableMap);
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle,
+				testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0",
+				listBoundary, tablesList, SQAPICLOC3SUR, SQAPICSUTAG, viewList);
+		complianceReportsPage.addNewReport(rpt);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle,
+				testSetup.getLoginUser()))) {
+			if (complianceReportsPage.validatePdfFiles(rpt,
+					testSetup.getDownloadPath())) {
+				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+						testSetup.getLoginUser()));
+			}
+		} else
+			fail("\nTestcase RPT010 failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+
+	/**
+	 * Test Case ID: RPT022 Test Description: Duplicate report
+	 * 
+	 */
+	@Test
+	public void RPT022() {
+		String rptTitle = "RPT022 Report" + testSetup.getRandomNumber();
+		System.out.format("\nRunning RPT022: Duplicate report, %s\n", rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		String surUnit = "";
+
+		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICSUTAG);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
@@ -1088,7 +1394,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 			assertTrue(complianceReportsPage.findExistingReport(rptTitle
 					+ "COPY", PICDFADMIN));
 		else
-			fail("\nTestcase RPT007 failed.\n");
+			fail("\nTestcase RPT022 failed.\n");
 
 		complianceReportsPage.open();
 		complianceReportsPage.logout();

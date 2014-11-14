@@ -83,11 +83,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.inputSWLat.sendKeys(reportsCompliance.getSWLat());
 		this.inputSWLong.sendKeys(reportsCompliance.getSWLong());
 		
-		this.checkBoxIndTb.click();
-		this.checkBoxIsoAna.click();
-		this.checkBoxPCA.click();
-		this.checkBoxPCRA.click();
-		
+		List<Map<String, String>> tablesList = reportsCompliance
+				.getTablesList();
+		if (tablesList.get(0).get(KEYINDTB).equalsIgnoreCase("1")) {
+			this.checkBoxIndTb.click();
+		}
+		if (tablesList.get(0).get(KEYISOANA).equalsIgnoreCase("1")) {
+			this.checkBoxIsoAna.click();
+		}
+		if (tablesList.get(0).get(KEYPCA).equalsIgnoreCase("1")) {
+			this.checkBoxPCA.click();
+		}
+		if (tablesList.get(0).get(KEYPCRA).equalsIgnoreCase("1")) {
+			this.checkBoxPCRA.click();
+		}
+
 		this.checkBoxOtherPla.click();
 		this.checkBoxPEPla.click();
 		this.checkBoxProtectedSteel.click();
@@ -669,6 +679,76 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		
 		return true;
+	}
+	
+	public boolean copyReportAndModifyDetails(String rptTitle, String strCreatedBy, String rptTitleNew) {
+		setPagination(PAGINATIONSETTING);
+		
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		
+		String reportTitleXPath;
+		String createdByXPath;
+		String copyImgXPath;
+		
+		WebElement rptTitleCell;
+		WebElement createdByCell;
+		WebElement copyImg;
+		
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);		
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+			
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+			
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				copyImgXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]/a[2]/img";
+				copyImg = table.findElement(By.xpath(copyImgXPath));
+				
+				copyImg.click();
+				
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				
+				this.inputTitle.clear();
+				this.inputTitle.sendKeys(rptTitleNew);
+				this.inputViewInd.click();
+				this.inputViewIso.click();
+				this.inputViewAnno.click();
+				this.inputViewAssets.click();
+				this.inputViewBoundaries.click();
+				this.btnOK.click();
+				
+				return true;
+			}
+			
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+				this.nextBtn.click();
+				
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+				
+				rowNum = 0;
+			}			
+		}
+		
+		return false;		
+
 	}
 	
 	/**
