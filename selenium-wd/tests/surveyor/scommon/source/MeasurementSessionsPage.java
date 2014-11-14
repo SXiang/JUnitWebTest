@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -41,7 +42,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[8]/a[5]/img")
 	private WebElement linkDeleteSurvey;
-
+	
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -127,7 +128,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		return false;
 	}
 	
-	private List<String> getTagNameList() {
+	public List<String> getTagNameList() {
 		setPagination(PAGINATIONSETTING);
 		
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
@@ -150,7 +151,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			
 			strListTag.add(col1.getText().trim());
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -168,7 +169,123 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		}
 		
 		return strListTag;
-	}	
+	}
+	
+	public List<String> getDriverSurveysByTag(String driver) {
+		List<String> tagList = new ArrayList<String>();
+		
+		setPagination(PAGINATIONSETTING);
+		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		String tagXPath;
+		String driverXPath; 
+		
+		WebElement tagCell;
+		WebElement driverCell;
+		
+		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			tagXPath = strTRXPath + "["+rowNum+"]/td[1]";
+			tagCell = table.findElement(By.xpath(tagXPath));
+			
+			driverXPath = strTRXPath + "["+rowNum+"]/td[2]";
+			driverCell = table.findElement(By.xpath(driverXPath));
+			
+			if (tagCell.getText() != null && driverCell.getText().trim().equalsIgnoreCase(driver)) {
+				tagList.add(tagCell.getText().trim());
+			}
+			
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+				
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				
+				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+				
+				rowNum = 0;
+			}
+		}
+		
+		return tagList; 
+	}
+	
+	public boolean deleteDrivingSurveyByTag(String tagName, boolean deleteAll) {
+		this.setPagination(PAGINATIONSETTING);
+		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		String tagXPath;
+		String deleteImgXPath;
+		
+		WebElement tagCell;
+		WebElement deleteImg;
+		
+		boolean deleted = false;
+		
+		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
+												
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			tagXPath = strTRXPath + "["+rowNum+"]/td[1]";
+			tagCell = table.findElement(By.xpath(tagXPath));
+			
+			if (tagCell.getText().trim().equalsIgnoreCase(tagName)) {
+				deleteImgXPath = strTRXPath + "["+rowNum+"]/td[10]/a[6]/img";
+				deleteImg = table.findElement(By.xpath(deleteImgXPath));
+				
+				deleteImg.click();
+				
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				
+				if (this.isElementPresent(popupConfirmationBoxXPath) && this.isElementPresent(btnDeleteXPath)) {
+					JavascriptExecutor js = (JavascriptExecutor)driver; 
+					js.executeScript("arguments[0].click();", btnDelete);
+					deleted = true;
+					rowNum = rowNum - 1;
+					if (!deleteAll)
+						return true;
+				}
+				else
+					return false;
+			}
+			
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+				
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				
+				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+				
+				rowNum = 0;
+			}
+		}
+
+		return deleted;
+	}
 
 	/**
 	 * @param args

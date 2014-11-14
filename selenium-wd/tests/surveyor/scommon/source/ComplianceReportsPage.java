@@ -409,7 +409,88 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				}
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+				
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+				
+				rowNum = 0;
+			}
+		}
+		
+		return false;
+	}
+	
+	public boolean checkActionStatusInSeconds(String rptTitle, String strCreatedBy, int seconds) {
+		this.testSetup.slowdownInSeconds(seconds);
+		
+		setPagination(PAGINATIONSETTING);
+		
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		
+		String reportTitleXPath;
+		String createdByXPath;
+		String pdfImgXPath;
+		String zipImgXPath;
+		
+		WebElement rptTitleCell;
+		WebElement createdByCell;
+		WebElement pdfImg;
+		WebElement zipImg;
+		
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
+			createdByXPath   = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+						
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+			
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				try {
+					pdfImgXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]/a[3]/img";
+					pdfImg = table.findElement(By.xpath(pdfImgXPath));
+					String srcPdfImg = pdfImg.getAttribute("src");
+					
+					zipImgXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]/a[4]/img";
+					zipImg = table.findElement(By.xpath(zipImgXPath));
+					String srcZipImg = zipImg.getAttribute("src");
+					
+					if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip")) {
+						pdfImg.click();
+						
+						testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+						zipImg.click();
+						
+						testSetup.slowdownInSeconds(15);
+						
+						return true;
+					}
+					else
+						return false;
+				}
+				catch (org.openqa.selenium.NoSuchElementException e) {
+						return false;
+				}
+			}
+			
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -480,7 +561,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				return true;
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -552,7 +633,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					return false;
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -617,7 +698,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				return true;
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -639,14 +720,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	
 	public boolean validatePdfFiles(ReportsCompliance reportsCompliance, String downloadPath) {
 		try {
-			BaseHelper.deCompressZipFile(reportsCompliance.getRptTitle(), downloadPath);
+			BaseHelper.deCompressZipFile(reportsCompliance.getRptTitle().trim().replaceAll(" ", "_"), downloadPath);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
 		
-		String nameBase = reportsCompliance.getRptTitle();
+		String nameBase = reportsCompliance.getRptTitle().trim().replaceAll(" ", "_");
 		String viewName;
 		String pdfFile1;
 		String pdfFile2;
@@ -655,7 +736,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		List<Map<String, String>> viewList = reportsCompliance.getViewList();
 		
 		pdfFile1 = downloadPath + nameBase + ".pdf";
-		pdfFile3 = downloadPath + nameBase + File.separator + nameBase + ".pdf";
+		pdfFile3 = downloadPath + nameBase + File.separator + nameBase.replaceAll("_", "") + ".pdf";
 		
 		if (BaseHelper.validatePdfFile(pdfFile1) && BaseHelper.validatePdfFile(pdfFile3)) {
 			try {
@@ -672,7 +753,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		
 		for (int i = 0; i < viewList.size(); i++) {
 			viewName = viewList.get(i).get(KEYVIEWNAME);
-			pdfFile2 = downloadPath + nameBase + File.separator + nameBase + "_" + viewName + ".pdf";
+			pdfFile2 = downloadPath + nameBase + File.separator + nameBase.replaceAll("_", "") + "_" + viewName + ".pdf";
 			
 			if (!BaseHelper.validatePdfFile(pdfFile2))
 				return false;
