@@ -143,4 +143,10 @@ public final class SurveyorConstants {
 	public static final String KEYASSETS = "Assets";
 	public static final String KEYBOUNDARIES = "Boundaries";
 	public static final String KEYBASEMAP = "Base Map";
+	
+	public static final String DUPLICATIONERROR = "Please, correct the following errors:";
+	public static final String PWVALUEERROR = "Please enter the same value again.";
+	public static final String EMAILINVALID = "The Email is not a valid , please enter valid email address";
+	public static final String BLANKFIELDERROR = "This field is required.";
+	public static final String PWDSAMEVALUE = "Please enter the same value again.";
 }
