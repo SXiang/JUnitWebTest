@@ -332,4 +332,89 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		
 		assertTrue(manageUsersAdminPage.getUserRole(userName).equalsIgnoreCase(CUSUSERROLESU));
 	}
+	
+	/**
+	 * Test Case ID: CUSTADM011
+	 * Test Description: More than 50 characters not allowed in email address field
+	 * Test Script: - On Home Page, and click Administration -> Users
+					- Click on 'Add New User' button
+					- Provide more than 50 characters in Email Address field and click OK
+	 * Expected Results: Please enter no more than 50 characters." message is displayed
+	 * Current implementation:
+	 * Current Issue:
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM011() {
+		String userName = "1111111111aaaaaaaaaa2222222222bbbbbbbbbb1@email.com";
+		
+		System.out.println("\nRunning - CUSTADM011 - Test Description: More than 50 characters not allowed in email address field\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		homePage.getLinkCusAdmin().click();
+		homePage.getLinkAdminManageUsers().click();
+		
+		String rtnMsg = manageUsersAdminPage.addTestUser(userName, USERPASSWORD, USERPASSWORD);
+		
+		assertTrue(rtnMsg.equalsIgnoreCase(EMAILTOOLONG));
+	}
+	
+	/**
+	 * Test Case ID: CUSTADM014
+	 * Test Description: Search valid user record
+	 * Test Script: Provide valid user name in search box present on Users screen
+	 * Expected Results: Searched user details are displayed
+	 * Current implementation:   
+	 * Current Issue:
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM014() {
+		String customerName = SQACUS;
+		String userName = customerName + testSetup.getRandomNumber() + "custadm014" + REGBASEUSERNAME;
+		
+		System.out.println("\nRunning - CUSTADM014 - Test Description: Search valid user record\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		homePage.getLinkCusAdmin().click();
+		homePage.getLinkAdminManageUsers().click();
+		
+		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONEPTUA, false);
+		manageUsersAdminPage.getInputSearch().sendKeys(userName);
+		
+		assertTrue(manageUsersAdminPage.findExistingUser(SQACUS, userName, CUSUSERROLEDR, false));
+		assertTrue(manageUsersAdminPage.getUserStatus(userName).equalsIgnoreCase(USERDISABLED) );
+	}
+	
+	/**
+	 * Test Case ID: CUSTADM015
+	 * Test Description: Search invalid user record
+	 * Test Script: Provide invalid user name in search box present on Users screen 
+	 * Expected Results: Message should be displayed : 'No matching records found' 
+	 * Current implementation:   
+	 * Current Issue:
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM015() {
+		String customerName = SQACUS;
+		String userName = customerName + testSetup.getRandomNumber() + "custadm015" + REGBASEUSERNAME;
+		
+		System.out.println("\nRunning - CUSTADM015 - Test Description: Search invalid user record\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		homePage.getLinkCusAdmin().click();
+		homePage.getLinkAdminManageUsers().click();
+		
+		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONEPTUA, true);
+		manageUsersAdminPage.getInputSearch().sendKeys(userName + userName);
+		
+		assertTrue(manageUsersAdminPage.getLabelNoMatchingSearch().getText().trim().equalsIgnoreCase(NOMATCHINGSEARCH));
+	}
 }

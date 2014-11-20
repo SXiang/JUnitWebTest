@@ -27,7 +27,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 	//@FindBy(how = How.XPATH, using = "//*[@id='user-form']/fieldset/div[8]/div[2]/a")
 	@FindBy(how = How.XPATH, using = "//*[@id='user-form']/fieldset/div[7]/div[2]/a")
 	private WebElement cancelBtn;
-	private String cancelBtnXPath = "//*[@id='user-form']/fieldset/div[7]/div[2]/a";
+	//private String cancelBtnXPath = "//*[@id='user-form']/fieldset/div[7]/div[2]/a";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='User.UserName-error']")
 	private WebElement labelUserNameError;

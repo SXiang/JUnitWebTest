@@ -149,4 +149,7 @@ public final class SurveyorConstants {
 	public static final String EMAILINVALID = "The Email is not a valid , please enter valid email address";
 	public static final String BLANKFIELDERROR = "This field is required.";
 	public static final String PWDSAMEVALUE = "Please enter the same value again.";
+	public static final String EMAILTOOLONG = "Please enter less than 50 characters.";
+	
+	public static final String NOMATCHINGSEARCH = "No matching records found";
 }

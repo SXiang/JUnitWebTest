@@ -72,6 +72,12 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement btnDelete;
 	protected String btnDeleteXPath = "//*[@id='myModal']/div/div/div[3]/a[1]";
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable_info']")
+	protected WebElement labelPageTableInfo;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td")
+	protected WebElement labelNoMatchingSearch;
+	
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -122,6 +128,18 @@ public class SurveyorBasePage extends BasePage {
 	
 	public WebElement getLinkAdminManageUsers() {
 		return this.linkAdminManageUsers;
+	}
+	
+	public WebElement getLabelPageTableInfo() {
+		return this.labelPageTableInfo;
+	}
+	
+	public WebElement getInputSearch() {
+		return this.inputSearch;
+	}
+	
+	public WebElement getLabelNoMatchingSearch() {
+		return this.labelNoMatchingSearch;
 	}
 
 	/**
