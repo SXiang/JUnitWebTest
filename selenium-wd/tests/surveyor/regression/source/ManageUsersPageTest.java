@@ -99,7 +99,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.open();		
 		manageUsersPage.setPagination("10");
 		
-		userNameList = manageUsersPage.getUserNameListOnCurrentPage(false);
+		userNameList = manageUsersPage.getUserNameList(false);
 		
 		assertTrue(userNameList.size() <= 10);
 		
@@ -112,7 +112,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.open();		
 		manageUsersPage.setPagination("25");
 		
-		userNameList = manageUsersPage.getUserNameListOnCurrentPage(false);
+		userNameList = manageUsersPage.getUserNameList(false);
 		
 		assertTrue(userNameList.size() <= 25);
 		
@@ -125,7 +125,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.open();		
 		manageUsersPage.setPagination("50");
 		
-		userNameList = manageUsersPage.getUserNameListOnCurrentPage(false);
+		userNameList = manageUsersPage.getUserNameList(false);
 		
 		assertTrue(userNameList.size() <= 50);
 		
@@ -138,7 +138,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.open();		
 		manageUsersPage.setPagination("100");
 		
-		userNameList = manageUsersPage.getUserNameListOnCurrentPage(false);
+		userNameList = manageUsersPage.getUserNameList(false);
 		
 		assertTrue(userNameList.size() <= 100);
 		

@@ -6,10 +6,14 @@ package surveyor.regression.source;
 import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.BaseHelper;
 import surveyor.scommon.source.ManageUsersAdminPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 
@@ -416,5 +420,49 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		manageUsersAdminPage.getInputSearch().sendKeys(userName + userName);
 		
 		assertTrue(manageUsersAdminPage.getLabelNoMatchingSearch().getText().trim().equalsIgnoreCase(NOMATCHINGSEARCH));
+	}
+	
+	/**
+	 * Test Case ID: CUSTADM016
+	 * Test Description: Sort records based on attributes present
+	 * Test Script: Sort records on all Administration screens
+	 * Expected Results: User is able to sort the list of records based on specifed attribute
+	 * Current implementation:   
+	 * Current Issue:
+     * Future Improvement: validate on more pages and have the relative sorting check covered
+	 */	
+	@Test
+	public void CUSTADM016() {
+		List<String> list = new ArrayList<String>();
+		
+		System.out.println("\nRunning - CUSTADM016 - Test Description: Sort records based on attributes present\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		homePage.getLinkCusAdmin().click();
+		homePage.getLinkAdminManageUsers().click();
+		
+		manageUsersAdminPage.getTheadUserName().click();
+		list = manageUsersAdminPage.getUserNameList(false);
+		
+		assertTrue(BaseHelper.isStringListSorted(list));
+		
+		manageUsersAdminPage.getTheadUserName().click();
+		list = manageUsersAdminPage.getUserNameList(false);
+		
+		assertTrue(BaseHelper.isStringListSortedDes(list));
+		
+		manageUsersAdminPage.open();
+		
+		manageUsersAdminPage.getTheadRoles().click();
+		list = manageUsersAdminPage.getRolesList(false);
+		
+		assertTrue(BaseHelper.isStringListSorted(list));
+		
+		manageUsersAdminPage.getTheadRoles().click();
+		list = manageUsersAdminPage.getRolesList(false);
+		
+		assertTrue(BaseHelper.isStringListSortedDes(list));
 	}
 }

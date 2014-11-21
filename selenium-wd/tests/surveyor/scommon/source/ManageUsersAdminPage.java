@@ -181,9 +181,6 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 			}
 		}
 		
-//		if (isElementPresent(this.cancelBtnXPath))
-//			this.cancelBtn.click();
-		
 		return rtnMsg;
 	}	
 	

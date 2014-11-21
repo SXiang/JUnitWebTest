@@ -87,6 +87,12 @@ public class ManageUsersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='User_TimeZoneId']")
 	protected WebElement dropDownTimeZone;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/thead/tr/th[2]")
+	protected WebElement theadUserName;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/thead/tr/th[3]")
+	protected WebElement theadRoles;
+	
 	//add more web elements here later
 
 	/**
@@ -727,7 +733,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		return false;
 	}	
 	
-	public List<String> getUserNameListOnCurrentPage(boolean allPages) {
+	public List<String> getUserNameList(boolean allPages) {
 		List<String> userList = new ArrayList<String>();
 		
 		setPagination(PAGINATIONSETTING);
@@ -770,6 +776,59 @@ public class ManageUsersPage extends SurveyorBasePage {
 		}
 		
 		return userList;
+	}
+	
+	public List<String> getRolesList(boolean allPages) {
+		List<String> rolesList = new ArrayList<String>();
+		
+		setPagination(PAGINATIONSETTING);
+		
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		
+		String rolesXPath;
+		WebElement rolesCell;
+		
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			rolesXPath     = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
+			rolesCell      = table.findElement(By.xpath(rolesXPath));
+			
+			rolesList.add(rolesCell.getText().trim());
+			
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled") && allPages) {
+				this.nextBtn.click();
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				
+				rowSize = newRows.size();
+				
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+				
+				rowNum = 0;
+			}	
+		}
+		
+		return rolesList;
+	}
+	
+	public WebElement getTheadUserName() {
+		return this.theadUserName;
+	}
+	
+	public WebElement getTheadRoles() {
+		return this.theadRoles;
 	}
 
 	/**

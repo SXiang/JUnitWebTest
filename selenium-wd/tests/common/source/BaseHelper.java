@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -79,6 +80,26 @@ public class BaseHelper {
 	
 	public static boolean compareTwoFilesByContent(String file1, String file2) throws IOException {
 		return FileUtils.contentEquals(new File(file1), new File(file2));
+	}
+	
+	public static boolean isStringListSorted(List<String> strList) {
+		boolean sorted = true;
+		for (int i = 1; i < strList.size(); i++) {
+			if (strList.get(i - 1).compareTo(strList.get(i)) > 0 )
+				sorted = false;
+		}
+		
+		return sorted;
+	}
+	
+	public static boolean isStringListSortedDes(List<String> strList) {
+		boolean sorted = true;
+		for (int i = 1; i < strList.size(); i++) {
+			if (strList.get(i -1).compareTo(strList.get(i)) < 0 )
+				sorted = false;
+		}
+		
+		return sorted;
 	}
 
 	/**
