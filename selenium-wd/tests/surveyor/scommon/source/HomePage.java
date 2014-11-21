@@ -148,6 +148,9 @@ public class HomePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[1]/div/h1/strong")
 	private WebElement subTitileDrivingSurveys;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-manage-surveyors']/a")
+	private WebElement linkManageSurveyors;
+	
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -594,7 +597,11 @@ public class HomePage extends SurveyorBasePage {
 	
 	public WebElement getSubTitleDrivingSurveys() {
 		return this.subTitileDrivingSurveys;
-	}	
+	}
+	
+	public WebElement getLinkManageSurveyors() {
+		return this.linkManageSurveyors;
+	}
 	
 	public void setPagination(String str) {
 		List<WebElement> options = this.paginationInputRDS.findElements(By.tagName("option"));
