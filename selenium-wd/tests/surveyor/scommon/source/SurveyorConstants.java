@@ -80,6 +80,17 @@ public final class SurveyorConstants {
 	public static final String SQACUSLOC2SUR = "sqacusloc2sur";
 	public static final String SQACUSLOC3SUR = "sqacusloc3sur";
 	
+	public static final String SQAPICLOCSURANA = "sqapiclocsurana";
+	public static final String SQAPICLOC0SURANA = "sqapicloc0surana";
+	public static final String SQAPICLOC1SURANA = "sqapicloc1surana";
+	public static final String SQAPICLOC2SURANA = "sqapicloc2surana";
+	public static final String SQAPICLOC3SURANA = "sqapicloc3surana";
+	public static final String SQACUSLOCSURANA = "sqacuslocsurana";
+	public static final String SQACUSLOC0SURANA = "sqacusloc0surana";
+	public static final String SQACUSLOC1SURANA = "sqacusloc1surana";
+	public static final String SQACUSLOC2SURANA = "sqacusloc2surana";
+	public static final String SQACUSLOC3SURANA = "sqacusloc3surana";	
+	
 	public static final String SQACUSUATAG = "dmcs1-sqacusua";
 	public static final String SQACUSSUTAG = "dmcs1-sqacussu";
 	public static final String SQACUSDRTAG = "dmcs1-sqacusdr";
@@ -152,4 +163,8 @@ public final class SurveyorConstants {
 	public static final String EMAILTOOLONG = "Please enter less than 50 characters.";
 	
 	public static final String NOMATCHINGSEARCH = "No matching records found";
+	
+	public static final String DRIVINGSURVEYSEXPORTSURVEY = "SurveyExport";
+	public static final String DRIVINGSURVEYSEXPORTPEAKS = "PeakExport";
+	public static final String DRIVINGSURVEYSEXPORTANALYSIS = "AnalysisExport";
 }

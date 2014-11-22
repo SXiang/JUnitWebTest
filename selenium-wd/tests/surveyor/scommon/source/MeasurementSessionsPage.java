@@ -3,6 +3,7 @@
  */
 package surveyor.scommon.source;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import common.source.BaseHelper;
 import common.source.TestSetup;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
@@ -286,6 +288,204 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 		return deleted;
 	}
+	
+	public String getStartDT(String tag, String user, String surveyor, String analyzer, boolean allPages) {
+		this.setPagination(PAGINATIONSETTING);
+		
+		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		String tagXPath;
+		String userXPath;
+		String surveyorXPath;
+		String analyzerXPath;
+		String startDTXPath;
+		
+		WebElement tagCell;
+		WebElement userCell;
+		WebElement surveyorCell;
+		WebElement analyzerCell;
+		WebElement startDTCell;
+		
+		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
+												
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			tagXPath = strTRXPath + "["+rowNum+"]/td[1]";
+			tagCell = table.findElement(By.xpath(tagXPath));
+			
+			userXPath = strTRXPath + "["+rowNum+"]/td[2]";
+			userCell = table.findElement(By.xpath(userXPath));
+			
+			surveyorXPath = strTRXPath + "["+rowNum+"]/td[3]";
+			surveyorCell = table.findElement(By.xpath(surveyorXPath));
+			
+			analyzerXPath = strTRXPath + "["+rowNum+"]/td[4]";
+			analyzerCell = table.findElement(By.xpath(analyzerXPath));			
+			
+			startDTXPath = strTRXPath + "["+rowNum+"]/td[5]";
+			startDTCell = table.findElement(By.xpath(startDTXPath));
+			
+			if (tagCell.getText().trim().equalsIgnoreCase(tag) && userCell.getText().trim().equalsIgnoreCase(user) &&
+					surveyorCell.getText().trim().equalsIgnoreCase(surveyor) && analyzerCell.getText().trim().equalsIgnoreCase(analyzer)) {
+				return startDTCell.getText().trim();
+			}
+			
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled") && allPages) {
+				this.nextBtn.click();
+				
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				
+				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+				
+				rowNum = 0;
+			}
+		}
+		
+		return null;
+	}
+	
+	public boolean actionOnDrivingSurveys(String tag, String user, String surveyor, String analyzer, String startDT, String action, boolean allPages) {
+		this.setPagination(PAGINATIONSETTING);
+		
+		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		String tagXPath;
+		String userXPath;
+		String surveyorXPath;
+		String analyzerXPath;
+		String startDTXPath;
+		String actionXPath;
+		
+		WebElement tagCell;
+		WebElement userCell;
+		WebElement surveyorCell;
+		WebElement analyzerCell;
+		WebElement startDTCell;
+		WebElement actionCell;
+		
+		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
+												
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			tagXPath = strTRXPath + "["+rowNum+"]/td[1]";
+			tagCell = table.findElement(By.xpath(tagXPath));
+			
+			userXPath = strTRXPath + "["+rowNum+"]/td[2]";
+			userCell = table.findElement(By.xpath(userXPath));
+			
+			surveyorXPath = strTRXPath + "["+rowNum+"]/td[3]";
+			surveyorCell = table.findElement(By.xpath(surveyorXPath));
+			
+			analyzerXPath = strTRXPath + "["+rowNum+"]/td[4]";
+			analyzerCell = table.findElement(By.xpath(analyzerXPath));			
+			
+			startDTXPath = strTRXPath + "["+rowNum+"]/td[5]";
+			startDTCell = table.findElement(By.xpath(startDTXPath));
+			
+			if (tagCell.getText().trim().equalsIgnoreCase(tag) && userCell.getText().trim().equalsIgnoreCase(user) &&
+					surveyorCell.getText().trim().equalsIgnoreCase(surveyor) && analyzerCell.getText().trim().equalsIgnoreCase(analyzer) &&
+					startDTCell.getText().trim().equalsIgnoreCase(startDT)) {
+				if (action.equalsIgnoreCase(DRIVINGSURVEYSEXPORTSURVEY)) {
+					actionXPath = strTRXPath + "["+rowNum+"]/td[10]/a[2]/img";
+					actionCell = table.findElement(By.xpath(actionXPath));
+				} 
+				else if (action.equalsIgnoreCase(DRIVINGSURVEYSEXPORTPEAKS)) {
+					actionXPath = strTRXPath + "["+rowNum+"]/td[10]/a[3]/img";
+					actionCell = table.findElement(By.xpath(actionXPath));
+				} 
+				else if (action.equalsIgnoreCase(DRIVINGSURVEYSEXPORTANALYSIS)) {
+					actionXPath = strTRXPath + "["+rowNum+"]/td[10]/a[4]/img";
+					actionCell = table.findElement(By.xpath(actionXPath));
+				} 
+				else
+					actionCell = null;				
+				
+				if (actionCell != null) {
+					actionCell.click();
+					return true;
+				}
+				else
+					return false;
+			}
+			
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled") && allPages) {
+				this.nextBtn.click();
+				
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				
+				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+				
+				rowNum = 0;
+			}
+		}
+
+		return false;
+	}
+	
+	public boolean validateDatFiles(String type, String tag, String analyzer, String downloadPath, boolean delete) {
+		String zipFileNameBase = type;
+
+		String zipFileName = null;
+		String datFileName = null;
+		
+		File dir = new File(downloadPath);
+		String[] files = dir.list(); 
+		
+		for (int i = 0; i < files.length; i++) {
+			if (files[i].startsWith(zipFileNameBase) && files[i].endsWith(".zip") && files[i].contains(tag) && files[i].contains(analyzer)) {
+				zipFileName = files[i];
+				datFileName = zipFileName.replaceFirst(".zip", ".dat");
+				
+				try {
+					BaseHelper.deCompressZipFile(zipFileName, downloadPath, true);
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+					return false;
+				}
+			}
+		}
+		
+		if (datFileName != null) {		
+			if (BaseHelper.validateDatFile(downloadPath + File.separator + datFileName)) {
+				if (delete) {
+					File file = new File(downloadPath + File.separator + datFileName);
+					file.delete();
+					
+					file = new File(downloadPath + File.separator + zipFileName);
+					file.delete();
+				}
+				
+				return true;
+			}		
+		}
+		
+		return false;
+	}	
 
 	/**
 	 * @param args
