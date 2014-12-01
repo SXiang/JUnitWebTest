@@ -3,7 +3,50 @@
  */
 package surveyor.regression.source;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
+import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
+import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
+import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
+import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
+import static surveyor.scommon.source.SurveyorConstants.KEYGAPS;
+import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
+import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
+import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
+import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
+import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
+import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
+import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
+import static surveyor.scommon.source.SurveyorConstants.SQACUS;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSDRTAG;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC1SUR;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC2SUR;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC3SUR;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSSUTAG;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSSUUSER;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSUATAG;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSUAUSER;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICAD;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICADTAG;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICADUSER;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICDRTAG;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICLOC3SUR;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICSUTAG;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICUA;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICUATAG;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICUAUSER;
+import static surveyor.scommon.source.SurveyorConstants.TIMEZONECT;
+import static surveyor.scommon.source.SurveyorConstants.TIMEZONEET;
+import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
+import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
+import static surveyor.scommon.source.SurveyorConstants.CUSNAMEBASE;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +60,6 @@ import org.openqa.selenium.support.PageFactory;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorBaseTest;
-import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
  * @author zlu
@@ -1525,6 +1567,147 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 					+ "COPY", PICDFADMIN));
 		else
 			fail("\nTestcase RPT022 failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+	
+	/**
+	 * Test Case ID: RPT026 Test Description: Generate compliance report as
+	 * customer supervisor
+	 * 
+	 */
+	@Test
+	public void RPT026() {
+		String rptTitle = "RPT026 Report" + testSetup.getRandomNumber();
+		System.out
+				.format("\nRunning RPT026: Generate compliance report as customer supervisor, %s\n",
+						rptTitle);
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
+		complianceReportsPage.open();
+
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add("10");
+		listBoundary.add("10");
+		listBoundary.add("37.40418739795187");
+		listBoundary.add("-121.97484970092772");
+		listBoundary.add("37.385435182627226");
+		listBoundary.add("-121.99742317199707");
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYGAPS, "1");
+		viewMap1.put(KEYASSETS, "1");
+		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBASEMAP, "Map");
+
+		viewList.add(viewMap1);
+
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "1");
+		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYPCA, "1");
+		tableMap.put(KEYPCRA, "1");
+		tablesList.add(tableMap);
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle,
+				SQACUSSU, CUSNAMEBASE, TIMEZONECT, "0",
+				listBoundary, tablesList, SQACUSLOC2SUR, SQACUSSUTAG, viewList);
+		complianceReportsPage.addNewReport(rpt);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSSU))) {
+			if (complianceReportsPage.validatePdfFiles(rpt,
+					testSetup.getDownloadPath())) {
+				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+						SQACUSSU));
+			} else
+				fail("\nTestcase RPT026 failed.\n");
+		} else
+			fail("\nTestcase RPT026 failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+
+	/**
+	 * Test Case ID: RPT027 Test Description: Generate compliance report as customer admin
+	 * 
+	 */
+	@Test
+	public void RPT027() {
+		String rptTitle = "RPT027 Report" + testSetup.getRandomNumber();
+		System.out
+				.format("\nRunning RPT027: Generate compliance report as customer admin, survey owner, %s\n",
+						rptTitle);
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		complianceReportsPage.open();
+
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add("10");
+		listBoundary.add("10");
+		listBoundary.add("37.40418739795187");
+		listBoundary.add("-121.97484970092772");
+		listBoundary.add("37.385435182627226");
+		listBoundary.add("-121.99742317199707");
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYGAPS, "1");
+		viewMap1.put(KEYASSETS, "1");
+		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBASEMAP, "Map");
+
+		viewList.add(viewMap1);
+
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "1");
+		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYPCA, "1");
+		tableMap.put(KEYPCRA, "1");
+		tablesList.add(tableMap);
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU,
+				CUSNAMEBASE, TIMEZONEET, "0", listBoundary, tablesList,
+				SQACUSLOC1SUR, SQACUSUATAG, viewList);
+		complianceReportsPage.addNewReport(rpt);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSUA))) {
+			if (complianceReportsPage.validatePdfFiles(rpt,
+					testSetup.getDownloadPath())) {
+				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+						SQACUSUA));
+			} else
+				fail("\nTestcase RPT027 failed.\n");
+		} else
+			fail("\nTestcase RPT027 failed.\n");
 
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
