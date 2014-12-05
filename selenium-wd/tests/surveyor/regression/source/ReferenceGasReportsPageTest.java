@@ -61,7 +61,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		DateFormat dateFormat = new SimpleDateFormat("dd");
 		Date date = new Date();
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DATE, -1);
+		cal.add(Calendar.DATE, -10);
 		String startDate = dateFormat.format(cal.getTime());
 		System.out.println("Start Date : " + startDate);
 
@@ -107,7 +107,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		DateFormat dateFormat = new SimpleDateFormat("dd");
 		Date date = new Date();
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DATE, -1);
+		cal.add(Calendar.DATE, -5);
 		String startDate = dateFormat.format(cal.getTime());
 		System.out.println("Start Date : " + startDate);
 
@@ -128,6 +128,52 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 					SQACUSUA));
 		else
 			fail("\nTestcase RPT029 failed.\n");
+
+		referenceGasReportsPage.open();
+		referenceGasReportsPage.logout();
+	}
+	
+	/**
+	 * Test Case ID: RPT044 Test Description: Generate Generate Reference Gas
+	 * Capture Report for single day
+	 * 
+	 */
+	@Test
+	public void RPT044() {
+		String rptTitle = "RPT044 Report" + testSetup.getRandomNumber();
+		System.out
+				.format("\nRunning RPT044 Test Description: Generate Reference Gas Capture Report for single day, %s\n",
+						rptTitle);
+
+		String surveyorUnit = SQACUS + " - " + SQACUSLOC + "0" + " - "
+				+ SQACUSLOC0SUR;
+		System.out.println(surveyorUnit);
+
+		DateFormat dateFormat = new SimpleDateFormat("dd");
+		Date date = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -1);
+		String startDate = dateFormat.format(cal.getTime());
+		System.out.println("Start Date : " + startDate);
+
+		date = new Date();
+		String endDate = dateFormat.format(date);
+		System.out.println("End Date : " + endDate);
+
+		referenceGasReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		referenceGasReportsPage.open();
+
+		referenceGasReportsPage.addNewPDReport(rptTitle, TIMEZONEPT,
+				surveyorUnit, startDate, endDate);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((referenceGasReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
+			assertTrue(referenceGasReportsPage.findExistingReport(rptTitle,
+					PICDFADMIN));
+		else
+			fail("\nTestcase RPT044 failed.\n");
 
 		referenceGasReportsPage.open();
 		referenceGasReportsPage.logout();

@@ -63,7 +63,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		DateFormat dateFormat = new SimpleDateFormat("dd");
 		Date date = new Date();
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DATE, -1);
+		cal.add(Calendar.DATE, -10);
 		String startDate = dateFormat.format(cal.getTime());
 		System.out.println("Start Date : " + startDate);
 
@@ -109,7 +109,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void RPT028() {
-		String rptTitle = "RPT028 Report " + testSetup.getRandomNumber();
+		String rptTitle = "RPT028 Report" + testSetup.getRandomNumber();
 		System.out
 				.format("\nRunning RPT028 Test Description: Generate system history report as Customer Administrator, %s\n",
 						rptTitle);
@@ -117,7 +117,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		DateFormat dateFormat = new SimpleDateFormat("dd");
 		Date date = new Date();
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DATE, -1);
+		cal.add(Calendar.DATE, -5);
 		String startDate = dateFormat.format(cal.getTime());
 
 		manageSurveyorHistoriesPage.login(testSetup.getLoginUser(),
@@ -152,6 +152,60 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 					SQACUSUA));
 		else
 			fail("\nTestcase RPT028 failed.\n");
+
+		systemHistoryReportsPage.open();
+		systemHistoryReportsPage.logout();
+	}
+	
+	/**
+	 * Test Case ID: RPT043 Test Description: Generate system history report for
+	 * single day
+	 * 
+	 */
+	@Test
+	public void RPT043() {
+		String rptTitle = "RPT043 Report" + testSetup.getRandomNumber();
+		System.out
+				.format("\nRunning RPT043 Test Description: Generate system history report for single day, %s\n",
+						rptTitle);
+
+		DateFormat dateFormat = new SimpleDateFormat("dd");
+		Date date = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -1);
+		String startDate = dateFormat.format(cal.getTime());
+		System.out.println("Start Date : " + startDate);
+
+		manageSurveyorHistoriesPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		manageSurveyorHistoriesPage.open();
+
+		String surveyorUnit = SQACUS + " - " + SQACUSLOC + "0" + " - "
+				+ SQACUSLOC0SUR;
+		System.out.println(surveyorUnit);
+		String note = "Automation Test Note " + testSetup.getRandomNumber();
+
+		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, note);
+		assertTrue("Administrator not able to add new history note!",
+				manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS,
+						SQACUSLOC + "0", SQACUSLOC0SUR, note));
+
+		systemHistoryReportsPage.open();
+
+		date = new Date();
+		String endDate = dateFormat.format(date);
+		System.out.println("End Date : " + endDate);
+
+		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONEPT,
+				surveyorUnit, startDate, endDate);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((systemHistoryReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
+			assertTrue(systemHistoryReportsPage.findExistingReport(rptTitle,
+					PICDFADMIN));
+		else
+			fail("\nTestcase RPT043 failed.\n");
 
 		systemHistoryReportsPage.open();
 		systemHistoryReportsPage.logout();
