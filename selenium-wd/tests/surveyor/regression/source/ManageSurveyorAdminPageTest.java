@@ -122,4 +122,57 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		assertFalse(manageSurveyorAdminPage.findExistingSurveyor(locationName1, surveyorName));
 		assertFalse(manageSurveyorAdminPage.editExistingSurveyor(locationName1, surveyorName, locationName3, surveyorName));
 	}
+	
+	/**
+	 * Test Case ID: CUSTADM021
+	 * Test Description: More than 50 characters not allowed in Surveyor Description field
+	 * Test Script: - On Home Page, and click Administration -> Manage Surveyors
+					- Click on 'Edit' button
+					- Provide more than 50 characters in Surveyor Description field and click OK
+	 * Expected Results: User cannot enter more than 50 characters and message having limit of characters displayed
+	 * Current implementation:   
+	 * Current Issue: DE461, Error msg improvement: customer Utility Admin rename a surveyor to an existing name in the same location
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM021() {
+		String str34chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcd";
+		String str35chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcde";
+		
+		String surveyorName50Chars = testSetup.getRandomNumber() + "custadm021" + str34chars;
+		String surveyorName51Chars = testSetup.getRandomNumber() + "custadm021" + str35chars;
+		
+		System.out.println("\nRunning - CUSTADM021 - Test Description: More than 50 characters not allowed in Surveyor Description field\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		
+		manageSurveyorPage.open();
+		manageSurveyorPage.addNewSurveyor(surveyorName51Chars, SQACUSLOC, SQACUS);
+		manageSurveyorPage.logout();
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		manageSurveyorAdminPage.open();
+		manageSurveyorAdminPage.editExistingSurveyor(SQACUSLOC, surveyorName50Chars, surveyorName51Chars);
+		
+		assertTrue(manageSurveyorAdminPage.findExistingSurveyor(SQACUSLOC, surveyorName50Chars));
+	}
+	
+	/**
+	 * Test Case ID: CUSTADM022
+	 * Test Description: edit surveyor - blank required fields
+	 * Test Script: - On Home Page, click Administration -> Manage Customer's Surveyors
+					- Click on Edit link
+					- Delete description field data. Click OK
+	 * Expected Results: "Please fill out this field." message should be displayed
+	 * Current implementation:   
+	 * Current Issue:
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM022() {
+		
+	}
 }
