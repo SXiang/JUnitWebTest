@@ -154,4 +154,30 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		manageLocationsAdminPage.editExistingLocation(SQACUS, locationName,locationNameNew);
 		assertTrue(manageLocationsAdminPage.findExistingLocation(SQACUS, locationNameNew));
 	}
+	
+	/**
+	 * Test Case ID: CUSTADM025
+	 * Test Description: Customer Admin not allowed to create duplicate Location
+	 * Test Script: - On Home Page, click Administration -> Manage Locations
+					- Click on 'Add New Location' button
+					- Provide location details same as existing location and click OK
+	 * Expected Results: Duplicate Location creation not allowed
+	 * Current implementation:   
+	 * Current Issue:
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM025() {
+		String locationName = testSetup.getRandomNumber() + "custadm025";
+		
+		System.out.println("\nRunning - CUSTADM025 - Test Description: Customer Admin not allowed to create duplicate Location\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA,  USERPASSWORD);
+		
+		manageLocationsAdminPage.open();
+		manageLocationsAdminPage.addNewLocation(locationName);
+		
+		assertFalse(manageLocationsAdminPage.addNewLocation(locationName, true));
+	}
 }
