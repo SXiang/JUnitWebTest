@@ -47,7 +47,14 @@ public class ManageLocationsAdminPage extends ManageLocationsPage {
 				
 		this.inputLocationDesc.sendKeys(locationDesc);
 		
+		String curURL = driver.getCurrentUrl();
+		
 		this.btnOK.click();
+		
+		if (locationDesc.equalsIgnoreCase("")) {
+			if (driver.getCurrentUrl().equalsIgnoreCase(curURL))
+				return false;
+		}
 		
 		if (isElementPresent(this.panelDuplicationErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));

@@ -180,4 +180,26 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		
 		assertFalse(manageLocationsAdminPage.addNewLocation(locationName, true));
 	}
+	
+	/**
+	 * Test Case ID: CUSTADM026
+	 * Test Description: add location- blank required fields
+	 * Test Script: - On Home Page, click Administration -> Manage Locations
+					- Click on 'Add New Location' button
+					- Keep description field blank. Click OK
+	 * Expected Results: "Please fill out this field." message should be displayed 
+	 * Current implementation:   
+	 * Current Issue:
+     * Future Improvement: deal with the tooltip text
+	 */	
+	@Test
+	public void CUSTADM026() {
+		System.out.println("\nRunning - CUSTADM026 - Test Description: add location- blank required fields\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA,  USERPASSWORD);
+		
+		manageLocationsAdminPage.open();
+		assertFalse(manageLocationsAdminPage.addNewLocation("", true));
+	}
 }
