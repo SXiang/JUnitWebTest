@@ -202,4 +202,30 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		manageLocationsAdminPage.open();
 		assertFalse(manageLocationsAdminPage.addNewLocation("", true));
 	}
+	
+	/**
+	 * Test Case ID: CUSTADM027
+	 * Test Description: edit location- blank required fields
+	 * Test Script: - On Home Page, click Administration -> Manage Locations
+					- Click on Edit link
+					- Delete description field data. Click OK
+	 * Expected Results: "Please fill out this field." message should be displayed
+	 * Current implementation:   
+	 * Current Issue:
+     * Future Improvement: deal with the tooltip text
+	 */	
+	@Test
+	public void CUSTADM027() {
+		String locationName = testSetup.getRandomNumber() + "custadm027";
+		
+		System.out.println("\nRunning - CUSTADM027 - Test Description: edit location- blank required fields\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA,  USERPASSWORD);
+		
+		manageLocationsAdminPage.open();
+		manageLocationsAdminPage.addNewLocation(locationName);
+		
+		assertFalse(manageLocationsAdminPage.editExistingLocation(SQACUS, locationName, ""));
+	}
 }

@@ -172,7 +172,14 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				this.inputLocationDesc.clear();
 				this.inputLocationDesc.sendKeys(newLocationName);
 				
+				String curURL = driver.getCurrentUrl();
+				
 				this.btnOK.click();
+				
+				if (newLocationName.equalsIgnoreCase("")) {
+					if (driver.getCurrentUrl().equalsIgnoreCase(curURL))
+						return false;
+				}
 				
 				if (isElementPresent(this.panelDuplicationErrorXPath)) {
 					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
