@@ -10,6 +10,9 @@ import static surveyor.scommon.source.SurveyorConstants.CUSNAMEBASESUR;
 import static surveyor.scommon.source.SurveyorConstants.RGBNAMEBASE;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
+import static surveyor.scommon.source.SurveyorConstants.SQACUS;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSLOCSUR;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -49,5 +52,32 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		manageRefGasBottlesAdminPage.addNewRefGasBottle(strItemNumber, testSetup.getRandomNumber(), "-32", CUSNAMEBASE, CUSNAMEBASELOC, CUSNAMEBASESUR);
 		
 		assertTrue(manageRefGasBottlesAdminPage.findExistingRefGasBottle(strItemNumber, CUSNAMEBASESUR, CUSNAMEBASELOC));
+	}
+	
+	/**
+	 * Test Case ID: CUSTADM029
+	 * Test Description: Add Reference Gas Bottles
+	 * Test Script: - On Home Page, click Administration -> Manage Reference Gas Bottles -> Add New Reference Gas Bottle
+					- Provide required details and click OK
+	 * Expected Results: User is navigated to Manager Reference Gas Bottles page and its details are displayed in the table
+	 * Current implementation:   
+	 * Current Issue:
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM029() {
+		String rgbNumber = RGBNAMEBASE + testSetup.getRandomNumber() + "CUSTADM029";
+		String lotNum = testSetup.getRandomNumber();
+		String isoValue = "-32";
+		
+		System.out.println("\nRunning CUSTADM029 - Test Description: Add Reference Gas Bottles");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		manageRefGasBottlesAdminPage.open();
+		manageRefGasBottlesAdminPage.addNewRefGasBottle(rgbNumber, lotNum, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR);
+		
+		assertTrue(manageRefGasBottlesAdminPage.findExistingRefGasBottle(rgbNumber, SQACUSLOCSUR, SQACUSLOC));
 	}
 }
