@@ -100,4 +100,30 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		
 		assertTrue(manageLocationsAdminPage.findExistingLocation(customerName, locationName));
 	}
+	
+	/**
+	 * Test Case ID: CUSTADM023
+	 * Test Description: Add location
+	 * Test Script: - On Home Page, click Administration -> Manage Locations
+					- Click on 'Add New Location' button
+					- Provide required location details and click OK
+	 * Expected Results: User is navigated to Manage Locations page and new location entry is present in the table
+	 * Current implementation:   
+	 * Current Issue:
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM023() {
+		String locationName = testSetup.getRandomNumber() + "custadm023";
+		
+		System.out.println("\nRunning - CUSTADM023 - Test Description: Add location\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		manageLocationsAdminPage.open();
+		manageLocationsAdminPage.addNewLocation(locationName);
+		
+		assertTrue(manageLocationsAdminPage.findExistingLocation(SQACUS, locationName));
+	}
 }
