@@ -228,4 +228,36 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		
 		assertFalse(manageLocationsAdminPage.editExistingLocation(SQACUS, locationName, ""));
 	}
+	
+	/**
+	 * Test Case ID: CUSTADM028
+	 * Test Description: More than 50 characters not allowed in Location Description field
+	 * Test Script: - On Home Page, and click Administration -> Manage Locations
+					- Click on 'Add New Location' button
+					- Provide more than 50 characters in Location Description field. Click OK
+	 * Expected Results: User cannot enter more than 50 characters and message having limit of characters displayed 
+	 * Current implementation:   
+	 * Current Issue:
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM028() {
+		String str34chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcd";
+		String str35chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcde";
+		
+		String locationName50Chars = testSetup.getRandomNumber() + "custadm028" + str34chars;
+		String locationName51Chars = testSetup.getRandomNumber() + "custadm028" + str35chars;
+		
+		System.out.println("\nRunning - CUSTADM028 - Test Description: More than 50 characters not allowed in Location Description field\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA,  USERPASSWORD);
+		
+		manageLocationsAdminPage.open();
+		manageLocationsAdminPage.addNewLocation(locationName51Chars, false);
+		
+		assertFalse(manageLocationsAdminPage.findExistingLocation(SQACUS, locationName51Chars));
+		manageLocationsAdminPage.open();
+		assertTrue(manageLocationsAdminPage.findExistingLocation(SQACUS, locationName50Chars));
+	}
 }
