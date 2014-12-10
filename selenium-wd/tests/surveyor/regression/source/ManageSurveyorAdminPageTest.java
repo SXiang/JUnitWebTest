@@ -169,10 +169,25 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	 * Expected Results: "Please fill out this field." message should be displayed
 	 * Current implementation:   
 	 * Current Issue:
-     * Future Improvement:
+     * Future Improvement: deal with the tooltip text
 	 */	
 	@Test
 	public void CUSTADM022() {
+		String surveyorName = testSetup.getRandomNumber() + "custadm022";
 		
+		System.out.println("\nRunning - CUSTADM022 - Test Description: edit surveyor - blank required fields\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		
+		manageSurveyorPage.open();
+		manageSurveyorPage.addNewSurveyor(surveyorName, SQACUSLOC, SQACUS);
+		manageSurveyorPage.logout();		
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		manageSurveyorAdminPage.open();
+		assertFalse(manageSurveyorAdminPage.editExistingSurveyor(SQACUSLOC, surveyorName, ""));
 	}
 }

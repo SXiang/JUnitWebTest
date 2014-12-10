@@ -130,7 +130,14 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 						option.click();
 				}
 				
+				String curURL = driver.getCurrentUrl();
+				
 				this.btnOK.click();
+				
+				if (surveyorNameNew.equalsIgnoreCase("")) {
+					if (driver.getCurrentUrl().equalsIgnoreCase(curURL))
+						return false;
+				}
 				
 				if (isElementPresent(this.panelDuplicationErrorXPath)) {
 					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
