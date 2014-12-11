@@ -12,6 +12,8 @@ import org.openqa.selenium.support.PageFactory;
 
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsAdminPage;
+import surveyor.scommon.source.ManageRefGasBottlesAdminPage;
+import surveyor.scommon.source.ManageUsersAdminPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 
@@ -23,6 +25,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	private static ManageUsersPage manageUsersPage;
 	private static ManageLocationsAdminPage manageLocationsAdminPage;
 	private static ManageCustomersPage manageCustomersPage;
+	private static ManageUsersAdminPage manageUsersAdminPage;
+	private static ManageRefGasBottlesAdminPage manageRefGasBottlesAdminPage;
 	
 	@BeforeClass
 	public static void setupManageLocationsAdminPageTest() {
@@ -34,6 +38,12 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		
 		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageCustomersPage);
+		
+		manageUsersAdminPage = new ManageUsersAdminPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver,  manageUsersAdminPage);
+		
+		manageRefGasBottlesAdminPage = new ManageRefGasBottlesAdminPage(driver, testSetup, baseURL);
+		PageFactory.initElements(driver, manageRefGasBottlesAdminPage);
 	}
 
 	/**
@@ -259,5 +269,51 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		assertFalse(manageLocationsAdminPage.findExistingLocation(SQACUS, locationName51Chars));
 		manageLocationsAdminPage.open();
 		assertTrue(manageLocationsAdminPage.findExistingLocation(SQACUS, locationName50Chars));
+	}
+	
+	/**
+	 * Test Case ID: CUSTADM032
+	 * Test Description: Verify Cancel button for all customer admin screens
+	 * Test Script: - Click on Cancel button present on all administrator screen
+	 * Expected Results: - User action is Canceled and existing data persists
+	 * Current implementation:   
+	 * Current Issue:
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM032() {
+		String curURL;
+		
+		System.out.println("\nRunning - CUSTADM032 - Test Description: Verify Cancel button for all customer admin screens\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		manageLocationsAdminPage.open();
+		
+		curURL = driver.getCurrentUrl();
+		
+		manageLocationsAdminPage.getBtnAddNewLocation().click();
+		manageLocationsAdminPage.getBtnCancel().click();
+		
+		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(curURL) && manageLocationsAdminPage.getStrPageURL().equalsIgnoreCase(curURL));
+		
+		manageUsersAdminPage.open();
+		
+		curURL = driver.getCurrentUrl();
+		
+		manageUsersAdminPage.getBtnAddNewUser().click();
+		manageUsersAdminPage.getBtnCancell().click();
+		
+		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(curURL) && manageUsersAdminPage.getStrPageURL().equalsIgnoreCase(curURL));
+		
+		manageRefGasBottlesAdminPage.open();
+		
+		curURL = driver.getCurrentUrl();
+		
+		manageRefGasBottlesAdminPage.getBtnAddNewRefGasBottle().click();
+		manageRefGasBottlesAdminPage.getBtnCancel().click();
+		
+		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(curURL) && manageRefGasBottlesAdminPage.getStrPageURL().equalsIgnoreCase(curURL));
 	}
 }

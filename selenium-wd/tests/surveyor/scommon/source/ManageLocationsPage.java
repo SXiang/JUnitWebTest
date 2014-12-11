@@ -209,7 +209,15 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		}
 		
 		return false;
-	}		
+	}
+	
+	public WebElement getBtnAddNewLocation() {
+		return this.btnAddNewLocation;
+	}
+	
+	public WebElement getBtnCancel() {
+		return this.btnCancel;
+	}
 	
 	/**
 	 * @param args

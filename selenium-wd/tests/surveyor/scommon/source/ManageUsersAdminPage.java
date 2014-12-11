@@ -188,6 +188,10 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		return this.btnAddNewUser;
 	}
 	
+	public WebElement getBtnCancell() {
+		return this.cancelBtn;
+	}
+	
 	/**
 	 * @param args
 	 */

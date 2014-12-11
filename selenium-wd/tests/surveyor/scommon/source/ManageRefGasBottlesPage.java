@@ -232,6 +232,14 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		return false;
 	}
 	
+	public WebElement getBtnAddNewRefGasBottle() {
+		return this.btnAddNewRefGasBottle;
+	}
+	
+	public WebElement getBtnCancel() {
+		return this.btnCancel;
+	}
+	
 	/**
 	 * @param args
 	 */
