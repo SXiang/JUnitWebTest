@@ -42,7 +42,7 @@ public class ManageLocationsAdminPage extends ManageLocationsPage {
 		}		
 	}
 	
-	public boolean addNewLocation(String locationDesc, boolean dFlag) {
+	public boolean addNewLocation(String locationDesc, boolean bFlag) {
 		this.btnAddNewLocation.click();
 				
 		this.inputLocationDesc.sendKeys(locationDesc);

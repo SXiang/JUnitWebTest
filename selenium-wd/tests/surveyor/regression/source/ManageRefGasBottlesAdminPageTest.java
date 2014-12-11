@@ -80,4 +80,29 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		
 		assertTrue(manageRefGasBottlesAdminPage.findExistingRefGasBottle(rgbNumber, SQACUSLOCSUR, SQACUSLOC));
 	}
+	
+	/**
+	 * Test Case ID: CUSTADM030
+	 * Test Description: add reference gas bottle - blank required fields
+	 * Test Script: - On Home Page, click Administration -> Manage Reference Gas Bottles -> Add New Reference Gas Bottle
+					- Keep required fields blank. Click OK
+	 * Expected Results: "Please fill out this field." message should be displayed
+	 * Current implementation:   
+	 * Current Issue:
+     * Future Improvement: deal with the tooltip text
+	 */	
+	@Test
+	public void CUSTADM030() {
+		String rgbNumber = "";
+		String lotNum = testSetup.getRandomNumber();
+		String isoValue = "-32";
+		
+		System.out.println("\nRunning CUSTADM030 - Test Description: add reference gas bottle - blank required fields");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		manageRefGasBottlesAdminPage.open();
+		assertFalse(manageRefGasBottlesAdminPage.addNewRefGasBottle(rgbNumber, lotNum, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR, true));
+	}	
 }
