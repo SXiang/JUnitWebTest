@@ -104,5 +104,42 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		
 		manageRefGasBottlesAdminPage.open();
 		assertFalse(manageRefGasBottlesAdminPage.addNewRefGasBottle(rgbNumber, lotNum, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR, true));
-	}	
+	}
+	
+	/**
+	 * Test Case ID: CUSTADM031
+	 * Test Description: More than 50 characters not allowed in Item and Lot Number fields present on Add Reference Gas Bottle screens
+	 * Test Script: - On Home Page, click Administration -> Manage Reference Gas Bottles -> Add New Reference Gas Bottle
+	 * Expected Results: User cannot enter more than ... characters and message having limit of characters displayed
+	 * Current implementation:   
+	 * Current Issue:
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM031() {
+		String str34chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcd";
+		String str35chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcde";
+		
+		String rgbNumber50Chars = testSetup.getRandomNumber() + "custadm031" + str34chars;
+		String rgbNumber51Chars = testSetup.getRandomNumber() + "custadm031" + str35chars;
+		
+		String lotNum50Chars = testSetup.getRandomNumber() + "custadm031" + str34chars;
+		String lotNum51Chars = testSetup.getRandomNumber() + "custadm031" + str35chars;
+		
+		String isoValue = "-32";
+		
+		System.out.println("\nRunning CUSTADM031 - Test Description: More than 50 characters not allowed in Item and Lot Number fields present on Add Reference Gas Bottle screens");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		manageRefGasBottlesAdminPage.open();
+		manageRefGasBottlesAdminPage.addNewRefGasBottle(rgbNumber51Chars, lotNum51Chars, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR, true);
+		
+		assertFalse(manageRefGasBottlesAdminPage.findExistingRefGasBottle(rgbNumber51Chars, SQACUSLOCSUR, SQACUSLOC, lotNum50Chars));
+		manageRefGasBottlesAdminPage.open();
+		assertFalse(manageRefGasBottlesAdminPage.findExistingRefGasBottle(rgbNumber50Chars, SQACUSLOCSUR, SQACUSLOC, lotNum51Chars));
+		manageRefGasBottlesAdminPage.open();
+		assertTrue(manageRefGasBottlesAdminPage.findExistingRefGasBottle(rgbNumber50Chars, SQACUSLOCSUR, SQACUSLOC, lotNum50Chars));
+	}
 }

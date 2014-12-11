@@ -67,7 +67,9 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	public void addNewRefGasBottle(String strItemNumber, String strLotNumber, String strIsoValue, String strCusName, String strLocName, String strSurveyor) {
 		this.btnAddNewRefGasBottle.click();
 		
+		this.inputItemNumber.clear();
 		this.inputItemNumber.sendKeys(strItemNumber);
+		this.inputLotNumber.clear();
 		this.inputLotNumber.sendKeys(strLotNumber);
 		this.inputIsoValue.clear();
 		this.inputIsoValue.sendKeys(strIsoValue);
