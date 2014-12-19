@@ -64,10 +64,17 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		cal.add(Calendar.DATE, -10);
 		String startDate = dateFormat.format(cal.getTime());
 		System.out.println("Start Date : " + startDate);
-
+		if (startDate.startsWith("0")) {
+			startDate = startDate.replaceFirst("0*", "");
+			System.out.println("New Start Date : " + startDate);
+		}
 		date = new Date();
 		String endDate = dateFormat.format(date);
 		System.out.println("End Date : " + endDate);
+		if (endDate.startsWith("0")) {
+			endDate = endDate.replaceFirst("0*", "");
+			System.out.println("New End Date : " + endDate);
+		}
 
 		referenceGasReportsPage.login(testSetup.getLoginUser(),
 				testSetup.getLoginPwd());
@@ -110,10 +117,18 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		cal.add(Calendar.DATE, -5);
 		String startDate = dateFormat.format(cal.getTime());
 		System.out.println("Start Date : " + startDate);
+		if (startDate.startsWith("0")) {
+			startDate = startDate.replaceFirst("0*", "");
+			System.out.println("New Start Date : " + startDate);
+		}
 
 		date = new Date();
 		String endDate = dateFormat.format(date);
 		System.out.println("End Date : " + endDate);
+		if (endDate.startsWith("0")) {
+			endDate = endDate.replaceFirst("0*", "");
+			System.out.println("New End Date : " + endDate);
+		}
 
 		referenceGasReportsPage.login(SQACUSUA, USERPASSWORD);
 		referenceGasReportsPage.open();
@@ -132,7 +147,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		referenceGasReportsPage.open();
 		referenceGasReportsPage.logout();
 	}
-	
+
 	/**
 	 * Test Case ID: RPT044 Test Description: Generate Generate Reference Gas
 	 * Capture Report for single day
@@ -155,10 +170,17 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		cal.add(Calendar.DATE, -1);
 		String startDate = dateFormat.format(cal.getTime());
 		System.out.println("Start Date : " + startDate);
-
+		if (startDate.startsWith("0")) {
+			startDate = startDate.replaceFirst("0*", "");
+			System.out.println("New Start Date : " + startDate);
+		}
 		date = new Date();
 		String endDate = dateFormat.format(date);
 		System.out.println("End Date : " + endDate);
+		if (endDate.startsWith("0")) {
+			endDate = endDate.replaceFirst("0*", "");
+			System.out.println("New End Date : " + endDate);
+		}
 
 		referenceGasReportsPage.login(testSetup.getLoginUser(),
 				testSetup.getLoginPwd());

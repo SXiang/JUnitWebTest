@@ -206,8 +206,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 	protected WebElement dropdownCustomer;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='customerModal']/div/div/div[3]/a[1]")
+	protected WebElement btnChangeCustomer;
+	protected String btnChangeCustomerXPath = "//*[@id='customerModal']/div/div/div[3]/a[1]";
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='surveyModal']/div/div/div[3]/a[1]")
 	protected WebElement btnChangeMode;
-	protected String btnChangeModeXPath = "//*[@id='customerModal']/div/div/div[3]/a[1]";
+	protected String btnChangeModeXPath = "//*[@id='surveyModal']/div/div/div[3]/a[1]";
 	
 	@FindBy(how = How.XPATH, using = "/html/body/div/div[2]/div/div/div[2]/p[1]")
 	protected WebElement errorMsgDeleteCompliacneReport;
@@ -233,6 +237,37 @@ public class ReportsBasePage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	protected WebElement btnNewRefGasRpt;
+	
+	@FindBy(how = How.ID, using = "S1")
+	protected WebElement radioBtnS1Mode;
+	
+	@FindBy(how = How.ID, using = "Standard")
+	protected WebElement radioBtnStndMode;
+	
+	@FindBy(how = How.ID, using = "Rapid Response")
+	protected WebElement radioBtnRRmode;
+	
+	@FindBy(how = How.ID, using = "Manual")
+	protected WebElement radioBtnManualMode;
+	
+	@FindBy(how = How.ID, using = "//label[@id='report-run-0-surveymode']")
+	protected WebElement labelSurveyMode;
+	protected String labelStrSurveyMode = "//label[@id='report-run-0-surveymode']";
+	
+	@FindBy(how = How.ID, using = "dvErrorText")
+	protected WebElement divErrorText;
+	protected String strErrorText = "//div[@id='dvErrorText']";
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable_filter']/label/input")
+	protected WebElement inputSearchReport;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[1]")
+	protected WebElement tdReportTitle;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[2]")
+	protected WebElement tdReportCreatedBy;
+	
+	
 	
 	/**
 	 * @param driver

@@ -4,7 +4,6 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.assertTrue;
-
 import static org.junit.Assert.fail;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.SQACUS;
@@ -66,6 +65,10 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		cal.add(Calendar.DATE, -10);
 		String startDate = dateFormat.format(cal.getTime());
 		System.out.println("Start Date : " + startDate);
+		if (startDate.startsWith("0")) {
+			startDate = startDate.replaceFirst("0*", "");
+			System.out.println("New Start Date : " + startDate);
+		}
 
 		manageSurveyorHistoriesPage.login(testSetup.getLoginUser(),
 				testSetup.getLoginPwd());
@@ -86,6 +89,10 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		date = new Date();
 		String endDate = dateFormat.format(date);
 		System.out.println("End Date : " + endDate);
+		if (endDate.startsWith("0")) {
+			endDate = endDate.replaceFirst("0*", "");
+			System.out.println("New End Date : " + endDate);
+		}
 
 		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONEPT,
 				surveyorUnit, startDate, endDate);
@@ -119,6 +126,10 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -5);
 		String startDate = dateFormat.format(cal.getTime());
+		if (startDate.startsWith("0")) {
+			startDate = startDate.replaceFirst("0*", "");
+			System.out.println("New Start Date : " + startDate);
+		}
 
 		manageSurveyorHistoriesPage.login(testSetup.getLoginUser(),
 				testSetup.getLoginPwd());
@@ -140,6 +151,10 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 
 		date = new Date();
 		String endDate = dateFormat.format(date);
+		if (endDate.startsWith("0")) {
+			endDate = endDate.replaceFirst("0*", "");
+			System.out.println("New End Date : " + endDate);
+		}
 
 		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONEPT,
 				surveyorUnit, startDate, endDate);
@@ -156,7 +171,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		systemHistoryReportsPage.open();
 		systemHistoryReportsPage.logout();
 	}
-	
+
 	/**
 	 * Test Case ID: RPT043 Test Description: Generate system history report for
 	 * single day
@@ -175,6 +190,10 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		cal.add(Calendar.DATE, -1);
 		String startDate = dateFormat.format(cal.getTime());
 		System.out.println("Start Date : " + startDate);
+		if (startDate.startsWith("0")) {
+			startDate = startDate.replaceFirst("0*", "");
+			System.out.println("New Start Date : " + startDate);
+		}
 
 		manageSurveyorHistoriesPage.login(testSetup.getLoginUser(),
 				testSetup.getLoginPwd());
@@ -195,6 +214,10 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		date = new Date();
 		String endDate = dateFormat.format(date);
 		System.out.println("End Date : " + endDate);
+		if (endDate.startsWith("0")) {
+			endDate = endDate.replaceFirst("0*", "");
+			System.out.println("New End Date : " + endDate);
+		}
 
 		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONEPT,
 				surveyorUnit, startDate, endDate);
