@@ -21,6 +21,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSDRTAG;
@@ -821,7 +822,6 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		String surUnit = "";
 
 		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICSUTAG);
-
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
@@ -1536,6 +1536,36 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	}
 
 	/**
+	 * Test Case ID: RPT015 Test Description: Pagination - 10,25,50 and 100
+	 * Reports selection on compliance report screen
+	 * 
+	 */
+	@Test
+	public void RPT015() {
+		System.out
+				.format("\nRunning RPT015: Pagination - 10,25,50 and 100 Reports selection on compliance report screen");
+
+		complianceReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		complianceReportsPage.open();
+		String paginationSetting25 = "25";
+		String paginationSetting50 = "50";
+		String paginationSetting100 = "100";
+
+		assertTrue(complianceReportsPage
+				.checkPaginationSetting(PAGINATIONSETTING));
+		assertTrue(complianceReportsPage
+				.checkPaginationSetting(paginationSetting25));
+		assertTrue(complianceReportsPage
+				.checkPaginationSetting(paginationSetting50));
+		assertTrue(complianceReportsPage
+				.checkPaginationSetting(paginationSetting100));
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+
+	/**
 	 * Test Case ID: RPT016 Test Description: Screen should not refresh while
 	 * searching an in-progress report, as it completes
 	 * 
@@ -2187,6 +2217,26 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	}
 
 	/**
+	 * Test Case ID: RPT035 Test Description: Click on Cancel button present on
+	 * compliance report screen
+	 * 
+	 */
+	@Test
+	public void RPT035() {
+		System.out
+				.format("\nRunning RPT035: Click on Cancel button present on compliance report screen\n");
+
+		complianceReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		assertTrue(complianceReportsPage.verifyCancelButtonFunctionality());
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+
+	/**
 	 * Test Case ID: RPT038 Test Description: Generate report having multiple
 	 * surveys and verify Gaps for them
 	 * 
@@ -2244,7 +2294,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		surTag.add(SQAPICADTAG);
 		surTag.add(SQAPICADSTNDTAG);
 		surTag.add(SQAPICADRRTAG);
-		
+
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, PICDFADMIN,
 				strCustomer, TIMEZONEET, exclusionRadius, listBoundary,
 				tablesList, surUnit, surTag, viewList);
@@ -2264,9 +2314,9 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
 	}
-	
+
 	/**
-	 * Test Case ID: RPT038 Test Description: Generate report having multiple
+	 * Test Case ID: RPT039 Test Description: Generate report having multiple
 	 * surveys and provide exclusion radius
 	 * 
 	 */
@@ -2305,7 +2355,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYASSETS, "0");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, "Map");
-		
+
 		viewMap2.put(KEYVIEWNAME, "Second View");
 		viewMap2.put(KEYLISA, "1");
 		viewMap2.put(KEYFOV, "1");
@@ -2353,6 +2403,67 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 				fail("\nTestcase RPT039 failed.\n");
 		} else
 			fail("\nTestcase RPT039 failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+	
+	/**
+	 * Test Case ID: RPT044 Test Description: Verify "Already Added" message is
+	 * displayed if user tries to add the same survey again
+	 * 
+	 */
+	@Test
+	public void RPT044() {
+		System.out
+				.format("\nRunning 44: Verify 'Already Added' message is displayed if user tries to add the same survey again\n");
+
+		complianceReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		complianceReportsPage.open();
+		complianceReportsPage.openNewComplianceReportPage();
+
+		assertTrue(complianceReportsPage.verifySurveyAlreadyAdded("Picarro",
+				SQAPICSUTAG));
+		assertTrue(complianceReportsPage
+				.deleteSurveyAndIncludeAgain(SQAPICSUTAG));
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+
+	/**
+	 * Test Case ID: RPT045 Test Description: Verify "Already Added" message is
+	 * displayed if user tries to add the same survey again using copy
+	 * functionality
+	 * 
+	 */
+	@Test
+	public void RPT045() {
+		System.out
+				.format("\nRunning 45: Verify 'Already Added' message is displayed if user tries to add the same survey again using copy functionality\n");
+
+		complianceReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		complianceReportsPage.open();
+		String rptTitle = "RPT045 Report" + testSetup.getRandomNumber();
+		String surUnit = "";
+		
+		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICSUTAG);
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+					PICDFADMIN));
+		} else
+			fail("\nRPT045 Report generation failed\n");
+		
+		complianceReportsPage.clickOnCopyReport(rptTitle, PICDFADMIN);
+
+		assertTrue(complianceReportsPage.verifySurveyAlreadyAdded("Picarro",
+				SQAPICSUTAG));
+		assertTrue(complianceReportsPage
+				.deleteSurveyAndIncludeAgain(SQAPICSUTAG));
 
 		complianceReportsPage.open();
 		complianceReportsPage.logout();

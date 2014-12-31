@@ -4,8 +4,8 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.assertTrue;
-
 import static org.junit.Assert.fail;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
@@ -94,6 +94,33 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		referenceGasReportsPage.open();
 		referenceGasReportsPage.logout();
 	}
+	
+	/**
+	 * Test Case ID: RPT015B Test Description: Pagination - 10,25,50 and 100
+	 * Reports selection on reference gas report screen
+	 * 
+	 */
+	@Test
+	public void RPT015B() {
+		System.out
+				.format("\nRunning RPT015A: Pagination - 10,25,50 and 100 Reports selection on reference gas report screen");
+
+		referenceGasReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		referenceGasReportsPage.open();
+		String paginationSetting25 = "25";
+		String paginationSetting50 = "50";
+
+		assertTrue(referenceGasReportsPage
+				.checkPaginationSetting(PAGINATIONSETTING));
+		assertTrue(referenceGasReportsPage
+				.checkPaginationSetting(paginationSetting25));
+		assertTrue(referenceGasReportsPage
+				.checkPaginationSetting(paginationSetting50));
+
+		referenceGasReportsPage.open();
+		referenceGasReportsPage.logout();
+	}
 
 	/**
 	 * Test Case ID: RPT029 Test Description: Generate Reference Gas Capture
@@ -147,17 +174,37 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		referenceGasReportsPage.open();
 		referenceGasReportsPage.logout();
 	}
+	
+	/**
+	 * Test Case ID: RPT035B Test Description: Click on Cancel button present on
+	 * reference gas report screen
+	 * 
+	 */
+	@Test
+	public void RPT035B() {
+		System.out
+				.format("\nRunning RPT035B: Click on Cancel button present on reference gas report screen\n");
+
+		referenceGasReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		referenceGasReportsPage.open();
+
+		assertTrue(referenceGasReportsPage.verifyCancelButtonFunctionality());
+
+		referenceGasReportsPage.open();
+		referenceGasReportsPage.logout();
+	}
 
 	/**
-	 * Test Case ID: RPT044 Test Description: Generate Generate Reference Gas
+	 * Test Case ID: RPT043 Test Description: Generate Generate Reference Gas
 	 * Capture Report for single day
 	 * 
 	 */
 	@Test
-	public void RPT044() {
-		String rptTitle = "RPT044 Report" + testSetup.getRandomNumber();
+	public void RPT043() {
+		String rptTitle = "RPT043 Report" + testSetup.getRandomNumber();
 		System.out
-				.format("\nRunning RPT044 Test Description: Generate Reference Gas Capture Report for single day, %s\n",
+				.format("\nRunning RPT043 Test Description: Generate Reference Gas Capture Report for single day, %s\n",
 						rptTitle);
 
 		String surveyorUnit = SQACUS + " - " + SQACUSLOC + "0" + " - "
@@ -195,7 +242,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 			assertTrue(referenceGasReportsPage.findExistingReport(rptTitle,
 					PICDFADMIN));
 		else
-			fail("\nTestcase RPT044 failed.\n");
+			fail("\nTestcase RPT043 failed.\n");
 
 		referenceGasReportsPage.open();
 		referenceGasReportsPage.logout();

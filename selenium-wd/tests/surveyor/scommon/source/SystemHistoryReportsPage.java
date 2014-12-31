@@ -26,7 +26,8 @@ import common.source.TestSetup;
 public class SystemHistoryReportsPage extends ReportsBasePage {
 	public static final String STRURLPath = "/Reports/SystemHistoryReports";
 	public static final String STRPageTitle = "System History Reports - Surveyor";
-
+	public static final String STRPaginationMsg = "Showing 1 to ";
+	
 	/**
 	 * @param driver
 	 * @param strBaseURL
@@ -221,6 +222,29 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 				rowNum = 0;
 			}
 		}
+
+		return false;
+	}
+	
+	public boolean checkPaginationSetting(String numberOfReports) {
+		setPagination(numberOfReports);
+		testSetup.slowdownInSeconds(3);
+		String msgToVerify = STRPaginationMsg + numberOfReports;
+		String actualText = this.paginationMsg.getText().substring(0, 15);
+
+		if (actualText.compareTo(msgToVerify) <= 0)
+			return true;
+
+		return false;
+	}
+	
+	public boolean verifyCancelButtonFunctionality() {
+		this.btnNewSysHistoryRpt.click();
+		this.btnCancel.click();
+		testSetup.slowdownInSeconds(3);
+		
+		if(isElementPresent(strNewSysHistoryRpt))
+			return true;
 
 		return false;
 	}

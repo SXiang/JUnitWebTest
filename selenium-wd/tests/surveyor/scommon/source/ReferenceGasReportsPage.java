@@ -26,7 +26,8 @@ import common.source.TestSetup;
 public class ReferenceGasReportsPage extends ReportsBasePage {
 	public static final String STRURLPath = "/Reports/ReferenceGasReports";
 	public static final String STRPageTitle = "Reference Gas Reports - Surveyor";
-
+	public static final String STRPaginationMsg = "Showing 1 to ";
+	
 	/**
 	 * @param driver
 	 * @param strBaseURL
@@ -219,6 +220,29 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 				rowNum = 0;
 			}
 		}
+
+		return false;
+	}
+
+	public boolean checkPaginationSetting(String numberOfReports) {
+		setPagination(numberOfReports);
+		testSetup.slowdownInSeconds(3);
+		String msgToVerify = STRPaginationMsg + numberOfReports;
+		String actualText = this.paginationMsg.getText().substring(0, 15);
+
+		if (actualText.compareTo(msgToVerify) <= 0)
+			return true;
+
+		return false;
+	}
+	
+	public boolean verifyCancelButtonFunctionality() {
+		this.btnNewRefGasRpt.click();
+		this.btnCancel.click();
+		testSetup.slowdownInSeconds(3);
+		
+		if(isElementPresent(strNewRefGasRpt))
+			return true;
 
 		return false;
 	}

@@ -18,6 +18,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	//@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a")
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	protected WebElement btnNewComplianceRpt;
+	protected String strBtnNewCompRpt = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='report-title']")
 	protected WebElement inputTitle;
@@ -183,7 +184,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonOk']")
 	protected WebElement btnOK;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[7]/a")
+	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Cancel')]")
 	protected WebElement btnCancel;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_length']/label/select")
@@ -228,6 +229,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	protected WebElement btnNewSysHistoryRpt;
+	protected String strNewSysHistoryRpt = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='report-survey-id']")
 	protected WebElement cbSurveyUnit;
@@ -237,6 +239,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	protected WebElement btnNewRefGasRpt;
+	protected String strNewRefGasRpt = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a";
 	
 	@FindBy(how = How.ID, using = "S1")
 	protected WebElement radioBtnS1Mode;
@@ -267,7 +270,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[2]")
 	protected WebElement tdReportCreatedBy;
 	
+	@FindBy(how = How.XPATH, using = "//div[@id='datatable_info']")
+	protected WebElement paginationMsg;
 	
+	@FindBy(how = How.XPATH, using = "//label[@id='report-run-0-surveytag']")
+	protected WebElement labelFirstSurveyTag;
+	protected String strFirstSurveyTag = "//label[@id='report-run-0-surveytag']";
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='surveyContent-0']/div/fieldset/div/fieldset/p/button")
+	protected WebElement btnDeleteDrivingSurvey;
 	
 	/**
 	 * @param driver

@@ -5,6 +5,7 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
@@ -108,6 +109,33 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		systemHistoryReportsPage.open();
 		systemHistoryReportsPage.logout();
 	}
+	
+	/**
+	 * Test Case ID: RPT015A Test Description: Pagination - 10,25,50 and 100
+	 * Reports selection on system history report screen
+	 * 
+	 */
+	@Test
+	public void RPT015A() {
+		System.out
+				.format("\nRunning RPT015A: Pagination - 10,25,50 and 100 Reports selection on system history report screen");
+
+		systemHistoryReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		systemHistoryReportsPage.open();
+		String paginationSetting25 = "25";
+		String paginationSetting50 = "50";
+
+		assertTrue(systemHistoryReportsPage
+				.checkPaginationSetting(PAGINATIONSETTING));
+		assertTrue(systemHistoryReportsPage
+				.checkPaginationSetting(paginationSetting25));
+		assertTrue(systemHistoryReportsPage
+				.checkPaginationSetting(paginationSetting50));
+
+		systemHistoryReportsPage.open();
+		systemHistoryReportsPage.logout();
+	}
 
 	/**
 	 * Test Case ID: RPT028 Test Description: Generate system history report as
@@ -173,15 +201,35 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: RPT043 Test Description: Generate system history report for
+	 * Test Case ID: RPT035A Test Description: Click on Cancel button present on
+	 * system history report screen
+	 * 
+	 */
+	@Test
+	public void RPT035A() {
+		System.out
+				.format("\nRunning RPT035A: Click on Cancel button present on system history report screen\n");
+
+		systemHistoryReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		systemHistoryReportsPage.open();
+
+		assertTrue(systemHistoryReportsPage.verifyCancelButtonFunctionality());
+
+		systemHistoryReportsPage.open();
+		systemHistoryReportsPage.logout();
+	}
+
+	/**
+	 * Test Case ID: RPT042 Test Description: Generate system history report for
 	 * single day
 	 * 
 	 */
 	@Test
-	public void RPT043() {
-		String rptTitle = "RPT043 Report" + testSetup.getRandomNumber();
+	public void RPT042() {
+		String rptTitle = "RPT042 Report" + testSetup.getRandomNumber();
 		System.out
-				.format("\nRunning RPT043 Test Description: Generate system history report for single day, %s\n",
+				.format("\nRunning RPT042 Test Description: Generate system history report for single day, %s\n",
 						rptTitle);
 
 		DateFormat dateFormat = new SimpleDateFormat("dd");
@@ -228,7 +276,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 			assertTrue(systemHistoryReportsPage.findExistingReport(rptTitle,
 					PICDFADMIN));
 		else
-			fail("\nTestcase RPT043 failed.\n");
+			fail("\nTestcase RPT042 failed.\n");
 
 		systemHistoryReportsPage.open();
 		systemHistoryReportsPage.logout();

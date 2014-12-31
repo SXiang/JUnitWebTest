@@ -42,6 +42,7 @@ import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -56,6 +57,8 @@ import common.source.TestSetup;
 public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String STRURLPath = "/Reports/ComplianceReports";
 	public static final String STRPageTitle = "Compliance Reports - Surveyor";
+	public static final String STRPaginationMsg = "Showing 1 to ";
+	public static final String STRSurveyIncludedMsg = "Already Added...";
 
 	/**
 	 * @param driver
@@ -1139,6 +1142,170 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.btnOK.click();
 	}
 	
+	public boolean checkPaginationSetting(String numberOfReports) {
+		setPagination(numberOfReports);
+		testSetup.slowdownInSeconds(3);
+		String msgToVerify = STRPaginationMsg + numberOfReports;
+		String actualText = this.paginationMsg.getText().substring(0, 15);
+
+		if (actualText.compareTo(msgToVerify) <= 0)
+			return true;
+
+		return false;
+	}
+	
+	public boolean verifyCancelButtonFunctionality() {
+		this.btnNewComplianceRpt.click();
+		this.btnCancel.click();
+		testSetup.slowdownInSeconds(3);
+		
+		if(isElementPresent(strBtnNewCompRpt))
+			return true;
+
+		return false;
+	}
+	
+	public void openNewComplianceReportPage(){
+		this.btnNewComplianceRpt.click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+	}
+	
+	public void clickOnCopyReport(String rptTitle, String strCreatedBy) {
+		setPagination(PAGINATIONSETTING);
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+
+		String reportTitleXPath;
+		String createdByXPath;
+		String copyImgXPath;
+
+		WebElement rptTitleCell;
+		WebElement createdByCell;
+		WebElement copyImg;
+
+		List<WebElement> rows = table.findElements(By
+				.xpath("//*[@id='datatable']/tbody/tr"));
+
+		int rowSize = rows.size();
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
+					+ "]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
+					+ "]/td[2]";
+
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
+					&& createdByCell.getText().trim()
+							.equalsIgnoreCase(strCreatedBy)) {
+				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
+						+ "]/td[4]/a[2]/img";
+				copyImg = table.findElement(By.xpath(copyImgXPath));
+
+				copyImg.click();
+				break;
+			}
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
+					&& this.nextBtn.isEnabled()) {
+				this.nextBtn.click();
+
+				this.testSetup.slowdownInSeconds(this.testSetup
+						.getSlowdownInSeconds());
+
+				List<WebElement> newRows = table.findElements(By
+						.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+				rowNum = 0;
+			}
+		}
+	}
+
+	public boolean verifySurveyAlreadyAdded(String customer, String surveyTag) {
+		if (customer != null && customer != "Picarro") {
+			List<WebElement> optionsCustomer = this.dropdownCustomer
+					.findElements(By.tagName("option"));
+			for (WebElement option : optionsCustomer) {
+				if ((customer).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+
+			if (this.isElementPresent(btnChangeModeXPath)) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", btnChangeMode);
+			}
+		}
+
+		if (surveyTag != "") {
+			this.cbTag.clear();
+			this.cbTag.sendKeys(surveyTag);
+			this.btnSruveySearch.click();
+			if (testSetup.isRunningDebug())
+				testSetup.slowdownInSeconds(3);
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+			this.checkboxSurFirst.click();
+			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+			this.btnAddSurveys.click();
+		}
+
+		if (isElementPresent(strFirstSurveyTag)) {
+			if (surveyTag != "") {
+				this.cbTag.clear();
+				this.cbTag.sendKeys(surveyTag);
+				this.btnSruveySearch.click();
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.checkboxSurFirst.click();
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.btnAddSurveys.click();
+
+				if (this.btnAddSurveys.getAttribute("value").equalsIgnoreCase(
+						STRSurveyIncludedMsg))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean deleteSurveyAndIncludeAgain(String surveyTag) {
+		this.btnDeleteDrivingSurvey.click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		try {
+			driver.findElement(By.xpath(strFirstSurveyTag));
+			return false;
+		} catch (NoSuchElementException e) {
+			if (surveyTag != "") {
+				this.cbTag.clear();
+				this.cbTag.sendKeys(surveyTag);
+				this.btnSruveySearch.click();
+				if (testSetup.isRunningDebug())
+					testSetup.slowdownInSeconds(3);
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.checkboxSurFirst.click();
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.btnAddSurveys.click();
+			}
+
+			if (isElementPresent(strFirstSurveyTag))
+				return true;
+
+			return false;
+		}
+	}
+
 	/**
 	 * @param args
 	 */
