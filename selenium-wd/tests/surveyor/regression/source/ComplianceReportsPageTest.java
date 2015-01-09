@@ -36,6 +36,7 @@ import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUATAG;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUAUSER;
 import static surveyor.scommon.source.SurveyorConstants.SQAPICAD;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICADMANUALTAG;
 import static surveyor.scommon.source.SurveyorConstants.SQAPICADRRTAG;
 import static surveyor.scommon.source.SurveyorConstants.SQAPICADSTNDTAG;
 import static surveyor.scommon.source.SurveyorConstants.SQAPICADTAG;
@@ -70,6 +71,8 @@ import surveyor.scommon.source.SurveyorBaseTest;
  */
 public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	private static ComplianceReportsPage complianceReportsPage = null;
+	private String STRReportAreaTooLargeMsg = "Area selected is too large";
+	private String STRReportAreaTooSmallMsg = "Area Selected is too small";
 
 	@BeforeClass
 	public static void setupComplianceReportsPageTest() {
@@ -1847,6 +1850,44 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	}
 
 	/**
+	 * Test Case ID: RPT023 Test Description: Generate compliance report for
+	 * provided custom boundary using date range filter for manual surveys and
+	 * download it
+	 * 
+	 */
+	@Test
+	public void RPT023() {
+		String rptTitle = "RPT023 Report" + testSetup.getRandomNumber();
+		System.out
+				.format("\nRunning RPT023: Generate compliance report for provided custom boundary using date range filter for manual surveys and download it, %s\n",
+						rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		String surUnit = "";
+		List<String> surTag = new ArrayList<String>();
+		surTag.add(SQAPICADMANUALTAG);
+		String reportMode = "Manual";
+		boolean changeMode = true;
+
+		complianceReportsPage.addNewPDReport(rptTitle, surUnit, surTag,
+				changeMode, reportMode);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+					PICDFADMIN));
+		else
+			fail("\nTestcase RPT023 failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+
+	/**
 	 * Test Case ID: RPT024 Test Description: Generate report for same surveys
 	 * but in different modes
 	 * 
@@ -2127,6 +2168,114 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	}
 
 	/**
+	 * Test Case ID: RPT030 Test Description: Generate Manual report from
+	 * existing reports having surveys of S1 or standard or Rapid Response types
+	 * using copy feature
+	 * 
+	 */
+	@Test
+	public void RPT030() {
+		String rptTitle = "RPT030 Report" + testSetup.getRandomNumber();
+		System.out
+				.format("\nRunning RPT030: Generate Manual report from existing reports having surveys of S1 or standard or Rapid Response types using copy feature , %s\n",
+						rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		String surUnit = "";
+		List<String> surTag = new ArrayList<String>();
+		surTag.add(SQAPICADTAG);
+		surTag.add(SQAPICADSTNDTAG);
+		surTag.add(SQAPICADRRTAG);
+		String reportMode = "Rapid Response";
+		String changeReportMode = "Manual";
+		List<String> manualSurTag = new ArrayList<String>();
+		manualSurTag.add(SQAPICADMANUALTAG);
+		boolean changeMode = true;
+
+		complianceReportsPage.addNewPDReport(rptTitle, surUnit, surTag,
+				changeMode, reportMode);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+					PICDFADMIN));
+		else
+			fail("\nNew Report Generation failed.\n");
+
+		String newRptTitle = "COPY" + rptTitle;
+
+		complianceReportsPage.copyReportAndModifyDetails(rptTitle, PICDFADMIN,
+				newRptTitle, surUnit, manualSurTag, true, changeReportMode);
+
+		if ((complianceReportsPage.checkActionStatus(newRptTitle, PICDFADMIN)))
+			assertTrue(complianceReportsPage.findExistingReport(newRptTitle,
+					PICDFADMIN));
+		else
+			fail("\nTestcase RPT030 failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+
+	/**
+	 * Test Case ID: RPT031 Test Description: Generate S1 or standard or rapid
+	 * response report from existing reports having survey of Manual type using
+	 * copy feature
+	 * 
+	 */
+	@Test
+	public void RPT031() {
+		String rptTitle = "RPT031 Report" + testSetup.getRandomNumber();
+		System.out
+				.format("\nRunning RPT031: Generate S1 or standard or rapid response report from existing reports having survey of Manual type using copy feature , %s\n",
+						rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		String surUnit = "";
+		List<String> surTag = new ArrayList<String>();
+		surTag.add(SQAPICADTAG);
+		surTag.add(SQAPICADSTNDTAG);
+		surTag.add(SQAPICADRRTAG);
+		String reportMode = "Manual";
+		String changeReportMode = "Rapid Response";
+		List<String> manualSurTag = new ArrayList<String>();
+		manualSurTag.add(SQAPICADMANUALTAG);
+		boolean changeMode = true;
+
+		complianceReportsPage.addNewPDReport(rptTitle, surUnit, manualSurTag,
+				changeMode, reportMode);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
+			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+					PICDFADMIN));
+		else
+			fail("\nNew Report Generation failed.\n");
+
+		String newRptTitle = "COPY" + rptTitle;
+
+		complianceReportsPage.copyReportAndModifyDetails(rptTitle, PICDFADMIN,
+				newRptTitle, surUnit, surTag, true, changeReportMode);
+
+		if ((complianceReportsPage.checkActionStatus(newRptTitle, PICDFADMIN)))
+			assertTrue(complianceReportsPage.findExistingReport(newRptTitle,
+					PICDFADMIN));
+		else
+			fail("\nTestcase RPT031 failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+
+	/**
 	 * Test Case ID: RPT032 Test Description: Generate S1 or standard report
 	 * from existing reports having survey of Rapid Response type using copy
 	 * feature
@@ -2211,6 +2360,44 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 					PICDFADMIN));
 		else
 			fail("\nTestcase RPT033 failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+
+	/**
+	 * Test Case ID: RPT034 Test Description: Very small or big report area
+	 * selection not allowed
+	 * 
+	 */
+	// IN PROGRESS TEST SCRIPT
+	// @Test
+	public void RPT034() {
+		System.out
+				.format("\nRunning RPT034: Very small or big report area selection not allowed\n");
+
+		complianceReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		complianceReportsPage.open();
+		
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add("10");
+		listBoundary.add("10");
+		listBoundary.add("37.39924180865303");
+		listBoundary.add("-121.98283195495604");
+		listBoundary.add("37.395527866984104");
+		listBoundary.add("-121.98600769042967");
+		String actualMsg = complianceReportsPage.provideLatLongAtCustomBoundarySelectorWindow(listBoundary);
+		System.out.println(actualMsg);
+		// Assert.assertEquals(actualMsg, STRReportAreaTooSmallMsg);
+		
+		listBoundary.add(2, "37.42252593456307");
+		listBoundary.add(3, "-121.83494567871095");
+		listBoundary.add(4, "37.27989023941680");
+		listBoundary.add(5, "-122.05415725708008");
+		actualMsg = complianceReportsPage.provideLatLongAtCustomBoundarySelectorWindow(listBoundary);
+		System.out.println(actualMsg);
+		// Assert.assertEquals(actualMsg, STRReportAreaTooLargeMsg);
 
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
@@ -2407,7 +2594,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
 	}
-	
+
 	/**
 	 * Test Case ID: RPT044 Test Description: Verify "Already Added" message is
 	 * displayed if user tries to add the same survey again
@@ -2448,7 +2635,9 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		complianceReportsPage.open();
 		String rptTitle = "RPT045 Report" + testSetup.getRandomNumber();
 		String surUnit = "";
-		
+
+		// rptTitle = "RPT001 manual";
+
 		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICSUTAG);
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
@@ -2457,7 +2646,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 					PICDFADMIN));
 		} else
 			fail("\nRPT045 Report generation failed\n");
-		
+
 		complianceReportsPage.clickOnCopyReport(rptTitle, PICDFADMIN);
 
 		assertTrue(complianceReportsPage.verifySurveyAlreadyAdded("Picarro",

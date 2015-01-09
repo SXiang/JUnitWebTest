@@ -39,6 +39,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -1304,6 +1305,46 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 			return false;
 		}
+	}
+	
+	public String provideLatLongAtCustomBoundarySelectorWindow(List<String> listBoundary) {
+		String actualMsg = "";
+		this.btnNewComplianceRpt.click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		this.inputImgMapHeight.sendKeys(listBoundary.get(0));
+		this.inputImgMapWidth.sendKeys(listBoundary.get(1));
+		this.btnLatLongSelector.click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		String parentWindow = driver.getWindowHandle();
+		Set<String> handles = driver.getWindowHandles();
+		for (String windowHandle : handles) {
+			if (!windowHandle.equals(parentWindow)) {
+				driver.switchTo().window(windowHandle);
+				//driver.manage().window().maximize();
+				
+				this.inputCustomNELat.clear();
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.inputCustomNELat.sendKeys(listBoundary.get(2));
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.inputCustomNELong.clear();
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.inputCustomNELong.sendKeys(listBoundary.get(3));
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.inputCustomSWLat.clear();
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.inputCustomSWLat.sendKeys(listBoundary.get(4));
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.inputCustomSWLong.clear();
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.inputCustomSWLong.sendKeys(listBoundary.get(5));
+				this.btnCustomOK.click();
+				actualMsg = this.btnCustomOK.getText();
+			}
+		}
+		//driver.close();
+		//driver.switchTo().window(parentWindow);
+		return actualMsg;
 	}
 
 	/**

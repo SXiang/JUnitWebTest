@@ -280,6 +280,24 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyContent-0']/div/fieldset/div/fieldset/p/button")
 	protected WebElement btnDeleteDrivingSurvey;
 	
+	@FindBy(how = How.ID, using = "buttonMap")
+	protected WebElement btnLatLongSelector;
+	
+	@FindBy(how = How.ID, using = "NE_lat")
+	protected WebElement inputCustomNELat;
+	
+	@FindBy(how = How.ID, using = "NE_lon")
+	protected WebElement inputCustomNELong;
+	
+	@FindBy(how = How.ID, using = "SW_lat")
+	protected WebElement inputCustomSWLat;
+	
+	@FindBy(how = How.ID, using = "SW_lon")
+	protected WebElement inputCustomSWLong;
+	
+	@FindBy(how = How.ID, using = "button_ok")
+	protected WebElement btnCustomOK;
+	
 	/**
 	 * @param driver
 	 * @param testSetup

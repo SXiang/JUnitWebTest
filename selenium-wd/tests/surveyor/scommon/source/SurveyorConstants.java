@@ -151,4 +151,5 @@ public final class SurveyorConstants {
 	
 	public static final String SQAPICADRRTAG = "dmcrapidresponse-sqapic-admin";
 	public static final String SQAPICADSTNDTAG = "dmcstandard-sqapic-admin";
+	public static final String SQAPICADMANUALTAG = "dmcmanual-sqapic-admin";
 }
