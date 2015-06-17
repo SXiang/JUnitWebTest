@@ -83,6 +83,9 @@ public class TestSetup {
 	
 	public TestSetup() {
 		try {
+			String userDir = System.getProperty("user.dir");
+			File propertyfile = new File(userDir+"/..");
+			testPropFileName  =propertyfile.getCanonicalPath() +File.separator + "test.properties";
 			InputStream inputStream = new FileInputStream(testPropFileName);
 
 			testProp = new Properties();
@@ -119,8 +122,8 @@ public class TestSetup {
 			System.out.println("\nThe browser is: " + this.browser + "\n");
 
 			this.ieDriverPath = this.testProp.getProperty("ieDriverPath");
-			this.chromeDriverPath = this.testProp
-					.getProperty("chromeDriverPath");
+			File chromepath = new File(userDir+"/.."+"/.."+"/..");
+			this.chromeDriverPath = chromepath.getCanonicalPath() +File.separator +"lib" + File.separator+"chromedriver.exe";
 
 			this.implicitlyWaitTimeOutInSeconds = this.testProp
 					.getProperty("implicitlyWaitTimeOutInSeconds");
