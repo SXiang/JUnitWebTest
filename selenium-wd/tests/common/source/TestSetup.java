@@ -3,6 +3,7 @@
  */
 package common.source;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -44,7 +45,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
  */
 public class TestSetup {
 
-	private static final String testPropFileName = "test.properties";
+	private static String testPropFileName;
 	private Properties testProp;
 
 	private String baseURL;
