@@ -42,6 +42,31 @@ public class ManageLocationsAdminPage extends ManageLocationsPage {
 		}		
 	}
 	
+	public boolean addNewLocation(String locationDesc, boolean bFlag) {
+		this.btnAddNewLocation.click();
+				
+		this.inputLocationDesc.sendKeys(locationDesc);
+		
+		String curURL = driver.getCurrentUrl();
+		
+		this.btnOK.click();
+		
+		if (locationDesc.equalsIgnoreCase("")) {
+			if (driver.getCurrentUrl().equalsIgnoreCase(curURL))
+				return false;
+		}
+		
+		if (isElementPresent(this.panelDuplicationErrorXPath)){
+			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
+			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:")) {
+				this.btnCancel.click();
+				return false;
+			}
+		}
+		
+		return true;
+	}	
+	
 	/**
 	 * @param args
 	 */

@@ -12,6 +12,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import surveyor.scommon.source.ManageUsersAdminPage;
+import surveyor.scommon.source.SendFeedbackPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.UserFeedbackAdminPage;
 
@@ -90,5 +92,56 @@ public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
 			fail("\nTese case UFBAP000B failed.\n");
 		
 		userFeedbackAdminPage.logout();
+	}
+	
+	/**
+	 * Test Case ID: CUSTADM018
+	 * Test Description: Customer Admin can view the feedback notes sent by that customer's user 
+	 * Test Script: - Login as specified customer's user (e.g. PGE's user - driver, supervisor)
+					- On Home Page, click on Send Feedback
+					- Provide feedback text and click Send button
+					- Login as specified customer's Administrator (e.g. PGE Admin)
+					- On Home Page, click Administration -> View User Feedback
+	 * Expected Results: - User friendly message should be displayed. ""Successfully sent Feedback to Picarro Administrator"
+						 - Feedback notes, date, customer and user name details are present in the list
+	 * Current implementation:   
+	 * Current Issue:
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM018() {
+		ManageUsersAdminPage manageUsersAdminPage = new ManageUsersAdminPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver,  manageUsersAdminPage);
+		
+		SendFeedbackPage sendFeedbackPage = new SendFeedbackPage(driver, testSetup, baseURL);
+		PageFactory.initElements(driver, sendFeedbackPage);
+		
+		String customerName = SQACUS;
+		String userName = customerName + testSetup.getRandomNumber() + "custadm018" + REGBASEUSERNAME;
+		String strFeedback = "Feedback sent by: " + userName;
+		
+		System.out.println("\nRunning - CUSTADM018 - Test Description: Customer Admin can view the feedback notes sent by that customer's user\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		homePage.getLinkCusAdmin().click();
+		homePage.getLinkAdminManageUsers().click();
+		
+		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONEPTUA, true);
+		manageUsersAdminPage.logout();
+		
+		loginPage.open();
+		loginPage.loginNormalAs(userName, USERPASSWORD);
+		
+		homePage.getLinkSendFB().click();
+		sendFeedbackPage.sendFeedback(userName, strFeedback);
+		sendFeedbackPage.logout();
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		userFeedbackAdminPage.open();
+		assertTrue(userFeedbackAdminPage.getUserFeedbackNote(customerName, userName).equalsIgnoreCase(strFeedback));
 	}	
 }

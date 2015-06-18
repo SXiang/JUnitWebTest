@@ -170,7 +170,7 @@ public class HomePageTest extends SurveyorBaseTest {
 		
 		homePage.getLinkReports().click();
 		assertTrue(homePage.getLinkCompliance().isDisplayed());
-		assertTrue(homePage.getLinkInvestigation().isDisplayed());
+		//assertTrue(homePage.getLinkInvestigation().isDisplayed());
 		assertTrue(homePage.getLinkReferenceGas().isDisplayed());
 		assertTrue(homePage.getLinkSystemHistory().isDisplayed());
 	}

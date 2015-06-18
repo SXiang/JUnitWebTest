@@ -3,6 +3,8 @@
  */
 package surveyor.regression.source;
 
+import java.util.List;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -72,4 +74,78 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		
 		assertTrue(homePage.checkIfAtHomePage());
 	}
+	
+	/**
+	 * Test Case ID: CUSTADM013
+	 * Test Description: Pagination (Manage Users)
+	 * Test Script: 10,25,50 and 100 records selection on all Administration screens
+	 * Expected Results: Specified number of records will be listed in the table
+	 * Current implementation:   
+	 * Current Issue:
+     * Future Improvement: validating on "Manage Users" pages for now and should check on other pages as well
+	 */	
+	@Test
+	public void CUSTADM013() {
+		List<String> userNameList;
+		String numTextString;
+		String[] strList;
+		int userNum = 0;
+		
+		System.out.println("\nRunning - CUSTADM013 - Test Description: Pagination (Manage Users)\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
+		
+		manageUsersPage.open();		
+		manageUsersPage.setPagination("10");
+		
+		userNameList = manageUsersPage.getUserNameList(false);
+		
+		assertTrue(userNameList.size() <= 10);
+		
+		numTextString = manageUsersPage.getLabelPageTableInfo().getText().trim();
+		strList = numTextString.split(" ");
+		userNum = Integer.parseInt(strList[3]);
+		
+		assertTrue(userNameList.size() == userNum);
+		
+		manageUsersPage.open();		
+		manageUsersPage.setPagination("25");
+		
+		userNameList = manageUsersPage.getUserNameList(false);
+		
+		assertTrue(userNameList.size() <= 25);
+		
+		numTextString = manageUsersPage.getLabelPageTableInfo().getText().trim();
+		strList = numTextString.split(" ");
+		userNum = Integer.parseInt(strList[3]);
+		
+		assertTrue(userNameList.size() == userNum);
+		
+		manageUsersPage.open();		
+		manageUsersPage.setPagination("50");
+		
+		userNameList = manageUsersPage.getUserNameList(false);
+		
+		assertTrue(userNameList.size() <= 50);
+		
+		numTextString = manageUsersPage.getLabelPageTableInfo().getText().trim();
+		strList = numTextString.split(" ");
+		userNum = Integer.parseInt(strList[3]);
+		
+		assertTrue(userNameList.size() == userNum);
+		
+		manageUsersPage.open();		
+		manageUsersPage.setPagination("100");
+		
+		userNameList = manageUsersPage.getUserNameList(false);
+		
+		assertTrue(userNameList.size() <= 100);
+		
+		numTextString = manageUsersPage.getLabelPageTableInfo().getText().trim();
+		strList = numTextString.split(" ");
+		userNum = Integer.parseInt(strList[3]);
+		
+		assertTrue(userNameList.size() == userNum);
+	}	
 }

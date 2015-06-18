@@ -6,10 +6,14 @@ package surveyor.regression.source;
 import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.BaseHelper;
 import surveyor.scommon.source.ManageUsersAdminPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 
@@ -179,5 +183,286 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		
 		loginPage.open();
 		assertTrue(loginPage.loginNormalAs(userName, USERPASSWORD) == null);
+	}
+	
+	/**
+	 * Test Case ID: CUSTADM006
+	 * Test Description: Customer admin not allowed to create duplicate User
+	 * Test Script: - On Home Page, and click Administration -> Users
+	 			    - Click on 'Add New User' button
+				    - Provide user name as existing user's name and click OK
+	 * Expected Results: Duplicate User creation not allowed
+	 * Current implementation:
+	 * Current Issue:
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM006() {
+		String customerName = SQACUS;
+		String userName = customerName + testSetup.getRandomNumber() + "custadm006" + REGBASEUSERNAME;
+		
+		System.out.println("\nRunning - CUSTADM006 - Customer admin not allowed to create duplicate User\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		homePage.getLinkCusAdmin().click();
+		homePage.getLinkAdminManageUsers().click();
+		
+		manageUsersAdminPage.addTestUser(userName,  USERPASSWORD, USERPASSWORD);
+		assertTrue(manageUsersAdminPage.findExistingUser(userName));
+		
+		manageUsersAdminPage.open();
+		assertTrue(manageUsersAdminPage.addTestUser(userName, USERPASSWORD, USERPASSWORD).contains(DUPLICATIONERROR));
+	}
+	
+	/**
+	 * Test Case ID: CUSTADM007
+	 * Test Description: Add User - Password and Confirm Password values different
+	 * Test Script: - On Home Page, and click Administration -> Users
+					- Click on 'Add New User' button
+					- Provide different values for Password and Confirm Password fields
+	 * Expected Results: "Please enter the same value again." message should be displayed
+	 * Current implementation:
+	 * Current Issue:
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM007() {
+		String customerName = SQACUS;
+		String userName = customerName + testSetup.getRandomNumber() + "custadm007" + REGBASEUSERNAME;
+		
+		System.out.println("\nRunning - CUSTADM007 - Test Description: Add User - Password and Confirm Password values different\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		homePage.getLinkCusAdmin().click();
+		homePage.getLinkAdminManageUsers().click();
+		
+		assertTrue(manageUsersAdminPage.addTestUser(userName, USERPASSWORD, USERPASSWORD + "2").contains(PWVALUEERROR));
+	}
+	
+	/**
+	 * Test Case ID: CUSTADM008
+	 * Test Description: add user - invalid email address values
+	 * Test Script: - Login to the site and click Administration -> Users
+					- Click on 'Add New User' button
+					- Provide invalid email address (e.g. rpitter@b, rpitter, rpitter@b. , rpitter@b.c). Click OK
+	 * Expected Results: "Please enter valid email address" message should be displayed
+	 * Current implementation:
+	 * Current Issue:
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM008() {
+		String userName1 = "rpitter@b";
+		String userName2 = "rpitter@b.c";
+		
+		System.out.println("\nRunning - CUSTADM008 - Test Description: add user - invalid email address values\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		homePage.getLinkCusAdmin().click();
+		homePage.getLinkAdminManageUsers().click();
+		
+		assertTrue(manageUsersAdminPage.addTestUser(userName1, USERPASSWORD, USERPASSWORD).contains(EMAILINVALID));
+		
+		manageUsersAdminPage.open();
+		assertTrue(manageUsersAdminPage.addTestUser(userName2, USERPASSWORD, USERPASSWORD).contains(EMAILINVALID));
+	}
+	
+	/**
+	 * Test Case ID: CUSTADM009
+	 * Test Description: add user - blank required fields
+	 * Test Script: - Login to the site and click Administration -> Users
+					- Click on 'Add New User' button
+					- Keep Email Address, pwd and confirm pwd fields blank. Click OK
+	 * Expected Results: "Please fill out this field." message should be displayed
+	 * Current implementation:
+	 * Current Issue:
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM009() {
+		String customerName = SQACUS;
+		String userName = customerName + testSetup.getRandomNumber() + "custadm009" + REGBASEUSERNAME;
+		
+		System.out.println("\nRunning - CUSTADM009 - Test Description: add user - blank required fields\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		homePage.getLinkCusAdmin().click();
+		homePage.getLinkAdminManageUsers().click();
+		
+		assertTrue(manageUsersAdminPage.addTestUser("", USERPASSWORD, USERPASSWORD).contains(BLANKFIELDERROR));
+		
+		manageUsersAdminPage.open();
+		assertTrue(manageUsersAdminPage.addTestUser(userName, "", USERPASSWORD).contains(PWDSAMEVALUE));
+		
+		manageUsersAdminPage.open();
+		assertTrue(manageUsersAdminPage.addTestUser(userName, USERPASSWORD, "").contains(BLANKFIELDERROR));
+	}
+	
+	/**
+	 * Test Case ID: CUSTADM010
+	 * Test Description: Admin can change role of existing user
+	 * Test Script: - On Home Page, and click Administration -> Users
+					- Click on Edit link
+					- Change the role of the user
+	 * Expected Results: - Admin can successfully change the role of user
+						 - Op Qual is optional field (invalid for the current product implementation)
+	 * Current implementation:
+	 * Current Issue:
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM010() {
+		String customerName = SQACUS;
+		String userName = customerName + testSetup.getRandomNumber() + "custadm010" + REGBASEUSERNAME;
+		
+		System.out.println("\nRunning - CUSTADM010 - Test Description: Admin can change role of existing user\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		homePage.getLinkCusAdmin().click();
+		homePage.getLinkAdminManageUsers().click();
+		
+		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONEPTUA);		
+		manageUsersAdminPage.editUser(userName, CUSUSERROLESU, TIMEZONEPTUA, true);
+		
+		assertTrue(manageUsersAdminPage.getUserRole(userName).equalsIgnoreCase(CUSUSERROLESU));
+	}
+	
+	/**
+	 * Test Case ID: CUSTADM011
+	 * Test Description: More than 50 characters not allowed in email address field
+	 * Test Script: - On Home Page, and click Administration -> Users
+					- Click on 'Add New User' button
+					- Provide more than 50 characters in Email Address field and click OK
+	 * Expected Results: Please enter no more than 50 characters." message is displayed
+	 * Current implementation:
+	 * Current Issue:
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM011() {
+		String userName = "1111111111aaaaaaaaaa2222222222bbbbbbbbbb1@email.com";
+		
+		System.out.println("\nRunning - CUSTADM011 - Test Description: More than 50 characters not allowed in email address field\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		homePage.getLinkCusAdmin().click();
+		homePage.getLinkAdminManageUsers().click();
+		
+		String rtnMsg = manageUsersAdminPage.addTestUser(userName, USERPASSWORD, USERPASSWORD);
+		
+		assertTrue(rtnMsg.equalsIgnoreCase(EMAILTOOLONG));
+	}
+	
+	/**
+	 * Test Case ID: CUSTADM014
+	 * Test Description: Search valid user record
+	 * Test Script: Provide valid user name in search box present on Users screen
+	 * Expected Results: Searched user details are displayed
+	 * Current implementation:   
+	 * Current Issue:
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM014() {
+		String customerName = SQACUS;
+		String userName = customerName + testSetup.getRandomNumber() + "custadm014" + REGBASEUSERNAME;
+		
+		System.out.println("\nRunning - CUSTADM014 - Test Description: Search valid user record\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		homePage.getLinkCusAdmin().click();
+		homePage.getLinkAdminManageUsers().click();
+		
+		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONEPTUA, false);
+		manageUsersAdminPage.getInputSearch().sendKeys(userName);
+		
+		assertTrue(manageUsersAdminPage.findExistingUser(SQACUS, userName, CUSUSERROLEDR, false));
+		assertTrue(manageUsersAdminPage.getUserStatus(userName).equalsIgnoreCase(USERDISABLED) );
+	}
+	
+	/**
+	 * Test Case ID: CUSTADM015
+	 * Test Description: Search invalid user record
+	 * Test Script: Provide invalid user name in search box present on Users screen 
+	 * Expected Results: Message should be displayed : 'No matching records found' 
+	 * Current implementation:   
+	 * Current Issue:
+     * Future Improvement:
+	 */	
+	@Test
+	public void CUSTADM015() {
+		String customerName = SQACUS;
+		String userName = customerName + testSetup.getRandomNumber() + "custadm015" + REGBASEUSERNAME;
+		
+		System.out.println("\nRunning - CUSTADM015 - Test Description: Search invalid user record\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		homePage.getLinkCusAdmin().click();
+		homePage.getLinkAdminManageUsers().click();
+		
+		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONEPTUA, true);
+		manageUsersAdminPage.getInputSearch().sendKeys(userName + userName);
+		
+		assertTrue(manageUsersAdminPage.getLabelNoMatchingSearch().getText().trim().equalsIgnoreCase(NOMATCHINGSEARCH));
+	}
+	
+	/**
+	 * Test Case ID: CUSTADM016
+	 * Test Description: Sort records based on attributes present
+	 * Test Script: Sort records on all Administration screens
+	 * Expected Results: User is able to sort the list of records based on specifed attribute
+	 * Current implementation:   
+	 * Current Issue:
+     * Future Improvement: validate on more pages and have the relative sorting check covered
+	 */	
+	@Test
+	public void CUSTADM016() {
+		List<String> list = new ArrayList<String>();
+		
+		System.out.println("\nRunning - CUSTADM016 - Test Description: Sort records based on attributes present\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		homePage.getLinkCusAdmin().click();
+		homePage.getLinkAdminManageUsers().click();
+		
+		manageUsersAdminPage.getTheadUserName().click();
+		list = manageUsersAdminPage.getUserNameList(false);
+		
+		assertTrue(BaseHelper.isStringListSorted(list));
+		
+		manageUsersAdminPage.getTheadUserName().click();
+		list = manageUsersAdminPage.getUserNameList(false);
+		
+		assertTrue(BaseHelper.isStringListSortedDes(list));
+		
+		manageUsersAdminPage.open();
+		
+		manageUsersAdminPage.getTheadRoles().click();
+		list = manageUsersAdminPage.getRolesList(false);
+		
+		assertTrue(BaseHelper.isStringListSorted(list));
+		
+		manageUsersAdminPage.getTheadRoles().click();
+		list = manageUsersAdminPage.getRolesList(false);
+		
+		assertTrue(BaseHelper.isStringListSortedDes(list));
 	}
 }

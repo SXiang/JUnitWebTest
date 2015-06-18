@@ -67,7 +67,9 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	public void addNewRefGasBottle(String strItemNumber, String strLotNumber, String strIsoValue, String strCusName, String strLocName, String strSurveyor) {
 		this.btnAddNewRefGasBottle.click();
 		
+		this.inputItemNumber.clear();
 		this.inputItemNumber.sendKeys(strItemNumber);
+		this.inputLotNumber.clear();
 		this.inputLotNumber.sendKeys(strLotNumber);
 		this.inputIsoValue.clear();
 		this.inputIsoValue.sendKeys(strIsoValue);
@@ -86,6 +88,39 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 				this.btnCancel.click();
 		}
 	}
+	
+	public boolean addNewRefGasBottle(String strItemNumber, String strLotNumber, String strIsoValue, String strCusName, String strLocName, String strSurveyor, boolean bFlag) {
+		this.btnAddNewRefGasBottle.click();
+		
+		this.inputItemNumber.sendKeys(strItemNumber);
+		this.inputLotNumber.sendKeys(strLotNumber);
+		this.inputIsoValue.clear();
+		this.inputIsoValue.sendKeys(strIsoValue);
+		
+		List<WebElement> options = this.dropdownSurveyor.findElements(By.tagName("option"));
+		for (WebElement option : options) { 	
+			if (option.getText().trim().equalsIgnoreCase(strCusName + " - " + strLocName + " - " + strSurveyor))
+				option.click();
+		}
+		
+		String curURL = driver.getCurrentUrl();
+		
+		this.btnOK.click();
+		
+		if (strItemNumber.equalsIgnoreCase(""))
+			if (driver.getCurrentUrl().equalsIgnoreCase(curURL))
+				return false;
+		
+		if (isElementPresent(this.panelDupRgbErrorXPath)){
+			WebElement panelError = driver.findElement(By.xpath(this.panelDupRgbErrorXPath));
+			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:")) {
+				this.btnCancel.click();
+				return false;
+			}
+		}
+		
+		return true;
+	}	
 	
 	public boolean findExistingRefGasBottle(String strItemNumber, String strSurveyor) {
 		setPagination(PAGINATIONSETTING);
@@ -195,6 +230,14 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		}
 		
 		return false;
+	}
+	
+	public WebElement getBtnAddNewRefGasBottle() {
+		return this.btnAddNewRefGasBottle;
+	}
+	
+	public WebElement getBtnCancel() {
+		return this.btnCancel;
 	}
 	
 	/**

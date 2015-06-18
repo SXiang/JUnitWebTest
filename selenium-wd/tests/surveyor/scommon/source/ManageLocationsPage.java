@@ -45,8 +45,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='location-form']/fieldset/div[3]/div[2]/a")
 	protected WebElement btnCancel;
 	
-	//add more @FindBy here later
-	
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -174,7 +172,14 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				this.inputLocationDesc.clear();
 				this.inputLocationDesc.sendKeys(newLocationName);
 				
+				String curURL = driver.getCurrentUrl();
+				
 				this.btnOK.click();
+				
+				if (newLocationName.equalsIgnoreCase("")) {
+					if (driver.getCurrentUrl().equalsIgnoreCase(curURL))
+						return false;
+				}
 				
 				if (isElementPresent(this.panelDuplicationErrorXPath)) {
 					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
@@ -204,7 +209,15 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		}
 		
 		return false;
-	}		
+	}
+	
+	public WebElement getBtnAddNewLocation() {
+		return this.btnAddNewLocation;
+	}
+	
+	public WebElement getBtnCancel() {
+		return this.btnCancel;
+	}
 	
 	/**
 	 * @param args

@@ -11,6 +11,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
+import surveyor.scommon.source.ManageSurveyorAdminPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import static surveyor.scommon.source.SurveyorConstants.*;
@@ -22,6 +23,7 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 public class ManageSurveyorPageTest extends SurveyorBaseTest {
 	private static ManageLocationsPage manageLocationsPage;
 	private static ManageSurveyorPage manageSurveyorPage;
+	private static ManageSurveyorAdminPage manageSurveyorAdminPage;
 	private static ManageCustomersPage manageCustomersPage;
 	
 	@BeforeClass
@@ -34,6 +36,9 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		
 		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageCustomersPage);
+		
+		manageSurveyorAdminPage = new ManageSurveyorAdminPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver,  manageSurveyorAdminPage);
 	}
 	
 	/**

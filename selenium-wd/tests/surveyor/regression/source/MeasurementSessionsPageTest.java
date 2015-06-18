@@ -208,8 +208,8 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void HOME013() {
-		String tagName = "long03";
-		boolean deleteAll = true;
+		String tagName = "dmcs1-pgeua";
+		boolean deleteAll = false;
 		List<String> tagList;
 		
 		System.out.println("\nRunning - HOME013 - Delete surveys\n");
@@ -230,5 +230,44 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 		tagList = msp.getTagNameList();
 		
 		assertTrue(!tagList.contains(tagName));
-	}	
+	}
+	
+	/**
+	 * Test Case ID: CUSTADM017
+	 * Test Description: Export Raw Data
+	 * Test Script: - On Home Page, click on Driving Surveys
+					- Click on Export Survey
+					- Click on Export Peaks
+					- Click on Export Analysis
+	 * Expected Results: - Customer Administrator should be allowed to export raw data and it should be .dat text file
+	 * Current implementation: Raw Data is available to Picarro Administrator only now
+	 * Current Issue:
+     * Future Improvement:
+	 */
+	@Test
+	public void CUSTADM017() {
+		String startDT;
+		
+		System.out.println("\nRunning - CUSTADM017 - Test Description: Export Raw Data\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
+		
+		homePage.getLinkDrivingSurveys().click();
+		
+		measurementSessionsPage.getInputSearch().sendKeys(SQAPICDRTAG);
+		startDT = measurementSessionsPage.getStartDT(SQAPICDRTAG, SQAPICDR, SQAPICLOC3SUR, SQAPICLOC3SURANA, false);
+		
+		measurementSessionsPage.actionOnDrivingSurveys(SQAPICDRTAG, SQAPICDR, SQAPICLOC3SUR, SQAPICLOC3SURANA, startDT, DRIVINGSURVEYSEXPORTSURVEY, false);
+		testSetup.slowdownInSeconds(15);
+		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTSURVEY, SQAPICDRTAG, SQAPICLOC3SURANA, testSetup.getDownloadPath(), true));
+		
+		measurementSessionsPage.actionOnDrivingSurveys(SQAPICDRTAG, SQAPICDR, SQAPICLOC3SUR, SQAPICLOC3SURANA, startDT, DRIVINGSURVEYSEXPORTPEAKS, false);
+		testSetup.slowdownInSeconds(15);
+		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTPEAKS, SQAPICDRTAG, SQAPICLOC3SURANA, testSetup.getDownloadPath(), true));
+		
+		measurementSessionsPage.actionOnDrivingSurveys(SQAPICDRTAG, SQAPICDR, SQAPICLOC3SUR, SQAPICLOC3SURANA, startDT, DRIVINGSURVEYSEXPORTANALYSIS, false);
+		testSetup.slowdownInSeconds(15);
+		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTANALYSIS, SQAPICDRTAG, SQAPICLOC3SURANA, testSetup.getDownloadPath(), true));
+	}
 }
