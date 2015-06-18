@@ -18,6 +18,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	//@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a")
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	protected WebElement btnNewComplianceRpt;
+	protected String strBtnNewCompRpt = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='report-title']")
 	protected WebElement inputTitle;
@@ -183,7 +184,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonOk']")
 	protected WebElement btnOK;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[7]/a")
+	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Cancel')]")
 	protected WebElement btnCancel;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_length']/label/select")
@@ -206,8 +207,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 	protected WebElement dropdownCustomer;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='customerModal']/div/div/div[3]/a[1]")
+	protected WebElement btnChangeCustomer;
+	protected String btnChangeCustomerXPath = "//*[@id='customerModal']/div/div/div[3]/a[1]";
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='surveyModal']/div/div/div[3]/a[1]")
 	protected WebElement btnChangeMode;
-	protected String btnChangeModeXPath = "//*[@id='customerModal']/div/div/div[3]/a[1]";
+	protected String btnChangeModeXPath = "//*[@id='surveyModal']/div/div/div[3]/a[1]";
 	
 	@FindBy(how = How.XPATH, using = "/html/body/div/div[2]/div/div/div[2]/p[1]")
 	protected WebElement errorMsgDeleteCompliacneReport;
@@ -221,6 +226,77 @@ public class ReportsBasePage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='report-survey-end-dt']")
 	protected WebElement inputEndData;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
+	protected WebElement btnNewSysHistoryRpt;
+	protected String strNewSysHistoryRpt = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a";
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='report-survey-id']")
+	protected WebElement cbSurveyUnit;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[4]/a")
+	protected WebElement btnDownload;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
+	protected WebElement btnNewRefGasRpt;
+	protected String strNewRefGasRpt = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a";
+	
+	@FindBy(how = How.ID, using = "S1")
+	protected WebElement radioBtnS1Mode;
+	
+	@FindBy(how = How.ID, using = "Standard")
+	protected WebElement radioBtnStndMode;
+	
+	@FindBy(how = How.ID, using = "Rapid Response")
+	protected WebElement radioBtnRRmode;
+	
+	@FindBy(how = How.ID, using = "Manual")
+	protected WebElement radioBtnManualMode;
+	
+	@FindBy(how = How.ID, using = "//label[@id='report-run-0-surveymode']")
+	protected WebElement labelSurveyMode;
+	protected String labelStrSurveyMode = "//label[@id='report-run-0-surveymode']";
+	
+	@FindBy(how = How.ID, using = "dvErrorText")
+	protected WebElement divErrorText;
+	protected String strErrorText = "//div[@id='dvErrorText']";
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable_filter']/label/input")
+	protected WebElement inputSearchReport;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[1]")
+	protected WebElement tdReportTitle;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[2]")
+	protected WebElement tdReportCreatedBy;
+	
+	@FindBy(how = How.XPATH, using = "//div[@id='datatable_info']")
+	protected WebElement paginationMsg;
+	
+	@FindBy(how = How.XPATH, using = "//label[@id='report-run-0-surveytag']")
+	protected WebElement labelFirstSurveyTag;
+	protected String strFirstSurveyTag = "//label[@id='report-run-0-surveytag']";
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='surveyContent-0']/div/fieldset/div/fieldset/p/button")
+	protected WebElement btnDeleteDrivingSurvey;
+	
+	@FindBy(how = How.ID, using = "buttonMap")
+	protected WebElement btnLatLongSelector;
+	
+	@FindBy(how = How.ID, using = "NE_lat")
+	protected WebElement inputCustomNELat;
+	
+	@FindBy(how = How.ID, using = "NE_lon")
+	protected WebElement inputCustomNELong;
+	
+	@FindBy(how = How.ID, using = "SW_lat")
+	protected WebElement inputCustomSWLat;
+	
+	@FindBy(how = How.ID, using = "SW_lon")
+	protected WebElement inputCustomSWLong;
+	
+	@FindBy(how = How.ID, using = "button_ok")
+	protected WebElement btnCustomOK;
 	
 	/**
 	 * @param driver

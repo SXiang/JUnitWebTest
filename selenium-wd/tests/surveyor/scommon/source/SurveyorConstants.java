@@ -111,10 +111,10 @@ public final class SurveyorConstants {
 	public static final String CUSBOUNDARY = "Custom Boundary";
 	public static final String IMGMAPHEIGHT = "5";
 	public static final String IMGMAPWIDTH = "5";
-	public static final String NELAT = "37.4353397926825";
-	public static final String NELON = "-121.84696197509766";
-	public static final String SWLAT = "37.33058362073965";
-	public static final String SWLON = "-122.04883575439453";
+	public static final String NELAT = "37.421980615353675";
+	public static final String NELON = "-121.93639755249023";
+	public static final String SWLAT = "37.39566424530531";
+	public static final String SWLON = "-122.01141357421875";
 	
 	public static final String SURVEYORUNIT = "sqacus - sqacusloc - sqacuslocsur";
 	public static final String TAG = "dmcs1-sqa01";
@@ -155,6 +155,16 @@ public final class SurveyorConstants {
 	public static final String KEYBOUNDARIES = "Boundaries";
 	public static final String KEYBASEMAP = "Base Map";
 	
+
+	public static final String KEYINDTB = "Indications Table";
+	public static final String KEYISOANA = "Isotopic Analysis";
+	public static final String KEYPCA = "Percent Coverage Assets";
+	public static final String KEYPCRA = "Percent Coverage Report Area";
+	
+	public static final String SQAPICADRRTAG = "dmcrapidresponse-sqapic-admin";
+	public static final String SQAPICADSTNDTAG = "dmcstandard-sqapic-admin";
+	public static final String SQAPICADMANUALTAG = "dmcmanual-sqapic-admin";
+
 	public static final String DUPLICATIONERROR = "Please, correct the following errors:";
 	public static final String PWVALUEERROR = "Please enter the same value again.";
 	public static final String EMAILINVALID = "The Email is not a valid , please enter valid email address";
@@ -167,4 +177,5 @@ public final class SurveyorConstants {
 	public static final String DRIVINGSURVEYSEXPORTSURVEY = "SurveyExport";
 	public static final String DRIVINGSURVEYSEXPORTPEAKS = "PeakExport";
 	public static final String DRIVINGSURVEYSEXPORTANALYSIS = "AnalysisExport";
+
 }

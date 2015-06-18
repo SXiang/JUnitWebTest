@@ -29,32 +29,63 @@ public class Reports {
 	protected String tag;
 	
 	protected List<Map<String, String>> viewList;
-
+	protected List<Map<String, String>> tablesList;
+	
+	protected List<String> tagList;
+	
 	/**
 	 * 
 	 */
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, 
-			String surveyorUnit, String tag, List<Map<String, String>> viewList) {
+	public Reports(String rptTitle, String strCreatedBy, String customer,
+			String timeZone, String exclusionRadius, List<String> listBoundary,
+			List<Map<String, String>> tablesList, String surveyorUnit,
+			String tag, List<Map<String, String>> viewList) {
 		this.rptTitle = rptTitle;
 		this.strCreatedBy = strCreatedBy;
 		this.customer = customer;
 		this.timeZone = timeZone;
 		this.exclusionRadius = exclusionRadius;
-		
+
 		this.listBoundary = listBoundary;
 		this.imageMapHeight = listBoundary.get(0);
-		this.imageMapWidth  = listBoundary.get(1);
-		this.NELat          = listBoundary.get(2);
-		this.NELong         = listBoundary.get(3);
-		this.SWLat          = listBoundary.get(4);
-		this.SWLong         = listBoundary.get(5);
+		this.imageMapWidth = listBoundary.get(1);
+		this.NELat = listBoundary.get(2);
+		this.NELong = listBoundary.get(3);
+		this.SWLat = listBoundary.get(4);
+		this.SWLong = listBoundary.get(5);
 		
+		this.tablesList = tablesList;
 		this.surveyorUnit = surveyorUnit;
 		this.tag = tag;
-		
+
 		this.viewList = viewList;
 	}
 	
+	public Reports(String rptTitle, String strCreatedBy, String customer,
+			String timeZone, String exclusionRadius, List<String> listBoundary,
+			List<Map<String, String>> tablesList, String surveyorUnit,
+			List<String> tagList, List<Map<String, String>> viewList) {
+		this.rptTitle = rptTitle;
+		this.strCreatedBy = strCreatedBy;
+		this.customer = customer;
+		this.timeZone = timeZone;
+		this.exclusionRadius = exclusionRadius;
+
+		this.listBoundary = listBoundary;
+		this.imageMapHeight = listBoundary.get(0);
+		this.imageMapWidth = listBoundary.get(1);
+		this.NELat = listBoundary.get(2);
+		this.NELong = listBoundary.get(3);
+		this.SWLat = listBoundary.get(4);
+		this.SWLong = listBoundary.get(5);
+		
+		this.tablesList = tablesList;
+		this.surveyorUnit = surveyorUnit;
+		this.tagList = tagList;
+
+		this.viewList = viewList;
+	}
+
 	public String getRptTitle() {
 		return this.rptTitle;
 	}
@@ -109,6 +140,14 @@ public class Reports {
 	
 	public List<Map<String, String>> getViewList() {
 		return this.viewList;
+	}
+	
+	public List<Map<String, String>> getTablesList() {
+		return this.tablesList;
+	}
+	
+	public List<String> getTagList() {
+		return this.tagList;
 	}
 	
 	/**
