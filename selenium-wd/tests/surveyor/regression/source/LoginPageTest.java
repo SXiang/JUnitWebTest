@@ -26,7 +26,6 @@ public class LoginPageTest extends SurveyorBaseTest {
 		homePage.open();
 		assertTrue(PICDFADMIN + " user login unsuccessful!",
 				homePage.checkIfAtHomePage());
-		assertTrue(homePage.checkAdministratorDashboard());
 		loginPage = homePage.logout();
 	}
 	
@@ -38,7 +37,6 @@ public class LoginPageTest extends SurveyorBaseTest {
 		homePage.open();
 		assertTrue(SQACUSUAUSER
 				+ " user login unsuccessful!", homePage.checkIfAtHomePage());
-		assertTrue(homePage.checkVisitilityForCusUA(SQACUSUA));
 		loginPage = homePage.logout();
 	}
 	
@@ -50,7 +48,6 @@ public class LoginPageTest extends SurveyorBaseTest {
 		homePage.open();
 		assertTrue(SQACUSDRUSER
 				+ " user login unsuccessful!", homePage.checkIfAtHomePage());
-		assertTrue(homePage.checkVisitilityForCusDR(SQACUSDR));
 		loginPage = homePage.logout();
 	}
 }
