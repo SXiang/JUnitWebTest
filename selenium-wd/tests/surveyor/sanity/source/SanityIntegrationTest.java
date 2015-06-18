@@ -19,8 +19,12 @@ import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
 import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
 import static surveyor.scommon.source.SurveyorConstants.KEYGAPS;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
+import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
+import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.REGBASEUSERNAME;
@@ -287,7 +291,16 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		viewList.add(viewMap1);
 		viewList.add(viewMap2);
 		
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "3", listBoundary, "", SQAPICDRTAG, viewList);
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "1");
+		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYPCA, "0");
+		tableMap.put(KEYPCRA, "0");
+		tablesList.add(tableMap);
+		
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "3", listBoundary, tablesList, "", SQAPICDRTAG, viewList);
 		complianceReportsPage.addNewReport(rpt);
 		
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
