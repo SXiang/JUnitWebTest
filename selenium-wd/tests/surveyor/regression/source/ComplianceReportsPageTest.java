@@ -823,13 +823,19 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		complianceReportsPage.open();
 
 		String surUnit = "";
-
+		// changed survey tag for time being---- remove the code later on and fix the tag value as per surveys available in SureyorConstants file
+		String SQAPICSUTAG = "test 6/22";
+		
 		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICSUTAG);
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
-					PICDFADMIN));
+			if (complianceReportsPage.validatePdfFiles(rptTitle,
+					testSetup.getDownloadPath())) {
+				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+						PICDFADMIN));
+			} else
+				fail("\nTestcase RPT001 failed.\n");
 		} else
 			fail("\nTestcase RPT001 failed.\n");
 
@@ -846,6 +852,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	@Test
 	public void RPT003() {
 		String rptTitle = "RPT003 Report" + testSetup.getRandomNumber();
+		
 		System.out
 				.format("\nRunning RPT003: Generate compliance report by selecting custom boundary using date range and tag filters for more than one view and export the report, %s\n",
 						rptTitle);
@@ -915,8 +922,10 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
 		tablesList.add(tableMap);
+		
+		// changed survey tag for time being---- remove the code later on and fix the tag value as per surveys available in SureyorConstants file
+		String SQAPICSUTAG = "test 6/22";
 
-		// Date Range filter remaining
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle,
 				testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0",
 				listBoundary, tablesList, "", SQAPICSUTAG, viewList);

@@ -82,6 +82,12 @@ public class TestSetup {
 	
 	private String downloadPath;
 	
+	private String dbIPAddress;
+	private String dbPortNo;
+	private String dbName;
+	private String dbUser;
+	private String dbPassword;
+	
 	public TestSetup() {
 		try {
 			String userDir = System.getProperty("user.dir");
@@ -119,10 +125,17 @@ public class TestSetup {
 			this.loginUserDisplayName = this.testProp
 					.getProperty("loginUserDisplayName");
 
+			this.dbIPAddress = this.testProp.getProperty("dbIPAddress");
+			this.dbName = this.testProp.getProperty("dbName");
+			this.dbPortNo = this.testProp.getProperty("dbPortNo");
+			this.dbUser = this.testProp.getProperty("dbUser");
+			this.dbPassword = this.testProp.getProperty("dbPassword");
+
 			this.browser = this.testProp.getProperty("browser");
 			System.out.println("\nThe browser is: " + this.browser + "\n");
 
 			this.ieDriverPath = this.testProp.getProperty("ieDriverPath");
+			
 			File chromepath = new File(userDir+"/.."+"/.."+"/..");
 			this.chromeDriverPath = chromepath.getCanonicalPath() +File.separator +"lib" + File.separator+"chromedriver.exe";
 
@@ -135,7 +148,8 @@ public class TestSetup {
 
 			this.language = this.testProp.getProperty("language");
 			
-			this.downloadPath = this.testProp.getProperty("downloadPath");
+			//this.downloadPath = this.testProp.getProperty("downloadPath");
+			this.downloadPath = "C:/Users/" + System.getProperty("user.name") + "/Downloads/";
 
 			if (this.testProp.getProperty("debug").equals("true")) {
 				
@@ -328,6 +342,26 @@ public class TestSetup {
 	
 	public String getDownloadPath() {
 		return downloadPath;
+	}
+	
+	public String getDbIpAddress() {
+		return dbIPAddress;
+	}
+	
+	public String getDbPortNo() {
+		return dbPortNo;
+	}
+	
+	public String getDbName() {
+		return dbName;
+	}
+	
+	public String getDbUser() {
+		return dbUser;
+	}
+	
+	public String getDbPassword() {
+		return dbPassword;
 	}
 
 	public static void main(String[] args) {

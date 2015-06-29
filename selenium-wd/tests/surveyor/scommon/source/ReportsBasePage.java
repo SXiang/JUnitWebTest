@@ -15,22 +15,19 @@ import common.source.TestSetup;
  *
  */
 public class ReportsBasePage extends SurveyorBasePage {
-	//@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a")
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	protected WebElement btnNewComplianceRpt;
 	protected String strBtnNewCompRpt = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a";
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='report-title']")
+	@FindBy(how = How.ID, using = "report-title")
 	protected WebElement inputTitle;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='report-timezone']")
+	@FindBy(how = How.ID, using = "report-timezone")
 	protected WebElement cBoxTimezone;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='report-exclusion-radius']")
+	@FindBy(how = How.ID, using = "report-exclusion-radius")
 	protected WebElement inputExclusionRadius;
 	
-	//@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[1]/div/div/fieldset/div[3]/div[2]/div/label/input")
-	//@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[2]/div/div/fieldset/div[3]/div[2]/div/label/input")
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div[3]/div/div/fieldset/div[3]/div[2]/div/label")
 	protected WebElement inputReportModeS1;
 	
@@ -43,7 +40,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[1]/div/div/fieldset/div[3]/div[5]/div/label/input")
 	protected WebElement inputReportModeManual;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='report-survey-mode-minimum-amplitude']")
+	@FindBy(how = How.ID, using = "report-survey-mode-minimum-amplitude")
 	protected WebElement inputMinAmp;
 	
 //	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[2]/div/fieldset/div[1]/div/div/div[1]/label")
@@ -52,37 +49,37 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[2]/div/fieldset/div[1]/div/div/div[1]/label")
 	protected WebElement inputCusBoundary;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='buttonMap']")
+	@FindBy(how = How.ID, using = "buttonMap")
 	protected WebElement btnMapSel;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='report-map-height']")
+	@FindBy(how = How.ID, using = "report-map-height")
 	protected WebElement inputImgMapHeight;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='report-map-width']")
+	@FindBy(how = How.ID, using = "report-map-width")
 	protected WebElement inputImgMapWidth;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='start-lat']")
+	@FindBy(how = How.ID, using = "area-start-latitude")
 	protected WebElement inputNELat; 
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='start-lng']")
+	@FindBy(how = How.ID, using = "area-start-longitude")
 	protected WebElement inputNELong;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='end-lat']")
+	@FindBy(how = How.ID, using = "area-end-latitude")
 	protected WebElement inputSWLat;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='end-lng']")
+	@FindBy(how = How.ID, using = "area-end-longitude")
 	protected WebElement inputSWLong;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='report-show-indications']")
+	@FindBy(how = How.ID, using = "report-show-indications")
 	protected WebElement checkBoxIndTb;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='report-show-isotopic']")
+	@FindBy(how = How.ID, using = "report-show-isotopic")
 	protected WebElement checkBoxIsoAna;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='report-show-percent-coverage-assets']")
+	@FindBy(how = How.ID, using = "report-show-percent-coverage-assets")
 	protected WebElement checkBoxPCA;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='report-show-percent-coverage-report-area']")
+	@FindBy(how = How.ID, using = "report-show-percent-coverage-report-area")
 	protected WebElement checkBoxPCRA;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='report-asset-layers-00000000-0000-0000-0000-000000000001']")
@@ -109,10 +106,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='report-boundry-layers-Level 6']")
 	protected WebElement checkBoxLevel6;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='report-surveyor-id']")
+	@FindBy(how = How.ID, using = "report-surveyor-id")
 	protected WebElement cbSurUnit;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='report-survey-tag']")
+	@FindBy(how = How.ID, using = "report-survey-tag")
 	protected WebElement cbTag;
   
 //	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[5]/div/div[1]/fieldset/div[5]/div/div[1]/div/label/input")
@@ -127,13 +124,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[5]/div/div[1]/fieldset/div[5]/div/div[5]/div/label/input")
 	protected WebElement inputSurModeFilterOperator;	
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='buttonSearchSurvey']")
-	protected WebElement btnSruveySearch;
+	@FindBy(how = How.ID, using = "buttonSearchSurvey")
+	protected WebElement btnSurveySearch;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td[7]/input")
 	protected WebElement checkboxSurFirst;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='buttonAddSurveys']")
+	@FindBy(how = How.ID, using = "buttonAddSurveys")
 	protected WebElement btnAddSurveys;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonAddViews']/span[2]")
@@ -192,6 +189,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/img")
 	protected WebElement actionStatus;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a[3]/img")
+	//*[@id="datatable"]/tbody/tr[4]/td[4]/a[4]/img
+	protected WebElement btnReportViewer;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/span")
 	protected WebElement errorSpan;

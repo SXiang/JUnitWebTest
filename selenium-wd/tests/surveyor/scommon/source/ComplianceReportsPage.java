@@ -47,8 +47,11 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 
 import common.source.BaseHelper;
+import common.source.DBConnection;
 import common.source.TestSetup;
 
 /**
@@ -60,6 +63,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String STRPageTitle = "Compliance Reports - Surveyor";
 	public static final String STRPaginationMsg = "Showing 1 to ";
 	public static final String STRSurveyIncludedMsg = "Already Added...";
+	
+	@FindBy (how = How.ID, using = "pdf")
+	protected WebElement pdfImg;
+	
+	@FindBy (how = How.ID, using = "zip-file_pdf")
+	protected WebElement zipImg;
 
 	/**
 	 * @param driver
@@ -108,41 +117,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		this.inputExclusionRadius.clear();
 		this.inputExclusionRadius.sendKeys(reportsCompliance.getExclusionRadius());
-		//this.inputReportModeS1.click();
 		
-		//this.inputCusBoundary.click();
-		
-		this.inputImgMapHeight.sendKeys(reportsCompliance.getImageMapHeight());
-		this.inputImgMapWidth.sendKeys(reportsCompliance.getImageMapWidth());
 		this.inputNELat.sendKeys(reportsCompliance.getNELat());
 		this.inputNELong.sendKeys(reportsCompliance.getNELong());
 		this.inputSWLat.sendKeys(reportsCompliance.getSWLat());
 		this.inputSWLong.sendKeys(reportsCompliance.getSWLong());
-		
-		List<Map<String, String>> tablesList = reportsCompliance
-				.getTablesList();
-		if (tablesList.get(0).get(KEYINDTB).equalsIgnoreCase("1")) {
-			this.checkBoxIndTb.click();
-		}
-		if (tablesList.get(0).get(KEYISOANA).equalsIgnoreCase("1")) {
-			this.checkBoxIsoAna.click();
-		}
-		if (tablesList.get(0).get(KEYPCA).equalsIgnoreCase("1")) {
-			this.checkBoxPCA.click();
-		}
-		if (tablesList.get(0).get(KEYPCRA).equalsIgnoreCase("1")) {
-			this.checkBoxPCRA.click();
-		}
-
-		this.checkBoxOtherPla.click();
-		this.checkBoxPEPla.click();
-		this.checkBoxProtectedSteel.click();
-		this.checkBoxUnProtectedSteel.click();
-		this.checkBoxCastIron.click();
-		this.checkBoxCopper.click();
-		
-//		this.checkBoxLevel1.click();
-//		this.checkBoxLevel6.click();
 		
 		if (reportsCompliance.getSurveyorUnit() != "") {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
@@ -164,17 +143,40 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		
 		if (testSetup.isRunningDebug())
 			testSetup.slowdownInSeconds(3);
-		
-//		this.cbStartDate.sendKeys(startDate);
-//		this.cbEndDate.sendKeys(endDate);
-		//this.inputSurModeFilterS1.click();
-		
-		this.btnSruveySearch.click();
+		this.btnSurveySearch.click();
 		this.checkboxSurFirst.click();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		this.btnAddSurveys.click();
 		
+		this.inputImgMapHeight.clear();
+		this.inputImgMapHeight.sendKeys(reportsCompliance.getImageMapHeight());
+		this.inputImgMapWidth.clear();
+		this.inputImgMapWidth.sendKeys(reportsCompliance.getImageMapWidth());
+		
 		addViews(reportsCompliance.getViewList());
+		
+		this.checkBoxOtherPla.click();
+		this.checkBoxPEPla.click();
+		this.checkBoxProtectedSteel.click();
+		this.checkBoxUnProtectedSteel.click();
+		this.checkBoxCastIron.click();
+		this.checkBoxCopper.click();
+		
+		List<Map<String, String>> tablesList = reportsCompliance
+				.getTablesList();
+		if (tablesList.get(0).get(KEYINDTB).equalsIgnoreCase("1")) {
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("arguments[0].click();", checkBoxIndTb);
+		}
+		if (tablesList.get(0).get(KEYISOANA).equalsIgnoreCase("1")) {
+			this.checkBoxIsoAna.click();
+		}
+		if (tablesList.get(0).get(KEYPCA).equalsIgnoreCase("1")) {
+			this.checkBoxPCA.click();
+		}
+		if (tablesList.get(0).get(KEYPCRA).equalsIgnoreCase("1")) {
+			this.checkBoxPCRA.click();
+		}
 		
 		this.btnOK.click();
 	}
@@ -268,9 +270,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	//Temporary solution for now and should pass the params by a data structure
 	private void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, 
 			String NELat, String NELong, String SWLat, String SWLong, String surUnit, String tag, String startDate, String endDate, String surModeFilter) {
-		
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
 		this.btnNewComplianceRpt.click();
 		
 		this.inputTitle.clear();
@@ -303,31 +303,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		this.inputExclusionRadius.clear();
 		this.inputExclusionRadius.sendKeys(exclusionRadius);
-		//this.inputReportModeS1.click();
 		
-		//this.inputCusBoundary.click();
-		
-		this.inputImgMapHeight.sendKeys(imageMapHeight);
-		this.inputImgMapWidth.sendKeys(imageMapWidth);
 		this.inputNELat.sendKeys(NELat);
 		this.inputNELong.sendKeys(NELong);
 		this.inputSWLat.sendKeys(SWLat);
 		this.inputSWLong.sendKeys(SWLong);
-		
-		this.checkBoxIndTb.click();
-		this.checkBoxIsoAna.click();
-		this.checkBoxPCA.click();
-		this.checkBoxPCRA.click();
-		
-		this.checkBoxOtherPla.click();
-		this.checkBoxPEPla.click();
-		this.checkBoxProtectedSteel.click();
-		this.checkBoxUnProtectedSteel.click();
-		this.checkBoxCastIron.click();
-		this.checkBoxCopper.click();
-		
-//		this.checkBoxLevel1.click();
-//		this.checkBoxLevel6.click();
 		
 		if (surUnit != "") {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
@@ -350,11 +330,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (testSetup.isRunningDebug())
 			testSetup.slowdownInSeconds(3);
 		
-//		this.cbStartDate.sendKeys(startDate);
-//		this.cbEndDate.sendKeys(endDate);
-		//this.inputSurModeFilterS1.click();
-		
-		this.btnSruveySearch.click();
+		this.btnSurveySearch.click();
 		this.checkboxSurFirst.click();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		this.btnAddSurveys.click();
@@ -365,105 +341,127 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.inputViewInd.click();
 		this.inputViewIso.click();
 		this.inputViewAnno.click();
+		this.inputViewGaps.click();
 		this.inputViewAssets.click();
 		this.inputViewBoundaries.click();
-		//this.inputViewBaseMap.click();
+		
+		this.inputImgMapHeight.clear();
+		this.inputImgMapHeight.sendKeys(imageMapHeight);
+		this.inputImgMapWidth.clear();
+		this.inputImgMapWidth.sendKeys(imageMapWidth);
+		
+		this.checkBoxOtherPla.click();
+		this.checkBoxPEPla.click();
+		this.checkBoxProtectedSteel.click();
+		this.checkBoxUnProtectedSteel.click();
+		this.checkBoxCastIron.click();
+		this.checkBoxCopper.click();
+		
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", checkBoxIndTb);
+		this.checkBoxIsoAna.click();
+		this.checkBoxPCA.click();
+		this.checkBoxPCRA.click();
 		
 		this.btnOK.click();
 	}
 	
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy) {
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-		
 		setPagination(PAGINATIONSETTING);
-		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-		
+
 		String reportTitleXPath;
 		String createdByXPath;
-		String pdfImgXPath;
-		String zipImgXPath;
-		
 		WebElement rptTitleCell;
 		WebElement createdByCell;
-		WebElement pdfImg;
-		WebElement zipImg;
-		
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
-		
+
+		List<WebElement> rows = table.findElements(By
+				.xpath("//*[@id='datatable']/tbody/tr"));
+
 		int rowSize = rows.size();
 		int loopCount = 0;
-		
+
 		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 			loopCount = rowSize;
 		else
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
-		
+
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
-			createdByXPath   = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
-						
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
+					+ "]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
+					+ "]/td[2]";
+
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
-			
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
+					&& createdByCell.getText().trim()
+							.equalsIgnoreCase(strCreatedBy)) {
 				long startTime = System.currentTimeMillis();
 				long elapsedTime = 0;
 				boolean bContinue = true;
-				
+
 				while (bContinue) {
 					try {
-						pdfImgXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]/a[3]/img";
-						pdfImg = table.findElement(By.xpath(pdfImgXPath));
-						String srcPdfImg = pdfImg.getAttribute("src");
-						
-						zipImgXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]/a[4]/img";
-						zipImg = table.findElement(By.xpath(zipImgXPath));
-						String srcZipImg = zipImg.getAttribute("src");
-						
-						if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip")) {
-							pdfImg.click();
-							
-							testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-							zipImg.click();
-							
-							testSetup.slowdownInSeconds(15);
-							
-							return true;
+						if (rowSize == 1) {
+							this.btnReportViewer = table
+									.findElement(By
+											.xpath("//*[@id='datatable']/tbody/tr/td[4]/a[3]"));
+							this.btnReportViewer.click();
+						} else {
+							this.btnReportViewer = table.findElement(By
+									.xpath("//*[@id='datatable']/tbody/tr["
+											+ rowNum + "]/td[4]/a[3]/img"));
+							this.btnReportViewer.click();
 						}
-						else
+						String srcPdfImg = this.pdfImg.getAttribute("src");
+						String srcZipImg = this.zipImg.getAttribute("src");
+
+						if (srcPdfImg.contains("pdf")
+								&& srcZipImg.contains("zip")) {
+							JavascriptExecutor js = (JavascriptExecutor) driver;
+							js.executeScript("arguments[0].click();", pdfImg);
+							testSetup.slowdownInSeconds(testSetup
+									.getSlowdownInSeconds());
+							this.zipImg.click();
+							testSetup.slowdownInSeconds(15);
+							return true;
+						} else
 							return false;
-					}
-					catch (org.openqa.selenium.NoSuchElementException e) {
+					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
 						if (elapsedTime >= (ACTIONTIMEOUT * 1000)) {
 							return false;
 						}
-						
+
 						continue;
 					}
 				}
 			}
-			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
+					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
-				
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-				
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+
+				this.testSetup.slowdownInSeconds(this.testSetup
+						.getSlowdownInSeconds());
+
+				List<WebElement> newRows = table.findElements(By
+						.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 					loopCount = rowSize;
 				else
 					loopCount = Integer.parseInt(PAGINATIONSETTING);
-				
+
 				rowNum = 0;
 			}
 		}
-		
 		return false;
 	}
-	
+
 	public boolean checkActionStatusInSeconds(String rptTitle, String strCreatedBy, int seconds) {
 		this.testSetup.slowdownInSeconds(seconds);
 		
@@ -759,9 +757,66 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	}
 	
-	public boolean validatePdfFiles(ReportsCompliance reportsCompliance, String downloadPath) {
+	public boolean validatePdfFiles(String reportTitle, String downloadPath) {
+		String reportId;
+		String reportFullId;
+		DBConnection objDbConn = new DBConnection();
+
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		try {
-			BaseHelper.deCompressZipFile(reportsCompliance.getRptTitle().trim().replaceAll(" ", "_"), downloadPath);
+			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
+			reportFullId = "CR-" + reportId;
+			System.out.println(reportFullId);
+			BaseHelper.deCompressZipFile(reportFullId, downloadPath);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		String nameBase = reportTitle.trim().replaceAll(" ", "_");
+		String pdfFile1;
+		String pdfFile2;
+		String pdfFile3;
+		
+		pdfFile1 = downloadPath + reportFullId + ".pdf";
+		pdfFile3 = downloadPath + reportFullId + File.separator + nameBase.replaceAll("_", "") + ".pdf";
+		
+		if (BaseHelper.validatePdfFile(pdfFile1) && BaseHelper.validatePdfFile(pdfFile3)) {
+			try {
+				if (!BaseHelper.compareTwoFilesByContent(pdfFile1, pdfFile3))
+					return false;
+			} 
+			catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		else
+			return false;
+		
+		    pdfFile2 = downloadPath + reportFullId + File.separator + nameBase.replaceAll("_", "") + "_View 1.pdf";
+			
+			if (!BaseHelper.validatePdfFile(pdfFile2))
+				return false;
+		
+		return true;
+	}
+	
+	public boolean validatePdfFiles(ReportsCompliance reportsCompliance, String downloadPath) {
+		String reportId;
+		String reportFullId;
+		DBConnection objDbConn = new DBConnection();
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+
+		try {
+			// taking time to download the zip - VPN connection
+			// Thread.sleep(10000);
+			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportsCompliance.getRptTitle(), this.testSetup);
+			reportFullId = "CR-" + reportId;
+			System.out.println(reportFullId);
+			this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+			BaseHelper.deCompressZipFile(reportFullId, downloadPath);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -776,8 +831,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		
 		List<Map<String, String>> viewList = reportsCompliance.getViewList();
 		
-		pdfFile1 = downloadPath + nameBase + ".pdf";
-		pdfFile3 = downloadPath + nameBase + File.separator + nameBase.replaceAll("_", "") + ".pdf";
+		pdfFile1 = downloadPath + reportFullId + ".pdf";
+		pdfFile3 = downloadPath + reportFullId + File.separator + nameBase.replaceAll("_", "") + ".pdf";
 		
 		if (BaseHelper.validatePdfFile(pdfFile1) && BaseHelper.validatePdfFile(pdfFile3)) {
 			try {
@@ -794,7 +849,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		
 		for (int i = 0; i < viewList.size(); i++) {
 			viewName = viewList.get(i).get(KEYVIEWNAME);
-			pdfFile2 = downloadPath + nameBase + File.separator + nameBase.replaceAll("_", "") + "_" + viewName + ".pdf";
+			pdfFile2 = downloadPath + reportFullId + File.separator + nameBase.replaceAll("_", "") + "_" + viewName + ".pdf";
 			
 			if (!BaseHelper.validatePdfFile(pdfFile2))
 				return false;
@@ -878,7 +933,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						if (tagValue != "") {
 							this.cbTag.clear();
 							this.cbTag.sendKeys(tagValue);
-							this.btnSruveySearch.click();
+							this.btnSurveySearch.click();
 							if (testSetup.isRunningDebug())
 								testSetup.slowdownInSeconds(3);
 							testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
@@ -1002,7 +1057,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (tagValue != "") {
 				this.cbTag.clear();
 				this.cbTag.sendKeys(tagValue);
-				this.btnSruveySearch.click();
+				this.btnSurveySearch.click();
 				if (testSetup.isRunningDebug())
 					testSetup.slowdownInSeconds(3);
 				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
@@ -1128,7 +1183,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (tagValue != "") {
 				this.cbTag.clear();
 				this.cbTag.sendKeys(tagValue);
-				this.btnSruveySearch.click();
+				this.btnSurveySearch.click();
 				if (testSetup.isRunningDebug())
 					testSetup.slowdownInSeconds(3);
 				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
@@ -1253,7 +1308,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (surveyTag != "") {
 			this.cbTag.clear();
 			this.cbTag.sendKeys(surveyTag);
-			this.btnSruveySearch.click();
+			this.btnSurveySearch.click();
 			if (testSetup.isRunningDebug())
 				testSetup.slowdownInSeconds(3);
 			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
@@ -1266,7 +1321,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (surveyTag != "") {
 				this.cbTag.clear();
 				this.cbTag.sendKeys(surveyTag);
-				this.btnSruveySearch.click();
+				this.btnSurveySearch.click();
 				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 				this.checkboxSurFirst.click();
 				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
@@ -1291,7 +1346,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (surveyTag != "") {
 				this.cbTag.clear();
 				this.cbTag.sendKeys(surveyTag);
-				this.btnSruveySearch.click();
+				this.btnSurveySearch.click();
 				if (testSetup.isRunningDebug())
 					testSetup.slowdownInSeconds(3);
 				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
