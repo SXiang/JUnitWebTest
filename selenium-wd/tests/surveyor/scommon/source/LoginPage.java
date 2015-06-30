@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 
 import common.source.BasePage;
 import common.source.TestSetup;
@@ -44,9 +45,9 @@ public class LoginPage extends BasePage {
 	}
 	 
 	public HomePage loginNormalAs(String userName, String password) {
-		tbUserName.sendKeys(userName);
-		tbPassword.sendKeys(password);
-		btnLogin.click();
+		this.tbUserName.sendKeys(userName);
+		this.tbPassword.sendKeys(password);
+		this.btnLogin.click();
 		
 		if (driver.getCurrentUrl().contains("Eula") && driver.getTitle().contains("Eula")) {
 			btnAccept.click();
@@ -64,6 +65,7 @@ public class LoginPage extends BasePage {
 		}
 		
 		HomePage homePage = new HomePage(this.driver, this.strBaseURL, this.testSetup);
+		PageFactory.initElements(driver,  homePage);
 		long startTime = System.currentTimeMillis();
 		long elapsedTime = 0;
 		

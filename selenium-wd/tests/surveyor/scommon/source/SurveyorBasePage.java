@@ -93,7 +93,7 @@ public class SurveyorBasePage extends BasePage {
 		this.linkLogOut.click();
 		
 		LoginPage loginPage = new LoginPage(this.driver, this.strBaseURL, this.testSetup);
-		
+		PageFactory.initElements(driver,  loginPage);
 		return loginPage;
 	}
 	

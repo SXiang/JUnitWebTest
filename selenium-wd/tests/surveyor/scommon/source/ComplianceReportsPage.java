@@ -568,7 +568,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				NELAT, NELON, SWLAT, SWLON, surveyor, tag, STARTDATE, ENDDATE, changeMode, reportMode);
 	}
 	
-	public boolean findExistingReport(String rptTitle, String strCreatedBy) { 
+	public boolean findReport(String rptTitle, String strCreatedBy) { 
 		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -810,8 +810,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
 		try {
-			// taking time to download the zip - VPN connection
-			// Thread.sleep(10000);
 			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportsCompliance.getRptTitle(), this.testSetup);
 			reportFullId = "CR-" + reportId;
 			System.out.println(reportFullId);

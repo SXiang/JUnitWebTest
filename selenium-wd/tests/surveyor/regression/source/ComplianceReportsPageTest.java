@@ -143,7 +143,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSUA)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					SQACUSUA));
 		else
 			fail("\nTestcase RPT000A - Test Description: Create a compliance report by a user with Customer Utility Admin Role, survey owner, failed.\n");
@@ -178,7 +178,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSUA)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					SQACUSUA));
 		else
 			fail("\nTestcase RPT000A1 - Test Description: Create a compliance report by a user with Customer Utility Admin Role, supervisor survey, failed.\n");
@@ -211,7 +211,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSUA)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					SQACUSUA));
 		else
 			fail("\nTestcase RPT000A2 - Test Description: Create a compliance report by a user with Customer Utility Admin Role, driver survey, failed.\n");
@@ -244,7 +244,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSSU)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					SQACUSSU));
 		else
 			fail("\nTestcase RPT000B - Test Description: Create a compliance report by a user with Customer Supervisor Role, survey owner, failed.\n");
@@ -276,7 +276,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSSU)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					SQACUSSU));
 		else
 			fail("\nTestcase RPT000B1 - Test Description: Create a compliance report by a user with Customer Supervisor Role, driver survey, failed.\n");
@@ -308,7 +308,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSSU)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					SQACUSSU));
 		else
 			fail("\nTestcase RPT000B2 - Test Description: Create a compliance report by a user with Customer Supervisor Role, utility admin survey, failed.\n");
@@ -340,7 +340,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICAD)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					SQAPICAD));
 		else
 			fail("\nTestcase RPT000C failed.\n");
@@ -372,7 +372,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICAD)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					SQAPICAD));
 		else
 			fail("\nTestcase RPT000C1 failed.\n");
@@ -404,7 +404,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICAD)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					SQAPICAD));
 		else
 			fail("\nTestcase RPT000C2 failed.\n");
@@ -436,7 +436,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICAD)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					SQAPICAD));
 		else
 			fail("\nTestcase RPT000C3 failed.\n");
@@ -468,7 +468,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICUA)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					SQAPICUA));
 		else
 			fail("\nTestcase RPT000D failed.\n");
@@ -500,7 +500,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICUA)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					SQAPICUA));
 		else
 			fail("\nTestcase RPT000D1 failed.\n");
@@ -532,7 +532,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICUA)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					SQAPICUA));
 		else
 			fail("\nTestcase RPT000D2 failed.\n");
@@ -564,7 +564,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICUA)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					SQAPICUA));
 		else
 			fail("\nTestcase RPT000D3 failed.\n");
@@ -596,13 +596,13 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					PICDFADMIN));
 		else
 			fail("\nTestcase RPT000E failed.\n");
 
 		if (complianceReportsPage.deleteReport(rptTitle, PICDFADMIN))
-			assertTrue(!complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(!complianceReportsPage.findReport(rptTitle,
 					PICDFADMIN));
 		else
 			fail("\nTestcase RPT000E failed.\n");
@@ -634,7 +634,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					PICDFADMIN));
 		else
 			fail("\nTestcase RPT000F failed.\n");
@@ -644,7 +644,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle + "COPY",
 				PICDFADMIN)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle
+			assertTrue(complianceReportsPage.findReport(rptTitle
 					+ "COPY", PICDFADMIN));
 		else
 			fail("\nTestcase RPT000F failed.\n");
@@ -677,7 +677,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					PICDFADMIN));
 		else
 			fail("\nTestcase RPT000G failed.\n");
@@ -710,7 +710,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					PICDFADMIN));
 		else
 			fail("\nTestcase RPT000H failed.\n");
@@ -795,7 +795,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 				testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt,
 					testSetup.getDownloadPath())) {
-				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+				assertTrue(complianceReportsPage.findReport(rptTitle,
 						testSetup.getLoginUser()));
 			} else
 				fail("\nTestcase RPT000I failed.\n");
@@ -824,18 +824,15 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		String surUnit = "";
 		// changed survey tag for time being---- remove the code later on and fix the tag value as per surveys available in SureyorConstants file
-		String SQAPICSUTAG = "test 6/22";
+		String SQAPICSUTAG = "SmokeTest 6/12";
 		
 		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICSUTAG);
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
-			if (complianceReportsPage.validatePdfFiles(rptTitle,
-					testSetup.getDownloadPath())) {
-				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
-						PICDFADMIN));
-			} else
-				fail("\nTestcase RPT001 failed.\n");
+			assertTrue(complianceReportsPage.validatePdfFiles(rptTitle,
+					testSetup.getDownloadPath()));
+			assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
 		} else
 			fail("\nTestcase RPT001 failed.\n");
 
@@ -924,7 +921,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tablesList.add(tableMap);
 		
 		// changed survey tag for time being---- remove the code later on and fix the tag value as per surveys available in SureyorConstants file
-		String SQAPICSUTAG = "test 6/22";
+		String SQAPICSUTAG = "SmokeTest 6/12";
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle,
 				testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0",
@@ -935,12 +932,10 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle,
 				testSetup.getLoginUser()))) {
-			if (complianceReportsPage.validatePdfFiles(rpt,
-					testSetup.getDownloadPath())) {
-				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
-						testSetup.getLoginUser()));
-			} else
-				fail("\nTestcase RPT003 failed.\n");
+			assertTrue(complianceReportsPage.validatePdfFiles(rpt,
+					testSetup.getDownloadPath()));
+			assertTrue(complianceReportsPage.findReport(rptTitle,
+					testSetup.getLoginUser()));
 		} else
 			fail("\nTestcase RPT003 failed.\n");
 
@@ -1038,7 +1033,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 				testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt,
 					testSetup.getDownloadPath())) {
-				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+				assertTrue(complianceReportsPage.findReport(rptTitle,
 						testSetup.getLoginUser()));
 			} else
 				fail("\nTestcase RPT003A failed.\n");
@@ -1110,7 +1105,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 				testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt,
 					testSetup.getDownloadPath())) {
-				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+				assertTrue(complianceReportsPage.findReport(rptTitle,
 						testSetup.getLoginUser()));
 			} else
 				fail("\nTestcase RPT004 failed.\n");
@@ -1182,7 +1177,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 				testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt,
 					testSetup.getDownloadPath())) {
-				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+				assertTrue(complianceReportsPage.findReport(rptTitle,
 						testSetup.getLoginUser()));
 			} else
 				fail("\nTestcase RPT005 failed.\n");
@@ -1256,7 +1251,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 				testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt,
 					testSetup.getDownloadPath())) {
-				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+				assertTrue(complianceReportsPage.findReport(rptTitle,
 						testSetup.getLoginUser()));
 			} else
 				fail("\nTestcase RPT006 failed.\n");
@@ -1292,7 +1287,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					PICDFADMIN));
 		else
 			fail("\nNew Report Generation failed.\n");
@@ -1302,7 +1297,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle + "COPY",
 				PICDFADMIN)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle
+			assertTrue(complianceReportsPage.findReport(rptTitle
 					+ "COPY", PICDFADMIN));
 		else
 			fail("\nTestcase RPT007 failed.\n");
@@ -1373,7 +1368,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 				testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt,
 					testSetup.getDownloadPath())) {
-				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+				assertTrue(complianceReportsPage.findReport(rptTitle,
 						testSetup.getLoginUser()));
 			} else
 				fail("\nTestcase RPT008 failed.\n");
@@ -1446,7 +1441,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 				testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt,
 					testSetup.getDownloadPath())) {
-				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+				assertTrue(complianceReportsPage.findReport(rptTitle,
 						testSetup.getLoginUser()));
 			} else
 				fail("\nTestcase RPT009 failed.\n");
@@ -1517,7 +1512,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 				testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt,
 					testSetup.getDownloadPath())) {
-				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+				assertTrue(complianceReportsPage.findReport(rptTitle,
 						testSetup.getLoginUser()));
 			} else
 				fail("\nTestcase RPT010 failed.\n");
@@ -1599,7 +1594,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		assertTrue(complianceReportsPage.searchReport(rptTitle, PICDFADMIN));
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					PICDFADMIN));
 		} else
 			fail("\nNot able to generate the report\n");
@@ -1652,14 +1647,14 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle,
 				testSetup.getLoginUser())))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					testSetup.getLoginUser()));
 		else
 			fail("\nNew Compliance report creation failed.\n");
 
 		if (complianceReportsPage.deleteReport(rptTitle,
 				testSetup.getLoginUser()))
-			assertTrue(!complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(!complianceReportsPage.findReport(rptTitle,
 					testSetup.getLoginUser()));
 		else
 			fail("\nTestcase RPT019 failed.\n");
@@ -1693,13 +1688,13 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSUA)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					SQACUSUA));
 		else
 			fail("\nNew Compliance report creation failed.\n");
 
 		if (complianceReportsPage.deleteReport(rptTitle, SQACUSUA))
-			assertTrue(!complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(!complianceReportsPage.findReport(rptTitle,
 					SQACUSUA));
 		else
 			fail("\nTestcase RPT019A failed.\n");
@@ -1731,13 +1726,13 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSSU)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					SQACUSSU));
 		else
 			fail("\nNew Compliance report creation failed.\n");
 
 		if (complianceReportsPage.deleteReport(rptTitle, SQACUSSU))
-			assertTrue(!complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(!complianceReportsPage.findReport(rptTitle,
 					SQACUSSU));
 		else
 			fail("\nTestcase RPT019B failed.\n");
@@ -1808,7 +1803,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 				testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt,
 					testSetup.getDownloadPath())) {
-				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+				assertTrue(complianceReportsPage.findReport(rptTitle,
 						testSetup.getLoginUser()));
 			} else
 				fail("\nTestcase RPT020 failed.\n");
@@ -1839,7 +1834,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					PICDFADMIN));
 		else
 			fail("\nNew Report Generation failed.\n");
@@ -1849,7 +1844,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle + "COPY",
 				PICDFADMIN)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle
+			assertTrue(complianceReportsPage.findReport(rptTitle
 					+ "COPY", PICDFADMIN));
 		else
 			fail("\nTestcase RPT022 failed.\n");
@@ -1887,7 +1882,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					PICDFADMIN));
 		else
 			fail("\nTestcase RPT023 failed.\n");
@@ -1926,7 +1921,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle,
 				testSetup.getLoginUser())))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					testSetup.getLoginUser()));
 		else
 			fail("\nS1 report creation failed.\n");
@@ -1940,7 +1935,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle,
 				testSetup.getLoginUser())))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					testSetup.getLoginUser()));
 		else
 			fail("\nStandard report creation failed.\n");
@@ -1953,7 +1948,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					PICDFADMIN));
 		else
 			fail("\nTestcase RPT024 failed.\n");
@@ -2023,7 +2018,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
 			if (complianceReportsPage.validatePdfFiles(rpt,
 					testSetup.getDownloadPath())) {
-				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+				assertTrue(complianceReportsPage.findReport(rptTitle,
 						PICDFADMIN));
 			} else
 				fail("\nTestcase RPT025 failed.\n");
@@ -2094,7 +2089,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSSU))) {
 			if (complianceReportsPage.validatePdfFiles(rpt,
 					testSetup.getDownloadPath())) {
-				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+				assertTrue(complianceReportsPage.findReport(rptTitle,
 						SQACUSSU));
 			} else
 				fail("\nTestcase RPT026 failed.\n");
@@ -2165,7 +2160,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSUA))) {
 			if (complianceReportsPage.validatePdfFiles(rpt,
 					testSetup.getDownloadPath())) {
-				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+				assertTrue(complianceReportsPage.findReport(rptTitle,
 						SQACUSUA));
 			} else
 				fail("\nTestcase RPT027 failed.\n");
@@ -2210,7 +2205,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					PICDFADMIN));
 		else
 			fail("\nNew Report Generation failed.\n");
@@ -2221,7 +2216,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 				newRptTitle, surUnit, manualSurTag, true, changeReportMode);
 
 		if ((complianceReportsPage.checkActionStatus(newRptTitle, PICDFADMIN)))
-			assertTrue(complianceReportsPage.findExistingReport(newRptTitle,
+			assertTrue(complianceReportsPage.findReport(newRptTitle,
 					PICDFADMIN));
 		else
 			fail("\nTestcase RPT030 failed.\n");
@@ -2264,7 +2259,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					PICDFADMIN));
 		else
 			fail("\nNew Report Generation failed.\n");
@@ -2275,7 +2270,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 				newRptTitle, surUnit, surTag, true, changeReportMode);
 
 		if ((complianceReportsPage.checkActionStatus(newRptTitle, PICDFADMIN)))
-			assertTrue(complianceReportsPage.findExistingReport(newRptTitle,
+			assertTrue(complianceReportsPage.findReport(newRptTitle,
 					PICDFADMIN));
 		else
 			fail("\nTestcase RPT031 failed.\n");
@@ -2314,7 +2309,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					PICDFADMIN));
 		else
 			fail("\nNew Report Generation failed.\n");
@@ -2325,7 +2320,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 				newRptTitle, surUnit, surTag, true, changeReportMode);
 
 		if ((complianceReportsPage.checkActionStatus(newRptTitle, PICDFADMIN)))
-			assertTrue(complianceReportsPage.findExistingReport(newRptTitle,
+			assertTrue(complianceReportsPage.findReport(newRptTitle,
 					PICDFADMIN));
 		else
 			fail("\nTestcase RPT032 failed.\n");
@@ -2365,7 +2360,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					PICDFADMIN));
 		else
 			fail("\nTestcase RPT033 failed.\n");
@@ -2500,7 +2495,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
 			if (complianceReportsPage.validatePdfFiles(rpt,
 					testSetup.getDownloadPath())) {
-				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+				assertTrue(complianceReportsPage.findReport(rptTitle,
 						PICDFADMIN));
 			} else
 				fail("\nTestcase RPT038 failed.\n");
@@ -2593,7 +2588,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
 			if (complianceReportsPage.validatePdfFiles(rpt,
 					testSetup.getDownloadPath())) {
-				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+				assertTrue(complianceReportsPage.findReport(rptTitle,
 						PICDFADMIN));
 			} else
 				fail("\nTestcase RPT039 failed.\n");
@@ -2651,7 +2646,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
-			assertTrue(complianceReportsPage.findExistingReport(rptTitle,
+			assertTrue(complianceReportsPage.findReport(rptTitle,
 					PICDFADMIN));
 		} else
 			fail("\nRPT045 Report generation failed\n");

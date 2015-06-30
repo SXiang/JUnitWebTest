@@ -27,14 +27,8 @@ import static surveyor.scommon.source.SurveyorConstants.SQACUSDRTAG;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSDRUSER;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOCSUR;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSSUTAG;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSUATAG;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUAUSER;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICADTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICDRTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICSUTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICUATAG;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 
@@ -43,119 +37,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.ManageCustomersPage;
-import surveyor.scommon.source.ManageLocationsAdminPage;
-import surveyor.scommon.source.ManageLocationsPage;
-import surveyor.scommon.source.ManageRefGasBottlesAdminPage;
-import surveyor.scommon.source.ManageRefGasBottlesPage;
-import surveyor.scommon.source.ManageSurveyorAdminPage;
-import surveyor.scommon.source.ManageSurveyorPage;
-import surveyor.scommon.source.ManageUsersAdminPage;
-import surveyor.scommon.source.ManageUsersPage;
-import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorBaseTest;
-import surveyor.scommon.source.UserFeedbackAdminPage;
-import surveyor.scommon.source.UserFeedbackPage;
 
 /**
  * @author zlu
  *
  */
 public class SanityIntegrationTest extends SurveyorBaseTest {
-	private static ManageCustomersPage manageCustomersPage;
 	private static ComplianceReportsPage complianceReportsPage;
-	private static ManageLocationsPage manageLocationsPage;
-	private static ManageLocationsAdminPage manageLocationsAdminPage;
-	private static ManageSurveyorPage manageSurveyorPage;
-	private static ManageSurveyorAdminPage manageSurveyorAdminPage;
-	private static ManageUsersPage manageUsersPage;
-	private static ManageUsersAdminPage manageUsersAdminPage;
-	private static ManageRefGasBottlesPage manageRefGasBottlesPage;
-	private static ManageRefGasBottlesAdminPage manageRefGasBottlesAdminPage;
-	private static MeasurementSessionsPage measurementSessionsPage;
-	private static UserFeedbackPage userFeedbackPage;
-	private static UserFeedbackAdminPage userFeedbackAdminPage;
-	
-	private static List<String> strListTagCus = null;
-	private static List<String> strListTagPic = null;
-	private static List<String> strListTagCusDr = null;
 
 	@BeforeClass
 	public static void SetupSanityIntegrationTest() {
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageCustomersPage);
-		
 		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  complianceReportsPage);
-		
-		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageLocationsPage);
-		
-		manageLocationsAdminPage = new ManageLocationsAdminPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageLocationsAdminPage);
-		
-		manageSurveyorPage = new ManageSurveyorPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageSurveyorPage);
-		
-		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageUsersPage);
-		
-		manageUsersAdminPage = new ManageUsersAdminPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageUsersAdminPage);
-		
-		manageRefGasBottlesPage = new ManageRefGasBottlesPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver,  manageRefGasBottlesPage);
-		
-		manageRefGasBottlesAdminPage = new ManageRefGasBottlesAdminPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver,  manageRefGasBottlesAdminPage);
-		
-		manageSurveyorAdminPage = new ManageSurveyorAdminPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageSurveyorAdminPage);
-		
-		measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver,  measurementSessionsPage);
-		
-		userFeedbackPage = new UserFeedbackPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver,  userFeedbackPage);		
-		
-		userFeedbackAdminPage = new UserFeedbackAdminPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver,  userFeedbackAdminPage);		
-		
-		strListTagCus = new ArrayList<String>();
-		strListTagPic = new ArrayList<String>();
-		
-		strListTagCusDr = new ArrayList<String>();
-		strListTagCusDr.add(SQACUSDRTAG);
-		
-		strListTagCus.add(SQACUSUATAG);
-		strListTagCus.add(SQACUSSUTAG);
-		strListTagCus.add(SQACUSDRTAG);
-		
-		strListTagPic.add(SQAPICADTAG);
-		strListTagPic.add(SQAPICUATAG);
-		strListTagPic.add(SQAPICSUTAG);
-		strListTagPic.add(SQAPICDRTAG);		
+		PageFactory.initElements(driver,  complianceReportsPage);	
 	}
-	
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-		homePage.open();
-		
-		if (!driver.getTitle().equalsIgnoreCase("Login"))
-			homePage.logout();
-		
-		driver.quit();		
-	}	
 	
 	@Test
 	public void loginTest_TC25_PicarroAdmin() {
@@ -276,12 +177,10 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSSU))) {
-			if (complianceReportsPage.validatePdfFiles(rpt,
-					testSetup.getDownloadPath())) {
-				assertTrue(complianceReportsPage.findExistingReport(rptTitle,
-						SQACUSSU));
-			} else
-				fail("\nTestcase TC739 failed.\n");
+			assertTrue(complianceReportsPage.findReport(rptTitle,
+					SQACUSSU));
+			assertTrue(complianceReportsPage.validatePdfFiles(rpt,
+					testSetup.getDownloadPath()));
 		} else
 			fail("\nTestcase TC739 failed." + rptTitle
 					+ " report not found created by " + SQACUSSU + " user!!\n");
