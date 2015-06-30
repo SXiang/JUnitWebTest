@@ -104,7 +104,7 @@
 			<batchtest fork="yes" todir="${reports}/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/*Test.class" />
+					<include name="**/SanityIntegrationTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
