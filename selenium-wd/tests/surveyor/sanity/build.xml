@@ -45,7 +45,7 @@
 
 	<target name="compile_common" depends="init"
 		description="Compile common source code">
-		<javac compiler="modern" srcdir="${basedir}/../../common/source:${basedir}/../../surveyor/scommon/source" includeantruntime="false" destdir="${basedir}/../../common/build" >
+		<javac compiler="modern" srcdir="${basedir}/../../common/source:${basedir}/../../surveyor/scommon/source" includeantruntime="false" destdir="${basedir}/../../common/build" debug="on">
 			<classpath>
 				<!-- <pathelement path="${basedir}/../../../lib"/> -->
 				<fileset dir="${basedir}/../../../lib">
@@ -74,7 +74,7 @@
 	</target>
 
 	<target name="compile" depends="compile_scommon" description="Compile sanity source code">
-		<javac compiler="modern" srcdir="${source}" includeantruntime="false" destdir="${build}" >
+		<javac compiler="modern" srcdir="${source}" includeantruntime="false" destdir="${build}" debug="on" >
 			<classpath>
 				<!-- <pathelement path = "${basedir}/../../../lib"/> -->
 				<fileset dir="${basedir}/../../../lib">
