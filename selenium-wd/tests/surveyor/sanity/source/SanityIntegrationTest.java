@@ -183,7 +183,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 					testSetup.getDownloadPath()));
 		} else
 			fail("\nTestcase TC739 failed." + rptTitle
-					+ " report not found created by " + SQACUSSU + " user!!\n");
+					+ " report failed to generate by " + SQACUSSU + " user!!\n");
 
 		complianceReportsPage.open();
 		complianceReportsPage.logout();

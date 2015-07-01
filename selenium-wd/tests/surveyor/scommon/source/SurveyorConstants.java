@@ -93,7 +93,7 @@ public final class SurveyorConstants {
 	
 	public static final String SQACUSUATAG = "dmcs1-sqacusua";
 	public static final String SQACUSSUTAG = "dmcs1-sqacussu";
-	public static final String SQACUSDRTAG = "stnd-sqacusdr";
+	public static final String SQACUSDRTAG = "stnd-sqacudr";
 	public static final String SQAPICADTAG = "dmcs1-sqapicad";
 	public static final String SQAPICUATAG = "dmcs1-sqapicua";
 	public static final String SQAPICSUTAG = "dmcs1-sqapicsu";
