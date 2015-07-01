@@ -95,7 +95,7 @@ public class TestSetup {
 			File propertyfile = new File(".");
 
 
-			testPropFileName  =propertyfile.getCanonicalPath() +"/selenium-wd/tests/surveyor/" + "test.properties";
+			testPropFileName  =propertyfile.getCanonicalPath() +File.separator+"selenium-wd"+ File.separator+"tests"+File.separator+"surveyor" +File.separator+ "test.properties";
 
 			System.out.println("testPropFileName:****"+testPropFileName);
 			InputStream inputStream = new FileInputStream(testPropFileName);
