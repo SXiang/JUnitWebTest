@@ -22,7 +22,7 @@
 
 		<mkdir dir="${basedir}/../scommon/build" />
 		<mkdir dir="${basedir}/../scommon/dist" />
-		
+	</target>
 
 	<target name="clean" description="Clean up">
 		<move file="${reports}" tofile="${reports}.old" failonerror="false" />
@@ -102,8 +102,6 @@
 				<!-- <include name = "**/*.jar"/> -->
 				<!-- </fileset> -->
 			</classpath>
-
-
 
 			<batchtest fork="yes" todir="${reports}/xml">
 				<formatter type="xml" />
