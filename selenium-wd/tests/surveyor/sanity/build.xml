@@ -83,16 +83,16 @@
 		</javac>
 
 		<jar jarfile="${dist}/${jar_name}" basedir="${build}" />
-
 	</target>
 
 	<target name="tests" depends="compile" description="Run test suite">
+
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 			showoutput="yes">
 
 			<classpath>
 				<pathelement path="${build}" />
-				echo message="junit build: ${build}" 
+				
 				<!-- <pathelement path = "${basedir}/../../../lib"/> -->
 				<!-- <pathelement path = "${basedir}/../../common"/> -->
 				<fileset dir="${basedir}/../../../lib">
@@ -110,6 +110,7 @@
 				</fileset>
 			</batchtest>
 		</junit>
+<echo message="junit build : ${build}" />
 	</target>
 
 	<target name="test" depends="tests">
