@@ -22,8 +22,7 @@
 
 		<mkdir dir="${basedir}/../scommon/build" />
 		<mkdir dir="${basedir}/../scommon/dist" />
-	</target>
-
+		
 
 	<target name="clean" description="Clean up">
 		<move file="${reports}" tofile="${reports}.old" failonerror="false" />
@@ -90,8 +89,10 @@
 	<target name="tests" depends="compile" description="Run test suite">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 			showoutput="yes">
+
 			<classpath>
 				<pathelement path="${build}" />
+				echo message="junit build: ${build}" 
 				<!-- <pathelement path = "${basedir}/../../../lib"/> -->
 				<!-- <pathelement path = "${basedir}/../../common"/> -->
 				<fileset dir="${basedir}/../../../lib">
@@ -101,6 +102,8 @@
 				<!-- <include name = "**/*.jar"/> -->
 				<!-- </fileset> -->
 			</classpath>
+
+
 
 			<batchtest fork="yes" todir="${reports}/xml">
 				<formatter type="xml" />
