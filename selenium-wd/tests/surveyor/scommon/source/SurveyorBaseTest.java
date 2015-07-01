@@ -36,9 +36,9 @@ public class SurveyorBaseTest {
 		baseURL = testSetup.getBaseUrl();
 		screenShotsDir = "./screenshots/";
 		debug = testSetup.isRunningDebug();
-		System.out.println("debuggug null:" +driver);
+		System.out.println("debuggug null - driver:***:" +driver);
 		//System.out.println("debuggug null:" +driver.manage());
-		//driver.manage().deleteAllCookies();
+		driver.manage().deleteAllCookies();
 		
 		loginPage = new LoginPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  loginPage);
