@@ -25,18 +25,6 @@
 	</target>
 
 
-<target name="setClassPath" unless="test.classpath">
-		<path id="classpath_jars">
-			<fileset dir="${ws.jars}" includes="**/**/*.jar"/>
-			<!--fileset dir="${seleniumcore.jars}" includes="**/*.jar"/-->
-		</path>
-		<pathconvert pathsep=":" 
-	            property="test.classpath" 
-	            refid="classpath_jars"/>
-		<!--echo message="classpath2: ${test.classpath}" /-->
-	</target>
-
-
 	<target name="clean" description="Clean up">
 		<move file="${reports}" tofile="${reports}.old" failonerror="false" />
 		<move file="${screenshots}" tofile="${screenshots}.old"
@@ -57,7 +45,7 @@
 
 	<target name="compile_common" depends="init"
 		description="Compile common source code">
-		<javac srcdir="${basedir}/../../common/source:${basedir}/../../surveyor/scommon/source" includeantruntime="false" destdir="${basedir}/../../common/build">
+		<javac compiler="modern" srcdir="${basedir}/../../common/source:${basedir}/../../surveyor/scommon/source" includeantruntime="false" destdir="${basedir}/../../common/build" >
 			<classpath>
 				<!-- <pathelement path="${basedir}/../../../lib"/> -->
 				<fileset dir="${basedir}/../../../lib">
@@ -72,8 +60,8 @@
 
 	<target name="compile_scommon" depends="compile_common"
 		description="Compile scommon source code">
-		<javac srcdir="${basedir}/../scommon/source" includeantruntime="false" destdir="${basedir}/../scommon/build"
-			debug="on">
+		<javac compiler="modern" srcdir="${basedir}/../scommon/source" includeantruntime="false" destdir="${basedir}/../scommon/build"
+			debug="on" >
 			<classpath>
 				<fileset dir="${basedir}/../../../lib">
 					<include name="**/*.jar" />
@@ -86,7 +74,7 @@
 	</target>
 
 	<target name="compile" depends="compile_scommon" description="Compile sanity source code">
-		<javac srcdir="${source}" includeantruntime="false" destdir="${build}">
+		<javac compiler="modern" srcdir="${source}" includeantruntime="false" destdir="${build}" >
 			<classpath>
 				<!-- <pathelement path = "${basedir}/../../../lib"/> -->
 				<fileset dir="${basedir}/../../../lib">
