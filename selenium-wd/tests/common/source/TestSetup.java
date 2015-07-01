@@ -91,6 +91,7 @@ public class TestSetup {
 	public TestSetup() {
 		try {
 			String userDir = System.getProperty("user.dir");
+			System.out.println("userdir"+userDir);
 			File propertyfile = new File(userDir+"/..");
 			testPropFileName  =propertyfile.getCanonicalPath() +File.separator + "test.properties";
 			InputStream inputStream = new FileInputStream(testPropFileName);
