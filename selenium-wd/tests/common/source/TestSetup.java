@@ -154,7 +154,7 @@ public class TestSetup {
 			this.language = this.testProp.getProperty("language");
 			
 			//this.downloadPath = this.testProp.getProperty("downloadPath");
-			this.downloadPath = "C:/Users/" + System.getProperty("user.name") + "/Downloads/";
+			this.downloadPath = "C:\Users\Administrator\Downloads";
 
 			if (this.testProp.getProperty("debug").equals("true")) {
 				
