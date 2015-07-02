@@ -163,7 +163,7 @@ public class TestSetup {
 			//this.downloadPath = this.testProp.getProperty("downloadPath");
 		//	this.downloadPath = "C:"+File.separator+"Users"+File.separator+"Administrator"+File.separator+"Downloads"+File.separator;
 		//	this.downloadPath = "C:"+File.separator+"Users"+File.separator+"rmallikarjun"+File.separator+"Downloads"+File.separator;
-			this.downloadPath = System.getProperty("user.home")+File.separator+"Downloads"+File.separator
+			this.downloadPath = System.getProperty("user.home")+File.separator+"Downloads"+File.separator;
 
 			if (this.testProp.getProperty("debug").equals("true")) {
 				
