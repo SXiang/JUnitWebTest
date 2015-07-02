@@ -97,9 +97,9 @@ public class TestSetup {
 
 		    System.out.println("rootPath:****"+rootPath);
 
-		//	testPropFileName  = rootPath +File.separator+"selenium-wd"+ File.separator+"tests"+File.separator+"surveyor" +File.separator+ "test.properties";
+			testPropFileName  = rootPath +File.separator+"selenium-wd"+ File.separator+"tests"+File.separator+"surveyor" +File.separator+ "test.properties";
 
-			testPropFileName  = rootPath +File.separator+ "test.properties";
+		//	testPropFileName  = rootPath +File.separator+ "test.properties";
 
 			System.out.println("testPropFileName:****"+testPropFileName);
 			InputStream inputStream = new FileInputStream(testPropFileName);
@@ -146,9 +146,8 @@ public class TestSetup {
 
 			this.ieDriverPath = this.testProp.getProperty("ieDriverPath");
 
-			//this.chromeDriverPath = rootPath + File.separator+"selenium-wd"+ File.separator +"lib" + File.separator+"chromedriver.exe";
-			//this.chromeDriverPath = rootPath + File.separator+ ".." + File.separator+chromedriver.exe";
-			this.chromeDriverPath="C:\\projects\\surveyor-qa\\selenium-wd\\lib\\chromedriver.exe";
+			this.chromeDriverPath = rootPath + File.separator+"selenium-wd"+ File.separator +"lib" + File.separator+"chromedriver.exe";
+		//	this.chromeDriverPath="C:\\projects\\surveyor-qa\\selenium-wd\\lib\\chromedriver.exe";
 							
 
 			this.implicitlyWaitTimeOutInSeconds = this.testProp
