@@ -95,7 +95,7 @@ public class TestSetup {
 
 			String rootPath = propertyfile.getCanonicalPath();
 
-		    System.out.println("rootPath:****"+rootPath);
+		    System.out.println("rootPath:**** "+rootPath);
 
 			testPropFileName  = rootPath +File.separator+"selenium-wd"+ File.separator+"tests"+File.separator+"surveyor" +File.separator+ "test.properties";
 
@@ -160,9 +160,9 @@ public class TestSetup {
 			this.language = this.testProp.getProperty("language");
 			
 			//this.downloadPath = this.testProp.getProperty("downloadPath");
-		//	this.downloadPath = "C:"+File.separator+"Users"+File.separator+"Administrator"+File.separator+"Downloads"+File.separator;
+			this.downloadPath = "C:"+File.separator+"Users"+File.separator+"Administrator"+File.separator+"Downloads"+File.separator;
 		//	this.downloadPath = "C:"+File.separator+"Users"+File.separator+"rmallikarjun"+File.separator+"Downloads"+File.separator;
-			this.downloadPath = System.getProperty("user.home")+File.separator+"Downloads"+File.separator;
+		//	this.downloadPath = System.getProperty("user.home")+File.separator+"Downloads"+File.separator;
 
 			if (this.testProp.getProperty("debug").equals("true")) {
 				
