@@ -155,12 +155,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		
 		addViews(reportsCompliance.getViewList());
 		
-		this.checkBoxOtherPla.click();
-		this.checkBoxPEPla.click();
-		this.checkBoxProtectedSteel.click();
-		this.checkBoxUnProtectedSteel.click();
-		this.checkBoxCastIron.click();
-		this.checkBoxCopper.click();
+//		this.checkBoxOtherPla.click();
+//		this.checkBoxPEPla.click();
+//		this.checkBoxProtectedSteel.click();
+//		this.checkBoxUnProtectedSteel.click();
+//		this.checkBoxCastIron.click();
+//		this.checkBoxCopper.click();
 		
 		List<Map<String, String>> tablesList = reportsCompliance
 				.getTablesList();
