@@ -810,10 +810,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
 		try {
+			Thread.sleep(10000);
 			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportsCompliance.getRptTitle(), this.testSetup);
 			reportFullId = "CR-" + reportId;
 			System.out.println(reportFullId);
 			this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+			System.out.println("Report Download Path: " + downloadPath);
 			BaseHelper.deCompressZipFile(reportFullId, downloadPath);
 		}
 		catch (Exception e) {
