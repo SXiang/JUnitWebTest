@@ -92,12 +92,21 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		loginPage = homePage.logout();
 	}
 	
+	@Test
+	public void downloadTest() {
+		
+		complianceReportsPage.login(PICDFADMIN, USERPASSWORD);
+		
+		complianceReportsPage.open();
+		
+	}
+	
 	/**
 	 * Test Case ID: TC739 Test Description: Generate compliance report as
 	 * customer supervisor user by selecting report area using custom boundary
 	 * 
 	 */
-	@Test
+	/*@Test
 	public void TC739() {
 		String rptTitle = "Customer Supervisor Report TC739 "
 				+ testSetup.getRandomNumber();
@@ -106,7 +115,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 						rptTitle);
 
 		complianceReportsPage.login(SQACUSSU, USERPASSWORD);
-		complianceReportsPage.open();
+		 complianceReportsPage.open();
 
 		List<String> listBoundary = new ArrayList<String>();
 		listBoundary.add("8.5");
@@ -184,6 +193,36 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		} else
 			fail("\nTestcase TC739 failed." + rptTitle
 					+ " report failed to generate by " + SQACUSSU + " user!!\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}*/
+	
+	@Test
+	public void RPT001() {
+//		String rptTitle = "RPT001 Report" + testSetup.getRandomNumber();
+		String rptTitle = "Customer Supervisor Report TC739 994450";
+		System.out
+				.format("\nRunning RPT001: Generate compliance report with all default values/filters selected and download it, %s\n",
+						rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		//String surUnit = "";
+		// changed survey tag for time being---- remove the code later on and fix the tag value as per surveys available in SureyorConstants file
+		//String SQAPICSUTAG = "SmokeTest 6/12";
+		
+//		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICSUTAG);
+//		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
+			assertTrue(complianceReportsPage.validatePdfFiles(rptTitle,
+					testSetup.getDownloadPath()));
+			assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
+		} else
+			fail("\nTestcase RPT001 failed.\n");
 
 		complianceReportsPage.open();
 		complianceReportsPage.logout();

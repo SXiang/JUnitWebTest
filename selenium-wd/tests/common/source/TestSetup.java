@@ -13,7 +13,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -95,13 +97,10 @@ public class TestSetup {
 
 			String rootPath = propertyfile.getCanonicalPath();
 
-		    System.out.println("rootPath:**** "+rootPath);
-
 			testPropFileName  = rootPath +File.separator+"selenium-wd"+ File.separator+"tests"+File.separator+"surveyor" +File.separator+ "test.properties";
 
 		//	testPropFileName  = rootPath +File.separator+ "test.properties";
 
-			System.out.println("testPropFileName:****"+testPropFileName);
 			InputStream inputStream = new FileInputStream(testPropFileName);
 
 
@@ -111,8 +110,7 @@ public class TestSetup {
 			this.dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			this.calendar = Calendar.getInstance();
 			
-			System.out.println();
-			
+	
 			System.out.println(dateFormat.format(this.calendar.getTime())
 					+ "\n");
 
@@ -160,9 +158,7 @@ public class TestSetup {
 			this.language = this.testProp.getProperty("language");
 			
 			//this.downloadPath = this.testProp.getProperty("downloadPath");
-			this.downloadPath = "C:"+File.separator+"Users"+File.separator+"Administrator"+File.separator+"Downloads"+File.separator;
-		//	this.downloadPath = "C:"+File.separator+"Users"+File.separator+"rmallikarjun"+File.separator+"Downloads"+File.separator;
-		//	this.downloadPath = System.getProperty("user.home")+File.separator+"Downloads"+File.separator;
+			this.downloadPath = System.getProperty("user.home")+File.separator+"Downloads"+File.separator;
 
 			if (this.testProp.getProperty("debug").equals("true")) {
 				
@@ -204,6 +200,9 @@ public class TestSetup {
 							.equalsIgnoreCase("Yes") && this.browser != null) {
 				switch (this.browser.trim()) {
 				case "chrome":
+					System.out.println("-----Chrome it is ----");
+					Map<String, Object> prefs = new HashMap<String, Object>();
+					prefs.put("download.default_directory", this.downloadPath);
 					DesiredCapabilities capabilities = DesiredCapabilities.chrome();
 					ChromeOptions options = new ChromeOptions();
 					options.addArguments(Arrays.asList(
@@ -211,6 +210,8 @@ public class TestSetup {
 //							"allow-running-insecure-content",
 //							"ignore-certificate-errors", 
 							"test-type"));
+				//	options.addArguments("download.default_directory", this.downloadPath);
+					options.setExperimentalOptions("prefs", prefs);
 					capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 					driver = new RemoteWebDriver(new URL("http://"
 							+ this.remoteServerHost + ":4444/wd/hub/"),
@@ -238,6 +239,9 @@ public class TestSetup {
 			} else if (this.browser != null && (this.ieDriverPath != null || this.chromeDriverPath != null)) {
 				switch (this.browser.trim()) {
 				case "chrome":
+					System.out.println("-----Chrome it is ----");
+					Map<String, Object> prefs = new HashMap<String, Object>();
+					prefs.put("download.default_directory", this.downloadPath);
 					DesiredCapabilities capabilities = DesiredCapabilities.chrome();
 					ChromeOptions options = new ChromeOptions();
 					options.addArguments(Arrays.asList(
@@ -245,6 +249,7 @@ public class TestSetup {
 //						"allow-running-insecure-content",
 //						"ignore-certificate-errors", 
 						"test-type"));
+					options.setExperimentalOptions("prefs", prefs);
 					capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 					
 					System.setProperty("webdriver.chrome.driver",
