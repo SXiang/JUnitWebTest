@@ -177,5 +177,11 @@ public final class SurveyorConstants {
 	public static final String DRIVINGSURVEYSEXPORTSURVEY = "SurveyExport";
 	public static final String DRIVINGSURVEYSEXPORTPEAKS = "PeakExport";
 	public static final String DRIVINGSURVEYSEXPORTANALYSIS = "AnalysisExport";
-
+	
+	public static final String LOGINTITLE = "Login";
+	public static final String HOMETITLE = "Home - Surveyor";
+	public static final String HOMEDHEADER = "Dashboard";
+	public static final String SUBTITLE = " - Surveyor";
+	public static final String DRIVINGSURVEYTITLE = "Measurement Sessions - Surveyor";
+	public static final String DRIVINGSURVEYHEADER = "Driving Surveys";
 }

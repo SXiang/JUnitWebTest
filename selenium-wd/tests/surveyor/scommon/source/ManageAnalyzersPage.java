@@ -41,6 +41,9 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='analyzer-form']/fieldset/div[4]/div[2]/a")
 	private WebElement btnCancel;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[5]/a")
+	protected WebElement btnEditAnalyzer;
+	
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -325,6 +328,18 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		}
 		
 		return false;
+	}
+	
+	public void clickOnAddNewAnalyzerBtn() {
+		this.btnAddNewAnalyzer.click();
+	}
+	
+	public void clickOnFirstEditAnalyzerBtn() {
+		this.btnEditAnalyzer.click();
+	}
+	
+	public void clickOnCancelBtn() {
+		this.btnCancel.click();
 	}
 
 	/**

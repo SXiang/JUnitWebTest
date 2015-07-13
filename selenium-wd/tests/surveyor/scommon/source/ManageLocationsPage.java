@@ -42,8 +42,11 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
 	protected WebElement btnOK;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='location-form']/fieldset/div[3]/div[2]/a")
+	@FindBy(how = How.ID, using = "buttonCancel")
 	protected WebElement btnCancel;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[5]/a")
+	protected WebElement btnEditLocation;
 	
 	/**
 	 * @param driver
@@ -217,6 +220,18 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	
 	public WebElement getBtnCancel() {
 		return this.btnCancel;
+	}
+	
+	public void clickOnAddNewLocationBtn() {
+		this.btnAddNewLocation.click();
+	}
+	
+	public void clickOnFirstEditLocationBtn() {
+		this.btnEditLocation.click();
+	}
+	
+	public void clickOnCancelBtn() {
+		this.btnCancel.click();
 	}
 	
 	/**

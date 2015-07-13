@@ -14,20 +14,14 @@ import org.openqa.selenium.support.How;
 import common.source.TestSetup;
 
 /**
+ * Util Admin User's page
+ * Code related to Util Admin Manage User's page should be here
  * @author zlu
  *
  */
 public class ManageUsersAdminPage extends ManageUsersPage {
 	public static final String STRURLPath = "/Admin/ManageUsers";
 	public static final String STRPageTitle = "Manage ??? Users - Surveyor";
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
-	private WebElement btnAddNewUser;
-	
-	//@FindBy(how = How.XPATH, using = "//*[@id='user-form']/fieldset/div[8]/div[2]/a")
-	@FindBy(how = How.XPATH, using = "//*[@id='user-form']/fieldset/div[7]/div[2]/a")
-	private WebElement cancelBtn;
-	//private String cancelBtnXPath = "//*[@id='user-form']/fieldset/div[7]/div[2]/a";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='User.UserName-error']")
 	private WebElement labelUserNameError;
@@ -40,7 +34,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='PasswordConfirm-error']")
 	private WebElement labelPwdConfirmError;
 	private String labelPwdConfirmErrorXPath = "//*[@id='PasswordConfirm-error']";
-
+	
 	/**
 	 * @param driver
 	 * @param baseURL
@@ -53,7 +47,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 	}
 	
 	public void addNewUser(String email, String password, String role) {
-		this.btnAddNewUser.click();
+		this.btnAddNewCustomerUser.click();
 		
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
@@ -71,12 +65,12 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		if (isElementPresent(this.panelDuplicationErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
 			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
-				this.cancelBtn.click();
+				this.cancelAddBtn.click();
 		}
 	}
 
 	public void addNewUser(String email, String password, String role, String timeZone) {
-		this.btnAddNewUser.click();
+		this.btnAddNewCustomerUser.click();
 		
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
@@ -100,12 +94,12 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		if (isElementPresent(this.panelDuplicationErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
 			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
-				this.cancelBtn.click();
+				this.cancelAddBtn.click();
 		}
 	}
 	
 	public void addNewUser(String email, String password, String role, String timeZone, boolean accountEnabled) {
-		this.btnAddNewUser.click();
+		this.btnAddNewCustomerUser.click();
 		
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
@@ -138,7 +132,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		if (isElementPresent(this.panelDuplicationErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
 			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
-				this.cancelBtn.click();
+				this.cancelAddBtn.click();
 		}
 	}
 	
@@ -146,7 +140,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 	public String addTestUser(String email, String password1, String password2) {
 		String rtnMsg = "";
 		
-		this.btnAddNewUser.click();
+		this.btnAddNewCustomerUser.click();
 		
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
@@ -157,19 +151,19 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		
 		if (isElementPresent(this.labelUserNameErrorXPath)) {
 			rtnMsg = this.labelUserNameError.getText().trim();
-			this.cancelBtn.click();
+			this.cancelAddBtn.click();
 			return rtnMsg;
 		}
 		
 		if (isElementPresent(this.labelUserPwdErrorXPath)) {
 			rtnMsg = this.labelUserPwdError.getText().trim();
-			this.cancelBtn.click();
+			this.cancelAddBtn.click();
 			return rtnMsg; 
 		}
 		
 		if (isElementPresent(this.labelPwdConfirmErrorXPath)) {
 			rtnMsg = this.labelPwdConfirmError.getText().trim();
-			this.cancelBtn.click();
+			this.cancelAddBtn.click();
 			return rtnMsg; 
 		}		
 		
@@ -177,7 +171,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
 			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:")) {
 				rtnMsg = panelError.getText();
-				this.cancelBtn.click();
+				this.cancelAddBtn.click();
 			}
 		}
 		
@@ -185,11 +179,11 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 	}	
 	
 	public WebElement getBtnAddNewUser() {
-		return this.btnAddNewUser;
+		return this.btnAddNewCustomerUser;
 	}
 	
 	public WebElement getBtnCancell() {
-		return this.cancelBtn;
+		return this.cancelAddBtn;
 	}
 	
 	/**

@@ -44,7 +44,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
 	private WebElement btnOK;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='ref-gas-bottle-form']/fieldset/div[5]/div[2]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='ref-gas-bottle-form']/fieldset/div[4]/div[2]/a")
 	private WebElement btnCancel;
 
 	
@@ -238,6 +238,14 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	
 	public WebElement getBtnCancel() {
 		return this.btnCancel;
+	}
+	
+	public void clickOnAddNewRefGasBottleBtn() {
+		this.btnAddNewRefGasBottle.click();
+	}
+	
+	public void clickOnCancelBtn() {
+		this.btnCancel.click();
 	}
 	
 	/**

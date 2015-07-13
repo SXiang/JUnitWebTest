@@ -37,6 +37,9 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='Active']")
 	private WebElement inputAccountEnabled;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[3]/a")
+	private WebElement btnEditCustomer;
+	
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -359,6 +362,18 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		}
 		
 		return false;
+	}
+	
+	public void clickOnAddNewCustomerBtn(){
+		this.btnAddNewCustomer.click();
+	}
+	
+	public void clickOnFirstEditCustomerBtn(){
+		this.btnEditCustomer.click();
+	}
+	
+	public void clickOnCancelBtn(){
+		this.cancelBtn.click();
 	}
 	
 	/**

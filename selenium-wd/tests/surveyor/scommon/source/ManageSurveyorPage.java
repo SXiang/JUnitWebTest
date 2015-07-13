@@ -46,7 +46,13 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	protected WebElement btnOK;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyor-form']/fieldset/div[3]/div[2]/a")
-	protected WebElement btnCancel;
+	protected WebElement btnAddCancel;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='surveyor-form']/fieldset/div[4]/div[2]/a")
+	protected WebElement btnEditCancel;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a")
+	protected WebElement btnEditSurveyor;
 	
 	//add more @FindBy here later
 	
@@ -129,7 +135,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		if (isElementPresent(this.panelDupSurErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDupSurErrorXPath));
 			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
-				this.btnCancel.click();
+				this.btnAddCancel.click();
 		}		
 	}	
 	
@@ -244,7 +250,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 				if (isElementPresent(this.panelDuplicationErrorXPath)) {
 					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
 					if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:")) {
-						this.btnCancel.click();
+						this.btnEditCancel.click();
 						return false;
 					}
 				}
@@ -269,6 +275,22 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		}
 		
 		return false;
+	}
+	
+	public void clickOnAddNewSurveyorBtn() {
+		this.btnAddNewSurveyor.click();
+	}
+	
+	public void clickOnFirstEditSurveyorBtn() {
+		this.btnEditSurveyor.click();
+	}
+	
+	public void clickOnAddCancelBtn() {
+		this.btnAddCancel.click();
+	}
+	
+	public void clickOnEditCancelBtn() {
+		this.btnEditCancel.click();
 	}
 
 	/**

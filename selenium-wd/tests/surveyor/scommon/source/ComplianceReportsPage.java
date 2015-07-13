@@ -4,6 +4,7 @@
 package surveyor.scommon.source;
 
 import static surveyor.scommon.source.SurveyorConstants.ACTIONTIMEOUT;
+import static org.junit.Assert.fail;
 import static surveyor.scommon.source.SurveyorConstants.CUSBOUNDARY;
 import static surveyor.scommon.source.SurveyorConstants.ENDDATE;
 import static surveyor.scommon.source.SurveyorConstants.EXCLUSIONRADIUS;
@@ -437,6 +438,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						}
 
 						continue;
+					} catch (NullPointerException ne){
+						System.out.println("Null Pointer Exception: " + ne);
+						fail("Report failed to generate!!");
 					}
 				}
 			}
@@ -1401,6 +1405,23 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		//driver.switchTo().window(parentWindow);
 		return actualMsg;
 	}
+	
+	public void clickOnNewComplianceReportBtn(){
+		this.btnNewComplianceRpt.click();
+	}
+	
+	public void clickOnCancelBtn(){
+		this.btnCancel.click();
+	}
+	
+	public void clickOnFirstCopyComplianceBtn() {
+		this.btnFirstCopyCompliance.click();
+	}
+	
+	public void clickOnFirstInvestigateComplianceBtn() {
+		this.btnFirstInvestigateCompliance.click();
+	}
+	
 
 	/**
 	 * @param args
