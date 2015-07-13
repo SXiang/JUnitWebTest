@@ -299,6 +299,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "button_ok")
 	protected WebElement btnCustomOK;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a[2]")
+	protected WebElement btnFirstCopyCompliance;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a[4]")
+	protected WebElement btnFirstInvestigateCompliance;
+	
 	/**
 	 * @param driver
 	 * @param testSetup

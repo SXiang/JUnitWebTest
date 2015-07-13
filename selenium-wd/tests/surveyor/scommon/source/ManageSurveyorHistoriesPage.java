@@ -234,6 +234,14 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 		}
 		return false;
 	}
+	
+	public void clickOnAddNewHistoryEntryBtn() {
+		this.btnAddNewHistoryEntry.click();
+	}
+	
+	public void clickOnCancelBtn() {
+		this.btnCancel.click();
+	}
 
 	/**
 	 * @param args

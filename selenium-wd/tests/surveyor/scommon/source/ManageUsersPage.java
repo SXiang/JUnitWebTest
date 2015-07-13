@@ -17,6 +17,8 @@ import org.openqa.selenium.support.How;
 import common.source.TestSetup;
 
 /**
+ * Picarro Admin User's Page
+ * Generic User's related code (which can be used by Picarro and Util admin both) should come in this class
  * @author zlu
  *
  */
@@ -62,8 +64,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 //	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
 //	protected WebElement btnOk;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='user-form']/fieldset/div[9]/div[2]/a")
-	protected WebElement cancelBtn;	
+	@FindBy(how = How.XPATH, using = "//*[@id='user-form']/div/div[11]/div[2]/a")
+	protected WebElement cancelAddBtn;	
 	
 //	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody")
 //	protected WebElement userTB;	
@@ -92,6 +94,12 @@ public class ManageUsersPage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/thead/tr/th[3]")
 	protected WebElement theadRoles;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[7]/a[1]")
+	protected WebElement btnEditUser;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='user-form']/div/div[8]/div[2]/a")
+	protected WebElement cancelEditBtn;
 	
 	//add more web elements here later
 
@@ -130,7 +138,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		if (isElementPresent(this.panelDuplicationErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
 			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
-				this.cancelBtn.click();
+				this.cancelAddBtn.click();
 		}
 	}
 	
@@ -159,7 +167,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		if (isElementPresent(this.panelDuplicationErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
 			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
-				this.cancelBtn.click();
+				this.cancelAddBtn.click();
 		}
 	}	
 	
@@ -188,7 +196,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		if (isElementPresent(this.panelDuplicationErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
 			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
-				this.cancelBtn.click();
+				this.cancelAddBtn.click();
 		}		
 	}
 	
@@ -223,7 +231,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		if (isElementPresent(this.panelDuplicationErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
 			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
-				this.cancelBtn.click();
+				this.cancelAddBtn.click();
 		}		
 	}	
 	
@@ -829,6 +837,26 @@ public class ManageUsersPage extends SurveyorBasePage {
 	
 	public WebElement getTheadRoles() {
 		return this.theadRoles;
+	}
+	
+	public void clickOnAddNewPicarroUserBtn() {
+		this.btnAddNewPicarroUser.click();
+	}
+	
+	public void clickOnAddNewCustomerUserBtn() {
+		this.btnAddNewCustomerUser.click();
+	}
+	
+	public void clickOnCancelAddBtn() {
+		this.cancelAddBtn.click();
+	}
+	
+	public void clickOnFirstEditUserBtn(){
+		this.btnEditUser.click();
+	}
+	
+	public void clickOnCancelEditBtn() {
+		this.cancelEditBtn.click();
 	}
 
 	/**
