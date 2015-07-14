@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetAddress;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -89,10 +90,14 @@ public class TestSetup {
 	private String dbName;
 	private String dbUser;
 	private String dbPassword;
+	private String computerName;
 	
 	public TestSetup() {
 		try {
 
+			this.computerName=InetAddress.getLocalHost().getHostAddress();
+			System.out.println("IP Address: " +computerName);
+			
 			File propertyfile = new File(".");
 
 			String rootPath = propertyfile.getCanonicalPath();
@@ -156,10 +161,11 @@ public class TestSetup {
 					.getProperty("implicitlyWaitSpecialTimeOutInMS");
 
 			this.language = this.testProp.getProperty("language");
-			
-			//this.downloadPath = this.testProp.getProperty("downloadPath");
+			if((this.computerName=InetAddress.getLocalHost().getHostAddress()).equalsIgnoreCase("20.20.10.82")){
+			this.downloadPath = this.testProp.getProperty("downloadPath");
+			}else{
 			this.downloadPath = System.getProperty("user.home")+File.separator+"Downloads"+File.separator;
-
+			}
 			if (this.testProp.getProperty("debug").equals("true")) {
 				
 				this.debug = true;
