@@ -107,7 +107,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 				homePage.checkIfAtHomePage());
 		loginPage = homePage.logout();
 	}
-
+/*
 	@Test
 	public void TC25_LoginTest_CustomerAdmin() {
 		loginPage.open();
@@ -130,13 +130,13 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		loginPage = homePage.logout();
 	}
 
-	/**
+	*//**
 	 * Test Case ID: TC739 Test Description: Generate compliance report as
 	 * customer supervisor user by selecting report area using custom boundary
 	 * 
-	 */
+	 *//*
 
-	/*@Test
+	@Test
 	public void TC739_GenerateComplianceReport_CustomerSupervisor() {
 		String rptTitle = "Customer Supervisor Report TC739 "
 				+ testSetup.getRandomNumber();
@@ -225,8 +225,8 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
-	}*/
-	
+	}
+	*/
 	@Test
 	public void RPT001() {
 //		String rptTitle = "RPT001 Report" + testSetup.getRandomNumber();
@@ -257,7 +257,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		complianceReportsPage.logout();
 	}
 
-	@Test
+	/*@Test
 	public void TC519_CheckBrokenPages() {
 		loginPage.open();
 		assertTrue(loginPage.isLinkBroken());
@@ -372,5 +372,5 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 
 		homePage.clickOnViewServerlogsLink();
 		assertTrue(homePage.isLinkBroken());
-	}
+	}*/
 }
