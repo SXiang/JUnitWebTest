@@ -136,7 +136,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 	 * 
 	 */
 
-	@Test
+	/*@Test
 	public void TC739_GenerateComplianceReport_CustomerSupervisor() {
 		String rptTitle = "Customer Supervisor Report TC739 "
 				+ testSetup.getRandomNumber();
@@ -225,12 +225,12 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
-	}
+	}*/
 	
 	@Test
 	public void RPT001() {
 //		String rptTitle = "RPT001 Report" + testSetup.getRandomNumber();
-		String rptTitle = "Customer Supervisor Report TC739 994450";
+		String rptTitle =  "RPT001 Report444897";
 		System.out
 				.format("\nRunning RPT001: Generate compliance report with all default values/filters selected and download it, %s\n",
 						rptTitle);
