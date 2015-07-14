@@ -210,7 +210,9 @@ public class BasePage {
 	}
 	
 	public void clickOnViewAnalyzerLogsLink() {
-		this.linkViewAnalyzerLogs.click();
+	
+            driver.get("https://p3sqa.picarro.com/Picarro/AnalyzerLogs");        
+		//this.linkViewAnalyzerLogs.click();
 	}
 	
 	public void clickOnViewServerlogsLink() {
