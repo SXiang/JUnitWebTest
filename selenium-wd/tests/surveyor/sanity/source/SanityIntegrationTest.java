@@ -5,32 +5,7 @@ package surveyor.sanity.source;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static surveyor.scommon.source.SurveyorConstants.CUSNAMEBASE;
-import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
-import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
-import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
-import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
-import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
-import static surveyor.scommon.source.SurveyorConstants.KEYGAPS;
-import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
-import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
-import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
-import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
-import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
-import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
-import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
-import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
-import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSDR;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSDRTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSDRUSER;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSLOCSUR;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSUAUSER;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
-import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
+import static surveyor.scommon.source.SurveyorConstants.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,17 +74,17 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 	@Test
 	public void TC25_LoginTest_PicarroAdmin() {
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(),
-				testSetup.getLoginPwd());
-
+		//loginPage.loginNormalAs(testSetup.getLoginUser(),
+			//	testSetup.getLoginPwd());
+			loginPage.loginNormalAs(PICDFADMIN,PICADMINPSWD);
 		homePage.open();
-		assertTrue(PICDFADMIN + " user login unsuccessful!",
-				homePage.checkIfAtHomePage());
+			assertTrue(PICDFADMIN + " user login unsuccessful!",
+					homePage.checkIfAtHomePage());
 		loginPage = homePage.logout();
 	}
 
 	@Test
-	public void TC25_LoginTest_CustomerAdmin() {
+	public void TC25_LoginTest_CustomerAdmin()  {
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
@@ -134,9 +109,9 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 	 * Test Case ID: TC739 Test Description: Generate compliance report as
 	 * customer supervisor user by selecting report area using custom boundary
 	 * 
-	 *//*
+	 */
 
-	@Test
+//	@Test
 	public void TC739_GenerateComplianceReport_CustomerSupervisor() {
 		String rptTitle = "Customer Supervisor Report TC739 "
 				+ testSetup.getRandomNumber();
@@ -226,8 +201,8 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
 	}
-	*/
-	@Test
+	
+	//@Test
 	public void RPT001() {
 //		String rptTitle = "RPT001 Report" + testSetup.getRandomNumber();
 		String rptTitle =  "RPT001 Report444897";
@@ -235,8 +210,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 				.format("\nRunning RPT001: Generate compliance report with all default values/filters selected and download it, %s\n",
 						rptTitle);
 
-		complianceReportsPage.login(testSetup.getLoginUser(),
-				testSetup.getLoginPwd());
+		complianceReportsPage.login(PICDFADMIN,PICADMINPSWD);
 		complianceReportsPage.open();
 
 		//String surUnit = "";
@@ -245,7 +219,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		
 //		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICSUTAG);
 //		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-
+System.out.println("##### :" + testSetup.getDownloadPath());
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rptTitle,
 					testSetup.getDownloadPath()));
@@ -262,8 +236,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		loginPage.open();
 		assertTrue(loginPage.isLinkBroken());
 
-		loginPage.loginNormalAs(testSetup.getLoginUser(),
-				testSetup.getLoginPwd());
+		loginPage.loginNormalAs(PICDFADMIN,PICADMINPSWD);
 		assertTrue(homePage.isLinkBroken());
 
 		homePage.clickOnDrivingSurveyLink();

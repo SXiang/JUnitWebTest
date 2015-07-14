@@ -22,6 +22,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -101,11 +102,10 @@ public class TestSetup {
 			File propertyfile = new File(".");
 
 			String rootPath = propertyfile.getCanonicalPath();
-
+			
+			//testPropFileName  = rootPath +File.separator+ "test.properties";
 			testPropFileName  = rootPath +File.separator+"selenium-wd"+ File.separator+"tests"+File.separator+"surveyor" +File.separator+ "test.properties";
-
-		//	testPropFileName  = rootPath +File.separator+ "test.properties";
-
+						
 			InputStream inputStream = new FileInputStream(testPropFileName);
 
 
@@ -148,11 +148,10 @@ public class TestSetup {
 			System.out.println("\nThe browser is: " + this.browser + "\n");
 
 			this.ieDriverPath = this.testProp.getProperty("ieDriverPath");
-
+			
 			this.chromeDriverPath = rootPath + File.separator+"selenium-wd"+ File.separator +"lib" + File.separator+"chromedriver.exe";
-		//	this.chromeDriverPath="C:\\projects\\surveyor-qa\\selenium-wd\\lib\\chromedriver.exe";
-							
-
+			
+		//	this.chromeDriverPath=new File(rootPath +"/.."+"/.."+"/..").getCanonicalPath()+File.separator+"lib" + File.separator+"chromedriver.exe";
 			this.implicitlyWaitTimeOutInSeconds = this.testProp
 					.getProperty("implicitlyWaitTimeOutInSeconds");
 			this.implicitlyWaitSpecialTimeOutInSeconds = this.
@@ -257,7 +256,7 @@ public class TestSetup {
 						"test-type"));
 					options.setExperimentalOptions("prefs", prefs);
 					capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-					
+									
 					System.setProperty("webdriver.chrome.driver",
 							this.chromeDriverPath);
 					System.out.println("\nThe System Propery 'webdriver.chrome.driver' is: "
