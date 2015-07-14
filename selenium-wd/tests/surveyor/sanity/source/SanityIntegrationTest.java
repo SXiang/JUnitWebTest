@@ -257,7 +257,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		complianceReportsPage.logout();
 	}
 
-	/*@Test
+	@Test
 	public void TC519_CheckBrokenPages() {
 		loginPage.open();
 		assertTrue(loginPage.isLinkBroken());
@@ -372,5 +372,5 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 
 		homePage.clickOnViewServerlogsLink();
 		assertTrue(homePage.isLinkBroken());
-	}*/
+	}
 }
