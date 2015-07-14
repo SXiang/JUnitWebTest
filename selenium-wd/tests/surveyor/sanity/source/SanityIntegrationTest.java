@@ -107,7 +107,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 				homePage.checkIfAtHomePage());
 		loginPage = homePage.logout();
 	}
-/*
+
 	@Test
 	public void TC25_LoginTest_CustomerAdmin() {
 		loginPage.open();
@@ -130,7 +130,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		loginPage = homePage.logout();
 	}
 
-	*//**
+	/**
 	 * Test Case ID: TC739 Test Description: Generate compliance report as
 	 * customer supervisor user by selecting report area using custom boundary
 	 * 
