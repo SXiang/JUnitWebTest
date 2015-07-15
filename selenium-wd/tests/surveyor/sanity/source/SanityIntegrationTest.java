@@ -64,7 +64,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 	private static ManageRefGasBottlesPage manageRefGasBottlesPage;
 	private static ManageSurveyorHistoriesPage manageSurveyorHistoriesPage;
 	private static ManageReleaseNotesPage manageReleaseNotesPage;
-// Test checkin on 7/15 
+
 	@BeforeClass
 	public static void SetupSanityIntegrationTest() {
 		complianceReportsPage = new ComplianceReportsPage(driver, baseURL,
