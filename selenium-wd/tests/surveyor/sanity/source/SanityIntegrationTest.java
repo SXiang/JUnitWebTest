@@ -5,7 +5,33 @@ package surveyor.sanity.source;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static surveyor.scommon.source.SurveyorConstants.*;
+import static surveyor.scommon.source.SurveyorConstants.CUSNAMEBASE;
+import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
+import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
+import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
+import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
+import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
+import static surveyor.scommon.source.SurveyorConstants.KEYGAPS;
+import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
+import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
+import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
+import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
+import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
+import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
+import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
+import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSDR;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSDRTAG;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSDRUSER;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSLOCSUR;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSUAUSER;
+import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
+import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -202,7 +228,6 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		complianceReportsPage.logout();
 	}
 	
-
 	@Test
 	public void TC519_CheckBrokenPages() {
 		loginPage.open();
@@ -312,10 +337,12 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		assertTrue(manageReleaseNotesPage.isLinkBroken());
 		manageReleaseNotesPage.clickOnCancelBtn();
 
-		homePage.clickOnViewAnalyzerLogsLink();
+//		homePage.clickOnViewAnalyzerLogsLink();
+		driver.get(baseURL + "/Picarro/AnalyzerLogs");
 		assertTrue(homePage.isLinkBroken());
 
-		homePage.clickOnViewServerlogsLink();
+//		homePage.clickOnViewServerlogsLink();
+		driver.get(baseURL + "/Picarro/ServerLog");
 		assertTrue(homePage.isLinkBroken());
 	}
 }
