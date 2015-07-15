@@ -216,7 +216,8 @@ public class BasePage {
 	}
 	
 	public void clickOnViewServerlogsLink() {
-		this.linkViewServerLogs.click();
+		//this.linkViewServerLogs.click();
+		 driver.get("https://p3sqa.picarro.com/Picarro/ServerLog");
 	}
 	
 	public boolean isLinkBroken() {
