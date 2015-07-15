@@ -202,34 +202,6 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		complianceReportsPage.logout();
 	}
 	
-	//@Test
-	public void RPT001() {
-//		String rptTitle = "RPT001 Report" + testSetup.getRandomNumber();
-		String rptTitle =  "RPT001 Report444897";
-		System.out
-				.format("\nRunning RPT001: Generate compliance report with all default values/filters selected and download it, %s\n",
-						rptTitle);
-
-		complianceReportsPage.login(PICDFADMIN,PICADMINPSWD);
-		complianceReportsPage.open();
-
-		//String surUnit = "";
-		// changed survey tag for time being---- remove the code later on and fix the tag value as per surveys available in SureyorConstants file
-		//String SQAPICSUTAG = "SmokeTest 6/12";
-		
-//		complianceReportsPage.addNewPDReport(rptTitle, surUnit, SQAPICSUTAG);
-//		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-System.out.println("##### :" + testSetup.getDownloadPath());
-		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
-			assertTrue(complianceReportsPage.validatePdfFiles(rptTitle,
-					testSetup.getDownloadPath()));
-			assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
-		} else
-			fail("\nTestcase RPT001 failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
-	}
 
 	@Test
 	public void TC519_CheckBrokenPages() {
