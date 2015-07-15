@@ -74,43 +74,46 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageCustomersPage = new ManageCustomersPage(driver, baseURL,
 				testSetup);
 		PageFactory.initElements(driver, manageCustomersPage);
-		
+
 		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageUsersPage);
-		
-		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageLocationsPage);
-		
+		PageFactory.initElements(driver, manageUsersPage);
+
+		manageLocationsPage = new ManageLocationsPage(driver, baseURL,
+				testSetup);
+		PageFactory.initElements(driver, manageLocationsPage);
+
 		manageSurveyorsPage = new ManageSurveyorPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageSurveyorsPage);
-		
-		manageAnalyzersPage = new ManageAnalyzersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageAnalyzersPage);
-		
-		manageRefGasBottlesPage = new ManageRefGasBottlesPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver,  manageRefGasBottlesPage);
-		
-		manageSurveyorHistoriesPage = new ManageSurveyorHistoriesPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageSurveyorHistoriesPage);
-		
-		manageReleaseNotesPage = new ManageReleaseNotesPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageReleaseNotesPage);
+		PageFactory.initElements(driver, manageSurveyorsPage);
+
+		manageAnalyzersPage = new ManageAnalyzersPage(driver, baseURL,
+				testSetup);
+		PageFactory.initElements(driver, manageAnalyzersPage);
+
+		manageRefGasBottlesPage = new ManageRefGasBottlesPage(driver,
+				testSetup, baseURL);
+		PageFactory.initElements(driver, manageRefGasBottlesPage);
+
+		manageSurveyorHistoriesPage = new ManageSurveyorHistoriesPage(driver,
+				baseURL, testSetup);
+		PageFactory.initElements(driver, manageSurveyorHistoriesPage);
+
+		manageReleaseNotesPage = new ManageReleaseNotesPage(driver, baseURL,
+				testSetup);
+		PageFactory.initElements(driver, manageReleaseNotesPage);
 	}
 
 	@Test
 	public void TC25_LoginTest_PicarroAdmin() {
 		loginPage.open();
-		//loginPage.loginNormalAs(testSetup.getLoginUser(),
-			//	testSetup.getLoginPwd());
-			loginPage.loginNormalAs(PICDFADMIN,PICADMINPSWD);
+		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 		homePage.open();
-			assertTrue(PICDFADMIN + " user login unsuccessful!",
-					homePage.checkIfAtHomePage());
+		assertTrue(PICDFADMIN + " user login unsuccessful!",
+				homePage.checkIfAtHomePage());
 		loginPage = homePage.logout();
 	}
 
 	@Test
-	public void TC25_LoginTest_CustomerAdmin()  {
+	public void TC25_LoginTest_CustomerAdmin() {
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
@@ -137,7 +140,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 	 * 
 	 */
 
-//	@Test
+	// @Test
 	public void TC739_GenerateComplianceReport_CustomerSupervisor() {
 		String rptTitle = "Customer Supervisor Report TC739 "
 				+ testSetup.getRandomNumber();
@@ -146,7 +149,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 						rptTitle);
 
 		complianceReportsPage.login(SQACUSSU, USERPASSWORD);
-		 complianceReportsPage.open();
+		complianceReportsPage.open();
 
 		List<String> listBoundary = new ArrayList<String>();
 		listBoundary.add("8.5");
@@ -227,13 +230,13 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
 	}
-	
+
 	@Test
 	public void TC519_CheckBrokenPages() {
 		loginPage.open();
 		assertTrue(loginPage.isLinkBroken());
 
-		loginPage.loginNormalAs(PICDFADMIN,PICADMINPSWD);
+		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 		assertTrue(homePage.isLinkBroken());
 
 		homePage.clickOnDrivingSurveyLink();
@@ -247,13 +250,13 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 
 		homePage.clickOnFeedbackLink();
 		assertTrue(homePage.isLinkBroken());
-		
+
 		homePage.clickOnReportsLink();
 		homePage.clickOnComplianceReportLink();
 		assertTrue(complianceReportsPage.isLinkBroken());
-		
-//		homePage.clickOnEQReportLink();
-//		assertTrue(homePage.isLinkBroken());
+
+		// homePage.clickOnEQReportLink();
+		// assertTrue(homePage.isLinkBroken());
 
 		homePage.clickOnReferenceGasReportLink();
 		assertTrue(homePage.isLinkBroken());
@@ -321,7 +324,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageRefGasBottlesPage.clickOnAddNewRefGasBottleBtn();
 		assertTrue(manageRefGasBottlesPage.isLinkBroken());
 		manageRefGasBottlesPage.clickOnCancelBtn();
-		
+
 		homePage.clickOnManageSurveyorHistoriesLink();
 		assertTrue(manageSurveyorHistoriesPage.isLinkBroken());
 		manageSurveyorHistoriesPage.clickOnAddNewHistoryEntryBtn();
@@ -337,11 +340,11 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		assertTrue(manageReleaseNotesPage.isLinkBroken());
 		manageReleaseNotesPage.clickOnCancelBtn();
 
-//		homePage.clickOnViewAnalyzerLogsLink();
+		// homePage.clickOnViewAnalyzerLogsLink();
 		driver.get(baseURL + "/Picarro/AnalyzerLogs");
 		assertTrue(homePage.isLinkBroken());
 
-//		homePage.clickOnViewServerlogsLink();
+		// homePage.clickOnViewServerlogsLink();
 		driver.get(baseURL + "/Picarro/ServerLog");
 		assertTrue(homePage.isLinkBroken());
 	}
