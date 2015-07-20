@@ -392,7 +392,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 					+ "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-					+ "]/td[2]";
+					+ "]/td[3]";
 
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
@@ -409,12 +409,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						if (rowSize == 1) {
 							this.btnReportViewer = table
 									.findElement(By
-											.xpath("//*[@id='datatable']/tbody/tr/td[4]/a[3]"));
+											.xpath("//*[@id='datatable']/tbody/tr/td[5]/a[3]"));
 							this.btnReportViewer.click();
 						} else {
 							this.btnReportViewer = table.findElement(By
 									.xpath("//*[@id='datatable']/tbody/tr["
-											+ rowNum + "]/td[4]/a[3]/img"));
+											+ rowNum + "]/td[5]/a[3]/img"));
 							this.btnReportViewer.click();
 						}
 						String srcPdfImg = this.pdfImg.getAttribute("src");
@@ -595,7 +595,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
 			
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
@@ -769,6 +769,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		try {
 			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
+			reportId = reportId.substring(0, 6);
+			System.out.println(reportId);
+			System.out.println(reportId.length());
 			reportFullId = "CR-" + reportId;
 			System.out.println(reportFullId);
 			BaseHelper.deCompressZipFile(reportFullId, downloadPath);
@@ -816,6 +819,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		try {
 			Thread.sleep(10000);
 			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportsCompliance.getRptTitle(), this.testSetup);
+			reportId = reportId.substring(0, 6);
+			System.out.println(reportId);
+			System.out.println(reportId.length());
 			reportFullId = "CR-" + reportId;
 			System.out.println(reportFullId);
 			this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());

@@ -139,8 +139,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 	 * customer supervisor user by selecting report area using custom boundary
 	 * 
 	 */
-
-	// @Test
+	@Test
 	public void TC739_GenerateComplianceReport_CustomerSupervisor() {
 		String rptTitle = "Customer Supervisor Report TC739 "
 				+ testSetup.getRandomNumber();
@@ -340,11 +339,9 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		assertTrue(manageReleaseNotesPage.isLinkBroken());
 		manageReleaseNotesPage.clickOnCancelBtn();
 
-		// homePage.clickOnViewAnalyzerLogsLink();
 		driver.get(baseURL + "/Picarro/AnalyzerLogs");
 		assertTrue(homePage.isLinkBroken());
 
-		// homePage.clickOnViewServerlogsLink();
 		driver.get(baseURL + "/Picarro/ServerLog");
 		assertTrue(homePage.isLinkBroken());
 	}
