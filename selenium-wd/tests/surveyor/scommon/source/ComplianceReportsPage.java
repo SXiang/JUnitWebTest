@@ -133,13 +133,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 		
+		System.out.println(reportsCompliance.getTag());
+		
 		if (reportsCompliance.getTag() != "") {
-			List<WebElement> optionsTAG = this.cbTag.findElements(By.tagName("option"));
-			for (WebElement optionTAG : optionsTAG) {
-				if ((reportsCompliance.getTag()).equalsIgnoreCase(optionTAG.getText().trim())) {
-					optionTAG.click();
-				}
-			}
+			this.cbTag.sendKeys(reportsCompliance.getTag());
 		}
 		
 		if (testSetup.isRunningDebug())
@@ -155,13 +152,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.inputImgMapWidth.sendKeys(reportsCompliance.getImageMapWidth());
 		
 		addViews(reportsCompliance.getViewList());
-		
-//		this.checkBoxOtherPla.click();
-//		this.checkBoxPEPla.click();
-//		this.checkBoxProtectedSteel.click();
-//		this.checkBoxUnProtectedSteel.click();
-//		this.checkBoxCastIron.click();
-//		this.checkBoxCopper.click();
 		
 		List<Map<String, String>> tablesList = reportsCompliance
 				.getTablesList();
@@ -821,11 +811,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportsCompliance.getRptTitle(), this.testSetup);
 			reportId = reportId.substring(0, 6);
 			System.out.println(reportId);
-			System.out.println(reportId.length());
 			reportFullId = "CR-" + reportId;
 			System.out.println(reportFullId);
 			this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-			System.out.println("Report Download Path: " + downloadPath);
 			BaseHelper.deCompressZipFile(reportFullId, downloadPath);
 		}
 		catch (Exception e) {
