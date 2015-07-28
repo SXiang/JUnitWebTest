@@ -58,7 +58,13 @@ public class LoginPage extends BasePage {
 		this.btnLogin.click();
 		if (driver.getCurrentUrl().contains("Eula") && driver.getTitle().contains("Eula")) {
 			btnAccept.click();
-		}		
+		}	
+		try {
+			Thread.sleep(20000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		try {
 			//temporary solution for now
