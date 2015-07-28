@@ -106,6 +106,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 	public void TC25_LoginTest_PicarroAdmin() {
 		System.out.println("@@@@@@@@@@@@@@ entering admin Login@@@@@@@@@@@@@@@");
 		loginPage.open();
+		System.out.println(" $$$$ open login page: "+driver.getTitle());
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 		homePage.open();
 		System.out.println("####title in login method: "+driver.getTitle());
