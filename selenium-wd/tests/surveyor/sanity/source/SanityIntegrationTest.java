@@ -5,6 +5,7 @@ package surveyor.sanity.source;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static surveyor.scommon.source.SurveyorConstants.*;
 import static surveyor.scommon.source.SurveyorConstants.CUSNAMEBASE;
 import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
@@ -104,19 +105,16 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 
 	@Test
 	public void TC25_LoginTest_PicarroAdmin() {
-		System.out.println("@@@@@@@@@@@@@@ entering admin Login@@@@@@@@@@@@@@@");
 		loginPage.open();
-		System.out.println(" $$$$ open login page: "+driver.getTitle());
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 		homePage.open();
-		System.out.println("####title in login method: "+driver.getTitle());
-		
+	
 		assertTrue(PICDFADMIN + " user login unsuccessful!",
 				homePage.checkIfAtHomePage());
 		loginPage = homePage.logout();
 	}
 
-	//@Test
+	@Test
 	public void TC25_LoginTest_CustomerAdmin() {
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -127,7 +125,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		loginPage = homePage.logout();
 	}
 
-	//@Test
+	@Test
 	public void TC25_LoginTest_CustomerDriver() {
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);
@@ -143,7 +141,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 	 * customer supervisor user by selecting report area using custom boundary
 	 * 
 	 */
-	//@Test
+	@Test
 	public void TC739_GenerateComplianceReport_CustomerSupervisor() {
 		String rptTitle = "Customer Supervisor Report TC739 "
 				+ testSetup.getRandomNumber();
@@ -234,7 +232,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		complianceReportsPage.logout();
 	}
 
-//	@Test
+	@Test
 	public void TC519_CheckBrokenPages() {
 		loginPage.open();
 		assertTrue(loginPage.isLinkBroken());

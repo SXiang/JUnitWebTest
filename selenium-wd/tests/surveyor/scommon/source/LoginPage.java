@@ -54,17 +54,10 @@ public class LoginPage extends BasePage {
 	public HomePage loginNormalAs(String userName, String password)  {
 		this.tbUserName.sendKeys(userName);
 		this.tbPassword.sendKeys(password);
-		System.out.println("@@@@@@@ click login button ");
 		this.btnLogin.click();
 		if (driver.getCurrentUrl().contains("Eula") && driver.getTitle().contains("Eula")) {
 			btnAccept.click();
 		}	
-		try {
-			Thread.sleep(20000);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		
 		try {
 			//temporary solution for now
