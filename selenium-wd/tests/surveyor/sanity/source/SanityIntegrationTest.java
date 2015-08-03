@@ -351,9 +351,9 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageReleaseNotesPage.clickOnAddNewReleaseNoteBtn();
 		assertTrue(manageReleaseNotesPage.isLinkBroken());
 		manageReleaseNotesPage.clickOnCancelBtn();
-		manageReleaseNotesPage.clickOnFirstEditNoteBtn();
-		assertTrue(manageReleaseNotesPage.isLinkBroken());
-		manageReleaseNotesPage.clickOnCancelBtn();
+		//manageReleaseNotesPage.clickOnFirstEditNoteBtn();
+		//assertTrue(manageReleaseNotesPage.isLinkBroken());
+		//manageReleaseNotesPage.clickOnCancelBtn();
 
 		//driver.get(baseURL + "/Picarro/AnalyzerLogs");
 		homePage.clickOnViewAnalyzerLogsLink(baseURL);
