@@ -278,6 +278,8 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageCustomersPage.clickOnFirstEditCustomerBtn();
 		assertTrue(manageCustomersPage.isLinkBroken());
 		manageCustomersPage.clickOnCancelBtn();
+		
+		manageCustomersPage.waitForPageToLoad();
 
 		homePage.clickOnManageUsersLink();
 		assertTrue(manageUsersPage.isLinkBroken());
@@ -291,6 +293,8 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		assertTrue(manageUsersPage.isLinkBroken());
 		manageUsersPage.clickOnCancelEditBtn();
 
+		manageUsersPage.waitForPageToLoad();
+		
 		homePage.clickOnManageLocationsLink();
 		assertTrue(manageLocationsPage.isLinkBroken());
 		manageLocationsPage.clickOnAddNewLocationBtn();
@@ -299,7 +303,9 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageLocationsPage.clickOnFirstEditLocationBtn();
 		assertTrue(manageLocationsPage.isLinkBroken());
 		manageLocationsPage.clickOnCancelBtn();
-
+		
+		manageLocationsPage.waitForPageToLoad();
+		
 		homePage.clickOnManageSurveyorsLink();
 		assertTrue(manageSurveyorsPage.isLinkBroken());
 		manageSurveyorsPage.clickOnAddNewSurveyorBtn();
@@ -308,6 +314,8 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageSurveyorsPage.clickOnFirstEditSurveyorBtn();
 		assertTrue(manageSurveyorsPage.isLinkBroken());
 		manageSurveyorsPage.clickOnEditCancelBtn();
+		
+		manageSurveyorsPage.waitForPageToLoad();
 
 		homePage.clickOnManageAnalyzersLink();
 		assertTrue(manageAnalyzersPage.isLinkBroken());
@@ -317,18 +325,24 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageAnalyzersPage.clickOnFirstEditAnalyzerBtn();
 		assertTrue(manageAnalyzersPage.isLinkBroken());
 		manageAnalyzersPage.clickOnCancelBtn();
+		
+		manageAnalyzersPage.waitForPageToLoad();
 
 		homePage.clickOnManageRefGasBottlesLink();
 		assertTrue(manageRefGasBottlesPage.isLinkBroken());
 		manageRefGasBottlesPage.clickOnAddNewRefGasBottleBtn();
 		assertTrue(manageRefGasBottlesPage.isLinkBroken());
 		manageRefGasBottlesPage.clickOnCancelBtn();
+		
+		manageRefGasBottlesPage.waitForPageToLoad();
 
 		homePage.clickOnManageSurveyorHistoriesLink();
 		assertTrue(manageSurveyorHistoriesPage.isLinkBroken());
 		manageSurveyorHistoriesPage.clickOnAddNewHistoryEntryBtn();
 		assertTrue(manageSurveyorHistoriesPage.isLinkBroken());
 		manageSurveyorHistoriesPage.clickOnCancelBtn();
+		
+		manageSurveyorHistoriesPage.waitForPageToLoad();
 
 		homePage.clickOnManageReleaseNotesLink();
 		assertTrue(manageReleaseNotesPage.isLinkBroken());
@@ -339,10 +353,12 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		assertTrue(manageReleaseNotesPage.isLinkBroken());
 		manageReleaseNotesPage.clickOnCancelBtn();
 
-		driver.get(baseURL + "/Picarro/AnalyzerLogs");
+		//driver.get(baseURL + "/Picarro/AnalyzerLogs");
+		homePage.clickOnViewAnalyzerLogsLink(baseURL);
 		assertTrue(homePage.isLinkBroken());
 
-		driver.get(baseURL + "/Picarro/ServerLog");
+		//driver.get(baseURL + "/Picarro/ServerLog");
+		homePage.clickOnViewServerlogsLink(baseURL);
 		assertTrue(homePage.isLinkBroken());
 	}
 }

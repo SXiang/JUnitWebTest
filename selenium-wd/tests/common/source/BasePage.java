@@ -142,7 +142,7 @@ public class BasePage {
 	}
 
 	public void clickOnFeedbackLink() {
-		this.linkFleetMap.click();
+		this.linkFeedback.click();
 	}
 	
 	public void clickOnReportsLink() {
@@ -209,34 +209,46 @@ public class BasePage {
 		this.linkManageSurveyorHistories.click();
 	}
 	
-	public void clickOnViewAnalyzerLogsLink() {
-	    driver.get( strBaseURL+"/"+"Picarro"+"/"+"AnalyzerLogs");        
-		//this.linkViewAnalyzerLogs.click();
+	public void clickOnViewAnalyzerLogsLink(String strBaseURL) {
+		driver.get(strBaseURL + "/Picarro/AnalyzerLogs");
 	}
-	
-	public void clickOnViewServerlogsLink() {
-		//this.linkViewServerLogs.click();
-		 driver.get(strBaseURL+"/"+"Picarro"+"/"+"ServerLog");
+
+	public void clickOnViewServerlogsLink(String strBaseURL) {
+		driver.get(strBaseURL + "/Picarro/ServerLog");
 	}
 	
 	public boolean isLinkBroken() {
 		boolean result = false;
+		waitForPageToLoad();
 		String pageTitle = this.driver.getTitle();
 
 		if (pageTitle.contains(LOGINTITLE)) {
+			System.out.println("PageTitle: " + pageTitle);
 			result = true;
 			return result;
 		} else if (pageTitle.contains(HOMETITLE)) {
+			System.out.println("PageTitle: " + pageTitle);
 			result = this.pageHeader.getText().equalsIgnoreCase(HOMEDHEADER);
 			return result;
 		} else if (pageTitle.contains(DRIVINGSURVEYTITLE)) {
+			System.out.println("PageTitle: " + pageTitle);
 			result = this.pageHeader.getText().equalsIgnoreCase(
 					DRIVINGSURVEYHEADER);
 			return result;
 		} else {
 			String pageHeader = this.pageHeader.getText();
+			System.out.println("PageTitle: " + pageTitle);
 			result = pageTitle.contentEquals(pageHeader + SUBTITLE);
 			return result;
+		}
+	}
+	
+	public void waitForPageToLoad(){
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
