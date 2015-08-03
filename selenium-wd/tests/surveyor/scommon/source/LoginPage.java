@@ -57,7 +57,7 @@ public class LoginPage extends BasePage {
 		this.btnLogin.click();
 		if (driver.getCurrentUrl().contains("Eula") && driver.getTitle().contains("Eula")) {
 			btnAccept.click();
-		}		
+		}	
 		
 		try {
 			//temporary solution for now
@@ -76,11 +76,13 @@ public class LoginPage extends BasePage {
 		long elapsedTime = 0;
 		
 		while (true) {
-			if (homePage.checkIfAtHomePage())
+			if (homePage.checkIfAtHomePage()){
+				System.out.println("----returning home page");
 				return homePage;
-			else if (driver.getCurrentUrl().equalsIgnoreCase(this.strPageURL) && driver.getTitle().equalsIgnoreCase(LoginPage.STRPageTitle))
+			}else if (driver.getCurrentUrl().equalsIgnoreCase(this.strPageURL) && driver.getTitle().equalsIgnoreCase(LoginPage.STRPageTitle)){
+				System.out.println("----did not go to home page");
 				return null;
-			
+			}
 			elapsedTime = System.currentTimeMillis() - startTime;
 			if (elapsedTime >= (30 * 1000)) {
 				return null;

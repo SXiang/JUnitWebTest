@@ -5,6 +5,7 @@ package surveyor.sanity.source;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static surveyor.scommon.source.SurveyorConstants.*;
 import static surveyor.scommon.source.SurveyorConstants.CUSNAMEBASE;
 import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
@@ -107,6 +108,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 		homePage.open();
+	
 		assertTrue(PICDFADMIN + " user login unsuccessful!",
 				homePage.checkIfAtHomePage());
 		loginPage = homePage.logout();
