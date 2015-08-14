@@ -753,7 +753,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	
 	public boolean validatePdfFiles(String reportTitle, String downloadPath) {
 		String reportId;
-		String reportFullId;
+		String reportName;
 		DBConnection objDbConn = new DBConnection();
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -762,9 +762,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			reportId = reportId.substring(0, 6);
 			System.out.println(reportId);
 			System.out.println(reportId.length());
-			reportFullId = "CR-" + reportId;
-			System.out.println(reportFullId);
-			BaseHelper.deCompressZipFile(reportFullId, downloadPath);
+			reportName = "CR-" + reportId;
+			System.out.println(reportName);
+			BaseHelper.deCompressZipFile(reportName, downloadPath);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -776,8 +776,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String pdfFile2;
 		String pdfFile3;
 		
-		pdfFile1 = downloadPath + reportFullId + ".pdf";
-		pdfFile3 = downloadPath + reportFullId + File.separator + nameBase.replaceAll("_", "") + ".pdf";
+		pdfFile1 = downloadPath + reportName + ".pdf";
+		pdfFile3 = downloadPath + reportName + File.separator + nameBase.replaceAll("_", "") + ".pdf";
 		
 		if (BaseHelper.validatePdfFile(pdfFile1) && BaseHelper.validatePdfFile(pdfFile3)) {
 			try {
@@ -792,7 +792,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		else
 			return false;
 		
-		    pdfFile2 = downloadPath + reportFullId + File.separator + nameBase.replaceAll("_", "") + "_View 1.pdf";
+		    pdfFile2 = downloadPath + reportName + File.separator + nameBase.replaceAll("_", "") + "_View 1.pdf";
 			
 			if (!BaseHelper.validatePdfFile(pdfFile2))
 				return false;
@@ -802,7 +802,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	
 	public boolean validatePdfFiles(ReportsCompliance reportsCompliance, String downloadPath) {
 		String reportId;
-		String reportFullId;
+		String reportName;
 		DBConnection objDbConn = new DBConnection();
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
@@ -811,10 +811,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportsCompliance.getRptTitle(), this.testSetup);
 			reportId = reportId.substring(0, 6);
 			System.out.println(reportId);
-			reportFullId = "CR-" + reportId;
-			System.out.println(reportFullId);
+			reportName = "CR-" + reportId;
+			System.out.println(reportName);
 			this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-			BaseHelper.deCompressZipFile(reportFullId, downloadPath);
+			BaseHelper.deCompressZipFile(reportName, downloadPath);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -829,8 +829,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		
 		List<Map<String, String>> viewList = reportsCompliance.getViewList();
 		
-		pdfFile1 = downloadPath + reportFullId + ".pdf";
-		pdfFile3 = downloadPath + reportFullId + File.separator + nameBase.replaceAll("_", "") + ".pdf";
+		pdfFile1 = downloadPath + reportName + ".pdf";
+		pdfFile3 = downloadPath + reportName + File.separator + nameBase.replaceAll("_", "") + ".pdf";
 		
 		if (BaseHelper.validatePdfFile(pdfFile1) && BaseHelper.validatePdfFile(pdfFile3)) {
 			try {
@@ -847,7 +847,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		
 		for (int i = 0; i < viewList.size(); i++) {
 			viewName = viewList.get(i).get(KEYVIEWNAME);
-			pdfFile2 = downloadPath + reportFullId + File.separator + nameBase.replaceAll("_", "") + "_" + viewName + ".pdf";
+			pdfFile2 = downloadPath + reportName + File.separator + nameBase.replaceAll("_", "") + "_" + viewName + ".pdf";
 			
 			if (!BaseHelper.validatePdfFile(pdfFile2))
 				return false;

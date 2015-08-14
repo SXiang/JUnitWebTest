@@ -10,10 +10,13 @@ import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC0SUR;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
+import static surveyor.scommon.source.SurveyorConstants.TIMEZONECT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSLOCSUR;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -53,11 +56,9 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 				.format("\nRunning RPT014 Test Description: Generate Reference Gas Capture Report as Administrator, %s\n",
 						rptTitle);
 
-		String surveyorUnit = SQACUS + " - " + SQACUSLOC + "0" + " - "
-				+ SQACUSLOC0SUR;
+		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
 		System.out.println(surveyorUnit);
 
-		// DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:MM a");
 		DateFormat dateFormat = new SimpleDateFormat("dd");
 		Date date = new Date();
 		Calendar cal = Calendar.getInstance();
@@ -85,16 +86,18 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
-		if ((referenceGasReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
-			assertTrue(referenceGasReportsPage.findExistingReport(rptTitle,
-					PICDFADMIN));
-		else
+		if ((referenceGasReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
+			assertTrue(referenceGasReportsPage.findReport(rptTitle, PICDFADMIN));
+			assertTrue("Report not downloaded successfully!",
+					referenceGasReportsPage.validatePdfFiles(rptTitle,
+							testSetup.getDownloadPath()));
+		} else
 			fail("\nTestcase RPT014 failed.\n");
 
 		referenceGasReportsPage.open();
 		referenceGasReportsPage.logout();
 	}
-	
+
 	/**
 	 * Test Case ID: RPT015B Test Description: Pagination - 10,25,50 and 100
 	 * Reports selection on reference gas report screen
@@ -134,8 +137,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 				.format("\nRunning RPT029 Test Description: Generate Reference Gas Capture Report as customer admin, %s\n",
 						rptTitle);
 
-		String surveyorUnit = SQACUS + " - " + SQACUSLOC + "0" + " - "
-				+ SQACUSLOC0SUR;
+		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
 		System.out.println(surveyorUnit);
 
 		DateFormat dateFormat = new SimpleDateFormat("dd");
@@ -160,21 +162,22 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		referenceGasReportsPage.login(SQACUSUA, USERPASSWORD);
 		referenceGasReportsPage.open();
 
-		referenceGasReportsPage.addNewPDReport(rptTitle, TIMEZONEMT,
-				surveyorUnit, startDate, endDate);
+		referenceGasReportsPage.addNewReport(rptTitle, TIMEZONEMT,
+				surveyorUnit, startDate, endDate, 6, 0);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
-		if ((referenceGasReportsPage.checkActionStatus(rptTitle, SQACUSUA)))
-			assertTrue(referenceGasReportsPage.findExistingReport(rptTitle,
-					SQACUSUA));
-		else
-			fail("\nTestcase RPT029 failed.\n");
+		if ((referenceGasReportsPage.checkActionStatus(rptTitle, SQACUSUA))) {
+			assertTrue(referenceGasReportsPage.findReport(rptTitle, SQACUSUA));
+			assertTrue(referenceGasReportsPage.validatePdfFiles(rptTitle,
+					testSetup.getDownloadPath()));
+		} else
+			fail("\nTestcase RPT029 failed. Report not downloaded successfully!\n");
 
 		referenceGasReportsPage.open();
 		referenceGasReportsPage.logout();
 	}
-	
+
 	/**
 	 * Test Case ID: RPT035B Test Description: Click on Cancel button present on
 	 * reference gas report screen
@@ -238,11 +241,66 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
-		if ((referenceGasReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
-			assertTrue(referenceGasReportsPage.findExistingReport(rptTitle,
-					PICDFADMIN));
-		else
+		if ((referenceGasReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
+			assertTrue(referenceGasReportsPage.findReport(rptTitle, PICDFADMIN));
+			assertTrue(referenceGasReportsPage.validatePdfFiles(rptTitle,
+							testSetup.getDownloadPath()));
+		} else
 			fail("\nTestcase RPT043 failed.\n");
+
+		referenceGasReportsPage.open();
+		referenceGasReportsPage.logout();
+	}
+
+	/**
+	 * Test Case ID: RPT029 Test Description: Generate Reference Gas Capture
+	 * Report as customer supervisor
+	 * 
+	 */
+	@Test
+	public void TC515_GenerateRefGasReport_CustomerSupervisor() {
+		String rptTitle = "TC515 Report" + testSetup.getRandomNumber();
+		System.out
+				.format("\nRunning TC515 Test Description: Generate Reference Gas Capture Report as customer supervisor, %s\n",
+						rptTitle);
+
+		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
+		System.out.println(surveyorUnit);
+
+		DateFormat dateFormat = new SimpleDateFormat("dd");
+		Date date = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -30);
+		String startDate = dateFormat.format(cal.getTime());
+		System.out.println("Start Date : " + startDate);
+		if (startDate.startsWith("0")) {
+			startDate = startDate.replaceFirst("0*", "");
+			System.out.println("New Start Date : " + startDate);
+		}
+
+		date = new Date();
+		String endDate = dateFormat.format(date);
+		System.out.println("End Date : " + endDate);
+		if (endDate.startsWith("0")) {
+			endDate = endDate.replaceFirst("0*", "");
+			System.out.println("New End Date : " + endDate);
+		}
+
+		referenceGasReportsPage.login(SQACUSSU, USERPASSWORD);
+		referenceGasReportsPage.open();
+
+		referenceGasReportsPage.addNewReport(rptTitle, TIMEZONECT,
+				surveyorUnit, startDate, endDate, 6, 0);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if ((referenceGasReportsPage.checkActionStatus(rptTitle, SQACUSSU))) {
+			assertTrue(referenceGasReportsPage.findReport(rptTitle, SQACUSSU));
+			assertTrue("Defect DE696!",
+					referenceGasReportsPage.validatePdfFiles(rptTitle,
+							testSetup.getDownloadPath()));
+		} else
+			fail("\nTestcase RPT515 failed.Report failed to download\n");
 
 		referenceGasReportsPage.open();
 		referenceGasReportsPage.logout();

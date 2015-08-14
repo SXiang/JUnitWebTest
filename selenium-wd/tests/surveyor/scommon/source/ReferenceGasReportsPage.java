@@ -9,14 +9,13 @@ import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 import static surveyor.scommon.source.SurveyorConstants.STARTDATE;
 import static surveyor.scommon.source.SurveyorConstants.SURVEYORUNIT;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONE;
-
 import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
-
+import common.source.BaseHelper;
+import common.source.DBConnection;
 import common.source.TestSetup;
 
 /**
@@ -80,6 +79,46 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 
 		this.btnOK.click();
 	}
+	
+	public void addNewReport(String title, String timeZone, String surUnit,
+			String startDate, String endDate, int noOfPreStartMonth, int noOfPreEndMonth) {
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		this.btnNewRefGasRpt.click();
+
+		this.inputTitle.clear();
+		this.inputTitle.sendKeys(title);
+
+		List<WebElement> optionsTZ = this.cBoxTimezone.findElements(By
+				.tagName("option"));
+		for (WebElement option : optionsTZ) {
+			if ((timeZone).equalsIgnoreCase(option.getText().trim())) {
+				option.click();
+			}
+		}
+
+		if (surUnit != "") {
+			List<WebElement> optionsSU = this.cbSurveyUnit.findElements(By
+					.tagName("option"));
+			for (WebElement option : optionsSU) {
+				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+		}
+
+		DatetimepickerSetting dateSetting = new DatetimepickerSetting(driver,
+				testSetup, strBaseURL, strBaseURL + STRURLPath);
+		PageFactory.initElements(driver, dateSetting);
+
+		dateSetting.setDay("start", noOfPreStartMonth, startDate, false);
+		dateSetting.setDay("end", noOfPreEndMonth, endDate, false);
+
+		if (testSetup.isRunningDebug())
+			testSetup.slowdownInSeconds(3);
+
+		this.btnOK.click();
+	}
 
 	public void addNewPDReport(String reportTitle) {
 		this.addNewReport(reportTitle, TIMEZONE, SURVEYORUNIT, STARTDATE,
@@ -108,6 +147,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 				.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
+		System.out.println(rowSize);
 		int loopCount = 0;
 
 		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
@@ -119,7 +159,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 					+ "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-					+ "]/td[2]";
+					+ "]/td[3]";
 
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
@@ -167,7 +207,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 		return false;
 	}
 
-	public boolean findExistingReport(String rptTitle, String strCreatedBy) {
+	public boolean findReport(String rptTitle, String strCreatedBy) {
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
 		String reportTitleXPath;
@@ -191,7 +231,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 					+ "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-					+ "]/td[2]";
+					+ "]/td[3]";
 
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
@@ -222,6 +262,32 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 		}
 
 		return false;
+	}
+	
+	public boolean validatePdfFiles(String reportTitle, String downloadPath) {
+		String reportId;
+		String reportName;
+		DBConnection objDbConn = new DBConnection();
+
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		try {
+			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
+			reportId = reportId.substring(0, 6);
+			System.out.println(reportId);
+			System.out.println(reportId.length());
+			reportName = "RG-" + reportId;
+			System.out.println(reportName);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		String pdfFile1;
+		pdfFile1 = downloadPath + reportName + ".pdf";
+		
+		boolean result = false;
+		result = BaseHelper.validatePdfFileForRefGas_SysHis(pdfFile1);
+		return result;
 	}
 
 	public boolean checkPaginationSetting(String numberOfReports) {

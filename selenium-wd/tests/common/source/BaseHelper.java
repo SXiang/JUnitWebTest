@@ -108,6 +108,29 @@ public class BaseHelper {
 		return false;
 	}
 	
+	public static boolean validatePdfFileForRefGas_SysHis(String pdfFileName) {
+		//Temproary solution for now by just checking the file size
+		File pdfFile = new File(pdfFileName);
+		
+		long sizeKB = 0;
+		
+		if (pdfFile.exists()) {
+			sizeKB = (long)(pdfFile.length() / 1024);
+		}
+		else {
+			System.out.format("\nThe \"%s\" file doesn't exists!\n", pdfFileName);
+			return false;
+		}
+		
+		System.out.format("\nThe \"%s\" size is: %d\n", pdfFileName, sizeKB);
+		
+		if (sizeKB > 77) {
+			return true;
+		}
+
+		return false;
+	}
+	
 	public static boolean validateDatFile(String datFileName) {
 		//Temproary solution for now
 		File datFile = new File(datFileName);

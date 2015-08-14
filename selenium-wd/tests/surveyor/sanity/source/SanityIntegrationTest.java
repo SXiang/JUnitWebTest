@@ -155,10 +155,10 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		List<String> listBoundary = new ArrayList<String>();
 		listBoundary.add("8.5");
 		listBoundary.add("11");
-		listBoundary.add("37.39554669269125");
-		listBoundary.add("-121.93632605840963");
-		listBoundary.add("37.42172677338927");
-		listBoundary.add("-121.98619368841455");
+		listBoundary.add("37.42152227696863");
+		listBoundary.add("-121.93495276739418");
+		listBoundary.add("37.4128647496036");
+		listBoundary.add("-121.94370749761877");
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();

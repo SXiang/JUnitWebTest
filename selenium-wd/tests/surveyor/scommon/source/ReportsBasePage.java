@@ -235,7 +235,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='report-survey-id']")
 	protected WebElement cbSurveyUnit;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[4]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[5]/a")
 	protected WebElement btnDownload;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
