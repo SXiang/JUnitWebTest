@@ -5,7 +5,6 @@ package surveyor.sanity.source;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static surveyor.scommon.source.SurveyorConstants.*;
 import static surveyor.scommon.source.SurveyorConstants.CUSNAMEBASE;
 import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
@@ -277,6 +276,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageCustomersPage.clickOnAddNewCustomerBtn();
 		assertTrue(manageCustomersPage.isLinkBroken());
 		manageCustomersPage.clickOnCancelBtn();
+		manageCustomersPage.waitForPageToLoad();
 		manageCustomersPage.clickOnFirstEditCustomerBtn();
 		assertTrue(manageCustomersPage.isLinkBroken());
 		manageCustomersPage.clickOnCancelBtn();
@@ -288,9 +288,11 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageUsersPage.clickOnAddNewPicarroUserBtn();
 		assertTrue(manageUsersPage.isLinkBroken());
 		manageUsersPage.clickOnCancelAddBtn();
+		manageCustomersPage.waitForPageToLoad();
 		manageUsersPage.clickOnAddNewCustomerUserBtn();
 		assertTrue(manageUsersPage.isLinkBroken());
 		manageUsersPage.clickOnCancelAddBtn();
+		manageCustomersPage.waitForPageToLoad();
 		manageUsersPage.clickOnFirstEditUserBtn();
 		assertTrue(manageUsersPage.isLinkBroken());
 		manageUsersPage.clickOnCancelEditBtn();
@@ -302,6 +304,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageLocationsPage.clickOnAddNewLocationBtn();
 		assertTrue(manageLocationsPage.isLinkBroken());
 		manageLocationsPage.clickOnCancelBtn();
+		manageCustomersPage.waitForPageToLoad();
 		manageLocationsPage.clickOnFirstEditLocationBtn();
 		assertTrue(manageLocationsPage.isLinkBroken());
 		manageLocationsPage.clickOnCancelBtn();
@@ -313,6 +316,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageSurveyorsPage.clickOnAddNewSurveyorBtn();
 		assertTrue(manageSurveyorsPage.isLinkBroken());
 		manageSurveyorsPage.clickOnAddCancelBtn();
+		manageCustomersPage.waitForPageToLoad();
 		manageSurveyorsPage.clickOnFirstEditSurveyorBtn();
 		assertTrue(manageSurveyorsPage.isLinkBroken());
 		manageSurveyorsPage.clickOnEditCancelBtn();
@@ -324,6 +328,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageAnalyzersPage.clickOnAddNewAnalyzerBtn();
 		assertTrue(manageAnalyzersPage.isLinkBroken());
 		manageAnalyzersPage.clickOnCancelBtn();
+		manageCustomersPage.waitForPageToLoad();
 		manageAnalyzersPage.clickOnFirstEditAnalyzerBtn();
 		assertTrue(manageAnalyzersPage.isLinkBroken());
 		manageAnalyzersPage.clickOnCancelBtn();
@@ -351,15 +356,10 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageReleaseNotesPage.clickOnAddNewReleaseNoteBtn();
 		assertTrue(manageReleaseNotesPage.isLinkBroken());
 		manageReleaseNotesPage.clickOnCancelBtn();
-		//manageReleaseNotesPage.clickOnFirstEditNoteBtn();
-		//assertTrue(manageReleaseNotesPage.isLinkBroken());
-		//manageReleaseNotesPage.clickOnCancelBtn();
 
-		//driver.get(baseURL + "/Picarro/AnalyzerLogs");
 		homePage.clickOnViewAnalyzerLogsLink(baseURL);
 		assertTrue(homePage.isLinkBroken());
 
-		//driver.get(baseURL + "/Picarro/ServerLog");
 		homePage.clickOnViewServerlogsLink(baseURL);
 		assertTrue(homePage.isLinkBroken());
 	}
