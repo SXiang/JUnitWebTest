@@ -29,7 +29,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='Note']")
 	protected WebElement inputFBNote;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
+	@FindBy(how = How.XPATH, using = "//*[@id='buttonOk']")
 	protected WebElement btnSend;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='feedback-form']/fieldset/div[3]/div[2]/a")
