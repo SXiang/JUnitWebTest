@@ -47,13 +47,13 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 */	
 	@Test
 	public void tc69_addCustomerUser() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "adm013";
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "tc69";
 		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + REGBASEUSERNAME;
 		String cityName ="Santa Clara";
 		String locationDesc =customerName +"-"+cityName;
 		
-		System.out.println("\nRunning ADM013 - Test Description: Adding a customer and a User with Utility Administrator role");
+		System.out.println("\nRunning TC69 - Test Description: Adding a customer and a User with Utility Administrator role");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -90,7 +90,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String[] strList;
 		int userNum = 0;
 		
-		System.out.println("\nRunning - CUSTADM013 - Test Description: Pagination (Manage Users)\n");
+		System.out.println("\nRunning - TC115 - Test Description: Pagination (Manage Users)\n");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
