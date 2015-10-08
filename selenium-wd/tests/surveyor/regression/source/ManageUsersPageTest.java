@@ -46,7 +46,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * 
 	 */	
 	@Test
-	public void tc69_AddCustomerUser() {
+	public void tc69_addCustomerUser() {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "adm013";
 		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + REGBASEUSERNAME;
