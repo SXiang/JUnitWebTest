@@ -79,7 +79,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		System.out.println();
 		assertTrue(manageUsersPage.findExistingUser(customerName, userName));
 		
-		loginPage.open();
+		//loginPage.open();
 		//HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
 		//assertTrue(homePage.checkIfAtHomePage());
 	}
