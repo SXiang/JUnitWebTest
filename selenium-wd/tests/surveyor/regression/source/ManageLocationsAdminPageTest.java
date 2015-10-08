@@ -67,7 +67,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		manageCustomersPage.addNewCustomer(customerName, eula);
 		
 		manageUsersPage.open();
-		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEUA);
+		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEUA, locationName);
 		
 		manageUsersPage.logout();
 		

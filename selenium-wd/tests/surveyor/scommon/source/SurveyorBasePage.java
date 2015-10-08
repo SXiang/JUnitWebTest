@@ -11,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Select;
 
 import common.source.BasePage;
 import common.source.TestSetup;
@@ -51,7 +52,7 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_next']")
 	protected WebElement nextBtn;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
+	@FindBy(how = How.XPATH, using = "//*[@id='buttonOk']")
 	protected WebElement btnOk;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
@@ -107,11 +108,15 @@ public class SurveyorBasePage extends BasePage {
 	}
 	
 	public void setPagination(String str) {
-		List<WebElement> options = paginationInput.findElements(By.tagName("option"));
+		List<WebElement> options = this.paginationInput.findElements(By.tagName("option"));
 		for (WebElement option : options) {
 			if(str.equals(option.getText().trim()))
 				option.click();		
 		}
+		
+      //    Select droplist = new Select(this.paginationInput);   
+		
+	//	droplist.selectByVisibleText("10");
 	}
 	
 	public WebElement getLinkPicarroAdmin() {

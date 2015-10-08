@@ -30,17 +30,20 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageCustomersPage);
 	}
-
+	
+	
 	/**
 	 * Test Case ID: ADM004
 	 * Test Description: Adding Location
 	 * 
 	 */
-	@Test
+	//@Test
 	public void ADM004() {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "ADM004";
 		String eula = customerName + ": " + EULASTRING;
 		String locationName = customerName + "Loc";
+		String cityName="Santa Clara";
+	
 		
 		System.out.println("\nRunning ADM004 - Test Description: Adding Location");
 		
@@ -51,7 +54,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		manageCustomersPage.addNewCustomer(customerName, eula);
 		
 		manageLocationsPage.open();			
-		manageLocationsPage.addNewLocation(locationName,  customerName);
+		manageLocationsPage.addNewLocation(locationName,  customerName, cityName );
 		
 		assertTrue(manageLocationsPage.findExistingLocation(customerName, locationName));
 	}
@@ -67,6 +70,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		String eula = customerName + ": " + EULASTRING;
 		String locationName = customerName + "Loc";
 		String newLocationName = locationName + "NEW";
+		String cityName="Santa Clara";
 		
 		System.out.println("\nRunning ADM005 - Test Description: Editing Location");
 		
@@ -77,7 +81,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		manageCustomersPage.addNewCustomer(customerName, eula);
 		
 		manageLocationsPage.open();
-		manageLocationsPage.addNewLocation(locationName,  customerName);
+		manageLocationsPage.addNewLocation(locationName,  customerName, cityName);
 		
 		manageLocationsPage.editExistingLocation(customerName, locationName, newLocationName);
 		

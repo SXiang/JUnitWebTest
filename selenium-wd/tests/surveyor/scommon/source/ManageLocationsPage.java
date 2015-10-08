@@ -22,7 +22,8 @@ import common.source.TestSetup;
 public class ManageLocationsPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageLocations";
 	public static final String STRPageTitle = "Manage Locations - Surveyor";
-	
+	String latitude;
+	String longitude;
 	//@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a")
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	protected WebElement btnAddNewLocation;	
@@ -36,10 +37,37 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='Description']")
 	protected WebElement inputLocationDesc;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='point-latitude']")
+	protected WebElement inputLocationLat;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='point-longitude']")
+	protected WebElement inputLocationLong;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='CustomerId']")
 	protected WebElement dropDownCustomer;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
+	@FindBy(how = How.XPATH, using = "//*[@id='StandardMinimumAmplitude']")
+	protected WebElement stdMinAmp;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='OperatorMinimumAmplitude']")
+	protected WebElement opdMinAmp;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='RapidResponseMinimumAmplitude']")
+	protected WebElement RRMinAmp;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='NoLowerBound']")
+	protected WebElement NoLower;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='YesLowerBound']")
+	protected WebElement YesLower;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='NoUpperBound']")
+	protected WebElement NoUpper;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='YesUpperBound']")
+	protected WebElement YesUpper;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='buttonOk']")
 	protected WebElement btnOK;
 	
 	@FindBy(how = How.ID, using = "buttonCancel")
@@ -64,16 +92,33 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		super(driver, testSetup, baseURL, baseURL + urlPath);
 	}
 	
-	public void addNewLocation(String locationDesc, String customer) {
+	public void addNewLocation(String locationDesc, String customer, String newLocationName) {
+		
+		if(newLocationName.equalsIgnoreCase("Santa Clara")){
+			 latitude= "37.3971035425739";
+		      longitude="-121.98343231897";
+		}
+		
 		this.btnAddNewLocation.click();
 				
 		this.inputLocationDesc.sendKeys(locationDesc);
+		this.inputLocationLat.sendKeys(latitude);
+		this.inputLocationLong.sendKeys(longitude);
 		
 		List<WebElement> options = this.dropDownCustomer.findElements(By.tagName("option"));
 		for (WebElement option : options) {
 			if(customer.equalsIgnoreCase(option.getText().trim()))
 				option.click();
 		}
+		
+		this.stdMinAmp.sendKeys("0.1");
+		this.opdMinAmp.sendKeys("5");
+		this.RRMinAmp.sendKeys("5");
+		
+		this.NoLower.sendKeys("-45");
+		this.YesLower.sendKeys("-42");
+		this.YesUpper.sendKeys("-30");
+		this.NoUpper.sendKeys("-25");
 		
 		this.btnOK.click();
 		

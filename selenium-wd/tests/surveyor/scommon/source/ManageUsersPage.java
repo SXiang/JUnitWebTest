@@ -13,6 +13,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.Select;
 
 import common.source.TestSetup;
 
@@ -45,7 +46,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 //	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Log Out')]")
 //	private WebElement linkLogOut;	
 
-	@FindBy(how = How.XPATH, using = "//*[@id='User_CustomerId']")
+	//@FindBy(how = How.XPATH, using = "//*[@id='User_CustomerId']")
+	@FindBy(how = How.XPATH, using = "//*[@id='User_LocationId']")
 	protected WebElement dropDownCustomer;
 	
 	//@FindBy(how = How.XPATH, using = "//*[@id='User_UserName']")
@@ -171,14 +173,19 @@ public class ManageUsersPage extends SurveyorBasePage {
 		}
 	}	
 	
-	public void addNewCustomerUser(String customerName, String email, String password, String role) {
+	public void addNewCustomerUser(String customerName, String email, String password, String role, String location) {
+		String custLoc = customerName+" - "+location;
 		this.btnAddNewCustomerUser.click();
 		
-		List<WebElement> options = this.dropDownCustomer.findElements(By.tagName("option"));
-		for (WebElement option : options) { 	
+	/*	List<WebElement> options = this.dropDownCustomer.findElements(By.tagName("option"));
+			for (WebElement option : options) { 	
 			if (customerName.equalsIgnoreCase(option.getText().trim()))
 				option.click();
-		}
+		} */
+		
+		Select droplist = new Select(this.dropDownCustomer);   
+		
+     	droplist.selectByVisibleText(custLoc);
 		
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
@@ -200,7 +207,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		}		
 	}
 	
-	public void addNewCustomerUser(String customerName, String email, String password, String role, String timeZone) {
+	public void addNewCustomerUser(String customerName, String email, String password, String role, String timeZone,String location) {
 		this.btnAddNewCustomerUser.click();
 		
 		List<WebElement> options = this.dropDownCustomer.findElements(By.tagName("option"));
@@ -304,14 +311,15 @@ public class ManageUsersPage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			customerNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
-			userNameXPath     = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
-
+			customerNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
+			userNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
+			
 			customerNameCell = table.findElement(By.xpath(customerNameXPath));
 			userNameCell     = table.findElement(By.xpath(userNameXPath));
-			
+						
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName) 
-					&& (userNameCell.getText().trim()).equalsIgnoreCase(userName)) {
+				&& (userNameCell.getText().trim()).equalsIgnoreCase(userName)) {
+		
 				return true;
 			}
 				

@@ -53,6 +53,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		String locationName = customerName + "Loc";
 		String surveyorName = locationName + "Sur";
 		String analyzerName = surveyorName + "Ana";
+		String cityName="Santa Clara";
 		
 		System.out.println("\nRunning ADM010 - Test Description: Adding Analyzer");
 		
@@ -65,7 +66,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		
 		manageLocationsPage.open();
 		
-		manageLocationsPage.addNewLocation(locationName, customerName);
+		manageLocationsPage.addNewLocation(locationName, customerName , cityName);
 		
 		manageSurveyorPage.open();
 		
@@ -89,6 +90,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		String locationName = customerName + "loc";
 		String surveyorName = locationName + testSetup.getRandomNumber() + "sur";
 		String analyzerName = surveyorName + "ana";
+		String cityName="Santa Clara";
 		
 		System.out.println("\nRunning MAP000A - Test Description: Adding Analyzer for Picarro by Picarro default Administrator");
 		
@@ -97,7 +99,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		
 		manageLocationsPage.open();
 		
-		manageLocationsPage.addNewLocation(locationName, customerName);
+		manageLocationsPage.addNewLocation(locationName, customerName ,cityName);
 		
 		manageSurveyorPage.open();
 		
@@ -122,6 +124,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		String surveyorName = locationName + "sur";
 		String surveyorNameNew = locationName + "surnew";
 		String analyzerName = surveyorName + "ana";
+		String cityName ="Santa Clara";
 		
 		System.out.println("\nRunning MAP000B - Test Description: Editing Analyzer for Picarro, changing the Analyzer Name, by Picarro default Administrator");
 		
@@ -130,7 +133,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		
 		manageLocationsPage.open();
 
-		manageLocationsPage.addNewLocation(locationName, customerName);
+		manageLocationsPage.addNewLocation(locationName, customerName, cityName);
 		
 		manageSurveyorPage.open();
 		
@@ -159,6 +162,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		String locationName = customerName + "loc";
 		String surveyorName = locationName + testSetup.getRandomNumber() + "sur";
 		String analyzerName = surveyorName + "ana";
+		String cityName ="santa clara";
 		
 		System.out.println("\nRunning MAP000C - Test Description: Adding Analyzer for Picarro by Picarro user with Administrator Role");
 		
@@ -167,7 +171,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		
 		manageLocationsPage.open();
 		
-		manageLocationsPage.addNewLocation(locationName, customerName);
+		manageLocationsPage.addNewLocation(locationName, customerName, cityName);
 		
 		manageSurveyorPage.open();
 		
@@ -192,6 +196,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		String surveyorName = locationName + "sur";
 		String surveyorNameNew = locationName + "surnew";
 		String analyzerName = surveyorName + "ana";
+		String cityName ="Santa Clara";
 		
 		System.out.println("\nRunning MAP000D - Test Description: Editing Analyzer for Picarro, associating an analyzer to a different surveyor, by Picarro user with Administrator Role");
 
@@ -200,7 +205,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		
 		manageLocationsPage.open();
 		
-		manageLocationsPage.addNewLocation(locationName, customerName);
+		manageLocationsPage.addNewLocation(locationName, customerName,cityName);
 		
 		manageSurveyorPage.open();
 		

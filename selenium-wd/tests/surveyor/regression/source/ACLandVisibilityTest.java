@@ -37,6 +37,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "aclv000a";
 		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + REGBASEUSERNAME;
+		String location = customerName+"-"+"Santa Clara";
 		
 		System.out.println("\nRunning ACLV000A - Test Description: Check ACLV for customer user with Utility Administrator role");
 		
@@ -53,7 +54,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		PageFactory.initElements(driver,  manageUsersPage);
 		manageUsersPage.open();
 		
-		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEUA);
+		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEUA,location);
 		
 		assertTrue(manageUsersPage.findExistingUser(customerName, userName));
 		
@@ -85,6 +86,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "aclv000b";
 		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + REGBASEUSERNAME;
+		String location = customerName+"-"+"Santa Clara";
 		
 		System.out.println("\nRunning ACLV000B - Test Description: Check ACLV for customer user with Supervisor role");
 		
@@ -101,7 +103,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		PageFactory.initElements(driver,  manageUsersPage);
 		manageUsersPage.open();
 		
-		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLESU);
+		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLESU,location);
 		
 		assertTrue(manageUsersPage.findExistingUser(customerName, userName));
 		
@@ -133,6 +135,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "aclv000c";
 		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + REGBASEUSERNAME;
+		String location = customerName+"-"+"Santa Clara";
 		
 		System.out.println("\nRunning ACLV000C - Test Description: Check ACLV for customer user with Driver role");
 		
@@ -149,7 +152,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		PageFactory.initElements(driver,  manageUsersPage);
 		manageUsersPage.open();
 		
-		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEDR);
+		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEDR,location);
 		
 		assertTrue(manageUsersPage.findExistingUser(customerName, userName));
 		

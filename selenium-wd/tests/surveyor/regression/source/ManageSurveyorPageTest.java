@@ -52,6 +52,7 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		String eula = customerName + ": " + EULASTRING;
 		String locationName = customerName + "Loc";
 		String surveyorName = locationName + "Sur";
+		String cityName ="Santa Clara";
 		
 		System.out.println("\nRunning ADM007...");
 		
@@ -62,7 +63,7 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		manageCustomersPage.addNewCustomer(customerName, eula);
 		
 		manageLocationsPage.open();
-		manageLocationsPage.addNewLocation(locationName, customerName);
+		manageLocationsPage.addNewLocation(locationName, customerName,cityName);
 		
 		manageSurveyorPage.open();
 		manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName);

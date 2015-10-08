@@ -90,11 +90,12 @@ public class ManageCusLocSurAnaUserTest extends SurveyorBaseTest {
 			String strSurveyorName = "";
 			String strAnalyzerName = "";
 			String strUserName = "";
+			String cityname="Santa Clara";
 			
 			for (int i = 0; i < LOCNUM; i++) {
 				manageLocationsPage.open();
 				strLocationName = CUSTOMER + "_" + LOCATION + Integer.toString(i);
-				manageLocationsPage.addNewLocation(strLocationName, CUSTOMER);
+				manageLocationsPage.addNewLocation(strLocationName, CUSTOMER,cityname);
 				
 				for (int ii = 0; ii < SURNUM; ii++) {
 					manageSurveyorPage.open();

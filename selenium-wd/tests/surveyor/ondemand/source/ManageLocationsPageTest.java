@@ -46,6 +46,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 			
 			String strCustomerName = "";
 			String strLocation = "";
+			String cityName="Santa clara";
 			
 			for (int i = 0; i < CUSTOMERNUM; i++) {
 				if (i >= 0 && i < 10)
@@ -63,7 +64,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 					else
 						strLocation = strCustomerName + "_" + Integer.toString(ii) + BASELOCATIONNAME;
 					
-					manageLocationsPage.addNewLocation(strLocation, strCustomerName);
+					manageLocationsPage.addNewLocation(strLocation, strCustomerName,cityName);
 				}
 			}
 		}
