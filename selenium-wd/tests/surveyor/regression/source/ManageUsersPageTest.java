@@ -39,24 +39,14 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageLocationsPage);
 	}
-	
+
 	/**
-	 * Test Case ID: ADM000
-	 * Test Description: skipping for now for some special test case here later
-	 * 
-	 */
-	//@Test
-	public void ADM000() {
-		System.out.println("\nRunning ADM00 and skipping for now for some special test case here later...");
-	}	
-	
-	/**
-	 * Test Case ID: ADM013
+	 * Test Case ID: TC69
 	 * Test Description: Adding a customer and a User with Utility Administrator role
 	 * 
 	 */	
 	@Test
-	public void ADM013() {
+	public void tc69_AddCustomerUser() {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "adm013";
 		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + REGBASEUSERNAME;
@@ -76,16 +66,16 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		
 		manageUsersPage.open();
 		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEUA,locationDesc);
-		System.out.println();
+		
 		assertTrue(manageUsersPage.findExistingUser(customerName, userName));
 		
-		//loginPage.open();
-		//HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
-		//assertTrue(homePage.checkIfAtHomePage());
+		loginPage.open();
+		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
+		assertTrue(homePage.checkIfAtHomePage());
 	}
 	
 	/**
-	 * Test Case ID: CUSTADM013
+	 * Test Case ID: TC115
 	 * Test Description: Pagination (Manage Users)
 	 * Test Script: 10,25,50 and 100 records selection on all Administration screens
 	 * Expected Results: Specified number of records will be listed in the table
@@ -93,8 +83,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * Current Issue:
      * Future Improvement: validating on "Manage Users" pages for now and should check on other pages as well
 	 */	
-	@Test
-	public void CUSTADM013() {
+	//@Test
+	public void tc115_manageUser_pagination() {
 		List<String> userNameList;
 		String numTextString;
 		String[] strList;
