@@ -83,7 +83,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * Current Issue:
      * Future Improvement: validating on "Manage Users" pages for now and should check on other pages as well
 	 */	
-	//@Test
+	@Test
 	public void tc115_manageUser_pagination() {
 		List<String> userNameList;
 		String numTextString;
