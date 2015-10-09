@@ -43,8 +43,6 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyor-history-form']/fieldset/div[3]/div[2]/a")
 	protected WebElement btnCancel;
 
-	// add more @FindBy here later
-
 	/**
 	 * @param driver
 	 * @param testSetup

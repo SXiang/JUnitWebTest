@@ -86,7 +86,6 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		systemHistoryReportsPage.open();
 		date = new Date();
 		String endDate = dateFormat.format(date);
-		System.out.println("End Date : " + endDate);
 		if (endDate.startsWith("0")) {
 			endDate = endDate.replaceFirst("0*", "");
 		}
@@ -268,6 +267,9 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 					testSetup.getDownloadPath()));
 		} else
 			fail("\nTestcase TC195 failed.\n");
+		
+		assertTrue(systemHistoryReportsPage.validatePdfFiles(rptTitle,
+		testSetup.getDownloadPath()));
 
 		systemHistoryReportsPage.open();
 		systemHistoryReportsPage.logout();
@@ -291,7 +293,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		DateFormat dateFormat = new SimpleDateFormat("dd");
 		Date date = new Date();
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DATE, -5);
+		cal.add(Calendar.DATE, -10);
 		String startDate = dateFormat.format(cal.getTime());
 		if (startDate.startsWith("0")) {
 			startDate = startDate.replaceFirst("0*", "");
@@ -321,7 +323,6 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
-		System.out.println(rptTitle);
 		if ((systemHistoryReportsPage.checkActionStatus(rptTitle, SQACUSSU))) {
 			assertTrue(systemHistoryReportsPage.findExistingReport(rptTitle,
 					SQACUSSU));
