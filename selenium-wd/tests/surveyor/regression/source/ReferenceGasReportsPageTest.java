@@ -9,7 +9,6 @@ import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC0SUR;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
@@ -18,6 +17,7 @@ import static surveyor.scommon.source.SurveyorConstants.TIMEZONEET;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOCSUR;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSLOCANZ;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -57,25 +57,21 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 				.format("\nRunning TC159 Test Description: Generate Reference Gas Capture Report as Administrator, %s\n",
 						rptTitle);
 
-		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
+		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR
+				+ "-" + SQACUSLOCANZ;
 		System.out.println(surveyorUnit);
-
 		DateFormat dateFormat = new SimpleDateFormat("dd");
 		Date date = new Date();
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -10);
 		String startDate = dateFormat.format(cal.getTime());
-		System.out.println("Start Date : " + startDate);
 		if (startDate.startsWith("0")) {
 			startDate = startDate.replaceFirst("0*", "");
-			System.out.println("New Start Date : " + startDate);
 		}
 		date = new Date();
 		String endDate = dateFormat.format(date);
-		System.out.println("End Date : " + endDate);
 		if (endDate.startsWith("0")) {
 			endDate = endDate.replaceFirst("0*", "");
-			System.out.println("New End Date : " + endDate);
 		}
 
 		referenceGasReportsPage.login(testSetup.getLoginUser(),
@@ -86,7 +82,6 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 				surveyorUnit, startDate, endDate, 7, 0);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-
 		if ((referenceGasReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
 			assertTrue(referenceGasReportsPage.findReport(rptTitle, PICDFADMIN));
 			assertTrue(referenceGasReportsPage.validatePdfFiles(rptTitle,
@@ -137,26 +132,21 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 				.format("\nRunning TC179 Test Description: Generate Reference Gas Capture Report as customer admin, %s\n",
 						rptTitle);
 
-		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
-		System.out.println(surveyorUnit);
-
+		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR
+				+ "-" + SQACUSLOCANZ;
 		DateFormat dateFormat = new SimpleDateFormat("dd");
 		Date date = new Date();
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -5);
 		String startDate = dateFormat.format(cal.getTime());
-		System.out.println("Start Date : " + startDate);
 		if (startDate.startsWith("0")) {
 			startDate = startDate.replaceFirst("0*", "");
-			System.out.println("New Start Date : " + startDate);
 		}
 
 		date = new Date();
 		String endDate = dateFormat.format(date);
-		System.out.println("End Date : " + endDate);
 		if (endDate.startsWith("0")) {
 			endDate = endDate.replaceFirst("0*", "");
-			System.out.println("New End Date : " + endDate);
 		}
 
 		referenceGasReportsPage.login(SQACUSUA, USERPASSWORD);
@@ -204,7 +194,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 	 * 
 	 */
 //	@Test
-// Need to check how to select 6/29 start date
+// Need to check how to select 6/29 start date and how feasible it will be. PDF size verification will fail if no data is present
 	public void TC196_GenerateRefGasRpt_SingleDay() {
 		String rptTitle = "TC196 Report" + testSetup.getRandomNumber();
 		String startDate = "28";
@@ -214,9 +204,8 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 				.format("\nRunning TC196 Test Description: Generate Reference Gas Capture Report for single day, %s\n",
 						rptTitle);
 
-		String surveyorUnit = SQACUS + " - " + SQACUSLOC + "0" + " - "
-				+ SQACUSLOC0SUR;
-		System.out.println(surveyorUnit);
+		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR
+				+ "-" + SQACUSLOCANZ;
 
 		referenceGasReportsPage.login(testSetup.getLoginUser(),
 				testSetup.getLoginPwd());
@@ -250,26 +239,21 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 				.format("\nRunning TC515 Test Description: Generate Reference Gas Capture Report as customer supervisor, %s\n",
 						rptTitle);
 
-		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
-		System.out.println(surveyorUnit);
-
+		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR
+				+ "-" + SQACUSLOCANZ;
 		DateFormat dateFormat = new SimpleDateFormat("dd");
 		Date date = new Date();
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -30);
 		String startDate = dateFormat.format(cal.getTime());
-		System.out.println("Start Date : " + startDate);
 		if (startDate.startsWith("0")) {
 			startDate = startDate.replaceFirst("0*", "");
-			System.out.println("New Start Date : " + startDate);
 		}
 
 		date = new Date();
 		String endDate = dateFormat.format(date);
-		System.out.println("End Date : " + endDate);
 		if (endDate.startsWith("0")) {
 			endDate = endDate.replaceFirst("0*", "");
-			System.out.println("New End Date : " + endDate);
 		}
 
 		referenceGasReportsPage.login(SQACUSSU, USERPASSWORD);

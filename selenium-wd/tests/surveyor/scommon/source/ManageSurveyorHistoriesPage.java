@@ -37,7 +37,7 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='SurveyorUnitId']")
 	protected WebElement dropDownSurveyorUnit;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
+	@FindBy(how = How.XPATH, using = "//*[@id='buttonOk']")
 	protected WebElement btnOK;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyor-history-form']/fieldset/div[3]/div[2]/a")

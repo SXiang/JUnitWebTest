@@ -17,6 +17,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.BaseHelper;
+import common.source.DBConnection;
 import common.source.TestSetup;
 
 /**
@@ -119,7 +121,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 					+ "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-					+ "]/td[2]";
+					+ "]/td[3]";
 
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
@@ -193,7 +195,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 					+ "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-					+ "]/td[2]";
+					+ "]/td[3]";
 
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
@@ -224,6 +226,32 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 		}
 
 		return false;
+	}
+	
+	public boolean validatePdfFiles(String reportTitle, String downloadPath) {
+		String reportId;
+		String reportName;
+		DBConnection objDbConn = new DBConnection();
+
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		try {
+			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
+			reportId = reportId.substring(0, 6);
+			System.out.println(reportId);
+			System.out.println(reportId.length());
+			reportName = "SH-" + reportId;
+			System.out.println(reportName);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		String pdfFile1;
+		pdfFile1 = downloadPath + reportName + ".pdf";
+		
+		boolean result = false;
+		result = BaseHelper.validatePdfFileForSysHis(pdfFile1);
+		return result;
 	}
 	
 	public boolean checkPaginationSetting(String numberOfReports) {

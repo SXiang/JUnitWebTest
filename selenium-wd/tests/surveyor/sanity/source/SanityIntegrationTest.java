@@ -164,17 +164,17 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		Map<String, String> viewMap2 = new HashMap<String, String>();
 		Map<String, String> viewMap3 = new HashMap<String, String>();
 
-		viewMap3.put(KEYVIEWNAME, "First View");
-		viewMap3.put(KEYLISA, "1");
-		viewMap3.put(KEYFOV, "1");
-		viewMap3.put(KEYBREADCRUMB, "1");
-		viewMap3.put(KEYINDICATIONS, "1");
-		viewMap3.put(KEYISOTOPICCAPTURE, "1");
-		viewMap3.put(KEYANNOTATION, "1");
-		viewMap3.put(KEYGAPS, "0");
-		viewMap3.put(KEYASSETS, "1");
-		viewMap3.put(KEYBOUNDARIES, "1");
-		viewMap3.put(KEYBASEMAP, "Satellite");
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYGAPS, "0");
+		viewMap1.put(KEYASSETS, "0");
+		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBASEMAP, "Satellite");
 
 		viewMap2.put(KEYVIEWNAME, "Second View");
 		viewMap2.put(KEYLISA, "0");
@@ -188,17 +188,17 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		viewMap2.put(KEYBOUNDARIES, "0");
 		viewMap2.put(KEYBASEMAP, "Satellite");
 
-		viewMap1.put(KEYVIEWNAME, "Third View");
-		viewMap1.put(KEYLISA, "1");
-		viewMap1.put(KEYFOV, "1");
-		viewMap1.put(KEYBREADCRUMB, "0");
-		viewMap1.put(KEYINDICATIONS, "0");
-		viewMap1.put(KEYISOTOPICCAPTURE, "1");
-		viewMap1.put(KEYANNOTATION, "1");
-		viewMap1.put(KEYGAPS, "0");
-		viewMap1.put(KEYASSETS, "0");
-		viewMap1.put(KEYBOUNDARIES, "0");
-		viewMap1.put(KEYBASEMAP, "Map");
+		viewMap3.put(KEYVIEWNAME, "Third View");
+		viewMap3.put(KEYLISA, "1");
+		viewMap3.put(KEYFOV, "1");
+		viewMap3.put(KEYBREADCRUMB, "0");
+		viewMap3.put(KEYINDICATIONS, "0");
+		viewMap3.put(KEYISOTOPICCAPTURE, "1");
+		viewMap3.put(KEYANNOTATION, "1");
+		viewMap3.put(KEYGAPS, "0");
+		viewMap3.put(KEYASSETS, "0");
+		viewMap3.put(KEYBOUNDARIES, "0");
+		viewMap3.put(KEYBASEMAP, "Map");
 
 		viewList.add(viewMap1);
 		viewList.add(viewMap2);
@@ -209,7 +209,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 
 		tableMap.put(KEYINDTB, "1");
 		tableMap.put(KEYISOANA, "1");
-		tableMap.put(KEYPCA, "1");
+		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "1");
 		tablesList.add(tableMap);
 

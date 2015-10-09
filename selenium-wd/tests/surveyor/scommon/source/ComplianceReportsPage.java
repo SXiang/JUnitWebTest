@@ -151,7 +151,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.inputImgMapWidth.clear();
 		this.inputImgMapWidth.sendKeys(reportsCompliance.getImageMapWidth());
 		
-		addViews(reportsCompliance.getViewList());
+		System.out.println(reportsCompliance.getViewList().size());
+		addViews(reportsCompliance.customer, reportsCompliance.getViewList());
 		
 		List<Map<String, String>> tablesList = reportsCompliance
 				.getTablesList();
@@ -172,7 +173,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.btnOK.click();
 	}
 	
-	private void addViews(List<Map<String, String>> viewList) {
+	private void addViews(String customer, List<Map<String, String>> viewList) {
 		int rowNum; 
 		int colNum;  
 		String strBaseXPath;
@@ -244,14 +245,35 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				driver.findElement(By.xpath(strBaseXPath)).click();
 			}
 			
-			colNum = 12;
-			strBaseXPath = "//*[@id='datatableViews']/tbody/tr["+rowNum+"]/td["+colNum+"]/select";
-			WebElement dropdownBaseMap = driver.findElement(By.xpath(strBaseXPath));
-			
-			List<WebElement> options = dropdownBaseMap.findElements(By.tagName("option"));
-			for (WebElement option : options) {
-				if ((viewList.get(i).get(KEYBASEMAP)).equalsIgnoreCase(option.getText().trim())) {
-					option.click();
+			if (customer.equalsIgnoreCase("sqacus")) {
+				colNum = 10;
+				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum
+						+ "]/td[" + colNum + "]/select";
+				WebElement dropdownBaseMap = driver.findElement(By
+						.xpath(strBaseXPath));
+
+				List<WebElement> options = dropdownBaseMap.findElements(By
+						.tagName("option"));
+				for (WebElement option : options) {
+					if ((viewList.get(i).get(KEYBASEMAP))
+							.equalsIgnoreCase(option.getText().trim())) {
+						option.click();
+					}
+				}
+			} else {
+				colNum = 12;
+				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum
+						+ "]/td[" + colNum + "]/select";
+				WebElement dropdownBaseMap = driver.findElement(By
+						.xpath(strBaseXPath));
+
+				List<WebElement> options = dropdownBaseMap.findElements(By
+						.tagName("option"));
+				for (WebElement option : options) {
+					if ((viewList.get(i).get(KEYBASEMAP))
+							.equalsIgnoreCase(option.getText().trim())) {
+						option.click();
+					}
 				}
 			}
 		}
@@ -1191,7 +1213,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 
-		addViews(reportsCompliance.getViewList());
+		addViews(reportsCompliance.customer, reportsCompliance.getViewList());
 
 		this.btnOK.click();
 	}

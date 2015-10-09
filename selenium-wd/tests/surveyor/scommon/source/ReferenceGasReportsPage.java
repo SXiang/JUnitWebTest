@@ -286,7 +286,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 		pdfFile1 = downloadPath + reportName + ".pdf";
 		
 		boolean result = false;
-		result = BaseHelper.validatePdfFileForRefGas_SysHis(pdfFile1);
+		result = BaseHelper.validatePdfFileForRefGas(pdfFile1);
 		return result;
 	}
 

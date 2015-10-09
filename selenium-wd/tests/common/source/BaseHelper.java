@@ -86,7 +86,6 @@ public class BaseHelper {
     }	
 	
 	public static boolean validatePdfFile(String pdfFileName) {
-		//Temproary solution for now by just checking the file size
 		File pdfFile = new File(pdfFileName);
 		
 		long sizeKB = 0;
@@ -108,8 +107,7 @@ public class BaseHelper {
 		return false;
 	}
 	
-	public static boolean validatePdfFileForRefGas_SysHis(String pdfFileName) {
-		//Temproary solution for now by just checking the file size
+	public static boolean validatePdfFileForRefGas(String pdfFileName) {
 		File pdfFile = new File(pdfFileName);
 		
 		long sizeKB = 0;
@@ -131,8 +129,31 @@ public class BaseHelper {
 		return false;
 	}
 	
+	public static boolean validatePdfFileForSysHis(String pdfFileName) {
+		File pdfFile = new File(pdfFileName);
+		double sizeKB;
+		
+		if (pdfFile.exists()) {
+			System.out.println("Length: " + pdfFile.length());
+			sizeKB = (double)(pdfFile.length() / 1024);
+//			sizeKB = (long)(12186 / 1024);
+			System.out.println("SizeKB: " + sizeKB);
+		}
+		else {
+			System.out.format("\nThe \"%s\" file doesn't exists!\n", pdfFileName);
+			return false;
+		}
+		System.out.format("\nThe \"%s\" size is: %.1f\n", pdfFileName, sizeKB);
+		
+		if (sizeKB > (11.2)) {
+			return true;
+		}
+
+		return false;
+	}
+	
 	public static boolean validateDatFile(String datFileName) {
-		//Temproary solution for now
+		//Temporary solution for now
 		File datFile = new File(datFileName);
 		
 		if (datFile.exists()) {

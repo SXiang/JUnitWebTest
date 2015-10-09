@@ -9,9 +9,12 @@ import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC0SUR;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC2SUR;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSLOCSUR;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
+import static surveyor.scommon.source.SurveyorConstants.TIMEZONECT;
+import static surveyor.scommon.source.SurveyorConstants.TIMEZONEET;
+import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 
@@ -48,51 +51,44 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: RPT013 Test Description: Generate system history report as
+	 * Test Case ID: TC158 Test Description: Generate system history report as
 	 * Administrator
 	 * 
 	 */
 	@Test
-	public void RPT013() {
-		String rptTitle = "RPT013 Report" + testSetup.getRandomNumber();
+	public void TC158_SysHisRpt_PicarroAdmin() {
+		String rptTitle = "TC158 Report" + testSetup.getRandomNumber();
 		System.out
-				.format("\nRunning RPT013 Test Description: Generate system history report as Administrator, %s\n",
+				.format("\nRunning TC158 Test Description: Generate system history report as Administrator, %s\n",
 						rptTitle);
 
-		// DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:MM a");
 		DateFormat dateFormat = new SimpleDateFormat("dd");
 		Date date = new Date();
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -10);
 		String startDate = dateFormat.format(cal.getTime());
-		System.out.println("Start Date : " + startDate);
 		if (startDate.startsWith("0")) {
 			startDate = startDate.replaceFirst("0*", "");
-			System.out.println("New Start Date : " + startDate);
 		}
 
 		manageSurveyorHistoriesPage.login(testSetup.getLoginUser(),
 				testSetup.getLoginPwd());
 		manageSurveyorHistoriesPage.open();
 
-		String surveyorUnit = SQACUS + " - " + SQACUSLOC + "0" + " - "
-				+ SQACUSLOC0SUR;
-		System.out.println(surveyorUnit);
+		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
 		String note = "Automation Test Note " + testSetup.getRandomNumber();
 
 		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, note);
 		assertTrue("Administrator not able to add new history note!",
 				manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS,
-						SQACUSLOC + "0", SQACUSLOC0SUR, note));
+						SQACUSLOC, SQACUSLOCSUR, note));
 
 		systemHistoryReportsPage.open();
-
 		date = new Date();
 		String endDate = dateFormat.format(date);
 		System.out.println("End Date : " + endDate);
 		if (endDate.startsWith("0")) {
 			endDate = endDate.replaceFirst("0*", "");
-			System.out.println("New End Date : " + endDate);
 		}
 
 		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONEPT,
@@ -100,25 +96,27 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
-		if ((systemHistoryReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
+		if ((systemHistoryReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
 			assertTrue(systemHistoryReportsPage.findExistingReport(rptTitle,
 					PICDFADMIN));
-		else
-			fail("\nTestcase RPT013 failed.\n");
+			assertTrue(systemHistoryReportsPage.validatePdfFiles(rptTitle,
+					testSetup.getDownloadPath()));
+		} else
+			fail("\nTestcase TC158 failed.\n");
 
 		systemHistoryReportsPage.open();
 		systemHistoryReportsPage.logout();
 	}
-	
+
 	/**
-	 * Test Case ID: RPT015A Test Description: Pagination - 10,25,50 and 100
+	 * Test Case ID: TC161 Test Description: Pagination - 10,25,50 and 100
 	 * Reports selection on system history report screen
 	 * 
 	 */
 	@Test
-	public void RPT015A() {
+	public void TC161_SysHisRpt_Pagination() {
 		System.out
-				.format("\nRunning RPT015A: Pagination - 10,25,50 and 100 Reports selection on system history report screen");
+				.format("\nRunning TC161: Pagination - 10,25,50 and 100 Reports selection on system history report screen");
 
 		systemHistoryReportsPage.login(testSetup.getLoginUser(),
 				testSetup.getLoginPwd());
@@ -138,15 +136,15 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: RPT028 Test Description: Generate system history report as
+	 * Test Case ID: TC178 Test Description: Generate system history report as
 	 * Customer Administrator
 	 * 
 	 */
 	@Test
-	public void RPT028() {
-		String rptTitle = "RPT028 Report" + testSetup.getRandomNumber();
+	public void TC178_SysHisRpt_CustAdmin() {
+		String rptTitle = "TC178 Report" + testSetup.getRandomNumber();
 		System.out
-				.format("\nRunning RPT028 Test Description: Generate system history report as Customer Administrator, %s\n",
+				.format("\nRunning TC178 Test Description: Generate system history report as Customer Administrator, %s\n",
 						rptTitle);
 
 		DateFormat dateFormat = new SimpleDateFormat("dd");
@@ -156,22 +154,19 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		String startDate = dateFormat.format(cal.getTime());
 		if (startDate.startsWith("0")) {
 			startDate = startDate.replaceFirst("0*", "");
-			System.out.println("New Start Date : " + startDate);
 		}
 
 		manageSurveyorHistoriesPage.login(testSetup.getLoginUser(),
 				testSetup.getLoginPwd());
 		manageSurveyorHistoriesPage.open();
 
-		String surveyorUnit = SQACUS + " - " + SQACUSLOC + "2" + " - "
-				+ SQACUSLOC2SUR;
-		System.out.println(surveyorUnit);
+		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
 		String note = "Automation Test Note " + testSetup.getRandomNumber();
-
+		
 		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, note);
 		assertTrue("Administrator not able to add new history note!",
 				manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS,
-						SQACUSLOC + "2", SQACUSLOC2SUR, note));
+						SQACUSLOC, SQACUSLOCSUR, note));
 
 		manageSurveyorHistoriesPage.logout();
 		systemHistoryReportsPage.login(SQACUSUA, USERPASSWORD);
@@ -181,34 +176,36 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		String endDate = dateFormat.format(date);
 		if (endDate.startsWith("0")) {
 			endDate = endDate.replaceFirst("0*", "");
-			System.out.println("New End Date : " + endDate);
 		}
 
-		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONEPT,
+		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONEET,
 				surveyorUnit, startDate, endDate);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
-		System.out.println(rptTitle);
-		if ((systemHistoryReportsPage.checkActionStatus(rptTitle, SQACUSUA)))
+		if ((systemHistoryReportsPage.checkActionStatus(rptTitle, SQACUSUA))) {
 			assertTrue(systemHistoryReportsPage.findExistingReport(rptTitle,
 					SQACUSUA));
+			assertTrue(systemHistoryReportsPage.validatePdfFiles(rptTitle,
+					testSetup.getDownloadPath()));
+		}
+
 		else
-			fail("\nTestcase RPT028 failed.\n");
+			fail("\nTestcase TC178 failed.\n");
 
 		systemHistoryReportsPage.open();
 		systemHistoryReportsPage.logout();
 	}
 
 	/**
-	 * Test Case ID: RPT035A Test Description: Click on Cancel button present on
+	 * Test Case ID: TC186 Test Description: Click on Cancel button present on
 	 * system history report screen
 	 * 
 	 */
 	@Test
-	public void RPT035A() {
+	public void TC186_SysHisRpt_CancelBtn() {
 		System.out
-				.format("\nRunning RPT035A: Click on Cancel button present on system history report screen\n");
+				.format("\nRunning TC186: Click on Cancel button present on system history report screen\n");
 
 		systemHistoryReportsPage.login(testSetup.getLoginUser(),
 				testSetup.getLoginPwd());
@@ -221,15 +218,15 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: RPT042 Test Description: Generate system history report for
+	 * Test Case ID: TC195 Test Description: Generate system history report for
 	 * single day
 	 * 
 	 */
 	@Test
-	public void RPT042() {
-		String rptTitle = "RPT042 Report" + testSetup.getRandomNumber();
+	public void TC195_SysHisRpt_SingleDay() {
+		String rptTitle = "TC195 Report" + testSetup.getRandomNumber();
 		System.out
-				.format("\nRunning RPT042 Test Description: Generate system history report for single day, %s\n",
+				.format("\nRunning TC195 Test Description: Generate system history report for single day, %s\n",
 						rptTitle);
 
 		DateFormat dateFormat = new SimpleDateFormat("dd");
@@ -237,46 +234,102 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -1);
 		String startDate = dateFormat.format(cal.getTime());
-		System.out.println("Start Date : " + startDate);
 		if (startDate.startsWith("0")) {
 			startDate = startDate.replaceFirst("0*", "");
-			System.out.println("New Start Date : " + startDate);
+		}
+		
+		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
+		String note = "Automation Test Note " + testSetup.getRandomNumber();
+
+		manageSurveyorHistoriesPage.login(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		manageSurveyorHistoriesPage.open();
+
+		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, note);
+		assertTrue("Administrator not able to add new history note!",
+				manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS,
+						SQACUSLOC, SQACUSLOCSUR, note));
+
+		systemHistoryReportsPage.open();
+		date = new Date();
+		String endDate = dateFormat.format(date);
+		if (endDate.startsWith("0")) {
+			endDate = endDate.replaceFirst("0*", "");
+		}
+
+		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONEMT,
+				surveyorUnit, startDate, endDate);
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		if ((systemHistoryReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
+			assertTrue(systemHistoryReportsPage.findExistingReport(rptTitle,
+					PICDFADMIN));
+			assertTrue(systemHistoryReportsPage.validatePdfFiles(rptTitle,
+					testSetup.getDownloadPath()));
+		} else
+			fail("\nTestcase TC195 failed.\n");
+
+		systemHistoryReportsPage.open();
+		systemHistoryReportsPage.logout();
+	}
+
+	/**
+	 * Test Case ID: TC516 Test Description: Generate system history report as
+	 * Customer Supervisor
+	 * 
+	 */
+	@Test
+	public void TC516_SysHisRpt_CustSupervisor() {
+		String rptTitle = "TC516 Report" + testSetup.getRandomNumber();
+		System.out
+				.format("\nRunning TC516 Test Description: Generate system history report as Customer Supervisor, %s\n",
+						rptTitle);
+		
+		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
+		String note = "Automation Test Note " + testSetup.getRandomNumber();
+
+		DateFormat dateFormat = new SimpleDateFormat("dd");
+		Date date = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -5);
+		String startDate = dateFormat.format(cal.getTime());
+		if (startDate.startsWith("0")) {
+			startDate = startDate.replaceFirst("0*", "");
 		}
 
 		manageSurveyorHistoriesPage.login(testSetup.getLoginUser(),
 				testSetup.getLoginPwd());
 		manageSurveyorHistoriesPage.open();
 
-		String surveyorUnit = SQACUS + " - " + SQACUSLOC + "0" + " - "
-				+ SQACUSLOC0SUR;
-		System.out.println(surveyorUnit);
-		String note = "Automation Test Note " + testSetup.getRandomNumber();
-
 		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, note);
 		assertTrue("Administrator not able to add new history note!",
 				manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS,
-						SQACUSLOC + "0", SQACUSLOC0SUR, note));
+						SQACUSLOC, SQACUSLOCSUR, note));
 
+		manageSurveyorHistoriesPage.logout();
+		systemHistoryReportsPage.login(SQACUSSU, USERPASSWORD);
 		systemHistoryReportsPage.open();
 
 		date = new Date();
 		String endDate = dateFormat.format(date);
-		System.out.println("End Date : " + endDate);
 		if (endDate.startsWith("0")) {
 			endDate = endDate.replaceFirst("0*", "");
-			System.out.println("New End Date : " + endDate);
 		}
 
-		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONEPT,
+		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONECT,
 				surveyorUnit, startDate, endDate);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
-		if ((systemHistoryReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
+		System.out.println(rptTitle);
+		if ((systemHistoryReportsPage.checkActionStatus(rptTitle, SQACUSSU))) {
 			assertTrue(systemHistoryReportsPage.findExistingReport(rptTitle,
-					PICDFADMIN));
-		else
-			fail("\nTestcase RPT042 failed.\n");
+					SQACUSSU));
+			assertTrue("Defect DE695!",
+					systemHistoryReportsPage.validatePdfFiles(rptTitle,
+							testSetup.getDownloadPath()));
+		} else
+			fail("\nTestcase TC516 failed.\n");
 
 		systemHistoryReportsPage.open();
 		systemHistoryReportsPage.logout();

@@ -76,6 +76,7 @@ public final class SurveyorConstants {
 	public static final String SQAPICLOC2SUR = "sqapicloc2sur";
 	public static final String SQAPICLOC3SUR = "sqapicloc3sur";
 	public static final String SQACUSLOCSUR = "White Dodge";
+	public static final String SQACUSLOCANZ = "FDDS2037";
 	public static final String SQACUSLOC0SUR = "sqacusloc0sur";
 	public static final String SQACUSLOC1SUR = "sqacusloc1sur";
 	public static final String SQACUSLOC2SUR = "sqacusloc2sur";
