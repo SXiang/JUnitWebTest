@@ -46,7 +46,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * 
 	 */	
 	@Test
-	public void tc69_addCustomerUser() {
+	public void TC69_AddCustomerUser() {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "tc69";
 		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + REGBASEUSERNAME;
@@ -84,7 +84,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
      * Future Improvement: validating on "Manage Users" pages for now and should check on other pages as well
 	 */	
 	@Test
-	public void tc115_manageUser_pagination() {
+	public void TC115_ManageUserPagination() {
 		List<String> userNameList;
 		String numTextString;
 		String[] strList;
