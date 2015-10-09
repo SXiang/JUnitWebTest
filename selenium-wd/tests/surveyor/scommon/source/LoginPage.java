@@ -37,7 +37,8 @@ public class LoginPage extends BasePage {
 	@FindBy(how = How.CSS, using = "[type='submit']")
 	private WebElement btnLogin;
 	
-	@FindBy(how = How.XPATH, using = "//button[@type='submit']")
+	//@FindBy(how = How.XPATH, using = "//button[@type='submit']")
+	@FindBy(how = How.CSS, using = "[type='submit']")
 	private WebElement btnAccept;
 	
 	/**
@@ -59,7 +60,7 @@ public class LoginPage extends BasePage {
 			btnAccept.click();
 		}	
 		
-		try {
+		/*try {
 			//temporary solution for now
 			while (driver.getCurrentUrl().contains("Detect")) {
 				continue;
@@ -68,8 +69,10 @@ public class LoginPage extends BasePage {
 		catch (Exception e) {
 			System.out.format("\n\n\nException on loginNormalAs: %s\n\n\n", e.getMessage());
 			return null;
-		}
+		}*/
 		
+		
+		waitForPageToLoad();
 		HomePage homePage = new HomePage(this.driver, this.strBaseURL, this.testSetup);
 		PageFactory.initElements(driver,  homePage);
 		long startTime = System.currentTimeMillis();
