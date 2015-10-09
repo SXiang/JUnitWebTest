@@ -56,23 +56,12 @@ public class LoginPage extends BasePage {
 		this.tbUserName.sendKeys(userName);
 		this.tbPassword.sendKeys(password);
 		this.btnLogin.click();
+
+		waitForPageToLoad();
 		if (driver.getCurrentUrl().contains("Eula") && driver.getTitle().contains("Eula")) {
 			btnAccept.click();
 		}	
 		
-		/*try {
-			//temporary solution for now
-			while (driver.getCurrentUrl().contains("Detect")) {
-				continue;
-			}
-		}
-		catch (Exception e) {
-			System.out.format("\n\n\nException on loginNormalAs: %s\n\n\n", e.getMessage());
-			return null;
-		}*/
-		
-		
-		waitForPageToLoad();
 		HomePage homePage = new HomePage(this.driver, this.strBaseURL, this.testSetup);
 		PageFactory.initElements(driver,  homePage);
 		long startTime = System.currentTimeMillis();
@@ -80,10 +69,8 @@ public class LoginPage extends BasePage {
 		
 		while (true) {
 			if (homePage.checkIfAtHomePage()){
-				System.out.println("----returning home page");
 				return homePage;
 			}else if (driver.getCurrentUrl().equalsIgnoreCase(this.strPageURL) && driver.getTitle().equalsIgnoreCase(LoginPage.STRPageTitle)){
-				System.out.println("----did not go to home page");
 				return null;
 			}
 			elapsedTime = System.currentTimeMillis() - startTime;
