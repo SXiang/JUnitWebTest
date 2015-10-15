@@ -6,7 +6,9 @@ package surveyor.regression.source;
 import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC0SUR;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSLOCSUR;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICSUP;
+import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -30,19 +32,18 @@ public class ManageSurveyorHistoriesPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: ADM019 Test Description: Add Surveyor History Note
+	 * Test Case ID: TC76 Test Description: Add Surveyor History Note
 	 * 
 	 */
 	@Test
-	public void ADM019() {
-		String strNote = "ADM019 Automation Note "
+	public void TC76_AddSurveyorHistoryNote_PicarroAdmin() {
+		String strNote = "TC76 Automation Note "
 				+ testSetup.getRandomNumber();
-		String surveyorUnit = SQACUS + " - " + SQACUSLOC + "0" + " - "
-				+ SQACUSLOC0SUR;
-		System.out.println(surveyorUnit);
+		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - "
+				+ SQACUSLOCSUR;
 
 		System.out
-				.format("\nRunning ADM019 Test Description: Add Surveyor History Note as Administrator\n");
+				.format("\nRunning TC76 Test Description: Add Surveyor History Note as Picarro Administrator\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(),
@@ -52,6 +53,30 @@ public class ManageSurveyorHistoriesPageTest extends SurveyorBaseTest {
 		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, strNote);
 		assertTrue("Administrator not able to add new history note!",
 				manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS,
-						SQACUSLOC + "0", SQACUSLOC0SUR, strNote));
+						SQACUSLOC, SQACUSLOCSUR, strNote));
+	}
+	
+	/**
+	 * Test Case ID: TC1249 Test Description: Add Surveyor History Note
+	 * 
+	 */
+	@Test
+	public void TC1249_AddSurveyorHistoryNote_PicarroSupport() {
+		String strNote = "TC1249 Automation Note "
+				+ testSetup.getRandomNumber();
+		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - "
+				+ SQACUSLOCSUR;
+
+		System.out
+				.format("\nRunning TC1249 Test Description: Add Surveyor History Note as Picarro Support user\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+
+		manageSurveyorHistoriesPage.open();
+		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, strNote);
+		assertTrue("Picarro Support user not able to add new history note!",
+				manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS,
+						SQACUSLOC, SQACUSLOCSUR, strNote));
 	}
 }
