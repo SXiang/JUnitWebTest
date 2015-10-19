@@ -11,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 
 import common.source.TestSetup;
 import static surveyor.scommon.source.SurveyorConstants.*;
@@ -22,6 +23,7 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 public class UserFeedbackPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/UserFeedback";
 	public static final String STRPageTitle = "User Feedback - Surveyor";
+	public String feedbackRecievedTxt = "Your feedback has been received.";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='user-feedback']/a")
 	protected WebElement linkSendFeedback;
@@ -36,13 +38,16 @@ public class UserFeedbackPage extends SurveyorBasePage {
 	protected WebElement btnCancel;
 	
 	@FindBy(how = How.XPATH, using = "/html/body/div/div[2]/div/div/div[3]/a")
-	protected WebElement linkToHomePage;
+	protected WebElement btnReturnToHomePage;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-user-feedback']/a")
 	protected WebElement linkViewUserFeedback;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-user-feedback']/a")
 	protected WebElement linkCusAdminViewUserFB;	
+	
+	@FindBy(how = How.XPATH, using = "/html/body/div/div[2]/div/div/div[2]/p")
+	protected WebElement textFeedbackRecieved;
 
 	/**
 	 * @param driver
@@ -65,7 +70,20 @@ public class UserFeedbackPage extends SurveyorBasePage {
 		this.linkSendFeedback.click();
 		this.inputFBNote.sendKeys(strFeedback);
 		this.btnSend.click();
-		this.linkToHomePage.click();
+	}
+	
+	public HomePage clickBtnReturnToHomePage() {
+		this.btnReturnToHomePage.click();
+		HomePage homePage = new HomePage(this.driver, this.strBaseURL, this.testSetup);
+		PageFactory.initElements(driver,  homePage);
+		return homePage;
+	}
+	
+	public boolean checkSuccessMsg(){
+		if (this.textFeedbackRecieved.getText().equalsIgnoreCase(feedbackRecievedTxt))
+			return true;
+		else
+			return false;
 	}
 	
 	public boolean checkUserFeedback(String user, String strFeedback) {

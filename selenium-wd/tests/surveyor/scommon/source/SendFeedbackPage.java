@@ -38,7 +38,7 @@ public class SendFeedbackPage extends UserFeedbackPage {
 	public void sendFeedback(String strLoginUser, String strFeedback) {
 		this.inputFBNote.sendKeys(strFeedback);
 		this.btnSend.click();
-		this.linkToHomePage.click();
+		this.btnReturnToHomePage.click();
 	}
 
 	/**

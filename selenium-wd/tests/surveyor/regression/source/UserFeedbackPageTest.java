@@ -21,72 +21,182 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  */
 public class UserFeedbackPageTest extends SurveyorBaseTest {
 	private static UserFeedbackPage userFeedbackPage;
-	
+
 	@BeforeClass
 	public static void setupUserFeedbackPageTest() {
 		userFeedbackPage = new UserFeedbackPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver,  userFeedbackPage);
+		PageFactory.initElements(driver, userFeedbackPage);
 	}
-	
+
 	/**
-	 * Test Case ID: UFBP000A
-	 * Test Description: Sending feedback from Picarro Default Administrator
+	 * Test Case ID: TC124 Test Description: Customer User is able to send the
+	 * feedback and Picarro Administrator can view the note
 	 * 
 	 */
 	@Test
-	public void UFBP000A() {
-		String feedbackNote = testSetup.getRandomNumber() + ": " + STRFEEDBACK + " - UFBP000A";
+	public void TC124_CustAdminSendFeedback_PicarroAdminViewIt() {
+		String feedbackNote = testSetup.getRandomNumber() + ": " + STRFEEDBACK
+				+ " - TC124";
 		boolean bFound = false;
-		
-		System.out.println("\nRunning UFBP000A - Test Description: Sending feedback from Picarro Default Administrator");
+
+		System.out
+				.println("\nRunning TC124 - Test Description: Customer User is able to send the feedback and Picarro Administrator can view the note");
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
-		
-		userFeedbackPage.sendFeedback(testSetup.getLoginUser(),  feedbackNote);
-		
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+
+		userFeedbackPage.sendFeedback(SQACUSUA, feedbackNote);
+		assertTrue(SQACUSUA + " not able to send the feedback note!!",
+				userFeedbackPage.checkSuccessMsg());
+		userFeedbackPage.clickBtnReturnToHomePage();
+		homePage.logout();
+
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
 		userFeedbackPage.open();
-		List<String> list = userFeedbackPage.getUserFeedbackNotes("Picarro",  testSetup.getLoginUser());
-		
-		for (String note : list) {
+		List<String> picFeedbackList = userFeedbackPage.getUserFeedbackNotes(
+				SQACUS, SQACUSUA);
+
+		for (String note : picFeedbackList) {
 			if (note.equalsIgnoreCase(feedbackNote)) {
 				bFound = true;
+				assertTrue("TC124 Failed - Feedback Note not found!!",
+						note.equalsIgnoreCase(feedbackNote));
 				break;
 			}
 		}
-		
+
 		if (!bFound)
-			fail("\nTese case UFBP000A failed.\n");
+			fail("\nTese case TC124 failed.\n");
 	}
-	
+
 	/**
-	 * Test Case ID: UFBP000B
-	 * Test Description: Sending feedback from Picarro User with Administrator Role
+	 * Test Case ID: 508 Test Description: User is able to send the feedback and
+	 * Picarro support user can view the note
 	 * 
 	 */
 	@Test
-	public void UFBP000B() {
-		String feedbackNote = testSetup.getRandomNumber() + ": " + STRFEEDBACK + " - UFBP000B";
+	public void TC508_PicarroSupport_ViewFeedbackNote() {
+		String feedbackNote = testSetup.getRandomNumber() + ": " + STRFEEDBACK
+				+ " - TC508";
 		boolean bFound = false;
-		
-		System.out.println("\nRunning UFBP000B - Test Description: Sending feedback from Picarro User with Administrator Role");
+
+		System.out
+				.println("\nRunning TC508 - Test Description: User is able to send the feedback and Picarro support user can view the note");
 
 		loginPage.open();
-		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
-		
-		userFeedbackPage.sendFeedback(SQAPICAD, feedbackNote);
-		
+		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);
+
+		userFeedbackPage.sendFeedback(SQACUSDR, feedbackNote);
+		assertTrue(SQACUSDR + " not able to send the feedback note!!",
+				userFeedbackPage.checkSuccessMsg());
+		userFeedbackPage.clickBtnReturnToHomePage();
+		homePage.logout();
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 		userFeedbackPage.open();
-		List<String> list = userFeedbackPage.getUserFeedbackNotes("Picarro",  SQAPICAD);
-		
-		for (String note : list) {
+		List<String> picFeedbackList = userFeedbackPage.getUserFeedbackNotes(
+				SQACUS, SQACUSDR);
+
+		for (String note : picFeedbackList) {
 			if (note.equalsIgnoreCase(feedbackNote)) {
 				bFound = true;
+				assertTrue("TC508 Failed - Feedback Note not found!!",
+						note.equalsIgnoreCase(feedbackNote));
 				break;
 			}
 		}
-		
+
 		if (!bFound)
-			fail("\nTese case UFBP000B failed.\n");
-	}	
+			fail("\nTese case TC508 failed.\n");
+	}
+
+	/**
+	 * Test Case ID: TC1328 Test Description: Picarro Admin is able to send the
+	 * feedback and Picarro Support can view the note
+	 * 
+	 */
+	@Test
+	public void TC1328_PicAdminSendFeedback_PicSupViewIt() {
+		String feedbackNote = testSetup.getRandomNumber() + ": " + STRFEEDBACK
+				+ " - TC1328";
+		boolean bFound = false;
+
+		System.out
+				.println("\nRunning TC1328 - Test Description: Picarro Admin is able to send the feedback and Picarro Support can view the note");
+
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+
+		userFeedbackPage.sendFeedback(testSetup.getLoginUser(), feedbackNote);
+		assertTrue(testSetup.getLoginUser()
+				+ " not able to send the feedback note!!",
+				userFeedbackPage.checkSuccessMsg());
+		userFeedbackPage.clickBtnReturnToHomePage();
+		homePage.logout();
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+		userFeedbackPage.open();
+		List<String> picFeedbackList = userFeedbackPage.getUserFeedbackNotes(
+				"Picarro", testSetup.getLoginUser());
+
+		for (String note : picFeedbackList) {
+			if (note.equalsIgnoreCase(feedbackNote)) {
+				bFound = true;
+				assertTrue("TC1328 Failed - Feedback Note not found!!",
+						note.equalsIgnoreCase(feedbackNote));
+				break;
+			}
+		}
+
+		if (!bFound)
+			fail("\nTese case TC1328 failed.\n");
+	}
+
+	/**
+	 * Test Case ID: TC1329 Test Description: Picarro Support user is able to
+	 * send the feedback and Picarro Admin can view the note
+	 * 
+	 */
+	@Test
+	public void TC1329_PicSupSendFeedback_PicAdminViewIt() {
+		String feedbackNote = testSetup.getRandomNumber() + ": " + STRFEEDBACK
+				+ " - TC1329";
+		boolean bFound = false;
+
+		System.out
+				.println("\nRunning TC1329 - Test Description: Picarro Support user is able to send the feedback and Picarro Admin can view the note");
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+
+		userFeedbackPage.sendFeedback(testSetup.getLoginUser(), feedbackNote);
+		assertTrue(SQAPICSUP + " not able to send the feedback note!!",
+				userFeedbackPage.checkSuccessMsg());
+		userFeedbackPage.clickBtnReturnToHomePage();
+		homePage.logout();
+
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+		userFeedbackPage.open();
+		List<String> picFeedbackList = userFeedbackPage.getUserFeedbackNotes(
+				"Picarro", SQAPICSUP);
+
+		for (String note : picFeedbackList) {
+			if (note.equalsIgnoreCase(feedbackNote)) {
+				bFound = true;
+				assertTrue("TC1329 Failed - Feedback Note not found!!",
+						note.equalsIgnoreCase(feedbackNote));
+				break;
+			}
+		}
+
+		if (!bFound)
+			fail("\nTese case TC1329 failed.\n");
+	}
 }
