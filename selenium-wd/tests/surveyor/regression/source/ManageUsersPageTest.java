@@ -43,21 +43,50 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC69 Test Description: Adding a customer and a User with
-	 * Utility Administrator role
+	 * Test Case ID: TC68 Test Description: Picarro Admin - Add New Picarro User
 	 * 
 	 */
 	@Test
-	public void TC69_AddCustomerUser() {
+	public void TC68_AddNewPicarroUser() {
+		String userName = "PicarroUser" + testSetup.getRandomNumber()
+				+ "picarroUser01" + REGBASEUSERNAME;
+		String locationDesc = "Picarro - Santa Clara";
+
+		System.out
+				.println("\nRunning TC68 - Test Description: Picarro Admin - Add New Picarro user");
+
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+
+		manageUsersPage.open();
+		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD,
+				CUSUSERROLEUA, locationDesc, TIMEZONECT);
+
+		assertTrue(manageUsersPage.findExistingUser("Picarro", userName));
+		loginPage = manageUsersPage.logout();
+
+		loginPage.open();
+		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
+		assertTrue(homePage.checkIfAtHomePage());
+	}
+
+	/**
+	 * Test Case ID: TC69 Test Description: Picarro Admin - Add New Customer
+	 * User
+	 * 
+	 */
+	@Test
+	public void TC69_AddNewCustomerUser() {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber()
 				+ "TC69";
 		String eula = customerName + ": " + EULASTRING;
-		String userName = customerName + REGBASEUSERNAME;
+		String userName = customerName + "customerUser01" + REGBASEUSERNAME;
 		String cityName = "Santa Clara";
 		String locationDesc = customerName + "-" + cityName;
 
 		System.out
-				.println("\nRunning TC69 - Test Description: Adding a customer and a User with Utility Administrator role");
+				.println("\nRunning TC69 - Test Description: Picarro Admin - Add New Customer user");
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(),
@@ -86,8 +115,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC115 Test Description: Pagination (Manage Users) Test
 	 * Script: 10,25,50 and 100 records selection on all Administration screens
 	 * Expected Results: Specified number of records will be listed in the table
-	 * Current implementation: Current Issue: Future Improvement: validating on
-	 * "Manage Users" pages for now and should check on other pages as well
+	 * Future Improvement: validating on "Manage Users" pages for now and should
+	 * check on other pages as well
 	 */
 	@Test
 	public void TC115_ManageUserPagination() {
@@ -100,7 +129,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 				.println("\nRunning - TC115 - Test Description: Pagination (Manage Users)\n");
 
 		loginPage.open();
-		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
+		loginPage.loginNormalAs(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
 
 		manageUsersPage.open();
 		manageUsersPage.setPagination("10");
@@ -157,5 +187,62 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		userNum = Integer.parseInt(strList[3]);
 
 		assertTrue(userNameList.size() == userNum);
+	}
+
+	/**
+	 * Test Case ID: TC470 Test Description: Picarro Support - Add New Picarro
+	 * User
+	 * 
+	 */
+	@Test
+	public void TC470_AddNewPicarroUser() {
+		String userName = "PicarroUser" + testSetup.getRandomNumber()
+				+ "picarroUser02" + REGBASEUSERNAME;
+		String locationDesc = "Picarro - Santa Clara";
+
+		System.out
+				.println("\nRunning TC470 - Test Description: Picarro Support - Add New Picarro user");
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+
+		manageUsersPage.open();
+		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD,
+				CUSUSERROLESU, locationDesc, TIMEZONECT);
+
+		assertTrue(manageUsersPage.findExistingUser("Picarro", userName));
+		loginPage = manageUsersPage.logout();
+
+		loginPage.open();
+		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
+		assertTrue(homePage.checkIfAtHomePage());
+	}
+
+	/**
+	 * Test Case ID: TC471 Test Description: Picarro Support - Add New Customer
+	 * User
+	 * 
+	 */
+	@Test
+	public void TC471_AddNewCustomerUser() {
+		String userName = SQACUS + testSetup.getRandomNumber()
+				+ "customerUser02" + REGBASEUSERNAME;
+
+		System.out
+				.println("\nRunning TC471 - Test Description: Picarro Support - Add New Customer user");
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+
+		manageUsersPage.open();
+		manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD,
+				CUSUSERROLEUA, SQACUSLOC);
+
+		assertTrue(manageUsersPage.findExistingUser(SQACUS, userName));
+		loginPage = manageUsersPage.logout();
+
+		loginPage.open();
+		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
+		assertTrue(homePage.checkIfAtHomePage());
 	}
 }

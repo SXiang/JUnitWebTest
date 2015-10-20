@@ -180,7 +180,6 @@ public class BaseHelper {
 			if (strList.get(i - 1).compareTo(strList.get(i)) > 0)
 				sorted = false;
 		}
-
 		return sorted;
 	}
 
@@ -190,7 +189,6 @@ public class BaseHelper {
 			if (strList.get(i - 1).compareTo(strList.get(i)) < 0)
 				sorted = false;
 		}
-
 		return sorted;
 	}
 

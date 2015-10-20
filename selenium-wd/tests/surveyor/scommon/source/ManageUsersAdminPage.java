@@ -70,8 +70,10 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 	}
 
 	public void addNewUser(String email, String password, String role, String timeZone) {
+		waitForPageToLoad();
 		this.btnAddNewCustomerUser.click();
 		
+		waitForPageToLoad();
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
 		this.inputPassword.sendKeys(password);
@@ -101,6 +103,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 	public void addNewUser(String email, String password, String role, String timeZone, boolean accountEnabled) {
 		this.btnAddNewCustomerUser.click();
 		
+		waitForPageToLoad();
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
 		this.inputPassword.sendKeys(password);
@@ -139,9 +142,10 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 	//temporary solution for now and should be improved with a better approach 
 	public String addTestUser(String email, String password1, String password2) {
 		String rtnMsg = "";
-		
+		waitForPageToLoad();
 		this.btnAddNewCustomerUser.click();
 		
+		waitForPageToLoad();
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
 		this.inputPassword.sendKeys(password1);
@@ -149,6 +153,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		
 		this.btnOk.click();
 		
+		waitForPageToLoad();
 		if (isElementPresent(this.labelUserNameErrorXPath)) {
 			rtnMsg = this.labelUserNameError.getText().trim();
 			this.cancelAddBtn.click();
@@ -169,6 +174,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		
 		if (isElementPresent(this.panelDuplicationErrorXPath)) {
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
+			
 			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:")) {
 				rtnMsg = panelError.getText();
 				this.cancelAddBtn.click();

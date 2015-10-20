@@ -23,446 +23,400 @@ import surveyor.scommon.source.SurveyorBaseTest;
  */
 public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	private static ManageUsersAdminPage manageUsersAdminPage;
-	
+
 	@BeforeClass
 	public static void setupManageUsersAdminPageTest() {
-		manageUsersAdminPage = new ManageUsersAdminPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageUsersAdminPage);
+		manageUsersAdminPage = new ManageUsersAdminPage(driver, baseURL,
+				testSetup);
+		PageFactory.initElements(driver, manageUsersAdminPage);
 	}
 
 	/**
-	 * Test Case ID: CUSTADM001
-	 * Test Description: add user
-	 * Test Script: - On Home Page, click Administration -> Manage Users
-				    - Click on 'Add New User' button
-					- Provide required user details and click OK [E1]
-					- Login to p-cubed with newly created user credentials [E2]
-	 * Expected Results: E1. Admin user is navigated to Manage Users page and new user details are present in the table
-						 E2. New user is able to login the application successfully and navigated to valid page
-     * Future Improvement: 1. Create user by Default "Administrator", Picarro Administrator and Utility Administrator from both Picarro and customer
-     * 					   2. Create users with different roles 
-     * 					   3. Create users with different TimeZone
-     * 					   4. Create users with the status "disabled" (non default)
-	 */	
+	 * Test Case ID: TC438 Test Description: Customer Admin - add new user
+	 */
 	@Test
-	public void CUSTADM001() {
-		String customerName = SQACUS;
-		String userName = customerName + testSetup.getRandomNumber() + "custadm001" + REGBASEUSERNAME;
-		
-		System.out.println("\nRunning - CUSTADM001 - add user\n");
-		
+	public void TC438_CustAdmin_AddNewUser() {
+		String userName = SQACUS + testSetup.getRandomNumber() + "custadm001"
+				+ REGBASEUSERNAME;
+
+		System.out
+				.println("\nRunning - TC438 - Customer Admin - add new user\n");
+
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		
+
 		homePage.getLinkCusAdmin().click();
 		homePage.getLinkAdminManageUsers().click();
-		
-		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONECTUA);
-		
-		assertTrue(manageUsersAdminPage.findExistingUser(SQACUS, userName, CUSUSERROLEDR));
+
+		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR,
+				TIMEZONECTUA);
+
+		assertTrue(manageUsersAdminPage.findExistingUser(SQACUSLOC, userName,
+				CUSUSERROLEDR));
 		manageUsersAdminPage.logout();
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(userName, USERPASSWORD);
-	
+
 		assertTrue(homePage.checkIfAtHomePage());
 	}
-	
+
 	/**
-	 * Test Case ID: CUSTADM002
-	 * Test Description: edit user
-	 * Test Script: - On Home Page, click Administration -> Manage Users
-	     		    - Click on Edit link of the desired user
-				    - Modify user details and click OK
-	 * Expected Results: - User details are modified successfully 
-     * Future Improvement:
-	 */	
+	 * Test Case ID: TC439 Test Description: Customer Admin - edit user
+	 */
 	@Test
-	public void CUSTADM002() {
-		String customerName = SQACUS;
-		String userName = customerName + testSetup.getRandomNumber() + "custadm002" + REGBASEUSERNAME;
-		
-		System.out.println("\nRunning - CUSTADM002 - edit user\n");
-		
+	public void TC439_CustAdmin_EditUser() {
+		String userName = SQACUS + testSetup.getRandomNumber() + "custadm002"
+				+ REGBASEUSERNAME;
+
+		System.out.println("\nRunning - TC439 - Customer Admin - edit user\n");
+
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		
+
 		homePage.getLinkCusAdmin().click();
 		homePage.getLinkAdminManageUsers().click();
-		
-		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONECTUA);
-		assertTrue(manageUsersAdminPage.findExistingUser(SQACUS, userName, CUSUSERROLEDR));
-		
-		manageUsersAdminPage.editUser(userName, CUSUSERROLESU, TIMEZONEETUA, true);
-		assertTrue(manageUsersAdminPage.findExistingUser(SQACUS, userName, CUSUSERROLESU));
-		assertTrue(manageUsersAdminPage.getUserRole(userName).equalsIgnoreCase(CUSUSERROLESU));
-		assertTrue(manageUsersAdminPage.getUserStatus(userName).equalsIgnoreCase("Enabled"));
+
+		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR,
+				TIMEZONECTUA);
+		assertTrue(manageUsersAdminPage.findExistingUser(SQACUSLOC, userName,
+				CUSUSERROLEDR));
+
+		manageUsersAdminPage.editUser(userName, CUSUSERROLESU, TIMEZONEETUA,
+				true);
+		assertTrue(manageUsersAdminPage.findExistingUser(SQACUSLOC, userName,
+				CUSUSERROLESU));
+		assertTrue(manageUsersAdminPage.getUserRole(userName).equalsIgnoreCase(
+				CUSUSERROLESU));
+		assertTrue(manageUsersAdminPage.getUserStatus(userName)
+				.equalsIgnoreCase("Enabled"));
 	}
-	
+
 	/**
-	 * Test Case ID: CUSTADM003
-	 * Test Description: Customer specific user can change its password
-	 * Test Script: - On Home Page, click on Reset Password
-	 *				- Change the user password
-	 *				- Login with modified user password
-	 * Expected Results: - Message should be displayed as : User password modified successfully
-	 *					 - User can login the application successfully
-	 * Current implementation: User will be brought to the "ManageUsers" page after clicking "OK" button on resetting 
-	 * 						   password without message displayed as "User password modified successfully"
-	 * Current Issue: New password can be reset to the same as the current one
-     * Future Improvement:
-	 */	
+	 * Test Case ID: TC440 Test Description: Customer specific user can change
+	 * its password
+	 */
 	@Test
-	public void CUSTADM003() {
-		String customerName = SQACUS;
-		String userName = customerName + testSetup.getRandomNumber() + "custadm003" + REGBASEUSERNAME;
-		
-		System.out.println("\nRunning - CUSTADM003 - Customer specific user can change its password\n");
-		
+	public void TC440_CustAdmin_ChangePwd() {
+		String userName = SQACUS + testSetup.getRandomNumber() + "custadm003"
+				+ REGBASEUSERNAME;
+
+		System.out
+				.println("\nRunning - TC440 - Customer specific user can change its password\n");
+
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		
+
 		manageUsersAdminPage.open();
-		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONECTUA);
-		
+		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR,
+				TIMEZONECTUA);
+
 		assertTrue(manageUsersAdminPage.findExistingUser(userName));
-		
+
 		manageUsersAdminPage.logout();
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(userName, USERPASSWORD);
-		
+
 		assertTrue(homePage.checkIfAtHomePage());
-		
+
 		manageUsersAdminPage.logout();
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		
+
 		manageUsersAdminPage.open();
-		if (!manageUsersAdminPage.resetUserPassword(userName, USERPASSWORD + "1"))
-			fail("\nTestcase CUSTADM003 - failed to reset user password.\n");
-		
+		if (!manageUsersAdminPage.resetUserPassword(userName, USERPASSWORD
+				+ "1"))
+			fail("\nTestcase TC440 - failed to reset user password.\n");
+
 		manageUsersAdminPage.logout();
-		
+
 		loginPage.open();
 		if (loginPage.loginNormalAs(userName, USERPASSWORD + "1") != null)
 			assertTrue(homePage.checkIfAtHomePage());
 		else
-			fail("\nTestcase CUSTADM003 - failed to login by the new password.\n");
+			fail("\nTestcase TC440 - failed to login by the new password.\n");
 	}
-	
+
 	/**
-	 * Test Case ID: CUSTADM004
-	 * Test Description: Disabled User
-	 * Test Script: - On Home Page, and click Administration -> Users
-				    - Click on 'Add New User' button
-					- Provide user details and check the Disabled checkbox. Click OK
-	 * Expected Results: - Disabled User will not be able login the application
-	 * Current implementation:
-	 * Current Issue:
-     * Future Improvement: Adding user with disabled status by Picarro default Admin, Picarro Admin and Picarro Utility Admin
-	 */	
+	 * Test Case ID: TC441 Test Description: Customer Admin - Disabled User
+	 */
 	@Test
-	public void CUSTADM004() {
-		String customerName = SQACUS;
-		String userName = customerName + testSetup.getRandomNumber() + "custadm004" + REGBASEUSERNAME;
-		
-		System.out.println("\nRunning - CUSTADM004 - Test Description: Disabled User\n");
-		
+	public void TC441_CustAdmin_DisableUser() {
+		String userName = SQACUS + testSetup.getRandomNumber() + "custadm004"
+				+ REGBASEUSERNAME;
+
+		System.out
+				.println("\nRunning - TC441 - Test Description: Customer Admin - Disabled User\n");
+
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		
+
 		homePage.getLinkCusAdmin().click();
 		homePage.getLinkAdminManageUsers().click();
-		
-		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONECTUA, false);
-		assertTrue(manageUsersAdminPage.findExistingUser(SQACUS, userName, CUSUSERROLEDR));
-		
+
+		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR,
+				TIMEZONECTUA, false);
+		assertTrue(manageUsersAdminPage.findExistingUser(SQACUSLOC, userName,
+				CUSUSERROLEDR));
+		assertTrue(manageUsersAdminPage.getUserStatus(userName)
+				.equalsIgnoreCase("Disabled"));
 		manageUsersAdminPage.logout();
-		
+
 		loginPage.open();
 		assertTrue(loginPage.loginNormalAs(userName, USERPASSWORD) == null);
 	}
-	
+
 	/**
-	 * Test Case ID: CUSTADM006
-	 * Test Description: Customer admin not allowed to create duplicate User
-	 * Test Script: - On Home Page, and click Administration -> Users
-	 			    - Click on 'Add New User' button
-				    - Provide user name as existing user's name and click OK
-	 * Expected Results: Duplicate User creation not allowed
-	 * Current implementation:
-	 * Current Issue:
-     * Future Improvement:
-	 */	
+	 * Test Case ID: TC443 Test Description: Customer admin not allowed to
+	 * create duplicate User
+	 */
 	@Test
-	public void CUSTADM006() {
-		String customerName = SQACUS;
-		String userName = customerName + testSetup.getRandomNumber() + "custadm006" + REGBASEUSERNAME;
-		
-		System.out.println("\nRunning - CUSTADM006 - Customer admin not allowed to create duplicate User\n");
-		
+	public void TC443_DuplicateUserCreationNotAllowed() {
+		String userName = SQACUS + testSetup.getRandomNumber() + "custadm006"
+				+ REGBASEUSERNAME;
+
+		System.out
+				.println("\nRunning - TC443 - Customer admin not allowed to create duplicate User\n");
+
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		
+
 		homePage.getLinkCusAdmin().click();
 		homePage.getLinkAdminManageUsers().click();
-		
-		manageUsersAdminPage.addTestUser(userName,  USERPASSWORD, USERPASSWORD);
+
+		manageUsersAdminPage.addTestUser(userName, USERPASSWORD, USERPASSWORD);
 		assertTrue(manageUsersAdminPage.findExistingUser(userName));
-		
+
 		manageUsersAdminPage.open();
-		assertTrue(manageUsersAdminPage.addTestUser(userName, USERPASSWORD, USERPASSWORD).contains(DUPLICATIONERROR));
+		assertTrue(manageUsersAdminPage.addTestUser(userName, USERPASSWORD,
+				USERPASSWORD).contains(DUPLICATIONERROR));
 	}
-	
+
 	/**
-	 * Test Case ID: CUSTADM007
-	 * Test Description: Add User - Password and Confirm Password values different
-	 * Test Script: - On Home Page, and click Administration -> Users
-					- Click on 'Add New User' button
-					- Provide different values for Password and Confirm Password fields
-	 * Expected Results: "Please enter the same value again." message should be displayed
-	 * Current implementation:
-	 * Current Issue:
-     * Future Improvement:
-	 */	
+	 * Test Case ID: TC444 Test Description: Add User - Password and Confirm
+	 * Password values different
+	 */
 	@Test
-	public void CUSTADM007() {
-		String customerName = SQACUS;
-		String userName = customerName + testSetup.getRandomNumber() + "custadm007" + REGBASEUSERNAME;
-		
-		System.out.println("\nRunning - CUSTADM007 - Test Description: Add User - Password and Confirm Password values different\n");
-		
+	public void TC444_PwdValuesDiffNotAllowed() {
+		String userName = SQACUS + testSetup.getRandomNumber() + "custadm007"
+				+ REGBASEUSERNAME;
+
+		System.out
+				.println("\nRunning - TC444 - Test Description: Add User - Password and Confirm Password values different\n");
+
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		
+
 		homePage.getLinkCusAdmin().click();
 		homePage.getLinkAdminManageUsers().click();
-		
-		assertTrue(manageUsersAdminPage.addTestUser(userName, USERPASSWORD, USERPASSWORD + "2").contains(PWVALUEERROR));
+
+		assertTrue(manageUsersAdminPage.addTestUser(userName, USERPASSWORD,
+				USERPASSWORD + "2").contains(PWVALUEERROR));
 	}
-	
+
 	/**
-	 * Test Case ID: CUSTADM008
-	 * Test Description: add user - invalid email address values
-	 * Test Script: - Login to the site and click Administration -> Users
-					- Click on 'Add New User' button
-					- Provide invalid email address (e.g. rpitter@b, rpitter, rpitter@b. , rpitter@b.c). Click OK
-	 * Expected Results: "Please enter valid email address" message should be displayed
-	 * Current implementation:
-	 * Current Issue:
-     * Future Improvement:
-	 */	
+	 * Test Case ID: TC445 Test Description: add user - invalid email
+	 */
 	@Test
-	public void CUSTADM008() {
+	public void TC445_InvalidEmailAddressNotAllowed() {
 		String userName1 = "rpitter@b";
 		String userName2 = "rpitter@b.c";
-		
-		System.out.println("\nRunning - CUSTADM008 - Test Description: add user - invalid email address values\n");
-		
+
+		System.out
+				.println("\nRunning - TC445 - Test Description: add user - invalid email address values\n");
+
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		
+
 		homePage.getLinkCusAdmin().click();
 		homePage.getLinkAdminManageUsers().click();
-		
-		assertTrue(manageUsersAdminPage.addTestUser(userName1, USERPASSWORD, USERPASSWORD).contains(EMAILINVALID));
-		
+
+		assertTrue(manageUsersAdminPage.addTestUser(userName1, USERPASSWORD,
+				USERPASSWORD).equalsIgnoreCase(EMAILINVALID));
+
 		manageUsersAdminPage.open();
-		assertTrue(manageUsersAdminPage.addTestUser(userName2, USERPASSWORD, USERPASSWORD).contains(EMAILINVALID));
+		assertTrue(manageUsersAdminPage.addTestUser(userName2, USERPASSWORD,
+				USERPASSWORD).equalsIgnoreCase(EMAILINVALID));
 	}
-	
+
 	/**
-	 * Test Case ID: CUSTADM009
-	 * Test Description: add user - blank required fields
-	 * Test Script: - Login to the site and click Administration -> Users
-					- Click on 'Add New User' button
-					- Keep Email Address, pwd and confirm pwd fields blank. Click OK
-	 * Expected Results: "Please fill out this field." message should be displayed
-	 * Current implementation:
-	 * Current Issue:
-     * Future Improvement:
-	 */	
+	 * Test Case ID: TC446 Test Description: add user - blank required
+	 */
 	@Test
-	public void CUSTADM009() {
-		String customerName = SQACUS;
-		String userName = customerName + testSetup.getRandomNumber() + "custadm009" + REGBASEUSERNAME;
-		
-		System.out.println("\nRunning - CUSTADM009 - Test Description: add user - blank required fields\n");
-		
+	public void TC446_BlankRequiredFields() {
+		String userName = SQACUS + testSetup.getRandomNumber() + "custadm009"
+				+ REGBASEUSERNAME;
+
+		System.out
+				.println("\nRunning - TC446 - Test Description: add user - blank required fields\n");
+
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		
+
 		homePage.getLinkCusAdmin().click();
 		homePage.getLinkAdminManageUsers().click();
-		
-		assertTrue(manageUsersAdminPage.addTestUser("", USERPASSWORD, USERPASSWORD).contains(BLANKFIELDERROR));
-		
+
+		assertTrue(manageUsersAdminPage.addTestUser("", USERPASSWORD,
+				USERPASSWORD).contains(BLANKFIELDERROR));
+
 		manageUsersAdminPage.open();
-		assertTrue(manageUsersAdminPage.addTestUser(userName, "", USERPASSWORD).contains(PWDSAMEVALUE));
-		
+		assertTrue(manageUsersAdminPage.addTestUser(userName, "", USERPASSWORD)
+				.contains(PWDSAMEVALUE));
+
 		manageUsersAdminPage.open();
-		assertTrue(manageUsersAdminPage.addTestUser(userName, USERPASSWORD, "").contains(BLANKFIELDERROR));
+		assertTrue(manageUsersAdminPage.addTestUser(userName, USERPASSWORD, "")
+				.contains(BLANKFIELDERROR));
 	}
-	
+
 	/**
-	 * Test Case ID: CUSTADM010
-	 * Test Description: Admin can change role of existing user
-	 * Test Script: - On Home Page, and click Administration -> Users
-					- Click on Edit link
-					- Change the role of the user
-	 * Expected Results: - Admin can successfully change the role of user
-						 - Op Qual is optional field (invalid for the current product implementation)
-	 * Current implementation:
-	 * Current Issue:
-     * Future Improvement:
-	 */	
+	 * Test Case ID: TC447 Test Description: Admin can change role, timezone and
+	 * location of existing user
+	 */
 	@Test
-	public void CUSTADM010() {
-		String customerName = SQACUS;
-		String userName = customerName + testSetup.getRandomNumber() + "custadm010" + REGBASEUSERNAME;
-		
-		System.out.println("\nRunning - CUSTADM010 - Test Description: Admin can change role of existing user\n");
-		
+	public void TC447_EditUserRoleTimezone() {
+		String userName = SQACUS + testSetup.getRandomNumber() + "custadm010"
+				+ REGBASEUSERNAME;
+
+		System.out
+				.println("\nRunning - TC447 - Test Description: Admin can change role, timezone and location of existing user\n");
+
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		
+
 		homePage.getLinkCusAdmin().click();
 		homePage.getLinkAdminManageUsers().click();
-		
-		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONEPTUA);		
-		manageUsersAdminPage.editUser(userName, CUSUSERROLESU, TIMEZONEPTUA, true);
-		
-		assertTrue(manageUsersAdminPage.getUserRole(userName).equalsIgnoreCase(CUSUSERROLESU));
+
+		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR,
+				TIMEZONEPTUA);
+		manageUsersAdminPage.editUser(userName, CUSUSERROLESU, TIMEZONEPTUA,
+				false);
+
+		assertTrue(manageUsersAdminPage.getUserRole(userName).equalsIgnoreCase(
+				CUSUSERROLESU));
+
+		assertTrue(manageUsersAdminPage.getUserStatus(userName)
+				.equalsIgnoreCase("Disabled"));
 	}
-	
+
 	/**
-	 * Test Case ID: CUSTADM011
-	 * Test Description: More than 50 characters not allowed in email address field
-	 * Test Script: - On Home Page, and click Administration -> Users
-					- Click on 'Add New User' button
-					- Provide more than 50 characters in Email Address field and click OK
-	 * Expected Results: Please enter no more than 50 characters." message is displayed
-	 * Current implementation:
-	 * Current Issue:
-     * Future Improvement:
-	 */	
+	 * Test Case ID: TC448 Test Description: More than 50 characters not allowed
+	 * in email address field
+	 */
 	@Test
-	public void CUSTADM011() {
+	public void TC448_LimitOnEmailAddress() {
 		String userName = "1111111111aaaaaaaaaa2222222222bbbbbbbbbb1@email.com";
-		
-		System.out.println("\nRunning - CUSTADM011 - Test Description: More than 50 characters not allowed in email address field\n");
-		
+
+		System.out
+				.println("\nRunning - TC448 - Test Description: More than 50 characters not allowed in email address field\n");
+
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		
+
 		homePage.getLinkCusAdmin().click();
 		homePage.getLinkAdminManageUsers().click();
-		
-		String rtnMsg = manageUsersAdminPage.addTestUser(userName, USERPASSWORD, USERPASSWORD);
-		
+
+		String rtnMsg = manageUsersAdminPage.addTestUser(userName,
+				USERPASSWORD, USERPASSWORD);
+
 		assertTrue(rtnMsg.equalsIgnoreCase(EMAILTOOLONG));
 	}
-	
+
 	/**
-	 * Test Case ID: CUSTADM014
-	 * Test Description: Search valid user record
-	 * Test Script: Provide valid user name in search box present on Users screen
-	 * Expected Results: Searched user details are displayed
-	 * Current implementation:   
-	 * Current Issue:
-     * Future Improvement:
-	 */	
+	 * Test Case ID: TC451 Test Description: Search valid user record
+	 */
 	@Test
-	public void CUSTADM014() {
-		String customerName = SQACUS;
-		String userName = customerName + testSetup.getRandomNumber() + "custadm014" + REGBASEUSERNAME;
-		
-		System.out.println("\nRunning - CUSTADM014 - Test Description: Search valid user record\n");
-		
+	public void TC451_SearchValidUser() {
+		String userName = SQACUS + testSetup.getRandomNumber() + "custadm014"
+				+ REGBASEUSERNAME;
+
+		System.out
+				.println("\nRunning - TC451 - Test Description: Search valid user record\n");
+
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		
+
 		homePage.getLinkCusAdmin().click();
 		homePage.getLinkAdminManageUsers().click();
-		
-		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONEPTUA, false);
+
+		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR,
+				TIMEZONEPTUA, false);
 		manageUsersAdminPage.getInputSearch().sendKeys(userName);
-		
-		assertTrue(manageUsersAdminPage.findExistingUser(SQACUS, userName, CUSUSERROLEDR, false));
-		assertTrue(manageUsersAdminPage.getUserStatus(userName).equalsIgnoreCase(USERDISABLED) );
+
+		assertTrue(manageUsersAdminPage.findExistingUser(SQACUSLOC, userName,
+				CUSUSERROLEDR, false));
+		assertTrue(manageUsersAdminPage.getUserStatus(userName)
+				.equalsIgnoreCase(USERDISABLED));
 	}
-	
+
 	/**
-	 * Test Case ID: CUSTADM015
-	 * Test Description: Search invalid user record
-	 * Test Script: Provide invalid user name in search box present on Users screen 
-	 * Expected Results: Message should be displayed : 'No matching records found' 
-	 * Current implementation:   
-	 * Current Issue:
-     * Future Improvement:
-	 */	
+	 * Test Case ID: TC452 Test Description: Search invalid user record
+	 */
 	@Test
-	public void CUSTADM015() {
-		String customerName = SQACUS;
-		String userName = customerName + testSetup.getRandomNumber() + "custadm015" + REGBASEUSERNAME;
-		
-		System.out.println("\nRunning - CUSTADM015 - Test Description: Search invalid user record\n");
-		
+	public void TC452_SearchInvalidUser() {
+		String userName = SQACUS + testSetup.getRandomNumber() + "custadm015"
+				+ REGBASEUSERNAME;
+
+		System.out
+				.println("\nRunning - TC452 - Test Description: Search invalid user record\n");
+
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		
 		homePage.getLinkCusAdmin().click();
 		homePage.getLinkAdminManageUsers().click();
-		
-		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONEPTUA, true);
 		manageUsersAdminPage.getInputSearch().sendKeys(userName + userName);
-		
-		assertTrue(manageUsersAdminPage.getLabelNoMatchingSearch().getText().trim().equalsIgnoreCase(NOMATCHINGSEARCH));
+
+		assertTrue(manageUsersAdminPage.getLabelNoMatchingSearch()
+				.equalsIgnoreCase(NOMATCHINGSEARCH));
 	}
-	
+
 	/**
-	 * Test Case ID: CUSTADM016
-	 * Test Description: Sort records based on attributes present
-	 * Test Script: Sort records on all Administration screens
-	 * Expected Results: User is able to sort the list of records based on specifed attribute
-	 * Current implementation:   
-	 * Current Issue:
-     * Future Improvement: validate on more pages and have the relative sorting check covered
-	 */	
+	 * Test Case ID: TC453 Test Description: Sort records based on attributes
+	 * present
+	 */
 	@Test
-	public void CUSTADM016() {
+	public void TC453_SortRecords() {
 		List<String> list = new ArrayList<String>();
-		
-		System.out.println("\nRunning - CUSTADM016 - Test Description: Sort records based on attributes present\n");
-		
+
+		System.out
+				.println("\nRunning - TC453 - Test Description: Sort records based on attributes present\n");
+
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		
+
 		homePage.getLinkCusAdmin().click();
 		homePage.getLinkAdminManageUsers().click();
-		
 		manageUsersAdminPage.getTheadUserName().click();
 		list = manageUsersAdminPage.getUserNameList(false);
-		
-		assertTrue(BaseHelper.isStringListSorted(list));
-		
-		manageUsersAdminPage.getTheadUserName().click();
-		list = manageUsersAdminPage.getUserNameList(false);
-		
 		assertTrue(BaseHelper.isStringListSortedDes(list));
-		
-		manageUsersAdminPage.open();
-		
-		manageUsersAdminPage.getTheadRoles().click();
-		list = manageUsersAdminPage.getRolesList(false);
-		
+
+		manageUsersAdminPage.getTheadName().click();
+		list = manageUsersAdminPage.getNameList(false);
 		assertTrue(BaseHelper.isStringListSorted(list));
-		
+		manageUsersAdminPage.getTheadName().click();
+		list = manageUsersAdminPage.getNameList(false);
+		assertTrue(BaseHelper.isStringListSortedDes(list));
+
+		manageUsersAdminPage.getTheadLocation().click();
+		list = manageUsersAdminPage.getLocationList(false);
+		assertTrue(BaseHelper.isStringListSorted(list));
+		manageUsersAdminPage.getTheadLocation().click();
+		list = manageUsersAdminPage.getLocationList(false);
+		assertTrue(BaseHelper.isStringListSortedDes(list));
+
 		manageUsersAdminPage.getTheadRoles().click();
 		list = manageUsersAdminPage.getRolesList(false);
-		
+		assertTrue(BaseHelper.isStringListSorted(list));
+		manageUsersAdminPage.getTheadRoles().click();
+		list = manageUsersAdminPage.getRolesList(false);
+		assertTrue(BaseHelper.isStringListSortedDes(list));
+
+		manageUsersAdminPage.getTheadStatus().click();
+		list = manageUsersAdminPage.getStatusList(false);
+		assertTrue(BaseHelper.isStringListSorted(list));
+		manageUsersAdminPage.getTheadStatus().click();
+		list = manageUsersAdminPage.getStatusList(false);
 		assertTrue(BaseHelper.isStringListSortedDes(list));
 	}
 }

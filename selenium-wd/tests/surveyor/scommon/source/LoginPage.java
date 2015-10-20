@@ -18,7 +18,8 @@ import common.source.TestSetup;
  */
 public class LoginPage extends BasePage {
 	public static final String STRURLPath = "/Account/Login";
-	public static final String STRPageTitle = "Login";		
+	public static final String STRPageTitle = "Login";
+	public String strDisplayedMsg = "Your account is inactive. Please contact your administrator to re-enable your account.";
 
 	@FindBy(how = How.ID, using = "Username")
 	private WebElement tbUserName;
@@ -28,10 +29,14 @@ public class LoginPage extends BasePage {
 
 	@FindBy(how = How.CSS, using = "[type='submit']")
 	private WebElement btnLogin;
-	
+
 	@FindBy(how = How.CSS, using = "[type='submit']")
 	private WebElement btnAccept;
 	
+	@FindBy(how = How.XPATH, using = "//div[@class='validation-summary-errors'/ul/li")
+	private WebElement txtAccountDisabled;
+	
+
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -42,32 +47,40 @@ public class LoginPage extends BasePage {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 		System.out.println("\nThe Login Page URL is: " + this.strPageURL);
 	}
-	 
-	public HomePage loginNormalAs(String userName, String password)  {
+
+	public HomePage loginNormalAs(String userName, String password) {
 		this.tbUserName.sendKeys(userName);
 		this.tbPassword.sendKeys(password);
 		this.btnLogin.click();
 
 		waitForPageToLoad();
-		if (driver.getCurrentUrl().contains("Eula") && driver.getTitle().contains("Eula")) {
+		if (driver.getCurrentUrl().contains("Eula")
+				&& driver.getTitle().contains("Eula")) {
 			btnAccept.click();
-		}	
-		
-		HomePage homePage = new HomePage(this.driver, this.strBaseURL, this.testSetup);
-		PageFactory.initElements(driver,  homePage);
+		}
+		waitForPageToLoad();
+		HomePage homePage = new HomePage(this.driver, this.strBaseURL,
+				this.testSetup);
+		PageFactory.initElements(driver, homePage);
 		long startTime = System.currentTimeMillis();
 		long elapsedTime = 0;
-		
+
 		while (true) {
-			if (homePage.checkIfAtHomePage()){
+			if (homePage.checkIfAtHomePage()) {
 				return homePage;
-			}else if (driver.getCurrentUrl().equalsIgnoreCase(this.strPageURL) && driver.getTitle().equalsIgnoreCase(LoginPage.STRPageTitle)){
+			} else if (driver.getCurrentUrl().equalsIgnoreCase(this.strPageURL)
+					&& driver.getTitle().equalsIgnoreCase(
+							LoginPage.STRPageTitle)) {
 				return null;
 			}
 			elapsedTime = System.currentTimeMillis() - startTime;
 			if (elapsedTime >= (30 * 1000)) {
 				return null;
-			} 
+			}
 		}
+	}
+
+	public boolean isAccountDisabled(){
+		return this.txtAccountDisabled.getText().equalsIgnoreCase(strDisplayedMsg);
 	}
 }
