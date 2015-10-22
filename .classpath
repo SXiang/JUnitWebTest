@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="selenium-wd/tests"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/ant-junit-1.8.0.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/junit-4.11-sources.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/junit-4.11.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/selenium-server-standalone-2.39.0.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/sqljdbc4-3.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
