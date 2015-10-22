@@ -37,7 +37,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 * Test Description: Adding Location
 	 * 
 	 */
-	//@Test
+	@Test
 	public void ADM004() {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "ADM004";
 		String eula = customerName + ": " + EULASTRING;

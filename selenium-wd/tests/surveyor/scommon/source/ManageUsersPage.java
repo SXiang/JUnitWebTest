@@ -51,7 +51,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	protected WebElement dropDownCustomer;
 	
 	//@FindBy(how = How.XPATH, using = "//*[@id='User_UserName']")
-	@FindBy(how = How.XPATH, using = "//*[@id='User.UserName']")
+	@FindBy(id = "User.UserName")
 	protected WebElement inputEmail;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='User_Password']")
@@ -66,7 +66,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 //	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
 //	protected WebElement btnOk;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='user-form']/div/div[11]/div[2]/a")
+	@FindBy(css = "a[class='button-cancel btn btn-danger']")
 	protected WebElement cancelAddBtn;	
 	
 //	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody")
@@ -185,6 +185,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		
 		Select droplist = new Select(this.dropDownCustomer);   
 		
+		System.out.println("custLoc=" + custLoc);
      	droplist.selectByVisibleText(custLoc);
 		
 		this.inputEmail.clear();
