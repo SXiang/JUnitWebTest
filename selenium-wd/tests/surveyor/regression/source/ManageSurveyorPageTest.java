@@ -42,19 +42,19 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 	}
 	
 	/**
-	 * Test Case ID: ADM007
+	 * Test Case ID: TC63
 	 * Test Description: Adding Surveyor
 	 * 
 	 */
 	@Test
-	public void ADM007() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "ADM007";
+	public void TC63() {
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC63";
 		String eula = customerName + ": " + EULASTRING;
 		String locationName = customerName + "Loc";
 		String surveyorName = locationName + "Sur";
 		String cityName ="Santa Clara";
 		
-		System.out.println("\nRunning ADM007...");
+		System.out.println("\nRunning TC63...");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());

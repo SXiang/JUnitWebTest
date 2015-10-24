@@ -35,7 +35,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Log Out')]")
 	protected WebElement linkLogOut;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='Description']")
+	@FindBy(id = "Description")
 	protected WebElement inputLocationDesc;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='point-latitude']")
