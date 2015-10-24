@@ -57,86 +57,19 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: MLAP000A Test Description: Adding a Customer by
-	 * Administrator then add Location by Customer Utility Administrator
-	 * 
-	 */
-	@Test
-	public void MLAP000A() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "mlap000a";
-		String eula = customerName + ": " + EULASTRING;
-		String userName = customerName + "_ua" + REGBASEUSERNAME;
-		String locationName = customerName + "Loc";
-
-		System.out.println(
-				"\nRunning MLAP000A - Test Description: Adding a Customer by Administrator then add Location by Customer Utility Administrator");
-
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-
-		manageCustomersPage.open();
-		manageCustomersPage.addNewCustomer(customerName, eula);
-
-		manageUsersPage.open();
-		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEUA, locationName);
-
-		manageUsersPage.logout();
-
-		loginPage.open();
-		loginPage.loginNormalAs(userName, USERPASSWORD);
-
-		manageLocationsAdminPage.open();
-		manageLocationsAdminPage.addNewLocation(locationName);
-
-		assertTrue(manageLocationsAdminPage.findExistingLocation(customerName, locationName));
-	}
-
-	/**
-	 * Test Case ID: MLAP000B Test Description: Adding a Location for Picarro by
-	 * Picarro Utility Administrator
-	 * 
-	 */
-	@Test
-	public void MLAP000B() {
-		String customerName = "Picarro";
-		String strRandomNum = testSetup.getRandomNumber();
-		String userName = "picarro" + strRandomNum + "mlap000b" + "_ua" + REGBASEPICUSERNAME;
-		String locationName = strRandomNum + "mlap000b" + "Loc";
-
-		System.out.println(
-				"\nRunning MLAP000B - Test Description: Adding a Location for Picarro by Picarro Utility Administrator");
-
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-
-		manageUsersPage.open();
-		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, CUSUSERROLEUA);
-
-		manageUsersPage.logout();
-
-		loginPage.open();
-		loginPage.loginNormalAs(userName, USERPASSWORD);
-
-		manageLocationsAdminPage.open();
-		manageLocationsAdminPage.addNewLocation(locationName);
-
-		assertTrue(manageLocationsAdminPage.findExistingLocation(customerName, locationName));
-	}
-
-	/**
-	 * Test Case ID: CUSTADM023 Test Description: Add location Test Script: - On
+	 * Test Case ID: TC60 Test Description: Add location Test Script: - On
 	 * Home Page, click Administration -> Manage Locations - Click on 'Add New
 	 * Location' button - Provide required location details and click OK
 	 * Expected Results: User is navigated to Manage Locations page and new
 	 * location entry is present in the table Current implementation: Current
 	 * Issue: Future Improvement:
 	 */
-	//@Test
-	public void CUSTADM023() {
-		String locationName = testSetup.getRandomNumber() + "custadm023";
+	@Test
+	public void TC60() {
+		String locationName = testSetup.getRandomNumber() + "TC60";
 		String cityName = "Santa Clara";
 
-		System.out.println("\nRunning - CUSTADM023 - Test Description: Add location\n");
+		System.out.println("\nRunning - TC60 - Test Description: Add location\n");
 
 		// Add Location as Picarro admin.
 		loginPage.open();
@@ -154,20 +87,20 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: CUSTADM024 Test Description: Edit existing location Test
+	 * Test Case ID: TC459 Test Description: Edit existing location Test
 	 * Script: - On Home Page, click Administration -> Manage Locations - Click
 	 * Edit link - Modify location details and click OK Expected Results: User
 	 * is navigated to Manage Locations page and modified location details are
 	 * present in the table Current implementation: Current Issue: Future
 	 * Improvement:
 	 */
-	//@Test
-	public void CUSTADM024() {
-		String locationName = testSetup.getRandomNumber() + "custadm024";
-		String locationNameNew = testSetup.getRandomNumber() + "custadm024" + "_New";
+	@Test
+	public void TC459() {
+		String locationName = testSetup.getRandomNumber() + "TC459";
+		String locationNameNew = testSetup.getRandomNumber() + "TC459" + "_New";
 		String cityName = "Santa Clara";
 
-		System.out.println("\nRunning - CUSTADM024 - Test Description: Edit existing location\n");
+		System.out.println("\nRunning - TC459 - Test Description: Edit existing location\n");
 
 		// Add Location as Picarro admin.
 		loginPage.open();
@@ -186,19 +119,19 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: CUSTADM027 Test Description: edit location- blank required
+	 * Test Case ID: TC493 Test Description: edit location- blank required
 	 * fields Test Script: - On Home Page, click Administration -> Manage
 	 * Locations - Click on Edit link - Delete description field data. Click OK
 	 * Expected Results: "Please fill out this field." message should be
 	 * displayed Current implementation: Current Issue: Future Improvement: deal
 	 * with the tooltip text
 	 */
-	//@Test
-	public void CUSTADM027() {
-		String locationName = testSetup.getRandomNumber() + "custadm027";
+	@Test
+	public void TC493() {
+		String locationName = testSetup.getRandomNumber() + "TC493";
 		String cityName = "Santa Clara";
 
-		System.out.println("\nRunning - CUSTADM027 - Test Description: edit location- blank required fields\n");
+		System.out.println("\nRunning - TC493 - Test Description: edit location- blank required fields\n");
 
 		// Add Location as Picarro admin.
 		loginPage.open();
@@ -216,7 +149,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: CUSTADM028 
+	 * Test Case ID: TC462
 	 * Test Description: More than 50 characters not
 	 * allowed in Location Description field 
 	 * Test Script: 
@@ -228,17 +161,17 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	 * message having limit of characters displayed Current implementation:
 	 * Current Issue: Future Improvement:
 	 */
-	//@Test
-	public void CUSTADM028() {
+	@Test
+	public void TC462() {
 		String str34chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcd";
 		String str35chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcde";
 		String cityName = "Santa Clara";
 
-		String locationName50Chars = testSetup.getRandomNumber() + "custadm028" + str34chars;
-		String locationName51Chars = testSetup.getRandomNumber() + "custadm028" + str35chars;
+		String locationName50Chars = testSetup.getRandomNumber() + "000000TC462" + str34chars;
+		String locationName51Chars = testSetup.getRandomNumber() + "000000TC462" + str35chars;
 
 		System.out.println(
-				"\nRunning - CUSTADM028 - Test Description: More than 50 characters not allowed in Location Description field\n");
+				"\nRunning - TC462 - Test Description: More than 50 characters not allowed in Location Description field\n");
 
 		// Add Location as Picarro admin.
 		loginPage.open();
@@ -260,18 +193,18 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: CUSTADM032 Test Description: Verify Cancel button for all
+	 * Test Case ID: TC466 Test Description: Verify Cancel button for all
 	 * customer admin screens Test Script: - Click on Cancel button present on
 	 * all administrator screen Expected Results: - User action is Canceled and
 	 * existing data persists Current implementation: Current Issue: Future
 	 * Improvement:
 	 */
-	//@Test
-	public void CUSTADM032() {
+	@Test
+	public void TC466() {
 		String curURL;
 
 		System.out.println(
-				"\nRunning - CUSTADM032 - Test Description: Verify Cancel button for all customer admin screens\n");
+				"\nRunning - TC466 - Test Description: Verify Cancel button for all customer admin screens\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
