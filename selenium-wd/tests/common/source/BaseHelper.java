@@ -180,7 +180,6 @@ public class BaseHelper {
 			if (strList.get(i - 1).compareTo(strList.get(i)) > 0)
 				sorted = false;
 		}
-
 		return sorted;
 	}
 
@@ -190,10 +189,27 @@ public class BaseHelper {
 			if (strList.get(i - 1).compareTo(strList.get(i)) < 0)
 				sorted = false;
 		}
-
 		return sorted;
 	}
 
+	public static String prependStringWithChar(String input, char prependChar, int times) {
+		StringBuilder builder = new StringBuilder();
+		
+		if (times > 0) {
+			char[] ch = new char[times];
+			for (int i = 0; i < ch.length; i++) {
+				ch[i] = prependChar;
+			}
+			builder.append(String.copyValueOf(ch));
+		}
+		
+		if (input != null) {
+			builder.append(input);
+		}
+			
+		return builder.toString();
+	}
+	
 	/**
 	 * @param args
 	 */

@@ -11,7 +11,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.Select;
 
 import common.source.BasePage;
 import common.source.TestSetup;
@@ -35,7 +34,7 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement linkPicarroAdmin;
 	protected String strLinkPicarroAdminXPath = "//*[@id='picarro-administration-menu']/a";
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-menu']/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/div[4]/ul/li[8]/a")
 	protected WebElement linkCusAdmin;
 	protected String strLinkCusAdminXPath = "//*[@id='customer-administration-menu']/a";	
 	
@@ -132,6 +131,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 	
 	public WebElement getLinkAdminManageUsers() {
+		waitForPageToLoad();
 		return this.linkAdminManageUsers;
 	}
 	
@@ -142,9 +142,9 @@ public class SurveyorBasePage extends BasePage {
 	public WebElement getInputSearch() {
 		return this.inputSearch;
 	}
-	
-	public WebElement getLabelNoMatchingSearch() {
-		return this.labelNoMatchingSearch;
+
+	public String getLabelNoMatchingSearch() {
+		return this.labelNoMatchingSearch.getText().trim();
 	}
 
 	/**

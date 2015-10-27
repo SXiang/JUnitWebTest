@@ -168,12 +168,12 @@ public final class SurveyorConstants {
 	public static final String SQAPICADSTNDTAG = "dmcstandard-sqapic-admin";
 	public static final String SQAPICADMANUALTAG = "dmcmanual-sqapic-admin";
 
-	public static final String DUPLICATIONERROR = "Please, correct the following errors:";
+	public static final String DUPLICATIONERROR = "User name already exists, please try another name";
 	public static final String PWVALUEERROR = "Please enter the same value again.";
-	public static final String EMAILINVALID = "The Email is not a valid , please enter valid email address";
+	public static final String EMAILINVALID = "The Email is not valid, please enter valid email address.";
 	public static final String BLANKFIELDERROR = "This field is required.";
 	public static final String PWDSAMEVALUE = "Please enter the same value again.";
-	public static final String EMAILTOOLONG = "Please enter less than 50 characters.";
+	public static final String EMAILTOOLONG = "Please enter no more than 50 characters.";
 	
 	public static final String NOMATCHINGSEARCH = "No matching records found";
 	

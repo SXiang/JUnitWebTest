@@ -57,19 +57,23 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC60 Test Description: Add location Test Script: - On
-	 * Home Page, click Administration -> Manage Locations - Click on 'Add New
-	 * Location' button - Provide required location details and click OK
+	 * Test Case ID: TC489 
+	 * Test Description: Add location 
+	 * Test Script: - On Home Page, click Administration -> Manage Locations 
+	 * - Click on 'Add New Location' button 
+	 * - Provide required location details and click OK
 	 * Expected Results: User is navigated to Manage Locations page and new
-	 * location entry is present in the table Current implementation: Current
-	 * Issue: Future Improvement:
+	 * location entry is present in the table 
+	 * Current implementation: 
+	 * Current Issue: 
+	 * Future Improvement:
 	 */
 	@Test
-	public void TC60() {
-		String locationName = testSetup.getRandomNumber() + "TC60";
+	public void TC489() {
+		String locationName = testSetup.getRandomNumber() + "TC489";
 		String cityName = "Santa Clara";
 
-		System.out.println("\nRunning - TC60 - Test Description: Add location\n");
+		System.out.println("\nRunning - TC489 - Test Description: Add location\n");
 
 		// Add Location as Picarro admin.
 		loginPage.open();
@@ -87,12 +91,16 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC459 Test Description: Edit existing location Test
-	 * Script: - On Home Page, click Administration -> Manage Locations - Click
-	 * Edit link - Modify location details and click OK Expected Results: User
-	 * is navigated to Manage Locations page and modified location details are
-	 * present in the table Current implementation: Current Issue: Future
-	 * Improvement:
+	 * Test Case ID: TC459 
+	 * Test Description: Edit existing location Test
+	 * Script: - On Home Page, click Administration -> Manage Locations 
+	 * - Click Edit link 
+	 * - Modify location details and click OK 
+	 * Expected Results: User is navigated to Manage Locations page and modified location details are
+	 * present in the table 
+	 * Current implementation: 
+	 * Current Issue: 
+	 * Future Improvement:
 	 */
 	@Test
 	public void TC459() {
@@ -109,7 +117,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName);
 
-		// Edit Location as Utility user.
+		// Edit Location as Utility admin.
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
@@ -119,19 +127,22 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC493 Test Description: edit location- blank required
-	 * fields Test Script: - On Home Page, click Administration -> Manage
-	 * Locations - Click on Edit link - Delete description field data. Click OK
-	 * Expected Results: "Please fill out this field." message should be
-	 * displayed Current implementation: Current Issue: Future Improvement: deal
-	 * with the tooltip text
+	 * Test Case ID: TC461 
+	 * Test Description: edit location- blank required fields 
+	 * Test Script: - On Home Page, click Administration -> Manage Locations 
+	 * - Click on Edit link 
+	 * - Delete description field data. Click OK
+	 * Expected Results: "Please fill out this field." message should be displayed 
+	 * Current implementation: 
+	 * Current Issue: 
+	 * Future Improvement: deal with the tooltip text
 	 */
 	@Test
-	public void TC493() {
-		String locationName = testSetup.getRandomNumber() + "TC493";
+	public void TC461() {
+		String locationName = testSetup.getRandomNumber() + "TC461";
 		String cityName = "Santa Clara";
 
-		System.out.println("\nRunning - TC493 - Test Description: edit location- blank required fields\n");
+		System.out.println("\nRunning - TC461 - Test Description: edit location- blank required fields\n");
 
 		// Add Location as Picarro admin.
 		loginPage.open();
@@ -150,8 +161,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC462
-	 * Test Description: More than 50 characters not
-	 * allowed in Location Description field 
+	 * Test Description: More than 50 characters not allowed in Location Description field 
 	 * Test Script: 
 	 * - On Home Page, and click Administration -> Manage Locations 
 	 * - Click on 'Add New Location'
@@ -167,8 +177,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		String str35chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcde";
 		String cityName = "Santa Clara";
 
-		String locationName50Chars = testSetup.getRandomNumber() + "000000TC462" + str34chars;
-		String locationName51Chars = testSetup.getRandomNumber() + "000000TC462" + str35chars;
+		String locationName50Chars = testSetup.getFixedSizeRandomNumber(11) + "TC462" + str34chars;
+		String locationName51Chars = testSetup.getFixedSizeRandomNumber(11) + "TC462" + str35chars;
 
 		System.out.println(
 				"\nRunning - TC462 - Test Description: More than 50 characters not allowed in Location Description field\n");
@@ -178,6 +188,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageLocationsPage.open();
+		
 		manageLocationsPage.addNewLocation(locationName50Chars, SQACUS, cityName);
 		manageLocationsPage.addNewLocation(locationName51Chars, SQACUS, cityName);
 
@@ -193,11 +204,13 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC466 Test Description: Verify Cancel button for all
-	 * customer admin screens Test Script: - Click on Cancel button present on
-	 * all administrator screen Expected Results: - User action is Canceled and
-	 * existing data persists Current implementation: Current Issue: Future
-	 * Improvement:
+	 * Test Case ID: TC466 
+	 * Test Description: Verify Cancel button for all customer admin screens 
+	 * Test Script: - Click on Cancel button present on all administrator screen 
+	 * Expected Results: - User action is Canceled and existing data persists 
+	 * Current implementation: 
+	 * Current Issue: 
+	 * Future Improvement:
 	 */
 	@Test
 	public void TC466() {
