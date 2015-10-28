@@ -25,7 +25,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	String latitude;
 	String longitude;
 	//@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a")
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
+	//@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
+	@FindBy(css = "a[href='/Picarro/ManageLocation']")
 	protected WebElement btnAddNewLocation;	
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Administrator')]")
@@ -34,7 +35,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Log Out')]")
 	protected WebElement linkLogOut;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='Description']")
+	@FindBy(id = "Description")
 	protected WebElement inputLocationDesc;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='point-latitude']")
@@ -212,7 +213,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			locationNameCell = table.findElement(By.xpath(locationNameXPath));
 			
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName) && (locationNameCell.getText().trim()).equalsIgnoreCase(locationName)) {
-				actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
+				actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[5]";
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
 				
 				actionEditCell.click();

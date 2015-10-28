@@ -25,7 +25,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	private WebElement btnAddNewCustomer;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='Name']")
+	@FindBy(id = "Name")
 	private WebElement inputCustomerName;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='Eula']")

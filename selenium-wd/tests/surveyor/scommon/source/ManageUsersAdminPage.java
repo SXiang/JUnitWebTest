@@ -188,7 +188,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		return this.btnAddNewCustomerUser;
 	}
 	
-	public WebElement getBtnCancell() {
+	public WebElement getBtnCancel() {
 		return this.cancelAddBtn;
 	}
 	

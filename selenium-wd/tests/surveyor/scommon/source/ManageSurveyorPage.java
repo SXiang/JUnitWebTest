@@ -6,6 +6,7 @@ package surveyor.scommon.source;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.By.ByXPath;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.How;
@@ -36,13 +37,13 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Log Out')]")
 	protected WebElement linkLogOut;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='Description']")
+	@FindBy(id = "Description")
 	protected WebElement inputSurveyorDesc;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='LocationId']")
 	protected WebElement dropDownLocation;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
+	@FindBy(id = "buttonOk")
 	protected WebElement btnOK;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyor-form']/fieldset/div[3]/div[2]/a")

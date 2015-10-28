@@ -354,6 +354,18 @@ public class TestSetup {
 	public String getRandomNumber() {
 		return this.randomNumber;
 	}
+
+	public String getFixedSizeRandomNumber(int size) {
+		int len = this.randomNumber.length();
+		if (len > size) {
+			return this.randomNumber.substring(0, size-1);
+		} else if (len < size){
+			return BaseHelper.prependStringWithChar(this.randomNumber, '0', size - len);
+		}			
+		
+		// length same as size. Return the number as it.
+		return this.randomNumber;
+	}
 	
 	public long getImplicitlyWaitTimeOutInSeconds() {
 		return Long.parseLong(this.implicitlyWaitTimeOutInSeconds.trim());

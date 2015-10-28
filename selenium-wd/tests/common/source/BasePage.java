@@ -46,22 +46,22 @@ public class BasePage {
 	@FindBy(how = How.XPATH, using = "//li[@id='user-feedback']/a")
 	private WebElement linkFeedback;
 	
-	@FindBy(how = How.XPATH, using = "//li[@id='report-menu']/a")
+	@FindBy(how = How.XPATH, using = "//li/a[@data-target='#report-menu']")
 	private WebElement linkReports;
 	
-	@FindBy(how = How.ID, using = "report-compliance")
+	@FindBy(id = "report-compliance")
 	private WebElement linkComplianceReport;
 	
-	@FindBy(how = How.ID, using = "report-investigation")
+	@FindBy(id = "report-investigation")
 	private WebElement linkEQReport;
 	
-	@FindBy(how = How.ID, using = "report-reference-gas")
+	@FindBy(id = "report-reference-gas")
 	private WebElement linkReferenceGasReport;
 	
-	@FindBy(how = How.ID, using = "report-system-history")
+	@FindBy(id = "report-system-history")
 	private WebElement linkSystemHistoryReport;
 	
-	@FindBy(how = How.XPATH, using = "//li[@id='picarro-administration-menu']/a")
+	@FindBy(how = How.XPATH, using = "//li/a[@data-target='#picarro-administration-menu']")
 	private WebElement linkPicarroAdmin;
 	
 	@FindBy(how = How.XPATH, using = "//li[@id='picarro-administration-calibration']/a")
@@ -101,7 +101,7 @@ public class BasePage {
 	private WebElement linkViewServerLogs;
 	
 	public BasePage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
-		this.driver = driver;
+		this.driver = driver;	
 		this.testSetup = testSetup;
 		this.strBaseURL = strBaseURL;
 		this.strPageURL = strPageURL;
