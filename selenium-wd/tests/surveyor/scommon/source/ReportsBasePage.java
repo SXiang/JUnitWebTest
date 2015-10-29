@@ -70,16 +70,16 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "area-end-longitude")
 	protected WebElement inputSWLong;
 	
-	@FindBy(how = How.ID, using = "report-show-indications")
+	@FindBy(id = "report-show-indications")
 	protected WebElement checkBoxIndTb;
 	
-	@FindBy(how = How.ID, using = "report-show-isotopic")
+	@FindBy(id = "report-show-isotopic")
 	protected WebElement checkBoxIsoAna;
 	
-	@FindBy(how = How.ID, using = "report-show-percent-coverage-assets")
+	@FindBy(id = "report-show-percent-coverage-assets")
 	protected WebElement checkBoxPCA;
 	
-	@FindBy(how = How.ID, using = "report-show-percent-coverage-report-area")
+	@FindBy(id = "report-show-percent-coverage-report-area")
 	protected WebElement checkBoxPCRA;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='report-asset-layers-00000000-0000-0000-0000-000000000001']")
