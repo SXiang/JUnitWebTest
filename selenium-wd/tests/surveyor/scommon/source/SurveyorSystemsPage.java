@@ -4,6 +4,8 @@
 package surveyor.scommon.source;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BasePage;
 import common.source.TestSetup;
@@ -15,7 +17,18 @@ import common.source.TestSetup;
 public class SurveyorSystemsPage extends BasePage {
 	public static final String STRURLPath = "/Home/SurveyorSystems";
 	public static final String STRPageTitle = "Surveyors - Surveyor";
+	public static final String STRPageContentText = "Surveyors";
 
+	/**
+	 * @param driver
+	 * @param testSetup
+	 * @param strBaseURL
+	 */
+	public SurveyorSystemsPage(WebDriver driver, TestSetup testSetup,
+			String strBaseURL) {
+		super(driver, testSetup, strBaseURL, strBaseURL + STRURLPath);
+	}
+	
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -27,11 +40,12 @@ public class SurveyorSystemsPage extends BasePage {
 		super(driver, testSetup, strBaseURL, strBaseURL + STRURLPath);
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-
-	}
-
+	@Override
+	public void waitForPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRPageContentText);
+            }
+        });
+    }
 }

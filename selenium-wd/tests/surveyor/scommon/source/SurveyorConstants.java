@@ -51,6 +51,7 @@ public final class SurveyorConstants {
 	public static final String CUSUSERROLEUA = "Utility Administrator";
 	public static final String CUSUSERROLESU = "Supervisor";
 	public static final String CUSUSERROLEDR = "Driver";
+	public static final String PICUSERROLESUP = "Picarro Support";
 	
 	public static final String PICDFADMIN = "Administrator";
 	public static final String PICADMINPSWD = "FastLane!911";

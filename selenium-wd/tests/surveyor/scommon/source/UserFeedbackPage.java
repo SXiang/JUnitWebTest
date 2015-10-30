@@ -12,6 +12,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.TestSetup;
 import static surveyor.scommon.source.SurveyorConstants.*;
@@ -23,6 +25,7 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 public class UserFeedbackPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/UserFeedback";
 	public static final String STRPageTitle = "User Feedback - Surveyor";
+	public static final String STRPageContentText = "Please share your thoughts";
 	public String feedbackRecievedTxt = "Your feedback has been received.";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='user-feedback']/a")
@@ -53,7 +56,6 @@ public class UserFeedbackPage extends SurveyorBasePage {
 	 * @param driver
 	 * @param testSetup
 	 * @param strBaseURL
-	 * @param strPageURL
 	 */
 	public UserFeedbackPage(WebDriver driver, TestSetup testSetup,
 			String strBaseURL) {
@@ -251,11 +253,12 @@ public class UserFeedbackPage extends SurveyorBasePage {
 		return list; 
 	}	
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-
-	}
-
+	@Override
+	public void waitForPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRPageContentText);
+            }
+        });
+    }
 }

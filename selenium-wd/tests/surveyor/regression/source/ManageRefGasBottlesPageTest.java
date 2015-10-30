@@ -32,37 +32,37 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 	 * 
 	 */
 	@Test
-	public void MRGBP000A() {
-		String strItemNumber = "Reg" + RGBNAMEBASE + testSetup.getRandomNumber() + "MRGBP000A";
+	public void TC135() {
+		String strLotNumber = testSetup.getFixedSizeRandomNumber(5) + "TC135";
 		
-		System.out.println("\nRunning MRGBP000A - Test Description: Adding a Ref Gas Bottle to a customer surveyor by Picarro Default Administrator");
+		System.out.println("\nRunning TC135 - Test Description: Adding a Ref Gas Bottle to a customer surveyor by Picarro Default Administrator");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		
 		manageRefGasBottlesPage.open();
-		manageRefGasBottlesPage.addNewRefGasBottle(strItemNumber, testSetup.getRandomNumber(), "-32", CUSNAMEBASE, CUSNAMEBASELOC, CUSNAMEBASESUR);
+		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", SQACUS, SQACUSLOC, SQACUSLOCSUR);
 		
-		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strItemNumber, CUSNAMEBASESUR));
+		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber, SQACUSLOCSUR));
 	}
 
 	/**
-	 * Test Case ID: MRGBP000B
-	 * Test Description: Adding a Ref Gas Bottle to a customer surveyor by Picarro User with Administrator Role
+	 * Test Case ID: TC1250
+	 * Test Description: Add Reference Gas Bottles as Picarro Support user
 	 * 
 	 */
 	@Test
-	public void MRGBP000B() {
-		String strItemNumber = "Reg" + RGBNAMEBASE + testSetup.getRandomNumber() + "MRGBP000B";
+	public void TC1250() {
+		String strLotNumber = testSetup.getRandomNumber() + "TC1250";
 		
-		System.out.println("\nRunning MRGBP000B - Test Description: Adding a Ref Gas Bottle to a customer surveyor by Picarro User with Administrator Role");
+		System.out.println("\nRunning TC1250 - Test Description: Add Reference Gas Bottles as Picarro Support user");
 		
 		loginPage.open();
-		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 		
 		manageRefGasBottlesPage.open();
-		manageRefGasBottlesPage.addNewRefGasBottle(strItemNumber, testSetup.getRandomNumber(), "-32", CUSNAMEBASE, CUSNAMEBASELOC, CUSNAMEBASESUR);
+		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", SQACUS, SQACUSLOC, SQACUSLOCSUR);
 		
-		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strItemNumber, CUSNAMEBASESUR));
+		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber, SQACUSLOCSUR));
 	}	
 }

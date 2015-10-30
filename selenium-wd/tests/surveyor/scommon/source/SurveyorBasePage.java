@@ -11,6 +11,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BasePage;
 import common.source.TestSetup;
@@ -19,18 +21,18 @@ import common.source.TestSetup;
  * @author zlu
  *
  */
-public class SurveyorBasePage extends BasePage {
+public class SurveyorBasePage extends BasePage {	
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/a")
 	protected WebElement dropDownAdministrator;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/div[2]/ul/li/a")
 	protected WebElement dropDownUser;
 	
-	//@FindBy(how = How.XPATH, using = "//a[contains(text(),'Log Out')]")
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/div[2]/ul/li/ul/li[6]/a")
 	protected WebElement linkLogOut;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-menu']/a")
+	@FindBy(how = How.XPATH, using = "//a[@data-target='#picarro-administration-menu']")
 	protected WebElement linkPicarroAdmin;
 	protected String strLinkPicarroAdminXPath = "//*[@id='picarro-administration-menu']/a";
 	
@@ -112,10 +114,6 @@ public class SurveyorBasePage extends BasePage {
 			if(str.equals(option.getText().trim()))
 				option.click();		
 		}
-		
-      //    Select droplist = new Select(this.paginationInput);   
-		
-	//	droplist.selectByVisibleText("10");
 	}
 	
 	public WebElement getLinkPicarroAdmin() {
@@ -147,10 +145,12 @@ public class SurveyorBasePage extends BasePage {
 		return this.labelNoMatchingSearch.getText().trim();
 	}
 
-	/**
-	 * @param args
+	/*
+	 * Helper method to wait for an Element to be ready on the page. 
 	 */
-	public static void main(String[] args) {
-
+	public void WaitForElementReady(String elementID) {
+		(new WebDriverWait(this.driver, this.timeout))
+		  .until(ExpectedConditions.presenceOfElementLocated
+				  (By.id(elementID)));
 	}
 }

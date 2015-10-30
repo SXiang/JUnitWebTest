@@ -29,10 +29,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	private WebElement panelDupRgbError;
 	private String panelDupRgbErrorXPath = "//*[@id='page-wrapper']/div/div[2]/div[1]";	
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='SerialNumber']")
-	private WebElement inputItemNumber;
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='BatchId']")
+	@FindBy(id = "BatchId")
 	private WebElement inputLotNumber;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='IsotopicValue']")
@@ -41,7 +38,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='SurveyorUnitId']")
 	private WebElement dropdownSurveyor;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
+	@FindBy(id = "buttonOk")
 	private WebElement btnOK;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='ref-gas-bottle-form']/fieldset/div[4]/div[2]/a")
@@ -52,7 +49,6 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	 * @param driver
 	 * @param testSetup
 	 * @param strBaseURL
-	 * @param strPageURL
 	 */
 	public ManageRefGasBottlesPage(WebDriver driver, TestSetup testSetup, String strBaseURL) {
 		super(driver, testSetup, strBaseURL, strBaseURL + STRURLPATH);
@@ -64,11 +60,9 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		super(driver, testSetup, baseURL, baseURL + urlPath);
 	}	
 	
-	public void addNewRefGasBottle(String strItemNumber, String strLotNumber, String strIsoValue, String strCusName, String strLocName, String strSurveyor) {
+	public void addNewRefGasBottle(String strLotNumber, String strIsoValue, String strCusName, String strLocName, String strSurveyor) {
 		this.btnAddNewRefGasBottle.click();
 		
-		this.inputItemNumber.clear();
-		this.inputItemNumber.sendKeys(strItemNumber);
 		this.inputLotNumber.clear();
 		this.inputLotNumber.sendKeys(strLotNumber);
 		this.inputIsoValue.clear();
@@ -89,10 +83,9 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		}
 	}
 	
-	public boolean addNewRefGasBottle(String strItemNumber, String strLotNumber, String strIsoValue, String strCusName, String strLocName, String strSurveyor, boolean bFlag) {
+	public boolean addNewRefGasBottle(String strLotNumber, String strIsoValue, String strCusName, String strLocName, String strSurveyor, boolean bFlag) {
 		this.btnAddNewRefGasBottle.click();
 		
-		this.inputItemNumber.sendKeys(strItemNumber);
 		this.inputLotNumber.sendKeys(strLotNumber);
 		this.inputIsoValue.clear();
 		this.inputIsoValue.sendKeys(strIsoValue);
@@ -103,17 +96,11 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 				option.click();
 		}
 		
-		String curURL = driver.getCurrentUrl();
-		
 		this.btnOK.click();
-		
-		if (strItemNumber.equalsIgnoreCase(""))
-			if (driver.getCurrentUrl().equalsIgnoreCase(curURL))
-				return false;
 		
 		if (isElementPresent(this.panelDupRgbErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDupRgbErrorXPath));
-			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:")) {
+			if (panelError.getText().equalsIgnoreCase("Please fill out this field.")) {
 				this.btnCancel.click();
 				return false;
 			}
@@ -122,15 +109,15 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		return true;
 	}	
 	
-	public boolean findExistingRefGasBottle(String strItemNumber, String strSurveyor) {
+	public boolean findExistingRefGasBottle(String strLotNumber, String strSurveyor) {
 		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
 		String strSurveyorXPath;
-		String strRGBXPath;
+		String strLotNumberXPath;
 		WebElement surveyorCell;
-		WebElement rgbCell;
+		WebElement lotNumberCell;
 		
 		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
 		
@@ -144,12 +131,12 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			strSurveyorXPath = strTRXPath + "["+rowNum+"]/td[3]";
-			strRGBXPath = strTRXPath + "["+rowNum+"]/td[4]";
+			strLotNumberXPath = strTRXPath + "["+rowNum+"]/td[5]";
 			
 			surveyorCell = table.findElement(By.xpath(strSurveyorXPath));
-			rgbCell = table.findElement(By.xpath(strRGBXPath));
+			lotNumberCell = table.findElement(By.xpath(strLotNumberXPath));
 			
-			if (surveyorCell.getText().equalsIgnoreCase(strSurveyor) && rgbCell.getText().equalsIgnoreCase(strItemNumber)) {				
+			if (surveyorCell.getText().equalsIgnoreCase(strSurveyor) && lotNumberCell.getText().equalsIgnoreCase(strLotNumber)) {				
 				return true;
 			}
 			
@@ -172,20 +159,18 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		return false;
 	}	
 
-	public boolean findExistingRefGasBottle(String strItemNumber, String strSurveyor, String location, String customer) {
+	public boolean findExistingRefGasBottle(String strLotNumber, String strSurveyor, String location, String customer) {
 		setPagination(PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
-		String customerXPath;
 		String locationXPath;
 		String strSurveyorXPath;
-		String strRGBXPath;
+		String strLotNumberXPath;
 		
-		WebElement customerCell;
 		WebElement locationCell;
 		WebElement surveyorCell;
-		WebElement rgbCell;
+		WebElement lotNumberCell;
 		
 		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
 		
@@ -198,18 +183,16 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING);		
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			customerXPath = strTRXPath + "["+rowNum+"]/td[1]";
-			locationXPath = strTRXPath + "["+rowNum+"]/td[2]";
-			strSurveyorXPath = strTRXPath + "["+rowNum+"]/td[3]";
-			strRGBXPath = strTRXPath + "["+rowNum+"]/td[4]";
+			locationXPath = strTRXPath + "["+rowNum+"]/td[1]";
+			strSurveyorXPath = strTRXPath + "["+rowNum+"]/td[2]";
+			strLotNumberXPath = strTRXPath + "["+rowNum+"]/td[4]";
 			
-			customerCell = table.findElement(By.xpath(customerXPath));
 			locationCell = table.findElement(By.xpath(locationXPath));
 			surveyorCell = table.findElement(By.xpath(strSurveyorXPath));
-			rgbCell = table.findElement(By.xpath(strRGBXPath));
+			lotNumberCell = table.findElement(By.xpath(strLotNumberXPath));
 			
-			if (customerCell.getText().trim().equalsIgnoreCase(customer) && locationCell.getText().trim().equalsIgnoreCase(location) &&
-					surveyorCell.getText().trim().equalsIgnoreCase(strSurveyor) && rgbCell.getText().trim().equalsIgnoreCase(strItemNumber)) {				
+			if (locationCell.getText().trim().equalsIgnoreCase(location) &&
+					surveyorCell.getText().trim().equalsIgnoreCase(strSurveyor) && lotNumberCell.getText().trim().equalsIgnoreCase(strLotNumber)) {				
 				return true;
 			}
 			
@@ -246,12 +229,5 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	
 	public void clickOnCancelBtn() {
 		this.btnCancel.click();
-	}
-	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-
 	}
 }

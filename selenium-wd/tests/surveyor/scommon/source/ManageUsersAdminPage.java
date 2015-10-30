@@ -98,6 +98,8 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
 				this.cancelAddBtn.click();
 		}
+		
+		this.waitForPageLoad();
 	}
 	
 	public void addNewUser(String email, String password, String role, String timeZone, boolean accountEnabled) {
@@ -137,6 +139,8 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
 				this.cancelAddBtn.click();
 		}
+		
+		this.waitForPageLoad();
 	}
 	
 	//temporary solution for now and should be improved with a better approach 
@@ -180,6 +184,8 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 				this.cancelAddBtn.click();
 			}
 		}
+		
+		this.waitForPageLoad();
 		
 		return rtnMsg;
 	}	

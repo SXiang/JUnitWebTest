@@ -19,7 +19,6 @@ import common.source.TestSetup;
  */
 public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 	public static final String STRURLPATH = "/Admin/ManageRefGasBottles";
-	//public static final String STRPAGETITLE = "Manage Reference Gas Bottles - Surveyor";
 	
 	/**
 	 * @param driver
@@ -32,127 +31,59 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 		System.out.format("\nThe Manage Reference Gas Bottles Admin Page URL is: %s\n", strBaseURL + STRURLPATH);
 	}
 	
-	public boolean findExistingRefGasBottle(String strItemNumber, String strSurveyor, String location) {
+	public boolean findExistingRefGasBottle(String strLotNumber, String strSurveyor, String location) {
 		setPagination(PAGINATIONSETTING);
-		
-		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
-		String locationXPath;
-		String strSurveyorXPath;
-		String strRGBXPath;
-		
-		WebElement locationCell;
-		WebElement surveyorCell;
-		WebElement rgbCell;
-		
-		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
-		
-		int rowSize = rows.size();
-		int loopCount = 0;
-		
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
-			loopCount = rowSize;
-		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);		
-		
-		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			locationXPath = strTRXPath + "["+rowNum+"]/td[1]";
-			strSurveyorXPath = strTRXPath + "["+rowNum+"]/td[2]";
-			strRGBXPath = strTRXPath + "["+rowNum+"]/td[3]";
-			
-			locationCell = table.findElement(By.xpath(locationXPath));
-			surveyorCell = table.findElement(By.xpath(strSurveyorXPath));
-			rgbCell = table.findElement(By.xpath(strRGBXPath));
-			
-			if (locationCell.getText().trim().equalsIgnoreCase(location) && surveyorCell.getText().trim().equalsIgnoreCase(strSurveyor) 
-					&& rgbCell.getText().trim().equalsIgnoreCase(strItemNumber)) {				
-				return true;
-			}
-			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-				
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-				
-				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
-				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
-					loopCount = rowSize;
-				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
-				
-				rowNum = 0;
-			}
-		}
-		
-		return false;
-	}
-	
-	public boolean findExistingRefGasBottle(String strItemNumber, String strSurveyor, String location, String lotNum) {
-		setPagination(PAGINATIONSETTING);
-		
-		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
-		String locationXPath;
-		String strSurveyorXPath;
-		String strRGBXPath;
-		String strLotNumXPath;
-		
-		WebElement locationCell;
-		WebElement surveyorCell;
-		WebElement rgbCell;
-		WebElement lotNumCell;
-		
-		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
-		
-		int rowSize = rows.size();
-		int loopCount = 0;
-		
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
-			loopCount = rowSize;
-		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);		
-		
-		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			locationXPath = strTRXPath + "["+rowNum+"]/td[1]";
-			strSurveyorXPath = strTRXPath + "["+rowNum+"]/td[2]";
-			strRGBXPath = strTRXPath + "["+rowNum+"]/td[3]";
-			strLotNumXPath = strTRXPath + "["+rowNum+"]/td[4]";
-			
-			locationCell = table.findElement(By.xpath(locationXPath));
-			surveyorCell = table.findElement(By.xpath(strSurveyorXPath));
-			rgbCell = table.findElement(By.xpath(strRGBXPath));
-			lotNumCell = table.findElement(By.xpath(strLotNumXPath));
-			
-			if (locationCell.getText().trim().equalsIgnoreCase(location) && surveyorCell.getText().trim().equalsIgnoreCase(strSurveyor) 
-					&& rgbCell.getText().trim().equalsIgnoreCase(strItemNumber)
-							&& lotNumCell.getText().trim().equalsIgnoreCase(lotNum)) {				
-				return true;
-			}
-			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-				
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-				
-				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
-				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
-					loopCount = rowSize;
-				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
-				
-				rowNum = 0;
-			}
-		}
-		
-		return false;
-	}	
-	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
 
+		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		String locationXPath;
+		String strSurveyorXPath;
+		String strLotNumberXPath;
+		
+		WebElement locationCell;
+		WebElement surveyorCell;
+		WebElement lotNumberCell;
+		
+		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
+		
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);		
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			locationXPath = strTRXPath + "["+rowNum+"]/td[1]";
+			strSurveyorXPath = strTRXPath + "["+rowNum+"]/td[2]";
+			strLotNumberXPath = strTRXPath + "["+rowNum+"]/td[4]";
+			
+			locationCell = table.findElement(By.xpath(locationXPath));
+			surveyorCell = table.findElement(By.xpath(strSurveyorXPath));
+			lotNumberCell = table.findElement(By.xpath(strLotNumberXPath));
+			
+			if (locationCell.getText().trim().equalsIgnoreCase(location) && surveyorCell.getText().trim().equalsIgnoreCase(strSurveyor) 
+					&& lotNumberCell.getText().trim().equalsIgnoreCase(strLotNumber)) {				
+				return true;
+			}
+			
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+				
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				
+				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+				
+				rowNum = 0;
+			}
+		}
+		
+		return false;
 	}
 }
