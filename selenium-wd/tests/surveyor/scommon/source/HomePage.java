@@ -5,6 +5,7 @@ package surveyor.scommon.source;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -24,9 +25,10 @@ import common.source.TestSetup;
 public class HomePage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Home";
 	public static final String STRPageTitle = "Home - Surveyor";
-	public static final String STRPageContentText = "Dashboard";
-	
+	public static final String STRPageContentText = "Dashboard";	
 	public static final String STRSurveyorDashboard = "Surveyor Dashboard";
+	
+	public static final String EQ_REPORT_LINK_XPATH = "//*[@id='report-investigation']";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/div[1]/a/img")
 	private WebElement picarroLogo;
@@ -93,7 +95,7 @@ public class HomePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='report-compliance']")
 	private WebElement linkCompliance;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='report-investigation']")
+	// Link may NOT be present for all users. Conditionally detect this link. 
 	private WebElement linkInvestigation;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='report-reference-gas']")
@@ -136,6 +138,39 @@ public class HomePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-manage-surveyors']/a")
 	private WebElement linkManageSurveyors;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-calibration']/a")
+	protected WebElement linkPicAdminCalibration;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-user-feedback']/a")
+	protected WebElement linkPicAdminViewUserFeedback;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-customers']/a")
+	protected WebElement linkPicAdminManageCus;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-users']/a")
+	protected WebElement linkPicAdminManageUsers;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-locations']/a")
+	protected WebElement linkPicAdminManageLoc;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-surveyors']/a")
+	protected WebElement linkPicAdminManageSur;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-analyzers']/a")
+	protected WebElement linkPicAdminManageAnl;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-ref-gas-bottles']/a")
+	protected WebElement linkPicAdminManageRefGasBottles;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-surveyor-history']/a")
+	protected WebElement linkPicAdminManageSurHistories;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-analyzer-logs']/a")
+	protected WebElement linkPicAdminViewAnlLogs;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-server-log']/a")
+	protected WebElement linkPicAdminViewSurLogs;
+	
 	/**
 	 * @param driver
 	 * @param baseURL
@@ -152,6 +187,50 @@ public class HomePage extends SurveyorBasePage {
 			return true;
 		
 		return false;
+	}
+	
+	public WebElement getLinkPicAdminCalibration() {
+		return this.linkPicAdminCalibration;
+	}
+
+	public WebElement getLinkPicAdminViewUserFeedback() {
+		return this.linkPicAdminViewUserFeedback;
+	}
+
+	public WebElement getLinkPicAdminManageCus() {
+		return this.linkPicAdminManageCus;
+	}
+
+	public WebElement getLinkPicAdminManageUsers() {
+		return this.linkPicAdminManageUsers;
+	}	
+
+	public WebElement getLinkPicAdminManageLoc() {
+		return this.linkPicAdminManageLoc;
+	}	
+
+	public WebElement getLinkPicAdminManageSur() {
+		return this.linkPicAdminManageSur;
+	}	
+
+	public WebElement getLinkPicAdminManageAnl() {
+		return this.linkPicAdminManageAnl;
+	}	
+
+	public WebElement getLinkPicAdminManageRefGasBottles() {
+		return this.linkPicAdminManageRefGasBottles;
+	}	
+
+	public WebElement getLinkPicAdminManageSurHistories() {
+		return this.linkPicAdminManageSurHistories;
+	}	
+
+	public WebElement getLinkPicAdminViewAnlLogs() {
+		return this.linkPicAdminViewAnlLogs;
+	}	
+
+	public WebElement getLinkPicAdminViewSurLogs() {
+		return this.linkPicAdminViewSurLogs;
 	}
 	
 	public boolean checkVisibilityForPicarroSUP(String loginUser) {
@@ -459,6 +538,11 @@ public class HomePage extends SurveyorBasePage {
 	}
 	
 	public WebElement getLinkInvestigation() {
+		try {
+			this.linkInvestigation = driver.findElement(By.xpath(EQ_REPORT_LINK_XPATH));
+		} catch (NoSuchElementException  e) {
+			e.printStackTrace();
+		}
 		return this.linkInvestigation;
 	}
 	

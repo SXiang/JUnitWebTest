@@ -70,6 +70,7 @@ public final class SurveyorConstants {
 	public static final String SQAPICSUP = "sqapicsup@picarro.com";
 	public static final String SQAPICUA = "sqapicua@picarro.com";
 	public static final String SQAPICSU = "sqapicsu@picarro.com";
+	public static final String SQAPICSU1 = "sqapicsu1@picarro.com";
 	public static final String SQAPICDR = "sqapicdr@picarro.com";
 	
 	public static final String SQAPICLOCSUR = "sqapiclocsur";

@@ -77,11 +77,22 @@ public class HomePageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
 		homePage.open();
+		homePage.waitForPageLoad();
 
 		homePage.getLinkPicarroAdmin().click();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
+		assertTrue(homePage.getLinkPicAdminCalibration().isDisplayed());
+		assertTrue(homePage.getLinkPicAdminViewUserFeedback().isDisplayed());
 		assertTrue(homePage.getLinkPicAdminManageCus().isDisplayed());
+		assertTrue(homePage.getLinkPicAdminManageUsers().isDisplayed());
+		assertTrue(homePage.getLinkPicAdminManageLoc().isDisplayed());
+		assertTrue(homePage.getLinkPicAdminManageSur().isDisplayed());
+		assertTrue(homePage.getLinkPicAdminManageAnl().isDisplayed());
+		assertTrue(homePage.getLinkPicAdminManageRefGasBottles().isDisplayed());
+		assertTrue(homePage.getLinkPicAdminManageSurHistories().isDisplayed());
+		assertTrue(homePage.getLinkPicAdminViewAnlLogs().isDisplayed());
+		assertTrue(homePage.getLinkPicAdminViewSurLogs().isDisplayed());
 	}
 
 	/**
@@ -115,7 +126,7 @@ public class HomePageTest extends SurveyorBaseTest {
 				"\nRunning - TC47 - Test Description: Reports link working and user is able to see the report menu\n");
 
 		loginPage.open();
-		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
+		loginPage.loginNormalAs(SQAPICSU, USERPASSWORD);
 
 		homePage.open();
 
@@ -123,7 +134,6 @@ public class HomePageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		assertTrue(homePage.getLinkCompliance().isDisplayed());
-		assertTrue(homePage.getLinkInvestigation().isDisplayed());
 		assertTrue(homePage.getLinkReferenceGas().isDisplayed());
 		assertTrue(homePage.getLinkSystemHistory().isDisplayed());
 	}

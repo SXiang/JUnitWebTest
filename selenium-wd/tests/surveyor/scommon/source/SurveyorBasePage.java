@@ -60,12 +60,9 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement panelDuplicationError;
 	protected String panelDuplicationErrorXPath = "//*[@id='page-wrapper']/div/div[2]/div[1]";
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-customers']/a")
-	protected WebElement linkPicAdminManageCus;
-	
 	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-manage-users']/a")
 	protected WebElement linkAdminManageUsers;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='myModalLabel']")
 	protected WebElement popupConfirmationBox;
 	protected String popupConfirmationBoxXPath = "//*[@id='myModalLabel']";
@@ -120,19 +117,14 @@ public class SurveyorBasePage extends BasePage {
 		return this.linkPicarroAdmin;
 	}
 	
-	public WebElement getLinkPicAdminManageCus() {
-		return this.linkPicAdminManageCus;
-	}
-	
 	public WebElement getLinkCusAdmin() {
 		return this.linkCusAdmin;
 	}
 	
 	public WebElement getLinkAdminManageUsers() {
-		waitForPageToLoad();
 		return this.linkAdminManageUsers;
 	}
-	
+
 	public WebElement getLabelPageTableInfo() {
 		return this.labelPageTableInfo;
 	}

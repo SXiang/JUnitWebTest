@@ -71,10 +71,9 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC36() {
-		String customerName = SQACUS;
-		String eula = customerName + ": " + EULASTRING;
-		String userName = customerName + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
-		String location = customerName + " - " + SQACUSLOC;
+		String eula = SQACUS + ": " + EULASTRING;
+		String userName = SQACUS + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
+		String location = SQACUS + " - " + SQACUSLOC;
 		
 		System.out.println("\nRunning TC36 - Test Description: Check ACLV for customer user with Supervisor role");
 		
@@ -84,8 +83,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		ManageUsersPage manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageUsersPage);
 		manageUsersPage.open();
-		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLESU,location);
-		assertTrue(manageUsersPage.findExistingUser(customerName, userName));
+		manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD, CUSUSERROLESU,location);
+		assertTrue(manageUsersPage.findExistingUser(SQACUS, userName));
 		
 		ManageCustomersPage manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageCustomersPage);
@@ -108,10 +107,9 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC37() {
-		String customerName = SQACUS;
-		String eula = customerName + ": " + EULASTRING;
-		String userName = customerName + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
-		String location = customerName + " - " + SQACUSLOC;
+		String eula = SQACUS + ": " + EULASTRING;
+		String userName = SQACUS + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
+		String location = SQACUS + " - " + SQACUSLOC;
 		
 		System.out.println("\nRunning TC37 - Test Description: Check ACLV for customer user with Utility Administrator role");
 		
@@ -121,8 +119,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		ManageUsersPage manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageUsersPage);
 		manageUsersPage.open();
-		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEUA, location);
-		assertTrue(manageUsersPage.findExistingUser(customerName, userName));
+		manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD, CUSUSERROLEUA, location);
+		assertTrue(manageUsersPage.findExistingUser(SQACUS, userName));
 		
 		ManageCustomersPage manageCustomerPage = new ManageCustomersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageCustomerPage);
