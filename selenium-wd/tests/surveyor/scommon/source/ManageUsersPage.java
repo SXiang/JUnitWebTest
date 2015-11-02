@@ -13,7 +13,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.TestSetup;
 
@@ -27,36 +29,17 @@ import common.source.TestSetup;
 public class ManageUsersPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageUsers";
 	public static final String STRPageTitle = "Manage Users - Surveyor";
-
-	// @FindBy(how = How.XPATH, using =
-	// "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a[1]")
+	public static final String STRPageContentText = "Manage Users";
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a[1]")
 	protected WebElement btnAddNewCustomerUser;
 
-	// @FindBy(how = How.XPATH, using =
-	// "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a[2]")
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a[2]")
 	protected WebElement btnAddNewPicarroUser;
 
-	// @FindBy(how = How.XPATH, using =
-	// "//*[@id='page-wrapper']/div/div[2]/div[1]")
-	// protected WebElement panelDupUserError;
-	// protected String panelDupUserErrorXPath =
-	// "//*[@id='page-wrapper']/div/div[2]/div[1]";
-
-	// //@FindBy(how = How.XPATH, using =
-	// "//a[contains(text(),'Administrator')]")
-	// @FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/a")
-	// private WebElement dropDownAdministrator;
-	//
-	// @FindBy(how = How.XPATH, using = "//a[contains(text(),'Log Out')]")
-	// private WebElement linkLogOut;
-
-	// @FindBy(how = How.XPATH, using = "//*[@id='User_CustomerId']")
-	@FindBy(how = How.XPATH, using = "//*[@id='User_LocationId']")
+	@FindBy(id = "User_LocationId")
 	protected WebElement dropDownCustomer;
 
-	// @FindBy(how = How.XPATH, using = "//*[@id='User_UserName']")
 	@FindBy(how = How.XPATH, using = "//*[@id='User.UserName']")
 	protected WebElement inputEmail;
 
@@ -69,22 +52,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='User_RoleId']")
 	protected WebElement dropDownRole;
 
-	// @FindBy(how = How.XPATH, using = "//*[@id='buttonCustomerOk']")
-	// protected WebElement btnOk;
-
 	@FindBy(css = "a[class='button-cancel btn btn-danger']")
 	protected WebElement cancelAddBtn;
-
-	// @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody")
-	// protected WebElement userTB;
-
-	// @FindBy(how = How.XPATH, using =
-	// "//*[@id='datatable_length']/label/select")
-	// protected WebElement paginationInput;
-
-	// @FindBy(how = How.XPATH, using = "//a[contains(text(),'Next')]")
-	// @FindBy(how = How.XPATH, using = "//*[@id='datatable_next']")
-	// protected WebElement nextBtn;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='NewPassword']")
 	protected WebElement inputNewPassword;
@@ -206,26 +175,19 @@ public class ManageUsersPage extends SurveyorBasePage {
 			String password, String role, String location) {
 		String custLoc = customerName + " - " + location;
 		this.btnAddNewCustomerUser.click();
-
-		/*
-		 * List<WebElement> options =
-		 * this.dropDownCustomer.findElements(By.tagName("option")); for
-		 * (WebElement option : options) { if
-		 * (customerName.equalsIgnoreCase(option.getText().trim()))
-		 * option.click(); }
-		 */
-
-		Select droplist = new Select(this.dropDownCustomer);
-
-		droplist.selectByVisibleText(custLoc);
-
+		
+		List<WebElement> options = this.dropDownCustomer.findElements(By.tagName("option")); 
+		for	(WebElement option : options) { 
+			if (option.getText().trim().equalsIgnoreCase(custLoc))
+				option.click(); 
+		}
+		
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
 		this.inputPassword.sendKeys(password);
 		this.inputPasswordConfirm.sendKeys(password);
 
-		List<WebElement> roleOptions = this.dropDownRole.findElements(By
-				.tagName("option"));
+		List<WebElement> roleOptions = this.dropDownRole.findElements(By.tagName("option"));
 		for (WebElement roleOption : roleOptions) {
 			if (roleOption.getText().trim().equalsIgnoreCase(role))
 				roleOption.click();
@@ -1143,11 +1105,13 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public void clickOnCancelEditBtn() {
 		this.cancelEditBtn.click();
 	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-
-	}
+	
+    @Override
+	public void waitForPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRPageContentText);
+            }
+        });
+    }
 }

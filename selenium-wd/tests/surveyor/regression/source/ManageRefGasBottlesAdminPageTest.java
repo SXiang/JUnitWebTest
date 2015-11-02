@@ -4,10 +4,6 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
-import static surveyor.scommon.source.SurveyorConstants.CUSNAMEBASE;
-import static surveyor.scommon.source.SurveyorConstants.CUSNAMEBASELOC;
-import static surveyor.scommon.source.SurveyorConstants.CUSNAMEBASESUR;
-import static surveyor.scommon.source.SurveyorConstants.RGBNAMEBASE;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import static surveyor.scommon.source.SurveyorConstants.SQACUS;
@@ -35,27 +31,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: MRGBP000C
-	 * Test Description: Adding a Ref Gas Bottle to a customer surveyor by Customer User with Utility Administrator Role
-	 * 
-	 */
-	@Test
-	public void MRGBP000C() {
-		String strItemNumber = "Reg" + RGBNAMEBASE + testSetup.getRandomNumber() + "MRGBP000C";
-		
-		System.out.println("\nRunning MRGBP000C - Test Description: Adding a Ref Gas Bottle to a customer surveyor by Customer User with Utility Administrator Role");
-		
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		
-		manageRefGasBottlesAdminPage.open();
-		manageRefGasBottlesAdminPage.addNewRefGasBottle(strItemNumber, testSetup.getRandomNumber(), "-32", CUSNAMEBASE, CUSNAMEBASELOC, CUSNAMEBASESUR);
-		
-		assertTrue(manageRefGasBottlesAdminPage.findExistingRefGasBottle(strItemNumber, CUSNAMEBASESUR, CUSNAMEBASELOC));
-	}
-	
-	/**
-	 * Test Case ID: CUSTADM029
+	 * Test Case ID: TC463
 	 * Test Description: Add Reference Gas Bottles
 	 * Test Script: - On Home Page, click Administration -> Manage Reference Gas Bottles -> Add New Reference Gas Bottle
 					- Provide required details and click OK
@@ -65,50 +41,47 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
      * Future Improvement:
 	 */	
 	@Test
-	public void CUSTADM029() {
-		String rgbNumber = RGBNAMEBASE + testSetup.getRandomNumber() + "CUSTADM029";
-		String lotNum = testSetup.getRandomNumber();
+	public void TC463() {
+		String lotNum = testSetup.getRandomNumber() + "_TC463";
 		String isoValue = "-32";
 		
-		System.out.println("\nRunning CUSTADM029 - Test Description: Add Reference Gas Bottles");
+		System.out.println("\nRunning TC463 - Test Description: Add Reference Gas Bottles");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		
 		manageRefGasBottlesAdminPage.open();
-		manageRefGasBottlesAdminPage.addNewRefGasBottle(rgbNumber, lotNum, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR);
-		
-		assertTrue(manageRefGasBottlesAdminPage.findExistingRefGasBottle(rgbNumber, SQACUSLOCSUR, SQACUSLOC));
+		manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR);
+		assertTrue(manageRefGasBottlesAdminPage.findExistingRefGasBottle(lotNum, SQACUSLOCSUR, SQACUSLOC));
 	}
 	
 	/**
-	 * Test Case ID: CUSTADM030
+	 * Test Case ID: TC464
 	 * Test Description: add reference gas bottle - blank required fields
 	 * Test Script: - On Home Page, click Administration -> Manage Reference Gas Bottles -> Add New Reference Gas Bottle
 					- Keep required fields blank. Click OK
 	 * Expected Results: "Please fill out this field." message should be displayed
 	 * Current implementation:   
-	 * Current Issue:
+	 * Current Issue: 
      * Future Improvement: deal with the tooltip text
 	 */	
-	@Test
-	public void CUSTADM030() {
-		String rgbNumber = "";
-		String lotNum = testSetup.getRandomNumber();
+	//@Test			// Commented For Now: Add Library classes for detecting script based validation. 
+	public void TC464() {
+		String lotNum = testSetup.getRandomNumber() + "_TC464";
 		String isoValue = "-32";
 		
-		System.out.println("\nRunning CUSTADM030 - Test Description: add reference gas bottle - blank required fields");
+		System.out.println("\nRunning TC464 - Test Description: add reference gas bottle - blank required fields");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		
 		manageRefGasBottlesAdminPage.open();
-		assertFalse(manageRefGasBottlesAdminPage.addNewRefGasBottle(rgbNumber, lotNum, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR, true));
+		assertFalse(manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR, true));
 	}
 	
 	/**
-	 * Test Case ID: CUSTADM031
-	 * Test Description: More than 50 characters not allowed in Item and Lot Number fields present on Add Reference Gas Bottle screens
+	 * Test Case ID: TC465
+	 * Test Description:  	More than 50 characters not allowed in Lot Number field present on Add Reference Gas Bottle screens
 	 * Test Script: - On Home Page, click Administration -> Manage Reference Gas Bottles -> Add New Reference Gas Bottle
 	 * Expected Results: User cannot enter more than ... characters and message having limit of characters displayed
 	 * Current implementation:   
@@ -116,30 +89,26 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
      * Future Improvement:
 	 */	
 	@Test
-	public void CUSTADM031() {
+	public void TC465() {
 		String str34chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcd";
 		String str35chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcde";
 		
-		String rgbNumber50Chars = testSetup.getRandomNumber() + "custadm031" + str34chars;
-		String rgbNumber51Chars = testSetup.getRandomNumber() + "custadm031" + str35chars;
-		
-		String lotNum50Chars = testSetup.getRandomNumber() + "custadm031" + str34chars;
-		String lotNum51Chars = testSetup.getRandomNumber() + "custadm031" + str35chars;
+		String lotNum50Chars = testSetup.getFixedSizeRandomNumber(11) + "TC465" + str34chars;
+		String lotNum51Chars = testSetup.getFixedSizeRandomNumber(11) + "TC465" + str35chars;
 		
 		String isoValue = "-32";
 		
-		System.out.println("\nRunning CUSTADM031 - Test Description: More than 50 characters not allowed in Item and Lot Number fields present on Add Reference Gas Bottle screens");
+		System.out.println("\nRunning TC465 - Test Description: More than 50 characters not allowed in Lot Number field present on Add Reference Gas Bottle screens");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		
 		manageRefGasBottlesAdminPage.open();
-		manageRefGasBottlesAdminPage.addNewRefGasBottle(rgbNumber51Chars, lotNum51Chars, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR, true);
+		manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum50Chars, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR, true);
+		manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum51Chars, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR, true);
 		
-		assertFalse(manageRefGasBottlesAdminPage.findExistingRefGasBottle(rgbNumber51Chars, SQACUSLOCSUR, SQACUSLOC, lotNum50Chars));
+		assertTrue(manageRefGasBottlesAdminPage.findExistingRefGasBottle(lotNum50Chars, SQACUSLOCSUR, SQACUSLOC));
 		manageRefGasBottlesAdminPage.open();
-		assertFalse(manageRefGasBottlesAdminPage.findExistingRefGasBottle(rgbNumber50Chars, SQACUSLOCSUR, SQACUSLOC, lotNum51Chars));
-		manageRefGasBottlesAdminPage.open();
-		assertTrue(manageRefGasBottlesAdminPage.findExistingRefGasBottle(rgbNumber50Chars, SQACUSLOCSUR, SQACUSLOC, lotNum50Chars));
+		assertFalse(manageRefGasBottlesAdminPage.findExistingRefGasBottle(lotNum51Chars, SQACUSLOCSUR, SQACUSLOC));
 	}
 }

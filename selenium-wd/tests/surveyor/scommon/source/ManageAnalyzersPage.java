@@ -11,6 +11,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.FindBy;
 
 import common.source.TestSetup;
@@ -22,6 +24,7 @@ import common.source.TestSetup;
 public class ManageAnalyzersPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageAnalyzers";
 	public static final String STRPageTitle = "Manage Analyzers - Surveyor";
+	public static final String STRPageContentText = "Manage Analyzers";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	private WebElement btnAddNewAnalyzer;	
@@ -46,9 +49,8 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	
 	/**
 	 * @param driver
+	 * @param baseURL
 	 * @param testSetup
-	 * @param strBaseURL
-	 * @param strPageURL
 	 */
 	public ManageAnalyzersPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
@@ -120,9 +122,9 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			customerXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
-			locationXPath     = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
-			surveyorXPath     = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
-			analyzerXPath     = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]";
+			locationXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+			surveyorXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
+			analyzerXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]";
 
 			customerCell = table.findElement(By.xpath(customerXPath));
 			locationCell = table.findElement(By.xpath(locationXPath));
@@ -183,9 +185,9 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			customerXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
-			locationXPath     = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
-			surveyorXPath     = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
-			analyzerXPath     = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]";
+			locationXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+			surveyorXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
+			analyzerXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]";
 
 			customerCell = table.findElement(By.xpath(customerXPath));
 			locationCell = table.findElement(By.xpath(locationXPath));
@@ -208,6 +210,8 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				}
 				
 				this.btnOk.click();
+				
+				this.waitForPageLoad();
 				
 				if (table.isDisplayed())
 					return true;
@@ -270,9 +274,9 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			customerXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
-			locationXPath     = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
-			surveyorXPath     = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
-			analyzerXPath     = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]";
+			locationXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+			surveyorXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
+			analyzerXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]";
 
 			customerCell = table.findElement(By.xpath(customerXPath));
 			locationCell = table.findElement(By.xpath(locationXPath));
@@ -342,10 +346,12 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		this.btnCancel.click();
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		
-	}
+	@Override
+	public void waitForPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRPageContentText);
+            }
+        });
+    }
 }

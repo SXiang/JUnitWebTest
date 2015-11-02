@@ -13,6 +13,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BaseHelper;
 import common.source.TestSetup;
@@ -22,9 +24,10 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  * @author zlu
  *
  */
-public class MeasurementSessionsPage extends SurveyorBasePage {
+public class MeasurementSessionsPage extends SurveyorBasePage {	
 	public static final String STRURLPath = "/Home/MeasurementSessions";
 	public static final String STRPageTitle = "Measurement Sessions - Surveyor";
+	public static final String STRPageContentText = "Driving Surveys";
 	
 	public static final String DSTAGUA = "dmcs1-sqacusua";
 	public static final String DSTAGSU = "dmcs1-sqacussu";
@@ -49,7 +52,6 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	 * @param driver
 	 * @param testSetup
 	 * @param strBaseURL
-	 * @param strPageURL
 	 */
 	public MeasurementSessionsPage(WebDriver driver, TestSetup testSetup,
 			String strBaseURL) {
@@ -487,10 +489,12 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		return false;
 	}	
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		
-	}
+	@Override
+	public void waitForPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRPageContentText);
+            }
+        });
+    }
 }

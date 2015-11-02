@@ -365,6 +365,8 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		homePage.getLinkCusAdmin().click();
 		homePage.getLinkAdminManageUsers().click();
+		
+		manageUsersAdminPage.waitForPageLoad();
 		manageUsersAdminPage.getInputSearch().sendKeys(userName + userName);
 
 		assertTrue(manageUsersAdminPage.getLabelNoMatchingSearch()

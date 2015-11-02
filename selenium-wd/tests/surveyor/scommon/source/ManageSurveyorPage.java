@@ -6,10 +6,11 @@ package surveyor.scommon.source;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.By.ByXPath;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.FindBy;
 
 import common.source.TestSetup;
@@ -22,8 +23,8 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 public class ManageSurveyorPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageSurveyors";
 	public static final String STRPageTitle = "Manage Surveyors - Surveyor";
+	public static final String STRPageContentText = "Manage Surveyors";
 	
-	//@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a")
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	protected WebElement btnAddNewSurveyor;
 	
@@ -101,14 +102,16 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		
 		List<WebElement> options = this.dropDownLocation.findElements(By.tagName("option"));
 		for (WebElement option : options) {
-			if(location.equals(option.getText().trim()))
-				option.click();		
+			if (option.getText().trim().equalsIgnoreCase(location))
+				option.click();
 		}
 		
 		if (this.testSetup.isRunningDebug())
 			this.testSetup.slowdownInSeconds(5);		
 		
 		this.btnOK.click();
+		
+		this.waitForPageLoad();
 	}
 	
 	public void addNewSurveyor(String surveyorDesc, String locationName, String customerName) {
@@ -137,7 +140,9 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 			WebElement panelError = driver.findElement(By.xpath(this.panelDupSurErrorXPath));
 			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
 				this.btnAddCancel.click();
-		}		
+		}
+		
+		this.waitForPageLoad();
 	}	
 	
 	public boolean findExistingSurveyor(String customerName, String locationName, String surveyorName) {
@@ -293,11 +298,13 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	public void clickOnEditCancelBtn() {
 		this.btnEditCancel.click();
 	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		
-	}
+	
+    @Override
+	public void waitForPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRPageContentText);
+            }
+        });
+    }
 }
