@@ -102,10 +102,10 @@ public class TestSetup {
 			File propertyfile = new File(".");
 
 			String rootPath = propertyfile.getCanonicalPath();
-			
-			//testPropFileName  = rootPath +File.separator+ "test.properties";
-			testPropFileName  = rootPath +File.separator+"selenium-wd"+ File.separator+"tests"+File.separator+"surveyor" +File.separator+ "test.properties";
-						
+			/* For CI and Eclipse run setup  */
+		//	testPropFileName  = rootPath +File.separator+"selenium-wd"+ File.separator+"tests"+File.separator+"surveyor" +File.separator+ "test.properties";
+			/* For build.xml run locally  */		
+			testPropFileName  = rootPath+ File.separator+"tests"+File.separator+"surveyor" +File.separator+ "test.properties";
 			InputStream inputStream = new FileInputStream(testPropFileName);
 
 
@@ -148,10 +148,10 @@ public class TestSetup {
 			System.out.println("\nThe browser is: " + this.browser + "\n");
 
 			this.ieDriverPath = this.testProp.getProperty("ieDriverPath");
-			
-			this.chromeDriverPath = rootPath + File.separator+"selenium-wd"+ File.separator +"lib" + File.separator+"chromedriver.exe";
-			
-		//	this.chromeDriverPath=new File(rootPath +"/.."+"/.."+"/..").getCanonicalPath()+File.separator+"lib" + File.separator+"chromedriver.exe";
+			/* For CI and Eclipse run setup  */
+		//	this.chromeDriverPath = rootPath + File.separator+"selenium-wd"+ File.separator +"lib" + File.separator+"chromedriver.exe";
+			/* For build.xml run locally  */
+			this.chromeDriverPath = rootPath + File.separator +"lib" + File.separator+"chromedriver.exe";
 			this.implicitlyWaitTimeOutInSeconds = this.testProp
 					.getProperty("implicitlyWaitTimeOutInSeconds");
 			this.implicitlyWaitSpecialTimeOutInSeconds = this.
