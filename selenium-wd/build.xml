@@ -1,0 +1,174 @@
+<project name="selenium-qa" default="testsanity" basedir=".">
+	<property name="proj_name" value="selenium-qa" />
+	<property name="dist" location="dist" />
+	<property name="source" location="source" />
+	<property name="build" location="build" />
+	<property name="reports" location="reports" />
+	<property name="screenshots" location="screenshots" />
+	<property name="sanity_jar" value="sanity.jar" />
+	<property name="regression_jar" value="regression.jar" />
+	<property name="common_jar" value="common.jar" />
+	<property name="scommon_jar" value="scommon.jar" />
+
+	<target name="init" depends="clean" description="Initialize build environment">
+		<mkdir dir="${build}" />
+		<mkdir dir="${dist}" />
+		<!--<mkdir dir="${screenshots}" /> -->
+		<mkdir dir="${screenshots}/sanity"/>
+		<mkdir dir="${screenshots}/regression"/>
+		<!--<mkdir dir="${reports}" /> -->
+		<mkdir dir="${reports}/sanity/html/" />
+		<mkdir dir="${reports}/sanity/xml/" />
+		<mkdir dir="${reports}/regression/html/" />
+		<mkdir dir="${reports}/regression/xml/" />
+
+		<mkdir dir="${basedir}/tests/common/build" />
+		<mkdir dir="${basedir}/tests/common/dist" />
+
+		<mkdir dir="${basedir}/tests/surveyor/scommon/build" />
+		<mkdir dir="${basedir}/tests/surveyor/scommon/dist" />
+	</target>
+
+	<target name="clean" description="Clean up">
+		<move file="${reports}" tofile="${reports}.old" failonerror="false" />
+		<move file="${screenshots}" tofile="${screenshots}.old"
+				failonerror="false" />
+
+		<delete dir="${build}" />
+		<delete dir="${dist}" />
+		<!--<delete dir="${reports}" /> -->
+		<delete dir="${reports}/sanity/html/" />
+		<delete dir="${reports}/sanity/xml/" />
+		<delete dir="${reports}/regression/html/" />
+		<delete dir="${reports}/regression/xml/" />
+
+
+		<delete dir="${basedir}/tests/common/build" />
+		<delete dir="${basedir}/tests/common/dist" />
+		<delete file="${basedir}/lib/${common_jar}" />
+
+		<delete dir="${basedir}/tests/surveyor/scommon/build" />
+		<delete dir="${basedir}/tests/surveyor/scommon/dist" />
+		<delete file="${basedir}/lib/${scommon_jar}" />
+	</target>
+
+	<target name="compile_common" depends="init"
+			description="Compile common source code">
+		<javac srcdir="${basedir}/tests/common/source:${basedir}/tests/surveyor/scommon/source" includeantruntime="false" destdir="${basedir}/tests/common/build">
+			<classpath>
+				<fileset dir="${basedir}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+
+		<jar jarfile="${basedir}/lib/${common_jar}" basedir="${basedir}/tests/common/build" />
+
+	</target>
+
+	<target name="compile_scommon" depends="compile_common"
+			description="Compile scommon source code">
+		<javac srcdir="${basedir}/tests/surveyor/scommon/source" includeantruntime="false" destdir="${basedir}/tests/surveyor/scommon/build"
+				debug="on">
+			<classpath>
+				<fileset dir="${basedir}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+
+		<jar jarfile="${basedir}/lib/${scommon_jar}" basedir="${basedir}/tests/surveyor/scommon/build" />
+
+	</target>
+
+	<target name="compileregression" depends="compile_scommon" description="Compile regression source code">
+		<javac srcdir="${basedir}/tests/surveyor/regression/source" includeantruntime="false" destdir="${build}">
+			<classpath>
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+
+		<jar jarfile="${dist}/${regression_jar}" basedir="${build}" />
+
+	</target>
+
+	<target name="compileSanity" depends="compile_scommon" description="Compile sanity source code">
+		<javac srcdir="${basedir}/tests/surveyor/sanity/source" includeantruntime="false" destdir="${build}">
+			<classpath>
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+
+		<jar jarfile="${dist}/${sanity_jar}" basedir="${build}" />
+
+	</target>
+
+	<target name="testregression" depends="compileregression" description="Run regression test suite">
+		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
+				showoutput="yes">
+			<classpath>
+				<pathelement path="${build}" />
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+
+			<batchtest fork="yes" todir="${reports}/regression/xml">
+				<formatter type="xml" />
+				<fileset dir="${build}">
+					<include name="**/LoginPageTest.class" />
+				<!--	<include name="**/ManageUsersPageTest.class" />
+					<include name="**/UserFeedbackPageTest.class" />
+					<include name="**/UserFeedbackAdminPageTest.class" />
+					<include name="**/ManageLocationsPageTest.class" />
+					<include name="**/ManageLocationsAdminPageTest.class" />
+					<include name="**/ManageSurveyorPageTest.class" />
+					<include name="**/ManageSurveyorAdminPageTest.class" /> -->
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	<target name="testsanity" depends="compileSanity" description="Run sanity test suite">
+
+		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
+					showoutput="yes">
+
+			<classpath>
+				<pathelement path="${build}" />
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+
+			<batchtest fork="yes" todir="${reports}/sanity/xml/">
+				<formatter type="xml" />
+				<fileset dir="${build}">
+					<include name="**/SanityIntegrationTest.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<echo message="junit build : ${build}" />
+	</target>
+
+	<target name="sanityreport" depends="testsanity">
+		<junitreport todir="${reports}/sanity/xml">
+			<fileset dir="${reports}/sanity/xml">
+				<include name="*TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${reports}/sanity/html" />
+		</junitreport>
+	</target>
+
+	<target name="regressionreport" depends="testregression">
+		<junitreport todir="${reports}/regression/xml">
+			<fileset dir="${reports}/regression/xml">
+				<include name="*TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${reports}/regression/html" />
+		</junitreport>
+	</target>
+</project>
