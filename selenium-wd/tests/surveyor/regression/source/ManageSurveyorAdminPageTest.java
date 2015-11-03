@@ -54,7 +54,6 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	 */	
 	@Test
 	public void TC455() {
-		//String customerName = SQACUS;
 		String locationName = SQACUSLOC;
 		String surveyorName = SQACUSLOCSUR + testSetup.getRandomNumber() + "TC455";
 		String surveyorNameNew = surveyorName + "New";
@@ -104,7 +103,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		// Add Surveyor with Location1
 		manageSurveyorPage.open();
 		manageSurveyorPage.addNewSurveyor(surveyorName, locationName1, SQACUS);
-		
+
 		// Add Location2 for the Customer.
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName2, SQACUS, cityName);

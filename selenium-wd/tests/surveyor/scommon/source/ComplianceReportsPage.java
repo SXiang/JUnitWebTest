@@ -50,6 +50,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BaseHelper;
 import common.source.DBConnection;
@@ -64,6 +66,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String STRPageTitle = "Compliance Reports - Surveyor";
 	public static final String STRPaginationMsg = "Showing 1 to ";
 	public static final String STRSurveyIncludedMsg = "Already Added...";
+	public static final String STRPageContentText = "Compliance Reports";
 	
 	@FindBy (how = How.ID, using = "pdf")
 	protected WebElement pdfImg;
@@ -161,13 +164,16 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			js.executeScript("arguments[0].click();", checkBoxIndTb);
 		}
 		if (tablesList.get(0).get(KEYISOANA).equalsIgnoreCase("1")) {
-			this.checkBoxIsoAna.click();
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("arguments[0].click();", checkBoxIsoAna);
 		}
 		if (tablesList.get(0).get(KEYPCA).equalsIgnoreCase("1")) {
-			this.checkBoxPCA.click();
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("arguments[0].click();", checkBoxPCA);
 		}
 		if (tablesList.get(0).get(KEYPCRA).equalsIgnoreCase("1")) {
-			this.checkBoxPCRA.click();
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("arguments[0].click();", checkBoxPCRA);
 		}
 		
 		this.btnOK.click();
@@ -1438,11 +1444,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.btnFirstInvestigateCompliance.click();
 	}
 	
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-
-	}
+	@Override
+	public void waitForPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRPageContentText);
+            }
+        });
+    }
 }

@@ -28,6 +28,8 @@ public class BasePage {
 	protected WebDriver driver;
 	protected TestSetup testSetup;
 	
+	protected int timeout = 15;
+	
 	@FindBy(how = How.XPATH, using = "//h1/strong")
 	private WebElement pageHeader;
 
@@ -109,6 +111,7 @@ public class BasePage {
 
 	public void open() {	
 		driver.get(strPageURL);
+		this.waitForPageToLoad();
 	}
 
 	public String getStrPageURL() {
@@ -244,11 +247,14 @@ public class BasePage {
 	}
 	
 	public void waitForPageToLoad(){
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+	}
+	
+	/*
+	 * Default implementation of this method makes a call to waitForPageToLoad().
+	 * Inherited Page classes can provide a page specific implementation of this method.
+	 */
+	public void waitForPageLoad() {
+		waitForPageToLoad();	
 	}
 }
