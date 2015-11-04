@@ -45,7 +45,10 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
+		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
 		homePage.getLinkAdminManageUsers().click();
 
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR,
@@ -74,7 +77,10 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
+		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
 		homePage.getLinkAdminManageUsers().click();
 
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR,
@@ -153,7 +159,10 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
+		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
 		homePage.getLinkAdminManageUsers().click();
 
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR,
@@ -183,7 +192,10 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
+		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
 		homePage.getLinkAdminManageUsers().click();
 
 		manageUsersAdminPage.addTestUser(userName, USERPASSWORD, USERPASSWORD);
@@ -209,7 +221,10 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
+		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
 		homePage.getLinkAdminManageUsers().click();
 
 		assertTrue(manageUsersAdminPage.addTestUser(userName, USERPASSWORD,
@@ -230,7 +245,10 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
+		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
 		homePage.getLinkAdminManageUsers().click();
 
 		assertTrue(manageUsersAdminPage.addTestUser(userName1, USERPASSWORD,
@@ -255,7 +273,10 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
+		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
 		homePage.getLinkAdminManageUsers().click();
 
 		assertTrue(manageUsersAdminPage.addTestUser("", USERPASSWORD,
@@ -285,7 +306,10 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
+		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
 		homePage.getLinkAdminManageUsers().click();
 
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR,
@@ -314,7 +338,10 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
+		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
 		homePage.getLinkAdminManageUsers().click();
 
 		String rtnMsg = manageUsersAdminPage.addTestUser(userName,
@@ -337,7 +364,10 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
+		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
 		homePage.getLinkAdminManageUsers().click();
 
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR,
@@ -363,11 +393,16 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
 		homePage.getLinkAdminManageUsers().click();
 		
 		manageUsersAdminPage.waitForPageLoad();
 		manageUsersAdminPage.getInputSearch().sendKeys(userName + userName);
+		manageUsersAdminPage.waitForPageLoad();
 
 		assertTrue(manageUsersAdminPage.getLabelNoMatchingSearch()
 				.equalsIgnoreCase(NOMATCHINGSEARCH));
@@ -387,7 +422,10 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
+		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
 		homePage.getLinkAdminManageUsers().click();
 		manageUsersAdminPage.getTheadUserName().click();
 		list = manageUsersAdminPage.getUserNameList(false);

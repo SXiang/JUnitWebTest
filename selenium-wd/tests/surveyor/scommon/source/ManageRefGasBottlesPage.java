@@ -22,7 +22,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	public static final String STRURLPATH = "/Picarro/ManageRefGasBottles";
 	public static final String STRPAGETITLE = "Manage Reference Gas Bottles - Surveyor";
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
+	@FindBy(css = "a[class='btn btn-primary']")
 	private WebElement btnAddNewRefGasBottle;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
@@ -81,6 +81,8 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
 				this.btnCancel.click();
 		}
+		
+		this.waitForPageLoad();
 	}
 	
 	public boolean addNewRefGasBottle(String strLotNumber, String strIsoValue, String strCusName, String strLocName, String strSurveyor, boolean bFlag) {
@@ -105,6 +107,8 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 				return false;
 			}
 		}
+		
+		this.waitForPageLoad();
 		
 		return true;
 	}	
