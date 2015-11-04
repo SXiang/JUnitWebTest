@@ -36,7 +36,7 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement linkPicarroAdmin;
 	protected String strLinkPicarroAdminXPath = "//*[@id='picarro-administration-menu']/a";
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/div[4]/ul/li[8]/a")
+	@FindBy(how = How.XPATH, using = "//*[@data-target='#customer-administration-menu']")
 	protected WebElement linkCusAdmin;
 	protected String strLinkCusAdminXPath = "//*[@id='customer-administration-menu']/a";	
 	

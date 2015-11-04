@@ -202,6 +202,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 					"Please, correct the following errors:"))
 				this.cancelAddBtn.click();
 		}
+		
+		this.waitForPageLoad();
 	}
 
 	public void addNewCustomerUser(String customerName, String email,
@@ -243,6 +245,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 					"Please, correct the following errors:"))
 				this.cancelAddBtn.click();
 		}
+		
+		this.waitForPageLoad();
 	}
 
 	public boolean findExistingUser(String userName) {
