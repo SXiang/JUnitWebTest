@@ -49,13 +49,15 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	}
 	
 	/**
-	 * Test Case ID: DSMS000A
+	 * Test Case ID: TC35_CheckVisibilityDriverRole
 	 * Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Driver role
-	 * 
+	 * Notes: This test case is dependent on upload of survey tags.
+	 *        This test case can be fixed post Simulator Integration in Automation framework.
+	 *        Work tracked by US1210
 	 */
-	@Test
-	public void DSMS000A() {
-		System.out.println("\nRunning DSMS000A - Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Driver role");
+	//@Test /* Disabled for now. Refer Notes section*/
+	public void TC35_CheckVisibilityDriverRole() {
+		System.out.println("\nRunning TC35_CheckVisibilityDriverRole - Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Driver role");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);		
@@ -65,13 +67,15 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	}
 	
 	/**
-	 * Test Case ID: DSMS000B
+	 * Test Case ID: TC36_CheckVisibilityCustomerSupervisorRole
 	 * Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Supervisor role
-	 * 
+	 * Notes: This test case is dependent on upload of survey tags.
+	 *        This test case can be fixed post Simulator Integration in Automation framework.
+	 *        Work tracked by US1210
 	 */
-	@Test
-	public void DSMS000B() {
-		System.out.println("\nRunning DSMS000B - Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Supervisor role");
+	//@Test /* Disabled for now. Refer Notes section*/
+	public void TC36_CheckVisibilityCustomerSupervisorRole() {
+		System.out.println("\nRunning TC36_CheckVisibilityCustomerSupervisorRole - Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Supervisor role");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);		
@@ -81,13 +85,15 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	}
 	
 	/**
-	 * Test Case ID: DSMS000C
+	 * Test Case ID: TC37_CheckVisibilityUtilityAdminRole
 	 * Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Utility Administrator role
-	 * 
+	 * Notes: This test case is dependent on upload of survey tags.
+	 *        This test case can be fixed post Simulator Integration in Automation framework.
+	 *        Work tracked by US1210
 	 */
-	@Test
-	public void DSMS000C() {
-		System.out.println("\nRunning DSMS000C - Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Utility Administrator role");
+	//@Test /* Disabled for now. Refer Notes section*/
+	public void TC37_CheckVisibilityUtilityAdminRole() {
+		System.out.println("\nRunning TC37_CheckVisibilityUtilityAdminRole - Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Utility Administrator role");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);		
@@ -97,13 +103,15 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	}
 	
 	/**
-	 * Test Case ID: DSMS000D
+	 * Test Case ID: TC38_CheckVisibilityPicarroAdminRole
 	 * Test Description: Visibility check of Driving Surveys Measurement Sessions for Picarro user with Administrator role
-	 * 
+	 * Notes: This test case is dependent on upload of survey tags.
+	 *        This test case can be fixed post Simulator Integration in Automation framework.
+	 *        Work tracked by US1210
 	 */
-	@Test
-	public void DSMS000D() {
-		System.out.println("\nRunning DSMS000D - Test Description: Visibility check of Driving Surveys Measurement Sessions for Picarro user with Administrator role");
+	//@Test /* Disabled for now. Refer Notes section*/
+	public void TC38_CheckVisibilityPicarroAdminRole() {
+		System.out.println("\nRunning TC38_CheckVisibilityPicarroAdminRole - Test Description: Visibility check of Driving Surveys Measurement Sessions for Picarro user with Administrator role");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);		
@@ -114,66 +122,15 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	}
 	
 	/**
-	 * Test Case ID: DSMS000E
-	 * Test Description: Visibility check of Driving Surveys Measurement Sessions for Picarro user with Utility Administrator role
-	 * 
-	 */
-	@Test
-	public void DSMS000E() {
-		System.out.println("\nRunning DSMS000E - Test Description: Visibility check of Driving Surveys Measurement Sessions for Picarro user with Utility Administrator role");
-		
-		loginPage.open();
-		loginPage.loginNormalAs(SQAPICUA, USERPASSWORD);		
-		
-		measurementSessionsPage.open();
-		
-		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(SQAPICUA, CUSUSERROLEUA, strListTagCus, strListTagPic));
-	}
-	
-	/**
-	 * Test Case ID: DSMS000F
-	 * Test Description: Visibility check of Driving Surveys Measurement Sessions for Picarro user with Supervisor role
-	 * 
-	 */
-	@Test
-	public void DSMS000F() {
-		System.out.println("\nRunning DSMS000F - Test Description: Visibility check of Driving Surveys Measurement Sessions for Picarro user with Supervisor role");
-		
-		loginPage.open();
-		loginPage.loginNormalAs(SQAPICSU, USERPASSWORD);
-
-		measurementSessionsPage.open();
-		
-		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(SQAPICSU, CUSUSERROLESU, strListTagCus, strListTagPic));
-	}
-	
-	/**
-	 * Test Case ID: DSMS000G
-	 * Test Description: Visibility check of Driving Surveys Measurement Sessions for Picarro user with Driver role
-	 * 
-	 */
-	@Test
-	public void DSMS000G() {
-		System.out.println("\nRunning DSMS000G - Test Description: Visibility check of Driving Surveys Measurement Sessions for Picarro user with Driver role");
-		
-		loginPage.open();
-		loginPage.loginNormalAs(SQAPICDR, USERPASSWORD);
-		
-		measurementSessionsPage.open();
-		
-		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(SQAPICDR, CUSUSERROLEDR, strListTagCus, strListTagPic));
-	}
-	
-	/**
-	 * Test Case ID: HOME015
+	 * Test Case ID: TC51_CheckRecentDrivingSurveyInDashboard
 	 * Test Description: Recent Driving Surveys Section present on Dashboard should display latest surveys
 	 * Test Script: - Login and verify recent driving surveys section
 	 * Expected Results: - User should be able to see recent driving surveys
      * Future Improvement: - Visibility check, a customer user should be able to see all surveys generated by the other customer users with different roles 
 	 */
 	@Test
-	public void HOME015() {
-		System.out.println("\nRunning - HOME015 - Test Description: Recent Driving Surveys Section present on Dashboard should display latest surveys\n");
+	public void TC51_CheckRecentDrivingSurveyInDashboard() {
+		System.out.println("\nRunning - TC51_CheckRecentDrivingSurveyInDashboard - Test Description: Recent Driving Surveys Section present on Dashboard should display latest surveys\n");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);
@@ -185,6 +142,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 		PageFactory.initElements(driver,  msp);
 		
 		homePage.getLinkDrivingSurveys().click();
+		measurementSessionsPage.waitForPageLoad();
 		
 		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(testSetup.getBaseUrl() + DRIVINGSURVEYS));
 		
@@ -194,7 +152,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	}
 	
 	/**
-	 * Test Case ID: HOME013
+	 * Test Case ID: TC49_DeleteSurveys
 	 * Test Description: Delete surveys
 	 * Test Script: - On Home Page, Dashboard (test script might change once US is implemented)
 					- Delete Standard survey
@@ -204,15 +162,18 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	 * Expected Results: - Picarro Admin is able to delete surveys
 	 * Future Improvement: 1. Delete S1 survey for now and should be the same for deleting surveys with different types
 	 *                     2. Delete surveys generated by different users with different roles
-	 *                     3. Delete surveys by different login users with different roles  
+	 *                     3. Delete surveys by different login users with different roles
+	 * Notes: This test case takes 10+ mins to run on P3SQA environment because of large number of rows in DB.
+	 *        Better approach for automation is to use a clean DB for automation test execution.
+	 *        Use of clean DB in automation, Work tracked by US1210
 	 */
-	@Test
-	public void HOME013() {
+	//@Test /* Disabled for now. Refer Notes section*/
+	public void TC49_DeleteSurveys() {
 		String tagName = "dmcs1-pgeua";
 		boolean deleteAll = false;
 		List<String> tagList;
 		
-		System.out.println("\nRunning - HOME013 - Delete surveys\n");
+		System.out.println("\nRunning - TC49_DeleteSurveys - Delete surveys\n");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
@@ -233,7 +194,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	}
 	
 	/**
-	 * Test Case ID: CUSTADM017
+	 * Test Case ID: TC125_ExportSurveyPeaksAnalysis
 	 * Test Description: Export Raw Data
 	 * Test Script: - On Home Page, click on Driving Surveys
 					- Click on Export Survey
@@ -243,12 +204,15 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	 * Current implementation: Raw Data is available to Picarro Administrator only now
 	 * Current Issue:
      * Future Improvement:
+	 * Notes: This test case takes 10+ mins to run on P3SQA environment because of large number of rows in DB.
+	 *        Better approach for automation is to use a clean DB for automation test execution.
+	 *        Use of clean DB in automation, Work tracked by US1210
 	 */
-	@Test
-	public void CUSTADM017() {
+	//@Test /* Disabled for now. Refer Notes section*/
+	public void TC125_ExportSurveyPeaksAnalysis() {
 		String startDT;
 		
-		System.out.println("\nRunning - CUSTADM017 - Test Description: Export Raw Data\n");
+		System.out.println("\nRunning - TC125_ExportSurveyPeaksAnalysis - Test Description: Export Raw Data\n");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
