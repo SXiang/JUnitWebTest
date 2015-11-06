@@ -42,7 +42,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	}	
 	
 	/**
-	 * Test Case ID: TC455
+	 * Test Case ID: TC455_EditSurveyor_CustUA
 	 * Test Description: edit surveyor
 	 * Test Script: - On Home Page, click Administration -> Manage Customer's Surveyors
 					- Click on Edit link
@@ -53,12 +53,12 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
      * Future Improvement: editing a surveyor to have it associate to a different customer location is covered in CUSTADM020
 	 */	
 	@Test
-	public void TC455() {
+	public void TC455_EditSurveyor_CustUA() {
 		String locationName = SQACUSLOC;
 		String surveyorName = SQACUSLOCSUR + testSetup.getRandomNumber() + "TC455";
 		String surveyorNameNew = surveyorName + "New";
 		
-		System.out.println("\nRunning - TC455 - Test Description: edit surveyor\n");
+		System.out.println("\nRunning - TC455_EditSurveyor_CustUA - Test Description: edit surveyor\n");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -76,7 +76,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	}
 	
 	/**
-	 * Test Case ID: TC456
+	 * Test Case ID: TC456_EditSurveyorAssignLoc_CustUA
 	 * Test Description: Administrator is allowed to associate and disassociate Surveyor Units within Locations associated only to his customer
 	 * Test Script: Pre-requisite: Location1 and Location2 are associated to same customer of admin
 					- On Home Page, click Administration -> Manage Customer's Surveyors
@@ -88,14 +88,15 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
      * Future Improvement:
 	 */	
 	@Test
-	public void TC456() {
+	public void TC456_EditSurveyorAssignLoc_CustUA() {
 		String locationName1 = SQACUSLOC;
 		String locationName2 = SQACUSLOC + testSetup.getRandomNumber();
 		String locationName3 = SQAPICLOC;
 		String surveyorName = SQACUSLOCSUR + testSetup.getRandomNumber() + "TC456";
 		String cityName = "Santa Clara";
 		
-		System.out.println("\nRunning - TC456 - Test Description: Administrator is allowed to associate and disassociate Surveyor Units within Locations associated only to his customer\n");
+		System.out.println("\nRunning - TC456_EditSurveyorAssignLoc_CustUA - Test Description: Administrator is allowed to associate and "
+				+ "disassociate Surveyor Units within Locations associated only to his customer\n");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -125,7 +126,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	}
 	
 	/**
-	 * Test Case ID: TC457
+	 * Test Case ID: TC457_EditSurveyorDesc25CharLimit_CustUA
 	 * Test Description: More than 25 characters not allowed in Surveyor Description field
 	 * Test Script: - On Home Page, and click Administration -> Manage Surveyors
 					- Click on 'Edit' button
@@ -136,14 +137,15 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
      * Future Improvement:
 	 */	
 	@Test
-	public void TC457() {
+	public void TC457_EditSurveyorDesc25CharLimit_CustUA() {
 		String str14chars = "AbcdefghI-Abcd";
 		String str15chars = "AbcdefghI-Abcde";
 		
 		String surveyorName25Chars = testSetup.getFixedSizeRandomNumber(6) + "TC457" + str14chars;
 		String surveyorName26Chars = testSetup.getFixedSizeRandomNumber(6) + "TC457" + str15chars;
 		
-		System.out.println("\nRunning - TC101 - Test Description: More than 25 characters not allowed in Surveyor Description field\n");
+		System.out.println("\nRunning - TC457_EditSurveyorDesc25CharLimit_CustUA - Test Description: More than 25 characters not allowed "
+				+ "in Surveyor Description field\n");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -162,7 +164,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	}
 	
 	/**
-	 * Test Case ID: TC458
+	 * Test Case ID: TC458_EditSurveyorBlankRequiredFields_CustUA
 	 * Test Description: edit surveyor - blank required fields
 	 * Test Script: - On Home Page, click Administration -> Manage Customer's Surveyors
 					- Click on Edit link
@@ -173,10 +175,10 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
      * Future Improvement: deal with the tooltip text
 	 */	
 	@Test
-	public void TC458() {
+	public void TC458_EditSurveyorBlankRequiredFields_CustUA() {
 		String surveyorName = testSetup.getRandomNumber() + "TC458";
 		
-		System.out.println("\nRunning - TC458 - Test Description: edit surveyor - blank required fields\n");
+		System.out.println("\nRunning - TC458_EditSurveyorBlankRequiredFields_CustUA - Test Description: edit surveyor - blank required fields\n");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
