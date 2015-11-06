@@ -42,19 +42,19 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	}
 	
 	/**
-	 * Test Case ID: TC65
+	 * Test Case ID: TC65_AddAnalyzer_PicAdmin
 	 * Test Description: Adding Analyzer for Picarro by Picarro default Administrator
 	 * 
 	 */	
 	@Test
-	public void TC65() {
+	public void TC65_AddAnalyzer_PicAdmin() {
 		String customerName = "Picarro";
 		String locationName = customerName + "loc";
 		String surveyorName = locationName + testSetup.getRandomNumber() + "sur";
 		String analyzerName = surveyorName + "ana";
 		String cityName="Santa Clara";
 		
-		System.out.println("\nRunning TC65 - Test Description: Adding Analyzer for Picarro by Picarro default Administrator");
+		System.out.println("\nRunning TC65_AddAnalyzer_PicAdmin - Test Description: Adding Analyzer for Picarro by Picarro default Administrator");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
@@ -71,12 +71,12 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	}
 	
 	/**
-	 * Test Case ID: TC67
+	 * Test Case ID: TC67_EditAnalyzer_PicAdmin
 	 * Test Description: Editing Analyzer for Picarro, associating an analyzer to a different surveyor, by Picarro default Administrator
 	 * 
 	 */	
 	@Test
-	public void TC67() {
+	public void TC67_EditAnalyzer_PicAdmin() {
 		String customerName = "Picarro";
 		String locationName = customerName + testSetup.getRandomNumber() + "loc";
 		String surveyorName = locationName + "sur";
@@ -84,7 +84,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		String analyzerName = surveyorName + "ana";
 		String cityName ="Santa Clara";
 		
-		System.out.println("\nRunning TC67 - Test Description: Editing Analyzer for Picarro, changing the Analyzer Name, by Picarro default Administrator");
+		System.out.println("\nRunning TC67_EditAnalyzer_PicAdmin - Test Description: Editing Analyzer for Picarro, changing the Analyzer Name, "
+				+ "by Picarro default Administrator");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		

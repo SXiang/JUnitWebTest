@@ -33,19 +33,19 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	
 	
 	/**
-	 * Test Case ID: TC60
+	 * Test Case ID: TC60_AddLocation_PicAdmin
 	 * Test Description: Adding Location
 	 * 
 	 */
 	@Test
-	public void TC60() {
+	public void TC60_AddLocation_PicAdmin() {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC60";
 		String eula = customerName + ": " + EULASTRING;
 		String locationName = customerName + "Loc";
 		String cityName="Santa Clara";
 	
 		
-		System.out.println("\nRunning TC60 - Test Description: Adding Location");
+		System.out.println("\nRunning TC60_AddLocation_PicAdmin - Test Description: Adding Location");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
@@ -60,19 +60,19 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	}
 	
 	/**
-	 * Test Case ID: TC61
+	 * Test Case ID: TC61_EditLocation_PicAdmin
 	 * Test Description: Editing Location
 	 * 
 	 */
 	@Test
-	public void TC61() {
+	public void TC61_EditLocation_PicAdmin() {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC61";
 		String eula = customerName + ": " + EULASTRING;
 		String locationName = customerName + "Loc";
 		String newLocationName = locationName + "NEW";
 		String cityName="Santa Clara";
 		
-		System.out.println("\nRunning TC61 - Test Description: Editing Location");
+		System.out.println("\nRunning TC61_EditLocation_PicAdmin - Test Description: Editing Location");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());

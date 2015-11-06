@@ -57,7 +57,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC489 
+	 * Test Case ID: TC489_AddLocation_CustUA 
 	 * Test Description: Add location 
 	 * Test Script: - On Home Page, click Administration -> Manage Locations 
 	 * - Click on 'Add New Location' button 
@@ -69,11 +69,11 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	 * Future Improvement:
 	 */
 	@Test
-	public void TC489() {
+	public void TC489_AddLocation_CustUA() {
 		String locationName = testSetup.getRandomNumber() + "TC489";
 		String cityName = "Santa Clara";
 
-		System.out.println("\nRunning - TC489 - Test Description: Add location\n");
+		System.out.println("\nRunning - TC489_AddLocation_CustUA - Test Description: Add location\n");
 
 		// Add Location as Picarro admin.
 		loginPage.open();
@@ -91,7 +91,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC459 
+	 * Test Case ID: TC459_EditLocation_CustUA 
 	 * Test Description: Edit existing location Test
 	 * Script: - On Home Page, click Administration -> Manage Locations 
 	 * - Click Edit link 
@@ -103,12 +103,12 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	 * Future Improvement:
 	 */
 	@Test
-	public void TC459() {
+	public void TC459_EditLocation_CustUA() {
 		String locationName = testSetup.getRandomNumber() + "TC459";
 		String locationNameNew = testSetup.getRandomNumber() + "TC459" + "_New";
 		String cityName = "Santa Clara";
 
-		System.out.println("\nRunning - TC459 - Test Description: Edit existing location\n");
+		System.out.println("\nRunning - TC459_EditLocation_CustUA - Test Description: Edit existing location\n");
 
 		// Add Location as Picarro admin.
 		loginPage.open();
@@ -127,7 +127,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC461 
+	 * Test Case ID: TC461_EditLocBlankRequiredFields_CustUA 
 	 * Test Description: edit location- blank required fields 
 	 * Test Script: - On Home Page, click Administration -> Manage Locations 
 	 * - Click on Edit link 
@@ -138,11 +138,11 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	 * Future Improvement: deal with the tooltip text
 	 */
 	@Test
-	public void TC461() {
+	public void TC461_EditLocBlankRequiredFields_CustUA() {
 		String locationName = testSetup.getRandomNumber() + "TC461";
 		String cityName = "Santa Clara";
 
-		System.out.println("\nRunning - TC461 - Test Description: edit location- blank required fields\n");
+		System.out.println("\nRunning - TC461_EditLocBlankRequiredFields_CustUA - Test Description: edit location- blank required fields\n");
 
 		// Add Location as Picarro admin.
 		loginPage.open();
@@ -160,7 +160,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC462
+	 * Test Case ID: TC462_EditLoc50CharLimit_CustUA
 	 * Test Description: More than 50 characters not allowed in Location Description field 
 	 * Test Script: 
 	 * - On Home Page, and click Administration -> Manage Locations 
@@ -172,7 +172,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	 * Current Issue: Future Improvement:
 	 */
 	@Test
-	public void TC462() {
+	public void TC462_EditLoc50CharLimit_CustUA() {
 		String str34chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcd";
 		String str35chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcde";
 		String cityName = "Santa Clara";
@@ -181,7 +181,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		String locationName51Chars = testSetup.getFixedSizeRandomNumber(11) + "TC462" + str35chars;
 
 		System.out.println(
-				"\nRunning - TC462 - Test Description: More than 50 characters not allowed in Location Description field\n");
+				"\nRunning - TC462_EditLoc50CharLimit_CustUA - Test Description: More than 50 characters not allowed in Location Description field\n");
 
 		// Add Location as Picarro admin.
 		loginPage.open();
@@ -204,7 +204,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC466 
+	 * Test Case ID: TC466_VerifyCancelButtonAllScreens_CustAdmin 
 	 * Test Description: Verify Cancel button for all customer admin screens 
 	 * Test Script: - Click on Cancel button present on all administrator screen 
 	 * Expected Results: - User action is Canceled and existing data persists 
@@ -213,11 +213,11 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	 * Future Improvement:
 	 */
 	@Test
-	public void TC466() {
+	public void TC466_VerifyCancelButtonAllScreens_CustAdmin() {
 		String curURL;
 
 		System.out.println(
-				"\nRunning - TC466 - Test Description: Verify Cancel button for all customer admin screens\n");
+				"\nRunning - TC466_VerifyCancelButtonAllScreens_CustAdmin - Test Description: Verify Cancel button for all customer admin screens\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);

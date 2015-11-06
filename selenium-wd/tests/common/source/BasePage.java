@@ -90,7 +90,7 @@ public class BasePage {
 	@FindBy(how = How.XPATH, using = "//li[@id='picarro-administration-manage-ref-gas-bottles']/a")
 	private WebElement linkManageRefGasBottles;
 	
-	@FindBy(how = How.XPATH, using = "//li[@id='picarro-administration-manage-release-notes']/a")
+	@FindBy(how = How.XPATH, using = "//li[@id='user-release-notes']/a")
 	private WebElement linkManageReleaseNotes;
 	
 	@FindBy(how = How.XPATH, using = "//li[@id='picarro-administration-manage-surveyor-history']/a")

@@ -31,7 +31,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC463
+	 * Test Case ID: TC463_AddRefGasBottle_CustUA
 	 * Test Description: Add Reference Gas Bottles
 	 * Test Script: - On Home Page, click Administration -> Manage Reference Gas Bottles -> Add New Reference Gas Bottle
 					- Provide required details and click OK
@@ -41,11 +41,11 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
      * Future Improvement:
 	 */	
 	@Test
-	public void TC463() {
+	public void TC463_AddRefGasBottle_CustUA() {
 		String lotNum = testSetup.getRandomNumber() + "_TC463";
 		String isoValue = "-32";
 		
-		System.out.println("\nRunning TC463 - Test Description: Add Reference Gas Bottles");
+		System.out.println("\nRunning TC463_AddRefGasBottle_CustUA - Test Description: Add Reference Gas Bottles");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -56,7 +56,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	}
 	
 	/**
-	 * Test Case ID: TC464
+	 * Test Case ID: TC464_AddRefGasBottleBlankRequiredFields_CustUA
 	 * Test Description: add reference gas bottle - blank required fields
 	 * Test Script: - On Home Page, click Administration -> Manage Reference Gas Bottles -> Add New Reference Gas Bottle
 					- Keep required fields blank. Click OK
@@ -66,11 +66,12 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
      * Future Improvement: deal with the tooltip text
 	 */	
 	//@Test			// Commented For Now: Add Library classes for detecting script based validation. 
-	public void TC464() {
+	public void TC464_AddRefGasBottleBlankRequiredFields_CustUA() {
 		String lotNum = testSetup.getRandomNumber() + "_TC464";
 		String isoValue = "-32";
 		
-		System.out.println("\nRunning TC464 - Test Description: add reference gas bottle - blank required fields");
+		System.out.println("\nRunning TC464_AddRefGasBottleBlankRequiredFields_CustUA - Test Description: add reference gas bottle - "
+				+ "blank required fields");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -80,7 +81,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	}
 	
 	/**
-	 * Test Case ID: TC465
+	 * Test Case ID: TC465_AddRefGasBottleLotNumber50CharLimit_CustUA
 	 * Test Description:  	More than 50 characters not allowed in Lot Number field present on Add Reference Gas Bottle screens
 	 * Test Script: - On Home Page, click Administration -> Manage Reference Gas Bottles -> Add New Reference Gas Bottle
 	 * Expected Results: User cannot enter more than ... characters and message having limit of characters displayed
@@ -89,7 +90,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
      * Future Improvement:
 	 */	
 	@Test
-	public void TC465() {
+	public void TC465_AddRefGasBottleLotNumber50CharLimit_CustUA() {
 		String str34chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcd";
 		String str35chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcde";
 		
@@ -98,7 +99,8 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		
 		String isoValue = "-32";
 		
-		System.out.println("\nRunning TC465 - Test Description: More than 50 characters not allowed in Lot Number field present on Add Reference Gas Bottle screens");
+		System.out.println("\nRunning TC465_AddRefGasBottleLotNumber50CharLimit_CustUA - Test Description: More than 50 characters not allowed "
+				+ "in Lot Number field present on Add Reference Gas Bottle screens");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);

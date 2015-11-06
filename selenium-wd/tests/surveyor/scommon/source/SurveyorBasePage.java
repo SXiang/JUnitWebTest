@@ -40,7 +40,7 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement linkCusAdmin;
 	protected String strLinkCusAdminXPath = "//*[@id='customer-administration-menu']/a";	
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_length']/label/select")
+	@FindBy(name = "datatable_length")
 	protected WebElement paginationInput;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_filter']/label/input")
