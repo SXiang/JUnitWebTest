@@ -358,12 +358,14 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		
 		manageSurveyorHistoriesPage.waitForPageToLoad();
 
+		/* Commenting, while change is being deployed to P3SQA.
 		homePage.clickOnManageReleaseNotesLink();
 		assertTrue(manageReleaseNotesPage.isLinkBroken());
 		manageReleaseNotesPage.clickOnAddNewReleaseNoteBtn();
 		assertTrue(manageReleaseNotesPage.isLinkBroken());
 		manageReleaseNotesPage.clickOnCancelBtn();
-
+		*/
+		
 		homePage.clickOnViewAnalyzerLogsLink(baseURL);
 		assertTrue(homePage.isLinkBroken());
 
