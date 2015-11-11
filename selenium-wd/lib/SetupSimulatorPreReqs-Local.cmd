@@ -1,0 +1,2 @@
+Powershell -command "& {Set-ExecutionPolicy remotesigned -Force;C:\Repositories\surveyor-qa\selenium-wd\lib\SetupSimulatorPreReqs.ps1 -isRunningLocally:$true -overwritePicarroAnalyzer:$false; exit;}"
+exit
