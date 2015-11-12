@@ -2,6 +2,8 @@ package surveyor.scommon.source;
 
 import java.util.Map;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -13,9 +15,48 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.WebElement;
 
 public class DriverViewPage extends SurveyorBasePage {
+	private static final String VIRTUALEARTH_NET_BRANDING_LOGO = "https://dev.virtualearth.net/Branding/logo_powered_by.png";
+	private static final String IMG_DATA_DATA_0 = "return imgData.data[0];";
+	private static final String IMG_DATA_DATA_1 = "return imgData.data[1];";
+	private static final String IMG_DATA_DATA_2 = "return imgData.data[2];";
+	private static final String[] GreenRGBPixels = new String[] {"21", "255", "0"};
+	private static final String[] RedRGBPixels = new String[] {"255", "2", "0"};
+
+	public static final String STATUS_PRESSURE_CANVAS_CTX = "test_ctx = $(\"#status_pressure_canvas\")[0].getContext('2d');";
+	public static final String STATUS_WARM_CANVAS_CTX = "test_ctx = $(\"#status_warm_canvas\")[0].getContext('2d');";
+	public static final String STATUS_TEMP_CANVAS_CTX = "test_ctx = $(\"#status_temp_canvas\")[0].getContext('2d');";
+	public static final String STATUS_FLOW_CANVAS_CTX = "test_ctx = $(\"#status_flow_canvas\")[0].getContext('2d');";
+	public static final String STATUS_GPS_CANVAS_CTX = "test_ctx = $(\"#status_gps_canvas\")[0].getContext('2d');";
+	public static final String STATUS_ANEMOMETER_CANVAS_CTX = "test_ctx = $(\"#status_anemometer_canvas\")[0].getContext('2d');";
+	private static final String CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA = "centerX = 40;centerY = 40;fontY = 12;paddingY = 5;rectWidth = 1;rectHeight = 1;var imgData=test_ctx.getImageData(centerX,centerY-fontY-paddingY,rectWidth,rectHeight);";
+
 	public static final String STRURLPath = "/Live/Driver?address=https%3A%2F%2Flocalhost&port=5600&serialNumber=" + TestSetup.TEST_ANALYZER_SERIAL_NUMBER;
 	public static final String STRPageTitle = "Live";
 	public static final String STRPageContentText = "Map View";	
+
+	public enum SurveyTime {
+		Day,
+		Night
+	}
+
+	public enum SolarRadiation {
+		Overcast,
+		Moderate,
+		Strong
+	}
+	
+	public enum Wind {
+		Calm,
+		Light,
+		Strong
+	}
+
+	public enum SurveyType {
+		Standard,
+		RapidResponse,
+		Operator,
+		Manual
+	}
 
 	public enum DisplaySwitchType {
 		EightHourHistory,
@@ -27,12 +68,12 @@ public class DriverViewPage extends SurveyorBasePage {
 		Lisas,
 		FOVs
 	}
-	
+
 	public enum MapSwitchType {
 		Satellite,
 		Map
 	}
-	
+
 	public enum GisSwitchType {
 		MaterialTypeCopper,
 		MaterialTypeUnprotectedSteel,
@@ -48,6 +89,52 @@ public class DriverViewPage extends SurveyorBasePage {
 	
 	private Map<String, String> data;
     private int timeout = 15;
+
+    /*
+	@FindBy(id = "tag")
+	@CacheLookup
+	private WebElement labelTag;
+	
+	@FindBy(id = "surveyMode")
+	@CacheLookup
+	private WebElement labelSurveyMode;
+	
+	@FindBy(id = "headerInfoStatus")
+	@CacheLookup
+	private WebElement labelSurveyStatus;
+	
+	@FindBy(id = "driver")
+	@CacheLookup
+	private WebElement labelDriver;
+	
+	@FindBy(id = "stabilityClass")
+	@CacheLookup
+	private WebElement labelStabilityClass;
+	
+	@FindBy(id = "timeElapsed")
+	@CacheLookup
+	private WebElement labelTimeElapsed;
+	
+	@FindBy(id = "timeRemaining")
+	@CacheLookup
+	private WebElement labelTimeRemaining;
+	
+	@FindBy(id = "surveyorAnalyzer")
+	@CacheLookup
+	private WebElement labelSurveyor;
+	
+	@FindBy(id = "zoomLevel")
+	@CacheLookup
+	private WebElement labelZoomLevel;
+    */
+    
+    @FindBy(id = "header_info_box_upper_left")
+    @CacheLookup
+    private WebElement divHeaderInfoBox;
+    
+    @FindBy(id = "no_analyzer")
+    @CacheLookup
+    private WebElement divNoAnalyzer;
 
     @FindBy(id = "bottom_button_mode")
     @CacheLookup
@@ -77,10 +164,30 @@ public class DriverViewPage extends SurveyorBasePage {
     @CacheLookup
     private WebElement statusButton;
 
+    @FindBy(id = "mode_start_survey")
+    @CacheLookup
+    private WebElement startSurveyButton;
+
+    @FindBy(id = "mode_start_eq_survey")
+    @CacheLookup
+    private WebElement startEQSurveyButton;
+    
     @FindBy(id = "mode_shutdown_analyzer")
     @CacheLookup
     private WebElement systemShutdownButton;
-    
+
+    @FindBy(id = "mode_stop_survey")
+    @CacheLookup
+    private WebElement stopSurveyButton;
+
+    @FindBy(id = "mode_start_isotopic_capture")
+    @CacheLookup
+    private WebElement startIsotopicCaptureButton;
+
+    @FindBy(id = "mode_start_reference")
+    @CacheLookup
+    private WebElement refBottleMeasButton;
+
     @FindBy(id = "display_switch_8hour_history")
     @CacheLookup
     private WebElement displaySwitch8HourHistory;
@@ -255,7 +362,7 @@ public class DriverViewPage extends SurveyorBasePage {
 
     @FindBy(id = "survey_modal_tag")
     @CacheLookup
-    private WebElement xTagSurveyTimeDayNight;
+    private WebElement tagSurvey;
 
 	/**
 	 * @param driver
@@ -312,17 +419,98 @@ public class DriverViewPage extends SurveyorBasePage {
 		this.positionButton.click();
 		return this;
 	}
+	
+	public DriverViewPage clickHeaderInfoBox() {
+		this.divHeaderInfoBox.click();
+		return this;
+	}
 
 	public boolean isPositionButtonSelected() {
 		return this.positionButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon on");
 	}
-		
+
+	public WebElement getStartSurveyButton() {
+		return this.startSurveyButton;
+	}
+
+	public boolean isStartSurveyButtonEnabled() {
+		return this.startSurveyButton.getAttribute("class").equalsIgnoreCase("trigger_button on");
+	}
+
+	public WebElement getStartEQSurveyButton() {
+		return this.startEQSurveyButton;
+	}
+
+	public boolean isStartEQSurveyButtonEnabled() {
+		return this.startEQSurveyButton.getAttribute("class").equalsIgnoreCase("trigger_button on");
+	}
+
 	public WebElement getSystemShutdownButton() {
 		return this.systemShutdownButton;
 	}
 
 	public boolean isSystemShutdownButtonEnabled() {
 		return this.systemShutdownButton.getAttribute("class").equalsIgnoreCase("trigger_button on");
+	}
+
+	public WebElement getStopDrivingSurveyButton() {
+		return this.stopSurveyButton;
+	}
+
+	public boolean isStopDrivingSurveyButtonEnabled() {
+		return this.stopSurveyButton.getAttribute("class").equalsIgnoreCase("trigger_button on");
+	}
+
+	public WebElement getStartIsotopicCaptureButton() {
+		return this.startIsotopicCaptureButton;
+	}
+
+	public boolean isStartIsotopicCaptureButtonEnabled() {
+		return this.startIsotopicCaptureButton.getAttribute("class").equalsIgnoreCase("trigger_button on");
+	}
+
+	public WebElement getRefBottleMeasButton() {
+		return this.refBottleMeasButton;
+	}
+
+	public boolean isRefBottleMeasButtonEnabled() {
+		return this.refBottleMeasButton.getAttribute("class").equalsIgnoreCase("trigger_button on");
+	}
+
+	public String getTagLabelText() {
+		return driver.findElement(By.id("tag")).getText();
+	}
+
+	public String getSurveyModeLabelText() {
+		return driver.findElement(By.id("surveyMode")).getText();
+	}
+	
+	public String getSurveyStatusLabelText() {
+		return driver.findElement(By.id("headerInfoStatus")).getText();
+	}
+	
+	public String getDriverLabelText() {
+		return driver.findElement(By.id("driver")).getText();
+	}
+	
+	public String getStabilityClassLabelText() {
+		return driver.findElement(By.id("stabilityClass")).getText();
+	}
+	
+	public String getTimeElapsedLabelText() {
+		return driver.findElement(By.id("timeElapsed")).getText();
+	}
+	
+	public String getTimeRemainingLabelText() {
+		return driver.findElement(By.id("timeRemaining")).getText();
+	}
+	
+	public String getSurveyorLabelText() {
+		return driver.findElement(By.id("surveyorAnalyzer")).getText();
+	}
+	
+	public String getZoomLevelLabelText() {
+		return driver.findElement(By.id("zoomLevel")).getText();
 	}
 
 	public boolean isGisSwitchOn(GisSwitchType switchType) throws IllegalArgumentException {
@@ -407,6 +595,67 @@ public class DriverViewPage extends SurveyorBasePage {
 		}
 		
 		return isSelected;
+	}
+
+	public void toggleMapSwitch(MapSwitchType switchType, boolean turnOn) {
+		switch (switchType)
+		{
+			case Satellite:
+				if (this.mapSwitchSatellite.getAttribute("class").equalsIgnoreCase("switch radio_switch")) {
+					if (turnOn) {
+						this.mapSwitchSatellite.click();
+					}
+				} else if (this.mapSwitchSatellite.getAttribute("class").equalsIgnoreCase("switch radio_switch on")) {
+					if (!turnOn) {
+						this.mapSwitchSatellite.click();
+					}
+				}	
+				break;
+			case Map:
+				if (this.mapSwitchMap.getAttribute("class").equalsIgnoreCase("switch radio_switch")) {
+					if (turnOn) {
+						this.mapSwitchMap.click();
+					}
+				} else if (this.mapSwitchMap.getAttribute("class").equalsIgnoreCase("switch radio_switch on")) {
+					if (!turnOn) {
+						this.mapSwitchMap.click();
+					}
+				}
+				break;
+			default:
+				throw new IllegalArgumentException("Map switch type unknown and not currently handled.");
+		}
+	}
+
+	public boolean verifyLoadedMap(MapSwitchType switchType) {
+		
+		// Check map logo to ensure BingMap is getting loaded.
+		Object mapLogo = ((JavascriptExecutor)driver).executeScript("src = mapLayer.getSource();return src.getLogo();");
+		if (!mapLogo.toString().equalsIgnoreCase(VIRTUALEARTH_NET_BRANDING_LOGO)) {
+			return false;
+		}
+		
+		// Checks the number of attributions returned to ensure correct map is loaded.
+		// Satellite map has 29 attributions. Map map has 7 attributions.
+		Object attributionsLength = ((JavascriptExecutor)driver).executeScript("src = mapLayer.getSource();return src.getAttributions().length;");
+		
+		switch (switchType)
+		{
+			case Satellite:
+				if (attributionsLength.toString() != "29") {
+					return false;
+				}	
+				break;
+			case Map:
+				if (attributionsLength.toString() != "7") {
+					return false;
+				}
+				break;
+			default:
+				throw new IllegalArgumentException("Map switch type unknown and not currently handled.");
+		}
+		
+		return true;
 	}
 
 	public boolean isMapSwitchOn(MapSwitchType switchType) throws IllegalArgumentException {
@@ -524,6 +773,90 @@ public class DriverViewPage extends SurveyorBasePage {
 
 	public boolean isPositionButtonGreen() {
 		return this.positionButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon on");
+	}
+
+	public boolean isPressureButtonRed() {
+		Object pixelRed = ((JavascriptExecutor)driver).executeScript(STATUS_PRESSURE_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
+		Object pixelGreen = ((JavascriptExecutor)driver).executeScript(STATUS_PRESSURE_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
+		Object pixelBlue = ((JavascriptExecutor)driver).executeScript(STATUS_PRESSURE_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
+		return pixelRed.toString().equals(RedRGBPixels[0]) && pixelGreen.toString().equals(RedRGBPixels[1]) && pixelBlue.toString().equals(RedRGBPixels[2]);
+	}
+
+	public boolean isPressureButtonGreen() {
+		Object pixelRed = ((JavascriptExecutor)driver).executeScript(STATUS_PRESSURE_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
+		Object pixelGreen = ((JavascriptExecutor)driver).executeScript(STATUS_PRESSURE_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
+		Object pixelBlue = ((JavascriptExecutor)driver).executeScript(STATUS_PRESSURE_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
+		return pixelRed.toString().equals(GreenRGBPixels[0]) && pixelGreen.toString().equals(GreenRGBPixels[1]) && pixelBlue.toString().equals(GreenRGBPixels[2]);
+	}
+
+	public boolean isHBTempButtonRed() {
+		Object pixelRed = ((JavascriptExecutor)driver).executeScript(STATUS_WARM_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
+		Object pixelGreen = ((JavascriptExecutor)driver).executeScript(STATUS_WARM_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
+		Object pixelBlue = ((JavascriptExecutor)driver).executeScript(STATUS_WARM_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
+		return pixelRed.toString().equals(RedRGBPixels[0]) && pixelGreen.toString().equals(RedRGBPixels[1]) && pixelBlue.toString().equals(RedRGBPixels[2]);
+	}
+
+	public boolean isHBTempButtonGreen() {
+		Object pixelRed = ((JavascriptExecutor)driver).executeScript(STATUS_WARM_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
+		Object pixelGreen = ((JavascriptExecutor)driver).executeScript(STATUS_WARM_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
+		Object pixelBlue = ((JavascriptExecutor)driver).executeScript(STATUS_WARM_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
+		return pixelRed.toString().equals(GreenRGBPixels[0]) && pixelGreen.toString().equals(GreenRGBPixels[1]) && pixelBlue.toString().equals(GreenRGBPixels[2]);
+	}
+
+	public boolean isWBTempButtonRed() {
+		Object pixelRed = ((JavascriptExecutor)driver).executeScript(STATUS_TEMP_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
+		Object pixelGreen = ((JavascriptExecutor)driver).executeScript(STATUS_TEMP_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
+		Object pixelBlue = ((JavascriptExecutor)driver).executeScript(STATUS_TEMP_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
+		return pixelRed.toString().equals(RedRGBPixels[0]) && pixelGreen.toString().equals(RedRGBPixels[1]) && pixelBlue.toString().equals(RedRGBPixels[2]);
+	}
+
+	public boolean isWBTempButtonGreen() {
+		Object pixelRed = ((JavascriptExecutor)driver).executeScript(STATUS_TEMP_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
+		Object pixelGreen = ((JavascriptExecutor)driver).executeScript(STATUS_TEMP_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
+		Object pixelBlue = ((JavascriptExecutor)driver).executeScript(STATUS_TEMP_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
+		return pixelRed.toString().equals(GreenRGBPixels[0]) && pixelGreen.toString().equals(GreenRGBPixels[1]) && pixelBlue.toString().equals(GreenRGBPixels[2]);
+	}
+
+	public boolean isFlowButtonRed() {
+		Object pixelRed = ((JavascriptExecutor)driver).executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
+		Object pixelGreen = ((JavascriptExecutor)driver).executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
+		Object pixelBlue = ((JavascriptExecutor)driver).executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
+		return pixelRed.toString().equals(RedRGBPixels[0]) && pixelGreen.toString().equals(RedRGBPixels[1]) && pixelBlue.toString().equals(RedRGBPixels[2]);
+	}
+
+	public boolean isFlowButtonGreen() {
+		Object pixelRed = ((JavascriptExecutor)driver).executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
+		Object pixelGreen = ((JavascriptExecutor)driver).executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
+		Object pixelBlue = ((JavascriptExecutor)driver).executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
+		return pixelRed.toString().equals(GreenRGBPixels[0]) && pixelGreen.toString().equals(GreenRGBPixels[1]) && pixelBlue.toString().equals(GreenRGBPixels[2]);
+	}
+
+	public boolean isGPSButtonRed() {
+		Object pixelRed = ((JavascriptExecutor)driver).executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
+		Object pixelGreen = ((JavascriptExecutor)driver).executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
+		Object pixelBlue = ((JavascriptExecutor)driver).executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
+		return pixelRed.toString().equals(RedRGBPixels[0]) && pixelGreen.toString().equals(RedRGBPixels[1]) && pixelBlue.toString().equals(RedRGBPixels[2]);
+	}
+
+	public boolean isGPSButtonGreen() {
+		Object pixelRed = ((JavascriptExecutor)driver).executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
+		Object pixelGreen = ((JavascriptExecutor)driver).executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
+		Object pixelBlue = ((JavascriptExecutor)driver).executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
+		return pixelRed.toString().equals(GreenRGBPixels[0]) && pixelGreen.toString().equals(GreenRGBPixels[1]) && pixelBlue.toString().equals(GreenRGBPixels[2]);
+	}
+
+	public boolean isAnemometerButtonRed() {
+		Object pixelRed = ((JavascriptExecutor)driver).executeScript(STATUS_ANEMOMETER_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
+		Object pixelGreen = ((JavascriptExecutor)driver).executeScript(STATUS_ANEMOMETER_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
+		Object pixelBlue = ((JavascriptExecutor)driver).executeScript(STATUS_ANEMOMETER_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
+		return pixelRed.toString().equals(RedRGBPixels[0]) && pixelGreen.toString().equals(RedRGBPixels[1]) && pixelBlue.toString().equals(RedRGBPixels[2]);
+	}
+
+	public boolean isAnemometerButtonGreen() {
+		Object pixelRed = ((JavascriptExecutor)driver).executeScript(STATUS_ANEMOMETER_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
+		Object pixelGreen = ((JavascriptExecutor)driver).executeScript(STATUS_ANEMOMETER_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
+		Object pixelBlue = ((JavascriptExecutor)driver).executeScript(STATUS_ANEMOMETER_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
+		return pixelRed.toString().equals(GreenRGBPixels[0]) && pixelGreen.toString().equals(GreenRGBPixels[1]) && pixelBlue.toString().equals(GreenRGBPixels[2]);
 	}
 
 	public DriverViewPage clickCurtainButton() {
@@ -724,15 +1057,26 @@ public class DriverViewPage extends SurveyorBasePage {
     }
 
     /**
-     * Click on Start Survey Button.
+     * Click on Start Survey Button inside the Survey modal dialog.
      *
      * @return the DriverViewPage class instance.
      */
-    public DriverViewPage clickStartSurveyButton() {
+    public DriverViewPage clickStartSurvey() {
         startSurvey.click();
         return this;
     }
 
+    /**
+     * Click on Start Survey Button in the Driver view page to open the modal Start Survey dialog.
+     *
+     * @return the DriverViewPage class instance.
+     */
+    public DriverViewPage clickStartSurveyButton() {
+        this.startSurveyButton.click();
+        return this;
+    }
+
+    
     /**
      * Click on Strong Button.
      *
@@ -783,53 +1127,96 @@ public class DriverViewPage extends SurveyorBasePage {
     }
 
     /**
-     * Set default value to X 50 Chars Remaining Save Cancel Delete Textarea field.
+     * Set default value to tag field.
      *
      * @return the DriverViewPage class instance.
      */
-    public DriverViewPage setX50CharsRemainingSaveCancelTextareaField() {
-        return setX50CharsRemainingSaveCancelTextareaField(data.get("X_50_CHARS__REMAINING_SAVE_CANCEL"));
+    public DriverViewPage setTagSurveyTextField() {
+        return setTagSurveyTextField(data.get("TAG_SURVEY"));
     }
 
     /**
-     * Set value to X 50 Chars Remaining Save Cancel Delete Textarea field.
+     * Set value to Tag field.
      *
      * @return the DriverViewPage class instance.
      */
-    public DriverViewPage setX50CharsRemainingSaveCancelTextareaField(String x50CharsRemainingSaveCancelValue) {
-        x50CharsRemainingSaveCancel.sendKeys(x50CharsRemainingSaveCancelValue);
+    public DriverViewPage setTagSurveyTextField(String tag) {
+        tagSurvey.sendKeys(tag);
         return this;
     }
 
     /**
-     * Set default value to X Tag Survey Time Day Night Solar Radiation Overcast Moderate Strong Cloud Cover 50 50 Wind Calm Light Strong Survey Type Standard Rapid Response Operator Manual Min Amp Start Survey Text field.
+     * Starts a survey with the specified values.
      *
      * @return the DriverViewPage class instance.
      */
-    public DriverViewPage setXTagSurveyTimeDayNightTextField() {
-        return setXTagSurveyTimeDayNightTextField(data.get("X_TAG_SURVEY_TIME_DAY_NIGHT"));
+    public DriverViewPage startDrivingSurvey(String tag, SurveyTime surveyTime, SolarRadiation solarRadiation, Wind wind, SurveyType surveyType) {
+    	this.clickStartSurveyButton();
+    	this.waitForPageToLoad();
+    	
+    	this.setTagSurveyTextField(tag);
+    	switch (surveyTime) {
+	    	case Day:
+	    		this.clickDayButton();
+	    		break;
+			case Night:
+				this.clickNightButton();
+				break;
+			default:
+				break;
+    	}
+    	
+    	switch (solarRadiation) {
+			case Moderate:
+				this.clickModerateButton();
+				break;
+			case Overcast:
+				this.clickOvercastButton();
+				break;
+			case Strong:
+				this.clickStrong1Button();
+				break;
+			default:
+				break;	    	
+    	}
+    	
+    	switch (wind) {
+			case Calm:
+				this.clickCalmButton();
+				break;
+			case Light:
+				this.clickLightButton();
+				break;
+			case Strong:
+				this.clickStrong2Button();
+				break;
+			default:
+				break;    	
+    	}
+    	
+    	switch (surveyType) {
+			case Manual:
+				this.clickManualButton();
+				break;
+			case Operator:
+				this.clickOperatorButton();
+				break;
+			case RapidResponse:
+				this.clickRapidResponseButton();
+				break;
+			case Standard:
+				this.clickStandardButton();
+				break;
+			default:
+				break;
+    	}
+    	
+    	this.clickStartSurvey();
+    	this.waitForPageToLoad();
+    	
+    	return this;
     }
-
-    /**
-     * Set value to X Tag Survey Time Day Night Solar Radiation Overcast Moderate Strong Cloud Cover 50 50 Wind Calm Light Strong Survey Type Standard Rapid Response Operator Manual Min Amp Start Survey Text field.
-     *
-     * @return the DriverViewPage class instance.
-     */
-    public DriverViewPage setXTagSurveyTimeDayNightTextField(String xTagSurveyTimeDayNightValue) {
-        xTagSurveyTimeDayNight.sendKeys(xTagSurveyTimeDayNightValue);
-        return this;
-    }
-
-    /**
-     * Submit the form to target page.
-     *
-     * @return the DriverViewPage class instance.
-     */
-    public DriverViewPage submit() {
-        clickSaveButton();
-        return this;
-    }
-
+    
     /**
      * Verify that current page URL matches the expected URL.
      *
@@ -846,13 +1233,22 @@ public class DriverViewPage extends SurveyorBasePage {
 
     /**
      * Verify that the page loaded completely.
-     *
-     * @return the DriverViewPage class instance.
      */
     public void waitForPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getPageSource().contains(STRPageContentText);
+            }
+        });
+    }
+    
+    /**
+     * Verifies that the page is done Connecting and Connecting element is hidden.
+     */
+    public void waitForConnectionComplete() {
+        (new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return divNoAnalyzer.getAttribute("class").equalsIgnoreCase("cssFade ng-hide");
             }
         });
     }

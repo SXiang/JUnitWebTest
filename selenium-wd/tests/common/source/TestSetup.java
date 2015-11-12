@@ -219,10 +219,10 @@ public class TestSetup {
 	
 	public static void startAnalyzer() throws IOException {
 		// Kill any existing instance of Analyzer if running.
-		ProcessUtility.killProcess("Picarro.Surveyor.Analyzer.exe", /*killChildProcesses*/ true);
+		stopAnalyzer();
 		
 		// Start the Analyzer process.
-		analyzerProcess = ProcessUtility.executeProcess(ANALYZER_EXE_PATH, /*isShellCommand*/ true, /*waitForExit*/ false);	
+		analyzerProcess = ProcessUtility.executeProcess(ANALYZER_EXE_PATH, /*isShellCommand*/ false, /*waitForExit*/ false);	
 	}
 
 	public static void replayDB3Script(String defnFileName, String db3FileName) {
@@ -272,6 +272,7 @@ public class TestSetup {
 
 	public static void stopAnalyzer() {
 		ProcessUtility.killProcess("Picarro.Surveyor.Analyzer.exe", /*killChildProcesses*/ true);
+		ProcessUtility.killProcess("Supervisor.exe", /*killChildProcesses*/ true);
 	}
 
 	public void startReplay(String defnFileName) throws InstantiationException, IllegalAccessException, IOException {

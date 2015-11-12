@@ -15,7 +15,6 @@ public class ProcessUtility {
 				execCommand = "cmd.exe /C " + command;
 			}
 			
-			
 			process = Runtime.getRuntime().exec(execCommand);
 			Thread.sleep(1000); // TEST
 			
