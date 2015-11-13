@@ -143,21 +143,20 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		this.waitForPageLoad();
 	}
 	
-	//temporary solution for now and should be improved with a better approach 
 	public String addTestUser(String email, String password1, String password2) {
 		String rtnMsg = "";
 		waitForPageToLoad();
 		this.btnAddNewCustomerUser.click();
-		
 		waitForPageToLoad();
+		
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
 		this.inputPassword.sendKeys(password1);
 		this.inputPasswordConfirm.sendKeys(password2);
 		
 		this.btnOk.click();
-		
 		waitForPageToLoad();
+		
 		if (isElementPresent(this.labelUserNameErrorXPath)) {
 			rtnMsg = this.labelUserNameError.getText().trim();
 			this.cancelAddBtn.click();
@@ -184,8 +183,6 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 				this.cancelAddBtn.click();
 			}
 		}
-		
-		this.waitForPageLoad();
 		
 		return rtnMsg;
 	}	

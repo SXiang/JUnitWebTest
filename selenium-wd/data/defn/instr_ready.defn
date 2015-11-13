@@ -1,0 +1,123 @@
+node gps_generator target=jukebox.play_records 
+     out=gps_out
+     args='[{
+     "_obj_type"    : "gps",
+     "EPOCH_TIME"   : 1423167410.517,
+     "GPS_TIME"     : 72997.5,
+     "GPS_ABS_LAT"  : 37.396987,
+     "GPS_ABS_LONG" : -121.984237666667,
+     "GPS_FIT"      : 2
+     },
+     {
+     "_obj_type"    : "gps",
+     "EPOCH_TIME"   : 1423167410.617,
+     "GPS_TIME"     : 72997.6,
+     "GPS_ABS_LAT"  : 37.396987,	
+     "GPS_ABS_LONG" : -121.984237666667,
+     "GPS_FIT"      : 2
+     }]', True
+
+node wind_generator target=jukebox.play_records 
+     out=wind_out
+     args='[{
+     "_obj_type": "anemometer",
+     "EPOCH_TIME": 1423167410.517,
+     "WS_WIND_LAT": -0.67,
+     "WS_WIND_LON": 0.33,
+     "WS_STATUS": 0.0
+     },
+     {
+     "_obj_type": "anemometer",
+     "EPOCH_TIME": 1423167410.617,
+     "WS_WIND_LAT": -0.67,
+     "WS_WIND_LON": 0.33,
+     "WS_STATUS": 0.0
+     }]', True
+
+node meas_generator target=jukebox.play_records 
+     out=meas_out
+     args='[{
+     "_obj_type"	: "measurement",
+     "CAR_VEL_E"	: "NaN",
+     "CAR_VEL_N"	: "NaN",
+     "CH4"		: 2.2,
+     "CO2"		: "NaN",
+     "Delta_iCH4_Raw"   : "NaN",
+     "EPOCH_TIME"	: 1423167410.517,
+     "GPS_FIT"		: 2,
+     "GPS_ABS_LAT"	: "37.3917479",
+     "GPS_ABS_LONG"	: "-121.9871106",
+     "H2O"		: "NaN",
+     "species"		: 25,
+     "ValveMask"	: 16,
+     "WIND_DIR_SDEV"	: "NaN",
+     "WIND_N"		: "NaN",
+     "WIND_E"		: "NaN",
+     "WS_WIND_LAT"	: "NaN",
+     "WS_WIND_LON"	: "NaN",
+     "CavityPressure"   : 147,
+     "CavityTemp"	: 45,
+     "DasTemp"		: 45,
+     "MOBILE_FLOW"	: 4,
+     "PeripheralStatus" : 0, 
+     "AnalyzerStatus"   : 902182,
+     "WarmBoxTemp"	: 50},
+     {
+     "_obj_type"	: "measurement",
+     "CAR_VEL_E"	: "NaN",
+     "CAR_VEL_N"	: "NaN",
+     "CH4"		: 2.2,
+     "CO2"		: "NaN",
+     "Delta_iCH4_Raw"   : "NaN",
+     "EPOCH_TIME"	: 1423167410.617,
+     "GPS_FIT"		: 2,
+     "GPS_ABS_LAT"	: "37.3917479",
+     "GPS_ABS_LONG"	: "-121.9871106",
+     "H2O"		: "NaN",
+     "species"		: 25,
+     "ValveMask"	: 16,
+     "WIND_DIR_SDEV"	: "NaN",
+     "WIND_N"		: "NaN",
+     "WIND_E"		: "NaN",
+     "WS_WIND_LAT"	: "NaN",
+     "WS_WIND_LON"	: "NaN",
+     "CavityPressure"   : 147,
+     "CavityTemp"	: 45,
+     "DasTemp"		: 45,
+     "MOBILE_FLOW"	: 4,
+     "PeripheralStatus" : 0, 
+     "AnalyzerStatus"   : 902182,
+     "WarmBoxTemp"	: 50}]',True
+     
+node merger target=stream_merger.stream_merger 
+     in=gps_out,wind_out,meas_out out=merge_out
+     
+node zmq_pub target=zmqsender.zmq_sender in=merge_out 
+     args=True
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

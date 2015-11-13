@@ -8,6 +8,7 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -183,11 +184,10 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC443_DuplicateUserCreationNotAllowed() {
-		String userName = SQACUS + testSetup.getRandomNumber() + "custadm006"
+		String userName = SQACUS + testSetup.getFixedSizePseudoRandomString(24) + "_TC443"
 				+ REGBASEUSERNAME;
 
-		System.out
-				.println("\nRunning - TC443 - Customer admin not allowed to create duplicate User\n");
+		System.out.println("\nRunning - TC443 - Customer admin not allowed to create duplicate User\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -199,7 +199,6 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		homePage.getLinkAdminManageUsers().click();
 
 		manageUsersAdminPage.addTestUser(userName, USERPASSWORD, USERPASSWORD);
-		assertTrue(manageUsersAdminPage.findExistingUser(userName));
 
 		manageUsersAdminPage.open();
 		assertTrue(manageUsersAdminPage.addTestUser(userName, USERPASSWORD,
