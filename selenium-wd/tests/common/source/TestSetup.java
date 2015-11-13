@@ -121,8 +121,10 @@ public class TestSetup {
 			this.computerName=InetAddress.getLocalHost().getHostAddress();
 			System.out.println("IP Address: " +computerName);
 			
+
 			String rootPath = getRootPath();
 			testPropFileName = getExecutionPath(rootPath) + "tests" + File.separator + "surveyor" + File.separator + "test.properties";
+
 			InputStream inputStream = new FileInputStream(testPropFileName);
 			testProp = new Properties();
 			testProp.load(inputStream);
@@ -152,10 +154,12 @@ public class TestSetup {
 			System.out.println("\nThe browser is: " + this.browser + "\n");
 
 			this.ieDriverPath = this.testProp.getProperty("ieDriverPath");
+
 			this.chromeDriverPath = getExecutionPath(rootPath) + "lib" + File.separator + "chromedriver.exe";
 			this.implicitlyWaitTimeOutInSeconds = this.testProp.getProperty("implicitlyWaitTimeOutInSeconds");
 			this.implicitlyWaitSpecialTimeOutInSeconds = this.testProp.getProperty("implicitlyWaitSpecialTimeOutInSeconds");
 			this.implicitlyWaitSpecialTimeOutInMS = this.testProp.getProperty("implicitlyWaitSpecialTimeOutInMS");
+
 			this.language = this.testProp.getProperty("language");
 
 			if (!isRunningLocally()) {
