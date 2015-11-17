@@ -401,7 +401,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		
 		manageUsersAdminPage.waitForPageLoad();
 		manageUsersAdminPage.getInputSearch().sendKeys(userName + userName);
-		manageUsersAdminPage.waitForPageLoad();
+		manageUsersAdminPage.waitForPageToLoad();
 
 		assertTrue(manageUsersAdminPage.getLabelNoMatchingSearch()
 				.equalsIgnoreCase(NOMATCHINGSEARCH));
