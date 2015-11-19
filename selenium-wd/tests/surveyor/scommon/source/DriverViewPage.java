@@ -90,47 +90,37 @@ public class DriverViewPage extends SurveyorBasePage {
 	private Map<String, String> data;
     private int timeout = 15;
 
-    /*
-	@FindBy(id = "tag")
-	@CacheLookup
-	private WebElement labelTag;
-	
-	@FindBy(id = "surveyMode")
-	@CacheLookup
-	private WebElement labelSurveyMode;
-	
-	@FindBy(id = "headerInfoStatus")
-	@CacheLookup
-	private WebElement labelSurveyStatus;
-	
-	@FindBy(id = "driver")
-	@CacheLookup
-	private WebElement labelDriver;
-	
-	@FindBy(id = "stabilityClass")
-	@CacheLookup
-	private WebElement labelStabilityClass;
-	
-	@FindBy(id = "timeElapsed")
-	@CacheLookup
-	private WebElement labelTimeElapsed;
-	
-	@FindBy(id = "timeRemaining")
-	@CacheLookup
-	private WebElement labelTimeRemaining;
-	
-	@FindBy(id = "surveyorAnalyzer")
-	@CacheLookup
-	private WebElement labelSurveyor;
-	
-	@FindBy(id = "zoomLevel")
-	@CacheLookup
-	private WebElement labelZoomLevel;
-    */
-    
     @FindBy(id = "header_info_box_upper_left")
     @CacheLookup
     private WebElement divHeaderInfoBox;
+
+    @FindBy(id = "bottom_button_exit")
+    @CacheLookup
+    private WebElement curtainReturnButton;
+
+    @FindBy(id = "bottom_button_arrow_up")
+    @CacheLookup
+    private WebElement curtainArrowUpButton;
+    
+    @FindBy(id = "bottom_button_arrow_down")
+    @CacheLookup
+    private WebElement curtainArrowDownButton;
+
+    @FindBy(id = "bottom_button_arrow_left")
+    @CacheLookup
+    private WebElement curtainArrowLeftButton;
+
+    @FindBy(id = "bottom_button_arrow_right")
+    @CacheLookup
+    private WebElement curtainArrowRightButton;
+
+    @FindBy(id = "bottom_button_zoom_in")
+    @CacheLookup
+    private WebElement curtainZoomInButton;
+    
+    @FindBy(id = "bottom_button_zoom_out")
+    @CacheLookup
+    private WebElement curtainZoomOutButton;
     
     @FindBy(id = "no_analyzer")
     @CacheLookup
@@ -374,7 +364,42 @@ public class DriverViewPage extends SurveyorBasePage {
 		
 		System.out.println("\nThe Home Page URL is: " + this.strPageURL);
 	}
+
+	public DriverViewPage clickCurtainArrowUpButton() {
+		this.curtainArrowUpButton.click();
+		return this;
+	}
+
+	public DriverViewPage clickCurtainArrowDownButton() {
+		this.curtainArrowDownButton.click();
+		return this;
+	}
 	
+	public DriverViewPage clickCurtainArrowLeftButton() {
+		this.curtainArrowLeftButton.click();
+		return this;
+	}
+
+	public DriverViewPage clickCurtainArrowRightButton() {
+		this.curtainArrowRightButton.click();
+		return this;
+	}
+
+	public DriverViewPage clickCurtainZoomInButton() {
+		this.curtainZoomInButton.click();
+		return this;
+	}
+
+	public DriverViewPage clickCurtainZoomOutButton() {
+		this.curtainZoomOutButton.click();
+		return this;
+	}
+
+	public DriverViewPage clickCurtainReturnButton() {
+		this.curtainReturnButton.click();
+		return this;
+	}
+
 	public DriverViewPage clickModeButton() {
 		this.modeButton.click();
 		return this;
