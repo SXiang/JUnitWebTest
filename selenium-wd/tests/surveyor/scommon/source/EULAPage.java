@@ -1,0 +1,77 @@
+package surveyor.scommon.source;
+
+import java.util.Map;
+import org.openqa.selenium.support.CacheLookup;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import common.source.TestSetup;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+public class EULAPage extends SurveyorBasePage {
+    private WebDriver driver;
+
+    @FindBy(css = "button[class='btn btn-success btn-lg btn-block']")
+    @CacheLookup
+    private WebElement iAccept;
+
+    private final String pageLoadedText = "Please review the EULA below";
+
+    private final static String STRURLPath = "/Eula";
+
+    @FindBy(css = "textarea[class='form-control']")
+    @CacheLookup
+    private WebElement pleaseReviewTheEulaBelowLorem;
+
+	/**
+	 * @param driver
+	 * @param baseURL
+	 * @param testSetup
+	 */
+	public EULAPage(WebDriver driver, String baseURL, TestSetup testSetup) {
+		super(driver, testSetup, baseURL, baseURL + STRURLPath);
+		
+		System.out.println("\nThe EULA Page URL is: " + this.strPageURL);
+	}
+
+    /**
+     * Click on I Accept Button.
+     *
+     * @return the EULAPage class instance.
+     */
+    public EULAPage clickIAcceptButton() {
+        iAccept.click();
+        return this;
+    }
+
+    /**
+     * Verify that the page loaded completely.
+     *
+     * @return the EULAPage class instance.
+     */
+    public EULAPage verifyPageLoaded() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(pageLoadedText);
+            }
+        });
+        return this;
+    }
+
+    /**
+     * Verify that current page URL matches the expected URL.
+     *
+     * @return the EULAPage class instance.
+     */
+    public EULAPage verifyPageUrl() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getCurrentUrl().contains(STRURLPath);
+            }
+        });
+        return this;
+    }
+}

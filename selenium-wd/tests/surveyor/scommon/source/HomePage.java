@@ -171,6 +171,9 @@ public class HomePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-server-log']/a")
 	protected WebElement linkPicAdminViewSurLogs;
 	
+    @FindBy(css = "button[class='btn btn-success btn-lg btn-block']")
+    private WebElement iAccept;
+	
 	/**
 	 * @param driver
 	 * @param baseURL
@@ -187,6 +190,21 @@ public class HomePage extends SurveyorBasePage {
 			return true;
 		
 		return false;
+	}
+	
+	@Override
+	public void open() {	
+		driver.get(strPageURL);
+		this.waitForPageToLoad();
+		
+		if (driver.getCurrentUrl().contains("/Eula?")) {
+			// If user is redirected to EULA then click on Accept.
+			EULAPage eulaPage = new EULAPage(driver, this.strBaseURL, testSetup);
+			PageFactory.initElements(driver, eulaPage);
+			
+			eulaPage.clickIAcceptButton();
+			this.waitForPageToLoad();
+		}
 	}
 	
 	public WebElement getLinkPicAdminCalibration() {
