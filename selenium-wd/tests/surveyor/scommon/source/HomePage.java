@@ -515,7 +515,7 @@ public class HomePage extends SurveyorBasePage {
 		if (!this.driver.getCurrentUrl().contains("MeasurementSessions"))
 			return false;
 		
-		if (!this.driver.getTitle().contains("Measurement Sessions"))
+		if (!this.driver.getTitle().contains("Driving Surveys"))
 			return false;
 		
 		return true;

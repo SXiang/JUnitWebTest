@@ -26,7 +26,7 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  */
 public class MeasurementSessionsPage extends SurveyorBasePage {	
 	public static final String STRURLPath = "/Home/MeasurementSessions";
-	public static final String STRPageTitle = "Measurement Sessions - Surveyor";
+	public static final String STRPageTitle = "Driving Surveys - Surveyor";
 	public static final String STRPageContentText = "Driving Surveys";
 	
 	public static final String DSTAGUA = "dmcs1-sqacusua";
