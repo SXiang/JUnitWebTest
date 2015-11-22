@@ -48,16 +48,23 @@ public class LoginPage extends BasePage {
 		System.out.println("\nThe Login Page URL is: " + this.strPageURL);
 	}
 
+	private void handleEULA() {
+		if (driver.getCurrentUrl().contains("/Eula")) {
+			// If user is redirected to EULA then click on Accept.
+			EULAPage eulaPage = new EULAPage(driver, this.strBaseURL, testSetup);
+			PageFactory.initElements(driver, eulaPage);
+			eulaPage.clickIAcceptButton();
+		}
+	}
+
 	public HomePage loginNormalAs(String userName, String password) {
 		this.tbUserName.sendKeys(userName);
 		this.tbPassword.sendKeys(password);
 		this.btnLogin.click();
 
 		waitForPageToLoad();
-		if (driver.getCurrentUrl().contains("Eula")
-				&& driver.getTitle().contains("Eula")) {
-			btnAccept.click();
-		}
+		handleEULA();
+		
 		waitForPageToLoad();
 		HomePage homePage = new HomePage(this.driver, this.strBaseURL,
 				this.testSetup);
@@ -72,7 +79,8 @@ public class LoginPage extends BasePage {
 					&& driver.getTitle().equalsIgnoreCase(
 							LoginPage.STRPageTitle)) {
 				return null;
-			}
+			} 
+			
 			elapsedTime = System.currentTimeMillis() - startTime;
 			if (elapsedTime >= (30 * 1000)) {
 				return null;

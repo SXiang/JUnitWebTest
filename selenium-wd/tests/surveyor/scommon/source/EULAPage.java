@@ -1,6 +1,5 @@
 package surveyor.scommon.source;
 
-import java.util.Map;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -18,7 +17,7 @@ public class EULAPage extends SurveyorBasePage {
     @CacheLookup
     private WebElement iAccept;
 
-    private final String pageLoadedText = "Please review the EULA below";
+    private final static String STRPageContentText = "Please review the EULA below";
 
     private final static String STRURLPath = "/Eula";
 
@@ -47,18 +46,13 @@ public class EULAPage extends SurveyorBasePage {
         return this;
     }
 
-    /**
-     * Verify that the page loaded completely.
-     *
-     * @return the EULAPage class instance.
-     */
-    public EULAPage verifyPageLoaded() {
+	@Override
+	public void waitForPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
-                return d.getPageSource().contains(pageLoadedText);
+                return d.getPageSource().contains(STRPageContentText);
             }
         });
-        return this;
     }
 
     /**
