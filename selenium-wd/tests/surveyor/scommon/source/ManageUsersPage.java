@@ -85,7 +85,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[7]/a[1]")
 	protected WebElement btnEditUser;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='user-form']/div/div[8]/div[2]/a")
+	@FindBy(css = "a[class='button-cancel btn btn-danger']")
 	protected WebElement cancelEditBtn;
 
 	// add more web elements here later

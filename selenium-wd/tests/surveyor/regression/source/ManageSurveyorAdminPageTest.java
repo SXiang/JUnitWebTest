@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
@@ -52,7 +53,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	 * Current Issue:
      * Future Improvement: editing a surveyor to have it associate to a different customer location is covered in CUSTADM020
 	 */	
-	@Test
+	@Ignore
 	public void TC455_EditSurveyor_CustUA() {
 		String locationName = SQACUSLOC;
 		String surveyorName = SQACUSLOCSUR + testSetup.getRandomNumber() + "TC455";
@@ -87,7 +88,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	 * Current Issue:
      * Future Improvement:
 	 */	
-	@Test
+	@Ignore
 	public void TC456_EditSurveyorAssignLoc_CustUA() {
 		String locationName1 = SQACUSLOC;
 		String locationName2 = SQACUSLOC + testSetup.getRandomNumber();
@@ -126,41 +127,41 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	}
 	
 	/**
-	 * Test Case ID: TC457_EditSurveyorDesc25CharLimit_CustUA
-	 * Test Description: More than 25 characters not allowed in Surveyor Description field
+	 * Test Case ID: TC457_EditSurveyorDesc50CharLimit_CustUA
+	 * Test Description: More than 50 characters not allowed in Surveyor Description field
 	 * Test Script: - On Home Page, and click Administration -> Manage Surveyors
 					- Click on 'Edit' button
-					- Provide more than 25 characters in Surveyor Description field and click OK
-	 * Expected Results: User cannot enter more than 25 characters and message having limit of characters displayed
+					- Provide more than 50 characters in Surveyor Description field and click OK
+	 * Expected Results: User cannot enter more than 50 characters and message having limit of characters displayed
 	 * Current implementation:   
 	 * Current Issue: DE1273 - Server-side check for Surveyor description length<=25 does NOT exist.
      * Future Improvement:
 	 */	
 	@Test
-	public void TC457_EditSurveyorDesc25CharLimit_CustUA() {
+	public void TC457_EditSurveyorDesc50CharLimit_CustUA() {
 		String str14chars = "AbcdefghI-Abcd";
 		String str15chars = "AbcdefghI-Abcde";
 		
-		String surveyorName25Chars = testSetup.getFixedSizeRandomNumber(6) + "TC457" + str14chars;
-		String surveyorName26Chars = testSetup.getFixedSizeRandomNumber(6) + "TC457" + str15chars;
+		String surveyorName50Chars = testSetup.getFixedSizeRandomNumber(31) + "TC457" + str14chars;
+		String surveyorName51Chars = testSetup.getFixedSizeRandomNumber(31) + "TC457" + str15chars;
 		
-		System.out.println("\nRunning - TC457_EditSurveyorDesc25CharLimit_CustUA - Test Description: More than 25 characters not allowed "
+		System.out.println("\nRunning - TC457_EditSurveyorDesc50CharLimit_CustUA - Test Description: More than 50 characters not allowed "
 				+ "in Surveyor Description field\n");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		
 		manageSurveyorPage.open();
-		manageSurveyorPage.addNewSurveyor(surveyorName25Chars, SQACUSLOC, SQACUS);
+		manageSurveyorPage.addNewSurveyor(surveyorName50Chars, SQACUSLOC, SQACUS);
 		manageSurveyorPage.logout();
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		
 		manageSurveyorAdminPage.open();
-		manageSurveyorAdminPage.editExistingSurveyor(SQACUSLOC, surveyorName25Chars, surveyorName26Chars);
+		manageSurveyorAdminPage.editExistingSurveyor(SQACUSLOC, surveyorName50Chars, surveyorName51Chars);
 		
-		assertTrue(manageSurveyorAdminPage.findExistingSurveyor(SQACUSLOC, surveyorName25Chars));
+		assertTrue(manageSurveyorAdminPage.findExistingSurveyor(SQACUSLOC, surveyorName50Chars));
 	}
 	
 	/**
@@ -174,7 +175,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	 * Current Issue:
      * Future Improvement: deal with the tooltip text
 	 */	
-	@Test
+	@Ignore
 	public void TC458_EditSurveyorBlankRequiredFields_CustUA() {
 		String surveyorName = testSetup.getRandomNumber() + "TC458";
 		
