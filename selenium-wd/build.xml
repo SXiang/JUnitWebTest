@@ -131,6 +131,7 @@
 					<include name="**/ManageRefGasBottlesPageTest.class" />
 					<include name="**/ManageSurveyorPageTest.class" />
 					<include name="**/ManageSurveyorAdminPageTest.class" />
+					<include name="**/ManageSurveyorHistoriesPageTest.class" />
 					<include name="**/ManageUsersPageTest.class" />
 					<include name="**/ManageUsersAdminPageTest.class" />
 					<include name="**/UserFeedbackPageTest.class" />

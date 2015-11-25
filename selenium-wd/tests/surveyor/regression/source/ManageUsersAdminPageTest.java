@@ -8,8 +8,6 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;

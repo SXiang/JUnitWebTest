@@ -7,7 +7,6 @@ import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
@@ -53,7 +52,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	 * Current Issue:
      * Future Improvement: editing a surveyor to have it associate to a different customer location is covered in CUSTADM020
 	 */	
-	@Ignore
+	@Test
 	public void TC455_EditSurveyor_CustUA() {
 		String locationName = SQACUSLOC;
 		String surveyorName = SQACUSLOCSUR + testSetup.getRandomNumber() + "TC455";
@@ -88,7 +87,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	 * Current Issue:
      * Future Improvement:
 	 */	
-	@Ignore
+	@Test
 	public void TC456_EditSurveyorAssignLoc_CustUA() {
 		String locationName1 = SQACUSLOC;
 		String locationName2 = SQACUSLOC + testSetup.getRandomNumber();
@@ -142,8 +141,8 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		String str14chars = "AbcdefghI-Abcd";
 		String str15chars = "AbcdefghI-Abcde";
 		
-		String surveyorName50Chars = testSetup.getFixedSizeRandomNumber(31) + "TC457" + str14chars;
-		String surveyorName51Chars = testSetup.getFixedSizeRandomNumber(31) + "TC457" + str15chars;
+		String surveyorName50Chars = testSetup.getFixedSizePseudoRandomString(31) + "TC457" + str14chars;
+		String surveyorName51Chars = testSetup.getFixedSizePseudoRandomString(31) + "TC457" + str15chars;
 		
 		System.out.println("\nRunning - TC457_EditSurveyorDesc50CharLimit_CustUA - Test Description: More than 50 characters not allowed "
 				+ "in Surveyor Description field\n");
@@ -175,7 +174,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	 * Current Issue:
      * Future Improvement: deal with the tooltip text
 	 */	
-	@Ignore
+	@Test
 	public void TC458_EditSurveyorBlankRequiredFields_CustUA() {
 		String surveyorName = testSetup.getRandomNumber() + "TC458";
 		
