@@ -177,7 +177,7 @@ public class BaseHelper {
 	public static boolean isStringListSorted(List<String> strList) {
 		boolean sorted = true;
 		for (int i = 1; i < strList.size(); i++) {
-			if (strList.get(i - 1).compareTo(strList.get(i)) > 0)
+			if (strList.get(i - 1).compareToIgnoreCase(strList.get(i)) > 0)
 				sorted = false;
 		}
 		return sorted;
@@ -186,7 +186,7 @@ public class BaseHelper {
 	public static boolean isStringListSortedDes(List<String> strList) {
 		boolean sorted = true;
 		for (int i = 1; i < strList.size(); i++) {
-			if (strList.get(i - 1).compareTo(strList.get(i)) < 0)
+			if (strList.get(i - 1).compareToIgnoreCase(strList.get(i)) < 0)
 				sorted = false;
 		}
 		return sorted;
