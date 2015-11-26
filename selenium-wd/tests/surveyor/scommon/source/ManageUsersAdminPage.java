@@ -22,6 +22,7 @@ import common.source.TestSetup;
 public class ManageUsersAdminPage extends ManageUsersPage {
 	public static final String STRURLPath = "/Admin/ManageUsers";
 	public static final String STRPageTitle = "Manage ??? Users - Surveyor";
+	private static final int ALLOWED_MAX_EMAIL_LENGTH = 50;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='User.UserName-error']")
 	private WebElement labelUserNameError;
@@ -151,6 +152,21 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
+		
+		// If user inputted greater than allowed max characters in Email, then check if 'Max character' message label is shown. 
+		// If not remove chars from beginning to format email to valid MAX length.
+		if (email.length() > ALLOWED_MAX_EMAIL_LENGTH) {
+			if (isElementPresent(this.labelUserNameErrorXPath)) {
+				rtnMsg = this.labelUserNameError.getText().trim();
+				this.cancelAddBtn.click();
+				return rtnMsg;
+			} else {
+				int difflen = email.length() - ALLOWED_MAX_EMAIL_LENGTH;
+				this.inputEmail.clear();
+				this.inputEmail.sendKeys(email.substring(difflen, email.length()-1));
+			}
+		}
+		
 		this.inputPassword.sendKeys(password1);
 		this.inputPasswordConfirm.sendKeys(password2);
 		
