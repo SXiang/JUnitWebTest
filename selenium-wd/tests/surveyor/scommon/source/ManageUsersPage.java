@@ -30,6 +30,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageUsers";
 	public static final String STRPageTitle = "Manage Users - Surveyor";
 	public static final String STRPageContentText = "Manage Users";
+	protected static final CharSequence STREditPageContentText = "Edit User";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a[1]")
 	protected WebElement btnAddNewCustomerUser;
@@ -580,6 +581,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
 
 				actionEditCell.click();
+				this.waitForEditPageLoad();
 
 				List<WebElement> options = dropDownRole.findElements(By
 						.tagName("option"));
@@ -1115,6 +1117,14 @@ public class ManageUsersPage extends SurveyorBasePage {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getPageSource().contains(STRPageContentText);
+            }
+        });
+    }
+
+	public void waitForEditPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STREditPageContentText);
             }
         });
     }
