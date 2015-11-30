@@ -5,7 +5,13 @@
 	<classpathentry kind="lib" path="selenium-wd/lib/junit-4.11-sources.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/junit-4.11.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/selenium-server-standalone-2.39.0.jar"/>
-	<classpathentry kind="lib" path="selenium-wd/lib/sqljdbc4-3.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/http-builder-0.6.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/groovy-2.4.5.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/groovy-all-2.3.6.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/pdfbox-1.8.10.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/pdfbox-app-1.8.10.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/imagecomparison-0.3.2.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/sqljdbc42.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

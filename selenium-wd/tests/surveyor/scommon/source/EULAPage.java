@@ -6,6 +6,8 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -17,7 +19,7 @@ public class EULAPage extends SurveyorBasePage {
     @CacheLookup
     private WebElement iAccept;
 
-    private final static String STRPageContentText = "Please review the EULA below";
+    private final static String STRPageContentText = Resources.getResource(ResourceKeys.Dialog_PleaseReviewEULA);
 
     private final static String STRURLPath = "/Eula";
 

@@ -6,6 +6,8 @@ package surveyor.scommon.source;
 import org.openqa.selenium.WebDriver;
 
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 
 /**
  * @author zlu
@@ -13,7 +15,7 @@ import common.source.TestSetup;
  */
 public class UserFeedbackAdminPage extends UserFeedbackPage {
 	public static final String STRURLPath = "/Admin/UserFeedback";
-	public static final String STRPageTitle = "User Feedback - Surveyor";
+	public static final String STRPageTitle = Resources.getResource(ResourceKeys.UserFeedback_PageTitle);
 	
 	/**
 	 * @param driver

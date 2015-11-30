@@ -13,6 +13,8 @@ import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.BaseHelper;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.ManageUsersAdminPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 
@@ -94,7 +96,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		assertTrue(manageUsersAdminPage.getUserRole(userName).equalsIgnoreCase(
 				CUSUSERROLESU));
 		assertTrue(manageUsersAdminPage.getUserStatus(userName)
-				.equalsIgnoreCase("Enabled"));
+				.equalsIgnoreCase(Resources.getResource(ResourceKeys.Constant_Enabled)));
 	}
 
 	/**
@@ -169,7 +171,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		assertTrue(manageUsersAdminPage.findExistingUser(SQACUSLOC, userName,
 				CUSUSERROLEDR));
 		assertTrue(manageUsersAdminPage.getUserStatus(userName)
-				.equalsIgnoreCase("Disabled"));
+				.equalsIgnoreCase(Resources.getResource(ResourceKeys.Constant_Disabled)));
 		manageUsersAdminPage.logout();
 
 		loginPage.open();
@@ -319,7 +321,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 				CUSUSERROLESU));
 
 		assertTrue(manageUsersAdminPage.getUserStatus(userName)
-				.equalsIgnoreCase("Disabled"));
+				.equalsIgnoreCase(Resources.getResource(ResourceKeys.Constant_Disabled)));
 	}
 
 	/**

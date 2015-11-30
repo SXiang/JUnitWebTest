@@ -12,6 +12,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
+
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
@@ -20,7 +23,7 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  */
 public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	public static final String STRURLPATH = "/Picarro/ManageRefGasBottles";
-	public static final String STRPAGETITLE = "Manage Reference Gas Bottles - Surveyor";
+	public static final String STRPAGETITLE = Resources.getResource(ResourceKeys.ManageRefGasBottles_PageTitle);
 	
 	@FindBy(css = "a[class='btn btn-primary']")
 	private WebElement btnAddNewRefGasBottle;
@@ -78,7 +81,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		
 		if (isElementPresent(this.panelDupRgbErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDupRgbErrorXPath));
-			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
+			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
 				this.btnCancel.click();
 		}
 		

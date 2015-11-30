@@ -12,6 +12,9 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.FindBy;
 
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
+
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
@@ -20,7 +23,7 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  */
 public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageSurveyorHistories";
-	public static final String STRPageTitle = "Manage Surveyor Histories - Surveyor";
+	public static final String STRPageTitle = Resources.getResource(ResourceKeys.Layout_Nav_ManageSurveyorHistories);
 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	protected WebElement btnAddNewHistoryEntry;

@@ -9,6 +9,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BasePage;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 
 /**
  * @author zlu
@@ -16,8 +18,8 @@ import common.source.TestSetup;
  */
 public class SurveyorSystemsPage extends BasePage {
 	public static final String STRURLPath = "/Home/SurveyorSystems";
-	public static final String STRPageTitle = "Surveyors - Surveyor";
-	public static final String STRPageContentText = "Surveyors";
+	public static final String STRPageTitle = Resources.getResource(ResourceKeys.Constant_Surveyors) + " - " + Resources.getResource(ResourceKeys.Constant_Surveyors);
+	public static final String STRPageContentText = Resources.getResource(ResourceKeys.Constant_Surveyors);
 
 	/**
 	 * @param driver

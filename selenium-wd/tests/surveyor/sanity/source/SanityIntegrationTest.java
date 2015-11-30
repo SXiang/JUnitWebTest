@@ -42,6 +42,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ManageAnalyzersPage;
 import surveyor.scommon.source.ManageCustomersPage;
@@ -174,7 +176,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "0");
 		viewMap1.put(KEYBOUNDARIES, "0");
-		viewMap1.put(KEYBASEMAP, "Satellite");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewMap2.put(KEYVIEWNAME, "Second View");
 		viewMap2.put(KEYLISA, "0");
@@ -186,7 +188,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		viewMap2.put(KEYGAPS, "1");
 		viewMap2.put(KEYASSETS, "0");
 		viewMap2.put(KEYBOUNDARIES, "0");
-		viewMap2.put(KEYBASEMAP, "Satellite");
+		viewMap2.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewMap3.put(KEYVIEWNAME, "Third View");
 		viewMap3.put(KEYLISA, "1");
@@ -198,7 +200,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		viewMap3.put(KEYGAPS, "0");
 		viewMap3.put(KEYASSETS, "0");
 		viewMap3.put(KEYBOUNDARIES, "0");
-		viewMap3.put(KEYBASEMAP, "Map");
+		viewMap3.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
 		viewList.add(viewMap2);

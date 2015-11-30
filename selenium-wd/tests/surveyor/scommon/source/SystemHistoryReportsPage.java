@@ -20,6 +20,8 @@ import org.openqa.selenium.support.PageFactory;
 import common.source.BaseHelper;
 import common.source.DBConnection;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 
 /**
  * @author pmahajan
@@ -27,7 +29,7 @@ import common.source.TestSetup;
  */
 public class SystemHistoryReportsPage extends ReportsBasePage {
 	public static final String STRURLPath = "/Reports/SystemHistoryReports";
-	public static final String STRPageTitle = "System History Reports - Surveyor";
+	public static final String STRPageTitle = Resources.getResource(ResourceKeys.SystemHistoryReports_PageTitle);
 	public static final String STRPaginationMsg = "Showing 1 to ";
 	
 	/**

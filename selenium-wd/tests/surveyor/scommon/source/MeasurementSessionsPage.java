@@ -18,6 +18,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BaseHelper;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
+
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
@@ -26,8 +29,8 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  */
 public class MeasurementSessionsPage extends SurveyorBasePage {	
 	public static final String STRURLPath = "/Home/MeasurementSessions";
-	public static final String STRPageTitle = "Driving Surveys - Surveyor";
-	public static final String STRPageContentText = "Driving Surveys";
+	public static final String STRPageTitle = Resources.getResource(ResourceKeys.Layout_Nav_DrivingSurveys);
+	public static final String STRPageContentText = Resources.getResource(ResourceKeys.Layout_Nav_DrivingSurveys);
 	
 	public static final String DSTAGUA = "dmcs1-sqacusua";
 	public static final String DSTAGSU = "dmcs1-sqacussu";

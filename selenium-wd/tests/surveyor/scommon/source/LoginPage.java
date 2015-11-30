@@ -10,7 +10,9 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.BasePage;
+import common.source.TestContext;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.User;
 
 /**
  * @author zlu
@@ -74,6 +76,12 @@ public class LoginPage extends BasePage {
 
 		while (true) {
 			if (homePage.checkIfAtHomePage()) {
+				// Set LoggedInUser and Culture to context.
+				TestContext.INSTANCE.setLoggedInUser(userName);
+				User loggedInUser = User.getUser(userName);
+				if (loggedInUser != null) {
+					TestContext.INSTANCE.setUserCulture(loggedInUser.getCultureId());
+				}
 				return homePage;
 			} else if (driver.getCurrentUrl().equalsIgnoreCase(this.strPageURL)
 					&& driver.getTitle().equalsIgnoreCase(

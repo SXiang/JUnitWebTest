@@ -3,6 +3,9 @@
  */
 package surveyor.scommon.source;
 
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
+
 /**
  * @author zlu
  *
@@ -30,7 +33,7 @@ public final class SurveyorConstants {
 	public static final int USERNUM = 5;    //Should be set less than 100 otherwise need review the code
 	
 	public static final String CUSTOMERNAMEPREFIX = "regcus";
-	public static final String CUSTOMERSTATUS = "Enabled";
+	public static final String CUSTOMERSTATUS = Resources.getResource(ResourceKeys.Constant_Enabled);
 	public static final String EULASTRING = "Testing eula string, TBD";
 	public static final String REGBASEUSERNAME = "@email.com";
 	
@@ -50,7 +53,7 @@ public final class SurveyorConstants {
 	public static final String USERROLEADMIN = "Administrator";
 	public static final String CUSUSERROLEUA = "Utility Administrator";
 	public static final String CUSUSERROLESU = "Supervisor";
-	public static final String CUSUSERROLEDR = "Driver";
+	public static final String CUSUSERROLEDR = Resources.getResource(ResourceKeys.Constant_Driver);
 	public static final String PICUSERROLESUP = "Picarro Support";
 	
 	public static final String PICDFADMIN = "Administrator";
@@ -113,7 +116,7 @@ public final class SurveyorConstants {
 	public static final String EXCLUSIONRADIUS = "50";
 	public static final String REPORTMODES1 = "S1";
 	
-	public static final String CUSBOUNDARY = "Custom Boundary";
+	public static final String CUSBOUNDARY = Resources.getResource(ResourceKeys.ComplianceReport_CustomBoundary);
 	public static final String IMGMAPHEIGHT = "8.5";
 	public static final String IMGMAPWIDTH = "11";
 	public static final String NELAT = "37.421980615353675";
@@ -132,11 +135,11 @@ public final class SurveyorConstants {
 	//public static final String PAGINATIONSETTING = "100";
 	public static final String PAGINATIONSETTING = "10"; //Selenium WebDriver issues so set it to 10 only for now
 	
-	public static final String USERENABLED = "Enabled";
-	public static final String USERDISABLED = "Disabled";
+	public static final String USERENABLED = Resources.getResource(ResourceKeys.Constant_Enabled);
+	public static final String USERDISABLED = Resources.getResource(ResourceKeys.Constant_Disabled);
 	
-	public static final String CUSTOMERENABLED = "Enabled";
-	public static final String CUSTOMERDISABLED = "Disabled";
+	public static final String CUSTOMERENABLED = Resources.getResource(ResourceKeys.Constant_Enabled);
+	public static final String CUSTOMERDISABLED = Resources.getResource(ResourceKeys.Constant_Disabled);
 	
 	public static final String TIMEZONEPT = "Pacific Time (US and Canada)";
 	public static final String TIMEZONEMT = "Mountain Time (US and Canada)";
@@ -163,16 +166,16 @@ public final class SurveyorConstants {
 
 	public static final String KEYINDTB = "Indications Table";
 	public static final String KEYISOANA = "Isotopic Analysis";
-	public static final String KEYPCA = "Percent Coverage Assets";
+	public static final String KEYPCA = "Percent Coverage Assets"; 
 	public static final String KEYPCRA = "Percent Coverage Report Area";
 	
 	public static final String SQAPICADRRTAG = "dmcrapidresponse-sqapic-admin";
 	public static final String SQAPICADSTNDTAG = "dmcstandard-sqapic-admin";
 	public static final String SQAPICADMANUALTAG = "dmcmanual-sqapic-admin";
 
-	public static final String DUPLICATIONERROR = "User name already exists, please try another name";
+	public static final String DUPLICATIONERROR = Resources.getResource(ResourceKeys.ManageUser_UserNameAlreadyExists);
 	public static final String PWVALUEERROR = "Please enter the same value again.";
-	public static final String EMAILINVALID = "The Email is not valid, please enter valid email address.";
+	public static final String EMAILINVALID = Resources.getResource(ResourceKeys.ManageUser_EmailNotValid);
 	public static final String BLANKFIELDERROR = "This field is required.";
 	public static final String PWDSAMEVALUE = "Please enter the same value again.";
 	public static final String EMAILTOOLONG = "Please enter no more than 50 characters.";

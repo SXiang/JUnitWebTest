@@ -10,6 +10,8 @@ import org.openqa.selenium.support.How;
 
 import common.source.BasePage;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 
 /**
  * @author zlu
@@ -18,7 +20,7 @@ import common.source.TestSetup;
 public class PrimePage extends BasePage {
 	
 	public static final String STRURLPath = "/Prime";
-	public static final String STRPageTitle = "Index"; //The title should be changed soon otherwise submit a bug for it
+	public static final String STRPageTitle = Resources.getResource(ResourceKeys.Constant_Index); //The title should be changed soon otherwise submit a bug for it
 	
 	@FindBy(how = How.CSS, using = "#bottom_button_side_panel > div")
 	private WebElement btnSidePanel;

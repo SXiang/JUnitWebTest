@@ -18,6 +18,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 
 /**
  * Picarro Admin User's Page Generic User's related code (which can be used by
@@ -28,9 +30,9 @@ import common.source.TestSetup;
  */
 public class ManageUsersPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageUsers";
-	public static final String STRPageTitle = "Manage Users - Surveyor";
-	public static final String STRPageContentText = "Manage Users";
-	protected static final CharSequence STREditPageContentText = "Edit User";
+	public static final String STRPageTitle = Resources.getResource(ResourceKeys.ManageUsers_PageTitle);
+	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageUsers_PageTitle);
+	protected static final CharSequence STREditPageContentText = Resources.getResource(ResourceKeys.ManageUser_EditUser);
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a[1]")
 	protected WebElement btnAddNewCustomerUser;
@@ -130,7 +132,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			WebElement panelError = driver.findElement(By
 					.xpath(this.panelDuplicationErrorXPath));
 			if (panelError.getText().equalsIgnoreCase(
-					"Please, correct the following errors:"))
+					Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
 				this.cancelAddBtn.click();
 		}
 	}
@@ -167,7 +169,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			WebElement panelError = driver.findElement(By
 					.xpath(this.panelDuplicationErrorXPath));
 			if (panelError.getText().equalsIgnoreCase(
-					"Please, correct the following errors:"))
+					Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
 				this.cancelAddBtn.click();
 		}
 	}
@@ -200,7 +202,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			WebElement panelError = driver.findElement(By
 					.xpath(this.panelDuplicationErrorXPath));
 			if (panelError.getText().equalsIgnoreCase(
-					"Please, correct the following errors:"))
+					Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
 				this.cancelAddBtn.click();
 		}
 		
@@ -243,7 +245,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			WebElement panelError = driver.findElement(By
 					.xpath(this.panelDuplicationErrorXPath));
 			if (panelError.getText().equalsIgnoreCase(
-					"Please, correct the following errors:"))
+					Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
 				this.cancelAddBtn.click();
 		}
 		

@@ -56,6 +56,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import common.source.BaseHelper;
 import common.source.DBConnection;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 
 /**
  * @author zlu
@@ -63,10 +65,10 @@ import common.source.TestSetup;
  */
 public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String STRURLPath = "/Reports/ComplianceReports";
-	public static final String STRPageTitle = "Compliance Reports - Surveyor";
+	public static final String STRPageTitle = Resources.getResource(ResourceKeys.ComplianceReports_PageTitle);
 	public static final String STRPaginationMsg = "Showing 1 to ";
-	public static final String STRSurveyIncludedMsg = "Already Added...";
-	public static final String STRPageContentText = "Compliance Reports";
+	public static final String STRSurveyIncludedMsg = Resources.getResource(ResourceKeys.ComplianceReport_AlreadyAdded);
+	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_PageTitle);
 	
 	@FindBy (how = How.ID, using = "pdf")
 	protected WebElement pdfImg;
@@ -933,11 +935,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				if (changeMode) {
 					if (strReportMode.contentEquals("S1"))
 						this.radioBtnS1Mode.click();
-					else if (strReportMode.contentEquals("Standard"))
+					else if (strReportMode.contentEquals(Resources.getResource(ResourceKeys.Constant_Standard)))
 						this.radioBtnStndMode.click();
 					else if (strReportMode.contentEquals("Rapid Response"))
 						this.radioBtnRRmode.click();
-					else if (strReportMode.contentEquals("Manual"))
+					else if (strReportMode.contentEquals(Resources.getResource(ResourceKeys.Constant_Manual)))
 						this.radioBtnManualMode.click();
 
 					if (this.isElementPresent(btnChangeModeXPath)) {
@@ -1029,11 +1031,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (changeMode) {
 			if (strReportMode.contentEquals("S1"))
 				this.radioBtnS1Mode.click();
-			else if (strReportMode.contentEquals("Standard"))
+			else if (strReportMode.contentEquals(Resources.getResource(ResourceKeys.Constant_Standard)))
 				this.radioBtnStndMode.click();
 			else if (strReportMode.contentEquals("Rapid Response"))
 				this.radioBtnRRmode.click();
-			else if (strReportMode.contentEquals("Manual"))
+			else if (strReportMode.contentEquals(Resources.getResource(ResourceKeys.Constant_Manual)))
 				this.radioBtnManualMode.click();
 		}
 
