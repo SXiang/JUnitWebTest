@@ -16,6 +16,9 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
+
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
@@ -25,8 +28,8 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 public class UserFeedbackPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/UserFeedback";
 	public static final String STRPageTitle = "User Feedback - Surveyor";
-	public static final String STRPageContentText = "Please share your thoughts";
-	public String feedbackRecievedTxt = "Your feedback has been received.";
+	public static final String STRPageContentText = Resources.getResource(ResourceKeys.UserFeedback_PromptTitle);
+	public String feedbackRecievedTxt = Resources.getResource(ResourceKeys.UserFeedback_ThankYou_PromptText);
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='user-feedback']/a")
 	protected WebElement linkSendFeedback;

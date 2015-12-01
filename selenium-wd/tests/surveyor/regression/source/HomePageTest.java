@@ -8,6 +8,8 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.FleetMapPage;
 import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.SurveyorBaseTest;
@@ -61,7 +63,7 @@ public class HomePageTest extends SurveyorBaseTest {
 		
 		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(testSetup.getBaseUrl() + SURVEYORS));
 		assertTrue(homePage.getSubTitleSurveyors().isDisplayed()
-				&& homePage.getSubTitleSurveyors().getText().trim().equalsIgnoreCase("Surveyors"));
+				&& homePage.getSubTitleSurveyors().getText().trim().equalsIgnoreCase(Resources.getResource(ResourceKeys.Constant_Surveyors)));
 	}
 
 	/**

@@ -14,6 +14,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.FindBy;
 
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
+
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
@@ -22,8 +25,8 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  */
 public class ManageSurveyorPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageSurveyors";
-	public static final String STRPageTitle = "Manage Surveyors - Surveyor";
-	public static final String STRPageContentText = "Manage Surveyors";
+	public static final String STRPageTitle = Resources.getResource(ResourceKeys.ManageSurveyors_PageTitle);
+	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageSurveyors_PageTitle);
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	protected WebElement btnAddNewSurveyor;
@@ -138,7 +141,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		
 		if (isElementPresent(this.panelDupSurErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDupSurErrorXPath));
-			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
+			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
 				this.btnAddCancel.click();
 		}
 		
@@ -255,7 +258,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 				
 				if (isElementPresent(this.panelDuplicationErrorXPath)) {
 					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-					if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:")) {
+					if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
 						this.btnEditCancel.click();
 						return false;
 					}

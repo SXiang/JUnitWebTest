@@ -17,6 +17,8 @@ import org.openqa.selenium.support.PageFactory;
 import common.source.BaseHelper;
 import common.source.DBConnection;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 
 /**
  * @author pmahajan
@@ -24,7 +26,7 @@ import common.source.TestSetup;
  */
 public class ReferenceGasReportsPage extends ReportsBasePage {
 	public static final String STRURLPath = "/Reports/ReferenceGasReports";
-	public static final String STRPageTitle = "Reference Gas Reports - Surveyor";
+	public static final String STRPageTitle = Resources.getResource(ResourceKeys.RefGasReports_PageTitle);
 	public static final String STRPaginationMsg = "Showing 1 to ";
 	
 	/**

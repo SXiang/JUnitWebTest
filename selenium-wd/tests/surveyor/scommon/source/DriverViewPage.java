@@ -9,6 +9,8 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
@@ -31,7 +33,7 @@ public class DriverViewPage extends SurveyorBasePage {
 	private static final String CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA = "centerX = 40;centerY = 40;fontY = 12;paddingY = 5;rectWidth = 1;rectHeight = 1;var imgData=test_ctx.getImageData(centerX,centerY-fontY-paddingY,rectWidth,rectHeight);";
 
 	public static final String STRURLPath = "/Live/Driver?address=https%3A%2F%2Flocalhost&port=5600&serialNumber=" + TestSetup.TEST_ANALYZER_SERIAL_NUMBER;
-	public static final String STRPageTitle = "Live";
+	public static final String STRPageTitle = Resources.getResource(ResourceKeys.Constant_Live);
 	public static final String STRPageContentText = "Map View";	
 
 	public enum SurveyTime {

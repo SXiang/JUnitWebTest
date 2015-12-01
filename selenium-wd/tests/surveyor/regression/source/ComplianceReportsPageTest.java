@@ -61,6 +61,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorBaseTest;
@@ -758,7 +760,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "1");
-		viewMap1.put(KEYBASEMAP, "Map");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewMap2.put(KEYVIEWNAME, "Second View");
 		viewMap2.put(KEYLISA, "1");
@@ -770,7 +772,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap2.put(KEYGAPS, "0");
 		viewMap2.put(KEYASSETS, "0");
 		viewMap2.put(KEYBOUNDARIES, "0");
-		viewMap2.put(KEYBASEMAP, "Satellite");
+		viewMap2.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewList.add(viewMap1);
 		viewList.add(viewMap2);
@@ -881,7 +883,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "1");
-		viewMap1.put(KEYBASEMAP, "Map");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewMap2.put(KEYVIEWNAME, "Second View");
 		viewMap2.put(KEYLISA, "1");
@@ -893,7 +895,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap2.put(KEYGAPS, "0");
 		viewMap2.put(KEYASSETS, "0");
 		viewMap2.put(KEYBOUNDARIES, "0");
-		viewMap2.put(KEYBASEMAP, "Satellite");
+		viewMap2.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewMap3.put(KEYVIEWNAME, "Third View");
 		viewMap3.put(KEYLISA, "0");
@@ -905,7 +907,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap3.put(KEYGAPS, "0");
 		viewMap3.put(KEYASSETS, "1");
 		viewMap3.put(KEYBOUNDARIES, "1");
-		viewMap3.put(KEYBASEMAP, "Satellite");
+		viewMap3.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewList.add(viewMap1);
 		viewList.add(viewMap2);
@@ -983,7 +985,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "1");
-		viewMap1.put(KEYBASEMAP, "Map");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewMap2.put(KEYVIEWNAME, "Second View");
 		viewMap2.put(KEYLISA, "1");
@@ -995,7 +997,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap2.put(KEYGAPS, "0");
 		viewMap2.put(KEYASSETS, "0");
 		viewMap2.put(KEYBOUNDARIES, "0");
-		viewMap2.put(KEYBASEMAP, "Satellite");
+		viewMap2.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewMap3.put(KEYVIEWNAME, "Third View");
 		viewMap3.put(KEYLISA, "0");
@@ -1007,7 +1009,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap3.put(KEYGAPS, "0");
 		viewMap3.put(KEYASSETS, "0");
 		viewMap3.put(KEYBOUNDARIES, "0");
-		viewMap3.put(KEYBASEMAP, "Map");
+		viewMap3.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
 		viewList.add(viewMap2);
@@ -1081,7 +1083,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "0");
 		viewMap1.put(KEYBOUNDARIES, "0");
-		viewMap1.put(KEYBASEMAP, "Map");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
 
@@ -1162,7 +1164,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "0");
 		viewMap1.put(KEYBOUNDARIES, "0");
-		viewMap1.put(KEYBASEMAP, "Map");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
 
@@ -1235,7 +1237,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "0");
 		viewMap1.put(KEYBOUNDARIES, "0");
-		viewMap1.put(KEYBASEMAP, "Map");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
 
@@ -1352,7 +1354,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "1");
-		viewMap1.put(KEYBASEMAP, "Map");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
 
@@ -1425,7 +1427,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "0");
 		viewMap1.put(KEYBOUNDARIES, "0");
-		viewMap1.put(KEYBASEMAP, "Map");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
 
@@ -1488,7 +1490,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "0");
 		viewMap1.put(KEYBOUNDARIES, "0");
-		viewMap1.put(KEYBASEMAP, "Map");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
 
@@ -1779,7 +1781,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "0");
 		viewMap1.put(KEYBOUNDARIES, "0");
-		viewMap1.put(KEYBASEMAP, "Map");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
 
@@ -1873,7 +1875,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		String surUnit = "";
 		List<String> surTag = new ArrayList<String>();
 		surTag.add(SQAPICADMANUALTAG);
-		String reportMode = "Manual";
+		String reportMode = Resources.getResource(ResourceKeys.Constant_Manual);
 		boolean changeMode = true;
 
 		complianceReportsPage.addNewPDReport(rptTitle, surUnit, surTag,
@@ -1927,7 +1929,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 			fail("\nS1 report creation failed.\n");
 
 		rptTitle = "RPT024 Standard Report" + testSetup.getRandomNumber();
-		reportMode = "Standard";
+		reportMode = Resources.getResource(ResourceKeys.Constant_Standard);
 
 		complianceReportsPage.addNewPDReport(rptTitle, surUnit, surTag,
 				changeMode, reportMode);
@@ -1995,7 +1997,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "1");
-		viewMap1.put(KEYBASEMAP, "Map");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
 
@@ -2066,7 +2068,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "1");
-		viewMap1.put(KEYBASEMAP, "Map");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
 
@@ -2137,7 +2139,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "1");
-		viewMap1.put(KEYBASEMAP, "Map");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
 
@@ -2194,7 +2196,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		surTag.add(SQAPICADSTNDTAG);
 		surTag.add(SQAPICADRRTAG);
 		String reportMode = "Rapid Response";
-		String changeReportMode = "Manual";
+		String changeReportMode = Resources.getResource(ResourceKeys.Constant_Manual);
 		List<String> manualSurTag = new ArrayList<String>();
 		manualSurTag.add(SQAPICADMANUALTAG);
 		boolean changeMode = true;
@@ -2247,7 +2249,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		surTag.add(SQAPICADTAG);
 		surTag.add(SQAPICADSTNDTAG);
 		surTag.add(SQAPICADRRTAG);
-		String reportMode = "Manual";
+		String reportMode = Resources.getResource(ResourceKeys.Constant_Manual);
 		String changeReportMode = "Rapid Response";
 		List<String> manualSurTag = new ArrayList<String>();
 		manualSurTag.add(SQAPICADMANUALTAG);
@@ -2465,7 +2467,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "0");
 		viewMap1.put(KEYBOUNDARIES, "0");
-		viewMap1.put(KEYBASEMAP, "Map");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
 
@@ -2545,7 +2547,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "0");
 		viewMap1.put(KEYBOUNDARIES, "0");
-		viewMap1.put(KEYBASEMAP, "Map");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewMap2.put(KEYVIEWNAME, "Second View");
 		viewMap2.put(KEYLISA, "1");
@@ -2557,7 +2559,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap2.put(KEYGAPS, "0");
 		viewMap2.put(KEYASSETS, "0");
 		viewMap2.put(KEYBOUNDARIES, "0");
-		viewMap2.put(KEYBASEMAP, "Satellite");
+		viewMap2.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewList.add(viewMap1);
 		viewList.add(viewMap2);

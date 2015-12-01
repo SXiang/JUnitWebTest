@@ -15,7 +15,9 @@ import org.junit.runner.Description;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.TestContext;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.Resources;
 
 /**
  * @author zlu
@@ -80,6 +82,8 @@ public class SurveyorBaseTest {
 		
 		homePage = new HomePage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  homePage);
+		
+		TestContext.INSTANCE.setTestSetup(testSetup);
 	}
 
 	/**

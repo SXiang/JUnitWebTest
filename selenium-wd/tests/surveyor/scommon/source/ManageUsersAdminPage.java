@@ -12,6 +12,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 
 /**
  * Util Admin User's page
@@ -65,7 +67,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		
 		if (isElementPresent(this.panelDuplicationErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
+			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
 				this.cancelAddBtn.click();
 		}
 	}
@@ -96,7 +98,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		
 		if (isElementPresent(this.panelDuplicationErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
+			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
 				this.cancelAddBtn.click();
 		}
 		
@@ -137,7 +139,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		
 		if (isElementPresent(this.panelDuplicationErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
+			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
 				this.cancelAddBtn.click();
 		}
 		
@@ -194,7 +196,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		if (isElementPresent(this.panelDuplicationErrorXPath)) {
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
 			
-			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:")) {
+			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
 				rtnMsg = panelError.getText();
 				this.cancelAddBtn.click();
 			}

@@ -9,6 +9,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 
 /**
  * @author zlu
@@ -16,7 +18,7 @@ import common.source.TestSetup;
  */
 public class SendFeedbackPage extends UserFeedbackPage {
 	public static final String STRURLPath = "/UserFeedback";
-	public static final String STRPageTitle = "Feedback - Surveyor";
+	public static final String STRPageTitle = Resources.getResource(ResourceKeys.UserFeedback_PageTitle);
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='Note']")
 	private WebElement inputFBNote;

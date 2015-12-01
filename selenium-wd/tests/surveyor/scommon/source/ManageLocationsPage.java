@@ -14,6 +14,8 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.FindBy;
 
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 
 /**
  * @author zlu
@@ -125,7 +127,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		
 		if (isElementPresent(this.panelDuplicationErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-			if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:"))
+			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
 				this.btnCancel.click();
 		}		
 	}
@@ -232,7 +234,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				
 				if (isElementPresent(this.panelDuplicationErrorXPath)) {
 					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-					if (panelError.getText().equalsIgnoreCase("Please, correct the following errors:")) {
+					if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
 						this.btnCancel.click();
 						return false;
 					}
