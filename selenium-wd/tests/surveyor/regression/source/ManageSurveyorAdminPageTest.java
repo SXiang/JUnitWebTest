@@ -160,7 +160,13 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		manageSurveyorAdminPage.open();
 		manageSurveyorAdminPage.editExistingSurveyor(SQACUSLOC, surveyorName50Chars, surveyorName51Chars);
 		
-		assertTrue(manageSurveyorAdminPage.findExistingSurveyor(SQACUSLOC, surveyorName50Chars));
+		String allowedSurveyorName = surveyorName51Chars.substring(0,50);
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		
+		manageSurveyorAdminPage.open();
+		assertTrue(manageSurveyorAdminPage.findExistingSurveyor(SQACUSLOC, allowedSurveyorName));
 	}
 	
 	/**

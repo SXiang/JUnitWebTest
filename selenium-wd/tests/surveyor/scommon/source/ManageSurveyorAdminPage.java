@@ -35,7 +35,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 	}
 	
 	public boolean findExistingSurveyor(String locationName, String surveyorName) {
-		setPagination(PAGINATIONSETTING);
+		setPagination(PAGE_PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -50,10 +50,10 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 		
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGE_PAGINATIONSETTING))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
+			loopCount = Integer.parseInt(PAGE_PAGINATIONSETTING);
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			locationNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
@@ -64,20 +64,21 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 			
 			if ((locationNameCell.getText().trim()).equalsIgnoreCase(locationName) 
 					&& (surveyorNameCell.getText().trim()).equalsIgnoreCase(surveyorName)) {
+				System.out.println("Found entry at row=" + rowNum);
 				return true;
 			}
 				
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGE_PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				
 				rowSize = newRows.size();
 				
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGE_PAGINATIONSETTING))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGE_PAGINATIONSETTING);
 				
 				rowNum = 0;
 			}	
@@ -87,7 +88,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 	}	
 	
 	public boolean editExistingSurveyor(String locationName, String surveyorName, String surveyorNameNew) {
-		setPagination(PAGINATIONSETTING);
+		setPagination(PAGE_PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -104,10 +105,10 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 		
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGE_PAGINATIONSETTING))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
+			loopCount = Integer.parseInt(PAGE_PAGINATIONSETTING);
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			locationNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
@@ -120,6 +121,8 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 					&& (surveyorNameCell.getText().trim()).equalsIgnoreCase(surveyorName)) {
 				actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
+				
+				System.out.println("Found cell at xpath=" + actionEditXPath);
 				
 				actionEditCell.click();
 				
@@ -152,17 +155,17 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 				return true;
 			}
 				
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGE_PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				
 				rowSize = newRows.size();
 				
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGE_PAGINATIONSETTING))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGE_PAGINATIONSETTING);
 				
 				rowNum = 0;
 			}	
@@ -172,7 +175,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 	}
 	
 	public boolean editExistingSurveyor(String locationName, String surveyorName, String locationNameNew, String surveyorNameNew) {
-		setPagination(PAGINATIONSETTING);
+		setPagination(PAGE_PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -189,10 +192,10 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 		
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGE_PAGINATIONSETTING))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
+			loopCount = Integer.parseInt(PAGE_PAGINATIONSETTING);
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			locationNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
@@ -205,6 +208,8 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 					&& (surveyorNameCell.getText().trim()).equalsIgnoreCase(surveyorName)) {
 				actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
+				
+				System.out.println("Found cell at xpath=" + actionEditXPath);
 				
 				actionEditCell.click();
 				
@@ -237,17 +242,17 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 				return true;
 			}
 				
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGE_PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				
 				rowSize = newRows.size();
 				
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGE_PAGINATIONSETTING))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGE_PAGINATIONSETTING);
 				
 				rowNum = 0;
 			}	

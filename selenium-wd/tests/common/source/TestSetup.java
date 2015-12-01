@@ -459,7 +459,7 @@ public class TestSetup {
 		// Adjust size of the string as per the requested size.
 		int len = uuidString.length();
 		if (len > size) {
-			return uuidString.substring(0, size-1);
+			return uuidString.substring(0, size);
 		} else if (len < size){
 			return BaseHelper.prependStringWithChar(uuidString, '0', size - len);
 		}			
