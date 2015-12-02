@@ -124,6 +124,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String numTextString;
 		String[] strList;
 		int userNum = 0;
+		int pageSize = 0;
 
 		System.out
 				.println("\nRunning - TC115 - Test Description: Pagination (Manage Users)\n");
@@ -132,12 +133,13 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(testSetup.getLoginUser(),
 				testSetup.getLoginPwd());
 
+		pageSize = 10;
 		manageUsersPage.open();
-		manageUsersPage.setPagination("10");
+		manageUsersPage.setPagination(String.valueOf(pageSize));
 
-		userNameList = manageUsersPage.getUserNameList(false);
+		userNameList = manageUsersPage.getUserNameList(false, pageSize);
 
-		assertTrue(userNameList.size() <= 10);
+		assertTrue(userNameList.size() <= pageSize);
 
 		numTextString = manageUsersPage.getLabelPageTableInfo().getText()
 				.trim();
@@ -146,12 +148,13 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		assertTrue(userNameList.size() == userNum);
 
+		pageSize = 25;
 		manageUsersPage.open();
-		manageUsersPage.setPagination("25");
+		manageUsersPage.setPagination(String.valueOf(pageSize));
 
-		userNameList = manageUsersPage.getUserNameList(false);
+		userNameList = manageUsersPage.getUserNameList(false, pageSize);
 
-		assertTrue(userNameList.size() <= 25);
+		assertTrue(userNameList.size() <= pageSize);
 
 		numTextString = manageUsersPage.getLabelPageTableInfo().getText()
 				.trim();
@@ -160,12 +163,13 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		assertTrue(userNameList.size() == userNum);
 
+		pageSize = 50;
 		manageUsersPage.open();
-		manageUsersPage.setPagination("50");
+		manageUsersPage.setPagination(String.valueOf(pageSize));
 
-		userNameList = manageUsersPage.getUserNameList(false);
+		userNameList = manageUsersPage.getUserNameList(false, pageSize);
 
-		assertTrue(userNameList.size() <= 50);
+		assertTrue(userNameList.size() <= pageSize);
 
 		numTextString = manageUsersPage.getLabelPageTableInfo().getText()
 				.trim();
@@ -174,12 +178,13 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		assertTrue(userNameList.size() == userNum);
 
+		pageSize = 100;
 		manageUsersPage.open();
-		manageUsersPage.setPagination("100");
+		manageUsersPage.setPagination(String.valueOf(pageSize));
 
-		userNameList = manageUsersPage.getUserNameList(false);
+		userNameList = manageUsersPage.getUserNameList(false, pageSize);
 
-		assertTrue(userNameList.size() <= 100);
+		assertTrue(userNameList.size() <= pageSize);
 
 		numTextString = manageUsersPage.getLabelPageTableInfo().getText()
 				.trim();
