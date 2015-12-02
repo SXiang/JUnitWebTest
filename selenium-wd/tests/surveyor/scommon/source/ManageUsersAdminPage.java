@@ -195,8 +195,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		
 		if (isElementPresent(this.panelDuplicationErrorXPath)) {
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-			
-			System.out.println("panelError.gettext() = " + panelError.getText());
+
 			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
 				rtnMsg = panelError.getText();
 				this.cancelAddBtn.click();
