@@ -40,9 +40,6 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Administrator')]")
 	protected WebElement dropDownAdministrator;
 	
-	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Log out')]")
-	protected WebElement linkLogOut;
-	
 	@FindBy(id = "Description")
 	protected WebElement inputSurveyorDesc;
 	

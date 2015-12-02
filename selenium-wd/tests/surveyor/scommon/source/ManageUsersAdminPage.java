@@ -26,15 +26,15 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 	public static final String STRPageTitle = "Manage ??? Users - Surveyor";
 	private static final int ALLOWED_MAX_EMAIL_LENGTH = 50;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='User.UserName-error']")
+	@FindBy(id = "User.UserName-error")
 	private WebElement labelUserNameError;
 	private String labelUserNameErrorXPath = "//*[@id='User.UserName-error']";
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='User_Password-error']")
+	@FindBy(id = "User_Password-error")
 	private WebElement labelUserPwdError;
 	private String labelUserPwdErrorXPath = "//*[@id='User_Password-error']"; 
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='PasswordConfirm-error']")
+	@FindBy(id = "PasswordConfirm-error")
 	private WebElement labelPwdConfirmError;
 	private String labelPwdConfirmErrorXPath = "//*[@id='PasswordConfirm-error']";
 	
@@ -196,6 +196,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		if (isElementPresent(this.panelDuplicationErrorXPath)) {
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
 			
+			System.out.println("panelError.gettext() = " + panelError.getText());
 			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
 				rtnMsg = panelError.getText();
 				this.cancelAddBtn.click();
