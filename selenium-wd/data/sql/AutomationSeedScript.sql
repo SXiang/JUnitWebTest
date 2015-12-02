@@ -266,31 +266,35 @@ IF NOT EXISTS (SELECT * FROM [dbo].[IsotopicAnalysisDispositionType] WHERE [Isot
 
 --Surveyor:
 -- Assign Surveyor to 'Santa Clara-picarro', 'sqacusloc', 'pge_SC' and 'sqaTestloc' locations.
-IF NOT EXISTS (SELECT * FROM [dbo].[SurveyorUnit] WHERE [Id]='00000014-fb61-2ef6-5dd1-39c8ac533d40')
-BEGIN
-	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Santa Clara-picarro'
+SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Santa Clara-picarro'
+UPDATE [dbo].[SurveyorUnit] SET [LocationId]=@locationID, [Description]=N'SoftwareCar_2037_picarro' WHERE [Id]='00000014-fb61-2ef6-5dd1-39c8ac533d40'
+IF @@ROWCOUNT=0
 	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'00000014-fb61-2ef6-5dd1-39c8ac533d40', @locationID, N'SoftwareCar_2037_picarro')
-END
-IF NOT EXISTS (SELECT * FROM [dbo].[SurveyorUnit] WHERE [Id]='00000014-fb61-2ef6-5dd1-39c8ac533d41')
-BEGIN
-	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='sqacusloc'
+
+SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='sqacusloc'
+UPDATE [dbo].[SurveyorUnit] SET [LocationId]=@locationID, [Description]=N'SoftwareCar_2037_cust' WHERE [Id]='00000014-fb61-2ef6-5dd1-39c8ac533d41'
+IF @@ROWCOUNT=0
 	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'00000014-fb61-2ef6-5dd1-39c8ac533d41', @locationID, N'SoftwareCar_2037_cust')
-END
-IF NOT EXISTS (SELECT * FROM [dbo].[SurveyorUnit] WHERE [Id]='C24E9253-F195-9AEC-DE1E-39D0FBB5D8A1')
-BEGIN
-	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='pge_SC'
+
+SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='sqacusloc'
+UPDATE [dbo].[SurveyorUnit] SET [LocationId]=@locationID, [Description]=N'White Dodge' WHERE [Id]='DEBACFF7-E103-C14C-9DF8-39CD7B5F2A0A'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'DEBACFF7-E103-C14C-9DF8-39CD7B5F2A0A', @locationID, N'White Dodge')
+
+SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='pge_SC'
+UPDATE [dbo].[SurveyorUnit] SET [LocationId]=@locationID, [Description]=N'PGE-FEDS2015' WHERE [Id]='C24E9253-F195-9AEC-DE1E-39D0FBB5D8A1'
+IF @@ROWCOUNT=0
 	INSERT [dbo].[SurveyorUnit] ([Id],[LocationId],[Description] ) VALUES('C24E9253-F195-9AEC-DE1E-39D0FBB5D8A1', @locationID, 'PGE-FEDS2015')
-END
-IF NOT EXISTS (SELECT * FROM [dbo].[SurveyorUnit] WHERE [Id]='00000014-fb61-2ef6-5dd1-39c8ac533d42')
-BEGIN
-	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='sqaTestloc'
+
+SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='sqaTestloc'
+UPDATE [dbo].[SurveyorUnit] SET [LocationId]=@locationID, [Description]=N'SoftwareCar_2037_Testcust' WHERE [Id]='00000014-fb61-2ef6-5dd1-39c8ac533d42'
+IF @@ROWCOUNT=0
 	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'00000014-fb61-2ef6-5dd1-39c8ac533d42', @locationID, N'SoftwareCar_2037_Testcust')
-END
-IF NOT EXISTS (SELECT * FROM [dbo].[SurveyorUnit] WHERE [Id]='FB4F3579-843A-113E-001C-39D4011393C9')
-BEGIN
-	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Santa Clara-picarro'
+
+SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Santa Clara-picarro'
+UPDATE [dbo].[SurveyorUnit] SET [LocationId]=@locationID, [Description]=N'SimAuto-Surveyor1' WHERE [Id]='FB4F3579-843A-113E-001C-39D4011393C9'
+IF @@ROWCOUNT=0
 	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'FB4F3579-843A-113E-001C-39D4011393C9', @locationID, N'SimAuto-Surveyor1')
-END
 
 
 -- Analyzer
@@ -539,7 +543,7 @@ BEGIN CATCH
         ERROR_NUMBER() AS ErrorNumber
         ,ERROR_SEVERITY() AS ErrorSeverity
         ,ERROR_STATE() AS ErrorState
-        ,ERROR_PROCEDURE() AS ErrorProcedure
+        ,ERROR_PROCEDURE() AS ErrorProcedure	
         ,ERROR_LINE() AS ErrorLine
         ,ERROR_MESSAGE() AS ErrorMessage
 
