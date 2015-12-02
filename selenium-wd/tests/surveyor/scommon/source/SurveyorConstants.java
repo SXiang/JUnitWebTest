@@ -134,6 +134,9 @@ public final class SurveyorConstants {
 	
 	//public static final String PAGINATIONSETTING = "100";
 	public static final String PAGINATIONSETTING = "10"; //Selenium WebDriver issues so set it to 10 only for now
+	public static final String PAGINATIONSETTING_25 = "25";
+	public static final String PAGINATIONSETTING_50 = "50";
+	public static final String PAGINATIONSETTING_100 = "100";
 	
 	public static final String USERENABLED = Resources.getResource(ResourceKeys.Constant_Enabled);
 	public static final String USERDISABLED = Resources.getResource(ResourceKeys.Constant_Disabled);
