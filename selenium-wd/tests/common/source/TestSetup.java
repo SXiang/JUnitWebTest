@@ -208,13 +208,10 @@ public class TestSetup {
 		String batchFileDirectory = getExecutionPath(getRootPath()) + "lib" + File.separator;
 
 		String command = null;
-		if (!isRunningLocally()) {
-			command = "SetupSimulatorPreReqs.cmd";
-		} else {
+		if (isRunningLocally()) {
 			command = "SetupSimulatorPreReqs-Local.cmd";
+			ProcessUtility.executeProcess(batchFileDirectory + command, /*isShellCommand*/ true, /*waitForExit*/ true);
 		}
-		 
-		ProcessUtility.executeProcess(batchFileDirectory + command, /*isShellCommand*/ true, /*waitForExit*/ true);
 	}
 	
 	public static void startAnalyzer() throws IOException {
