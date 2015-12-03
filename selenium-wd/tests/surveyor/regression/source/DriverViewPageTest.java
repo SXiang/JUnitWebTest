@@ -3,6 +3,8 @@ package surveyor.regression.source;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.TestSetup;
@@ -154,7 +156,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	 * 5. All Asset types and boundaries level are OFF 
 	 * 6. Status is green and all the gauges present on expanding are green
 	 */
-	@Test
+	//@Test
 	public void TC1094_SimulatorTest_VerifyInstrumentReady_PicAdmin() {
 		System.out.println("Running TC1094_SimulatorTest_VerifyInstrumentReady_PicAdmin");
 
@@ -269,7 +271,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	 * 6. Car icon is displayed in red color. Breadcrumb will  be displayed in blue color 
 	 * 7. Stop Driving Survey, Start Isotopic Capture, Reference Bottle Measurement buttons are enabled and System Shutdown button is not present
 	 */
-	@Test
+	//@Test
 	public void TC1097_SimulatorTest_StartDrivingSurvey_PicAdmin() {
 		System.out.println("Running TC1097_SimulatorTest_StartDrivingSurvey_PicAdmin");
 
@@ -370,6 +372,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 
 		driverViewPage.open();
 		driverViewPage.waitForPageLoad();
+		driverViewPage.waitForConnectionComplete();
 		
 		System.out.println("Clicking on MODE button");
 		driverViewPage.clickModeButton();
@@ -408,10 +411,15 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		assertTrue(driverViewPage.getStartIsotopicCaptureButton().isDisplayed());
 		assertTrue(driverViewPage.getRefBottleMeasButton().isDisplayed());
 
+		System.out.println("Clicking on STOP SURVEY");
 		driverViewPage.getStopDrivingSurveyButton().click();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		System.out.println("Waiting on UI unblock.");
+		driverViewPage.waitForUIUnBlock();
 		
 		// 8. "Only car icon is present on map. Car icon is displayed in grey color. Breadcrumb will  be displayed in grey color." <-- [Check Feasibility]
+		System.out.println("Click Header Info Box.");
 		driverViewPage.clickHeaderInfoBox();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		

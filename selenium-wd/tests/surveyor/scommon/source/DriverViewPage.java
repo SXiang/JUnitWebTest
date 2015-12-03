@@ -128,6 +128,10 @@ public class DriverViewPage extends SurveyorBasePage {
     @CacheLookup
     private WebElement divNoAnalyzer;
 
+    @FindBy(id = "blocked_ui")
+    @CacheLookup
+    private WebElement divBlockedUI;
+
     @FindBy(id = "bottom_button_mode")
     @CacheLookup
     private WebElement modeButton;
@@ -1276,6 +1280,21 @@ public class DriverViewPage extends SurveyorBasePage {
         (new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return divNoAnalyzer.getAttribute("class").equalsIgnoreCase("cssFade ng-hide");
+            }
+        });
+    }
+    
+    public WebElement getDivBlockedUI() {
+    	return this.divBlockedUI;	
+    }
+
+    /**
+     * Verifies that the page UI is no longer blocked.
+     */
+    public void waitForUIUnBlock() {
+        (new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return divBlockedUI.getAttribute("class").equalsIgnoreCase("ng-hide");
             }
         });
     }
