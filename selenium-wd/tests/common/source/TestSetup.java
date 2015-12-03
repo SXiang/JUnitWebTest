@@ -61,11 +61,6 @@ public class TestSetup {
 	private static final String CI_HOST_ADDRESS = "20.20.20.59";
 	private static String testPropFileName;
 	
-	//public static final String SIMULATOR_TEST_REPLAY_FOLDER = "C:\\PicarroAnalyzerSimAutomation";
-	//public static final String SIMULATOR_TEST_REPLAY_DB3_BAT_FILE = "C:\\PicarroAnalyzerSimAutomation\\replay-db3-curl.bat";
-	//public static final String SIMULATOR_TEST_DEFN_FILE = "C:\\PicarroAnalyzerSimAutomation\\replay-db3.defn";
-	//public static final String SIMULATOR_TEST_DB3_FILE = "C:\\PicarroAnalyzerSimAutomation\\Surveyor.db3";
-	
 	public static final String REPLAY_DEFN_CURL_FILE = "replay-defn-curl.bat";
 	public static final String ANALYZER_EXE_PATH = "C:\\PicarroAnalyzer\\Picarro.Surveyor.Analyzer.exe";
 	public static final String TEST_ANALYZER_SERIAL_NUMBER = "SimAuto-Analyzer1";
@@ -219,7 +214,12 @@ public class TestSetup {
 		stopAnalyzer();
 		
 		// Start the Analyzer process.
-		analyzerProcess = ProcessUtility.executeProcess(ANALYZER_EXE_PATH, /*isShellCommand*/ false, /*waitForExit*/ false);	
+		analyzerProcess = ProcessUtility.executeProcess(ANALYZER_EXE_PATH, /*isShellCommand*/ false, /*waitForExit*/ false);
+		if (analyzerProcess.isAlive()) {
+			System.out.println("Analyzer EXE started Successfully!");
+		} else {
+			System.out.println("Analyzer EXE did NOT start.");
+		}
 	}
 
 	public static void replayDB3Script(String defnFileName, String db3FileName) {
