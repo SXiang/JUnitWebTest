@@ -58,7 +58,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
  */
 public class TestSetup {
 
-	private static final String CI_HOST_ADDRESS = "20.20.10.82";
+	private static final String CI_HOST_ADDRESS = "20.20.20.59";
 	private static String testPropFileName;
 	
 	//public static final String SIMULATOR_TEST_REPLAY_FOLDER = "C:\\PicarroAnalyzerSimAutomation";
