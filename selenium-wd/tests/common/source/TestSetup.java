@@ -269,10 +269,14 @@ public class TestSetup {
 		}
 	}
 
-	public static void stopAnalyzer() throws UnknownHostException {
-		if (isRunningLocally()) {
-			ProcessUtility.killProcess("Picarro.Surveyor.Analyzer.exe", /*killChildProcesses*/ true);
-			ProcessUtility.killProcess("Supervisor.exe", /*killChildProcesses*/ true);
+	public static void stopAnalyzer() {
+		try {
+			if (isRunningLocally()) {
+				ProcessUtility.killProcess("Picarro.Surveyor.Analyzer.exe", /*killChildProcesses*/ true);
+				ProcessUtility.killProcess("Supervisor.exe", /*killChildProcesses*/ true);
+			}
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
 		}
 	}
 
