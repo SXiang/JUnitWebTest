@@ -210,15 +210,17 @@ public class TestSetup {
 	}
 	
 	public static void startAnalyzer() throws IOException {
-		// Kill any existing instance of Analyzer if running.
-		stopAnalyzer();
-		
-		// Start the Analyzer process.
-		analyzerProcess = ProcessUtility.executeProcess(ANALYZER_EXE_PATH, /*isShellCommand*/ false, /*waitForExit*/ false);
-		if (analyzerProcess.isAlive()) {
-			System.out.println("Analyzer EXE started Successfully!");
-		} else {
-			System.out.println("Analyzer EXE did NOT start.");
+		if (isRunningLocally()) {
+			// Kill any existing instance of Analyzer if running.
+			stopAnalyzer();
+			
+			// Start the Analyzer process.
+			analyzerProcess = ProcessUtility.executeProcess(ANALYZER_EXE_PATH, /*isShellCommand*/ false, /*waitForExit*/ false);
+			if (analyzerProcess.isAlive()) {
+				System.out.println("Analyzer EXE started Successfully!");
+			} else {
+				System.out.println("Analyzer EXE did NOT start.");
+			}
 		}
 	}
 
@@ -267,9 +269,11 @@ public class TestSetup {
 		}
 	}
 
-	public static void stopAnalyzer() {
-		ProcessUtility.killProcess("Picarro.Surveyor.Analyzer.exe", /*killChildProcesses*/ true);
-		ProcessUtility.killProcess("Supervisor.exe", /*killChildProcesses*/ true);
+	public static void stopAnalyzer() throws UnknownHostException {
+		if (isRunningLocally()) {
+			ProcessUtility.killProcess("Picarro.Surveyor.Analyzer.exe", /*killChildProcesses*/ true);
+			ProcessUtility.killProcess("Supervisor.exe", /*killChildProcesses*/ true);
+		}
 	}
 
 	public void startReplay(String defnFileName) throws InstantiationException, IllegalAccessException, IOException {
