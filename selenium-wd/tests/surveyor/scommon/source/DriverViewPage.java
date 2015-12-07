@@ -1248,6 +1248,12 @@ public class DriverViewPage extends SurveyorBasePage {
     	return this;
     }
     
+    public DriverViewPage stopDrivingSurvey() {
+    	this.getStopDrivingSurveyButton().click();
+    	this.waitForUIUnBlock();
+    	return this;
+    }    		
+    
     /**
      * Verify that current page URL matches the expected URL.
      *

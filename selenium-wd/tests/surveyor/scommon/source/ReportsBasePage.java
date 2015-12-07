@@ -70,6 +70,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "area-end-longitude")
 	protected WebElement inputSWLong;
 	
+    @FindBy(id = "btn-select-area")
+	protected WebElement latLongMapSelectorBtn;
+	
 	@FindBy(id = "report-show-indications")
 	protected WebElement checkBoxIndTb;
 	
@@ -327,6 +330,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return this.btnNewComplianceRpt;
 	}
 	
+	public void clickLatLongAreaSelectorBtn() {
+		this.latLongMapSelectorBtn.click();
+	}
+	
+
 	/**
 	 * @param args
 	 */

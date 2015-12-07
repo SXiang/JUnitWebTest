@@ -177,13 +177,13 @@ public final class SurveyorConstants {
 	public static final String SQAPICADMANUALTAG = "dmcmanual-sqapic-admin";
 
 	public static final String DUPLICATIONERROR = Resources.getResource(ResourceKeys.ManageUser_UserNameAlreadyExists);
-	public static final String PWVALUEERROR = "Please enter the same value again.";
+	public static final String PWVALUEERROR = Resources.getResource(ResourceKeys.Validation_EnterSameValueAgain);
 	public static final String EMAILINVALID = Resources.getResource(ResourceKeys.ManageUser_EmailNotValid);
-	public static final String BLANKFIELDERROR = "This field is required.";
-	public static final String PWDSAMEVALUE = "Please enter the same value again.";
-	public static final String EMAILTOOLONG = "Please enter no more than 50 characters.";
+	public static final String BLANKFIELDERROR = Resources.getResource(ResourceKeys.Validation_Required);
+	public static final String PWDSAMEVALUE = Resources.getResource(ResourceKeys.Validation_EnterSameValueAgain);
+	public static final String EMAILTOOLONG = Resources.getResource(ResourceKeys.Validation_EnterNoMoreThan).replace("{0}", "50");
 	
-	public static final String NOMATCHINGSEARCH = "No matching records found";
+	public static final String NOMATCHINGSEARCH = Resources.getResource(ResourceKeys.Constant_NoMatchingRecordsFound);
 	
 	public static final String DRIVINGSURVEYSEXPORTSURVEY = "SurveyExport";
 	public static final String DRIVINGSURVEYSEXPORTPEAKS = "PeakExport";
