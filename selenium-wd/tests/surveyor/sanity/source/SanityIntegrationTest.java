@@ -217,7 +217,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU,
 				CUSNAMEBASE, TIMEZONEPT, "0", listBoundary, tablesList,
-				SQACUSLOCSUR, SQACUSDRTAG, viewList);
+				SQACUSLOCSUR, "", viewList);
 		complianceReportsPage.addNewReport(rpt);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());

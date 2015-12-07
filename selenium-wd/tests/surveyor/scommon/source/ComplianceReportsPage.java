@@ -38,23 +38,30 @@ import static surveyor.scommon.source.SurveyorConstants.TIMEZONE;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BaseHelper;
 import common.source.DBConnection;
+import common.source.FileUtility;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -64,6 +71,8 @@ import surveyor.dataaccess.source.Resources;
  *
  */
 public class ComplianceReportsPage extends ReportsBasePage {
+	private static final int CUSTOM_BOUNDARY_RADBUTTON_GROUP_IDX = 0;
+	private static final int CUSTOMER_BOUNDARY_RADBUTTON_GROUP_IDX = 1;
 	public static final String STRURLPath = "/Reports/ComplianceReports";
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.ComplianceReports_PageTitle);
 	public static final String STRPaginationMsg = "Showing 1 to ";
@@ -75,6 +84,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	
 	@FindBy (how = How.ID, using = "zip-file_pdf")
 	protected WebElement zipImg;
+
+    @FindBy(name = "rdAreaMode")
+    private List<WebElement> areaBoundaryRadioButtons;
+
+	@FindBy (id = "btn-select-boundary")
+	protected WebElement boundarySelectorBtn;
+
+	@FindBy (id = "dvAreaMode_Customer")
+	protected WebElement divCustomerBoundarySection;
+	
+	@FindBy (id = "dvAreaMode_Custom")
+	protected WebElement divCustomBoundarySection;
 
 	/**
 	 * @param driver
@@ -147,6 +168,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (testSetup.isRunningDebug())
 			testSetup.slowdownInSeconds(3);
 		this.btnSurveySearch.click();
+		
 		this.checkboxSurFirst.click();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		this.btnAddSurveys.click();
@@ -576,7 +598,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.addNewReport(reportTitle, customer, TIMEZONE, EXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, 
 				NELAT, NELON, SWLAT, SWLON, SURVEYORUNIT, TAG, STARTDATE, ENDDATE, REPORTMODES1);
 	}
-		
+
 	public void addNewPDReport(String reportTitle, String surveyor, String tag) {
 		this.addNewReport(reportTitle, null, TIMEZONE, EXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, 
 				NELAT, NELON, SWLAT, SWLON, surveyor, tag, STARTDATE, ENDDATE, REPORTMODES1);
@@ -1445,7 +1467,53 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public void clickOnFirstInvestigateComplianceBtn() {
 		this.btnFirstInvestigateCompliance.click();
 	}
+
+	public void openCustomerBoundarySelector() {
+		this.selectCustomerBoundaryRadioButton();
+		this.waitForCustomerBoundarySectionToShow();
+		this.clickBoundarySelectorBtn();
+	}
+
+	public void openLatLongAreaSelector() {
+		this.selectCustomBoundaryRadioButton();
+		this.waitForCustomBoundarySectionToShow();
+		this.clickLatLongMapSelectorBtn();
+	}
 	
+	public void clickLatLongMapSelectorBtn() {
+		this.latLongMapSelectorBtn.click();
+	}
+
+	public void clickBoundarySelectorBtn() {
+		this.boundarySelectorBtn.click();
+	}
+
+	public void selectCustomBoundaryRadioButton() {
+		this.areaBoundaryRadioButtons.get(CUSTOM_BOUNDARY_RADBUTTON_GROUP_IDX).click();
+	}
+
+	public void selectCustomerBoundaryRadioButton() {
+		this.areaBoundaryRadioButtons.get(CUSTOMER_BOUNDARY_RADBUTTON_GROUP_IDX).click();
+	}
+
+	private void waitForCustomBoundarySectionToShow() {
+		WebElement dvAreaModeCustom = this.divCustomBoundarySection;
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+            	return !dvAreaModeCustom.getAttribute("style").contains("display:none");
+            }
+        });
+	}
+
+	private void waitForCustomerBoundarySectionToShow() {
+		WebElement dvAreaModeCustomer = this.divCustomerBoundarySection;
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+            	return !dvAreaModeCustomer.getAttribute("style").contains("display:none");
+            }
+        });
+	}
+
 	@Override
 	public void waitForPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {

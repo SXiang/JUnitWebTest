@@ -21,6 +21,7 @@ public class ResourceKeys {
 	public static final String Constant_Manual = "Constant_Manual";
 	public static final String Constant_Map = "Constant_Map";
 	public static final String Constant_Name = "Constant_Name";
+	public static final String Constant_NoMatchingRecordsFound = "Constant_NoMatchingRecordsFound";
 	public static final String Constant_Password = "Constant_Password";
 	public static final String Constant_Satellite = "Constant_Satellite";
 	public static final String Constant_Standard = "Constant_Standard";
@@ -57,4 +58,20 @@ public class ResourceKeys {
 	public static final String UserFeedback_PromptTitle = "UserFeedback_PromptTitle";
 	public static final String UserFeedback_ThankYou_PromptText = "UserFeedback_ThankYou_PromptText";
 	public static final String Validation_SummaryTitle = "Validation_SummaryTitle";
+	public static final String Validation_Required = "Validation_Required";
+	public static final String Validation_FixThisField = "Validation_FixThisField";
+	public static final String Validation_EnterValidEmail = "Validation_EnterValidEmail";
+	public static final String Validation_EnterValidUrl = "Validation_EnterValidUrl";
+	public static final String Validation_EnterValidDate = "Validation_EnterValidDate";
+	public static final String Validation_EnterValidIsoDate = "Validation_EnterValidIsoDate";
+	public static final String Validation_EnterValidNumber = "Validation_EnterValidNumber";
+	public static final String Validation_EnterOnlyDigits = "Validation_EnterOnlyDigits";
+	public static final String Validation_EnterValidCreditCardNumber = "Validation_EnterValidCreditCardNumber";
+	public static final String Validation_EnterSameValueAgain = "Validation_EnterSameValueAgain";
+	public static final String Validation_EnterNoMoreThan = "Validation_EnterNoMoreThan";
+	public static final String Validation_EnterAtLeast = "Validation_EnterAtLeast";
+	public static final String Validation_EnterValueInLengthRange = "Validation_EnterValueInLengthRange";
+	public static final String Validation_EnterValueInRange = "Validation_EnterValueInRange";
+	public static final String Validation_EnterValueLessThanOrEqual = "Validation_EnterValueLessThanOrEqual";
+	public static final String Validation_EnterValueGreaterThanOrEqual = "Validation_EnterValueGreaterThanOrEqual";
 }

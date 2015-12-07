@@ -3,38 +3,29 @@
  */
 package common.source;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
@@ -312,10 +303,8 @@ public class TestSetup {
 						ChromeOptions options = new ChromeOptions();
 						options.addArguments(Arrays.asList(
 								"--incognito",
-	//							"allow-running-insecure-content",
-	//							"ignore-certificate-errors", 
 								"test-type"));
-					//	options.addArguments("download.default_directory", this.downloadPath);
+						options.addArguments("chrome.switches","--disable-extensions");
 						options.setExperimentalOptions("prefs", prefs);
 						capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 						driver = new RemoteWebDriver(new URL("http://"
@@ -351,9 +340,8 @@ public class TestSetup {
 						ChromeOptions options = new ChromeOptions();
 						options.addArguments(Arrays.asList(
 							"--incognito",
-	//						"allow-running-insecure-content",
-	//						"ignore-certificate-errors", 
 							"test-type"));
+						options.addArguments("chrome.switches","--disable-extensions");
 						options.setExperimentalOptions("prefs", prefs);
 						capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 										

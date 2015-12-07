@@ -53,17 +53,17 @@ public class OLMapUtility {
 	private static final String GET_ASSETS_GEOMETRY_COORDINATES_FUNCTION = "function getAssetsCoordinates(){var assetsCoord=new Array();"
 			+ "try{if(assetLayer&&assetLayer.getSource){sources=assetLayer.getSource();if(sources.getFeatures){features=sources.getFeatures();"
 			+ "if(features){for(var i=0;i<features.length;i++){if(features[i]&&features[i].getGeometry){geometry=features[i].getGeometry();"
-			+ "if(geometry&&geometry.getCoordinates){assetsCoord.push(geometry.getCoordinates());}}}}}};}catch(err){};return assetsCoord;}";
+			+ "if(geometry&&geometry.getCoordinates){assetsCoord.push(geometry.getCoordinates());}}}}}};}catch(err){};return assetsCoord;};";
 	
 	private static final String CONCENTRATION_CHART_DATA_FUNCTION = "function isConcentrationChartDataShownOnMap(percentRectHeight,percentWhitePixelsToSeek){"
 			+ "var chartIsShown=false;try{cc_ctx=$('#graph_mini')[0].getContext('2d');height=$('#graph_mini').height();width=$('#graph_mini').width();"
 			+ "var rectHeight=height*percentRectHeight/100;var imgData=cc_ctx.getImageData(0,height-rectHeight,width,rectHeight);var len=imgData.data.length;"
 			+ "var points=len*percentWhitePixelsToSeek/100;for(var i=0;i<len;i++){if(imgData.data[i]==255){points--;"
-			+ "if(points<0){chartIsShown=true;}}}}catch(err){chartIsShown=false;};return chartIsShown;}";
+			+ "if(points<0){chartIsShown=true;}}}}catch(err){chartIsShown=false;};return chartIsShown;};";
 	
 	private static final String GET_CONCENTRATION_CHART_IMAGE_DATA_FUNCTION = "function getConcentrationChartImageData(){var imgData;"
 			+ "try{cc_ctx=$('#graph_mini')[0].getContext('2d');height=$('#graph_mini').height();width=$('#graph_mini').width();"
-			+ "imgData=cc_ctx.getImageData(0,0,width,height).data;}catch(err){imgData=null;};return imgData;}";
+			+ "imgData=cc_ctx.getImageData(0,0,width,height).data;}catch(err){imgData=null;};return imgData;};";
 	
 	private static final String IS_FOV_PRESENT_JS_FUNCTION = "function isFOVPresent(){var found=false;try{layer=fovLayer;"
 			+ "if(layer&&layer.getVisible&&layer.getVisible()&&layer.getStyle){style=layer.getStyle();if(style&&style.getFill){fill=style.getFill();"
@@ -72,8 +72,7 @@ public class OLMapUtility {
 	private static final String GET_FOV_GEOMETRY_COORDINATES_FUNCTION = "function getFOVCoordinates(){var fovCoord=new Array();"
 			+ "if(fovLayer){if(fovLayer.getSource){sources=fovLayer.getSource();if(sources.getFeatures){features=sources.getFeatures();"
 			+ "if(features){for(var i=0;i<features.length;i++){if(features[i]&&features[i].getGeometry){geometry=features[i].getGeometry();"
-			+ "if(geometry.getCoordinates){coordArray=geometry.getCoordinates();if(coordArray){fovCoord.push(coordArray);}}}}}}}};"
-			+ "return fovCoord;};";
+			+ "if(geometry.getCoordinates){coordArray=geometry.getCoordinates();if(coordArray){fovCoord.push(coordArray);}}}}}}}};return fovCoord;};";
 	
 	private static final String IS_BREADCRUMBS_PRESENT_JS_FUNCTION = "function isBreadCrumbPresent(){var found=false;var fillColorMatch=false;var strokeColorMatch=false;"
 			+ "try{layer=breadCrumbLayer;if(layer&&layer.getVisible&&layer.getVisible()&&layer.getStyle){style=layer.getStyle();"
@@ -105,30 +104,30 @@ public class OLMapUtility {
 			+ "if(lastConstellation){lastConstellation.nodes.forEach(function(d){if(d.text){if(nodeCnt==0){text=d.text;}else{text+=','+d.text;};nodeCnt++;}});};"
 			+ "return text;};";
 	
-	private static final String IS_ICON_PRESENT_JS_FUNCTION_CALL = "isIconPresent('%s');";
+	private static final String IS_ICON_PRESENT_JS_FUNCTION_CALL = "return isIconPresent('%s');";
 
-	private static final String IS_LISAS_PRESENT_JS_FUNCTION_CALL = "isLisasPresent();";
-	private static final String GET_LISA_COORDINATES_JS_FUNCTION_CALL = "getLisaCoordinates();";
+	private static final String IS_LISAS_PRESENT_JS_FUNCTION_CALL = "return isLisasPresent();";
+	private static final String GET_LISA_COORDINATES_JS_FUNCTION_CALL = "return getLisaCoordinates();";
 	
-	private static final String IS_BOUNDARIES_PRESENT_JS_FUNCTION_CALL = "isBoundariesPresent();";
-	private static final String GET_BOUNDARIES_GEOMETRY_COORDINATES_JS_FUNCTION_CALL = "getBoundariesCoordinates();";
+	private static final String IS_BOUNDARIES_PRESENT_JS_FUNCTION_CALL = "return isBoundariesPresent();";
+	private static final String GET_BOUNDARIES_GEOMETRY_COORDINATES_JS_FUNCTION_CALL = "return getBoundariesCoordinates();";
 	
-	private static final String IS_ASSETS_PRESENT_JS_FUNCTION_CALL = "isAssetsPresent();";
-	private static final String GET_ASSETS_GEOMETRY_COORDINATES_FUNCTION_CALL = "getAssetsCoordinates();";
+	private static final String IS_ASSETS_PRESENT_JS_FUNCTION_CALL = "return isAssetsPresent();";
+	private static final String GET_ASSETS_GEOMETRY_COORDINATES_FUNCTION_CALL = "return getAssetsCoordinates();";
 	
-	private static final String IS_BREADCRUMBS_PRESENT_JS_FUNCTION_CALL = "isBreadCrumbPresent();";
-	private static final String GET_BREADCRUMB_GEOMETRY_COORDINATES_FUNCTION_CALL = "getBreadCrumbCoordinates();";
+	private static final String IS_BREADCRUMBS_PRESENT_JS_FUNCTION_CALL = "return isBreadCrumbPresent();";
+	private static final String GET_BREADCRUMB_GEOMETRY_COORDINATES_FUNCTION_CALL = "return getBreadCrumbCoordinates();";
 	
-	private static final String CONCENTRATION_CHART_DATA_FUNCTION_CALL = "isConcentrationChartDataShownOnMap(5,50);";   // look for 50% white pixels in bottom 5% of the chart
-	private static final String GET_CONCENTRATION_CHART_IMAGE_DATA_FUNCTION_CALL = "getConcentrationChartImageData();";
+	private static final String CONCENTRATION_CHART_DATA_FUNCTION_CALL = "return isConcentrationChartDataShownOnMap(5,10);";   // look for 10% white pixels in bottom 5% of the chart
+	private static final String GET_CONCENTRATION_CHART_IMAGE_DATA_FUNCTION_CALL = "return getConcentrationChartImageData();";
 	
-	private static final String IS_INDICATIONS_PRESENT_JS_FUNCTION_CALL = "isIndicationsShownOnMap();";
-	private static final String GET_INDICATION_LINK_COUNT_JS_FUNCTION_CALL = "getIndicationLinksCount();";
-	private static final String GET_INDICATION_NODES_COUNT_JS_FUNCTION_CALL = "getIndicationNodesCount();";
-	private static final String GET_INDICATION_NODES_TEXT_JS_FUNCTION_CALL = "getIndicationNodesText();";
+	private static final String IS_INDICATIONS_PRESENT_JS_FUNCTION_CALL = "return isIndicationsShownOnMap();";
+	private static final String GET_INDICATION_LINK_COUNT_JS_FUNCTION_CALL = "return getIndicationLinksCount();";
+	private static final String GET_INDICATION_NODES_COUNT_JS_FUNCTION_CALL = "return getIndicationNodesCount();";
+	private static final String GET_INDICATION_NODES_TEXT_JS_FUNCTION_CALL = "return getIndicationNodesText();";
 	
-	private static final String IS_FOV_PRESENT_JS_FUNCTION_CALL = "getFOVCoordinates();";
-	private static final String GET_FOV_GEOMETRY_COORDINATES_FUNCTION_CALL = "getFOVCoordinates();";
+	private static final String IS_FOV_PRESENT_JS_FUNCTION_CALL = "return isFOVPresent();";
+	private static final String GET_FOV_GEOMETRY_COORDINATES_FUNCTION_CALL = "return getFOVCoordinates();";
 	
 	private WebDriver driver;
 
