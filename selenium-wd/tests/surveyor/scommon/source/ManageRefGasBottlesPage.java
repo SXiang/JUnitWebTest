@@ -10,6 +10,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
@@ -24,6 +26,8 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	public static final String STRURLPATH = "/Picarro/ManageRefGasBottles";
 	public static final String STRPAGETITLE = Resources.getResource(ResourceKeys.ManageRefGasBottles_PageTitle);
+	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageRefGasBottles_PageTitle);
+	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.AddRefGasBottle_PageTitle);
 	
 	@FindBy(css = "a[class='btn btn-primary']")
 	private WebElement btnAddNewRefGasBottle;
@@ -237,4 +241,21 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	public void clickOnCancelBtn() {
 		this.btnCancel.click();
 	}
+
+    @Override
+	public void waitForPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRPageContentText);
+            }
+        });
+    }
+
+	public void waitForNewPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRNewPageContentText);
+            }
+        });
+    }
 }

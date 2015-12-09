@@ -1,6 +1,7 @@
 package surveyor.dataaccess.source;
 
 public class ResourceKeys {
+	public static final String AddRefGasBottle_PageTitle = "AddRefGasBottle_PageTitle";
 	public static final String ComplianceReport_AlreadyAdded = "ComplianceReport_AlreadyAdded";
 	public static final String ComplianceReport_CustomBoundary = "ComplianceReport_CustomBoundary";
 	public static final String ComplianceReport_IsotopicAnalysis = "ComplianceReport_IsotopicAnalysis";
@@ -50,6 +51,7 @@ public class ResourceKeys {
 	public static final String ManageUsers_PageTitle = "ManageUsers_PageTitle";
 	public static final String ManageUser_EditUser = "ManageUser_EditUser";
 	public static final String ManageUser_EmailNotValid = "ManageUser_EmailNotValid";
+	public static final String ManageUser_NewUser = "ManageUser_NewUser";
 	public static final String ManageUser_UserNameAlreadyExists = "ManageUser_UserNameAlreadyExists";
 	public static final String RefGasReports_PageTitle = "RefGasReports_PageTitle";
 	public static final String Runs_DrivingSurveys = "Runs_DrivingSurveys";
