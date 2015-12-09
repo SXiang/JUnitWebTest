@@ -49,7 +49,7 @@ public class Resources extends BaseEntity {
 			Resources resource = (Resources)DBCache.INSTANCE.get(CACHE_KEY+name);
 			resx = resource.getValue();
 		} else {
-			String SQL = "SELECT * FROM dbo.Resources WHERE Name='" + name + "' AND Culture='" + culture + "'";
+			String SQL = "SELECT * FROM dbo.Resources WHERE Name='" + name + "' AND CultureId='" + culture + "'";
 			ArrayList<Resources> resList = load(SQL);
 			if (resList!=null && resList.size()>0) {
 				Resources resource = resList.get(0);
@@ -65,7 +65,7 @@ public class Resources extends BaseEntity {
 	 */
 	public ArrayList<Resources> getAll() {
 		String culture = TestContext.INSTANCE.getUserCulture();
-		String SQL = "SELECT * FROM dbo.Resources WHERE Culture='" + culture + "'";
+		String SQL = "SELECT * FROM dbo.Resources WHERE CultureId='" + culture + "'";
         return load(SQL);
 	}
 
@@ -78,7 +78,7 @@ public class Resources extends BaseEntity {
 			
 			while (resultSet.next()) {
 				String name = resultSet.getString("Name");
-				Resources resource = new Resources(resultSet.getString("Culture"), 
+				Resources resource = new Resources(resultSet.getString("CultureId"), 
 	            		name, resultSet.getString("Value"));
 				resourcesList.add(resource);
 				
