@@ -32,6 +32,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageUsers";
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.ManageUsers_PageTitle);
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageUsers_PageTitle);
+	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ManageUser_NewUser);
 	protected static final CharSequence STREditPageContentText = Resources.getResource(ResourceKeys.ManageUser_EditUser);
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a[1]")
@@ -1132,7 +1133,15 @@ public class ManageUsersPage extends SurveyorBasePage {
         });
     }
 
-	public void waitForEditPageLoad() {
+	public void waitForNewPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRNewPageContentText);
+            }
+        });
+    }
+
+    public void waitForEditPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getPageSource().contains(STREditPageContentText);

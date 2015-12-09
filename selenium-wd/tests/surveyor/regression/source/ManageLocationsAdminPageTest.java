@@ -225,12 +225,14 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		manageUsersAdminPage.open();
 		curURL = driver.getCurrentUrl();
 		manageUsersAdminPage.getBtnAddNewUser().click();
+		manageUsersAdminPage.waitForNewPageLoad();
 		manageUsersAdminPage.getBtnCancel().click();
 		assertTrue(manageUsersAdminPage.getStrPageURL().equalsIgnoreCase(curURL));
 
 		manageRefGasBottlesAdminPage.open();
 		curURL = driver.getCurrentUrl();
 		manageRefGasBottlesAdminPage.getBtnAddNewRefGasBottle().click();
+		manageRefGasBottlesAdminPage.waitForNewPageLoad();
 		manageRefGasBottlesAdminPage.getBtnCancel().click();
 		assertTrue(manageRefGasBottlesAdminPage.getStrPageURL().equalsIgnoreCase(curURL));
 	}
