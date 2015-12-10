@@ -611,6 +611,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				}
 
 				this.btnOk.click();
+				this.waitForPageLoad();
 
 				if (table.isDisplayed())
 					return true;
