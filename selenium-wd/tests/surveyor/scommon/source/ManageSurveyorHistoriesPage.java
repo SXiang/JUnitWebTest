@@ -9,6 +9,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.FindBy;
 
 import common.source.TestSetup;
@@ -24,6 +26,8 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageSurveyorHistories";
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.Layout_Nav_ManageSurveyorHistories);
+	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageSurveyorHistories_PageTitle);
+	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ManageSurveyorHistory_PageTitle);
 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	protected WebElement btnAddNewHistoryEntry;
@@ -89,6 +93,7 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 		}
 
 		this.btnAddNewHistoryEntry.click();
+		this.waitForNewPageLoad();
 
 		List<WebElement> options = this.dropDownSurveyorUnit.findElements(By
 				.tagName("option"));
@@ -114,6 +119,7 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 		}
 
 		this.btnAddNewHistoryEntry.click();
+		this.waitForNewPageLoad();
 
 		List<WebElement> options = this.dropDownSurveyorUnit.findElements(By
 				.tagName("option"));
@@ -141,6 +147,7 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 		}
 
 		this.btnAddNewHistoryEntry.click();
+		this.waitForNewPageLoad();
 
 		List<WebElement> options = this.dropDownSurveyorUnit.findElements(By
 				.tagName("option"));
@@ -250,4 +257,21 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 	public static void main(String[] args) {
 
 	}
+
+    @Override
+	public void waitForPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRPageContentText);
+            }
+        });
+    }
+
+	public void waitForNewPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRNewPageContentText);
+            }
+        });
+    }
 }
