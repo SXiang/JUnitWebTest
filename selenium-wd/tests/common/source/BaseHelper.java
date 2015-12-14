@@ -7,7 +7,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -25,8 +29,7 @@ public class BaseHelper {
 	public BaseHelper() {
 	}
 
-	public static void deCompressZipFile(String strNameBase, String strDLPath)
-			throws Exception {
+	public static void deCompressZipFile(String strNameBase, String strDLPath) throws Exception {
 		String zipFile = strDLPath + strNameBase + ".zip";
 		String outputFolder = strDLPath + strNameBase;
 
@@ -56,8 +59,7 @@ public class BaseHelper {
 		zis.close();
 	}
 
-	public static void deCompressZipFile(String strName, String strDLPath,
-			boolean fullFileName) throws Exception {
+	public static void deCompressZipFile(String strName, String strDLPath, boolean fullFileName) throws Exception {
 		String zipFile = strDLPath + strName;
 		String outputFolder = strDLPath;
 
@@ -95,8 +97,7 @@ public class BaseHelper {
 		if (pdfFile.exists()) {
 			sizeKB = (long) (pdfFile.length() / 1024);
 		} else {
-			System.out.format("\nThe \"%s\" file doesn't exists!\n",
-					pdfFileName);
+			System.out.format("\nThe \"%s\" file doesn't exists!\n", pdfFileName);
 			return false;
 		}
 
@@ -117,8 +118,7 @@ public class BaseHelper {
 		if (pdfFile.exists()) {
 			sizeKB = (long) (pdfFile.length() / 1024);
 		} else {
-			System.out.format("\nThe \"%s\" file doesn't exists!\n",
-					pdfFileName);
+			System.out.format("\nThe \"%s\" file doesn't exists!\n", pdfFileName);
 			return false;
 		}
 
@@ -136,12 +136,9 @@ public class BaseHelper {
 		double sizeKB;
 
 		if (pdfFile.exists()) {
-			System.out.println("Length: " + pdfFile.length());
 			sizeKB = pdfFile.length() / 1024.2d;
-			System.out.println("SIZEKB::" + sizeKB);
 		} else {
-			System.out.format("\nThe \"%s\" file doesn't exists!\n",
-					pdfFileName);
+			System.out.format("\nThe \"%s\" file doesn't exists!\n", pdfFileName);
 			return false;
 		}
 		System.out.format("\nThe \"%s\" size is: %.2f\n", pdfFileName, sizeKB);
@@ -161,16 +158,14 @@ public class BaseHelper {
 			if (datFile.canRead())
 				return true;
 		} else {
-			System.out.format("\nThe \"%s\" file doesn't exists!\n",
-					datFileName);
+			System.out.format("\nThe \"%s\" file doesn't exists!\n", datFileName);
 			return false;
 		}
 
 		return false;
 	}
 
-	public static boolean compareTwoFilesByContent(String file1, String file2)
-			throws IOException {
+	public static boolean compareTwoFilesByContent(String file1, String file2) throws IOException {
 		return FileUtils.contentEquals(new File(file1), new File(file2));
 	}
 
@@ -194,7 +189,7 @@ public class BaseHelper {
 
 	public static String prependStringWithChar(String input, char prependChar, int times) {
 		StringBuilder builder = new StringBuilder();
-		
+
 		if (times > 0) {
 			char[] ch = new char[times];
 			for (int i = 0; i < ch.length; i++) {
@@ -202,18 +197,76 @@ public class BaseHelper {
 			}
 			builder.append(String.copyValueOf(ch));
 		}
-		
+
 		if (input != null) {
 			builder.append(input);
 		}
-			
+
 		return builder.toString();
 	}
-	
+
+	/**
+	 * This method checks a list of strings are contained in a given string
+	 * 
+	 * @param actualReportString
+	 * @param inputList
+	 * @return HashMap<String, Boolean> a map with the string and whether it's
+	 *         matched
+	 */
+	public static HashMap<String, Boolean> singlePatternMatching(String actualReportString, List<String> inputList) {
+
+		HashMap<String, Boolean> stringMatch = new HashMap<String, Boolean>();
+		String[] lines = actualReportString.split("\\n");
+		Iterator<String> listIterator = inputList.iterator();
+		for (String line : lines) {
+			while (listIterator.hasNext()) {
+				String stringtoMatch = listIterator.next().trim();
+				String formatteLine = line.trim();
+				if (formatteLine.contains(stringtoMatch)) {
+					stringMatch.put(stringtoMatch, true);
+				}
+			}
+		}
+		return stringMatch;
+	}
+
+	/**
+	 * This method checks for a list of key value pairs in a given string. Input
+	 * is a list of Strings to be matched and returns the String and associated
+	 * value
+	 * 
+	 * @param actualReportString
+	 * @param inputList
+	 * @return HashMap<String, String> a map with the string and whether it's
+	 *         matched
+	 */
+	public static HashMap<String, String> patternMatchingforPairs(String actualReportString, List<String> inputList) {
+		HashMap<String, String> stringMatch = new HashMap<String, String>();
+		String[] lines = actualReportString.split("\\n");
+		Iterator<String> listIterator = inputList.iterator();
+
+		while (listIterator.hasNext()) {
+			Pattern pattertoMatch = Pattern.compile(listIterator.next().trim());
+			for (String line : lines) {
+				String formatteLine = line.trim();
+				if (pattertoMatch.matcher(line).find()) {
+					Matcher matcher = pattertoMatch.matcher(formatteLine);
+					matcher.find();
+					stringMatch.put((formatteLine.substring(matcher.start(), matcher.end()).trim()),
+							(formatteLine.substring(matcher.end() + 1).trim().replace(":", "").trim()));
+				}
+			}
+		}
+
+		return stringMatch;
+	}
+
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
+
+		// HashMap<String, String> output=patternMatchingforPairs
 
 	}
 }
