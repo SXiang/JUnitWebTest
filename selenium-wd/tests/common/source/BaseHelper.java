@@ -14,6 +14,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.PixelGrabber;
 
 import org.apache.commons.io.FileUtils;
 
@@ -218,7 +221,12 @@ public class BaseHelper {
 		HashMap<String, Boolean> stringMatch = new HashMap<String, Boolean>();
 		String[] lines = actualReportString.split("\\n");
 		Iterator<String> listIterator = inputList.iterator();
+		while (listIterator.hasNext()) {
+			String stringtoMatch = listIterator.next().trim();
+			stringMatch.put(stringtoMatch, false);
+		}
 		for (String line : lines) {
+			listIterator = inputList.iterator();
 			while (listIterator.hasNext()) {
 				String stringtoMatch = listIterator.next().trim();
 				String formatteLine = line.trim();
@@ -237,14 +245,12 @@ public class BaseHelper {
 	 * 
 	 * @param actualReportString
 	 * @param inputList
-	 * @return HashMap<String, String> a map with the string and whether it's
-	 *         matched
+	 * @return HashMap<String, String> a map with the string and whether it's matched
 	 */
 	public static HashMap<String, String> patternMatchingforPairs(String actualReportString, List<String> inputList) {
 		HashMap<String, String> stringMatch = new HashMap<String, String>();
 		String[] lines = actualReportString.split("\\n");
 		Iterator<String> listIterator = inputList.iterator();
-
 		while (listIterator.hasNext()) {
 			Pattern pattertoMatch = Pattern.compile(listIterator.next().trim());
 			for (String line : lines) {
@@ -257,7 +263,6 @@ public class BaseHelper {
 				}
 			}
 		}
-
 		return stringMatch;
 	}
 
@@ -265,8 +270,6 @@ public class BaseHelper {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-
-		// HashMap<String, String> output=patternMatchingforPairs
 
 	}
 }
