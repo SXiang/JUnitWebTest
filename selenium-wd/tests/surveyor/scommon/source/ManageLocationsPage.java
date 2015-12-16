@@ -3,7 +3,7 @@
  */
 package surveyor.scommon.source;
 
-import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 
 import java.util.List;
 
@@ -57,6 +57,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='RapidResponseMinimumAmplitude']")
 	protected WebElement RRMinAmp;
+	
+	@FindBy(id = "AssessmentMinimumAmplitude")
+	protected WebElement assessmentMinAmp;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='NoLowerBound']")
 	protected WebElement NoLower;
@@ -114,9 +117,10 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				option.click();
 		}
 		
-		this.stdMinAmp.sendKeys("0.1");
+		this.stdMinAmp.sendKeys("0.035");
 		this.opdMinAmp.sendKeys("5");
 		this.RRMinAmp.sendKeys("5");
+		this.assessmentMinAmp.sendKeys("0.035");
 		
 		this.NoLower.sendKeys("-45");
 		this.YesLower.sendKeys("-42");
@@ -133,7 +137,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 	
 	public boolean findExistingLocation(String customerName, String locationName) {
-		setPagination(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING_100);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -148,10 +152,10 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 		
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			customerNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
@@ -162,20 +166,21 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName) 
 					&& (locationNameCell.getText().trim()).equalsIgnoreCase(locationName)) {
+				System.out.println("Found entry at row=" + rowNum);
 				return true;
 			}
 				
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				
 				rowSize = newRows.size();
 				
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 				
 				rowNum = 0;
 			}
@@ -185,7 +190,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 	
 	public boolean editExistingLocation(String customerName, String locationName, String newLocationName) {
-		setPagination(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING_100);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -202,10 +207,10 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);		
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);		
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			customerNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
@@ -217,6 +222,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName) && (locationNameCell.getText().trim()).equalsIgnoreCase(locationName)) {
 				actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[5]";
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
+				System.out.println("Found entry at row=" + rowNum);
 				
 				actionEditCell.click();
 				
@@ -243,17 +249,17 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				return true;
 			}
 				
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				
 				rowSize = newRows.size();
 				
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 				
 				rowNum = 0;
 			}	

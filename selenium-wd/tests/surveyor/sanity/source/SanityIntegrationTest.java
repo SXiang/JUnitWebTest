@@ -156,10 +156,10 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		List<String> listBoundary = new ArrayList<String>();
 		listBoundary.add("8.5");
 		listBoundary.add("11");
-		listBoundary.add("37.42152227696863");
-		listBoundary.add("-121.93495276739418");
-		listBoundary.add("37.4128647496036");
-		listBoundary.add("-121.94370749761877");
+		listBoundary.add("37.42060203616509");
+		listBoundary.add("-121.97252515127416");
+		listBoundary.add("37.41572797964773");
+		listBoundary.add("-121.98394063284152");
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();
@@ -217,7 +217,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU,
 				CUSNAMEBASE, TIMEZONEPT, "0", listBoundary, tablesList,
-				SQACUSLOCSUR, "", viewList);
+				SQACUSLOCSUR, SQACUSDRTAG, viewList);
 		complianceReportsPage.addNewReport(rpt);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
