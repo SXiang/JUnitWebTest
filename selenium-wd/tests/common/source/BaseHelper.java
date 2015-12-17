@@ -15,6 +15,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.PixelGrabber;
+
 import org.apache.commons.io.FileUtils;
 
 /**
