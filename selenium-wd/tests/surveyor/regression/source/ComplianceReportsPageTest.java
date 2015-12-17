@@ -2663,4 +2663,5 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
 	}
+
 }

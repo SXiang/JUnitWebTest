@@ -361,7 +361,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
             }
         });
     }
-	
+
     public void waitForEditPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {

@@ -19,7 +19,7 @@ public class Constants {
 	public static final int Excel_TestCaseSteps_Col_Result = 7;
 		
 	// Test Execution Excel Sheets
-	public static final String[] Excel_Sheets_TestCases = {"TestCaseSteps-Reports", "TestCaseSteps-DriverView"};
+	public static final String[] Excel_Sheets_TestCases = {"TestCases-DriverView", "TestCases-Reports"};
 	
 	public static final String TestCasesExcelFile = "TestCases.xlsx";
 	public static final String TestCaseDataExcelFile = "TestCaseData.xlsx";

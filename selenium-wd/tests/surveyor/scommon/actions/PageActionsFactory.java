@@ -16,35 +16,35 @@ public class PageActionsFactory {
 		} else if (pageObjectName.equals("ComplianceReportsPage")) {
 			return new ComplianceReportsPageActions(driver, strBaseURL, testSetup);
 		} else if (pageObjectName.equals("DriverViewPage")) {
-			return null;  // not yet implemented.
+			return new DriverViewPageActions(driver, strBaseURL, testSetup);
 		} else if (pageObjectName.equals("EULAPage")) {
 			return null;  // not yet implemented.
 		} else if (pageObjectName.equals("FleetMapPage")) {
-			return new ComplianceReportsPageActions(driver, strBaseURL, testSetup);
+			return null;  // not yet implemented.
 		} else if (pageObjectName.equals("HomePage")) {
 			return null;  // not yet implemented.
 		} else if (pageObjectName.equals("LoginPage")) {
-			return null;  // not yet implemented.
+			return new LoginPageActions(driver, strBaseURL, testSetup);
 		} else if (pageObjectName.equals("ManageAnalyzersPage")) {
-			return new ComplianceReportsPageActions(driver, strBaseURL, testSetup);
+			return null;  // not yet implemented.
 		} else if (pageObjectName.equals("ManageCustomersPage")) {
 			return null;  // not yet implemented.
 		} else if (pageObjectName.equals("ManageLocationsPage")) {
 			return null;  // not yet implemented.
 		} else if (pageObjectName.equals("ManageRefGasBottlesPage")) {
-			return new ComplianceReportsPageActions(driver, strBaseURL, testSetup);
+			return null;  // not yet implemented.
 		} else if (pageObjectName.equals("ManageReleaseNotesPage")) {
 			return null;  // not yet implemented.
 		} else if (pageObjectName.equals("ManageSurveyorPage")) {
 			return null;  // not yet implemented.
 		} else if (pageObjectName.equals("ManageSurveyorHistoriesPage")) {
-			return new ComplianceReportsPageActions(driver, strBaseURL, testSetup);
+			return null;  // not yet implemented.
 		} else if (pageObjectName.equals("ManageUsersPage")) {
 			return null;  // not yet implemented.
 		} else if (pageObjectName.equals("MeasurementSessionsPage")) {
 			return null;  // not yet implemented.
 		} else if (pageObjectName.equals("PrimePage")) {
-			return new ComplianceReportsPageActions(driver, strBaseURL, testSetup);
+			return null;  // not yet implemented.
 		} else if (pageObjectName.equals("ReferenceGasReportsPage")) {
 			return null;  // not yet implemented.
 		} else if (pageObjectName.equals("SendFeedbackPage")) {
@@ -58,5 +58,9 @@ public class PageActionsFactory {
 		} 
 		
 		return null;
+	}
+
+	public static IMethodInvoker getMethodInvoker() {
+		return new TableMapMethodInvoker();
 	}
 }

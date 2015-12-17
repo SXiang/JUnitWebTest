@@ -109,6 +109,7 @@ public class TestSetup {
 			
 			String rootPath = getRootPath();
 			testPropFileName = getExecutionPath(rootPath) + "tests" + File.separator + "surveyor" + File.separator + "test.properties";
+
 			InputStream inputStream = new FileInputStream(testPropFileName);
 			testProp = new Properties();
 			testProp.load(inputStream);

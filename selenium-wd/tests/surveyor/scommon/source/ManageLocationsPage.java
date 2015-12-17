@@ -52,6 +52,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='StandardMinimumAmplitude']")
 	protected WebElement stdMinAmp;
 	
+	@FindBy(id = "AssessmentMinimumAmplitude")
+	protected WebElement assessmentMinAmp;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='OperatorMinimumAmplitude']")
 	protected WebElement opdMinAmp;
 	
@@ -114,9 +117,10 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				option.click();
 		}
 		
-		this.stdMinAmp.sendKeys("0.1");
+		this.stdMinAmp.sendKeys("0.035");
 		this.opdMinAmp.sendKeys("5");
 		this.RRMinAmp.sendKeys("5");
+		this.assessmentMinAmp.sendKeys("0.035");
 		
 		this.NoLower.sendKeys("-45");
 		this.YesLower.sendKeys("-42");
