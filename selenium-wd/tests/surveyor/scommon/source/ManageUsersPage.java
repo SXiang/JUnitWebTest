@@ -33,7 +33,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.ManageUsers_PageTitle);
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageUsers_PageTitle);
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ManageUser_NewUser);
-	protected static final CharSequence STREditPageContentText = Resources.getResource(ResourceKeys.ManageUser_EditUser);
+	public static final String STREditPageContentText = Resources.getResource(ResourceKeys.ManageUser_EditUser);
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a[1]")
 	protected WebElement btnAddNewCustomerUser;
@@ -114,7 +114,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 	public void addNewPicarroUser(String email, String password, String role) {
 		this.btnAddNewPicarroUser.click();
-
+		this.waitForNewPageLoad();
+		
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
 		this.inputPassword.sendKeys(password);
@@ -141,6 +142,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public void addNewPicarroUser(String email, String password, String role,
 			String location, String timeZone) {
 		this.btnAddNewPicarroUser.click();
+		this.waitForNewPageLoad();
 
 		Select droplist = new Select(this.dropDownCustomer);
 		droplist.selectByVisibleText(location);
