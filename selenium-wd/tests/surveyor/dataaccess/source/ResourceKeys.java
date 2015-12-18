@@ -45,6 +45,7 @@ public class ResourceKeys {
 	public static final String Layout_Nav_ManageUsers = "Layout_Nav_ManageUsers";
 	public static final String Layout_Nav_Surveyors = "Layout_Nav_Surveyors";
 	public static final String ManageAnalyzer_EditAnalyzer = "ManageAnalyzer_EditAnalyzer";
+	public static final String ManageAnalyzer_NewAnalyzer = "ManageAnalyzer_NewAnalyzer";
 	public static final String ManageAnalyzers_PageTitle = "ManageAnalyzers_PageTitle";
 	public static final String ManageCustomers_PageTitle = "ManageCustomers_PageTitle";
 	public static final String ManageLocation_RapidResponse = "ManageLocation_RapidResponse";

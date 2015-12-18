@@ -26,8 +26,9 @@ import surveyor.dataaccess.source.Resources;
 public class ManageAnalyzersPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageAnalyzers";
 	public static final String STRPageTitle = "Manage Analyzers - Surveyor";
-	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageAnalyzers_PageTitle);
-	public static final CharSequence STREditPageContentText = Resources.getResource(ResourceKeys.ManageAnalyzer_EditAnalyzer);
+	public static final String STRPageContentText = "Manage Analyzers";
+	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ManageAnalyzer_NewAnalyzer);
+	public static final String STREditPageContentText = Resources.getResource(ResourceKeys.ManageAnalyzer_EditAnalyzer);
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	private WebElement btnAddNewAnalyzer;	
@@ -205,6 +206,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				System.out.println("Found entry at row=" + rowNum);
 				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[5]";								
 				actionCell = table.findElement(By.xpath(actionXPath));
+				System.out.println("Found entry at row=" + rowNum);
 				actionCell.click();
 				this.waitForEditPageLoad();
 				
@@ -214,9 +216,8 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 						option.click();		
 				}
 				
-				this.btnOk.click();
-				
-				this.waitForPageLoad();
+				this.btnOk.click();		
+				this.waitForPageToLoad();
 				
 				if (table.isDisplayed())
 					return true;
@@ -292,10 +293,9 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 					(locationCell.getText().trim()).equalsIgnoreCase(locationName) && 
 					(surveyorCell.getText().trim()).equalsIgnoreCase(surveyorName) && 
 					analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
-				System.out.println("Found entry at row=" + rowNum);
 				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[5]";
 				actionCell = table.findElement(By.xpath(actionXPath));
-				
+				System.out.println("Found entry at row=" + rowNum);
 				actionCell.click();
 				this.waitForEditPageLoad();
 				
@@ -309,6 +309,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				}
 				
 				this.btnOk.click();
+				this.waitForPageToLoad();
 				
 				if (table.isDisplayed())
 					return true;
@@ -358,6 +359,14 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getPageSource().contains(STRPageContentText);
+            }
+        });
+    }
+
+	public void waitForNewPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRNewPageContentText);
             }
         });
     }
