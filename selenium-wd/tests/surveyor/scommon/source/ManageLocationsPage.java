@@ -52,14 +52,14 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='StandardMinimumAmplitude']")
 	protected WebElement stdMinAmp;
 	
+	@FindBy(id = "AssessmentMinimumAmplitude")
+	protected WebElement assessmentMinAmp;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='OperatorMinimumAmplitude']")
 	protected WebElement opdMinAmp;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='RapidResponseMinimumAmplitude']")
 	protected WebElement RRMinAmp;
-	
-	@FindBy(id = "AssessmentMinimumAmplitude")
-	protected WebElement assessmentMinAmp;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='NoLowerBound']")
 	protected WebElement NoLower;

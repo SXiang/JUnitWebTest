@@ -544,6 +544,10 @@ public class DriverViewPage extends SurveyorBasePage {
 		return driver.findElement(By.id("zoomLevel")).getText();
 	}
 
+	public String getAnalyzerLabelText() {
+		return driver.findElement(By.id("headerInfoStatus")).getText();
+	}
+
 	public boolean isGisSwitchOn(GisSwitchType switchType) throws IllegalArgumentException {
 		boolean isSelected = false;
 		
@@ -559,19 +563,19 @@ public class DriverViewPage extends SurveyorBasePage {
 				isSelected = this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio on");
 				break;
 			case MaterialTypeCastIron:
-				isSelected = this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio on");				
+				isSelected = this.materialTypeCastIron.getAttribute("class").equalsIgnoreCase("switch material_radio on");				
 				break;
 			case MaterialTypeOtherPlastic:
-				isSelected = this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio on");				
+				isSelected = this.materialTypeOtherPlastic.getAttribute("class").equalsIgnoreCase("switch material_radio on");				
 				break;
 			case MaterialTypePEPlastic:
-				isSelected = this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio on");				
+				isSelected = this.materialTypePEPlastic.getAttribute("class").equalsIgnoreCase("switch material_radio on");				
 				break;
 			case MaterialTypeProtectedSteel:
-				isSelected = this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio on");				
+				isSelected = this.materialTypeProtectedSteel.getAttribute("class").equalsIgnoreCase("switch material_radio on");				
 				break;
 			case MaterialTypeUnprotectedSteel:
-				isSelected = this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio on");				
+				isSelected = this.materialTypeUnprotectedSteel.getAttribute("class").equalsIgnoreCase("switch material_radio on");				
 				break;
 			case UseAllBoundaries:
 				isSelected = this.useAllBoundaries.getAttribute("class").equalsIgnoreCase("switch on");
@@ -601,19 +605,19 @@ public class DriverViewPage extends SurveyorBasePage {
 				isSelected = this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio");
 				break;
 			case MaterialTypeCastIron:
-				isSelected = this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio");				
+				isSelected = this.materialTypeCastIron.getAttribute("class").equalsIgnoreCase("switch material_radio");				
 				break;
 			case MaterialTypeOtherPlastic:
-				isSelected = this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio");				
+				isSelected = this.materialTypeOtherPlastic.getAttribute("class").equalsIgnoreCase("switch material_radio");				
 				break;
 			case MaterialTypePEPlastic:
-				isSelected = this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio");				
+				isSelected = this.materialTypePEPlastic.getAttribute("class").equalsIgnoreCase("switch material_radio");				
 				break;
 			case MaterialTypeProtectedSteel:
-				isSelected = this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio");				
+				isSelected = this.materialTypeProtectedSteel.getAttribute("class").equalsIgnoreCase("switch material_radio");				
 				break;
 			case MaterialTypeUnprotectedSteel:
-				isSelected = this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio");				
+				isSelected = this.materialTypeUnprotectedSteel.getAttribute("class").equalsIgnoreCase("switch material_radio");				
 				break;
 			case UseAllBoundaries:
 				isSelected = this.useAllBoundaries.getAttribute("class").equalsIgnoreCase("switch");
@@ -628,34 +632,126 @@ public class DriverViewPage extends SurveyorBasePage {
 		return isSelected;
 	}
 
-	public void toggleMapSwitch(MapSwitchType switchType, boolean turnOn) {
+	public boolean toggleGisSwitch(GisSwitchType switchType, boolean turnOn) throws IllegalArgumentException {
+		boolean isSelected = false;
+		
 		switch (switchType)
 		{
-			case Satellite:
-				if (this.mapSwitchSatellite.getAttribute("class").equalsIgnoreCase("switch radio_switch")) {
+			case BoundariesDistrict:
+				if (this.boundariesDistrict.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 					if (turnOn) {
-						this.mapSwitchSatellite.click();
+						this.boundariesDistrict.click();
 					}
-				} else if (this.mapSwitchSatellite.getAttribute("class").equalsIgnoreCase("switch radio_switch on")) {
+				} else if (this.boundariesDistrict.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 					if (!turnOn) {
-						this.mapSwitchSatellite.click();
+						this.boundariesDistrict.click();
 					}
 				}	
 				break;
-			case Map:
-				if (this.mapSwitchMap.getAttribute("class").equalsIgnoreCase("switch radio_switch")) {
+			case BoundariesDistrictPlat:
+				if (this.boundariesDistrictPlat.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 					if (turnOn) {
-						this.mapSwitchMap.click();
+						this.boundariesDistrictPlat.click();
 					}
-				} else if (this.mapSwitchMap.getAttribute("class").equalsIgnoreCase("switch radio_switch on")) {
+				} else if (this.boundariesDistrictPlat.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 					if (!turnOn) {
-						this.mapSwitchMap.click();
+						this.boundariesDistrictPlat.click();
 					}
-				}
+				}	
+				break;
+			case MaterialTypeCopper: 
+				if (this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
+					if (turnOn) {
+						this.materialTypeCopper.click();
+					}
+				} else if (this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
+					if (!turnOn) {
+						this.materialTypeCopper.click();
+					}
+				}	
+				break;
+			case MaterialTypeCastIron:
+				if (this.materialTypeCastIron.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
+					if (turnOn) {
+						this.materialTypeCastIron.click();
+					}
+				} else if (this.materialTypeCastIron.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
+					if (!turnOn) {
+						this.materialTypeCastIron.click();
+					}
+				}	
+				break;
+			case MaterialTypeOtherPlastic:
+				if (this.materialTypeOtherPlastic.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
+					if (turnOn) {
+						this.materialTypeOtherPlastic.click();
+					}
+				} else if (this.materialTypeOtherPlastic.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
+					if (!turnOn) {
+						this.materialTypeOtherPlastic.click();
+					}
+				}	
+				break;
+			case MaterialTypePEPlastic:
+				if (this.materialTypePEPlastic.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
+					if (turnOn) {
+						this.materialTypePEPlastic.click();
+					}
+				} else if (this.materialTypePEPlastic.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
+					if (!turnOn) {
+						this.materialTypePEPlastic.click();
+					}
+				}	
+				break;
+			case MaterialTypeProtectedSteel:
+				if (this.materialTypeProtectedSteel.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
+					if (turnOn) {
+						this.materialTypeProtectedSteel.click();
+					}
+				} else if (this.materialTypeProtectedSteel.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
+					if (!turnOn) {
+						this.materialTypeProtectedSteel.click();
+					}
+				}	
+				break;
+			case MaterialTypeUnprotectedSteel:
+				if (this.materialTypeUnprotectedSteel.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
+					if (turnOn) {
+						this.materialTypeUnprotectedSteel.click();
+					}
+				} else if (this.materialTypeUnprotectedSteel.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
+					if (!turnOn) {
+						this.materialTypeUnprotectedSteel.click();
+					}
+				}	
+				break;
+			case UseAllBoundaries:
+				if (this.useAllBoundaries.getAttribute("class").equalsIgnoreCase("switch")) {
+					if (turnOn) {
+						this.useAllBoundaries.click();
+					}
+				} else if (this.useAllBoundaries.getAttribute("class").equalsIgnoreCase("switch on")) {
+					if (!turnOn) {
+						this.useAllBoundaries.click();
+					}
+				}	
+				break;
+			case UseAllPipes:
+				if (this.useAllPipes.getAttribute("class").equalsIgnoreCase("switch")) {
+					if (turnOn) {
+						this.useAllPipes.click();
+					}
+				} else if (this.useAllPipes.getAttribute("class").equalsIgnoreCase("switch on")) {
+					if (!turnOn) {
+						this.useAllPipes.click();
+					}
+				}	
 				break;
 			default:
-				throw new IllegalArgumentException("Map switch type unknown and not currently handled.");
+				throw new IllegalArgumentException("Gis switch type unknown and not currently handled.");
 		}
+		
+		return isSelected;
 	}
 
 	public boolean verifyLoadedMap(MapSwitchType switchType) {
@@ -723,6 +819,36 @@ public class DriverViewPage extends SurveyorBasePage {
 		}
 		
 		return isSelected;
+	}
+	
+	public void toggleMapSwitch(MapSwitchType switchType, boolean turnOn) {
+		switch (switchType)
+		{
+			case Satellite:
+				if (this.mapSwitchSatellite.getAttribute("class").equalsIgnoreCase("switch radio_switch")) {
+					if (turnOn) {
+						this.mapSwitchSatellite.click();
+					}
+				} else if (this.mapSwitchSatellite.getAttribute("class").equalsIgnoreCase("switch radio_switch on")) {
+					if (!turnOn) {
+						this.mapSwitchSatellite.click();
+					}
+				}	
+				break;
+			case Map:
+				if (this.mapSwitchMap.getAttribute("class").equalsIgnoreCase("switch radio_switch")) {
+					if (turnOn) {
+						this.mapSwitchMap.click();
+					}
+				} else if (this.mapSwitchMap.getAttribute("class").equalsIgnoreCase("switch radio_switch on")) {
+					if (!turnOn) {
+						this.mapSwitchMap.click();
+					}
+				}
+				break;
+			default:
+				throw new IllegalArgumentException("Map switch type unknown and not currently handled.");
+		}
 	}
 
 	public boolean isDisplaySwitchOff(DisplaySwitchType switchType) throws IllegalArgumentException {
@@ -795,6 +921,102 @@ public class DriverViewPage extends SurveyorBasePage {
 		}
 		
 		return isSelected;
+	}
+
+	public void toggleDisplaySwitch(DisplaySwitchType switchType, boolean turnOn) {
+		switch (switchType)
+		{
+			case EightHourHistory:
+				if (this.displaySwitch8HourHistory.getAttribute("class").equalsIgnoreCase("switch")) {
+					if (turnOn) {
+						this.displaySwitch8HourHistory.click();
+					}
+				} else if (this.displaySwitch8HourHistory.getAttribute("class").equalsIgnoreCase("switch on")) {
+					if (!turnOn) {
+						this.displaySwitch8HourHistory.click();
+					}
+				}	
+				break;
+			case ConcentrationChart:
+				if (this.displaySwitchConcentrationChart.getAttribute("class").equalsIgnoreCase("switch")) {
+					if (turnOn) {
+						this.displaySwitchConcentrationChart.click();
+					}
+				} else if (this.displaySwitchConcentrationChart.getAttribute("class").equalsIgnoreCase("switch on")) {
+					if (!turnOn) {
+						this.displaySwitchConcentrationChart.click();
+					}
+				}	
+				break;
+			case FOVs:
+				if (this.displaySwitchFovs.getAttribute("class").equalsIgnoreCase("switch")) {
+					if (turnOn) {
+						this.displaySwitchFovs.click();
+					}
+				} else if (this.displaySwitchFovs.getAttribute("class").equalsIgnoreCase("switch on")) {
+					if (!turnOn) {
+						this.displaySwitchFovs.click();
+					}
+				}	
+				break;
+			case Indications:
+				if (this.displaySwitchIndications.getAttribute("class").equalsIgnoreCase("switch")) {
+					if (turnOn) {
+						this.displaySwitchIndications.click();
+					}
+				} else if (this.displaySwitchIndications.getAttribute("class").equalsIgnoreCase("switch on")) {
+					if (!turnOn) {
+						this.displaySwitchIndications.click();
+					}
+				}	
+				break;
+			case IsotopicAnalysis:
+				if (this.displaySwitchIsotopicAnalysis.getAttribute("class").equalsIgnoreCase("switch")) {
+					if (turnOn) {
+						this.displaySwitchIsotopicAnalysis.click();
+					}
+				} else if (this.displaySwitchIsotopicAnalysis.getAttribute("class").equalsIgnoreCase("switch on")) {
+					if (!turnOn) {
+						this.displaySwitchIsotopicAnalysis.click();
+					}
+				}	
+				break;
+			case Lisas:
+				if (this.displaySwitchLisas.getAttribute("class").equalsIgnoreCase("switch")) {
+					if (turnOn) {
+						this.displaySwitchLisas.click();
+					}
+				} else if (this.displaySwitchLisas.getAttribute("class").equalsIgnoreCase("switch on")) {
+					if (!turnOn) {
+						this.displaySwitchLisas.click();
+					}
+				}	
+				break;
+			case Notes:
+				if (this.displaySwitchNotes.getAttribute("class").equalsIgnoreCase("switch")) {
+					if (turnOn) {
+						this.displaySwitchNotes.click();
+					}
+				} else if (this.displaySwitchNotes.getAttribute("class").equalsIgnoreCase("switch on")) {
+					if (!turnOn) {
+						this.displaySwitchNotes.click();
+					}
+				}	
+				break;
+			case WindRose:
+				if (this.displaySwitchWindrose.getAttribute("class").equalsIgnoreCase("switch")) {
+					if (turnOn) {
+						this.displaySwitchWindrose.click();
+					}
+				} else if (this.displaySwitchWindrose.getAttribute("class").equalsIgnoreCase("switch on")) {
+					if (!turnOn) {
+						this.displaySwitchWindrose.click();
+					}
+				}	
+				break;
+			default:
+				throw new IllegalArgumentException("Display switch type unknown and not currently handled.");
+		}
 	}
 
 	public DriverViewPage hidePositionMenu() {
@@ -1106,7 +1328,6 @@ public class DriverViewPage extends SurveyorBasePage {
         this.startSurveyButton.click();
         return this;
     }
-
     
     /**
      * Click on Strong Button.

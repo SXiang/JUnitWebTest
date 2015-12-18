@@ -13,5 +13,12 @@
 	<classpathentry kind="lib" path="selenium-wd/lib/pdfbox-app-1.8.10.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/imagecomparison-0.3.2.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/sqljdbc42.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/poi-ooxml-schemas-3.13-20150929.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/poi-scratchpad-3.13-20150929.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/poi-examples-3.13-20150929.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/poi-excelant-3.13-20150929.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/poi-ooxml-3.13-20150929.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/poi-3.13-20150929.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/xmlbeans-2.6.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

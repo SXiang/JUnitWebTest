@@ -1,5 +1,9 @@
 package common.source;
 
+import java.io.IOException;
+
+import org.openqa.selenium.WebDriver;
+
 public enum TestContext {
 	INSTANCE;
 	
@@ -62,8 +66,39 @@ public enum TestContext {
 	public String getUserCulture() {
 		return userCulture;
 	}
-
+	
 	public void setUserCulture(String userCulture) {
 		this.userCulture = userCulture;
 	}
+
+	public TestSetup getTestSetup() {
+		return this.testSetup;
+	}
+
+	public String getExecutionPath() {
+		String executionPath = null;
+		try {
+			executionPath = TestSetup.getExecutionPath(TestSetup.getRootPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return executionPath;
+	}
+
+	public WebDriver getDriver() {
+		WebDriver driver = null;
+		if (testSetup != null) {
+			driver = testSetup.getDriver();
+		}		
+		return driver;
+	}
+	
+	public String getBaseUrl() {
+		String baseUrl = null;
+		if (testSetup != null) {
+			baseUrl = testSetup.getBaseUrl();
+		}		
+		return baseUrl;
+	}
+	
 }

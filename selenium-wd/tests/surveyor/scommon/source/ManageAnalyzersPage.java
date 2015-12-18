@@ -203,7 +203,8 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 					(locationCell.getText().trim()).equalsIgnoreCase(locationName) && 
 					(surveyorCell.getText().trim()).equalsIgnoreCase(surveyorName) && 
 					analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
-				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[5]";
+				System.out.println("Found entry at row=" + rowNum);
+				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[5]";								
 				actionCell = table.findElement(By.xpath(actionXPath));
 				System.out.println("Found entry at row=" + rowNum);
 				actionCell.click();

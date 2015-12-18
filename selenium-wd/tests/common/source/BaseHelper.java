@@ -3,6 +3,7 @@
  */
 package common.source;
 
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -192,7 +193,6 @@ public class BaseHelper {
 
 	public static String prependStringWithChar(String input, char prependChar, int times) {
 		StringBuilder builder = new StringBuilder();
-
 		if (times > 0) {
 			char[] ch = new char[times];
 			for (int i = 0; i < ch.length; i++) {

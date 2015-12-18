@@ -2,6 +2,7 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
@@ -55,7 +56,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	 * 5. All Asset types and boundaries level are OFF 
 	 * 6. Status is red and on expanding flow, temp gauges are also red
 	 */
-	@Test
+	@Ignore
 	public void TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin() {
 		System.out.println("Running TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin");
 
