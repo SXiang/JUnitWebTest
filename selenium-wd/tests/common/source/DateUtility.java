@@ -2,12 +2,13 @@ package common.source;
 
 import java.text.Format;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAccessor;
-
-
+import java.util.Locale;
 
 
 public class DateUtility {
+	
 	/**
 	 * This function takes a Date/Time format in String and compare the format is correct with the given locale format
 	 * 
@@ -15,17 +16,17 @@ public class DateUtility {
 	 *            - given date time in String, reports- whether the format check is for the reports
 	 * @return whether the String is a match for the locale format
 	 */
-	public boolean compareDateTimeFormat(String inputDateTime, boolean reports) {
+	public boolean compareDateTimeFormat (String inputDateTime, boolean useTimeZone) {
 		TemporalAccessor inputDate;
-
-		try {
-			inputDate = DateTimeFormatter.ofPattern(getDateFormat(reports)).parse(inputDateTime.trim());
-			if (inputDate != null) {
-				return true;
+		Locale locale = Locale.forLanguageTag(getLanguageTag());
+		try{
+		DateTimeFormatter formatter=DateTimeFormatter.ofPattern(getDateFormat(useTimeZone),locale);
+		inputDate = formatter.parse(inputDateTime.trim());
+		if (inputDate != null) {
+			return true;
 			}
-		} catch (Exception e) {
-			 e.printStackTrace();
 		}
+		catch (DateTimeParseException e){}
 		return false;
 	}
 
@@ -35,10 +36,11 @@ public class DateUtility {
 	 * @param inputDateTime1, inputDateTime2 and whether the date check is for the reports
 	 * @return whether dates are a match or not
 	 */
-	public boolean compareDateTimes(String inputDateTime1, String inputDateTime2, boolean reports) {
+	public boolean compareDateTimes(String inputDateTime1, String inputDateTime2, boolean useTimeZone) {
+		Locale locale = Locale.forLanguageTag(getLanguageTag());
 		try {
-			TemporalAccessor date1 = DateTimeFormatter.ofPattern(getDateFormat(reports)).parse(inputDateTime1.trim());
-			TemporalAccessor date2 = DateTimeFormatter.ofPattern(getDateFormat(reports)).parse(inputDateTime2.trim());
+			TemporalAccessor date1 = DateTimeFormatter.ofPattern(getDateFormat(useTimeZone),locale).parse(inputDateTime1.trim());
+			TemporalAccessor date2 = DateTimeFormatter.ofPattern(getDateFormat(useTimeZone),locale).parse(inputDateTime2.trim());
 			String date1String=date1.toString();
 			String date2String=date2.toString();
 			if(date1String.equals(date2String))
@@ -46,9 +48,7 @@ public class DateUtility {
 				return true;
 			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {}
 
 		return false;
 	}
@@ -72,13 +72,10 @@ public class DateUtility {
 				return true;
 			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {	}
 
 		return false;
 	}
-	
 	
 	/**
 	 * This methods looks at the culture of the user and determines the date format accordingly Cultures supported right now: English, French, Chinese
@@ -87,14 +84,10 @@ public class DateUtility {
 	 * @return date format for the user locale
 	 */
 
-	public String getDateFormat(boolean reports) {
-		String culture = TestContext.INSTANCE.getUserCulture();
-		/*
-		 * only for testing assign culture
-		 */
-		//culture = "en-US";
+	public String getDateFormat(boolean useTimeZone) {
+		String culture=TestContext.INSTANCE.getUserCulture();
 		String dateFormat = null;
-		if (reports) {
+		if (useTimeZone) {
 			if (culture.equals("en-US")) {
 				dateFormat = "MM/dd/yyyy h[h]:mm a zzz";
 			}
@@ -116,6 +109,30 @@ public class DateUtility {
 			}
 		}
 		return dateFormat;
+		
+	}
+	
+	/**
+	 * This methods looks at the culture of the user and returns the Java specific Locale- language tag
+	 * 
+	 *  @return locale language tag
+	 */
+
+	public String getLanguageTag() {
+		String culture=TestContext.INSTANCE.getUserCulture();
+		String languageTag=null;
+		if(culture.equals("en-US")){
+			languageTag= "en-US";
+		}
+		if(culture.equals("fr")){
+			languageTag= "fr-FR";
+		}
+		if(culture.equals("zh-Hans")){
+			languageTag= "zh-CN";
+		}
+		
+		return languageTag;
+		
 	}
 
 
@@ -124,11 +141,12 @@ public class DateUtility {
 	 * 
 	 * @param args
 	 */
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 		DateUtility date = new DateUtility();
 		String result;
 		//Unit tests -  compareDateTimeFormat(String inputDateTime, boolean reports)
-		// US -en  Report format tests		
+		TestContext.INSTANCE.setUserCulture("en-US");
+		// US -en  Report format tests	
 		System.out.println(result=(date.compareDateTimeFormat( "12/14/2015 8:42 PM PST", true))?"PASS":"FAIL"); 
 		System.out.println(result=(date.compareDateTimeFormat( "24/01/2015 18:42 CST",  true))?"FAIL":"PASS"); 
 		System.out.println(result=(date.compareDateTimeFormat( "24/01/2015 18:42 PM CST", true))?"FAIL":"PASS"); 
@@ -136,6 +154,7 @@ public class DateUtility {
 		System.out.println(result=(date.compareDateTimeFormat( "24/01/2015 18:42 PM", true))?"FAIL":"PASS");
 		System.out.println(result=(date.compareDateTimeFormat( "24/01/15 18:42 PM CST", true))?"FAIL":"PASS");
 		// US -en  Page format tests	
+		TestContext.INSTANCE.setUserCulture("en-US");
 		System.out.println(result = (date.compareDateTimeFormat("12/14/2015 8:42 PM PST", false)) ? "FAIL" : "PASS");
 		System.out.println(result = (date.compareDateTimeFormat("24/01/2015 18:42 ", false)) ? "FAIL" : "PASS");
 		System.out.println(result = (date.compareDateTimeFormat("24/01/2015 18:42 PM", false)) ? "FAIL" : "PASS");
@@ -143,26 +162,29 @@ public class DateUtility {
 		System.out.println(result = (date.compareDateTimeFormat("24/01/2015 18:42 PM", false)) ? "FAIL" : "PASS");
 		System.out.println(result = (date.compareDateTimeFormat("24/01/15 18:42 PM CST", false)) ? "FAIL" : "PASS");
 		// FR  Report format tests		
-		System.out.println(result=(date.compareDateTimeFormat( "12/14/2015 8:42 PST", true))?"FAIL":"PASS"); 
-		System.out.println(result=(date.compareDateTimeFormat( "24/01/2015 18:42 CST",  true))?"PASS":"FAIL"); 
-		System.out.println(result=(date.compareDateTimeFormat( "2015/01/12 18:42 CST", true))?"FAIL":"PASS"); 
-		System.out.println(result=(date.compareDateTimeFormat( "24/01/2015 18:42 CST", true))?"PASS":"FAIL"); 
-		System.out.println(result=(date.compareDateTimeFormat( "24/01/2015 18:42 PM", true))?"FAIL":"PASS");
+		TestContext.INSTANCE.setUserCulture("fr");
+		System.out.println(result=(date.compareDateTimeFormat( "12/14/2015 8:42 CET", true))?"FAIL":"PASS"); 
+		System.out.println(result=(date.compareDateTimeFormat( "30/06/2009 18:42 CET", true))?"PASS":"FAIL"); 
+		System.out.println(result=(date.compareDateTimeFormat( "2015/01/12 18:42 CET", true))?"FAIL":"PASS"); 
+		System.out.println(result=(date.compareDateTimeFormat( "24/01/2015 18:42 CET", true))?"PASS":"FAIL"); 
 		System.out.println(result=(date.compareDateTimeFormat( "24/01/15 18:42 PM CST", true))?"FAIL":"PASS");
 		// FR  Page format tests	
+		TestContext.INSTANCE.setUserCulture("fr");
 		System.out.println(result=(date.compareDateTimeFormat( "12/24/2015 8:42 ", false))?"FAIL":"PASS"); 
 		System.out.println(result=(date.compareDateTimeFormat( "24/01/2015 8:42 ",  false))?"PASS":"FAIL"); 
 		System.out.println(result=(date.compareDateTimeFormat( "2015/01/12 18:42 ", false))?"FAIL":"PASS"); 
 		System.out.println(result=(date.compareDateTimeFormat( "24/01/2015 16:42 ", false))?"PASS":"FAIL"); 
 		System.out.println(result=(date.compareDateTimeFormat( "24/01/2015 18:42 PM", false))?"FAIL":"PASS");
 		System.out.println(result=(date.compareDateTimeFormat( "24/01/15 18:42 PM ", false))?"FAIL":"PASS");
-		// China  Report format tests		
+		// China  Report format tests	
+		TestContext.INSTANCE.setUserCulture("zh-Hans");
 		System.out.println(result=(date.compareDateTimeFormat( "2015/12/14 8:42 PST ", true))?"PASS":"FAIL"); 
 		System.out.println(result=(date.compareDateTimeFormat( "2015/01/12 18:42 CST", true))?"PASS":"FAIL"); 
 		System.out.println(result=(date.compareDateTimeFormat( "24/01/2015 18:42 CST", true))?"FAIL":"PASS"); 
 		System.out.println(result=(date.compareDateTimeFormat( "2015/12/14 8:42 ", true))?"FAIL":"PASS");
 		System.out.println(result=(date.compareDateTimeFormat( "2015/12/14 8:42 PM CST", true))?"FAIL":"PASS");
 		//China  Page format tests	
+		TestContext.INSTANCE.setUserCulture("zh-Hans");
 		System.out.println(result=(date.compareDateTimeFormat( "2015/12/14 8:42 ", false))?"PASS":"FAIL"); 
 		System.out.println(result=(date.compareDateTimeFormat( "2015/01/12 18:42 ", false))?"PASS":"FAIL"); 
 		System.out.println(result=(date.compareDateTimeFormat( "24/01/2015 18:42 ", false))?"FAIL":"PASS"); 
@@ -170,14 +192,16 @@ public class DateUtility {
 		System.out.println(result=(date.compareDateTimeFormat( "2015/12/14 8:42 PM", false))?"FAIL":"PASS");
 		
 		//Unit tests - compareDateTimes(String inputDateTime1, Date inputDateTime2, boolean reports)
-		// US -en		
+		// US -en
+		TestContext.INSTANCE.setUserCulture("en-US");
 		System.out.println(result=(date.compareDateTimes( "12/14/2015 8:42 PM PST","12/14/2015 8:42 PM PST", true))?"PASS":"FAIL");
 		System.out.println(result=(date.compareDateTimes( "12/14/2015 8:40 PM PST","12/14/2015 8:42 PM PST", true))?"FAIL":"PASS");
 		System.out.println(result=(date.compareDateTimes( "12/14/2015 8:42 PM PST","12/10/2015 8:42 PM PST", true))?"FAIL":"PASS");
 		System.out.println(result=(date.compareDateTimes( "12/14/2015 8:42 PM ","12/14/2015 8:42 PM ", false))?"PASS":"FAIL");
 		System.out.println(result=(date.compareDateTimes( "12/14/2015 8:40 PM ","12/14/2015 8:42 PM ", false))?"FAIL":"PASS");
 		System.out.println(result=(date.compareDateTimes( "12/14/2015 8:42 PM ","12/10/2015 8:42 PM ", false))?"FAIL":"PASS");
-		// FR		
+		// FR
+		TestContext.INSTANCE.setUserCulture("fr");
 		System.out.println(result=(date.compareDateTimes( "24/01/2015 18:42 CST","24/01/2015 18:42 CST", true))?"PASS":"FAIL");
 		System.out.println(result=(date.compareDateTimes( "24/01/2015 18:42 CST","24/01/2015 18:40 CST", true))?"FAIL":"PASS");
 		System.out.println(result=(date.compareDateTimes( "24/01/2015 18:42 CST","20/01/2015 18:42 CST", true))?"FAIL":"PASS");
@@ -185,6 +209,7 @@ public class DateUtility {
 		System.out.println(result=(date.compareDateTimes( "24/01/2015 18:42 ","24/01/2015 18:40 ", false))?"FAIL":"PASS");
 		System.out.println(result=(date.compareDateTimes( "24/01/2015 18:42 ","20/01/2015 18:42 ", false))?"FAIL":"PASS");
 		// China	
+		TestContext.INSTANCE.setUserCulture("zh-Hans");
 		System.out.println(result=(date.compareDateTimes( "2015/01/12 18:42 CST","2015/01/12 18:42 CST", true))?"PASS":"FAIL");
 		System.out.println(result=(date.compareDateTimes( "2015/01/12 18:40 CST","2015/01/12 18:42 CST", true))?"FAIL":"PASS");
 		System.out.println(result=(date.compareDateTimes( "2015/01/12 18:42 CST","2014/01/12 18:42 CST", true))?"FAIL":"PASS");
@@ -194,31 +219,31 @@ public class DateUtility {
 		
 		//Unit tests - compareDates(String inputDateTime1, String inputDateTime2, boolean reports)
 		// US -en		
-		
+		TestContext.INSTANCE.setUserCulture("en-US");
 		System.out.println(result=(date.compareDates( "12/14/2015 8:42 PM PST","12/14/2015 8:42 PM PST", true))?"PASS":"FAIL");
 		System.out.println(result=(date.compareDates( "12/14/2015 8:40 PM PST","12/14/2016 8:42 PM PST", true))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDates( "12/14/2015 8:42 PM PST","12/15/2015 8:42 PM PST", true))?"FAIL":"PASS");
-		
+		System.out.println(result=(date.compareDates( "12/14/2015 8:42 PM PST","12/15/2015 8:42 PM PST", true))?"FAIL":"PASS");		
 		System.out.println(result=(date.compareDates( "12/14/2015 8:42 PM ","12/14/2015 8:42 PM ", false))?"PASS":"FAIL");
 		System.out.println(result=(date.compareDates( "12/14/2015 8:40 PM ","12/14/2016 8:42 PM ", false))?"FAIL":"PASS");
 		System.out.println(result=(date.compareDates( "12/14/2015 8:42 PM ","12/15/2015 8:42 PM ", false))?"FAIL":"PASS");
-		//FR	
+		//FR
+		TestContext.INSTANCE.setUserCulture("fr");
 		System.out.println(result=(date.compareDates( "24/01/2015 18:42 CST","24/01/2015 18:42 CST", true))?"PASS":"FAIL");
 		System.out.println(result=(date.compareDates( "24/01/2015 18:42 CST","24/02/2015 18:42 CST", true))?"FAIL":"PASS");
 		System.out.println(result=(date.compareDates( "24/01/2015 18:42 CST","24/01/2016 18:42 CST", true))?"FAIL":"PASS");
 		System.out.println(result=(date.compareDates( "24/01/2015 18:42 ","24/01/2015 18:42 ", false))?"PASS":"FAIL");
 		System.out.println(result=(date.compareDates( "24/01/2015 18:42 ","24/02/2015 18:42 ", false))?"FAIL":"PASS");
 		System.out.println(result=(date.compareDates( "24/01/2015 18:42 ","24/01/2016 18:42 ", false))?"FAIL":"PASS");
-		// China	
+		// China
+		TestContext.INSTANCE.setUserCulture("zh-Hans");
 		System.out.println(result=(date.compareDates( "2015/01/12 18:42 CST","2015/01/12 18:42 CST", true))?"PASS":"FAIL");
 		System.out.println(result=(date.compareDates( "2015/01/12 18:40 CST","2015/02/12 18:42 CST", true))?"FAIL":"PASS");
 		System.out.println(result=(date.compareDates( "2015/01/12 18:42 CST","2014/01/12 18:42 CST", true))?"FAIL":"PASS");
-		// China	
 		System.out.println(result=(date.compareDates( "2015/01/12 18:42 ","2015/01/12 18:42 ", false))?"PASS":"FAIL");
 		System.out.println(result=(date.compareDates( "2015/01/12 18:40 ","2015/02/12 18:42 ", false))?"FAIL":"PASS");
 		System.out.println(result=(date.compareDates( "2015/01/12 18:42 ","2014/01/12 18:42 ", false))?"FAIL":"PASS");
 
 
 
-	}*/
+	}
 }
