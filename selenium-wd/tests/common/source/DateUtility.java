@@ -59,10 +59,11 @@ public class DateUtility {
 	 * @param inputDateTime1, inputDateTime2 and whether the date check is for the reports
 	 * @return whether dates are a match or not
 	 */
-	public boolean compareDates(String inputDateTime1, String inputDateTime2, boolean reports) {
+	public boolean compareDates(String inputDateTime1, String inputDateTime2, boolean useTimeZone) {
+		Locale locale = Locale.forLanguageTag(getLanguageTag());
 		try {
-			TemporalAccessor date1 = DateTimeFormatter.ofPattern(getDateFormat(reports)).parse(inputDateTime1.trim());
-			TemporalAccessor date2 = DateTimeFormatter.ofPattern(getDateFormat(reports)).parse(inputDateTime2.trim());
+			TemporalAccessor date1 = DateTimeFormatter.ofPattern(getDateFormat(useTimeZone),locale).parse(inputDateTime1.trim());
+			TemporalAccessor date2 = DateTimeFormatter.ofPattern(getDateFormat(useTimeZone),locale).parse(inputDateTime2.trim());
 			DateTimeFormatter formatter =  DateTimeFormatter.ofPattern("MM/dd/YYYY");  
 			Format format = formatter.toFormat();  
 			String date1Part = format.format(date1);  
