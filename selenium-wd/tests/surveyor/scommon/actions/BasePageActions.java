@@ -82,6 +82,14 @@ public class BasePageActions implements IPageActions {
 		return false;
 	}
 
+	protected void logAction(String actionName, String data, Integer dataRowID) {
+		System.out.println(String.format("Executing action-[%s] : data=[%s], dataRowID=[%d]", actionName, data, dataRowID));
+	}
+
+	protected void log(String logText) {
+		System.out.println(logText);
+	}
+
 	@Override
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
 		return false;

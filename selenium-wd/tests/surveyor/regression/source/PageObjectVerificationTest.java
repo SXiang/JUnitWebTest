@@ -13,6 +13,7 @@ import surveyor.scommon.source.BoundarySelectionControl.ControlMode;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.DriverViewPage.CloudCover;
 import surveyor.scommon.source.DriverViewPage.SolarRadiation;
 import surveyor.scommon.source.DriverViewPage.SurveyTime;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
@@ -116,7 +117,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		
 		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
 		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
-		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, SurveyType.Standard);
+		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
 
 		// Let the test run for a few seconds.
 		testSetup.slowdownInSeconds(20 * testSetup.getSlowdownInSeconds());

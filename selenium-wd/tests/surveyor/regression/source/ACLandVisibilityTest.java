@@ -181,6 +181,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		ManageUsersPage manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageUsersPage);
 		
+		System.out.println("Creating Picarro support user with username-" + userName);
+		
 		manageUsersPage.open();
 		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, PICUSERROLESUP);		
 		if (!manageUsersPage.findExistingUser("Picarro", userName))
