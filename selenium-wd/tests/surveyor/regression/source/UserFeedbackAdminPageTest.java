@@ -51,6 +51,7 @@ public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
 
 		userFeedbackAdminPage.sendFeedback(SQACUSSU, feedbackNote);
+		userFeedbackAdminPage.waitForPageLoad();
 		assertTrue(SQACUSSU + " not able to send the feedback note!!",
 				userFeedbackAdminPage.checkSuccessMsg());
 		userFeedbackAdminPage.clickBtnReturnToHomePage();

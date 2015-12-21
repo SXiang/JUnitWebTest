@@ -64,6 +64,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		
 	public void addNewAnalyzer(String serialNumber, String sharedKey, String cuslocsur) {
 		this.btnAddNewAnalyzer.click();
+		this.waitForNewPageLoad();
 				
 		this.inputSerialNumber.sendKeys(serialNumber);
 		this.inputSharedKey.sendKeys(sharedKey);
@@ -79,6 +80,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	
 	public void addNewAnalyzer(String serialNumber, String sharedKey, String surveyor, String customerName, String locationName) {
 		this.btnAddNewAnalyzer.click();
+		this.waitForNewPageLoad();
 		
 		this.inputSerialNumber.sendKeys(serialNumber);
 		this.inputSharedKey.sendKeys(sharedKey);

@@ -63,7 +63,7 @@ public class LoginPageActions extends BasePageActions {
 			if (userPassList == null || userPassList.size()!=2) {
 				throw new Exception("Invalid argument value for username/password. Value should be in format [username:password]");
 			}
-			dataRow = new LoginDataRow(userPassList.get(0), userPassList.get(1), "", "", "");
+			dataRow = new LoginDataRow("", userPassList.get(0), userPassList.get(1), "", "");
 		} else if (dataRowID >0) {
 			dataRow = getDataRow(dataRowID);
 		} else {

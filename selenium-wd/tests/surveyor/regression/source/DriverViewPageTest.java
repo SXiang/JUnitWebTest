@@ -8,6 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import common.source.TestSetup;
 import surveyor.scommon.source.DriverViewPage;
+import surveyor.scommon.source.DriverViewPage.CloudCover;
 import surveyor.scommon.source.DriverViewPage.DisplaySwitchType;
 import surveyor.scommon.source.DriverViewPage.GisSwitchType;
 import surveyor.scommon.source.DriverViewPage.MapSwitchType;
@@ -189,7 +190,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		
 		// Start Driving Survey.
 		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TC1094";
-		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Moderate, Wind.Calm, SurveyType.Standard);
+		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Moderate, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
 
 		// Verify Isotopic Capture and Ref Bottle Measurement buttons ARE displayed.
 		driverViewPage.clickModeButton();
@@ -290,7 +291,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		// 1., 2., 3., 4.
 		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
 		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TC1097";
-		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, SurveyType.Standard);
+		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
 
 		// Open Header box and check the survey information.
 		driverViewPage.clickHeaderInfoBox();
@@ -387,7 +388,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		// 1., 2. 4.
 		// Start Driving Survey. Survey Time: Day, Solar Radiation: Strong, Wind: Light, Survey Type: Operator 
 		String tag = testSetup.getFixedSizePseudoRandomString(32) + "_TC1098";
-		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Strong, Wind.Light, SurveyType.Operator);
+		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Strong, Wind.Light, CloudCover.LessThan50, SurveyType.Operator);
 
 		// 5. "Car icon is displayed in red color. Breadcrumb will  be displayed in blue color" <-- [Check feasibility in Open Layer]
 		
