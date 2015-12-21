@@ -92,7 +92,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 	}
 	
 	public boolean checkUserFeedback(String user, String strFeedback) {
-		setPagination(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING_100);
 		
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -106,10 +106,10 @@ public class UserFeedbackPage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 		
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);		
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);		
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			strUserXPath = strTRXPath + "["+rowNum+"]/td[2]";
@@ -118,21 +118,22 @@ public class UserFeedbackPage extends SurveyorBasePage {
 			userCell = table.findElement(By.xpath(strUserXPath));
 			noteCell = table.findElement(By.xpath(strNoteXPath));
 			
-			if (userCell.getText().equalsIgnoreCase(user) && noteCell.getText().equalsIgnoreCase(strFeedback)) {				
+			if (userCell.getText().equalsIgnoreCase(user) && noteCell.getText().equalsIgnoreCase(strFeedback)) {			
+				System.out.println("Found entry at row=" + rowNum);
 				return true;
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				
 				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
 				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 				
 				rowNum = 0;
 			}
@@ -142,7 +143,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 	}
 	
 	public String getUserFeedbackNote(String customer, String user) {
-		setPagination(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING_100);
 		
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -159,10 +160,10 @@ public class UserFeedbackPage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 		
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);		
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);		
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			customerXPath = strTRXPath + "["+rowNum+"]/td[1]";
@@ -174,21 +175,21 @@ public class UserFeedbackPage extends SurveyorBasePage {
 			if (customerCell.getText().trim().equalsIgnoreCase(customer) && userCell.getText().trim().equalsIgnoreCase(user)) {				
 				strNoteXPath = strTRXPath + "["+rowNum+"]/td[3]";
 				noteCell = table.findElement(By.xpath(strNoteXPath));
-				
+				System.out.println("Found entry at row=" + rowNum);
 				return noteCell.getText().trim();
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				
 				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
 				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 				
 				rowNum = 0;
 			}
@@ -201,7 +202,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 	public List<String> getUserFeedbackNotes(String customer, String user) {
 		List<String> list = new ArrayList<String>();		
 		
-		setPagination(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING_100);
 		
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -218,10 +219,10 @@ public class UserFeedbackPage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 		
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);		
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);		
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			customerXPath = strTRXPath + "["+rowNum+"]/td[1]";
@@ -233,21 +234,21 @@ public class UserFeedbackPage extends SurveyorBasePage {
 			if (customerCell.getText().trim().equalsIgnoreCase(customer) && userCell.getText().trim().equalsIgnoreCase(user)) {				
 				strNoteXPath = strTRXPath + "["+rowNum+"]/td[3]";
 				noteCell = table.findElement(By.xpath(strNoteXPath));
-				
+				System.out.println("Found entry at row=" + rowNum);
 				list.add(noteCell.getText().trim());
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				
 				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
 				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 				
 				rowNum = 0;
 			}
