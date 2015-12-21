@@ -2,16 +2,41 @@
 <classpath>
 	<classpathentry kind="src" path="selenium-wd/tests"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/ant-junit-1.8.0.jar"/>
-	<classpathentry kind="lib" path="selenium-wd/lib/junit-4.11-sources.jar"/>
-	<classpathentry kind="lib" path="selenium-wd/lib/junit-4.11.jar"/>
-	<classpathentry kind="lib" path="selenium-wd/lib/selenium-server-standalone-2.39.0.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/junit-4.11-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://junit.org/javadoc/latest/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="selenium-wd/lib/junit-4.11.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://junit.org/javadoc/latest/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="selenium-wd/lib/selenium-server-standalone-2.39.0.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://selenium.googlecode.com/git/docs/api/java/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/http-builder-0.6.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/groovy-2.4.5.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/groovy-all-2.3.6.jar"/>
-	<classpathentry kind="lib" path="selenium-wd/lib/pdfbox-1.8.10.jar"/>
-	<classpathentry kind="lib" path="selenium-wd/lib/pdfbox-app-1.8.10.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/pdfbox-1.8.10.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="https://pdfbox.apache.org/docs/1.8.10/javadocs/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="selenium-wd/lib/pdfbox-app-1.8.10.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="https://pdfbox.apache.org/docs/1.8.10/javadocs/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="selenium-wd/lib/imagecomparison-0.3.2.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/sqljdbc42.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/commons-csv-1.2/commons-csv-1.2.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="https://commons.apache.org/proper/commons-csv/archives/1.2/apidocs"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
