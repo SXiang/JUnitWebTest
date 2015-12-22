@@ -52,7 +52,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		
 		homePage.getLinkAdminManageUsers().click();
 
-		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR,
+		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC, CUSUSERROLEDR,
 				TIMEZONECTUA);
 
 		assertTrue(manageUsersAdminPage.findExistingUser(SQACUSLOC, userName,
@@ -84,7 +84,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		
 		homePage.getLinkAdminManageUsers().click();
 
-		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR,
+		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC, CUSUSERROLEDR,
 				TIMEZONECTUA);
 		assertTrue(manageUsersAdminPage.findExistingUser(SQACUSLOC, userName,
 				CUSUSERROLEDR));
@@ -115,7 +115,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageUsersAdminPage.open();
-		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR,
+		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC, CUSUSERROLEDR,
 				TIMEZONECTUA);
 
 		assertTrue(manageUsersAdminPage.findExistingUser(userName));
@@ -166,8 +166,11 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		
 		homePage.getLinkAdminManageUsers().click();
 
-		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR,
+		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC, CUSUSERROLEDR,
 				TIMEZONECTUA, false);
+		
+		System.out.println("userName = " + userName);
+		
 		assertTrue(manageUsersAdminPage.findExistingUser(SQACUSLOC, userName,
 				CUSUSERROLEDR));
 		assertTrue(manageUsersAdminPage.getUserStatus(userName)
@@ -312,7 +315,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		
 		homePage.getLinkAdminManageUsers().click();
 
-		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR,
+		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC, CUSUSERROLEDR,
 				TIMEZONEPTUA);
 		manageUsersAdminPage.editUser(userName, CUSUSERROLESU, TIMEZONEPTUA,
 				false);
@@ -368,7 +371,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		
 		homePage.getLinkAdminManageUsers().click();
 
-		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, CUSUSERROLEDR,
+		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC, CUSUSERROLEDR,
 				TIMEZONEPTUA, false);
 		manageUsersAdminPage.getInputSearch().sendKeys(userName);
 
