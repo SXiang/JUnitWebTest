@@ -7,8 +7,6 @@ import common.source.RegexUtility;
 
 public class ActionFunctionExecutor {
 	
-	private static final String REGEX_PATTERN_SPLIT_BY_COMMA = ",";
-	private static final String REGEX_PATTERN_EXTRACT_FUNCTION_ARGS = "([a-zA-Z_]\\w+)\\((.+)\\)";
 	private ActionFunctions actionFunc = null;
 	private Method[] methods;
 	
@@ -18,9 +16,9 @@ public class ActionFunctionExecutor {
 	}
 	
 	public boolean isValidFunction(String argValue) {
-		List<String> groups = RegexUtility.getMatchingGroups(argValue, REGEX_PATTERN_EXTRACT_FUNCTION_ARGS);
+		List<String> groups = RegexUtility.getMatchingGroups(argValue, RegexUtility.REGEX_PATTERN_EXTRACT_FUNCTION_ARGS);
 		if (groups != null && groups.size() > 0) {
-			String functionName = groups.get(0);
+			String functionName = groups.get(1);
 			for (int i=0; i< methods.length; i++) {
 				if(methods[i].getName().equals(functionName)){
 					return true;
@@ -32,11 +30,11 @@ public class ActionFunctionExecutor {
 
 	public String executeFunction(String argValue)  throws Exception {
 		Object outputValue = null;
-		List<String> groups = RegexUtility.getMatchingGroups(argValue, REGEX_PATTERN_EXTRACT_FUNCTION_ARGS);
+		List<String> groups = RegexUtility.getMatchingGroups(argValue, RegexUtility.REGEX_PATTERN_EXTRACT_FUNCTION_ARGS);
 		if (groups != null && groups.size() > 0) {
-			String functionName = groups.get(0);
-			String functionArgs = groups.get(1);
-			List<String> paramGroups = RegexUtility.split(functionArgs, REGEX_PATTERN_SPLIT_BY_COMMA);
+			String functionName = groups.get(1);
+			String functionArgs = groups.get(2);
+			List<String> paramGroups = RegexUtility.split(functionArgs, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
 			
 			ActionFunctions actionFunc = new ActionFunctions();
 			for (int i=0; i< methods.length; i++) {
@@ -54,18 +52,35 @@ public class ActionFunctionExecutor {
 		return String.valueOf(outputValue);
 	}
 
-	private Object[] buildFunctionParameters(List<String> paramGroups, int i) {
+	private Object[] buildFunctionParameters(List<String> paramGroups, int i) throws Exception {
 		Object[] objArr = new Object[paramGroups.size()];
 		for (int j = 0; j < paramGroups.size(); j++) {
 			String param = paramGroups.get(i);
+			boolean isString = false;
+			boolean isInteger = false;
+			boolean isFloat = false;
 			// Remove the enclosing ' or " characters from string arguments
 			if (param.startsWith("'") || param.startsWith("\"")) {
 				param = param.substring(1);
+				isString = true;
 			}
-			if (param.endsWith("'") || param.endsWith("\"")) {
-				param = param.substring(0, param.length()-1);
+			if (isString) {
+				if (param.endsWith("'") || param.endsWith("\"")) {
+					param = param.substring(0, param.length()-1);
+				} else {
+					throw new Exception(String.format("String argument %s specified not enclosed correctly in quotes.", param));
+				}
 			}
-			objArr[i] = param;
+			
+			// loosely deduce type of the argument based on '.' in parameter.
+			if (!isString) {
+				if (param.contains(".")) { isFloat = true; }
+				else { isInteger = true; }
+			}
+			
+			if (isString) { objArr[i] = param; }
+			else if (isInteger) { objArr[i] = Integer.valueOf(param); }
+			else if (isFloat) { objArr[i] = Float.valueOf(param); }
 		}
 		return objArr;
 	}

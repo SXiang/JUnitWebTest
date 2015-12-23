@@ -1,8 +1,44 @@
 package surveyor.scommon.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import common.source.RegexUtility;
+
 public class ActionArguments {
 	public static boolean isEmpty(String argValue) {
 		return (argValue == null || argValue.isEmpty());
+	}
+
+	public static List<Integer> getNumericList(String argValue) throws Exception {
+		/* Supported argument formats include:
+		 * 1. To specify range use: {n:m} .. For eg. "3:5"
+		 * 2. To specify a specific row: {n} .. For eg "3" will run test ONLY for row 3.
+		 * 3. To specify random rows: {n1,n2,n3} .. For eg "1,3,15" will run test for rows 1, 3 and 15.
+		 */
+		List<Integer> list = new ArrayList<Integer>(); 
+		if (argValue.contains(RegexUtility.COLON_SPLIT_REGEX_PATTERN)) {
+			List<String> splitArr = RegexUtility.split(argValue, RegexUtility.COLON_SPLIT_REGEX_PATTERN);
+			if (splitArr.size() != 2) {
+				throw new Exception(String.format("Unsupported range pattern specified in argument - [%s]. Supported pattern: {n:m} .. For eg. '3:5'", argValue));
+			}
+			Integer startRange = Integer.valueOf(splitArr.get(0));
+			Integer endRange = Integer.valueOf(splitArr.get(1));
+			for (int num = startRange; num <= endRange; num++) {
+				list.add(num);
+			}
+		} else if (argValue.contains(RegexUtility.COMMA_SPLIT_REGEX_PATTERN)) {
+			List<String> splitArr = RegexUtility.split(argValue, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
+			if (splitArr.size() < 2) {
+				throw new Exception(String.format("Unsupported pattern specified in argument - [%s]. Supported pattern: {n1,n2,n3} .. For eg '1,3,15'", argValue));
+			}
+			for (int i = 0; i < splitArr.size(); i++) {
+				list.add(Integer.valueOf(splitArr.get(i)));
+			}
+		} else {
+			list.add(Integer.valueOf(argValue));
+		}
+		return list;
 	}
 
 	public static void verifyNotNullOrEmpty(String actionName, String argName, String argValue) throws Exception {

@@ -12,6 +12,8 @@ import common.source.TestContext;
 import common.source.OLMapUtility.IconColor;
 import common.source.RegexUtility;
 import common.source.TestSetup;
+import surveyor.scommon.actions.data.DriverViewDataReader;
+import surveyor.scommon.actions.data.DriverViewDataReader.DriverViewDataRow;
 import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.DriverViewPage.CloudCover;
 import surveyor.scommon.source.DriverViewPage.DisplaySwitchType;
@@ -49,79 +51,16 @@ public class DriverViewPageActions extends BasePageActions {
 	private static final String CLS_DRIVER_VIEW_PAGE_ACTIONS = "DriverViewPageActions::";
 	private static final String ARG_DATA_ROW_ID = "dataRowID";
 	private static final String ARG_DATA = "data";
-	private static final String TESTDATA_SHEET_NAME = "Driver View Test Data";
 	
-	public static final int Excel_TestData_DriverView_Col_RowID = 0;	
-	public static final int Excel_TestData_DriverView_Col_SurveyTag = 1;
-	public static final int Excel_TestData_DriverView_Col_SurveyTime = 2;
-	public static final int Excel_TestData_DriverView_Col_SolarRadiation = 3;
-	public static final int Excel_TestData_DriverView_Col_Wind = 4;
-	public static final int Excel_TestData_DriverView_Col_CloudCover = 5;
-	public static final int Excel_TestData_DriverView_Col_SurveyType = 6;
-	public static final int Excel_TestData_DriverView_Col_ReplayScriptDB3File = 7;
-	public static final int Excel_TestData_DriverView_Col_ReplayScriptDefnFile = 8;
-
-	public class DriverViewDataRow {
-		public String rowID;
-		public String surveyTag;
-		public String surveyTime;
-		public String solarRadiation;
-		public String wind;
-		public String cloudCover;
-		public String surveyType;
-		public String replayScriptDB3;
-		public String replayScriptDefn;
-		
-		public DriverViewDataRow(String rowID, String surveyTag, String surveyTime,
-				String solarRadiation, String wind, String cloudCover, String surveyType,
-				String replayScriptDB3, String replayScriptDefn) throws Exception {
-			this.rowID = rowID;
-			// surveytag could be a function. Evaluate argument for function.
-			this.surveyTag = surveyTag;
-			this.surveyTime = surveyTime;
-			this.solarRadiation = solarRadiation;
-			this.wind = wind;
-			this.cloudCover = cloudCover;
-			this.surveyType = surveyType;
-			this.replayScriptDB3 = replayScriptDB3;
-			this.replayScriptDefn = replayScriptDefn;
-		}
-	}	
-
 	private DriverViewPage driverViewPage = null;
-	private DriverViewDataRow dataRow = null;
-
-	public DriverViewDataRow getDataRow() {
-		return dataRow;
-	}
-
-	public void setDataRow(DriverViewDataRow dataRow) {
-		this.dataRow = dataRow;
-	}
+	private DriverViewDataReader dataReader = null;
 
 	public DriverViewPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL);
 		driverViewPage = new DriverViewPage(driver, testSetup, strBaseURL);
 		PageFactory.initElements(driver, driverViewPage);
-	}
-
-	private DriverViewDataRow getDataRow(Integer dataRowID) throws Exception {
-		String rowID = excelUtility.getCellData(dataRowID, Excel_TestData_DriverView_Col_RowID, TESTDATA_SHEET_NAME);
-		String surveyTag = excelUtility.getCellData(dataRowID, Excel_TestData_DriverView_Col_SurveyTag, TESTDATA_SHEET_NAME);
-		// SurveyTag could be an ActionFunction. Check and get value.
-		String surveyTime = excelUtility.getCellData(dataRowID, Excel_TestData_DriverView_Col_SurveyTime, TESTDATA_SHEET_NAME);
-		String solarRadiation = excelUtility.getCellData(dataRowID, Excel_TestData_DriverView_Col_SolarRadiation, TESTDATA_SHEET_NAME);
-		String wind = excelUtility.getCellData(dataRowID, Excel_TestData_DriverView_Col_Wind, TESTDATA_SHEET_NAME);
-		String cloudCover = excelUtility.getCellData(dataRowID, Excel_TestData_DriverView_Col_CloudCover, TESTDATA_SHEET_NAME);
-		String surveyType = excelUtility.getCellData(dataRowID, Excel_TestData_DriverView_Col_SurveyType, TESTDATA_SHEET_NAME);
-		String replayScriptDB3 = excelUtility.getCellData(dataRowID, Excel_TestData_DriverView_Col_ReplayScriptDB3File, TESTDATA_SHEET_NAME);
-		String replayScriptDefn = excelUtility.getCellData(dataRowID, Excel_TestData_DriverView_Col_ReplayScriptDefnFile, TESTDATA_SHEET_NAME);
 		
-		System.out.println(String.format("Found data row: rowID=[%s], surveyTag=[%s], surveyTime=[%s], solarRadiation=[%s], "
-				+ "wind=[%s], cloudCover=[%s], surveyType=[%s], replayScriptDB3=[%s], replayScriptDefn=[%s]", 
-				rowID, surveyTag, surveyTime, solarRadiation, wind, cloudCover, surveyType, replayScriptDB3, replayScriptDefn));
-		
-		return new DriverViewDataRow(rowID, surveyTag, surveyTime, solarRadiation, wind, cloudCover, surveyType, replayScriptDB3, replayScriptDefn);
+		setDataReader(new DriverViewDataReader(this.excelUtility));
 	}
 
 	public boolean clickOnCurtainArrowDownButton(String data, Integer dataRowID) {
@@ -227,11 +166,11 @@ public class DriverViewPageActions extends BasePageActions {
 		logAction("startSimulatorScript", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_START_SIMULATOR_SCRIPT, ARG_DATA_ROW_ID, dataRowID);
 		try {
-			DriverViewDataRow dataRow = getDataRow(dataRowID);
-			if (!ActionArguments.isEmpty(dataRow.replayScriptDB3)) {
-				TestSetup.replayDB3Script(dataRow.replayScriptDefn, dataRow.replayScriptDB3);
+			DriverViewDataRow dataRow = getDataReader().getDataRow(dataRowID);
+			if (!ActionArguments.isEmpty(dataRow.replayScriptDB3File)) {
+				TestSetup.replayDB3Script(dataRow.replayScriptDefnFile, dataRow.replayScriptDB3File);
 			} else {
-				TestSetup.replayDB3Script(dataRow.replayScriptDefn);
+				TestSetup.replayDB3Script(dataRow.replayScriptDefnFile);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -275,13 +214,13 @@ public class DriverViewPageActions extends BasePageActions {
 			
 		} else {
 			ActionArguments.verifyGreaterThanZero(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_START_DRIVING_SURVEY, ARG_DATA_ROW_ID, dataRowID);
-			this.setDataRow(getDataRow(dataRowID));
-			surveyTag = this.getDataRow().surveyTag;
-			time = getSurveyTime(this.getDataRow().surveyTime);
-			radiation = getSolarRadiation(this.getDataRow().solarRadiation);
-			wind = getWind(this.getDataRow().wind);
-			cloudCover = getCloudCover(this.getDataRow().wind);
-			type = getSurveyType(this.getDataRow().surveyType);
+			getDataReader().setDataRow(getDataReader().getDataRow(dataRowID));
+			surveyTag = getDataReader().getDataRow().surveyTag;
+			time = getSurveyTime(getDataReader().getDataRow().surveyTime);
+			radiation = getSolarRadiation(getDataReader().getDataRow().solarRadiation);
+			wind = getWind(getDataReader().getDataRow().wind);
+			cloudCover = getCloudCover(getDataReader().getDataRow().wind);
+			type = getSurveyType(getDataReader().getDataRow().surveyType);
 		}
 		try {
 			driverViewPage.startDrivingSurvey(surveyTag, time, radiation, wind, cloudCover, type);
@@ -1130,5 +1069,13 @@ public class DriverViewPageActions extends BasePageActions {
 		else if (actionName.equals("verifyWindRoseIsNotShownOnMap")) { return this.verifyWindRoseIsNotShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyWindRoseIsShownOnMap")) { return this.verifyWindRoseIsShownOnMap(data, dataRowID); }
 		return false;
+	}
+
+	public DriverViewDataReader getDataReader() {
+		return dataReader;
+	}
+
+	public void setDataReader(DriverViewDataReader dataReader) {
+		this.dataReader = dataReader;
 	}
 }

@@ -48,6 +48,15 @@ import static surveyor.scommon.source.SurveyorConstants.TAG;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONE;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
 
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETCASTIRON;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETCOPPER;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETPEPLASTIC;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
+import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICT;
+import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -102,10 +111,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String STRPaginationMsg = "Showing 1 to ";
 	public static final String STRSurveyIncludedMsg = Resources.getResource(ResourceKeys.ComplianceReport_AlreadyAdded);
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_PageTitle);
-
+	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_AddNew);
+	
 	private String reportName;
-
-	@FindBy(how = How.ID, using = "pdf")
+	
+	@FindBy (how = How.ID, using = "pdf")
 	protected WebElement pdfImg;
 
 	@FindBy(how = How.ID, using = "zip-file_pdf")
@@ -152,25 +162,28 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		this.btnNewComplianceRpt.click();
-
+		this.waitForNewPageLoad();
+		
 		this.inputTitle.clear();
 		this.inputTitle.sendKeys(reportsCompliance.getRptTitle());
-
-		if (reportsCompliance.getCustomer() != null && reportsCompliance.getCustomer() != "Picarro") {
-			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
-			for (WebElement option : optionsCustomer) {
-				if ((reportsCompliance.getCustomer()).equalsIgnoreCase(option.getText().trim())) {
-					option.click();
+		
+		if (reportsCompliance.getCustomer() != null && reportsCompliance.getCustomer()  != "Picarro") {
+			if (dropdownCustomer.isDisplayed()) {
+				List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
+				for (WebElement option : optionsCustomer) {
+					if ((reportsCompliance.getCustomer()).equalsIgnoreCase(option.getText().trim())) {
+						option.click();
+					}
 				}
-			}
-
-			if (this.isElementPresent(btnChangeCustomerXPath)) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", btnChangeCustomer);
-
-				// temporary bypass the issue DE456
-				this.inputTitle.clear();
-				this.inputTitle.sendKeys(reportsCompliance.getRptTitle());
+				
+				if (this.isElementPresent(btnChangeCustomerXPath)) {
+					JavascriptExecutor js = (JavascriptExecutor)driver; 
+					js.executeScript("arguments[0].click();", btnChangeCustomer);  				
+					
+					//temporary bypass the issue DE456
+					this.inputTitle.clear();
+					this.inputTitle.sendKeys(reportsCompliance.getRptTitle());
+				}
 			}
 		}
 
@@ -205,7 +218,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (testSetup.isRunningDebug())
 			testSetup.slowdownInSeconds(3);
 		this.btnSurveySearch.click();
-
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
 		this.checkboxSurFirst.click();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		this.btnAddSurveys.click();
@@ -234,20 +248,50 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("arguments[0].click();", checkBoxPCRA);
 		}
-
-		this.checkBoxOtherPla.click();
-		this.checkBoxPEPla.click();
-		this.checkBoxProtectedSteel.click();
-		this.checkBoxUnProtectedSteel.click();
-		this.checkBoxCastIron.click();
-		this.checkBoxCopper.click();
-
-		this.checkBoxDistrict.click();
-		this.checkBoxDistrictPlat.click();
-
+		
+		handleOptionalViewLayersSection(reportsCompliance);
+		
 		this.btnOK.click();
 	}
 
+	private void handleOptionalViewLayersSection(Reports reportsCompliance) {
+		List<Map<String, String>> viewLayersList = reportsCompliance.getViewLayersList();
+		if (viewLayersList != null) {
+			if (viewLayersList.get(0).get(KEYASSETCASTIRON).equalsIgnoreCase("1")) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxCastIron);
+			}
+			if (viewLayersList.get(0).get(KEYASSETCOPPER).equalsIgnoreCase("1")) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxCopper);
+			}
+			if (viewLayersList.get(0).get(KEYASSETOTHERPLASTIC).equalsIgnoreCase("1")) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxOtherPla);
+			}
+			if (viewLayersList.get(0).get(KEYASSETPEPLASTIC).equalsIgnoreCase("1")) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxPEPla);
+			}
+			if (viewLayersList.get(0).get(KEYASSETPROTECTEDSTEEL).equalsIgnoreCase("1")) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxProtectedSteel);
+			}
+			if (viewLayersList.get(0).get(KEYASSETUNPROTECTEDSTEEL).equalsIgnoreCase("1")) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxUnProtectedSteel);
+			}
+			if (viewLayersList.get(0).get(KEYBOUNDARYDISTRICT).equalsIgnoreCase("1")) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxDistrict);
+			}
+			if (viewLayersList.get(0).get(KEYBOUNDARYDISTRICTPLAT).equalsIgnoreCase("1")) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxDistrictPlat);
+			}
+		}
+	}
+	
 	private void addViews(String customer, List<Map<String, String>> viewList) {
 		int rowNum;
 		int colNum;
@@ -352,7 +396,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	private void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, String tag, String startDate, String endDate, String surModeFilter) {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		this.btnNewComplianceRpt.click();
-
+		this.waitForNewPageLoad();
+		
 		this.inputTitle.clear();
 		this.inputTitle.sendKeys(title);
 
@@ -1171,6 +1216,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tag, String startDate, String endDate, boolean changeMode, String strReportMode) {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		this.btnNewComplianceRpt.click();
+		this.waitForNewPageLoad();
 
 		if (customer != null && customer != "Picarro") {
 			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
@@ -1264,6 +1310,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public boolean checkBlankReportErrorTextPresent() {
 		this.btnNewComplianceRpt.click();
+		this.waitForNewPageLoad();
 		this.btnOK.click();
 		if (isElementPresent(strErrorText))
 			return true;
@@ -1283,7 +1330,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public void addNewReportWithMultipleSurveysIncluded(Reports reportsCompliance) {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		this.btnNewComplianceRpt.click();
-
+		this.waitForNewPageLoad();
+		
 		this.inputTitle.clear();
 		this.inputTitle.sendKeys(reportsCompliance.getRptTitle());
 
@@ -1386,6 +1434,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public boolean verifyCancelButtonFunctionality() {
 		this.btnNewComplianceRpt.click();
+		this.waitForNewPageLoad();
 		this.btnCancel.click();
 		testSetup.slowdownInSeconds(3);
 
@@ -1397,7 +1446,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public void openNewComplianceReportPage() {
 		this.btnNewComplianceRpt.click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		this.waitForNewPageLoad();
 	}
 
 	public void clickOnCopyReport(String rptTitle, String strCreatedBy) {
@@ -1528,7 +1577,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public String provideLatLongAtCustomBoundarySelectorWindow(List<String> listBoundary) {
 		String actualMsg = "";
 		this.btnNewComplianceRpt.click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		this.waitForNewPageLoad();
 		this.inputImgMapHeight.sendKeys(listBoundary.get(0));
 		this.inputImgMapWidth.sendKeys(listBoundary.get(1));
 		this.btnLatLongSelector.click();
@@ -1629,11 +1678,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@Override
 	public void waitForPageLoad() {
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return d.getPageSource().contains(STRPageContentText);
-			}
-		});
-	}
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRPageContentText);
+            }
+        });
+    }
 
+	public void waitForNewPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRNewPageContentText);
+            }
+        });
+    }
 }
