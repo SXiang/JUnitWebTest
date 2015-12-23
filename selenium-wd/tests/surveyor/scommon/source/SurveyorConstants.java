@@ -118,15 +118,15 @@ public final class SurveyorConstants {
 	public static final String REPORTMODES = "Standard";
 	
 	public static final String CUSBOUNDARY = Resources.getResource(ResourceKeys.ComplianceReport_CustomBoundary);
-	public static final String IMGMAPHEIGHT = "8.50";
-	public static final String IMGMAPWIDTH = "11.00";
-	public static final String NELAT = "37.40520";
-	public static final String NELON = "-121.98547";
-	public static final String SWLAT = "37.40121";
-	public static final String SWLON = "-121.99096";
+	public static final String IMGMAPHEIGHT = "8.5";
+	public static final String IMGMAPWIDTH = "11";
+	public static final String NELAT = "37.421980615353675";
+	public static final String NELON = "121.93639755249023";
+	public static final String SWLAT = "37.39566424530531";
+	public static final String SWLON = "122.01141357421875";
 	
-	public static final String SURVEYORUNIT = "Picarro - Santa Clara - Dodge Journey";
-	public static final String TAG = "software";
+	public static final String SURVEYORUNIT = "sqacus - sqacusloc - sqacuslocsur";
+	public static final String TAG = "dmcs1-sqa01";
 	
 	public static final String STARTDATE = "01/01/2014";
 	public static final String ENDDATE = "08/14/2014";
@@ -173,7 +173,7 @@ public final class SurveyorConstants {
 	public static final String KEYPCA = "Percent Coverage Assets"; 
 	public static final String KEYPCRA = "Percent Coverage Report Area";
 	
-	public static final String SQAPICADRRTAG = "rr-pic";
+	public static final String SQAPICADRRTAG = "dmcrapidresponse-sqapic-admin";
 	public static final String SQAPICADSTNDTAG = "dmcstandard-sqapic-admin";
 	public static final String SQAPICADMANUALTAG = "dmcmanual-sqapic-admin";
 
