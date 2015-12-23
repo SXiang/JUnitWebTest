@@ -308,6 +308,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a[4]")
 	protected WebElement btnFirstInvestigateCompliance;
 	
+	@FindBy(how = How.ID, using = "report-boundry-layers-District")
+	protected WebElement checkBoxDistrict;
+	
+	@FindBy(how = How.ID, using = "report-boundry-layers-District Plat")
+	protected WebElement checkBoxDistrictPlat;
+	
 	/**
 	 * @param driver
 	 * @param testSetup
