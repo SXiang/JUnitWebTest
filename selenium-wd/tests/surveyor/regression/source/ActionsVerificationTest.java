@@ -211,8 +211,8 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 			assertTrue(driverViewPageAction.verifyFOVIsNotShownOnMap(EMPTY,NOTSET));
 			
 			driverViewPageAction.clickOnHeaderInfoBox(EMPTY,NOTSET);
-			assertTrue(driverViewPageAction.verifySurveyInfoTagLabelEquals("Tag: " + driverViewPageAction.getDataRow().surveyTag,NOTSET));
-			assertTrue(driverViewPageAction.verifySurveyInfoModeLabelEquals("Mode: " + driverViewPageAction.getDataRow().surveyType,NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoTagLabelEquals("Tag: " + driverViewPageAction.getDataReader().getDataRow(3).surveyTag,NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoModeLabelEquals("Mode: " + driverViewPageAction.getDataReader().getDataRow(3).surveyType,NOTSET));
 			assertTrue(driverViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith("Elapsed: 00:",NOTSET));
 			assertTrue(driverViewPageAction.verifySurveyInfoSurveyStatusLabelEquals("Survey Active",NOTSET));
 			assertTrue(driverViewPageAction.verifySurveyInfoDriverLabelEquals("Driver: " + AdminUser,NOTSET));

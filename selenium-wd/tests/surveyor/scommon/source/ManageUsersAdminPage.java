@@ -10,6 +10,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.Select;
 
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
@@ -72,11 +73,14 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		}
 	}
 
-	public void addNewUser(String email, String password, String role, String timeZone) {
-		waitForPageToLoad();
+	public void addNewUser(String email, String password, String location, String role, String timeZone) {
 		this.btnAddNewCustomerUser.click();
 		
-		waitForPageToLoad();
+		this.waitForNewPageLoad();
+		
+		Select droplist = new Select(this.dropDownCustomer);
+		droplist.selectByVisibleText(location);
+
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
 		this.inputPassword.sendKeys(password);
@@ -105,10 +109,14 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		this.waitForPageLoad();
 	}
 	
-	public void addNewUser(String email, String password, String role, String timeZone, boolean accountEnabled) {
+	public void addNewUser(String email, String password, String location, String role, String timeZone, boolean accountEnabled) {
 		this.btnAddNewCustomerUser.click();
 		
-		waitForPageToLoad();
+		this.waitForNewPageLoad();
+		
+		Select droplist = new Select(this.dropDownCustomer);
+		droplist.selectByVisibleText(location);
+		
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
 		this.inputPassword.sendKeys(password);
@@ -150,7 +158,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		String rtnMsg = "";
 		waitForPageToLoad();
 		this.btnAddNewCustomerUser.click();
-		waitForPageToLoad();
+		this.waitForNewPageLoad();
 		
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
