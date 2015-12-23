@@ -4,8 +4,8 @@
 package surveyor.scommon.source;
 
 import static org.junit.Assert.fail;
-import static common.source.BaseHelper.singlePatternMatching;
-import static common.source.BaseHelper.patternMatchingforPairs;
+import static common.source.BaseHelper.matchSinglePattern;
+import static common.source.BaseHelper.matchPatternforPairs;
 import common.source.DateUtility;
 import static surveyor.scommon.source.SurveyorConstants.ACTIONTIMEOUT;
 import static surveyor.scommon.source.SurveyorConstants.APPRNAME;
@@ -931,25 +931,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.reportName = reportTitle;
 	}
 
-	/*
-	 * Method to compare text in pdf file with expected
-	 */
-	public boolean comparePDFText(String actualPath, String targetFileName) {
-		String actualReport = actualPath + reportName.trim() + ".pdf";
-		PDFUtility pdfUtility;
-		pdfUtility = new PDFUtility();
-		try {
-			String expectedReport = TestSetup.getRootPath() + "\\selenium-wd\\data\\test-data\\compliancereport-tests" + targetFileName;
-			String expectedReportString = pdfUtility.extractPDFText(expectedReport);
-			String actualReportString = pdfUtility.extractPDFText(actualReport);
-			if (expectedReportString.equals(actualReportString))
-				return true;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return false;
-	}
 
 	/**
 	 * Method to compare the report creation date with current date & Report creation date format with locale
@@ -993,28 +974,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @return boolean - true or false based on whether the report text matches the given text
 	 */
 
-	public boolean compareComplianceRptFirstPageStaticText(String actualPath) {
-		PDFUtility pdfUtility;
-		pdfUtility = new PDFUtility();
+	public boolean compareComplianceRptFirstPageStaticText(String actualPath) throws IOException {
+		PDFUtility pdfUtility = new PDFUtility();
 		String actualReport = actualPath + reportName.trim() + ".pdf";
 		String actualReportString = null;
-		try {
-			actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
+		actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
+		List<String> expectedReportString = new ArrayList<String>();
+		expectedReportString.add(REPORTTITLE);
+		expectedReportString.add(LISAINV);
+		expectedReportString.add(GAPINV);
+		expectedReportString.add(CGIINV);
+		expectedReportString.add(APPRNAME);
+		expectedReportString.add(APPRSIG);
+		expectedReportString.add(RPTCRTDATE);
 
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
-		List<String> staticString = new ArrayList<String>();
-		staticString.add(REPORTTITLE);
-		staticString.add(LISAINV);
-		staticString.add(GAPINV);
-		staticString.add(CGIINV);
-		staticString.add(APPRNAME);
-		staticString.add(APPRSIG);
-		staticString.add(RPTCRTDATE);
-
-		HashMap<String, Boolean> actualFirstPage = singlePatternMatching(actualReportString, staticString);
+		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value)
 				return false;
@@ -1029,85 +1003,27 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 *            path to the generated report
 	 * @return true or false based on whether the report text matches the given text
 	 */
-	public boolean compareComplianceRptFirstPageTable(String actualPath, HashMap<String, String> inputMap) {
-		PDFUtility pdfUtility;
-		pdfUtility = new PDFUtility();
+	public boolean compareComplianceRptFirstPageTable(String actualPath, HashMap<String, String> inputMap) throws IOException {
+		PDFUtility pdfUtility = new PDFUtility();
 		String actualReport = actualPath + reportName.trim() + ".pdf";
 		String actualReportString = null;
-		try {
-			actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
+		actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
+		List<String> expectedTableStrings = new ArrayList<String>();
+		expectedTableStrings.add("Map Height & Width");
+		expectedTableStrings.add("Time Zone");
+		expectedTableStrings.add("Exclusion Radius");
+		expectedTableStrings.add("Report Mode");
+		expectedTableStrings.add("NE Lat & NE Long");
+		expectedTableStrings.add("SW Lat & SW Long");
 
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		List<String> tableStrings = new ArrayList<String>();
-		tableStrings.add("Map Height & Width");
-		tableStrings.add("Time Zone");
-		tableStrings.add("Exclusion Radius");
-		tableStrings.add("Report Mode");
-		tableStrings.add("NE Lat & NE Long");
-		tableStrings.add("SW Lat & SW Long");
-
-		HashMap<String, String> actualFirstPage = patternMatchingforPairs(actualReportString, tableStrings);
+		HashMap<String, String> actualFirstPage = matchPatternforPairs(actualReportString, expectedTableStrings);
 		if (actualFirstPage.equals(inputMap)) {
 			return true;
 		}
 		return false;
 	}
 
-	/**
-	 * Method to verify rest of the compliance report text
-	 * 
-	 * @param actual
-	 *            path to the generated report
-	 * @return true or false based on whether the report text matches the given text
-	 */
-	public boolean verifyRestofComplianceReportText(String actualPath) {
-
-		List<String> page2Static = new ArrayList<String>();
-		page2Static.add("Show Coverage");
-		page2Static.add("Percent Coverage Assets");
-		page2Static.add("Percent Coverage Report Area");
-		page2Static.add("Percent Coverage Forecast");
-		page2Static.add("Coverage Values");
-		page2Static.add("Total Linear Asset Coverage");
-		page2Static.add("Percent Coverage Report Area");
-		page2Static.add("Layers");
-		page2Static.add("Asset");
-		page2Static.add("Copper");
-		page2Static.add("Un-protected Steel");
-		page2Static.add("Protected Steel");
-		page2Static.add("Cast Iron");
-		page2Static.add("Other Plastic");
-		page2Static.add("PE Plastic");
-		page2Static.add("Boundary");
-		page2Static.add("District Plat");
-		page2Static.add("District");
-		page2Static.add("PE Plastic");
-		page2Static.add("View Table");
-		page2Static.add("Selected Driving Surveys");
-		page2Static.add("Isotopic Analysis Table");
-
-		PDFUtility pdfUtility;
-		pdfUtility = new PDFUtility();
-		String actualReport = actualPath + reportName.trim() + ".pdf";
-		String actualReportString = null;
-		try {
-			actualReportString = pdfUtility.extractPDFText(actualReport, 2, -1);
-			// System.out.println(actualReportString);
-			HashMap<String, Boolean> actualFirstPage = singlePatternMatching(actualReportString, page2Static);
-			for (Boolean value : actualFirstPage.values()) {
-				if (!value)
-					return false;
-			}
-
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
-		return true;
-	}
-
+	
 	/**
 	 * Method to verify the images appear on the compliance report
 	 * 
@@ -1115,18 +1031,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 *            path to the generated report
 	 * @return true or false based on whether the images match the given images
 	 */
-	public boolean compareComplianceRptImages(String actualPath, String baselinePath) {
+	public boolean compareComplianceRptImages(String actualPath, String baselinePath) throws IOException{
 		String actualReport = actualPath + reportName.trim() + ".pdf";
 		PDFUtility pdfUtility;
 		pdfUtility = new PDFUtility();
-		try {
-			String imageDirectory = pdfUtility.extractPDFImages(actualReport, Paths.get(actualPath).getFileName().toString() + "_", 1, 2);
-			System.out.println(imageDirectory);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		String imageDirectory = pdfUtility.extractPDFImages(actualReport, Paths.get(actualPath).getFileName().toString() + "_", 1, 2);
+		System.out.println(imageDirectory);
 		return false;
 	}
 
@@ -1137,18 +1047,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 *            path to the generated report
 	 * @return true or false based on whether the images match the given images
 	 */
-	public boolean compareViewImages(String actualPath, String baselinePath) {
+	public boolean compareViewImages(String actualPath, String baselinePath)throws IOException {
 		String actualReport = actualPath + reportName.trim() + ".pdf";
 		PDFUtility pdfUtility;
 		pdfUtility = new PDFUtility();
-		try {
-			String imageDirectory = pdfUtility.extractPDFImages(actualReport, Paths.get(actualPath).getFileName().toString() + "_", 1, 2);
-			System.out.println(imageDirectory);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		String imageDirectory = pdfUtility.extractPDFImages(actualReport, Paths.get(actualPath).getFileName().toString() + "_", 1, 2);
+		System.out.println(imageDirectory);
 		return false;
 	}
 
