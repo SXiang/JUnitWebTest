@@ -343,7 +343,6 @@ public class ComplianceReportsPageActions extends BasePageActions {
 				listBoundary, tablesList, surveyorUnit, tag, viewList, viewLayersList);
 		complianceReportsPage.addNewReport(rpt);
 		
-		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(30);
 		workingReportsComp = rpt;		// Store the working report properties.
 		return true;
 	}
