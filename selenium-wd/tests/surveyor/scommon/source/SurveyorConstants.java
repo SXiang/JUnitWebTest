@@ -106,7 +106,7 @@ public final class SurveyorConstants {
 	public static final String SQAPICUATAG = "dmcs1-sqapicua";
 	public static final String SQAPICSUTAG = "dmcs1-sqapicsu";
 	public static final String SQAPICDRTAG = "dmcs1-sqapicdr";
-	
+	public static final String SQACRPTTAG = "tc56";
 	public static final String RGBNAMEBASE = "rgb";
 	
 	public static String STRFEEDBACK = "This is sqa test feedback message";
@@ -115,14 +115,15 @@ public final class SurveyorConstants {
 	public static final String TIMEZONE = "Pacific Standard Time";
 	public static final String EXCLUSIONRADIUS = "50";
 	public static final String REPORTMODES1 = "S1";
+	public static final String REPORTMODES = "Standard";
 	
 	public static final String CUSBOUNDARY = Resources.getResource(ResourceKeys.ComplianceReport_CustomBoundary);
 	public static final String IMGMAPHEIGHT = "8.5";
 	public static final String IMGMAPWIDTH = "11";
 	public static final String NELAT = "37.421980615353675";
-	public static final String NELON = "-121.93639755249023";
+	public static final String NELON = "121.93639755249023";
 	public static final String SWLAT = "37.39566424530531";
-	public static final String SWLON = "-122.01141357421875";
+	public static final String SWLON = "122.01141357421875";
 	
 	public static final String SURVEYORUNIT = "sqacus - sqacusloc - sqacuslocsur";
 	public static final String TAG = "dmcs1-sqa01";
@@ -203,4 +204,44 @@ public final class SurveyorConstants {
 	public static final String SUBTITLE = " - Surveyor";
 	public static final String DRIVINGSURVEYTITLE = "Measurement Sessions - Surveyor";
 	public static final String DRIVINGSURVEYHEADER = "Driving Surveys";
-}
+	
+	/*
+	 * Compliance Report static titles
+	 */
+	public static final String REPORTTITLE="Compliance Report";
+	public static final String LISAINV="LISA Investigation Complete";
+	public static final String GAPINV="GAP Investigation Complete";
+	public static final String CGIINV="CGI Investigation Complete";
+	public static final String APPRNAME="Approver Name";
+	public static final String APPRSIG="Approver Signature";
+	public static final String RPTCRTDATE="Report Creation Date";
+	public static final String DATE="Date";
+	
+	/*
+	 * Compliance Report tags
+	 */
+	public static final String PICADMNSTDTAG = "stnd-pic";
+	public static final String PICADMNRRTAG = "rr-pic";
+	public static final String PICADMNOPTAG = "op-pic";
+	public static final String PICADMNMANTAG = "man-pic";
+	public static final String CUSDRVSTDTAG = "stnd-sqacudr";
+	public static final String CUSDRVRRTAG = "rr-sqacudr";
+	public static final String CUSDRVOPTAG = "op-pic";
+	
+	/*
+	 * Compliance Report Surveyor Units
+	 */
+	public static final String PICADMNSURVEYOR = "Software Car";
+	public static final String SQACUSSURVEYOR = "White Dodge";
+	
+	/*
+	 * Lat Long for Reporting
+	 */
+	public static final String RNELAT = "37.42060";
+	public static final String RNELON = "-121.97250";
+	public static final String RSWLAT = "37.41570";
+	public static final String RSWLON = "-121.98390";
+	
+	public static final String REXCLUSIONRADIUS = "3";
+	
+	}

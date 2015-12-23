@@ -216,7 +216,7 @@ public class BaseHelper {
 	 * @return HashMap<String, Boolean> a map with the string and whether it's
 	 *         matched
 	 */
-	public static HashMap<String, Boolean> singlePatternMatching(String actualReportString, List<String> inputList) {
+	public static HashMap<String, Boolean> matchSinglePattern(String actualReportString, List<String> inputList) {
 
 		HashMap<String, Boolean> stringMatch = new HashMap<String, Boolean>();
 		String[] lines = actualReportString.split("\\n");
@@ -242,12 +242,11 @@ public class BaseHelper {
 	 * This method checks for a list of key value pairs in a given string. Input
 	 * is a list of Strings to be matched and returns the String and associated
 	 * value
-	 * 
 	 * @param actualReportString
 	 * @param inputList
 	 * @return HashMap<String, String> a map with the string and whether it's matched
 	 */
-	public static HashMap<String, String> patternMatchingforPairs(String actualReportString, List<String> inputList) {
+	public static HashMap<String, String> matchPatternforPairs(String actualReportString, List<String> inputList) {
 		HashMap<String, String> stringMatch = new HashMap<String, String>();
 		String[] lines = actualReportString.split("\\n");
 		Iterator<String> listIterator = inputList.iterator();
