@@ -7,6 +7,7 @@ public class ResourceKeys {
 	public static final String ComplianceReport_IsotopicAnalysis = "ComplianceReport_IsotopicAnalysis";
 	public static final String ComplianceReport_PercentCoverageAssets = "ComplianceReport_PercentCoverageAssets";
 	public static final String ComplianceReport_PercentCoverageReportArea = "ComplianceReport_PercentCoverageReportArea";
+	public static final String ComplianceReports_AddNew = "ComplianceReports_AddNew";
 	public static final String ComplianceReports_PageTitle = "ComplianceReports_PageTitle";
 	public static final String Constant_Assets = "Constant_Assets";
 	public static final String Constant_BaseMap = "Constant_BaseMap";

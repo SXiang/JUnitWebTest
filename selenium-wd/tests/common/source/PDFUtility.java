@@ -156,6 +156,31 @@ public class PDFUtility {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		List<String> pdfFilesInDirectory = null;
+		Path pdfDirectory = null;
+		try {
+			pdfDirectory = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\pdfutility-tests");
+			pdfFilesInDirectory = FileUtility.getFilesInDirectory(pdfDirectory);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+		PDFUtility pdfUtility = new PDFUtility();
+		
+		for (String filePath : pdfFilesInDirectory) {
+			String filename = Paths.get(filePath).getFileName().toString();
+			if (filename.equalsIgnoreCase("TC155.pdf"))
+			{
+				try {
+					String fileContent = pdfUtility.extractPDFText(filePath);
+					FileUtility.writeToFile("C:\\temp\\output.txt", fileContent);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		/*
 		Path pdfDirectory;
 		List<String> pdfFilesInDirectory = null;
 		HashMap<String, String> expectedTextMap = new HashMap<String, String>();
@@ -275,6 +300,7 @@ public class PDFUtility {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		*/
 	}
 
 	private void testExtractPDFText_validPDF(String filePath, String expectedText) throws IOException {

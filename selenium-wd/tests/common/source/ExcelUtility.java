@@ -50,7 +50,7 @@ public class ExcelUtility {
             cellDataMap.put(key, cellData);
             return cellData;
          } catch (Exception e) {
-             System.out.println("Class ExcelUtility | Method getCellData | Exception msg : "+e.getMessage());
+             //System.out.println("Class ExcelUtility | Method getCellData | Exception msg : "+e.getMessage());
              //TestExecutionEngine.bResult = false;
              return "<ERROR>";
          }
@@ -62,7 +62,7 @@ public class ExcelUtility {
     		FileInputStream excelFile = new FileInputStream(path);
             excelWorkbook = new XSSFWorkbook(excelFile);
     	} catch (Exception e) {
-    		System.out.println("Class ExcelUtility | Method setExcelFile | Exception msg : "+e.getMessage());
+    		//System.out.println("Class ExcelUtility | Method setExcelFile | Exception msg : "+e.getMessage());
     		//TestExecutionEngine.bResult = false;
     	}
 	}

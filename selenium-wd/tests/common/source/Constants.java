@@ -1,6 +1,9 @@
 package common.source;
 
 public class Constants {
+	public static final String DRIVER_VIEW_TEST_CASES = "TestCases-DriverView";
+	public static final String COMPLIANCE_REPORTS_TEST_CASES = "TestCases-CmpReports";
+
 	// Test Execution Excel Sheet Column Numbers
 	public static final int Excel_TestCases_Col_ID = 0;	
 	public static final int Excel_TestCases_Col_RallyID = 1;
@@ -19,7 +22,7 @@ public class Constants {
 	public static final int Excel_TestCaseSteps_Col_Result = 7;
 		
 	// Test Execution Excel Sheets
-	public static final String[] Excel_Sheets_TestCases = {"TestCases-DriverView", "TestCases-Reports"};
+	public static final String[] Excel_Sheets_TestCases = {DRIVER_VIEW_TEST_CASES, COMPLIANCE_REPORTS_TEST_CASES};
 	
 	public static final String TestCasesExcelFile = "TestCases.xlsx";
 	public static final String TestCaseDataExcelFile = "TestCaseData.xlsx";

@@ -30,6 +30,7 @@ public class Reports {
 	
 	protected List<Map<String, String>> viewList;
 	protected List<Map<String, String>> tablesList;
+	protected List<Map<String, String>> viewLayersList;
 	
 	protected List<String> tagList;
 	
@@ -40,6 +41,14 @@ public class Reports {
 			String timeZone, String exclusionRadius, List<String> listBoundary,
 			List<Map<String, String>> tablesList, String surveyorUnit,
 			String tag, List<Map<String, String>> viewList) {
+		this(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, listBoundary,
+				tablesList, surveyorUnit, tag, viewList, null);
+	}
+
+	public Reports(String rptTitle, String strCreatedBy, String customer,
+			String timeZone, String exclusionRadius, List<String> listBoundary,
+			List<Map<String, String>> tablesList, String surveyorUnit,
+			String tag, List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) {
 		this.rptTitle = rptTitle;
 		this.strCreatedBy = strCreatedBy;
 		this.customer = customer;
@@ -59,8 +68,9 @@ public class Reports {
 		this.tag = tag;
 
 		this.viewList = viewList;
+		this.viewLayersList = viewLayersList;
 	}
-	
+
 	public Reports(String rptTitle, String strCreatedBy, String customer,
 			String timeZone, String exclusionRadius, List<String> listBoundary,
 			List<Map<String, String>> tablesList, String surveyorUnit,
@@ -142,6 +152,10 @@ public class Reports {
 		return this.viewList;
 	}
 	
+	public List<Map<String, String>> getViewLayersList() {
+		return this.viewLayersList;
+	}
+
 	public List<Map<String, String>> getTablesList() {
 		return this.tablesList;
 	}

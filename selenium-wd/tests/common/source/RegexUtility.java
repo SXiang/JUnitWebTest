@@ -13,6 +13,9 @@ public class RegexUtility {
 	// '(.+)' - Extract the constant inside string 
 	//(.+),(.+) - Will give the last parameter in 2nd group match. Remaining will all be in first group and can be recursively split.
 	
+	public static final String COLON_SPLIT_REGEX_PATTERN = ":";
+	public static final String COMMA_SPLIT_REGEX_PATTERN = ",";
+
 	private static int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
 	
 	public static boolean matchesPattern(String inputString, String regexPattern) {
