@@ -128,6 +128,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(id = "dvAreaMode_Custom")
 	protected WebElement divCustomBoundarySection;
+	
+	@FindBy(id = "report-survey-start-dt")
+	protected WebElement startDatePicker;
+	
+	@FindBy(id = "report-survey-end-dt")
+	protected WebElement endDatePicker;
 
 	/**
 	 * @param driver
