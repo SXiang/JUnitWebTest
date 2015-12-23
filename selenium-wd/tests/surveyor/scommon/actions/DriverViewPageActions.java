@@ -167,10 +167,10 @@ public class DriverViewPageActions extends BasePageActions {
 		ActionArguments.verifyGreaterThanZero(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_START_SIMULATOR_SCRIPT, ARG_DATA_ROW_ID, dataRowID);
 		try {
 			DriverViewDataRow dataRow = getDataReader().getDataRow(dataRowID);
-			if (!ActionArguments.isEmpty(dataRow.replayScriptDB3)) {
-				TestSetup.replayDB3Script(dataRow.replayScriptDefn, dataRow.replayScriptDB3);
+			if (!ActionArguments.isEmpty(dataRow.replayScriptDB3File)) {
+				TestSetup.replayDB3Script(dataRow.replayScriptDefnFile, dataRow.replayScriptDB3File);
 			} else {
-				TestSetup.replayDB3Script(dataRow.replayScriptDefn);
+				TestSetup.replayDB3Script(dataRow.replayScriptDefnFile);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -113,6 +113,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_PageTitle);
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_AddNew);
 	
+	private String reportName;
+	
 	@FindBy (how = How.ID, using = "pdf")
 	protected WebElement pdfImg;
 

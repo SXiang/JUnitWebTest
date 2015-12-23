@@ -15,9 +15,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICDRTAG;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
-
+import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETCASTIRON;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETCOPPER;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
@@ -38,9 +36,8 @@ import org.openqa.selenium.support.PageFactory;
 
 import common.source.TestContext;
 import common.source.TestSetup;
-import surveyor.dataaccess.source.ResourceKeys;
-import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.actions.data.ComplianceReportDataReader;
+import surveyor.scommon.actions.data.ComplianceReportDataReader.ComplianceReportDataRow;
 import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader;
 import surveyor.scommon.actions.data.ReportOptViewLayersDataReader;
@@ -51,6 +48,8 @@ import surveyor.scommon.source.ReportsCompliance;
 public class ComplianceReportsPageActions extends BasePageActions {
 	private ComplianceReportsPage complianceReportsPage = null;
 	private ComplianceReportDataReader dataReader = null;
+	public static ReportsCompliance workingReportsComp = null;      // Stores the ReportsCompliance object from createNewReport action
+	public static ComplianceReportDataRow workingDataRow = null;    // Stores the workingDataRow from createNewReport action
 
 	public ComplianceReportsPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL);
@@ -303,23 +302,25 @@ public class ComplianceReportsPageActions extends BasePageActions {
 	public boolean createNewReport(String data, Integer dataRowID) throws Exception {
 		logAction("createNewReport", data, dataRowID);
 		
-		String rptTitle = dataReader.getDataRow(dataRowID).title;
-		String surveyorUnit = dataReader.getDataRow(dataRowID).surveySurveyor;
-		String tag = dataReader.getDataRow(dataRowID).surveyTag;
+		workingDataRow = dataReader.getDataRow(dataRowID);
+		
+		String rptTitle = workingDataRow.title;
+		String surveyorUnit = workingDataRow.surveySurveyor;
+		String tag = workingDataRow.surveyTag;
 		String customer = null; 
-		String customerRowID = dataReader.getDataRow(dataRowID).customerRowID;
+		String customerRowID = workingDataRow.customerRowID;
 		if (customerRowID != "") {
 			Integer custRowID = Integer.valueOf(customerRowID);
 			customer = (new CustomerDataReader(this.excelUtility)).getDataRow(custRowID).name;
 		}
-		String timeZone = dataReader.getDataRow(dataRowID).timezone;
-		String exclusionRadius = dataReader.getDataRow(dataRowID).exclusionRadius;
+		String timeZone = workingDataRow.timezone;
+		String exclusionRadius = workingDataRow.exclusionRadius;
 
 		List<String> listBoundary = new ArrayList<String>();
 		fillCustomBoundary(listBoundary, dataReader, dataRowID);
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
-		List<Integer> reportViewRowIDs = ActionArguments.getNumericList(dataReader.getDataRow(dataRowID).reportViewRowIDs);
+		List<Integer> reportViewRowIDs = ActionArguments.getNumericList(workingDataRow.reportViewRowIDs);
 		for (Integer rowID : reportViewRowIDs) {
 			Map<String, String> viewMap = new HashMap<String, String>();
 			fillViewDetails(viewMap, new ReportViewsDataReader(this.excelUtility), rowID);
@@ -327,13 +328,13 @@ public class ComplianceReportsPageActions extends BasePageActions {
 		}
 
 		List<Map<String, String>> viewLayersList = new ArrayList<Map<String, String>>();
-		List<Integer> reportOptVwLayersRowIDs = ActionArguments.getNumericList(dataReader.getDataRow(dataRowID).reportOptViewLayerRowID);
+		List<Integer> reportOptVwLayersRowIDs = ActionArguments.getNumericList(workingDataRow.reportOptViewLayerRowID);
 		Map<String, String> viewLayerMap = new HashMap<String, String>();
 		fillViewLayersInfo(viewLayerMap, new ReportOptViewLayersDataReader(this.excelUtility), reportOptVwLayersRowIDs.get(0));
 		viewLayersList.add(viewLayerMap);
 		
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
-		List<Integer> reportOptTabPDFRowIDs = ActionArguments.getNumericList(dataReader.getDataRow(dataRowID).reportOptTabularPDFContentRowID);
+		List<Integer> reportOptTabPDFRowIDs = ActionArguments.getNumericList(workingDataRow.reportOptTabularPDFContentRowID);
 		Map<String, String> tableMap = new HashMap<String, String>();
 		fillReportTableInfo(tableMap, new ReportOptTabularPDFContentDataReader(this.excelUtility), reportOptTabPDFRowIDs.get(0));
 		tablesList.add(tableMap);
@@ -341,6 +342,9 @@ public class ComplianceReportsPageActions extends BasePageActions {
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, TestContext.INSTANCE.getLoggedInUser(), customer, timeZone, exclusionRadius,
 				listBoundary, tablesList, surveyorUnit, tag, viewList, viewLayersList);
 		complianceReportsPage.addNewReport(rpt);
+		
+		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(30);
+		workingReportsComp = rpt;		// Store the working report properties.
 		return true;
 	}
 
@@ -958,7 +962,35 @@ public class ComplianceReportsPageActions extends BasePageActions {
 		logAction("verifyPDFZipFilesAreCorrect", data, dataRowID);
 		return true;
 	}
- 
+
+	/**
+	 * Executes verifyPDFZipFilesArePresent action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean verifyPDFZipFilesArePresent(String data, Integer dataRowID) throws Exception {
+		logAction("verifyPDFZipFilesArePresent", data, dataRowID);
+		
+		if (workingReportsComp == null) {
+			throw new Exception("Create new report before verifying report PDF files. Report has not been created.");
+		}
+		
+		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
+		String rptTitle = workingDataRow.title;
+		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSSU))) {
+			if ((!complianceReportsPage.findReport(rptTitle, SQACUSSU)) || 
+					(!complianceReportsPage.validatePdfFiles(workingReportsComp, 
+							TestContext.INSTANCE.getTestSetup().getDownloadPath()))) {
+				return false;
+			}
+		} else {
+			return false;
+		}
+		return true;
+	}
+
 	/**
 	 * Executes verifyPDFZIPThumbnailDownloadFromComplianceViewer action.
 	 * @param data - specifies the input data passed to the action.
@@ -1354,6 +1386,7 @@ public class ComplianceReportsPageActions extends BasePageActions {
 		else if (actionName.equals("verifyPDFThumbnailDownloadFromComplianceViewer")) { return this.verifyPDFThumbnailDownloadFromComplianceViewer(data, dataRowID); }
 		else if (actionName.equals("verifyPDFThumbnailIsShownInComplianceViewer")) { return this.verifyPDFThumbnailIsShownInComplianceViewer(data, dataRowID); }
 		else if (actionName.equals("verifyPDFZipFilesAreCorrect")) { return this.verifyPDFZipFilesAreCorrect(data, dataRowID); }
+		else if (actionName.equals("verifyPDFZipFilesArePresent")) { return this.verifyPDFZipFilesArePresent(data, dataRowID); }
 		else if (actionName.equals("verifyPDFZIPThumbnailDownloadFromComplianceViewer")) { return this.verifyPDFZIPThumbnailDownloadFromComplianceViewer(data, dataRowID); }
 		else if (actionName.equals("verifyPDFZIPThumbnailIsShownInComplianceViewer")) { return this.verifyPDFZIPThumbnailIsShownInComplianceViewer(data, dataRowID); }
 		else if (actionName.equals("verifyReportPDFMatches")) { return this.verifyReportPDFMatches(data, dataRowID); }
