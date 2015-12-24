@@ -539,12 +539,19 @@ public class ComplianceReportsPage extends ReportsBasePage {
 							JavascriptExecutor js = (JavascriptExecutor) driver;
 							js.executeScript("arguments[0].click();", pdfImg);
 							testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-							this.zipImg.click();
+							js = (JavascriptExecutor) driver;
+							js.executeScript("arguments[0].click();", zipImg);
 							testSetup.slowdownInSeconds(15);
-							this.zipMeta.click();
-							testSetup.slowdownInSeconds(15);
-							this.zipShape.click();
-							testSetup.slowdownInSeconds(15);
+							if (zipShape.isDisplayed()) {
+								js = (JavascriptExecutor) driver;
+								js.executeScript("arguments[0].click();", zipMeta);
+								testSetup.slowdownInSeconds(15);
+							}
+							if (zipShape.isDisplayed()) {
+								js = (JavascriptExecutor) driver;
+								js.executeScript("arguments[0].click();", zipShape);
+								testSetup.slowdownInSeconds(15);
+							}
 							return true;
 						}
 
@@ -552,7 +559,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 							JavascriptExecutor js = (JavascriptExecutor) driver;
 							js.executeScript("arguments[0].click();", pdfImg);
 							testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-							this.zipImg.click();
+							js = (JavascriptExecutor) driver;
+							js.executeScript("arguments[0].click();", zipImg);
 							testSetup.slowdownInSeconds(15);
 							return true;
 						} else
