@@ -49,7 +49,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
  */
 public class TestSetup {
 
-	private static final String CI_HOST_ADDRESS = "20.20.20.59";
+	private static final String[] CI_MACHINES = {"20.20.20.59", "20.20.10.82"};
 	private static String testPropFileName;
 	
 	public static final String REPLAY_DEFN_CURL_FILE = "replay-defn-curl.bat";
@@ -188,7 +188,15 @@ public class TestSetup {
 	}
 	
 	private static boolean isRunningLocally() throws UnknownHostException {
-		return !(InetAddress.getLocalHost().getHostAddress()).equalsIgnoreCase(CI_HOST_ADDRESS);
+		boolean isRunningLocally = true;
+		for (String machineIp : CI_MACHINES) {
+			if (InetAddress.getLocalHost().getHostAddress().equalsIgnoreCase(machineIp)) {
+				isRunningLocally = false;	
+				break;
+			}
+		} 
+		
+		return isRunningLocally;
 	}
 
 	/*

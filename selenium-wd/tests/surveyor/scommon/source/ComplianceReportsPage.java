@@ -542,7 +542,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 							js = (JavascriptExecutor) driver;
 							js.executeScript("arguments[0].click();", zipImg);
 							testSetup.slowdownInSeconds(15);
-							if (zipShape.isDisplayed()) {
+							if (zipMeta.isDisplayed()) {
 								js = (JavascriptExecutor) driver;
 								js.executeScript("arguments[0].click();", zipMeta);
 								testSetup.slowdownInSeconds(15);
