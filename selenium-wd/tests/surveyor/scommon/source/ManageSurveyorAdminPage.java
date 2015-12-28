@@ -119,12 +119,13 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 			
 			if ((locationNameCell.getText().trim()).equalsIgnoreCase(locationName) 
 					&& (surveyorNameCell.getText().trim()).equalsIgnoreCase(surveyorName)) {
-				actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
+				actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]/a";
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
 				
-				System.out.println("Found cell at xpath=" + actionEditXPath);
+				System.out.println("Found entry at rowNum=" + rowNum);
 				
 				actionEditCell.click();
+				this.waitForEditPageLoad();
 				
 				this.inputSurveyorDesc.clear();
 				this.inputSurveyorDesc.sendKeys(surveyorNameNew);
@@ -206,12 +207,13 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 			
 			if ((locationNameCell.getText().trim()).equalsIgnoreCase(locationName) 
 					&& (surveyorNameCell.getText().trim()).equalsIgnoreCase(surveyorName)) {
-				actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
+				actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]/a";
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
 				
-				System.out.println("Found cell at xpath=" + actionEditXPath);
+				System.out.println("Found entry at rowNum=" + rowNum);
 				
 				actionEditCell.click();
+				this.waitForEditPageLoad();
 				
 				this.inputSurveyorDesc.clear();
 				this.inputSurveyorDesc.sendKeys(surveyorNameNew);
