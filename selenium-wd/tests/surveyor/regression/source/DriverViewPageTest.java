@@ -189,7 +189,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		assertTrue(!driverViewPage.getRefBottleMeasButton().isDisplayed());
 		
 		// Start Driving Survey.
-		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TC1094";
+		String tag = testSetup.getFixedSizePseudoRandomString(10) + "_TC1094";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Moderate, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
 
 		// Verify Isotopic Capture and Ref Bottle Measurement buttons ARE displayed.
@@ -290,8 +290,10 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		
 		// 1., 2., 3., 4.
 		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
-		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TC1097";
+		String tag = testSetup.getFixedSizePseudoRandomString(10) + "_TC1097";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
+		
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		// Open Header box and check the survey information.
 		driverViewPage.clickHeaderInfoBox();
@@ -387,7 +389,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		
 		// 1., 2. 4.
 		// Start Driving Survey. Survey Time: Day, Solar Radiation: Strong, Wind: Light, Survey Type: Operator 
-		String tag = testSetup.getFixedSizePseudoRandomString(32) + "_TC1098";
+		String tag = testSetup.getFixedSizePseudoRandomString(10) + "_TC1098";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Strong, Wind.Light, CloudCover.LessThan50, SurveyType.Operator);
 
 		// 5. "Car icon is displayed in red color. Breadcrumb will  be displayed in blue color" <-- [Check feasibility in Open Layer]
