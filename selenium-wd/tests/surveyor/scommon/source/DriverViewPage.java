@@ -1465,8 +1465,7 @@ public class DriverViewPage extends SurveyorBasePage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage setTagSurveyTextField(String tag) {
-		JavascriptExecutor js = (JavascriptExecutor)driver;
-		js.executeScript("arguments[0].value = '" + tag + "';", tagSurvey);
+		tagSurvey.sendKeys(tag);
 		return this;
 	}
 
