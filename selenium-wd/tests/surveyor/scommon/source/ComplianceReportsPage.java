@@ -54,12 +54,14 @@ import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -77,6 +79,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
@@ -128,12 +131,54 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(id = "dvAreaMode_Custom")
 	protected WebElement divCustomBoundarySection;
-	
+
 	@FindBy(id = "report-survey-start-dt")
 	protected WebElement startDatePicker;
-	
+
 	@FindBy(id = "report-survey-end-dt")
-	protected WebElement endDatePicker;
+	protected WebElement checkBoxAllSurvey;
+
+	@FindBy(id = "report-survey-end-dt")
+	protected WebElement checkBoxStndSurvey;
+
+	@FindBy(id = "report-survey-end-dt")
+	protected WebElement checkBoxRRSurvey;
+
+	@FindBy(id = "report-survey-end-dt")
+	protected WebElement checkBoxManualSurvey;
+
+	@FindBy(id = "report-survey-end-dt")
+	protected WebElement checkBoxOperatorSurvey;
+
+	@FindBy(how = How.XPATH, using = "//div[@id='surveyContent-0']//button[@class='btn btnDeleteSurvey btn-sm btn-danger']")
+	protected WebElement btnDeleteSurvey;
+
+	@FindBy(how = How.XPATH, using = "//table[@id='datatable']/tbody/tr")
+	protected List<WebElement> numberofRecords;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[1]")
+	protected WebElement tdCReportTitle;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[3]")
+	protected WebElement tdCReportCreatedBy;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='deleteReportModalLabel']/../..//*[@class='btn btn-danger']")
+	protected WebElement btnDeleteConfirm;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='Standard']")
+	protected WebElement checkBoxStndRptMode;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='Rapid Response']")
+	protected WebElement checkBoxRRRptMode;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='Manual']")
+	protected WebElement checkBoxManualRptMode;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='surveyModal']/div/div/div[3]/a[1]")
+	protected WebElement btnChangeRptMode;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li[1]")
+	protected WebElement areaErrorText;
 
 	/**
 	 * @param driver
@@ -181,6 +226,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 
+		if (reportsCompliance.reportMode != null) {
+			if (reportsCompliance.reportMode.equalsIgnoreCase("standard")) {
+				this.checkBoxStndRptMode.click();
+			}
+
+			if (reportsCompliance.reportMode.equalsIgnoreCase("manual")) {
+				this.checkBoxManualRptMode.click();
+			}
+
+			if (reportsCompliance.reportMode.equalsIgnoreCase("rr")) {
+				this.checkBoxRRRptMode.click();
+			}
+
+		}
+
 		this.inputExclusionRadius.clear();
 		this.inputExclusionRadius.sendKeys(reportsCompliance.getExclusionRadius());
 
@@ -198,8 +258,30 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 
+		// TO DO: Implement date picker
+
 		if (reportsCompliance.getTag() != "") {
 			this.cbTag.sendKeys(reportsCompliance.getTag());
+		}
+
+		// TO DO: Implement Survey type
+		/*
+		 * if (reportsCompliance.getSurveyMode() != "") { String surveyMode=reportsCompliance.getSurveyMode(); if(surveyMode.equalsIgnoreCase("Standard")){
+		 * 
+		 * } if(surveyMode.equalsIgnoreCase("Operator")){
+		 * 
+		 * } if(surveyMode.equalsIgnoreCase("Rapid Response")){
+		 * 
+		 * } }
+		 */
+
+		if (reportsCompliance.getSurveyorUnit() != "") {
+			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
+			for (WebElement option : optionsSU) {
+				if ((reportsCompliance.getSurveyorUnit()).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
 		}
 
 		if (testSetup.isRunningDebug())
@@ -235,15 +317,30 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			js.executeScript("arguments[0].click();", checkBoxPCRA);
 		}
 
-		this.checkBoxOtherPla.click();
-		this.checkBoxPEPla.click();
-		this.checkBoxProtectedSteel.click();
-		this.checkBoxUnProtectedSteel.click();
-		this.checkBoxCastIron.click();
-		this.checkBoxCopper.click();
-
-		this.checkBoxDistrict.click();
-		this.checkBoxDistrictPlat.click();
+		if (driver.findElements(By.xpath("//*[@id='report-asset-layers-ad701312-c470-482a-be45-ef37770e2ce6']")).size() > 0) {
+			this.checkBoxOtherPla.click();
+		}
+		if (driver.findElements(By.xpath("//*[@id='report-asset-layers-f14735de-6c9b-4423-8533-f243a7fe4e90']")).size() > 0) {
+			this.checkBoxPEPla.click();
+		}
+		if (driver.findElements(By.xpath("//*[@id='report-asset-layers-44353e68-0694-4f05-85cb-84d753ea278c']")).size() > 0) {
+			this.checkBoxProtectedSteel.click();
+		}
+		if (driver.findElements(By.xpath("//*[@id='report-asset-layers-f3955e82-dd13-4842-84f7-502bcda6b57a']")).size() > 0) {
+			this.checkBoxUnProtectedSteel.click();
+		}
+		if (driver.findElements(By.xpath("//*[@id='report-asset-layers-96caf1f5-d5c5-461d-9ce3-d210c20a1bb0']")).size() > 0) {
+			this.checkBoxCastIron.click();
+		}
+		if (driver.findElements(By.xpath("//*[@id='report-asset-layers-d08fc87f-f979-4131-92a9-3d82f37f4bba']")).size() > 0) {
+			this.checkBoxCopper.click();
+		}
+		if (driver.findElements(By.xpath("//*[@id='report-boundry-layers-District Plat']")).size() > 0) {
+			this.checkBoxDistrict.click();
+		}
+		if (driver.findElements(By.xpath("//*[@id='report-boundry-layers-District']")).size() > 0) {
+			this.checkBoxDistrictPlat.click();
+		}
 
 		this.btnOK.click();
 	}
@@ -496,10 +593,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 							testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 							this.zipImg.click();
 							testSetup.slowdownInSeconds(15);
-							this.zipMeta.click();
-							testSetup.slowdownInSeconds(15);
-							this.zipShape.click();
-							testSetup.slowdownInSeconds(15);
+							if (zipMeta.isDisplayed()) {
+								this.zipMeta.click();
+								testSetup.slowdownInSeconds(15);
+							}
+							if (zipShape.isDisplayed()) {
+								this.zipShape.click();
+								testSetup.slowdownInSeconds(15);
+							}
 							return true;
 						}
 
@@ -640,7 +741,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void addNewPDReport(String reportTitle, String surveyor, List<String> tag, boolean changeMode, String reportMode) {
-		this.addNewReport(reportTitle, null, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, changeMode, reportMode);
+		this.addNewReport(reportTitle, null, TIMEZONEPT, REXCLUSIONRADIUS, "", "", "", RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, changeMode, reportMode);
 	}
 
 	public boolean findReport(String rptTitle, String strCreatedBy) {
@@ -719,30 +820,28 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
 
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
-				deleteImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[1]/img";
+				deleteImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]/img";
 				deleteImg = table.findElement(By.xpath(deleteImgXPath));
 
 				deleteImg.click();
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.btnDeleteConfirm.click();
 
 				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
-				if (this.isElementPresent(btnDeleteReportXPath)) {
-					JavascriptExecutor js = (JavascriptExecutor) driver;
-					js.executeScript("arguments[0].click();", btnDeleteReport);
+				/*
+				 * if (this.isElementPresent(btnDeleteReportXPath)) { JavascriptExecutor js = (JavascriptExecutor) driver; js.executeScript("arguments[0].click();", btnDeleteReport);
+				 * 
+				 * if (this.isElementPresent(errorMsgDeleteCompliacneReportXPath)) { this.btnReturnToHomePage.click(); return false; } else return true; } else return false;
+				 */
 
-					if (this.isElementPresent(errorMsgDeleteCompliacneReportXPath)) {
-						this.btnReturnToHomePage.click();
-						return false;
-					} else
-						return true;
-				} else
-					return false;
+				return true;
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
@@ -789,13 +888,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
 
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
-				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[2]/img";
+				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
 				copyImg = table.findElement(By.xpath(copyImgXPath));
 
 				copyImg.click();
@@ -937,7 +1036,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.reportName = reportTitle;
 	}
 
-
 	/**
 	 * Method to compare the report creation date with current date & Report creation date format with locale
 	 * 
@@ -1029,7 +1127,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return false;
 	}
 
-	
 	/**
 	 * Method to verify the images appear on the compliance report
 	 * 
@@ -1037,7 +1134,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 *            path to the generated report
 	 * @return true or false based on whether the images match the given images
 	 */
-	public boolean compareComplianceRptImages(String actualPath, String baselinePath) throws IOException{
+	public boolean compareComplianceRptImages(String actualPath, String baselinePath) throws IOException {
 		String actualReport = actualPath + reportName.trim() + ".pdf";
 		PDFUtility pdfUtility;
 		pdfUtility = new PDFUtility();
@@ -1053,7 +1150,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 *            path to the generated report
 	 * @return true or false based on whether the images match the given images
 	 */
-	public boolean compareViewImages(String actualPath, String baselinePath)throws IOException {
+	public boolean compareViewImages(String actualPath, String baselinePath) throws IOException {
 		String actualReport = actualPath + reportName.trim() + ".pdf";
 		PDFUtility pdfUtility;
 		pdfUtility = new PDFUtility();
@@ -1065,6 +1162,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean copyReportAndModifyDetails(String rptTitle, String strCreatedBy, String rptTitleNew, String surUnit, List<String> tag, boolean changeMode, String strReportMode) {
 		setPagination(PAGINATIONSETTING);
 
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		setPagination(PAGINATIONSETTING);
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
 		String reportTitleXPath;
@@ -1085,66 +1184,71 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		else
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
 
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
 
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
-				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[2]/img";
+				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
 				copyImg = table.findElement(By.xpath(copyImgXPath));
-
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				copyImg.click();
 
+				this.inputTitle.clear();
+				this.inputTitle.sendKeys(rptTitleNew);
 				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
-				if (changeMode) {
-					if (strReportMode.contentEquals("S1"))
-						this.radioBtnS1Mode.click();
-					else if (strReportMode.contentEquals(Resources.getResource(ResourceKeys.Constant_Standard)))
-						this.radioBtnStndMode.click();
-					else if (strReportMode.contentEquals("Rapid Response"))
-						this.radioBtnRRmode.click();
-					else if (strReportMode.contentEquals(Resources.getResource(ResourceKeys.Constant_Manual)))
-						this.radioBtnManualMode.click();
-
-					if (this.isElementPresent(btnChangeModeXPath)) {
-						JavascriptExecutor js = (JavascriptExecutor) driver;
-						js.executeScript("arguments[0].click();", btnChangeMode);
-					}
-					if (surUnit != "") {
-						List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
-						for (WebElement option : optionsSU) {
-							if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
-								option.click();
-							}
-						}
+				if (strReportMode != null && changeMode) {
+					if (strReportMode.equalsIgnoreCase("standard")) {
+						this.checkBoxStndRptMode.click();
 					}
 
-					for (String tagValue : tag) {
-						if (tagValue != "") {
-							this.cbTag.clear();
-							this.cbTag.sendKeys(tagValue);
-							this.btnSurveySearch.click();
-							if (testSetup.isRunningDebug())
-								testSetup.slowdownInSeconds(3);
-							testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-							this.checkboxSurFirst.click();
-							testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-							this.btnAddSurveys.click();
+					if (strReportMode.equalsIgnoreCase("manual")) {
+						this.checkBoxManualRptMode.click();
+					}
+
+					if (strReportMode.equalsIgnoreCase("rr")) {
+						this.checkBoxRRRptMode.click();
+					}
+
+					testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+					if (this.btnChangeRptMode.isDisplayed()) {
+						this.btnChangeRptMode.click();
+					}
+					testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+				} else
+					this.btnDeleteSurvey.click();
+				if (surUnit != "") {
+					List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
+					for (WebElement option : optionsSU) {
+						if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
+							option.click();
 						}
 					}
 				}
 
-				this.inputTitle.clear();
-				this.inputTitle.sendKeys(rptTitleNew);
+				for (String tagValue : tag) {
+					if (tagValue != "") {
+						this.cbTag.clear();
+						this.cbTag.sendKeys(tagValue);
+						this.btnSurveySearch.click();
+						if (testSetup.isRunningDebug())
+							testSetup.slowdownInSeconds(3);
+						testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+						this.checkboxSurFirst.click();
+						testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+						this.btnAddSurveys.click();
+					}
+				}
+
 				this.inputViewInd.click();
 				this.inputViewIso.click();
 				this.inputViewAnno.click();
-				this.inputViewAssets.click();
-				this.inputViewBoundaries.click();
 				this.btnOK.click();
 
 				return true;
@@ -1169,6 +1273,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tag, String startDate, String endDate, boolean changeMode, String strReportMode) {
+
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		this.btnNewComplianceRpt.click();
 
@@ -1258,7 +1363,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.inputViewIso.click();
 		this.inputViewAnno.click();
 		this.inputViewAssets.click();
-		this.inputViewBoundaries.click();
+		// this.inputViewBoundaries.click();
 		this.btnOK.click();
 	}
 
@@ -1273,8 +1378,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean searchReport(String reportTitle, String reportCreatedBy) {
 		this.inputSearchReport.sendKeys(reportTitle);
 
-		if (this.tdReportTitle.getText().contentEquals(reportTitle)) {
-			if (this.tdReportCreatedBy.getText().contentEquals(reportCreatedBy))
+		if (this.tdCReportTitle.getText().contentEquals(reportTitle)) {
+			if (this.tdCReportCreatedBy.getText().contentEquals(reportCreatedBy))
 				return true;
 		}
 		return false;
@@ -1424,13 +1529,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
 
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
-				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[2]/img";
+				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
 				copyImg = table.findElement(By.xpath(copyImgXPath));
 
 				copyImg.click();
@@ -1607,6 +1712,16 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public void selectCustomerBoundaryRadioButton() {
 		this.areaBoundaryRadioButtons.get(CUSTOMER_BOUNDARY_RADBUTTON_GROUP_IDX).click();
+	}
+
+	public int getNumberofRecords() {
+		List<WebElement> records = this.numberofRecords;
+		return records.size();
+	}
+
+	public String getAreaErrorText() {
+		return this.areaErrorText.getText();
+
 	}
 
 	private void waitForCustomBoundarySectionToShow() {
