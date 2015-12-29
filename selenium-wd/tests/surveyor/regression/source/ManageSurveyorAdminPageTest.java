@@ -127,40 +127,44 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	
 	/**
 	 * Test Case ID: TC457_EditSurveyorDesc50CharLimit_CustUA
-	 * Test Description: More than 50 characters not allowed in Surveyor Description field
+	 * Test Description: More than 400 characters not allowed in Surveyor Description field
 	 * Test Script: - On Home Page, and click Administration -> Manage Surveyors
 					- Click on 'Edit' button
-					- Provide more than 50 characters in Surveyor Description field and click OK
-	 * Expected Results: User cannot enter more than 50 characters and message having limit of characters displayed
+					- Provide more than 400 characters in Surveyor Description field and click OK
+	 * Expected Results: User cannot enter more than 400 characters and message having limit of characters displayed
 	 * Current implementation:   
-	 * Current Issue: DE1273 - Server-side check for Surveyor description length<=25 does NOT exist.
      * Future Improvement:
 	 */	
 	@Test
-	public void TC457_EditSurveyorDesc50CharLimit_CustUA() {
+	public void TC457_EditSurveyorDesc400CharLimit_CustUA() {
 		String str14chars = "AbcdefghI-Abcd";
 		String str15chars = "AbcdefghI-Abcde";
 		
-		String surveyorName50Chars = testSetup.getFixedSizePseudoRandomString(31) + "TC457" + str14chars;
-		String surveyorName51Chars = testSetup.getFixedSizePseudoRandomString(31) + "TC457" + str15chars;
+		String surveyorName400Chars = testSetup.getFixedSizePseudoRandomString(381) + "TC457" + str14chars;
+		String surveyorName401Chars = testSetup.getFixedSizePseudoRandomString(381) + "TC457" + str15chars;
 		
-		System.out.println("\nRunning - TC457_EditSurveyorDesc50CharLimit_CustUA - Test Description: More than 50 characters not allowed "
+		System.out.println("\nRunning - TC457_EditSurveyorDesc50CharLimit_CustUA - Test Description: More than 400 characters not allowed "
 				+ "in Surveyor Description field\n");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		
 		manageSurveyorPage.open();
-		manageSurveyorPage.addNewSurveyor(surveyorName50Chars, SQACUSLOC, SQACUS);
+		manageSurveyorPage.addNewSurveyor(surveyorName400Chars, SQACUSLOC, SQACUS);
 		manageSurveyorPage.logout();
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		
+		System.out.println("surveyorName400Chars=" + surveyorName400Chars);
+		System.out.println("surveyorName401Chars=" + surveyorName401Chars);
+		System.out.println("Starting to edit the surveyor...");
+
 		manageSurveyorAdminPage.open();
-		manageSurveyorAdminPage.editExistingSurveyor(SQACUSLOC, surveyorName50Chars, surveyorName51Chars);
+		manageSurveyorAdminPage.editExistingSurveyor(SQACUSLOC, surveyorName400Chars, surveyorName401Chars);
 		
-		String allowedSurveyorName = surveyorName51Chars.substring(0,50);
+		String allowedSurveyorName = surveyorName401Chars.substring(0,400);
+		System.out.println("allowedSurveyorName=" + allowedSurveyorName);
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);

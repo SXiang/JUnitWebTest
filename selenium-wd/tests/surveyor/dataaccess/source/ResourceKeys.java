@@ -52,6 +52,8 @@ public class ResourceKeys {
 	public static final String ManageLocation_RapidResponse = "ManageLocation_RapidResponse";
 	public static final String ManageRefGasBottles_PageTitle = "ManageRefGasBottles_PageTitle";
 	public static final String ManageSurveyors_PageTitle = "ManageSurveyors_PageTitle";
+	public static final String ManageSurveyor_NewSurveyor = "ManageSurveyor_NewSurveyor";
+	public static final String ManageSurveyor_EditSurveyor = "ManageSurveyor_EditSurveyor";
 	public static final String ManageSurveyorHistories_PageTitle = "ManageSurveyorHistories_PageTitle";
 	public static final String ManageSurveyorHistory_PageTitle = "ManageSurveyorHistory_PageTitle";
 	public static final String ManageUsers_PageTitle = "ManageUsers_PageTitle";

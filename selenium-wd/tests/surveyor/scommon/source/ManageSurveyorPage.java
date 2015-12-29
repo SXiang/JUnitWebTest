@@ -28,6 +28,8 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageSurveyors";
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.ManageSurveyors_PageTitle);
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageSurveyors_PageTitle);
+	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ManageSurveyor_NewSurveyor);
+	public static final String STREditPageContentText = Resources.getResource(ResourceKeys.ManageSurveyor_EditSurveyor);
 	public static final String PAGE_PAGINATIONSETTING = "100";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
@@ -243,11 +245,12 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 			
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName) && (locationNameCell.getText().trim()).equalsIgnoreCase(locationName) 
 					&& (surveyorNameCell.getText().trim()).equalsIgnoreCase(surveyorName)) {
-				actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]";
+				actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]/a";
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
 				
 				System.out.println("Found cell at xpath=" + actionEditXPath);
 				actionEditCell.click();
+				this.waitForEditPageLoad();
 				
 				this.inputSurveyorDesc.clear();
 				this.inputSurveyorDesc.sendKeys(surveyorNameNew);
@@ -311,6 +314,23 @@ public class ManageSurveyorPage extends SurveyorBasePage {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getPageSource().contains(STRPageContentText);
+            }
+        });
+    }
+
+	public void waitForNewPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRNewPageContentText);
+            }
+        });
+    }
+
+    public void waitForEditPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+            	System.out.println("Checking for content on EDIT page: " + STREditPageContentText);
+                return d.getPageSource().contains(STREditPageContentText);
             }
         });
     }
