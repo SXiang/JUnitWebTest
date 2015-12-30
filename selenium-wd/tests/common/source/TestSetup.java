@@ -49,7 +49,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
  */
 public class TestSetup {
 
-	private static final String[] CI_MACHINES = {"20.20.20.59", "20.20.10.82"};
+	private static final String[] CI_MACHINES = {"20.20.20.59", "20.20.10.82", "10.200.2.48"};
 	private static String testPropFileName;
 	
 	public static final String REPLAY_DEFN_CURL_FILE = "replay-defn-curl.bat";
