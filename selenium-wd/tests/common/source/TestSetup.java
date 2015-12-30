@@ -233,26 +233,27 @@ public class TestSetup {
 
 	public static void replayDB3Script(String defnFileName, String db3FileName) {
 		try {
-			// Replace %DB3_FILE_PATH% in defn file with full path to db3FileName.
-			String rootFolder = getExecutionPath(getRootPath()) + "data";
-			String defnFullPath = rootFolder + File.separator + "defn" + File.separator + defnFileName;
-			String db3FileFullPath = rootFolder + File.separator + "db3" + File.separator + db3FileName;
-			
-			String workingDefnFile = getUUIDString() + "_" + defnFileName;
-			String workingDefnFullPath = Paths.get(rootFolder + File.separator + "defn", workingDefnFile).toString();
-			
-			// Create a copy of the defn file in %TEMP% folder.
-			Files.copy(Paths.get(defnFullPath), Paths.get(workingDefnFullPath));
-
-			// Update the working copy.
-			FileUtility.updateFile(workingDefnFullPath, "%DB3_FILE_PATH%", db3FileFullPath);
-			
-			// Replay DB3 script
-			replayDB3Script(workingDefnFile);
-			
-			// Delete the working copy of the defn file.
-			Files.delete(Paths.get(workingDefnFullPath));
-			
+			if (isRunningLocally()) {
+				// Replace %DB3_FILE_PATH% in defn file with full path to db3FileName.
+				String rootFolder = getExecutionPath(getRootPath()) + "data";
+				String defnFullPath = rootFolder + File.separator + "defn" + File.separator + defnFileName;
+				String db3FileFullPath = rootFolder + File.separator + "db3" + File.separator + db3FileName;
+				
+				String workingDefnFile = getUUIDString() + "_" + defnFileName;
+				String workingDefnFullPath = Paths.get(rootFolder + File.separator + "defn", workingDefnFile).toString();
+				
+				// Create a copy of the defn file in %TEMP% folder.
+				Files.copy(Paths.get(defnFullPath), Paths.get(workingDefnFullPath));
+	
+				// Update the working copy.
+				FileUtility.updateFile(workingDefnFullPath, "%DB3_FILE_PATH%", db3FileFullPath);
+				
+				// Replay DB3 script
+				replayDB3Script(workingDefnFile);
+				
+				// Delete the working copy of the defn file.
+				Files.delete(Paths.get(workingDefnFullPath));
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
