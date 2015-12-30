@@ -107,7 +107,7 @@ public class BaseHelper {
 
 		System.out.format("\nThe \"%s\" size is: %d\n", pdfFileName, sizeKB);
 
-		if (sizeKB > 0) {
+		if (sizeKB > 1) {
 			return true;
 		}
 

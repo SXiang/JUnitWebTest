@@ -174,6 +174,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='deleteReportModalLabel']/../..//*[@class='btn btn-danger']")
 	protected WebElement btnDeleteConfirm;
+	protected String btnDeleteConfirmXpath="//*[@id='deleteReportModalLabel']/../..//*[@class='btn btn-danger']";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='Standard']")
 	protected WebElement checkBoxStndRptMode;
@@ -891,18 +892,25 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				deleteImg = table.findElement(By.xpath(deleteImgXPath));
 
 				deleteImg.click();
-				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-				this.btnDeleteConfirm.click();
+				waitForDeletePopupLoad();
+				//this.btnDeleteConfirm.click();
 
-				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				if (this.isElementPresent(btnDeleteConfirmXpath)) {
+					 JavascriptExecutor js = (JavascriptExecutor) driver; 
+					 js.executeScript("arguments[0].click();", btnDeleteConfirm);
+					 testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				 
+				 if (this.isElementPresent(errorMsgDeleteCompliacneReportXPath)) { 
+					 this.btnReturnToHomePage.click(); 
+					 return false; 
+					 } 
+				 else 
+						 return true; 
+				 } 
+				 else 
+					 return false;
+				
 
-				/*
-				 * if (this.isElementPresent(btnDeleteReportXPath)) { JavascriptExecutor js = (JavascriptExecutor) driver; js.executeScript("arguments[0].click();", btnDeleteReport);
-				 * 
-				 * if (this.isElementPresent(errorMsgDeleteCompliacneReportXPath)) { this.btnReturnToHomePage.click(); return false; } else return true; } else return false;
-				 */
-
-				return true;
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
@@ -1222,9 +1230,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public boolean copyReportAndModifyDetails(String rptTitle, String strCreatedBy, String rptTitleNew, String surUnit, List<String> tag, boolean changeMode, String strReportMode) {
 		setPagination(PAGINATIONSETTING);
-
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-		setPagination(PAGINATIONSETTING);
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
 		String reportTitleXPath;
@@ -1256,9 +1261,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
 				copyImg = table.findElement(By.xpath(copyImgXPath));
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				copyImg.click();
-
 				this.inputTitle.clear();
 				this.inputTitle.sendKeys(rptTitleNew);
 				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
@@ -1572,8 +1575,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public void clickOnCopyReport(String rptTitle, String strCreatedBy) {
 		setPagination(PAGINATIONSETTING);
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-
+		
 		String reportTitleXPath;
 		String createdByXPath;
 		String copyImgXPath;
@@ -1823,4 +1825,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
             }
         });
     }
+	
+	  public void waitForDeletePopupLoad() {
+	        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+	            public Boolean apply(WebDriver d) {
+	                return btnDeleteConfirm.isDisplayed();
+	            }
+	        });
+	    }
 }
