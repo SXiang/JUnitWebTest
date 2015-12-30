@@ -893,8 +893,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 				deleteImg.click();
 				waitForDeletePopupLoad();
-				//this.btnDeleteConfirm.click();
-
+				
 				if (this.isElementPresent(btnDeleteConfirmXpath)) {
 					 JavascriptExecutor js = (JavascriptExecutor) driver; 
 					 js.executeScript("arguments[0].click();", btnDeleteConfirm);
