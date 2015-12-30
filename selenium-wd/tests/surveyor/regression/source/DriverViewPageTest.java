@@ -156,7 +156,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	 * 5. All Asset types and boundaries level are OFF 
 	 * 6. Status is green and all the gauges present on expanding are green
 	 */
-	@Test
+	@Ignore
 	public void TC1094_SimulatorTest_VerifyInstrumentReady_PicAdmin() {
 		System.out.println("Running TC1094_SimulatorTest_VerifyInstrumentReady_PicAdmin");
 
@@ -363,7 +363,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	 * 7. Stop Driving Survey, Isotopic Capture and Reference Bottle Measurement buttons are present
 	 * 8. Survey Inactive message is displayed and only car icon is present on map. Car icon is displayed in grey color. Breadcrumb will  be displayed in grey color. There should be no errors on the consolebuttons are disabled
 	 */
-	@Test
+	@Ignore
 	public void TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin() {
 		System.out.println("Running TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin");
 
