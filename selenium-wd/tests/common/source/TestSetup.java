@@ -188,9 +188,13 @@ public class TestSetup {
 	}
 	
 	private static boolean isRunningLocally() throws UnknownHostException {
-		boolean isRunningLocally = true;
+		System.out.println("Checking if test is running locally.");
+		boolean isRunningLocally = true;		
+		String hostAddress = InetAddress.getLocalHost().getHostAddress();
+		System.out.println("Executing machine IP is: " + hostAddress);
 		for (String machineIp : CI_MACHINES) {
-			if (InetAddress.getLocalHost().getHostAddress().equalsIgnoreCase(machineIp)) {
+			System.out.println("Checking with IP: " + machineIp);
+			if (hostAddress.equalsIgnoreCase(machineIp)) {
 				isRunningLocally = false;	
 				break;
 			}
