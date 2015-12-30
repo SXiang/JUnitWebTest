@@ -33,7 +33,7 @@ public class Reports {
 	
 	protected List<Map<String, String>> viewList;
 	protected List<Map<String, String>> tablesList;
-	
+	protected List<Map<String, String>> viewLayersList;
 	protected List<String> tagList;
 	protected String surveyMode;
 	
@@ -149,6 +149,32 @@ public class Reports {
 
 		this.viewList = viewList;
 	}
+	
+	public Reports(String rptTitle, String strCreatedBy, String customer,
+			String timeZone, String exclusionRadius, List<String> listBoundary,
+			List<Map<String, String>> tablesList, String surveyorUnit,
+			String tag, List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) {
+		this.rptTitle = rptTitle;
+		this.strCreatedBy = strCreatedBy;
+		this.customer = customer;
+		this.timeZone = timeZone;
+		this.exclusionRadius = exclusionRadius;
+
+		this.listBoundary = listBoundary;
+		this.imageMapHeight = listBoundary.get(0);
+		this.imageMapWidth = listBoundary.get(1);
+		this.NELat = listBoundary.get(2);
+		this.NELong = listBoundary.get(3);
+		this.SWLat = listBoundary.get(4);
+		this.SWLong = listBoundary.get(5);
+		
+		this.tablesList = tablesList;
+		this.surveyorUnit = surveyorUnit;
+		this.tag = tag;
+
+		this.viewList = viewList;
+		this.viewLayersList = viewLayersList;
+	}
 
 	public String getRptTitle() {
 		return this.rptTitle;
@@ -223,6 +249,10 @@ public class Reports {
 	
 	public String getSurveyMode() {
 		return this.surveyMode;
+	}
+	
+	public List<Map<String, String>> getViewLayersList() {
+		return this.viewLayersList;
 	}
 	
 	/**
