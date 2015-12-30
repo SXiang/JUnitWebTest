@@ -35,7 +35,15 @@ public class ReportsCompliance extends Reports {
 
 	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList) {
 		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, listBoundary, tablesList, surveyorUnit, tagList, viewList);
+
 	}
+	
+	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList,
+			String surveyorUnit, String tag, List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) {
+		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, listBoundary, tablesList, surveyorUnit, tag, viewList, viewLayersList);
+	}
+
+	
 
 	/**
 	 * @param args

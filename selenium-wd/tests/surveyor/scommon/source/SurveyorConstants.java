@@ -167,6 +167,17 @@ public final class SurveyorConstants {
 	public static final String KEYBOUNDARIES = "Boundaries";
 	public static final String KEYBASEMAP = "Base Map";
 
+	
+	public static final String KEYASSETCASTIRON = "Cast Iron";
+	public static final String KEYASSETCOPPER = "Copper";
+	public static final String KEYASSETOTHERPLASTIC = "Other Plastic";
+	public static final String KEYASSETPEPLASTIC = "PE Plastic";
+	public static final String KEYASSETPROTECTEDSTEEL = "Un-protected Steel";
+	public static final String KEYASSETUNPROTECTEDSTEEL = "Protected Steel";
+	public static final String KEYBOUNDARYDISTRICT = "District";
+	public static final String KEYBOUNDARYDISTRICTPLAT = "District Plat";
+
+
 	public static final String KEYINDTB = "Indications Table";
 	public static final String KEYISOANA = "Isotopic Analysis";
 	public static final String KEYPCA = "Percent Coverage Assets";
@@ -235,6 +246,7 @@ public final class SurveyorConstants {
 
 	public static final String REXCLUSIONRADIUS = "3";
 
+
 	/*
 	 * Start & end date for survey
 	 */
@@ -250,3 +262,7 @@ public final class SurveyorConstants {
 	public static final String RSUVMODERR = "Rapid Response";
 	public static final String RSUVMODEMANUAL = "Manual";
 }
+
+	
+
+
