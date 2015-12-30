@@ -16,46 +16,46 @@ public final class SurveyorConstants {
 	 */
 	private SurveyorConstants() {
 	}
-	
+
 	public static final String BASECUSTOMERNAME = "Cus";
 	public static final String BASELOCATIONNAME = "Loc";
 	public static final String BASESURVEYORNAME = "Sur";
 	public static final String BASEANALYZERNAME = "";
-	public static final String ANALYZERSHAREDKEY = "sqa#Picarro$0";	
-	
+	public static final String ANALYZERSHAREDKEY = "sqa#Picarro$0";
+
 	public static final String BASEUSERNAME = "SQA@picarro.com";
 	public static final String USERPASSWORD = "sqa#Picarro$0";
-	
-	public static final int CUSTOMERNUM = 50; //Should be set less than 100 otherwise need review the code
-	public static final int LOCATIONNUM = 5; //Should be set less than 100 otherwise need review the code
-	public static final int SURVEYORNUM = 1; //Should be set less than 100 otherwise need review the code
-	public static final int ANALYZERNUM = 1; //Should be set less than 100 otherwise need review the code
-	public static final int USERNUM = 5;    //Should be set less than 100 otherwise need review the code
-	
+
+	public static final int CUSTOMERNUM = 50; // Should be set less than 100 otherwise need review the code
+	public static final int LOCATIONNUM = 5; // Should be set less than 100 otherwise need review the code
+	public static final int SURVEYORNUM = 1; // Should be set less than 100 otherwise need review the code
+	public static final int ANALYZERNUM = 1; // Should be set less than 100 otherwise need review the code
+	public static final int USERNUM = 5; // Should be set less than 100 otherwise need review the code
+
 	public static final String CUSTOMERNAMEPREFIX = "regcus";
 	public static final String CUSTOMERSTATUS = Resources.getResource(ResourceKeys.Constant_Enabled);
 	public static final String EULASTRING = "Testing eula string, TBD";
 	public static final String REGBASEUSERNAME = "@email.com";
-	
+
 	public static final String PICNAMEPREFIX = "sqapic";
 	public static final String REGBASEPICUSERNAME = "@picarro.com";
-	
+
 	public static final String CUSNAMEBASE = "sqacus";
 	public static final String CUSNAMEBASELOC = "sqacusloc";
 	public static final String CUSNAMEBASESUR = "sqacuslocsur";
 	public static final String CUSNAMEBASEANA = "sqacuslocsurana";
-	
+
 	public static final String SQACUS = "sqacus";
 	public static final String SQACUSLOC = "sqacusloc";
 	public static final String SQAPIC = "sqapic";
 	public static final String SQAPICLOC = "sqapicloc";
-	
+
 	public static final String USERROLEADMIN = "Administrator";
 	public static final String CUSUSERROLEUA = "Utility Administrator";
 	public static final String CUSUSERROLESU = "Supervisor";
 	public static final String CUSUSERROLEDR = Resources.getResource(ResourceKeys.Constant_Driver);
 	public static final String PICUSERROLESUP = "Picarro Support";
-	
+
 	public static final String PICDFADMIN = "Administrator";
 	public static final String PICADMINPSWD = "FastLane!911";
 	public static final String SQACUSUAUSER = "sqacusua";
@@ -65,7 +65,7 @@ public final class SurveyorConstants {
 	public static final String SQAPICUAUSER = "sqapicua";
 	public static final String SQAPICSUUSER = "sqapicsu";
 	public static final String SQAPICDRUSER = "sqapicdr";
-	
+
 	public static final String SQACUSUA = "sqacusua@email.com";
 	public static final String SQACUSSU = "sqacussu@email.com";
 	public static final String SQACUSDR = "sqacusdr1@email.com";
@@ -75,7 +75,7 @@ public final class SurveyorConstants {
 	public static final String SQAPICSU = "sqapicsu@picarro.com";
 	public static final String SQAPICSU1 = "sqapicsu1@picarro.com";
 	public static final String SQAPICDR = "sqapicdr@picarro.com";
-	
+
 	public static final String SQAPICLOCSUR = "sqapiclocsur";
 	public static final String SQAPICLOC0SUR = "sqapicloc0sur";
 	public static final String SQAPICLOC1SUR = "sqapicloc1sur";
@@ -87,7 +87,7 @@ public final class SurveyorConstants {
 	public static final String SQACUSLOC1SUR = "sqacusloc1sur";
 	public static final String SQACUSLOC2SUR = "sqacusloc2sur";
 	public static final String SQACUSLOC3SUR = "sqacusloc3sur";
-	
+
 	public static final String SQAPICLOCSURANA = "sqapiclocsurana";
 	public static final String SQAPICLOC0SURANA = "sqapicloc0surana";
 	public static final String SQAPICLOC1SURANA = "sqapicloc1surana";
@@ -97,8 +97,8 @@ public final class SurveyorConstants {
 	public static final String SQACUSLOC0SURANA = "sqacusloc0surana";
 	public static final String SQACUSLOC1SURANA = "sqacusloc1surana";
 	public static final String SQACUSLOC2SURANA = "sqacusloc2surana";
-	public static final String SQACUSLOC3SURANA = "sqacusloc3surana";	
-	
+	public static final String SQACUSLOC3SURANA = "sqacusloc3surana";
+
 	public static final String SQACUSUATAG = "dmcs1-sqacusua";
 	public static final String SQACUSSUTAG = "dmcs1-sqacussu";
 	public static final String SQACUSDRTAG = "stnd-sqacudr";
@@ -108,15 +108,15 @@ public final class SurveyorConstants {
 	public static final String SQAPICDRTAG = "dmcs1-sqapicdr";
 	public static final String SQACRPTTAG = "tc56";
 	public static final String RGBNAMEBASE = "rgb";
-	
+
 	public static String STRFEEDBACK = "This is sqa test feedback message";
-	
+
 	public static final String TITLENAMEBASE = "sqacrpt";
 	public static final String TIMEZONE = "Pacific Standard Time";
 	public static final String EXCLUSIONRADIUS = "50";
 	public static final String REPORTMODES1 = "S1";
 	public static final String REPORTMODES = "Standard";
-	
+
 	public static final String CUSBOUNDARY = Resources.getResource(ResourceKeys.ComplianceReport_CustomBoundary);
 	public static final String IMGMAPHEIGHT = "8.5";
 	public static final String IMGMAPWIDTH = "11";
@@ -124,37 +124,37 @@ public final class SurveyorConstants {
 	public static final String NELON = "121.93639755249023";
 	public static final String SWLAT = "37.39566424530531";
 	public static final String SWLON = "122.01141357421875";
-	
+
 	public static final String SURVEYORUNIT = "sqacus - sqacusloc - sqacuslocsur";
 	public static final String TAG = "dmcs1-sqa01";
-	
+
 	public static final String STARTDATE = "01/01/2014";
 	public static final String ENDDATE = "08/14/2014";
-	
-	public static final int ACTIONTIMEOUT = 300; //in seconds
-	
-	//public static final String PAGINATIONSETTING = "100";
-	public static final String PAGINATIONSETTING = "10"; //Selenium WebDriver issues so set it to 10 only for now
+
+	public static final int ACTIONTIMEOUT = 300; // in seconds
+
+	// public static final String PAGINATIONSETTING = "100";
+	public static final String PAGINATIONSETTING = "10"; // Selenium WebDriver issues so set it to 10 only for now
 	public static final String PAGINATIONSETTING_25 = "25";
 	public static final String PAGINATIONSETTING_50 = "50";
 	public static final String PAGINATIONSETTING_100 = "100";
-	
+
 	public static final String USERENABLED = Resources.getResource(ResourceKeys.Constant_Enabled);
 	public static final String USERDISABLED = Resources.getResource(ResourceKeys.Constant_Disabled);
-	
+
 	public static final String CUSTOMERENABLED = Resources.getResource(ResourceKeys.Constant_Enabled);
 	public static final String CUSTOMERDISABLED = Resources.getResource(ResourceKeys.Constant_Disabled);
-	
+
 	public static final String TIMEZONEPT = "Pacific Time (US and Canada)";
 	public static final String TIMEZONEMT = "Mountain Time (US and Canada)";
 	public static final String TIMEZONECT = "Central Time (US and Canada)";
 	public static final String TIMEZONEET = "Eastern Time (US and Canada)";
-	
+
 	public static final String TIMEZONEPTUA = "Pacific Standard Time";
 	public static final String TIMEZONEMTUA = "Mountain Standard Time (Mexico)";
 	public static final String TIMEZONECTUA = "Central Standard Time";
 	public static final String TIMEZONEETUA = "Eastern Standard Time";
-	
+
 	public static final String KEYVIEWNAME = "ViewName";
 	public static final String KEYLISA = "Lisa";
 	public static final String KEYFOV = "FOV";
@@ -166,6 +166,7 @@ public final class SurveyorConstants {
 	public static final String KEYASSETS = "Assets";
 	public static final String KEYBOUNDARIES = "Boundaries";
 	public static final String KEYBASEMAP = "Base Map";
+
 	
 	public static final String KEYASSETCASTIRON = "Cast Iron";
 	public static final String KEYASSETCOPPER = "Copper";
@@ -176,11 +177,12 @@ public final class SurveyorConstants {
 	public static final String KEYBOUNDARYDISTRICT = "District";
 	public static final String KEYBOUNDARYDISTRICTPLAT = "District Plat";
 
+
 	public static final String KEYINDTB = "Indications Table";
 	public static final String KEYISOANA = "Isotopic Analysis";
-	public static final String KEYPCA = "Percent Coverage Assets"; 
+	public static final String KEYPCA = "Percent Coverage Assets";
 	public static final String KEYPCRA = "Percent Coverage Report Area";
-	
+
 	public static final String SQAPICADRRTAG = "dmcrapidresponse-sqapic-admin";
 	public static final String SQAPICADSTNDTAG = "dmcstandard-sqapic-admin";
 	public static final String SQAPICADMANUALTAG = "dmcmanual-sqapic-admin";
@@ -191,32 +193,32 @@ public final class SurveyorConstants {
 	public static final String BLANKFIELDERROR = Resources.getResource(ResourceKeys.Validation_Required);
 	public static final String PWDSAMEVALUE = Resources.getResource(ResourceKeys.Validation_EnterSameValueAgain);
 	public static final String EMAILTOOLONG = Resources.getResource(ResourceKeys.Validation_EnterNoMoreThan).replace("{0}", "50");
-	
+
 	public static final String NOMATCHINGSEARCH = Resources.getResource(ResourceKeys.Constant_NoMatchingRecordsFound);
-	
+
 	public static final String DRIVINGSURVEYSEXPORTSURVEY = "SurveyExport";
 	public static final String DRIVINGSURVEYSEXPORTPEAKS = "PeakExport";
 	public static final String DRIVINGSURVEYSEXPORTANALYSIS = "AnalysisExport";
-	
+
 	public static final String LOGINTITLE = "Login";
 	public static final String HOMETITLE = "Home - Surveyor";
 	public static final String HOMEDHEADER = "Dashboard";
 	public static final String SUBTITLE = " - Surveyor";
 	public static final String DRIVINGSURVEYTITLE = "Measurement Sessions - Surveyor";
 	public static final String DRIVINGSURVEYHEADER = "Driving Surveys";
-	
+
 	/*
 	 * Compliance Report static titles
 	 */
-	public static final String REPORTTITLE="Compliance Report";
-	public static final String LISAINV="LISA Investigation Complete";
-	public static final String GAPINV="GAP Investigation Complete";
-	public static final String CGIINV="CGI Investigation Complete";
-	public static final String APPRNAME="Approver Name";
-	public static final String APPRSIG="Approver Signature";
-	public static final String RPTCRTDATE="Report Creation Date";
-	public static final String DATE="Date";
-	
+	public static final String REPORTTITLE = "Compliance Report";
+	public static final String LISAINV = "LISA Investigation Complete";
+	public static final String GAPINV = "GAP Investigation Complete";
+	public static final String CGIINV = "CGI Investigation Complete";
+	public static final String APPRNAME = "Approver Name";
+	public static final String APPRSIG = "Approver Signature";
+	public static final String RPTCRTDATE = "Report Creation Date";
+	public static final String DATE = "Date";
+
 	/*
 	 * Compliance Report tags
 	 */
@@ -227,13 +229,13 @@ public final class SurveyorConstants {
 	public static final String CUSDRVSTDTAG = "stnd-sqacudr";
 	public static final String CUSDRVRRTAG = "rr-sqacudr";
 	public static final String CUSDRVOPTAG = "op-pic";
-	
+
 	/*
 	 * Compliance Report Surveyor Units
 	 */
-	public static final String PICADMNSURVEYOR = "Software Car";
+	public static final String PICADMNSURVEYOR = "Picarro - Santa Clara - Software Car";
 	public static final String SQACUSSURVEYOR = "White Dodge";
-	
+
 	/*
 	 * Lat Long for Reporting
 	 */
@@ -241,7 +243,26 @@ public final class SurveyorConstants {
 	public static final String RNELON = "-121.97250";
 	public static final String RSWLAT = "37.41570";
 	public static final String RSWLON = "-121.98390";
-	
+
 	public static final String REXCLUSIONRADIUS = "3";
+
+
+	/*
+	 * Start & end date for survey
+	 */
+	public static final String RSURSTARTDATE = "12/14/2015 3:00:00 PM";
+	public static final String RSURENDDATE = "12/14/2015 5:00:00 PM";
+
+	/*
+	 * Survey modes for Compliance report
+	 */
+	public static final String RSUVMODEALL = "All";
+	public static final String RSUVMODESTD = "Standard";
+	public static final String RSUVMODEOP = "Operator";
+	public static final String RSUVMODERR = "Rapid Response";
+	public static final String RSUVMODEMANUAL = "Manual";
+}
+
 	
-	}
+
+
