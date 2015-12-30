@@ -803,7 +803,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void addNewPDReport(String reportTitle, String surveyor, List<String> tag, boolean changeMode, String reportMode) {
-		this.addNewReport(reportTitle, null, TIMEZONEPT, REXCLUSIONRADIUS, "", "", "", RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, changeMode, reportMode);
+		this.addNewReport(reportTitle, null, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, changeMode, reportMode);
 	}
 
 	public boolean findReport(String rptTitle, String strCreatedBy) {
@@ -1428,7 +1428,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.inputViewIso.click();
 		this.inputViewAnno.click();
 		this.inputViewAssets.click();
-		// this.inputViewBoundaries.click();
+		if(boundary!=null){
+		 this.inputViewBoundaries.click();
+		 this.checkBoxDistrict.click();
+		 this.checkBoxDistrict.click();
+		}
 		this.btnOK.click();
 	}
 

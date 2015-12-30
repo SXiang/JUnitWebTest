@@ -88,6 +88,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
@@ -1658,7 +1659,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC183 Test Description: Generate report having multiple surveys of Standard, Operator and Rapid Response types in Rapid Response report mode
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC183_ComplianceReportTest_VerifyReportwithMultipleSurveys() {
 		String rptTitle = "TC183 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC183: Generate report having multiple surveys of Standard, Operator and Rapid Response types in Rapid Response report mode, %s\n", rptTitle);
@@ -1931,7 +1932,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC198 Test Description: Verify "Already Added" message is displayed if user tries to add the same survey again using copy functionality
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC198_ComplianceReportTest_VerifyAlreadyAddedMessageforCopy() {
 		System.out.format("\nRunning TC198: Verify 'Already Added' message is displayed if user tries to add the same survey again using copy functionality\n");
 
