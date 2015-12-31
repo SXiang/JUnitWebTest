@@ -127,6 +127,28 @@
 			</batchtest>
 		</junit>
 	</target>
+	
+	<target name="testcompliancereport" depends="compileregression" description="Run compliance report test cases">
+		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
+				showoutput="yes">
+			<classpath>
+				<pathelement path="${build}" />
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+
+			<batchtest fork="yes" todir="${reports}/regression/xml">
+				<formatter type="xml" />
+				<fileset dir="${build}">
+
+					<include name="**/ComplianceReportsPageTest.class" />
+
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	
 	<target name="testregression" depends="compileregression" description="Run regression test suite">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
@@ -142,6 +164,7 @@
 				<fileset dir="${build}">
 
 					<include name="**/ACLandVisibilityTest.class" />
+					<include name="**/ComplianceReportsPageTest.class" />
 					<include name="**/HomePageTest.class" />
 					<include name="**/LoginPageTest.class" />
 					<include name="**/ManageAnalyzersPageTest.class" />
@@ -155,8 +178,7 @@
 					<include name="**/ManageUsersPageTest.class" />
 					<include name="**/ManageUsersAdminPageTest.class" />
 					<include name="**/UserFeedbackPageTest.class" />
-					<include name="**/UserFeedbackAdminPageTest.class" />
-
+					<include name="**/UserFeedbackAdminPageTest.class" />					
 				</fileset>
 			</batchtest>
 		</junit>
