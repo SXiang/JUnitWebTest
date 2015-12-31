@@ -287,7 +287,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		System.out.println("Clicking on MODE button");
 		driverViewPage.clickModeButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
+
 		// 1., 2., 3., 4.
 		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
 		String tag = testSetup.getFixedSizePseudoRandomString(10) + "_TC1097";
