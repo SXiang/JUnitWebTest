@@ -1386,7 +1386,9 @@ public class DriverViewPage extends SurveyorBasePage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickStartSurvey() {
+		System.out.println("Clicking on StartSurvey button..");
 		startSurvey.click();
+		System.out.println("Clicked on StartSurvey button..");
 		return this;
 	}
 
@@ -1465,6 +1467,9 @@ public class DriverViewPage extends SurveyorBasePage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage setTagSurveyTextField(String tag) {
+		System.out.println(String.format("Sending text %s to tag", tag));
+		tagSurvey.sendKeys(tag);
+		System.out.println(String.format("Sent text %s to tag", tag));
 		tagSurvey.sendKeys(tag);
 		return this;
 	}
@@ -1476,10 +1481,14 @@ public class DriverViewPage extends SurveyorBasePage {
 	 */
 	public DriverViewPage startDrivingSurvey(String tag, SurveyTime surveyTime, SolarRadiation solarRadiation,
 			Wind wind, CloudCover cloudCover, SurveyType surveyType) {
+		System.out.println("Opening the StartSurvey modal dialog..");
 		this.clickStartSurveyButton();
+		System.out.println("Opened the StartSurvey modal dialog..");
 		this.waitForPageToLoad();
 
 		this.setTagSurveyTextField(tag);
+		
+		System.out.println("Selecting surveyTime..");
 		switch (surveyTime) {
 		case Day:
 			this.clickDayButton();
@@ -1517,7 +1526,8 @@ public class DriverViewPage extends SurveyorBasePage {
 		default:
 			break;
 		}
-
+		System.out.println("Selected surveyTime..");
+		System.out.println("Selecting wind..");
 		switch (wind) {
 		case Calm:
 			this.clickCalmButton();
@@ -1531,7 +1541,8 @@ public class DriverViewPage extends SurveyorBasePage {
 		default:
 			break;
 		}
-
+		System.out.println("Selected wind..");
+		System.out.println("Selecting surveyType..");		
 		switch (surveyType) {
 		case Manual:
 			this.clickManualButton();
@@ -1551,6 +1562,7 @@ public class DriverViewPage extends SurveyorBasePage {
 		default:
 			break;
 		}
+		System.out.println("Selected surveyType..");
 
 		this.clickStartSurvey();
 		this.waitForPageToLoad();

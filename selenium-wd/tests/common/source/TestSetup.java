@@ -49,7 +49,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
  */
 public class TestSetup {
 
-	private static final String[] CI_MACHINES = {"20.20.20.59", "20.20.10.82", "10.200.2.48"};
+	private static final String[] CI_MACHINES = {"20.20.20.59", "20.20.10.82", "10.0.2.15", "10.200.2.48"};
 	private static String testPropFileName;
 	
 	public static final String REPLAY_DEFN_CURL_FILE = "replay-defn-curl.bat";
@@ -188,9 +188,13 @@ public class TestSetup {
 	}
 	
 	private static boolean isRunningLocally() throws UnknownHostException {
-		boolean isRunningLocally = true;
+		System.out.println("Checking if test is running locally.");
+		boolean isRunningLocally = true;		
+		String hostAddress = InetAddress.getLocalHost().getHostAddress();
+		System.out.println("Executing machine IP is: " + hostAddress);
 		for (String machineIp : CI_MACHINES) {
-			if (InetAddress.getLocalHost().getHostAddress().equalsIgnoreCase(machineIp)) {
+			System.out.println("Checking with IP: " + machineIp);
+			if (hostAddress.equalsIgnoreCase(machineIp)) {
 				isRunningLocally = false;	
 				break;
 			}
@@ -229,26 +233,27 @@ public class TestSetup {
 
 	public static void replayDB3Script(String defnFileName, String db3FileName) {
 		try {
-			// Replace %DB3_FILE_PATH% in defn file with full path to db3FileName.
-			String rootFolder = getExecutionPath(getRootPath()) + "data";
-			String defnFullPath = rootFolder + File.separator + "defn" + File.separator + defnFileName;
-			String db3FileFullPath = rootFolder + File.separator + "db3" + File.separator + db3FileName;
-			
-			String workingDefnFile = getUUIDString() + "_" + defnFileName;
-			String workingDefnFullPath = Paths.get(rootFolder + File.separator + "defn", workingDefnFile).toString();
-			
-			// Create a copy of the defn file in %TEMP% folder.
-			Files.copy(Paths.get(defnFullPath), Paths.get(workingDefnFullPath));
-
-			// Update the working copy.
-			FileUtility.updateFile(workingDefnFullPath, "%DB3_FILE_PATH%", db3FileFullPath);
-			
-			// Replay DB3 script
-			replayDB3Script(workingDefnFile);
-			
-			// Delete the working copy of the defn file.
-			Files.delete(Paths.get(workingDefnFullPath));
-			
+			if (isRunningLocally()) {
+				// Replace %DB3_FILE_PATH% in defn file with full path to db3FileName.
+				String rootFolder = getExecutionPath(getRootPath()) + "data";
+				String defnFullPath = rootFolder + File.separator + "defn" + File.separator + defnFileName;
+				String db3FileFullPath = rootFolder + File.separator + "db3" + File.separator + db3FileName;
+				
+				String workingDefnFile = getUUIDString() + "_" + defnFileName;
+				String workingDefnFullPath = Paths.get(rootFolder + File.separator + "defn", workingDefnFile).toString();
+				
+				// Create a copy of the defn file in %TEMP% folder.
+				Files.copy(Paths.get(defnFullPath), Paths.get(workingDefnFullPath));
+	
+				// Update the working copy.
+				FileUtility.updateFile(workingDefnFullPath, "%DB3_FILE_PATH%", db3FileFullPath);
+				
+				// Replay DB3 script
+				replayDB3Script(workingDefnFile);
+				
+				// Delete the working copy of the defn file.
+				Files.delete(Paths.get(workingDefnFullPath));
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
