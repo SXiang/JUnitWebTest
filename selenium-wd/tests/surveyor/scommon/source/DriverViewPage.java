@@ -1467,13 +1467,10 @@ public class DriverViewPage extends SurveyorBasePage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage setTagSurveyTextField(String tag) {
-<<<<<<< HEAD
 		System.out.println(String.format("Sending text %s to tag", tag));
 		tagSurvey.sendKeys(tag);
 		System.out.println(String.format("Sent text %s to tag", tag));
-=======
 		tagSurvey.sendKeys(tag);
->>>>>>> master
 		return this;
 	}
 
