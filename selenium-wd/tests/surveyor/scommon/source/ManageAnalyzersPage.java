@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.FindBy;
 
+import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -139,7 +140,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 			
 			if ((customerCell.getText().trim()).equalsIgnoreCase(customerName) && (locationCell.getText().trim()).equalsIgnoreCase(locationName) 
 					&& (surveyorCell.getText().trim()).equalsIgnoreCase(surveyorName) && analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
-				System.out.println("Found entry at row=" + rowNum);
+				Log.info("Found entry at row=" + rowNum);
 				return true;
 			}
 				
@@ -205,10 +206,10 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 					(locationCell.getText().trim()).equalsIgnoreCase(locationName) && 
 					(surveyorCell.getText().trim()).equalsIgnoreCase(surveyorName) && 
 					analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
-				System.out.println("Found entry at row=" + rowNum);
+				Log.info("Found entry at row=" + rowNum);
 				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[5]";								
 				actionCell = table.findElement(By.xpath(actionXPath));
-				System.out.println("Found entry at row=" + rowNum);
+				Log.info("Found entry at row=" + rowNum);
 				actionCell.click();
 				this.waitForEditPageLoad();
 				
@@ -297,7 +298,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 					analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
 				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[5]";
 				actionCell = table.findElement(By.xpath(actionXPath));
-				System.out.println("Found entry at row=" + rowNum);
+				Log.info("Found entry at row=" + rowNum);
 				actionCell.click();
 				this.waitForEditPageLoad();
 				

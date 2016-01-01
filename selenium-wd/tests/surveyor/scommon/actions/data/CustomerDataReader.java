@@ -1,6 +1,7 @@
 package surveyor.scommon.actions.data;
 
 import common.source.ExcelUtility;
+import common.source.Log;
 
 public class CustomerDataReader extends BaseDataReader {
 
@@ -41,7 +42,7 @@ public class CustomerDataReader extends BaseDataReader {
 		String name = excelUtility.getCellData(dataRowID, Excel_TestData_Report_Col_Name, TESTDATA_SHEET_NAME);
 		String enabled = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_Enabled, TESTDATA_SHEET_NAME);
 		
-		System.out.println(String.format("Found data row: rowID=[%s], name=[%s], enabled=[%s]", rowID, name, enabled));
+		Log.info(String.format("Found data row: rowID=[%s], name=[%s], enabled=[%s]", rowID, name, enabled));
 		
 		return new CustomerDataRow(rowID, name, enabled);
 	}

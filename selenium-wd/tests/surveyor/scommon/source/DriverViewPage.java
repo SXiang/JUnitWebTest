@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -360,7 +361,7 @@ public class DriverViewPage extends SurveyorBasePage {
 	public DriverViewPage(WebDriver driver, TestSetup testSetup, String baseURL) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 
-		System.out.println("\nThe Home Page URL is: " + this.strPageURL);
+		Log.info("\nThe Home Page URL is: " + this.strPageURL);
 	}
 
 	public DriverViewPage clickCurtainArrowUpButton() {
@@ -1386,9 +1387,9 @@ public class DriverViewPage extends SurveyorBasePage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickStartSurvey() {
-		System.out.println("Clicking on StartSurvey button..");
+		Log.info("Clicking on StartSurvey button..");
 		startSurvey.click();
-		System.out.println("Clicked on StartSurvey button..");
+		Log.info("Clicked on StartSurvey button..");
 		return this;
 	}
 
@@ -1467,9 +1468,9 @@ public class DriverViewPage extends SurveyorBasePage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage setTagSurveyTextField(String tag) {
-		System.out.println(String.format("Sending text %s to tag", tag));
+		Log.info(String.format("Sending text %s to tag", tag));
 		tagSurvey.sendKeys(tag);
-		System.out.println(String.format("Sent text %s to tag", tag));
+		Log.info(String.format("Sent text %s to tag", tag));
 		tagSurvey.sendKeys(tag);
 		return this;
 	}
@@ -1481,18 +1482,18 @@ public class DriverViewPage extends SurveyorBasePage {
 	 */
 	public DriverViewPage startDrivingSurvey(String tag, SurveyTime surveyTime, SolarRadiation solarRadiation,
 			Wind wind, CloudCover cloudCover, SurveyType surveyType) {
-		System.out.println("Opening the StartSurvey modal dialog..");
+		Log.info("Opening the StartSurvey modal dialog..");
 		this.clickStartSurveyButton();
-		System.out.println("Opened the StartSurvey modal dialog..");
+		Log.info("Opened the StartSurvey modal dialog..");
 		this.waitForPageToLoad();
 
 		this.setTagSurveyTextField(tag);
 		
-		System.out.println("Selecting surveyTime..");
+		Log.info("Selecting surveyTime..");
 		switch (surveyTime) {
 		case Day:
 			this.clickDayButton();
-			System.out.println("Survey Time: Day selected.");
+			Log.info("Survey Time: Day selected.");
 			// Solar Radiation is valid only during Day time.
 			switch (solarRadiation) {
 			case Moderate:
@@ -1510,7 +1511,7 @@ public class DriverViewPage extends SurveyorBasePage {
 			break;
 		case Night:
 			this.clickNightButton();
-			System.out.println("Survey Time: Night selected.");
+			Log.info("Survey Time: Night selected.");
 			// Cloud Cover option is valid only during Night time.
 			switch (cloudCover) {
 			case LessThan50:
@@ -1526,8 +1527,8 @@ public class DriverViewPage extends SurveyorBasePage {
 		default:
 			break;
 		}
-		System.out.println("Selected surveyTime..");
-		System.out.println("Selecting wind..");
+		Log.info("Selected surveyTime..");
+		Log.info("Selecting wind..");
 		switch (wind) {
 		case Calm:
 			this.clickCalmButton();
@@ -1541,8 +1542,8 @@ public class DriverViewPage extends SurveyorBasePage {
 		default:
 			break;
 		}
-		System.out.println("Selected wind..");
-		System.out.println("Selecting surveyType..");		
+		Log.info("Selected wind..");
+		Log.info("Selecting surveyType..");		
 		switch (surveyType) {
 		case Manual:
 			this.clickManualButton();
@@ -1562,7 +1563,7 @@ public class DriverViewPage extends SurveyorBasePage {
 		default:
 			break;
 		}
-		System.out.println("Selected surveyType..");
+		Log.info("Selected surveyType..");
 
 		this.clickStartSurvey();
 		this.waitForPageToLoad();

@@ -13,6 +13,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.FindBy;
 
+import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -91,7 +92,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public ManageLocationsPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 		
-		System.out.println("\nThe Manager Locations Page URL is: " + this.strPageURL);
+		Log.info("\nThe Manager Locations Page URL is: " + this.strPageURL);
 	}
 	
 	public ManageLocationsPage(WebDriver driver, String baseURL, TestSetup testSetup, String urlPath) {
@@ -166,7 +167,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName) 
 					&& (locationNameCell.getText().trim()).equalsIgnoreCase(locationName)) {
-				System.out.println("Found entry at row=" + rowNum);
+				Log.info("Found entry at row=" + rowNum);
 				return true;
 			}
 				
@@ -222,7 +223,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName) && (locationNameCell.getText().trim()).equalsIgnoreCase(locationName)) {
 				actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[5]";
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
-				System.out.println("Found entry at row=" + rowNum);
+				Log.info("Found entry at row=" + rowNum);
 				
 				actionEditCell.click();
 				

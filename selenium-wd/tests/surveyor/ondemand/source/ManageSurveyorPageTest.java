@@ -17,6 +17,7 @@ import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.SurveyorBaseTest;
+import common.source.Log;
 import common.source.TestSetup;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
@@ -37,7 +38,7 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 	 */	
 	@Test
 	public void manageSurveyorPage_AddNewSurveyors() {
-		System.out.println("\nRunning manageSurveyorPage_AddNewSurveyors...");
+		Log.info("\nRunning manageSurveyorPage_AddNewSurveyors...");
 		
 		try {
 			manageSurveyorPage.open();
@@ -79,7 +80,7 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 			}
 		}
 		catch (Exception e) {
-			System.out.println("\nException on test case \"manageSurveyorPage_AddNewSurveyors\": " + e.getMessage());
+			Log.info("\nException on test case \"manageSurveyorPage_AddNewSurveyors\": " + e.getMessage());
 		}
 		
 	}

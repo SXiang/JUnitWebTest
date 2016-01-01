@@ -10,6 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.Log;
 import surveyor.scommon.source.ManageLocationsAdminPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageSurveyorAdminPage;
@@ -58,7 +59,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		String surveyorName = SQACUSLOCSUR + testSetup.getRandomNumber() + "TC455";
 		String surveyorNameNew = surveyorName + "New";
 		
-		System.out.println("\nRunning - TC455_EditSurveyor_CustUA - Test Description: edit surveyor\n");
+		Log.info("\nRunning - TC455_EditSurveyor_CustUA - Test Description: edit surveyor\n");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -95,7 +96,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		String surveyorName = SQACUSLOCSUR + testSetup.getRandomNumber() + "TC456";
 		String cityName = "Santa Clara";
 		
-		System.out.println("\nRunning - TC456_EditSurveyorAssignLoc_CustUA - Test Description: Administrator is allowed to associate and "
+		Log.info("\nRunning - TC456_EditSurveyorAssignLoc_CustUA - Test Description: Administrator is allowed to associate and "
 				+ "disassociate Surveyor Units within Locations associated only to his customer\n");
 		
 		loginPage.open();
@@ -143,7 +144,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		String surveyorName400Chars = testSetup.getFixedSizePseudoRandomString(381) + "TC457" + str14chars;
 		String surveyorName401Chars = testSetup.getFixedSizePseudoRandomString(381) + "TC457" + str15chars;
 		
-		System.out.println("\nRunning - TC457_EditSurveyorDesc50CharLimit_CustUA - Test Description: More than 400 characters not allowed "
+		Log.info("\nRunning - TC457_EditSurveyorDesc50CharLimit_CustUA - Test Description: More than 400 characters not allowed "
 				+ "in Surveyor Description field\n");
 		
 		loginPage.open();
@@ -156,15 +157,15 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		
-		System.out.println("surveyorName400Chars=" + surveyorName400Chars);
-		System.out.println("surveyorName401Chars=" + surveyorName401Chars);
-		System.out.println("Starting to edit the surveyor...");
+		Log.info("surveyorName400Chars=" + surveyorName400Chars);
+		Log.info("surveyorName401Chars=" + surveyorName401Chars);
+		Log.info("Starting to edit the surveyor...");
 
 		manageSurveyorAdminPage.open();
 		manageSurveyorAdminPage.editExistingSurveyor(SQACUSLOC, surveyorName400Chars, surveyorName401Chars);
 		
 		String allowedSurveyorName = surveyorName401Chars.substring(0,400);
-		System.out.println("allowedSurveyorName=" + allowedSurveyorName);
+		Log.info("allowedSurveyorName=" + allowedSurveyorName);
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -188,7 +189,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	public void TC458_EditSurveyorBlankRequiredFields_CustUA() {
 		String surveyorName = testSetup.getRandomNumber() + "TC458";
 		
-		System.out.println("\nRunning - TC458_EditSurveyorBlankRequiredFields_CustUA - Test Description: edit surveyor - blank required fields\n");
+		Log.info("\nRunning - TC458_EditSurveyorBlankRequiredFields_CustUA - Test Description: edit surveyor - blank required fields\n");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());

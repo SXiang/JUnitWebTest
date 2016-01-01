@@ -148,101 +148,101 @@ public class DateUtility {
 		//Unit tests -  compareDateTimeFormat(String inputDateTime, boolean reports)
 		TestContext.INSTANCE.setUserCulture("en-US");
 		// US -en  Report format tests	
-		System.out.println(result=(date.compareDateTimeFormat( "12/14/2015 8:42 PM PST", true))?"PASS":"FAIL"); 
-		System.out.println(result=(date.compareDateTimeFormat( "24/01/2015 18:42 CST",  true))?"FAIL":"PASS"); 
-		System.out.println(result=(date.compareDateTimeFormat( "24/01/2015 18:42 PM CST", true))?"FAIL":"PASS"); 
-		System.out.println(result=(date.compareDateTimeFormat( "01/24/2015 08:42 PM CST", true))?"PASS":"FAIL"); 
-		System.out.println(result=(date.compareDateTimeFormat( "24/01/2015 18:42 PM", true))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDateTimeFormat( "24/01/15 18:42 PM CST", true))?"FAIL":"PASS");
+		Log.info(result=(date.compareDateTimeFormat( "12/14/2015 8:42 PM PST", true))?"PASS":"FAIL"); 
+		Log.info(result=(date.compareDateTimeFormat( "24/01/2015 18:42 CST",  true))?"FAIL":"PASS"); 
+		Log.info(result=(date.compareDateTimeFormat( "24/01/2015 18:42 PM CST", true))?"FAIL":"PASS"); 
+		Log.info(result=(date.compareDateTimeFormat( "01/24/2015 08:42 PM CST", true))?"PASS":"FAIL"); 
+		Log.info(result=(date.compareDateTimeFormat( "24/01/2015 18:42 PM", true))?"FAIL":"PASS");
+		Log.info(result=(date.compareDateTimeFormat( "24/01/15 18:42 PM CST", true))?"FAIL":"PASS");
 		// US -en  Page format tests	
 		TestContext.INSTANCE.setUserCulture("en-US");
-		System.out.println(result = (date.compareDateTimeFormat("12/14/2015 8:42 PM PST", false)) ? "FAIL" : "PASS");
-		System.out.println(result = (date.compareDateTimeFormat("24/01/2015 18:42 ", false)) ? "FAIL" : "PASS");
-		System.out.println(result = (date.compareDateTimeFormat("24/01/2015 18:42 PM", false)) ? "FAIL" : "PASS");
-		System.out.println(result = (date.compareDateTimeFormat("01/24/2015 08:42 PM", false)) ? "PASS" : "FAIL");
-		System.out.println(result = (date.compareDateTimeFormat("24/01/2015 18:42 PM", false)) ? "FAIL" : "PASS");
-		System.out.println(result = (date.compareDateTimeFormat("24/01/15 18:42 PM CST", false)) ? "FAIL" : "PASS");
+		Log.info(result = (date.compareDateTimeFormat("12/14/2015 8:42 PM PST", false)) ? "FAIL" : "PASS");
+		Log.info(result = (date.compareDateTimeFormat("24/01/2015 18:42 ", false)) ? "FAIL" : "PASS");
+		Log.info(result = (date.compareDateTimeFormat("24/01/2015 18:42 PM", false)) ? "FAIL" : "PASS");
+		Log.info(result = (date.compareDateTimeFormat("01/24/2015 08:42 PM", false)) ? "PASS" : "FAIL");
+		Log.info(result = (date.compareDateTimeFormat("24/01/2015 18:42 PM", false)) ? "FAIL" : "PASS");
+		Log.info(result = (date.compareDateTimeFormat("24/01/15 18:42 PM CST", false)) ? "FAIL" : "PASS");
 		// FR  Report format tests		
 		TestContext.INSTANCE.setUserCulture("fr");
-		System.out.println(result=(date.compareDateTimeFormat( "12/14/2015 8:42 CET", true))?"FAIL":"PASS"); 
-		System.out.println(result=(date.compareDateTimeFormat( "30/06/2009 18:42 CET", true))?"PASS":"FAIL"); 
-		System.out.println(result=(date.compareDateTimeFormat( "2015/01/12 18:42 CET", true))?"FAIL":"PASS"); 
-		System.out.println(result=(date.compareDateTimeFormat( "24/01/2015 18:42 CET", true))?"PASS":"FAIL"); 
-		System.out.println(result=(date.compareDateTimeFormat( "24/01/15 18:42 PM CST", true))?"FAIL":"PASS");
+		Log.info(result=(date.compareDateTimeFormat( "12/14/2015 8:42 CET", true))?"FAIL":"PASS"); 
+		Log.info(result=(date.compareDateTimeFormat( "30/06/2009 18:42 CET", true))?"PASS":"FAIL"); 
+		Log.info(result=(date.compareDateTimeFormat( "2015/01/12 18:42 CET", true))?"FAIL":"PASS"); 
+		Log.info(result=(date.compareDateTimeFormat( "24/01/2015 18:42 CET", true))?"PASS":"FAIL"); 
+		Log.info(result=(date.compareDateTimeFormat( "24/01/15 18:42 PM CST", true))?"FAIL":"PASS");
 		// FR  Page format tests	
 		TestContext.INSTANCE.setUserCulture("fr");
-		System.out.println(result=(date.compareDateTimeFormat( "12/24/2015 8:42 ", false))?"FAIL":"PASS"); 
-		System.out.println(result=(date.compareDateTimeFormat( "24/01/2015 8:42 ",  false))?"PASS":"FAIL"); 
-		System.out.println(result=(date.compareDateTimeFormat( "2015/01/12 18:42 ", false))?"FAIL":"PASS"); 
-		System.out.println(result=(date.compareDateTimeFormat( "24/01/2015 16:42 ", false))?"PASS":"FAIL"); 
-		System.out.println(result=(date.compareDateTimeFormat( "24/01/2015 18:42 PM", false))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDateTimeFormat( "24/01/15 18:42 PM ", false))?"FAIL":"PASS");
+		Log.info(result=(date.compareDateTimeFormat( "12/24/2015 8:42 ", false))?"FAIL":"PASS"); 
+		Log.info(result=(date.compareDateTimeFormat( "24/01/2015 8:42 ",  false))?"PASS":"FAIL"); 
+		Log.info(result=(date.compareDateTimeFormat( "2015/01/12 18:42 ", false))?"FAIL":"PASS"); 
+		Log.info(result=(date.compareDateTimeFormat( "24/01/2015 16:42 ", false))?"PASS":"FAIL"); 
+		Log.info(result=(date.compareDateTimeFormat( "24/01/2015 18:42 PM", false))?"FAIL":"PASS");
+		Log.info(result=(date.compareDateTimeFormat( "24/01/15 18:42 PM ", false))?"FAIL":"PASS");
 		// China  Report format tests	
 		TestContext.INSTANCE.setUserCulture("zh-Hans");
-		System.out.println(result=(date.compareDateTimeFormat( "2015/12/14 8:42 PST ", true))?"PASS":"FAIL"); 
-		System.out.println(result=(date.compareDateTimeFormat( "2015/01/12 18:42 CST", true))?"PASS":"FAIL"); 
-		System.out.println(result=(date.compareDateTimeFormat( "24/01/2015 18:42 CST", true))?"FAIL":"PASS"); 
-		System.out.println(result=(date.compareDateTimeFormat( "2015/12/14 8:42 ", true))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDateTimeFormat( "2015/12/14 8:42 PM CST", true))?"FAIL":"PASS");
+		Log.info(result=(date.compareDateTimeFormat( "2015/12/14 8:42 PST ", true))?"PASS":"FAIL"); 
+		Log.info(result=(date.compareDateTimeFormat( "2015/01/12 18:42 CST", true))?"PASS":"FAIL"); 
+		Log.info(result=(date.compareDateTimeFormat( "24/01/2015 18:42 CST", true))?"FAIL":"PASS"); 
+		Log.info(result=(date.compareDateTimeFormat( "2015/12/14 8:42 ", true))?"FAIL":"PASS");
+		Log.info(result=(date.compareDateTimeFormat( "2015/12/14 8:42 PM CST", true))?"FAIL":"PASS");
 		//China  Page format tests	
 		TestContext.INSTANCE.setUserCulture("zh-Hans");
-		System.out.println(result=(date.compareDateTimeFormat( "2015/12/14 8:42 ", false))?"PASS":"FAIL"); 
-		System.out.println(result=(date.compareDateTimeFormat( "2015/01/12 18:42 ", false))?"PASS":"FAIL"); 
-		System.out.println(result=(date.compareDateTimeFormat( "24/01/2015 18:42 ", false))?"FAIL":"PASS"); 
-		System.out.println(result=(date.compareDateTimeFormat( "12/14/2015 8:42 ", false))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDateTimeFormat( "2015/12/14 8:42 PM", false))?"FAIL":"PASS");
+		Log.info(result=(date.compareDateTimeFormat( "2015/12/14 8:42 ", false))?"PASS":"FAIL"); 
+		Log.info(result=(date.compareDateTimeFormat( "2015/01/12 18:42 ", false))?"PASS":"FAIL"); 
+		Log.info(result=(date.compareDateTimeFormat( "24/01/2015 18:42 ", false))?"FAIL":"PASS"); 
+		Log.info(result=(date.compareDateTimeFormat( "12/14/2015 8:42 ", false))?"FAIL":"PASS");
+		Log.info(result=(date.compareDateTimeFormat( "2015/12/14 8:42 PM", false))?"FAIL":"PASS");
 		
 		//Unit tests - compareDateTimes(String inputDateTime1, Date inputDateTime2, boolean reports)
 		// US -en
 		TestContext.INSTANCE.setUserCulture("en-US");
-		System.out.println(result=(date.compareDateTimes( "12/14/2015 8:42 PM PST","12/14/2015 8:42 PM PST", true))?"PASS":"FAIL");
-		System.out.println(result=(date.compareDateTimes( "12/14/2015 8:40 PM PST","12/14/2015 8:42 PM PST", true))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDateTimes( "12/14/2015 8:42 PM PST","12/10/2015 8:42 PM PST", true))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDateTimes( "12/14/2015 8:42 PM ","12/14/2015 8:42 PM ", false))?"PASS":"FAIL");
-		System.out.println(result=(date.compareDateTimes( "12/14/2015 8:40 PM ","12/14/2015 8:42 PM ", false))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDateTimes( "12/14/2015 8:42 PM ","12/10/2015 8:42 PM ", false))?"FAIL":"PASS");
+		Log.info(result=(date.compareDateTimes( "12/14/2015 8:42 PM PST","12/14/2015 8:42 PM PST", true))?"PASS":"FAIL");
+		Log.info(result=(date.compareDateTimes( "12/14/2015 8:40 PM PST","12/14/2015 8:42 PM PST", true))?"FAIL":"PASS");
+		Log.info(result=(date.compareDateTimes( "12/14/2015 8:42 PM PST","12/10/2015 8:42 PM PST", true))?"FAIL":"PASS");
+		Log.info(result=(date.compareDateTimes( "12/14/2015 8:42 PM ","12/14/2015 8:42 PM ", false))?"PASS":"FAIL");
+		Log.info(result=(date.compareDateTimes( "12/14/2015 8:40 PM ","12/14/2015 8:42 PM ", false))?"FAIL":"PASS");
+		Log.info(result=(date.compareDateTimes( "12/14/2015 8:42 PM ","12/10/2015 8:42 PM ", false))?"FAIL":"PASS");
 		// FR
 		TestContext.INSTANCE.setUserCulture("fr");
-		System.out.println(result=(date.compareDateTimes( "24/01/2015 18:42 CST","24/01/2015 18:42 CST", true))?"PASS":"FAIL");
-		System.out.println(result=(date.compareDateTimes( "24/01/2015 18:42 CST","24/01/2015 18:40 CST", true))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDateTimes( "24/01/2015 18:42 CST","20/01/2015 18:42 CST", true))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDateTimes( "24/01/2015 18:42 ","24/01/2015 18:42", false))?"PASS":"FAIL");
-		System.out.println(result=(date.compareDateTimes( "24/01/2015 18:42 ","24/01/2015 18:40 ", false))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDateTimes( "24/01/2015 18:42 ","20/01/2015 18:42 ", false))?"FAIL":"PASS");
+		Log.info(result=(date.compareDateTimes( "24/01/2015 18:42 CST","24/01/2015 18:42 CST", true))?"PASS":"FAIL");
+		Log.info(result=(date.compareDateTimes( "24/01/2015 18:42 CST","24/01/2015 18:40 CST", true))?"FAIL":"PASS");
+		Log.info(result=(date.compareDateTimes( "24/01/2015 18:42 CST","20/01/2015 18:42 CST", true))?"FAIL":"PASS");
+		Log.info(result=(date.compareDateTimes( "24/01/2015 18:42 ","24/01/2015 18:42", false))?"PASS":"FAIL");
+		Log.info(result=(date.compareDateTimes( "24/01/2015 18:42 ","24/01/2015 18:40 ", false))?"FAIL":"PASS");
+		Log.info(result=(date.compareDateTimes( "24/01/2015 18:42 ","20/01/2015 18:42 ", false))?"FAIL":"PASS");
 		// China	
 		TestContext.INSTANCE.setUserCulture("zh-Hans");
-		System.out.println(result=(date.compareDateTimes( "2015/01/12 18:42 CST","2015/01/12 18:42 CST", true))?"PASS":"FAIL");
-		System.out.println(result=(date.compareDateTimes( "2015/01/12 18:40 CST","2015/01/12 18:42 CST", true))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDateTimes( "2015/01/12 18:42 CST","2014/01/12 18:42 CST", true))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDateTimes( "2015/01/12 18:42 ","2015/01/12 18:42 ", false))?"PASS":"FAIL");
-		System.out.println(result=(date.compareDateTimes( "2015/01/12 18:40 ","2015/01/12 18:42 ", false))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDateTimes( "2015/01/12 18:42 ","2014/01/12 18:42 ", false))?"FAIL":"PASS");
+		Log.info(result=(date.compareDateTimes( "2015/01/12 18:42 CST","2015/01/12 18:42 CST", true))?"PASS":"FAIL");
+		Log.info(result=(date.compareDateTimes( "2015/01/12 18:40 CST","2015/01/12 18:42 CST", true))?"FAIL":"PASS");
+		Log.info(result=(date.compareDateTimes( "2015/01/12 18:42 CST","2014/01/12 18:42 CST", true))?"FAIL":"PASS");
+		Log.info(result=(date.compareDateTimes( "2015/01/12 18:42 ","2015/01/12 18:42 ", false))?"PASS":"FAIL");
+		Log.info(result=(date.compareDateTimes( "2015/01/12 18:40 ","2015/01/12 18:42 ", false))?"FAIL":"PASS");
+		Log.info(result=(date.compareDateTimes( "2015/01/12 18:42 ","2014/01/12 18:42 ", false))?"FAIL":"PASS");
 		
 		//Unit tests - compareDates(String inputDateTime1, String inputDateTime2, boolean reports)
 		// US -en		
 		TestContext.INSTANCE.setUserCulture("en-US");
-		System.out.println(result=(date.compareDates( "12/14/2015 8:42 PM PST","12/14/2015 8:42 PM PST", true))?"PASS":"FAIL");
-		System.out.println(result=(date.compareDates( "12/14/2015 8:40 PM PST","12/14/2016 8:42 PM PST", true))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDates( "12/14/2015 8:42 PM PST","12/15/2015 8:42 PM PST", true))?"FAIL":"PASS");		
-		System.out.println(result=(date.compareDates( "12/14/2015 8:42 PM ","12/14/2015 8:42 PM ", false))?"PASS":"FAIL");
-		System.out.println(result=(date.compareDates( "12/14/2015 8:40 PM ","12/14/2016 8:42 PM ", false))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDates( "12/14/2015 8:42 PM ","12/15/2015 8:42 PM ", false))?"FAIL":"PASS");
+		Log.info(result=(date.compareDates( "12/14/2015 8:42 PM PST","12/14/2015 8:42 PM PST", true))?"PASS":"FAIL");
+		Log.info(result=(date.compareDates( "12/14/2015 8:40 PM PST","12/14/2016 8:42 PM PST", true))?"FAIL":"PASS");
+		Log.info(result=(date.compareDates( "12/14/2015 8:42 PM PST","12/15/2015 8:42 PM PST", true))?"FAIL":"PASS");		
+		Log.info(result=(date.compareDates( "12/14/2015 8:42 PM ","12/14/2015 8:42 PM ", false))?"PASS":"FAIL");
+		Log.info(result=(date.compareDates( "12/14/2015 8:40 PM ","12/14/2016 8:42 PM ", false))?"FAIL":"PASS");
+		Log.info(result=(date.compareDates( "12/14/2015 8:42 PM ","12/15/2015 8:42 PM ", false))?"FAIL":"PASS");
 		//FR
 		TestContext.INSTANCE.setUserCulture("fr");
-		System.out.println(result=(date.compareDates( "24/01/2015 18:42 CST","24/01/2015 18:42 CST", true))?"PASS":"FAIL");
-		System.out.println(result=(date.compareDates( "24/01/2015 18:42 CST","24/02/2015 18:42 CST", true))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDates( "24/01/2015 18:42 CST","24/01/2016 18:42 CST", true))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDates( "24/01/2015 18:42 ","24/01/2015 18:42 ", false))?"PASS":"FAIL");
-		System.out.println(result=(date.compareDates( "24/01/2015 18:42 ","24/02/2015 18:42 ", false))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDates( "24/01/2015 18:42 ","24/01/2016 18:42 ", false))?"FAIL":"PASS");
+		Log.info(result=(date.compareDates( "24/01/2015 18:42 CST","24/01/2015 18:42 CST", true))?"PASS":"FAIL");
+		Log.info(result=(date.compareDates( "24/01/2015 18:42 CST","24/02/2015 18:42 CST", true))?"FAIL":"PASS");
+		Log.info(result=(date.compareDates( "24/01/2015 18:42 CST","24/01/2016 18:42 CST", true))?"FAIL":"PASS");
+		Log.info(result=(date.compareDates( "24/01/2015 18:42 ","24/01/2015 18:42 ", false))?"PASS":"FAIL");
+		Log.info(result=(date.compareDates( "24/01/2015 18:42 ","24/02/2015 18:42 ", false))?"FAIL":"PASS");
+		Log.info(result=(date.compareDates( "24/01/2015 18:42 ","24/01/2016 18:42 ", false))?"FAIL":"PASS");
 		// China
 		TestContext.INSTANCE.setUserCulture("zh-Hans");
-		System.out.println(result=(date.compareDates( "2015/01/12 18:42 CST","2015/01/12 18:42 CST", true))?"PASS":"FAIL");
-		System.out.println(result=(date.compareDates( "2015/01/12 18:40 CST","2015/02/12 18:42 CST", true))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDates( "2015/01/12 18:42 CST","2014/01/12 18:42 CST", true))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDates( "2015/01/12 18:42 ","2015/01/12 18:42 ", false))?"PASS":"FAIL");
-		System.out.println(result=(date.compareDates( "2015/01/12 18:40 ","2015/02/12 18:42 ", false))?"FAIL":"PASS");
-		System.out.println(result=(date.compareDates( "2015/01/12 18:42 ","2014/01/12 18:42 ", false))?"FAIL":"PASS");
+		Log.info(result=(date.compareDates( "2015/01/12 18:42 CST","2015/01/12 18:42 CST", true))?"PASS":"FAIL");
+		Log.info(result=(date.compareDates( "2015/01/12 18:40 CST","2015/02/12 18:42 CST", true))?"FAIL":"PASS");
+		Log.info(result=(date.compareDates( "2015/01/12 18:42 CST","2014/01/12 18:42 CST", true))?"FAIL":"PASS");
+		Log.info(result=(date.compareDates( "2015/01/12 18:42 ","2015/01/12 18:42 ", false))?"PASS":"FAIL");
+		Log.info(result=(date.compareDates( "2015/01/12 18:40 ","2015/02/12 18:42 ", false))?"FAIL":"PASS");
+		Log.info(result=(date.compareDates( "2015/01/12 18:42 ","2014/01/12 18:42 ", false))?"FAIL":"PASS");
 
 
 

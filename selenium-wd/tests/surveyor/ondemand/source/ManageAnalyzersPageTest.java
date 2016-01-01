@@ -17,6 +17,7 @@ import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageAnalyzersPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.SurveyorBaseTest;
+import common.source.Log;
 import common.source.TestSetup;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
@@ -37,7 +38,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	 */	
 	@Test
 	public void manageAnalyzersPage_AddNewAnalyzers() {
-		System.out.println("\nRunning manageAnalyzersPage_AddNewAnalyzers...");
+		Log.info("\nRunning manageAnalyzersPage_AddNewAnalyzers...");
 		
 		try {
 			manageAnalyzersPage.open();
@@ -115,7 +116,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 			}
 		}
 		catch (Exception e) {
-			System.out.println("\nException on test case \"manageAnalyzersPage_AddNewAnalyzers\": " + e.getMessage());
+			Log.info("\nException on test case \"manageAnalyzersPage_AddNewAnalyzers\": " + e.getMessage());
 		}
 	}
 }

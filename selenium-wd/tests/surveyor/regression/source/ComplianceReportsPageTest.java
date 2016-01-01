@@ -93,6 +93,7 @@ import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
+import common.source.Log;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.ComplianceReportsPage;
@@ -211,7 +212,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 				// assertTrue(complianceReportsPage.compareComplianceRptFirstPageTable(testSetup.getDownloadPath(),expectedTextMap));
 				assertTrue(complianceReportsPage.validateReportCreationDate(testSetup.getDownloadPath()));
 			} catch (IOException e) {
-				e.printStackTrace();
+				Log.error(e.toString());
 				fail("\nTestcase TC517 failed.\n");
 			}
 
@@ -294,7 +295,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 			try {
 				assertTrue(complianceReportsPage.compareComplianceRptFirstPageStaticText(testSetup.getDownloadPath()));
 			} catch (IOException e) {
-				e.printStackTrace();
+				Log.error(e.toString());
 				fail("\nTestcase TC148 failed.\n");
 			}
 

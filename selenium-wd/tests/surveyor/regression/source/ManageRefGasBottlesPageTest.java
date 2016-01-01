@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.Log;
 import surveyor.scommon.source.ManageRefGasBottlesPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import static surveyor.scommon.source.SurveyorConstants.*;
@@ -35,7 +36,7 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 	public void TC135_AddRefGasBottle_PicAdmin() {
 		String strLotNumber = testSetup.getFixedSizeRandomNumber(5) + "TC135";
 		
-		System.out.println("\nRunning TC135_AddRefGasBottle_PicAdmin - Test Description: Adding a Ref Gas Bottle to a customer surveyor by "
+		Log.info("\nRunning TC135_AddRefGasBottle_PicAdmin - Test Description: Adding a Ref Gas Bottle to a customer surveyor by "
 				+ "Picarro Default Administrator");
 		
 		loginPage.open();
@@ -56,7 +57,7 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 	public void TC1250_AddRefGasBottle_PicSU() {
 		String strLotNumber = testSetup.getRandomNumber() + "TC1250";
 		
-		System.out.println("\nRunning TC1250_AddRefGasBottle_PicSU - Test Description: Add Reference Gas Bottles as Picarro Support user");
+		Log.info("\nRunning TC1250_AddRefGasBottle_PicSU - Test Description: Add Reference Gas Bottles as Picarro Support user");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);

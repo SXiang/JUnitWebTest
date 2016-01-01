@@ -10,6 +10,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import common.source.BasePage;
+import common.source.Log;
 import common.source.TestSetup;
 
 /**
@@ -48,7 +49,7 @@ public class AdministrationPage extends BasePage {
 		
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 		
-		System.out.println("The Administration Page URL is: " + this.strPageURL);
+		Log.info("The Administration Page URL is: " + this.strPageURL);
 	}
 	
 	public LoginPage logout() {

@@ -40,7 +40,7 @@ public class ImagingUtility {
 			FileUtils.copyFile(screenShotImage, new File(path + fileName
 					+ ".jpg"));
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 	}
 
@@ -84,7 +84,7 @@ public class ImagingUtility {
 			screenshotDirectory = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\screenshots");
 			filesInDirectory = FileUtility.getFilesInDirectory(screenshotDirectory);
 
-			System.out.println(screenshotDirectory.toString() + File.separator + "driver-view-01-different-size.png");
+			Log.info(screenshotDirectory.toString() + File.separator + "driver-view-01-different-size.png");
 			
 			String differentSizeFilePath = screenshotDirectory.toString() + File.separator + "driver-view-01-different-size.png";
 		    BufferedImage differentSizeImage = ImageIO.read(new File(differentSizeFilePath));
@@ -127,7 +127,7 @@ public class ImagingUtility {
 			    Files.delete(Paths.get(modifiedFilePath));
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 	}
 
@@ -142,7 +142,7 @@ public class ImagingUtility {
 	    	File outputfile = new File(modifiedFilePath);
 			ImageIO.write(bi, "png", outputfile);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			Log.error(ex.toString());
 		}
 		return modifiedFilePath;
 	}
@@ -155,61 +155,61 @@ public class ImagingUtility {
 	}
 	
     private static void ImageUtility_compareImagesOverload1_identicalImages_shouldReturnSuccess(Image image1, Image image2) {
-    	System.out.println("Running ImageUtility_compareImagesOverload1_identicalImages_shouldReturnSuccess ...");
+    	Log.info("Running ImageUtility_compareImagesOverload1_identicalImages_shouldReturnSuccess ...");
     	ImageComparisonResult result = compareImages(image1, image2);
     	assert(result.isEqual() && result.getClass().getName().equals(NET_AVH4_UTIL_IMAGECOMPARISON_IMAGE_COMPARISON_SUCCESS));
     }
 
     private static void ImageUtility_compareImagesOverload1_imageCopy_shouldReturnSuccess(Image image1, Image image2) {
-    	System.out.println("Running ImageUtility_compareImagesOverload1_imageCopy_shouldReturnSuccess ...");
+    	Log.info("Running ImageUtility_compareImagesOverload1_imageCopy_shouldReturnSuccess ...");
     	ImageComparisonResult result = compareImages(image1, image2);
     	assert(result.isEqual() && result.getClass().getName().equals(NET_AVH4_UTIL_IMAGECOMPARISON_IMAGE_COMPARISON_SUCCESS));
     }
 
     private static void ImageUtility_compareImagesOverload1_withNoReferenceImage_shouldReturnNoReferenceImageFailure(Image image) {
-    	System.out.println("Running ImageUtility_compareImagesOverload1_withNoReferenceImage_shouldReturnNoReferenceImageFailure ...");
+    	Log.info("Running ImageUtility_compareImagesOverload1_withNoReferenceImage_shouldReturnNoReferenceImageFailure ...");
     	ImageComparisonResult result = compareImages(image, null);
     	assert(result instanceof NoReferenceImageResult);
     }
 
     private static void ImageUtility_compareImagesOverload1_imagesWithDifferingPixels_shouldReturnPixelMismatch(Image image1, Image image2) {
-    	System.out.println("Running ImageUtility_compareImagesOverload1_imagesWithDifferingPixels_shouldReturnPixelMismatch ...");
+    	Log.info("Running ImageUtility_compareImagesOverload1_imagesWithDifferingPixels_shouldReturnPixelMismatch ...");
     	ImageComparisonResult result = compareImages(image1, image2);
     	assert(result instanceof PixelMismatchResult);
 	}
 
     private static void ImageUtility_compareImagesOverload1_imagesWithDifferentDimensions_shouldReturnSizeMismatch(Image image1, Image image2) {
-    	System.out.println("Running ImageUtility_compareImagesOverload1_imagesWithDifferentDimensions_shouldReturnSizeMismatch ...");
+    	Log.info("Running ImageUtility_compareImagesOverload1_imagesWithDifferentDimensions_shouldReturnSizeMismatch ...");
     	ImageComparisonResult result = compareImages(image2, image1);
     	assert(result instanceof SizeMismatchResult);
     }
 
     private static void ImageUtility_compareImagesOverload2_identicalImages_shouldReturnSuccess(String imageFile1, String imageFile2) {
-    	System.out.println("Running ImageUtility_compareImagesOverload2_identicalImages_shouldReturnSuccess ...");
+    	Log.info("Running ImageUtility_compareImagesOverload2_identicalImages_shouldReturnSuccess ...");
     	ImageComparisonResult result = compareImages(imageFile1, imageFile2);
     	assert(result.isEqual() && result.getClass().getName().equals(NET_AVH4_UTIL_IMAGECOMPARISON_IMAGE_COMPARISON_SUCCESS));
     }
 
     private static void ImageUtility_compareImagesOverload2_imageCopy_shouldReturnSuccess(String imageFile1, String imageFile2) {
-    	System.out.println("Running ImageUtility_compareImagesOverload2_imageCopy_shouldReturnSuccess ...");
+    	Log.info("Running ImageUtility_compareImagesOverload2_imageCopy_shouldReturnSuccess ...");
     	ImageComparisonResult result = compareImages(imageFile1, imageFile2);
     	assert(result.isEqual() && result.getClass().getName().equals(NET_AVH4_UTIL_IMAGECOMPARISON_IMAGE_COMPARISON_SUCCESS));
     }
 
     private static void ImageUtility_compareImagesOverload2_withNoReferenceImage_shouldReturnNoReferenceImageFailure(String imageFile) {
-    	System.out.println("Running ImageUtility_compareImagesOverload2_withNoReferenceImage_shouldReturnNoReferenceImageFailure ...");
+    	Log.info("Running ImageUtility_compareImagesOverload2_withNoReferenceImage_shouldReturnNoReferenceImageFailure ...");
     	ImageComparisonResult result = compareImages(imageFile, null);
     	assert(result instanceof NoReferenceImageResult);
     }
 
     private static void ImageUtility_compareImagesOverload2_imagesWithDifferingPixels_shouldReturnPixelMismatch(String imageFile1, String imageFile2) {
-    	System.out.println("Running ImageUtility_compareImagesOverload2_imagesWithDifferingPixels_shouldReturnPixelMismatch ...");
+    	Log.info("Running ImageUtility_compareImagesOverload2_imagesWithDifferingPixels_shouldReturnPixelMismatch ...");
     	ImageComparisonResult result = compareImages(imageFile1, imageFile2);
     	assert(result instanceof PixelMismatchResult);
 	}
 
     private static void ImageUtility_compareImagesOverload2_imagesWithDifferentDimensions_shouldReturnSizeMismatch(String imageFile1, String imageFile2) {
-    	System.out.println("Running ImageUtility_compareImagesOverload2_imagesWithDifferentDimensions_shouldReturnSizeMismatch ...");
+    	Log.info("Running ImageUtility_compareImagesOverload2_imagesWithDifferentDimensions_shouldReturnSizeMismatch ...");
     	ImageComparisonResult result = compareImages(imageFile1, imageFile2);
     	assert(result instanceof SizeMismatchResult);
     }

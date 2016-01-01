@@ -3,6 +3,7 @@ package surveyor.dataaccess.source;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import common.source.Log;
 
 public class User extends BaseEntity {
 	private static final String CACHE_KEY = "USER.";
@@ -60,7 +61,7 @@ public class User extends BaseEntity {
 			user.setUserName(resultSet.getString("UserName"));
 			user.setCultureId(resultSet.getString("CultureId"));
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 
 		return user;
@@ -87,7 +88,7 @@ public class User extends BaseEntity {
 	         }
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 		
 		return userList;

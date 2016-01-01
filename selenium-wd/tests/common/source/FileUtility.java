@@ -17,6 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileUtility {
+	/**
+	 * Reads content of the specified file into a String.
+	 * @param filePath - Path of the file.
+	 * @return - String containing file content.
+	 * @throws IOException
+	 */
 	public static String readFileContents(String filePath) throws IOException {
 		String lineText = null;
 		StringBuilder builder = new StringBuilder();
@@ -29,7 +35,26 @@ public class FileUtility {
 		
 		return builder.toString();		
 	}
-	
+
+	/**
+	 * Reads content of the specified file into an ArrayList where each line in the file represents an entry in the List.
+	 * @param filePath - Path of the file.
+	 * @return - List containing file lines.
+	 * @throws IOException
+	 */
+	public static List<String> readFileLinesToList(String filePath) throws IOException {
+		String lineText = null;
+		List<String> list = new ArrayList<String>();
+		
+		BufferedReader buffReader = new BufferedReader(new FileReader(filePath));
+		while ((lineText = buffReader.readLine()) != null) {
+			list.add(lineText);
+		}
+		buffReader.close();
+		
+		return list;		
+	}
+
 	/*
 	 * Writes specified string to the file.
 	 * NOTE: This method won't write line breaks into the file. 
@@ -94,7 +119,7 @@ public class FileUtility {
 		    System.err.format("%s not empty%n", file);
 		} catch (IOException x) {
 		    // File permission problems are caught here.
-		    System.err.println(x);
+		    Log.error(x.toString());
 		}
 	}
 	

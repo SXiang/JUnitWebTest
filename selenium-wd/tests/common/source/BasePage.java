@@ -226,21 +226,21 @@ public class BasePage {
 		String pageTitle = this.driver.getTitle();
 
 		if (pageTitle.contains(LOGINTITLE)) {
-			System.out.println("PageTitle: " + pageTitle);
+			Log.info("PageTitle: " + pageTitle);
 			result = true;
 			return result;
 		} else if (pageTitle.contains(HOMETITLE)) {
-			System.out.println("PageTitle: " + pageTitle);
+			Log.info("PageTitle: " + pageTitle);
 			result = this.pageHeader.getText().equalsIgnoreCase(HOMEDHEADER);
 			return result;
 		} else if (pageTitle.contains(DRIVINGSURVEYTITLE)) {
-			System.out.println("PageTitle: " + pageTitle);
+			Log.info("PageTitle: " + pageTitle);
 			result = this.pageHeader.getText().equalsIgnoreCase(
 					DRIVINGSURVEYHEADER);
 			return result;
 		} else {
 			String pageHeader = this.pageHeader.getText();
-			System.out.println("PageTitle: " + pageTitle);
+			Log.info("PageTitle: " + pageTitle);
 			result = pageTitle.contentEquals(pageHeader + SUBTITLE);
 			return result;
 		}

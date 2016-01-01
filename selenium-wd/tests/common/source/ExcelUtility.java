@@ -50,7 +50,7 @@ public class ExcelUtility {
             cellDataMap.put(key, cellData);
             return cellData;
          } catch (Exception e) {
-             //System.out.println("Class ExcelUtility | Method getCellData | Exception msg : "+e.getMessage());
+             //Log.info("Class ExcelUtility | Method getCellData | Exception msg : "+e.getMessage());
              //TestExecutionEngine.bResult = false;
              return "<ERROR>";
          }
@@ -62,7 +62,7 @@ public class ExcelUtility {
     		FileInputStream excelFile = new FileInputStream(path);
             excelWorkbook = new XSSFWorkbook(excelFile);
     	} catch (Exception e) {
-    		//System.out.println("Class ExcelUtility | Method setExcelFile | Exception msg : "+e.getMessage());
+    		//Log.info("Class ExcelUtility | Method setExcelFile | Exception msg : "+e.getMessage());
     		//TestExecutionEngine.bResult = false;
     	}
 	}
@@ -107,7 +107,7 @@ public class ExcelUtility {
 			excelWorksheet = excelWorkbook.getSheet(sheetName);
 			num=excelWorksheet.getLastRowNum()+1;
 		} catch (Exception e) {
-			System.err.println("Class ExcelUtility | Method getRowCount | Exception msg : "+e.getMessage());
+			Log.error("Class ExcelUtility | Method getRowCount | Exception msg : "+e.getMessage());
 			//TestExecutionEngine.bResult = false;
 		}
 		return num;
@@ -124,7 +124,7 @@ public class ExcelUtility {
 				}
 			}       			
 		} catch (Exception e) {
-			System.err.println("Class ExcelUtility | Method getRowContains | Exception msg : "+e.getMessage());
+			Log.error("Class ExcelUtility | Method getRowContains | Exception msg : "+e.getMessage());
 			//TestExecutionEngine.bResult = false;
 		}
 		return num;
@@ -148,7 +148,7 @@ public class ExcelUtility {
     		return number;
     		*/
 		} catch (Exception e) {
-			System.err.println("Class ExcelUtility | Method getRowContains | Exception msg : "+e.getMessage());
+			Log.error("Class ExcelUtility | Method getRowContains | Exception msg : "+e.getMessage());
 			//TestExecutionEngine.bResult = false;
 			return 0;
         }

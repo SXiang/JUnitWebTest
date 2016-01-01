@@ -5,6 +5,7 @@ import java.io.File;
 import org.openqa.selenium.WebDriver;
 
 import common.source.ExcelUtility;
+import common.source.Log;
 import common.source.TestContext;
 
 public class BasePageActions implements IPageActions {
@@ -22,7 +23,7 @@ public class BasePageActions implements IPageActions {
 			excelUtility = new ExcelUtility();
 			excelUtility.setExcelFile(testDataExcelPath);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 	}
 
@@ -83,11 +84,11 @@ public class BasePageActions implements IPageActions {
 	}
 
 	protected void logAction(String actionName, String data, Integer dataRowID) {
-		System.out.println(String.format("Executing action-[%s] : data=[%s], dataRowID=[%d]", actionName, data, dataRowID));
+		Log.info(String.format("Executing action-[%s] : data=[%s], dataRowID=[%d]", actionName, data, dataRowID));
 	}
 
 	protected void log(String logText) {
-		System.out.println(logText);
+		Log.info(logText);
 	}
 
 	@Override

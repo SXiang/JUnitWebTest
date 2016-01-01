@@ -64,72 +64,72 @@ public class CSVUtility {
 		
 		CSVUtility csv=new CSVUtility();
 		List<String> output=csv.getHeadings(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\csvutility-tests\\CR-F5D2F4-Report.csv");
-		System.out.println(output.toString());
+		Log.info(output.toString());
 		List<HashMap<String,String>> outputMap=	csv.getAllRows(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\csvutility-tests\\CR-F5D2F4-Report.csv");
 		for(int i=0;i<outputMap.size();i++){
 		HashMap<String, String> map=outputMap.get(i);
 		 for(Map.Entry<String,String> entry:map.entrySet()){
-			 System.out.print(entry.getKey()+" : "+entry.getValue()+"\n");
+			 Log.info(entry.getKey()+" : "+entry.getValue()+"\n");
 		 }
 		}
 
 		List<String> output1=csv.getHeadings(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\csvutility-tests\\CR-F5D2F4-ReportIsotopic.csv");
-		System.out.println(output1.toString());
+		Log.info(output1.toString());
 		List<HashMap<String,String>> outputMap1=csv.getAllRows(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\csvutility-tests\\CR-F5D2F4-ReportIsotopic.csv");
 		for(int i=0;i<outputMap1.size();i++){
 		HashMap<String, String> map=outputMap1.get(i);
 		 for(Map.Entry<String,String> entry:map.entrySet()){
-			 System.out.print(entry.getKey()+" : "+entry.getValue()+"\n");
+			 Log.info(entry.getKey()+" : "+entry.getValue()+"\n");
 		 }
 		}
 		
 		List<String> output2=csv.getHeadings(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\csvutility-tests\\CR-F5D2F4-ReportGAP.csv");
-		System.out.println(output2.toString());
+		Log.info(output2.toString());
 		List<HashMap<String,String>> outputMap2=csv.getAllRows(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\csvutility-tests\\CR-F5D2F4-ReportGAP.csv");
 		for(int i=0;i<outputMap2.size();i++){
 		HashMap<String, String> map=outputMap2.get(i);
 		 for(Map.Entry<String,String> entry:map.entrySet()){
-			 System.out.print(entry.getKey()+" : "+entry.getValue()+"\n");
+			 Log.info(entry.getKey()+" : "+entry.getValue()+"\n");
 		 }
 		}
 		
 		List<String> output3=csv.getHeadings(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\csvutility-tests\\CR-F5D2F4-ReportLISAS.csv");
-		System.out.println(output3.toString());
+		Log.info(output3.toString());
 		List<HashMap<String,String>> outputMap3=csv.getAllRows(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\csvutility-tests\\CR-F5D2F4-ReportLISAS.csv");
 		for(int i=0;i<outputMap3.size();i++){
 		HashMap<String, String> map=outputMap3.get(i);
 		 for(Map.Entry<String,String> entry:map.entrySet()){
-			 System.out.print(entry.getKey()+" : "+entry.getValue()+"\n");
+			 Log.info(entry.getKey()+" : "+entry.getValue()+"\n");
 		 }
 		}
 		
 		List<String> output4=csv.getHeadings(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\csvutility-tests\\CR-F5D2F4-ReportSurvey.csv");
-		System.out.println(output4.toString());
+		Log.info(output4.toString());
 		List<HashMap<String,String>> outputMap4=csv.getAllRows(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\csvutility-tests\\CR-F5D2F4-ReportSurvey.csv");
 		for(int i=0;i<outputMap4.size();i++){
 		HashMap<String, String> map=outputMap4.get(i);
 		 for(Map.Entry<String,String> entry:map.entrySet()){
-			 System.out.print(entry.getKey()+" : "+entry.getValue()+"\n");
+			 Log.info(entry.getKey()+" : "+entry.getValue()+"\n");
 		 }
 		}
 		
 		List<String> output5=csv.getHeadings(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\csvutility-tests\\onlyHeadings.csv");
-		System.out.println(output5.toString());
+		Log.info(output5.toString());
 		List<HashMap<String,String>> outputMap5=csv.getAllRows(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\csvutility-tests\\onlyHeadings.csv");
 		for(int i=0;i<outputMap5.size();i++){
 		HashMap<String, String> map=outputMap5.get(i);
 		 for(Map.Entry<String,String> entry:map.entrySet()){
-			 System.out.print(entry.getKey()+" : "+entry.getValue()+"\n");
+			 Log.info(entry.getKey()+" : "+entry.getValue()+"\n");
 		 }
 		}
 		
 		List<String> output6=csv.getHeadings(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\csvutility-tests\\empty.csv");
-		System.out.println(output6.toString());
+		Log.info(output6.toString());
 		List<HashMap<String,String>> outputMap6=csv.getAllRows(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\csvutility-tests\\empty.csv");
 		for(int i=0;i<outputMap6.size();i++){
 		HashMap<String, String> map=outputMap6.get(i);
 		 for(Map.Entry<String,String> entry:map.entrySet()){
-			 System.out.print(entry.getKey()+" : "+entry.getValue()+"\n");
+			 Log.info(entry.getKey()+" : "+entry.getValue()+"\n");
 		 }
 		}
 	}

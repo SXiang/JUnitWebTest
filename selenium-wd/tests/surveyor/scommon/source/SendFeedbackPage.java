@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -34,7 +35,7 @@ public class SendFeedbackPage extends UserFeedbackPage {
 	public SendFeedbackPage(WebDriver driver, TestSetup testSetup, String strBaseURL) {
 		super(driver, testSetup, strBaseURL, STRURLPath);
 		
-		System.out.println("\nThe Send Feedback Page URL is: " + strBaseURL + STRURLPath);
+		Log.info("\nThe Send Feedback Page URL is: " + strBaseURL + STRURLPath);
 	}
 	
 	public void sendFeedback(String strLoginUser, String strFeedback) {

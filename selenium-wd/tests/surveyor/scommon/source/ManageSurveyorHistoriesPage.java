@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.FindBy;
 
+import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -60,7 +61,7 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 			TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 
-		System.out.println("\nThe Manager Surveyor Histories Page URL is: "
+		Log.info("\nThe Manager Surveyor Histories Page URL is: "
 				+ this.strPageURL);
 	}
 
@@ -88,8 +89,8 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 
 	public void addNewHistoryNote(String surveyorUnit, String note) {
 		if (this.testSetup.isRunningDebug()) {
-			System.out.println(surveyorUnit);
-			System.out.println(note);
+			Log.info(surveyorUnit);
+			Log.info(note);
 		}
 
 		this.btnAddNewHistoryEntry.click();
@@ -113,9 +114,9 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 	public void addNewHistoryNote(String surveyorUnit, String locationName,
 			String note) {
 		if (this.testSetup.isRunningDebug()) {
-			System.out.println(surveyorUnit);
-			System.out.println(locationName);
-			System.out.println(note);
+			Log.info(surveyorUnit);
+			Log.info(locationName);
+			Log.info(note);
 		}
 
 		this.btnAddNewHistoryEntry.click();
@@ -140,10 +141,10 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 	public void addNewHistoryNote(String surveyorUnit, String locationName,
 			String customerName, String note) {
 		if (this.testSetup.isRunningDebug()) {
-			System.out.println(surveyorUnit);
-			System.out.println(locationName);
-			System.out.println(customerName);
-			System.out.println(note);
+			Log.info(surveyorUnit);
+			Log.info(locationName);
+			Log.info(customerName);
+			Log.info(note);
 		}
 
 		this.btnAddNewHistoryEntry.click();

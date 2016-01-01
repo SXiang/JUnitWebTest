@@ -12,6 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.Log;
 import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import static surveyor.scommon.source.SurveyorConstants.*;
@@ -57,7 +58,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	 */
 	//@Test /* Disabled for now. Refer Notes section*/
 	public void TC35_CheckVisibilityDriverRole() {
-		System.out.println("\nRunning TC35_CheckVisibilityDriverRole - Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Driver role");
+		Log.info("\nRunning TC35_CheckVisibilityDriverRole - Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Driver role");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);		
@@ -75,7 +76,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	 */
 	//@Test /* Disabled for now. Refer Notes section*/
 	public void TC36_CheckVisibilityCustomerSupervisorRole() {
-		System.out.println("\nRunning TC36_CheckVisibilityCustomerSupervisorRole - Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Supervisor role");
+		Log.info("\nRunning TC36_CheckVisibilityCustomerSupervisorRole - Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Supervisor role");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);		
@@ -93,7 +94,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	 */
 	//@Test /* Disabled for now. Refer Notes section*/
 	public void TC37_CheckVisibilityUtilityAdminRole() {
-		System.out.println("\nRunning TC37_CheckVisibilityUtilityAdminRole - Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Utility Administrator role");
+		Log.info("\nRunning TC37_CheckVisibilityUtilityAdminRole - Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Utility Administrator role");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);		
@@ -111,7 +112,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	 */
 	//@Test /* Disabled for now. Refer Notes section*/
 	public void TC38_CheckVisibilityPicarroAdminRole() {
-		System.out.println("\nRunning TC38_CheckVisibilityPicarroAdminRole - Test Description: Visibility check of Driving Surveys Measurement Sessions for Picarro user with Administrator role");
+		Log.info("\nRunning TC38_CheckVisibilityPicarroAdminRole - Test Description: Visibility check of Driving Surveys Measurement Sessions for Picarro user with Administrator role");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);		
@@ -130,7 +131,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC51_CheckRecentDrivingSurveyInDashboard() {
-		System.out.println("\nRunning - TC51_CheckRecentDrivingSurveyInDashboard - Test Description: Recent Driving Surveys Section present on Dashboard should display latest surveys\n");
+		Log.info("\nRunning - TC51_CheckRecentDrivingSurveyInDashboard - Test Description: Recent Driving Surveys Section present on Dashboard should display latest surveys\n");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);
@@ -173,7 +174,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 		boolean deleteAll = false;
 		List<String> tagList;
 		
-		System.out.println("\nRunning - TC49_DeleteSurveys - Delete surveys\n");
+		Log.info("\nRunning - TC49_DeleteSurveys - Delete surveys\n");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
@@ -212,7 +213,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	public void TC125_ExportSurveyPeaksAnalysis() {
 		String startDT;
 		
-		System.out.println("\nRunning - TC125_ExportSurveyPeaksAnalysis - Test Description: Export Raw Data\n");
+		Log.info("\nRunning - TC125_ExportSurveyPeaksAnalysis - Test Description: Export Raw Data\n");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);

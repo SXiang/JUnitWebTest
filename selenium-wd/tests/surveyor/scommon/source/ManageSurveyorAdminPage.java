@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -64,7 +65,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 			
 			if ((locationNameCell.getText().trim()).equalsIgnoreCase(locationName) 
 					&& (surveyorNameCell.getText().trim()).equalsIgnoreCase(surveyorName)) {
-				System.out.println("Found entry at row=" + rowNum);
+				Log.info("Found entry at row=" + rowNum);
 				return true;
 			}
 				
@@ -122,7 +123,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 				actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]/a";
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
 				
-				System.out.println("Found entry at rowNum=" + rowNum);
+				Log.info("Found entry at rowNum=" + rowNum);
 				
 				actionEditCell.click();
 				this.waitForEditPageLoad();
@@ -210,7 +211,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 				actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]/a";
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
 				
-				System.out.println("Found entry at rowNum=" + rowNum);
+				Log.info("Found entry at rowNum=" + rowNum);
 				
 				actionEditCell.click();
 				this.waitForEditPageLoad();

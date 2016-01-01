@@ -19,6 +19,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import common.source.BaseHelper;
 import common.source.DBConnection;
+import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -239,13 +240,13 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 		try {
 			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
 			reportId = reportId.substring(0, 6);
-			System.out.println(reportId);
-			System.out.println(reportId.length());
+			Log.info(reportId);
+			Log.info(String.valueOf(reportId.length()));
 			reportName = "SH-" + reportId;
-			System.out.println(reportName);
+			Log.info(reportName);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 			return false;
 		}
 		String pdfFile1;

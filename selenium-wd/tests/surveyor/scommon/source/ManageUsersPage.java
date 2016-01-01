@@ -17,6 +17,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -103,7 +104,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public ManageUsersPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 
-		System.out.println("\nThe Manager Users Page URL is: "
+		Log.info("\nThe Manager Users Page URL is: "
 				+ this.strPageURL);
 	}
 
@@ -282,7 +283,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			userNameCell = table.findElement(By.xpath(userNameXPath));
 
 			if ((userNameCell.getText().trim()).equalsIgnoreCase(userName)) {
-				System.out.println("Found entry at row=" + rowNum);
+				Log.info("Found entry at row=" + rowNum);
 				return true;
 			}
 
@@ -342,7 +343,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			if ((locationCell.getText().trim()).equalsIgnoreCase(locationName)
 					&& (userNameCell.getText().trim())
 							.equalsIgnoreCase(userName)) {
-				System.out.println("Found entry at row=" + rowNum);
+				Log.info("Found entry at row=" + rowNum);
 				return true;
 			}
 
@@ -410,7 +411,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 							.equalsIgnoreCase(userName)
 					&& (roleNameCell.getText().trim())
 							.equalsIgnoreCase(roleName)) {
-				System.out.println("Found entry at row=" + rowNum);
+				Log.info("Found entry at row=" + rowNum);
 				return true;
 			}
 
@@ -468,7 +469,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				roleNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 						+ "]/td[4]";
 				roleNameCell = table.findElement(By.xpath(roleNameXPath));
-				System.out.println("Found entry at row=" + rowNum);
+				Log.info("Found entry at row=" + rowNum);
 				return roleNameCell.getText().trim();
 			}
 
@@ -526,7 +527,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				userStatusXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 						+ "]/td[5]";
 				userStatusCell = table.findElement(By.xpath(userStatusXPath));
-				System.out.println("Found entry at row=" + rowNum);
+				Log.info("Found entry at row=" + rowNum);
 				return userStatusCell.getText().trim();
 			}
 
@@ -586,7 +587,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 						+ "]/td[6]/a[1]";
 
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
-				System.out.println("Found cell at xpath=" + actionEditXPath);
+				Log.info("Found cell at xpath=" + actionEditXPath);
 				actionEditCell.click();
 				this.waitForEditPageLoad();
 
@@ -677,7 +678,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 				actionResetPWDCell = table.findElement(By
 						.xpath(actionResetPWDXPath));
-				System.out.println("Found cell at xpath=" + actionResetPWDCell);
+				Log.info("Found cell at xpath=" + actionResetPWDCell);
 				actionResetPWDCell.click();
 				waitForPageToLoad();
 
@@ -742,7 +743,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			userNameCell = table.findElement(By.xpath(userNameXPath));
 
 			if ((userNameCell.getText().trim()).equalsIgnoreCase(userName)) {
-				System.out.println("Found entry at row=" + rowNum);
+				Log.info("Found entry at row=" + rowNum);
 				return true;
 			}
 
@@ -811,7 +812,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 							.equalsIgnoreCase(userName)
 					&& (roleNameCell.getText().trim())
 							.equalsIgnoreCase(roleName)) {
-				System.out.println("Found entry at row=" + rowNum);
+				Log.info("Found entry at row=" + rowNum);
 				return true;
 			}
 

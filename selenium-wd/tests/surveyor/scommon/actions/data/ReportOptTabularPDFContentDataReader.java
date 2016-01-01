@@ -1,6 +1,7 @@
 package surveyor.scommon.actions.data;
 
 import common.source.ExcelUtility;
+import common.source.Log;
 
 public class ReportOptTabularPDFContentDataReader extends BaseDataReader {
 
@@ -57,7 +58,7 @@ public class ReportOptTabularPDFContentDataReader extends BaseDataReader {
 		String percentCoverageReportArea = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_PercentCoverageReportArea, TESTDATA_SHEET_NAME);
 		String percentCoverageForecast = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_PercentCoverageForecast, TESTDATA_SHEET_NAME);
 		
-		System.out.println(String.format("Found data row: rowID=[%s], indicationTable=[%s], isotopicAnalysis=[%s], gapTable=[%s], percentCoverageAssets=[%s], percentCoverageReportArea=[%s], percentCoverageForecast=[%s]", rowID, indicationTable, isotopicAnalysis, gapTable, percentCoverageAssets, percentCoverageReportArea, percentCoverageForecast));
+		Log.info(String.format("Found data row: rowID=[%s], indicationTable=[%s], isotopicAnalysis=[%s], gapTable=[%s], percentCoverageAssets=[%s], percentCoverageReportArea=[%s], percentCoverageForecast=[%s]", rowID, indicationTable, isotopicAnalysis, gapTable, percentCoverageAssets, percentCoverageReportArea, percentCoverageForecast));
 		
 		return new ReportOptTabularPDFContentDataRow(rowID, indicationTable, isotopicAnalysis, gapTable, percentCoverageAssets, percentCoverageReportArea, percentCoverageForecast);
 	}

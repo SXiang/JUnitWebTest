@@ -5,6 +5,7 @@ import java.util.List;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.Log;
 import common.source.OLMapUtility;
 import common.source.TestSetup;
 import common.source.OLMapUtility.IconColor;
@@ -100,7 +101,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void ReferenceOnly_SimulatorTest_OLMapFunctionality() {
-		System.out.println("Running ReferenceOnly_SimulatorTest_OLMapFunctionality");
+		Log.info("Running ReferenceOnly_SimulatorTest_OLMapFunctionality");
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -111,7 +112,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		driverViewPage.waitForPageLoad();
 		driverViewPage.waitForConnectionComplete();
 		
-		System.out.println("Clicking on MODE button");
+		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -125,105 +126,105 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		// Call the various OLMapUtility methods.
 		OLMapUtility mapUtility = new OLMapUtility(driver);
 		boolean chartDataShowingOnMap = mapUtility.isConcentrationChartDataShowingOnMap();
-		System.out.println("chartDataShowingOnMap = " + chartDataShowingOnMap);
+		Log.info("chartDataShowingOnMap = " + chartDataShowingOnMap);
 
 		boolean indicationsShownOnMap = mapUtility.isIndicationsShownOnMap();
-		System.out.println("indicationsShownOnMap = " + indicationsShownOnMap);
+		Log.info("indicationsShownOnMap = " + indicationsShownOnMap);
 
 		boolean breadcrumbShownOnMap = mapUtility.isBreadcrumbShownOnMap();
-		System.out.println("breadcrumbShownOnMap = " + breadcrumbShownOnMap);
+		Log.info("breadcrumbShownOnMap = " + breadcrumbShownOnMap);
 
 		boolean fovShownOnMap = mapUtility.isFOVShownOnMap();
-		System.out.println("fovShownOnMap = " + fovShownOnMap);
+		Log.info("fovShownOnMap = " + fovShownOnMap);
 
 		boolean lisaShownOnMap = mapUtility.isLISAShownOnMap();
-		System.out.println("lisaShownOnMap = " + lisaShownOnMap);
+		Log.info("lisaShownOnMap = " + lisaShownOnMap);
 
 		boolean crossHairIconShownOnMap = mapUtility.isCrossHairIconShownOnMap(IconColor.Gray);
-		System.out.println("[GRAY] crossHairIconShownOnMap = " + crossHairIconShownOnMap);
+		Log.info("[GRAY] crossHairIconShownOnMap = " + crossHairIconShownOnMap);
 
 		crossHairIconShownOnMap = mapUtility.isCrossHairIconShownOnMap(IconColor.Red);
-		System.out.println("[RED] crossHairIconShownOnMap = " + crossHairIconShownOnMap);
+		Log.info("[RED] crossHairIconShownOnMap = " + crossHairIconShownOnMap);
 		
 		crossHairIconShownOnMap = mapUtility.isCrossHairIconShownOnMap(IconColor.White);
-		System.out.println("[WHITE] crossHairIconShownOnMap = " + crossHairIconShownOnMap);
+		Log.info("[WHITE] crossHairIconShownOnMap = " + crossHairIconShownOnMap);
 				
 		Integer linksCount = mapUtility.getIndicationsLinksCount();
-		System.out.println("INDICATIONS linksCount = " + linksCount);
+		Log.info("INDICATIONS linksCount = " + linksCount);
 
 		Integer nodesCount = mapUtility.getIndicationsNodesCount();
-		System.out.println("INDICATIONS nodesCount = " + nodesCount);
+		Log.info("INDICATIONS nodesCount = " + nodesCount);
 
 		String nodesText = mapUtility.getIndicationsNodesText();
-		System.out.println("INDICATIONS nodesText = " + nodesText);
+		Log.info("INDICATIONS nodesText = " + nodesText);
 
-		System.out.println("Getting Asset Coordinates...");
+		Log.info("Getting Asset Coordinates...");
 		List<Object> assetCoordinates = mapUtility.getAssetCoordinates();
 		if (assetCoordinates != null)
 		{
-			System.out.println("assetCoordinates NOT NULL. COUNT=" + assetCoordinates.size());
-			System.out.println("Coordinates are:");
+			Log.info("assetCoordinates NOT NULL. COUNT=" + assetCoordinates.size());
+			Log.info("Coordinates are:");
 			for (Object obj : assetCoordinates) {
-				System.out.println(obj);
+				Log.info(obj.toString());
 			}
 		}
 
-		System.out.println("Getting Boundary Coordinates...");
+		Log.info("Getting Boundary Coordinates...");
 		List<Object> boundaryCoordinates = mapUtility.getBoundariesCoordinates();
 		if (boundaryCoordinates != null)
 		{
-			System.out.println("boundaryCoordinates NOT NULL. COUNT=" + boundaryCoordinates.size());
-			System.out.println("Coordinates are:");
+			Log.info("boundaryCoordinates NOT NULL. COUNT=" + boundaryCoordinates.size());
+			Log.info("Coordinates are:");
 			for (Object obj : boundaryCoordinates) {
-				System.out.println(obj);
+				Log.info(obj.toString());
 			}
 		}
 
-		System.out.println("Getting BreadCrumb Coordinates...");
+		Log.info("Getting BreadCrumb Coordinates...");
 		List<Object> breadcrumbCoordinates = mapUtility.getBreadCrumbCoordinates();
 		if (breadcrumbCoordinates != null)
 		{
-			System.out.println("breadcrumbCoordinates NOT NULL. COUNT=" + breadcrumbCoordinates.size());
-			System.out.println("Coordinates are:");
+			Log.info("breadcrumbCoordinates NOT NULL. COUNT=" + breadcrumbCoordinates.size());
+			Log.info("Coordinates are:");
 			for (Object obj : breadcrumbCoordinates) {
-				System.out.println(obj);
+				Log.info(obj.toString());
 			}
 		}
 		
-		System.out.println("Getting ConcentrationChart Image Data...");
+		Log.info("Getting ConcentrationChart Image Data...");
 		List<Object> concentrationChartData = mapUtility.getConcentrationChartImageData();
 		if (concentrationChartData != null)
 		{
-			System.out.println("concentrationChartData NOT NULL. COUNT=" + concentrationChartData.size());
-			System.out.println("Data points are:");
+			Log.info("concentrationChartData NOT NULL. COUNT=" + concentrationChartData.size());
+			Log.info("Data points are:");
 			for (Object obj : concentrationChartData) {
-				System.out.println(obj);
+				Log.info(obj.toString());
 			}
 		}
 
-		System.out.println("Getting FovCoordinates Coordinates...");
+		Log.info("Getting FovCoordinates Coordinates...");
 		List<Object> fovCoordinates = mapUtility.getFOVCoordinates();
 		if (fovCoordinates != null)
 		{
-			System.out.println("fovCoordinates NOT NULL. COUNT=" + fovCoordinates.size());
-			System.out.println("Coordinates are:");
+			Log.info("fovCoordinates NOT NULL. COUNT=" + fovCoordinates.size());
+			Log.info("Coordinates are:");
 			for (Object obj : fovCoordinates) {
-				System.out.println(obj);
+				Log.info(obj.toString());
 			}
 		}
 
-		System.out.println("Getting LISA Coordinates...");
+		Log.info("Getting LISA Coordinates...");
 		List<Object> lisaCoordinates = mapUtility.getLISACoordinates();
 		if (lisaCoordinates != null)
 		{
-			System.out.println("lisaCoordinates NOT NULL. COUNT=" + lisaCoordinates.size());
-			System.out.println("Coordinates are:");
+			Log.info("lisaCoordinates NOT NULL. COUNT=" + lisaCoordinates.size());
+			Log.info("Coordinates are:");
 			for (Object obj : lisaCoordinates) {
-				System.out.println(obj);
+				Log.info(obj.toString());
 			}
 		}
 
-		System.out.println("Clicking on MODE button");
+		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 

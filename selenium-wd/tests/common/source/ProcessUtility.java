@@ -30,10 +30,10 @@ public class ProcessUtility {
 				processInputStream(process.getErrorStream());
 
 				int exit = process.waitFor();
-				System.out.println("Process Exit Code: " + exit);
+				Log.info("Process Exit Code: " + exit);
 			}
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		} finally {
 			if (waitForExit) {
 				if (process != null) {
@@ -54,10 +54,10 @@ public class ProcessUtility {
 		String lineText;
 		try {
 			while ((lineText = bufferedReader.readLine()) != null) {
-				System.out.println(lineText);
+				Log.info(lineText);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		} finally {
 			bufferedReader.close();
 		}
@@ -75,9 +75,9 @@ public class ProcessUtility {
 			processInputStream(process.getErrorStream());
 
 			int exit = process.waitFor();
-			System.out.println("Process Exit Code: " + exit);	
+			Log.info("Process Exit Code: " + exit);	
 		} catch (IOException | InterruptedException e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 	}
 }

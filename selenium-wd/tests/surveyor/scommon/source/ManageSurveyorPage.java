@@ -14,6 +14,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.FindBy;
 
+import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -74,7 +75,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	public ManageSurveyorPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 		
-		System.out.println("\nThe Manager Surveyor Page URL is: " + this.strPageURL);
+		Log.info("\nThe Manager Surveyor Page URL is: " + this.strPageURL);
 	}
 	
 	public ManageSurveyorPage(WebDriver driver, String baseURL, TestSetup testSetup, String urlPath) {
@@ -103,8 +104,8 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 
 	public void addNewSurveyor(String surveyorDesc, String location) {
 		if (this.testSetup.isRunningDebug()) {
-			System.out.println(surveyorDesc);
-			System.out.println(location);
+			Log.info(surveyorDesc);
+			Log.info(location);
 		}
 		
 		this.btnAddNewSurveyor.click();
@@ -127,9 +128,9 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	
 	public void addNewSurveyor(String surveyorDesc, String locationName, String customerName) {
 		if (this.testSetup.isRunningDebug()) {
-			System.out.println(surveyorDesc);
-			System.out.println(locationName);
-			System.out.println(customerName);
+			Log.info(surveyorDesc);
+			Log.info(locationName);
+			Log.info(customerName);
 		}
 		
 		this.btnAddNewSurveyor.click();
@@ -186,7 +187,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 			
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName) && (locationNameCell.getText().trim()).equalsIgnoreCase(locationName) 
 					&& (surveyorNameCell.getText().trim()).equalsIgnoreCase(surveyorName)) {
-				System.out.println("Found entry at row=" + rowNum);
+				Log.info("Found entry at row=" + rowNum);
 				return true;
 			}
 				
@@ -248,7 +249,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 				actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]/a";
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
 				
-				System.out.println("Found cell at xpath=" + actionEditXPath);
+				Log.info("Found cell at xpath=" + actionEditXPath);
 				actionEditCell.click();
 				this.waitForEditPageLoad();
 				
@@ -329,7 +330,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
     public void waitForEditPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
-            	System.out.println("Checking for content on EDIT page: " + STREditPageContentText);
+            	Log.info("Checking for content on EDIT page: " + STREditPageContentText);
                 return d.getPageSource().contains(STREditPageContentText);
             }
         });

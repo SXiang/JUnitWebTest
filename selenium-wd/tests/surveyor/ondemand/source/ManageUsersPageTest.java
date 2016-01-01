@@ -16,6 +16,7 @@ import org.openqa.selenium.support.PageFactory;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.SurveyorBaseTest;
+import common.source.Log;
 import common.source.TestSetup;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
@@ -36,7 +37,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void manageUsersPage_AddNewUsers() {
-		System.out.println("\nRunning manageUsersPage_AddNewUsers...");
+		Log.info("\nRunning manageUsersPage_AddNewUsers...");
 		
 		try {
 			manageUsersPage.open();
@@ -71,7 +72,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 			}
 		}
 		catch (Exception e) {
-			System.out.println("Exception on test case \"manageUsersPage_AddNewUsers\": " + e.getMessage());
+			Log.info("Exception on test case \"manageUsersPage_AddNewUsers\": " + e.getMessage());
 		}
 	}
 }

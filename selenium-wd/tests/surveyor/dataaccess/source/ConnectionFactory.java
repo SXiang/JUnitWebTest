@@ -2,7 +2,7 @@ package surveyor.dataaccess.source;
 
 import java.sql.*;
 import java.util.Hashtable;
-
+import common.source.Log;
 import common.source.TestContext;
 
 public class ConnectionFactory {
@@ -30,7 +30,7 @@ public class ConnectionFactory {
 				conn = DriverManager.getConnection(connectionUrl, dbUser, dbPassword);
 				connectionCache.put(connectionUrl, conn);
 			} catch (ClassNotFoundException | SQLException e) {
-				e.printStackTrace();
+				Log.error(e.toString());
 			}
 		}
 		return conn;

@@ -17,11 +17,11 @@ public class DBConnection {
 		try {
 			Class.forName(dbClass);
 			con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-			System.out.println("Connection Established!");
+			Log.info("Connection Established!");
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 		return con;
 	}
@@ -33,7 +33,7 @@ public class DBConnection {
 				rs = stmt.executeQuery(query);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 			if (con != null) {
 				try {
 					con.close();
@@ -49,9 +49,9 @@ public class DBConnection {
 		if (con != null) {
 			try {
 				con.close();
-				System.out.println("Connection Closed!");
+				Log.info("Connection Closed!");
 			} catch (Exception e) {
-				e.printStackTrace();
+				Log.error(e.toString());
 			}
 		}
 	}
@@ -71,11 +71,11 @@ public class DBConnection {
 		try {
 			while (rs.next()) {
 				reportId = rs.getString(1);
-				System.out.println("Inner reportId: " + reportId);
+				Log.info("Inner reportId: " + reportId);
 				return reportId;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 			this.closeConnection(con);
 		}
 		return reportId;

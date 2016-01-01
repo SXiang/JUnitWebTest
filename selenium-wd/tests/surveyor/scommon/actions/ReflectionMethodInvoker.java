@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import common.source.Log;
+
 public class ReflectionMethodInvoker implements IMethodInvoker {
 
 	public List<IMethodObserver> methodObservers;
@@ -27,7 +29,7 @@ public class ReflectionMethodInvoker implements IMethodInvoker {
 					try {
 						result = method[i].invoke(pageAction, methodParams.getMethodData(), dataRowID);
 					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-						e.printStackTrace();
+						Log.error(e.toString());
 						result = false;
 					}
 					

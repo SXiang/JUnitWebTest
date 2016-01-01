@@ -10,6 +10,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.BasePage;
+import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.User;
@@ -47,7 +48,7 @@ public class LoginPage extends BasePage {
 	 */
 	public LoginPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
-		System.out.println("\nThe Login Page URL is: " + this.strPageURL);
+		Log.info("\nThe Login Page URL is: " + this.strPageURL);
 	}
 
 	private void handleEULA() {

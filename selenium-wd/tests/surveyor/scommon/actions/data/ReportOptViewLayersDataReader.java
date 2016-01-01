@@ -1,6 +1,7 @@
 package surveyor.scommon.actions.data;
 
 import common.source.ExcelUtility;
+import common.source.Log;
 
 public class ReportOptViewLayersDataReader extends BaseDataReader {
 
@@ -65,7 +66,7 @@ public class ReportOptViewLayersDataReader extends BaseDataReader {
 		String boundaryDistrictPlat = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_BoundaryDistrictPlat, TESTDATA_SHEET_NAME);
 		String boundaryDistrict = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_BoundaryDistrict, TESTDATA_SHEET_NAME);
 		
-		System.out.println(String.format("Found data row: rowID=[%s], assetCopper=[%s], assetUnprotectedSteel=[%s], assetProtectedSteel=[%s], assetCastIron=[%s], assetOtherPlastic=[%s], assetPEPlastic=[%s], boundaryDistrictPlat=[%s], boundaryDistrict=[%s]", rowID, assetCopper, assetUnprotectedSteel, assetProtectedSteel, assetCastIron, assetOtherPlastic, assetPEPlastic, boundaryDistrictPlat, boundaryDistrict));
+		Log.info(String.format("Found data row: rowID=[%s], assetCopper=[%s], assetUnprotectedSteel=[%s], assetProtectedSteel=[%s], assetCastIron=[%s], assetOtherPlastic=[%s], assetPEPlastic=[%s], boundaryDistrictPlat=[%s], boundaryDistrict=[%s]", rowID, assetCopper, assetUnprotectedSteel, assetProtectedSteel, assetCastIron, assetOtherPlastic, assetPEPlastic, boundaryDistrictPlat, boundaryDistrict));
 		
 		return new ReportOptViewLayersDataRow(rowID, assetCopper, assetUnprotectedSteel, assetProtectedSteel, assetCastIron, assetOtherPlastic, assetPEPlastic, boundaryDistrictPlat, boundaryDistrict);
 	}

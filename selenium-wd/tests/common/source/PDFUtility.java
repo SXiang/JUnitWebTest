@@ -273,38 +273,38 @@ public class PDFUtility {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 	}
 
 	private void testExtractPDFText_validPDF(String filePath, String expectedText) throws IOException {
 		String pdfText = extractPDFText(filePath);
 		Assert.assertTrue(pdfText.contains(expectedText), String.format("Text - '%s' NOT found in file - %s", expectedText, filePath));
-		System.out.println("Completed test - testExtractPDFText_validPDF() for file - " + filePath);
+		Log.info("Completed test - testExtractPDFText_validPDF() for file - " + filePath);
 	}
 
 	private void testExtractPDFText_invalidPDF(String filePath, String expectedText) throws IOException {
 		String pdfText = extractPDFText(filePath);
 		Assert.assertTrue(pdfText.contains(expectedText), String.format("Text - '%s' NOT found in file - %s", expectedText, filePath));
-		System.out.println("Completed test - testExtractPDFText_invalidPDF() for file - " + filePath);
+		Log.info("Completed test - testExtractPDFText_invalidPDF() for file - " + filePath);
 	}
 	
 	private void testExtractPDFText_validPDF_firstPage(String filePath, String expectedText) throws IOException {
 		String pdfText = extractPDFText(filePath, 1, 1);
 		Assert.assertTrue(pdfText.contains(expectedText), String.format("Text - '%s' NOT found in file - %s", expectedText, filePath));
-		System.out.println("Completed test - testExtractPDFText_validPDF_firstPage() for file - " + filePath);
+		Log.info("Completed test - testExtractPDFText_validPDF_firstPage() for file - " + filePath);
 	}
 
 	private void testExtractPDFText_validPDF_lastPage(String filePath, int endPage, String expectedText) throws IOException {
 		String pdfText = extractPDFText(filePath, endPage, endPage);
 		Assert.assertTrue(pdfText.contains(expectedText), String.format("Text - '%s' NOT found in file - %s", expectedText, filePath));
-		System.out.println("Completed test - testExtractPDFText_validPDF_lastPage() for file - " + filePath);
+		Log.info("Completed test - testExtractPDFText_validPDF_lastPage() for file - " + filePath);
 	}
 
 	private void testExtractPDFText_validPDF_innerPages(String filePath, int startPage, int endPage, String expectedText) throws IOException {
 		String pdfText = extractPDFText(filePath, startPage, endPage);
 		Assert.assertTrue(pdfText.contains(expectedText), String.format("Text - '%s' NOT found in file - %s", expectedText, filePath));
-		System.out.println("Completed test - testExtractPDFText_validPDF_innerPages() for file - " + filePath);
+		Log.info("Completed test - testExtractPDFText_validPDF_innerPages() for file - " + filePath);
 	}
 
 	private void testExtractImages_validPDF(String filePath, int expectedImageCount) throws IOException {
@@ -314,7 +314,7 @@ public class PDFUtility {
 		Assert.assertTrue(actualImageCount == expectedImageCount, String.format("Expected - '%d' files in PDF - %s. Found - '%d' files", 
 				expectedImageCount, filePath, actualImageCount));
 		FileUtility.deleteDirectoryAndFiles(Paths.get(imageDirectory));
-		System.out.println("Completed test - testExtractImages_validPDF() for file - " + filePath);
+		Log.info("Completed test - testExtractImages_validPDF() for file - " + filePath);
 	}
 
 	private void testExtractImages_invalidPDF(String filePath, int expectedImageCount) throws IOException {
@@ -324,7 +324,7 @@ public class PDFUtility {
 		Assert.assertTrue(actualImageCount == expectedImageCount, String.format("Expected - '%d' files in PDF - %s. Found - '%d' files", 
 				expectedImageCount, filePath, actualImageCount));
 		FileUtility.deleteDirectoryAndFiles(Paths.get(imageDirectory));
-		System.out.println("Completed test - testExtractImages_invalidPDF() for file - " + filePath);
+		Log.info("Completed test - testExtractImages_invalidPDF() for file - " + filePath);
 	}
 	
 	private void testExtractImages_validPDF_firstPage(String filePath, int expectedImageCount) throws IOException {
@@ -334,7 +334,7 @@ public class PDFUtility {
 		Assert.assertTrue(actualImageCount == expectedImageCount, String.format("Expected - '%d' files in PDF - %s. Found - '%d' files", 
 				expectedImageCount, filePath, actualImageCount));
 		FileUtility.deleteDirectoryAndFiles(Paths.get(imageDirectory));
-		System.out.println("Completed test - testExtractImages_validPDF_firstPage() for file - " + filePath);
+		Log.info("Completed test - testExtractImages_validPDF_firstPage() for file - " + filePath);
 	}
 
 	private void testExtractImages_validPDF_lastPage(String filePath, int endPage, int expectedImageCount) throws IOException {
@@ -344,7 +344,7 @@ public class PDFUtility {
 		Assert.assertTrue(actualImageCount == expectedImageCount, String.format("Expected - '%d' files in PDF - %s. Found - '%d' files", 
 				expectedImageCount, filePath, actualImageCount));
 		FileUtility.deleteDirectoryAndFiles(Paths.get(imageDirectory));
-		System.out.println("Completed test - testExtractImages_validPDF_lastPage() for file - " + filePath);
+		Log.info("Completed test - testExtractImages_validPDF_lastPage() for file - " + filePath);
 	}
 
 	private void testExtractImages_validPDF_innerPages(String filePath, int startPage, int endPage, int expectedImageCount) throws IOException {
@@ -354,6 +354,6 @@ public class PDFUtility {
 		Assert.assertTrue(actualImageCount == expectedImageCount, String.format("Expected - '%d' files in PDF - %s. Found - '%d' files", 
 				expectedImageCount, filePath, actualImageCount));
 		FileUtility.deleteDirectoryAndFiles(Paths.get(imageDirectory));
-		System.out.println("Completed test - testExtractImages_validPDF_innerPages() for file - " + filePath);
+		Log.info("Completed test - testExtractImages_validPDF_innerPages() for file - " + filePath);
 	}
 }

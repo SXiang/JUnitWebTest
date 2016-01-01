@@ -8,6 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 import common.source.Constants;
 import common.source.ExcelUtility;
 import common.source.OLMapUtility;
+import common.source.Log;
 import common.source.TestContext;
 import common.source.OLMapUtility.IconColor;
 import common.source.RegexUtility;
@@ -173,7 +174,7 @@ public class DriverViewPageActions extends BasePageActions {
 				TestSetup.replayDB3Script(dataRow.replayScriptDefnFile);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 			return false;
 		}
 		return true;
@@ -225,7 +226,7 @@ public class DriverViewPageActions extends BasePageActions {
 		try {
 			driverViewPage.startDrivingSurvey(surveyTag, time, radiation, wind, cloudCover, type);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 			return false;
 		}
 		return true;

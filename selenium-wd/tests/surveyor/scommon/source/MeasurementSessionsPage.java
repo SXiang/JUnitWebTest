@@ -17,6 +17,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BaseHelper;
+import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -469,7 +470,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 					BaseHelper.deCompressZipFile(zipFileName, downloadPath, true);
 				}
 				catch (Exception e) {
-					e.printStackTrace();
+					Log.error(e.toString());
 					return false;
 				}
 			}

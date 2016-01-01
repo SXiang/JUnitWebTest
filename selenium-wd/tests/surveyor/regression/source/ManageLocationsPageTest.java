@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.Log;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.SurveyorBaseTest;
@@ -45,7 +46,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		String cityName="Santa Clara";
 	
 		
-		System.out.println("\nRunning TC60_AddLocation_PicAdmin - Test Description: Adding Location");
+		Log.info("\nRunning TC60_AddLocation_PicAdmin - Test Description: Adding Location");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
@@ -72,7 +73,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		String newLocationName = locationName + "NEW";
 		String cityName="Santa Clara";
 		
-		System.out.println("\nRunning TC61_EditLocation_PicAdmin - Test Description: Editing Location");
+		Log.info("\nRunning TC61_EditLocation_PicAdmin - Test Description: Editing Location");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());

@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.Log;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageSurveyorAdminPage;
@@ -54,7 +55,7 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		String surveyorName = locationName + "Sur";
 		String cityName ="Santa Clara";
 		
-		System.out.println("\nRunning TC63_AddSurveyor_PicAdmin...");
+		Log.info("\nRunning TC63_AddSurveyor_PicAdmin...");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());

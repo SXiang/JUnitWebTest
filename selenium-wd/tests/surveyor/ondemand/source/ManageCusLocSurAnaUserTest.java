@@ -20,6 +20,7 @@ import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.SurveyorBaseTest;
+import common.source.Log;
 import common.source.TestSetup;
 
 /**
@@ -80,7 +81,7 @@ public class ManageCusLocSurAnaUserTest extends SurveyorBaseTest {
 	 */	
 	@Test
 	public void addingCusLocSurAnaUser() {
-		System.out.println("\nRunning ManageCusLocSurAnaUserTest_addingCusLocSurAnaUser...");
+		Log.info("\nRunning ManageCusLocSurAnaUserTest_addingCusLocSurAnaUser...");
 		
 		try {
 			//manageCustomersPage.open();
@@ -117,7 +118,7 @@ public class ManageCusLocSurAnaUserTest extends SurveyorBaseTest {
 			}
 		}
 		catch (Exception e) {
-			System.out.println("\nException on test case \"ManageCusLocSurAnaUserTest_addingCusLocSurAnaUser\": " + e.getMessage());		
+			Log.info("\nException on test case \"ManageCusLocSurAnaUserTest_addingCusLocSurAnaUser\": " + e.getMessage());		
 		}
 	}
 }

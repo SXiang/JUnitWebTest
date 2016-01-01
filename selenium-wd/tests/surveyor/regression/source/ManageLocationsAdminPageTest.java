@@ -10,6 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.Log;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsAdminPage;
@@ -73,7 +74,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		String locationName = testSetup.getRandomNumber() + "TC489";
 		String cityName = "Santa Clara";
 
-		System.out.println("\nRunning - TC489_AddLocation_CustUA - Test Description: Add location\n");
+		Log.info("\nRunning - TC489_AddLocation_CustUA - Test Description: Add location\n");
 
 		// Add Location as Picarro admin.
 		loginPage.open();
@@ -108,7 +109,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		String locationNameNew = testSetup.getRandomNumber() + "TC459" + "_New";
 		String cityName = "Santa Clara";
 
-		System.out.println("\nRunning - TC459_EditLocation_CustUA - Test Description: Edit existing location\n");
+		Log.info("\nRunning - TC459_EditLocation_CustUA - Test Description: Edit existing location\n");
 
 		// Add Location as Picarro admin.
 		loginPage.open();
@@ -142,7 +143,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		String locationName = testSetup.getRandomNumber() + "TC461";
 		String cityName = "Santa Clara";
 
-		System.out.println("\nRunning - TC461_EditLocBlankRequiredFields_CustUA - Test Description: edit location- blank required fields\n");
+		Log.info("\nRunning - TC461_EditLocBlankRequiredFields_CustUA - Test Description: edit location- blank required fields\n");
 
 		// Add Location as Picarro admin.
 		loginPage.open();
@@ -180,7 +181,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		String locationName50Chars = testSetup.getFixedSizeRandomNumber(11) + "TC462" + str34chars;
 		String locationName51Chars = testSetup.getFixedSizeRandomNumber(11) + "TC462" + str35chars;
 
-		System.out.println(
+		Log.info(
 				"\nRunning - TC462_EditLoc50CharLimit_CustUA - Test Description: More than 50 characters not allowed in Location Description field\n");
 
 		// Add Location as Picarro admin.
@@ -216,7 +217,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	public void TC466_VerifyCancelButtonAllScreens_CustAdmin() {
 		String curURL;
 
-		System.out.println(
+		Log.info(
 				"\nRunning - TC466_VerifyCancelButtonAllScreens_CustAdmin - Test Description: Verify Cancel button for all customer admin screens\n");
 
 		loginPage.open();

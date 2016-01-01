@@ -9,6 +9,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import common.source.BasePage;
+import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -36,7 +37,7 @@ public class PrimePage extends BasePage {
 		
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 		
-		System.out.println("\nThe Prime Page URL is: " + this.strPageURL);
+		Log.info("\nThe Prime Page URL is: " + this.strPageURL);
 	}
 	
 	public void browsingSettingControls() {
