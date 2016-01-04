@@ -1,5 +1,7 @@
 package common.source;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
@@ -15,10 +17,12 @@ public class Log {
 	private static Logger log = Logger.getLogger(Log.class.getName());
 	private static String logFilePath;
 
+	/* Generating log files for each test run tracked by US1399. 
 	static {
 		logFilePath = String.format("./selenium-wd/logs/%s-log.log", TestContext.INSTANCE.getRunUniqueId());
 		updateLog4jConfiguration(logFilePath);
 	}
+	*/
 	
 	public static void info(String message) {
 		log.info(message);
@@ -39,7 +43,8 @@ public class Log {
 	private static void updateLog4jConfiguration(String logFile) { 
 	    Properties props = new Properties(); 
 	    try { 
-	        InputStream inputStream = log.getClass().getResourceAsStream( "/log4j.properties"); 
+	    	String log4JPropFilePath = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "tests" + File.separator + "log4j.properties";;
+	        InputStream inputStream = new FileInputStream(log4JPropFilePath); 
 	        props.load(inputStream); 
 	        inputStream.close(); 
 	    } catch (IOException ex) { 
@@ -59,7 +64,7 @@ public class Log {
 		test_LogWarn_NoMessage();
 		test_LogDebug_NoMessage();
 		test_LogError_NoMessage();
-		//FileUtility.deleteFile(Paths.get(logFilePath));
+		FileUtility.deleteFile(Paths.get(logFilePath));
 	}
 
 	private static void assertLogLastEntryContains(String[] messages) {
