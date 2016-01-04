@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.Log;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import static surveyor.scommon.source.SurveyorConstants.*;
@@ -36,7 +37,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "ADM001";
 		String eula = customerName + ": " + EULASTRING;
 		
-		System.out.println("\nRunning ADM001 - Test Description: Adding Customer");
+		Log.info("\nRunning ADM001 - Test Description: Adding Customer");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
@@ -59,7 +60,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		String eula = customerName + ": " + EULASTRING;
 		String newCustomerName = customerName + "NEW";		
 		
-		System.out.println("\nRunning ADM002 - Test Description: Editing Customer");
+		Log.info("\nRunning ADM002 - Test Description: Editing Customer");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
@@ -85,7 +86,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		String newCustomerName = customerName + "NEW";
 		String eulaNew = customerName + ": " + EULASTRING + "NEW";
 		
-		System.out.println("\nRunning MCP000A - Test Description: Editing Customer with eula change only");
+		Log.info("\nRunning MCP000A - Test Description: Editing Customer with eula change only");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
@@ -109,7 +110,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "MCP000B";
 		String eula = customerName + ": " + EULASTRING;
 		
-		System.out.println("\nRunning MCP000B - Test Description: Checking Customer Account Status");
+		Log.info("\nRunning MCP000B - Test Description: Checking Customer Account Status");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
@@ -131,7 +132,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "MCP000C";
 		String eula = customerName + ": " + EULASTRING;
 		
-		System.out.println("\nRunning MCP000C - Test Description: Changing Customer Account Status");
+		Log.info("\nRunning MCP000C - Test Description: Changing Customer Account Status");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		

@@ -6,6 +6,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 
+import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.actions.DriverViewPageActions;
@@ -93,7 +94,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 			assertTrue(driverViewPageAction.verifyAnemometerButtonIsGreen(EMPTY,NOTSET));
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 	}
 
@@ -129,7 +130,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 			assertTrue(driverViewPageAction.verifySystemShutdownButtonIsEnabled(EMPTY,NOTSET));
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 	}
 
@@ -167,7 +168,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 			assertTrue(driverViewPageAction.verifySurveyInfoSurveyStatusLabelEquals("Survey Inactive",NOTSET));
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 	}
 
@@ -226,7 +227,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			driverViewPageAction.stopDrivingSurvey(EMPTY,NOTSET);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 	}
 }

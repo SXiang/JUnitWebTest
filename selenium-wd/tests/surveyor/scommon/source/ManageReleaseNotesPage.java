@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import common.source.Log;
 import common.source.TestSetup;
 
 /**
@@ -48,7 +49,7 @@ public class ManageReleaseNotesPage extends SurveyorBasePage {
 			TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 
-		System.out.println("\nThe Manager Surveyor Histories Page URL is: "
+		Log.info("\nThe Manager Surveyor Histories Page URL is: "
 				+ this.strPageURL);
 	}
 

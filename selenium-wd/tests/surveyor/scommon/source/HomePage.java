@@ -16,6 +16,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import common.source.Log;
 import common.source.TestSetup;
 
 /**
@@ -179,7 +180,7 @@ public class HomePage extends SurveyorBasePage {
 	public HomePage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 		
-		System.out.println("\nThe Home Page URL is: " + this.strPageURL);
+		Log.info("\nThe Home Page URL is: " + this.strPageURL);
 	}
 	
 	public boolean checkIfAtHomePage() {
@@ -547,7 +548,7 @@ public class HomePage extends SurveyorBasePage {
 		try {
 			this.linkInvestigation = driver.findElement(By.xpath(EQ_REPORT_LINK_XPATH));
 		} catch (NoSuchElementException  e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 		return this.linkInvestigation;
 	}

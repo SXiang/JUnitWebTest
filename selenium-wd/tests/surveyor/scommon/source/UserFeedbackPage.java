@@ -15,6 +15,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -64,7 +65,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 			String strBaseURL) {
 		super(driver, testSetup, strBaseURL, strBaseURL + STRURLPath);
 		
-		System.out.println("\nThe User Feedback Page URL is: " + strBaseURL + STRURLPath);
+		Log.info("\nThe User Feedback Page URL is: " + strBaseURL + STRURLPath);
 	}
 	
 	public UserFeedbackPage(WebDriver driver, TestSetup testSetup, String strBaseURL, String urlPath) {
@@ -119,7 +120,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 			noteCell = table.findElement(By.xpath(strNoteXPath));
 			
 			if (userCell.getText().equalsIgnoreCase(user) && noteCell.getText().equalsIgnoreCase(strFeedback)) {			
-				System.out.println("Found entry at row=" + rowNum);
+				Log.info("Found entry at row=" + rowNum);
 				return true;
 			}
 			
@@ -175,7 +176,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 			if (customerCell.getText().trim().equalsIgnoreCase(customer) && userCell.getText().trim().equalsIgnoreCase(user)) {				
 				strNoteXPath = strTRXPath + "["+rowNum+"]/td[3]";
 				noteCell = table.findElement(By.xpath(strNoteXPath));
-				System.out.println("Found entry at row=" + rowNum);
+				Log.info("Found entry at row=" + rowNum);
 				return noteCell.getText().trim();
 			}
 			
@@ -234,7 +235,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 			if (customerCell.getText().trim().equalsIgnoreCase(customer) && userCell.getText().trim().equalsIgnoreCase(user)) {				
 				strNoteXPath = strTRXPath + "["+rowNum+"]/td[3]";
 				noteCell = table.findElement(By.xpath(strNoteXPath));
-				System.out.println("Found entry at row=" + rowNum);
+				Log.info("Found entry at row=" + rowNum);
 				list.add(noteCell.getText().trim());
 			}
 			

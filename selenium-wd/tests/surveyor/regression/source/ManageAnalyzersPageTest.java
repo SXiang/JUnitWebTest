@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.Log;
 import surveyor.scommon.source.ManageAnalyzersPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
@@ -54,7 +55,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		String analyzerName = surveyorName + "ana";
 		String cityName="Santa Clara";
 		
-		System.out.println("\nRunning TC65_AddAnalyzer_PicAdmin - Test Description: Adding Analyzer for Picarro by Picarro default Administrator");
+		Log.info("\nRunning TC65_AddAnalyzer_PicAdmin - Test Description: Adding Analyzer for Picarro by Picarro default Administrator");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
@@ -84,7 +85,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		String analyzerName = surveyorName + "ana";
 		String cityName ="Santa Clara";
 		
-		System.out.println("\nRunning TC67_EditAnalyzer_PicAdmin - Test Description: Editing Analyzer for Picarro, changing the Analyzer Name, "
+		Log.info("\nRunning TC67_EditAnalyzer_PicAdmin - Test Description: Editing Analyzer for Picarro, changing the Analyzer Name, "
 				+ "by Picarro default Administrator");
 		
 		loginPage.open();

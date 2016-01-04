@@ -5,6 +5,7 @@ package surveyor.scommon.source;
 
 import org.openqa.selenium.WebDriver;
 
+import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -25,7 +26,7 @@ public class UserFeedbackAdminPage extends UserFeedbackPage {
 	public UserFeedbackAdminPage(WebDriver driver, TestSetup testSetup, String strBaseURL) {
 		super(driver, testSetup, strBaseURL, STRURLPath);
 		
-		System.out.println("\nThe User Feedback Admin Page URL is: " + strBaseURL + STRURLPath);
+		Log.info("\nThe User Feedback Admin Page URL is: " + strBaseURL + STRURLPath);
 	}
 
 	/**

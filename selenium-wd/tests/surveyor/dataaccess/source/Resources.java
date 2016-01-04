@@ -2,7 +2,7 @@ package surveyor.dataaccess.source;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+import common.source.Log;
 import common.source.TestContext;
 
 public class Resources extends BaseEntity {
@@ -87,7 +87,7 @@ public class Resources extends BaseEntity {
 	         }
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 		
 		return resourcesList;

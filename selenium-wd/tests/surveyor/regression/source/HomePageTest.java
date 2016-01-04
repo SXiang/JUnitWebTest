@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.Log;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.FleetMapPage;
@@ -51,7 +52,7 @@ public class HomePageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC44_VerifySurveyorLink_PicAdminRole() {
-		System.out.println("\nRunning - TC44_VerifySurveyorLink_PicAdminRole - Test Description: Picarro Surveyors link working\n");
+		Log.info("\nRunning - TC44_VerifySurveyorLink_PicAdminRole - Test Description: Picarro Surveyors link working\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -73,7 +74,7 @@ public class HomePageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC45_VerifyAdministratorMenu_PicAdminRole() {
-		System.out.println("\nRunning - TC45_VerifyAdministratorMenu_PicAdminRole - Test Description: Picarro Administrator link working\n");
+		Log.info("\nRunning - TC45_VerifyAdministratorMenu_PicAdminRole - Test Description: Picarro Administrator link working\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -104,7 +105,7 @@ public class HomePageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC46_VerifySendFeedbackLink_CustDriverRole() {
-		System.out.println("\nRunning - TC46_VerifySendFeedbackLink_CustomerDriverRole - Test Description: Send Feedback link working\n");
+		Log.info("\nRunning - TC46_VerifySendFeedbackLink_CustomerDriverRole - Test Description: Send Feedback link working\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);
@@ -124,7 +125,7 @@ public class HomePageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC47_VerifyReportMenu_PicarroSURole() {
-		System.out.println(
+		Log.info(
 				"\nRunning - TC47_VerifyReportMenu_PicarroSURole - Test Description: Reports link working and user is able to see the report menu\n");
 
 		loginPage.open();
@@ -147,7 +148,7 @@ public class HomePageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC48_VerifyDrivingSurveysLink_CustDriverRole() {
-		System.out.println("\nRunning - TC48_VerifyDrivingSurveysLink_CustDriverRole - Test Description: Driving Surveys link working\n");
+		Log.info("\nRunning - TC48_VerifyDrivingSurveysLink_CustDriverRole - Test Description: Driving Surveys link working\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);
@@ -169,7 +170,7 @@ public class HomePageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC50_VerifyFleetMapLink_CustSURole() {
-		System.out.println("\nRunning - TC50_VerifyFleetMapLink_CustSURole - Test Description: Fleet Map link working\n");
+		Log.info("\nRunning - TC50_VerifyFleetMapLink_CustSURole - Test Description: Fleet Map link working\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
@@ -188,7 +189,7 @@ public class HomePageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC140_VerifyAllDrivingSurveysLink_PicAdminRole() {
-		System.out.println(
+		Log.info(
 				"\nTestcase - TC140_VerifyAllDrivingSurveysLink_PicAdminRole: Sanity check on home page DashBoard/View All Driving Surveys "
 				+ "Link with Picarro Admin login\n");
 
@@ -206,7 +207,7 @@ public class HomePageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC141_VerifyAllSurveyorsLink_PicAdminRole() {
-		System.out.println(
+		Log.info(
 				"\nTestcase - TC141_VerifyAllSurveyorsLink_PicAdminRole: Sanity check on home page DashBoard/View All Surveyors Link with Picarro Admin login\n");
 
 		loginPage.open();

@@ -95,6 +95,7 @@ import org.testng.Assert;
 import common.source.BaseHelper;
 import common.source.DBConnection;
 import common.source.FileUtility;
+import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -683,7 +684,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 						continue;
 					} catch (NullPointerException ne) {
-						System.out.println("Null Pointer Exception: " + ne);
+						Log.info("Null Pointer Exception: " + ne);
 						fail("Report failed to generate!!");
 					}
 				}
@@ -1010,7 +1011,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			setReportName(reportName);
 			BaseHelper.deCompressZipFile(reportName, downloadPath);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 			return false;
 		}
 
@@ -1028,7 +1029,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				if (!BaseHelper.compareTwoFilesByContent(pdfFile1, pdfFile3))
 					return false;
 			} catch (IOException e) {
-				e.printStackTrace();
+				Log.error(e.toString());
 				return false;
 			}
 		} else
@@ -1057,7 +1058,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 			BaseHelper.deCompressZipFile(reportName, downloadPath);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 			return false;
 		}
 
@@ -1077,7 +1078,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				if (!BaseHelper.compareTwoFilesByContent(pdfFile1, pdfFile3))
 					return false;
 			} catch (IOException e) {
-				e.printStackTrace();
+				Log.error(e.toString());
 				return false;
 			}
 		} else
@@ -1088,7 +1089,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			pdfFile2 = downloadPath + reportName + File.separator + nameBase.replaceAll("_", "") + "_" + viewName + ".pdf";
 
 			if (!BaseHelper.validatePdfFile(pdfFile2)) {
-				System.out.println("PDF Validation failed for: " + pdfFile2);
+				Log.info("PDF Validation failed for: " + pdfFile2);
 				return false;
 			}
 		}
@@ -1118,7 +1119,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String actualReport = actualPath + reportName.trim() + ".pdf";
 		PDFUtility pdfUtility = new PDFUtility();
 		String actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
-		// System.out.println(actualReportString);
+		// Log.info(actualReportString);
 		String[] lines = actualReportString.split("\\n");
 		Pattern pattertoMatch = Pattern.compile("Report Creation Date");
 		for (String line : lines) {
@@ -1207,7 +1208,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		PDFUtility pdfUtility;
 		pdfUtility = new PDFUtility();
 		String imageDirectory = pdfUtility.extractPDFImages(actualReport, Paths.get(actualPath).getFileName().toString() + "_", 1, 2);
-		System.out.println(imageDirectory);
+		Log.info(imageDirectory);
 		return false;
 	}
 
@@ -1223,7 +1224,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		PDFUtility pdfUtility;
 		pdfUtility = new PDFUtility();
 		String imageDirectory = pdfUtility.extractPDFImages(actualReport, Paths.get(actualPath).getFileName().toString() + "_", 1, 2);
-		System.out.println(imageDirectory);
+		Log.info(imageDirectory);
 		return false;
 	}
 

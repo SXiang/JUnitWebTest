@@ -6,6 +6,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.Log;
 import common.source.TestSetup;
 import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.DriverViewPage.CloudCover;
@@ -59,7 +60,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	 */
 	@Ignore
 	public void TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin() {
-		System.out.println("Running TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin");
+		Log.info("Running TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin");
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -70,7 +71,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		driverViewPage.waitForPageLoad();
 		driverViewPage.waitForConnectionComplete();
 		
-		System.out.println("Clicking on MODE button");
+		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
@@ -87,7 +88,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		assertTrue(driverViewPage.getSystemShutdownButton().isDisplayed());
 		assertTrue(driverViewPage.isSystemShutdownButtonEnabled());
 		
-		System.out.println("Clicking on DISPLAY button");
+		Log.info("Clicking on DISPLAY button");
 		driverViewPage.clickDisplayButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
@@ -101,7 +102,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.Notes));
 		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.WindRose));
 		
-		System.out.println("Clicking on MAP button");
+		Log.info("Clicking on MAP button");
 		driverViewPage.clickMapButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -109,7 +110,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		assertTrue(driverViewPage.isMapSwitchOn(MapSwitchType.Satellite));
 		assertTrue(driverViewPage.isMapSwitchOff(MapSwitchType.Map));
 
-		System.out.println("Clicking on GIS button");
+		Log.info("Clicking on GIS button");
 		driverViewPage.clickGisButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
@@ -125,7 +126,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.UseAllBoundaries));
 		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.UseAllPipes));
 		
-		System.out.println("Clicking on STATUS button");
+		Log.info("Clicking on STATUS button");
 		driverViewPage.clickStatusButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -156,9 +157,9 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	 * 5. All Asset types and boundaries level are OFF 
 	 * 6. Status is green and all the gauges present on expanding are green
 	 */
-	@Ignore
+	@Test
 	public void TC1094_SimulatorTest_VerifyInstrumentReady_PicAdmin() {
-		System.out.println("Running TC1094_SimulatorTest_VerifyInstrumentReady_PicAdmin");
+		Log.info("Running TC1094_SimulatorTest_VerifyInstrumentReady_PicAdmin");
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -169,7 +170,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		driverViewPage.waitForPageLoad();
 		driverViewPage.waitForConnectionComplete();
 		
-		System.out.println("Clicking on MODE button");
+		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -198,7 +199,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		assertTrue(driverViewPage.getStartIsotopicCaptureButton().isDisplayed());
 		assertTrue(driverViewPage.getRefBottleMeasButton().isDisplayed());
 
-		System.out.println("Clicking on DISPLAY button");
+		Log.info("Clicking on DISPLAY button");
 		driverViewPage.clickDisplayButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -212,7 +213,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.Notes));
 		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.WindRose));
 		
-		System.out.println("Clicking on MAP button");
+		Log.info("Clicking on MAP button");
 		driverViewPage.clickMapButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -220,7 +221,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		assertTrue(driverViewPage.isMapSwitchOn(MapSwitchType.Satellite));
 		assertTrue(driverViewPage.isMapSwitchOff(MapSwitchType.Map));
 
-		System.out.println("Clicking on GIS button");
+		Log.info("Clicking on GIS button");
 		driverViewPage.clickGisButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
@@ -239,7 +240,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		// Verify 6.
 		assertTrue(driverViewPage.isStatusButtonGreen());
 
-		System.out.println("Clicking on STATUS button to expand gauges");
+		Log.info("Clicking on STATUS button to expand gauges");
 		driverViewPage.clickStatusButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
@@ -273,7 +274,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC1097_SimulatorTest_StartDrivingSurvey_PicAdmin() {
-		System.out.println("Running TC1097_SimulatorTest_StartDrivingSurvey_PicAdmin");
+		Log.info("Running TC1097_SimulatorTest_StartDrivingSurvey_PicAdmin");
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -284,7 +285,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		driverViewPage.waitForPageLoad();
 		driverViewPage.waitForConnectionComplete();
 		
-		System.out.println("Clicking on MODE button");
+		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
@@ -299,36 +300,36 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		driverViewPage.clickHeaderInfoBox();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
-		System.out.println("MODE:[" + driverViewPage.getSurveyModeLabelText() + "]");
+		Log.info("MODE:[" + driverViewPage.getSurveyModeLabelText() + "]");
 		assertTrue(driverViewPage.getSurveyModeLabelText().equals("Mode: Standard"));
 		
-		System.out.println("SURVEY ACTIVE:[" + driverViewPage.getSurveyStatusLabelText() + "]");
+		Log.info("SURVEY ACTIVE:[" + driverViewPage.getSurveyStatusLabelText() + "]");
 		assertTrue(driverViewPage.getSurveyStatusLabelText().equals("Survey Active"));
 		
-		System.out.println("STABILITY CLASS:[" + driverViewPage.getStabilityClassLabelText() + "]");
+		Log.info("STABILITY CLASS:[" + driverViewPage.getStabilityClassLabelText() + "]");
 		assertTrue(driverViewPage.getStabilityClassLabelText().equals("Stability Class: C"));
 		
-		System.out.println("ELAPSED:[" + driverViewPage.getTimeElapsedLabelText() + "]");
+		Log.info("ELAPSED:[" + driverViewPage.getTimeElapsedLabelText() + "]");
 		assertTrue(driverViewPage.getTimeElapsedLabelText().startsWith("Elapsed: 00:"));
 		
-		System.out.println("REMAINING:[" + driverViewPage.getTimeRemainingLabelText() + "]");
+		Log.info("REMAINING:[" + driverViewPage.getTimeRemainingLabelText() + "]");
 		assertTrue(driverViewPage.getTimeRemainingLabelText().startsWith("Remaining: 0"));
 		
-		System.out.println("SURVEYOR:[" + driverViewPage.getSurveyorLabelText() + "]");
+		Log.info("SURVEYOR:[" + driverViewPage.getSurveyorLabelText() + "]");
 		assertTrue(driverViewPage.getSurveyorLabelText().equals("Surveyor: " + SIM_AUTO_SURVEYOR1 + " - " + SIM_AUTO_ANALYZER1));
 		
-		System.out.println("ZOOM LEVEL:[" + driverViewPage.getZoomLevelLabelText() + "]");
+		Log.info("ZOOM LEVEL:[" + driverViewPage.getZoomLevelLabelText() + "]");
 		assertTrue(driverViewPage.getZoomLevelLabelText().equals("Zoom Level: 19"));
 
-		System.out.println("TAG:[" + driverViewPage.getTagLabelText() + "]");
-		System.out.println("Tag value is: " + tag);
+		Log.info("TAG:[" + driverViewPage.getTagLabelText() + "]");
+		Log.info("Tag value is: " + tag);
 		assertTrue(driverViewPage.getTagLabelText().equals("Tag: " + tag));
 
 		// 5. "Time limit warning should not appear before 7 hours have elapsed" <-- [Perform manually]
 		
 		// 6. "Car icon is displayed in red color. Breadcrumb will  be displayed in blue color" <-- [Check Feasibility in OpenLayer] 
 
-		System.out.println("Clicking on MODE button");
+		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
@@ -363,9 +364,9 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	 * 7. Stop Driving Survey, Isotopic Capture and Reference Bottle Measurement buttons are present
 	 * 8. Survey Inactive message is displayed and only car icon is present on map. Car icon is displayed in grey color. Breadcrumb will  be displayed in grey color. There should be no errors on the consolebuttons are disabled
 	 */
-	@Ignore
+	@Test
 	public void TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin() {
-		System.out.println("Running TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin");
+		Log.info("Running TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin");
 
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
@@ -376,7 +377,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		driverViewPage.waitForPageLoad();
 		driverViewPage.waitForConnectionComplete();
 		
-		System.out.println("Clicking on MODE button");
+		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -404,7 +405,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		// 6.
 		driverViewPage.verifyLoadedMap(MapSwitchType.Map);
 		
-		System.out.println("Clicking on MODE button");
+		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -413,20 +414,20 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		assertTrue(driverViewPage.getStartIsotopicCaptureButton().isDisplayed());
 		assertTrue(driverViewPage.getRefBottleMeasButton().isDisplayed());
 
-		System.out.println("Clicking on STOP SURVEY");
+		Log.info("Clicking on STOP SURVEY");
 		driverViewPage.getStopDrivingSurveyButton().click();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
-		System.out.println("Waiting on UI unblock.");
+		Log.info("Waiting on UI unblock.");
 		driverViewPage.waitForUIUnBlock();
 		
 		// 8. "Only car icon is present on map. Car icon is displayed in grey color. Breadcrumb will  be displayed in grey color." <-- [Check Feasibility]
-		System.out.println("Click Header Info Box.");
+		Log.info("Click Header Info Box.");
 		driverViewPage.clickHeaderInfoBox();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
 		// 8.
-		System.out.println("SURVEY INACTIVE:[" + driverViewPage.getSurveyStatusLabelText() + "]");
+		Log.info("SURVEY INACTIVE:[" + driverViewPage.getSurveyStatusLabelText() + "]");
 		assertTrue(driverViewPage.getSurveyStatusLabelText().equals("Survey Inactive"));
 	}
 

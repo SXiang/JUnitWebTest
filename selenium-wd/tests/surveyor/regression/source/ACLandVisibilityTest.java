@@ -13,6 +13,7 @@ import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import static surveyor.scommon.source.SurveyorConstants.*;
+import common.source.Log;
 
 /**
  * @author zlu
@@ -39,7 +40,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		String userName = customerName + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
 		String location = customerName + " - " + SQACUSLOC;
 		
-		System.out.println("\nRunning TC35_CheckACLVCustomerUser_DriverRole - Test Description: Check ACLV for customer user with Driver role");
+		Log.info("\nRunning TC35_CheckACLVCustomerUser_DriverRole - Test Description: Check ACLV for customer user with Driver role");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -74,7 +75,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		String userName = SQACUS + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
 		String location = SQACUS + " - " + SQACUSLOC;
 		
-		System.out.println("\nRunning TC36_CheckACLVCustomerUser_SupervisorRole - Test Description: Check ACLV for customer user with Supervisor role");
+		Log.info("\nRunning TC36_CheckACLVCustomerUser_SupervisorRole - Test Description: Check ACLV for customer user with Supervisor role");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -109,7 +110,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		String userName = SQACUS + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
 		String location = SQACUS + " - " + SQACUSLOC;
 		
-		System.out.println("\nRunning TC37_CheckACLVCustomerUser_UtilityAdminRole - Test Description: Check ACLV for customer user with Utility Administrator role");
+		Log.info("\nRunning TC37_CheckACLVCustomerUser_UtilityAdminRole - Test Description: Check ACLV for customer user with Utility Administrator role");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -143,7 +144,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	public void TC38_CheckACLV_PicAdminRole() {
 		String userName = PICNAMEPREFIX + "ad" + testSetup.getRandomNumber() + REGBASEPICUSERNAME;
 		
-		System.out.println("\nRunning TC38_CheckACLV_PicAdminRole - Test Description: Check ACLV for Picarro Administrator role, non-default Administrator account\n");
+		Log.info("\nRunning TC38_CheckACLV_PicAdminRole - Test Description: Check ACLV for Picarro Administrator role, non-default Administrator account\n");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
@@ -173,7 +174,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	public void TC40_CheckACLV_PicSupportRole() {
 		String userName = PICNAMEPREFIX + "su" + testSetup.getRandomNumber() + REGBASEPICUSERNAME;
 		
-		System.out.println("\nRunning TC40_CheckACLV_PicSupportRole - Test Description: Check ACLV for Picarro user with Picarro Support role\n");
+		Log.info("\nRunning TC40_CheckACLV_PicSupportRole - Test Description: Check ACLV for Picarro user with Picarro Support role\n");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
@@ -181,7 +182,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		ManageUsersPage manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageUsersPage);
 		
-		System.out.println("Creating Picarro support user with username-" + userName);
+		Log.info("Creating Picarro support user with username-" + userName);
 		
 		manageUsersPage.open();
 		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, PICUSERROLESUP);		

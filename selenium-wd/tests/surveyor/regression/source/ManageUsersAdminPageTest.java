@@ -12,6 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.Log;
 import common.source.BaseHelper;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -73,7 +74,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		String userName = SQACUS + testSetup.getRandomNumber() + "custadm002"
 				+ REGBASEUSERNAME;
 
-		System.out.println("\nRunning - TC439 - Customer Admin - edit user\n");
+		Log.info("\nRunning - TC439 - Customer Admin - edit user\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -169,7 +170,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC, CUSUSERROLEDR,
 				TIMEZONECTUA, false);
 		
-		System.out.println("userName = " + userName);
+		Log.info("userName = " + userName);
 		
 		assertTrue(manageUsersAdminPage.findExistingUser(SQACUSLOC, userName,
 				CUSUSERROLEDR));
@@ -190,7 +191,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		String userName = SQACUS + testSetup.getFixedSizePseudoRandomString(24) + "_TC443"
 				+ REGBASEUSERNAME;
 
-		System.out.println("\nRunning - TC443 - Customer admin not allowed to create duplicate User\n");
+		Log.info("\nRunning - TC443 - Customer admin not allowed to create duplicate User\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -334,7 +335,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC448_LimitOnEmailAddress() {
 		String userName = "_TC448_" + testSetup.getFixedSizePseudoRandomString(34) + "@email.com";
-		System.out.println("\nRunning - TC448 - Test Description: More than 50 characters not allowed in email address field\n");
+		Log.info("\nRunning - TC448 - Test Description: More than 50 characters not allowed in email address field\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);

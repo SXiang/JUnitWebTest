@@ -15,6 +15,7 @@ import org.junit.runner.Description;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.Resources;
@@ -41,23 +42,23 @@ public class SurveyorBaseTest {
 	public TestWatcher watcher = new TestWatcher() {
 		@Override
 		protected void starting(Description description) {
-			System.out.println("Started executing " + description.getClassName() + "." + description.getMethodName() + "() test...");
+			Log.info("Started executing " + description.getClassName() + "." + description.getMethodName() + "() test...");
 			if (isExecutingSimulatorTestMethod(description.getMethodName())) {
-				System.out.println("Installing simulator pre-reqs. Start Analyzer and Replay DB3 script.");
+				Log.info("Installing simulator pre-reqs. Start Analyzer and Replay DB3 script.");
 				try {
 					TestSetup.setupSimulatorPreReqs();
 					TestSetup.startAnalyzer();
 				} catch (IOException e) {
-					e.printStackTrace();
+					Log.error(e.toString());
 				}	
 			}
 		}
 		
 		@Override
 		protected void finished(Description description) {
-			System.out.println("Finished executing " + description.getClassName() + "." + description.getMethodName() + "() test...");
+			Log.info("Finished executing " + description.getClassName() + "." + description.getMethodName() + "() test...");
 			if (isExecutingSimulatorTestMethod(description.getMethodName())) {
-				System.out.println("Stop Analyzer.");
+				Log.info("Stop Analyzer.");
 				TestSetup.stopAnalyzer();
 			}
 		}
@@ -74,7 +75,7 @@ public class SurveyorBaseTest {
 		screenShotsDir = "./screenshots/";
 		debug = testSetup.isRunningDebug();
 		
-		System.out.println("debuggug null - driver:***:" +driver);
+		Log.info("debuggug null - driver:***:" +driver);
 		driver.manage().deleteAllCookies();
 		
 		loginPage = new LoginPage(driver, baseURL, testSetup);

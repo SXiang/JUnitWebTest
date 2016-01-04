@@ -1,6 +1,8 @@
 package surveyor.scommon.actions.data;
 
 import common.source.ExcelUtility;
+import common.source.Log;
+
 import surveyor.scommon.actions.ActionArguments;
 
 public class ReportViewsDataReader extends BaseDataReader {
@@ -83,7 +85,7 @@ public class ReportViewsDataReader extends BaseDataReader {
 		String annotation = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_Annotation, TESTDATA_SHEET_NAME);
 		String baseMap = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_BaseMap, TESTDATA_SHEET_NAME);
 		
-		System.out.println(String.format("Found data row: rowID=[%s], name=[%s], lISAs=[%s], fOV=[%s], breadcrumbs=[%s], indications=[%s], fieldNotes=[%s], gaps=[%s], assets=[%s], boundaries=[%s], isotopicCapture=[%s], annotation=[%s], baseMap=[%s]", rowID, name, lISAs, fOV, breadcrumbs, indications, fieldNotes, gaps, assets, boundaries, isotopicCapture, annotation, baseMap));
+		Log.info(String.format("Found data row: rowID=[%s], name=[%s], lISAs=[%s], fOV=[%s], breadcrumbs=[%s], indications=[%s], fieldNotes=[%s], gaps=[%s], assets=[%s], boundaries=[%s], isotopicCapture=[%s], annotation=[%s], baseMap=[%s]", rowID, name, lISAs, fOV, breadcrumbs, indications, fieldNotes, gaps, assets, boundaries, isotopicCapture, annotation, baseMap));
 		
 		return new ReportViewsDataRow(rowID, name, lISAs, fOV, breadcrumbs, indications, fieldNotes, gaps, assets, boundaries, isotopicCapture, annotation, baseMap);
 	}

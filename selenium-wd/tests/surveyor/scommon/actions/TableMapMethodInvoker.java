@@ -3,6 +3,8 @@ package surveyor.scommon.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import common.source.Log;
+
 public class TableMapMethodInvoker implements IMethodInvoker {
 
 	public List<IMethodObserver> methodObservers;
@@ -24,7 +26,7 @@ public class TableMapMethodInvoker implements IMethodInvoker {
 			try {
 				result = pageAction.invokeAction(actionName, methodParams.getMethodData(), dataRowID);
 			} catch (Exception e) {
-				e.printStackTrace();
+				Log.error(e.toString());
 			}
 		} else {	// Multiple rowsIDs specified.	
 			for (Integer dataRowID : rowIDList) {
@@ -32,7 +34,7 @@ public class TableMapMethodInvoker implements IMethodInvoker {
 				try {
 					result = pageAction.invokeAction(actionName, methodParams.getMethodData(), dataRowID);
 				} catch (Exception e) {
-					e.printStackTrace();
+					Log.error(e.toString());
 				}
 				
 				if (!result) {

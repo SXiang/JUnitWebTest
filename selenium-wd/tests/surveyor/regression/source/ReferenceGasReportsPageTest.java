@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import common.source.Log;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
@@ -59,7 +60,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 
 		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR
 				+ "-" + SQACUSLOCANZ;
-		System.out.println(surveyorUnit);
+		Log.info(surveyorUnit);
 		DateFormat dateFormat = new SimpleDateFormat("dd");
 		Date date = new Date();
 		Calendar cal = Calendar.getInstance();

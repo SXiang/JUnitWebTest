@@ -13,6 +13,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
+import common.source.Log;
+
 public class BoundarySelectionControl extends BaseControl {
 
 	public enum ControlMode {
@@ -104,10 +106,10 @@ public class BoundarySelectionControl extends BaseControl {
     public BoundarySelectionControl drawSelectorRectangle(String canvasXPath, int xOffset, int yOffset, int width, int height) {
 		WebElement canvas = driver.findElement(By.xpath(canvasXPath));
 		if (canvas != null && canvas.isDisplayed()) {
-			System.out.println("Found canvas element");
+			Log.info("Found canvas element");
 		}
 		
-		System.out.println("Performing actions on the canvas element");
+		Log.info("Performing actions on the canvas element");
 		Actions builder = new Actions(driver);
 		builder.moveToElement(canvas, xOffset, yOffset)
 			.keyDown(Keys.SHIFT)
@@ -191,7 +193,7 @@ public class BoundarySelectionControl extends BaseControl {
      * @return the BoundarySelectionControl class instance.
      */
 	public BoundarySelectionControl waitForModalDialogOpen() {
-		System.out.println("Wait for map modal dialog to open.");
+		Log.info("Wait for map modal dialog to open.");
 		WebElement myModal = this.mapModalDialog;
 		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {

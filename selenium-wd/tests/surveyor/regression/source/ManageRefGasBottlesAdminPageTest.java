@@ -10,6 +10,7 @@ import static surveyor.scommon.source.SurveyorConstants.SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOCSUR;
 
+import common.source.Log;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
@@ -45,7 +46,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		String lotNum = testSetup.getRandomNumber() + "_TC463";
 		String isoValue = "-32";
 		
-		System.out.println("\nRunning TC463_AddRefGasBottle_CustUA - Test Description: Add Reference Gas Bottles");
+		Log.info("\nRunning TC463_AddRefGasBottle_CustUA - Test Description: Add Reference Gas Bottles");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -70,7 +71,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		String lotNum = testSetup.getRandomNumber() + "_TC464";
 		String isoValue = "-32";
 		
-		System.out.println("\nRunning TC464_AddRefGasBottleBlankRequiredFields_CustUA - Test Description: add reference gas bottle - "
+		Log.info("\nRunning TC464_AddRefGasBottleBlankRequiredFields_CustUA - Test Description: add reference gas bottle - "
 				+ "blank required fields");
 		
 		loginPage.open();
@@ -99,7 +100,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		
 		String isoValue = "-32";
 		
-		System.out.println("\nRunning TC465_AddRefGasBottleLotNumber50CharLimit_CustUA - Test Description: More than 50 characters not allowed "
+		Log.info("\nRunning TC465_AddRefGasBottleLotNumber50CharLimit_CustUA - Test Description: More than 50 characters not allowed "
 				+ "in Lot Number field present on Add Reference Gas Bottle screens");
 		
 		loginPage.open();

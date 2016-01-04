@@ -1,6 +1,7 @@
 package surveyor.scommon.actions.data;
 
 import common.source.ExcelUtility;
+import common.source.Log;
 
 public class DriverViewDataReader extends BaseDataReader {
 
@@ -65,7 +66,7 @@ public class DriverViewDataReader extends BaseDataReader {
 		String replayScriptDB3File = excelUtility.getCellData(dataRowID, Excel_TestData_Report_Col_ReplayScriptDB3File, TESTDATA_SHEET_NAME);
 		String replayScriptDefnFile = excelUtility.getCellData(dataRowID, Excel_TestData_Report_Col_ReplayScriptDefnFile, TESTDATA_SHEET_NAME);
 		
-		System.out.println(String.format("Found data row: rowID=[%s], surveyTag=[%s], surveyTime=[%s], solarRadiation=[%s], wind=[%s], cloudCover=[%s], surveyType=[%s], replayScriptDB3File=[%s], replayScriptDefnFile=[%s]", rowID, surveyTag, surveyTime, solarRadiation, wind, cloudCover, surveyType, replayScriptDB3File, replayScriptDefnFile));
+		Log.info(String.format("Found data row: rowID=[%s], surveyTag=[%s], surveyTime=[%s], solarRadiation=[%s], wind=[%s], cloudCover=[%s], surveyType=[%s], replayScriptDB3File=[%s], replayScriptDefnFile=[%s]", rowID, surveyTag, surveyTime, solarRadiation, wind, cloudCover, surveyType, replayScriptDB3File, replayScriptDefnFile));
 		
 		return new DriverViewDataRow(rowID, surveyTag, surveyTime, solarRadiation, wind, cloudCover, surveyType, replayScriptDB3File, replayScriptDefnFile);
 	}

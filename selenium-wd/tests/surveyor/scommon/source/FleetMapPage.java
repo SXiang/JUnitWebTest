@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BasePage;
+import common.source.Log;
 import common.source.TestSetup;
 
 /**
@@ -27,7 +28,7 @@ public class FleetMapPage extends BasePage {
 	public FleetMapPage(WebDriver driver, TestSetup testSetup, String baseURL) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 
-		System.out.println("\nThe FleetMap Page URL is: "
+		Log.info("\nThe FleetMap Page URL is: "
 				+ this.strPageURL);
 	}
 	

@@ -10,6 +10,12 @@ public enum TestContext {
 	private TestSetup testSetup;
 	private String userCulture = "en-US";
 	private String loggedInUserName;
+	private String runUniqueId;
+
+	private TestContext() {
+		// Every time a context is created set a unique run ID.
+		this.setRunUniqueId(TestSetup.getUUIDString());
+	}
 
 	public String getDbIpAddress() {
 		String dbIPAddress = null;
@@ -80,7 +86,7 @@ public enum TestContext {
 		try {
 			executionPath = TestSetup.getExecutionPath(TestSetup.getRootPath());
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 		return executionPath;
 	}
@@ -100,5 +106,12 @@ public enum TestContext {
 		}		
 		return baseUrl;
 	}
-	
+
+	public String getRunUniqueId() {
+		return runUniqueId;
+	}
+
+	private void setRunUniqueId(String runUniqueId) {
+		this.runUniqueId = runUniqueId;
+	}
 }

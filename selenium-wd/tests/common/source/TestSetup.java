@@ -105,7 +105,7 @@ public class TestSetup {
 		try {
 
 			this.computerName=InetAddress.getLocalHost().getHostAddress();
-			System.out.println("IP Address: " +computerName);
+			Log.info("IP Address: " +computerName);
 			
 
 			String rootPath = getRootPath();
@@ -118,10 +118,10 @@ public class TestSetup {
 			this.dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			this.calendar = Calendar.getInstance();
 
-			System.out.println(dateFormat.format(this.calendar.getTime())
+			Log.info(dateFormat.format(this.calendar.getTime())
 					+ "\n");
 			this.baseURL = this.testProp.getProperty("baseURL");
-			System.out.println("\nThe baseURL is: " + this.baseURL + "\n");
+			Log.info("\nThe baseURL is: " + this.baseURL + "\n");
 
 			this.runningOnRemoteServer = this.testProp.getProperty("runningOnRemoteServer");
 			this.remoteServerHost = this.testProp.getProperty("remoteServerHost");
@@ -137,7 +137,7 @@ public class TestSetup {
 			this.dbUser = this.testProp.getProperty("dbUser");
 			this.dbPassword = this.testProp.getProperty("dbPassword");
 			this.browser = this.testProp.getProperty("browser");
-			System.out.println("\nThe browser is: " + this.browser + "\n");
+			Log.info("\nThe browser is: " + this.browser + "\n");
 
 			this.ieDriverPath = this.testProp.getProperty("ieDriverPath");
 
@@ -162,15 +162,15 @@ public class TestSetup {
 
 			this.slowdownInSeconds = this.testProp.getProperty("slowdownInSeconds");
 			this.randomNumber = Long.toString((new Random()).nextInt(1000000));
-			System.out.println("\nThe random number is: " + this.randomNumber + "\n");
+			Log.info("\nThe random number is: " + this.randomNumber + "\n");
 
 			driverSetup();
 			inputStream.close();
 		
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 	}
 
@@ -188,12 +188,12 @@ public class TestSetup {
 	}
 	
 	private static boolean isRunningLocally() throws UnknownHostException {
-		System.out.println("Checking if test is running locally.");
+		Log.info("Checking if test is running locally.");
 		boolean isRunningLocally = true;		
 		String hostAddress = InetAddress.getLocalHost().getHostAddress();
-		System.out.println("Executing machine IP is: " + hostAddress);
+		Log.info("Executing machine IP is: " + hostAddress);
 		for (String machineIp : CI_MACHINES) {
-			System.out.println("Checking with IP: " + machineIp);
+			Log.info("Checking with IP: " + machineIp);
 			if (hostAddress.equalsIgnoreCase(machineIp)) {
 				isRunningLocally = false;	
 				break;
@@ -224,9 +224,9 @@ public class TestSetup {
 			// Start the Analyzer process.
 			analyzerProcess = ProcessUtility.executeProcess(ANALYZER_EXE_PATH, /*isShellCommand*/ false, /*waitForExit*/ false);
 			if (analyzerProcess.isAlive()) {
-				System.out.println("Analyzer EXE started Successfully!");
+				Log.info("Analyzer EXE started Successfully!");
 			} else {
-				System.out.println("Analyzer EXE did NOT start.");
+				Log.info("Analyzer EXE did NOT start.");
 			}
 		}
 	}
@@ -255,7 +255,7 @@ public class TestSetup {
 				Files.delete(Paths.get(workingDefnFullPath));
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 	}
 
@@ -270,10 +270,10 @@ public class TestSetup {
 			//String defnFullPath = replayCmdFolder + File.separator + defnFileName;	
 			String replayCmdFullPath = replayCmdFolder + File.separator + REPLAY_DEFN_CURL_FILE;
 			String command = "cd \"" + replayCmdFolder + "\" && " + replayCmdFullPath + " " + defnFileName;
-			System.out.println("Executing replay script. Command -> " + command);
+			Log.info("Executing replay script. Command -> " + command);
 			analyzerProcess = ProcessUtility.executeProcess(command, /*isShellCommand*/ true, /*waitForExit*/ true);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 	}
 
@@ -284,7 +284,7 @@ public class TestSetup {
 				ProcessUtility.killProcess("Supervisor.exe", /*killChildProcesses*/ true);
 			}
 		} catch (UnknownHostException e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 	}
 
@@ -309,7 +309,7 @@ public class TestSetup {
 							.equalsIgnoreCase("Yes") && this.browser != null) {
 				switch (this.browser.trim()) {
 					case "chrome":
-						System.out.println("-----Chrome it is ----");
+						Log.info("-----Chrome it is ----");
 						Map<String, Object> prefs = new HashMap<String, Object>();
 						prefs.put("download.default_directory", this.downloadPath);
 						DesiredCapabilities capabilities = DesiredCapabilities.chrome();
@@ -341,12 +341,12 @@ public class TestSetup {
 						break;
 				}
 
-				System.out.println("\nRunning Selenium Server for use with RemoteDrivers and the server is running on: "
+				Log.info("\nRunning Selenium Server for use with RemoteDrivers and the server is running on: "
 						+ this.remoteServerHost + "\n");
 			} else if (this.browser != null && (this.ieDriverPath != null || this.chromeDriverPath != null)) {
 				switch (this.browser.trim()) {
 					case "chrome":
-						System.out.println("-----Chrome it is ----");
+						Log.info("-----Chrome it is ----");
 						Map<String, Object> prefs = new HashMap<String, Object>();
 						prefs.put("download.default_directory", this.downloadPath);
 						DesiredCapabilities capabilities = DesiredCapabilities.chrome();
@@ -360,7 +360,7 @@ public class TestSetup {
 										
 						System.setProperty("webdriver.chrome.driver",
 								this.chromeDriverPath);
-						System.out.println("\nThe System Propery 'webdriver.chrome.driver' is: "
+						Log.info("\nThe System Propery 'webdriver.chrome.driver' is: "
 										+ System.getProperty(
 												"webdriver.chrome.driver")
 												.toString() + "\n");
@@ -378,9 +378,9 @@ public class TestSetup {
 						driver = new FirefoxDriver();
 						break;
 				}
-				System.out.println("\nRunning WebDriver API\n");
+				Log.info("\nRunning WebDriver API\n");
 			} else {
-				System.out.println("\nWebDriver setup failed, please check the config setting in test.properites file.\n");
+				Log.info("\nWebDriver setup failed, please check the config setting in test.properites file.\n");
 				System.exit(1);
 			}
 
@@ -396,7 +396,7 @@ public class TestSetup {
 
 		} catch (Exception e) {
 			
-			e.printStackTrace();
+			Log.error(e.toString());
 			System.exit(1);
 			
 		}
@@ -427,7 +427,7 @@ public class TestSetup {
 		try {
 			Thread.sleep(seconds * 1000);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 	}
 	

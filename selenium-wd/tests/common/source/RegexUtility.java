@@ -74,19 +74,19 @@ public class RegexUtility {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println("Running test - testMatchesPattern_functionNameAndArgument_Success() ...");
+		Log.info("Running test - testMatchesPattern_functionNameAndArgument_Success() ...");
 		testMatchesPattern_functionNameAndArgument_Success();
-		System.out.println("Running test - testMatchesPattern_functionNameNoArgument_FailMatch() ...");
+		Log.info("Running test - testMatchesPattern_functionNameNoArgument_FailMatch() ...");
 		testMatchesPattern_functionNameNoArgument_FailMatch();
-		System.out.println("Running test - testGetMatchingGroups_functionNameAndArgument_Success() ...");
+		Log.info("Running test - testGetMatchingGroups_functionNameAndArgument_Success() ...");
 		testGetMatchingGroups_functionNameAndArgument_Success();
-		System.out.println("Running test - testGetMatchingGroups_functionNameNoArgument_NoGroupsReturned() ...");
+		Log.info("Running test - testGetMatchingGroups_functionNameNoArgument_NoGroupsReturned() ...");
 		testGetMatchingGroups_functionNameNoArgument_NoGroupsReturned();
-		System.out.println("Running test - testSplit_SplitByCommaMultipleParts_Success() ...");
+		Log.info("Running test - testSplit_SplitByCommaMultipleParts_Success() ...");
 		testSplit_SplitByCommaMultipleParts_Success();
-		System.out.println("Running test - testSplit_SplitByColonTwoPartsLastEmpty_Success() ...");
+		Log.info("Running test - testSplit_SplitByColonTwoPartsLastEmpty_Success() ...");
 		testSplit_SplitByColonEmptyPartsNotReturned_Success();
-		System.out.println("Running test - testSplit_SplitByCommaOnePart_Success() ...");
+		Log.info("Running test - testSplit_SplitByCommaOnePart_Success() ...");
 		testSplit_SplitByCommaOnePart_Success();
 	}
 

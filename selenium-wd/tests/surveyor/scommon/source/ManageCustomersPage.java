@@ -11,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.FindBy;
 
+import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -52,7 +53,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public ManageCustomersPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 		
-		System.out.println("\nThe Manager Customers Page URL is: " + this.strPageURL);
+		Log.info("\nThe Manager Customers Page URL is: " + this.strPageURL);
 	}
 	
 	public void addNewCustomer(String customerName, String eula) {
