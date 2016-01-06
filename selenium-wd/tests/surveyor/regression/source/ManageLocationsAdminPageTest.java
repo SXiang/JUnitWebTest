@@ -81,6 +81,9 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageLocationsPage.open();
+		
+		Log.info("Adding location: " + locationName);
+		
 		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName);
 
 		// Verify location as Utility Admin.
