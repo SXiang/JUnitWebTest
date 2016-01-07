@@ -13,7 +13,7 @@ import java.util.Map;
 public class Reports {
 	protected String rptTitle;
 	protected String strCreatedBy;
-	protected String customer;
+	private String customer;
 	protected String timeZone;
 	protected String exclusionRadius;
 	
@@ -26,17 +26,17 @@ public class Reports {
 	protected String SWLong;
 	
 	protected String surveyorUnit;
-	protected String tag;
-	
+	protected String surveyUsername;
+	protected String tag;	
+	protected List<String> tagList;
+	protected String surveyMode;
+	protected Boolean surveyGeoFilterOn;
 	protected String startDate;
 	protected String endDate;
 	
 	protected List<Map<String, String>> viewList;
 	protected List<Map<String, String>> tablesList;
 	protected List<Map<String, String>> viewLayersList;
-
-	protected List<String> tagList;
-	protected String surveyMode;
 	
 	protected String reportMode;
 	
@@ -57,7 +57,7 @@ public class Reports {
 			String tag, List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) {
 		this.rptTitle = rptTitle;
 		this.strCreatedBy = strCreatedBy;
-		this.customer = customer;
+		this.setCustomer(customer);
 		this.timeZone = timeZone;
 		this.exclusionRadius = exclusionRadius;
 
@@ -83,7 +83,7 @@ public class Reports {
 			 List<Map<String, String>> viewList, String surveyMode) {
 		this.rptTitle = rptTitle;
 		this.strCreatedBy = strCreatedBy;
-		this.customer = customer;
+		this.setCustomer(customer);
 		this.timeZone = timeZone;
 		this.exclusionRadius = exclusionRadius;
 
@@ -112,7 +112,7 @@ public class Reports {
 			 List<Map<String, String>> viewList, String surveyMode, String reportMode) {
 		this.rptTitle = rptTitle;
 		this.strCreatedBy = strCreatedBy;
-		this.customer = customer;
+		this.setCustomer(customer);
 		this.timeZone = timeZone;
 		this.exclusionRadius = exclusionRadius;
 
@@ -141,7 +141,7 @@ public class Reports {
 			List<String> tagList, List<Map<String, String>> viewList) {
 		this.rptTitle = rptTitle;
 		this.strCreatedBy = strCreatedBy;
-		this.customer = customer;
+		this.setCustomer(customer);
 		this.timeZone = timeZone;
 		this.exclusionRadius = exclusionRadius;
 
@@ -246,6 +246,10 @@ public class Reports {
 	 */
 	public static void main(String[] args) {
 
+	}
+
+	public void setCustomer(String customer) {
+		this.customer = customer;
 	}
 
 }

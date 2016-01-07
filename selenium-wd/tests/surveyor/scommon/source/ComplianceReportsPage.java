@@ -108,6 +108,19 @@ import common.source.BaseHelper;
  *
  */
 public class ComplianceReportsPage extends ReportsBasePage {
+	public enum SurveyModeFilter {
+		All,
+		Standard,
+		Operator,
+		RapidResponse
+	}
+	
+	public enum ReportMode {
+		Standard,
+		RapidResponse,
+		Manual
+	}
+
 	private static final int CUSTOM_BOUNDARY_RADBUTTON_GROUP_IDX = 0;
 	private static final int CUSTOMER_BOUNDARY_RADBUTTON_GROUP_IDX = 1;
 	public static final String STRURLPath = "/Reports/ComplianceReports";
@@ -208,75 +221,37 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public void addNewReport(Reports reportsCompliance) {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
-		this.btnNewComplianceRpt.click();
-		this.waitForNewPageLoad();
-		
-		this.inputTitle.clear();
-		this.inputTitle.sendKeys(reportsCompliance.getRptTitle());
+		openNewReportPage();
+		inputReportTitle(reportsCompliance.getRptTitle());
 		
 		if (reportsCompliance.getCustomer() != null && reportsCompliance.getCustomer()  != "Picarro") {
-			if (dropdownCustomer.isDisplayed()) {
-				List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
-				for (WebElement option : optionsCustomer) {
-					if ((reportsCompliance.getCustomer()).equalsIgnoreCase(option.getText().trim())) {
-						option.click();
-					}
-				}
-				
-				if (this.isElementPresent(btnChangeCustomerXPath)) {
-					JavascriptExecutor js = (JavascriptExecutor)driver; 
-					js.executeScript("arguments[0].click();", btnChangeCustomer);  				
-					
-					//temporary bypass the issue DE456
-					this.inputTitle.clear();
-					this.inputTitle.sendKeys(reportsCompliance.getRptTitle());
-				}
+			selectCustomer(reportsCompliance.getCustomer());
+			Boolean confirmed = confirmInChangeCustomerDialog();
+			if (confirmed) {
+				inputReportTitle(reportsCompliance.getRptTitle());
 			}
 		}
 
-		List<WebElement> optionsTZ = this.cBoxTimezone.findElements(By.tagName("option"));
-		for (WebElement option : optionsTZ) {
-			if ((reportsCompliance.getTimeZone()).equalsIgnoreCase(option.getText().trim())) {
-				option.click();
-			}
-		}
+		selectTimeZone(reportsCompliance.getTimeZone());
 
 		if (reportsCompliance.reportMode != null) {
-			if (reportsCompliance.reportMode.equalsIgnoreCase("standard")) {
-				this.checkBoxStndRptMode.click();
-			}
-
-			if (reportsCompliance.reportMode.equalsIgnoreCase("manual")) {
-				this.checkBoxManualRptMode.click();
-			}
-
-			if (reportsCompliance.reportMode.equalsIgnoreCase("rr")) {
-				this.checkBoxRRRptMode.click();
-			}
-
+			selectReportMode(getReportMode(reportsCompliance.reportMode));
 		}
 
-		this.inputExclusionRadius.clear();
-		this.inputExclusionRadius.sendKeys(reportsCompliance.getExclusionRadius());
+		inputExclusionRadius(reportsCompliance.getExclusionRadius());
 
-		this.inputNELat.sendKeys(reportsCompliance.getNELat());
-		this.inputNELong.sendKeys(reportsCompliance.getNELong());
-		this.inputSWLat.sendKeys(reportsCompliance.getSWLat());
-		this.inputSWLong.sendKeys(reportsCompliance.getSWLong());
+		fillCustomBoundaryTextFields(reportsCompliance.getNELat(),
+				reportsCompliance.getNELong(), reportsCompliance.getSWLat(),
+				reportsCompliance.getSWLong());
 
 		if (reportsCompliance.getSurveyorUnit() != "") {
-			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
-			for (WebElement option : optionsSU) {
-				if ((reportsCompliance.getSurveyorUnit()).equalsIgnoreCase(option.getText().trim())) {
-					option.click();
-				}
-			}
+			selectSurveySurveyor(reportsCompliance.getSurveyorUnit());
 		}
 
 		// TO DO: Implement date picker
 
 		if (reportsCompliance.getTag() != "") {
-			this.cbTag.sendKeys(reportsCompliance.getTag());
+			inputSurveyTag(reportsCompliance.getTag());
 		}
 
 		// TO DO: Implement Survey type
@@ -291,12 +266,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		 */
 
 		if (reportsCompliance.getSurveyorUnit() != "") {
-			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
-			for (WebElement option : optionsSU) {
-				if ((reportsCompliance.getSurveyorUnit()).equalsIgnoreCase(option.getText().trim())) {
-					option.click();
-				}
-			}
+			selectSurveySurveyor(reportsCompliance.getSurveyorUnit());
 		}
 
 		if (testSetup.isRunningDebug())
@@ -308,31 +278,24 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		this.btnAddSurveys.click();
 
-		this.inputImgMapHeight.clear();
-		this.inputImgMapHeight.sendKeys(reportsCompliance.getImageMapHeight());
-		this.inputImgMapWidth.clear();
-		this.inputImgMapWidth.sendKeys(reportsCompliance.getImageMapWidth());
+		inputImageMapHeight(reportsCompliance.getImageMapHeight());
+		inputImageMapWidth(reportsCompliance.getImageMapWidth());
 
-		addViews(reportsCompliance.customer, reportsCompliance.getViewList());
+		addViews(reportsCompliance.getCustomer(), reportsCompliance.getViewList());
 
 		List<Map<String, String>> tablesList = reportsCompliance.getTablesList();
 		if (tablesList.get(0).get(KEYINDTB).equalsIgnoreCase("1")) {
-			JavascriptExecutor js = (JavascriptExecutor) driver;
-			js.executeScript("arguments[0].click();", checkBoxIndTb);
+			selectIndicationsTableCheckBox();
 		}
 		if (tablesList.get(0).get(KEYISOANA).equalsIgnoreCase("1")) {
-			JavascriptExecutor js = (JavascriptExecutor) driver;
-			js.executeScript("arguments[0].click();", checkBoxIsoAna);
+			selectIsotopicAnalysisCheckBox();
 		}
 		if (tablesList.get(0).get(KEYPCA).equalsIgnoreCase("1")) {
-			JavascriptExecutor js = (JavascriptExecutor) driver;
-			js.executeScript("arguments[0].click();", checkBoxPCA);
+			selectPercentCoverageAssetCheckBox();
 		}
 		if (tablesList.get(0).get(KEYPCRA).equalsIgnoreCase("1")) {
-			JavascriptExecutor js = (JavascriptExecutor) driver;
-			js.executeScript("arguments[0].click();", checkBoxPCRA);
+			selectPercentCoverageReportArea();
 		}
-
 
 		if (driver.findElements(By.xpath("//*[@id='report-asset-layers-ad701312-c470-482a-be45-ef37770e2ce6']")).size() > 0) {
 			this.checkBoxOtherPla.click();
@@ -362,6 +325,146 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		handleOptionalViewLayersSection(reportsCompliance);
 		
 		this.btnOK.click();
+	}
+
+	public void selectTimeZone(String timeZone) {
+		List<WebElement> optionsTZ = this.cBoxTimezone.findElements(By.tagName("option"));
+		for (WebElement option : optionsTZ) {
+			if (timeZone.equalsIgnoreCase(option.getText().trim())) {
+				option.click();
+			}
+		}
+	}
+
+	public void selectGapCheckBox() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", checkBoxGap);
+	}
+
+	public void selectPercentCoverageReportArea() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", checkBoxPCRA);
+	}
+
+	public void selectPercentCoverageAssetCheckBox() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", checkBoxPCA);
+	}
+
+	public void selectPercentCoverageForecastCheckBox() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", checkBoxPCF);
+	}
+
+	public void selectIsotopicAnalysisCheckBox() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", checkBoxIsoAna);
+	}
+
+	public void selectIndicationsTableCheckBox() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", checkBoxIndTb);
+	}
+
+	public void selectSurveySurveyor(String surveyorUnit) {
+		List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
+		for (WebElement option : optionsSU) {
+			if (surveyorUnit.equalsIgnoreCase(option.getText().trim())) {
+				option.click();
+			}
+		}
+	}
+
+	public ReportMode getReportMode(String reportMode) {
+		ReportMode mode = ReportMode.Manual;
+		if (reportMode.equalsIgnoreCase("standard")) {
+			mode = ReportMode.Standard;
+		} else if (reportMode.equalsIgnoreCase("manual")) {
+			mode = ReportMode.Manual;
+		} else if (reportMode.equalsIgnoreCase("rr")) {
+			mode = ReportMode.RapidResponse;
+		} 
+		return mode;
+	}
+
+	public void selectCustomer(String customer) {
+		if (dropdownCustomer.isDisplayed()) {
+			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
+			for (WebElement option : optionsCustomer) {
+				if (customer.equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+			
+			confirmInChangeCustomerDialog();
+		}
+	}
+
+	public boolean confirmInChangeCustomerDialog() {
+		if (dropdownCustomer.isDisplayed()) {
+			if (this.isElementPresent(btnChangeCustomerXPath)) {
+				JavascriptExecutor js = (JavascriptExecutor)driver; 
+				js.executeScript("arguments[0].click();", btnChangeCustomer);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void openNewReportPage() {
+		this.btnNewComplianceRpt.click();
+		this.waitForNewPageLoad();
+	}
+
+	public void inputSurveyTag(String tag) {
+		this.cbTag.clear();
+		this.cbTag.sendKeys(tag);
+	}
+
+	public void inputSurveyUsername(String username) {
+		this.inputSurveyUsername.clear();
+		this.inputSurveyUsername.sendKeys(username);
+	}
+
+	public void inputReportTitle(String rptTitle) {
+		this.inputTitle.clear();
+		this.inputTitle.sendKeys(rptTitle);
+	}
+
+	public void inputImageMapWidth(String imageMapWidth) {
+		this.inputImgMapWidth.clear();
+		this.inputImgMapWidth.sendKeys(imageMapWidth);
+	}
+
+	public void inputImageMapHeight(String imageMapHeight) {
+		this.inputImgMapHeight.clear();
+		this.inputImgMapHeight.sendKeys(imageMapHeight);
+	}
+
+	public void inputExclusionRadius(String exclusionRadius) {
+		this.inputExclusionRadius.clear();
+		this.inputExclusionRadius.sendKeys(exclusionRadius);
+	}
+
+	public void inputFOVOpacity(String fovOpacity) {
+		this.inputFOVOpacity.clear();
+		this.inputFOVOpacity.sendKeys(fovOpacity);
+	}
+
+	public void inputLISAOpacity(String lisaOpacity) {
+		this.inputLISAOpacity.clear();
+		this.inputLISAOpacity.sendKeys(lisaOpacity);
+	}
+
+	public void fillCustomBoundaryTextFields(String neLat, String neLong, String swLat, String swLong) {
+		this.inputNELat.sendKeys(neLat);
+		this.inputNELong.sendKeys(neLong);
+		this.inputSWLat.sendKeys(swLat);
+		this.inputSWLong.sendKeys(swLong);
+	}
+	
+	public void addSurveyInformation(String surveyor, String username, String tag, Date startDate, Date endDate, SurveyModeFilter surveyModeFilter, Boolean geoFilterOn) {
+		Log.info("Adding Survey information");
 	}
 
 	private void handleOptionalViewLayersSection(Reports reportsCompliance) {
@@ -402,7 +505,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 	
-	private void addViews(String customer, List<Map<String, String>> viewList) {
+	public void addViews(String customer, List<Map<String, String>> viewList) {
 		int rowNum;
 		int colNum;
 		String strBaseXPath;
@@ -505,8 +608,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	// Temporary solution for now and should pass the params by a data structure
 	private void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, String tag, String startDate, String endDate, String surModeFilter) {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		this.btnNewComplianceRpt.click();
-		this.waitForNewPageLoad();
+		openNewReportPage();
 		
 		this.inputTitle.clear();
 		this.inputTitle.sendKeys(title);
@@ -528,15 +630,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 
-		List<WebElement> optionsTZ = this.cBoxTimezone.findElements(By.tagName("option"));
-		for (WebElement option : optionsTZ) {
-			if ((timeZone).equalsIgnoreCase(option.getText().trim())) {
-				option.click();
-			}
-		}
-
-		this.inputExclusionRadius.clear();
-		this.inputExclusionRadius.sendKeys(exclusionRadius);
+		selectTimeZone(timeZone);
+		inputExclusionRadius(exclusionRadius);
 
 		this.inputNELat.sendKeys(NELat);
 		this.inputNELong.sendKeys(NELong);
@@ -553,8 +648,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 
 		if (tag != "") {
-			this.cbTag.clear();
-			this.cbTag.sendKeys(tag);
+			inputSurveyTag(tag);
 		}
 
 		if (testSetup.isRunningDebug())
@@ -575,10 +669,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.inputViewAssets.click();
 		this.inputViewBoundaries.click();
 
-		this.inputImgMapHeight.clear();
-		this.inputImgMapHeight.sendKeys(imageMapHeight);
-		this.inputImgMapWidth.clear();
-		this.inputImgMapWidth.sendKeys(imageMapWidth);
+		inputImageMapHeight(imageMapHeight);
+		inputImageMapWidth(imageMapWidth);
 
 		this.checkBoxOtherPla.click();
 		this.checkBoxPEPla.click();
@@ -590,8 +682,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.checkBoxDistrict.click();
 		this.checkBoxDistrictPlat.click();
 
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", checkBoxIndTb);
+		selectIndicationsTableCheckBox();
 		this.checkBoxIsoAna.click();
 		this.checkBoxPCA.click();
 		this.checkBoxPCRA.click();
@@ -909,8 +1000,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				 } 
 				 else 
 					 return false;
-				
-
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
@@ -1267,23 +1356,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 				if (strReportMode != null && changeMode) {
-					if (strReportMode.equalsIgnoreCase("standard")) {
-						this.checkBoxStndRptMode.click();
-					}
-
-					if (strReportMode.equalsIgnoreCase("manual")) {
-						this.checkBoxManualRptMode.click();
-					}
-
-					if (strReportMode.equalsIgnoreCase("rr")) {
-						this.checkBoxRRRptMode.click();
-					}
-
-					testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-					if (this.btnChangeRptMode.isDisplayed()) {
-						this.btnChangeRptMode.click();
-					}
-					testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+					selectReportMode(getReportMode(strReportMode));
 
 				} else
 					this.btnDeleteSurvey.click();
@@ -1298,8 +1371,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 				for (String tagValue : tag) {
 					if (tagValue != "") {
-						this.cbTag.clear();
-						this.cbTag.sendKeys(tagValue);
+						
+						inputSurveyTag(tagValue);
+						
 						this.btnSurveySearch.click();
 						if (testSetup.isRunningDebug())
 							testSetup.slowdownInSeconds(3);
@@ -1336,11 +1410,32 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return false;
 	}
 
+	public void selectReportMode(ReportMode mode) {
+		switch (mode) {
+		case Standard:
+			this.checkBoxStndRptMode.click();
+			break;
+		case RapidResponse:
+			this.checkBoxRRRptMode.click();
+			break;
+		case Manual:
+			this.checkBoxManualRptMode.click();
+			break;
+		default:
+			break;
+		}
+		
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		if (this.btnChangeRptMode.isDisplayed()) {
+			this.btnChangeRptMode.click();
+		}
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+	}
+
 	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tag, String startDate, String endDate, boolean changeMode, String strReportMode) {
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		this.btnNewComplianceRpt.click();
-		this.waitForNewPageLoad();
+		openNewReportPage();
 
 		if (customer != null && customer != "Picarro") {
 			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
@@ -1370,17 +1465,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.inputTitle.clear();
 		this.inputTitle.sendKeys(title);
 
-		List<WebElement> optionsTZ = this.cBoxTimezone.findElements(By.tagName("option"));
-		for (WebElement option : optionsTZ) {
-			if ((timeZone).equalsIgnoreCase(option.getText().trim())) {
-				option.click();
-			}
-		}
-
-		this.inputExclusionRadius.clear();
-		this.inputExclusionRadius.sendKeys(exclusionRadius);
-		this.inputImgMapHeight.sendKeys(imageMapHeight);
-		this.inputImgMapWidth.sendKeys(imageMapWidth);
+		selectTimeZone(timeZone);
+		inputExclusionRadius(exclusionRadius);
+		inputImageMapWidth(imageMapWidth);
+		inputImageMapHeight(imageMapHeight);
+		
 		this.inputNELat.sendKeys(NELat);
 		this.inputNELong.sendKeys(NELong);
 		this.inputSWLat.sendKeys(SWLat);
@@ -1409,8 +1498,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		for (String tagValue : tag) {
 			if (tagValue != "") {
-				this.cbTag.clear();
-				this.cbTag.sendKeys(tagValue);
+				inputSurveyTag(tagValue);
 				this.btnSurveySearch.click();
 				if (testSetup.isRunningDebug())
 					testSetup.slowdownInSeconds(3);
@@ -1437,8 +1525,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean checkBlankReportErrorTextPresent() {
-		this.btnNewComplianceRpt.click();
-		this.waitForNewPageLoad();
+		openNewReportPage();
 		this.btnOK.click();
 		if (isElementPresent(strErrorText))
 			return true;
@@ -1457,11 +1544,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public void addNewReportWithMultipleSurveysIncluded(Reports reportsCompliance) {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		this.btnNewComplianceRpt.click();
-		this.waitForNewPageLoad();
+		openNewReportPage();
 		
-		this.inputTitle.clear();
-		this.inputTitle.sendKeys(reportsCompliance.getRptTitle());
+		inputReportTitle(reportsCompliance.getRptTitle());
 
 		if (reportsCompliance.getCustomer() != null && reportsCompliance.getCustomer() != "Picarro") {
 			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
@@ -1475,28 +1560,19 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				js.executeScript("arguments[0].click();", btnChangeCustomer);
 
-				// temporary bypass the issue DE456
-				this.inputTitle.clear();
-				this.inputTitle.sendKeys(reportsCompliance.getRptTitle());
+				inputReportTitle(reportsCompliance.getRptTitle());
 			}
 		}
 
-		List<WebElement> optionsTZ = this.cBoxTimezone.findElements(By.tagName("option"));
-		for (WebElement option : optionsTZ) {
-			if ((reportsCompliance.getTimeZone()).equalsIgnoreCase(option.getText().trim())) {
-				option.click();
-			}
-		}
+		selectTimeZone(reportsCompliance.getTimeZone());
 
-		this.inputExclusionRadius.clear();
-		this.inputExclusionRadius.sendKeys(reportsCompliance.getExclusionRadius());
-
-		this.inputImgMapHeight.sendKeys(reportsCompliance.getImageMapHeight());
-		this.inputImgMapWidth.sendKeys(reportsCompliance.getImageMapWidth());
-		this.inputNELat.sendKeys(reportsCompliance.getNELat());
-		this.inputNELong.sendKeys(reportsCompliance.getNELong());
-		this.inputSWLat.sendKeys(reportsCompliance.getSWLat());
-		this.inputSWLong.sendKeys(reportsCompliance.getSWLong());
+		inputExclusionRadius(reportsCompliance.getExclusionRadius());
+		inputImageMapHeight(reportsCompliance.getImageMapHeight());
+		inputImageMapWidth(reportsCompliance.getImageMapWidth());
+		
+		fillCustomBoundaryTextFields(reportsCompliance.getNELat(),
+				reportsCompliance.getNELong(), reportsCompliance.getSWLat(),
+				reportsCompliance.getSWLong());
 
 		List<Map<String, String>> tablesList = reportsCompliance.getTablesList();
 		if (tablesList.get(0).get(KEYINDTB).equalsIgnoreCase("1")) {
@@ -1521,18 +1597,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.checkBoxCopper.click();
 
 		if (reportsCompliance.getSurveyorUnit() != "") {
-			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
-			for (WebElement option : optionsSU) {
-				if ((reportsCompliance.getSurveyorUnit()).equalsIgnoreCase(option.getText().trim())) {
-					option.click();
-				}
-			}
+			selectSurveySurveyor(reportsCompliance.getSurveyorUnit());
 		}
 
 		for (String tagValue : reportsCompliance.tagList) {
 			if (tagValue != "") {
-				this.cbTag.clear();
-				this.cbTag.sendKeys(tagValue);
+				inputSurveyTag(tagValue);
 				this.btnSurveySearch.click();
 				if (testSetup.isRunningDebug())
 					testSetup.slowdownInSeconds(3);
@@ -1543,7 +1613,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 
-		addViews(reportsCompliance.customer, reportsCompliance.getViewList());
+		addViews(reportsCompliance.getCustomer(), reportsCompliance.getViewList());
 
 		this.btnOK.click();
 	}
@@ -1561,8 +1631,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyCancelButtonFunctionality() {
-		this.btnNewComplianceRpt.click();
-		this.waitForNewPageLoad();
+		openNewReportPage();
 		this.btnCancel.click();
 		testSetup.slowdownInSeconds(3);
 
@@ -1573,8 +1642,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void openNewComplianceReportPage() {
-		this.btnNewComplianceRpt.click();
-		this.waitForNewPageLoad();
+		openNewReportPage();
 	}
 
 	public void clickOnCopyReport(String rptTitle, String strCreatedBy) {
@@ -1646,8 +1714,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 
 		if (surveyTag != "") {
-			this.cbTag.clear();
-			this.cbTag.sendKeys(surveyTag);
+			inputSurveyTag(surveyTag);
 			this.btnSurveySearch.click();
 			if (testSetup.isRunningDebug())
 				testSetup.slowdownInSeconds(3);
@@ -1659,8 +1726,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		if (isElementPresent(strFirstSurveyTag)) {
 			if (surveyTag != "") {
-				this.cbTag.clear();
-				this.cbTag.sendKeys(surveyTag);
+				inputSurveyTag(surveyTag);
 				this.btnSurveySearch.click();
 				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 				this.checkboxSurFirst.click();
@@ -1683,8 +1749,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			return false;
 		} catch (NoSuchElementException e) {
 			if (surveyTag != "") {
-				this.cbTag.clear();
-				this.cbTag.sendKeys(surveyTag);
+				inputSurveyTag(surveyTag);
 				this.btnSurveySearch.click();
 				if (testSetup.isRunningDebug())
 					testSetup.slowdownInSeconds(3);
@@ -1703,10 +1768,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public String provideLatLongAtCustomBoundarySelectorWindow(List<String> listBoundary) {
 		String actualMsg = "";
-		this.btnNewComplianceRpt.click();
-		this.waitForNewPageLoad();
-		this.inputImgMapHeight.sendKeys(listBoundary.get(0));
-		this.inputImgMapWidth.sendKeys(listBoundary.get(1));
+		openNewReportPage();
+		
+		inputImageMapHeight(listBoundary.get(0));
+		inputImageMapWidth(listBoundary.get(1));
+		
 		this.btnLatLongSelector.click();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 

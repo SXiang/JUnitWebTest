@@ -9,6 +9,7 @@ import common.source.Log;
 import common.source.TestContext;
 
 public class BasePageActions implements IPageActions {
+	protected static final String DEFAULT_DATE_FORMAT = "MM/dd/yyyy HH:mm:ss a";
 	private static final String DATA_FOLDER = "data";
 	private static final String TEST_DATA_XLSX = "TestCaseData.xlsx";
 	private WebDriver driver = null;

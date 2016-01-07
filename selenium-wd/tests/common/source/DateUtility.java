@@ -1,13 +1,28 @@
 package common.source;
 
 import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAccessor;
+import java.util.Date;
 import java.util.Locale;
 
 
 public class DateUtility {
+	
+	/**
+	 * Parses and returns the Date object for the specified Date and Date format strings.
+	 * @param dateString - Date represented as a string.
+	 * @param dateFormatString - Format represented as a string.
+	 * @return - Date object for the specified Date and Date format strings
+	 * @throws ParseException
+	 */
+	public static Date getDate(String dateString, String dateFormatString) throws ParseException {
+		SimpleDateFormat dateFormat = new SimpleDateFormat(dateFormatString);
+		return dateFormat.parse(dateString);
+	}
 	
 	/**
 	 * This function takes a Date/Time format in String and compare the format is correct with the given locale format
