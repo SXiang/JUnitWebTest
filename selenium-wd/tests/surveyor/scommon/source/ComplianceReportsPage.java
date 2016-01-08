@@ -270,11 +270,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		addSurveyInformation(reportsCompliance.getSurveyorUnit(),reportsCompliance.getUserName(),reportsCompliance.getTag(),reportsCompliance.getSurveyStartDate(),reportsCompliance.getSurveyEndDate(),
 				reportsCompliance.getSurveyMode(),reportsCompliance.getGeoFilter());
 
-		this.btnSurveySearch.click();
-		this.waitForSurveyTabletoLoad();;
 		
-		this.checkboxSurFirst.click();
-		this.btnAddSurveys.click();
+		
 
 		this.inputImgMapHeight.clear();
 		this.inputImgMapHeight.sendKeys(reportsCompliance.getImageMapHeight());
@@ -340,6 +337,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Log.info("Adding Survey information");
 		
 		if ( surveyor!= "") {
+			System.out.println("Surveyor not null");
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsSU) {
 				if (surveyor.equalsIgnoreCase(option.getText().trim())) {
@@ -348,11 +346,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 		
-		if (username!= "") {
+		if (username!= null) {
+			System.out.println("Username not null");
 			this.userName.sendKeys(username);
 		}
 		
 		if (tag != "") {
+			System.out.println("Tag not null");
 			this.cbTag.clear();
 			this.cbTag.sendKeys(tag);
 		}
@@ -360,6 +360,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		
 		if (surveyModeFilter != null) {
+			System.out.println("Survey Mode not null");
 			switch (surveyModeFilter) {
 			case All:
 				this.inputSurModeFilterAll.click();
@@ -386,6 +387,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				this.checkGeoFilter.click();
 			}			
 		}
+		
+		this.btnSurveySearch.click();
+		this.waitForSurveyTabletoLoad();
+
+		this.checkboxSurFirst.click();
+		this.btnAddSurveys.click();
 				
 	}
 

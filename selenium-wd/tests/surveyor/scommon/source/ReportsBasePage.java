@@ -116,10 +116,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='report-boundry-layers-Level 6']")
 	protected WebElement checkBoxLevel6;
 
-
-	
-
-
 	@FindBy(how = How.ID, using = "report-surveyor-id")
 	protected WebElement cbSurUnit;
 
