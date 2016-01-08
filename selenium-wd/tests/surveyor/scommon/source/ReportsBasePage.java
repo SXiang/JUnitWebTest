@@ -125,24 +125,33 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.ID, using = "report-survey-tag")
 	protected WebElement cbTag;
+	
+	@FindBy(how = How.ID, using = "report-survey-driver")
+	protected WebElement userName;
+	
+	@FindBy(how = How.XPATH, using = "//*[normalize-space( )='All']//input[@name='survey-mode-type']")
+	protected WebElement inputSurModeFilterAll;
 
-	// @FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[5]/div/div[1]/fieldset/div[5]/div/div[1]/div/label/input")
-	// protected WebElement inputSurModeFilterS1;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[5]/div/div[1]/fieldset/div[5]/div/div[1]/div/label/input")
-	protected WebElement inputSurModeFilterS1;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[5]/div/div[1]/fieldset/div[5]/div/div[2]/div/label/input")
+	@FindBy(how = How.XPATH, using = "//*[normalize-space( )='Standard']//input[@name='survey-mode-type']")
 	protected WebElement inputSurModeFilterStd;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[5]/div/div[1]/fieldset/div[5]/div/div[5]/div/label/input")
+	@FindBy(how = How.XPATH, using = "//*[normalize-space( )='Operator']//input[@name='survey-mode-type']")
 	protected WebElement inputSurModeFilterOperator;
+	
+	@FindBy(how = How.XPATH, using = "//*[normalize-space( )='Rapid Response']//input[@name='survey-mode-type']")
+	protected WebElement inputSurModeFilterRapidResponse;
+	
+	@FindBy(how = How.XPATH, using = "//*[normalize-space( )='Manual']//input[@name='survey-mode-type']")
+	protected WebElement inputSurModeFilterManual;
 
 	@FindBy(how = How.ID, using = "buttonSearchSurvey")
 	protected WebElement btnSurveySearch;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td[7]/input")
 	protected WebElement checkboxSurFirst;
+	
+	@FindBy(how = How.ID, using = "report-geo-filter")
+	protected WebElement checkGeoFilter;
 
 	@FindBy(how = How.ID, using = "buttonAddSurveys")
 	protected WebElement btnAddSurveys;

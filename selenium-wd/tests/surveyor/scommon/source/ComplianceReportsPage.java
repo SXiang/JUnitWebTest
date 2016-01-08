@@ -56,6 +56,8 @@ import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICT;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
+import surveyor.scommon.source.Reports.ReportModeFilter;
+import surveyor.scommon.source.Reports.SurveyModeFilter;
 
 import java.io.File;
 import java.io.IOException;
@@ -177,9 +179,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[3]")
 	protected WebElement tdCReportCreatedBy;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='deleteReportModalLabel']/../..//*[@class='btn btn-danger']")
+	@FindBy(how = How.XPATH, using = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=ComplianceReports')]")
 	protected WebElement btnDeleteConfirm;
-	protected String btnDeleteConfirmXpath="//*[@id='deleteReportModalLabel']/../..//*[@class='btn btn-danger']";
+	protected String btnDeleteConfirmXpath="//a[starts-with(@href,'/Reports/DeleteReport?reportType=ComplianceReports')]";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='Standard']")
 	protected WebElement checkBoxStndRptMode;
@@ -214,8 +216,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public void addNewReport(Reports reportsCompliance) {
 		this.waitForPageLoad();
 		this.btnNewComplianceRpt.click();
-		this.waitForNewPageLoad();
-		
+		this.waitForNewPageLoad();		
 		this.inputTitle.clear();
 		this.inputTitle.sendKeys(reportsCompliance.getRptTitle());
 		
@@ -226,15 +227,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					if ((reportsCompliance.getCustomer()).equalsIgnoreCase(option.getText().trim())) {
 						option.click();
 					}
-				}
-				
+				}				
 				if (this.isElementPresent(btnChangeCustomerXPath)) {
 					JavascriptExecutor js = (JavascriptExecutor)driver; 
-					js.executeScript("arguments[0].click();", btnChangeCustomer);  				
-					
+					js.executeScript("arguments[0].click();", btnChangeCustomer);  							
 					this.inputTitle.clear();
-					this.inputTitle.sendKeys(reportsCompliance.getRptTitle());
-					
+					this.inputTitle.sendKeys(reportsCompliance.getRptTitle());					
 				}
 			}
 		}
@@ -247,18 +245,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 
 		if (reportsCompliance.reportMode != null) {
-			if (reportsCompliance.reportMode.equalsIgnoreCase("standard")) {
+			if (reportsCompliance.reportMode.equals(ReportModeFilter.Standard)) {
 				this.checkBoxStndRptMode.click();
 			}
 
-			if (reportsCompliance.reportMode.equalsIgnoreCase("manual")) {
+			if (reportsCompliance.reportMode.equals(ReportModeFilter.Manual)) {
 				this.checkBoxManualRptMode.click();
 			}
 
-			if (reportsCompliance.reportMode.equalsIgnoreCase("rr")) {
+			if (reportsCompliance.reportMode.equals(ReportModeFilter.RapidResponse)) {
 				this.checkBoxRRRptMode.click();
 			}
-
 		}
 
 		this.inputExclusionRadius.clear();
@@ -269,40 +266,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.inputSWLat.sendKeys(reportsCompliance.getSWLat());
 		this.inputSWLong.sendKeys(reportsCompliance.getSWLong());
 
-		if (reportsCompliance.getSurveyorUnit() != "") {
-			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
-			for (WebElement option : optionsSU) {
-				if ((reportsCompliance.getSurveyorUnit()).equalsIgnoreCase(option.getText().trim())) {
-					option.click();
-				}
-			}
-		}
 
-		// TO DO: Implement date picker
-
-		if (reportsCompliance.getTag() != "") {
-			this.cbTag.sendKeys(reportsCompliance.getTag());
-		}
-
-		// TO DO: Implement Survey type
-		/*
-		 * if (reportsCompliance.getSurveyMode() != "") { String surveyMode=reportsCompliance.getSurveyMode(); if(surveyMode.equalsIgnoreCase("Standard")){
-		 * 
-		 * } if(surveyMode.equalsIgnoreCase("Operator")){
-		 * 
-		 * } if(surveyMode.equalsIgnoreCase("Rapid Response")){
-		 * 
-		 * } }
-		 */
-
-		if (reportsCompliance.getSurveyorUnit() != "") {
-			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
-			for (WebElement option : optionsSU) {
-				if ((reportsCompliance.getSurveyorUnit()).equalsIgnoreCase(option.getText().trim())) {
-					option.click();
-				}
-			}
-		}
+		addSurveyInformation(reportsCompliance.getSurveyorUnit(),reportsCompliance.getUserName(),reportsCompliance.getTag(),reportsCompliance.getSurveyStartDate(),reportsCompliance.getSurveyEndDate(),
+				reportsCompliance.getSurveyMode(),reportsCompliance.getGeoFilter());
 
 		this.btnSurveySearch.click();
 		this.waitForSurveyTabletoLoad();;
@@ -368,6 +334,59 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 					
 		this.btnOK.click();
+	}
+	
+	public void addSurveyInformation(String surveyor, String username, String tag, String startDate, String endDate, SurveyModeFilter surveyModeFilter, Boolean geoFilterOn) {
+		Log.info("Adding Survey information");
+		
+		if ( surveyor!= "") {
+			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
+			for (WebElement option : optionsSU) {
+				if (surveyor.equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+		}
+		
+		if (username!= "") {
+			this.userName.sendKeys(username);
+		}
+		
+		if (tag != "") {
+			this.cbTag.clear();
+			this.cbTag.sendKeys(tag);
+		}
+		// TO DO: Implement date picker
+
+		
+		if (surveyModeFilter != null) {
+			switch (surveyModeFilter) {
+			case All:
+				this.inputSurModeFilterAll.click();
+				break;
+			case Standard:
+				this.inputSurModeFilterStd.click();
+				break;
+			case Operator:
+				this.inputSurModeFilterOperator.click();
+				break;
+			case RapidResponse:
+				this.inputSurModeFilterRapidResponse.click();
+				break;
+			case Manual:
+				this.inputSurModeFilterManual.click();
+				break;
+			default:
+				break;
+			}
+		}
+		
+		if(geoFilterOn!=null){
+			if(geoFilterOn){
+				this.checkGeoFilter.click();
+			}			
+		}
+				
 	}
 
 	

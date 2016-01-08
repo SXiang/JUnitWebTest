@@ -26,19 +26,36 @@ public class Reports {
 	protected String SWLong;
 	
 	protected String surveyorUnit;
-	protected String tag;
-	
+	protected String tag;	
 	protected String startDate;
 	protected String endDate;
+	protected String userName;
+	protected boolean geoFilterOn;
 	
 	protected List<Map<String, String>> viewList;
 	protected List<Map<String, String>> tablesList;
 	protected List<Map<String, String>> viewLayersList;
 
 	protected List<String> tagList;
-	protected String surveyMode;
 	
-	protected String reportMode;
+	protected SurveyModeFilter surveyMode;	
+	protected ReportModeFilter reportMode;
+	
+	public enum SurveyModeFilter {
+		All,
+		Standard,
+		Operator,
+		RapidResponse,
+		Manual
+	}
+	
+	public enum ReportModeFilter {
+		Standard,
+		RapidResponse,
+		Manual
+	}
+	
+	
 	
 	/**
 	 * 
@@ -80,7 +97,7 @@ public class Reports {
 	public Reports(String rptTitle, String strCreatedBy, String customer,
 			String timeZone, String exclusionRadius, List<String> listBoundary,
 			List<Map<String, String>> tablesList, String surveyorUnit, String tag,String startDate, String endDate,
-			 List<Map<String, String>> viewList, String surveyMode) {
+			 List<Map<String, String>> viewList, SurveyModeFilter surveyMode) {
 		this.rptTitle = rptTitle;
 		this.strCreatedBy = strCreatedBy;
 		this.customer = customer;
@@ -109,7 +126,7 @@ public class Reports {
 	public Reports(String rptTitle, String strCreatedBy, String customer,
 			String timeZone, String exclusionRadius, List<String> listBoundary,
 			List<Map<String, String>> tablesList, String surveyorUnit, String tag,String startDate, String endDate,
-			 List<Map<String, String>> viewList, String surveyMode, String reportMode) {
+			 List<Map<String, String>> viewList, SurveyModeFilter surveyMode, ReportModeFilter reportMode) {
 		this.rptTitle = rptTitle;
 		this.strCreatedBy = strCreatedBy;
 		this.customer = customer;
@@ -129,6 +146,37 @@ public class Reports {
 		this.tag = tag;
 		this.startDate=startDate;
 		this.endDate=endDate;
+		
+		this.viewList = viewList;
+		this.surveyMode=surveyMode;
+		this.reportMode=reportMode;
+	}
+	
+	public Reports(String rptTitle, String strCreatedBy, String customer,
+			String timeZone, String exclusionRadius, List<String> listBoundary,
+			List<Map<String, String>> tablesList, String surveyorUnit, String tag,String startDate, String endDate,
+			 List<Map<String, String>> viewList, SurveyModeFilter surveyMode, String userName,Boolean geoFilterOn, ReportModeFilter reportMode) {
+		this.rptTitle = rptTitle;
+		this.strCreatedBy = strCreatedBy;
+		this.customer = customer;
+		this.timeZone = timeZone;
+		this.exclusionRadius = exclusionRadius;
+
+		this.listBoundary = listBoundary;
+		this.imageMapHeight = listBoundary.get(0);
+		this.imageMapWidth = listBoundary.get(1);
+		this.NELat = listBoundary.get(2);
+		this.NELong = listBoundary.get(3);
+		this.SWLat = listBoundary.get(4);
+		this.SWLong = listBoundary.get(5);
+		
+		this.tablesList = tablesList;
+		this.surveyorUnit = surveyorUnit;
+		this.tag = tag;
+		this.startDate=startDate;
+		this.endDate=endDate;
+		this.userName=userName;
+		this.geoFilterOn=geoFilterOn;
 		
 		this.viewList = viewList;
 		this.surveyMode=surveyMode;
@@ -220,6 +268,19 @@ public class Reports {
 	public String getSurveyEndDate() {
 		return this.endDate;
 	}
+	
+	public SurveyModeFilter getSurveyMode() {
+		return this.surveyMode;
+	}
+	
+	public boolean getGeoFilter() {
+		return this.geoFilterOn;
+	}
+	
+	public String getUserName() {
+		return this.userName;
+	}
+	
 	public List<Map<String, String>> getViewList() {
 		return this.viewList;
 	}
@@ -233,9 +294,6 @@ public class Reports {
 		return this.tagList;
 	}
 	
-	public String getSurveyMode() {
-		return this.surveyMode;
-	}
 	
 	public List<Map<String, String>> getViewLayersList() {
 		return this.viewLayersList;
