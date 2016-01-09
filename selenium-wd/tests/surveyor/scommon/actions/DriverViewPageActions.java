@@ -14,6 +14,7 @@ import common.source.OLMapUtility.IconColor;
 import common.source.RegexUtility;
 import common.source.TestSetup;
 import surveyor.scommon.actions.data.DriverViewDataReader;
+import surveyor.scommon.actions.data.ComplianceReportDataReader.ComplianceReportDataRow;
 import surveyor.scommon.actions.data.DriverViewDataReader.DriverViewDataRow;
 import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.DriverViewPage.CloudCover;
@@ -55,6 +56,9 @@ public class DriverViewPageActions extends BasePageActions {
 	
 	private DriverViewPage driverViewPage = null;
 	private DriverViewDataReader dataReader = null;
+
+	public static DriverViewDataRow workingDataRow = null;    // Stores the workingDataRow from startSurvey action
+
 
 	public DriverViewPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL);
@@ -138,6 +142,13 @@ public class DriverViewPageActions extends BasePageActions {
 		return true;
 	}
 
+	public boolean clickOnShutdownButton(String data, Integer dataRowID) {
+		logAction("clickOnShutdownButton", data, dataRowID);
+		driverViewPage.clickShutdownButton();
+		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
+		return true;
+	}
+
 	public boolean clickOnStatusButton(String data, Integer dataRowID) {
 		logAction("clickOnStatusButton", data, dataRowID);
 		driverViewPage.clickStatusButton();
@@ -187,6 +198,26 @@ public class DriverViewPageActions extends BasePageActions {
 		driverViewPage.waitForConnectionComplete();
 		return true;
 	}
+	
+	/**
+	 * Verifies the survey tag in Start Survey modal dialog.
+	 *
+	 * @return 
+	 */
+	public boolean verifySurveyTagInStartSurveyDialogEquals(String data, Integer dataRowID) {
+		String surveyTag = driverViewPage.getSurveyTagFromStartSurveyDialog();
+		return surveyTag.equals(data);
+	}
+
+	/**
+	 * Opens the Start Survey modal dialog.
+	 *
+	 * @return 
+	 */
+	public boolean openStartSurveyModalDialog(String data, Integer dataRowID) {
+		driverViewPage.openStartSurveyModalDialog();
+		return true;
+	}
 
 	/**
 	 * 
@@ -215,13 +246,16 @@ public class DriverViewPageActions extends BasePageActions {
 			
 		} else {
 			ActionArguments.verifyGreaterThanZero(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_START_DRIVING_SURVEY, ARG_DATA_ROW_ID, dataRowID);
-			getDataReader().setDataRow(getDataReader().getDataRow(dataRowID));
-			surveyTag = getDataReader().getDataRow().surveyTag;
-			time = getSurveyTime(getDataReader().getDataRow().surveyTime);
-			radiation = getSolarRadiation(getDataReader().getDataRow().solarRadiation);
-			wind = getWind(getDataReader().getDataRow().wind);
-			cloudCover = getCloudCover(getDataReader().getDataRow().wind);
-			type = getSurveyType(getDataReader().getDataRow().surveyType);
+			DriverViewDataRow dataRow = getDataReader().getDataRow(dataRowID);
+			surveyTag = dataRow.surveyTag;
+			time = getSurveyTime(dataRow.surveyTime);
+			radiation = getSolarRadiation(dataRow.solarRadiation);
+			wind = getWind(dataRow.wind);
+			cloudCover = getCloudCover(dataRow.wind);
+			type = getSurveyType(dataRow.surveyType);
+			
+			// store the working datarow.
+			workingDataRow = dataRow;
 		}
 		try {
 			driverViewPage.startDrivingSurvey(surveyTag, time, radiation, wind, cloudCover, type);
@@ -596,6 +630,16 @@ public class DriverViewPageActions extends BasePageActions {
 		return driverViewPage.isGisSwitchOn(switchType);
 	}
 
+	public boolean verifyStartSurveyButtonFromSurveyDialogIsEnabled(String data, Integer dataRowID) {
+		logAction("verifyStartSurveyButtonFromSurveyDialogIsEnabled", data, dataRowID);
+		return driverViewPage.getStartSurveyButtonFromStartSurveyDialog().isEnabled();
+	}
+
+	public boolean verifyStartSurveyButtonFromSurveyDialogIsDisabled(String data, Integer dataRowID) {
+		logAction("verifyStartSurveyButtonFromSurveyDialogIsDisabled", data, dataRowID);
+		return !verifyStartSurveyButtonFromSurveyDialogIsEnabled(data, dataRowID);
+	}
+	
 	public boolean verifyGisSwitchIsOff(String data, Integer dataRowID) throws Exception {
 		logAction("verifyGisSwitchIsOff", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_GIS_SWITCH_IS_OFF, ARG_DATA, data);

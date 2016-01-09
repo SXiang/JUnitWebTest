@@ -449,6 +449,11 @@ public class DriverViewPage extends SurveyorBasePage {
 		return this;
 	}
 
+	public DriverViewPage clickShutdownButton() {
+		this.getSystemShutdownButton().click();
+		return this;
+	}
+	
 	public boolean isPositionButtonSelected() {
 		return this.positionButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon on");
 	}
@@ -1393,6 +1398,16 @@ public class DriverViewPage extends SurveyorBasePage {
 		return this;
 	}
 
+
+	/**
+	 * Gets the Start Survey Button from the Survey modal dialog.
+	 *
+	 * @return button element.
+	 */
+	public WebElement getStartSurveyButtonFromStartSurveyDialog() {
+		return startSurvey;
+	}
+
 	/**
 	 * Click on Start Survey Button in the Driver view page to open the modal
 	 * Start Survey dialog.
@@ -1476,16 +1491,33 @@ public class DriverViewPage extends SurveyorBasePage {
 	}
 
 	/**
+	 * Get Tag field value.
+	 *
+	 * @return the tag field value.
+	 */
+	public String getTagSurveyTextField() {
+		return tagSurvey.getText();
+	}
+
+	/**
+	 * Gets the survey tag from the Start Survey dialog.
+	 *
+	 * @return the survey tag value.
+	 */
+	public String getSurveyTagFromStartSurveyDialog() {
+		openStartSurveyModalDialog();
+
+		return this.getTagSurveyTextField();
+	}
+	
+	/**
 	 * Starts a survey with the specified values.
 	 *
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage startDrivingSurvey(String tag, SurveyTime surveyTime, SolarRadiation solarRadiation,
 			Wind wind, CloudCover cloudCover, SurveyType surveyType) {
-		Log.info("Opening the StartSurvey modal dialog..");
-		this.clickStartSurveyButton();
-		Log.info("Opened the StartSurvey modal dialog..");
-		this.waitForPageToLoad();
+		openStartSurveyModalDialog();
 
 		this.setTagSurveyTextField(tag);
 		
@@ -1569,6 +1601,13 @@ public class DriverViewPage extends SurveyorBasePage {
 		this.waitForPageToLoad();
 
 		return this;
+	}
+
+	public void openStartSurveyModalDialog() {
+		Log.info("Opening the StartSurvey modal dialog..");
+		this.clickStartSurveyButton();
+		Log.info("Opened the StartSurvey modal dialog..");
+		this.waitForPageToLoad();
 	}
 
 	public DriverViewPage stopDrivingSurvey() {

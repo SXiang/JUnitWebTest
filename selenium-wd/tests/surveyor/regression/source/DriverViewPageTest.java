@@ -4,10 +4,14 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.Log;
+import common.source.TestContext;
 import common.source.TestSetup;
+import surveyor.scommon.actions.DriverViewPageActions;
+import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.DriverViewPage.CloudCover;
 import surveyor.scommon.source.DriverViewPage.DisplaySwitchType;
@@ -36,9 +40,20 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	private static final String INSTR_READY_DEFN_FILE = "instr_ready.defn";
 	private static final String REPLAY_DB3_DEFN_FILE = "replay-db3.defn";
 
+	private static final String EMPTY = "";
+	private static final Integer NOTSET = -1;
+	private LoginPageActions loginPageAction;
+	private DriverViewPageActions driverViewPageAction;
+
 	public DriverViewPageTest() {
 		driverViewPage = new DriverViewPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver, driverViewPage);
+		
+		WebDriver webDriver = TestContext.INSTANCE.getDriver();
+		TestSetup testSetup = TestContext.INSTANCE.getTestSetup();
+		String baseURL = testSetup.getBaseUrl();
+		loginPageAction = new LoginPageActions(webDriver, baseURL, testSetup);
+		driverViewPageAction = new DriverViewPageActions(webDriver, baseURL,testSetup);
 	}
 
 	/**
@@ -431,4 +446,78 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		assertTrue(driverViewPage.getSurveyStatusLabelText().equals("Survey Inactive"));
 	}
 
+	@Test
+	public void TC256_SimulatorTest_DriverViewInstrumentStartWaitStopShutdown() {
+		try {
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(testSetup.getLoginUser() + ":" + testSetup.getLoginPwd(), NOTSET);
+			driverViewPageAction.startSimulatorScript(EMPTY, 1);
+			driverViewPageAction.open(EMPTY,NOTSET);
+			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
+			
+			driverViewPageAction.startDrivingSurvey(EMPTY, 3);
+			
+			// Intentional sleep for 3 minutes as per test case steps.
+			Thread.sleep(180000);
+			
+			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
+			driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
+			
+			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
+			driverViewPageAction.clickOnShutdownButton(EMPTY,NOTSET);
+			
+			// CHECK: Verify analyzer is shutdown.
+		} catch (Exception e) {
+			Log.error(e.toString());
+		}
+	}
+
+	@Test
+	public void TC302_SimulatorTest_DriverViewUserSeesLastTagValue() {
+		try {
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(testSetup.getLoginUser() + ":" + testSetup.getLoginPwd(), NOTSET);
+			driverViewPageAction.startSimulatorScript(EMPTY, 1);
+			driverViewPageAction.open(EMPTY,NOTSET);
+			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
+			
+			driverViewPageAction.startDrivingSurvey(EMPTY, 3);
+			
+			// Run the survey for 50 seconds.
+			Thread.sleep(50000);
+			
+			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
+			driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
+			
+			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
+			driverViewPageAction.openStartSurveyModalDialog(EMPTY,NOTSET);
+			
+			assertTrue(driverViewPageAction.verifySurveyTagInStartSurveyDialogEquals(driverViewPageAction.workingDataRow.surveyTag, NOTSET));
+			assertTrue(driverViewPageAction.verifyStartSurveyButtonFromSurveyDialogIsDisabled(EMPTY, NOTSET));
+		} catch (Exception e) {
+			Log.error(e.toString());
+		}
+	}
+
+	@Test
+	public void TC777_SimulatorTest_DriverViewFlatteningCustomerBoundaryData() {
+		try {
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
+			driverViewPageAction.startSimulatorScript(EMPTY, 1);
+			driverViewPageAction.open(EMPTY,NOTSET);
+			driverViewPageAction.clickOnGisButton(EMPTY,NOTSET);
+			driverViewPageAction.turnOffBoundariesDistrict(EMPTY, NOTSET);
+			driverViewPageAction.turnOffBoundariesDistrictPlat(EMPTY, NOTSET);
+
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(EMPTY, 2);   /* Customer Supervisor */
+			driverViewPageAction.open(EMPTY,NOTSET);
+			driverViewPageAction.clickOnGisButton(EMPTY,NOTSET);
+			assertTrue(driverViewPageAction.verifyGisSwitchIsOn("BoundariesDistrict",NOTSET));
+			assertTrue(driverViewPageAction.verifyGisSwitchIsOn("BoundariesDistrictPlat",NOTSET));
+		} catch (Exception e) {
+			Log.error(e.toString());
+		}
+	}
 }
