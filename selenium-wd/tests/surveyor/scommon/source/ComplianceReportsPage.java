@@ -99,7 +99,7 @@ import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-
+import surveyor.scommon.source.ComplianceReportsPage.ReportViewerThumbnailType;
 import common.source.PDFUtility;
 import common.source.BaseHelper;
 
@@ -297,30 +297,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			selectPercentCoverageReportArea();
 		}
 
-		if (driver.findElements(By.xpath("//*[@id='report-asset-layers-ad701312-c470-482a-be45-ef37770e2ce6']")).size() > 0) {
-			this.checkBoxOtherPla.click();
-		}
-		if (driver.findElements(By.xpath("//*[@id='report-asset-layers-f14735de-6c9b-4423-8533-f243a7fe4e90']")).size() > 0) {
-			this.checkBoxPEPla.click();
-		}
-		if (driver.findElements(By.xpath("//*[@id='report-asset-layers-44353e68-0694-4f05-85cb-84d753ea278c']")).size() > 0) {
-			this.checkBoxProtectedSteel.click();
-		}
-		if (driver.findElements(By.xpath("//*[@id='report-asset-layers-f3955e82-dd13-4842-84f7-502bcda6b57a']")).size() > 0) {
-			this.checkBoxUnProtectedSteel.click();
-		}
-		if (driver.findElements(By.xpath("//*[@id='report-asset-layers-96caf1f5-d5c5-461d-9ce3-d210c20a1bb0']")).size() > 0) {
-			this.checkBoxCastIron.click();
-		}
-		if (driver.findElements(By.xpath("//*[@id='report-asset-layers-d08fc87f-f979-4131-92a9-3d82f37f4bba']")).size() > 0) {
-			this.checkBoxCopper.click();
-		}
-		if (driver.findElements(By.xpath("//*[@id='report-boundry-layers-District Plat']")).size() > 0) {
-			this.checkBoxDistrict.click();
-		}
-		if (driver.findElements(By.xpath("//*[@id='report-boundry-layers-District']")).size() > 0) {
-			this.checkBoxDistrictPlat.click();
-		}
+		selectViewLayerAssets(true, true, true, true, true, true);
+		
 		
 		handleOptionalViewLayersSection(reportsCompliance);
 		
@@ -470,41 +448,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	private void handleOptionalViewLayersSection(Reports reportsCompliance) {
 		List<Map<String, String>> viewLayersList = reportsCompliance.getViewLayersList();
 		if (viewLayersList != null) {
-			if (viewLayersList.get(0).get(KEYASSETCASTIRON).equalsIgnoreCase("1")) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxCastIron);
-			}
-			if (viewLayersList.get(0).get(KEYASSETCOPPER).equalsIgnoreCase("1")) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxCopper);
-			}
-			if (viewLayersList.get(0).get(KEYASSETOTHERPLASTIC).equalsIgnoreCase("1")) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxOtherPla);
-			}
-			if (viewLayersList.get(0).get(KEYASSETPEPLASTIC).equalsIgnoreCase("1")) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxPEPla);
-			}
-			if (viewLayersList.get(0).get(KEYASSETPROTECTEDSTEEL).equalsIgnoreCase("1")) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxProtectedSteel);
-			}
-			if (viewLayersList.get(0).get(KEYASSETUNPROTECTEDSTEEL).equalsIgnoreCase("1")) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxUnProtectedSteel);
-			}
-			if (viewLayersList.get(0).get(KEYBOUNDARYDISTRICT).equalsIgnoreCase("1")) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxDistrict);
-			}
-			if (viewLayersList.get(0).get(KEYBOUNDARYDISTRICTPLAT).equalsIgnoreCase("1")) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxDistrictPlat);
-			}
+			boolean selectAssetCastIron = viewLayersList.get(0).get(KEYASSETCASTIRON).equalsIgnoreCase("1");
+			boolean selectAssetCopper = viewLayersList.get(0).get(KEYASSETCOPPER).equalsIgnoreCase("1");
+			boolean selectAssetOtherPlastic = viewLayersList.get(0).get(KEYASSETOTHERPLASTIC).equalsIgnoreCase("1");
+			boolean selectAssetPEPlastic = viewLayersList.get(0).get(KEYASSETPEPLASTIC).equalsIgnoreCase("1");
+			boolean selectAssetProtectedSteel = viewLayersList.get(0).get(KEYASSETPROTECTEDSTEEL).equalsIgnoreCase("1");
+			boolean selectAssetUnprotectedSteel = viewLayersList.get(0).get(KEYASSETUNPROTECTEDSTEEL).equalsIgnoreCase("1");
+			selectViewLayerAssets(selectAssetCastIron, selectAssetCopper, selectAssetOtherPlastic, 
+					selectAssetPEPlastic, selectAssetProtectedSteel, selectAssetUnprotectedSteel);
+			
+			boolean selectBoundaryDistrict = viewLayersList.get(0).get(KEYBOUNDARYDISTRICT).equalsIgnoreCase("1");
+			boolean selectBoundaryDistrictPlat = viewLayersList.get(0).get(KEYBOUNDARYDISTRICTPLAT).equalsIgnoreCase("1");
+			selectViewLayerBoundaries(selectBoundaryDistrict, selectBoundaryDistrictPlat);
 		}
 	}
-	
+
 	public void addViews(String customer, List<Map<String, String>> viewList) {
 		int rowNum;
 		int colNum;
@@ -672,15 +630,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		inputImageMapHeight(imageMapHeight);
 		inputImageMapWidth(imageMapWidth);
 
-		this.checkBoxOtherPla.click();
-		this.checkBoxPEPla.click();
-		this.checkBoxProtectedSteel.click();
-		this.checkBoxUnProtectedSteel.click();
-		this.checkBoxCastIron.click();
-		this.checkBoxCopper.click();
-
-		this.checkBoxDistrict.click();
-		this.checkBoxDistrictPlat.click();
+		selectViewLayerAssets(true, true, true, true, true, true);
+		selectViewLayerBoundaries(true, true);
 
 		selectIndicationsTableCheckBox();
 		this.checkBoxIsoAna.click();
@@ -854,6 +805,128 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						return true;
 					} else
 						return false;
+				} catch (org.openqa.selenium.NoSuchElementException e) {
+					return false;
+				}
+			}
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+				rowNum = 0;
+			}
+		}
+
+		return false;
+	}
+
+	public enum ComplianceReportButtonType {
+		Delete,
+		Copy,
+		ReportViewer,
+		Investigate,
+		InvestigatePDF,
+		Resubmit
+	}
+	
+	public enum ReportViewerThumbnailType {
+		ComplianceTablePDF,
+		ComplianceZipPDF,
+		ComplianceZipShape,
+		ComplianceZipMeta,
+		FirstView,
+		SecondView,
+		ThirdView,
+		FourthView,
+		FifthView,
+		SixthView,
+		SeventhView
+	}
+
+	public boolean verifyComplianceReportButton(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType) throws Exception {
+		return checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, buttonType, false);
+	}
+	
+	public boolean clickComplianceReportButton(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType) throws Exception {
+		return checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, buttonType, true);
+	}
+	
+	private boolean checkComplianceReportButtonPresenceAndClick(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType, 
+			boolean clickButton) throws Exception {
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+
+		setPagination(PAGINATIONSETTING);
+
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+
+		String reportTitleXPath;
+		String createdByXPath;
+		String buttonXPath;
+
+		WebElement rptTitleCell;
+		WebElement createdByCell;
+		WebElement buttonImg;
+
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+
+		int rowSize = rows.size();
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
+
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				try {
+					switch (buttonType) {
+					case Delete:
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[1]/img";
+						break;
+					case Copy:
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[2]/img";
+						break;
+					case ReportViewer:
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[3]/img";
+						break;
+					case Investigate:
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[4]/img";
+						break;
+					case InvestigatePDF:
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[5]/img";
+						break;
+					case Resubmit:
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[6]/img";
+						break;
+					default:
+						throw new Exception("ButtonType NOT supported.");
+					}
+					buttonImg = table.findElement(By.xpath(buttonXPath));
+					String srcButtonImg = pdfImg.getAttribute("src");
+
+					if (buttonImg.isDisplayed()) {
+						if (clickButton) {
+							buttonImg.click();
+						}
+						return true;
+					}
+					return false;
 				} catch (org.openqa.selenium.NoSuchElementException e) {
 					return false;
 				}
@@ -1480,12 +1553,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.checkBoxPCA.click();
 		this.checkBoxPCRA.click();
 
-		this.checkBoxOtherPla.click();
-		this.checkBoxPEPla.click();
-		this.checkBoxProtectedSteel.click();
-		this.checkBoxUnProtectedSteel.click();
-		this.checkBoxCastIron.click();
-		this.checkBoxCopper.click();
+		selectViewLayerAssets(true, true, true, true, true, true);
 
 		if (surUnit != "") {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
@@ -1518,8 +1586,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.inputViewAssets.click();
 		if(boundary!=null){
 		 this.inputViewBoundaries.click();
-		 this.checkBoxDistrict.click();
-		 this.checkBoxDistrict.click();
+		 
+		 selectViewLayerBoundaries(true, true);
 		}
 		this.btnOK.click();
 	}
@@ -1589,12 +1657,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			this.checkBoxPCRA.click();
 		}
 
-		this.checkBoxOtherPla.click();
-		this.checkBoxPEPla.click();
-		this.checkBoxProtectedSteel.click();
-		this.checkBoxUnProtectedSteel.click();
-		this.checkBoxCastIron.click();
-		this.checkBoxCopper.click();
+		selectViewLayerAssets(true, true, true, true, true, true);
 
 		if (reportsCompliance.getSurveyorUnit() != "") {
 			selectSurveySurveyor(reportsCompliance.getSurveyorUnit());
@@ -1903,4 +1966,130 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	            }
 	        });
 	    }
+
+	public void selectViewLayerAssets(Boolean selectAssetCastIron, Boolean selectAssetCopper,
+			Boolean selectAssetOtherPlastic, Boolean selectAssetPEPlastic, Boolean selectAssetProtectedSteel,
+			Boolean selectAssetUnprotectedSteel) {
+		if (selectAssetCastIron) {
+			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-96caf1f5-d5c5-461d-9ce3-d210c20a1bb0']")).size() > 0) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxCastIron);
+			}
+		}
+		if (selectAssetCopper) {
+			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-d08fc87f-f979-4131-92a9-3d82f37f4bba']")).size() > 0) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxCopper);
+			}
+		}
+		if (selectAssetOtherPlastic) {
+			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-ad701312-c470-482a-be45-ef37770e2ce6']")).size() > 0) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxOtherPla);
+			}
+		}
+		if (selectAssetPEPlastic) {
+			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-f14735de-6c9b-4423-8533-f243a7fe4e90']")).size() > 0) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxPEPla);
+			}
+		}
+		if (selectAssetProtectedSteel) {
+			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-44353e68-0694-4f05-85cb-84d753ea278c']")).size() > 0) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxProtectedSteel);
+			}
+		}
+		if (selectAssetUnprotectedSteel) {
+			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-f3955e82-dd13-4842-84f7-502bcda6b57a']")).size() > 0) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxUnProtectedSteel);
+			}
+		}
+	}
+
+	public void selectViewLayerBoundaries(boolean selectBoundaryDistrict, boolean selectBoundaryDistrictPlat) {
+		if (selectBoundaryDistrict) {
+			if (driver.findElements(By.xpath("//*[@id='report-boundry-layers-District']")).size() > 0) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxDistrict);
+			}
+		}
+		if (selectBoundaryDistrictPlat) {
+			if (driver.findElements(By.xpath("//*[@id='report-boundry-layers-District Plat']")).size() > 0) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxDistrictPlat);
+			}
+		}
+	}
+
+	public enum CustomerBoundaryType {
+		District,
+		DistrictPlat
+	}
+	
+	public void selectAnyCustomerBoundary(CustomerBoundaryType type) {
+		// TODO open the Boundary selector and click on any customer boundary.
+		// Could provide a search by boundary name.
+	}
+	
+	public void waitForPDFFileDownload() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void validateInvestigatePDFFile() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void waitForReportViewerPopupToShow() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void downloadMetaDataZipFile() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void verifyMetaDataFiles() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void verifyMetaDataFilesData() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void verifyThumbnailInReportViewer(ReportViewerThumbnailType compliancezipmeta) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void downloadShapeZipFile() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void waitForShapeZipFileDownload() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void verifyShapeFilesData() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void verifyShapeFiles() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType compliancezipmeta) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -51,7 +51,89 @@ public class ActionsExecutionEngine implements IMethodObserver {
 		methodInvoker = PageActionsFactory.getMethodInvoker();
 		methodInvoker.registerObserver(this);
 	}
-	
+
+	public void executeTestCase(String sheetName, Integer testID) throws Exception {
+		String testCaseExcelPath = TestContext.INSTANCE.getExecutionPath() + DATA_FOLDER + File.separator + TEST_CASES_XLSX;
+		excelUtility.setExcelFile(testCaseExcelPath);
+		Boolean foundMatchingTestCase = false;
+		
+    	for (String testCaseSheetName : Constants.Excel_Sheets_TestCases) {
+    		if (testCaseSheetName.equalsIgnoreCase(sheetName)) {  // Found match.
+	    		if (isExecutableTestGroup(testCaseSheetName)) {    		
+		    		Log.info("Reading test case sheet: " + testCaseSheetName);
+		    		int iTotalTestCases = excelUtility.getRowCount(testCaseSheetName);
+		    		String testStepsSheetName = testCaseSheetName + "-TestSteps";
+		    		for (int iTestcase=1; iTestcase < iTotalTestCases; iTestcase++) {
+		    			bResult = true;
+		    			testCaseID = excelUtility.getIntegerCellData(iTestcase, Constants.Excel_TestCases_Col_ID, testCaseSheetName);
+		    			testCaseRallyID = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_RallyID, testCaseSheetName);
+		    			testCaseName = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_Name, testCaseSheetName);
+		    			testCaseUserRowIDs = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_UserRowIDs, testCaseSheetName);
+		    			testCaseEnabled = excelUtility.getBooleanCellData(iTestcase, Constants.Excel_TestCases_Col_Enabled, testCaseSheetName);
+		    			testCaseRunResult = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_RunResult, testCaseSheetName);
+		    			
+		    			if (testID == Integer.valueOf(testCaseID)) {	// found match.
+		    				foundMatchingTestCase = true;
+		    				Log.info(String.format("Found matching test case: [TestSheetName=%s], [TestCaseID=%d]", sheetName, testID ));
+		        			if (testCaseEnabled.equalsIgnoreCase("true")) {
+			    				executeTestCaseAction(testCaseSheetName, testStepsSheetName, iTestcase);
+			    			}
+		    			}
+		    		}
+				}
+    		}
+    	}
+    	
+    	if (!foundMatchingTestCase) {
+    		Log.warn(String.format("NOT found matching test case: [TestSheetName=%s], [TestCaseID=%d]", sheetName, testID ));
+    	}
+    }
+
+	private void executeTestCaseAction(String testCaseSheetName, String testStepsSheetName, int iTestcase) throws Exception {
+		Log.info(String.format("START Executing Test Case ID = %s", testCaseID));
+		
+		testCaseStep = excelUtility.getRowContains(testCaseID, Constants.Excel_TestCaseSteps_Col_ID, testStepsSheetName);
+		testCaseLastStep = excelUtility.getTestStepsCount(testCaseID, Constants.Excel_TestCaseSteps_Col_ID, testCaseStep, testStepsSheetName);
+
+		bResult=true;
+
+		for (;testCaseStep < testCaseLastStep; testCaseStep++) {
+
+			testStepID = excelUtility.getIntegerCellData(testCaseStep, Constants.Excel_TestCaseSteps_Col_ID, testStepsSheetName);
+			testStepStep = excelUtility.getCellData(testCaseStep, Constants.Excel_TestCaseSteps_Col_TestCaseStep, testStepsSheetName);
+			testStepPageObject = excelUtility.getCellData(testCaseStep, Constants.Excel_TestCaseSteps_Col_PageObject, testStepsSheetName);
+			testStepAction = excelUtility.getCellData(testCaseStep, Constants.Excel_TestCaseSteps_Col_Action, testStepsSheetName);
+			testStepWebElement = excelUtility.getCellData(testCaseStep, Constants.Excel_TestCaseSteps_Col_WebElement, testStepsSheetName);
+			testStepTestData = excelUtility.getCellData(testCaseStep, Constants.Excel_TestCaseSteps_Col_TestData, testStepsSheetName);
+			testStepTestDataRowIDs = excelUtility.getCellData(testCaseStep, Constants.Excel_TestCaseSteps_Col_TestDataRowIDs, testStepsSheetName);
+			testStepResult = excelUtility.getCellData(testCaseStep, Constants.Excel_TestCaseSteps_Col_Result, testStepsSheetName);
+			
+			Log.info(String.format("RUNNING Test Step[ID=%s]-'%s'", testStepID, testStepStep));
+			Log.info(String.format("START Executing action-'%s' on page-'%s' with test data-'%s' for rowIDs-'%s'", 
+					testStepAction, testStepPageObject, testStepTestData, testStepTestDataRowIDs));
+			
+			bResult = executeAction(testCaseStep, testStepPageObject, testStepAction, testStepWebElement, testStepTestData, testStepTestDataRowIDs, testStepsSheetName);
+
+			if (bResult==false) {
+				excelUtility.setCellData(Constants.KEYWORD_FAIL, testCaseStep, Constants.Excel_TestCaseSteps_Col_Result, testCaseSheetName);
+				Log.info(String.format("FAILURE while executing action-'%s' on page-'%s' with test data-'%s' for rowIDs-'%s'", 
+						testStepAction, testStepPageObject, testStepTestData, testStepTestDataRowIDs));
+				break;
+			}						
+
+			Log.info(String.format("FINISHED executing action-'%s' on page-'%s' with test data-'%s' for rowIDs-'%s'", 
+					testStepAction, testStepPageObject, testStepTestData, testStepTestDataRowIDs));
+		}
+		
+		if (bResult==true) {
+			excelUtility.setCellData(Constants.KEYWORD_PASS, iTestcase, Constants.Excel_TestCases_Col_RunResult, testCaseSheetName);
+			Log.info(String.format("FINISHED Executing Test Case ID = %s", testCaseID));
+		} else {					
+			excelUtility.setCellData(Constants.KEYWORD_FAIL, iTestcase, Constants.Excel_TestCases_Col_RunResult, testCaseSheetName);
+			Log.info(String.format("FAILURE while Executing Test Case ID = %s", testCaseID));
+		}
+	}	
+
 	public void startExecution() throws Exception {
 		String testCaseExcelPath = TestContext.INSTANCE.getExecutionPath() + DATA_FOLDER + File.separator + TEST_CASES_XLSX;
 		excelUtility.setExcelFile(testCaseExcelPath);
@@ -71,48 +153,7 @@ public class ActionsExecutionEngine implements IMethodObserver {
 	    			testCaseRunResult = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_RunResult, testCaseSheetName);
 	    			
 	    			if (testCaseEnabled.equalsIgnoreCase("true")) {
-	    				Log.info(String.format("START Executing Test Case ID = %s", testCaseID));
-	    				
-	    				testCaseStep = excelUtility.getRowContains(testCaseID, Constants.Excel_TestCaseSteps_Col_ID, testStepsSheetName);
-	    				testCaseLastStep = excelUtility.getTestStepsCount(testCaseID, Constants.Excel_TestCaseSteps_Col_ID, testCaseStep, testStepsSheetName);
-	
-	    				bResult=true;
-	
-	    				for (;testCaseStep < testCaseLastStep; testCaseStep++) {
-	
-	    					testStepID = excelUtility.getIntegerCellData(testCaseStep, Constants.Excel_TestCaseSteps_Col_ID, testStepsSheetName);
-	        				testStepStep = excelUtility.getCellData(testCaseStep, Constants.Excel_TestCaseSteps_Col_TestCaseStep, testStepsSheetName);
-	        				testStepPageObject = excelUtility.getCellData(testCaseStep, Constants.Excel_TestCaseSteps_Col_PageObject, testStepsSheetName);
-	        				testStepAction = excelUtility.getCellData(testCaseStep, Constants.Excel_TestCaseSteps_Col_Action, testStepsSheetName);
-	        				testStepWebElement = excelUtility.getCellData(testCaseStep, Constants.Excel_TestCaseSteps_Col_WebElement, testStepsSheetName);
-	        				testStepTestData = excelUtility.getCellData(testCaseStep, Constants.Excel_TestCaseSteps_Col_TestData, testStepsSheetName);
-	        				testStepTestDataRowIDs = excelUtility.getCellData(testCaseStep, Constants.Excel_TestCaseSteps_Col_TestDataRowIDs, testStepsSheetName);
-	        				testStepResult = excelUtility.getCellData(testCaseStep, Constants.Excel_TestCaseSteps_Col_Result, testStepsSheetName);
-	        				
-	        				Log.info(String.format("RUNNING Test Step[ID=%s]-'%s'", testStepID, testStepStep));
-	        				Log.info(String.format("START Executing action-'%s' on page-'%s' with test data-'%s' for rowIDs-'%s'", 
-	        						testStepAction, testStepPageObject, testStepTestData, testStepTestDataRowIDs));
-	        				
-	        				bResult = executeAction(testCaseStep, testStepPageObject, testStepAction, testStepWebElement, testStepTestData, testStepTestDataRowIDs, testStepsSheetName);
-	
-	    					if (bResult==false) {
-	    						excelUtility.setCellData(Constants.KEYWORD_FAIL, testCaseStep, Constants.Excel_TestCaseSteps_Col_Result, testCaseSheetName);
-	            				Log.info(String.format("FAILURE while executing action-'%s' on page-'%s' with test data-'%s' for rowIDs-'%s'", 
-	            						testStepAction, testStepPageObject, testStepTestData, testStepTestDataRowIDs));
-	    						break;
-	    					}						
-	
-	        				Log.info(String.format("FINISHED executing action-'%s' on page-'%s' with test data-'%s' for rowIDs-'%s'", 
-	        						testStepAction, testStepPageObject, testStepTestData, testStepTestDataRowIDs));
-	    				}
-	    				
-	    				if (bResult==true) {
-	    					excelUtility.setCellData(Constants.KEYWORD_PASS, iTestcase, Constants.Excel_TestCases_Col_RunResult, testCaseSheetName);
-	    					Log.info(String.format("FINISHED Executing Test Case ID = %s", testCaseID));
-	    				} else {					
-	    					excelUtility.setCellData(Constants.KEYWORD_FAIL, iTestcase, Constants.Excel_TestCases_Col_RunResult, testCaseSheetName);
-	    					Log.info(String.format("FAILURE while Executing Test Case ID = %s", testCaseID));
-	    				}
+	    				executeTestCaseAction(testCaseSheetName, testStepsSheetName, iTestcase);
 	    			}
 	    		}
 			}

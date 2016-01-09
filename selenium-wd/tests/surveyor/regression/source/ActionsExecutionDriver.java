@@ -1,5 +1,6 @@
 package surveyor.regression.source;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import common.source.Constants;
@@ -27,7 +28,7 @@ public class ActionsExecutionDriver extends SurveyorBaseTest {
 		Log.info("Done executing actions execution engine Driver View tests!");
 	}
 
-	@Test
+	@Ignore
 	public void TC_ComplianceReportTests_StartActionsEngineTests() {
 		Log.info("Starting actions execution engine Compliance Report tests.");
 		try {
