@@ -641,6 +641,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						String srcShapeImg = this.zipShape.getAttribute("src");
 						DBConnection objDbConn = new DBConnection();
 						String reportId = objDbConn.getIdOfSpecifiedReportTitle(rptTitle, this.testSetup);
+						System.out.println("report id"+ reportId);
 						reportId = reportId.substring(0, 6);
 						reportName = "CR-" + reportId;
 						
@@ -1664,6 +1665,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 
+
+	
 	public String provideLatLongAtCustomBoundarySelectorWindow(List<String> listBoundary) {
 		String actualMsg = "";
 		this.btnNewComplianceRpt.click();
