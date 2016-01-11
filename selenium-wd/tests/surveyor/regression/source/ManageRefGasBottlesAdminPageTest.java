@@ -65,10 +65,10 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	 * Current Issue: 
      * Future Improvement: deal with the tooltip text
 	 */	
-	//@Test			// Commented For Now: Add Library classes for detecting script based validation. 
+	@Test			
 	public void TC464_AddRefGasBottleBlankRequiredFields_CustUA() {
-		String lotNum = testSetup.getRandomNumber() + "_TC464";
-		String isoValue = "-32";
+		String lotNum="";
+		String isoValue = "";
 		
 		System.out.println("\nRunning TC464_AddRefGasBottleBlankRequiredFields_CustUA - Test Description: add reference gas bottle - "
 				+ "blank required fields");
@@ -77,7 +77,9 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		
 		manageRefGasBottlesAdminPage.open();
-		assertFalse(manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR, true));
+		assertTrue(manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR, false));
+		
+		
 	}
 	
 	/**

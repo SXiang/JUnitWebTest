@@ -92,9 +92,8 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		this.waitForPageLoad();
 	}
 	
-	public boolean addNewRefGasBottle(String strLotNumber, String strIsoValue, String strCusName, String strLocName, String strSurveyor, boolean bFlag) {
+	public boolean addNewRefGasBottle(String strLotNumber, String strIsoValue, String strCusName, String strLocName, String strSurveyor, boolean bFlag)  {
 		this.btnAddNewRefGasBottle.click();
-		
 		this.inputLotNumber.sendKeys(strLotNumber);
 		this.inputIsoValue.clear();
 		this.inputIsoValue.sendKeys(strIsoValue);
@@ -106,6 +105,17 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		}
 		
 		this.btnOK.click();
+	
+		if(bFlag==false){
+			String att1 =this.inputLotNumber.getAttribute("required");
+			String att2 =this.inputIsoValue.getAttribute("required");
+			//if (panelError.getText().equalsIgnoreCase("Please fill out this field.")) {
+					if (att1!=null && att2!=null ) {
+			
+				return true;
+			
+		}
+		}
 		
 		if (isElementPresent(this.panelDupRgbErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDupRgbErrorXPath));
@@ -114,7 +124,6 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 				return false;
 			}
 		}
-		
 		this.waitForPageLoad();
 		
 		return true;
