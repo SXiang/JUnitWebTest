@@ -7,11 +7,13 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.BrowserCommands;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.DriverViewPage.CloudCover;
 import surveyor.scommon.source.DriverViewPage.DisplaySwitchType;
@@ -44,6 +46,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	private static final Integer NOTSET = -1;
 	private LoginPageActions loginPageAction;
 	private DriverViewPageActions driverViewPageAction;
+	private TestEnvironmentActions testEnvironmentAction;
 
 	public DriverViewPageTest() {
 		driverViewPage = new DriverViewPage(driver, testSetup, baseURL);
@@ -54,6 +57,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		String baseURL = testSetup.getBaseUrl();
 		loginPageAction = new LoginPageActions(webDriver, baseURL, testSetup);
 		driverViewPageAction = new DriverViewPageActions(webDriver, baseURL,testSetup);
+		testEnvironmentAction = new TestEnvironmentActions();
 	}
 
 	/**
@@ -451,14 +455,14 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		try {
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(testSetup.getLoginUser() + ":" + testSetup.getLoginPwd(), NOTSET);
-			driverViewPageAction.startSimulatorScript(EMPTY, 1);
+			testEnvironmentAction.startSimulator(EMPTY, 1);
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			
 			driverViewPageAction.startDrivingSurvey(EMPTY, 3);
 			
 			// Intentional sleep for 3 minutes as per test case steps.
-			Thread.sleep(180000);
+			TestContext.INSTANCE.stayIdle(3 * 60);
 			
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
@@ -466,7 +470,9 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			driverViewPageAction.clickOnShutdownButton(EMPTY,NOTSET);
 			
-			// CHECK: Verify analyzer is shutdown.
+			// Verify analyzer is shutdown.
+			assertTrue(testEnvironmentAction.verifyAnalyzerIsShutdown(EMPTY, NOTSET));
+			
 		} catch (Exception e) {
 			Log.error(e.toString());
 		}
@@ -477,14 +483,14 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		try {
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(testSetup.getLoginUser() + ":" + testSetup.getLoginPwd(), NOTSET);
-			driverViewPageAction.startSimulatorScript(EMPTY, 1);
+			testEnvironmentAction.startSimulator(EMPTY, 1);
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			
 			driverViewPageAction.startDrivingSurvey(EMPTY, 3);
 			
 			// Run the survey for 50 seconds.
-			Thread.sleep(50000);
+			TestContext.INSTANCE.stayIdle(50);
 			
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
@@ -494,6 +500,8 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			
 			assertTrue(driverViewPageAction.verifySurveyTagInStartSurveyDialogEquals(driverViewPageAction.workingDataRow.surveyTag, NOTSET));
 			assertTrue(driverViewPageAction.verifyStartSurveyButtonFromSurveyDialogIsDisabled(EMPTY, NOTSET));
+			
+			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 		}
@@ -504,7 +512,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		try {
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-			driverViewPageAction.startSimulatorScript(EMPTY, 1);
+			testEnvironmentAction.startSimulator(EMPTY, 1);
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnGisButton(EMPTY,NOTSET);
 			driverViewPageAction.turnOffBoundariesDistrict(EMPTY, NOTSET);
@@ -516,8 +524,271 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			driverViewPageAction.clickOnGisButton(EMPTY,NOTSET);
 			assertTrue(driverViewPageAction.verifyGisSwitchIsOn("BoundariesDistrict",NOTSET));
 			assertTrue(driverViewPageAction.verifyGisSwitchIsOn("BoundariesDistrictPlat",NOTSET));
+			
+			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+		} catch (Exception e) {
+			Log.error(e.toString());
+		}
+	}
+
+	@Test
+	public void TC1095_SimulatorTest_NavigateBetweenDriverViewAndHomePage() {
+		try {
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
+			testEnvironmentAction.startSimulator(EMPTY, 1);
+			driverViewPageAction.open(EMPTY,NOTSET);
+
+			// goto home by clicking on picarro logo on driver view page.
+			driverViewPageAction.clickOnPicarroLogoButton(EMPTY, NOTSET);
+			
+			// go back to driver view page using browser back button.
+			BrowserCommands.goBack();
+			
+			assertTrue(driverViewPageAction.verifyPageLoaded(EMPTY,NOTSET));
+			
+			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+		} catch (Exception e) {
+			Log.error(e.toString());
+		}
+	}
+
+	@Test
+	public void TC1103_SimulatorTest_DriverViewStartDrivingSurveySatelliteView() {
+		try {
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
+			testEnvironmentAction.startSimulator(EMPTY, 1);
+			driverViewPageAction.open(EMPTY,NOTSET);
+
+			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+			
+			// Verify 1. and 2.
+			// This action internally verifies that the startSurvey button is ONLY enabled after survey mode is selected.
+			driverViewPageAction.startDrivingSurvey(EMPTY, 4);	
+			
+			driverViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+			driverViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+			
+			// Verify 3.
+			driverViewPageAction.verifyMapSwitchOn("Satellite", NOTSET);
+
+			// Verify 3.
+			String expectedTagValue = null;
+			String expectedModeValue = null;
+			String expectedTimeStartsWith = null;
+			String expectedSurveyStatus = "Active";
+			String expectedDriverInfo = null;
+			String expectedTimeElapsedStartsWith = null;
+			String expectedTimeRemainingStartsWith = null;
+			String expectedZoomLevel = null;
+			String expectedAnalyzerValue = null;
+			String expectedSurveyorValue = null;
+			String expectedStabilityClass = "A";
+			assertTrue(driverViewPageAction.verifySurveyInfoTagLabelEquals(expectedTagValue, NOTSET));			
+			assertTrue(driverViewPageAction.verifySurveyInfoModeLabelEquals(expectedModeValue, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoTimeLabelStartsWith(expectedTimeStartsWith, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoSurveyStatusLabelEquals(expectedSurveyStatus, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoDriverLabelEquals(expectedDriverInfo, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(expectedTimeElapsedStartsWith, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(expectedTimeRemainingStartsWith, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoZoomLevelLabelEquals(expectedZoomLevel, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoAnalyzerLabelEquals(expectedAnalyzerValue, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoSurveyorLabelEquals(expectedSurveyorValue, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoStabilityClassLabelEquals(expectedStabilityClass, NOTSET));
+			
+			// Verify 4.
+			assertTrue(driverViewPageAction.verifyCrossHairIconIsShownOnMap("Red", NOTSET));
+			assertTrue(driverViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+			
+			// Verify 5.
+			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+			assertTrue(driverViewPageAction.verifyStopDrivingSurveyButtonIsEnabled(EMPTY, NOTSET));
+			assertTrue(driverViewPageAction.verifyStartIsotopicCaptureButtonIsEnabled(EMPTY, NOTSET));
+			// TODO: ReferenceBottleMeasurement button (check???)
+			assertTrue(driverViewPageAction.verifySystemShutdownButtonIsDisabled(EMPTY, NOTSET));
+			assertTrue(driverViewPageAction.verifySystemShutdownButtonIsNotDisplayed(EMPTY, NOTSET));
+			
+			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+		} catch (Exception e) {
+			Log.error(e.toString());
+		}
+	}
+
+	@Test
+	public void TC1104_SimulatorTest_DriverViewStopDrivingSurveySatelliteView() {
+		try {
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
+			testEnvironmentAction.startSimulator(EMPTY, 1);
+			driverViewPageAction.open(EMPTY,NOTSET);
+
+			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+
+			// Verify 1.
+			driverViewPageAction.verifyMapSwitchOn("Satellite", NOTSET);
+
+			// Verify 3. and 4.
+			// This action internally verifies that the startSurvey button is ONLY enabled after survey mode is selected.
+			driverViewPageAction.startDrivingSurvey(EMPTY, 5);  /* Day, Strong, Light, Operator */	
+			
+			// Verify 1.
+			String expectedTagValue = null;
+			String expectedModeValue = null;
+			String expectedTimeStartsWith = null;
+			String expectedSurveyStatus = "Active";
+			String expectedDriverInfo = null;
+			String expectedTimeElapsedStartsWith = null;
+			String expectedTimeRemainingStartsWith = null;
+			String expectedZoomLevel = null;
+			String expectedAnalyzerValue = null;
+			String expectedSurveyorValue = null;
+			String expectedStabilityClass = "B";
+			assertTrue(driverViewPageAction.verifySurveyInfoTagLabelEquals(expectedTagValue, NOTSET));			
+			assertTrue(driverViewPageAction.verifySurveyInfoModeLabelEquals(expectedModeValue, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoTimeLabelStartsWith(expectedTimeStartsWith, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoSurveyStatusLabelEquals(expectedSurveyStatus, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoDriverLabelEquals(expectedDriverInfo, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(expectedTimeElapsedStartsWith, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(expectedTimeRemainingStartsWith, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoZoomLevelLabelEquals(expectedZoomLevel, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoAnalyzerLabelEquals(expectedAnalyzerValue, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoSurveyorLabelEquals(expectedSurveyorValue, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoStabilityClassLabelEquals(expectedStabilityClass, NOTSET));
+			
+			// Verify 5.
+			assertTrue(driverViewPageAction.verifyCrossHairIconIsShownOnMap("Red", NOTSET));
+			assertTrue(driverViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+			
+			// Stop driving survey.
+			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+			driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
+			
+			// Verify 6.
+			assertTrue(driverViewPageAction.verifyStopDrivingSurveyButtonIsEnabled(EMPTY, NOTSET));
+			assertTrue(driverViewPageAction.verifyStartIsotopicCaptureButtonIsEnabled(EMPTY, NOTSET));
+			// TODO: ReferenceBottleMeasurement button (check???)
+			assertTrue(driverViewPageAction.verifySystemShutdownButtonIsDisabled(EMPTY, NOTSET));
+			assertTrue(driverViewPageAction.verifySystemShutdownButtonIsNotDisplayed(EMPTY, NOTSET));
+
+			// Verify 7.
+			expectedSurveyStatus = "Inactive";
+			assertTrue(driverViewPageAction.verifySurveyInfoSurveyStatusLabelEquals(expectedSurveyStatus, NOTSET));
+			
+			// Verify 7.
+			// (check????) ONLY car icon is present on the map. For this what negative conditions can we check.
+			// That is, what can we check as NOT shown on the map.
+			
+			// Verify 7.
+			assertTrue(driverViewPageAction.verifyCrossHairIconIsShownOnMap("Gray", NOTSET));
+			assertTrue(driverViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));			
+			
+			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+		} catch (Exception e) {
+			Log.error(e.toString());
+		}
+	}
+
+	@Test
+	public void TC1133_SimulatorTest_DriverView2SurveysSameTagSameAnalyzer8HrHistoryON() {
+		try {
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
+			testEnvironmentAction.startSimulator(EMPTY, 1);
+			driverViewPageAction.open(EMPTY,NOTSET);
+
+			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+
+			// This action internally verifies that the startSurvey button is ONLY enabled after survey mode is selected.
+			driverViewPageAction.startDrivingSurvey(EMPTY, 6);	/* Day, Overcast, Calm, Standard */
+			
+			// turn ON map view.
+			driverViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+			driverViewPageAction.turnOnMapView("Map", NOTSET);
+			
+			// perform the survey for 4 mins.
+			TestContext.INSTANCE.stayIdle(4 * 60);
+
+			// Stop driving survey.
+			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+			driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
+
+			// start survey again.
+			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+			driverViewPageAction.startDrivingSurvey(EMPTY, 6);	/* Day, Overcast, Calm, Standard */
+
+			// turn ON 8-hour history.
+			driverViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+			driverViewPageAction.turnOnEightHourHistory(EMPTY, NOTSET);
+			
+			//-------------------
+			// Verify 1.
+			String expectedTagValue = null;
+			assertTrue(driverViewPageAction.verifySurveyInfoTagLabelEquals(expectedTagValue, NOTSET));			
+
+			// Verify 1.
+			// (check???) surveys conducted in the past 8-hour should be displayed on the map.
+			
+			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+		} catch (Exception e) {
+			Log.error(e.toString());
+		}
+	}
+
+	@Test
+	public void TC1133_SimulatorTest_DriverView2SurveysSameTagDifferentAnalyzers8HrHistoryON() {
+		try {
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
+			testEnvironmentAction.startSimulator(EMPTY, 1);
+			driverViewPageAction.open(EMPTY,NOTSET);
+
+			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+
+			// This action internally verifies that the startSurvey button is ONLY enabled after survey mode is selected.
+			driverViewPageAction.startDrivingSurvey(EMPTY, 6);	/* Day, Overcast, Calm, Standard */
+			
+			// turn ON map view.
+			driverViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+			driverViewPageAction.turnOnMapView("Map", NOTSET);
+			
+			// perform the survey for 4 mins.
+			TestContext.INSTANCE.stayIdle(4 * 60);
+
+			// Stop driving survey.
+			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+			driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
+
+			// Stop current simulator and start another with a different Analyzer.
+			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.startSimulator(EMPTY, 4);
+
+			driverViewPageAction.open(EMPTY,NOTSET);
+
+			// start survey again.
+			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+			driverViewPageAction.startDrivingSurvey(EMPTY, 6);	/* Day, Overcast, Calm, Standard */
+
+			// turn ON map view.
+			driverViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+			driverViewPageAction.turnOnMapView("Map", NOTSET);
+
+			// turn ON 8-hour history.
+			driverViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+			driverViewPageAction.turnOnEightHourHistory(EMPTY, NOTSET);
+			
+			//-------------------
+			// Verify 1.
+			String expectedAnalyzerValue = null;
+			assertTrue(driverViewPageAction.verifySurveyInfoAnalyzerLabelEquals(expectedAnalyzerValue, NOTSET));			
+
+			// Verify 1.
+			// (check???) surveys conducted in the past 8-hour should NOT be displayed on the map.
+			
+			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 		}
 	}
 }
+

@@ -17,6 +17,8 @@ import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.WebElement;
 
+import static org.junit.Assert.assertTrue;
+
 public class DriverViewPage extends SurveyorBasePage {
 	private static final String VIRTUALEARTH_NET_BRANDING_LOGO = "https://dev.virtualearth.net/Branding/logo_powered_by.png";
 	private static final String IMG_DATA_DATA_0 = "return imgData.data[0];";
@@ -140,6 +142,10 @@ public class DriverViewPage extends SurveyorBasePage {
 	@FindBy(id = "bottom_button_status")
 	@CacheLookup
 	private WebElement statusButton;
+	
+	@FindBy(id = "bottom_logo")
+	@CacheLookup
+	private WebElement picarroLogoButton;
 
 	@FindBy(id = "mode_start_survey")
 	@CacheLookup
@@ -530,6 +536,10 @@ public class DriverViewPage extends SurveyorBasePage {
 		return driver.findElement(By.id("timeElapsed")).getText();
 	}
 
+	public String getTimeLabelText() {
+		return driver.findElement(By.id("currentTime")).getText();
+	}	
+	
 	public String getTimeRemainingLabelText() {
 		return driver.findElement(By.id("timeRemaining")).getText();
 	}
@@ -1174,6 +1184,11 @@ public class DriverViewPage extends SurveyorBasePage {
 		return this;
 	}
 
+	public DriverViewPage clickPicarroLogoButton() {
+		this.picarroLogoButton.click();
+		return this;
+	}
+
 	public boolean isStatusButtonGreen() {
 		return this.statusButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon");
 	}
@@ -1398,7 +1413,6 @@ public class DriverViewPage extends SurveyorBasePage {
 		return this;
 	}
 
-
 	/**
 	 * Gets the Start Survey Button from the Survey modal dialog.
 	 *
@@ -1575,6 +1589,10 @@ public class DriverViewPage extends SurveyorBasePage {
 			break;
 		}
 		Log.info("Selected wind..");
+		
+		// Until SurveyType is selected the StartSurvey button should NOT be displayed.
+		assertTrue(this.getStartSurveyButtonFromStartSurveyDialog().isDisplayed() == false);
+		
 		Log.info("Selecting surveyType..");		
 		switch (surveyType) {
 		case Manual:

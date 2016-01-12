@@ -182,7 +182,7 @@ public class ActionsExecutionEngine implements IMethodObserver {
 		}
 		 
 		List<Integer> dataRowIDList = parseDataRowsIDs(testDataRowIDs);		 
-		IPageActions pageActions = PageActionsFactory.getPageAction(pageObjectName);
+		IActions pageActions = PageActionsFactory.getAction(pageObjectName);
 		BasePageActions baseAction = (BasePageActions)pageActions;
 		Log.info("BASEURL=" + baseAction.getBaseURL());
 		

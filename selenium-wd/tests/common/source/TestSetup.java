@@ -277,6 +277,14 @@ public class TestSetup {
 		}
 	}
 
+	public static boolean isAnalyzerRunning() {
+		return ProcessUtility.isProcessRunning("Picarro.Surveyor.Analyzer.exe");
+	}
+
+	public static boolean isAnalyzerShutdown() {
+		return !isAnalyzerRunning();
+	}
+
 	public static void stopAnalyzer() {
 		try {
 			if (isRunningLocally()) {

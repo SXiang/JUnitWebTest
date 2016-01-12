@@ -1,31 +1,17 @@
 package surveyor.scommon.actions;
 
-import java.io.File;
-
 import org.openqa.selenium.WebDriver;
 
-import common.source.ExcelUtility;
-import common.source.Log;
-import common.source.TestContext;
-
-public class BasePageActions implements IPageActions {
+public class BasePageActions extends BaseActions {
 	protected static final String DEFAULT_DATE_FORMAT = "MM/dd/yyyy HH:mm:ss a";
-	private static final String DATA_FOLDER = "data";
 	private static final String TEST_DATA_XLSX = "TestCaseData.xlsx";
 	private WebDriver driver = null;
 	private String baseURL = null;
-	protected ExcelUtility excelUtility = null;
 	
 	public BasePageActions(WebDriver driver, String baseURL) {
 		this.setDriver(driver);
 		this.setBaseURL(baseURL);
-		String testDataExcelPath = TestContext.INSTANCE.getExecutionPath() + DATA_FOLDER + File.separator + TEST_DATA_XLSX;
-		try {
-			excelUtility = new ExcelUtility();
-			excelUtility.setExcelFile(testDataExcelPath);
-		} catch (Exception e) {
-			Log.error(e.toString());
-		}
+		this.setExcelFile(TEST_DATA_XLSX);
 	}
 
 	public String getBaseURL() {
@@ -81,19 +67,6 @@ public class BasePageActions implements IPageActions {
 	}
 
 	public boolean selectRadioButtonByXPath(String elementXPath, Integer dataRowID) {
-		return false;
-	}
-
-	protected void logAction(String actionName, String data, Integer dataRowID) {
-		Log.info(String.format("Executing action-[%s] : data=[%s], dataRowID=[%d]", actionName, data, dataRowID));
-	}
-
-	protected void log(String logText) {
-		Log.info(logText);
-	}
-
-	@Override
-	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
 		return false;
 	}
 }

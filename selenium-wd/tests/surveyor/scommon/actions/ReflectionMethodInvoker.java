@@ -17,9 +17,9 @@ public class ReflectionMethodInvoker implements IMethodInvoker {
 	}
 	
 	@Override
-	public boolean invokeMethod(IPageActions pageAction, String actionName, MethodParams methodParams) {
+	public boolean invokeMethod(IActions action, String actionName, MethodParams methodParams) {
 		Object result = null;
-		method = pageAction.getClass().getMethods();	
+		method = action.getClass().getMethods();	
 		for (int i=0; i< method.length; i++) {
 			if(method[i].getName().equals(actionName)){
 				// Execute the method for specified dataRowIds
@@ -27,7 +27,7 @@ public class ReflectionMethodInvoker implements IMethodInvoker {
 					methodParams.setDataRowID(dataRowID);
 					
 					try {
-						result = method[i].invoke(pageAction, methodParams.getMethodData(), dataRowID);
+						result = method[i].invoke(action, methodParams.getMethodData(), dataRowID);
 					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 						Log.error(e.toString());
 						result = false;

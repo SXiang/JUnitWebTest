@@ -14,7 +14,7 @@ public class TableMapMethodInvoker implements IMethodInvoker {
 	}	
 
 	@Override
-	public boolean invokeMethod(IPageActions pageAction, String actionName, MethodParams methodParams) {
+	public boolean invokeMethod(IActions action, String actionName, MethodParams methodParams) {
 		boolean result = true;
 		List<Integer> rowIDList = methodParams.getDataRowIDList();
 		// Handle the case when single rowID is specified or no rowID is specified.
@@ -24,7 +24,7 @@ public class TableMapMethodInvoker implements IMethodInvoker {
 				dataRowID = rowIDList.get(0);
 			}
 			try {
-				result = pageAction.invokeAction(actionName, methodParams.getMethodData(), dataRowID);
+				result = action.invokeAction(actionName, methodParams.getMethodData(), dataRowID);
 			} catch (Exception e) {
 				Log.error(e.toString());
 			}
@@ -32,7 +32,7 @@ public class TableMapMethodInvoker implements IMethodInvoker {
 			for (Integer dataRowID : rowIDList) {
 				methodParams.setDataRowID(dataRowID);
 				try {
-					result = pageAction.invokeAction(actionName, methodParams.getMethodData(), dataRowID);
+					result = action.invokeAction(actionName, methodParams.getMethodData(), dataRowID);
 				} catch (Exception e) {
 					Log.error(e.toString());
 				}
