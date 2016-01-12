@@ -105,9 +105,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		}
 		
 		this.btnOK.click();
-		JavascriptExecutor js = (JavascriptExecutor)driver; 
-		js.executeScript("arguments[0].click();", btnOK);  	
-	
+			
 		if(bFlag==false){
 			String att1 =this.inputLotNumber.getAttribute("required");
 			String att2 =this.inputIsoValue.getAttribute("required");
