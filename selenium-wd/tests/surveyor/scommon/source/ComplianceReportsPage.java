@@ -100,6 +100,8 @@ import common.source.DBConnection;
 import common.source.FileUtility;
 import common.source.Log;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.Report;
+import surveyor.dataaccess.source.ReportGap;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 
@@ -1194,125 +1196,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return false;
 	}
 
-	//WIP Function not used in TCs
-	public boolean validateReportCSVFile(ReportsCompliance reportsCompliance, String downloadPath) {
-		String reportId;
-		String reportName;
-		DBConnection objDbConn = new DBConnection();
-
-		try {
-			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportsCompliance.getRptTitle(), this.testSetup);
-			reportId = reportId.substring(0, 6);
-			reportName = "CR-" + reportId;
-			setReportName(reportName);
-			BaseHelper.deCompressZipFile(reportName + " (1)", downloadPath);
-			String reportCSV = reportName + "-Report.csv";
-			if (new File(downloadPath + reportCSV).exists()) {
-				List<HashMap<String, String>> rowsList = new ArrayList<HashMap<String, String>>();
-				CSVUtility extractCSV = new CSVUtility();
-				rowsList = extractCSV.getAllRows(downloadPath + reportCSV);
-				if (rowsList.size() == 1) {
-					// rowsList.get(0).
-				}
-			}
-		} catch (Exception e) {
-			Log.error(e.toString());
-			return false;
-		}
-		return true;
-	}
-
-	public boolean validateIsoCSVFile(ReportsCompliance reportsCompliance, String downloadPath) {
-		String reportId;
-		String reportName;
-		DBConnection objDbConn = new DBConnection();
-
-		try {
-			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportsCompliance.getRptTitle(), this.testSetup);
-			reportId = reportId.substring(0, 6);
-			reportName = "CR-" + reportId;
-			setReportName(reportName);
-			BaseHelper.deCompressZipFile(reportName + " (1)", downloadPath);
-			String reportIsoCSV = reportName + "-ReportIsotopic.csv";
-			if (new File(downloadPath + reportIsoCSV).exists()) {
-
-			}
-
-		} catch (Exception e) {
-			Log.error(e.toString());
-			return false;
-		}
-		return true;
-	}
-
-	public boolean validateGAPCSVFile(ReportsCompliance reportsCompliance, String downloadPath) {
-		String reportId;
-		String reportName;
-		DBConnection objDbConn = new DBConnection();
-
-		try {
-			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportsCompliance.getRptTitle(), this.testSetup);
-			reportId = reportId.substring(0, 6);
-			reportName = "CR-" + reportId;
-			setReportName(reportName);
-			BaseHelper.deCompressZipFile(reportName + " (1)", downloadPath);
-			String reportGapCSV = reportName + "-ReportGAP.csv";
-			if (new File(downloadPath + reportGapCSV).exists()) {
-
-			}
-
-		} catch (Exception e) {
-			Log.error(e.toString());
-			return false;
-		}
-		return true;
-	}
-
-	public boolean validateLISACSVFile(ReportsCompliance reportsCompliance, String downloadPath) {
-		String reportId;
-		String reportName;
-		DBConnection objDbConn = new DBConnection();
-
-		try {
-			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportsCompliance.getRptTitle(), this.testSetup);
-			reportId = reportId.substring(0, 6);
-			reportName = "CR-" + reportId;
-			setReportName(reportName);
-			BaseHelper.deCompressZipFile(reportName + " (1)", downloadPath);
-			String reportLISASCSV = reportName + "-ReportLISAS.csv";
-			if (new File(downloadPath + reportLISASCSV).exists()) {
-
-			}
-		} catch (Exception e) {
-			Log.error(e.toString());
-			return false;
-		}
-		return true;
-	}
-
-	public boolean validateSurveyCSVFile(ReportsCompliance reportsCompliance, String downloadPath) {
-		String reportId;
-		String reportName;
-		DBConnection objDbConn = new DBConnection();
-
-		try {
-			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportsCompliance.getRptTitle(), this.testSetup);
-			reportId = reportId.substring(0, 6);
-			reportName = "CR-" + reportId;
-			setReportName(reportName);
-			BaseHelper.deCompressZipFile(reportName + " (1)", downloadPath);
-			String reportSurveyCSV = reportName + "-ReportSurvey.csv";
-			if (new File(downloadPath + reportSurveyCSV).exists()) {
-
-			}
-
-		} catch (Exception e) {
-			Log.error(e.toString());
-			return false;
-		}
-		return true;
-	}
-
 	public boolean copyReportAndModifyDetails(String rptTitle, String strCreatedBy, String rptTitleNew, String surUnit, List<String> tag, boolean changeMode, String strReportMode) {
 		setPagination(PAGINATIONSETTING);
 		this.waitForPageLoad();
@@ -1999,7 +1882,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						return true;
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
-						if (elapsedTime >= (ACTIONTIMEOUT * 1000)) {
+						if (elapsedTime >= (ACTIONTIMEOUT+900 * 1000)) {
 							return false;
 						}
 
