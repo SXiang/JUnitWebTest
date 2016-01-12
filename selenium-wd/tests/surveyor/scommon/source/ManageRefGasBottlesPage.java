@@ -6,6 +6,7 @@ package surveyor.scommon.source;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -16,7 +17,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
@@ -105,16 +105,16 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		}
 		
 		this.btnOK.click();
+		JavascriptExecutor js = (JavascriptExecutor)driver; 
+		js.executeScript("arguments[0].click();", btnOK);  	
 	
 		if(bFlag==false){
 			String att1 =this.inputLotNumber.getAttribute("required");
 			String att2 =this.inputIsoValue.getAttribute("required");
-			//if (panelError.getText().equalsIgnoreCase("Please fill out this field.")) {
-					if (att1!=null && att2!=null ) {
-			
-				return true;
-			
-		}
+			if (att1 != null && att2 != null) {
+
+				return false;
+			}
 		}
 		
 		if (isElementPresent(this.panelDupRgbErrorXPath)){
