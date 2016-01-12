@@ -215,19 +215,19 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
 		tableMap.put(KEYBOUNDARYDISTRICT, "0");
 		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
-		
+
 		tablesList.add(tableMap);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQAPICSUP, "Picarro", TIMEZONEPT, EXCLUSIONRADIUS, listBoundary, tablesList, "", SQACUSDRTAG, viewList);
 
 		complianceReportsPage.addNewReport(rpt);
-		
+
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICSUP))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, SQAPICSUP));
 			try {
 				assertTrue(complianceReportsPage.compareComplianceRptFirstPageStaticText(testSetup.getDownloadPath()));
-				
+
 			} catch (IOException e) {
 				Log.error(e.toString());
 				fail("\nTestcase TC517 failed.\n");
@@ -385,7 +385,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0", listBoundary, tablesList, PICADMNSURVEYOR, "", "", "", viewList, SurveyModeFilter.RapidResponse);
 		complianceReportsPage.addNewReport(rpt);
-		
+
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
@@ -682,7 +682,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
 
-			if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
+		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
 			} else
@@ -1218,7 +1218,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		viewList.add(viewMap1);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNMANTAG, "", "", viewList, SurveyModeFilter.Standard,ReportModeFilter.Manual);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNMANTAG, "", "", viewList, SurveyModeFilter.Manual, ReportModeFilter.Manual);
 		complianceReportsPage.addNewReport(rpt);
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser())))
@@ -1368,7 +1368,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "sqacus", TIMEZONEMT, "0", listBoundary, tablesList, "", CUSDRVSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
 
-	if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
+		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
 			} else
@@ -1568,7 +1568,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		complianceReportsPage.addNewReport(rpt);
 
-	if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSUA))) {
+		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSUA))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findReport(rptTitle, SQACUSUA));
 			} else
@@ -1711,7 +1711,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNMANTAG, "", "", viewList, SurveyModeFilter.Manual,ReportModeFilter.Manual);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNMANTAG, "", "", viewList, SurveyModeFilter.Manual, ReportModeFilter.Manual);
 		complianceReportsPage.addNewReport(rpt);
 
 		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
@@ -1852,7 +1852,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		List<String> listBoundary = new ArrayList<String>();
 		listBoundary.add(IMGMAPHEIGHT);
 		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add("36.42252593456307");
+		listBoundary.add("36.42252593456309");
 		listBoundary.add("-122.83494567871095");
 		listBoundary.add("38.27989023941680");
 		listBoundary.add("-124.05415725708008");
@@ -1980,7 +1980,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, PICDFADMIN, strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList);
 		complianceReportsPage.addNewReportWithMultipleSurveysIncluded(rpt);
-		
+
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
 			assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
 
