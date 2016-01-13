@@ -61,7 +61,7 @@ public class User extends BaseEntity {
 			user.setUserName(resultSet.getString("UserName"));
 			user.setCultureId(resultSet.getString("CultureId"));
 		} catch (SQLException e) {
-			Log.error(e.toString());
+			Log.error("Class User | " + e.toString());
 		}
 
 		return user;
@@ -81,7 +81,7 @@ public class User extends BaseEntity {
 			
 			while (resultSet.next()) {
 				User user = loadFrom(resultSet);
-				userList.add(loadFrom(resultSet));
+				userList.add(user);
 				
 				// add to cache.
 				DBCache.INSTANCE.set(CACHE_KEY + user.getUserName(), user);

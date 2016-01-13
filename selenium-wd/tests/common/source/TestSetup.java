@@ -103,18 +103,23 @@ public class TestSetup {
 	private String computerName;
 	
 	public TestSetup() {
+		initialize();
+	}
+
+	public TestSetup(Boolean initialize) {
+		if (initialize) {
+			initialize();
+		}
+	}
+
+	public void initialize() {
 		try {
 
 			this.computerName=InetAddress.getLocalHost().getHostAddress();
-			Log.info("IP Address: " +computerName);
-			
+			Log.info("IP Address: " +computerName);			
 
 			String rootPath = getRootPath();
-			testPropFileName = getExecutionPath(rootPath) + "tests" + File.separator + "surveyor" + File.separator + "test.properties";
-
-			InputStream inputStream = new FileInputStream(testPropFileName);
-			testProp = new Properties();
-			testProp.load(inputStream);
+			InputStream inputStream = loadTestProperties(rootPath);
 
 			this.dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			this.calendar = Calendar.getInstance();
@@ -132,11 +137,9 @@ public class TestSetup {
 			this.loginUser0000 = this.testProp.getProperty("loginUser0000");
 			this.loginPwd0000 = this.testProp.getProperty("loginPwd0000");
 			this.loginUserDisplayName = this.testProp.getProperty("loginUserDisplayName");
-			this.dbIPAddress = this.testProp.getProperty("dbIPAddress");
-			this.dbName = this.testProp.getProperty("dbName");
-			this.dbPortNo = this.testProp.getProperty("dbPortNo");
-			this.dbUser = this.testProp.getProperty("dbUser");
-			this.dbPassword = this.testProp.getProperty("dbPassword");
+
+			initializeDBProperties();
+			
 			this.browser = this.testProp.getProperty("browser");
 			Log.info("\nThe browser is: " + this.browser + "\n");
 
@@ -173,6 +176,22 @@ public class TestSetup {
 		} catch (IOException e) {
 			Log.error(e.toString());
 		}
+	}
+
+	public InputStream loadTestProperties(String rootPath) throws FileNotFoundException, IOException {
+		testPropFileName = getExecutionPath(rootPath) + "tests" + File.separator + "surveyor" + File.separator + "test.properties";
+		InputStream inputStream = new FileInputStream(testPropFileName);
+		testProp = new Properties();
+		testProp.load(inputStream);
+		return inputStream;
+	}
+
+	public void initializeDBProperties() {
+		this.dbIPAddress = this.testProp.getProperty("dbIPAddress");
+		this.dbName = this.testProp.getProperty("dbName");
+		this.dbPortNo = this.testProp.getProperty("dbPortNo");
+		this.dbUser = this.testProp.getProperty("dbUser");
+		this.dbPassword = this.testProp.getProperty("dbPassword");
 	}
 
 	public static String getRootPath() throws IOException {
