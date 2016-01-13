@@ -54,6 +54,8 @@ import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICT;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
+import surveyor.scommon.source.Reports.ReportModeFilter;
+import surveyor.scommon.source.Reports.SurveyModeFilter;
 
 import java.io.File;
 import java.io.IOException;
@@ -80,9 +82,12 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import common.source.BaseHelper;
+import common.source.CSVUtility;
 import common.source.DBConnection;
 import common.source.Log;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.Report;
+import surveyor.dataaccess.source.ReportGap;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.Reports.ReportModeFilter;
@@ -103,10 +108,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_PageTitle);
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_AddNew);
 	public static final String STRCopyPageTitle = Resources.getResource(ResourceKeys.ComplianceReport_PageTitle);
-	
+
 	private String reportName;
-	
-	@FindBy (how = How.ID, using = "pdf")
+
+	@FindBy(how = How.ID, using = "pdf")
 	protected WebElement pdfImg;
 
 	@FindBy(how = How.ID, using = "zip-file_pdf")
@@ -150,7 +155,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(id = "datatableSurveys")
 	protected WebElement surveysTable;
-	
+
 	@FindBy(how = How.XPATH, using = "//div[@id='surveyContent-0']//button[@class='btn btnDeleteSurvey btn-sm btn-danger']")
 	protected WebElement btnDeleteSurvey;
 
@@ -163,9 +168,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[3]")
 	protected WebElement tdCReportCreatedBy;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='deleteReportModalLabel']/../..//*[@class='btn btn-danger']")
+	@FindBy(how = How.XPATH, using = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=ComplianceReports')]")
 	protected WebElement btnDeleteConfirm;
-	protected String btnDeleteConfirmXpath="//*[@id='deleteReportModalLabel']/../..//*[@class='btn btn-danger']";
+	protected String btnDeleteConfirmXpath = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=ComplianceReports')]";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='Standard']")
 	protected WebElement checkBoxStndRptMode;
@@ -345,7 +350,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		this.checkboxSurFirst.click();
 		this.btnAddSurveys.click();
-
 	}
 
 	public void selectGapCheckBox() {
@@ -454,6 +458,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			boolean selectBoundaryDistrictPlat = viewLayersList.get(0).get(KEYBOUNDARYDISTRICTPLAT).equalsIgnoreCase("1");
 			selectViewLayerBoundaries(selectBoundaryDistrict, selectBoundaryDistrictPlat);
 		}
+
+		this.btnSurveySearch.click();
+		this.waitForSurveyTabletoLoad();
+
+		this.checkboxSurFirst.click();
+		this.btnAddSurveys.click();
+
 	}
 
 	public void addViews(String customer, List<Map<String, String>> viewList) {
@@ -601,14 +612,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			inputSurveyTag(tag);
 		}
 
-		if (testSetup.isRunningDebug())
-			testSetup.slowdownInSeconds(3);
-
 		this.btnSurveySearch.click();
 		this.checkboxSurFirst.click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		this.waitForSurveyTabletoLoad();
 		this.btnAddSurveys.click();
-
 		this.inputViewLisa.click();
 		this.inputViewFOV.click();
 		this.inputViewBreadCrumb.click();
@@ -634,10 +641,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy) {
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		setPagination(PAGINATIONSETTING);
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-
+		this.waitForPageLoad();
 		String reportTitleXPath;
 		String createdByXPath;
 		WebElement rptTitleCell;
@@ -670,32 +675,38 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						if (rowSize == 1) {
 							this.btnReportViewer = table.findElement(By.xpath("//*[@id='datatable']/tbody/tr/td[5]/a[3]"));
 							this.btnReportViewer.click();
+							this.waitForPdfReportIcontoAppear();
 						} else {
 							this.btnReportViewer = table.findElement(By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img"));
 							this.btnReportViewer.click();
+							this.waitForPdfReportIcontoAppear();
 						}
 						String srcPdfImg = this.pdfImg.getAttribute("src");
 						String srcZipImg = this.zipImg.getAttribute("src");
 						String srcZipMeta = this.zipMeta.getAttribute("src");
 						String srcShapeImg = this.zipShape.getAttribute("src");
+						DBConnection objDbConn = new DBConnection();
+						String reportId = objDbConn.getIdOfSpecifiedReportTitle(rptTitle, this.testSetup);
+						System.out.println("report id" + reportId);
+						reportId = reportId.substring(0, 6);
+						reportName = "CR-" + reportId;
 
 						if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip") && srcZipMeta.contains("zip") && srcShapeImg.contains("zip")) {
 							JavascriptExecutor js = (JavascriptExecutor) driver;
 							js.executeScript("arguments[0].click();", pdfImg);
-							testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-
+							waitForFileDownload(reportName + ".pdf", testSetup.getDownloadPath());
 							js = (JavascriptExecutor) driver;
 							js.executeScript("arguments[0].click();", zipImg);
-							testSetup.slowdownInSeconds(15);
+							waitForFileDownload(reportName + ".zip", testSetup.getDownloadPath());
 							if (zipMeta.isDisplayed()) {
 								js = (JavascriptExecutor) driver;
 								js.executeScript("arguments[0].click();", zipMeta);
-								testSetup.slowdownInSeconds(15);
+								waitForFileDownload(reportName + " (1).zip", testSetup.getDownloadPath());
 							}
 							if (zipShape.isDisplayed()) {
 								js = (JavascriptExecutor) driver;
 								js.executeScript("arguments[0].click();", zipShape);
-								testSetup.slowdownInSeconds(15);
+								waitForFileDownload(reportName + " (2).zip", testSetup.getDownloadPath());
 							}
 							return true;
 						}
@@ -703,16 +714,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip")) {
 							JavascriptExecutor js = (JavascriptExecutor) driver;
 							js.executeScript("arguments[0].click();", pdfImg);
-							testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+							waitForFileDownload(reportName + ".pdf", testSetup.getDownloadPath());
 							js = (JavascriptExecutor) driver;
 							js.executeScript("arguments[0].click();", zipImg);
-							testSetup.slowdownInSeconds(15);
+							waitForFileDownload(reportName + ".zip", testSetup.getDownloadPath());
 							return true;
 						} else
 							return false;
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
-						if (elapsedTime >= (ACTIONTIMEOUT * 1000)) {
+						if (elapsedTime >= (ACTIONTIMEOUT + 800 * 1000)) {
+							System.out.print("Timed out in reporting");
 							return false;
 						}
 
@@ -726,9 +738,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
-
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-
+				this.waitForPageLoad();
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
@@ -743,11 +753,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean checkActionStatusInSeconds(String rptTitle, String strCreatedBy, int seconds) {
-		this.testSetup.slowdownInSeconds(seconds);
 
 		setPagination(PAGINATIONSETTING);
-
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForPageLoad();
 
 		String reportTitleXPath;
 		String createdByXPath;
@@ -788,12 +796,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 					if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip")) {
 						pdfImg.click();
-
-						testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+						waitForFileDownload(reportName + ".pdf", testSetup.getDownloadPath());
 						zipImg.click();
-
-						testSetup.slowdownInSeconds(15);
-
+						waitForFileDownload(reportName + ".zip", testSetup.getDownloadPath());
 						return true;
 					} else
 						return false;
@@ -805,7 +810,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				this.waitForPageLoad();
 
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
@@ -966,8 +971,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean findReport(String rptTitle, String strCreatedBy) {
 		setPagination(PAGINATIONSETTING);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-
 		String reportTitleXPath;
 		String createdByXPath;
 
@@ -998,8 +1001,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-
+				this.waitForPageLoad();
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
@@ -1017,7 +1019,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean deleteReport(String rptTitle, String strCreatedBy) {
 		setPagination(PAGINATIONSETTING);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForPageLoad();
 
 		String reportTitleXPath;
 		String createdByXPath;
@@ -1050,7 +1052,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 				deleteImg.click();
 				waitForDeletePopupLoad();
-				
+
 				if (this.isElementPresent(btnDeleteConfirmXpath)) {
 					JavascriptExecutor js = (JavascriptExecutor) driver;
 					js.executeScript("arguments[0].click();", btnDeleteConfirm);
@@ -1068,7 +1070,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				this.waitForPageLoad();
 
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
@@ -1087,7 +1089,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean copyReport(String rptTitle, String strCreatedBy, String rptTitleNew) {
 		setPagination(PAGINATIONSETTING);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForPageLoad();
 
 		String reportTitleXPath;
 		String createdByXPath;
@@ -1120,7 +1122,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 				copyImg.click();
 
-				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.waitForCopyReportPagetoLoad();
 
 				this.inputTitle.clear();
 				this.inputTitle.sendKeys(rptTitleNew);
@@ -1133,7 +1135,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				this.waitForPageLoad();
 
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
@@ -1155,7 +1157,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String reportName;
 		DBConnection objDbConn = new DBConnection();
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		try {
 			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
 			reportId = reportId.substring(0, 6);
@@ -1199,15 +1200,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String reportId;
 		String reportName;
 		DBConnection objDbConn = new DBConnection();
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
 		try {
-			Thread.sleep(10000);
 			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportsCompliance.getRptTitle(), this.testSetup);
 			reportId = reportId.substring(0, 6);
 			reportName = "CR-" + reportId;
 			setReportName(reportName);
-			this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 			BaseHelper.deCompressZipFile(reportName, downloadPath);
 		} catch (Exception e) {
 			Log.error(e.toString());
@@ -1382,8 +1380,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public boolean copyReportAndModifyDetails(String rptTitle, String strCreatedBy, String rptTitleNew, String surUnit, List<String> tag, boolean changeMode, String strReportMode) {
 		setPagination(PAGINATIONSETTING);
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-
+		this.waitForPageLoad();
 		String reportTitleXPath;
 		String createdByXPath;
 		String copyImgXPath;
@@ -1402,7 +1399,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		else
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForPageLoad();
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
@@ -1416,7 +1413,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				copyImg.click();
 				this.inputTitle.clear();
 				this.inputTitle.sendKeys(rptTitleNew);
-				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 				if (strReportMode != null && changeMode) {
 					selectReportMode(getReportMode(strReportMode));
@@ -1439,11 +1435,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						inputSurveyTag(tagValue);
 						
 						this.btnSurveySearch.click();
-						if (testSetup.isRunningDebug())
-							testSetup.slowdownInSeconds(3);
-						testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+						this.waitForSurveyTabletoLoad();
 						this.checkboxSurFirst.click();
-						testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 						this.btnAddSurveys.click();
 					}
 				}
@@ -1459,7 +1452,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
 				this.nextBtn.click();
 
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				this.waitForPageLoad();
 
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
@@ -1513,9 +1506,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 
 		if (changeMode) {
-			if (strReportMode.contentEquals("S1"))
-				this.radioBtnS1Mode.click();
-			else if (strReportMode.contentEquals(Resources.getResource(ResourceKeys.Constant_Standard)))
+			if (strReportMode.contentEquals(Resources.getResource(ResourceKeys.Constant_Standard)))
 				this.radioBtnStndMode.click();
 			else if (strReportMode.contentEquals("Rapid Response"))
 				this.radioBtnRRmode.click();
@@ -1556,12 +1547,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (tagValue != "") {
 				inputSurveyTag(tagValue);
 				this.btnSurveySearch.click();
-				if (testSetup.isRunningDebug())
-					testSetup.slowdownInSeconds(3);
-				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.waitForSurveyTabletoLoad();
 				this.checkboxSurFirst.click();
-				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 				this.btnAddSurveys.click();
+				this.waitForNewPageLoad();
 			}
 		}
 
@@ -1632,8 +1621,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		List<Map<String, String>> tablesList = reportsCompliance.getTablesList();
 		if (tablesList.get(0).get(KEYINDTB).equalsIgnoreCase("1")) {
-			new Actions(driver).moveToElement(checkBoxIndTb).click();
-			// this.checkBoxIndTb.click();
+			this.checkBoxIndTb.click();
 		}
 		if (tablesList.get(0).get(KEYISOANA).equalsIgnoreCase("1")) {
 			this.checkBoxIsoAna.click();
@@ -1655,11 +1643,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (tagValue != "") {
 				inputSurveyTag(tagValue);
 				this.btnSurveySearch.click();
-				if (testSetup.isRunningDebug())
-					testSetup.slowdownInSeconds(3);
-				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.waitForSurveyTabletoLoad();
 				this.checkboxSurFirst.click();
-				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 				this.btnAddSurveys.click();
 			}
 		}
@@ -1671,7 +1656,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public boolean checkPaginationSetting(String numberOfReports) {
 		setPagination(numberOfReports);
-		testSetup.slowdownInSeconds(3);
+		this.waitForPageLoad();
 		String msgToVerify = STRPaginationMsg + numberOfReports;
 		String actualText = this.paginationMsg.getText().substring(0, 15);
 
@@ -1684,7 +1669,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean verifyCancelButtonFunctionality() {
 		openNewReportPage();
 		this.btnCancel.click();
-		testSetup.slowdownInSeconds(3);
+		this.waitForPageLoad();
 
 		if (isElementPresent(strBtnNewCompRpt))
 			return true;
@@ -1698,7 +1683,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public void clickOnCopyReport(String rptTitle, String strCreatedBy) {
 		setPagination(PAGINATIONSETTING);
-		
+
 		String reportTitleXPath;
 		String createdByXPath;
 		String copyImgXPath;
@@ -1735,7 +1720,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
 				this.nextBtn.click();
 
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				this.waitForPageLoad();
 
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
@@ -1767,11 +1752,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (surveyTag != "") {
 			inputSurveyTag(surveyTag);
 			this.btnSurveySearch.click();
-			if (testSetup.isRunningDebug())
-				testSetup.slowdownInSeconds(3);
-			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+			this.waitForSurveyTabletoLoad();
 			this.checkboxSurFirst.click();
-			testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 			this.btnAddSurveys.click();
 		}
 
@@ -1779,9 +1761,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (surveyTag != "") {
 				inputSurveyTag(surveyTag);
 				this.btnSurveySearch.click();
-				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.waitForSurveyTabletoLoad();
 				this.checkboxSurFirst.click();
-				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 				this.btnAddSurveys.click();
 
 				if (this.btnAddSurveys.getAttribute("value").equalsIgnoreCase(STRSurveyIncludedMsg))
@@ -1793,7 +1774,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public boolean deleteSurveyAndIncludeAgain(String surveyTag) {
 		this.btnDeleteDrivingSurvey.click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		this.waitForCopyReportPagetoLoad();
 
 		try {
 			driver.findElement(By.xpath(strFirstSurveyTag));
@@ -1802,11 +1783,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (surveyTag != "") {
 				inputSurveyTag(surveyTag);
 				this.btnSurveySearch.click();
-				if (testSetup.isRunningDebug())
-					testSetup.slowdownInSeconds(3);
-				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.waitForSurveyTabletoLoad();
 				this.checkboxSurFirst.click();
-				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 				this.btnAddSurveys.click();
 			}
 
@@ -1929,15 +1907,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		});
 	}
-	
 	@Override
 	public void waitForPageLoad() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                return d.getPageSource().contains(STRPageContentText);
-            }
-        });
-    }
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return d.getPageSource().contains(STRPageContentText);
+			}
+		});
+	}
 
 	public void waitForNewPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
@@ -2131,6 +2108,25 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void waitForFileDownload(String fileName, String downloadPath) {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return checkFileExists(fileName, downloadPath);
+			}
+		});
+	}
+	
+	private boolean checkFileExists(String fileName, String downloadPath) {
+		File dir = new File(downloadPath);
+		File[] dir_contents = dir.listFiles();
+		for (int i = 0; i < dir_contents.length; i++) {
+			if (dir_contents[i].getName().equals(fileName)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public void waitForPDFFileDownload() {

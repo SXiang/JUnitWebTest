@@ -33,6 +33,8 @@ public class Reports {
 	protected Boolean surveyGeoFilterOn;
 	protected String startDate;
 	protected String endDate;
+	protected String userName;
+	protected boolean geoFilterOn;
 	
 	protected List<Map<String, String>> viewList;
 	protected List<Map<String, String>> tablesList;
@@ -290,9 +292,6 @@ public class Reports {
 		return this.tagList;
 	}
 	
-	public String getSurveyMode() {
-		return this.surveyMode;
-	}
 	
 	public List<Map<String, String>> getViewLayersList() {
 		return this.viewLayersList;
