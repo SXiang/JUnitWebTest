@@ -37,7 +37,6 @@ import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.RPTCRTDATE;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
-import static surveyor.scommon.source.SurveyorConstants.REPORTMODES;
 import static surveyor.scommon.source.SurveyorConstants.REPORTMODES1;
 import static surveyor.scommon.source.SurveyorConstants.REPORTTITLE;
 import static surveyor.scommon.source.SurveyorConstants.STARTDATE;
@@ -45,7 +44,6 @@ import static surveyor.scommon.source.SurveyorConstants.SURVEYORUNIT;
 import static surveyor.scommon.source.SurveyorConstants.RSWLAT;
 import static surveyor.scommon.source.SurveyorConstants.RSWLON;
 import static surveyor.scommon.source.SurveyorConstants.TAG;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONE;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
 
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETCASTIRON;
@@ -59,18 +57,13 @@ import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -78,49 +71,29 @@ import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
-
 import common.source.BaseHelper;
 import common.source.DBConnection;
-import common.source.FileUtility;
 import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-import surveyor.scommon.source.ComplianceReportsPage.ReportViewerThumbnailType;
+import surveyor.scommon.source.Reports.ReportModeFilter;
+import surveyor.scommon.source.Reports.SurveyModeFilter;
 import common.source.PDFUtility;
-import common.source.BaseHelper;
 
 /**
  * @author zlu
  *
  */
 public class ComplianceReportsPage extends ReportsBasePage {
-	public enum SurveyModeFilter {
-		All,
-		Standard,
-		Operator,
-		RapidResponse
-	}
-	
-	public enum ReportMode {
-		Standard,
-		RapidResponse,
-		Manual
-	}
-
 	private static final int CUSTOM_BOUNDARY_RADBUTTON_GROUP_IDX = 0;
 	private static final int CUSTOMER_BOUNDARY_RADBUTTON_GROUP_IDX = 1;
 	public static final String STRURLPath = "/Reports/ComplianceReports";
@@ -129,6 +102,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String STRSurveyIncludedMsg = Resources.getResource(ResourceKeys.ComplianceReport_AlreadyAdded);
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_PageTitle);
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_AddNew);
+	public static final String STRCopyPageTitle = Resources.getResource(ResourceKeys.ComplianceReport_PageTitle);
 	
 	private String reportName;
 	
@@ -174,6 +148,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(id = "report-survey-end-dt")
 	protected WebElement checkBoxOperatorSurvey;
 
+	@FindBy(id = "datatableSurveys")
+	protected WebElement surveysTable;
+	
 	@FindBy(how = How.XPATH, using = "//div[@id='surveyContent-0']//button[@class='btn btnDeleteSurvey btn-sm btn-danger']")
 	protected WebElement btnDeleteSurvey;
 
@@ -219,8 +196,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	// more generic interface and implementation, more details will be added
 	// into the reports objects
 	public void addNewReport(Reports reportsCompliance) {
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-
 		openNewReportPage();
 		inputReportTitle(reportsCompliance.getRptTitle());
 		
@@ -234,8 +209,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		selectTimeZone(reportsCompliance.getTimeZone());
 
-		if (reportsCompliance.reportMode != null) {
-			selectReportMode(getReportMode(reportsCompliance.reportMode));
+		if (reportsCompliance.reportModeFilter != null) {
+			selectReportMode(reportsCompliance.reportModeFilter);
 		}
 
 		inputExclusionRadius(reportsCompliance.getExclusionRadius());
@@ -243,40 +218,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		fillCustomBoundaryTextFields(reportsCompliance.getNELat(),
 				reportsCompliance.getNELong(), reportsCompliance.getSWLat(),
 				reportsCompliance.getSWLong());
-
-		if (reportsCompliance.getSurveyorUnit() != "") {
-			selectSurveySurveyor(reportsCompliance.getSurveyorUnit());
-		}
-
-		// TO DO: Implement date picker
-
-		if (reportsCompliance.getTag() != "") {
-			inputSurveyTag(reportsCompliance.getTag());
-		}
-
-		// TO DO: Implement Survey type
-		/*
-		 * if (reportsCompliance.getSurveyMode() != "") { String surveyMode=reportsCompliance.getSurveyMode(); if(surveyMode.equalsIgnoreCase("Standard")){
-		 * 
-		 * } if(surveyMode.equalsIgnoreCase("Operator")){
-		 * 
-		 * } if(surveyMode.equalsIgnoreCase("Rapid Response")){
-		 * 
-		 * } }
-		 */
-
-		if (reportsCompliance.getSurveyorUnit() != "") {
-			selectSurveySurveyor(reportsCompliance.getSurveyorUnit());
-		}
-
-		if (testSetup.isRunningDebug())
-			testSetup.slowdownInSeconds(3);
-		this.btnSurveySearch.click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
-		this.checkboxSurFirst.click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		this.btnAddSurveys.click();
 
 		inputImageMapHeight(reportsCompliance.getImageMapHeight());
 		inputImageMapWidth(reportsCompliance.getImageMapWidth());
@@ -298,8 +239,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 
 		selectViewLayerAssets(true, true, true, true, true, true);
-		
-		
 		handleOptionalViewLayersSection(reportsCompliance);
 		
 		this.btnOK.click();
@@ -312,6 +251,101 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				option.click();
 			}
 		}
+	}
+
+	public void inputReportTitle(String rptTitle) {
+		this.inputTitle.clear();
+		this.inputTitle.sendKeys(rptTitle);
+	}
+
+	public void inputImageMapWidth(String imageMapWidth) {
+		this.inputImgMapWidth.clear();
+		this.inputImgMapWidth.sendKeys(imageMapWidth);
+	}
+
+	public void inputImageMapHeight(String imageMapHeight) {
+		this.inputImgMapHeight.clear();
+		this.inputImgMapHeight.sendKeys(imageMapHeight);
+	}
+
+	public void inputExclusionRadius(String exclusionRadius) {
+		this.inputExclusionRadius.clear();
+		this.inputExclusionRadius.sendKeys(exclusionRadius);
+	}
+
+	public void inputFOVOpacity(String fovOpacity) {
+		this.inputFOVOpacity.clear();
+		this.inputFOVOpacity.sendKeys(fovOpacity);
+	}
+
+	public void inputLISAOpacity(String lisaOpacity) {
+		this.inputLISAOpacity.clear();
+		this.inputLISAOpacity.sendKeys(lisaOpacity);
+	}
+
+	public void fillCustomBoundaryTextFields(String neLat, String neLong, String swLat, String swLong) {
+		this.inputNELat.sendKeys(neLat);
+		this.inputNELong.sendKeys(neLong);
+		this.inputSWLat.sendKeys(swLat);
+		this.inputSWLong.sendKeys(swLong);
+	}
+	
+	public void addSurveyInformation(String surveyor, String username, String tag, String startDate, String endDate, SurveyModeFilter surveyModeFilter, Boolean geoFilterOn) {
+		Log.info("Adding Survey information");
+
+		if (surveyor != "") {
+			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
+			for (WebElement option : optionsSU) {
+				if (surveyor.equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+		}
+
+		if (username != null) {
+			this.userName.sendKeys(username);
+		}
+
+		if (tag != "") {
+			this.cbTag.clear();
+			this.cbTag.sendKeys(tag);
+		}
+		// TO DO: Implement date picker
+
+		if (surveyModeFilter != null) {
+			switch (surveyModeFilter) {
+			case All:
+				this.inputSurModeFilterAll.click();
+				break;
+			case Standard:
+				this.inputSurModeFilterStd.click();
+				break;
+			case Operator:
+				this.inputSurModeFilterOperator.click();
+				break;
+			case RapidResponse:
+				this.inputSurModeFilterRapidResponse.click();
+				break;
+			case Manual:
+				this.inputSurModeFilterManual.click();
+				break;
+			default:
+				break;
+			}
+		}
+
+		if (geoFilterOn != null) {
+			if (geoFilterOn) {
+				this.checkGeoFilter.click();
+			}
+		}
+
+		this.btnSurveySearch.click();
+		this.waitForSurveyTabletoLoad();
+
+		this.checkboxSurFirst.click();
+		this.btnAddSurveys.click();
+
 	}
 
 	public void selectGapCheckBox() {
@@ -353,14 +387,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 
-	public ReportMode getReportMode(String reportMode) {
-		ReportMode mode = ReportMode.Manual;
+	public ReportModeFilter getReportMode(String reportMode) {
+		ReportModeFilter mode = ReportModeFilter.Manual;
 		if (reportMode.equalsIgnoreCase("standard")) {
-			mode = ReportMode.Standard;
+			mode = ReportModeFilter.Standard;
 		} else if (reportMode.equalsIgnoreCase("manual")) {
-			mode = ReportMode.Manual;
+			mode = ReportModeFilter.Manual;
 		} else if (reportMode.equalsIgnoreCase("rr")) {
-			mode = ReportMode.RapidResponse;
+			mode = ReportModeFilter.RapidResponse;
 		} 
 		return mode;
 	}
@@ -400,49 +434,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void inputSurveyUsername(String username) {
-		this.inputSurveyUsername.clear();
-		this.inputSurveyUsername.sendKeys(username);
-	}
-
-	public void inputReportTitle(String rptTitle) {
-		this.inputTitle.clear();
-		this.inputTitle.sendKeys(rptTitle);
-	}
-
-	public void inputImageMapWidth(String imageMapWidth) {
-		this.inputImgMapWidth.clear();
-		this.inputImgMapWidth.sendKeys(imageMapWidth);
-	}
-
-	public void inputImageMapHeight(String imageMapHeight) {
-		this.inputImgMapHeight.clear();
-		this.inputImgMapHeight.sendKeys(imageMapHeight);
-	}
-
-	public void inputExclusionRadius(String exclusionRadius) {
-		this.inputExclusionRadius.clear();
-		this.inputExclusionRadius.sendKeys(exclusionRadius);
-	}
-
-	public void inputFOVOpacity(String fovOpacity) {
-		this.inputFOVOpacity.clear();
-		this.inputFOVOpacity.sendKeys(fovOpacity);
-	}
-
-	public void inputLISAOpacity(String lisaOpacity) {
-		this.inputLISAOpacity.clear();
-		this.inputLISAOpacity.sendKeys(lisaOpacity);
-	}
-
-	public void fillCustomBoundaryTextFields(String neLat, String neLong, String swLat, String swLong) {
-		this.inputNELat.sendKeys(neLat);
-		this.inputNELong.sendKeys(neLong);
-		this.inputSWLat.sendKeys(swLat);
-		this.inputSWLong.sendKeys(swLong);
-	}
-	
-	public void addSurveyInformation(String surveyor, String username, String tag, Date startDate, Date endDate, SurveyModeFilter surveyModeFilter, Boolean geoFilterOn) {
-		Log.info("Adding Survey information");
+		this.userName.clear();
+		this.userName.sendKeys(username);
 	}
 
 	private void handleOptionalViewLayersSection(Reports reportsCompliance) {
@@ -565,7 +558,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	// compliance report.
 	// Temporary solution for now and should pass the params by a data structure
 	private void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, String tag, String startDate, String endDate, String surModeFilter) {
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		openNewReportPage();
 		
 		this.inputTitle.clear();
@@ -1060,19 +1052,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				waitForDeletePopupLoad();
 				
 				if (this.isElementPresent(btnDeleteConfirmXpath)) {
-					 JavascriptExecutor js = (JavascriptExecutor) driver; 
-					 js.executeScript("arguments[0].click();", btnDeleteConfirm);
-					 testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-				 
-				 if (this.isElementPresent(errorMsgDeleteCompliacneReportXPath)) { 
-					 this.btnReturnToHomePage.click(); 
-					 return false; 
-					 } 
-				 else 
-						 return true; 
-				 } 
-				 else 
-					 return false;
+					JavascriptExecutor js = (JavascriptExecutor) driver;
+					js.executeScript("arguments[0].click();", btnDeleteConfirm);
+					this.waitForPageLoad();
+
+					if (this.isElementPresent(errorMsgDeleteCompliacneReportXPath)) {
+						this.btnReturnToHomePage.click();
+						return false;
+					} else
+						return true;
+				} else
+					return false;
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
@@ -1430,6 +1420,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 				if (strReportMode != null && changeMode) {
 					selectReportMode(getReportMode(strReportMode));
+					this.waitForCopyReportPagetoLoad();
 
 				} else
 					this.btnDeleteSurvey.click();
@@ -1483,7 +1474,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return false;
 	}
 
-	public void selectReportMode(ReportMode mode) {
+	public void selectReportMode(ReportModeFilter mode) {
 		switch (mode) {
 		case Standard:
 			this.checkBoxStndRptMode.click();
@@ -1502,12 +1493,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (this.btnChangeRptMode.isDisplayed()) {
 			this.btnChangeRptMode.click();
 		}
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 	}
 
 	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tag, String startDate, String endDate, boolean changeMode, String strReportMode) {
-
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		openNewReportPage();
 
 		if (customer != null && customer != "Picarro") {
@@ -1584,6 +1572,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.inputViewIso.click();
 		this.inputViewAnno.click();
 		this.inputViewAssets.click();
+
 		if(boundary!=null){
 		 this.inputViewBoundaries.click();
 		 
@@ -1611,9 +1600,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void addNewReportWithMultipleSurveysIncluded(Reports reportsCompliance) {
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		openNewReportPage();
-		
 		inputReportTitle(reportsCompliance.getRptTitle());
 
 		if (reportsCompliance.getCustomer() != null && reportsCompliance.getCustomer() != "Picarro") {
@@ -1632,6 +1619,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 
+		// TODO : Check?? Was this call intentionally removed.
 		selectTimeZone(reportsCompliance.getTimeZone());
 
 		inputExclusionRadius(reportsCompliance.getExclusionRadius());
@@ -1941,7 +1929,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		});
 	}
-
+	
 	@Override
 	public void waitForPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
@@ -1966,6 +1954,113 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	            }
 	        });
 	    }
+	  
+		public void waitForReportGenerationtoComplete() {
+			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+				public Boolean apply(WebDriver d) {
+					return btnReportViewer.isDisplayed();
+				}
+			});
+		}
+
+		public void waitForSurveyTabletoLoad() {
+			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+				public Boolean apply(WebDriver d) {
+					return surveysTable.isDisplayed();
+				}
+			});
+		}
+
+		public void waitForCopyReportPagetoLoad() {
+			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+				public Boolean apply(WebDriver d) {
+					return d.getPageSource().contains(STRCopyPageTitle);
+				}
+			});
+		}
+
+		public void waitForPdfReportIcontoAppear() {
+			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+				public Boolean apply(WebDriver d) {
+					return pdfImg.isDisplayed();
+				}
+			});
+		}
+
+		public boolean waitForReportGenerationtoComplete(String rptTitle, String strCreatedBy) {
+			setPagination(PAGINATIONSETTING);
+
+			String reportTitleXPath;
+			String createdByXPath;
+			WebElement rptTitleCell;
+			WebElement createdByCell;
+
+			List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+
+			int rowSize = rows.size();
+			int loopCount = 0;
+
+			this.waitForPageLoad();
+
+			if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				loopCount = rowSize;
+			else
+				loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+			for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+				reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+				createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+
+				rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+				createdByCell = table.findElement(By.xpath(createdByXPath));
+
+				if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+					long startTime = System.currentTimeMillis();
+					long elapsedTime = 0;
+					boolean bContinue = true;
+
+					while (bContinue) {
+						try {
+							if (rowSize == 1) {
+								this.btnReportViewer = table.findElement(By.xpath("//*[@id='datatable']/tbody/tr/td[5]/a[3]"));
+
+							} else {
+								this.btnReportViewer = table.findElement(By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img"));
+
+							}
+
+							return true;
+						} catch (org.openqa.selenium.NoSuchElementException e) {
+							elapsedTime = System.currentTimeMillis() - startTime;
+							if (elapsedTime >= (ACTIONTIMEOUT+900 * 1000)) {
+								return false;
+							}
+
+							continue;
+						} catch (NullPointerException ne) {
+							Log.info("Null Pointer Exception: " + ne);
+							fail("Report failed to generate!!");
+						}
+					}
+				}
+
+				if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+					this.nextBtn.click();
+
+					this.waitForPageLoad();
+
+					List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+					rowSize = newRows.size();
+					if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+						loopCount = rowSize;
+					else
+						loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+					rowNum = 0;
+				}
+			}
+			return false;
+		}
 
 	public void selectViewLayerAssets(Boolean selectAssetCastIron, Boolean selectAssetCopper,
 			Boolean selectAssetOtherPlastic, Boolean selectAssetPEPlastic, Boolean selectAssetProtectedSteel,
@@ -2031,65 +2126,106 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public void selectAnyCustomerBoundary(CustomerBoundaryType type) {
 		// TODO open the Boundary selector and click on any customer boundary.
 		// Could provide a search by boundary name.
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void waitForPDFFileDownload() {
-		// TODO Auto-generated method stub
-		
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void validateInvestigatePDFFile() {
-		// TODO Auto-generated method stub
-		
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void waitForReportViewerPopupToShow() {
-		// TODO Auto-generated method stub
-		
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void downloadMetaDataZipFile() {
-		// TODO Auto-generated method stub
-		
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void verifyMetaDataFiles() {
-		// TODO Auto-generated method stub
-		
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void verifyMetaDataFilesData() {
-		// TODO Auto-generated method stub
-		
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void verifyThumbnailInReportViewer(ReportViewerThumbnailType compliancezipmeta) {
-		// TODO Auto-generated method stub
-		
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void downloadShapeZipFile() {
-		// TODO Auto-generated method stub
-		
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void waitForShapeZipFileDownload() {
-		// TODO Auto-generated method stub
-		
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void verifyShapeFilesData() {
-		// TODO Auto-generated method stub
-		
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void verifyShapeFiles() {
-		// TODO Auto-generated method stub
-		
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType compliancezipmeta) {
-		// TODO Auto-generated method stub
-		
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -79,6 +79,14 @@ import static surveyor.scommon.source.SurveyorConstants.PICADMNMANTAG;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNRRTAG;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNOPTAG;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETCASTIRON;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETCOPPER;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETPEPLASTIC;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
+import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICT;
+import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -97,6 +105,8 @@ import common.source.Log;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.Reports.ReportModeFilter;
+import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorBaseTest;
 
@@ -159,7 +169,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewMap2.put(KEYVIEWNAME, "Second View");
@@ -197,20 +207,27 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "1");
 		tableMap.put(KEYPCRA, "1");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
+
 		tablesList.add(tableMap);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQAPICSUP, "Picarro", TIMEZONEPT, EXCLUSIONRADIUS, listBoundary, tablesList, "", SQACUSDRTAG, viewList);
 
 		complianceReportsPage.addNewReport(rpt);
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICSUP))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, SQAPICSUP));
 			try {
 				assertTrue(complianceReportsPage.compareComplianceRptFirstPageStaticText(testSetup.getDownloadPath()));
-				// assertTrue(complianceReportsPage.compareComplianceRptFirstPageTable(testSetup.getDownloadPath(),expectedTextMap));
-				assertTrue(complianceReportsPage.validateReportCreationDate(testSetup.getDownloadPath()));
+
 			} catch (IOException e) {
 				Log.error(e.toString());
 				fail("\nTestcase TC517 failed.\n");
@@ -257,7 +274,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewMap2.put(KEYVIEWNAME, "Second View");
@@ -282,12 +299,18 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQAPICSUP, "Picarro", TIMEZONECT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, RSURSTARTDATE, RSURENDDATE, viewList, RSUVMODESTD);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQAPICSUP, "Picarro", TIMEZONECT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, RSURSTARTDATE, RSURENDDATE, viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
-
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICSUP))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
@@ -303,7 +326,6 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 			fail("\nTestcase TC148 failed.\n");
 
 		complianceReportsPage.open();
-
 		complianceReportsPage.logout();
 
 	}
@@ -339,7 +361,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
@@ -351,11 +373,18 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0", listBoundary, tablesList, PICADMNSURVEYOR, "", "", "", viewList, RSUVMODERR);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0", listBoundary, tablesList, PICADMNSURVEYOR, "", "", "", viewList, SurveyModeFilter.RapidResponse);
 		complianceReportsPage.addNewReport(rpt);
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
@@ -396,6 +425,14 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "0");
+		tableMap.put(KEYASSETCOPPER, "0");
+		tableMap.put(KEYASSETOTHERPLASTIC, "0");
+		tableMap.put(KEYASSETPEPLASTIC, "0");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "0");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "0");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
@@ -409,16 +446,14 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYISOTOPICCAPTURE, "1");
 		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "0");
-		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYASSETS, "0");
+		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQAPICSUP, "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, RSURSTARTDATE, RSURENDDATE, viewList, RSUVMODESTD);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQAPICSUP, "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, RSURSTARTDATE, RSURENDDATE, viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
-
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
@@ -459,6 +494,14 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
@@ -486,17 +529,17 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap2.put(KEYANNOTATION, "0");
 		viewMap2.put(KEYGAPS, "0");
 		viewMap2.put(KEYASSETS, "1");
-		viewMap2.put(KEYBOUNDARIES, "1");
+		viewMap2.put(KEYBOUNDARIES, "0");
 		viewMap2.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewList.add(viewMap1);
 		viewList.add(viewMap2);
 
 		// Start and end date filter insertion remaining
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0", listBoundary, tablesList, PICADMNSURVEYOR, "", RSURSTARTDATE, RSURENDDATE, viewList, RSUVMODESTD);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0", listBoundary, tablesList, PICADMNSURVEYOR, "", RSURSTARTDATE, RSURENDDATE, viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
 
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds() * 20);
+		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
@@ -537,6 +580,14 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "0");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
@@ -551,15 +602,15 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYANNOTATION, "0");
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, RSURSTARTDATE, RSURENDDATE, viewList, RSUVMODESTD);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, RSURSTARTDATE, RSURENDDATE, viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
 
-		testSetup.slowdownInSeconds(200);
+		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -601,6 +652,14 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "0");
 		tableMap.put(KEYPCA, "1");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
@@ -615,15 +674,13 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, RSUVMODESTD);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
-
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
@@ -664,6 +721,14 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "1");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
@@ -678,16 +743,14 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
 
 		// Start and end date filter insertion remaining
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, RSUVMODESTD);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
-
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
@@ -733,7 +796,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
@@ -745,12 +808,18 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, RSUVMODESTD);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
-
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
@@ -799,8 +868,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		assertTrue(complianceReportsPage.checkPaginationSetting(paginationSetting25));
 		assertTrue(!(complianceReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
 		assertTrue(complianceReportsPage.checkPaginationSetting(paginationSetting50));
-		// Enable 100 when there are 100 records
-		// assertTrue(complianceReportsPage.checkPaginationSetting(paginationSetting100));
+		assertTrue(complianceReportsPage.checkPaginationSetting(paginationSetting100));
 
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
@@ -839,7 +907,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
@@ -851,12 +919,20 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, RSUVMODESTD);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
 
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
 		assertTrue(complianceReportsPage.searchReport(rptTitle, PICDFADMIN));
 
@@ -909,6 +985,14 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "0");
 		tableMap.put(KEYPCA, "1");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
@@ -923,15 +1007,15 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, RSUVMODESTD);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
 
-		testSetup.slowdownInSeconds(200);
+		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
 		if (complianceReportsPage.deleteReport(rptTitle, testSetup.getLoginUser()))
 			assertTrue(!(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser())));
@@ -974,7 +1058,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
@@ -986,13 +1070,18 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "0");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEET, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, RSUVMODESTD);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEET, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
-
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
@@ -1032,6 +1121,14 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "0");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
@@ -1046,15 +1143,15 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYANNOTATION, "0");
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, RSURSTARTDATE, RSURENDDATE, viewList, RSUVMODESTD);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, RSURSTARTDATE, RSURENDDATE, viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
 
-		testSetup.slowdownInSeconds(200);
+		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
 		complianceReportsPage.copyReport(rptTitle, testSetup.getLoginUser(), rptTitle);
 
@@ -1094,6 +1191,14 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
@@ -1108,15 +1213,13 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNMANTAG, "", "", viewList, RSUVMODESTD, "manual");
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNMANTAG, "", "", viewList, SurveyModeFilter.Manual, ReportModeFilter.Manual);
 		complianceReportsPage.addNewReport(rpt);
-
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser())))
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
@@ -1154,6 +1257,14 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
@@ -1168,15 +1279,13 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap.put(KEYANNOTATION, "1");
 		viewMap.put(KEYGAPS, "1");
 		viewMap.put(KEYASSETS, "1");
-		viewMap.put(KEYBOUNDARIES, "1");
+		viewMap.put(KEYBOUNDARIES, "0");
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, RSUVMODESTD, "rr");
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard, ReportModeFilter.RapidResponse);
 		complianceReportsPage.addNewReport(rpt);
-
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser())))
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
@@ -1189,7 +1298,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
-		rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, RSUVMODESTD, "standard");
+		rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard, ReportModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser())))
@@ -1229,6 +1338,14 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
@@ -1248,10 +1365,8 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		viewList.add(viewMap);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "sqacus", TIMEZONEMT, "0", listBoundary, tablesList, "", CUSDRVSTDTAG, "", "", viewList, RSUVMODESTD);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "sqacus", TIMEZONEMT, "0", listBoundary, tablesList, "", CUSDRVSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
-
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
@@ -1293,6 +1408,14 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "0");
+		tableMap.put(KEYASSETCOPPER, "0");
+		tableMap.put(KEYASSETOTHERPLASTIC, "0");
+		tableMap.put(KEYASSETPEPLASTIC, "0");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "0");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "0");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
@@ -1356,10 +1479,8 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		viewList.add(viewMap3);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQAPICSUP, "sqacus", TIMEZONEPT, "0", listBoundary, tablesList, "", CUSDRVSTDTAG, "", "", viewList, RSUVMODESTD);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQAPICSUP, "sqacus", TIMEZONEPT, "0", listBoundary, tablesList, "", CUSDRVSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
-
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICSUP))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
@@ -1401,6 +1522,14 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "0");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "0");
+		tableMap.put(KEYASSETCOPPER, "0");
+		tableMap.put(KEYASSETOTHERPLASTIC, "0");
+		tableMap.put(KEYASSETPEPLASTIC, "0");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "0");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "0");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
@@ -1435,11 +1564,9 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		viewList.add(viewMap1);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", CUSDRVSTDTAG, "", "", viewList, RSUVMODESTD);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", CUSDRVSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 
 		complianceReportsPage.addNewReport(rpt);
-
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSUA))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
@@ -1485,7 +1612,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
@@ -1497,12 +1624,20 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, RSUVMODESTD);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
 
-		testSetup.slowdownInSeconds(200);
+		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
 		String newRptTitle = rptTitle + "COPY";
 
@@ -1510,7 +1645,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tagList.add(PICADMNMANTAG);
 		complianceReportsPage.copyReportAndModifyDetails(rptTitle, testSetup.getLoginUser(), newRptTitle, "", tagList, true, "manual");
 
-		testSetup.slowdownInSeconds(200);
+		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
 		if ((complianceReportsPage.checkActionStatus(newRptTitle, testSetup.getLoginUser()))) {
 			assertTrue(complianceReportsPage.findReport(newRptTitle, testSetup.getLoginUser()));
@@ -1554,7 +1689,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
@@ -1566,12 +1701,20 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNMANTAG, "", "", viewList, "", "manual");
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNMANTAG, "", "", viewList, SurveyModeFilter.Manual, ReportModeFilter.Manual);
 		complianceReportsPage.addNewReport(rpt);
 
-		testSetup.slowdownInSeconds(200);
+		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
 		String newRptTitle = rptTitle + "COPY";
 		List<String> surTag = new ArrayList<String>();
@@ -1621,7 +1764,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
@@ -1633,12 +1776,20 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNRRTAG, "", "", viewList, "", "rr");
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNRRTAG, "", "", viewList, SurveyModeFilter.RapidResponse, ReportModeFilter.RapidResponse);
 		complianceReportsPage.addNewReport(rpt);
 
-		testSetup.slowdownInSeconds(200);
+		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
 		String newRptTitle = rptTitle + "COPY";
 		List<String> surTag = new ArrayList<String>();
@@ -1660,7 +1811,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC183 Test Description: Generate report having multiple surveys of Standard, Operator and Rapid Response types in Rapid Response report mode
 	 * 
 	 */
-	@Ignore
+	@Test
 	public void TC183_ComplianceReportTest_VerifyReportwithMultipleSurveys() {
 		String rptTitle = "TC183 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC183: Generate report having multiple surveys of Standard, Operator and Rapid Response types in Rapid Response report mode, %s\n", rptTitle);
@@ -1677,8 +1828,6 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		boolean changeMode = true;
 
 		complianceReportsPage.addNewPDReport(rptTitle, surUnit, surTag, changeMode, reportMode);
-
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
 			assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
@@ -1703,7 +1852,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		List<String> listBoundary = new ArrayList<String>();
 		listBoundary.add(IMGMAPHEIGHT);
 		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add("36.42252593456307");
+		listBoundary.add("36.42252593456309");
 		listBoundary.add("-122.83494567871095");
 		listBoundary.add("38.27989023941680");
 		listBoundary.add("-124.05415725708008");
@@ -1720,7 +1869,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
@@ -1732,9 +1881,17 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNMANTAG, "", "", viewList, "", "manual");
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard, ReportModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
 		Assert.assertEquals(complianceReportsPage.getAreaErrorText(), STRReportAreaTooLargeMsg);
 
@@ -1773,8 +1930,8 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		complianceReportsPage.open();
 
 		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add("");
-		listBoundary.add("");
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
 		listBoundary.add(RNELAT);
 		listBoundary.add(RNELON);
 		listBoundary.add(RSWLAT);
@@ -1804,6 +1961,14 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
 		String surUnit = "";
@@ -1815,7 +1980,6 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, PICDFADMIN, strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList);
 		complianceReportsPage.addNewReportWithMultipleSurveysIncluded(rpt);
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
 			assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
@@ -1841,8 +2005,8 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		complianceReportsPage.open();
 
 		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add("");
-		listBoundary.add("");
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
 		listBoundary.add(RNELAT);
 		listBoundary.add(RNELON);
 		listBoundary.add(RSWLAT);
@@ -1886,6 +2050,14 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
 		String surUnit = "";
@@ -1897,8 +2069,6 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, PICDFADMIN, strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList);
 		complianceReportsPage.addNewReportWithMultipleSurveysIncluded(rpt);
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
@@ -1933,7 +2103,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC198 Test Description: Verify "Already Added" message is displayed if user tries to add the same survey again using copy functionality
 	 * 
 	 */
-	@Ignore
+	@Test
 	public void TC198_ComplianceReportTest_VerifyAlreadyAddedMessageforCopy() {
 		System.out.format("\nRunning TC198: Verify 'Already Added' message is displayed if user tries to add the same survey again using copy functionality\n");
 
@@ -1943,7 +2113,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		String surUnit = "";
 
 		complianceReportsPage.addNewPDReport(rptTitle, surUnit, PICADMNSTDTAG);
-		testSetup.slowdownInSeconds(200);
+		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
 		complianceReportsPage.clickOnCopyReport(rptTitle, PICDFADMIN);
 

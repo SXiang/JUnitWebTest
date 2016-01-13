@@ -5,6 +5,7 @@ public class ResourceKeys {
 	public static final String ComplianceReport_AlreadyAdded = "ComplianceReport_AlreadyAdded";
 	public static final String ComplianceReport_CustomBoundary = "ComplianceReport_CustomBoundary";
 	public static final String ComplianceReport_IsotopicAnalysis = "ComplianceReport_IsotopicAnalysis";
+	public static final String ComplianceReport_PageTitle = "ComplianceReport_PageTitle";
 	public static final String ComplianceReport_PercentCoverageAssets = "ComplianceReport_PercentCoverageAssets";
 	public static final String ComplianceReport_PercentCoverageReportArea = "ComplianceReport_PercentCoverageReportArea";
 	public static final String ComplianceReports_AddNew = "ComplianceReports_AddNew";

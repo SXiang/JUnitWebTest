@@ -52,9 +52,9 @@ import surveyor.scommon.actions.data.ReportOptViewLayersDataReader.ReportOptView
 import surveyor.scommon.actions.data.ReportViewsDataReader;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
-import surveyor.scommon.source.ComplianceReportsPage.ReportMode;
 import surveyor.scommon.source.ComplianceReportsPage.ReportViewerThumbnailType;
-import surveyor.scommon.source.ComplianceReportsPage.SurveyModeFilter;
+import surveyor.scommon.source.Reports.SurveyModeFilter;
+import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
 
 public class ComplianceReportsPageActions extends BasePageActions {
@@ -204,8 +204,8 @@ public class ComplianceReportsPageActions extends BasePageActions {
 		this.complianceReportsPage.addSurveyInformation(dataRow.surveySurveyor, 
 				dataRow.surveyUsername, 
 				dataRow.surveyTag, 
-				DateUtility.getDate(dataRow.surveyStartDate, DEFAULT_DATE_FORMAT), 
-				DateUtility.getDate(dataRow.surveyEndDate, DEFAULT_DATE_FORMAT), 
+				dataRow.surveyStartDate, 
+				dataRow.surveyEndDate, 
 				modeFilter, 
 				Boolean.parseBoolean(dataRow.surveyGeoFilterON));
 		return true;
@@ -711,7 +711,7 @@ public class ComplianceReportsPageActions extends BasePageActions {
 			ComplianceReportDataRow dataRow = getDataReader().getDataRow(dataRowID);
 			reportMode = dataRow.reportMode;
 		}
-		ReportMode mode = this.complianceReportsPage.getReportMode(reportMode);
+		ReportModeFilter mode = this.complianceReportsPage.getReportMode(reportMode);
 		this.complianceReportsPage.selectReportMode(mode);
 		return true;
 	}

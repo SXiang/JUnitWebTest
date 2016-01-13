@@ -25,11 +25,11 @@ public class ReportsCompliance extends Reports {
 		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, listBoundary, tablesList, surveyorUnit, tag, viewList);
 	}
 
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, String tag, String startDate, String endDate, List<Map<String, String>> viewList, String surveyMode) {
+	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, String tag, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, listBoundary, tablesList, surveyorUnit, tag, startDate, endDate, viewList, surveyMode);
 	}
 
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, String tag, String startDate, String endDate, List<Map<String, String>> viewList, String surveyMode, String reportMode) {
+	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, String tag, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode, ReportModeFilter reportMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, listBoundary, tablesList, surveyorUnit, tag, startDate, endDate, viewList, surveyMode, reportMode);
 	}
 
@@ -37,7 +37,6 @@ public class ReportsCompliance extends Reports {
 		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, listBoundary, tablesList, surveyorUnit, tagList, viewList);
 
 	}
-
 
 	public ReportsCompliance(String rptTitle, String strCreatedBy,
 			String customer, String timeZone, String exclusionRadius,

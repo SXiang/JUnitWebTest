@@ -181,7 +181,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	 * 5. All Asset types and boundaries level are OFF 
 	 * 6. Status is green and all the gauges present on expanding are green
 	 */
-	@Ignore
+	@Test
 	public void TC1094_SimulatorTest_VerifyInstrumentReady_PicAdmin() {
 		Log.info("Running TC1094_SimulatorTest_VerifyInstrumentReady_PicAdmin");
 
@@ -296,7 +296,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	 * 6. Car icon is displayed in red color. Breadcrumb will  be displayed in blue color 
 	 * 7. Stop Driving Survey, Start Isotopic Capture, Reference Bottle Measurement buttons are enabled and System Shutdown button is not present
 	 */
-	@Ignore
+	@Test
 	public void TC1097_SimulatorTest_StartDrivingSurvey_PicAdmin() {
 		Log.info("Running TC1097_SimulatorTest_StartDrivingSurvey_PicAdmin");
 
@@ -388,7 +388,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	 * 7. Stop Driving Survey, Isotopic Capture and Reference Bottle Measurement buttons are present
 	 * 8. Survey Inactive message is displayed and only car icon is present on map. Car icon is displayed in grey color. Breadcrumb will  be displayed in grey color. There should be no errors on the consolebuttons are disabled
 	 */
-	@Ignore
+	@Test
 	public void TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin() {
 		Log.info("Running TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin");
 
@@ -455,7 +455,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		assertTrue(driverViewPage.getSurveyStatusLabelText().equals("Survey Inactive"));
 	}
 
-	@Ignore
+	@Test
 	public void TC256_SimulatorTest_DriverViewInstrumentStartWaitStopShutdown() {
 		try {
 			loginPageAction.open(EMPTY, NOTSET);
@@ -490,7 +490,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		}
 	}
 
-	@Ignore
+	@Test
 	public void TC302_SimulatorTest_DriverViewUserSeesLastTagValue() {
 		try {
 			loginPageAction.open(EMPTY, NOTSET);
@@ -521,7 +521,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		}
 	}
 
-	@Ignore
+	@Test
 	public void TC777_SimulatorTest_DriverViewFlatteningCustomerBoundaryData() {
 		try {
 			loginPageAction.open(EMPTY, NOTSET);
@@ -545,7 +545,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		}
 	}
 
-	@Ignore
+	@Test
 	public void TC1095_SimulatorTest_NavigateBetweenDriverViewAndHomePage() {
 		try {
 			loginPageAction.open(EMPTY, NOTSET);
@@ -571,7 +571,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		}
 	}
 
-	@Ignore
+	@Test
 	public void TC1103_SimulatorTest_DriverViewStartDrivingSurveySatelliteView() {
 		try {
 			loginPageAction.open(EMPTY, NOTSET);
@@ -636,7 +636,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		}
 	}
 
-	@Ignore
+	@Test
 	public void TC1104_SimulatorTest_DriverViewStopDrivingSurveySatelliteView() {
 		try {
 			loginPageAction.open(EMPTY, NOTSET);
