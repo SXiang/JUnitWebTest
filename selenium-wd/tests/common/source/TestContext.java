@@ -80,7 +80,7 @@ public enum TestContext {
 	public TestSetup getTestSetup() {
 		return this.testSetup;
 	}
-
+	
 	public void stayIdle(int seconds) {
 		this.testSetup.slowdownInSeconds(seconds);
 	}

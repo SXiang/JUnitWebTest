@@ -49,6 +49,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
  */
 public class TestSetup {
 
+	private static final String UPDATE_ANALYZER_CONFIGURATION_CMD = "UpdateAnalyzerConfiguration.cmd";
 	private static final String[] CI_MACHINES = {"20.20.20.59", "20.20.10.82", "10.0.2.15", "10.200.2.48"};
 	private static String testPropFileName;
 	
@@ -209,51 +210,99 @@ public class TestSetup {
 	public static void setupSimulatorPreReqs() throws IOException {
 		String batchFileDirectory = getExecutionPath(getRootPath()) + "lib" + File.separator;
 
-		String command = null;
-		if (isRunningLocally()) {
-			command = "SetupSimulatorPreReqs-Local.cmd";
-			ProcessUtility.executeProcess(batchFileDirectory + command, /*isShellCommand*/ true, /*waitForExit*/ true);
-		}
+		String command = "SetupSimulatorPreReqs-Local.cmd";
+		ProcessUtility.executeProcess(batchFileDirectory + command, /*isShellCommand*/ true, /*waitForExit*/ true);
 	}
 	
 	public static void startAnalyzer() throws IOException {
-		if (isRunningLocally()) {
-			// Kill any existing instance of Analyzer if running.
+		// Kill any existing instance of Analyzer if running.
+		Log.info("Starting Analyzer EXE...");
+		stopAnalyzerIfRunning();
+		
+		// Start the Analyzer process.
+		analyzerProcess = ProcessUtility.executeProcess(ANALYZER_EXE_PATH, /*isShellCommand*/ false, /*waitForExit*/ false);
+		if (analyzerProcess.isAlive()) {
+			Log.info("Analyzer EXE started Successfully!");
+		} else {
+			Log.info("Analyzer EXE did NOT start.");
+		}
+	}
+
+	private static void stopAnalyzerIfRunning() throws UnknownHostException {
+		if (isAnalyzerRunning()) {
+			Log.info("An instance of Analyzer EXE is currently running. Stopping...");
 			stopAnalyzer();
+		}
+	}
+
+	public static void restartAnalyzer() throws IOException {
+		Log.info("Restarting Analyzer EXE...");
+		stopAnalyzerIfRunning();
+		startAnalyzer();
+	}
+	
+	public static void updateAnalyzerConfiguration(String analyzerSerialNumber, String analyzerSharedKey) {
+		try {
+			// Replace %DB3_FILE_PATH% in defn file with full path to db3FileName.
+			String workingFolder = getExecutionPath(getRootPath());
+			String libFolder = workingFolder + "lib";
+			String updCmdFullPath = libFolder + File.separator + UPDATE_ANALYZER_CONFIGURATION_CMD;
 			
-			// Start the Analyzer process.
-			analyzerProcess = ProcessUtility.executeProcess(ANALYZER_EXE_PATH, /*isShellCommand*/ false, /*waitForExit*/ false);
-			if (analyzerProcess.isAlive()) {
-				Log.info("Analyzer EXE started Successfully!");
-			} else {
-				Log.info("Analyzer EXE did NOT start.");
-			}
+			String workingUpdCmdFile = getUUIDString() + "_" + UPDATE_ANALYZER_CONFIGURATION_CMD;
+			String workingUpdCmdFullPath = Paths.get(libFolder + File.separator, workingUpdCmdFile).toString();
+			
+			// Create a copy of the update config cmd file.
+			Files.copy(Paths.get(updCmdFullPath), Paths.get(workingUpdCmdFullPath));
+
+			// Update the working copy.
+			FileUtility.updateFile(workingUpdCmdFullPath, "%WORKING_DIR%", workingFolder);
+			FileUtility.updateFile(workingUpdCmdFullPath, "%1%", analyzerSerialNumber);
+			FileUtility.updateFile(workingUpdCmdFullPath, "%2%", analyzerSharedKey);
+			
+			// Replay DB3 script
+			executeUpdateConfigCmd(workingUpdCmdFile);
+			
+			// Delete the working copy of the defn file.
+			Files.delete(Paths.get(workingUpdCmdFullPath));
+		} catch (IOException e) {
+			Log.error(e.toString());
+		}
+	}
+
+	private static void executeUpdateConfigCmd(String workingUpdCmdFile) {
+		// Execute update analyzer configuration script from the contained folder.
+		try {
+			String updateCmdFolder = getExecutionPath(getRootPath()) + "lib";
+			String updateCmdFileFullPath = updateCmdFolder + File.separator + workingUpdCmdFile;
+			String command = "cd \"" + updateCmdFolder + "\" && " + updateCmdFileFullPath;
+			Log.info("Executing update Analyzer configuration script. Command -> " + command);
+			ProcessUtility.executeProcess(command, /*isShellCommand*/ true, /*waitForExit*/ true);
+		} catch (IOException e) {
+			Log.error(e.toString());
 		}
 	}
 
 	public static void replayDB3Script(String defnFileName, String db3FileName) {
 		try {
-			if (isRunningLocally()) {
-				// Replace %DB3_FILE_PATH% in defn file with full path to db3FileName.
-				String rootFolder = getExecutionPath(getRootPath()) + "data";
-				String defnFullPath = rootFolder + File.separator + "defn" + File.separator + defnFileName;
-				String db3FileFullPath = rootFolder + File.separator + "db3" + File.separator + db3FileName;
-				
-				String workingDefnFile = getUUIDString() + "_" + defnFileName;
-				String workingDefnFullPath = Paths.get(rootFolder + File.separator + "defn", workingDefnFile).toString();
-				
-				// Create a copy of the defn file in %TEMP% folder.
-				Files.copy(Paths.get(defnFullPath), Paths.get(workingDefnFullPath));
-	
-				// Update the working copy.
-				FileUtility.updateFile(workingDefnFullPath, "%DB3_FILE_PATH%", db3FileFullPath);
-				
-				// Replay DB3 script
-				replayDB3Script(workingDefnFile);
-				
-				// Delete the working copy of the defn file.
-				Files.delete(Paths.get(workingDefnFullPath));
-			}
+			// Replace %DB3_FILE_PATH% in defn file with full path to db3FileName.
+			String rootFolder = getExecutionPath(getRootPath()) + "data";
+			String defnFullPath = rootFolder + File.separator + "defn" + File.separator + defnFileName;
+			String db3FileFullPath = rootFolder + File.separator + "db3" + File.separator + db3FileName;
+			
+			String workingDefnFile = getUUIDString() + "_" + defnFileName;
+			String workingDefnFullPath = Paths.get(rootFolder + File.separator + "defn", workingDefnFile).toString();
+			
+			// Create a copy of the defn file in %TEMP% folder.
+			Files.copy(Paths.get(defnFullPath), Paths.get(workingDefnFullPath));
+
+			// Update the working copy.
+			FileUtility.updateFile(workingDefnFullPath, "%DB3_FILE_PATH%", db3FileFullPath);
+			
+			// Replay DB3 script
+			replayDB3Script(workingDefnFile);
+			
+			// Delete the working copy of the defn file.
+			Files.delete(Paths.get(workingDefnFullPath));
 		} catch (IOException e) {
 			Log.error(e.toString());
 		}
@@ -285,14 +334,14 @@ public class TestSetup {
 		return !isAnalyzerRunning();
 	}
 
+	public static boolean isSupervisorRunning() {
+		return ProcessUtility.isProcessRunning("Supervisor.exe");
+	}
+
 	public static void stopAnalyzer() {
-		try {
-			if (isRunningLocally()) {
-				ProcessUtility.killProcess("Picarro.Surveyor.Analyzer.exe", /*killChildProcesses*/ true);
-				ProcessUtility.killProcess("Supervisor.exe", /*killChildProcesses*/ true);
-			}
-		} catch (UnknownHostException e) {
-			Log.error(e.toString());
+		ProcessUtility.killProcess("Picarro.Surveyor.Analyzer.exe", /*killChildProcesses*/ true);
+		if (isSupervisorRunning()) {
+			ProcessUtility.killProcess("Supervisor.exe", /*killChildProcesses*/ true);
 		}
 	}
 
@@ -307,6 +356,11 @@ public class TestSetup {
 	public void stopReplay() throws InstantiationException, IllegalAccessException, IOException {
 		HostSimInvoker simulator = new HostSimInvoker();
 		simulator.stopReplay();
+	}
+
+	public boolean hasBrowserQuit() {
+		Log.info("Checking if Browser has QUIT. Driver String value: " + this.getDriver().toString());
+		return this.getDriver().toString().contains("(null)");
 	}
 
 	private void driverSetup() {

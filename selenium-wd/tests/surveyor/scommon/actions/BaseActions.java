@@ -8,11 +8,16 @@ import common.source.TestContext;
 
 public class BaseActions implements IActions {
 	private static final String DATA_FOLDER = "data";
+	private static final String TEST_DATA_XLSX = "TestCaseData.xlsx";
 
 	protected static final String ARG_DATA_ROW_ID = "dataRowID";
 	protected static final String ARG_DATA = "data";
 
 	protected ExcelUtility excelUtility = null;
+	
+	public BaseActions() {
+		this.setExcelFile(TEST_DATA_XLSX);
+	}
 	
 	protected void setExcelFile(String excelFileName) {
 		String testDataExcelPath = TestContext.INSTANCE.getExecutionPath() + DATA_FOLDER + File.separator + excelFileName;

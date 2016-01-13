@@ -17,7 +17,7 @@ public class ReflectionMethodInvoker implements IMethodInvoker {
 	}
 	
 	@Override
-	public boolean invokeMethod(IActions action, String actionName, MethodParams methodParams) {
+	public boolean invokeMethod(IActions action, String actionName, MethodParams methodParams) throws Exception {
 		Object result = null;
 		method = action.getClass().getMethods();	
 		for (int i=0; i< method.length; i++) {
@@ -31,6 +31,7 @@ public class ReflectionMethodInvoker implements IMethodInvoker {
 					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 						Log.error(e.toString());
 						result = false;
+						throw e;
 					}
 					
 					if (!((boolean)result)) {

@@ -4,14 +4,13 @@ import org.openqa.selenium.WebDriver;
 
 public class BasePageActions extends BaseActions {
 	protected static final String DEFAULT_DATE_FORMAT = "MM/dd/yyyy HH:mm:ss a";
-	private static final String TEST_DATA_XLSX = "TestCaseData.xlsx";
 	private WebDriver driver = null;
 	private String baseURL = null;
 	
 	public BasePageActions(WebDriver driver, String baseURL) {
+		super();
 		this.setDriver(driver);
 		this.setBaseURL(baseURL);
-		this.setExcelFile(TEST_DATA_XLSX);
 	}
 
 	public String getBaseURL() {

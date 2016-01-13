@@ -159,6 +159,14 @@ public class DriverViewPage extends SurveyorBasePage {
 	@CacheLookup
 	private WebElement systemShutdownButton;
 
+	@FindBy(id = "mode_shutdown_confirm")
+	@CacheLookup
+	private WebElement shutdownConfirmButton;
+
+	@FindBy(id = "mode_shutdown_cancel")
+	@CacheLookup
+	private WebElement shutdownCancelButton;
+
 	@FindBy(id = "mode_stop_survey")
 	@CacheLookup
 	private WebElement stopSurveyButton;
@@ -459,7 +467,17 @@ public class DriverViewPage extends SurveyorBasePage {
 		this.getSystemShutdownButton().click();
 		return this;
 	}
-	
+
+	public DriverViewPage clickShutdownConfirmButton() {
+		this.getShutdownConfirmButton().click();
+		return this;
+	}
+
+	public DriverViewPage clickShutdownCancelButton() {
+		this.getShutdownCancelButton().click();
+		return this;
+	}
+
 	public boolean isPositionButtonSelected() {
 		return this.positionButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon on");
 	}
@@ -486,6 +504,14 @@ public class DriverViewPage extends SurveyorBasePage {
 
 	public boolean isSystemShutdownButtonEnabled() {
 		return this.systemShutdownButton.getAttribute("class").equalsIgnoreCase("trigger_button on");
+	}
+
+	public WebElement getShutdownConfirmButton() {
+		return this.shutdownConfirmButton;
+	}
+
+	public WebElement getShutdownCancelButton() {
+		return this.shutdownCancelButton;
 	}
 
 	public WebElement getStopDrivingSurveyButton() {
@@ -1497,9 +1523,8 @@ public class DriverViewPage extends SurveyorBasePage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage setTagSurveyTextField(String tag) {
-		Log.info(String.format("Sending text %s to tag", tag));
-		tagSurvey.sendKeys(tag);
-		Log.info(String.format("Sent text %s to tag", tag));
+		Log.info(String.format("Setting tag text - %s", tag));
+		tagSurvey.clear();
 		tagSurvey.sendKeys(tag);
 		return this;
 	}
@@ -1510,7 +1535,7 @@ public class DriverViewPage extends SurveyorBasePage {
 	 * @return the tag field value.
 	 */
 	public String getTagSurveyTextField() {
-		return tagSurvey.getText();
+		return tagSurvey.getAttribute("value");
 	}
 
 	/**
@@ -1520,7 +1545,7 @@ public class DriverViewPage extends SurveyorBasePage {
 	 */
 	public String getSurveyTagFromStartSurveyDialog() {
 		openStartSurveyModalDialog();
-
+		
 		return this.getTagSurveyTextField();
 	}
 	
@@ -1573,7 +1598,6 @@ public class DriverViewPage extends SurveyorBasePage {
 		default:
 			break;
 		}
-		Log.info("Selected surveyTime..");
 		Log.info("Selecting wind..");
 		switch (wind) {
 		case Calm:
@@ -1588,10 +1612,10 @@ public class DriverViewPage extends SurveyorBasePage {
 		default:
 			break;
 		}
-		Log.info("Selected wind..");
 		
 		// Until SurveyType is selected the StartSurvey button should NOT be displayed.
-		assertTrue(this.getStartSurveyButtonFromStartSurveyDialog().isDisplayed() == false);
+		// NOTE: This check will NOT always work correctly as this button might be showing when multiple tests are run one after the other. 
+		//assertTrue(this.getStartSurveyButtonFromStartSurveyDialog().isDisplayed() == false);
 		
 		Log.info("Selecting surveyType..");		
 		switch (surveyType) {
@@ -1613,7 +1637,6 @@ public class DriverViewPage extends SurveyorBasePage {
 		default:
 			break;
 		}
-		Log.info("Selected surveyType..");
 
 		this.clickStartSurvey();
 		this.waitForPageToLoad();
