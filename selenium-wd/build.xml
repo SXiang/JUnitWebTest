@@ -13,10 +13,8 @@
 	<target name="init" depends="clean" description="Initialize build environment">
 		<mkdir dir="${build}" />
 		<mkdir dir="${dist}" />
-		<!--<mkdir dir="${screenshots}" /> -->
 		<mkdir dir="${screenshots}/sanity"/>
 		<mkdir dir="${screenshots}/regression"/>
-		<!--<mkdir dir="${reports}" /> -->
 		<mkdir dir="${reports}/sanity/html/" />
 		<mkdir dir="${reports}/sanity/xml/" />
 		<mkdir dir="${reports}/regression/html/" />
@@ -36,7 +34,6 @@
 
 		<delete dir="${build}" />
 		<delete dir="${dist}" />
-		<!--<delete dir="${reports}" /> -->
 		<delete dir="${reports}/sanity/html/" />
 		<delete dir="${reports}/sanity/xml/" />
 		<delete dir="${reports}/regression/html/" />
@@ -127,7 +124,25 @@
 			</batchtest>
 		</junit>
 	</target>
-	
+
+	<target name="testlogin" depends="compileregression" description="Run login page test cases">
+		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
+				showoutput="yes">
+			<classpath>
+				<pathelement path="${build}" />
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+			<batchtest fork="yes" todir="${reports}/regression/xml">
+				<formatter type="xml" />
+				<fileset dir="${build}">
+					<include name="**/LoginPageTest.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
 	<target name="testcompliancereport" depends="compileregression" description="Run compliance report test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
@@ -164,7 +179,6 @@
 				<fileset dir="${build}">
 
 					<include name="**/ACLandVisibilityTest.class" />
-					<include name="**/ComplianceReportsPageTest.class" />
 					<include name="**/HomePageTest.class" />
 					<include name="**/LoginPageTest.class" />
 					<include name="**/ManageAnalyzersPageTest.class" />

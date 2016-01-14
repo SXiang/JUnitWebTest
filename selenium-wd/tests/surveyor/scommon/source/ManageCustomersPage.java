@@ -35,7 +35,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='Eula']")
 	private WebElement textAreaEula;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='customer-form']/fieldset/div[4]/div[2]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='customer-form']/fieldset/div[4]/div[3]/div[2]/a")
 	private WebElement cancelBtn;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='Active']")
