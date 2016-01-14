@@ -85,4 +85,5 @@ public class ResourceKeys {
 	public static final String Validation_EnterValueInRange = "Validation_EnterValueInRange";
 	public static final String Validation_EnterValueLessThanOrEqual = "Validation_EnterValueLessThanOrEqual";
 	public static final String Validation_EnterValueGreaterThanOrEqual = "Validation_EnterValueGreaterThanOrEqual";
+	public static final String ManageLocation_EditLocation = "ManageLocation_EditLocation";
 }

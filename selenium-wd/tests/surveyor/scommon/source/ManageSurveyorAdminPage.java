@@ -263,6 +263,14 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 		
 		return false;
 	}	
+	
+	public WebElement getBtnCancel() {
+		return this.btnEditCancel;
+	}
+	
+	public void clickOnFirstEditSurveyorBtn() {
+		this.btnEditSurveyor.click();
+	}
 
 	/**
 	 * @param args

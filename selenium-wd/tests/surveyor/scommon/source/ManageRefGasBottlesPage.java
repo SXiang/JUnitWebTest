@@ -123,7 +123,6 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 			}
 		}
 		this.waitForPageLoad();
-		
 		return true;
 	}	
 	

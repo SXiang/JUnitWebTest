@@ -161,7 +161,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 
 		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
 		String note = "Automation Test Note " + testSetup.getRandomNumber();
-		
+
 		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, note);
 		assertTrue("Administrator not able to add new history note!",
 				manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS,
@@ -236,7 +236,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		if (startDate.startsWith("0")) {
 			startDate = startDate.replaceFirst("0*", "");
 		}
-		
+
 		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
 		String note = "Automation Test Note " + testSetup.getRandomNumber();
 
@@ -267,9 +267,9 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 					testSetup.getDownloadPath()));
 		} else
 			fail("\nTestcase TC195 failed.\n");
-		
+
 		assertTrue(systemHistoryReportsPage.validatePdfFiles(rptTitle,
-		testSetup.getDownloadPath()));
+				testSetup.getDownloadPath()));
 
 		systemHistoryReportsPage.open();
 		systemHistoryReportsPage.logout();
@@ -286,7 +286,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		System.out
 				.format("\nRunning TC516 Test Description: Generate system history report as Customer Supervisor, %s\n",
 						rptTitle);
-		
+
 		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
 		String note = "Automation Test Note " + testSetup.getRandomNumber();
 

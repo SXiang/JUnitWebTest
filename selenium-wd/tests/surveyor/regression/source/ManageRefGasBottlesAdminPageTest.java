@@ -44,7 +44,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC463_AddRefGasBottle_CustUA() {
 		String lotNum = testSetup.getRandomNumber() + "_TC463";
-		String isoValue = "-32";
+		String isoValue = "-32.7";
 		
 		Log.info("\nRunning TC463_AddRefGasBottle_CustUA - Test Description: Add Reference Gas Bottles");
 		

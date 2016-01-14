@@ -3,7 +3,7 @@
  */
 package surveyor.scommon.source;
 
-import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 	}
 	
 	public boolean findExistingRefGasBottle(String strLotNumber, String strSurveyor, String location) {
-		setPagination(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING_100);
 
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -49,10 +49,10 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 		
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);		
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);		
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			locationXPath = strTRXPath + "["+rowNum+"]/td[1]";
@@ -68,17 +68,17 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 				return true;
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				
 				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
 				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 				
 				rowNum = 0;
 			}

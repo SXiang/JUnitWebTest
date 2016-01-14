@@ -3,7 +3,7 @@
  */
 package surveyor.scommon.source;
 
-import static surveyor.scommon.source.SurveyorConstants.*;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +17,11 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import common.source.Log;
-import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+
+import common.source.Log;
+import common.source.TestSetup;
 
 /**
  * Picarro Admin User's Page Generic User's related code (which can be used by
@@ -87,11 +88,14 @@ public class ManageUsersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/thead/tr/th[5]")
 	protected WebElement theadStatus;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[7]/a[1]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[6]/a[1]")
 	protected WebElement btnEditUser;
 
 	@FindBy(css = "a[class='button-cancel btn btn-danger']")
 	protected WebElement cancelEditBtn;
+	
+	@FindBy(how = How.ID, using="OldPassword")
+	protected WebElement inputOldPassword;
 
 	// add more web elements here later
 
@@ -1152,4 +1156,16 @@ public class ManageUsersPage extends SurveyorBasePage {
             }
         });
     }
+
+	public void changeUserPassword(String oldPassword, String newPassword) {
+		this.dropDownUser.click();
+		this.linkChangePwd.click();
+		waitForPageToLoad();
+
+		this.inputOldPassword.sendKeys(oldPassword);
+		this.inputNewPassword.sendKeys(newPassword);
+		this.inputNewPasswordConfirm.sendKeys(newPassword);
+		btnOk.click();
+		waitForPageToLoad();
+	}
 }

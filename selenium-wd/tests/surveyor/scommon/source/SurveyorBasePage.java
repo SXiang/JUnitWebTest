@@ -29,6 +29,9 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/div[2]/ul/li/a")
 	protected WebElement dropDownUser;
 	
+	@FindBy(id= "user-change-password")
+	protected WebElement linkChangePwd;
+	
 	@FindBy(id= "user-logout")
 	protected WebElement linkLogOut;
 	

@@ -5,7 +5,7 @@ package surveyor.scommon.source;
 
 import static surveyor.scommon.source.SurveyorConstants.ACTIONTIMEOUT;
 import static surveyor.scommon.source.SurveyorConstants.ENDDATE;
-import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 import static surveyor.scommon.source.SurveyorConstants.STARTDATE;
 import static surveyor.scommon.source.SurveyorConstants.SURVEYORUNIT;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONE;
@@ -136,7 +136,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy) {
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
-		setPagination(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING_100);
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
@@ -153,10 +153,10 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 		Log.info(String.valueOf(rowSize));
 		int loopCount = 0;
 
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
@@ -189,7 +189,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 				}
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 
@@ -199,10 +199,10 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 				List<WebElement> newRows = table.findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 				rowNum = 0;
 			}
@@ -225,10 +225,10 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
@@ -245,7 +245,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 				return true;
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 
@@ -255,10 +255,10 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 				List<WebElement> newRows = table.findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 				rowNum = 0;
 			}
