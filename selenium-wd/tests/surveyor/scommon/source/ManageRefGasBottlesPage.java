@@ -6,6 +6,7 @@ package surveyor.scommon.source;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -16,7 +17,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
@@ -92,9 +92,8 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		this.waitForPageLoad();
 	}
 	
-	public boolean addNewRefGasBottle(String strLotNumber, String strIsoValue, String strCusName, String strLocName, String strSurveyor, boolean bFlag) {
+	public boolean addNewRefGasBottle(String strLotNumber, String strIsoValue, String strCusName, String strLocName, String strSurveyor, boolean bFlag)  {
 		this.btnAddNewRefGasBottle.click();
-		
 		this.inputLotNumber.sendKeys(strLotNumber);
 		this.inputIsoValue.clear();
 		this.inputIsoValue.sendKeys(strIsoValue);
@@ -106,6 +105,15 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		}
 		
 		this.btnOK.click();
+			
+		if(bFlag==false){
+			String att1 =this.inputLotNumber.getAttribute("required");
+			String att2 =this.inputIsoValue.getAttribute("required");
+			if (att1 != null && att2 != null) {
+
+				return false;
+			}
+		}
 		
 		if (isElementPresent(this.panelDupRgbErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDupRgbErrorXPath));
@@ -114,7 +122,6 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 				return false;
 			}
 		}
-		
 		this.waitForPageLoad();
 		
 		return true;
