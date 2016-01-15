@@ -3,6 +3,7 @@ package surveyor.scommon.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import common.source.ExceptionUtility;
 import common.source.Log;
 
 public class TableMapMethodInvoker implements IMethodInvoker {
@@ -26,7 +27,7 @@ public class TableMapMethodInvoker implements IMethodInvoker {
 			try {
 				result = action.invokeAction(actionName, methodParams.getMethodData(), dataRowID);
 			} catch (Exception e) {
-				Log.error(e.toString());
+				Log.error("ERROR in action: " + actionName + ". Exception Details: " + ExceptionUtility.getStackTraceString(e));
 				throw e;
 			}
 		} else {	// Multiple rowsIDs specified.	

@@ -35,19 +35,19 @@ public class DriverViewPageActions extends BasePageActions {
 	private static final String FN_VERIFY_MAP_SWITCH_ON = "verifyMapSwitchOn";
 	private static final String FN_VERIFY_GIS_SWITCH_IS_ON = "verifyGisSwitchIsOn";
 	private static final String FN_VERIFY_DISPLAY_SWITCH_IS_ON = "verifyDisplaySwitchIsOn";
-	private static final String FN_VERIFY_SURVEY_INFO_TIME_REMAINING_LABEL_HAS_TEXT = "verifySurveyInfoTimeRemainingLabelHasText";
-	private static final String FN_VERIFY_SURVEY_INFO_TIME_ELAPSED_LABEL_HAS_TEXT = "verifySurveyInfoTimeElapsedLabelHasText";
 	private static final String FN_VERIFY_SURVEY_INFO_ANALYZER_LABEL_EQUALS = "verifySurveyInfoAnalyzerLabelEquals";
 	private static final String FN_VERIFY_SURVEY_INFO_SURVEYOR_LABEL_EQUALS = "verifySurveyInfoSurveyorLabelEquals";
 	private static final String FN_VERIFY_SURVEY_INFO_DRIVER_LABEL_EQUALS = "verifySurveyInfoDriverLabelEquals";
 	private static final String FN_VERIFY_SURVEY_INFO_STABILITY_CLASS_LABEL_EQUALS = "verifySurveyInfoStabilityClassLabelEquals";
 	private static final String FN_VERIFY_SURVEY_INFO_ZOOM_LEVEL_LABEL_EQUALS = "verifySurveyInfoZoomLevelLabelEquals";
+	private static final String FN_VERIFY_SURVEY_INFO_SURVEY_STATUS_LABEL_EQUALS = "verifySurveyInfoSurveyStatusLabelEquals";
+	private static final String FN_VERIFY_SURVEY_INFO_TAG_LABEL_EQUALS = "verifySurveyInfoTagLabelEquals";
 	private static final String FN_VERIFY_SURVEY_INFO_TIME_LABEL_STARTS_WITH = "verifySurveyInfoTimeLabelStartsWith";
 	private static final String FN_VERIFY_SURVEY_INFO_TIME_LABEL_EQUALS = "verifySurveyInfoTimeLabelEquals";
 	private static final String FN_VERIFY_SURVEY_INFO_TIME_REMAINING_LABEL_EQUALS = "verifySurveyInfoTimeRemainingLabelEquals";
 	private static final String FN_VERIFY_SURVEY_INFO_TIME_ELAPSED_LABEL_EQUALS = "verifySurveyInfoTimeElapsedLabelEquals";
-	private static final String FN_VERIFY_SURVEY_INFO_TAG_LABEL_EQUALS = "verifySurveyInfoTagLabelEquals";
-	private static final String FN_VERIFY_SURVEY_INFO_SURVEY_STATUS_LABEL_EQUALS = "verifySurveyInfoSurveyStatusLabelEquals";
+	private static final String FN_VERIFY_SURVEY_INFO_TIME_ELAPSED_LABEL_STARTS_WITH = "verifySurveyInfoTimeElapsedLabelStartsWith";
+	private static final String FN_VERIFY_SURVEY_INFO_TIME_REMAINING_LABEL_STARTS_WITH = "verifySurveyInfoTimeRemainingLabelStartsWith";
 	private static final String FN_VERIFY_SURVEY_INFO_MODE_LABEL_EQUALS = "verifySurveyInfoModeLabelEquals";
 	private static final String FN_VERIFY_CROSS_HAIR_ICON_IS_SHOWN_ON_MAP = "verifyCrossHairIconIsShownOnMap";
 	private static final String FN_START_DRIVING_SURVEY = "startDrivingSurvey";
@@ -556,6 +556,19 @@ public class DriverViewPageActions extends BasePageActions {
 		driverViewPage.toggleDisplaySwitch(DisplaySwitchType.WindRose, false);
 		return true;
 	}
+	
+	/* Position Button */
+	public boolean turnOnPosition(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOnPosition", data, dataRowID);
+		driverViewPage.togglePositionButton(true);
+		return true;
+	}
+
+	public boolean turnOffPosition(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOnPosition", data, dataRowID);
+		driverViewPage.togglePositionButton(false);
+		return true;
+	}
 
 	/* Button state verification methods */
 	
@@ -925,9 +938,19 @@ public class DriverViewPageActions extends BasePageActions {
 	}
 	public boolean verifySurveyInfoTagLabelEquals(String data, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.verifySurveyInfoTagLabelEquals", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_TAG_LABEL_EQUALS, ARG_DATA, data);
-		log(String.format("Looking for Text-[%s], Found Survey Tag Label Text-[%s]", data, driverViewPage.getTagLabelText()));
-		return driverViewPage.getTagLabelText().equals(data);
+
+		String actualTagValue = driverViewPage.getTagLabelText();
+		String expectedTagValue = null;
+		if (!ActionArguments.isEmpty(data)) {
+			expectedTagValue = "Tag: " + data;
+		} else if (dataRowID > 0) {
+			expectedTagValue = "Tag: " + workingDataRow.surveyTag;
+		} else {
+			throw new Exception(String.format("Either data or dataRowID must be passed for %s action.", FN_VERIFY_SURVEY_INFO_TAG_LABEL_EQUALS));
+		}
+		
+		log(String.format("Looking for Text-[%s], Found Survey Tag Label Text-[%s]", expectedTagValue, actualTagValue));
+		return actualTagValue.equals(expectedTagValue);
 	}
 	public boolean verifySurveyInfoTimeLabelStartsWith(String data, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.verifySurveyInfoTimeLabelStartsWith", data, dataRowID);
@@ -985,13 +1008,13 @@ public class DriverViewPageActions extends BasePageActions {
 	}
 	public boolean verifySurveyInfoTimeElapsedLabelStartsWith(String data, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.verifySurveyInfoTimeElapsedLabelStartsWith", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_TIME_ELAPSED_LABEL_HAS_TEXT, ARG_DATA, data);
+		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_TIME_ELAPSED_LABEL_STARTS_WITH, ARG_DATA, data);
 		log(String.format("Looking for Text-[%s], Found Time Elapsed Label Text-[%s]", data, driverViewPage.getTimeElapsedLabelText()));
 		return driverViewPage.getTimeElapsedLabelText().startsWith(data);
 	}
 	public boolean verifySurveyInfoTimeRemainingLabelStartsWith(String data, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.verifySurveyInfoTimeRemainingLabelStartsWith", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_TIME_REMAINING_LABEL_HAS_TEXT, ARG_DATA, data);
+		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_TIME_REMAINING_LABEL_STARTS_WITH, ARG_DATA, data);
 		log(String.format("Looking for Text-[%s], Found Time Remaining Label Text-[%s]", data, driverViewPage.getTimeRemainingLabelText()));
 		return driverViewPage.getTimeRemainingLabelText().startsWith(data);
 	}
@@ -1066,6 +1089,7 @@ public class DriverViewPageActions extends BasePageActions {
 		else if (actionName.equals("turnOffMaterialTypeProtectedSteel")) { return this.turnOffMaterialTypeProtectedSteel(data, dataRowID); }
 		else if (actionName.equals("turnOffMaterialTypeUnprotectedSteel")) { return this.turnOffMaterialTypeUnprotectedSteel(data, dataRowID); }
 		else if (actionName.equals("turnOffNotes")) { return this.turnOffNotes(data, dataRowID); }
+		else if (actionName.equals("turnOffPosition")) { return this.turnOffPosition(data, dataRowID); }
 		else if (actionName.equals("turnOffUseAllBoundaries")) { return this.turnOffUseAllBoundaries(data, dataRowID); }
 		else if (actionName.equals("turnOffUseAllPipes")) { return this.turnOffUseAllPipes(data, dataRowID); }
 		else if (actionName.equals("turnOffWindRose")) { return this.turnOffWindRose(data, dataRowID); }
@@ -1085,6 +1109,7 @@ public class DriverViewPageActions extends BasePageActions {
 		else if (actionName.equals("turnOnMaterialTypeProtectedSteel")) { return this.turnOnMaterialTypeProtectedSteel(data, dataRowID); }
 		else if (actionName.equals("turnOnMaterialTypeUnprotectedSteel")) { return this.turnOnMaterialTypeUnprotectedSteel(data, dataRowID); }
 		else if (actionName.equals("turnOnNotes")) { return this.turnOnNotes(data, dataRowID); }
+		else if (actionName.equals("turnOnPosition")) { return this.turnOnPosition(data, dataRowID); }
 		else if (actionName.equals("turnOnSatelliteView")) { return this.turnOnSatelliteView(data, dataRowID); }
 		else if (actionName.equals("turnOnUseAllBoundaries")) { return this.turnOnUseAllBoundaries(data, dataRowID); }
 		else if (actionName.equals("turnOnUseAllPipes")) { return this.turnOnUseAllPipes(data, dataRowID); }

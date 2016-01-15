@@ -354,14 +354,12 @@ public class TestSetup {
 	}
 
 	public static boolean isSupervisorRunning() {
-		return ProcessUtility.isProcessRunning("Supervisor.exe");
+		return ProcessUtility.isProcessRunning("supervisor.exe");
 	}
 
 	public static void stopAnalyzer() {
 		ProcessUtility.killProcess("Picarro.Surveyor.Analyzer.exe", /*killChildProcesses*/ true);
-		if (isSupervisorRunning()) {
-			ProcessUtility.killProcess("Supervisor.exe", /*killChildProcesses*/ true);
-		}
+		ProcessUtility.killProcess("supervisor.exe", /*killChildProcesses*/ true);
 	}
 
 	public void startReplay(String defnFileName) throws InstantiationException, IllegalAccessException, IOException {

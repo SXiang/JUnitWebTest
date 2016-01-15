@@ -31,14 +31,19 @@ public class TestEnvironmentActions extends BaseActions {
 		ActionArguments.verifyGreaterThanZero(CLS_TEST_ENVIRONMENT_ACTIONS + FN_START_SIMULATOR, ARG_DATA_ROW_ID, dataRowID);
 		try {
 			TestEnvironmentDataRow dataRow = getDataReader().getDataRow(dataRowID);
-			
-			// If not using the default analyzer serial number or shared key, 
-			// then update Analyzer configuration and restart Analyzer EXE.
-			if (!dataRow.analyzerSerialNumber.equalsIgnoreCase(DEFAULT_ANALYZER_SERIAL_NUMBER) || 
-					!dataRow.analyzerSharedKey.equalsIgnoreCase(DEFAULT_ANALYZER_SHARED_KEY)) {
-				TestSetup.updateAnalyzerConfiguration(dataRow.analyzerSerialNumber, dataRow.analyzerSharedKey);
-				TestSetup.restartAnalyzer();
-			}
+
+			TestSetup.updateAnalyzerConfiguration(dataRow.analyzerSerialNumber, dataRow.analyzerSharedKey);
+			TestSetup.restartAnalyzer();
+
+//			// If not using the default analyzer serial number or shared key, 
+//			// then update Analyzer configuration and restart Analyzer EXE.
+//			if (!dataRow.analyzerSerialNumber.equalsIgnoreCase(DEFAULT_ANALYZER_SERIAL_NUMBER) || 
+//					!dataRow.analyzerSharedKey.equalsIgnoreCase(DEFAULT_ANALYZER_SHARED_KEY)) {
+//				TestSetup.updateAnalyzerConfiguration(dataRow.analyzerSerialNumber, dataRow.analyzerSharedKey);
+//				TestSetup.restartAnalyzer();
+//			} else {
+//				
+//			}
 			
 			if (!ActionArguments.isEmpty(dataRow.replayScriptDB3File)) {
 				TestSetup.replayDB3Script(dataRow.replayScriptDefnFile, dataRow.replayScriptDB3File);

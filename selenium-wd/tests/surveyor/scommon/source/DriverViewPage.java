@@ -669,6 +669,14 @@ public class DriverViewPage extends SurveyorBasePage {
 		return isSelected;
 	}
 
+	public boolean togglePositionButton(boolean turnOn) throws IllegalArgumentException {
+		boolean isSelected = isPositionButtonGreen();
+		if ((isSelected && !turnOn) || (!isSelected && turnOn)) {
+			clickPositionButton();
+		}
+		return isPositionButtonGreen();
+	}
+
 	public boolean toggleGisSwitch(GisSwitchType switchType, boolean turnOn) throws IllegalArgumentException {
 		boolean isSelected = false;
 
