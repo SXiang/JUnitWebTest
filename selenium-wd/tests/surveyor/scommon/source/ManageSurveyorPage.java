@@ -3,23 +3,22 @@
  */
 package surveyor.scommon.source;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.support.FindBy;
 
-import common.source.Log;
-import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-
-import static surveyor.scommon.source.SurveyorConstants.*;
+import common.source.Log;
+import common.source.TestSetup;
 
 /**
  * @author zlu
@@ -63,7 +62,22 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	
     @FindBy(name = "datatable_length")
     private WebElement recordsPerPage;
+    
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[1]")
+    protected WebElement tdLocationValue;
+    
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[2]")
+    protected WebElement tdSurveyorValue;
+    
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/thead/tr/th[1]")
+	protected WebElement theadLocation;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/thead/tr/th[2]")
+	protected WebElement theadSurveyor;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr")
+	protected List<WebElement> rows;
+	
 	//add more @FindBy here later
 	
 	/**
@@ -335,4 +349,121 @@ public class ManageSurveyorPage extends SurveyorBasePage {
             }
         });
     }
+    
+	public boolean searchSurveyor(String locationName, String surveyorName) {
+		this.getInputSearch().sendKeys(surveyorName);
+
+		if (this.tdSurveyorValue.getText().contentEquals(surveyorName)) {
+			if (this.tdLocationValue.getText().contentEquals(locationName))
+				return true;
+		}
+		return false;
+	}
+
+	public WebElement getTheadSurveyor() {
+		return this.theadSurveyor;
+	}
+
+	public WebElement getTheadLocation() {
+		return this.theadLocation;
+	}
+	
+	public List<String> getSurveyorList(boolean allPages, int paginationSize) {
+		List<String> surveyorList = new ArrayList<String>();
+
+		String pageSizeStr = String.valueOf(paginationSize);
+		setPagination(pageSizeStr);
+		waitForPageLoad();
+
+		String surveyorXPath;
+		WebElement surveyorCell;
+
+		
+		int rowSize = rows.size();
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(pageSizeStr))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(pageSizeStr);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			surveyorXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
+					+ "]/td[2]";
+			surveyorCell = table.findElement(By.xpath(surveyorXPath));
+
+			surveyorList.add(surveyorCell.getText().trim());
+
+			if (rowNum == Integer.parseInt(pageSizeStr)
+					&& !this.nextBtn.getAttribute("class").contains("disabled")
+					&& allPages) {
+				this.nextBtn.click();
+				this.testSetup.slowdownInSeconds(this.testSetup
+						.getSlowdownInSeconds());
+				List<WebElement> newRows = table.findElements(By
+						.xpath("//*[@id='datatable']/tbody/tr"));
+
+				rowSize = newRows.size();
+
+				if (rowSize < Integer.parseInt(pageSizeStr))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(pageSizeStr);
+
+				rowNum = 0;
+			}
+		}
+		return surveyorList;
+	}
+	
+	public List<String> getLocationList(boolean allPages, int paginationSize) {
+		List<String> locationList = new ArrayList<String>();
+
+		String pageSizeStr = String.valueOf(paginationSize);
+		setPagination(pageSizeStr);
+		waitForPageLoad();
+
+		String locationXPath;
+		WebElement locationCell;
+
+		List<WebElement> rows = table.findElements(By
+				.xpath("//*[@id='datatable']/tbody/tr"));
+
+		int rowSize = rows.size();
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(pageSizeStr))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(pageSizeStr);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			locationXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
+					+ "]/td[1]";
+			locationCell = table.findElement(By.xpath(locationXPath));
+
+			locationList.add(locationCell.getText().trim());
+
+			if (rowNum == Integer.parseInt(pageSizeStr)
+					&& !this.nextBtn.getAttribute("class").contains("disabled")
+					&& allPages) {
+				this.nextBtn.click();
+				this.testSetup.slowdownInSeconds(this.testSetup
+						.getSlowdownInSeconds());
+				List<WebElement> newRows = table.findElements(By
+						.xpath("//*[@id='datatable']/tbody/tr"));
+
+				rowSize = newRows.size();
+
+				if (rowSize < Integer.parseInt(pageSizeStr))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(pageSizeStr);
+
+				rowNum = 0;
+			}
+		}
+		return locationList;
+	}
+
 }

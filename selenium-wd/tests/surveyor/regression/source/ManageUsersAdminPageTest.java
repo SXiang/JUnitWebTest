@@ -8,6 +8,7 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
@@ -349,33 +350,97 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	}
 
 	/**
+	 * Test Case ID: TC450_ManageUserAdminPagination Test Description:
+	 * Pagination (Manage Users Customer Admin) Test Script: 10,25,50 and 100
+	 * records selection on all Customer Administration screens Expected
+	 * Results: Specified number of records will be listed in the table Future
+	 * Improvement: validating on "Manage Users" pages for now and should check
+	 * on other pages as well
+	 */
+	@Test
+	public void TC450_ManageUserAdminPagination() {
+		List<String> userNameList;
+		String numTextString;
+		String[] strList;
+		int userNum = 0;
+
+		System.out
+				.println("\nRunning - TC450_ManageUserAdminPagination - Test Description: Pagination (Manage Users Customer Admin)\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+
+		manageUsersAdminPage.open();
+		manageUsersAdminPage.setPagination(PAGINATIONSETTING);
+
+		userNameList = manageUsersAdminPage.getUserNameList(false, Integer.valueOf(PAGINATIONSETTING));
+
+		assertTrue(userNameList.size() <= Integer.valueOf(PAGINATIONSETTING));
+
+		numTextString = manageUsersAdminPage.getLabelPageTableInfo().getText()
+				.trim();
+		strList = numTextString.split(" ");
+		userNum = Integer.parseInt(strList[3]);
+
+		assertTrue(userNameList.size() == userNum);
+
+		manageUsersAdminPage.open();
+		manageUsersAdminPage.setPagination(PAGINATIONSETTING_25);
+
+		userNameList = manageUsersAdminPage.getUserNameList(false, Integer.valueOf(PAGINATIONSETTING_25));
+
+		assertTrue(userNameList.size() <= Integer.valueOf(PAGINATIONSETTING_25));
+
+		numTextString = manageUsersAdminPage.getLabelPageTableInfo().getText()
+				.trim();
+		strList = numTextString.split(" ");
+		userNum = Integer.parseInt(strList[3]);
+
+		assertTrue(userNameList.size() == userNum);
+
+		manageUsersAdminPage.open();
+		manageUsersAdminPage.setPagination(PAGINATIONSETTING_50);
+
+		userNameList = manageUsersAdminPage.getUserNameList(false, Integer.valueOf(PAGINATIONSETTING_50));
+
+		assertTrue(userNameList.size() <= Integer.valueOf(PAGINATIONSETTING_50));
+
+		numTextString = manageUsersAdminPage.getLabelPageTableInfo().getText()
+				.trim();
+		strList = numTextString.split(" ");
+		userNum = Integer.parseInt(strList[3]);
+
+		assertTrue(userNameList.size() == userNum);
+
+		manageUsersAdminPage.open();
+		manageUsersAdminPage.setPagination(PAGINATIONSETTING_100);
+
+		userNameList = manageUsersAdminPage.getUserNameList(false, Integer.valueOf(PAGINATIONSETTING_100));
+
+		assertTrue(userNameList.size() <= Integer.valueOf(PAGINATIONSETTING_100));
+
+		numTextString = manageUsersAdminPage.getLabelPageTableInfo().getText()
+				.trim();
+		strList = numTextString.split(" ");
+		userNum = Integer.parseInt(strList[3]);
+
+		assertTrue(userNameList.size() == userNum);
+	}
+	
+	/**
 	 * Test Case ID: TC451 Test Description: Search valid user record
 	 */
 	@Test
 	public void TC451_SearchValidUser() {
-		String userName = SQACUS + testSetup.getRandomNumber() + "custadm014"
-				+ REGBASEUSERNAME;
-
 		System.out
 				.println("\nRunning - TC451 - Test Description: Search valid user record\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
-		homePage.waitForPageLoad();
-		homePage.getLinkCusAdmin().click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-
-		homePage.getLinkAdminManageUsers().click();
-
-		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC,
-				CUSUSERROLEDR, TIMEZONEPTUA, false);
-		manageUsersAdminPage.getInputSearch().sendKeys(userName);
-
-		assertTrue(manageUsersAdminPage.findExistingUser(SQACUSLOC, userName,
-				CUSUSERROLEDR, false));
-		assertTrue(manageUsersAdminPage.getUserStatus(userName)
-				.equalsIgnoreCase(USERDISABLED));
+		manageUsersAdminPage.open();
+		assertTrue(manageUsersAdminPage.searchUser(SQACUSUA, SQACUSLOC,
+				CUSUSERROLEUA, USERENABLED));
 	}
 
 	/**
@@ -407,15 +472,15 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC453 Test Description: Sort records based on attributes
+	 * Test Case ID: TC453 Test Description: Sort user records based on attributes
 	 * present
 	 */
 	@Test
-	public void TC453_SortRecords() {
+	public void TC453_SortUserRecords() {
 		List<String> list = new ArrayList<String>();
 
 		System.out
-				.println("\nRunning - TC453 - Test Description: Sort records based on attributes present\n");
+				.println("\nRunning - TC453 - Test Description: Sort user records based on attributes present\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);

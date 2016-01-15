@@ -241,7 +241,6 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 						return false;
 					}
 				}
-
 				return true;
 			}
 				

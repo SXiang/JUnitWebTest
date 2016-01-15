@@ -19,7 +19,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-
 import common.source.Log;
 import common.source.TestSetup;
 
@@ -97,6 +96,18 @@ public class ManageUsersPage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using="OldPassword")
 	protected WebElement inputOldPassword;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[1]")
+    protected WebElement tdUserNameValue;
+    
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[3]")
+    protected WebElement tdLocationValue;
+    
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]")
+    protected WebElement tdRoleValue;
+    
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[5]")
+    protected WebElement tdStatusValue;
+    
 	// add more web elements here later
 
 	/**
@@ -1167,5 +1178,19 @@ public class ManageUsersPage extends SurveyorBasePage {
 		this.inputNewPasswordConfirm.sendKeys(newPassword);
 		btnOk.click();
 		waitForPageToLoad();
+	}
+	
+	public boolean searchUser(String userName, String locationName, String role, String status) {
+		this.getInputSearch().sendKeys(userName);
+
+		if (this.tdUserNameValue.getText().contentEquals(userName)) {
+			if (this.tdLocationValue.getText().contentEquals(locationName)){
+				if (this.tdRoleValue.getText().contentEquals(role)){
+					if (this.tdStatusValue.getText().contentEquals(status))
+						return true;
+				}
+			}
+		}
+		return false;
 	}
 }

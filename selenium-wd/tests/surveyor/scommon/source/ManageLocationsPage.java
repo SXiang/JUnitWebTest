@@ -6,6 +6,7 @@ package surveyor.scommon.source;
 import static surveyor.scommon.source.SurveyorConstants.BLANKFIELDERROR;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -18,7 +19,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-
 import common.source.Log;
 import common.source.TestSetup;
 
@@ -105,6 +105,18 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(id = "point-longitude-error")
 	private WebElement labelLongValueError;
 	private String labelLongValueErrorXPath = "//label[@id='point-longitude-error']";
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[1]")
+    protected WebElement tdCustomerValue;
+    
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[2]")
+    protected WebElement tdLocationValue;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/thead/tr/th[2]")
+	protected WebElement theadLocation;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr")
+	protected List<WebElement> rows;
 
 	/**
 	 * @param driver
@@ -479,6 +491,67 @@ public class ManageLocationsPage extends SurveyorBasePage {
 								STREditPageContentText);
 					}
 				});
+	}
+	
+	public WebElement getTheadLocation() {
+		return this.theadLocation;
+	}
+	
+	public List<String> getLocationList(boolean allPages, int paginationSize) {
+		List<String> locationList = new ArrayList<String>();
+
+		String pageSizeStr = String.valueOf(paginationSize);
+		setPagination(pageSizeStr);
+		waitForPageLoad();
+
+		String locationXPath;
+		WebElement locationCell;
+
+		int rowSize = rows.size();
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(pageSizeStr))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(pageSizeStr);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			locationXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
+					+ "]/td[2]";
+			locationCell = table.findElement(By.xpath(locationXPath));
+
+			locationList.add(locationCell.getText().trim());
+
+			if (rowNum == Integer.parseInt(pageSizeStr)
+					&& !this.nextBtn.getAttribute("class").contains("disabled")
+					&& allPages) {
+				this.nextBtn.click();
+				this.testSetup.slowdownInSeconds(this.testSetup
+						.getSlowdownInSeconds());
+				List<WebElement> newRows = table.findElements(By
+						.xpath("//*[@id='datatable']/tbody/tr"));
+
+				rowSize = newRows.size();
+
+				if (rowSize < Integer.parseInt(pageSizeStr))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(pageSizeStr);
+
+				rowNum = 0;
+			}
+		}
+		return locationList;
+	}
+
+	public boolean searchLocation(String customer, String locationName) {
+		this.getInputSearch().sendKeys(locationName);
+
+		if (this.tdLocationValue.getText().contentEquals(locationName)) {
+			if (this.tdCustomerValue.getText().contentEquals(customer))
+				return true;
+		}
+		return false;
 	}
 
 	/**

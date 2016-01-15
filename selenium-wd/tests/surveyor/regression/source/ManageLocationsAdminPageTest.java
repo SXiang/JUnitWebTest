@@ -5,13 +5,22 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_25;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_50;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.SQACUS;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -27,6 +36,7 @@ import surveyor.scommon.source.ManageUsersAdminPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 
+import common.source.BaseHelper;
 import common.source.Log;
 
 /**
@@ -279,5 +289,147 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		manageRefGasBottlesAdminPage.getBtnCancel().click();
 		assertTrue(manageRefGasBottlesAdminPage.getStrPageURL()
 				.equalsIgnoreCase(curURL));
+	}
+	
+	/**
+	 * Test Case ID: TC450_ManageLocationsAdminPagination Test Description:
+	 * Pagination (Manage Locations Customer Admin) Test Script: 10,25,50 and
+	 * 100 records selection on all Customer Administration screens Expected
+	 * Results: Specified number of records will be listed in the table Future
+	 */
+	@Test
+	public void TC450_ManageLocationsAdminPagination() {
+		List<String> locationList;
+		String numTextString;
+		String[] strList;
+		int locNum = 0;
+
+		System.out
+				.println("\nRunning - TC450_ManageLocationsAdminPagination - Test Description: Pagination (Manage Locations Customer Admin)\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+
+		manageLocationsAdminPage.open();
+		manageLocationsAdminPage.setPagination(PAGINATIONSETTING);
+
+		locationList = manageLocationsAdminPage.getLocationList(false,
+				Integer.valueOf(PAGINATIONSETTING));
+
+		assertTrue(locationList.size() <= Integer.valueOf(PAGINATIONSETTING));
+
+		numTextString = manageLocationsAdminPage.getLabelPageTableInfo()
+				.getText().trim();
+		strList = numTextString.split(" ");
+		locNum = Integer.parseInt(strList[3]);
+
+		assertTrue(locationList.size() == locNum);
+
+		manageLocationsAdminPage.open();
+		manageLocationsAdminPage.setPagination(PAGINATIONSETTING_25);
+
+		locationList = manageLocationsAdminPage.getLocationList(false,
+				Integer.valueOf(PAGINATIONSETTING_25));
+
+		assertTrue(locationList.size() <= Integer.valueOf(PAGINATIONSETTING_25));
+
+		numTextString = manageLocationsAdminPage.getLabelPageTableInfo()
+				.getText().trim();
+		strList = numTextString.split(" ");
+		locNum = Integer.parseInt(strList[3]);
+
+		assertTrue(locationList.size() == locNum);
+
+		manageLocationsAdminPage.open();
+		manageLocationsAdminPage.setPagination(PAGINATIONSETTING_50);
+
+		locationList = manageLocationsAdminPage.getLocationList(false,
+				Integer.valueOf(PAGINATIONSETTING_50));
+
+		assertTrue(locationList.size() <= Integer.valueOf(PAGINATIONSETTING_50));
+
+		numTextString = manageLocationsAdminPage.getLabelPageTableInfo()
+				.getText().trim();
+		strList = numTextString.split(" ");
+		locNum = Integer.parseInt(strList[3]);
+
+		assertTrue(locationList.size() == locNum);
+
+		manageLocationsAdminPage.open();
+		manageLocationsAdminPage.setPagination(PAGINATIONSETTING_100);
+
+		locationList = manageLocationsAdminPage.getLocationList(false,
+				Integer.valueOf(PAGINATIONSETTING_100));
+
+		assertTrue(locationList.size() <= Integer
+				.valueOf(PAGINATIONSETTING_100));
+
+		numTextString = manageLocationsAdminPage.getLabelPageTableInfo()
+				.getText().trim();
+		strList = numTextString.split(" ");
+		locNum = Integer.parseInt(strList[3]);
+
+		assertTrue(locationList.size() == locNum);
+	}
+
+	/**
+	 * Test Case ID: TC451 Test Description: Search valid location record
+	 */
+	@Test
+	public void TC451_SearchValidLocation() {
+		System.out
+				.println("\nRunning - TC451 - Test Description: Search valid location record\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+
+		manageLocationsAdminPage.open();
+		assertTrue(manageLocationsAdminPage.searchLocation(SQACUS, SQACUSLOC));
+	}
+
+	/**
+	 * Test Case ID: TC452 Test Description: Search invalid location record
+	 */
+	@Test
+	public void TC452_SearchInvalidLocation() {
+		String location = SQACUSLOC + testSetup.getRandomNumber();
+
+		System.out
+				.println("\nRunning - TC452 - Test Description: Search invalid location record\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		manageLocationsAdminPage.open();
+		manageLocationsAdminPage.waitForPageLoad();
+		manageLocationsAdminPage.getInputSearch().sendKeys(location);
+		manageLocationsAdminPage.waitForPageToLoad();
+
+		assertTrue(manageLocationsAdminPage.getLabelNoMatchingSearch()
+				.equalsIgnoreCase(NOMATCHINGSEARCH));
+	}
+
+	/**
+	 * Test Case ID: TC453 Test Description: Sort location records based on
+	 * attributes present
+	 */
+	@Test
+	public void TC453_SortLocationRecords() {
+		List<String> list = new ArrayList<String>();
+
+		System.out
+				.println("\nRunning - TC453 - Test Description: Sort location records based on attributes present\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		manageLocationsAdminPage.open();
+
+		manageLocationsAdminPage.getTheadLocation().click();
+		list = manageLocationsAdminPage.getLocationList(false,
+				Integer.valueOf(PAGINATIONSETTING_100));
+		assertTrue(BaseHelper.isStringListSorted(list));
+		manageLocationsAdminPage.getTheadLocation().click();
+		list = manageLocationsAdminPage.getLocationList(false,
+				Integer.valueOf(PAGINATIONSETTING_100));
+		assertTrue(BaseHelper.isStringListSortedDes(list));
 	}
 }

@@ -19,7 +19,6 @@ import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
@@ -55,6 +54,21 @@ public class UserFeedbackPage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "/html/body/div/div[2]/div/div/div[2]/p")
 	protected WebElement textFeedbackRecieved;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr")
+	protected List<WebElement> rows;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[1]")
+    protected WebElement tdCustomerValue;
+    
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[2]")
+    protected WebElement tdUserValue;
+    
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[3]")
+    protected WebElement tdNoteValue;
+    
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/thead/tr/th[3]")
+	protected WebElement theadNote;
 
 	/**
 	 * @param driver
@@ -266,4 +280,64 @@ public class UserFeedbackPage extends SurveyorBasePage {
             }
         });
     }
+	
+	public List<String> getNotesList(boolean allPages, int paginationSize) {
+		List<String> noteList = new ArrayList<String>();
+		String pageSizeStr = String.valueOf(paginationSize);
+		setPagination(pageSizeStr);
+
+		String noteXPath;
+		WebElement noteCell;
+
+		int rowSize = rows.size();
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(pageSizeStr))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(pageSizeStr);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			noteXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
+					+ "]/td[3]";
+			noteCell = table.findElement(By.xpath(noteXPath));
+
+			noteList.add(noteCell.getText().trim());
+
+			if (rowNum == Integer.parseInt(pageSizeStr)
+					&& !this.nextBtn.getAttribute("class").contains("disabled")
+					&& allPages) {
+				this.nextBtn.click();
+				this.testSetup.slowdownInSeconds(this.testSetup
+						.getSlowdownInSeconds());
+				List<WebElement> newRows = table.findElements(By
+						.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+
+				if (rowSize < Integer.parseInt(pageSizeStr))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(pageSizeStr);
+
+				rowNum = 0;
+			}
+		}
+		return noteList;
+	}
+	
+	public boolean searchNote(String customer, String userName, String note) {
+		this.getInputSearch().sendKeys(note);
+
+		if (this.tdNoteValue.getText().contentEquals(note)) {
+			if (this.tdUserValue.getText().contentEquals(userName)) {
+				if (this.tdCustomerValue.getText().contentEquals(customer))
+					return true;
+			}
+		}
+		return false;
+	}
+	
+	public WebElement getTheadNotes() {
+		return this.theadNote;
+	}
 }
