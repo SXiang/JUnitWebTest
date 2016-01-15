@@ -3,6 +3,7 @@
  */
 package surveyor.scommon.source;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -51,7 +52,24 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='ref-gas-bottle-form']/fieldset/div[4]/div[2]/a")
 	private WebElement btnCancel;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr")
+	protected List<WebElement> rows;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[1]")
+    protected WebElement tdLocationValue;
+    
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[2]")
+    protected WebElement tdSurveyorValue;
+    
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[3]")
+    protected WebElement tdAnalyzerValue;
+    
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]")
+    protected WebElement tdLotNumValue;
+    
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[5]")
+    protected WebElement tdIsoValue;
+    	
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -264,4 +282,68 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
             }
         });
     }
+	
+	public List<String> getLotNumberList(boolean allPages, int paginationSize) {
+		List<String> surveyorList = new ArrayList<String>();
+
+		String pageSizeStr = String.valueOf(paginationSize);
+		setPagination(pageSizeStr);
+		waitForPageLoad();
+
+		String surveyorXPath;
+		WebElement surveyorCell;
+
+		
+		int rowSize = rows.size();
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(pageSizeStr))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(pageSizeStr);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			surveyorXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
+					+ "]/td[2]";
+			surveyorCell = table.findElement(By.xpath(surveyorXPath));
+
+			surveyorList.add(surveyorCell.getText().trim());
+
+			if (rowNum == Integer.parseInt(pageSizeStr)
+					&& !this.nextBtn.getAttribute("class").contains("disabled")
+					&& allPages) {
+				this.nextBtn.click();
+				this.testSetup.slowdownInSeconds(this.testSetup
+						.getSlowdownInSeconds());
+				List<WebElement> newRows = table.findElements(By
+						.xpath("//*[@id='datatable']/tbody/tr"));
+
+				rowSize = newRows.size();
+
+				if (rowSize < Integer.parseInt(pageSizeStr))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(pageSizeStr);
+
+				rowNum = 0;
+			}
+		}
+		return surveyorList;
+	}
+	
+	public boolean searchRefGasBottle(String locationName, String surveyorName, String analyzerName, String lotNum, String isoValue) {
+		this.getInputSearch().sendKeys(lotNum);
+
+		if (this.tdLotNumValue.getText().contentEquals(lotNum)) {
+			if (this.tdLocationValue.getText().contentEquals(locationName)) {
+				if (this.tdSurveyorValue.getText().contentEquals(surveyorName)) {
+					if (this.tdAnalyzerValue.getText().contentEquals(analyzerName)){
+						if (this.tdIsoValue.getText().contentEquals(isoValue))
+							return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
 }

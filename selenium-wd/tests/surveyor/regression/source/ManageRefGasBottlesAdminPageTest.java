@@ -4,13 +4,24 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
+import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_25;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_50;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import static surveyor.scommon.source.SurveyorConstants.SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOCSUR;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSLOCANZ;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import common.source.BaseHelper;
 import common.source.Log;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
@@ -115,5 +126,152 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		assertTrue(manageRefGasBottlesAdminPage.findExistingRefGasBottle(lotNum50Chars, SQACUSLOCSUR, SQACUSLOC));
 		manageRefGasBottlesAdminPage.open();
 		assertFalse(manageRefGasBottlesAdminPage.findExistingRefGasBottle(lotNum51Chars, SQACUSLOCSUR, SQACUSLOC));
+	}
+	
+	/**
+	 * Test Case ID: TC450_ManageRefGasBottlesAdminPagination Test Description:
+	 * Pagination (Manage Ref Gas Bottles Customer Admin) Test Script: 10,25,50
+	 * and 100 records selection on all Customer Administration screens Expected
+	 * Results: Specified number of records will be listed in the table Future
+	 */
+	@Test
+	public void TC450_ManageRefGasBottlesAdminPagination() {
+		List<String> lotNumberList;
+		String numTextString;
+		String[] strList;
+		int lotNum = 0;
+
+		System.out
+				.println("\nRunning - TC450_ManageRefGasBottlesAdminPagination - Test Description: Pagination (Manage Ref Gas Bottles Customer Admin)\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		manageRefGasBottlesAdminPage.open();
+		manageRefGasBottlesAdminPage.setPagination(PAGINATIONSETTING);
+
+		lotNumberList = manageRefGasBottlesAdminPage.getLotNumberList(false,
+				Integer.valueOf(PAGINATIONSETTING));
+
+		assertTrue(lotNumberList.size() <= Integer.valueOf(PAGINATIONSETTING));
+
+		numTextString = manageRefGasBottlesAdminPage.getLabelPageTableInfo()
+				.getText().trim();
+		strList = numTextString.split(" ");
+		lotNum = Integer.parseInt(strList[3]);
+
+		assertTrue(lotNumberList.size() == lotNum);
+
+		manageRefGasBottlesAdminPage.open();
+		manageRefGasBottlesAdminPage.setPagination(PAGINATIONSETTING_25);
+
+		lotNumberList = manageRefGasBottlesAdminPage.getLotNumberList(false,
+				Integer.valueOf(PAGINATIONSETTING_25));
+
+		assertTrue(lotNumberList.size() <= Integer.valueOf(PAGINATIONSETTING_25));
+
+		numTextString = manageRefGasBottlesAdminPage.getLabelPageTableInfo()
+				.getText().trim();
+		strList = numTextString.split(" ");
+		lotNum = Integer.parseInt(strList[3]);
+
+		assertTrue(lotNumberList.size() == lotNum);
+
+		manageRefGasBottlesAdminPage.open();
+		manageRefGasBottlesAdminPage.setPagination(PAGINATIONSETTING_50);
+
+		lotNumberList = manageRefGasBottlesAdminPage.getLotNumberList(false,
+				Integer.valueOf(PAGINATIONSETTING_50));
+
+		assertTrue(lotNumberList.size() <= Integer.valueOf(PAGINATIONSETTING_50));
+
+		numTextString = manageRefGasBottlesAdminPage.getLabelPageTableInfo()
+				.getText().trim();
+		strList = numTextString.split(" ");
+		lotNum = Integer.parseInt(strList[3]);
+
+		assertTrue(lotNumberList.size() == lotNum);
+
+		manageRefGasBottlesAdminPage.open();
+		manageRefGasBottlesAdminPage.setPagination(PAGINATIONSETTING_100);
+
+		lotNumberList = manageRefGasBottlesAdminPage.getLotNumberList(false,
+				Integer.valueOf(PAGINATIONSETTING_100));
+
+		assertTrue(lotNumberList.size() <= Integer
+				.valueOf(PAGINATIONSETTING_100));
+
+		numTextString = manageRefGasBottlesAdminPage.getLabelPageTableInfo()
+				.getText().trim();
+		strList = numTextString.split(" ");
+		lotNum = Integer.parseInt(strList[3]);
+
+		assertTrue(lotNumberList.size() == lotNum);
+	}
+
+	/**
+	 * Test Case ID: TC451 Test Description: Search valid Ref Gas Bottle record
+	 */
+	@Test
+	public void TC451_SearchValidRefGasBottle() {
+		String lotNumber = "TC451_" + testSetup.getRandomNumber();
+		String isoValue = "-32.7";
+
+		System.out
+				.println("\nRunning - TC451 - Test Description: Search ref gas bottle record\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+
+		manageRefGasBottlesAdminPage.open();
+		manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNumber, isoValue,
+				SQACUS, SQACUSLOC, SQACUSLOCSUR);
+		assertTrue(manageRefGasBottlesAdminPage.searchRefGasBottle(SQACUSLOC,
+				SQACUSLOCSUR, SQACUSLOCANZ, lotNumber, isoValue));
+	}
+
+	/**
+	 * Test Case ID: TC452 Test Description: Search invalid Ref Gas Bottle record
+	 */
+	@Test
+	public void TC452_SearchInvalidRefGasBottle() {
+		String lotNumber = "Invalid_TC452_" + testSetup.getRandomNumber();
+
+		System.out
+				.println("\nRunning - TC452 - Test Description: Search invalid Ref Gas Bottle record\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		manageRefGasBottlesAdminPage.open();
+		manageRefGasBottlesAdminPage.waitForPageLoad();
+		manageRefGasBottlesAdminPage.getInputSearch().sendKeys(lotNumber);
+		manageRefGasBottlesAdminPage.waitForPageToLoad();
+
+		assertTrue(manageRefGasBottlesAdminPage.getLabelNoMatchingSearch()
+				.equalsIgnoreCase(NOMATCHINGSEARCH));
+	}
+
+	/**
+	 * Test Case ID: TC453 Test Description: Sort Ref gas bottle records based on
+	 * attributes present
+	 */
+	@Test
+	public void TC453_SortRefGasBottleRecords() {
+		List<String> list = new ArrayList<String>();
+
+		System.out
+				.println("\nRunning - TC453 - Test Description: Sort Ref Gas Bottle records based on attributes present\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		manageRefGasBottlesAdminPage.open();
+
+		manageRefGasBottlesAdminPage.getTheadLotNumber().click();
+		list = manageRefGasBottlesAdminPage.getLocationList(false,
+				Integer.valueOf(PAGINATIONSETTING_100));
+		assertTrue(BaseHelper.isStringListSorted(list));
+		manageRefGasBottlesAdminPage.getTheadLocation().click();
+		list = manageRefGasBottlesAdminPage.getLocationList(false,
+				Integer.valueOf(PAGINATIONSETTING_100));
+		assertTrue(BaseHelper.isStringListSortedDes(list));
 	}
 }
