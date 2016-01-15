@@ -6,6 +6,7 @@ package surveyor.scommon.source;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -138,6 +139,11 @@ public class SurveyorBasePage extends BasePage {
 
 	public String getLabelNoMatchingSearch() {
 		return this.labelNoMatchingSearch.getText().trim();
+	}
+
+	public void performSearch(String searchTerm) {
+		this.inputSearch.sendKeys(searchTerm);
+		this.inputSearch.sendKeys(Keys.ENTER);
 	}
 
 	/*

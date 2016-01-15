@@ -11,6 +11,7 @@ import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorBaseTest;
 
 public class ActionsVerificationTest extends SurveyorBaseTest {
@@ -18,6 +19,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 	private static final String ANALYZER_SERIAL_NUMBER = "SimAuto-Analyzer1";
 	private LoginPageActions loginPageAction;
 	private DriverViewPageActions driverViewPageAction;
+	private TestEnvironmentActions testEnvironmentAction;
 	private static final String EMPTY = "";
 	private static final Integer NOTSET = -1;
 	private static final String AdminUser = "Administrator";
@@ -36,7 +38,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		try {
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(AdminUser + ":" + AdminPass, NOTSET);
-			driverViewPageAction.startSimulatorScript(EMPTY, 1);
+			testEnvironmentAction.startSimulator(EMPTY, 1);
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			
@@ -103,7 +105,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		try {
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(AdminUser + ":" + AdminPass, NOTSET);
-			driverViewPageAction.startSimulatorScript(EMPTY, 3);
+			testEnvironmentAction.startSimulator(EMPTY, 3);
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			
@@ -139,7 +141,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		try {
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(AdminUser + ":" + AdminPass, NOTSET);
-			driverViewPageAction.startSimulatorScript(EMPTY, 3);
+			testEnvironmentAction.startSimulator(EMPTY, 3);
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			
@@ -177,7 +179,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		try {
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(AdminUser + ":" + AdminPass, NOTSET);
-			driverViewPageAction.startSimulatorScript(EMPTY,3);
+			testEnvironmentAction.startSimulator(EMPTY,3);
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			driverViewPageAction.startDrivingSurvey(EMPTY, 3);

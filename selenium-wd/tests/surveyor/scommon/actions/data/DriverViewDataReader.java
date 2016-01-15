@@ -18,8 +18,6 @@ public class DriverViewDataReader extends BaseDataReader {
 	public static final int Excel_TestData_Report_Col_Wind = 4;
 	public static final int Excel_TestData_Report_Col_CloudCover = 5;
 	public static final int Excel_TestData_Report_Col_SurveyType = 6;
-	public static final int Excel_TestData_Report_Col_ReplayScriptDB3File = 7;
-	public static final int Excel_TestData_Report_Col_ReplayScriptDefnFile = 8;
  
 	public class DriverViewDataRow {
 		public String rowID;
@@ -29,10 +27,8 @@ public class DriverViewDataReader extends BaseDataReader {
 		public String wind;
 		public String cloudCover;
 		public String surveyType;
-		public String replayScriptDB3File;
-		public String replayScriptDefnFile;
  
-		public DriverViewDataRow(String rowID, String surveyTag, String surveyTime, String solarRadiation, String wind, String cloudCover, String surveyType, String replayScriptDB3File, String replayScriptDefnFile) {
+		public DriverViewDataRow(String rowID, String surveyTag, String surveyTime, String solarRadiation, String wind, String cloudCover, String surveyType) {
 			this.rowID = rowID;
 			this.surveyTag = surveyTag;
 			this.surveyTime = surveyTime;
@@ -40,8 +36,6 @@ public class DriverViewDataReader extends BaseDataReader {
 			this.wind = wind;
 			this.cloudCover = cloudCover;
 			this.surveyType = surveyType;
-			this.replayScriptDB3File = replayScriptDB3File;
-			this.replayScriptDefnFile = replayScriptDefnFile;
 		}
 	}	
  
@@ -63,11 +57,9 @@ public class DriverViewDataReader extends BaseDataReader {
 		String wind = excelUtility.getCellData(dataRowID, Excel_TestData_Report_Col_Wind, TESTDATA_SHEET_NAME);
 		String cloudCover = excelUtility.getCellData(dataRowID, Excel_TestData_Report_Col_CloudCover, TESTDATA_SHEET_NAME);
 		String surveyType = excelUtility.getCellData(dataRowID, Excel_TestData_Report_Col_SurveyType, TESTDATA_SHEET_NAME);
-		String replayScriptDB3File = excelUtility.getCellData(dataRowID, Excel_TestData_Report_Col_ReplayScriptDB3File, TESTDATA_SHEET_NAME);
-		String replayScriptDefnFile = excelUtility.getCellData(dataRowID, Excel_TestData_Report_Col_ReplayScriptDefnFile, TESTDATA_SHEET_NAME);
 		
-		Log.info(String.format("Found data row: rowID=[%s], surveyTag=[%s], surveyTime=[%s], solarRadiation=[%s], wind=[%s], cloudCover=[%s], surveyType=[%s], replayScriptDB3File=[%s], replayScriptDefnFile=[%s]", rowID, surveyTag, surveyTime, solarRadiation, wind, cloudCover, surveyType, replayScriptDB3File, replayScriptDefnFile));
+		Log.info(String.format("Found data row: rowID=[%s], surveyTag=[%s], surveyTime=[%s], solarRadiation=[%s], wind=[%s], cloudCover=[%s], surveyType=[%s]", rowID, surveyTag, surveyTime, solarRadiation, wind, cloudCover, surveyType));
 		
-		return new DriverViewDataRow(rowID, surveyTag, surveyTime, solarRadiation, wind, cloudCover, surveyType, replayScriptDB3File, replayScriptDefnFile);
+		return new DriverViewDataRow(rowID, surveyTag, surveyTime, solarRadiation, wind, cloudCover, surveyType);
 	}
 }

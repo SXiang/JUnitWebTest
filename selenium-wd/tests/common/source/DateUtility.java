@@ -1,13 +1,50 @@
 package common.source;
 
 import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAccessor;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 
 public class DateUtility {
+	
+	/**
+	 * Parses and returns the Date object for the specified Date and Date format strings.
+	 * @param dateString - Date represented as a string.
+	 * @param dateFormatString - Format represented as a string.
+	 * @return - Date object for the specified Date and Date format strings
+	 * @throws ParseException
+	 */
+	public static Date getDate(String dateString, String dateFormatString) throws ParseException {
+		SimpleDateFormat dateFormat = new SimpleDateFormat(dateFormatString);
+		return dateFormat.parse(dateString);
+	}
+	
+	/**
+	 * Returns the current zone Calendar.
+	 * @return
+	 */
+	public static Calendar getCalendarForCurrentZone() {
+		Calendar calendar = null;
+		String culture=TestContext.INSTANCE.getUserCulture();
+		if (culture.equals("en-US")) {
+			calendar = Calendar.getInstance(TimeZone.getTimeZone("US/Pacific"));
+		} else if (culture.equals("fr")) {
+			calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
+		} else if (culture.equals("zh-Hans")) {
+			calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Shanghai"));
+		}
+		
+		Log.info("Returning Calendar for current zone" + calendar.toString());		
+		return calendar;
+	}
 	
 	/**
 	 * This function takes a Date/Time format in String and compare the format is correct with the given locale format

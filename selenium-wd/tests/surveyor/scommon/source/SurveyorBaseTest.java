@@ -41,7 +41,7 @@ public class SurveyorBaseTest {
 	@Rule
 	public TestWatcher watcher = new TestWatcher() {
 		@Override
-		protected void starting(Description description) {
+		public void starting(Description description) {
 			Log.info("Started executing " + description.getClassName() + "." + description.getMethodName() + "() test...");
 			if (isExecutingSimulatorTestMethod(description.getMethodName())) {
 				Log.info("Installing simulator pre-reqs. Start Analyzer and Replay DB3 script.");
@@ -55,7 +55,7 @@ public class SurveyorBaseTest {
 		}
 		
 		@Override
-		protected void finished(Description description) {
+		public void finished(Description description) {
 			Log.info("Finished executing " + description.getClassName() + "." + description.getMethodName() + "() test...");
 			if (isExecutingSimulatorTestMethod(description.getMethodName())) {
 				Log.info("Stop Analyzer.");

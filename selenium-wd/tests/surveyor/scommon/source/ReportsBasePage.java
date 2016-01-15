@@ -324,6 +324,18 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a[4]")
 	protected WebElement btnFirstInvestigateCompliance;
 
+	@FindBy(how = How.ID, using = "report-FOV-opacity")
+	protected WebElement inputFOVOpacity;
+	
+	@FindBy(how = How.ID, using = "report-LISA-opacity")
+	protected WebElement inputLISAOpacity;
+
+	@FindBy(id = "report-show-gaps")
+	protected WebElement checkBoxGap;
+
+	@FindBy(id = "report-show-percent-coverage-forecast")
+	protected WebElement checkBoxPCF;
+	
 	/**
 	 * @param driver
 	 * @param testSetup

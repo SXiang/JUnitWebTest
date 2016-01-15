@@ -38,7 +38,6 @@ public class ReportsCompliance extends Reports {
 
 	}
 
-
 	public ReportsCompliance(String rptTitle, String strCreatedBy,
 			String customer, String timeZone, String exclusionRadius,
 			List<String> listBoundary, List<Map<String, String>> tablesList,
