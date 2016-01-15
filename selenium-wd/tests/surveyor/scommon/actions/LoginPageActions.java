@@ -8,6 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 import common.source.RegexUtility;
 import common.source.TestSetup;
 import surveyor.scommon.actions.data.UserDataReader;
+import surveyor.scommon.actions.data.DriverViewDataReader.DriverViewDataRow;
 import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
 import surveyor.scommon.source.LoginPage;
 
@@ -15,6 +16,8 @@ public class LoginPageActions extends BasePageActions {
 	private static final String REGEX_PATTERN_SPLIT_BY_COLON = ":";
 	private LoginPage loginPage = null;
 	private UserDataReader dataReader = null;
+	
+	public static UserDataRow workingDataRow = null;    // Stores the workingDataRow from login action
 	
 	public LoginPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL);
@@ -41,21 +44,28 @@ public class LoginPageActions extends BasePageActions {
 	}
 
 	public boolean open(String data, Integer dataRowID) throws Exception {
+		logAction("LoginPageActions.open", data, dataRowID);
 		loginPage.open();
 		return true;
 	}
 
 	public boolean login(String usernameColonPassword, Integer dataRowID) throws Exception {
+		logAction("LoginPageActions.login", usernameColonPassword, dataRowID);
 		UserDataRow dataRow = getUsernamePassword(usernameColonPassword, dataRowID);
 		loginPage.loginNormalAs(dataRow.username, dataRow.password);
+		
+		// store the working login datarow
+		workingDataRow = dataRow; 
 		return true;
 	}
 
 	public boolean verifyAccountEnabled(String usernameColonPassword, Integer dataRowID) throws Exception {
+		logAction("LoginPageActions.verifyAccountEnabled", usernameColonPassword, dataRowID);
 		return !loginPage.isAccountDisabled();
 	}
 	
 	public boolean verifyAccountDisabled(String usernameColonPassword, Integer dataRowID) throws Exception {
+		logAction("LoginPageActions.verifyAccountDisabled", usernameColonPassword, dataRowID);
 		return !verifyAccountEnabled(usernameColonPassword, dataRowID);
 	}
 	

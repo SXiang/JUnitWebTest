@@ -13,7 +13,7 @@ import java.util.Map;
 public class Reports {
 	protected String rptTitle;
 	protected String strCreatedBy;
-	protected String customer;
+	private String customer;
 	protected String timeZone;
 	protected String exclusionRadius;
 	
@@ -26,7 +26,11 @@ public class Reports {
 	protected String SWLong;
 	
 	protected String surveyorUnit;
+	protected String surveyUsername;
 	protected String tag;	
+	protected List<String> tagList;
+	protected String surveyMode;
+	protected Boolean surveyGeoFilterOn;
 	protected String startDate;
 	protected String endDate;
 	protected String userName;
@@ -35,11 +39,9 @@ public class Reports {
 	protected List<Map<String, String>> viewList;
 	protected List<Map<String, String>> tablesList;
 	protected List<Map<String, String>> viewLayersList;
-
-	protected List<String> tagList;
 	
-	protected SurveyModeFilter surveyMode;	
-	protected ReportModeFilter reportMode;
+	protected SurveyModeFilter surveyModeFilter;	
+	protected ReportModeFilter reportModeFilter;
 	
 	public enum SurveyModeFilter {
 		All,
@@ -54,8 +56,6 @@ public class Reports {
 		RapidResponse,
 		Manual
 	}
-	
-	
 	
 	/**
 	 * 
@@ -74,7 +74,7 @@ public class Reports {
 			String tag, List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) {
 		this.rptTitle = rptTitle;
 		this.strCreatedBy = strCreatedBy;
-		this.customer = customer;
+		this.setCustomer(customer);
 		this.timeZone = timeZone;
 		this.exclusionRadius = exclusionRadius;
 
@@ -100,7 +100,7 @@ public class Reports {
 			 List<Map<String, String>> viewList, SurveyModeFilter surveyMode) {
 		this.rptTitle = rptTitle;
 		this.strCreatedBy = strCreatedBy;
-		this.customer = customer;
+		this.setCustomer(customer);
 		this.timeZone = timeZone;
 		this.exclusionRadius = exclusionRadius;
 
@@ -119,7 +119,7 @@ public class Reports {
 		this.endDate=endDate;
 		
 		this.viewList = viewList;
-		this.surveyMode=surveyMode;
+		this.surveyModeFilter=surveyMode;
 	}
 	
 	
@@ -129,7 +129,7 @@ public class Reports {
 			 List<Map<String, String>> viewList, SurveyModeFilter surveyMode, ReportModeFilter reportMode) {
 		this.rptTitle = rptTitle;
 		this.strCreatedBy = strCreatedBy;
-		this.customer = customer;
+		this.setCustomer(customer);
 		this.timeZone = timeZone;
 		this.exclusionRadius = exclusionRadius;
 
@@ -148,8 +148,8 @@ public class Reports {
 		this.endDate=endDate;
 		
 		this.viewList = viewList;
-		this.surveyMode=surveyMode;
-		this.reportMode=reportMode;
+		this.surveyModeFilter=surveyMode;
+		this.reportModeFilter=reportMode;
 	}
 	
 	public Reports(String rptTitle, String strCreatedBy, String customer,
@@ -158,7 +158,7 @@ public class Reports {
 			 List<Map<String, String>> viewList, SurveyModeFilter surveyMode, String userName,Boolean geoFilterOn, ReportModeFilter reportMode) {
 		this.rptTitle = rptTitle;
 		this.strCreatedBy = strCreatedBy;
-		this.customer = customer;
+		this.setCustomer(customer);
 		this.timeZone = timeZone;
 		this.exclusionRadius = exclusionRadius;
 
@@ -175,12 +175,10 @@ public class Reports {
 		this.tag = tag;
 		this.startDate=startDate;
 		this.endDate=endDate;
-		this.userName=userName;
-		this.geoFilterOn=geoFilterOn;
 		
 		this.viewList = viewList;
-		this.surveyMode=surveyMode;
-		this.reportMode=reportMode;
+		this.surveyModeFilter=surveyMode;
+		this.reportModeFilter=reportMode;
 	}
 	
 	public Reports(String rptTitle, String strCreatedBy, String customer,
@@ -189,7 +187,7 @@ public class Reports {
 			List<String> tagList, List<Map<String, String>> viewList) {
 		this.rptTitle = rptTitle;
 		this.strCreatedBy = strCreatedBy;
-		this.customer = customer;
+		this.setCustomer(customer);
 		this.timeZone = timeZone;
 		this.exclusionRadius = exclusionRadius;
 
@@ -269,16 +267,16 @@ public class Reports {
 		return this.endDate;
 	}
 	
-	public SurveyModeFilter getSurveyMode() {
-		return this.surveyMode;
+	public SurveyModeFilter getSurveyModeFilter() {
+		return this.surveyModeFilter;
 	}
 	
 	public boolean getGeoFilter() {
-		return this.geoFilterOn;
+		return this.surveyGeoFilterOn;
 	}
 	
 	public String getUserName() {
-		return this.userName;
+		return this.surveyUsername;
 	}
 	
 	public List<Map<String, String>> getViewList() {
@@ -304,6 +302,10 @@ public class Reports {
 	 */
 	public static void main(String[] args) {
 
+	}
+
+	public void setCustomer(String customer) {
+		this.customer = customer;
 	}
 
 }

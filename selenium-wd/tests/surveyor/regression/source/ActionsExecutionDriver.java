@@ -1,5 +1,6 @@
 package surveyor.regression.source;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import common.source.Constants;
@@ -7,7 +8,7 @@ import common.source.Log;
 import surveyor.scommon.actions.ActionsExecutionEngine;
 import surveyor.scommon.source.SurveyorBaseTest;
 
-public class ActionsExecutionDriver extends SurveyorBaseTest {
+public class ActionsExecutionDriver /*extends SurveyorBaseTest*/ {
 	private ActionsExecutionEngine executionEngine = null;
 	
 	public ActionsExecutionDriver() {
@@ -15,7 +16,7 @@ public class ActionsExecutionDriver extends SurveyorBaseTest {
 	}
 	
 	@Test
-	public void TC_SimulatorTest_StartActionsEngineTests() {
+	public void TC_DriverViewTest_StartActionsEngineTests() {
 		Log.info("Starting actions execution engine Driver View tests.");
 		try {
 			executionEngine.setTestGroupsToExecute(new String[] {Constants.DRIVER_VIEW_TEST_CASES} );
@@ -27,7 +28,7 @@ public class ActionsExecutionDriver extends SurveyorBaseTest {
 		Log.info("Done executing actions execution engine Driver View tests!");
 	}
 
-	@Test
+	@Ignore
 	public void TC_ComplianceReportTests_StartActionsEngineTests() {
 		Log.info("Starting actions execution engine Compliance Report tests.");
 		try {

@@ -6,7 +6,7 @@ import common.source.TestContext;
 import common.source.TestSetup;
 
 public class PageActionsFactory {
-	public static IPageActions getPageAction(String pageObjectName) {
+	public static IActions getAction(String pageObjectName) {
 		WebDriver driver = TestContext.INSTANCE.getDriver();
 		TestSetup testSetup = TestContext.INSTANCE.getTestSetup();
 		String strBaseURL = TestContext.INSTANCE.getBaseUrl();
@@ -55,6 +55,8 @@ public class PageActionsFactory {
 			return null;  // not yet implemented.
 		} else if (pageObjectName.equals("UserFeedbackPage")) {
 			return null;  // not yet implemented.
+		} else if (pageObjectName.equals("TestEnvironment")) {
+			return new TestEnvironmentActions();
 		} 
 		
 		return null;
