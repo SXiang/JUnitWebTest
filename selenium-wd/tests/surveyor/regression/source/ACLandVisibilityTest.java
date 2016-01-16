@@ -263,7 +263,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 * Test Description: Check ACLV for Picarro Administrator role, non-default Administrator account
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC38_CheckACLV_PicAdminRole() {
 		String userName = PICNAMEPREFIX + "ad" + testSetup.getRandomNumber() + REGBASEPICUSERNAME;
 		
@@ -293,7 +293,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 * Test Description: Check ACLV for Picarro user with Picarro Support role
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC40_CheckACLV_PicSupportRole() {
 		String userName = PICNAMEPREFIX + "su" + testSetup.getRandomNumber() + REGBASEPICUSERNAME;
 		
