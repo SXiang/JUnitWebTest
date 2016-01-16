@@ -1015,6 +1015,58 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		return false;
 	}
+	
+	public boolean findReportbySearch(String rptTitle, String strCreatedBy) {
+		setPagination(PAGINATIONSETTING);
+		this.waitForPageLoad();
+		String reportTitleXPath;
+		String createdByXPath;
+
+		WebElement rptTitleCell;
+		WebElement createdByCell;
+		
+		this.getTextBoxReportSerach().sendKeys(rptTitle);
+		this.getTextBoxReportSerach().sendKeys(Keys.ENTER);
+		this.waitForPageLoad();
+		if(this.getDataTableEmpty().isDisplayed()){
+			return false;
+		}
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		int rowSize = rows.size();
+		
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			this.waitForPageLoad();
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				return true;
+			}
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+				this.waitForPageLoad();
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+				rowNum = 0;
+			}
+		}
+
+		return false;
+	}
 
 	public boolean deleteReport(String rptTitle, String strCreatedBy) {
 		setPagination(PAGINATIONSETTING);

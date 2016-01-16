@@ -47,7 +47,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 * Test Description: Check ACLV for customer user with Driver role
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC35_CheckACLVCustomerUser_DriverRole() {
 		String customerName = SQACUS;
 		String eula = customerName + ": " + EULASTRING;
@@ -83,7 +83,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 * Test Description: Check ACLV for customer user with Supervisor role
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC36_CheckACLVCustomerUser_SupervisorRole() {
 		String eula = SQACUS + ": " + EULASTRING;
 		String userName = SQACUS + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
@@ -113,7 +113,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		homePage.logout();				
 	}
 	
-	//@Test
+	@Test
 		public void TC36_CheckReportLink_SupervisorRole() {	
 			String rptTitle = "TC36 Report" + testSetup.getRandomNumber();
 			Log.info("\nRunning TC36_CheckReportLink_SupervisorRole - Test Description: Report link is working and user is able to view report's menu");		
@@ -210,6 +210,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 			Log.info("\nRunning TC36_CheckReportLink_SupervisorRole - Test Description: Release Notes link is working and can download Release Notes");		
 			loginPage.open();
 			loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
+			homePage = new HomePage(driver, baseURL, testSetup);
+			PageFactory.initElements(driver,  homePage);
 			homePage.open();
 			homePage.waitForPageLoad();		
 			assertTrue(homePage.checkIfAtHomePage());
@@ -225,7 +227,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 * Test Description: Check ACLV for customer user with Utility Administrator role
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC37_CheckACLVCustomerUser_UtilityAdminRole() {
 		String eula = SQACUS + ": " + EULASTRING;
 		String userName = SQACUS + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
