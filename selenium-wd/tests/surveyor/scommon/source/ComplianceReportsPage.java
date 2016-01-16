@@ -73,6 +73,7 @@ import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -186,6 +187,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li[1]")
 	protected WebElement areaErrorText;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable_filter']/label/input")
+	protected WebElement textBoxReportSerach;
 	
 	@FindBy(how = How.XPATH, using = "//*[@class='dataTables_empty']")
 	protected WebElement dataTableEmpty;
@@ -853,10 +857,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		SeventhView
 	}
 	
-	public WebElement getDataTableEmpty() {
-		return dataTableEmpty;
-	}
-
 	public boolean verifyComplianceReportButton(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType) throws Exception {
 		return checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, buttonType, false);
 	}
@@ -1948,6 +1948,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public String getAreaErrorText() {
 		return this.areaErrorText.getText();
 
+	}
+	
+	public WebElement getTextBoxReportSerach() {
+		return textBoxReportSerach;
+	}
+
+	public WebElement getDataTableEmpty() {
+		return dataTableEmpty;
 	}
 
 	private void waitForCustomBoundarySectionToShow() {

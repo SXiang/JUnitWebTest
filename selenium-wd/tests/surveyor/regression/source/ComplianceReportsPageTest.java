@@ -1018,7 +1018,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
 		if (complianceReportsPage.deleteReport(rptTitle, testSetup.getLoginUser()))
-			assertTrue(!(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser())));
+			assertTrue(!(complianceReportsPage.findReportbySearch(rptTitle, testSetup.getLoginUser())));
 		else
 			fail("\nTestcase TC166 failed.\n");
 
