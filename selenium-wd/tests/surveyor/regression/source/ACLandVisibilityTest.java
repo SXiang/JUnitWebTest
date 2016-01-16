@@ -9,10 +9,22 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageUsersPage;
+import surveyor.scommon.source.Reports.SurveyModeFilter;
+import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorBaseTest;
 import static surveyor.scommon.source.SurveyorConstants.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import common.source.Log;
 
 /**
@@ -21,6 +33,8 @@ import common.source.Log;
  */
 public class ACLandVisibilityTest extends SurveyorBaseTest {
 	private static ManageCustomersPage manageCustomersPage;
+	private static ComplianceReportsPage complianceReportsPage;
+	private static HomePage homePage;
 	
 	@BeforeClass
 	public static void setupACLandVisibilityTest() {
@@ -98,6 +112,113 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		assertTrue(homePage.checkVisibilityForCusSU(userName));
 		homePage.logout();				
 	}
+	
+	//@Test
+		public void TC36_CheckReportLink_SupervisorRole() {	
+			String rptTitle = "TC36 Report" + testSetup.getRandomNumber();
+			Log.info("\nRunning TC36_CheckReportLink_SupervisorRole - Test Description: Report link is working and user is able to view report's menu");		
+			loginPage.open();
+			loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+			complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
+			PageFactory.initElements(driver, complianceReportsPage);
+			complianceReportsPage.open();
+
+			List<String> listBoundary = new ArrayList<String>();
+			listBoundary.add(IMGMAPHEIGHT);
+			listBoundary.add(IMGMAPWIDTH);
+			listBoundary.add(RNELAT);
+			listBoundary.add(RNELON);
+			listBoundary.add(RSWLAT);
+			listBoundary.add(RSWLON);
+
+			List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+			Map<String, String> tableMap = new HashMap<String, String>();
+
+			tableMap.put(KEYINDTB, "1");
+			tableMap.put(KEYISOANA, "1");
+			tableMap.put(KEYPCA, "0");
+			tableMap.put(KEYPCRA, "0");
+			tableMap.put(KEYASSETCASTIRON, "0");
+			tableMap.put(KEYASSETCOPPER, "0");
+			tableMap.put(KEYASSETOTHERPLASTIC, "0");
+			tableMap.put(KEYASSETPEPLASTIC, "0");
+			tableMap.put(KEYASSETPROTECTEDSTEEL, "0");
+			tableMap.put(KEYASSETUNPROTECTEDSTEEL, "0");
+			tableMap.put(KEYBOUNDARYDISTRICT, "0");
+			tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
+			tablesList.add(tableMap);
+
+			List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+			Map<String, String> viewMap = new HashMap<String, String>();
+			
+			viewMap.put(KEYVIEWNAME, "First View");
+			viewMap.put(KEYLISA, "1");
+			viewMap.put(KEYFOV, "1");
+			viewMap.put(KEYBREADCRUMB, "1");
+			viewMap.put(KEYINDICATIONS, "1");
+			viewMap.put(KEYISOTOPICCAPTURE, "0");
+			viewMap.put(KEYANNOTATION, "0");
+			viewMap.put(KEYGAPS, "0");
+			viewMap.put(KEYASSETS, "0");
+			viewMap.put(KEYBOUNDARIES, "0");
+			viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
+
+			viewList.add(viewMap);
+
+			ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", CUSDRVSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
+
+			complianceReportsPage.addNewReport(rpt);
+
+			if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSUA))) {
+				if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
+					assertTrue(complianceReportsPage.findReport(rptTitle, SQACUSUA));
+				} else
+					fail("\nTC36__CheckReportLink_SupervisorRole: Generate Report as Customer Admin failed.\n");
+			} else
+				fail("\nTC36__CheckReportLink_SupervisorRole: Generate Report as Customer Admin failed.\n");
+
+			complianceReportsPage.open();
+			complianceReportsPage.logout();	
+			
+			complianceReportsPage.login(SQACUSSU, USERPASSWORD);
+			assertTrue(complianceReportsPage.getLinkReportMenu().isDisplayed());		
+			complianceReportsPage.getLinkReportMenu().click();
+			complianceReportsPage.waitForPageToLoad();
+			assertTrue(complianceReportsPage.getLinkComplianceReportMenu().isDisplayed());
+			complianceReportsPage.getLinkComplianceReportMenu().click();
+			complianceReportsPage.waitForPageLoad();
+			assertTrue(complianceReportsPage.getBtnNewComplianceRpt().isDisplayed());
+			assertTrue(complianceReportsPage.findReport(rptTitle, SQACUSUA));
+			if (complianceReportsPage.deleteReport(rptTitle, SQACUSUA))
+				assertTrue(!(complianceReportsPage.findReportbySearch(rptTitle, SQACUSUA)));
+			else
+				fail("\nTC36__CheckReportLink_SupervisorRole: Generate Report as Customer Supervisor failed.\n");
+
+			complianceReportsPage.open();
+			complianceReportsPage.logout();
+		
+		}
+		
+		/**
+		 * Test Case ID: TC36_CheckUserLink_ReleaseNotes
+		 * Test Description: Release Notes link is working and can download Release Notes
+		 * 
+		 */
+		@Test
+		public void TC36_CheckUserLink_ReleaseNotes() {	
+			String rptTitle = "TC36 Report" + testSetup.getRandomNumber();
+			Log.info("\nRunning TC36_CheckReportLink_SupervisorRole - Test Description: Release Notes link is working and can download Release Notes");		
+			loginPage.open();
+			loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
+			homePage.open();
+			homePage.waitForPageLoad();		
+			assertTrue(homePage.checkIfAtHomePage());
+			assertTrue(homePage.checkVisibilityForCusSU(SQACUSSU));
+			//homePage.getDropDownLoginUser().click();
+			//homePage.getLinkReleaseNotes().click();
+			ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
+		   driver.switchTo().window(newTab.get(0));
+		}
 
 	/**
 	 * Test Case ID: TC37_CheckACLVCustomerUser_UtilityAdminRole
