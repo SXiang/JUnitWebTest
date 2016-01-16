@@ -17,8 +17,6 @@ import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.WebElement;
 
-import static org.junit.Assert.assertTrue;
-
 public class DriverViewPage extends SurveyorBasePage {
 	private static final String VIRTUALEARTH_NET_BRANDING_LOGO = "https://dev.virtualearth.net/Branding/logo_powered_by.png";
 	private static final String IMG_DATA_DATA_0 = "return imgData.data[0];";
@@ -75,6 +73,14 @@ public class DriverViewPage extends SurveyorBasePage {
 	private Map<String, String> data;
 	private int timeout = 15;
 
+	@FindBy(id = "canvas_rose")
+	@CacheLookup
+	private WebElement windRose;
+	
+	@FindBy(id = "canvas_rose_arrow")
+	@CacheLookup
+	private WebElement windRoseArrow;
+	
 	@FindBy(id = "header_info_box_upper_left")
 	@CacheLookup
 	private WebElement divHeaderInfoBox;
@@ -261,7 +267,7 @@ public class DriverViewPage extends SurveyorBasePage {
 
 	@FindBy(id = "btn_cancel_annotation")
 	@CacheLookup
-	private WebElement cancel;
+	private WebElement fieldNotesCancel;
 
 	@FindBy(css = "a[href='http://openlayers.org/']")
 	@CacheLookup
@@ -277,7 +283,7 @@ public class DriverViewPage extends SurveyorBasePage {
 
 	@FindBy(id = "btn_delete_annotation")
 	@CacheLookup
-	private WebElement delete;
+	private WebElement fieldNotesDelete;
 
 	@FindBy(css = "button[title='Attributions']")
 	@CacheLookup
@@ -337,7 +343,7 @@ public class DriverViewPage extends SurveyorBasePage {
 
 	@FindBy(id = "btn_save_annotation")
 	@CacheLookup
-	private WebElement save;
+	private WebElement fieldNotesSave;
 
 	@FindBy(id = "survey_type_standard")
 	@CacheLookup
@@ -361,12 +367,12 @@ public class DriverViewPage extends SurveyorBasePage {
 
 	@FindBy(id = "anno_input")
 	@CacheLookup
-	private WebElement x50CharsRemainingSaveCancel;
+	private WebElement fieldNotesTextField;
 
 	@FindBy(id = "survey_modal_tag")
 	@CacheLookup
 	private WebElement tagSurvey;
-
+	
 	/**
 	 * @param driver
 	 * @param baseURL
@@ -626,6 +632,14 @@ public class DriverViewPage extends SurveyorBasePage {
 		return isSelected;
 	}
 
+	public boolean isWindRoseShown() {
+		boolean isShown = true;
+		if ((this.windRose.getAttribute("class").contains("ng-hide")) && (this.windRoseArrow.getAttribute("class").contains("ng-hide"))) {
+			isShown = true;
+		}
+		return isShown;
+	}
+	
 	public boolean isGisSwitchOff(GisSwitchType switchType) throws IllegalArgumentException {
 		boolean isSelected = false;
 
@@ -1227,6 +1241,10 @@ public class DriverViewPage extends SurveyorBasePage {
 		return this.statusButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon");
 	}
 
+	public boolean isStatusButtonGreenWithPlus() {
+		return this.statusButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon open");
+	}
+
 	public boolean isStatusButtonOpen() {
 		return this.statusButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon open");
 	}
@@ -1250,8 +1268,8 @@ public class DriverViewPage extends SurveyorBasePage {
 	 *
 	 * @return the DriverViewPage class instance.
 	 */
-	public DriverViewPage clickCancelButton() {
-		cancel.click();
+	public DriverViewPage clickFieldNotesCancelButton() {
+		fieldNotesCancel.click();
 		return this;
 	}
 
@@ -1280,8 +1298,8 @@ public class DriverViewPage extends SurveyorBasePage {
 	 *
 	 * @return the DriverViewPage class instance.
 	 */
-	public DriverViewPage clickDeleteButton() {
-		delete.click();
+	public DriverViewPage clickFieldNotesDeleteButton() {
+		fieldNotesDelete.click();
 		return this;
 	}
 
@@ -1410,8 +1428,8 @@ public class DriverViewPage extends SurveyorBasePage {
 	 *
 	 * @return the DriverViewPage class instance.
 	 */
-	public DriverViewPage clickSaveButton() {
-		save.click();
+	public DriverViewPage clickFieldNotesSaveButton() {
+		fieldNotesSave.click();
 		return this;
 	}
 
