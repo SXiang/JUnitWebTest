@@ -131,7 +131,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * @throws IOException
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC517_ComplianceReportTest_VerifywithDefaults() {
 		String rptTitle = "TC517 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC517: Generate compliance report with all default values/filters selected and download it, ", rptTitle);
@@ -383,7 +383,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0", listBoundary, tablesList, PICADMNSURVEYOR, "", "", "", viewList, SurveyModeFilter.RapidResponse);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0", listBoundary, tablesList, PICADMNSURVEYOR, "", "", "", viewList, SurveyModeFilter.All);
 		complianceReportsPage.addNewReport(rpt);
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
@@ -402,7 +402,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC151 Test Description: Generate report by providing tag filter
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC151_ComplianceReportTest_VerifyReportGenerationbyTagFilter() {
 		String rptTitle = "TC151 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC151: Generate report by providing tag filter including survey with isotopic analysis data, %s\n", rptTitle);
@@ -853,7 +853,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC160 Test Description: Pagination - 10,25,50 and 100 Reports selection on compliance report screen
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC160_ComplianceReportTest_VerifyPagination() {
 		System.out.format("\nRunning RPT015: Pagination - 10,25,50 and 100 Reports selection on compliance report screen");
 
@@ -1018,7 +1018,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
 		if (complianceReportsPage.deleteReport(rptTitle, testSetup.getLoginUser()))
-			assertTrue(!(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser())));
+			assertTrue(!(complianceReportsPage.findReportbySearch(rptTitle, testSetup.getLoginUser())));
 		else
 			fail("\nTestcase TC166 failed.\n");
 
@@ -1098,7 +1098,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC170 Test Description: Duplicate report
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC170_ComplianceReportTest_VerifyReportDuplicate() {
 		String rptTitle = "TC170 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC170: Duplicate report, %s\n", rptTitle);

@@ -230,10 +230,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		fillCustomBoundaryTextFields(reportsCompliance.getNELat(),
 				reportsCompliance.getNELong(), reportsCompliance.getSWLat(),
 				reportsCompliance.getSWLong());
+		
+		addSurveyInformation(reportsCompliance.getSurveyorUnit(),reportsCompliance.getUserName(),reportsCompliance.getTag(),
+				reportsCompliance.getSurveyStartDate(),reportsCompliance.getSurveyEndDate(),reportsCompliance.getSurveyModeFilter(),
+				reportsCompliance.getGeoFilter());
+
 
 		inputImageMapHeight(reportsCompliance.getImageMapHeight());
 		inputImageMapWidth(reportsCompliance.getImageMapWidth());
-
+		
 		addViews(reportsCompliance.getCustomer(), reportsCompliance.getViewList());
 
 		List<Map<String, String>> tablesList = reportsCompliance.getTablesList();
@@ -305,7 +310,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public void addSurveyInformation(String surveyor, String username, String tag, String startDate, String endDate, SurveyModeFilter surveyModeFilter, Boolean geoFilterOn) {
 		Log.info("Adding Survey information");
 
-		if (surveyor != "") {
+		if (surveyor != null) {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsSU) {
 				if (surveyor.equalsIgnoreCase(option.getText().trim())) {
@@ -466,11 +471,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			selectViewLayerBoundaries(selectBoundaryDistrict, selectBoundaryDistrictPlat);
 		}
 
-		this.btnSurveySearch.click();
-		this.waitForSurveyTabletoLoad();
-
-		this.checkboxSurFirst.click();
-		this.btnAddSurveys.click();
+	
 
 	}
 
@@ -855,7 +856,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		SixthView,
 		SeventhView
 	}
-
+	
 	public boolean verifyComplianceReportButton(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType) throws Exception {
 		return checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, buttonType, false);
 	}
