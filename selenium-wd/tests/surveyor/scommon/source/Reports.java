@@ -30,7 +30,7 @@ public class Reports {
 	protected String tag;	
 	protected List<String> tagList;
 	protected String surveyMode;
-	protected Boolean surveyGeoFilterOn;
+	protected Boolean surveyGeoFilterOn=false;
 	protected String startDate;
 	protected String endDate;
 	protected String userName;
