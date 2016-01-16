@@ -186,6 +186,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li[1]")
 	protected WebElement areaErrorText;
+	
+	@FindBy(how = How.XPATH, using = "//*[@class='dataTables_empty']")
+	protected WebElement dataTableEmpty;
 
 	/**
 	 * @param driver
@@ -848,6 +851,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		FifthView,
 		SixthView,
 		SeventhView
+	}
+	
+	public WebElement getDataTableEmpty() {
+		return dataTableEmpty;
 	}
 
 	public boolean verifyComplianceReportButton(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType) throws Exception {
