@@ -465,5 +465,4 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		}
 		return locationList;
 	}
-
 }

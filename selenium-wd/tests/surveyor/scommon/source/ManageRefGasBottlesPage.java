@@ -69,6 +69,18 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
     
     @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[5]")
     protected WebElement tdIsoValue;
+    
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/thead/tr/th[2]")
+	protected WebElement theadSurveyor;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/thead/tr/th[3]")
+	protected WebElement theadAnalyzer;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/thead/tr/th[4]")
+	protected WebElement theadLotNumber;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/thead/tr/th[5]")
+	protected WebElement theadIsoValue;
     	
 	/**
 	 * @param driver
@@ -345,5 +357,21 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 			}
 		}
 		return false;
+	}
+	
+	public WebElement getTheadLotNumber() {
+		return this.theadLotNumber;
+	}
+
+	public WebElement getTheadSurveyor() {
+		return this.theadSurveyor;
+	}
+	
+	public WebElement getTheadAnalyzer() {
+		return this.theadAnalyzer;
+	}
+	
+	public WebElement getTheadIsoValue() {
+		return this.theadIsoValue;
 	}
 }

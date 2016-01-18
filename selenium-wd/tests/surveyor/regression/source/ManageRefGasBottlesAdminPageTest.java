@@ -264,13 +264,31 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		manageRefGasBottlesAdminPage.open();
-
+		
 		manageRefGasBottlesAdminPage.getTheadLotNumber().click();
-		list = manageRefGasBottlesAdminPage.getLocationList(false,
+		list = manageRefGasBottlesAdminPage.getSurveyorList(false,
 				Integer.valueOf(PAGINATIONSETTING_100));
 		assertTrue(BaseHelper.isStringListSorted(list));
-		manageRefGasBottlesAdminPage.getTheadLocation().click();
-		list = manageRefGasBottlesAdminPage.getLocationList(false,
+		manageRefGasBottlesAdminPage.getTheadLotNumber().click();
+		list = manageRefGasBottlesAdminPage.getLotNumberList(false,
+				Integer.valueOf(PAGINATIONSETTING_100));
+		assertTrue(BaseHelper.isStringListSortedDes(list));
+		
+		manageRefGasBottlesAdminPage.getTheadLotNumber().click();
+		list = manageRefGasBottlesAdminPage.getAnalyzerList(false,
+				Integer.valueOf(PAGINATIONSETTING_100));
+		assertTrue(BaseHelper.isStringListSorted(list));
+		manageRefGasBottlesAdminPage.getTheadLotNumber().click();
+		list = manageRefGasBottlesAdminPage.getLotNumberList(false,
+				Integer.valueOf(PAGINATIONSETTING_100));
+		assertTrue(BaseHelper.isStringListSortedDes(list));
+
+		manageRefGasBottlesAdminPage.getTheadLotNumber().click();
+		list = manageRefGasBottlesAdminPage.getIsoValueList(false,
+				Integer.valueOf(PAGINATIONSETTING_100));
+		assertTrue(BaseHelper.isStringListSorted(list));
+		manageRefGasBottlesAdminPage.getTheadIsoValue().click();
+		list = manageRefGasBottlesAdminPage.getLotNumberList(false,
 				Integer.valueOf(PAGINATIONSETTING_100));
 		assertTrue(BaseHelper.isStringListSortedDes(list));
 	}
