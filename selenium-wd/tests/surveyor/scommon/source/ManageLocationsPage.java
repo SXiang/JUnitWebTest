@@ -31,6 +31,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public static final String STRPageTitle = "Manage Locations - Surveyor";
 	public static final String STREditPageContentText = Resources
 			.getResource(ResourceKeys.ManageLocation_EditLocation);
+	public static final String STRDuplicateLocMsg = "Location name already exists for customer, please try another name.";
 	String latitude;
 	String longitude;
 	// @FindBy(how = How.XPATH, using =
@@ -321,7 +322,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 							.equalsIgnoreCase(
 									Resources
 											.getResource(ResourceKeys.Validation_SummaryTitle))) {
-						this.btnCancel.click();
+//						this.btnCancel.click();
 						return false;
 					}
 				}
@@ -552,6 +553,10 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				return true;
 		}
 		return false;
+	}
+	
+	public boolean isDuplicateLocMsgPresent(){
+		return this.liDuplicateMsg.getText().equals(STRDuplicateLocMsg);
 	}
 
 	/**

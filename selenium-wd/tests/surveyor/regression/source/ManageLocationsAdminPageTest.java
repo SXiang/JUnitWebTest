@@ -151,6 +151,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 		assertFalse(manageLocationsAdminPage.editExistingLocation(SQACUS,
 				locationName1, locationName2));
+		assertTrue(manageLocationsAdminPage.isDuplicateLocMsgPresent());
 	}
 
 	/**

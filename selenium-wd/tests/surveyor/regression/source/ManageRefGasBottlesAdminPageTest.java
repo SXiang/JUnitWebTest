@@ -265,29 +265,29 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		manageRefGasBottlesAdminPage.open();
 		
-		manageRefGasBottlesAdminPage.getTheadLotNumber().click();
+		manageRefGasBottlesAdminPage.getTheadSurveyor().click();
 		list = manageRefGasBottlesAdminPage.getSurveyorList(false,
 				Integer.valueOf(PAGINATIONSETTING_100));
 		assertTrue(BaseHelper.isStringListSorted(list));
-		manageRefGasBottlesAdminPage.getTheadLotNumber().click();
-		list = manageRefGasBottlesAdminPage.getLotNumberList(false,
+		manageRefGasBottlesAdminPage.getTheadSurveyor().click();
+		list = manageRefGasBottlesAdminPage.getSurveyorList(false,
+				Integer.valueOf(PAGINATIONSETTING_100));
+		assertTrue(BaseHelper.isStringListSortedDes(list));
+		
+		manageRefGasBottlesAdminPage.getTheadAnalyzer().click();
+		list = manageRefGasBottlesAdminPage.getAnalyzerList(false,
+				Integer.valueOf(PAGINATIONSETTING_100));
+		assertTrue(BaseHelper.isStringListSorted(list));
+		manageRefGasBottlesAdminPage.getTheadAnalyzer().click();
+		list = manageRefGasBottlesAdminPage.getAnalyzerList(false,
 				Integer.valueOf(PAGINATIONSETTING_100));
 		assertTrue(BaseHelper.isStringListSortedDes(list));
 		
 		manageRefGasBottlesAdminPage.getTheadLotNumber().click();
-		list = manageRefGasBottlesAdminPage.getAnalyzerList(false,
-				Integer.valueOf(PAGINATIONSETTING_100));
-		assertTrue(BaseHelper.isStringListSorted(list));
-		manageRefGasBottlesAdminPage.getTheadLotNumber().click();
 		list = manageRefGasBottlesAdminPage.getLotNumberList(false,
 				Integer.valueOf(PAGINATIONSETTING_100));
-		assertTrue(BaseHelper.isStringListSortedDes(list));
-
-		manageRefGasBottlesAdminPage.getTheadLotNumber().click();
-		list = manageRefGasBottlesAdminPage.getIsoValueList(false,
-				Integer.valueOf(PAGINATIONSETTING_100));
 		assertTrue(BaseHelper.isStringListSorted(list));
-		manageRefGasBottlesAdminPage.getTheadIsoValue().click();
+		manageRefGasBottlesAdminPage.getTheadLotNumber().click();
 		list = manageRefGasBottlesAdminPage.getLotNumberList(false,
 				Integer.valueOf(PAGINATIONSETTING_100));
 		assertTrue(BaseHelper.isStringListSortedDes(list));

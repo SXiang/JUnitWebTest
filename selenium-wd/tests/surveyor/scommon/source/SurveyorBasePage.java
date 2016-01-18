@@ -64,6 +64,9 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement panelDuplicationError;
 	protected String panelDuplicationErrorXPath = "//*[@id='page-wrapper']/div/div[2]/div[1]";
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[2]/ul/li")
+	protected WebElement liDuplicateMsg;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-manage-users']/a")
 	protected WebElement linkAdminManageUsers;
 

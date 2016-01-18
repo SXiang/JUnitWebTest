@@ -465,4 +465,12 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		}
 		return locationList;
 	}
+	
+	public boolean isDuplicateSurMsgPresent(String locationName){
+		String STRDuplicateSurMsg = "Surveyor name already exists for location " + locationName +", please try another name.";
+		System.out.println(STRDuplicateSurMsg);
+		System.out.println(this.liDuplicateMsg.getText());
+		return this.liDuplicateMsg.getText().equals(STRDuplicateSurMsg);
+	}
+
 }

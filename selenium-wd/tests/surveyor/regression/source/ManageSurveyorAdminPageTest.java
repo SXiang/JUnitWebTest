@@ -286,6 +286,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 
 		assertFalse(manageSurveyorAdminPage.editExistingSurveyor(locationName,
 				surveyorName1, locationName, surveyorName2));
+		assertTrue(manageSurveyorAdminPage.isDuplicateSurMsgPresent(locationName));
 	}
 
 	/**
