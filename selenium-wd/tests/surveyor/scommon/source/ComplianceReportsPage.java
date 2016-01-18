@@ -73,6 +73,7 @@ import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -186,6 +187,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li[1]")
 	protected WebElement areaErrorText;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable_filter']/label/input")
+	protected WebElement textBoxReportSerach;
+	
+	@FindBy(how = How.XPATH, using = "//*[@class='dataTables_empty']")
+	protected WebElement dataTableEmpty;
 
 	/**
 	 * @param driver
@@ -223,10 +230,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		fillCustomBoundaryTextFields(reportsCompliance.getNELat(),
 				reportsCompliance.getNELong(), reportsCompliance.getSWLat(),
 				reportsCompliance.getSWLong());
+		
+		addSurveyInformation(reportsCompliance.getSurveyorUnit(),reportsCompliance.getUserName(),reportsCompliance.getTag(),
+				reportsCompliance.getSurveyStartDate(),reportsCompliance.getSurveyEndDate(),reportsCompliance.getSurveyModeFilter(),
+				reportsCompliance.getGeoFilter());
+
 
 		inputImageMapHeight(reportsCompliance.getImageMapHeight());
 		inputImageMapWidth(reportsCompliance.getImageMapWidth());
-
+		
 		addViews(reportsCompliance.getCustomer(), reportsCompliance.getViewList());
 
 		List<Map<String, String>> tablesList = reportsCompliance.getTablesList();
@@ -298,7 +310,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public void addSurveyInformation(String surveyor, String username, String tag, String startDate, String endDate, SurveyModeFilter surveyModeFilter, Boolean geoFilterOn) {
 		Log.info("Adding Survey information");
 
-		if (surveyor != "") {
+		if (surveyor != null) {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsSU) {
 				if (surveyor.equalsIgnoreCase(option.getText().trim())) {
@@ -459,11 +471,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			selectViewLayerBoundaries(selectBoundaryDistrict, selectBoundaryDistrictPlat);
 		}
 
-		this.btnSurveySearch.click();
-		this.waitForSurveyTabletoLoad();
-
-		this.checkboxSurFirst.click();
-		this.btnAddSurveys.click();
+	
 
 	}
 
@@ -848,7 +856,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		SixthView,
 		SeventhView
 	}
-
+	
 	public boolean verifyComplianceReportButton(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType) throws Exception {
 		return checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, buttonType, false);
 	}
@@ -1001,6 +1009,58 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 
+				this.waitForPageLoad();
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+				rowNum = 0;
+			}
+		}
+
+		return false;
+	}
+	
+	public boolean findReportbySearch(String rptTitle, String strCreatedBy) {
+		setPagination(PAGINATIONSETTING);
+		this.waitForPageLoad();
+		String reportTitleXPath;
+		String createdByXPath;
+
+		WebElement rptTitleCell;
+		WebElement createdByCell;
+		
+		this.getTextBoxReportSerach().sendKeys(rptTitle);
+		this.getTextBoxReportSerach().sendKeys(Keys.ENTER);
+		this.waitForPageLoad();
+		if(this.getDataTableEmpty().isDisplayed()){
+			return false;
+		}
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		int rowSize = rows.size();
+		
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			this.waitForPageLoad();
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				return true;
+			}
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
 				this.waitForPageLoad();
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
@@ -1888,6 +1948,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public String getAreaErrorText() {
 		return this.areaErrorText.getText();
 
+	}
+	
+	public WebElement getTextBoxReportSerach() {
+		return textBoxReportSerach;
+	}
+
+	public WebElement getDataTableEmpty() {
+		return dataTableEmpty;
 	}
 
 	private void waitForCustomBoundarySectionToShow() {
