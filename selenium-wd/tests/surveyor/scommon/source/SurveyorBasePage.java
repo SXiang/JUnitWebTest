@@ -149,7 +149,7 @@ public class SurveyorBasePage extends BasePage {
 		this.inputSearch.sendKeys(Keys.ENTER);
 	}
 	
-	public int getListSize() {
+	public boolean getListSize(List<String> listOfElements) {
 		String numTextString;
 		String[] strList;
 		int result = 0;
@@ -157,7 +157,7 @@ public class SurveyorBasePage extends BasePage {
 		numTextString = this.getLabelPageTableInfo().getText().trim();
 		strList = numTextString.split(" ");
 		result = Integer.parseInt(strList[3]);
-		return result;
+		return (listOfElements.size() == result);
 	}
 
 	/*

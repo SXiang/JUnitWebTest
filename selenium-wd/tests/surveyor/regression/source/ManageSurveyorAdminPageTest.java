@@ -298,7 +298,6 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC450_ManageSurveyorAdminPagination() {
 		List<String> surveyorList;
-		int surNum = 0;
 		Log.info("\nRunning - TC450_ManageSurveyorAdminPagination - Test Description: Pagination (Manage Surveyor)\n");
 
 		loginPage.open();
@@ -310,9 +309,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 				Integer.valueOf(PAGINATIONSETTING));
 
 		assertTrue(surveyorList.size() <= Integer.valueOf(PAGINATIONSETTING));
-
-		surNum = manageSurveyorAdminPage.getListSize();
-		assertTrue(surveyorList.size() == surNum);
+		assertTrue(manageSurveyorAdminPage.getListSize(surveyorList));
 
 		manageSurveyorAdminPage.open();
 		manageSurveyorAdminPage.setPagination(PAGINATIONSETTING_25);
@@ -320,9 +317,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 				Integer.valueOf(PAGINATIONSETTING_25));
 
 		assertTrue(surveyorList.size() <= Integer.valueOf(PAGINATIONSETTING_25));
-
-		surNum = manageSurveyorAdminPage.getListSize();
-		assertTrue(surveyorList.size() == surNum);
+		assertTrue(manageSurveyorAdminPage.getListSize(surveyorList));
 
 		manageSurveyorAdminPage.open();
 		manageSurveyorAdminPage.setPagination(PAGINATIONSETTING_50);
@@ -330,10 +325,8 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 				Integer.valueOf(PAGINATIONSETTING_50));
 
 		assertTrue(surveyorList.size() <= Integer.valueOf(PAGINATIONSETTING_50));
-
-		surNum = manageSurveyorAdminPage.getListSize();
-		assertTrue(surveyorList.size() == surNum);
-
+		assertTrue(manageSurveyorAdminPage.getListSize(surveyorList));
+		
 		manageSurveyorAdminPage.open();
 		manageSurveyorAdminPage.setPagination(PAGINATIONSETTING_100);
 		surveyorList = manageSurveyorAdminPage.getSurveyorList(false,
@@ -341,9 +334,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(surveyorList.size() <= Integer
 				.valueOf(PAGINATIONSETTING_100));
-
-		surNum = manageSurveyorAdminPage.getListSize();
-		assertTrue(surveyorList.size() == surNum);
+		assertTrue(manageSurveyorAdminPage.getListSize(surveyorList));
 	}
 
 	/**

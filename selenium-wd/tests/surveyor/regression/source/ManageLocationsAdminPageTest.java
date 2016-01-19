@@ -301,7 +301,6 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC450_ManageLocationsAdminPagination() {
 		List<String> locationList;
-		int locNum = 0;
 
 		Log.info("\nRunning - TC450_ManageLocationsAdminPagination - Test Description: Pagination (Manage Locations Customer Admin)\n");
 
@@ -314,9 +313,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		locationList = manageLocationsAdminPage.getLocationList(false,
 				Integer.valueOf(PAGINATIONSETTING));
 		assertTrue(locationList.size() <= Integer.valueOf(PAGINATIONSETTING));
-		
-		locNum = manageLocationsAdminPage.getListSize();
-		assertTrue(locationList.size() == locNum);
+		assertTrue(manageLocationsAdminPage.getListSize(locationList));
 
 		manageLocationsAdminPage.open();
 		manageLocationsAdminPage.setPagination(PAGINATIONSETTING_25);
@@ -324,9 +321,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		locationList = manageLocationsAdminPage.getLocationList(false,
 				Integer.valueOf(PAGINATIONSETTING_25));
 
-		locNum = manageLocationsAdminPage.getListSize();
-		assertTrue(locationList.size() == locNum);
-
+		assertTrue(manageLocationsAdminPage.getListSize(locationList));
+		
 		manageLocationsAdminPage.open();
 		manageLocationsAdminPage.setPagination(PAGINATIONSETTING_50);
 
@@ -335,8 +331,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(locationList.size() <= Integer.valueOf(PAGINATIONSETTING_50));
 
-		locNum = manageLocationsAdminPage.getListSize();
-		assertTrue(locationList.size() == locNum);
+		assertTrue(manageLocationsAdminPage.getListSize(locationList));
 
 		manageLocationsAdminPage.open();
 		manageLocationsAdminPage.setPagination(PAGINATIONSETTING_100);
@@ -347,8 +342,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		assertTrue(locationList.size() <= Integer
 				.valueOf(PAGINATIONSETTING_100));
 
-		locNum = manageLocationsAdminPage.getListSize();
-		assertTrue(locationList.size() == locNum);
+		assertTrue(manageLocationsAdminPage.getListSize(locationList));
 	}
 
 	/**

@@ -92,8 +92,7 @@ public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC450_ViewUserFeedbackAdminPagination() {
 		List<String> locationList;
-		int locNum = 0;
-		Log.info("\nRunning - TC450_ViewUserFeedbackAdminPagination - Test Description: Pagination (View User Feedabck Customer Admin)\n");
+		Log.info("\nRunning - TC450_ViewUserFeedbackAdminPagination - Test Description: Pagination (View User Feedback Customer Admin)\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -105,9 +104,7 @@ public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
 				Integer.valueOf(PAGINATIONSETTING));
 
 		assertTrue(locationList.size() <= Integer.valueOf(PAGINATIONSETTING));
-
-		locNum = userFeedbackAdminPage.getListSize();
-		assertTrue(locationList.size() == locNum);
+		assertTrue(userFeedbackAdminPage.getListSize(locationList));
 
 		userFeedbackAdminPage.open();
 		userFeedbackAdminPage.setPagination(PAGINATIONSETTING_25);
@@ -116,9 +113,7 @@ public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
 				Integer.valueOf(PAGINATIONSETTING_25));
 
 		assertTrue(locationList.size() <= Integer.valueOf(PAGINATIONSETTING_25));
-
-		locNum = userFeedbackAdminPage.getListSize();
-		assertTrue(locationList.size() == locNum);
+		assertTrue(userFeedbackAdminPage.getListSize(locationList));
 
 		userFeedbackAdminPage.open();
 		userFeedbackAdminPage.setPagination(PAGINATIONSETTING_50);
@@ -127,9 +122,7 @@ public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
 				Integer.valueOf(PAGINATIONSETTING_50));
 
 		assertTrue(locationList.size() <= Integer.valueOf(PAGINATIONSETTING_50));
-
-		locNum = userFeedbackAdminPage.getListSize();
-		assertTrue(locationList.size() == locNum);
+		assertTrue(userFeedbackAdminPage.getListSize(locationList));
 
 		userFeedbackAdminPage.open();
 		userFeedbackAdminPage.setPagination(PAGINATIONSETTING_100);
@@ -139,9 +132,7 @@ public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(locationList.size() <= Integer
 				.valueOf(PAGINATIONSETTING_100));
-
-		locNum = userFeedbackAdminPage.getListSize();
-		assertTrue(locationList.size() == locNum);
+		assertTrue(userFeedbackAdminPage.getListSize(locationList));
 	}
 
 	/**

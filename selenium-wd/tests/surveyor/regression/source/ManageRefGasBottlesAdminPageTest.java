@@ -137,7 +137,6 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC450_ManageRefGasBottlesAdminPagination() {
 		List<String> lotNumberList;
-		int lotNum = 0;
 		Log.info("\nRunning - TC450_ManageRefGasBottlesAdminPagination - Test Description: Pagination (Manage Ref Gas Bottles Customer Admin)\n");
 
 		loginPage.open();
@@ -149,9 +148,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 				Integer.valueOf(PAGINATIONSETTING));
 
 		assertTrue(lotNumberList.size() <= Integer.valueOf(PAGINATIONSETTING));
-
-		lotNum = manageRefGasBottlesAdminPage.getListSize();
-		assertTrue(lotNumberList.size() == lotNum);
+		assertTrue(manageRefGasBottlesAdminPage.getListSize(lotNumberList));
 
 		manageRefGasBottlesAdminPage.open();
 		manageRefGasBottlesAdminPage.setPagination(PAGINATIONSETTING_25);
@@ -160,9 +157,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 				Integer.valueOf(PAGINATIONSETTING_25));
 
 		assertTrue(lotNumberList.size() <= Integer.valueOf(PAGINATIONSETTING_25));
-
-		lotNum = manageRefGasBottlesAdminPage.getListSize();
-		assertTrue(lotNumberList.size() == lotNum);
+		assertTrue(manageRefGasBottlesAdminPage.getListSize(lotNumberList));
 
 		manageRefGasBottlesAdminPage.open();
 		manageRefGasBottlesAdminPage.setPagination(PAGINATIONSETTING_50);
@@ -171,9 +166,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 				Integer.valueOf(PAGINATIONSETTING_50));
 
 		assertTrue(lotNumberList.size() <= Integer.valueOf(PAGINATIONSETTING_50));
-
-		lotNum = manageRefGasBottlesAdminPage.getListSize();
-		assertTrue(lotNumberList.size() == lotNum);
+		assertTrue(manageRefGasBottlesAdminPage.getListSize(lotNumberList));
 
 		manageRefGasBottlesAdminPage.open();
 		manageRefGasBottlesAdminPage.setPagination(PAGINATIONSETTING_100);
@@ -183,9 +176,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(lotNumberList.size() <= Integer
 				.valueOf(PAGINATIONSETTING_100));
-
-		lotNum = manageRefGasBottlesAdminPage.getListSize();
-		assertTrue(lotNumberList.size() == lotNum);
+		assertTrue(manageRefGasBottlesAdminPage.getListSize(lotNumberList));
 	}
 
 	/**

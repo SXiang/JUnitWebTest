@@ -345,7 +345,6 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC450_ManageUserAdminPagination() {
 		List<String> userNameList;
-		int userNum = 0;
 		Log.info("\nRunning - TC450_ManageUserAdminPagination - Test Description: Pagination (Manage Users Customer Admin)\n");
 
 		loginPage.open();
@@ -358,8 +357,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(userNameList.size() <= Integer.valueOf(PAGINATIONSETTING));
 
-		userNum = manageUsersAdminPage.getListSize();
-		assertTrue(userNameList.size() == userNum);
+		assertTrue(manageUsersAdminPage.getListSize(userNameList));
 
 		manageUsersAdminPage.open();
 		manageUsersAdminPage.setPagination(PAGINATIONSETTING_25);
@@ -368,8 +366,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(userNameList.size() <= Integer.valueOf(PAGINATIONSETTING_25));
 
-		userNum = manageUsersAdminPage.getListSize();
-		assertTrue(userNameList.size() == userNum);
+		assertTrue(manageUsersAdminPage.getListSize(userNameList));
 
 		manageUsersAdminPage.open();
 		manageUsersAdminPage.setPagination(PAGINATIONSETTING_50);
@@ -378,8 +375,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(userNameList.size() <= Integer.valueOf(PAGINATIONSETTING_50));
 
-		userNum = manageUsersAdminPage.getListSize();
-		assertTrue(userNameList.size() == userNum);
+		assertTrue(manageUsersAdminPage.getListSize(userNameList));
 
 		manageUsersAdminPage.open();
 		manageUsersAdminPage.setPagination(PAGINATIONSETTING_100);
@@ -387,9 +383,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		userNameList = manageUsersAdminPage.getUserNameList(false, Integer.valueOf(PAGINATIONSETTING_100));
 
 		assertTrue(userNameList.size() <= Integer.valueOf(PAGINATIONSETTING_100));
-
-		userNum = manageUsersAdminPage.getListSize();
-		assertTrue(userNameList.size() == userNum);
+		assertTrue(manageUsersAdminPage.getListSize(userNameList));
 	}
 	
 	/**
