@@ -163,7 +163,7 @@
 			</batchtest>
 		</junit>
 	</target>
-	
+
 	<target name="testregression" depends="compileregression" description="Run regression test suite">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
@@ -191,8 +191,9 @@
 					<include name="**/ManageSurveyorHistoriesPageTest.class" />
 					<include name="**/ManageUsersPageTest.class" />
 					<include name="**/ManageUsersAdminPageTest.class" />
+					<include name="**/MeasurementSessionsPageTest.class" />
 					<include name="**/UserFeedbackPageTest.class" />
-					<include name="**/UserFeedbackAdminPageTest.class" />					
+					<include name="**/UserFeedbackAdminPageTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
