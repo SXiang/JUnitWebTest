@@ -207,7 +207,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 					(surveyorCell.getText().trim()).equalsIgnoreCase(surveyorName) && 
 					analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
 				Log.info("Found entry at row=" + rowNum);
-				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[5]";								
+				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[6]";								
 				actionCell = table.findElement(By.xpath(actionXPath));
 				Log.info("Found entry at row=" + rowNum);
 				actionCell.click();
@@ -296,7 +296,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 					(locationCell.getText().trim()).equalsIgnoreCase(locationName) && 
 					(surveyorCell.getText().trim()).equalsIgnoreCase(surveyorName) && 
 					analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
-				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[5]";
+				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[6]";
 				actionCell = table.findElement(By.xpath(actionXPath));
 				Log.info("Found entry at row=" + rowNum);
 				actionCell.click();
