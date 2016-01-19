@@ -17,6 +17,11 @@ public class OLMapUtility {
 		Gray
 	}
 
+	private static final String IS_FIELD_NOTES_SHOWN_FUNCTION = "function isFieldNotesShown() { var shown = false; try { if (surveyormap) "
+			+ "{ overlays = surveyormap.getOverlays(); for (var i = 0; i < overlays.getLength() ; i++) { overlay = overlays.item(i); "
+			+ "if (overlay) { element = overlay.getElement(); if (element) { if (element.id == 'annotation_modal') "
+			+ "{ return !(overlay.getPosition() == undefined); } } } } } } catch (err) { shown = false; }; return shown; };";
+
 	private static final String IS_ICON_PRESENT_JS_FUNCTION = "function isIconPresent(imgFileName){var found=false;var CAR_ICON_SRC='/content/images/'+imgFileName;"
 			+ "try{layers=map.getLayers();if(layers){for(var i=0;i<layers.getLength();i++){layer=layers.item(i);"
 			+ "if(layer&&layer.getVisible&&layer.getVisible()){source=layer.getSource();if(source){if(source.getFeatures){features=source.getFeatures();"
@@ -104,6 +109,7 @@ public class OLMapUtility {
 			+ "if(lastConstellation){lastConstellation.nodes.forEach(function(d){if(d.text){if(nodeCnt==0){text=d.text;}else{text+=','+d.text;};nodeCnt++;}});};"
 			+ "return text;};";
 	
+	private static final String IS_FIELD_NOTES_SHOWN_JS_FUNCTION_CALL = "return isFieldNotesShown();";
 	private static final String IS_ICON_PRESENT_JS_FUNCTION_CALL = "return isIconPresent('%s');";
 
 	private static final String IS_LISAS_PRESENT_JS_FUNCTION_CALL = "return isLisasPresent();";
@@ -383,5 +389,19 @@ public class OLMapUtility {
 			return true;
 		}
 		return false;
+	}
+	
+	/*
+	 * Checks whether field notes is shown on the map. 
+	 * Returns true if field notes is shown on the map, false otherwise. 
+	 */
+	public boolean isFieldNotesShown() {
+		String jsScript = IS_FIELD_NOTES_SHOWN_FUNCTION + IS_FIELD_NOTES_SHOWN_JS_FUNCTION_CALL;
+		Object fieldNotesShown = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (fieldNotesShown.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
+		
 	}
 }

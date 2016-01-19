@@ -5,8 +5,6 @@ import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
-import common.source.Constants;
-import common.source.ExcelUtility;
 import common.source.OLMapUtility;
 import common.source.Log;
 import common.source.TestContext;
@@ -14,7 +12,6 @@ import common.source.OLMapUtility.IconColor;
 import common.source.RegexUtility;
 import common.source.TestSetup;
 import surveyor.scommon.actions.data.DriverViewDataReader;
-import surveyor.scommon.actions.data.ComplianceReportDataReader.ComplianceReportDataRow;
 import surveyor.scommon.actions.data.DriverViewDataReader.DriverViewDataRow;
 import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.DriverViewPage.CloudCover;
@@ -729,6 +726,11 @@ public class DriverViewPageActions extends BasePageActions {
 		return driverViewPage.isStatusButtonGreen();
 	}
 
+	public boolean verifyStatusButtonIsGreenWithPlus(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyStatusButtonIsGreenWithPlus", data, dataRowID);
+		return driverViewPage.isStatusButtonGreenWithPlus();
+	}
+
 	public boolean verifyStatusButtonIsRed(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyStatusButtonIsRed", data, dataRowID);
 		return driverViewPage.isStatusButtonRed();
@@ -1019,28 +1021,64 @@ public class DriverViewPageActions extends BasePageActions {
 		return driverViewPage.getTimeRemainingLabelText().startsWith(data);
 	}
 	
-	/* TO BE IMPLEMENTED METHODS */
 	public boolean verifyFieldNotesIsShownOnMap(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyFieldNotesIsShownOnMap", data, dataRowID);
-		return true;
+		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
+		return mapUtility.isFieldNotesShown();
 	}
 	public boolean verifyWindRoseIsShownOnMap(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyWindRoseIsShownOnMap", data, dataRowID);
-		return true;
+		return this.driverViewPage.isWindRoseShown();
 	}
 	public boolean verifyFieldNotesIsNotShownOnMap(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyFieldNotesIsNotShownOnMap", data, dataRowID);
-		return true;
+		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
+		return !mapUtility.isFieldNotesShown();
 	}
 	public boolean verifyWindRoseIsNotShownOnMap(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyWindRoseIsNotShownOnMap", data, dataRowID);
-		return true;
+		return !this.driverViewPage.isWindRoseShown();
 	}
+	
+	/* TO BE IMPLEMENTED METHODS */
 	public boolean verifyCarIconIsNotInCenter(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyCarIconIsNotInCenter", data, dataRowID);
 		return true;
 	}
-	
+
+	/**
+	 * Executes enterFieldNotes action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean enterFieldNotes(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.enterFieldNotes", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifyMapViewIsShown action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyMapViewIsShown(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyMapViewIsShown", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifySatelliteViewIsShown action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifySatelliteViewIsShown(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifySatelliteViewIsShown", data, dataRowID);
+		return true;
+	}
+
 	/* Invoke action using specified ActionName */
 	@Override
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
@@ -1063,6 +1101,7 @@ public class DriverViewPageActions extends BasePageActions {
 		else if (actionName.equals("clickOnPicarroLogoButton")) { return this.clickOnPicarroLogoButton(data, dataRowID); }
 		else if (actionName.equals("clickOnPositionButton")) { return this.clickOnPositionButton(data, dataRowID); }
 		else if (actionName.equals("clickOnStatusButton")) { return this.clickOnStatusButton(data, dataRowID); }
+		else if (actionName.equals("enterFieldNotes")) { return this.enterFieldNotes(data, dataRowID); }
 		else if (actionName.equals("hideCurtainView")) { return this.hideCurtainView(data, dataRowID); }
 		else if (actionName.equals("insertTextById")) { return this.insertTextById(data, dataRowID); }
 		else if (actionName.equals("insertTextByXPath")) { return this.insertTextByXPath(data, dataRowID); }
@@ -1147,6 +1186,7 @@ public class DriverViewPageActions extends BasePageActions {
 		else if (actionName.equals("verifyLISAIsShownOnMap")) { return this.verifyLISAIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyMapSwitchOn")) { return this.verifyMapSwitchOn(data, dataRowID); }
 		else if (actionName.equals("verifyMapSwitchOff")) { return this.verifyMapSwitchOff(data, dataRowID); }
+		else if (actionName.equals("verifyMapViewIsShown")) { return this.verifyMapViewIsShown(data, dataRowID); }
 		else if (actionName.equals("verifyPageLoaded")) { return this.verifyPageLoaded(data, dataRowID); }
 		else if (actionName.equals("verifyPositionButtonIsGreen")) { return this.verifyPositionButtonIsGreen(data, dataRowID); }
 		else if (actionName.equals("verifyPositionButtonIsNotSelected")) { return this.verifyPositionButtonIsNotSelected(data, dataRowID); }
@@ -1155,12 +1195,18 @@ public class DriverViewPageActions extends BasePageActions {
 		else if (actionName.equals("verifyPressureButtonIsRed")) { return this.verifyPressureButtonIsRed(data, dataRowID); }
 		else if (actionName.equals("verifyRefBottleMeasButtonIsDisabled")) { return this.verifyRefBottleMeasButtonIsDisabled(data, dataRowID); }
 		else if (actionName.equals("verifyRefBottleMeasButtonIsEnabled")) { return this.verifyRefBottleMeasButtonIsEnabled(data, dataRowID); }
+		else if (actionName.equals("verifySatelliteViewIsShown")) { return this.verifySatelliteViewIsShown(data, dataRowID); }
 		else if (actionName.equals("verifyStartEQSurveyButtonIsDisabled")) { return this.verifyStartEQSurveyButtonIsDisabled(data, dataRowID); }
 		else if (actionName.equals("verifyStartEQSurveyButtonIsEnabled")) { return this.verifyStartEQSurveyButtonIsEnabled(data, dataRowID); }
 		else if (actionName.equals("verifyStartIsotopicCaptureButtonIsDisabled")) { return this.verifyStartIsotopicCaptureButtonIsDisabled(data, dataRowID); }
 		else if (actionName.equals("verifyStartIsotopicCaptureButtonIsEnabled")) { return this.verifyStartIsotopicCaptureButtonIsEnabled(data, dataRowID); }
 		else if (actionName.equals("verifyStartSurveyButtonIsDisabled")) { return this.verifyStartSurveyButtonIsDisabled(data, dataRowID); }
 		else if (actionName.equals("verifyStartSurveyButtonIsEnabled")) { return this.verifyStartSurveyButtonIsEnabled(data, dataRowID); }
+		else if (actionName.equals("verifyStatusButtonIsGreen")) { return this.verifyStatusButtonIsGreen(data, dataRowID); }
+		else if (actionName.equals("verifyStatusButtonIsGreenWithPlus")) { return this.verifyStatusButtonIsGreenWithPlus(data, dataRowID); }
+		else if (actionName.equals("verifyStatusButtonIsRed")) { return this.verifyStatusButtonIsRed(data, dataRowID); }
+		else if (actionName.equals("verifyStatusButtonIsExpanded")) { return this.verifyStatusButtonIsExpanded(data, dataRowID); }
+		else if (actionName.equals("verifyStatusButtonIsCollapsed")) { return this.verifyStatusButtonIsCollapsed(data, dataRowID); }
 		else if (actionName.equals("verifyStopDrivingSurveyButtonIsDisabled")) { return this.verifyStopDrivingSurveyButtonIsDisabled(data, dataRowID); }
 		else if (actionName.equals("verifyStopDrivingSurveyButtonIsEnabled")) { return this.verifyStopDrivingSurveyButtonIsEnabled(data, dataRowID); }
 		else if (actionName.equals("verifySurveyInfoAnalyzerLabelEquals")) { return this.verifySurveyInfoAnalyzerLabelEquals(data, dataRowID); }
