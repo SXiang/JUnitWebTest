@@ -109,6 +109,9 @@ public class OLMapUtility {
 			+ "if(lastConstellation){lastConstellation.nodes.forEach(function(d){if(d.text){if(nodeCnt==0){text=d.text;}else{text+=','+d.text;};nodeCnt++;}});};"
 			+ "return text;};";
 	
+	private static final String IS_MAP_VIEW_SHOWN = "return (mapLayer.getSource() == sourceBingRoads);";
+	private static final String IS_SATELLITE_VIEW_SHOWN = "return (mapLayer.getSource() == sourceBingArialWithStreets);";
+	
 	private static final String IS_FIELD_NOTES_SHOWN_JS_FUNCTION_CALL = "return isFieldNotesShown();";
 	private static final String IS_ICON_PRESENT_JS_FUNCTION_CALL = "return isIconPresent('%s');";
 
@@ -402,6 +405,31 @@ public class OLMapUtility {
 			return true;
 		}
 		return false;
-		
+	}
+
+	/*
+	 * Checks if map view is shown on the Map. 
+	 * Returns true if map view is shown on the map, false otherwise.
+	 * 
+	 */
+	public boolean isMapViewShown() {
+		Object isMapViewShown = ((JavascriptExecutor)this.driver).executeScript(IS_MAP_VIEW_SHOWN);
+		if (isMapViewShown.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
+	}
+
+	/*
+	 * Checks if satellite view is shown on the Map. 
+	 * Returns true if satellite view is shown on the map, false otherwise.
+	 * 
+	 */
+	public boolean isSatelliteViewShown() {
+		Object isSatelliteViewShown = ((JavascriptExecutor)this.driver).executeScript(IS_SATELLITE_VIEW_SHOWN);
+		if (isSatelliteViewShown.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
 	}
 }

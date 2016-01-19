@@ -1535,6 +1535,18 @@ public class DriverViewPage extends SurveyorBasePage {
 	}
 
 	/**
+	 * Set value to Field notes field.
+	 *
+	 * @return the DriverViewPage class instance.
+	 */
+	public DriverViewPage setFieldNotesTextField(String fieldNotes) {
+		Log.info(String.format("Adding fields notes text - %s", fieldNotes));
+		fieldNotesTextField.clear();
+		fieldNotesTextField.sendKeys(fieldNotes);
+		return this;
+	}
+	
+	/**
 	 * Set default value to tag field.
 	 *
 	 * @return the DriverViewPage class instance.

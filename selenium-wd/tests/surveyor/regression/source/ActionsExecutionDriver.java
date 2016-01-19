@@ -6,9 +6,8 @@ import org.junit.Test;
 import common.source.Constants;
 import common.source.Log;
 import surveyor.scommon.actions.ActionsExecutionEngine;
-import surveyor.scommon.source.SurveyorBaseTest;
 
-public class ActionsExecutionDriver /*extends SurveyorBaseTest*/ {
+public class ActionsExecutionDriver {
 	private ActionsExecutionEngine executionEngine = null;
 	
 	public ActionsExecutionDriver() {

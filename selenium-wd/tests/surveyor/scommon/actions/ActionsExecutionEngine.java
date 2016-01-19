@@ -159,7 +159,6 @@ public class ActionsExecutionEngine implements IMethodObserver {
 	    		String testStepsSheetName = testCaseSheetName + "-TestSteps";
 	    		for (int iTestcase=1; iTestcase < iTotalTestCases; iTestcase++) {
 	    			bResult = true;
-	    			beforeTestSetup();
 
 	    			testCaseID = excelUtility.getIntegerCellData(iTestcase, Constants.Excel_TestCases_Col_ID, testCaseSheetName);
 	    			testCaseRallyID = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_RallyID, testCaseSheetName);
@@ -169,10 +168,10 @@ public class ActionsExecutionEngine implements IMethodObserver {
 	    			testCaseRunResult = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_RunResult, testCaseSheetName);
 	    			
 	    			if (testCaseEnabled.equalsIgnoreCase("true")) {
+		    			beforeTestSetup();
 	    				executeTestCaseAction(testCaseSheetName, testStepsSheetName, iTestcase);
-	    			}
-	    			
-	    			afterTestTearDown();
+		    			afterTestTearDown();
+	    			}	    			
 	    		}
 			}
     	}
@@ -205,9 +204,7 @@ public class ActionsExecutionEngine implements IMethodObserver {
 		 
 		List<Integer> dataRowIDList = parseDataRowsIDs(testDataRowIDs);		 
 		IActions pageActions = PageActionsFactory.getAction(pageObjectName);
-		//BasePageActions baseAction = (BasePageActions)pageActions;
 		Log.info("Executing Action Type = " + pageActions.getClass().getName());
-		//Log.info("BASEURL=" + baseAction.getBaseURL());
 		
 		// Invoke method using MethodInvoker. Results are printed for each run in updateResult(..).
 		MethodParams methodParam = new MethodParams(testStepsSheetName, testStep, testData, dataRowIDList);
