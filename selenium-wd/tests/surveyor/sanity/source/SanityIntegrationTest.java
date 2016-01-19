@@ -7,9 +7,17 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static surveyor.scommon.source.SurveyorConstants.CUSNAMEBASE;
 import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETCASTIRON;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETCOPPER;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETPEPLASTIC;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
+import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICT;
+import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
 import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
 import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
 import static surveyor.scommon.source.SurveyorConstants.KEYGAPS;
@@ -213,6 +221,14 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "1");
+		tableMap.put(KEYASSETCASTIRON, "0");
+		tableMap.put(KEYASSETCOPPER, "0");
+		tableMap.put(KEYASSETOTHERPLASTIC, "0");
+		tableMap.put(KEYASSETPEPLASTIC, "0");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "0");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "0");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU,
