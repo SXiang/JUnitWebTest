@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -15,6 +16,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -387,17 +389,23 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	public boolean searchRefGasBottle(String locationName, String surveyorName,
 			String analyzerName, String lotNum, String isoValue) {
 		this.getInputSearch().sendKeys(lotNum);
-
-		if (this.tdLotNumValue.getText().contentEquals(lotNum)) {
-			if (this.tdLocationValue.getText().contentEquals(locationName)) {
-				if (this.tdSurveyorValue.getText().contentEquals(surveyorName)) {
-					if (this.tdAnalyzerValue.getText().contentEquals(
-							analyzerName)) {
-						if (this.tdIsoValue.getText().contentEquals(isoValue))
-							return true;
+		try {
+			if (this.tdLotNumValue.getText().contentEquals(lotNum)) {
+				if (this.tdLocationValue.getText().contentEquals(locationName)) {
+					if (this.tdSurveyorValue.getText().contentEquals(
+							surveyorName)) {
+						if (this.tdAnalyzerValue.getText().contentEquals(
+								analyzerName)) {
+							if (this.tdIsoValue.getText().contentEquals(
+									isoValue))
+								return true;
+						}
 					}
 				}
 			}
+		} catch (NoSuchElementException ne) {
+			Log.error(ne.toString());
+			return false;
 		}
 		return false;
 	}

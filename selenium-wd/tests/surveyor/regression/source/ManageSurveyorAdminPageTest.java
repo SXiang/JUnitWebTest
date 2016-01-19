@@ -298,12 +298,8 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC450_ManageSurveyorAdminPagination() {
 		List<String> surveyorList;
-		String numTextString;
-		String[] strList;
 		int surNum = 0;
-
-		System.out
-				.println("\nRunning - TC450_ManageSurveyorAdminPagination - Test Description: Pagination (Manage Surveyor)\n");
+		Log.info("\nRunning - TC450_ManageSurveyorAdminPagination - Test Description: Pagination (Manage Surveyor)\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -315,11 +311,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(surveyorList.size() <= Integer.valueOf(PAGINATIONSETTING));
 
-		numTextString = manageSurveyorAdminPage.getLabelPageTableInfo()
-				.getText().trim();
-		strList = numTextString.split(" ");
-		surNum = Integer.parseInt(strList[3]);
-
+		surNum = manageSurveyorAdminPage.getListSize();
 		assertTrue(surveyorList.size() == surNum);
 
 		manageSurveyorAdminPage.open();
@@ -329,11 +321,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(surveyorList.size() <= Integer.valueOf(PAGINATIONSETTING_25));
 
-		numTextString = manageSurveyorAdminPage.getLabelPageTableInfo()
-				.getText().trim();
-		strList = numTextString.split(" ");
-		surNum = Integer.parseInt(strList[3]);
-
+		surNum = manageSurveyorAdminPage.getListSize();
 		assertTrue(surveyorList.size() == surNum);
 
 		manageSurveyorAdminPage.open();
@@ -343,11 +331,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(surveyorList.size() <= Integer.valueOf(PAGINATIONSETTING_50));
 
-		numTextString = manageSurveyorAdminPage.getLabelPageTableInfo()
-				.getText().trim();
-		strList = numTextString.split(" ");
-		surNum = Integer.parseInt(strList[3]);
-
+		surNum = manageSurveyorAdminPage.getListSize();
 		assertTrue(surveyorList.size() == surNum);
 
 		manageSurveyorAdminPage.open();
@@ -358,11 +342,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		assertTrue(surveyorList.size() <= Integer
 				.valueOf(PAGINATIONSETTING_100));
 
-		numTextString = manageSurveyorAdminPage.getLabelPageTableInfo()
-				.getText().trim();
-		strList = numTextString.split(" ");
-		surNum = Integer.parseInt(strList[3]);
-
+		surNum = manageSurveyorAdminPage.getListSize();
 		assertTrue(surveyorList.size() == surNum);
 	}
 
@@ -375,9 +355,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		String surveyorName = "TC451_" + SQACUSSURVEYOR
 				+ testSetup.getRandomNumber();
 		String cityName = "Santa Clara";
-
-		System.out
-				.println("\nRunning - TC451 - Test Description: Search valid surveyor record\n");
+		Log.info("\nRunning - TC451 - Test Description: Search valid surveyor record\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
@@ -403,9 +381,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	public void TC452_SearchInvalidSurveyor() {
 		String surveyorName = "TC452_" + SQACUSSURVEYOR
 				+ testSetup.getRandomNumber();
-
-		System.out
-				.println("\nRunning - TC451 - Test Description: Search valid surveyor record\n");
+		Log.info("\nRunning - TC451 - Test Description: Search valid surveyor record\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -425,9 +401,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC453_SortSurveyorRecords() {
 		List<String> list = new ArrayList<String>();
-
-		System.out
-				.println("\nRunning - TC453 - Test Description: Sort surveyor records based on attributes present\n");
+		Log.info("\nRunning - TC453 - Test Description: Sort surveyor records based on attributes present\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);

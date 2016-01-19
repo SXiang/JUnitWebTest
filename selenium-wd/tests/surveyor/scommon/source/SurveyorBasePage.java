@@ -148,6 +148,17 @@ public class SurveyorBasePage extends BasePage {
 		this.inputSearch.sendKeys(searchTerm);
 		this.inputSearch.sendKeys(Keys.ENTER);
 	}
+	
+	public int getListSize() {
+		String numTextString;
+		String[] strList;
+		int result = 0;
+
+		numTextString = this.getLabelPageTableInfo().getText().trim();
+		strList = numTextString.split(" ");
+		result = Integer.parseInt(strList[3]);
+		return result;
+	}
 
 	/*
 	 * Helper method to wait for an Element to be ready on the page. 

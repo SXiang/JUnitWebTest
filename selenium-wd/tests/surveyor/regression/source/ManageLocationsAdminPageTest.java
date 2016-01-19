@@ -159,7 +159,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	 * edit location- blank required fields Test Script: - On Home Page, click
 	 * Administration -> Manage Locations - Click on Edit link - Delete
 	 * description field data. Click OK Expected Results:
-	 * "Please fill out this field." message should be displayed Current
+	 * "This is required field" message should be displayed Current
 	 * implementation: Current Issue: Future Improvement: deal with the tooltip
 	 * text
 	 */
@@ -301,12 +301,9 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC450_ManageLocationsAdminPagination() {
 		List<String> locationList;
-		String numTextString;
-		String[] strList;
 		int locNum = 0;
 
-		System.out
-				.println("\nRunning - TC450_ManageLocationsAdminPagination - Test Description: Pagination (Manage Locations Customer Admin)\n");
+		Log.info("\nRunning - TC450_ManageLocationsAdminPagination - Test Description: Pagination (Manage Locations Customer Admin)\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -316,14 +313,9 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 		locationList = manageLocationsAdminPage.getLocationList(false,
 				Integer.valueOf(PAGINATIONSETTING));
-
 		assertTrue(locationList.size() <= Integer.valueOf(PAGINATIONSETTING));
-
-		numTextString = manageLocationsAdminPage.getLabelPageTableInfo()
-				.getText().trim();
-		strList = numTextString.split(" ");
-		locNum = Integer.parseInt(strList[3]);
-
+		
+		locNum = manageLocationsAdminPage.getListSize();
 		assertTrue(locationList.size() == locNum);
 
 		manageLocationsAdminPage.open();
@@ -332,13 +324,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		locationList = manageLocationsAdminPage.getLocationList(false,
 				Integer.valueOf(PAGINATIONSETTING_25));
 
-		assertTrue(locationList.size() <= Integer.valueOf(PAGINATIONSETTING_25));
-
-		numTextString = manageLocationsAdminPage.getLabelPageTableInfo()
-				.getText().trim();
-		strList = numTextString.split(" ");
-		locNum = Integer.parseInt(strList[3]);
-
+		locNum = manageLocationsAdminPage.getListSize();
 		assertTrue(locationList.size() == locNum);
 
 		manageLocationsAdminPage.open();
@@ -349,11 +335,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(locationList.size() <= Integer.valueOf(PAGINATIONSETTING_50));
 
-		numTextString = manageLocationsAdminPage.getLabelPageTableInfo()
-				.getText().trim();
-		strList = numTextString.split(" ");
-		locNum = Integer.parseInt(strList[3]);
-
+		locNum = manageLocationsAdminPage.getListSize();
 		assertTrue(locationList.size() == locNum);
 
 		manageLocationsAdminPage.open();
@@ -365,11 +347,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		assertTrue(locationList.size() <= Integer
 				.valueOf(PAGINATIONSETTING_100));
 
-		numTextString = manageLocationsAdminPage.getLabelPageTableInfo()
-				.getText().trim();
-		strList = numTextString.split(" ");
-		locNum = Integer.parseInt(strList[3]);
-
+		locNum = manageLocationsAdminPage.getListSize();
 		assertTrue(locationList.size() == locNum);
 	}
 
@@ -378,8 +356,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC451_SearchValidLocation() {
-		System.out
-				.println("\nRunning - TC451 - Test Description: Search valid location record\n");
+		Log.info("\nRunning - TC451 - Test Description: Search valid location record\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -395,8 +372,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	public void TC452_SearchInvalidLocation() {
 		String location = SQACUSLOC + testSetup.getRandomNumber();
 
-		System.out
-				.println("\nRunning - TC452 - Test Description: Search invalid location record\n");
+		Log.info("\nRunning - TC452 - Test Description: Search invalid location record\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -416,9 +392,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC453_SortLocationRecords() {
 		List<String> list = new ArrayList<String>();
-
-		System.out
-				.println("\nRunning - TC453 - Test Description: Sort location records based on attributes present\n");
+		Log.info("\nRunning - TC453 - Test Description: Sort location records based on attributes present\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);

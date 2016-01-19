@@ -137,12 +137,8 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC450_ManageRefGasBottlesAdminPagination() {
 		List<String> lotNumberList;
-		String numTextString;
-		String[] strList;
 		int lotNum = 0;
-
-		System.out
-				.println("\nRunning - TC450_ManageRefGasBottlesAdminPagination - Test Description: Pagination (Manage Ref Gas Bottles Customer Admin)\n");
+		Log.info("\nRunning - TC450_ManageRefGasBottlesAdminPagination - Test Description: Pagination (Manage Ref Gas Bottles Customer Admin)\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -154,11 +150,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(lotNumberList.size() <= Integer.valueOf(PAGINATIONSETTING));
 
-		numTextString = manageRefGasBottlesAdminPage.getLabelPageTableInfo()
-				.getText().trim();
-		strList = numTextString.split(" ");
-		lotNum = Integer.parseInt(strList[3]);
-
+		lotNum = manageRefGasBottlesAdminPage.getListSize();
 		assertTrue(lotNumberList.size() == lotNum);
 
 		manageRefGasBottlesAdminPage.open();
@@ -169,11 +161,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(lotNumberList.size() <= Integer.valueOf(PAGINATIONSETTING_25));
 
-		numTextString = manageRefGasBottlesAdminPage.getLabelPageTableInfo()
-				.getText().trim();
-		strList = numTextString.split(" ");
-		lotNum = Integer.parseInt(strList[3]);
-
+		lotNum = manageRefGasBottlesAdminPage.getListSize();
 		assertTrue(lotNumberList.size() == lotNum);
 
 		manageRefGasBottlesAdminPage.open();
@@ -184,11 +172,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(lotNumberList.size() <= Integer.valueOf(PAGINATIONSETTING_50));
 
-		numTextString = manageRefGasBottlesAdminPage.getLabelPageTableInfo()
-				.getText().trim();
-		strList = numTextString.split(" ");
-		lotNum = Integer.parseInt(strList[3]);
-
+		lotNum = manageRefGasBottlesAdminPage.getListSize();
 		assertTrue(lotNumberList.size() == lotNum);
 
 		manageRefGasBottlesAdminPage.open();
@@ -200,11 +184,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		assertTrue(lotNumberList.size() <= Integer
 				.valueOf(PAGINATIONSETTING_100));
 
-		numTextString = manageRefGasBottlesAdminPage.getLabelPageTableInfo()
-				.getText().trim();
-		strList = numTextString.split(" ");
-		lotNum = Integer.parseInt(strList[3]);
-
+		lotNum = manageRefGasBottlesAdminPage.getListSize();
 		assertTrue(lotNumberList.size() == lotNum);
 	}
 
@@ -215,9 +195,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	public void TC451_SearchValidRefGasBottle() {
 		String lotNumber = "TC451_" + testSetup.getRandomNumber();
 		String isoValue = "-32.7";
-
-		System.out
-				.println("\nRunning - TC451 - Test Description: Search ref gas bottle record\n");
+		Log.info("\nRunning - TC451 - Test Description: Search ref gas bottle record\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -235,9 +213,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC452_SearchInvalidRefGasBottle() {
 		String lotNumber = "Invalid_TC452_" + testSetup.getRandomNumber();
-
-		System.out
-				.println("\nRunning - TC452 - Test Description: Search invalid Ref Gas Bottle record\n");
+		Log.info("\nRunning - TC452 - Test Description: Search invalid Ref Gas Bottle record\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -257,9 +233,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC453_SortRefGasBottleRecords() {
 		List<String> list = new ArrayList<String>();
-
-		System.out
-				.println("\nRunning - TC453 - Test Description: Sort Ref Gas Bottle records based on attributes present\n");
+		Log.info("\nRunning - TC453 - Test Description: Sort Ref Gas Bottle records based on attributes present\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);

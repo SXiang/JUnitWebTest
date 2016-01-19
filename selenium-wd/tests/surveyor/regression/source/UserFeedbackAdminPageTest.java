@@ -11,7 +11,6 @@ import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_25;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_50;
 import static surveyor.scommon.source.SurveyorConstants.SQACUS;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
 import static surveyor.scommon.source.SurveyorConstants.STRFEEDBACK;
@@ -24,10 +23,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
-import common.source.BaseHelper;
-
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.UserFeedbackAdminPage;
+
+import common.source.BaseHelper;
+import common.source.Log;
 
 /**
  * @author zlu
@@ -52,9 +52,7 @@ public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
 		String feedbackNote = testSetup.getRandomNumber() + ": " + STRFEEDBACK
 				+ " - TC454";
 		boolean bFound = false;
-
-		System.out
-				.println("\nRunning TC454 - Test Description: Customer Admin can view the feedback notes sent by that customer's user");
+		Log.info("\nRunning TC454 - Test Description: Customer Admin can view the feedback notes sent by that customer's user");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
@@ -94,12 +92,8 @@ public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC450_ViewUserFeedbackAdminPagination() {
 		List<String> locationList;
-		String numTextString;
-		String[] strList;
 		int locNum = 0;
-
-		System.out
-				.println("\nRunning - TC450_ViewUserFeedbackAdminPagination - Test Description: Pagination (View User Feedabck Customer Admin)\n");
+		Log.info("\nRunning - TC450_ViewUserFeedbackAdminPagination - Test Description: Pagination (View User Feedabck Customer Admin)\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -112,11 +106,7 @@ public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(locationList.size() <= Integer.valueOf(PAGINATIONSETTING));
 
-		numTextString = userFeedbackAdminPage.getLabelPageTableInfo()
-				.getText().trim();
-		strList = numTextString.split(" ");
-		locNum = Integer.parseInt(strList[3]);
-
+		locNum = userFeedbackAdminPage.getListSize();
 		assertTrue(locationList.size() == locNum);
 
 		userFeedbackAdminPage.open();
@@ -127,11 +117,7 @@ public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(locationList.size() <= Integer.valueOf(PAGINATIONSETTING_25));
 
-		numTextString = userFeedbackAdminPage.getLabelPageTableInfo()
-				.getText().trim();
-		strList = numTextString.split(" ");
-		locNum = Integer.parseInt(strList[3]);
-
+		locNum = userFeedbackAdminPage.getListSize();
 		assertTrue(locationList.size() == locNum);
 
 		userFeedbackAdminPage.open();
@@ -142,11 +128,7 @@ public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(locationList.size() <= Integer.valueOf(PAGINATIONSETTING_50));
 
-		numTextString = userFeedbackAdminPage.getLabelPageTableInfo()
-				.getText().trim();
-		strList = numTextString.split(" ");
-		locNum = Integer.parseInt(strList[3]);
-
+		locNum = userFeedbackAdminPage.getListSize();
 		assertTrue(locationList.size() == locNum);
 
 		userFeedbackAdminPage.open();
@@ -158,11 +140,7 @@ public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
 		assertTrue(locationList.size() <= Integer
 				.valueOf(PAGINATIONSETTING_100));
 
-		numTextString = userFeedbackAdminPage.getLabelPageTableInfo()
-				.getText().trim();
-		strList = numTextString.split(" ");
-		locNum = Integer.parseInt(strList[3]);
-
+		locNum = userFeedbackAdminPage.getListSize();
 		assertTrue(locationList.size() == locNum);
 	}
 
@@ -172,8 +150,7 @@ public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC451_SearchValidUserFeedbackNote() {
 		String feedbackNote = "TC451_" + testSetup.getRandomNumber();
-		System.out
-				.println("\nRunning - TC451 - Test Description: Search valid user feedback note record\n");
+		Log.info("\nRunning - TC451 - Test Description: Search valid user feedback note record\n");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
@@ -198,9 +175,7 @@ public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC452_SearchInvalidUserFeedbackNote() {
 		String feedbackNote = "TC452_" + testSetup.getRandomNumber();
-
-		System.out
-				.println("\nRunning - TC452 - Test Description: Search invalid user feedback note record\n");
+		Log.info("\nRunning - TC452 - Test Description: Search invalid user feedback note record\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -219,9 +194,7 @@ public class UserFeedbackAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC453_SortUserFeedbackNotesRecords() {
 		List<String> list = new ArrayList<String>();
-
-		System.out
-				.println("\nRunning - TC453 - Test Description: Sort user feedback notes records based on attributes present\n");
+		Log.info("\nRunning - TC453 - Test Description: Sort user feedback notes records based on attributes present\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);

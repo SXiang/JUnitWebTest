@@ -41,9 +41,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	public void TC438_CustAdmin_AddNewUser() {
 		String userName = SQACUS + testSetup.getRandomNumber() + "custadm001"
 				+ REGBASEUSERNAME;
-
-		System.out
-				.println("\nRunning - TC438 - Customer Admin - add new user\n");
+		Log.info("\nRunning - TC438 - Customer Admin - add new user\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -74,8 +72,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	public void TC439_CustAdmin_EditUser() {
 		String userName = SQACUS + testSetup.getRandomNumber() + "custadm002"
 				+ REGBASEUSERNAME;
-
-		System.out.println("\nRunning - TC439 - Customer Admin - edit user\n");
+		Log.info("\nRunning - TC439 - Customer Admin - edit user\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -110,9 +107,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	public void TC440_CustAdmin_ChangePwd() {
 		String userName = SQACUS + testSetup.getRandomNumber() + "custadm003"
 				+ REGBASEUSERNAME;
-
-		System.out
-				.println("\nRunning - TC440 - Customer specific user can change its password\n");
+		Log.info("\nRunning - TC440 - Customer specific user can change its password\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -148,9 +143,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	public void TC441_CustAdmin_DisableUser() {
 		String userName = SQACUS + testSetup.getRandomNumber() + "custadm004"
 				+ REGBASEUSERNAME;
-
-		System.out
-				.println("\nRunning - TC441 - Test Description: Customer Admin - Disabled User\n");
+		Log.info("\nRunning - TC441 - Test Description: Customer Admin - Disabled User\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -213,9 +206,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	public void TC444_PwdValuesDiffNotAllowed() {
 		String userName = SQACUS + testSetup.getRandomNumber() + "custadm007"
 				+ REGBASEUSERNAME;
-
-		System.out
-				.println("\nRunning - TC444 - Test Description: Add User - Password and Confirm Password values different\n");
+		Log.info("\nRunning - TC444 - Test Description: Add User - Password and Confirm Password values different\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -237,9 +228,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	public void TC445_InvalidEmailAddressNotAllowed() {
 		String userName1 = "rpitter@b";
 		String userName2 = "rpitter@b.c";
-
-		System.out
-				.println("\nRunning - TC445 - Test Description: add user - invalid email address values\n");
+		Log.info("\nRunning - TC445 - Test Description: add user - invalid email address values\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -265,9 +254,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	public void TC446_BlankRequiredFields() {
 		String userName = SQACUS + testSetup.getRandomNumber() + "custadm009"
 				+ REGBASEUSERNAME;
-
-		System.out
-				.println("\nRunning - TC446 - Test Description: add user - blank required fields\n");
+		Log.info("\nRunning - TC446 - Test Description: add user - blank required fields\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -298,9 +285,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	public void TC447_EditUserRoleTimezone() {
 		String userName = SQACUS + testSetup.getRandomNumber() + "custadm010"
 				+ REGBASEUSERNAME;
-
-		System.out
-				.println("\nRunning - TC447 - Test Description: Admin can change role, timezone and location of existing user\n");
+		Log.info("\nRunning - TC447 - Test Description: Admin can change role, timezone and location of existing user\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -360,12 +345,8 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC450_ManageUserAdminPagination() {
 		List<String> userNameList;
-		String numTextString;
-		String[] strList;
 		int userNum = 0;
-
-		System.out
-				.println("\nRunning - TC450_ManageUserAdminPagination - Test Description: Pagination (Manage Users Customer Admin)\n");
+		Log.info("\nRunning - TC450_ManageUserAdminPagination - Test Description: Pagination (Manage Users Customer Admin)\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -377,11 +358,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(userNameList.size() <= Integer.valueOf(PAGINATIONSETTING));
 
-		numTextString = manageUsersAdminPage.getLabelPageTableInfo().getText()
-				.trim();
-		strList = numTextString.split(" ");
-		userNum = Integer.parseInt(strList[3]);
-
+		userNum = manageUsersAdminPage.getListSize();
 		assertTrue(userNameList.size() == userNum);
 
 		manageUsersAdminPage.open();
@@ -391,11 +368,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(userNameList.size() <= Integer.valueOf(PAGINATIONSETTING_25));
 
-		numTextString = manageUsersAdminPage.getLabelPageTableInfo().getText()
-				.trim();
-		strList = numTextString.split(" ");
-		userNum = Integer.parseInt(strList[3]);
-
+		userNum = manageUsersAdminPage.getListSize();
 		assertTrue(userNameList.size() == userNum);
 
 		manageUsersAdminPage.open();
@@ -405,11 +378,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(userNameList.size() <= Integer.valueOf(PAGINATIONSETTING_50));
 
-		numTextString = manageUsersAdminPage.getLabelPageTableInfo().getText()
-				.trim();
-		strList = numTextString.split(" ");
-		userNum = Integer.parseInt(strList[3]);
-
+		userNum = manageUsersAdminPage.getListSize();
 		assertTrue(userNameList.size() == userNum);
 
 		manageUsersAdminPage.open();
@@ -419,11 +388,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(userNameList.size() <= Integer.valueOf(PAGINATIONSETTING_100));
 
-		numTextString = manageUsersAdminPage.getLabelPageTableInfo().getText()
-				.trim();
-		strList = numTextString.split(" ");
-		userNum = Integer.parseInt(strList[3]);
-
+		userNum = manageUsersAdminPage.getListSize();
 		assertTrue(userNameList.size() == userNum);
 	}
 	
@@ -432,8 +397,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC451_SearchValidUser() {
-		System.out
-				.println("\nRunning - TC451 - Test Description: Search valid user record\n");
+		Log.info("\nRunning - TC451 - Test Description: Search valid user record\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -450,9 +414,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	public void TC452_SearchInvalidUser() {
 		String userName = SQACUS + testSetup.getRandomNumber() + "custadm015"
 				+ REGBASEUSERNAME;
-
-		System.out
-				.println("\nRunning - TC452 - Test Description: Search invalid user record\n");
+		Log.info("\nRunning - TC452 - Test Description: Search invalid user record\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -478,9 +440,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC453_SortUserRecords() {
 		List<String> list = new ArrayList<String>();
-
-		System.out
-				.println("\nRunning - TC453 - Test Description: Sort user records based on attributes present\n");
+		Log.info("\nRunning - TC453 - Test Description: Sort user records based on attributes present\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -531,9 +491,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	public void TC468_CustAdmin_ResetPwd() {
 		String userName = SQACUS + testSetup.getRandomNumber() + "custadm015"
 				+ REGBASEUSERNAME;
-
-		System.out
-				.println("\nRunning - TC468 - Reset customer user password as customer admin\n");
+		Log.info("\nRunning - TC468 - Reset customer user password as customer admin\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
