@@ -159,7 +159,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	 * edit location- blank required fields Test Script: - On Home Page, click
 	 * Administration -> Manage Locations - Click on Edit link - Delete
 	 * description field data. Click OK Expected Results:
-	 * "This is required field" message should be displayed Current
+	 * "This field is required" message should be displayed Current
 	 * implementation: Current Issue: Future Improvement: deal with the tooltip
 	 * text
 	 */
