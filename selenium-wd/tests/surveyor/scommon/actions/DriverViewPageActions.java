@@ -26,6 +26,7 @@ import surveyor.scommon.source.DriverViewPage.Wind;
 public class DriverViewPageActions extends BasePageActions {
 	
 	private static final String SPLIT_BY_COMMA_REGEX_PATTERN = ",";
+	private static final String FN_ENTER_FIELD_NOTES = "enterFieldNotes";
 	private static final String FN_VERIFY_GIS_SWITCH_IS_OFF = "verifyGisSwitchIsOff";
 	private static final String FN_VERIFY_DISPLAY_SWITCH_IS_OFF = "verifyDisplaySwitchIsOff";
 	private static final String FN_VERIFY_MAP_SWITCH_OFF = "verifyMapSwitchOff";
@@ -370,6 +371,51 @@ public class DriverViewPageActions extends BasePageActions {
 		return !verifyMapSwitchOn(data, dataRowID);
 	}
 	
+	/**
+	 * Executes turnOnAllAssets action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean turnOnAllAssets(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOnAllAssets", data, dataRowID);
+		turnOnMaterialTypeCopper(data, dataRowID);
+		turnOnMaterialTypeUnprotectedSteel(data, dataRowID);
+		turnOnMaterialTypeProtectedSteel(data, dataRowID);
+		turnOnMaterialTypeCastIron(data, dataRowID);
+		turnOnMaterialTypeOtherPlastic(data, dataRowID);
+		turnOnMaterialTypePEPlastic(data, dataRowID);
+		turnOnUseAllPipes(data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes turnOnAllBoundaries action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean turnOnAllBoundaries(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOnAllBoundaries", data, dataRowID);
+		turnOnBoundariesDistrict(data, dataRowID);
+		turnOnBoundariesDistrictPlat(data, dataRowID);
+		turnOnAllBoundaries(data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes turnOnAllAssetsAndBoundaries action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean turnOnAllAssetsAndBoundaries(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOnAllAssetsAndBoundaries", data, dataRowID);
+		turnOnAllAssets(data, dataRowID);
+		turnOnAllBoundaries(data, dataRowID);
+		return true;
+	}
+
 	public boolean turnOnBoundariesDistrict(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.turnOnBoundariesDistrict", data, dataRowID);
 		driverViewPage.toggleGisSwitch(GisSwitchType.BoundariesDistrict, true);
@@ -468,6 +514,51 @@ public class DriverViewPageActions extends BasePageActions {
 	public boolean turnOffUseAllPipes(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.turnOffUseAllPipes", data, dataRowID);
 		driverViewPage.toggleGisSwitch(GisSwitchType.UseAllPipes, false);
+		return true;
+	}
+	
+	/**
+	 * Executes turnOffAllAssets action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean turnOffAllAssets(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOffAllAssets", data, dataRowID);
+		turnOffMaterialTypeCopper(data, dataRowID);
+		turnOffMaterialTypeUnprotectedSteel(data, dataRowID);
+		turnOffMaterialTypeProtectedSteel(data, dataRowID);
+		turnOffMaterialTypeCastIron(data, dataRowID);
+		turnOffMaterialTypeOtherPlastic(data, dataRowID);
+		turnOffMaterialTypePEPlastic(data, dataRowID);
+		turnOffUseAllPipes(data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes turnOffAllBoundaries action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean turnOffAllBoundaries(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOffAllBoundaries", data, dataRowID);
+		turnOffBoundariesDistrict(data, dataRowID);
+		turnOffBoundariesDistrictPlat(data, dataRowID);
+		turnOffAllBoundaries(data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes turnOffAllAssetsAndBoundaries action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean turnOffAllAssetsAndBoundaries(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOffAllAssetsAndBoundaries", data, dataRowID);
+		turnOffAllAssets(data, dataRowID);
+		turnOffAllBoundaries(data, dataRowID);
 		return true;
 	}
 
@@ -1051,9 +1142,13 @@ public class DriverViewPageActions extends BasePageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
 	 */
-	public boolean enterFieldNotes(String data, Integer dataRowID) {
+	public boolean enterFieldNotes(String data, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.enterFieldNotes", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_ENTER_FIELD_NOTES, ARG_DATA, data);
+		this.driverViewPage.setFieldNotesTextField(data);
+		this.driverViewPage.clickFieldNotesSaveButton();
 		return true;
 	}
  
@@ -1065,7 +1160,8 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyMapViewIsShown(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyMapViewIsShown", data, dataRowID);
-		return true;
+		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
+		return mapUtility.isMapViewShown();
 	}
  
 	/**
@@ -1076,7 +1172,8 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifySatelliteViewIsShown(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifySatelliteViewIsShown", data, dataRowID);
-		return true;
+		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
+		return mapUtility.isSatelliteViewShown();
 	}
 
 	/* Invoke action using specified ActionName */
@@ -1113,6 +1210,9 @@ public class DriverViewPageActions extends BasePageActions {
 		else if (actionName.equals("showCurtainView")) { return this.showCurtainView(data, dataRowID); }
 		else if (actionName.equals("startDrivingSurvey  ")) { return this.startDrivingSurvey  (data, dataRowID); }
 		else if (actionName.equals("stopDrivingSurvey")) { return this.stopDrivingSurvey(data, dataRowID); }
+		else if (actionName.equals("turnOffAllAssets")) { return this.turnOffAllAssets(data, dataRowID); }
+		else if (actionName.equals("turnOffAllBoundaries")) { return this.turnOffAllBoundaries(data, dataRowID); }
+		else if (actionName.equals("turnOffAllAssetsAndBoundaries")) { return this.turnOffAllAssetsAndBoundaries(data, dataRowID); }
 		else if (actionName.equals("turnOffBoundariesDistrict")) { return this.turnOffBoundariesDistrict(data, dataRowID); }
 		else if (actionName.equals("turnOffBoundariesDistrictPlat")) { return this.turnOffBoundariesDistrictPlat(data, dataRowID); }
 		else if (actionName.equals("turnOffConcentrationChart")) { return this.turnOffConcentrationChart(data, dataRowID); }
@@ -1132,6 +1232,9 @@ public class DriverViewPageActions extends BasePageActions {
 		else if (actionName.equals("turnOffUseAllBoundaries")) { return this.turnOffUseAllBoundaries(data, dataRowID); }
 		else if (actionName.equals("turnOffUseAllPipes")) { return this.turnOffUseAllPipes(data, dataRowID); }
 		else if (actionName.equals("turnOffWindRose")) { return this.turnOffWindRose(data, dataRowID); }
+		else if (actionName.equals("turnOnAllAssets")) { return this.turnOnAllAssets(data, dataRowID); }
+		else if (actionName.equals("turnOnAllBoundaries")) { return this.turnOnAllBoundaries(data, dataRowID); }
+		else if (actionName.equals("turnOnAllAssetsAndBoundaries")) { return this.turnOnAllAssetsAndBoundaries(data, dataRowID); }
 		else if (actionName.equals("turnOnBoundariesDistrict")) { return this.turnOnBoundariesDistrict(data, dataRowID); }
 		else if (actionName.equals("turnOnBoundariesDistrictPlat")) { return this.turnOnBoundariesDistrictPlat(data, dataRowID); }
 		else if (actionName.equals("turnOnConcentrationChart")) { return this.turnOnConcentrationChart(data, dataRowID); }
