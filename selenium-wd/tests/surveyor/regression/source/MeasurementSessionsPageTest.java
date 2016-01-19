@@ -39,14 +39,14 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 		strListTagCusDr = new ArrayList<String>();
 		strListTagCusDr.add(SQACUSDRTAG);
 		
-		strListTagCus.add(SQACUSUATAG);
-		strListTagCus.add(SQACUSSUTAG);
-		strListTagCus.add(SQACUSDRTAG);
+		strListTagCus.add(CUSDRVSTDTAG);
+		strListTagCus.add(CUSDRVRRTAG);
+		strListTagCus.add(CUSDRVOPTAG);
 		
-		strListTagPic.add(SQAPICADTAG);
-		strListTagPic.add(SQAPICUATAG);
-		strListTagPic.add(SQAPICSUTAG);
-		strListTagPic.add(SQAPICDRTAG);
+		strListTagPic.add(PICADMNSTDTAG);
+		strListTagPic.add(PICADMNRRTAG);
+		strListTagPic.add(PICADMNOPTAG);
+		strListTagPic.add(PICADMNMANTAG);
 	}
 	
 	/**
@@ -56,7 +56,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	 *        This test case can be fixed post Simulator Integration in Automation framework.
 	 *        Work tracked by US1210
 	 */
-	//@Test /* Disabled for now. Refer Notes section*/
+	@Test 
 	public void TC35_CheckVisibilityDriverRole() {
 		Log.info("\nRunning TC35_CheckVisibilityDriverRole - Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Driver role");
 		
@@ -74,7 +74,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	 *        This test case can be fixed post Simulator Integration in Automation framework.
 	 *        Work tracked by US1210
 	 */
-	//@Test /* Disabled for now. Refer Notes section*/
+	@Test 
 	public void TC36_CheckVisibilityCustomerSupervisorRole() {
 		Log.info("\nRunning TC36_CheckVisibilityCustomerSupervisorRole - Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Supervisor role");
 		
@@ -92,7 +92,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	 *        This test case can be fixed post Simulator Integration in Automation framework.
 	 *        Work tracked by US1210
 	 */
-	//@Test /* Disabled for now. Refer Notes section*/
+	@Test 
 	public void TC37_CheckVisibilityUtilityAdminRole() {
 		Log.info("\nRunning TC37_CheckVisibilityUtilityAdminRole - Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Utility Administrator role");
 		
@@ -110,7 +110,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	 *        This test case can be fixed post Simulator Integration in Automation framework.
 	 *        Work tracked by US1210
 	 */
-	//@Test /* Disabled for now. Refer Notes section*/
+	@Test 
 	public void TC38_CheckVisibilityPicarroAdminRole() {
 		Log.info("\nRunning TC38_CheckVisibilityPicarroAdminRole - Test Description: Visibility check of Driving Surveys Measurement Sessions for Picarro user with Administrator role");
 		
@@ -209,7 +209,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	 *        Better approach for automation is to use a clean DB for automation test execution.
 	 *        Use of clean DB in automation, Work tracked by US1210
 	 */
-	//@Test /* Disabled for now. Refer Notes section*/
+	@Test
 	public void TC125_ExportSurveyPeaksAnalysis() {
 		String startDT;
 		
@@ -220,19 +220,19 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 		
 		homePage.getLinkDrivingSurveys().click();
 		
-		measurementSessionsPage.getInputSearch().sendKeys(SQAPICDRTAG);
-		startDT = measurementSessionsPage.getStartDT(SQAPICDRTAG, SQAPICDR, SQAPICLOC3SUR, SQAPICLOC3SURANA, false);
+		measurementSessionsPage.getInputSearch().sendKeys(PICADMNSTDTAG);
+		startDT = measurementSessionsPage.getStartDT(PICADMNSTDTAG, PICDFADMIN, SQAPICLOC4SUR, SQAPICLOC4SURANA, false);
 		
-		measurementSessionsPage.actionOnDrivingSurveys(SQAPICDRTAG, SQAPICDR, SQAPICLOC3SUR, SQAPICLOC3SURANA, startDT, DRIVINGSURVEYSEXPORTSURVEY, false);
+		measurementSessionsPage.actionOnDrivingSurveys(PICADMNSTDTAG, PICDFADMIN, SQAPICLOC4SUR, SQAPICLOC4SURANA, startDT, DRIVINGSURVEYSEXPORTSURVEY, false);
 		testSetup.slowdownInSeconds(15);
-		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTSURVEY, SQAPICDRTAG, SQAPICLOC3SURANA, testSetup.getDownloadPath(), true));
+		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTSURVEY, PICADMNSTDTAG, SQAPICLOC4SURANA, testSetup.getDownloadPath(), true));
 		
-		measurementSessionsPage.actionOnDrivingSurveys(SQAPICDRTAG, SQAPICDR, SQAPICLOC3SUR, SQAPICLOC3SURANA, startDT, DRIVINGSURVEYSEXPORTPEAKS, false);
+		measurementSessionsPage.actionOnDrivingSurveys(PICADMNSTDTAG, PICDFADMIN, SQAPICLOC4SUR, SQAPICLOC4SURANA, startDT, DRIVINGSURVEYSEXPORTPEAKS, false);
 		testSetup.slowdownInSeconds(15);
-		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTPEAKS, SQAPICDRTAG, SQAPICLOC3SURANA, testSetup.getDownloadPath(), true));
+		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTPEAKS, PICADMNSTDTAG, SQAPICLOC4SURANA, testSetup.getDownloadPath(), true));
 		
-		measurementSessionsPage.actionOnDrivingSurveys(SQAPICDRTAG, SQAPICDR, SQAPICLOC3SUR, SQAPICLOC3SURANA, startDT, DRIVINGSURVEYSEXPORTANALYSIS, false);
+		measurementSessionsPage.actionOnDrivingSurveys(PICADMNSTDTAG, PICDFADMIN, SQAPICLOC4SUR, SQAPICLOC4SURANA, startDT, DRIVINGSURVEYSEXPORTANALYSIS, false);
 		testSetup.slowdownInSeconds(15);
-		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTANALYSIS, SQAPICDRTAG, SQAPICLOC3SURANA, testSetup.getDownloadPath(), true));
+		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTANALYSIS, PICADMNSTDTAG, SQAPICLOC4SURANA, testSetup.getDownloadPath(), true));
 	}
 }
