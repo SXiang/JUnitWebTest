@@ -239,6 +239,7 @@ public final class SurveyorConstants {
 	 */
 	public static final String PICADMNSURVEYOR = "Picarro - Santa Clara - Software Car";
 	public static final String SQACUSSURVEYOR = "White Dodge";
+	public static final String PICADMNSURVEYORSHORT = "Software Car";
 
 	/*
 	 * Lat Long for Reporting
@@ -265,6 +266,8 @@ public final class SurveyorConstants {
 	public static final String RSUVMODEOP = "Operator";
 	public static final String RSUVMODERR = "Rapid Response";
 	public static final String RSUVMODEMANUAL = "Manual";
+	
+	public static final String SQACUSSULOC="Santa Clara";
 }
 
 	
