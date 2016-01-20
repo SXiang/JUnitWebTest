@@ -9,12 +9,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.Select;
 
-import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+
+import common.source.Log;
+import common.source.TestSetup;
 
 /**
  * Util Admin User's page
@@ -47,7 +48,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 	public ManageUsersAdminPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, baseURL, testSetup, STRURLPath);
 		
-		System.out.format("\nThe Manager Users Admin Page URL is: %s\n", baseURL + STRURLPath);
+		Log.info("\nThe Manager Users Admin Page URL is: %s\n"+ baseURL + STRURLPath);
 	}
 	
 	public void addNewUser(String email, String password, String role) {

@@ -86,7 +86,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		if ((referenceGasReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
 			assertTrue(referenceGasReportsPage.findReport(rptTitle, PICDFADMIN));
 			assertTrue(referenceGasReportsPage.validatePdfFiles(rptTitle,
-							testSetup.getDownloadPath()));
+					testSetup.getDownloadPath()));
 		} else
 			fail("\nTestcase TC159 failed.\n");
 
@@ -194,13 +194,15 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 	 * Capture Report for single day
 	 * 
 	 */
-//	@Test
-// Need to check how to select 6/29 start date and how feasible it will be. PDF size verification will fail if no data is present
+	// @Test
+	// Need simulator reference gas capture as pre-requisite or better way to
+	// select 6/29 start date. PDF size verification will fail if no data is
+	// present
 	public void TC196_GenerateRefGasRpt_SingleDay() {
 		String rptTitle = "TC196 Report" + testSetup.getRandomNumber();
 		String startDate = "28";
 		String endDate = "29";
-		
+
 		System.out
 				.format("\nRunning TC196 Test Description: Generate Reference Gas Capture Report for single day, %s\n",
 						rptTitle);
@@ -220,7 +222,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		if ((referenceGasReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
 			assertTrue(referenceGasReportsPage.findReport(rptTitle, PICDFADMIN));
 			assertTrue(referenceGasReportsPage.validatePdfFiles(rptTitle,
-							testSetup.getDownloadPath()));
+					testSetup.getDownloadPath()));
 		} else
 			fail("\nTestcase TC196 failed.\n");
 

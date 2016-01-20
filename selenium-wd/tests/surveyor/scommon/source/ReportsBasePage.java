@@ -251,10 +251,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 	protected WebElement btnNewSysHistoryRpt;
 	protected String strNewSysHistoryRpt = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a";
 
-	@FindBy(how = How.XPATH, using = "//*[@id='report-survey-id']")
+	@FindBy(how = How.XPATH, using = "//*[@id='surveyor']")
 	protected WebElement cbSurveyUnit;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[5]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[5]/a[2]/img")
 	protected WebElement btnDownload;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")

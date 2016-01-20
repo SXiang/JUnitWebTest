@@ -85,7 +85,35 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		manageLocationsPage.addNewLocation(locationName,  customerName, cityName);
 		
 		manageLocationsPage.editExistingLocation(customerName, locationName, newLocationName);
-		
 		assertTrue(manageLocationsPage.findExistingLocation(customerName, newLocationName));
-	}	
+	}
+	
+	/**
+	 * Test Case ID: TC489_AddLocation_PicarroSupport 
+	 * Test Description: Add location 
+	 * Test Script: - On Home Page, click Administration -> Manage Locations 
+	 * - Click on 'Add New Location' button 
+	 * - Provide required location details and click OK
+	 * Expected Results: User is navigated to Manage Locations page and new
+	 * location entry is present in the table 
+	 * Current implementation: 
+	 * Current Issue: 
+	 * Future Improvement:
+	 */
+	@Test
+	public void TC489_AddLocation_PicarroSupport() {
+		String locationName = testSetup.getRandomNumber() + "TC489";
+		String cityName = "Santa Clara";
+
+		Log.info("\nRunning - TC489_AddLocation_PicarroSupport - Test Description: Add location\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+
+		manageLocationsPage.open();
+		Log.info("Adding location: " + locationName);
+		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName);
+
+		assertTrue(manageLocationsPage.findExistingLocation(SQACUS, locationName));
+	}
 }

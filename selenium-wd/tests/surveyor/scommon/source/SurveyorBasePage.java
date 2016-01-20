@@ -30,6 +30,9 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/div[2]/ul/li/a")
 	protected WebElement dropDownUser;
 	
+	@FindBy(id= "user-change-password")
+	protected WebElement linkChangePwd;
+	
 	@FindBy(id= "user-logout")
 	protected WebElement linkLogOut;
 	
@@ -60,6 +63,9 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
 	protected WebElement panelDuplicationError;
 	protected String panelDuplicationErrorXPath = "//*[@id='page-wrapper']/div/div[2]/div[1]";
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[2]/ul/li")
+	protected WebElement liDuplicateMsg;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-manage-users']/a")
 	protected WebElement linkAdminManageUsers;
@@ -141,6 +147,17 @@ public class SurveyorBasePage extends BasePage {
 	public void performSearch(String searchTerm) {
 		this.inputSearch.sendKeys(searchTerm);
 		this.inputSearch.sendKeys(Keys.ENTER);
+	}
+	
+	public boolean getListSize(List<String> listOfElements) {
+		String numTextString;
+		String[] strList;
+		int result = 0;
+
+		numTextString = this.getLabelPageTableInfo().getText().trim();
+		strList = numTextString.split(" ");
+		result = Integer.parseInt(strList[3]);
+		return (listOfElements.size() == result);
 	}
 
 	/*
