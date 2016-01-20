@@ -119,7 +119,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	 * 5. All Asset types and boundaries level are OFF 
 	 * 6. Status is red and on expanding flow, temp gauges are also red
 	 */
-	@Ignore
+	@Test
 	public void TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin() {
 		Log.info("Running TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin");
 
@@ -218,7 +218,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	 * 5. All Asset types and boundaries level are OFF 
 	 * 6. Status is green and all the gauges present on expanding are green
 	 */
-	@Ignore
+	@Test
 	public void TC1094_SimulatorTest_VerifyInstrumentReady_PicAdmin() {
 		Log.info("Running TC1094_SimulatorTest_VerifyInstrumentReady_PicAdmin");
 
@@ -333,7 +333,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	 * 6. Car icon is displayed in red color. Breadcrumb will  be displayed in blue color 
 	 * 7. Stop Driving Survey, Start Isotopic Capture, Reference Bottle Measurement buttons are enabled and System Shutdown button is not present
 	 */
-	@Ignore
+	@Test
 	public void TC1097_SimulatorTest_StartDrivingSurvey_PicAdmin() {
 		Log.info("Running TC1097_SimulatorTest_StartDrivingSurvey_PicAdmin");
 
@@ -425,7 +425,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	 * 7. Stop Driving Survey, Isotopic Capture and Reference Bottle Measurement buttons are present
 	 * 8. Survey Inactive message is displayed and only car icon is present on map. Car icon is displayed in grey color. Breadcrumb will  be displayed in grey color. There should be no errors on the consolebuttons are disabled
 	 */
-	@Ignore
+	@Test
 	public void TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin() {
 		Log.info("Running TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin");
 
@@ -492,7 +492,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		assertTrue(driverViewPage.getSurveyStatusLabelText().equals(SURVEY_INFO_SURVEY_STATUS_INACTIVE));
 	}
 
-	@Ignore
+	@Test
 	public void TC256_SimulatorTest_DriverViewInstrumentStartWaitStopShutdown() {
 		try {
 			Log.info("\nRunning TC256_SimulatorTest_DriverViewInstrumentStartWaitStopShutdown");
@@ -529,7 +529,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		}
 	}
 
-	@Ignore
+	@Test
 	public void TC302_SimulatorTest_DriverViewUserSeesLastTagValue() {
 		try {
 			Log.info("\nRunning TC302_SimulatorTest_DriverViewUserSeesLastTagValue");
@@ -562,7 +562,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		}
 	}
 
-	@Ignore
+	@Test
 	public void TC777_SimulatorTest_DriverViewFlatteningCustomerBoundaryData() {
 		try {
 			Log.info("\nRunning TC777_SimulatorTest_DriverViewFlatteningCustomerBoundaryData");
@@ -589,7 +589,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		}
 	}
 
-	@Ignore
+	@Test
 	public void TC1095_SimulatorTest_NavigateBetweenDriverViewAndHomePage() {
 		try {
 			Log.info("\nRunning TC1095_SimulatorTest_NavigateBetweenDriverViewAndHomePage");
@@ -618,7 +618,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		}
 	}
 
-	@Ignore
+	@Test
 	public void TC1103_SimulatorTest_DriverViewStartDrivingSurveySatelliteView() {
 		try {
 			Log.info("\nRunning TC1103_SimulatorTest_DriverViewStartDrivingSurveySatelliteView");
@@ -692,7 +692,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		}
 	}
 
-	@Ignore
+	@Test
 	public void TC1104_SimulatorTest_DriverViewStopDrivingSurveySatelliteView() {
 		try {
 			Log.info("\nRunning TC1104_SimulatorTest_DriverViewStopDrivingSurveySatelliteView");
@@ -781,7 +781,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		}
 	}
 
-	@Ignore
+	@Test
 	public void TC1133_SimulatorTest_DriverView2SurveysSameTagSameAnalyzer8HrHistoryON() {
 		try {
 			Log.info("\nRunning TC1133_SimulatorTest_DriverView2SurveysSameTagSameAnalyzer8HrHistoryON");
@@ -830,7 +830,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		}
 	}
 
-	@Ignore
+	@Test
 	public void TC1134_SimulatorTest_DriverView2SurveysSameTagDifferentAnalyzers8HrHistoryON() {
 		try {
 			Log.info("\nRunning TC1134_SimulatorTest_DriverView2SurveysSameTagDifferentAnalyzers8HrHistoryON");
@@ -978,7 +978,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		}
 	}
 
-	@Ignore
+	@Test
 	public void TC1213_SimulatorTest_NewDriverNavigatedToHomePage() {
 		try {
 			String userName = SQACUS + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
@@ -1010,7 +1010,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		}
 	}
 
-	@Ignore
+	@Test
 	public void TC1215_SimulatorTest_CannotLoginDriverViewInvalidCredentials() {
 		try {
 			Log.info("\nRunning TC1215_SimulatorTest_CannotLoginDriverViewInvalidCredentials");
@@ -1028,7 +1028,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		}
 	}
 	
-	@Ignore
+	@Test
 	public void TC1232_SimulatorTest_DriverViewRefreshBrowser() {
 		try {
 			Log.info("\nRunning TC1232_SimulatorTest_DriverViewRefreshBrowser");
@@ -1103,7 +1103,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	}
 
 	// DEFECT: After stopping and starting survey, Elapsed and Remaining Time labels are EMPTY.
-	@Ignore
+	@Test
 	public void TC1241_SimulatorTest_DriverViewStartSurveyMultipleTimes() {
 		try {
 			Log.info("\nRunning TC1241_SimulatorTest_DriverViewStartSurveyMultipleTimes");
@@ -1188,7 +1188,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		}
 	}
 
-	@Ignore
+	@Test
 	public void TC1277_SimulatorTest_DriverViewCustUserManualSurveyNotAllowed() {
 		try {
 			Log.info("\nRunning TC1277_SimulatorTest_DriverViewCustUserManualSurveyNotAllowed");
