@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import common.source.Log;
 import common.source.TestSetup;
 
 /**
@@ -28,7 +29,7 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 	public ManageRefGasBottlesAdminPage(WebDriver driver, TestSetup testSetup, String strBaseURL) {
 		super(driver, testSetup, strBaseURL, STRURLPATH);
 		
-		System.out.format("\nThe Manage Reference Gas Bottles Admin Page URL is: %s\n", strBaseURL + STRURLPATH);
+		Log.info("\nThe Manage Reference Gas Bottles Admin Page URL is: %s\n" + strBaseURL + STRURLPATH);
 	}
 	
 	public boolean findExistingRefGasBottle(String strLotNumber, String strSurveyor, String location) {

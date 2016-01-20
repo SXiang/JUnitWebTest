@@ -3,18 +3,17 @@
  */
 package surveyor.scommon.source;
 
-import static surveyor.scommon.source.SurveyorConstants.*;
-
 import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import common.source.Log;
-import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+
+import common.source.Log;
+import common.source.TestSetup;
 
 /**
  * @author zlu
@@ -32,7 +31,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 	public ManageSurveyorAdminPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, baseURL, testSetup, STRURLPath);
 		
-		System.out.format("\nThe Manage Surveyors Admin Page URL is: %s\n", baseURL + STRURLPath);
+		Log.info("\nThe Manage Surveyors Admin Page URL is: %s\n"+ baseURL + STRURLPath);
 	}
 	
 	public boolean findExistingSurveyor(String locationName, String surveyorName) {

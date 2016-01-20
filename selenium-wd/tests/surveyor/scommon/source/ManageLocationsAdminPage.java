@@ -7,9 +7,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+
+import common.source.Log;
+import common.source.TestSetup;
 
 /**
  * @author zlu
@@ -28,8 +30,8 @@ public class ManageLocationsAdminPage extends ManageLocationsPage {
 			TestSetup testSetup) {
 		super(driver, baseURL, testSetup, STRURLPath);
 
-		System.out.format("\nThe Manage Locations Admin Page URL is: %s\n",
-				baseURL + STRURLPath);
+		Log.info("\nThe Manage Locations Admin Page URL is: %s\n" + baseURL
+				+ STRURLPath);
 	}
 
 	public void addNewLocation(String locationDesc) {

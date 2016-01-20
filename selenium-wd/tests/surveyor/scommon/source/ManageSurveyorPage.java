@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -352,10 +353,14 @@ public class ManageSurveyorPage extends SurveyorBasePage {
     
 	public boolean searchSurveyor(String locationName, String surveyorName) {
 		this.getInputSearch().sendKeys(surveyorName);
-
-		if (this.tdSurveyorValue.getText().contentEquals(surveyorName)) {
-			if (this.tdLocationValue.getText().contentEquals(locationName))
-				return true;
+		try {
+			if (this.tdSurveyorValue.getText().contentEquals(surveyorName)) {
+				if (this.tdLocationValue.getText().contentEquals(locationName))
+					return true;
+			}
+		} catch (NoSuchElementException ne) {
+			Log.info(ne.toString());
+			return false;
 		}
 		return false;
 	}

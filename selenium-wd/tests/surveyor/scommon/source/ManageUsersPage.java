@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -1180,16 +1181,21 @@ public class ManageUsersPage extends SurveyorBasePage {
 		waitForPageToLoad();
 	}
 	
-	public boolean searchUser(String userName, String locationName, String role, String status) {
+	public boolean searchUser(String userName, String locationName,
+			String role, String status) {
 		this.getInputSearch().sendKeys(userName);
-
-		if (this.tdUserNameValue.getText().contentEquals(userName)) {
-			if (this.tdLocationValue.getText().contentEquals(locationName)){
-				if (this.tdRoleValue.getText().contentEquals(role)){
-					if (this.tdStatusValue.getText().contentEquals(status))
-						return true;
+		try {
+			if (this.tdUserNameValue.getText().contentEquals(userName)) {
+				if (this.tdLocationValue.getText().contentEquals(locationName)) {
+					if (this.tdRoleValue.getText().contentEquals(role)) {
+						if (this.tdStatusValue.getText().contentEquals(status))
+							return true;
+					}
 				}
 			}
+		} catch (NoSuchElementException ne) {
+			Log.info(ne.toString());
+			return false;
 		}
 		return false;
 	}

@@ -554,7 +554,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 					return true;
 			}
 		} catch (NoSuchElementException ne) {
-			Log.error(ne.toString());
+			Log.info(ne.toString());
 			return false;
 		}
 		return false;

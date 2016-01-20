@@ -336,7 +336,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 				}
 			}
 		} catch (NoSuchElementException ne) {
-			Log.error(ne.toString());
+			Log.info(ne.toString());
 			return false;
 		}
 		return false;

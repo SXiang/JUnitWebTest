@@ -3,11 +3,12 @@
  */
 package surveyor.scommon.source;
 
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -16,11 +17,11 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import common.source.Log;
-import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-import static surveyor.scommon.source.SurveyorConstants.*;
+
+import common.source.Log;
+import common.source.TestSetup;
 
 /**
  * @author zlu
@@ -96,7 +97,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 			String strBaseURL) {
 		super(driver, testSetup, strBaseURL, strBaseURL + STRURLPATH);
 
-		System.out.format("\nThe Manage Ref Gas Bottles Page URL is: %s\n",
+		Log.info("\nThe Manage Ref Gas Bottles Page URL is: %s\n" +
 				this.strPageURL);
 	}
 
@@ -404,7 +405,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 				}
 			}
 		} catch (NoSuchElementException ne) {
-			Log.error(ne.toString());
+			Log.info(ne.toString());
 			return false;
 		}
 		return false;
