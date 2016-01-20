@@ -37,10 +37,6 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	public static final String DSTAGSU = "dmcs1-sqacussu";
 	public static final String DSTAGDR = "dmcs1-sqacusdr";
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[8]/a[1]/img")
-	private WebElement linkViewSurvey;
-	
-	//@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[8]/a[2]/img")
 	@FindBy(how = How.XPATH, using = "//img[contains(@src,'/Content/Images/browser_download.png')]")
 	private WebElement linkExportSurvey;
 	
@@ -50,7 +46,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//img[contains(@src,'/Content/Images/filter-icon.png')]")
 	private WebElement linkExportAnalysis;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[8]/a[5]/img")
+	@FindBy(how = How.XPATH, using = "//img[contains(@src,'/Content/Images/delete.png')]")
 	private WebElement linkDeleteSurvey;
 	
 	@FindBy(how = How.XPATH, using = "//img[contains(@src,'/Content/Images/browser_download.png')]")
