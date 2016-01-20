@@ -81,7 +81,9 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	private TestEnvironmentActions testEnvironmentAction;
 	
 	private ManageCustomersPage manageCustomersPage = null;
-	private ManageUsersPage manageUsersPage = null;	
+	private ManageUsersPage manageUsersPage = null;
+	private HomePage homePage = null;
+	private LoginPage loginPage = null;
 
 	public DriverViewPageTest() {
 		driverViewPage = new DriverViewPage(driver, testSetup, baseURL);
@@ -95,6 +97,12 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		testEnvironmentAction = new TestEnvironmentActions();
 		
 		// Additional page objects.
+		homePage = new HomePage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver,  homePage);
+
+		loginPage = new LoginPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver, loginPage);
+
 		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageCustomersPage);
 		
@@ -602,8 +610,6 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			// goto home by clicking on picarro logo on driver view page.
 			driverViewPageAction.clickOnPicarroLogoButton(EMPTY, NOTSET);
 			
-			HomePage homePage = new HomePage(driver, baseURL, testSetup);
-			PageFactory.initElements(driver,  homePage);
 			homePage.waitForPageLoad();
 			
 			// go back to driver view page using browser back button.
@@ -989,11 +995,8 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			loginPage.open();
 			loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 			
-			ManageUsersPage manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
-			PageFactory.initElements(driver,  manageUsersPage);
 			manageUsersPage.open();
 			manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD, CUSUSERROLEDR,location);
-			
 
 			manageCustomersPage.open();
 			manageCustomersPage.logout();
@@ -1001,8 +1004,6 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			loginPage.open();
 			loginPage.loginNormalAs(userName, USERPASSWORD);
 			
-			HomePage homePage = new HomePage(driver, baseURL, testSetup);
-			PageFactory.initElements(driver, homePage);
 			assertTrue(homePage.checkIfAtHomePage());
 		} catch (Exception e) {
 			Log.error(e.toString());
@@ -1018,8 +1019,6 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPage.open();
 
-			LoginPage loginPage = new LoginPage(driver, baseURL, testSetup);
-			PageFactory.initElements(driver, loginPage);
 			loginPage.waitForPageLoad();
 			assertTrue(loginPage.checkIfAtLoginPage());
 		} catch (Exception e) {
