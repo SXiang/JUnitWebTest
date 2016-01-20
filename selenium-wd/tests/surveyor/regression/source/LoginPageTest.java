@@ -16,16 +16,34 @@ import static surveyor.scommon.source.SurveyorConstants.SQACUSUAUSER;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSDRUSER;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.EULAPage;
+import surveyor.scommon.source.FleetMapPage;
+import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.ManageUsersPage;
+import surveyor.scommon.source.PreferencesPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 
 public class LoginPageTest extends SurveyorBaseTest {
+	private static ManageUsersPage manageUsersPage;
+	private static HomePage homePage;
+	private static EULAPage eulaPage;
+
+	@BeforeClass
+	public static void setupACLandVisibilityTest() {
+		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver, manageUsersPage);
+		homePage = new HomePage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver, homePage);
+		eulaPage = new EULAPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver, eulaPage);
+	}
 
 	@Test
 	public void loginTest_TC11_VerifySecureConnection() {
@@ -67,22 +85,18 @@ public class LoginPageTest extends SurveyorBaseTest {
 	@Test
 	public void loginTest_TC26_AcceptEUCLA() {
 		String customerName = SQACUS;
-		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
 		String location = customerName + " - " + SQACUSLOC;
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		homePage.waitForPageLoad();
-		ManageUsersPage manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageUsersPage);
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
 		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEDR, location);
 		loginPage.open();
 		loginPage.login(userName, USERPASSWORD);
 		loginPage.waitForPageLoad();
-		EULAPage eulaPage = new EULAPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, eulaPage);
+
 		assertTrue(eulaPage.getiAccept().isDisplayed());
 		eulaPage.getiAccept().click();
 		homePage.waitForPageLoad();
@@ -92,14 +106,11 @@ public class LoginPageTest extends SurveyorBaseTest {
 	@Test
 	public void loginTest_TC29_DriverLogin() {
 		String customerName = SQACUS;
-		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
 		String location = customerName + " - " + SQACUSLOC;
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		homePage.waitForPageLoad();
-		ManageUsersPage manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageUsersPage);
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
 		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEDR, location);

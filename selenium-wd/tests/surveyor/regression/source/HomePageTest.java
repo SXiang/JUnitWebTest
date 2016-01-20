@@ -32,8 +32,12 @@ public class HomePageTest extends SurveyorBaseTest {
 	private static UserFeedbackPage userFeedbackPage;
 	private static FleetMapPage fleetMapPage;
 	private static SurveyorSystemsPage surveyorSystemsPage;
+	private static PreferencesPage preferencesPage;
 
 	public HomePageTest() {
+		homePage = new HomePage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver, homePage);
+
 		measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver, measurementSessionsPage);
 
@@ -45,6 +49,9 @@ public class HomePageTest extends SurveyorBaseTest {
 
 		surveyorSystemsPage = new SurveyorSystemsPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver, surveyorSystemsPage);
+
+		preferencesPage = new PreferencesPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver, preferencesPage);
 	}
 
 	/**
@@ -183,13 +190,11 @@ public class HomePageTest extends SurveyorBaseTest {
 		Log.info("\nRunning - TC54_VerifyEditUserPreferences Test Description: Modify timezone of user in Preferences\n");
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		homePage = new HomePage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, homePage);
+
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
 		homePage.getLinkPreference().click();
-		PreferencesPage preferencesPage = new PreferencesPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, preferencesPage);
+
 		preferencesPage.waitForPageLoad();
 		preferencesPage.setSelectedTimeZone(TIMEZONECTUA);
 		preferencesPage.getBtnOk().click();
@@ -205,8 +210,6 @@ public class HomePageTest extends SurveyorBaseTest {
 		Log.info("\nRunning - TC55_VerifyEditUserPreferences Test Description: Modify timezone of user from drop-down\n");
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		homePage = new HomePage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, homePage);
 		homePage.waitForPageLoad();
 		homePage.getDropDownTimeZone().click();
 		homePage.waitForPageLoad();
@@ -214,8 +217,6 @@ public class HomePageTest extends SurveyorBaseTest {
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
 		homePage.getLinkPreference().click();
-		PreferencesPage preferencesPage = new PreferencesPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, preferencesPage);
 		assertTrue(preferencesPage.getSelectedTimeZone().getText().equals(TIMEZONEPTUA));
 
 	}

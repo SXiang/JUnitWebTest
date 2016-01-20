@@ -37,6 +37,7 @@ import common.source.Log;
  */
 public class ACLandVisibilityTest extends SurveyorBaseTest {
 	private static ManageCustomersPage manageCustomersPage;
+	private static ManageUsersPage manageUsersPage;
 	private static ComplianceReportsPage complianceReportsPage;
 	private static HomePage homePage;
 	private static PreferencesPage preferencesPage;
@@ -47,6 +48,18 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	public static void setupACLandVisibilityTest() {
 		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, manageCustomersPage);
+		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver, manageUsersPage);
+		homePage = new HomePage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver, homePage);
+		preferencesPage = new PreferencesPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver, preferencesPage);
+		fleetMapPage = new FleetMapPage(driver, testSetup, baseURL);
+		PageFactory.initElements(driver, fleetMapPage);
+		surveyorPage = new ManageSurveyorPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver, surveyorPage);
+		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver, complianceReportsPage);
 	}
 
 	/**
@@ -65,13 +78,9 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
-		ManageUsersPage manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageUsersPage);
 		manageUsersPage.open();
 		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEDR, location);
 
-		ManageCustomersPage manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageCustomersPage);
 		manageCustomersPage.open();
 		manageCustomersPage.logout();
 
@@ -93,16 +102,15 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC35_CheckACLVCustomerUser_DriverRole_ReleaseNotes - Test Description: Release Notes link is working and can download Release Notes");
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);
-		homePage = new HomePage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, homePage);
 		homePage.open();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
 		homePage.getLinkReleaseNotes().click();
 		Set<String> winHandle = driver.getWindowHandles();
 		for (String window : winHandle) {
-			driver.switchTo().window(window);
+			driver.switchTo().window(window);			
 		}
+		driver.close();
 
 	}
 
@@ -112,30 +120,23 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC35_CheckACLVCustomerUser_DriverRole_Preferences() {
-		Log.info("\nRunning TC35_CheckACLVCustomerUser_DriverRole_Preferences - Test Description: Release Notes link is working and can download Release Notes");
+		Log.info("\nRunning TC35_CheckACLVCustomerUser_DriverRole_Preferences - Test Description: RPreferences link is working");
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);
-		homePage = new HomePage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, homePage);
+
 		homePage.open();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
 		homePage.getLinkPreference().click();
-		preferencesPage = new PreferencesPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, preferencesPage);
 		preferencesPage.waitForPageLoad();
 		assertTrue(preferencesPage.getSelectedTimeZone().getText().equalsIgnoreCase(TIMEZONE));
 		assertTrue(preferencesPage.getSelectedLocation().getText().equalsIgnoreCase(SQACUSLOC));
 		homePage.getLinkFleetMap().click();
-		fleetMapPage = new FleetMapPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver, fleetMapPage);
 		fleetMapPage.waitForPageLoad();
 		fleetMapPage.waitForFleetMaptoLoad();
 		assertTrue(fleetMapPage.checkIfAtFleetMapPage());
 		assertTrue(fleetMapPage.getFleetMap().isDisplayed());
 		homePage.getLinkSurveyors().click();
-		surveyorPage = new ManageSurveyorPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, surveyorPage);
 		surveyorPage.getTxtSurveyorSearch().sendKeys(SQACUSLOCSUR);
 		surveyorPage.waitForDataTabletoLoad();
 		assertTrue(surveyorPage.getTableRows().size() > 0);
@@ -156,8 +157,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
-		ManageUsersPage manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageUsersPage);
 		manageUsersPage.open();
 		manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD, CUSUSERROLESU, location);
 
@@ -186,8 +185,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC36_CheckReportLink_SupervisorRole - Test Description: Report link is working and user is able to view report's menu");
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, complianceReportsPage);
+
 		complianceReportsPage.open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -275,8 +273,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC36_CheckReportLink_CustomerSupervisorRole - Test Description: Release Notes link is working and can download Release Notes");
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
-		homePage = new HomePage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, homePage);
+
 		homePage.open();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
@@ -285,7 +282,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		for (String window : winHandle) {
 			driver.switchTo().window(window);
 		}
-
+		driver.close();
 	}
 
 	/**
@@ -297,27 +294,19 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC36_CheckReportLink_CustomerSupervisorRole - Test Description: Release Notes link is working and can download Release Notes");
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
-		homePage = new HomePage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, homePage);
 		homePage.open();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
 		homePage.getLinkPreference().click();
-		preferencesPage = new PreferencesPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, preferencesPage);
 		preferencesPage.waitForPageLoad();
 		assertTrue(preferencesPage.getSelectedTimeZone().getText().equalsIgnoreCase(TIMEZONE));
 		assertTrue(preferencesPage.getSelectedLocation().getText().equalsIgnoreCase(SQACUSLOC));
 		homePage.getLinkFleetMap().click();
-		fleetMapPage = new FleetMapPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver, fleetMapPage);
 		fleetMapPage.waitForPageLoad();
 		fleetMapPage.waitForFleetMaptoLoad();
 		assertTrue(fleetMapPage.checkIfAtFleetMapPage());
 		assertTrue(fleetMapPage.getFleetMap().isDisplayed());
 		homePage.getLinkSurveyors().click();
-		surveyorPage = new ManageSurveyorPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, surveyorPage);
 		surveyorPage.getTxtSurveyorSearch().sendKeys(SQACUSLOCSUR);
 		surveyorPage.waitForDataTabletoLoad();
 		assertTrue(surveyorPage.getTableRows().size() > 0);
@@ -338,16 +327,11 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
-		ManageUsersPage manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageUsersPage);
 		manageUsersPage.open();
 		manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD, CUSUSERROLEUA, location);
 
-		ManageCustomersPage manageCustomerPage = new ManageCustomersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageCustomerPage);
-
-		manageCustomerPage.open();
-		manageCustomerPage.logout();
+		manageCustomersPage.open();
+		manageCustomersPage.logout();
 
 		loginPage.open();
 		loginPage.loginNormalAs(userName, USERPASSWORD);
@@ -368,8 +352,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC37_CheckReportLink_UtilityAdminRole - Test Description: Report link is working and user is able to view report's menu");
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, complianceReportsPage);
+
 		complianceReportsPage.open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -457,16 +440,15 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC37_CheckReportLink_UtilityAdminRole - Test Description: Release Notes link is working and can download Release Notes");
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		homePage = new HomePage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, homePage);
 		homePage.open();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
 		homePage.getLinkReleaseNotes().click();
 		Set<String> winHandle = driver.getWindowHandles();
 		for (String window : winHandle) {
-			driver.switchTo().window(window);
+			driver.switchTo().window(window);			
 		}
+		driver.switchTo().defaultContent();
 
 	}
 
@@ -479,27 +461,23 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC37_CheckReportLink_UtilityAdminRole - Test Description: Release Notes link is working and can download Release Notes");
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		homePage = new HomePage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, homePage);
+
 		homePage.open();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
 		homePage.getLinkPreference().click();
-		preferencesPage = new PreferencesPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, preferencesPage);
+
 		preferencesPage.waitForPageLoad();
 		assertTrue(preferencesPage.getSelectedTimeZone().getText().equalsIgnoreCase(TIMEZONE));
 		assertTrue(preferencesPage.getSelectedLocation().getText().equalsIgnoreCase(SQACUSLOC));
 		homePage.getLinkFleetMap().click();
-		fleetMapPage = new FleetMapPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver, fleetMapPage);
+
 		fleetMapPage.waitForPageLoad();
 		fleetMapPage.waitForFleetMaptoLoad();
 		assertTrue(fleetMapPage.checkIfAtFleetMapPage());
 		assertTrue(fleetMapPage.getFleetMap().isDisplayed());
 		homePage.getLinkSurveyors().click();
-		surveyorPage = new ManageSurveyorPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, surveyorPage);
+
 		surveyorPage.getTxtSurveyorSearch().sendKeys(SQACUSLOCSUR);
 		surveyorPage.waitForDataTabletoLoad();
 		assertTrue(surveyorPage.getTableRows().size() > 0);
@@ -518,8 +496,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
-		ManageUsersPage manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageUsersPage);
 		manageUsersPage.open();
 		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, USERROLEADMIN);
 		if (!manageUsersPage.findExistingUser("Picarro", userName))
@@ -544,8 +520,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC38_CheckReportLink_PicarroAdminRole - Test Description: Report link is working and user is able to view report's menu");
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, complianceReportsPage);
+
 		complianceReportsPage.open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -633,8 +608,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC38_CheckReportLink_PicarroAdminRole - Test Description: Release Notes link is working and can download Release Notes");
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		homePage = new HomePage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, homePage);
+
 		homePage.open();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
@@ -643,6 +617,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		for (String window : winHandle) {
 			driver.switchTo().window(window);
 		}
+		driver.switchTo().defaultContent();
 
 	}
 
@@ -655,27 +630,29 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC38_CheckReportLink_UtilityAdminRole - Test Description: Release Notes link is working and can download Release Notes");
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		homePage = new HomePage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, homePage);
+
 		homePage.open();
+
+		homePage.open();
+		homePage.waitForPageLoad();
+		homePage.getDropDownTimeZone().click();
+		homePage.waitForPageLoad();
+		homePage.setDropDownTimeZone();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
 		homePage.getLinkPreference().click();
-		preferencesPage = new PreferencesPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, preferencesPage);
 		preferencesPage.waitForPageLoad();
+
 		assertTrue(preferencesPage.getSelectedTimeZone().getText().equalsIgnoreCase(TIMEZONE));
-		assertTrue(preferencesPage.getSelectedLocation().getText().equalsIgnoreCase(SQACUSLOC));
+		assertTrue(preferencesPage.getSelectedLocation().getText().equalsIgnoreCase(SQACUSSULOC));
 		homePage.getLinkFleetMap().click();
-		fleetMapPage = new FleetMapPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver, fleetMapPage);
+
 		fleetMapPage.waitForPageLoad();
 		fleetMapPage.waitForFleetMaptoLoad();
 		assertTrue(fleetMapPage.checkIfAtFleetMapPage());
 		assertTrue(fleetMapPage.getFleetMap().isDisplayed());
 		homePage.getLinkSurveyors().click();
-		surveyorPage = new ManageSurveyorPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, surveyorPage);
+
 		surveyorPage.getTxtSurveyorSearch().sendKeys(SQACUSLOCSUR);
 		surveyorPage.waitForDataTabletoLoad();
 		assertTrue(surveyorPage.getTableRows().size() > 0);
@@ -691,8 +668,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC40_CheckReportLink_PicarroSupportRole - Test Description: Report link is working and user is able to view report's menu");
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
-		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, complianceReportsPage);
+
 		complianceReportsPage.open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -780,16 +756,16 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC40_CheckReportLink_PicarroSupportRole - Test Description: Release Notes link is working and can download Release Notes");
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
-		homePage = new HomePage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, homePage);
+
 		homePage.open();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
 		homePage.getLinkReleaseNotes().click();
 		Set<String> winHandle = driver.getWindowHandles();
 		for (String window : winHandle) {
-			driver.switchTo().window(window);
+			driver.switchTo().window(window);			
 		}
+		driver.switchTo().defaultContent();
 
 	}
 
@@ -802,27 +778,28 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC38_CheckReportLink_PicarroSupportRole - Test Description: Release Notes link is working and can download Release Notes");
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
-		homePage = new HomePage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, homePage);
+
 		homePage.open();
+		homePage.waitForPageLoad();
+		homePage.getDropDownTimeZone().click();
+		homePage.waitForPageLoad();
+		homePage.setDropDownTimeZone();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
 		homePage.getLinkPreference().click();
-		preferencesPage = new PreferencesPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, preferencesPage);
+
 		preferencesPage.waitForPageLoad();
+
 		assertTrue(preferencesPage.getSelectedTimeZone().getText().equalsIgnoreCase(TIMEZONE));
 		assertTrue(preferencesPage.getSelectedLocation().getText().equalsIgnoreCase(SQACUSSULOC));
 		homePage.getLinkFleetMap().click();
-		fleetMapPage = new FleetMapPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver, fleetMapPage);
+
 		fleetMapPage.waitForPageLoad();
 		fleetMapPage.waitForFleetMaptoLoad();
 		assertTrue(fleetMapPage.checkIfAtFleetMapPage());
 		assertTrue(fleetMapPage.getFleetMap().isDisplayed());
 		homePage.getLinkSurveyors().click();
-		surveyorPage = new ManageSurveyorPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, surveyorPage);
+
 		surveyorPage.getTxtSurveyorSearch().sendKeys(PICADMNSURVEYORSHORT);
 		surveyorPage.waitForDataTabletoLoad();
 		assertTrue(surveyorPage.getTableRows().size() > 0);
