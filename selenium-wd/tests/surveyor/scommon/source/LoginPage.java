@@ -96,6 +96,14 @@ public class LoginPage extends BasePage {
 			}
 		}
 	}
+	
+	public void login(String userName, String password) {
+		this.tbUserName.sendKeys(userName);
+		this.tbPassword.sendKeys(password);
+		this.btnLogin.click();
+
+	}
+
 
 	public boolean isAccountDisabled(){
 		return this.txtAccountDisabled.getText().equalsIgnoreCase(strDisplayedMsg);

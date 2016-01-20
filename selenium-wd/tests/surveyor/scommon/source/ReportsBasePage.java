@@ -336,6 +336,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(id = "report-show-percent-coverage-forecast")
 	protected WebElement checkBoxPCF;
 	
+	@FindBy(how = How.XPATH, using = "//a[@data-target='#report-menu']")
+	protected WebElement linkReportMenu;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='report-compliance']")
+	protected WebElement linkComplianceReportMenu;
+	
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -357,11 +363,19 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public WebElement getBtnNewComplianceRpt() {
 		return this.btnNewComplianceRpt;
 	}
+	
+	public WebElement getLinkReportMenu() {
+		return linkReportMenu;
+	}
+
+	public WebElement getLinkComplianceReportMenu() {
+		return linkComplianceReportMenu;
+	}
 
 	public void clickLatLongAreaSelectorBtn() {
 		this.latLongMapSelectorBtn.click();
 	}
-
+		
 	/**
 	 * @param args
 	 */

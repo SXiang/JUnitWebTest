@@ -14,6 +14,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.Log;
@@ -28,6 +29,7 @@ public class HomePage extends SurveyorBasePage {
 	public static final String STRPageTitle = "Home - Surveyor";
 	public static final String STRPageContentText = "Dashboard";	
 	public static final String STRSurveyorDashboard = "Surveyor Dashboard";
+	public static final String STRReleaseNotes="ReleaseNotes";
 	
 	public static final String EQ_REPORT_LINK_XPATH = "//*[@id='report-investigation']";
 	
@@ -37,16 +39,19 @@ public class HomePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Administrator')]")
 	private WebElement dropDownAdministrator;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/div[2]/ul/li/a")
 	private WebElement dropDownLoginUser;	
 	
-	@FindBy(how = How.XPATH, using = "/html/body/div[1]/div/ul/li/ul/li[1]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='selected-timezone']")
+	private WebElement dropDownTimeZone;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='user-preferences']/a")
 	private WebElement linkPreference;
 	
 	@FindBy(how = How.XPATH, using = "/html/body/div[1]/div/ul/li/ul/li[2]/a")
 	private WebElement linkChangePwd;
 	
-	@FindBy(how = How.XPATH, using = "/html/body/div[1]/div/ul/li/ul/li[3]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='user-release-notes']/a")
 	private WebElement linkReleaseNotes;
 	
 	@FindBy(how = How.XPATH, using = "/html/body/div[1]/div/ul/li/ul/li[4]/a")
@@ -172,6 +177,11 @@ public class HomePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-server-log']/a")
 	protected WebElement linkPicAdminViewSurLogs;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='00000000-0000-0000-0001-000000000000']/a")
+	protected WebElement dropDownPST;
+	
+	
+	
 	/**
 	 * @param driver
 	 * @param baseURL
@@ -240,6 +250,18 @@ public class HomePage extends SurveyorBasePage {
 		return this.linkPicAdminViewSurLogs;
 	}
 	
+	public WebElement getDropDownLoginUser() {
+		return this.dropDownLoginUser;
+	}
+
+	public WebElement getLinkReleaseNotes() {
+		return this.linkReleaseNotes;
+	}
+
+	public WebElement getLinkPreference() {
+		return linkPreference;
+	}
+
 	public boolean checkVisibilityForPicarroSUP(String loginUser) {
 		if (!this.picarroLogo.isDisplayed())
 			return false;
@@ -624,6 +646,35 @@ public class HomePage extends SurveyorBasePage {
 		
 		return tagList;
 	}
+	
+	public WebElement getDropDownTimeZone() {
+		return dropDownTimeZone;
+	}
+	
+	public void setDropDownTimeZone() {
+		getDropDownPST().click();
+	}
+	
+
+	public WebElement getDropDownPST() {
+		return dropDownPST;
+	}
+
+	public boolean isReleaseNotes(WebDriver driver,String winHandle){
+		System.out.println("Current url"+driver.getCurrentUrl());
+		if(driver.switchTo().window(winHandle).getCurrentUrl().contains(STRReleaseNotes)){
+			return true;
+		}
+		return false;
+	}
+	
+	public void waitForReleaseNotestoLoad(WebDriver driver,String winHandle) {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+            	return d.switchTo().window(winHandle).getCurrentUrl().contains(STRReleaseNotes);
+            }
+        });
+    }
 	
 	@Override
 	public void waitForPageLoad() {

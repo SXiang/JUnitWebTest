@@ -64,6 +64,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
     @FindBy(name = "datatable_length")
     private WebElement recordsPerPage;
     
+
     @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[1]")
     protected WebElement tdLocationValue;
     
@@ -72,6 +73,16 @@ public class ManageSurveyorPage extends SurveyorBasePage {
     
     @FindBy(how = How.XPATH, using = "//*[@id='datatable']/thead/tr/th[1]")
 	protected WebElement theadLocation;
+
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable_filter']/label/input")
+	protected WebElement txtSurveyorSearch;
+    
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr")
+   	protected List<WebElement> tableRows;
+    
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']")
+   	protected WebElement surveyorsTable;
+
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/thead/tr/th[2]")
 	protected WebElement theadSurveyor;
@@ -325,7 +336,19 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		this.btnEditCancel.click();
 	}
 	
-    @Override
+    public WebElement getTxtSurveyorSearch() {
+		return txtSurveyorSearch;
+	}
+
+	public List<WebElement> getTableRows() {
+		return tableRows;
+	}
+
+	public WebElement getSurveyorsTable() {
+		return surveyorsTable;
+	}
+	
+	@Override
 	public void waitForPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
@@ -351,6 +374,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
         });
     }
     
+
 	public boolean searchSurveyor(String locationName, String surveyorName) {
 		this.getInputSearch().sendKeys(surveyorName);
 		try {
@@ -475,5 +499,16 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		String STRDuplicateSurMsg = "Surveyor name already exists for location " + locationName +", please try another name.";
 		return this.liDuplicateMsg.getText().equals(STRDuplicateSurMsg);
 	}
+
+
+	public void waitForDataTabletoLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return getSurveyorsTable().isDisplayed();
+            }
+        });
+    }
+
+	
 
 }

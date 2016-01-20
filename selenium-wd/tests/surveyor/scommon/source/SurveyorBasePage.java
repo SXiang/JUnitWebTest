@@ -40,6 +40,9 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement linkPicarroAdmin;
 	protected String strLinkPicarroAdminXPath = "//*[@id='picarro-administration-menu']/a";
 	
+	@FindBy(how = How.XPATH, using = "//a[@data-target='#picarro-administration-menu']/a")
+	protected WebElement linkPicarroAdminXPath; 
+	
 	@FindBy(how = How.XPATH, using = "//*[@data-target='#customer-administration-menu']")
 	protected WebElement linkCusAdmin;
 	protected String strLinkCusAdminXPath = "//*[@id='customer-administration-menu']/a";	
@@ -69,6 +72,9 @@ public class SurveyorBasePage extends BasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-manage-users']/a")
 	protected WebElement linkAdminManageUsers;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-users']/a")
+	protected WebElement linkPicAdminManageUsers;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='myModalLabel']")
 	protected WebElement popupConfirmationBox;
@@ -142,6 +148,14 @@ public class SurveyorBasePage extends BasePage {
 
 	public String getLabelNoMatchingSearch() {
 		return this.labelNoMatchingSearch.getText().trim();
+	}
+
+	public WebElement getLinkPicAdminManageUsers() {
+		return linkPicAdminManageUsers;
+	}
+
+	public WebElement getLinkPicarroAdminXPath() {
+		return linkPicarroAdminXPath;
 	}
 
 	public void performSearch(String searchTerm) {
