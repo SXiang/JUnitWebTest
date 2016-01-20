@@ -331,6 +331,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageLocationsPage.clickOnCancelBtn();
 		manageCustomersPage.waitForPageToLoad();
 		manageLocationsPage.clickOnFirstEditLocationBtn();
+		manageLocationsPage.waitForEditPageLoad();
 		assertTrue(manageLocationsPage.isLinkBroken());
 		manageLocationsPage.clickOnCancelBtn();
 		
@@ -343,6 +344,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageSurveyorsPage.clickOnAddCancelBtn();
 		manageCustomersPage.waitForPageToLoad();
 		manageSurveyorsPage.clickOnFirstEditSurveyorBtn();
+		manageSurveyorsPage.waitForEditPageLoad();
 		assertTrue(manageSurveyorsPage.isLinkBroken());
 		manageSurveyorsPage.clickOnEditCancelBtn();
 		
@@ -355,6 +357,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageAnalyzersPage.clickOnCancelBtn();
 		manageCustomersPage.waitForPageToLoad();
 		manageAnalyzersPage.clickOnFirstEditAnalyzerBtn();
+		manageAnalyzersPage.waitForEditPageLoad();
 		assertTrue(manageAnalyzersPage.isLinkBroken());
 		manageAnalyzersPage.clickOnCancelBtn();
 		

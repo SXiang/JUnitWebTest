@@ -58,7 +58,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	@FindBy(css = "a[class='button-cancel btn btn-danger']")
 	protected WebElement btnEditCancel;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[3]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a")
 	protected WebElement btnEditSurveyor;
 	
     @FindBy(name = "datatable_length")
