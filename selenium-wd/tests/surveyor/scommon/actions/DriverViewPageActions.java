@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.OLMapUtility;
+import common.source.BrowserCommands;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.OLMapUtility.IconColor;
@@ -59,10 +60,13 @@ public class DriverViewPageActions extends BasePageActions {
 
 	public DriverViewPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL);
+		initializeDriverViewPage(driver, strBaseURL, testSetup);
+		setDataReader(new DriverViewDataReader(this.excelUtility));
+	}
+
+	public void initializeDriverViewPage(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		setDriverViewPage(new DriverViewPage(driver, testSetup, strBaseURL));
 		PageFactory.initElements(driver, getDriverViewPage());
-		
-		setDataReader(new DriverViewDataReader(this.excelUtility));
 	}
 
 	public boolean clickOnCurtainArrowDownButton(String data, Integer dataRowID) {
@@ -337,6 +341,20 @@ public class DriverViewPageActions extends BasePageActions {
 		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
 		getDriverViewPage().waitForUIUnBlock();
 
+		return true;
+	}
+	
+	/**
+	 * Executes refreshPage action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean refreshPage(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.refreshPage", data, dataRowID);
+		BrowserCommands.refresh();
+		initializeDriverViewPage(TestContext.INSTANCE.getDriver(), 
+				TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
 		return true;
 	}
 	
@@ -1227,6 +1245,7 @@ public class DriverViewPageActions extends BasePageActions {
 		else if (actionName.equals("insertTextById")) { return this.insertTextById(data, dataRowID); }
 		else if (actionName.equals("insertTextByXPath")) { return this.insertTextByXPath(data, dataRowID); }
 		else if (actionName.equals("open")) { return this.open(data, dataRowID); }
+		else if (actionName.equals("refreshPage")) { return this.refreshPage(data, dataRowID); }
 		else if (actionName.equals("selectDropDownByID")) { return this.selectDropDownByID(data, dataRowID); }
 		else if (actionName.equals("selectDropDownByXPath")) { return this.selectDropDownByXPath(data, dataRowID); }
 		else if (actionName.equals("selectRadioButtonByID")) { return this.selectRadioButtonByID(data, dataRowID); }
@@ -1378,7 +1397,7 @@ public class DriverViewPageActions extends BasePageActions {
 		return driverViewPage;
 	}
 
-	private void setDriverViewPage(DriverViewPage driverViewPage) {
+	public void setDriverViewPage(DriverViewPage driverViewPage) {
 		this.driverViewPage = driverViewPage;
 	}
 }

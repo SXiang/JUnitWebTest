@@ -1324,6 +1324,15 @@ public class DriverViewPage extends SurveyorBasePage {
 	}
 
 	/**
+	 * Get Manual Button.
+	 *
+	 * @return the WebElement.
+	 */
+	public WebElement getManualButton() {
+		return manual;
+	}
+
+	/**
 	 * Click on Manual Button.
 	 *
 	 * @return the DriverViewPage class instance.
