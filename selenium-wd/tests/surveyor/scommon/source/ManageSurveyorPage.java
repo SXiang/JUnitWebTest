@@ -63,6 +63,15 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	
     @FindBy(name = "datatable_length")
     private WebElement recordsPerPage;
+    
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable_filter']/label/input")
+	protected WebElement txtSurveyorSearch;
+    
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr")
+   	protected List<WebElement> tableRows;
+    
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']")
+   	protected WebElement surveyorsTable;
 
 	//add more @FindBy here later
 	
@@ -310,7 +319,19 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		this.btnEditCancel.click();
 	}
 	
-    @Override
+    public WebElement getTxtSurveyorSearch() {
+		return txtSurveyorSearch;
+	}
+
+	public List<WebElement> getTableRows() {
+		return tableRows;
+	}
+
+	public WebElement getSurveyorsTable() {
+		return surveyorsTable;
+	}
+	
+	@Override
 	public void waitForPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
@@ -335,4 +356,14 @@ public class ManageSurveyorPage extends SurveyorBasePage {
             }
         });
     }
+    
+	public void waitForDataTabletoLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return getSurveyorsTable().isDisplayed();
+            }
+        });
+    }
+
+	
 }
