@@ -1,6 +1,11 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.assertTrue;
+import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLEDR;
+import static surveyor.scommon.source.SurveyorConstants.REGBASEUSERNAME;
+import static surveyor.scommon.source.SurveyorConstants.SQACUS;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
+import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 
 import java.util.Calendar;
 
@@ -27,6 +32,9 @@ import surveyor.scommon.source.DriverViewPage.SurveyTime;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.DriverViewPage.Wind;
 import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
+import surveyor.scommon.source.ManageCustomersPage;
+import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 
@@ -487,6 +495,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			//assertTrue(testEnvironmentAction.verifyAnalyzerIsShutdown(EMPTY, NOTSET));			
 		} catch (Exception e) {
 			Log.error(e.toString());
+			assertTrue(false);	// fail test.
 		}
 	}
 
@@ -518,6 +527,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
+			assertTrue(false);	// fail test.
 		}
 	}
 
@@ -542,6 +552,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
+			assertTrue(false);	// fail test.
 		}
 	}
 
@@ -568,6 +579,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
+			assertTrue(false);	// fail test.
 		}
 	}
 
@@ -594,7 +606,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			driverViewPageAction.clickOnHeaderInfoBox(EMPTY, NOTSET);
 
 			// Verify 3.
-			String expectedTagValue = "Tag: " + DriverViewPageActions.workingDataRow.surveyTag;
+			String expectedTagValue = DriverViewPageActions.workingDataRow.surveyTag;
 			String expectedModeValue = "Mode: " + DriverViewPageActions.workingDataRow.surveyType;
 			String expectedTimeStartsWith = "Time: " + String.valueOf(DateUtility.getCalendarForCurrentZone().get(Calendar.HOUR));
 			String expectedSurveyStatus = "Survey Active";
@@ -633,6 +645,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
+			assertTrue(false);	// fail test.
 		}
 	}
 
@@ -657,7 +670,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			driverViewPageAction.clickOnHeaderInfoBox(EMPTY, NOTSET);
 
 			// Verify 1.
-			String expectedTagValue = "Tag: " + DriverViewPageActions.workingDataRow.surveyTag;
+			String expectedTagValue = DriverViewPageActions.workingDataRow.surveyTag;
 			String expectedModeValue = "Mode: " + DriverViewPageActions.workingDataRow.surveyType;
 			String expectedTimeStartsWith = "Time: " + String.valueOf(DateUtility.getCalendarForCurrentZone().get(Calendar.HOUR));
 			String expectedSurveyStatus = "Survey Active";
@@ -713,6 +726,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
+			assertTrue(false);	// fail test.
 		}
 	}
 
@@ -754,7 +768,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			
 			//-------------------
 			// Verify 1.
-			String expectedTagValue = "Tag: " + DriverViewPageActions.workingDataRow.surveyTag;
+			String expectedTagValue = DriverViewPageActions.workingDataRow.surveyTag;
 			assertTrue(driverViewPageAction.verifySurveyInfoTagLabelEquals(expectedTagValue, NOTSET));			
 
 			// Verify 1.
@@ -763,6 +777,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
+			assertTrue(false);	// fail test.
 		}
 	}
 
@@ -822,6 +837,144 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
+			assertTrue(false);	// fail test.
+		}
+	}
+
+	@Test
+	public void TC1212_SimulatorTest_DriverViewStandardSurveyNewDriver() {
+		try {
+			String userName = SQACUS + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
+			String location = SQACUS + " - " + SQACUSLOC;
+			
+			Log.info("\nRunning TC1212_SimulatorTest_DriverViewStandardSurveyNewDriver - Test Description: Standard Survey as new driver user");
+			
+			loginPage.open();
+			loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+			
+			ManageUsersPage manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
+			PageFactory.initElements(driver,  manageUsersPage);
+			manageUsersPage.open();
+			manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD, CUSUSERROLEDR,location);
+			
+			ManageCustomersPage manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
+			PageFactory.initElements(driver,  manageCustomersPage);
+			manageCustomersPage.open();
+			manageCustomersPage.logout();
+			
+			loginPage.open();
+			loginPage.loginNormalAs(userName, USERPASSWORD);
+			
+			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			driverViewPageAction.open(EMPTY,NOTSET);
+
+			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+
+			driverViewPageAction.startDrivingSurvey(EMPTY, 6);	/* Day, Overcast, Calm, Standard */
+			
+			// turn ON all Display options.
+			driverViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+			driverViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
+			
+			driverViewPageAction.clickOnHeaderInfoBox(EMPTY, NOTSET);
+			
+			//-------------------
+			// Verify 
+			String expectedTagValue = DriverViewPageActions.workingDataRow.surveyTag;
+			String expectedModeValue = "Mode: " + DriverViewPageActions.workingDataRow.surveyType;
+			String expectedTimeStartsWith = "Time: " + String.valueOf(DateUtility.getCalendarForCurrentZone().get(Calendar.HOUR));
+			String expectedSurveyStatus = "Survey Active";
+			String expectedDriverInfo = "Driver: " + userName;
+			String expectedTimeElapsedStartsWith = "Elapsed: 00:";
+			String expectedTimeRemainingStartsWith = "Remaining: 07:";
+			String expectedZoomLevel = "Zoom Level: 19";
+			String expectedAnalyzerValue = "Survey Active";
+			String expectedSurveyorValue = "Surveyor: SimAuto-Surveyor1 - SimAuto-Analyzer1";
+			String expectedStabilityClass = "Stability Class: C";
+			
+			assertTrue(driverViewPageAction.verifySurveyInfoTagLabelEquals(expectedTagValue, NOTSET));			
+			assertTrue(driverViewPageAction.verifySurveyInfoModeLabelEquals(expectedModeValue, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoTimeLabelStartsWith(expectedTimeStartsWith, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoSurveyStatusLabelEquals(expectedSurveyStatus, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoDriverLabelEquals(expectedDriverInfo, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(expectedTimeElapsedStartsWith, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(expectedTimeRemainingStartsWith, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoZoomLevelLabelEquals(expectedZoomLevel, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoAnalyzerLabelEquals(expectedAnalyzerValue, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoSurveyorLabelEquals(expectedSurveyorValue, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoStabilityClassLabelEquals(expectedStabilityClass, NOTSET));
+			
+			assertTrue(driverViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+			
+			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+		} catch (Exception e) {
+			Log.error(e.toString());
+			assertTrue(false);	// fail test.			
+		}
+	}
+
+	@Test
+	public void TC1213_SimulatorTest_NewDriverNavigatedToHomePage() {
+		try {
+			String userName = SQACUS + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
+			String location = SQACUS + " - " + SQACUSLOC;
+			
+			Log.info("\nRunning TC1212_SimulatorTest_DriverViewStandardSurveyNewDriver - Test Description: Standard Survey as new driver user");
+			
+			loginPage.open();
+			loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+			
+			ManageUsersPage manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
+			PageFactory.initElements(driver,  manageUsersPage);
+			manageUsersPage.open();
+			manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD, CUSUSERROLEDR,location);
+			
+			ManageCustomersPage manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
+			PageFactory.initElements(driver,  manageCustomersPage);
+			manageCustomersPage.open();
+			manageCustomersPage.logout();
+			
+			loginPage.open();
+			loginPage.loginNormalAs(userName, USERPASSWORD);
+			
+			HomePage homePage = new HomePage(driver, baseURL, testSetup);
+			PageFactory.initElements(driver, homePage);
+			assertTrue(homePage.checkIfAtHomePage());
+		} catch (Exception e) {
+			Log.error(e.toString());
+			assertTrue(false);	// fail test.
+		}
+	}
+
+	@Test
+	public void TC1215_SimulatorTest_CannotLoginDriverViewInvalidCredentials() {
+		try {
+			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			driverViewPage.open();
+
+			LoginPage loginPage = new LoginPage(driver, baseURL, testSetup);
+			PageFactory.initElements(driver, loginPage);
+			loginPage.waitForPageLoad();
+			assertTrue(loginPage.checkIfAtLoginPage());
+		} catch (Exception e) {
+			Log.error(e.toString());
+			assertTrue(false);	// fail test.
+		}
+	}
+	
+	@Test
+	public void TC1232_SimulatorTest_DriverViewRefreshBrowser() {
+		try {
+			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			driverViewPage.open();
+
+			LoginPage loginPage = new LoginPage(driver, baseURL, testSetup);
+			PageFactory.initElements(driver, loginPage);
+			loginPage.waitForPageLoad();
+			assertTrue(loginPage.checkIfAtLoginPage());
+		} catch (Exception e) {
+			Log.error(e.toString());
+			assertTrue(false);	// fail test.
 		}
 	}
 }

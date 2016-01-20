@@ -60,6 +60,13 @@ public class LoginPage extends BasePage {
 		}
 	}
 
+	public boolean checkIfAtLoginPage() {
+		if (driver.getTitle().equalsIgnoreCase(STRPageTitle))
+			return true;
+		
+		return false;
+	}
+
 	public HomePage loginNormalAs(String userName, String password) {
 		this.tbUserName.sendKeys(userName);
 		this.tbPassword.sendKeys(password);

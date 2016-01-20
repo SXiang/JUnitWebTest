@@ -563,7 +563,19 @@ public class DriverViewPageActions extends BasePageActions {
 	}
 
 	/* Display Switch (Enable/Disable) methods */
-	
+
+	public boolean turnOnAllDisplayOptions(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOnAllDisplayOptions", data, dataRowID);
+		turnOnEightHourHistory(data, dataRowID);
+		turnOnConcentrationChart(data, dataRowID);
+		turnOnFOVs(data, dataRowID);
+		turnOnIndications(data, dataRowID);
+		turnOnIsotopicAnalysis(data, dataRowID);
+		turnOnLisas(data, dataRowID);
+		turnOnNotes(data, dataRowID);
+		turnOnWindRose(data, dataRowID);
+		return true;
+	}
 	public boolean turnOnEightHourHistory(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.turnOnEightHourHistory", data, dataRowID);
 		driverViewPage.toggleDisplaySwitch(DisplaySwitchType.EightHourHistory, true);
@@ -602,6 +614,18 @@ public class DriverViewPageActions extends BasePageActions {
 	public boolean turnOnWindRose(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.turnOnWindRose", data, dataRowID);
 		driverViewPage.toggleDisplaySwitch(DisplaySwitchType.WindRose, true);
+		return true;
+	}
+	public boolean turnOffAllDisplayOptions(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOffAllDisplayOptions", data, dataRowID);
+		turnOffEightHourHistory(data, dataRowID);
+		turnOffConcentrationChart(data, dataRowID);
+		turnOffFOVs(data, dataRowID);
+		turnOffIndications(data, dataRowID);
+		turnOffIsotopicAnalysis(data, dataRowID);
+		turnOffLisas(data, dataRowID);
+		turnOffNotes(data, dataRowID);
+		turnOffWindRose(data, dataRowID);
 		return true;
 	}
 	public boolean turnOffEightHourHistory(String data, Integer dataRowID) {
@@ -1216,6 +1240,7 @@ public class DriverViewPageActions extends BasePageActions {
 		else if (actionName.equals("turnOffBoundariesDistrict")) { return this.turnOffBoundariesDistrict(data, dataRowID); }
 		else if (actionName.equals("turnOffBoundariesDistrictPlat")) { return this.turnOffBoundariesDistrictPlat(data, dataRowID); }
 		else if (actionName.equals("turnOffConcentrationChart")) { return this.turnOffConcentrationChart(data, dataRowID); }
+		else if (actionName.equals("turnOffAllDisplayOptions")) { return this.turnOffAllDisplayOptions(data, dataRowID); }
 		else if (actionName.equals("turnOffEightHourHistory")) { return this.turnOffEightHourHistory(data, dataRowID); }
 		else if (actionName.equals("turnOffFOVs")) { return this.turnOffFOVs(data, dataRowID); }
 		else if (actionName.equals("turnOffIndications")) { return this.turnOffIndications(data, dataRowID); }
@@ -1238,6 +1263,7 @@ public class DriverViewPageActions extends BasePageActions {
 		else if (actionName.equals("turnOnBoundariesDistrict")) { return this.turnOnBoundariesDistrict(data, dataRowID); }
 		else if (actionName.equals("turnOnBoundariesDistrictPlat")) { return this.turnOnBoundariesDistrictPlat(data, dataRowID); }
 		else if (actionName.equals("turnOnConcentrationChart")) { return this.turnOnConcentrationChart(data, dataRowID); }
+		else if (actionName.equals("turnOnAllDisplayOptions")) { return this.turnOnAllDisplayOptions(data, dataRowID); }
 		else if (actionName.equals("turnOnEightHourHistory")) { return this.turnOnEightHourHistory(data, dataRowID); }
 		else if (actionName.equals("turnOnFOVs")) { return this.turnOnFOVs(data, dataRowID); }
 		else if (actionName.equals("turnOnIndications")) { return this.turnOnIndications(data, dataRowID); }
