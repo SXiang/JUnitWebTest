@@ -383,6 +383,13 @@ public class DriverViewPage extends SurveyorBasePage {
 
 		Log.info("\nThe Home Page URL is: " + this.strPageURL);
 	}
+	
+	public boolean checkIfAtDriverViewPage() {
+		if (driver.getTitle().equalsIgnoreCase(STRPageTitle))
+			return true;
+		
+		return false;
+	}
 
 	public DriverViewPage clickCurtainArrowUpButton() {
 		this.curtainArrowUpButton.click();

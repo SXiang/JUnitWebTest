@@ -1217,6 +1217,17 @@ public class DriverViewPageActions extends BasePageActions {
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		return mapUtility.isSatelliteViewShown();
 	}
+	
+	/**
+	 * Executes verifyDriverViewPageIsOpened action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyDriverViewPageIsOpened(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyDriverViewPageIsOpened", data, dataRowID);
+		return this.driverViewPage.checkIfAtDriverViewPage();
+	}
 
 	/* Invoke action using specified ActionName */
 	@Override
@@ -1316,6 +1327,7 @@ public class DriverViewPageActions extends BasePageActions {
 		else if (actionName.equals("verifyCrossHairIconIsShownOnMap")) { return this.verifyCrossHairIconIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchIsOff")) { return this.verifyDisplaySwitchIsOff(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchIsOn")) { return this.verifyDisplaySwitchIsOn(data, dataRowID); }
+		else if (actionName.equals("verifyDriverViewPageIsOpened")) { return this.verifyDriverViewPageIsOpened(data, dataRowID); }
 		else if (actionName.equals("verifyFieldNotesIsNotShownOnMap")) { return this.verifyFieldNotesIsNotShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyFieldNotesIsShownOnMap")) { return this.verifyFieldNotesIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyFlowButtonIsGreen")) { return this.verifyFlowButtonIsGreen(data, dataRowID); }
