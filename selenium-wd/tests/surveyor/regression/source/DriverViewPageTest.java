@@ -894,7 +894,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 
 			// This action internally verifies that the startSurvey button is ONLY enabled after survey mode is selected.
-			driverViewPageAction.startDrivingSurvey(EMPTY, 11);	/* Static Survey tag, Day, Overcast, Calm, Standard */
+			driverViewPageAction.startDrivingSurvey(EMPTY, 19);	/* Static Survey tag, Day, Overcast, Calm, Standard */
 			
 			// turn ON map view.
 			driverViewPageAction.clickOnMapButton(EMPTY, NOTSET);
@@ -909,7 +909,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 
 			// start survey again.
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-			driverViewPageAction.startDrivingSurvey(EMPTY, 11);	/* Static Survey tag, Day, Overcast, Calm, Standard */
+			driverViewPageAction.startDrivingSurvey(EMPTY, 19);	/* Static Survey tag, Day, Overcast, Calm, Standard */
 
 			// turn ON 8-hour history.
 			driverViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
@@ -943,7 +943,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 
 			// This action internally verifies that the startSurvey button is ONLY enabled after survey mode is selected.
-			driverViewPageAction.startDrivingSurvey(EMPTY, 12);	/* Static Survey tag, Day, Overcast, Calm, Standard */
+			driverViewPageAction.startDrivingSurvey(EMPTY, 20);	/* Static Survey tag, Day, Overcast, Calm, Standard */
 			
 			// turn ON map view.
 			driverViewPageAction.clickOnMapButton(EMPTY, NOTSET);
@@ -968,7 +968,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 
 			// start survey again.
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-			driverViewPageAction.startDrivingSurvey(EMPTY, 12);	/* Static Survey tag, Day, Overcast, Calm, Standard */
+			driverViewPageAction.startDrivingSurvey(EMPTY, 20);	/* Static Survey tag, Day, Overcast, Calm, Standard */
 
 			// turn ON map view.
 			driverViewPageAction.clickOnMapButton(EMPTY, NOTSET);
@@ -1133,7 +1133,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 
 			// start survey.
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-			driverViewPageAction.startDrivingSurvey(EMPTY, 9);	/* Day, Overcast, Strong, Standard */
+			driverViewPageAction.startDrivingSurvey(EMPTY, 17);	/* Day, Overcast, Strong, Standard */
 			testEnvironmentAction.idleForSeconds(String.valueOf(30), NOTSET);
 
 			driverViewPageAction.clickOnHeaderInfoBox(EMPTY, NOTSET);
@@ -1207,7 +1207,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 
 			// start survey.
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-			driverViewPageAction.startDrivingSurvey(EMPTY, 9);	/* Day, Overcast, Strong, Standard */
+			driverViewPageAction.startDrivingSurvey(EMPTY, 17);	/* Day, Overcast, Strong, Standard */
 			testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
 
 			// stop survey.
@@ -1259,7 +1259,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);	
 			
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-			driverViewPageAction.startDrivingSurvey(EMPTY, 10);	/* Night, Calm, CloudCover<50, Standard */
+			driverViewPageAction.startDrivingSurvey(EMPTY, 18);	/* Night, Calm, CloudCover<50, Standard */
 			testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
 
 			expectedTagValue = DriverViewPageActions.workingDataRow.surveyTag;
