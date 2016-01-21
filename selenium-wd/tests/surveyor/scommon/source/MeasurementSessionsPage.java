@@ -36,18 +36,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	public static final String DSTAGUA = "dmcs1-sqacusua";
 	public static final String DSTAGSU = "dmcs1-sqacussu";
 	public static final String DSTAGDR = "dmcs1-sqacusdr";
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[8]/a[1]/img")
-	private WebElement linkViewSurvey;
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[8]/a[2]/img")
-	private WebElement linkExportSurvey;
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[8]/a[3]/img")
-	private WebElement linkExportPeaks;
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[8]/a[4]/img")
-	private WebElement linkExportAnalysis;
+
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[8]/a[5]/img")
 	private WebElement linkDeleteSurvey;
@@ -373,7 +362,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		String analyzerXPath;
 		String startDTXPath;
 		String actionXPath;
-		
+			
 		WebElement tagCell;
 		WebElement userCell;
 		WebElement surveyorCell;
@@ -406,20 +395,20 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			
 			startDTXPath = strTRXPath + "["+rowNum+"]/td[5]";
 			startDTCell = table.findElement(By.xpath(startDTXPath));
-			
+	
 			if (tagCell.getText().trim().equalsIgnoreCase(tag) && userCell.getText().trim().equalsIgnoreCase(user) &&
 					surveyorCell.getText().trim().equalsIgnoreCase(surveyor) && analyzerCell.getText().trim().equalsIgnoreCase(analyzer) &&
 					startDTCell.getText().trim().equalsIgnoreCase(startDT)) {
 				if (action.equalsIgnoreCase(DRIVINGSURVEYSEXPORTSURVEY)) {
-					actionXPath = strTRXPath + "["+rowNum+"]/td[10]/a[2]/img";
+					actionXPath = strTRXPath + "["+rowNum+"]/td[11]/a[2]/img";
 					actionCell = table.findElement(By.xpath(actionXPath));
 				} 
 				else if (action.equalsIgnoreCase(DRIVINGSURVEYSEXPORTPEAKS)) {
-					actionXPath = strTRXPath + "["+rowNum+"]/td[10]/a[3]/img";
+					actionXPath = strTRXPath + "["+rowNum+"]/td[11]/a[3]/img";
 					actionCell = table.findElement(By.xpath(actionXPath));
 				} 
 				else if (action.equalsIgnoreCase(DRIVINGSURVEYSEXPORTANALYSIS)) {
-					actionXPath = strTRXPath + "["+rowNum+"]/td[10]/a[4]/img";
+					actionXPath = strTRXPath + "["+rowNum+"]/td[11]/a[4]/img";
 					actionCell = table.findElement(By.xpath(actionXPath));
 				} 
 				else

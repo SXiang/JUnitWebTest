@@ -39,7 +39,11 @@ public class EULAPage extends SurveyorBasePage {
 		Log.info("\nThe EULA Page URL is: " + this.strPageURL);
 	}
 
-    /**
+    public WebElement getiAccept() {
+		return iAccept;
+	}
+
+	/**
      * Click on I Accept Button.
      *
      * @return the EULAPage class instance.
@@ -54,6 +58,14 @@ public class EULAPage extends SurveyorBasePage {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getPageSource().contains(STRPageContentText);
+            }
+        });
+    }
+	
+	public void waitForAcceptButton() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return getiAccept().isDisplayed();
             }
         });
     }

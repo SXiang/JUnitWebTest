@@ -9,11 +9,51 @@ import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAccessor;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.testng.Assert;
+
 
 public class DateUtility {
+	
+	/**
+	 * Compares the first time string with second time string and returns if the first time string is greater than the second.
+	 * @param timeString1 - Time string in 00:00:00 format.
+	 * @param timeString2 - Time string in 00:00:00 format.
+	 * @return - returns if first time string is greater than second time string.
+	 */
+	public static boolean isFirstTimeGreater(String timeString1, String timeString2) {
+		boolean isGreater = false;
+		List<String> timeParts1 = RegexUtility.split(timeString1, RegexUtility.COLON_SPLIT_REGEX_PATTERN);
+		List<String> timeParts2 = RegexUtility.split(timeString2, RegexUtility.COLON_SPLIT_REGEX_PATTERN);
+		if (timeParts1 == null || timeParts1.size() != 3 ) {
+			throw new IllegalArgumentException("Invalid argument - 'timeString1'. Pass Time string in 00:00:00 format.");
+		}
+		if (timeParts2 == null || timeParts2.size() != 3) {
+			throw new IllegalArgumentException("Invalid argument - 'timeString2'. Pass Time string in 00:00:00 format.");
+		}
+		
+		Integer hr1 = Integer.valueOf(timeParts1.get(0));
+		Integer hr2 = Integer.valueOf(timeParts2.get(0));
+		Integer min1 = Integer.valueOf(timeParts1.get(1));
+		Integer min2 = Integer.valueOf(timeParts2.get(1));
+		Integer sec1 = Integer.valueOf(timeParts1.get(2));
+		Integer sec2 = Integer.valueOf(timeParts2.get(2));
+		if (hr1 > hr2) {
+			isGreater = true;
+		} else if (hr1 == hr2) {
+			if (min1 > min2) {
+				isGreater = true;
+			} else if (min1 == min2) {
+				if (sec1 > sec2) {
+					isGreater = true;
+				}
+			}
+		}
+		return isGreater;
+	}
 	
 	/**
 	 * Parses and returns the Date object for the specified Date and Date format strings.
@@ -180,6 +220,41 @@ public class DateUtility {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
+		// ** Unit tests for isFirstTimeGreater() method **/
+		String timeString1 = "00:00:00";
+		String timeString2 = "00:00:00";
+		Log.info(String.format("Comparing Time1 - '%s' with Time2 - '%s'", timeString1, timeString2));
+		boolean firstTimeGreater = DateUtility.isFirstTimeGreater(timeString1, timeString2);
+		Log.info(String.format("Expected = %b, Actual = %b", false, firstTimeGreater));
+		Assert.assertTrue(!firstTimeGreater);
+		timeString1 = "01:00:00";
+		timeString2 = "00:55:50";
+		Log.info(String.format("Comparing Time1 - '%s' with Time2 - '%s'", timeString1, timeString2));
+		firstTimeGreater = DateUtility.isFirstTimeGreater(timeString1, timeString2);
+		Log.info(String.format("Expected = %b, Actual = %b", true, firstTimeGreater));
+		Assert.assertTrue(firstTimeGreater);
+		timeString1 = "00:20:00";
+		timeString2 = "00:20:20";
+		Log.info(String.format("Comparing Time1 - '%s' with Time2 - '%s'", timeString1, timeString2));
+		firstTimeGreater = DateUtility.isFirstTimeGreater(timeString1, timeString2);
+		Log.info(String.format("Expected = %b, Actual = %b", false, firstTimeGreater));
+		Assert.assertTrue(!firstTimeGreater);
+		timeString1 = "07:59:01";
+		timeString2 = "07:59:00";
+		Log.info(String.format("Comparing Time1 - '%s' with Time2 - '%s'", timeString1, timeString2));
+		firstTimeGreater = DateUtility.isFirstTimeGreater(timeString1, timeString2);
+		Log.info(String.format("Expected = %b, Actual = %b", true, firstTimeGreater));
+		Assert.assertTrue(firstTimeGreater);
+		timeString1 = "23:59:58";
+		timeString2 = "23:59:57";
+		Log.info(String.format("Comparing Time1 - '%s' with Time2 - '%s'", timeString1, timeString2));
+		firstTimeGreater = DateUtility.isFirstTimeGreater(timeString1, timeString2);
+		Log.info(String.format("Expected = %b, Actual = %b", true, firstTimeGreater));
+		Assert.assertTrue(firstTimeGreater);
+		
+		// ** Unit tests for compareDateTimeFormat(), compareDateTimes() and compareDates() methods **/
+
 		DateUtility date = new DateUtility();
 		String result;
 		//Unit tests -  compareDateTimeFormat(String inputDateTime, boolean reports)
@@ -280,8 +355,6 @@ public class DateUtility {
 		Log.info(result=(date.compareDates( "2015/01/12 18:42 ","2015/01/12 18:42 ", false))?"PASS":"FAIL");
 		Log.info(result=(date.compareDates( "2015/01/12 18:40 ","2015/02/12 18:42 ", false))?"FAIL":"PASS");
 		Log.info(result=(date.compareDates( "2015/01/12 18:42 ","2014/01/12 18:42 ", false))?"FAIL":"PASS");
-
-
 
 	}
 }

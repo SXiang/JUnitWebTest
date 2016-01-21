@@ -4,6 +4,9 @@
 package surveyor.scommon.source;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -19,6 +22,9 @@ public class FleetMapPage extends BasePage {
 	public static final String STRURLPath = "/Home/FleetMap";
 	public static final String STRPageTitle = "Fleet Map - Surveyor";
 	public static final String STRPageContentText = "Fleet Map";
+	
+	@FindBy(how = How.XPATH, using = "//*[@class='ol-unselectable']")
+	protected WebElement fleetMap;
 
 	/**
 	 * @param driver
@@ -43,6 +49,25 @@ public class FleetMapPage extends BasePage {
 		super(driver, testSetup, strBaseURL, strBaseURL + STRURLPath);
 	}
 
+	public WebElement getFleetMap() {
+		return fleetMap;
+	}
+
+	public boolean checkIfAtFleetMapPage() {
+		if (driver.getTitle().equalsIgnoreCase(STRPageTitle))
+			return true;
+		
+		return false;
+	}
+
+	public void waitForFleetMaptoLoad() {
+    (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+        public Boolean apply(WebDriver d) {
+            return getFleetMap().isDisplayed();
+        }
+    });
+}
+	
     @Override
 	public void waitForPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {

@@ -81,6 +81,7 @@ public final class SurveyorConstants {
 	public static final String SQAPICLOC1SUR = "sqapicloc1sur";
 	public static final String SQAPICLOC2SUR = "sqapicloc2sur";
 	public static final String SQAPICLOC3SUR = "sqapicloc3sur";
+	public static final String SQAPICLOC4SUR = "Software Car";
 	public static final String SQACUSLOCSUR = "White Dodge";
 	public static final String SQACUSLOCANZ = "FDDS2037";
 	public static final String SQACUSLOC0SUR = "sqacusloc0sur";
@@ -93,6 +94,7 @@ public final class SurveyorConstants {
 	public static final String SQAPICLOC1SURANA = "sqapicloc1surana";
 	public static final String SQAPICLOC2SURANA = "sqapicloc2surana";
 	public static final String SQAPICLOC3SURANA = "sqapicloc3surana";
+	public static final String SQAPICLOC4SURANA = "FDDS2038";
 	public static final String SQACUSLOCSURANA = "sqacuslocsurana";
 	public static final String SQACUSLOC0SURANA = "sqacusloc0surana";
 	public static final String SQACUSLOC1SURANA = "sqacusloc1surana";
@@ -220,7 +222,7 @@ public final class SurveyorConstants {
 	public static final String DATE = "Date";
 
 	/*
-	 * Compliance Report tags
+	 * Driving survey tag for Compliance Reports
 	 */
 	public static final String PICADMNSTDTAG = "stnd-pic";
 	public static final String PICADMNRRTAG = "rr-pic";
@@ -228,7 +230,8 @@ public final class SurveyorConstants {
 	public static final String PICADMNMANTAG = "man-pic";
 	public static final String CUSDRVSTDTAG = "stnd-sqacudr";
 	public static final String CUSDRVRRTAG = "rr-sqacudr";
-	public static final String CUSDRVOPTAG = "op-pic";
+	public static final String CUSDRVOPTAG = "op-sqacudr";
+
 	
 		
 	/*
@@ -236,6 +239,7 @@ public final class SurveyorConstants {
 	 */
 	public static final String PICADMNSURVEYOR = "Picarro - Santa Clara - Software Car";
 	public static final String SQACUSSURVEYOR = "White Dodge";
+	public static final String PICADMNSURVEYORSHORT = "Software Car";
 
 	/*
 	 * Lat Long for Reporting
@@ -262,6 +266,8 @@ public final class SurveyorConstants {
 	public static final String RSUVMODEOP = "Operator";
 	public static final String RSUVMODERR = "Rapid Response";
 	public static final String RSUVMODEMANUAL = "Manual";
+	
+	public static final String SQACUSSULOC="Santa Clara";
 }
 
 	
