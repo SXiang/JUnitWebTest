@@ -192,7 +192,9 @@
 					<include name="**/ManageUsersPageTest.class" />
 					<include name="**/ManageUsersAdminPageTest.class" />
 					<include name="**/UserFeedbackPageTest.class" />
-					<include name="**/UserFeedbackAdminPageTest.class" />					
+					<include name="**/UserFeedbackAdminPageTest.class" />
+					<include name="**/SystemHistoryReportsPageTest.class" />	
+					<include name="**/ReferenceGasReportsPageTest.class" />					
 				</fileset>
 			</batchtest>
 		</junit>
