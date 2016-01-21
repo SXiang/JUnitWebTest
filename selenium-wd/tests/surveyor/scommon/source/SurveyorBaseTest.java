@@ -34,36 +34,6 @@ public class SurveyorBaseTest {
 	public static LoginPage loginPage;
 	public static HomePage homePage;
 
-	// JUnit does NOT give a good way to detect which TestClass is executing.
-	// So we watch for the Test method under execution and install simulator pre-reqs
-	// if the test under execution is a Simulator test.
-	// NOTE that all simulator tests MUST follow this naming pattern: TC*_SimulatorTest_* 
-	@Rule
-	public TestWatcher watcher = new TestWatcher() {
-		@Override
-		public void starting(Description description) {
-			Log.info("Started executing " + description.getClassName() + "." + description.getMethodName() + "() test...");
-			if (isExecutingSimulatorTestMethod(description.getMethodName())) {
-				Log.info("Installing simulator pre-reqs. Start Analyzer and Replay DB3 script.");
-				try {
-					TestSetup.setupSimulatorPreReqs();
-					TestSetup.startAnalyzer();
-				} catch (IOException e) {
-					Log.error(e.toString());
-				}	
-			}
-		}
-		
-		@Override
-		public void finished(Description description) {
-			Log.info("Finished executing " + description.getClassName() + "." + description.getMethodName() + "() test...");
-			if (isExecutingSimulatorTestMethod(description.getMethodName())) {
-				Log.info("Stop Analyzer.");
-				TestSetup.stopAnalyzer();
-			}
-		}
-	};
-	
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -98,18 +68,6 @@ public class SurveyorBaseTest {
 			homePage.logout();
 		
 		driver.quit();		
-	}
-
-	private static boolean isExecutingSimulatorTestMethod(String methodName) {
-		String[] nameParts = methodName.split("\\_");
-		if (nameParts != null && nameParts.length > 1)
-		{
-			if (nameParts[1].equalsIgnoreCase("SimulatorTest")) {
-				return true;
-			}
-		}
-		
-		return false;
 	}
 
 	/**

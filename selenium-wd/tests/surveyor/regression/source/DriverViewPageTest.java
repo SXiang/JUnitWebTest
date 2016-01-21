@@ -8,10 +8,17 @@ import static surveyor.scommon.source.SurveyorConstants.SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 
+import java.io.IOException;
 import java.util.Calendar;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
@@ -34,7 +41,10 @@ import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.DriverViewPage.Wind;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
+import surveyor.scommon.source.ManageAnalyzersPage;
 import surveyor.scommon.source.ManageCustomersPage;
+import surveyor.scommon.source.ManageLocationsPage;
+import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 
@@ -45,7 +55,7 @@ import surveyor.scommon.source.SurveyorBaseTest;
  *  installation of Simulator pre-requisites before running the test.
  * 
  */
-public class DriverViewPageTest extends SurveyorBaseTest {
+public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 
 	private static final String SURVEY_INFO_SURVEYOR1_ANALYZER1 = "Surveyor: SimAuto-Surveyor1 - SimAuto-Analyzer1";
 	private static final String SURVEY_INFO_SURVEYOR2_ANALYZER2 = "Surveyor: SimAuto-Surveyor2 - SimAuto-Analyzer2";
@@ -68,7 +78,6 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	private static final String SURVEY_INFO_STABILITY_CLASS_D = "Stability Class: D";
 	private static final String SIM_AUTO_ANALYZER1 = "SimAuto-Analyzer1";
 	private static final String SIM_AUTO_SURVEYOR1 = "SimAuto-Surveyor1";
-	private static DriverViewPage driverViewPage;
 	private static final String SURVEYOR_DB3 = "Surveyor.db3";
 	private static final String INSTR_WARMING_DEFN_FILE = "instr_warming.defn";
 	private static final String INSTR_READY_DEFN_FILE = "instr_ready.defn";
@@ -76,40 +85,114 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 
 	private static final String EMPTY = "";
 	private static final Integer NOTSET = -1;
+	
 	private LoginPageActions loginPageAction;
 	private DriverViewPageActions driverViewPageAction;
 	private TestEnvironmentActions testEnvironmentAction;
+
+	private static DriverViewPage driverViewPage;
+	private static ManageCustomersPage manageCustomersPage = null;
+	private static ManageUsersPage manageUsersPage = null;
+	private static HomePage homePage = null;
+	private static LoginPage loginPage = null;
+
+	private TestSetup testSetup = null;
+	private WebDriver driver = null;
+	private String baseURL = null;
 	
-	private ManageCustomersPage manageCustomersPage = null;
-	private ManageUsersPage manageUsersPage = null;
-	private HomePage homePage = null;
-	private LoginPage loginPage = null;
-
-	public DriverViewPageTest() {
-		driverViewPage = new DriverViewPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver, driverViewPage);
+	// JUnit does NOT give a good way to detect which TestClass is executing.
+	// So we watch for the Test method under execution and install simulator pre-reqs
+	// if the test under execution is a Simulator test.
+	// NOTE that all simulator tests MUST follow this naming pattern: TC*_SimulatorTest_* 
+	@Rule
+	public TestWatcher watcher = new TestWatcher() {
+		@Override
+		public void starting(Description description) {
+			Log.info("Started executing " + description.getClassName() + "." + description.getMethodName() + "() test...");
+			if (isExecutingSimulatorTestMethod(description.getMethodName())) {
+				Log.info("Installing simulator pre-reqs. Start Analyzer and Replay DB3 script.");
+				try {
+					TestSetup.setupSimulatorPreReqs();
+					TestSetup.startAnalyzer();
+				} catch (IOException e) {
+					Log.error(e.toString());
+				}	
+			}
+		}
 		
-		WebDriver webDriver = TestContext.INSTANCE.getDriver();
-		TestSetup testSetup = TestContext.INSTANCE.getTestSetup();
-		String baseURL = testSetup.getBaseUrl();
-		loginPageAction = new LoginPageActions(webDriver, baseURL, testSetup);
-		driverViewPageAction = new DriverViewPageActions(webDriver, baseURL,testSetup);
-		testEnvironmentAction = new TestEnvironmentActions();
-		
-		// Additional page objects.
-		homePage = new HomePage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  homePage);
+		@Override
+		public void finished(Description description) {
+			Log.info("Finished executing " + description.getClassName() + "." + description.getMethodName() + "() test...");
+			if (isExecutingSimulatorTestMethod(description.getMethodName())) {
+				Log.info("Stop Analyzer.");
+				TestSetup.stopAnalyzer();
+			}
+		}
+	};
 
-		loginPage = new LoginPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, loginPage);
-
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageCustomersPage);
+	private static boolean isExecutingSimulatorTestMethod(String methodName) {
+		String[] nameParts = methodName.split("\\_");
+		if (nameParts != null && nameParts.length > 1)
+		{
+			if (nameParts[1].equalsIgnoreCase("SimulatorTest")) {
+				return true;
+			}
+		}
 		
-		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageUsersPage);
+		return false;
 	}
 
+	@Before
+	public void beforeTestMethod() {
+		try {
+			testSetup = new TestSetup();
+			driver = testSetup.getDriver();
+			baseURL = testSetup.getBaseUrl();
+
+			Log.info("debuggug null - driver:***:" +driver);
+			driver.manage().deleteAllCookies();
+			
+			TestContext.INSTANCE.setTestSetup(testSetup);
+
+			loginPage = new LoginPage(driver, baseURL, testSetup);
+			PageFactory.initElements(driver,  loginPage);
+			
+			homePage = new HomePage(driver, baseURL, testSetup);
+			PageFactory.initElements(driver,  homePage);
+
+			driverViewPage = new DriverViewPage(driver, testSetup, baseURL);
+			PageFactory.initElements(driver, driverViewPage);
+
+			// Additional page objects.
+			manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
+			PageFactory.initElements(driver,  manageCustomersPage);
+			
+			manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
+			PageFactory.initElements(driver,  manageUsersPage);
+			
+			loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
+			driverViewPageAction = new DriverViewPageActions(driver, baseURL,testSetup);
+			testEnvironmentAction = new TestEnvironmentActions();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+	}
+	
+	@After
+    public void afterTestMethod() {
+		try {
+			homePage.open();
+			
+			if (!driver.getTitle().equalsIgnoreCase("Login"))
+				homePage.logout();
+			
+			driver.quit();		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Test Case ID: TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin
 	 * Script: -  	
@@ -127,7 +210,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	 * 5. All Asset types and boundaries level are OFF 
 	 * 6. Status is red and on expanding flow, temp gauges are also red
 	 */
-	@Test
+	@Ignore
 	public void TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin() {
 		Log.info("Running TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin");
 
@@ -501,7 +584,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	}
 
 	@Test
-	public void TC256_SimulatorTest_DriverViewInstrumentStartWaitStopShutdown() {
+	public void TC256_ActionTest_DriverViewInstrumentStartWaitStopShutdown() {
 		try {
 			Log.info("\nRunning TC256_SimulatorTest_DriverViewInstrumentStartWaitStopShutdown");
 			
@@ -538,7 +621,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	}
 
 	@Test
-	public void TC302_SimulatorTest_DriverViewUserSeesLastTagValue() {
+	public void TC302_ActionTest_DriverViewUserSeesLastTagValue() {
 		try {
 			Log.info("\nRunning TC302_SimulatorTest_DriverViewUserSeesLastTagValue");
 			
@@ -556,6 +639,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
 			
+			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			driverViewPageAction.openStartSurveyModalDialog(EMPTY,NOTSET);
 			
 			assertTrue(driverViewPageAction.verifySurveyTagInStartSurveyDialogEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
@@ -570,21 +654,27 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		}
 	}
 
-	@Test
-	public void TC777_SimulatorTest_DriverViewFlatteningCustomerBoundaryData() {
+	// TEST needs more work on correct verification.
+	@Ignore
+	public void TC777_ActionTest_DriverViewFlatteningCustomerBoundaryData() {
 		try {
 			Log.info("\nRunning TC777_SimulatorTest_DriverViewFlatteningCustomerBoundaryData");
 			
 			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
+			loginPageAction.login(EMPTY, 9);   /* PG&E Driver */
 			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnGisButton(EMPTY,NOTSET);
 			driverViewPageAction.turnOffBoundariesDistrict(EMPTY, NOTSET);
 			driverViewPageAction.turnOffBoundariesDistrictPlat(EMPTY, NOTSET);
+			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
 
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 2);   /* Customer Supervisor */
+			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			// To get a new instance of Driver view page, initialize the driver view page.
+			driverViewPageAction.initializeDriverViewPage(TestContext.INSTANCE.getDriver(), 
+					TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());		
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnGisButton(EMPTY,NOTSET);
 			assertTrue(driverViewPageAction.verifyGisSwitchIsOn("BoundariesDistrict",NOTSET));
@@ -598,7 +688,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	}
 
 	@Test
-	public void TC1095_SimulatorTest_NavigateBetweenDriverViewAndHomePage() {
+	public void TC1095_ActionTest_NavigateBetweenDriverViewAndHomePage() {
 		try {
 			Log.info("\nRunning TC1095_SimulatorTest_NavigateBetweenDriverViewAndHomePage");
 			
@@ -615,6 +705,10 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			// go back to driver view page using browser back button.
 			BrowserCommands.goBack();
 			
+			// To get a new instance of Driver view page, initialize the driver view page.
+			driverViewPageAction.initializeDriverViewPage(TestContext.INSTANCE.getDriver(), 
+					TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());		
+			
 			assertTrue(driverViewPageAction.verifyPageLoaded(EMPTY,NOTSET));
 			
 			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
@@ -625,7 +719,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	}
 
 	@Test
-	public void TC1103_SimulatorTest_DriverViewStartDrivingSurveySatelliteView() {
+	public void TC1103_ActionTest_DriverViewStartDrivingSurveySatelliteView() {
 		try {
 			Log.info("\nRunning TC1103_SimulatorTest_DriverViewStartDrivingSurveySatelliteView");
 			
@@ -699,7 +793,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	}
 
 	@Test
-	public void TC1104_SimulatorTest_DriverViewStopDrivingSurveySatelliteView() {
+	public void TC1104_ActionTest_DriverViewStopDrivingSurveySatelliteView() {
 		try {
 			Log.info("\nRunning TC1104_SimulatorTest_DriverViewStopDrivingSurveySatelliteView");
 			
@@ -788,7 +882,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	}
 
 	@Test
-	public void TC1133_SimulatorTest_DriverView2SurveysSameTagSameAnalyzer8HrHistoryON() {
+	public void TC1133_ActionTest_DriverView2SurveysSameTagSameAnalyzer8HrHistoryON() {
 		try {
 			Log.info("\nRunning TC1133_SimulatorTest_DriverView2SurveysSameTagSameAnalyzer8HrHistoryON");
 			
@@ -837,7 +931,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	}
 
 	@Test
-	public void TC1134_SimulatorTest_DriverView2SurveysSameTagDifferentAnalyzers8HrHistoryON() {
+	public void TC1134_ActionTest_DriverView2SurveysSameTagDifferentAnalyzers8HrHistoryON() {
 		try {
 			Log.info("\nRunning TC1134_SimulatorTest_DriverView2SurveysSameTagDifferentAnalyzers8HrHistoryON");
 
@@ -902,7 +996,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	}
 
 	@Test
-	public void TC1212_SimulatorTest_DriverViewStandardSurveyNewDriver() {
+	public void TC1212_ActionTest_DriverViewStandardSurveyNewDriver() {
 		try {
 			String userName = SQACUS + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
 			String location = SQACUS + " - " + SQACUSLOC;
@@ -1012,7 +1106,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	}
 
 	@Test
-	public void TC1215_SimulatorTest_CannotLoginDriverViewInvalidCredentials() {
+	public void TC1215_ActionTest_CannotLoginDriverViewInvalidCredentials() {
 		try {
 			Log.info("\nRunning TC1215_SimulatorTest_CannotLoginDriverViewInvalidCredentials");
 
@@ -1028,7 +1122,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	}
 	
 	@Test
-	public void TC1232_SimulatorTest_DriverViewRefreshBrowser() {
+	public void TC1232_ActionTest_DriverViewRefreshBrowser() {
 		try {
 			Log.info("\nRunning TC1232_SimulatorTest_DriverViewRefreshBrowser");
 
@@ -1101,9 +1195,8 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 		}
 	}
 
-	// DEFECT: After stopping and starting survey, Elapsed and Remaining Time labels are EMPTY.
 	@Test
-	public void TC1241_SimulatorTest_DriverViewStartSurveyMultipleTimes() {
+	public void TC1241_ActionTest_DriverViewStartSurveyMultipleTimes() {
 		try {
 			Log.info("\nRunning TC1241_SimulatorTest_DriverViewStartSurveyMultipleTimes");
 
@@ -1153,11 +1246,13 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			assertTrue(driverViewPageAction.verifySurveyInfoTimeLabelStartsWith(expectedTimeStartsWith, NOTSET));
 			assertTrue(driverViewPageAction.verifySurveyInfoSurveyStatusLabelEquals(expectedSurveyStatus, NOTSET));
 			assertTrue(driverViewPageAction.verifySurveyInfoDriverLabelEquals(expectedDriverInfo, NOTSET));
-			// DEFECT: TimeElapsed and TimeRemaining labels are EMPTY at this step.
 			assertTrue(driverViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(expectedTimeElapsedStartsWith, NOTSET));
 			assertTrue(driverViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(expectedTimeRemainingStartsWith, NOTSET));
 			assertTrue(driverViewPageAction.verifySurveyInfoZoomLevelLabelEquals(expectedZoomLevel, NOTSET));
 			assertTrue(driverViewPageAction.verifySurveyInfoSurveyorLabelEquals(expectedSurveyorValue, NOTSET));
+			
+			// click on Header info again to close Header.
+			driverViewPageAction.clickOnHeaderInfoBox(EMPTY, NOTSET);
 			
 			// stop and start survey again (with different survey parameters, except Survey Type).
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
@@ -1166,6 +1261,21 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 			driverViewPageAction.startDrivingSurvey(EMPTY, 10);	/* Night, Calm, CloudCover<50, Standard */
 			testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
+
+			expectedTagValue = DriverViewPageActions.workingDataRow.surveyTag;
+			expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType;
+			// Get current hour in 24 hrs format and then convert to 12 hr format
+			hourOfDay = DateUtility.getCalendarForCurrentZone().get(Calendar.HOUR_OF_DAY);
+			if (hourOfDay > 12) {
+				hourOfDay = hourOfDay - 12;
+			}			
+			expectedTimeStartsWith = SURVEY_INFO_TIME_PREFIX + String.valueOf(hourOfDay);
+			expectedSurveyStatus = SURVEY_INFO_SURVEY_STATUS_ACTIVE;
+			expectedDriverInfo = SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username;
+			expectedTimeElapsedStartsWith = SURVEY_INFO_ELAPSED_TIME_00;
+			expectedTimeRemainingStartsWith = SURVEY_INFO_REMAINING_TIME_07;
+			expectedZoomLevel = SURVEY_INFO_ZOOM_LEVEL_19;
+			expectedSurveyorValue = SURVEY_INFO_SURVEYOR1_ANALYZER1;
 
 			// Verify Survey has started again.
 			driverViewPageAction.clickOnHeaderInfoBox(EMPTY, NOTSET);
@@ -1188,7 +1298,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 	}
 
 	@Test
-	public void TC1277_SimulatorTest_DriverViewCustUserManualSurveyNotAllowed() {
+	public void TC1277_ActionTest_DriverViewCustUserManualSurveyNotAllowed() {
 		try {
 			Log.info("\nRunning TC1277_SimulatorTest_DriverViewCustUserManualSurveyNotAllowed");
 
@@ -1215,7 +1325,7 @@ public class DriverViewPageTest extends SurveyorBaseTest {
 
 	// Ignoring the test for now, till we figure out how to find specific AssetType and BoundaryType is displaying on Map.
 	@Ignore
-	public void TC1385_SimulatorTest_DriverViewGISDataPersistsPostDisplayOptionsOff() {
+	public void TC1385_ActionTest_DriverViewGISDataPersistsPostDisplayOptionsOff() {
 		try {
 			Log.info("\nRunning TC1385_SimulatorTest_DriverViewGISDataPersistsPostDisplayOptionsOff");
 			
