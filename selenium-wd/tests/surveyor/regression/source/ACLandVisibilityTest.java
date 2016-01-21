@@ -106,9 +106,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
 		homePage.waitForReleaseNotesLinktoLoad();
-
-		homePage.waitForReleaseNotesLinktoLoad();
-		assertTrue(homePage.getReleasenoteslink());
+		assertTrue(homePage.getReleaseNotesLink());
 
 	}
 
@@ -276,7 +274,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
 		homePage.waitForReleaseNotesLinktoLoad();
-		assertTrue(homePage.getReleasenoteslink());
+		assertTrue(homePage.getReleaseNotesLink());
 	}
 
 	/**
@@ -438,7 +436,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
 		homePage.waitForReleaseNotesLinktoLoad();
-		assertTrue(homePage.getReleasenoteslink());
+		assertTrue(homePage.getReleaseNotesLink());
 
 	}
 
@@ -605,7 +603,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		homePage.waitForReleaseNotesLinktoLoad();
 
 		homePage.waitForReleaseNotesLinktoLoad();
-		assertTrue(homePage.getReleasenoteslink());
+		assertTrue(homePage.getReleaseNotesLink());
 
 	}
 
@@ -750,7 +748,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		homePage.getDropDownLoginUser().click();
 
 		homePage.waitForReleaseNotesLinktoLoad();
-		assertTrue(homePage.getReleasenoteslink());
+		assertTrue(homePage.getReleaseNotesLink());
 
 	}
 

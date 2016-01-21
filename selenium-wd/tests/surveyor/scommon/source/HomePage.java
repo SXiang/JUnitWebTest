@@ -660,20 +660,18 @@ public class HomePage extends SurveyorBasePage {
 		return this.dropDownPST;
 	}
 
-	public boolean getReleasenoteslink() {
-		System.out.print(getLinkReleaseNotes().getAttribute("href"));
+	public boolean getReleaseNotesLink() {
 		return getLinkReleaseNotes().getAttribute("href").contains(STRReleaseNotesLink);
 	}
 
 	public boolean isReleaseNotes(WebDriver driver,String winHandle){
-		System.out.println("Current url"+driver.getCurrentUrl());
 		if(driver.switchTo().window(winHandle).getCurrentUrl().contains(STRReleaseNotes)){
 			return true;
 		}
 		return false;
 	}
 	
-	public void waitForReleaseNotestoLoad(WebDriver driver,String winHandle) {
+	public void waitForReleaseNotesToLoad(WebDriver driver,String winHandle) {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
             	return d.switchTo().window(winHandle).getCurrentUrl().contains(STRReleaseNotes);
