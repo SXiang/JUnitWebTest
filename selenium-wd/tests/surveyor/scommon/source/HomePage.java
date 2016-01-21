@@ -30,7 +30,7 @@ public class HomePage extends SurveyorBasePage {
 	public static final String STRPageContentText = "Dashboard";	
 	public static final String STRSurveyorDashboard = "Surveyor Dashboard";
 	public static final String STRReleaseNotes="ReleaseNotes";
-	
+	public static final String STRReleaseNotesLink="Surveyor_v2.1_ReleaseNotes.pdf";	
 	public static final String EQ_REPORT_LINK_XPATH = "//*[@id='report-investigation']";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/div[1]/a/img")
@@ -657,7 +657,12 @@ public class HomePage extends SurveyorBasePage {
 	
 
 	public WebElement getDropDownPST() {
-		return dropDownPST;
+		return this.dropDownPST;
+	}
+
+	public boolean getReleasenoteslink() {
+		System.out.print(getLinkReleaseNotes().getAttribute("href"));
+		return getLinkReleaseNotes().getAttribute("href").contains(STRReleaseNotesLink);
 	}
 
 	public boolean isReleaseNotes(WebDriver driver,String winHandle){
@@ -672,6 +677,14 @@ public class HomePage extends SurveyorBasePage {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
             	return d.switchTo().window(winHandle).getCurrentUrl().contains(STRReleaseNotes);
+            }
+        });
+    }
+	
+	public void waitForReleaseNotesLinktoLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+            	return getLinkReleaseNotes().isDisplayed() ;
             }
         });
     }

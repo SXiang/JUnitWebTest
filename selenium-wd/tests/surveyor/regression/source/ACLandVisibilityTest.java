@@ -105,12 +105,10 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		homePage.open();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
-		homePage.getLinkReleaseNotes().click();
-		Set<String> winHandle = driver.getWindowHandles();
-		for (String window : winHandle) {
-			driver.switchTo().window(window);			
-		}
-		driver.close();
+		homePage.waitForReleaseNotesLinktoLoad();
+
+		homePage.waitForReleaseNotesLinktoLoad();
+		assertTrue(homePage.getReleasenoteslink());
 
 	}
 
@@ -277,12 +275,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		homePage.open();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
-		homePage.getLinkReleaseNotes().click();
-		Set<String> winHandle = driver.getWindowHandles();
-		for (String window : winHandle) {
-			driver.switchTo().window(window);
-		}
-		driver.close();
+		homePage.waitForReleaseNotesLinktoLoad();
+		assertTrue(homePage.getReleasenoteslink());
 	}
 
 	/**
@@ -291,7 +285,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC36_CheckUserLink_Preferences() {
-		Log.info("\nRunning TC36_CheckReportLink_CustomerSupervisorRole - Test Description: Release Notes link is working and can download Release Notes");
+		Log.info("\nRunning TC36_CheckReportLink_CustomerSupervisorRole - Test Description: Preferncess link is working");
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
 		homePage.open();
@@ -443,12 +437,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		homePage.open();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
-		homePage.getLinkReleaseNotes().click();
-		Set<String> winHandle = driver.getWindowHandles();
-		for (String window : winHandle) {
-			driver.switchTo().window(window);			
-		}
-		driver.switchTo().defaultContent();
+		homePage.waitForReleaseNotesLinktoLoad();
+		assertTrue(homePage.getReleasenoteslink());
 
 	}
 
@@ -458,7 +448,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC37_CheckUserLink_Preferences() {
-		Log.info("\nRunning TC37_CheckReportLink_UtilityAdminRole - Test Description: Release Notes link is working and can download Release Notes");
+		Log.info("\nRunning TC37_CheckReportLink_UtilityAdminRole - Test Description: Prefernces link");
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
@@ -612,12 +602,10 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		homePage.open();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
-		homePage.getLinkReleaseNotes().click();
-		Set<String> winHandle = driver.getWindowHandles();
-		for (String window : winHandle) {
-			driver.switchTo().window(window);
-		}
-		driver.switchTo().defaultContent();
+		homePage.waitForReleaseNotesLinktoLoad();
+
+		homePage.waitForReleaseNotesLinktoLoad();
+		assertTrue(homePage.getReleasenoteslink());
 
 	}
 
@@ -627,7 +615,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC38_CheckUserLink_Preferences() {
-		Log.info("\nRunning TC38_CheckReportLink_UtilityAdminRole - Test Description: Release Notes link is working and can download Release Notes");
+		Log.info("\nRunning TC38_CheckReportLink_UtilityAdminRole - Test Description: Prefernces link is working");
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
@@ -760,12 +748,9 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		homePage.open();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
-		homePage.getLinkReleaseNotes().click();
-		Set<String> winHandle = driver.getWindowHandles();
-		for (String window : winHandle) {
-			driver.switchTo().window(window);			
-		}
-		driver.switchTo().defaultContent();
+
+		homePage.waitForReleaseNotesLinktoLoad();
+		assertTrue(homePage.getReleasenoteslink());
 
 	}
 
@@ -775,7 +760,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC40_CheckUserLink_Preferences() {
-		Log.info("\nRunning TC38_CheckReportLink_PicarroSupportRole - Test Description: Release Notes link is working and can download Release Notes");
+		Log.info("\nRunning TC38_CheckReportLink_PicarroSupportRole - Test Description: Prefernces link is working");
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 

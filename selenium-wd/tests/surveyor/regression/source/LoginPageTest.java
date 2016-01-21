@@ -94,11 +94,7 @@ public class LoginPageTest extends SurveyorBaseTest {
 		manageUsersPage.waitForPageLoad();
 		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEDR, location);
 		loginPage.open();
-		loginPage.login(userName, USERPASSWORD);
-		loginPage.waitForPageLoad();
-
-		assertTrue(eulaPage.getiAccept().isDisplayed());
-		eulaPage.getiAccept().click();
+		loginPage.loginNormalAs(userName, USERPASSWORD);
 		homePage.waitForPageLoad();
 		assertTrue(homePage.checkIfAtHomePage());
 	}
