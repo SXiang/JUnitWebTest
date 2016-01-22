@@ -43,7 +43,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='customer-form']/fieldset/div[4]/div[3]/div[2]/a")
 	private WebElement cancelBtn;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='Active']")
+	@FindBy(how = How.XPATH, using = "//*[@id='active']")
 	private WebElement inputAccountEnabled;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[3]/a")
