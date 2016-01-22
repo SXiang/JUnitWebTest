@@ -108,39 +108,14 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 	public TestWatcher watcher = new TestWatcher() {
 		@Override
 		public void starting(Description description) {
-			Log.info("Started executing " + description.getClassName() + "." + description.getMethodName() + "() test...");
-			if (isExecutingSimulatorTestMethod(description.getMethodName())) {
-				Log.info("Installing simulator pre-reqs. Start Analyzer and Replay DB3 script.");
-				try {
-					TestSetup.setupSimulatorPreReqs();
-					TestSetup.startAnalyzer();
-				} catch (IOException e) {
-					Log.error(e.toString());
-				}	
-			}
+			TestSetup.simulatorTestStarting(description);
 		}
-		
+
 		@Override
 		public void finished(Description description) {
-			Log.info("Finished executing " + description.getClassName() + "." + description.getMethodName() + "() test...");
-			if (isExecutingSimulatorTestMethod(description.getMethodName())) {
-				Log.info("Stop Analyzer.");
-				TestSetup.stopAnalyzer();
-			}
+			TestSetup.simulatorTestFinishing(description);
 		}
 	};
-
-	private static boolean isExecutingSimulatorTestMethod(String methodName) {
-		String[] nameParts = methodName.split("\\_");
-		if (nameParts != null && nameParts.length > 1)
-		{
-			if (nameParts[1].equalsIgnoreCase("SimulatorTest")) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
 
 	@Before
 	public void beforeTestMethod() {
@@ -590,7 +565,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(testSetup.getLoginUser() + ":" + testSetup.getLoginPwd(), NOTSET);
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			
@@ -627,7 +602,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(testSetup.getLoginUser() + ":" + testSetup.getLoginPwd(), NOTSET);
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			
@@ -647,7 +622,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			// {DEFECT}: Check if this test step is correct. If YES, this is a probable defect.
 			//assertTrue(driverViewPageAction.verifyStartSurveyButtonFromSurveyDialogIsDisabled(EMPTY, NOTSET));
 			
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.
@@ -662,16 +637,16 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 9);   /* PG&E Driver */
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnGisButton(EMPTY,NOTSET);
 			driverViewPageAction.turnOffBoundariesDistrict(EMPTY, NOTSET);
 			driverViewPageAction.turnOffBoundariesDistrictPlat(EMPTY, NOTSET);
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 2);   /* Customer Supervisor */
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			// To get a new instance of Driver view page, initialize the driver view page.
 			driverViewPageAction.initializeDriverViewPage(TestContext.INSTANCE.getDriver(), 
 					TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());		
@@ -680,7 +655,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			assertTrue(driverViewPageAction.verifyGisSwitchIsOn("BoundariesDistrict",NOTSET));
 			assertTrue(driverViewPageAction.verifyGisSwitchIsOn("BoundariesDistrictPlat",NOTSET));
 			
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.
@@ -694,7 +669,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 
 			// goto home by clicking on picarro logo on driver view page.
@@ -711,7 +686,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			
 			assertTrue(driverViewPageAction.verifyPageLoaded(EMPTY,NOTSET));
 			
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.
@@ -725,7 +700,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
@@ -785,7 +760,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			assertTrue(driverViewPageAction.verifyRefBottleMeasButtonIsEnabled(EMPTY, NOTSET));
 			assertTrue(driverViewPageAction.verifySystemShutdownButtonIsNotDisplayed(EMPTY, NOTSET));
 			
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.
@@ -799,7 +774,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 
 			// Verify 1.
@@ -874,7 +849,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			//assertTrue(driverViewPageAction.verifyCrossHairIconIsShownOnMap("Gray", NOTSET));
 			assertTrue(driverViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));			
 			
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.
@@ -888,7 +863,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
@@ -923,7 +898,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			// Verify 1.
 			// (check???) surveys conducted in the past 8-hour should be displayed on the map.
 			
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.
@@ -937,7 +912,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
@@ -957,13 +932,13 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
 
 			// Stop current simulator and start another with a different Analyzer.
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 
 			// To get a new instance of Driver view page, initialize the driver view page.
 			driverViewPageAction.initializeDriverViewPage(TestContext.INSTANCE.getDriver(), 
 					TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());		
 
-			testEnvironmentAction.startSimulator(EMPTY, 4);
+			testEnvironmentAction.startAnalyzer(EMPTY, 4);
 			driverViewPageAction.open(EMPTY,NOTSET);
 
 			// start survey again.
@@ -988,7 +963,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			// Verify 1.
 			// (check???) surveys conducted in the past 8-hour should NOT be displayed on the map.
 			
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.
@@ -1015,7 +990,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			loginPage.open();
 			loginPage.loginNormalAs(userName, USERPASSWORD);
 			
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 			
 			// Verify that Driver view page was opened.
@@ -1071,7 +1046,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			assertTrue(driverViewPageAction.verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
 			assertTrue(driverViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
 			
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.			
@@ -1110,7 +1085,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 		try {
 			Log.info("\nRunning TC1215_SimulatorTest_CannotLoginDriverViewInvalidCredentials");
 
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPage.open();
 
 			loginPage.waitForPageLoad();
@@ -1128,7 +1103,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 
 			// start survey.
@@ -1188,7 +1163,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			assertTrue(driverViewPageAction.verifySurveyInfoStabilityClassLabelEquals(expectedStabilityClass, NOTSET));
 		
 			// Stop current simulator and start another with a different Analyzer.
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.
@@ -1202,7 +1177,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 
 			// start survey.
@@ -1290,7 +1265,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			assertTrue(driverViewPageAction.verifySurveyInfoSurveyorLabelEquals(expectedSurveyorValue, NOTSET));
 	
 			// Stop current simulator and start another with a different Analyzer.
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.
@@ -1304,7 +1279,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 1);   /* Customer Utility admin */
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 
 			// start survey.
@@ -1316,7 +1291,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			assertFalse(driverViewPageAction.getDriverViewPage().getManualButton().isDisplayed());
 	
 			// Stop current simulator and start another with a different Analyzer.
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.
@@ -1332,7 +1307,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver user */
 
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
@@ -1398,7 +1373,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			driverViewPageAction.turnOnBoundariesDistrictPlat(EMPTY, NOTSET);
 			assertTrue(driverViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));		// TODO Look into how to check for specific BoundaryType showing.
 
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.

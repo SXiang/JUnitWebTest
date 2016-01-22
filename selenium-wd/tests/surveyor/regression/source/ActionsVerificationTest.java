@@ -38,7 +38,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		try {
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(AdminUser + ":" + AdminPass, NOTSET);
-			testEnvironmentAction.startSimulator(EMPTY, 1);
+			testEnvironmentAction.startAnalyzer(EMPTY, 1);
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			
@@ -105,7 +105,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		try {
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(AdminUser + ":" + AdminPass, NOTSET);
-			testEnvironmentAction.startSimulator(EMPTY, 3);
+			testEnvironmentAction.startAnalyzer(EMPTY, 3);
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			
@@ -141,7 +141,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		try {
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(AdminUser + ":" + AdminPass, NOTSET);
-			testEnvironmentAction.startSimulator(EMPTY, 3);
+			testEnvironmentAction.startAnalyzer(EMPTY, 3);
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			
@@ -179,7 +179,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		try {
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(AdminUser + ":" + AdminPass, NOTSET);
-			testEnvironmentAction.startSimulator(EMPTY,3);
+			testEnvironmentAction.startAnalyzer(EMPTY,3);
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			driverViewPageAction.startDrivingSurvey(EMPTY, 3);

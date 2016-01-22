@@ -174,6 +174,30 @@ public class DriverViewPageActions extends BasePageActions {
 		return true;
 	}
 
+	/**
+	 * Executes clickOnZoomInButton action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean clickOnZoomInButton(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.clickOnZoomInButton", data, dataRowID);
+		getDriverViewPage().clickZoomInButton();
+		return true;
+	}
+ 
+	/**
+	 * Executes clickOnZoomOutButton action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean clickOnZoomOutButton(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.clickOnZoomOutButton", data, dataRowID);
+		getDriverViewPage().clickZoomOutButton();
+		return true;
+	}
+
 	public boolean clickOnHeaderInfoBox(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.clickOnHeaderInfoBox", data, dataRowID);
 		getDriverViewPage().clickHeaderInfoBox();
@@ -193,10 +217,14 @@ public class DriverViewPageActions extends BasePageActions {
 		return true;
 	}
 
-
 	public boolean open(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.open", data, dataRowID);
 		getDriverViewPage().open();
+		return true;
+	}
+
+	public boolean waitForConnectionToComplete(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.waitForPageLoad", data, dataRowID);
 		getDriverViewPage().waitForPageLoad();
 		getDriverViewPage().waitForConnectionComplete();
 		return true;
@@ -417,7 +445,6 @@ public class DriverViewPageActions extends BasePageActions {
 		logAction("DriverViewPageActions.turnOnAllBoundaries", data, dataRowID);
 		turnOnBoundariesDistrict(data, dataRowID);
 		turnOnBoundariesDistrictPlat(data, dataRowID);
-		turnOnAllBoundaries(data, dataRowID);
 		return true;
 	}
  
@@ -563,7 +590,6 @@ public class DriverViewPageActions extends BasePageActions {
 		logAction("DriverViewPageActions.turnOffAllBoundaries", data, dataRowID);
 		turnOffBoundariesDistrict(data, dataRowID);
 		turnOffBoundariesDistrictPlat(data, dataRowID);
-		turnOffAllBoundaries(data, dataRowID);
 		return true;
 	}
  
@@ -1251,6 +1277,8 @@ public class DriverViewPageActions extends BasePageActions {
 		else if (actionName.equals("clickOnPicarroLogoButton")) { return this.clickOnPicarroLogoButton(data, dataRowID); }
 		else if (actionName.equals("clickOnPositionButton")) { return this.clickOnPositionButton(data, dataRowID); }
 		else if (actionName.equals("clickOnStatusButton")) { return this.clickOnStatusButton(data, dataRowID); }
+		else if (actionName.equals("clickOnZoomInButton")) { return this.clickOnZoomInButton(data, dataRowID); }
+		else if (actionName.equals("clickOnZoomOutButton")) { return this.clickOnZoomOutButton(data, dataRowID); }
 		else if (actionName.equals("enterFieldNotes")) { return this.enterFieldNotes(data, dataRowID); }
 		else if (actionName.equals("hideCurtainView")) { return this.hideCurtainView(data, dataRowID); }
 		else if (actionName.equals("insertTextById")) { return this.insertTextById(data, dataRowID); }
@@ -1391,6 +1419,7 @@ public class DriverViewPageActions extends BasePageActions {
 		else if (actionName.equals("verifyWBTempButtonIsRed")) { return this.verifyWBTempButtonIsRed(data, dataRowID); }
 		else if (actionName.equals("verifyWindRoseIsNotShownOnMap")) { return this.verifyWindRoseIsNotShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyWindRoseIsShownOnMap")) { return this.verifyWindRoseIsShownOnMap(data, dataRowID); }
+		else if (actionName.equals("waitForConnectionToComplete")) { return this.waitForConnectionToComplete(data, dataRowID); }		
 		return false;
 	}
 
