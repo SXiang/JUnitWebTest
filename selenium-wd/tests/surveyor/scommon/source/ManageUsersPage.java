@@ -196,6 +196,9 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 	public void addNewCustomerUser(String customerName, String email,
 			String password, String role, String location) {
+		Log.info(String.format("Adding new Customer user. Name=%s, Email=%s, Password=[HIDDEN], Role=%s, Location=%s", customerName, 
+				email, role, location));
+		
 		String custLoc = customerName + " - " + location;
 		this.btnAddNewCustomerUser.click();
 		

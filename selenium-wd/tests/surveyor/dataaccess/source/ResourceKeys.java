@@ -49,6 +49,9 @@ public class ResourceKeys {
 	public static final String ManageAnalyzer_EditAnalyzer = "ManageAnalyzer_EditAnalyzer";
 	public static final String ManageAnalyzer_NewAnalyzer = "ManageAnalyzer_NewAnalyzer";
 	public static final String ManageAnalyzers_PageTitle = "ManageAnalyzers_PageTitle";
+	public static final String ManageCustomer_EditCustomer = "ManageCustomer_EditCustomer";
+	public static final String ManageCustomer_NewCustomer = "ManageCustomer_NewCustomer";
+	public static final String ManageCustomers_AddNew = "ManageCustomers_AddNew";
 	public static final String ManageCustomers_PageTitle = "ManageCustomers_PageTitle";
 	public static final String ManageLocation_RapidResponse = "ManageLocation_RapidResponse";
 	public static final String ManageRefGasBottles_PageTitle = "ManageRefGasBottles_PageTitle";

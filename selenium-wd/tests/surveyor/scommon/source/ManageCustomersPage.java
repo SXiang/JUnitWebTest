@@ -9,6 +9,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.FindBy;
 
 import common.source.Log;
@@ -25,20 +27,23 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 public class ManageCustomersPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageCustomers";
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.ManageCustomers_PageTitle);
+	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageCustomers_PageTitle);
+	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ManageCustomer_NewCustomer);
+	public static final String STREditPageContentText = Resources.getResource(ResourceKeys.ManageCustomer_EditCustomer);
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	private WebElement btnAddNewCustomer;
 	
-	@FindBy(id = "Name")
+	@FindBy(id = "name")
 	private WebElement inputCustomerName;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='Eula']")
+	@FindBy(how = How.XPATH, using = "//*[@id='eula']")
 	private WebElement textAreaEula;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='customer-form']/fieldset/div[4]/div[3]/div[2]/a")
 	private WebElement cancelBtn;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='Active']")
+	@FindBy(how = How.XPATH, using = "//*[@id='active']")
 	private WebElement inputAccountEnabled;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[3]/a")
@@ -58,6 +63,15 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	
 	public void addNewCustomer(String customerName, String eula) {
 		this.btnAddNewCustomer.click();
+		this.waitForNewPageLoad();
+		
+		this.inputCustomerName = driver.findElement(By.id("name"));
+		if (this.inputCustomerName == null) {
+			Log.info("Did NOT find this.inputCustomerName element");
+		}
+		if (!this.inputCustomerName.isDisplayed()) {
+			Log.info("this.inputCustomerName is NOT displayed");
+		}
 		
 		this.inputCustomerName.sendKeys(customerName);
 		this.textAreaEula.sendKeys(eula);
@@ -145,6 +159,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				actionCell = table.findElement(By.xpath(actionXPath));
 				
 				actionCell.click();
+				this.waitForEditPageLoad();
 				
 				this.inputCustomerName.clear();
 				this.inputCustomerName.sendKeys(newCustomerName);
@@ -212,6 +227,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				actionCell = table.findElement(By.xpath(actionXPath));
 				
 				actionCell.click();
+				this.waitForEditPageLoad();
 				
 				this.inputCustomerName.clear();
 				this.inputCustomerName.sendKeys(newCustomerName);
@@ -380,10 +396,28 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		this.cancelBtn.click();
 	}
 	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
+    @Override
+	public void waitForPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRPageContentText);
+            }
+        });
+    }
 
-	}
+	public void waitForNewPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRNewPageContentText);
+            }
+        });
+    }
+
+    public void waitForEditPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STREditPageContentText);
+            }
+        });
+    }
 }
