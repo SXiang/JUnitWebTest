@@ -7,11 +7,10 @@ import surveyor.scommon.actions.data.TestEnvironmentDataReader;
 import surveyor.scommon.actions.data.TestEnvironmentDataReader.TestEnvironmentDataRow;
 
 public class TestEnvironmentActions extends BaseActions {
-	private static final String DEFAULT_ANALYZER_SHARED_KEY = "SimAuto-AnalyzerKey1";
-	private static final String DEFAULT_ANALYZER_SERIAL_NUMBER = "SimAuto-Analyzer1";
 	private static final String CLS_TEST_ENVIRONMENT_ACTIONS = "TestEnvironmentActions";
 	private static final String FN_IDLE_FOR_SECONDS = "idleForSeconds";
-	private static final String FN_START_SIMULATOR = "startSimulator";
+	private static final String FN_START_SIMULATOR = "startAnalyzer";
+	private static final String FN_START_REPLAY = "startReplay";
 	private TestEnvironmentDataReader dataReader;
 
 	public TestEnvironmentActions() {
@@ -20,20 +19,39 @@ public class TestEnvironmentActions extends BaseActions {
 	}
 
 	/**
-	 * Executes startSimulator action.
+	 * Executes startAnalyzer action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 * @throws Exception 
 	 */
-	public boolean startSimulator(String data, Integer dataRowID) throws Exception {
-		logAction("TestEnvironmentActions.startSimulator", data, dataRowID);
+	public boolean startAnalyzer(String data, Integer dataRowID) throws Exception {
+		logAction("TestEnvironmentActions.startAnalyzer", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero(CLS_TEST_ENVIRONMENT_ACTIONS + FN_START_SIMULATOR, ARG_DATA_ROW_ID, dataRowID);
 		try {
 			TestEnvironmentDataRow dataRow = getDataReader().getDataRow(dataRowID);
 
 			TestSetup.updateAnalyzerConfiguration(dataRow.analyzerSerialNumber, dataRow.analyzerSharedKey);
 			TestSetup.restartAnalyzer();
+		} catch (Exception e) {
+			Log.error(e.toString());
+			return false;
+		}
+		return true;
+	}
+ 
+	/**
+	 * Executes startReplay action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean startReplay(String data, Integer dataRowID) throws Exception {
+		logAction("TestEnvironmentActions.startReplay", data, dataRowID);
+		ActionArguments.verifyGreaterThanZero(CLS_TEST_ENVIRONMENT_ACTIONS + FN_START_REPLAY, ARG_DATA_ROW_ID, dataRowID);
+		try {
+			TestEnvironmentDataRow dataRow = getDataReader().getDataRow(dataRowID);
 
 			if (!ActionArguments.isEmpty(dataRow.replayScriptDB3File)) {
 				TestSetup.replayDB3Script(dataRow.replayScriptDefnFile, dataRow.replayScriptDB3File);
@@ -46,15 +64,15 @@ public class TestEnvironmentActions extends BaseActions {
 		}
 		return true;
 	}
- 
+	
 	/**
-	 * Executes stopSimulator action.
+	 * Executes stopAnalyzer action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 */
-	public boolean stopSimulator(String data, Integer dataRowID) {
-		logAction("TestEnvironmentActions.stopSimulator", data, dataRowID);
+	public boolean stopAnalyzer(String data, Integer dataRowID) {
+		logAction("TestEnvironmentActions.stopAnalyzer", data, dataRowID);
 		try {
 			TestSetup.stopAnalyzer();
 		} catch (Exception e) {
@@ -114,8 +132,9 @@ public class TestEnvironmentActions extends BaseActions {
 
 	/* Invoke action using specified ActionName */
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
-		if (actionName.equals("startSimulator")) { return this.startSimulator(data, dataRowID); }
-		else if (actionName.equals("stopSimulator")) { return this.stopSimulator(data, dataRowID); }
+		if (actionName.equals("startReplay")) { return this.startReplay(data, dataRowID); }
+		else if (actionName.equals("startAnalyzer")) { return this.startAnalyzer(data, dataRowID); }
+		else if (actionName.equals("stopAnalyzer")) { return this.stopAnalyzer(data, dataRowID); }
 		else if (actionName.equals("verifyAnalyzerIsRunning")) { return this.verifyAnalyzerIsRunning(data, dataRowID); }
 		else if (actionName.equals("verifyAnalyzerIsShutdown")) { return this.verifyAnalyzerIsShutdown(data, dataRowID); }
 		else if (actionName.equals("verifyBrowserIsShutdown")) { return this.verifyBrowserIsShutdown(data, dataRowID); }
@@ -133,5 +152,4 @@ public class TestEnvironmentActions extends BaseActions {
 	public void setDataReader(TestEnvironmentDataReader dataReader) {
 		this.dataReader = dataReader;
 	}
-
 }

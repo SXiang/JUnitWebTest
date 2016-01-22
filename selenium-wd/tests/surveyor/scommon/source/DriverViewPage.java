@@ -15,6 +15,7 @@ import surveyor.dataaccess.source.Resources;
 
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.WebElement;
 
 public class DriverViewPage extends SurveyorBasePage {
@@ -225,6 +226,14 @@ public class DriverViewPage extends SurveyorBasePage {
 	@CacheLookup
 	private WebElement mapSwitchMap;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='map']/div/div[2]/div[2]/button[1]")
+	@CacheLookup
+	private WebElement zoomInButton;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='map']/div/div[2]/div[2]/button[2]")
+	@CacheLookup
+	private WebElement zoomOutButton;
+	
 	@FindBy(id = "d08fc87f-f979-4131-92a9-3d82f37f4bba")
 	@CacheLookup
 	private WebElement materialTypeCopper;
@@ -373,6 +382,10 @@ public class DriverViewPage extends SurveyorBasePage {
 	@CacheLookup
 	private WebElement tagSurvey;
 	
+	@FindBy(id = "annotation_modal")
+	@CacheLookup
+	private WebElement fieldNotesModalDialog;
+	
 	/**
 	 * @param driver
 	 * @param baseURL
@@ -389,6 +402,16 @@ public class DriverViewPage extends SurveyorBasePage {
 			return true;
 		
 		return false;
+	}
+
+	public DriverViewPage clickZoomInButton() {
+		this.zoomInButton.click();
+		return this;
+	}
+
+	public DriverViewPage clickZoomOutButton() {
+		this.zoomOutButton.click();
+		return this;
 	}
 
 	public DriverViewPage clickCurtainArrowUpButton() {
@@ -1276,6 +1299,7 @@ public class DriverViewPage extends SurveyorBasePage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickFieldNotesCancelButton() {
+		fieldNotesCancel = driver.findElement(By.id("btn_cancel_annotation"));
 		fieldNotesCancel.click();
 		return this;
 	}
@@ -1445,6 +1469,7 @@ public class DriverViewPage extends SurveyorBasePage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickFieldNotesSaveButton() {
+		fieldNotesSave = driver.findElement(By.id("btn_save_annotation")); 
 		fieldNotesSave.click();
 		return this;
 	}
@@ -1557,7 +1582,8 @@ public class DriverViewPage extends SurveyorBasePage {
 	 */
 	public DriverViewPage setFieldNotesTextField(String fieldNotes) {
 		Log.info(String.format("Adding fields notes text - %s", fieldNotes));
-		fieldNotesTextField.clear();
+		fieldNotesTextField = driver.findElement(By.id("anno_input"));
+		//fieldNotesTextField.clear();
 		fieldNotesTextField.sendKeys(fieldNotes);
 		return this;
 	}
@@ -1759,6 +1785,28 @@ public class DriverViewPage extends SurveyorBasePage {
 		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return divBlockedUI.getAttribute("class").equalsIgnoreCase("ng-hide");
+			}
+		});
+	}
+
+	/**
+	 * Verifies that the field notes modal dialog popup is shown.
+	 */
+	public void waitForFieldNotesDialogToOpen() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return fieldNotesModalDialog.getAttribute("class").equalsIgnoreCase("");
+			}
+		});
+	}
+
+	/**
+	 * Verifies that the field notes modal dialog popup is closed.
+	 */
+	public void waitForFieldNotesDialogToClose() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return fieldNotesModalDialog.getAttribute("class").equalsIgnoreCase("ng-hide");
 			}
 		});
 	}
