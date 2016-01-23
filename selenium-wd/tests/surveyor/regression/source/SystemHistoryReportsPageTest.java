@@ -93,8 +93,6 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONEPT,
 				surveyorUnit, startDate, endDate);
 
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-
 		if ((systemHistoryReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
 			assertTrue(systemHistoryReportsPage.findExistingReport(rptTitle,
 					PICDFADMIN));
