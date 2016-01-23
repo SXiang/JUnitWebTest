@@ -38,10 +38,14 @@ public class OLMapUtility {
 			+ "pixelY=(node.y-(delta[1]*ol.has.DEVICE_PIXEL_RATIO))/(ol.has.DEVICE_PIXEL_RATIO);"
 			+ "return{pixelX,pixelY};}}});};return [pixelX,pixelY];};";
 	
-	private static final String IS_FIELD_NOTES_SHOWN_FUNCTION = "function isFieldNotesShown() { var shown = false; try { if (surveyormap) "
+	private static final String IS_FIELD_NOTES_DIALOG_SHOWN_FUNCTION = "function isFieldNotesDialogShown() { var shown = false; try { if (surveyormap) "
 			+ "{ overlays = surveyormap.getOverlays(); for (var i = 0; i < overlays.getLength() ; i++) { overlay = overlays.item(i); "
 			+ "if (overlay) { element = overlay.getElement(); if (element) { if (element.id == 'annotation_modal') "
 			+ "{ return !(overlay.getPosition() == undefined); } } } } } } catch (err) { shown = false; }; return shown; };";
+
+	private static final String IS_FIELD_NOTE_SHOWN_FUNCTION = "function isFieldNoteShownOnMap(note) { var shown = false; "
+			+ "var freshConstellation = JSON.parse(JSON.stringify(d3constellation)); freshConstellation.nodes.forEach(function (d) { "
+			+ "if (d.type == 'annotation') { if (!d.fixed) { if (d.text == note) { shown = true; } } } }); return shown; };";
 
 	private static final String IS_ICON_PRESENT_JS_FUNCTION = "function isIconPresent(imgFileName){var found=false;var CAR_ICON_SRC='/content/images/'+imgFileName;"
 			+ "try{layers=map.getLayers();if(layers){for(var i=0;i<layers.getLength();i++){layer=layers.item(i);"
@@ -133,7 +137,8 @@ public class OLMapUtility {
 	private static final String IS_MAP_VIEW_SHOWN = "return (mapLayer.getSource() == sourceBingRoads);";
 	private static final String IS_SATELLITE_VIEW_SHOWN = "return (mapLayer.getSource() == sourceBingArialWithStreets);";
 	
-	private static final String IS_FIELD_NOTES_SHOWN_JS_FUNCTION_CALL = "return isFieldNotesShown();";
+	private static final String IS_FIELD_NOTES_DIALOG_SHOWN_JS_FUNCTION_CALL = "return isFieldNotesDialogShown();";
+	private static final String IS_FIELD_NOTE_SHOWN_JS_FUNCTION_CALL = "return isFieldNoteShownOnMap('%s');";
 	private static final String IS_ICON_PRESENT_JS_FUNCTION_CALL = "return isIconPresent('%s');";
 
 	private static final String IS_LISAS_PRESENT_JS_FUNCTION_CALL = "return isLisasPresent();";
@@ -419,13 +424,26 @@ public class OLMapUtility {
 	}
 	
 	/*
+	 * Checks whether field notes dialog is shown on the map. 
+	 * Returns true if field dialog notes is shown on the map, false otherwise. 
+	 */
+	public boolean isFieldNotesDialogShown() {
+		String jsScript = IS_FIELD_NOTES_DIALOG_SHOWN_FUNCTION + IS_FIELD_NOTES_DIALOG_SHOWN_JS_FUNCTION_CALL;
+		Object fieldNotesDialogShown = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (fieldNotesDialogShown.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
+	}
+
+	/*
 	 * Checks whether field notes is shown on the map. 
 	 * Returns true if field notes is shown on the map, false otherwise. 
 	 */
-	public boolean isFieldNotesShown() {
-		String jsScript = IS_FIELD_NOTES_SHOWN_FUNCTION + IS_FIELD_NOTES_SHOWN_JS_FUNCTION_CALL;
-		Object fieldNotesShown = ((JavascriptExecutor)this.driver).executeScript(jsScript);
-		if (fieldNotesShown.toString().equalsIgnoreCase("true")) {
+	public boolean isFieldNoteShown(String fieldNote) {
+		String jsScript = IS_FIELD_NOTE_SHOWN_FUNCTION + String.format(IS_FIELD_NOTE_SHOWN_JS_FUNCTION_CALL, fieldNote);
+		Object fieldNoteShown = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (fieldNoteShown.toString().equalsIgnoreCase("true")) {
 			return true;
 		}
 		return false;

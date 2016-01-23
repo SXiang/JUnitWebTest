@@ -32,6 +32,8 @@ public class DriverViewPageActions extends BasePageActions {
 	private static final String FN_VERIFY_DISPLAY_SWITCH_IS_OFF = "verifyDisplaySwitchIsOff";
 	private static final String FN_VERIFY_MAP_SWITCH_OFF = "verifyMapSwitchOff";
 	private static final String FN_VERIFY_MAP_SWITCH_ON = "verifyMapSwitchOn";
+	private static final String FN_VERIFY_FIELD_NOTES_IS_SHOWN_ON_MAP = "verifyFieldNotesIsShownOnMap";
+	private static final String FN_VERIFY_FIELD_NOTES_IS_NOT_SHOWN_ON_MAP = "verifyFieldNotesIsNotShownOnMap";
 	private static final String FN_VERIFY_GIS_SWITCH_IS_ON = "verifyGisSwitchIsOn";
 	private static final String FN_VERIFY_DISPLAY_SWITCH_IS_ON = "verifyDisplaySwitchIsOn";
 	private static final String FN_VERIFY_SURVEY_INFO_ANALYZER_LABEL_EQUALS = "verifySurveyInfoAnalyzerLabelEquals";
@@ -115,6 +117,13 @@ public class DriverViewPageActions extends BasePageActions {
 		logAction("DriverViewPageActions.clickOnDisplayButton", data, dataRowID);
 		getDriverViewPage().clickDisplayButton();
 		return true;
+	}
+
+	public boolean clickOnFirstIndicationShownOnMap(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.clickOnFirstIndicationShownOnMap", data, dataRowID);
+		String mapCanvasXPath = "//*[@id='map']/div/canvas";
+		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
+		return mapUtility.clickFirstIndicationOnMap(mapCanvasXPath);
 	}
 
 	public boolean clickOnGisButton(String data, Integer dataRowID) {
@@ -1180,19 +1189,21 @@ public class DriverViewPageActions extends BasePageActions {
 		return getDriverViewPage().getTimeRemainingLabelText().startsWith(data);
 	}
 	
-	public boolean verifyFieldNotesIsShownOnMap(String data, Integer dataRowID) {
+	public boolean verifyFieldNotesIsShownOnMap(String data, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.verifyFieldNotesIsShownOnMap", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_FIELD_NOTES_IS_SHOWN_ON_MAP, ARG_DATA, data);
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
-		return mapUtility.isFieldNotesShown();
+		return mapUtility.isFieldNoteShown(data);
 	}
 	public boolean verifyWindRoseIsShownOnMap(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyWindRoseIsShownOnMap", data, dataRowID);
 		return this.getDriverViewPage().isWindRoseShown();
 	}
-	public boolean verifyFieldNotesIsNotShownOnMap(String data, Integer dataRowID) {
+	public boolean verifyFieldNotesIsNotShownOnMap(String data, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.verifyFieldNotesIsNotShownOnMap", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_FIELD_NOTES_IS_NOT_SHOWN_ON_MAP, ARG_DATA, data);
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
-		return !mapUtility.isFieldNotesShown();
+		return !mapUtility.isFieldNoteShown(data);
 	}
 	public boolean verifyWindRoseIsNotShownOnMap(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyWindRoseIsNotShownOnMap", data, dataRowID);
@@ -1270,6 +1281,7 @@ public class DriverViewPageActions extends BasePageActions {
 		else if (actionName.equals("clickOnCurtainZoomInButton")) { return this.clickOnCurtainZoomInButton(data, dataRowID); }
 		else if (actionName.equals("clickOnCurtainZoomOutButton")) { return this.clickOnCurtainZoomOutButton(data, dataRowID); }
 		else if (actionName.equals("clickOnDisplayButton")) { return this.clickOnDisplayButton(data, dataRowID); }
+		else if (actionName.equals("clickOnFirstIndicationShownOnMap")) { return this.clickOnFirstIndicationShownOnMap(data, dataRowID); }
 		else if (actionName.equals("clickOnGisButton")) { return this.clickOnGisButton(data, dataRowID); }
 		else if (actionName.equals("clickOnHeaderInfoBox")) { return this.clickOnHeaderInfoBox(data, dataRowID); }
 		else if (actionName.equals("clickOnMapButton")) { return this.clickOnMapButton(data, dataRowID); }
@@ -1356,8 +1368,8 @@ public class DriverViewPageActions extends BasePageActions {
 		else if (actionName.equals("verifyDisplaySwitchIsOff")) { return this.verifyDisplaySwitchIsOff(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchIsOn")) { return this.verifyDisplaySwitchIsOn(data, dataRowID); }
 		else if (actionName.equals("verifyDriverViewPageIsOpened")) { return this.verifyDriverViewPageIsOpened(data, dataRowID); }
-		else if (actionName.equals("verifyFieldNotesIsNotShownOnMap")) { return this.verifyFieldNotesIsNotShownOnMap(data, dataRowID); }
-		else if (actionName.equals("verifyFieldNotesIsShownOnMap")) { return this.verifyFieldNotesIsShownOnMap(data, dataRowID); }
+		else if (actionName.equals(FN_VERIFY_FIELD_NOTES_IS_NOT_SHOWN_ON_MAP)) { return this.verifyFieldNotesIsNotShownOnMap(data, dataRowID); }
+		else if (actionName.equals(FN_VERIFY_FIELD_NOTES_IS_SHOWN_ON_MAP)) { return this.verifyFieldNotesIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyFlowButtonIsGreen")) { return this.verifyFlowButtonIsGreen(data, dataRowID); }
 		else if (actionName.equals("verifyFlowButtonIsRed")) { return this.verifyFlowButtonIsRed(data, dataRowID); }
 		else if (actionName.equals("verifyFOVIsNotShownOnMap")) { return this.verifyFOVIsNotShownOnMap(data, dataRowID); }
