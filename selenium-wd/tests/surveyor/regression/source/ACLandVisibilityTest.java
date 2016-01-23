@@ -465,7 +465,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		assertTrue(fleetMapPage.checkIfAtFleetMapPage());
 		assertTrue(fleetMapPage.getFleetMap().isDisplayed());
 		homePage.getLinkSurveyors().click();
-
+		surveyorPage.waitForPageLoad();
 		surveyorPage.getTxtSurveyorSearch().sendKeys(SQACUSLOCSUR);
 		surveyorPage.waitForDataTabletoLoad();
 		assertTrue(surveyorPage.getTableRows().size() > 0);
@@ -638,7 +638,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		assertTrue(fleetMapPage.checkIfAtFleetMapPage());
 		assertTrue(fleetMapPage.getFleetMap().isDisplayed());
 		homePage.getLinkSurveyors().click();
-
+		surveyorPage.waitForPageLoad();
 		surveyorPage.getTxtSurveyorSearch().sendKeys(SQACUSLOCSUR);
 		surveyorPage.waitForDataTabletoLoad();
 		assertTrue(surveyorPage.getTableRows().size() > 0);
@@ -782,7 +782,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		assertTrue(fleetMapPage.checkIfAtFleetMapPage());
 		assertTrue(fleetMapPage.getFleetMap().isDisplayed());
 		homePage.getLinkSurveyors().click();
-
+		surveyorPage.waitForPageLoad();
 		surveyorPage.getTxtSurveyorSearch().sendKeys(PICADMNSURVEYORSHORT);
 		surveyorPage.waitForDataTabletoLoad();
 		assertTrue(surveyorPage.getTableRows().size() > 0);
