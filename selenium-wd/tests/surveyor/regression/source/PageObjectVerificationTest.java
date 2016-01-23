@@ -142,7 +142,8 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		driverViewPage.waitForFieldNotesDialogToOpen();
 		
 		Log.info("Entering dummy text in field notes");
-		driverViewPage.setFieldNotesTextField("This is dummy text in field notes");
+		String fieldNote = "Dummy field note";
+		driverViewPage.setFieldNotesTextField(fieldNote);
 		
 		Log.info("Clicking on Field notes Save button");
 		driverViewPage.clickFieldNotesSaveButton();
@@ -150,7 +151,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		Log.info("Waiting for field notes dialog to close");
 		driverViewPage.waitForFieldNotesDialogToClose();
 		
-		boolean isFieldNotesShown = mapUtility.isFieldNotesShown();
+		boolean isFieldNotesShown = mapUtility.isFieldNoteShown(fieldNote);
 		Log.info("isFieldNotesShown = " + isFieldNotesShown);
 		
 		boolean chartDataShowingOnMap = mapUtility.isConcentrationChartDataShowingOnMap();

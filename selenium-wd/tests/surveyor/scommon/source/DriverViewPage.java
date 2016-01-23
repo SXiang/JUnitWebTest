@@ -665,7 +665,7 @@ public class DriverViewPage extends SurveyorBasePage {
 	public boolean isWindRoseShown() {
 		boolean isShown = true;
 		if ((this.windRose.getAttribute("class").contains("ng-hide")) && (this.windRoseArrow.getAttribute("class").contains("ng-hide"))) {
-			isShown = true;
+			isShown = false;
 		}
 		return isShown;
 	}
