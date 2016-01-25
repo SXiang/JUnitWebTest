@@ -103,14 +103,14 @@ public class ReportDrivingSurvey extends BaseEntity {
 		ReportDrivingSurvey objReportDrivingSurvey = null;
 		
 		// Get from cache if present. Else fetch from Database.
-		if (DBCache.INSTANCE.containsKey(CACHE_KEY+reportId)) {
-			objReportDrivingSurvey = (ReportDrivingSurvey)DBCache.INSTANCE.get(CACHE_KEY+reportId);
+		if (DBCache.INSTANCE.containsKey(CACHE_KEY+reportId+"_"+surveyId)) {
+			objReportDrivingSurvey = (ReportDrivingSurvey)DBCache.INSTANCE.get(CACHE_KEY+reportId+"_"+surveyId);
 		} else {
 			String SQL = "SELECT * FROM dbo.[ReportDrivingSurvey] WHERE ReportId='" + reportId + "' AND SurveyId='" + surveyId + "'";
 			ArrayList<ReportDrivingSurvey> objReportDrivingSurveyList = load(SQL);
 			if (objReportDrivingSurveyList!=null && objReportDrivingSurveyList.size()>0) {
 				objReportDrivingSurvey = objReportDrivingSurveyList.get(0);
-				DBCache.INSTANCE.set(CACHE_KEY + reportId, objReportDrivingSurvey);
+				DBCache.INSTANCE.set(CACHE_KEY + reportId + "_" + surveyId, objReportDrivingSurvey);
 			}
 		}
 		return objReportDrivingSurvey;

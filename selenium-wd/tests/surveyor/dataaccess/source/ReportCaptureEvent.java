@@ -176,14 +176,14 @@ public class ReportCaptureEvent extends BaseEntity {
 		ReportCaptureEvent objReportCaptureEvent = null;
 		
 		// Get from cache if present. Else fetch from Database.
-		if (DBCache.INSTANCE.containsKey(CACHE_KEY+reportId)) {
-			objReportCaptureEvent = (ReportCaptureEvent)DBCache.INSTANCE.get(CACHE_KEY+reportId);
+		if (DBCache.INSTANCE.containsKey(CACHE_KEY+reportId+"_"+surveyId)) {
+			objReportCaptureEvent = (ReportCaptureEvent)DBCache.INSTANCE.get(CACHE_KEY+reportId+"_"+surveyId);
 		} else {
 			String SQL = "SELECT * FROM dbo.[ReportCaptureEvent] WHERE ReportId='" + reportId + "' AND SurveyId='" + surveyId + "'";
 			ArrayList<ReportCaptureEvent> objReportCaptureEventList = load(SQL);
 			if (objReportCaptureEventList!=null && objReportCaptureEventList.size()>0) {
 				objReportCaptureEvent = objReportCaptureEventList.get(0);
-				DBCache.INSTANCE.set(CACHE_KEY + reportId, objReportCaptureEvent);
+				DBCache.INSTANCE.set(CACHE_KEY + reportId + "_" + surveyId, objReportCaptureEvent);
 			}
 		}
 		return objReportCaptureEvent;

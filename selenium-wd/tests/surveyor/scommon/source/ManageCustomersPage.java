@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.FindBy;
 
+import common.source.BaseHelper;
 import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
@@ -40,8 +41,11 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='eula']")
 	private WebElement textAreaEula;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='customer-form']/fieldset/div[4]/div[3]/div[2]/a")
-	private WebElement cancelBtn;
+	@FindBy(how = How.XPATH, using = "//*[@id='customer-form']/fieldset/div[5]/div[2]/a")
+	private WebElement cancelAddBtn;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='customer-form']/fieldset/div[4]/div[2]/a")
+	private WebElement cancelEditBtn;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='active']")
 	private WebElement inputAccountEnabled;
@@ -75,13 +79,14 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		
 		this.inputCustomerName.sendKeys(customerName);
 		this.textAreaEula.sendKeys(eula);
+		this.inputAccountEnabled.click();
 		
 		this.btnOk.click();
 		
 		if (isElementPresent(this.panelDuplicationErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
 			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
-				this.cancelBtn.click();
+				this.cancelAddBtn.click();
 		}
 	}
 	
@@ -172,7 +177,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				if (isElementPresent(this.panelDuplicationErrorXPath)){
 					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
 					if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
-						this.cancelBtn.click();
+						this.cancelEditBtn.click();
 						return false;
 					}
 				}				
@@ -243,7 +248,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				if (isElementPresent(this.panelDuplicationErrorXPath)){
 					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
 					if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
-						this.cancelBtn.click();
+						this.cancelEditBtn.click();
 						return false;
 					}
 				}				
@@ -392,8 +397,12 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		this.btnEditCustomer.click();
 	}
 	
-	public void clickOnCancelBtn(){
-		this.cancelBtn.click();
+	public void clickOnAddCancelBtn(){
+		this.cancelAddBtn.click();
+	}
+
+	public void clickOnEditCancelBtn(){
+		this.cancelEditBtn.click();
 	}
 	
     @Override
@@ -416,7 +425,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
     public void waitForEditPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
-                return d.getPageSource().contains(STREditPageContentText);
+            	return d.getPageSource().contains(STREditPageContentText);
             }
         });
     }
