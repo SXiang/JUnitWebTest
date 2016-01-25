@@ -91,6 +91,9 @@ public class ManageUsersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[7]/a[1]")
 	protected WebElement btnEditUser;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[6]/a[1]")
+	protected WebElement btnEditCustomerUser;
+
 	@FindBy(css = "a[class='button-cancel btn btn-danger']")
 	protected WebElement cancelEditBtn;
 	
@@ -1141,6 +1144,10 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 	public void clickOnFirstEditUserBtn() {
 		this.btnEditUser.click();
+	}
+
+	public void clickOnCustomerFirstEditUserBtn() {
+		this.btnEditCustomerUser.click();
 	}
 
 	public void clickOnCancelEditBtn() {

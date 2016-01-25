@@ -16,6 +16,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BasePage;
+import common.source.RegexUtility;
 import common.source.TestSetup;
 
 /**
@@ -181,5 +182,17 @@ public class SurveyorBasePage extends BasePage {
 		(new WebDriverWait(this.driver, this.timeout))
 		  .until(ExpectedConditions.presenceOfElementLocated
 				  (By.id(elementID)));
+	}
+	
+	
+	public Integer getRecordsShownOnPage(WebDriver driver) {
+    	WebElement pageInfoLabel = driver.findElement(By.id("datatable_info"));
+		String numTextString = pageInfoLabel.getText().trim();
+		List<String> strList = RegexUtility.split(numTextString, RegexUtility.SPACE_SPLIT_REGEX_PATTERN);
+		Integer records = 0;
+		if (strList != null && strList.size() > 3) {
+			records =Integer.parseInt(strList.get(3)); 
+		}
+		return records;
 	}
 }

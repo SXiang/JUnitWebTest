@@ -20,6 +20,10 @@ import java.awt.Toolkit;
 import java.awt.image.PixelGrabber;
 
 import org.apache.commons.io.FileUtils;
+import org.testng.Assert;
+
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 
 /**
  * @author zlu
@@ -173,6 +177,21 @@ public class BaseHelper {
 		return FileUtils.contentEquals(new File(file1), new File(file2));
 	}
 
+	public static String getPaginationShowingStartString() {
+		String paginationShowingText = Resources.getResource(ResourceKeys.Constant_ShowingStartToEndOfTotalEntries);
+		// get first 3 parts of the string.
+		List<String> strParts = RegexUtility.split(paginationShowingText, RegexUtility.SPACE_SPLIT_REGEX_PATTERN);
+		StringBuffer showingStartString = new StringBuffer();
+		if (strParts != null && strParts.size() > 1) {
+			showingStartString.append(strParts.get(0));
+			showingStartString.append(" ");
+			showingStartString.append(strParts.get(1).replace("_START_", NumberUtility.getNumberStringForCurrentLocale(1)));
+			showingStartString.append(" ");
+			showingStartString.append(strParts.get(2));
+		}
+		return showingStartString.toString();
+	}
+
 	public static boolean isStringListSorted(List<String> strList) {
 		boolean sorted = true;
 		for (int i = 1; i < strList.size(); i++) {
@@ -269,6 +288,34 @@ public class BaseHelper {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		// Initialize TestSetup to instantiate the TestContext and DB connection parameters.
+		TestSetup testSetup = new TestSetup(false /*skip initialization*/);
+		String rootPath;
+		try {
+			rootPath = TestSetup.getRootPath();
+			testSetup.loadTestProperties(rootPath);
+		} catch (IOException e) {
+			Log.error(e.getMessage());;
+		}
+		testSetup.initializeDBProperties();
+		TestContext.INSTANCE.setTestSetup(testSetup);
 
+		// ** Unit tests for getPaginationShowingStartString() method **/
+		Log.info("Setting user culture to en-US");
+		TestContext.INSTANCE.setUserCulture("en-US");
+		String startString = BaseHelper.getPaginationShowingStartString();
+		Log.info(String.format("Expected = %s, Actual = %s", "Showing 1 to", startString));
+		Assert.assertTrue(!startString.isEmpty());
+
+		// No asserts in FR and ZH, since currently we dont have all the localized strings populated in the environment.
+		Log.info(String.format("Setting user culture to fr"));
+		TestContext.INSTANCE.setUserCulture("fr");
+		startString = BaseHelper.getPaginationShowingStartString();
+		Log.info("Paging start string is: " + startString);
+		
+		Log.info(String.format("Setting user culture to zh-Hans"));
+		TestContext.INSTANCE.setUserCulture("zh-Hans");
+		startString = BaseHelper.getPaginationShowingStartString();
+		Log.info("Paging start string is: " + startString);
 	}
 }
