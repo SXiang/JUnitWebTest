@@ -57,6 +57,7 @@ public class DataAccessUnitTests {
 		testReportCaptureEvent_GetReportCaptureEventByReportId_Valid();
 		Log.info("Executing testReportCaptureEvent_GetReportCaptureEventByReportId_Invalid() ...");
 		testReportCaptureEvent_GetReportCaptureEventByReportId_Invalid();
+		Log.info("Executing testStoredProcSystemHistory_GetStoredProcSystemHistoryByReportId_Valid() ...");
 		testStoredProcSystemHistory_GetStoredProcSystemHistoryByReportId_Valid();
 	}
 
