@@ -1,109 +1,113 @@
 package surveyor.dataaccess.source;
- 
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.sql.CallableStatement;
 
 import common.source.DateUtility;
 import common.source.Log;
- 
+
 public class StoredProcSystemHistory extends BaseEntity {
-	private static final String CACHE_KEY = "SPSYSTEMHISTORY.";
- 
-	private Date dateCreated;
+	private String dateCreated;
 	private String note;
 	private String UserName;
-	
+
 	public StoredProcSystemHistory() {
 		super();
 	}
 
- 
-	public Date getDateCreated() {
+	public String getDateCreated() {
 		return dateCreated;
 	}
-
 
 	public String getNote() {
 		return note;
 	}
 
-
 	public String getUserName() {
 		return UserName;
 	}
 
-
-	public void setDateCreated(Date dateCreated) {
+	public void setDateCreated(String dateCreated) {
 		this.dateCreated = dateCreated;
 	}
-
 
 	public void setNote(String note) {
 		this.note = note;
 	}
 
-
 	public void setUserName(String userName) {
 		UserName = userName;
 	}
 
+	public boolean isEquals(StoredProcSystemHistory obj) {
+		// if all 3 fields match, return true.
+		if (!this.getDateCreated().equals(obj.getDateCreated())) {
+			return false;
+		}
+		if (!this.getNote().equals(obj.getNote())) {
+			return false;
+		}
+		if (!this.getUserName().equals(obj.getUserName())) {
+			return false;
+		}
+		return true;
+	}
 
-	public StoredProcSystemHistory get(String reportId) {
-		StoredProcSystemHistory objReport = null;
-		
-		// Get from cache if present. Else fetch from Database.
-		if (DBCache.INSTANCE.containsKey(CACHE_KEY+reportId)) {
-			objReport = (StoredProcSystemHistory)DBCache.INSTANCE.get(CACHE_KEY+reportId);
-		} else {
-			String SQL = "{call SysHis_GetData(reportId)}";
-			ArrayList<StoredProcSystemHistory> objReportList = load(SQL,reportId);
-			if (objReportList!=null && objReportList.size()>0) {
-				objReport = objReportList.get(0);
-				DBCache.INSTANCE.set(CACHE_KEY + reportId, objReport);
+	public boolean isInList(ArrayList<StoredProcSystemHistory> list) {
+		for (StoredProcSystemHistory storedProcSystemHistory : list) {
+			if (this.isEquals(storedProcSystemHistory)) {
+				return true;
 			}
 		}
-		return objReport;
+		return false;
 	}
- 
-	private static StoredProcSystemHistory loadFrom(ResultSet resultSet) {
+
+	public ArrayList<StoredProcSystemHistory> get(String reportId) {
+		// Get from cache if present. Else fetch from Database.
+		ArrayList<StoredProcSystemHistory> objReportList = load(reportId);
+		return objReportList;
+	}
+
+	public static ArrayList<StoredProcSystemHistory> getSystemHistory(String reportId) {
+		// Get from cache if present. Else fetch from Database.
+		ArrayList<StoredProcSystemHistory> objStoredProcSystemHistory = new StoredProcSystemHistory().get(reportId);
+		return objStoredProcSystemHistory;
+	}
+
+	private StoredProcSystemHistory loadFrom(ResultSet resultSet) {
 		StoredProcSystemHistory objReport = new StoredProcSystemHistory();
 		try {
-			objReport.setDateCreated(resultSet.getDate("DateStarted"));
+			objReport.setDateCreated(resultSet.getString("DateCreated"));
 			objReport.setNote(resultSet.getString("Note"));
-			objReport.setUserName(resultSet.getString("UserId"));
-			
+			objReport.setUserName(resultSet.getString("UserName"));
 		} catch (SQLException e) {
 			Log.error("Class Report | " + e.toString());
 		}
 
 		return objReport;
 	}
-	
- 
-	public ArrayList<StoredProcSystemHistory> load(String SQL, String reportId) {
+
+	public ArrayList<StoredProcSystemHistory> load(String reportId) {
 		ArrayList<StoredProcSystemHistory> objReportList = new ArrayList<StoredProcSystemHistory>();
-		
+
 		try {
-			statement = connection.createStatement();
-			resultSet = statement.executeQuery(SQL);
-			
+			CallableStatement proc_stmt = connection.prepareCall("{ call SysHis_GetData(?) }");
+			proc_stmt.setString(1, reportId);
+			resultSet = proc_stmt.executeQuery();
 			while (resultSet.next()) {
 				StoredProcSystemHistory objReport = loadFrom(resultSet);
 				objReportList.add(objReport);
-				
-				// add to cache.
-				DBCache.INSTANCE.set(CACHE_KEY +reportId, objReport);
+
 			}
-			
+
 		} catch (SQLException e) {
 			Log.error(e.toString());
 		}
-		
+
 		return objReportList;
 	}
-	
+
 }
-
-
