@@ -9,6 +9,7 @@ import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 import static surveyor.scommon.source.SurveyorConstants.STARTDATE;
 import static surveyor.scommon.source.SurveyorConstants.SURVEYORUNIT;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONE;
+import static common.source.RegexUtility.REGEX_PATTERN_EXTRACT_LINES_STARTING_WITH_DIGITS;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -88,7 +89,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 			}
 		}
 
-		DatetimepickerSetting dateSetting = new DatetimepickerSetting(driver, testSetup, strBaseURL, strBaseURL + STRURLPath);
+		DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver, testSetup, strBaseURL, strBaseURL + STRURLPath);
 		PageFactory.initElements(driver, dateSetting);
 
 		dateSetting.setDay("start", 0, startDate, false);
@@ -332,7 +333,6 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 
 		for (StoredProcSystemHistory storedProcSystemHistory : objStoredProcSystemHistory) {
 			if (!storedProcSystemHistory.isInList(notesReturnList)) {
-				System.out.print("failed");
 				return false;
 			}
 		}
@@ -352,7 +352,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 			String line = null;
 
 			while ((line = bufferReader.readLine()) != null) {
-				if (line.matches("^\\d.*")) {
+				if (line.matches(REGEX_PATTERN_EXTRACT_LINES_STARTING_WITH_DIGITS)) {
 					if (!line.contains("Date Printed")) {
 						if (line.length() > 20) {
 							StoredProcSystemHistory storedProcObj = new StoredProcSystemHistory();

@@ -12,7 +12,7 @@ import common.source.Log;
 public class StoredProcSystemHistory extends BaseEntity {
 	private String dateCreated;
 	private String note;
-	private String UserName;
+	private String username;
 
 	public StoredProcSystemHistory() {
 		super();
@@ -26,8 +26,8 @@ public class StoredProcSystemHistory extends BaseEntity {
 		return note;
 	}
 
-	public String getUserName() {
-		return UserName;
+	public String getusername() {
+		return username;
 	}
 
 	public void setDateCreated(String dateCreated) {
@@ -38,8 +38,8 @@ public class StoredProcSystemHistory extends BaseEntity {
 		this.note = note;
 	}
 
-	public void setUserName(String userName) {
-		UserName = userName;
+	public void setUserName(String username) {
+		this.username = username;
 	}
 
 	public boolean isEquals(StoredProcSystemHistory obj) {
@@ -50,7 +50,7 @@ public class StoredProcSystemHistory extends BaseEntity {
 		if (!this.getNote().equals(obj.getNote())) {
 			return false;
 		}
-		if (!this.getUserName().equals(obj.getUserName())) {
+		if (!this.getusername().equals(obj.getusername())) {
 			return false;
 		}
 		return true;
@@ -82,7 +82,7 @@ public class StoredProcSystemHistory extends BaseEntity {
 		try {
 			objReport.setDateCreated(resultSet.getString("DateCreated"));
 			objReport.setNote(resultSet.getString("Note"));
-			objReport.setUserName(resultSet.getString("UserName"));
+			objReport.setUserName(resultSet.getString("username"));
 		} catch (SQLException e) {
 			Log.error("Class Report | " + e.toString());
 		}

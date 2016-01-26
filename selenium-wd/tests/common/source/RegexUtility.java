@@ -18,6 +18,7 @@ public class RegexUtility {
 	public static final String COMMA_SPLIT_REGEX_PATTERN = ",";
 	public static final String REGEX_PATTERN_EXTRACT_FUNCTION_ARGS = "([a-zA-Z_]\\w+)\\((.+)\\)";
 	public static final String REGEX_PATTERN_EXTRACT_VALUE_WRAPPED_IN_QUOTE = "'(.+)'";
+	public static final String REGEX_PATTERN_EXTRACT_LINES_STARTING_WITH_DIGITS = "^\\d.*";
 
 	private static int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
 	
@@ -75,7 +76,8 @@ public class RegexUtility {
 	
 	/**
 	 * This methods looks at the culture of the user and determines the date format Regex accordingly Cultures supported right now: English, French, Chinese
-	 * 
+	 * e.g. When used in combine with getMatchingGroups method, can extract the date from a String.  
+	 * "1/23/2016 11:16 PM PST" can be extracted from a String like "1/23/2016 11:16 PM PST Administrator Automation Test Note 122291" 
 	 * @param whether
 	 *            the date check is for a report or not (Note: Pages have the same Date format without TimeZone
 	 * @return date format for the user locale
