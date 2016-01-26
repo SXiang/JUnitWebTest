@@ -42,14 +42,16 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC58";
 		String eula = customerName + ": " + EULASTRING;
 		
-		Log.info("\nRunning TC58 - Test Description: Adding Customer");
+		Log.info("\nRunning TC58_AddNewCustomer_PicAdmin - Test Description: Adding Customer");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
 
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);		
-		assertTrue(manageCustomersPage.findExistingCustomer(customerName));
+		Log.info(String.format("Looking for customer - '%s' with enabled status - '%b'", customerName, true));
+		assertTrue(manageCustomersPage.findExistingCustomer(customerName, false));
+
 	}
 	
 	/**
@@ -65,43 +67,22 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	public void TC59_EditCustomer_PicAdmin() {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC59";
 		String eula = customerName + ": " + EULASTRING;
-		String newCustomerName = customerName + "NEW";		
 		
-		Log.info("\nRunning ADM002 - Test Description: Editing Customer");
+		Log.info("\nRunning TC59_EditCustomer_PicAdmin - Test Description: Editing Customer");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
 		
 		manageCustomersPage.open();		
+		
+		Log.info("Adding new Customer - " + customerName);
 		manageCustomersPage.addNewCustomer(customerName, eula);		
-		manageCustomersPage.editExistingCustomerName(customerName, newCustomerName);		
-		assertTrue(manageCustomersPage.findExistingCustomer(newCustomerName));
-	}
-	
-	/**
-	 * Test Case ID: MCP000A
-	 * Test Description: Editing Customer with eula change only
-	 * 
-	 */
-	@Ignore
-	public void MCP000A() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "MCP000A";
-		String eula = customerName + ": " + EULASTRING;
-		String newCustomerName = customerName + "NEW";
-		String eulaNew = customerName + ": " + EULASTRING + "NEW";
 		
-		Log.info("\nRunning MCP000A - Test Description: Editing Customer with eula change only");
+		Log.info("Modifying Customer account status - " + customerName);
+		manageCustomersPage.changeCustomerAccountStatus(customerName, false);
 		
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
-		
-		manageCustomersPage.open();
-		
-		manageCustomersPage.addNewCustomer(customerName, eula);
-		
-		manageCustomersPage.editExistingCustomerName(customerName, newCustomerName, eulaNew);
-		
-		assertTrue(manageCustomersPage.findExistingCustomer(newCustomerName));
+		Log.info(String.format("Looking for customer - '%s' with enabled status - '%b'", customerName, false));
+		assertTrue(manageCustomersPage.findExistingCustomer(customerName, false));
 	}
 	
 	/**
