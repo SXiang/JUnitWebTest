@@ -356,25 +356,14 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 					if (!line.contains("Date Printed")) {
 						if (line.length() > 20) {
 							StoredProcSystemHistory storedProcObj = new StoredProcSystemHistory();
-							String parts[]=line.split("\\s");
-							String firstPart[]=Arrays.copyOfRange(parts, 0, 4);
-							String dateCreated=String.join(" ",firstPart);
+							String parts[] = line.split("\\s");
+							String firstPart[] = Arrays.copyOfRange(parts, 0, 4);
+							String dateCreated = String.join(" ", firstPart);
 							storedProcObj.setDateCreated(dateCreated);
-							String remaining=line.replace(dateCreated, "").trim();
+							String remaining = line.replace(dateCreated, "").trim();
 							storedProcObj.setUserName(remaining.substring(0, remaining.indexOf(" ")).trim());
 							storedProcObj.setNote(remaining.substring(remaining.indexOf(" ")).trim());
 							notesList.add(storedProcObj);
-							/*String dateFormat = date.getDateFormatRegex(true);
-							Pattern pattern = Pattern.compile(dateFormat);
-							Matcher matcher = pattern.matcher(line);
-							if (matcher.find()) {
-								StoredProcSystemHistory storedProcObj = new StoredProcSystemHistory();
-								storedProcObj.setDateCreated(matcher.group(0));
-								String remaining = line.substring(matcher.end()).trim();
-								storedProcObj.setUserName(remaining.substring(0, remaining.indexOf(" ")).trim());
-								storedProcObj.setNote(remaining.substring(remaining.indexOf(" ")).trim());
-								notesList.add(storedProcObj);
-							}*/
 
 						}
 					}
