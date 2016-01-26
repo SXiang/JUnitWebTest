@@ -72,6 +72,44 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	}
 	
 	/**
+	 * Test Case ID: TC66_AddAnalyzerNonPicarroCustomer_PicAdmin
+	 * Script:   	 	
+	 * - On Home Page, click Picarro Administration -> Manage Analyzers
+	 * - Click on 'Add New Analyzer' button
+	 * - Select Surveyor Unit associated to customer other than Picarro
+	 * - Provide required analyzer details shown on screen and click OK [E1]
+	 * - Login with user of different Customer and navigate to Picarro Surveyors [E2]
+	 * - Login with user of same Customer under which Analyzer is added and navigate to Picarro Surveyors [E3]
+	 * Results: - 
+	 * - E1. User is navigated to Manage Analyzers page and new analyzer entry is present in the table
+	 * - E2. User is not able to see newly added Analyzer
+	 * - E3. User should see the newly added Analyzer
+	 */
+	@Test
+	public void TC66_AddAnalyzerNonPicarroCustomer_PicAdmin() {
+		String customerName = "Picarro";
+		String locationName = customerName + "loc";
+		String surveyorName = locationName + testSetup.getRandomNumber() + "sur";
+		String analyzerName = surveyorName + "ana";
+		String cityName="Santa Clara";
+		
+		Log.info("\nRunning TC66_AddAnalyzerNonPicarroCustomer_PicAdmin - Test Description: add analyzer under customer other than Picarro");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		
+		manageLocationsPage.open();
+		manageLocationsPage.addNewLocation(locationName, customerName ,cityName);
+		
+		manageSurveyorPage.open();
+		manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName);
+		
+		manageAnalyzersPage.open();
+		manageAnalyzersPage.addNewAnalyzer(analyzerName, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
+		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName));
+	}
+	
+	/**
 	 * Test Case ID: TC67_EditAnalyzer_PicAdmin
 	 * Test Description: Editing Analyzer for Picarro, associating an analyzer to a different surveyor, by Picarro default Administrator
 	 * 

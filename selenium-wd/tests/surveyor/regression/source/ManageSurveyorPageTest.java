@@ -71,4 +71,40 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		
 		assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorName));
 	}
+	
+	/**
+	 * Test Case ID: TC64_EditSurveyor_PicAdmin
+	 * Script:   	 	 	
+	 * - On Home Page, click Picarro Administration -> Manage Surveyors
+	 * - Click on Edit link
+	 * - Modify Surveyor details and click O
+	 * Results: - 
+	 * - User is navigated to Manage Surveyors page and modified Surveyor details are present in the table
+	 */
+	@Test
+	public void TC64_EditSurveyor_PicAdmin() {
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC64";
+		String eula = customerName + ": " + EULASTRING;
+		String locationName = customerName + "Loc";
+		String surveyorName = locationName + "Sur";
+		String surveyorNameNew = surveyorName + "New";
+		String cityName ="Santa Clara";
+		
+		Log.info("\nRunning TC63_AddSurveyor_PicAdmin...");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		
+		manageCustomersPage.open();
+		manageCustomersPage.addNewCustomer(customerName, eula);
+		
+		manageLocationsPage.open();
+		manageLocationsPage.addNewLocation(locationName, customerName,cityName);
+		
+		manageSurveyorPage.open();
+		manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName);
+		
+		manageSurveyorAdminPage.editExistingSurveyor(locationName, surveyorName, surveyorNameNew);
+		assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorNameNew));
+	}
 }

@@ -110,6 +110,47 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
 		assertTrue(homePage.checkIfAtHomePage());
 	}
+	
+	/**
+	 * Test Case ID: TC70_EditUser_PicAdmin
+	 * Script:
+	 * - On Home Page, click Picarro Administration -> Manage Users
+	 * - Click on Edit link
+	 * - Modify user details and click OK
+	 * Results: - 
+	 * - User details are modified successfully
+	 */
+	@Test
+	public void TC70_EditUser_PicAdmin() {
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC70";
+		String eula = customerName + ": " + EULASTRING;
+		String userName = customerName + "customerUser01" + REGBASEUSERNAME;
+		String cityName = "Santa Clara";
+		String locationDesc = customerName + "-" + cityName;
+
+		System.out.println("\nRunning TC70 - Test Description: Picarro Admin - edit user");
+
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+
+		manageCustomersPage.open();
+		manageCustomersPage.addNewCustomer(customerName, eula);
+
+		manageLocationsPage.open();
+		manageLocationsPage.addNewLocation(locationDesc, customerName, cityName);
+
+		manageUsersPage.open();
+		manageUsersPage.addNewCustomerUser(customerName, userName,
+				USERPASSWORD, CUSUSERROLEUA, locationDesc);
+
+		manageUsersPage.editUser(userName, CUSUSERROLESU, TIMEZONEETUA, true);
+		assertTrue(manageUsersPage.findExistingUser(customerName, userName));
+		loginPage = manageUsersPage.logout();
+
+		loginPage.open();
+		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
+		assertTrue(homePage.checkIfAtHomePage());
+	}
 
 	/**
 	 * Test Case ID: TC115 Test Description: Pagination (Manage Users) Test

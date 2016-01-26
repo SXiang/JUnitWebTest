@@ -58,31 +58,25 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		homePage = new HomePage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, homePage);
 
-		manageLocationsPage = new ManageLocationsPage(driver, baseURL,
-				testSetup);
+		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, manageLocationsPage);
 
-		manageLocationsAdminPage = new ManageLocationsAdminPage(driver,
-				baseURL, testSetup);
+		manageLocationsAdminPage = new ManageLocationsAdminPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, manageLocationsAdminPage);
 
 		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, manageUsersPage);
 
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL,
-				testSetup);
+		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, manageCustomersPage);
 
-		manageUsersAdminPage = new ManageUsersAdminPage(driver, baseURL,
-				testSetup);
+		manageUsersAdminPage = new ManageUsersAdminPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, manageUsersAdminPage);
 
-		manageRefGasBottlesAdminPage = new ManageRefGasBottlesAdminPage(driver,
-				testSetup, baseURL);
+		manageRefGasBottlesAdminPage = new ManageRefGasBottlesAdminPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver, manageRefGasBottlesAdminPage);
 
-		manageSurveyorAdminPage = new ManageSurveyorAdminPage(driver, baseURL,
-				testSetup);
+		manageSurveyorAdminPage = new ManageSurveyorAdminPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, manageSurveyorAdminPage);
 	}
 
@@ -114,10 +108,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageLocationsAdminPage.open();
-		manageLocationsAdminPage.editExistingLocation(SQACUS, locationName,
-				locationNameNew);
-		assertTrue(manageLocationsAdminPage.findExistingLocation(SQACUS,
-				locationNameNew));
+		manageLocationsAdminPage.editExistingLocation(SQACUS, locationName, locationNameNew);
+		assertTrue(manageLocationsAdminPage.findExistingLocation(SQACUS, locationNameNew));
 	}
 
 	/**
@@ -134,7 +126,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		String locationName2 = testSetup.getRandomNumber() + "TC460_2";
 		String cityName = "Santa Clara";
 
-		Log.info("\nRunning - TC460_DuplicateLocationNotAllowed_CustUA - Test Description: Customer Admin not allowed to edit location name same as existing one\n");
+		Log.info(
+				"\nRunning - TC460_DuplicateLocationNotAllowed_CustUA - Test Description: Customer Admin not allowed to edit location name same as existing one\n");
 
 		// Add Location as Picarro admin.
 		loginPage.open();
@@ -149,8 +142,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		manageLocationsAdminPage.open();
 
-		assertFalse(manageLocationsAdminPage.editExistingLocation(SQACUS,
-				locationName1, locationName2));
+		assertFalse(manageLocationsAdminPage.editExistingLocation(SQACUS, locationName1, locationName2));
 		assertTrue(manageLocationsAdminPage.isDuplicateLocMsgPresent());
 	}
 
@@ -168,7 +160,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		String locationName = testSetup.getRandomNumber() + "TC461";
 		String cityName = "Santa Clara";
 
-		Log.info("\nRunning - TC461_EditLocBlankRequiredFields_CustUA - Test Description: edit location- blank required fields\n");
+		Log.info(
+				"\nRunning - TC461_EditLocBlankRequiredFields_CustUA - Test Description: edit location- blank required fields\n");
 
 		// Add Location as Picarro admin.
 		loginPage.open();
@@ -182,14 +175,11 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageLocationsAdminPage.open();
-		assertFalse(manageLocationsAdminPage.editExistingLocation(SQACUS,
-				locationName, "", RNELAT, RNELON));
+		assertFalse(manageLocationsAdminPage.editExistingLocation(SQACUS, locationName, "", RNELAT, RNELON));
 
-		assertFalse(manageLocationsAdminPage.editExistingLocation(SQACUS,
-				locationName, locationName, "", RNELON));
+		assertFalse(manageLocationsAdminPage.editExistingLocation(SQACUS, locationName, locationName, "", RNELON));
 
-		assertFalse(manageLocationsAdminPage.editExistingLocation(SQACUS,
-				locationName, locationName, RNELAT, ""));
+		assertFalse(manageLocationsAdminPage.editExistingLocation(SQACUS, locationName, locationName, RNELAT, ""));
 	}
 
 	/**
@@ -207,12 +197,11 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		String str35chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcde";
 		String cityName = "Santa Clara";
 
-		String locationName50Chars = testSetup.getFixedSizeRandomNumber(11)
-				+ "TC462" + str34chars;
-		String locationName51Chars = testSetup.getFixedSizeRandomNumber(11)
-				+ "TC462" + str35chars;
+		String locationName50Chars = testSetup.getFixedSizeRandomNumber(11) + "TC462" + str34chars;
+		String locationName51Chars = testSetup.getFixedSizeRandomNumber(11) + "TC462" + str35chars;
 
-		Log.info("\nRunning - TC462_EditLoc50CharLimit_CustUA - Test Description: More than 50 characters not allowed in Location Description field\n");
+		Log.info(
+				"\nRunning - TC462_EditLoc50CharLimit_CustUA - Test Description: More than 50 characters not allowed in Location Description field\n");
 
 		// Add Location as Picarro admin.
 		loginPage.open();
@@ -220,10 +209,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 		manageLocationsPage.open();
 
-		manageLocationsPage.addNewLocation(locationName50Chars, SQACUS,
-				cityName);
-		manageLocationsPage.addNewLocation(locationName51Chars, SQACUS,
-				cityName);
+		manageLocationsPage.addNewLocation(locationName50Chars, SQACUS, cityName);
+		manageLocationsPage.addNewLocation(locationName51Chars, SQACUS, cityName);
 
 		// Edit location as Utility admin. 50 characters works. 51 characters
 		// doesn't work.
@@ -231,11 +218,9 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageLocationsAdminPage.open();
-		assertTrue(manageLocationsAdminPage.findExistingLocation(SQACUS,
-				locationName50Chars));
+		assertTrue(manageLocationsAdminPage.findExistingLocation(SQACUS, locationName50Chars));
 		manageLocationsAdminPage.open();
-		assertFalse(manageLocationsAdminPage.findExistingLocation(SQACUS,
-				locationName51Chars));
+		assertFalse(manageLocationsAdminPage.findExistingLocation(SQACUS, locationName51Chars));
 	}
 
 	/**
@@ -249,7 +234,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	public void TC466_VerifyCancelButtonAllScreens_CustAdmin() {
 		String curURL;
 
-		Log.info("\nRunning - TC466_VerifyCancelButtonAllScreens_CustAdmin - Test Description: Verify Cancel button for all customer admin screens\n");
+		Log.info(
+				"\nRunning - TC466_VerifyCancelButtonAllScreens_CustAdmin - Test Description: Verify Cancel button for all customer admin screens\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -259,39 +245,34 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		manageSurveyorAdminPage.clickOnCustomerFirstEditSurveyorBtn();
 		manageSurveyorAdminPage.waitForEditPageLoad();
 		manageSurveyorAdminPage.getBtnCancel().click();
-		assertTrue(manageSurveyorAdminPage.getStrPageURL().equalsIgnoreCase(
-				curURL));
+		assertTrue(manageSurveyorAdminPage.getStrPageURL().equalsIgnoreCase(curURL));
 
 		manageUsersAdminPage.open();
 		curURL = driver.getCurrentUrl();
 		manageUsersAdminPage.getBtnAddNewUser().click();
 		manageUsersAdminPage.waitForNewPageLoad();
 		manageUsersAdminPage.getBtnCancel().click();
-		assertTrue(manageUsersAdminPage.getStrPageURL()
-				.equalsIgnoreCase(curURL));
+		assertTrue(manageUsersAdminPage.getStrPageURL().equalsIgnoreCase(curURL));
 		manageUsersAdminPage.clickOnCustomerFirstEditUserBtn();
 		manageUsersAdminPage.waitForEditPageLoad();
 		manageUsersAdminPage.getBtnCancel().click();
-		assertTrue(manageUsersAdminPage.getStrPageURL()
-				.equalsIgnoreCase(curURL));
+		assertTrue(manageUsersAdminPage.getStrPageURL().equalsIgnoreCase(curURL));
 
 		manageLocationsAdminPage.open();
 		curURL = driver.getCurrentUrl();
 		manageLocationsAdminPage.clickOnFirstEditLocationBtn();
 		manageLocationsAdminPage.waitForEditPageLoad();
 		manageLocationsAdminPage.getBtnCancel().click();
-		assertTrue(manageLocationsAdminPage.getStrPageURL().equalsIgnoreCase(
-				curURL));
+		assertTrue(manageLocationsAdminPage.getStrPageURL().equalsIgnoreCase(curURL));
 
 		manageRefGasBottlesAdminPage.open();
 		curURL = driver.getCurrentUrl();
 		manageRefGasBottlesAdminPage.getBtnAddNewRefGasBottle().click();
 		manageRefGasBottlesAdminPage.waitForNewPageLoad();
 		manageRefGasBottlesAdminPage.getBtnCancel().click();
-		assertTrue(manageRefGasBottlesAdminPage.getStrPageURL()
-				.equalsIgnoreCase(curURL));
+		assertTrue(manageRefGasBottlesAdminPage.getStrPageURL().equalsIgnoreCase(curURL));
 	}
-	
+
 	/**
 	 * Test Case ID: TC450_ManageLocationsAdminPagination Test Description:
 	 * Pagination (Manage Locations Customer Admin) Test Script: 10,25,50 and
@@ -302,7 +283,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	public void TC450_ManageLocationsAdminPagination() {
 		List<String> locationList;
 
-		Log.info("\nRunning - TC450_ManageLocationsAdminPagination - Test Description: Pagination (Manage Locations Customer Admin)\n");
+		Log.info(
+				"\nRunning - TC450_ManageLocationsAdminPagination - Test Description: Pagination (Manage Locations Customer Admin)\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -310,24 +292,21 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		manageLocationsAdminPage.open();
 		manageLocationsAdminPage.setPagination(PAGINATIONSETTING);
 
-		locationList = manageLocationsAdminPage.getLocationList(false,
-				Integer.valueOf(PAGINATIONSETTING));
+		locationList = manageLocationsAdminPage.getLocationList(false, Integer.valueOf(PAGINATIONSETTING));
 		assertTrue(locationList.size() <= Integer.valueOf(PAGINATIONSETTING));
 		assertTrue(manageLocationsAdminPage.getListSize(locationList));
 
 		manageLocationsAdminPage.open();
 		manageLocationsAdminPage.setPagination(PAGINATIONSETTING_25);
 
-		locationList = manageLocationsAdminPage.getLocationList(false,
-				Integer.valueOf(PAGINATIONSETTING_25));
+		locationList = manageLocationsAdminPage.getLocationList(false, Integer.valueOf(PAGINATIONSETTING_25));
 
 		assertTrue(manageLocationsAdminPage.getListSize(locationList));
-		
+
 		manageLocationsAdminPage.open();
 		manageLocationsAdminPage.setPagination(PAGINATIONSETTING_50);
 
-		locationList = manageLocationsAdminPage.getLocationList(false,
-				Integer.valueOf(PAGINATIONSETTING_50));
+		locationList = manageLocationsAdminPage.getLocationList(false, Integer.valueOf(PAGINATIONSETTING_50));
 
 		assertTrue(locationList.size() <= Integer.valueOf(PAGINATIONSETTING_50));
 
@@ -336,11 +315,9 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		manageLocationsAdminPage.open();
 		manageLocationsAdminPage.setPagination(PAGINATIONSETTING_100);
 
-		locationList = manageLocationsAdminPage.getLocationList(false,
-				Integer.valueOf(PAGINATIONSETTING_100));
+		locationList = manageLocationsAdminPage.getLocationList(false, Integer.valueOf(PAGINATIONSETTING_100));
 
-		assertTrue(locationList.size() <= Integer
-				.valueOf(PAGINATIONSETTING_100));
+		assertTrue(locationList.size() <= Integer.valueOf(PAGINATIONSETTING_100));
 
 		assertTrue(manageLocationsAdminPage.getListSize(locationList));
 	}
@@ -375,8 +352,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		manageLocationsAdminPage.getInputSearch().sendKeys(location);
 		manageLocationsAdminPage.waitForPageToLoad();
 
-		assertTrue(manageLocationsAdminPage.getLabelNoMatchingSearch()
-				.equalsIgnoreCase(NOMATCHINGSEARCH));
+		assertTrue(manageLocationsAdminPage.getLabelNoMatchingSearch().equalsIgnoreCase(NOMATCHINGSEARCH));
 	}
 
 	/**
@@ -393,12 +369,10 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		manageLocationsAdminPage.open();
 
 		manageLocationsAdminPage.getTheadLocation().click();
-		list = manageLocationsAdminPage.getLocationList(false,
-				Integer.valueOf(PAGINATIONSETTING_100));
+		list = manageLocationsAdminPage.getLocationList(false, Integer.valueOf(PAGINATIONSETTING_100));
 		assertTrue(BaseHelper.isStringListSorted(list));
 		manageLocationsAdminPage.getTheadLocation().click();
-		list = manageLocationsAdminPage.getLocationList(false,
-				Integer.valueOf(PAGINATIONSETTING_100));
+		list = manageLocationsAdminPage.getLocationList(false, Integer.valueOf(PAGINATIONSETTING_100));
 		assertTrue(BaseHelper.isStringListSortedDes(list));
 	}
 }

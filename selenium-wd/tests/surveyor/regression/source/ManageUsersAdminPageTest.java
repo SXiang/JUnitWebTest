@@ -11,12 +11,18 @@ import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
+
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
 import common.source.BaseHelper;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.dataprovider.UserDataProvider;
 import surveyor.scommon.source.ManageUsersAdminPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 
@@ -24,6 +30,8 @@ import surveyor.scommon.source.SurveyorBaseTest;
  * @author zlu
  *
  */
+
+@RunWith(DataProviderRunner.class)
 public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	private static ManageUsersAdminPage manageUsersAdminPage;
 
@@ -482,7 +490,8 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	 * customer admin
 	 */
 	@Test
-	public void TC468_CustAdmin_ResetPwd() {
+    @UseDataProvider(value = "dataProviderIsStringLengthGreaterTwo", location = UserDataProvider.class)
+	public void TC468_CustAdmin_ResetPwd(String username, String password, String role) {
 		String userName = SQACUS + testSetup.getRandomNumber() + "custadm015"
 				+ REGBASEUSERNAME;
 		Log.info("\nRunning - TC468 - Reset customer user password as customer admin\n");

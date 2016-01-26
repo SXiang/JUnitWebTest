@@ -182,6 +182,7 @@
 					<include name="**/HomePageTest.class" />
 					<include name="**/LoginPageTest.class" />
 					<include name="**/ManageAnalyzersPageTest.class" />
+					<include name="**/ManageCustomersPageTest.class" />
 					<include name="**/ManageLocationsPageTest.class" />
 					<include name="**/ManageLocationsAdminPageTest.class" />
 					<include name="**/ManageRefGasBottlesAdminPageTest.class" />

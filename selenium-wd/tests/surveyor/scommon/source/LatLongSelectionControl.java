@@ -15,7 +15,7 @@ import org.openqa.selenium.interactions.Actions;
 
 import common.source.Log;
 
-public class BoundarySelectionControl extends BaseControl {
+public class LatLongSelectionControl extends BaseControl {
 
 	public enum ControlMode {
 		MapInteraction,
@@ -66,7 +66,7 @@ public class BoundarySelectionControl extends BaseControl {
     @CacheLookup
     private WebElement mapModalDialog;
 
-    public BoundarySelectionControl(WebDriver driver) {
+    public LatLongSelectionControl(WebDriver driver) {
         super(driver);
     }
 
@@ -101,15 +101,15 @@ public class BoundarySelectionControl extends BaseControl {
     /**
      * Draws a selector rectangle of specified width and height from the specified offset.
      *
-     * @return the BoundarySelectionControl class instance.
+     * @return the LatLongSelectionControl class instance.
      */
-    public BoundarySelectionControl drawSelectorRectangle(String canvasXPath, int xOffset, int yOffset, int width, int height) {
+    public LatLongSelectionControl drawSelectorRectangle(String canvasXPath, int xOffset, int yOffset, int width, int height) {
 		WebElement canvas = driver.findElement(By.xpath(canvasXPath));
 		if (canvas != null && canvas.isDisplayed()) {
-			Log.info("Found canvas element");
+			Log.info("[LatLongSelectionControl]: Found canvas element");
 		}
 		
-		Log.info("Performing actions on the canvas element");
+		Log.info("[LatLongSelectionControl]: Performing draw rectangle action on the canvas element");
 		Actions builder = new Actions(driver);
 		builder.moveToElement(canvas, xOffset, yOffset)
 			.keyDown(Keys.SHIFT)
@@ -122,6 +122,31 @@ public class BoundarySelectionControl extends BaseControl {
 
 		return this;
     }
+
+    /**
+     * Click on the specified (x,y) offset in the canvas.
+     *
+     * @return the LatLongSelectionControl class instance.
+     */
+    public LatLongSelectionControl selectLatLong(String canvasXPath, int xOffset, int yOffset) {
+		WebElement canvas = driver.findElement(By.xpath(canvasXPath));
+		if (canvas != null && canvas.isDisplayed()) {
+			Log.info("[LatLongSelectionControl]: Found canvas element");
+		}
+		
+		Log.info("[LatLongSelectionControl]: Performing click Action on the canvas element");
+		Actions builder = new Actions(driver);
+		builder.moveToElement(canvas, xOffset, yOffset)
+			.moveByOffset(xOffset, yOffset)
+			.keyDown(Keys.SHIFT)
+			.click()
+			.keyUp(Keys.SHIFT)
+			.build()
+			.perform();
+
+		return this;
+    }
+
     
     /**
      * Switches between interactions on web elements on the map iframe vs interaction on the web elements in container page.
@@ -131,9 +156,9 @@ public class BoundarySelectionControl extends BaseControl {
      * When interacting with map use the MapInteraction mode.
      * When interacting with web elements other than the Map (for eg. OK/Cancel buttons) use the default mode.
      *
-     * @return the BoundarySelectionControl class instance.
+     * @return the LatLongSelectionControl class instance.
      */
-	public BoundarySelectionControl switchMode(ControlMode mode) {
+	public LatLongSelectionControl switchMode(ControlMode mode) {
 		switch (mode)
 		{
 			case MapInteraction:
@@ -150,9 +175,9 @@ public class BoundarySelectionControl extends BaseControl {
     /**
      * Click on OK Button.
      *
-     * @return the BoundarySelectionControl class instance.
+     * @return the LatLongSelectionControl class instance.
      */
-    public BoundarySelectionControl clickOkButton() {
+    public LatLongSelectionControl clickOkButton() {
         okButton.click();
         return this;
     }
@@ -160,9 +185,9 @@ public class BoundarySelectionControl extends BaseControl {
     /**
      * Click on Cancel Button.
      *
-     * @return the BoundarySelectionControl class instance.
+     * @return the LatLongSelectionControl class instance.
      */
-    public BoundarySelectionControl clickCancelButton() {
+    public LatLongSelectionControl clickCancelButton() {
         cancelButton.click();
         return this;
     }
@@ -170,9 +195,9 @@ public class BoundarySelectionControl extends BaseControl {
     /**
      * Set value to selectByName Text field.
      *
-     * @return the BoundarySelectionControl class instance.
+     * @return the LatLongSelectionControl class instance.
      */
-    public BoundarySelectionControl setTitleTextField(String name) {
+    public LatLongSelectionControl setTitleTextField(String name) {
     	selectByNameTextField.sendKeys(name);
         return this;
     }
@@ -180,9 +205,9 @@ public class BoundarySelectionControl extends BaseControl {
     /**
      * Set value to filterByType Drop Down List field.
      *
-     * @return the BoundarySelectionControl class instance.
+     * @return the LatLongSelectionControl class instance.
      */
-    public BoundarySelectionControl setFilterByTypeDropDownListField(String filterByTypeValue) {
+    public LatLongSelectionControl setFilterByTypeDropDownListField(String filterByTypeValue) {
         new Select(filterByTypeDropDown).selectByVisibleText(filterByTypeValue);
         return this;
     }
@@ -190,14 +215,30 @@ public class BoundarySelectionControl extends BaseControl {
     /**
      * Waits for the modal map dialog to be opened.
      *
-     * @return the BoundarySelectionControl class instance.
+     * @return the LatLongSelectionControl class instance.
      */
-	public BoundarySelectionControl waitForModalDialogOpen() {
+	public LatLongSelectionControl waitForModalDialogOpen() {
 		Log.info("Wait for map modal dialog to open.");
 		WebElement myModal = this.mapModalDialog;
 		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
-                return !myModal.getAttribute("style").contains("display:none");
+                return !myModal.getAttribute("style").contains("display:none") && !myModal.getAttribute("style").contains("display: none");
+            }
+        });
+		return this;
+	}
+	
+	/**
+     * Waits for the modal map dialog to close.
+     *
+     * @return the LatLongSelectionControl class instance.
+     */
+	public LatLongSelectionControl waitForModalDialogToClose() {
+		Log.info("Wait for map modal dialog to close.");
+		WebElement myModal = this.mapModalDialog;
+		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return myModal.getAttribute("style").contains("display:none") || myModal.getAttribute("style").contains("display: none");
             }
         });
 		return this;
@@ -206,9 +247,9 @@ public class BoundarySelectionControl extends BaseControl {
     /**
      * Waits for the image to be loaded in the modal map dialog.
      *
-     * @return the BoundarySelectionControl class instance.
+     * @return the LatLongSelectionControl class instance.
      */
-	public BoundarySelectionControl waitForMapImageLoad() {
+	public LatLongSelectionControl waitForMapImageLoad() {
 		// Wait for image data on the canvas to be present.
 		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
