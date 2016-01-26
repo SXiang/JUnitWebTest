@@ -327,7 +327,6 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 		String reportId = reportObj.getId();
 		String fullDownloadPath = downloadPath + "SH-" + reportId.substring(0, 6) + ".pdf";
 		ArrayList<StoredProcSystemHistory> notesReturnList = tokenizeSystemHistoryNotesTable(fullDownloadPath);
-		System.out.print("tokenized size " + notesReturnList.size());
 		ArrayList<StoredProcSystemHistory> objStoredProcSystemHistory = StoredProcSystemHistory.getSystemHistory(reportId);
 
 		for (StoredProcSystemHistory storedProcSystemHistory : objStoredProcSystemHistory) {
