@@ -20,8 +20,7 @@ public class DataAccessUnitTests {
 			rootPath = TestSetup.getRootPath();
 			testSetup.loadTestProperties(rootPath);
 		} catch (IOException e) {
-			Log.error(e.getMessage());
-			;
+			Log.error(e.getMessage());			
 		}
 		testSetup.initializeDBProperties();
 		TestContext.INSTANCE.setTestSetup(testSetup);
@@ -167,9 +166,10 @@ public class DataAccessUnitTests {
 		Iterator<StoredProcSystemHistory> iterator = objStoredProcSystemHistory.iterator();
 		while (iterator.hasNext()) {
 			StoredProcSystemHistory storedProcSystemHistoryObj = iterator.next();
-			Log.info(storedProcSystemHistoryObj.getDateCreated() + " " + storedProcSystemHistoryObj.getUserName() + " " + storedProcSystemHistoryObj.getNote());
+			Assert.assertTrue(storedProcSystemHistoryObj != null, "Value cannot be NULL.");
 
-		}
+		}	
+		
 
 	}
 

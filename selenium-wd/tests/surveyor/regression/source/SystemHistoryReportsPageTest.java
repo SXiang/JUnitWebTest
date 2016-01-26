@@ -57,7 +57,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC158_SysHisRpt_PicarroAdmin() {
 		String rptTitle = "TC158 Report" + testSetup.getRandomNumber();
-		Log.info("\nRunning TC158 Test Description: Generate system history report as Administrator, %s\n" +rptTitle);
+		Log.info("\nRunning TC158 Test Description: Generate system history report as Administrator, %s\n" + rptTitle);
 
 		DateFormat dateFormat = new SimpleDateFormat("dd");
 		Date date = new Date();
@@ -192,7 +192,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC186 Test Description: Click on Cancel button present on system history report screen
 	 * 
 	 */
-	 @Test
+	@Test
 	public void TC186_SysHisRpt_CancelBtn() {
 		Log.info("\nRunning TC186: Click on Cancel button present on system history report screen\n");
 
@@ -254,7 +254,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 			assertTrue(systemHistoryReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
 			assertTrue(systemHistoryReportsPage.verifyStaticTextinPDF(testSetup.getDownloadPath(), rptTitle));
 			assertTrue(systemHistoryReportsPage.verifyUserInputInPDF(testSetup.getDownloadPath(), rptTitle, inputList));
-			assertTrue(systemHistoryReportsPage.verifyNotesTable(testSetup.getDownloadPath(), rptTitle));
+			assertTrue(systemHistoryReportsPage.verifyNotesTable(testSetup.getDownloadPath(), rptTitle));			
 		} else
 			fail("\nTestcase TC195 failed.\n");
 

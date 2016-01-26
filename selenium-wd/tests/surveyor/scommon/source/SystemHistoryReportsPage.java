@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -354,7 +355,16 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 				if (line.matches("^\\d.*")) {
 					if (!line.contains("Date Printed")) {
 						if (line.length() > 20) {
-							String dateFormat = date.getDateFormatRegex(true);
+							StoredProcSystemHistory storedProcObj = new StoredProcSystemHistory();
+							String parts[]=line.split("\\s");
+							String firstPart[]=Arrays.copyOfRange(parts, 0, 4);
+							String dateCreated=String.join(" ",firstPart);
+							storedProcObj.setDateCreated(dateCreated);
+							String remaining=line.replace(dateCreated, "").trim();
+							storedProcObj.setUserName(remaining.substring(0, remaining.indexOf(" ")).trim());
+							storedProcObj.setNote(remaining.substring(remaining.indexOf(" ")).trim());
+							notesList.add(storedProcObj);
+							/*String dateFormat = date.getDateFormatRegex(true);
 							Pattern pattern = Pattern.compile(dateFormat);
 							Matcher matcher = pattern.matcher(line);
 							if (matcher.find()) {
@@ -364,7 +374,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 								storedProcObj.setUserName(remaining.substring(0, remaining.indexOf(" ")).trim());
 								storedProcObj.setNote(remaining.substring(remaining.indexOf(" ")).trim());
 								notesList.add(storedProcObj);
-							}
+							}*/
 
 						}
 					}

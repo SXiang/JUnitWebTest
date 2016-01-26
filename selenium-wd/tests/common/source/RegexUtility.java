@@ -73,6 +73,36 @@ public class RegexUtility {
         return output;
 	}
 	
+	/**
+	 * This methods looks at the culture of the user and determines the date format Regex accordingly Cultures supported right now: English, French, Chinese
+	 * 
+	 * @param whether
+	 *            the date check is for a report or not (Note: Pages have the same Date format without TimeZone
+	 * @return date format for the user locale
+	 */
+
+	public static String getReportRegexDatePattern(boolean useTimeZone) {
+		String culture = TestContext.INSTANCE.getUserCulture();
+		String dateFormat = null;
+		if (useTimeZone) {
+			if ((culture.equals("en-US")) || (culture.equals("fr"))) {
+				dateFormat = "[0-9]{1,2}+['/']+[0-9]{1,2}+['/']+[0-9]{4}+[\\s+]+[0-9]{1,2}+[':']+[0-9]{1,2}+[\\s+]+[\\w]{2}+[\\s+]+[\\w]{3}";
+			}
+			if (culture.equals("zh-Hans")) {
+				dateFormat = "[0-9]{4}+['/']+[0-9]{1,2}+['/']+[0-9]{1,2}+[\\s+]+[0-9]{1,2}+[':']+[0-9]{1,2}+[\\s+]+[\\w]{2}+[\\s+]+[\\w]{3}";
+			}
+		} else {
+			if ((culture.equals("en-US")) || (culture.equals("fr"))) {
+				dateFormat = "[0-9]{1,2}+['/']+[0-9]{1,2}+['/']+[0-9]{4}+[\\s+]+[0-9]{1,2}+[':']+[0-9]{1,2}+[\\s+]+[\\w]{2}";
+			}
+			if (culture.equals("zh-Hans")) {
+				dateFormat = "[0-9]{4}+['/']+[0-9]{1,2}+['/']+[0-9]{1,2}+[\\s+]+[0-9]{1,2}+[':']+[0-9]{1,2}+[\\s+]+[\\w]{2}";
+			}
+		}
+		return dateFormat;
+
+	}
+	
 	public static void main(String[] args) {
 		Log.info("Running test - testMatchesPattern_functionNameAndArgument_Success() ...");
 		testMatchesPattern_functionNameAndArgument_Success();
@@ -88,6 +118,12 @@ public class RegexUtility {
 		testSplit_SplitByColonEmptyPartsNotReturned_Success();
 		Log.info("Running test - testSplit_SplitByCommaOnePart_Success() ...");
 		testSplit_SplitByCommaOnePart_Success();
+		Log.info("Running test - testMatchesPatternEN_US_functiongetReportRegexDatePattern_Success() ...");
+		testMatchesPatternEN_US_functiongetReportRegexDatePattern_Success();
+		Log.info("Running test - testMatchesPatternCN_functiongetReportRegexDatePattern_Success() ...");
+		testMatchesPatternCN_functiongetReportRegexDatePattern_Success();
+		Log.info("Running test - testMatchesPatternFR_functiongetReportRegexDatePattern_Success() ...");
+		testMatchesPatternFR_functiongetReportRegexDatePattern_Success();
 	}
 
 	private static void testMatchesPattern_functionNameAndArgument_Success() {
@@ -136,4 +172,29 @@ public class RegexUtility {
 		List<String> paramGroups = RegexUtility.split(functionArgs , RegexUtility.COLON_SPLIT_REGEX_PATTERN);
 		Assert.assertTrue(paramGroups.size() == 1);
 	}
+	
+	private static void testMatchesPatternEN_US_functiongetReportRegexDatePattern_Success() {
+		TestContext.INSTANCE.setUserCulture("en-US");
+		String dateTime = "1/21/2016 4:09 AM PST Administrator TC76 Automation Note 811835";
+		String dateFormat = RegexUtility.getReportRegexDatePattern(true);
+		List<String> groups=RegexUtility.getMatchingGroups(dateTime, dateFormat);
+		Assert.assertTrue(groups.get(0).trim().equals("1/21/2016 4:09 AM PST"));
+	}
+	
+	private static void testMatchesPatternCN_functiongetReportRegexDatePattern_Success() {
+		TestContext.INSTANCE.setUserCulture("zh-Hans");
+		String dateTime = "2016/1/21 4:08 AM CST sqapicsup@picarro.com TC1249 Automation Note 811835";
+		String dateFormat = RegexUtility.getReportRegexDatePattern(true);
+		List<String> groups=RegexUtility.getMatchingGroups(dateTime, dateFormat);
+		Assert.assertTrue(groups.get(0).trim().equals("2016/1/21 4:08 AM CST"));
+	}
+	
+	private static void testMatchesPatternFR_functiongetReportRegexDatePattern_Success() {
+		TestContext.INSTANCE.setUserCulture("fr");
+		String dateTime = "11/01/2016 4:08 AM CET sqapicsup@picarro.com TC1249 Automation Note 811835";
+		String dateFormat = RegexUtility.getReportRegexDatePattern(true);
+		List<String> groups=RegexUtility.getMatchingGroups(dateTime, dateFormat);
+		Assert.assertTrue(groups.get(0).trim().equals("11/01/2016 4:08 AM CET"));
+	}
+	
 }

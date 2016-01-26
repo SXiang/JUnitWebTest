@@ -201,35 +201,7 @@ public class DateUtility {
 
 	}
 
-	/**
-	 * This methods looks at the culture of the user and determines the date format Regex accordingly Cultures supported right now: English, French, Chinese
-	 * 
-	 * @param whether
-	 *            the date check is for a report or not (Note: Pages have the same Date format without TimeZone
-	 * @return date format for the user locale
-	 */
-
-	public String getDateFormatRegex(boolean useTimeZone) {
-		String culture = TestContext.INSTANCE.getUserCulture();
-		String dateFormat = null;
-		if (useTimeZone) {
-			if ((culture.equals("en-US")) || (culture.equals("fr"))) {
-				dateFormat = "[0-9]{1,2}+['/']+[0-9]{1,2}+['/']+[0-9]{4}+[\\s+]+[0-9]{1,2}+[':']+[0-9]{1,2}+[\\s+]+[\\w]{2}+[\\s+]+[\\w]{3}";
-			}
-			if (culture.equals("zh-Hans")) {
-				dateFormat = "[0-9]{4}+['/']+[0-9]{1,2}+['/']+[0-9]{1,2}+[\\s+]+[0-9]{1,2}+[':']+[0-9]{1,2}+[\\s+]+[\\w]{2}+[\\s+]+[\\w]{3}";
-			}
-		} else {
-			if ((culture.equals("en-US")) || (culture.equals("fr"))) {
-				dateFormat = "[0-9]{1,2}+['/']+[0-9]{1,2}+['/']+[0-9]{4}+[\\s+]+[0-9]{1,2}+[':']+[0-9]{1,2}+[\\s+]+[\\w]{2}";
-			}
-			if (culture.equals("zh-Hans")) {
-				dateFormat = "[0-9]{4}+['/']+[0-9]{1,2}+['/']+[0-9]{1,2}+[\\s+]+[0-9]{1,2}+[':']+[0-9]{1,2}+[\\s+]+[\\w]{2}";
-			}
-		}
-		return dateFormat;
-
-	}
+	
 
 	/**
 	 * This methods looks at the culture of the user and returns the Java specific Locale- language tag
@@ -243,10 +215,10 @@ public class DateUtility {
 		if (culture.equals("en-US")) {
 			languageTag = "en-US";
 		}
-		if (culture.equals("fr")) {
+		else if (culture.equals("fr")) {
 			languageTag = "fr-FR";
 		}
-		if (culture.equals("zh-Hans")) {
+		else if (culture.equals("zh-Hans")) {
 			languageTag = "zh-CN";
 		}
 
@@ -396,69 +368,6 @@ public class DateUtility {
 		Log.info(result = (date.compareDates("2015/01/12 18:40 ", "2015/02/12 18:42 ", false)) ? "FAIL" : "PASS");
 		Log.info(result = (date.compareDates("2015/01/12 18:42 ", "2014/01/12 18:42 ", false)) ? "FAIL" : "PASS");
 
-		// Unit tests - getDateFormatRegex
-		// US -en
-		TestContext.INSTANCE.setUserCulture("en-US");
-		String dateTime = "1/21/2016 4:08 AM PST sqapicsup@picarro.com TC1249 Automation Note 811835";
-		String dateFormat = date.getDateFormatRegex(true);
-		Pattern pattern = Pattern.compile(dateFormat);
-		Matcher matcher = pattern.matcher(dateTime);
-		if (matcher.find()) {
-
-			Log.info(matcher.group(0));
-			String remaining = dateTime.substring(matcher.end()).trim();
-			Log.info(remaining);
-			Log.info(remaining.substring(0, remaining.indexOf(" ")));
-			Log.info(remaining.substring(remaining.indexOf(" ")));
-		}
-		dateTime = "1/21/2016 4:09 AM PST Administrator TC76 Automation Note 811835";
-		dateFormat = date.getDateFormatRegex(false);
-		pattern = Pattern.compile(dateFormat);
-		matcher = pattern.matcher(dateTime);
-		if (matcher.find()) {
-			Log.info(matcher.group(0));
-			Log.info(dateTime.substring(matcher.end()));
-
-		}
-		// US -en
-		TestContext.INSTANCE.setUserCulture("fr");
-		dateTime = "11/01/2016 4:08 AM PST sqapicsup@picarro.com TC1249 Automation Note 811835";
-		dateFormat = date.getDateFormatRegex(true);
-		pattern = Pattern.compile(dateFormat);
-		matcher = pattern.matcher(dateTime);
-		if (matcher.find()) {
-			Log.info(matcher.group(0));
-			Log.info(dateTime.substring(matcher.end()));
-		}
-		dateTime = "21/02/2016 4:09 AM PST Administrator TC76 Automation Note 811835";
-		dateFormat = date.getDateFormatRegex(false);
-		pattern = Pattern.compile(dateFormat);
-		matcher = pattern.matcher(dateTime);
-		if (matcher.find()) {
-			Log.info(matcher.group(0));
-			Log.info(dateTime.substring(matcher.end()));
-
-		}
-		// US -en
-		TestContext.INSTANCE.setUserCulture("zh-Hans");
-		dateTime = "2016/1/21 4:08 AM PST sqapicsup@picarro.com TC1249 Automation Note 811835";
-		dateFormat = date.getDateFormatRegex(true);
-		pattern = Pattern.compile(dateFormat);
-		matcher = pattern.matcher(dateTime);
-		if (matcher.find()) {
-			Log.info(matcher.group(0));
-			String remaining = dateTime.substring(matcher.end());
-			Log.info(remaining.substring(0, remaining.indexOf(" ")));
-		}
-		dateTime = "2016/1/21 4:09 AM PST Administrator TC76 Automation Note 811835";
-		dateFormat = date.getDateFormatRegex(false);
-		pattern = Pattern.compile(dateFormat);
-		matcher = pattern.matcher(dateTime);
-		if (matcher.find()) {
-			Log.info(matcher.group(0));
-			Log.info(dateTime.substring(matcher.end()));
-
-		}
-
+		
 	}
 }
