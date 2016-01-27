@@ -6,8 +6,10 @@ package surveyor.scommon.source;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -31,6 +33,8 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageCustomers_PageTitle);
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ManageCustomer_NewCustomer);
 	public static final String STREditPageContentText = Resources.getResource(ResourceKeys.ManageCustomer_EditCustomer);
+	
+	private static final String EULAXPath = "eula";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	private WebElement btnAddNewCustomer;
@@ -82,7 +86,8 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		}
 		
 		this.inputCustomerName.sendKeys(customerName);
-		this.textAreaEula.sendKeys(eula);
+		
+		setEULAText(eula);
 		
 		enabledDisableCustomer(enableCustomer);
 		
@@ -96,6 +101,10 @@ public class ManageCustomersPage extends SurveyorBasePage {
 			}
 		}
 		return true;
+	}
+
+	private void setEULAText(String eula) {
+		sendKeysToTextArea(this.textAreaEula, eula);
 	}
 
 	private void enabledDisableCustomer(boolean enableCustomer) {
@@ -257,8 +266,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				actionCell.click();
 				this.waitForEditPageLoad();
 				
-				this.textAreaEula.clear();
-				this.textAreaEula.sendKeys(eulaNew);
+				setEULAText(eulaNew);
 				
 				this.btnOk.click();
 				

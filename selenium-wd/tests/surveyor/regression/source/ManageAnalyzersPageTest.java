@@ -178,10 +178,25 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName);
 		
 		manageAnalyzersPage.open();
+		
+		Log.info(String.format("Adding new Analyzer: Name=[%s],SharedKey=[%s],Surveyor=[%s],Customer=[%s],Location=[%s]", 
+				analyzerName50, ANALYZERSHAREDKEY, surveyorName, customerName, locationName));
 		manageAnalyzersPage.addNewAnalyzer(analyzerName50, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
+		
+		Log.info(String.format("Finding Analyzer: Customer=[%s],Location=[%s],Surveyor=[%s],Analyzer=[%s]", 
+				customerName, locationName, surveyorName, analyzerName50));
 		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName50));
+		
+		Log.info(String.format("Editing Analyzer: Customer=[%s],Location=[%s],Surveyor=[%s],Analyzer=[%s],SharedKey=[%s],NEW Surveyor=[%s]", 
+				customerName, locationName, surveyorName, analyzerName51, ANALYZERSHAREDKEY, surveyorName));
 		manageAnalyzersPage.editExistingAnalyzer(customerName, locationName, surveyorName, analyzerName51, ANALYZERSHAREDKEY, surveyorName);
+		
+		Log.info(String.format("Finding Analyzer: Customer=[%s],Location=[%s],Surveyor=[%s],Analyzer=[%s]", 
+				customerName, locationName, surveyorName, analyzerName51.substring(0, MAX_SIZE)));
 		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName51.substring(0, MAX_SIZE)));
+		
+		Log.info(String.format("Finding Analyzer: Customer=[%s],Location=[%s],Surveyor=[%s],Analyzer=[%s]", 
+				customerName, locationName, surveyorName, analyzerName50));
 		assertFalse(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName50));
 		
 		// Reset analyzerName and create new Analyzer with 51 chars.

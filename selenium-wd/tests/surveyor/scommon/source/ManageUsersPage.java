@@ -199,7 +199,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 	public void addNewCustomerUser(String customerName, String email,
 			String password, String role, String location) {
-		addNewCustomerUser(customerName, email, password, role, location);
+		addNewCustomerUser(customerName, email, password, role, location, true /*enabled*/);
 	}
 	
 	public void addNewCustomerUser(String customerName, String email,
@@ -364,6 +364,9 @@ public class ManageUsersPage extends SurveyorBasePage {
 			locationCell = table.findElement(By.xpath(locationXPath));
 			userNameCell = table.findElement(By.xpath(userNameXPath));
 
+			Log.info(String.format("Found User. Location-[%s], Username-[%s]", locationCell.getText().trim(),
+					userNameCell.getText().trim()));
+			
 			if ((locationCell.getText().trim()).equalsIgnoreCase(locationName)
 					&& (userNameCell.getText().trim())
 							.equalsIgnoreCase(userName)) {

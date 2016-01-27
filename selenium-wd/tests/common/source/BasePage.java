@@ -13,6 +13,7 @@ import static surveyor.scommon.source.SurveyorConstants.SUBTITLE;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
@@ -245,6 +246,17 @@ public class BasePage {
 			return result;
 		}
 	}
+	
+	protected void sendKeysToTextArea(WebElement textAreaEula, String eula) {
+		// Chromedriver does NOT send keys correctly to TextArea for some controls. 
+		// Use Actions workaround to send keys instead.
+		Actions actions = new Actions(driver);
+		actions.moveToElement(textAreaEula);
+		actions.click();
+		actions.sendKeys(eula);
+		actions.build().perform();
+	}
+
 	
 	public void waitForPageToLoad(){
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
