@@ -129,9 +129,10 @@ public class ActionsExecutionEngine implements IMethodObserver {
 			}
 			
 			if (bResult==false) {
-				excelUtility.setCellData(Constants.KEYWORD_FAIL, testCaseStep, Constants.Excel_TestCaseSteps_Col_Result, testCaseSheetName);
-				Log.info(String.format("FAILURE while executing action-'%s' on page-'%s' with test data-'%s' for rowIDs-'%s'", 
-						testStepAction, testStepPageObject, testStepTestData, testStepTestDataRowIDs));
+				String failureMessage = String.format("FAILURE while executing action-'%s' on page-'%s' with test data-'%s' for rowIDs-'%s'", 
+						testStepAction, testStepPageObject, testStepTestData, testStepTestDataRowIDs);
+				excelUtility.setCellData(Constants.KEYWORD_FAIL + " : " + failureMessage, testCaseStep, Constants.Excel_TestCaseSteps_Col_Result, testCaseSheetName);
+				Log.info(failureMessage);
 				break;
 			}						
 

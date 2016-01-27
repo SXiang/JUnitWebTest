@@ -40,7 +40,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 * - Log in as Picarro Admin
 	 * - On Home Page, click Picarro Administration -> Manage Locations
 	 * - Click on 'Add New Location' button
-	 * - Click on ‘Lat/Long Selector’ button
+	 * - Click on 'Lat/Long Selector' button
 	 * - Click on desired location on map (SHIFT+ENTER+MouseClick) and click OK    	 
 	 * Results: - 
 	 * - A map appears with a pin in the default location
@@ -72,7 +72,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 * - Log in as Picarro Admin
 	 * - On Home Page, click Picarro Administration -> Manage Locations
 	 * - Click on 'Edit' button
-	 * - Click on ‘Lat/Long Selector’ button
+	 * - Click on 'Lat/Long Selector' button
 	 * - Click on desired location on map away from original location (SHIFT+ENTER+MouseClick) and click OK
 	 * - Fill in other required fields on Edit Location page and click OK  	 
 	 * Results: - 
