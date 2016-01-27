@@ -24,6 +24,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.runner.Description;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -54,6 +55,7 @@ public class TestSetup {
 	private static String testPropFileName;
 	
 	public static final String REPLAY_DEFN_CURL_FILE = "replay-defn-curl.bat";
+	public static final String STOP_REPLAY_CURL_FILE = "replay-stop.bat";
 	public static final String ANALYZER_EXE_PATH = "C:\\PicarroAnalyzer\\Picarro.Surveyor.Analyzer.exe";
 	public static final String TEST_ANALYZER_SERIAL_NUMBER = "SimAuto-Analyzer1";
 	
@@ -176,6 +178,39 @@ public class TestSetup {
 		} catch (IOException e) {
 			Log.error(e.toString());
 		}
+	}
+
+	public static void simulatorTestStarting(Description description) {
+		Log.info("Started executing " + description.getClassName() + "." + description.getMethodName() + "() test...");
+		if (TestSetup.isExecutingSimulatorTestMethod(description.getMethodName())) {
+			Log.info("Installing simulator pre-reqs. Start Analyzer and Replay DB3 script.");
+			try {
+				TestSetup.setupSimulatorPreReqs();
+				TestSetup.startAnalyzer();
+			} catch (IOException e) {
+				Log.error(e.toString());
+			}	
+		}
+	}
+	
+	public static void simulatorTestFinishing(Description description) {
+		Log.info("Finished executing " + description.getClassName() + "." + description.getMethodName() + "() test...");
+		if (TestSetup.isExecutingSimulatorTestMethod(description.getMethodName())) {
+			Log.info("Stop Analyzer.");
+			TestSetup.stopAnalyzer();
+		}
+	}
+	
+	private static boolean isExecutingSimulatorTestMethod(String methodName) {
+		String[] nameParts = methodName.split("\\_");
+		if (nameParts != null && nameParts.length > 1)
+		{
+			if (nameParts[1].equalsIgnoreCase("SimulatorTest")) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	public InputStream loadTestProperties(String rootPath) throws FileNotFoundException, IOException {
@@ -345,6 +380,19 @@ public class TestSetup {
 		}
 	}
 
+	public static void stopReplay() {
+		// Execute replay script from the contained folder.
+		try {
+			String stopReplayCmdFolder = getExecutionPath(getRootPath()) + "data" + File.separator + "defn";
+			String stopReplayCmdFullPath = stopReplayCmdFolder + File.separator + STOP_REPLAY_CURL_FILE;
+			String command = "cd \"" + stopReplayCmdFolder + "\" && " + stopReplayCmdFullPath;
+			Log.info("Executing stop replay command. Command -> " + command);
+			ProcessUtility.executeProcess(command, /*isShellCommand*/ true, /*waitForExit*/ true);
+		} catch (IOException e) {
+			Log.error(e.toString());
+		}
+	}
+	
 	public static boolean isAnalyzerRunning() {
 		return ProcessUtility.isProcessRunning("Picarro.Surveyor.Analyzer.exe");
 	}
@@ -368,11 +416,6 @@ public class TestSetup {
 
 		HostSimInvoker simulator = new HostSimInvoker();
 		simulator.startReplay(defnFullPath);
-	}
-
-	public void stopReplay() throws InstantiationException, IllegalAccessException, IOException {
-		HostSimInvoker simulator = new HostSimInvoker();
-		simulator.stopReplay();
 	}
 
 	public boolean hasBrowserQuit() {

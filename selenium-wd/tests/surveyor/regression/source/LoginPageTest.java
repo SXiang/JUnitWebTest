@@ -55,9 +55,11 @@ public class LoginPageTest extends SurveyorBaseTest {
 	@Test
 	public void loginTest_TC25_PicarroAdmin() {
 		loginPage.open();
+		loginPage.waitForPageToLoad();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
 		homePage.open();
+		homePage.waitForPageLoad();
 		assertTrue(PICDFADMIN + " user login unsuccessful!", homePage.checkIfAtHomePage());
 		loginPage = homePage.logout();
 	}
@@ -65,9 +67,11 @@ public class LoginPageTest extends SurveyorBaseTest {
 	@Test
 	public void loginTest_TC25_CustomerAdmin() {
 		loginPage.open();
+		loginPage.waitForPageToLoad();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		homePage.open();
+		homePage.waitForPageLoad();
 		assertTrue(SQACUSUAUSER + " user login unsuccessful!", homePage.checkIfAtHomePage());
 		loginPage = homePage.logout();
 	}
@@ -78,6 +82,7 @@ public class LoginPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);
 
 		homePage.open();
+		homePage.waitForPageLoad();
 		assertTrue(SQACUSDRUSER + " user login unsuccessful!", homePage.checkIfAtHomePage());
 		loginPage = homePage.logout();
 	}

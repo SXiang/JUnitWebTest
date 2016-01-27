@@ -217,6 +217,7 @@ public class HomePageTest extends SurveyorBaseTest {
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
 		homePage.getLinkPreference().click();
+		preferencesPage.waitForPageLoad();
 		assertTrue(preferencesPage.getSelectedTimeZone().getText().equals(TIMEZONEPTUA));
 
 	}

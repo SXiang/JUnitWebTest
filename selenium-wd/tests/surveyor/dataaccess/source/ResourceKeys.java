@@ -29,6 +29,7 @@ public class ResourceKeys {
 	public static final String Constant_Satellite = "Constant_Satellite";
 	public static final String Constant_Standard = "Constant_Standard";
 	public static final String Constant_Surveyors = "Constant_Surveyors";
+	public static final String Constant_ShowingStartToEndOfTotalEntries = "Constant_ShowingStartToEndOfTotalEntries";
 	public static final String Constant_Yes = "Constant_Yes";
 	public static final String Dialog_IsotopicAnalysis = "Dialog_IsotopicAnalysis";
 	public static final String Dialog_MapView = "Dialog_MapView";
@@ -49,8 +50,15 @@ public class ResourceKeys {
 	public static final String ManageAnalyzer_EditAnalyzer = "ManageAnalyzer_EditAnalyzer";
 	public static final String ManageAnalyzer_NewAnalyzer = "ManageAnalyzer_NewAnalyzer";
 	public static final String ManageAnalyzers_PageTitle = "ManageAnalyzers_PageTitle";
+	public static final String ManageCustomer_EditCustomer = "ManageCustomer_EditCustomer";
+	public static final String ManageCustomer_NewCustomer = "ManageCustomer_NewCustomer";
+	public static final String ManageCustomers_AddNew = "ManageCustomers_AddNew";
 	public static final String ManageCustomers_PageTitle = "ManageCustomers_PageTitle";
+	public static final String ManageLocation_EditLocation = "ManageLocation_EditLocation";
+	public static final String ManageLocation_NewLocation = "ManageLocation_NewLocation";
 	public static final String ManageLocation_RapidResponse = "ManageLocation_RapidResponse";
+	public static final String ManageLocations_AddNew = "ManageLocations_AddNew";
+	public static final String ManageLocations_PageTitle = "ManageLocations_PageTitle";
 	public static final String ManageRefGasBottles_PageTitle = "ManageRefGasBottles_PageTitle";
 	public static final String ManageSurveyors_PageTitle = "ManageSurveyors_PageTitle";
 	public static final String ManageSurveyor_NewSurveyor = "ManageSurveyor_NewSurveyor";
@@ -99,5 +107,4 @@ public class ResourceKeys {
 	public static final String Validation_EnterValueInRange = "Validation_EnterValueInRange";
 	public static final String Validation_EnterValueLessThanOrEqual = "Validation_EnterValueLessThanOrEqual";
 	public static final String Validation_EnterValueGreaterThanOrEqual = "Validation_EnterValueGreaterThanOrEqual";
-	public static final String ManageLocation_EditLocation = "ManageLocation_EditLocation";
 }

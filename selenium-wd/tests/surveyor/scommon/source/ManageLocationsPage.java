@@ -20,6 +20,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import common.source.BaseHelper;
 import common.source.Log;
 import common.source.TestSetup;
 
@@ -30,15 +31,11 @@ import common.source.TestSetup;
 public class ManageLocationsPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageLocations";
 	public static final String STRPageTitle = "Manage Locations - Surveyor";
-	public static final String STREditPageContentText = Resources
-			.getResource(ResourceKeys.ManageLocation_EditLocation);
+	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageLocations_PageTitle);
+	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ManageLocation_NewLocation);
+	public static final String STREditPageContentText = Resources.getResource(ResourceKeys.ManageLocation_EditLocation);
 	public static final String STRDuplicateLocMsg = "Location name already exists for customer, please try another name.";
-	String latitude;
-	String longitude;
-	// @FindBy(how = How.XPATH, using =
-	// "//*[@id='page-wrapper']/div[2]/div/div/div[1]/div[1]/a")
-	// @FindBy(how = How.XPATH, using =
-	// "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
+
 	@FindBy(css = "a[href='/Picarro/ManageLocation']")
 	protected WebElement btnAddNewLocation;
 
@@ -119,6 +116,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr")
 	protected List<WebElement> rows;
+
+	String latitude;
+	String longitude;
 
 	/**
 	 * @param driver
@@ -484,16 +484,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public void clickOnCancelBtn() {
 		this.btnCancel.click();
 	}
-
-	public void waitForEditPageLoad() {
-		(new WebDriverWait(driver, timeout))
-				.until(new ExpectedCondition<Boolean>() {
-					public Boolean apply(WebDriver d) {
-						return d.getPageSource().contains(
-								STREditPageContentText);
-					}
-				});
-	}
 	
 	public WebElement getTheadLocation() {
 		return this.theadLocation;
@@ -511,7 +501,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 		int rowSize = rows.size();
 		int loopCount = 0;
-
 		if (rowSize < Integer.parseInt(pageSizeStr))
 			loopCount = rowSize;
 		else
@@ -564,10 +553,28 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		return this.liDuplicateMsg.getText().equals(STRDuplicateLocMsg);
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
+    @Override
+	public void waitForPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRPageContentText);
+            }
+        });
+    }
+    
+	public void waitForNewPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRNewPageContentText);
+            }
+        });
+    }
 
+	public void waitForEditPageLoad() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+            	return d.getPageSource().contains(STREditPageContentText);
+			}
+		});
 	}
 }

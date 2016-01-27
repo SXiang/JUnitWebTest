@@ -60,6 +60,10 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a")
 	protected WebElement btnEditSurveyor;
+
+	//*[@id="datatable"]/tbody/tr[1]/td[3]/a
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[3]/a")
+	protected WebElement btnEditCustomerSurveyor;
 	
     @FindBy(name = "datatable_length")
     private WebElement recordsPerPage;
@@ -328,6 +332,10 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		this.btnEditSurveyor.click();
 	}
 	
+	public void clickOnCustomerFirstEditSurveyorBtn() {
+		this.btnEditCustomerSurveyor.click();
+	}
+
 	public void clickOnAddCancelBtn() {
 		this.btnAddCancel.click();
 	}

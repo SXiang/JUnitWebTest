@@ -8,12 +8,10 @@ import static surveyor.scommon.source.SurveyorConstants.SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 
-import java.io.IOException;
 import java.util.Calendar;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,12 +39,8 @@ import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.DriverViewPage.Wind;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
-import surveyor.scommon.source.ManageAnalyzersPage;
 import surveyor.scommon.source.ManageCustomersPage;
-import surveyor.scommon.source.ManageLocationsPage;
-import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.ManageUsersPage;
-import surveyor.scommon.source.SurveyorBaseTest;
 
 /*
  * **** IMPORTANT ****:
@@ -108,39 +102,14 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 	public TestWatcher watcher = new TestWatcher() {
 		@Override
 		public void starting(Description description) {
-			Log.info("Started executing " + description.getClassName() + "." + description.getMethodName() + "() test...");
-			if (isExecutingSimulatorTestMethod(description.getMethodName())) {
-				Log.info("Installing simulator pre-reqs. Start Analyzer and Replay DB3 script.");
-				try {
-					TestSetup.setupSimulatorPreReqs();
-					TestSetup.startAnalyzer();
-				} catch (IOException e) {
-					Log.error(e.toString());
-				}	
-			}
+			TestSetup.simulatorTestStarting(description);
 		}
-		
+
 		@Override
 		public void finished(Description description) {
-			Log.info("Finished executing " + description.getClassName() + "." + description.getMethodName() + "() test...");
-			if (isExecutingSimulatorTestMethod(description.getMethodName())) {
-				Log.info("Stop Analyzer.");
-				TestSetup.stopAnalyzer();
-			}
+			TestSetup.simulatorTestFinishing(description);
 		}
 	};
-
-	private static boolean isExecutingSimulatorTestMethod(String methodName) {
-		String[] nameParts = methodName.split("\\_");
-		if (nameParts != null && nameParts.length > 1)
-		{
-			if (nameParts[1].equalsIgnoreCase("SimulatorTest")) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
 
 	@Before
 	public void beforeTestMethod() {
@@ -516,6 +485,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 	 * 7. Stop Driving Survey, Isotopic Capture and Reference Bottle Measurement buttons are present
 	 * 8. Survey Inactive message is displayed and only car icon is present on map. Car icon is displayed in grey color. Breadcrumb will  be displayed in grey color. There should be no errors on the consolebuttons are disabled
 	 */
+	// Partially automated. Console windows error checking NOT present.
 	@Test
 	public void TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin() {
 		Log.info("Running TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin");
@@ -583,6 +553,20 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 		assertTrue(driverViewPage.getSurveyStatusLabelText().equals(SURVEY_INFO_SURVEY_STATUS_INACTIVE));
 	}
 
+	/**
+	 * Test Case ID: TC256_ActionTest_DriverViewInstrumentStartWaitStopShutdown
+	 * Script: -  	
+	 *	- Enter driver view
+	 *	- Click Start Driving Survey from "Mode"
+	 *	- After few mins click on stop driving survey
+	 *	- Click on system shutdown button
+	 * Results: - 
+	 *	- Survey capture should start
+	 *	- Survey capture should stop. Screen darkens and Mode menu disappears (or Start Survey button is unavailable) and survey is uploaded
+	 *	- Analyzer is powering down and user is navigated to home page
+	 *	- Analyzer will turn off
+	 */
+	// Partially automated. Analyzer powering down might need work from Simulator.
 	@Test
 	public void TC256_ActionTest_DriverViewInstrumentStartWaitStopShutdown() {
 		try {
@@ -590,7 +574,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(testSetup.getLoginUser() + ":" + testSetup.getLoginPwd(), NOTSET);
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			
@@ -620,6 +604,20 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 		}
 	}
 
+	/**
+	 * Test Case ID: TC302_ActionTest_DriverViewUserSeesLastTagValue
+	 * Script: -  	
+	 *	- Driver is in same network of analyzer
+	 *	- Click on Mode -> Start Driving Survey [E1-1]
+	 *	- Navigate to Dashboard and then back to Driver View.[E1-2]
+	 *	- Stop Survey and Start new Survey again [E1 -3]
+	 *	- Select all required fields and keep tag field empty [E2]
+	 *	- Input value in tag field [E3]
+	 * Results: - 
+	 *	E1. Last survey tag (if any) should be present 
+	 *	E2. Start Survey button is not enabled 
+	 *	E3. Survey tag will have the specified value
+	 */
 	@Test
 	public void TC302_ActionTest_DriverViewUserSeesLastTagValue() {
 		try {
@@ -627,7 +625,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(testSetup.getLoginUser() + ":" + testSetup.getLoginPwd(), NOTSET);
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			
@@ -647,13 +645,24 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			// {DEFECT}: Check if this test step is correct. If YES, this is a probable defect.
 			//assertTrue(driverViewPageAction.verifyStartSurveyButtonFromSurveyDialogIsDisabled(EMPTY, NOTSET));
 			
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.
 		}
 	}
 
+	/**
+	 * Test Case ID: TC777_ActionTest_DriverViewFlatteningCustomerBoundaryData
+	 * Script: -  	
+	 *	1. Login to Pcubed via car tablet with PG&E Driver credentials and click on GIS option
+	 *	2. Toggle the ON and OFF for both options boundary options.
+	 *	3. Login to Pcubed via car tablet with Picarro Supervisor credentials and click on GIS option
+	 * Results: - 
+	 *	1. For Boundaries it should show only 2 options 1. District 2. District Plat
+	 *	2.Verify that when Each type (District and District Plat) is selected then it appears on Map and when it is set to OFF it does not show on Map.
+	 *	3.Verify that 2 options shown as District and District Plat. When Any one of those toggled to ON,it  is selected then it appears on Map and when it is set to OFF it is not shown on map.
+	 */
 	// TEST needs more work on correct verification.
 	@Ignore
 	public void TC777_ActionTest_DriverViewFlatteningCustomerBoundaryData() {
@@ -662,16 +671,16 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 9);   /* PG&E Driver */
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnGisButton(EMPTY,NOTSET);
 			driverViewPageAction.turnOffBoundariesDistrict(EMPTY, NOTSET);
 			driverViewPageAction.turnOffBoundariesDistrictPlat(EMPTY, NOTSET);
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 2);   /* Customer Supervisor */
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			// To get a new instance of Driver view page, initialize the driver view page.
 			driverViewPageAction.initializeDriverViewPage(TestContext.INSTANCE.getDriver(), 
 					TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());		
@@ -680,13 +689,24 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			assertTrue(driverViewPageAction.verifyGisSwitchIsOn("BoundariesDistrict",NOTSET));
 			assertTrue(driverViewPageAction.verifyGisSwitchIsOn("BoundariesDistrictPlat",NOTSET));
 			
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.
 		}
 	}
 
+	/**
+	 * Test Case ID: TC1095_ActionTest_NavigateBetweenDriverViewAndHomePage
+	 * Script: -  	
+	 *	1. Login to Pcubed via car tablet with PG&E Driver credentials and click on GIS option
+	 *	2. Toggle the ON and OFF for both options boundary options.
+	 *	3. Login to Pcubed via car tablet with Picarro Supervisor credentials and click on GIS option
+	 * Results: - 
+	 *	1. For Boundaries it should show only 2 options 1. District 2. District Plat
+	 *	2.Verify that when Each type (District and District Plat) is selected then it appears on Map and when it is set to OFF it does not show on Map.
+	 *	3.Verify that 2 options shown as District and District Plat. When Any one of those toggled to ON,it  is selected then it appears on Map and when it is set to OFF it is not shown on map.
+	 */
 	@Test
 	public void TC1095_ActionTest_NavigateBetweenDriverViewAndHomePage() {
 		try {
@@ -694,7 +714,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 
 			// goto home by clicking on picarro logo on driver view page.
@@ -711,13 +731,34 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			
 			assertTrue(driverViewPageAction.verifyPageLoaded(EMPTY,NOTSET));
 			
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.
 		}
 	}
 
+	/**
+	 * Test Case ID: TC1103_ActionTest_DriverViewStartDrivingSurveySatelliteView
+	 * Script: -  	
+	 *	1. Login to driver view 
+	 *	2. Click on Mode -> Start Driving Survey 
+	 *	3. Provide survey tag, select 
+	 *	Survey Time: Day 
+	 *	Solar Radiation: Strong 
+	 *	Wind: Calm 
+	 *	Survey Type: Standard 
+	 *	4. Click on Start Survey button 
+	 *	5. Click on Map and turn Satellite ON 
+	 *	6. Click on Mode button
+	 * Results: - 
+	 *	1. Survey conditions screen is present. Start Survey button is not present 
+	 *	2. Once all the values are selected, "Start Survey" button should be present and enabled 
+	 *	3. Survey Information is displayed in satellite view - Tag, Mode, Time, Survey Active, Driver Info, Elapsed time, Remaining Time, Zoom level, Surveyor and analyzer info 
+	 *	- Stability Class value displayed is A
+	 *	4. Car icon is displayed in red color. Breadcrumb will  be displayed in blue color 
+	 *	5. Stop Driving Survey, Start Isotopic Capture and Reference Bottle Measurement buttons are enabled. System Shutdown button is not present	 
+	 **/
 	@Test
 	public void TC1103_ActionTest_DriverViewStartDrivingSurveySatelliteView() {
 		try {
@@ -725,7 +766,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
@@ -785,13 +826,33 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			assertTrue(driverViewPageAction.verifyRefBottleMeasButtonIsEnabled(EMPTY, NOTSET));
 			assertTrue(driverViewPageAction.verifySystemShutdownButtonIsNotDisplayed(EMPTY, NOTSET));
 			
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.
 		}
 	}
 
+	/**
+	 * Test Case ID: TC1104_ActionTest_DriverViewStopDrivingSurveySatelliteView
+	 * Script: -  	
+	 *	1. Login to driver view 
+	 *	2. Click on the menu button at top right on Chrome and select More Tools -> Developer Tools to open the Java console
+	 *	3. Click on Mode button
+	 *	4. Click on Start Driving Survey button
+	 *	5. Provide survey tag, select  Survey Time: Day Solar Radiation: Strong Wind: Light Survey Type: Operator and click on Start Survey button 
+	 *	6. Click on Mode
+	 *	7. Click on Stop Driving Survey button
+	 * Results: - 
+	 *	1. Survey Information is displayed in satellite view - Tag, Mode, Time, Survey Active, Driver Info, Elapsed time, Remaining Time, Zoom level, Surveyor and analyzer info.
+	 *	- Stability Class value displayed is B
+	 *	2. The Java console should open up at the bottom of the screen (or at the right of the screen)
+	 *	3. Start Driving Survey and System shutdown buttons are present. There should be no errors on the console
+	 *	4. Survey conditions window should pop up
+	 *	5. Car icon is displayed in red color. Breadcrumb will  be displayed in blue color 
+	 *	6. Stop Driving Survey, Isotopic Capture and Reference Bottle Measurement buttons are present
+	 *	7. Survey Inactive message is displayed and only car icon is present on map. Car icon is displayed in grey color. Breadcrumb will  be displayed in grey color. There should be no errors on the console
+	 **/
 	@Test
 	public void TC1104_ActionTest_DriverViewStopDrivingSurveySatelliteView() {
 		try {
@@ -799,7 +860,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 
 			// Verify 1.
@@ -874,13 +935,29 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			//assertTrue(driverViewPageAction.verifyCrossHairIconIsShownOnMap("Gray", NOTSET));
 			assertTrue(driverViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));			
 			
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.
 		}
 	}
 
+	/**
+	 * Test Case ID: TC1133_ActionTest_DriverView2SurveysSameTagSameAnalyzer8HrHistoryON
+	 * Script: -  	
+	 *	1. Login to driver view 
+	 *	2. Click on Mode -> Start Driving Survey 
+	 *	3. Provide survey tag, select  Survey Time: Day Solar Radiation: Overcast Wind: Calm Survey Type: Standard 
+	 *	4. Click on Start Survey button 
+	 *	5. Click on Map and turn Map view ON 
+	 *	6. Do the survey for 4-5 mins and Stop the survey 
+	 *	7. Click on Mode -> Start Driving Survey 
+	 *	8. Provide the exact same survey tag 
+	 *	9. Click on Start Survey button 
+	 *	10. Click on Display -> turn 8 hour history ON
+	 * Results: - 
+	 *	1. Any surveys conducted within the past 8 hours that have the same tag for same surveyor and analyzer will be displayed on the map
+	 **/
 	@Test
 	public void TC1133_ActionTest_DriverView2SurveysSameTagSameAnalyzer8HrHistoryON() {
 		try {
@@ -888,7 +965,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
@@ -923,13 +1000,31 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			// Verify 1.
 			// (check???) surveys conducted in the past 8-hour should be displayed on the map.
 			
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.
 		}
 	}
 
+	/**
+	 * Test Case ID: TC1134_ActionTest_DriverView2SurveysSameTagDifferentAnalyzers8HrHistoryON
+	 * Script: -  	
+	 *	1. Login to driver view (eg. Surveyor1 and analyzer1) 
+	 *	2. Click on Mode -> Start Driving Survey 
+	 *	3. Provide survey tag, select  Survey Time: Day Solar Radiation: Overcast Wind: Calm Survey Type: Standard 
+	 *	4. Click on Start Survey button 
+	 *	5. Click on Map and turn Map view ON 
+	 *	6. Do the survey for 4-5 mins and Stop the survey 
+	 *	7. Change the analyzer and log in to driver view (eg. Surveyor2 and analyzer2) 
+	 *	8. Click on Mode -> Start Driving Survey 
+	 *	9. Provide the exact same survey tag 
+	 *	10. Click on Start Survey button 
+	 *	11. Click on Map and turn Map View ON 
+	 *	12. Click on Display -> turn 8 hour history ON
+	 * Results: - 
+	 *	1. Previous survey having same tag value will not be present as user has changed the surveyor\analyzer
+	 **/
 	@Test
 	public void TC1134_ActionTest_DriverView2SurveysSameTagDifferentAnalyzers8HrHistoryON() {
 		try {
@@ -937,7 +1032,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
@@ -957,13 +1052,13 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
 
 			// Stop current simulator and start another with a different Analyzer.
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 
 			// To get a new instance of Driver view page, initialize the driver view page.
 			driverViewPageAction.initializeDriverViewPage(TestContext.INSTANCE.getDriver(), 
 					TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());		
 
-			testEnvironmentAction.startSimulator(EMPTY, 4);
+			testEnvironmentAction.startAnalyzer(EMPTY, 4);
 			driverViewPageAction.open(EMPTY,NOTSET);
 
 			// start survey again.
@@ -988,13 +1083,23 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			// Verify 1.
 			// (check???) surveys conducted in the past 8-hour should NOT be displayed on the map.
 			
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.
 		}
 	}
 
+	/**
+	 * Test Case ID: TC1212_ActionTest_DriverViewStandardSurveyNewDriver
+	 * Script: -  	
+	 *	1. Log in to driver view as new driver user 
+	 *	2. Accept the EULA 
+	 *	3. Click on Mode -> Start Driving Survey, answer all the questions and click on Start Survey 
+	 *	4. Click on Display and turn all options ON
+	 * Results: - 
+	 *	1. Eula screen should be displayed 2. User is navigated to driver view 3. User is able to perform survey and can see all the survey data on map	 
+	 **/
 	@Test
 	public void TC1212_ActionTest_DriverViewStandardSurveyNewDriver() {
 		try {
@@ -1015,7 +1120,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			loginPage.open();
 			loginPage.loginNormalAs(userName, USERPASSWORD);
 			
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 			
 			// Verify that Driver view page was opened.
@@ -1071,13 +1176,21 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			assertTrue(driverViewPageAction.verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
 			assertTrue(driverViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
 			
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.			
 		}
 	}
 
+	/**
+	 * Test Case ID: TC1213_SimulatorTest_NewDriverNavigatedToHomePage
+	 * Script: -  	
+	 *	1. Log in to tablet as new driver user 
+	 *	2. Accept the EULA
+	 * Results: - 
+	 *	1. User should be navigated to Home page and not to driver view page
+	 **/
 	@Test
 	public void TC1213_SimulatorTest_NewDriverNavigatedToHomePage() {
 		try {
@@ -1105,12 +1218,19 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 		}
 	}
 
+	/**
+	 * Test Case ID: TC1215_ActionTest_CannotLoginDriverViewInvalidCredentials
+	 * Script: -  	
+	 *	1. Log in to driver view with non-existing or invalid user credentails
+	 * Results: - 
+	 *	1. User remains on log in page
+	 **/
 	@Test
 	public void TC1215_ActionTest_CannotLoginDriverViewInvalidCredentials() {
 		try {
 			Log.info("\nRunning TC1215_SimulatorTest_CannotLoginDriverViewInvalidCredentials");
 
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPage.open();
 
 			loginPage.waitForPageLoad();
@@ -1121,6 +1241,19 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 		}
 	}
 	
+	/**
+	 * Test Case ID: TC1232_ActionTest_DriverViewRefreshBrowser
+	 * Script: -  	
+	 *	1. Log in to Driver View 
+	 *	2. Click on Mode -> Start Driving Survey
+	 *	3. Provide survey tag, select Survey Time: Day Solar Radiation: Overcast Wind: Strong Survey Type: Standard 
+	 *	4. Click on Start Survey button  
+	 *	5. Wait at least 30 seconds to let the Time Elapsed and Time Remaining values to run a bit 
+	 *	6. Refresh the browser
+	 * Results: - 
+	 *	1. After refreshing, survey details should return, including Tag, Mode, Current Time, Survey Active, Driver Name, Stability Class, Elapsed Time, Remaining Time, Surveyor Name and Zoom Level. 
+	 *	2. None of the values should be missing. Elapsed and Remaining Times should not reset after the refresh.
+ 	 **/
 	@Test
 	public void TC1232_ActionTest_DriverViewRefreshBrowser() {
 		try {
@@ -1128,7 +1261,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 
 			// start survey.
@@ -1188,13 +1321,27 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			assertTrue(driverViewPageAction.verifySurveyInfoStabilityClassLabelEquals(expectedStabilityClass, NOTSET));
 		
 			// Stop current simulator and start another with a different Analyzer.
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.
 		}
 	}
 
+	/**
+	 * Test Case ID: TC1241_ActionTest_DriverViewStartSurveyMultipleTimes
+	 * Script: -  	
+	 *	- Start a survey with appropriate survey details in the dialog, select Survey Type "Standard" and click OK
+	 *	- From the Mode menu, click Stop Survey
+	 *	- From the Mode menu, click Start Survey
+	 *	- When the dialog pops up, do not change any details and click Start Survey
+	 *	- From the Mode menu, click Stop Survey again
+	 *	- From the Mode menu, click Start Survey again
+	 *	- When the dialog pops up, change all details except Survey Type and click Start Survey
+	 * Results: - 
+	 *	- Once the Start Survey button is clicked on the second survey, the dialog should disappear and the survey should start (car icon turns red, Elapsed Time begins to advance, etc.)
+	 *	- Once the Start Survey button is clicked on the third survey, the dialog should disappear and the survey should start (car icon turns red, Elapsed Time begins to advance, etc.)
+ 	 **/
 	@Test
 	public void TC1241_ActionTest_DriverViewStartSurveyMultipleTimes() {
 		try {
@@ -1202,7 +1349,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 
 			// start survey.
@@ -1290,13 +1437,22 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			assertTrue(driverViewPageAction.verifySurveyInfoSurveyorLabelEquals(expectedSurveyorValue, NOTSET));
 	
 			// Stop current simulator and start another with a different Analyzer.
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.
 		}
 	}
 
+	/**
+	 * Test Case ID: TC1277_ActionTest_DriverViewCustUserManualSurveyNotAllowed
+	 * Script: -  	
+	 *	- Log into the tablet as a customer user
+	 *	- Click on the Mode button
+	 *	- Click on the Start Survey button
+	 * Results: - 
+	 *	- On the survey details popup, customer user should only see Survey Types Standard, Operator and Rapid Response. Survey Type Manual should not be present
+ 	 **/
 	@Test
 	public void TC1277_ActionTest_DriverViewCustUserManualSurveyNotAllowed() {
 		try {
@@ -1304,7 +1460,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 1);   /* Customer Utility admin */
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 
 			// start survey.
@@ -1316,13 +1472,22 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			assertFalse(driverViewPageAction.getDriverViewPage().getManualButton().isDisplayed());
 	
 			// Stop current simulator and start another with a different Analyzer.
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.
 		}
 	}
 
+	/**
+	 * Test Case ID: TC1385_ActionTest_DriverViewGISDataPersistsPostDisplayOptionsOff
+	 * Script: -  	
+	 *	- While survey is running, turn on all GIS options and select a zoom level that displays pipe data (17 to 19)
+	 *	- Turn off Display options one-by-one
+	 *	- Turn on Display options one-by-one
+	 * Results: - 
+	 *	- All boundary and pipe data should persist as options are turned off/on
+ 	 **/
 	// Ignoring the test for now, till we figure out how to find specific AssetType and BoundaryType is displaying on Map.
 	@Ignore
 	public void TC1385_ActionTest_DriverViewGISDataPersistsPostDisplayOptionsOff() {
@@ -1332,7 +1497,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver user */
 
-			testEnvironmentAction.startSimulator(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
 
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
@@ -1398,11 +1563,10 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			driverViewPageAction.turnOnBoundariesDistrictPlat(EMPTY, NOTSET);
 			assertTrue(driverViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));		// TODO Look into how to check for specific BoundaryType showing.
 
-			testEnvironmentAction.stopSimulator(EMPTY, NOTSET);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			assertTrue(false);	// fail test on exception.
 		}
 	}
 }
-

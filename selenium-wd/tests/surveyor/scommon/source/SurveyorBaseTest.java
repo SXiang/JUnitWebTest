@@ -34,6 +34,23 @@ public class SurveyorBaseTest {
 	public static LoginPage loginPage;
 	public static HomePage homePage;
 
+	// JUnit does NOT give a good way to detect which TestClass is executing.
+	// So we watch for the Test method under execution and install simulator pre-reqs
+	// if the test under execution is a Simulator test.
+	// NOTE that all simulator tests MUST follow this naming pattern: TC*_SimulatorTest_* 
+	@Rule
+	public TestWatcher watcher = new TestWatcher() {
+		@Override
+		public void starting(Description description) {
+			TestSetup.simulatorTestStarting(description);
+		}
+
+		@Override
+		public void finished(Description description) {
+			TestSetup.simulatorTestFinishing(description);
+		}
+	};
+	
 	/**
 	 * @throws java.lang.Exception
 	 */

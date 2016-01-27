@@ -256,7 +256,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 		manageSurveyorAdminPage.open();
 		curURL = driver.getCurrentUrl();
-		manageSurveyorAdminPage.clickOnFirstEditSurveyorBtn();
+		manageSurveyorAdminPage.clickOnCustomerFirstEditSurveyorBtn();
 		manageSurveyorAdminPage.waitForEditPageLoad();
 		manageSurveyorAdminPage.getBtnCancel().click();
 		assertTrue(manageSurveyorAdminPage.getStrPageURL().equalsIgnoreCase(
@@ -269,7 +269,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		manageUsersAdminPage.getBtnCancel().click();
 		assertTrue(manageUsersAdminPage.getStrPageURL()
 				.equalsIgnoreCase(curURL));
-		manageUsersAdminPage.clickOnFirstEditUserBtn();
+		manageUsersAdminPage.clickOnCustomerFirstEditUserBtn();
 		manageUsersAdminPage.waitForEditPageLoad();
 		manageUsersAdminPage.getBtnCancel().click();
 		assertTrue(manageUsersAdminPage.getStrPageURL()

@@ -2,8 +2,11 @@ package common.source;
 
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 public class OLMapUtility {
 
@@ -17,10 +20,32 @@ public class OLMapUtility {
 		Gray
 	}
 
-	private static final String IS_FIELD_NOTES_SHOWN_FUNCTION = "function isFieldNotesShown() { var shown = false; try { if (surveyormap) "
+	private static final String GET_FIRST_INDICATION_NODE_PIXEL_FUNCTION_JS = "function getFirstIndicationNodePixels() { "
+			+ "var pixelX = -1; var pixelY = -1; if (lastConstellation) { lastConstellation.nodes.forEach(function (node) { "
+			+ "if (node.type == 'indication') { var mapExtent = surveyormap.getView().calculateExtent(surveyormap.getSize()); "
+			+ "var mapOrigin = surveyormap.getPixelFromCoordinate([mapExtent[0], mapExtent[3]]); "
+			+ "var delta = getOriginDelta(lastExtent, mapOrigin); "
+			+ "pixelX = (node.x - (delta[0] * ol.has.DEVICE_PIXEL_RATIO)) / (ol.has.DEVICE_PIXEL_RATIO); "
+			+ "pixelY = (node.y - (delta[1] * ol.has.DEVICE_PIXEL_RATIO)) / (ol.has.DEVICE_PIXEL_RATIO); "
+			+ "return [pixelX, pixelY]; } }); }; return [pixelX, pixelY]; };";
+
+	private static final String GET_INDICATION_NODE_PIXEL_FUNCTION_JS = "function getIndicationNodePixels(epoch,lat,lon){"
+			+ "var pixelX=-1;var pixelY=-1;if(lastConstellation){lastConstellation.nodes.forEach(function(node){if(node.type=='indication'){"
+			+ "if((node.epochTime==epoch)&&(node.lat==lat)&&(node.lon==lon)){"
+			+ "var mapExtent=surveyormap.getView().calculateExtent(surveyormap.getSize());"
+			+ "var mapOrigin=surveyormap.getPixelFromCoordinate([mapExtent[0],mapExtent[3]]);"
+			+ "var delta=getOriginDelta(lastExtent,mapOrigin);pixelX=(node.x-(delta[0]*ol.has.DEVICE_PIXEL_RATIO))/(ol.has.DEVICE_PIXEL_RATIO);"
+			+ "pixelY=(node.y-(delta[1]*ol.has.DEVICE_PIXEL_RATIO))/(ol.has.DEVICE_PIXEL_RATIO);"
+			+ "return{pixelX,pixelY};}}});};return [pixelX,pixelY];};";
+	
+	private static final String IS_FIELD_NOTES_DIALOG_SHOWN_FUNCTION = "function isFieldNotesDialogShown() { var shown = false; try { if (surveyormap) "
 			+ "{ overlays = surveyormap.getOverlays(); for (var i = 0; i < overlays.getLength() ; i++) { overlay = overlays.item(i); "
 			+ "if (overlay) { element = overlay.getElement(); if (element) { if (element.id == 'annotation_modal') "
 			+ "{ return !(overlay.getPosition() == undefined); } } } } } } catch (err) { shown = false; }; return shown; };";
+
+	private static final String IS_FIELD_NOTE_SHOWN_FUNCTION = "function isFieldNoteShownOnMap(note) { var shown = false; "
+			+ "var freshConstellation = JSON.parse(JSON.stringify(d3constellation)); freshConstellation.nodes.forEach(function (d) { "
+			+ "if (d.type == 'annotation') { if (!d.fixed) { if (d.text == note) { shown = true; } } } }); return shown; };";
 
 	private static final String IS_ICON_PRESENT_JS_FUNCTION = "function isIconPresent(imgFileName){var found=false;var CAR_ICON_SRC='/content/images/'+imgFileName;"
 			+ "try{layers=map.getLayers();if(layers){for(var i=0;i<layers.getLength();i++){layer=layers.item(i);"
@@ -112,7 +137,8 @@ public class OLMapUtility {
 	private static final String IS_MAP_VIEW_SHOWN = "return (mapLayer.getSource() == sourceBingRoads);";
 	private static final String IS_SATELLITE_VIEW_SHOWN = "return (mapLayer.getSource() == sourceBingArialWithStreets);";
 	
-	private static final String IS_FIELD_NOTES_SHOWN_JS_FUNCTION_CALL = "return isFieldNotesShown();";
+	private static final String IS_FIELD_NOTES_DIALOG_SHOWN_JS_FUNCTION_CALL = "return isFieldNotesDialogShown();";
+	private static final String IS_FIELD_NOTE_SHOWN_JS_FUNCTION_CALL = "return isFieldNoteShownOnMap('%s');";
 	private static final String IS_ICON_PRESENT_JS_FUNCTION_CALL = "return isIconPresent('%s');";
 
 	private static final String IS_LISAS_PRESENT_JS_FUNCTION_CALL = "return isLisasPresent();";
@@ -137,7 +163,10 @@ public class OLMapUtility {
 	
 	private static final String IS_FOV_PRESENT_JS_FUNCTION_CALL = "return isFOVPresent();";
 	private static final String GET_FOV_GEOMETRY_COORDINATES_FUNCTION_CALL = "return getFOVCoordinates();";
-	
+
+	private static final String GET_INDICATION_NODE_PIXEL_FUNCTION_CALL = "return getIndicationNodePixels(%s,%s,%s);";
+	private static final String GET_FIRST_INDICATION_NODE_PIXEL_FUNCTION_CALL = "return getFirstIndicationNodePixels();";
+
 	private WebDriver driver;
 
 	public OLMapUtility(WebDriver driver) {
@@ -395,13 +424,26 @@ public class OLMapUtility {
 	}
 	
 	/*
+	 * Checks whether field notes dialog is shown on the map. 
+	 * Returns true if field dialog notes is shown on the map, false otherwise. 
+	 */
+	public boolean isFieldNotesDialogShown() {
+		String jsScript = IS_FIELD_NOTES_DIALOG_SHOWN_FUNCTION + IS_FIELD_NOTES_DIALOG_SHOWN_JS_FUNCTION_CALL;
+		Object fieldNotesDialogShown = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (fieldNotesDialogShown.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
+	}
+
+	/*
 	 * Checks whether field notes is shown on the map. 
 	 * Returns true if field notes is shown on the map, false otherwise. 
 	 */
-	public boolean isFieldNotesShown() {
-		String jsScript = IS_FIELD_NOTES_SHOWN_FUNCTION + IS_FIELD_NOTES_SHOWN_JS_FUNCTION_CALL;
-		Object fieldNotesShown = ((JavascriptExecutor)this.driver).executeScript(jsScript);
-		if (fieldNotesShown.toString().equalsIgnoreCase("true")) {
+	public boolean isFieldNoteShown(String fieldNote) {
+		String jsScript = IS_FIELD_NOTE_SHOWN_FUNCTION + String.format(IS_FIELD_NOTE_SHOWN_JS_FUNCTION_CALL, fieldNote);
+		Object fieldNoteShown = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (fieldNoteShown.toString().equalsIgnoreCase("true")) {
 			return true;
 		}
 		return false;
@@ -432,4 +474,78 @@ public class OLMapUtility {
 		}
 		return false;
 	}
+	
+	/*
+	 * Clicks on the specified indication on the Map. 
+	 * If more than one indications are found the first indication matching the parameters is clicked.
+	 * Returns true if indication was found and clicked, false otherwise.
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public boolean clickIndicationOnMap(String canvasXPath, float indicationEpochTime, 
+			float indicationLatitude, float indicationLongitude) {
+		String functionCall = GET_INDICATION_NODE_PIXEL_FUNCTION_JS + 
+		String.format(GET_INDICATION_NODE_PIXEL_FUNCTION_CALL, String.valueOf(indicationEpochTime),
+				String.valueOf(indicationLatitude), String.valueOf(indicationLongitude));
+		
+		Log.info("Calling javascript function -> " + functionCall);
+		
+		List<Object> indNodePixel = (List<Object>)((JavascriptExecutor)this.driver).executeScript(functionCall);
+		
+		if (indNodePixel != null && indNodePixel.size() == 2) {
+			long px = (long)indNodePixel.get(0);
+			long py = (long)indNodePixel.get(1);
+			return clickAtPixel(canvasXPath, (int)px, (int)py);
+		}
+		return false;
+	}
+
+	/*
+	 * Clicks on the first indication in the lastConstellation nodes List on the Map. 
+	 * Returns true if indication was found and clicked, false otherwise.
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public boolean clickFirstIndicationOnMap(String canvasXPath) {
+		String functionCall = GET_FIRST_INDICATION_NODE_PIXEL_FUNCTION_JS + GET_FIRST_INDICATION_NODE_PIXEL_FUNCTION_CALL; 
+		Log.info("Calling javascript function -> " + functionCall);
+		List<Object> indNodePixel = (List<Object>)((JavascriptExecutor)this.driver).executeScript(functionCall);
+		
+		if (indNodePixel != null && indNodePixel.size() == 2) {
+			if (indNodePixel.get(0) instanceof Long)
+		    {
+				long px = (long)indNodePixel.get(0);
+				long py = (long)indNodePixel.get(1);
+				Log.info(String.format("Got values x=%s, y=%s", String.valueOf(px), String.valueOf(py)));
+				return clickAtPixel(canvasXPath, (int)px, (int)py);
+		    }
+		    else if (indNodePixel.get(0) instanceof Double)
+		    {
+				double px = (double)indNodePixel.get(0);
+				double py = (double)indNodePixel.get(1);
+				Log.info(String.format("Got values x=%s, y=%s", String.valueOf(px), String.valueOf(py)));
+				return clickAtPixel(canvasXPath, (int)px, (int)py);
+		    }
+		}
+		return false;
+	}
+
+	/*
+	 * Clicks at the specified pixel on the canvas element.
+	 * 
+	 */
+	public boolean clickAtPixel(String canvasXPath, int x, int y) {
+		WebElement canvas = driver.findElement(By.xpath(canvasXPath));
+		if (canvas != null && canvas.isDisplayed()) {
+			Log.info(String.format("Found canvas element for XPath-'%s'", canvasXPath));
+		}
+		
+		Log.info(String.format("Clicking at pixel=[%d,%d] on canvas", x, y));
+		Actions builder = new Actions(driver);
+		builder.moveToElement(canvas, x, y)
+			.click()
+			.perform();
+
+		return true;
+    }
 }

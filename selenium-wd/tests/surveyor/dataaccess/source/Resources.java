@@ -45,8 +45,8 @@ public class Resources extends BaseEntity {
 		String culture = TestContext.INSTANCE.getUserCulture();
 		
 		// Get from cache if present. Else fetch from Database.
-		if (DBCache.INSTANCE.containsKey(CACHE_KEY+name)) {
-			Resources resource = (Resources)DBCache.INSTANCE.get(CACHE_KEY+name);
+		if (DBCache.INSTANCE.containsKey(CACHE_KEY+name+"_"+culture)) {
+			Resources resource = (Resources)DBCache.INSTANCE.get(CACHE_KEY+name+"_"+culture);
 			resx = resource.getValue();
 		} else {
 			String SQL = "SELECT * FROM dbo.Resources WHERE Name='" + name + "' AND CultureId='" + culture + "'";
@@ -54,7 +54,7 @@ public class Resources extends BaseEntity {
 			if (resList!=null && resList.size()>0) {
 				Resources resource = resList.get(0);
 				resx = resource.getValue();
-				DBCache.INSTANCE.set(CACHE_KEY + name, resource);
+				DBCache.INSTANCE.set(CACHE_KEY+name+"_"+culture, resource);
 			}
 		}
 		return resx;

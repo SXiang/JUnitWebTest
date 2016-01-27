@@ -120,11 +120,40 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
 
+		// Zoom out twice so that the indications will still keep showing in the view.
+		driverViewPage.clickZoomOutButton();
+		driverViewPage.clickZoomOutButton();
+		
 		// Let the test run for a few seconds.
-		testSetup.slowdownInSeconds(20 * testSetup.getSlowdownInSeconds());
+		testSetup.slowdownInSeconds(5 * testSetup.getSlowdownInSeconds());
+
+		// Stopping the replay before capturing OLMapUtility objects.
+		// This is necessary to click on correct co-ordinates.
+		Log.info("Stopping replay...");
+		TestSetup.stopReplay();
 		
 		// Call the various OLMapUtility methods.
 		OLMapUtility mapUtility = new OLMapUtility(driver);
+		
+		String mapCanvasXPath = "//*[@id='map']/div/canvas";
+		boolean clickFirstIndicationOnMap = mapUtility.clickFirstIndicationOnMap(mapCanvasXPath);
+		Log.info("clickFirstIndicationOnMap = " + clickFirstIndicationOnMap);
+		
+		driverViewPage.waitForFieldNotesDialogToOpen();
+		
+		Log.info("Entering dummy text in field notes");
+		String fieldNote = "Dummy field note";
+		driverViewPage.setFieldNotesTextField(fieldNote);
+		
+		Log.info("Clicking on Field notes Save button");
+		driverViewPage.clickFieldNotesSaveButton();
+		
+		Log.info("Waiting for field notes dialog to close");
+		driverViewPage.waitForFieldNotesDialogToClose();
+		
+		boolean isFieldNotesShown = mapUtility.isFieldNoteShown(fieldNote);
+		Log.info("isFieldNotesShown = " + isFieldNotesShown);
+		
 		boolean chartDataShowingOnMap = mapUtility.isConcentrationChartDataShowingOnMap();
 		Log.info("chartDataShowingOnMap = " + chartDataShowingOnMap);
 
