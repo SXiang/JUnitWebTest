@@ -9,6 +9,10 @@ import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 import static surveyor.scommon.source.SurveyorConstants.STARTDATE;
 import static surveyor.scommon.source.SurveyorConstants.SURVEYORUNIT;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONE;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -17,7 +21,9 @@ import org.openqa.selenium.support.PageFactory;
 import common.source.BaseHelper;
 import common.source.DBConnection;
 import common.source.Log;
+import common.source.PDFUtility;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 
@@ -28,6 +34,15 @@ import surveyor.dataaccess.source.Resources;
 public class ReferenceGasReportsPage extends ReportsBasePage {
 	public static final String STRURLPath = "/Reports/ReferenceGasReports";
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.RefGasReports_PageTitle);
+	public static final String STRReportTitle = Resources.getResource(ResourceKeys.RefGasReport_PageTitle);
+	public static final String STRReportSubTitle = Resources.getResource(ResourceKeys.RefGasReportSSRS_ReferenceGasResultTable);
+	public static final String STRReportTableColumnDate = Resources.getResource(ResourceKeys.RefGasReportSSRS_InstallationDateTime);
+	public static final String STRReportTableColumnUserName = Resources.getResource(ResourceKeys.ReportSSRS_UserName);
+	public static final String STRReportTableColumnLotNumber = Resources.getResource(ResourceKeys.RefGasReportSSRS_LotNumber);
+	public static final String STRReportTableColumnIsotopic = Resources.getResource(ResourceKeys.RefGasReportSSRS_IsotopicValueUncertainty);
+	public static final String STRReportTableColumnTestResult = Resources.getResource(ResourceKeys.RefGasReportSSRS_TestResult);
+
+
 	public static final String STRPaginationMsg = "Showing 1 to ";
 	
 	/**
@@ -292,7 +307,62 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 		result = BaseHelper.validatePdfFileForRefGas(pdfFile1);
 		return result;
 	}
+	
+	public boolean verifyStaticTextInPDF(String downloadPath, String reportTitle) {
+		PDFUtility pdfUtility = new PDFUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String fullDownloadPath = downloadPath + "RG-" + reportId.substring(0, 6) + ".pdf";
+		try {
+			String pdfInText = (pdfUtility.extractPDFText(fullDownloadPath));
+			if (!pdfInText.contains(STRReportTitle)) {
+				return false;
+			}
+			if (!pdfInText.contains(STRReportSubTitle)) {
+				return false;
+			}
+			if (!pdfInText.contains(STRReportTableColumnDate)) {
+				return false;
+			}
+			if (!pdfInText.contains(STRReportTableColumnUserName)) {
+				return false;
+			}
+			if (!pdfInText.contains(STRReportTableColumnLotNumber)) {
+				return false;
+			}
+			if (!pdfInText.contains(STRReportTableColumnIsotopic)) {
+				return false;
+			}
+			if (!pdfInText.contains(STRReportTableColumnTestResult)) {
+				return false;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
 
+	public boolean verifyUserInputInPDF(String downloadPath, String reportTitle, ArrayList<String> inputs) {
+		PDFUtility pdfUtility = new PDFUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String fullDownloadPath = downloadPath + "RG-" + reportId.substring(0, 6) + ".pdf";
+		try {
+			String pdfInText = (pdfUtility.extractPDFText(fullDownloadPath));
+			Iterator<String> inputIterator = inputs.iterator();
+			while (inputIterator.hasNext()) {
+				if (!pdfInText.contains(inputIterator.next())) {
+					return false;
+				}
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
+		
 	public boolean checkPaginationSetting(String numberOfReports) {
 		setPagination(numberOfReports);
 		testSetup.slowdownInSeconds(3);
