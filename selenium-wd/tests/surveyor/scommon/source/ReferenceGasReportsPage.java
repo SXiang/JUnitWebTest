@@ -70,7 +70,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 			}
 		}
 
-		DatetimepickerSetting dateSetting = new DatetimepickerSetting(driver,
+		DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver,
 				testSetup, strBaseURL, strBaseURL + STRURLPath);
 		PageFactory.initElements(driver, dateSetting);
 
@@ -110,7 +110,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 			}
 		}
 
-		DatetimepickerSetting dateSetting = new DatetimepickerSetting(driver,
+		DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver,
 				testSetup, strBaseURL, strBaseURL + STRURLPath);
 		PageFactory.initElements(driver, dateSetting);
 

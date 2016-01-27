@@ -73,6 +73,12 @@ public class ResourceKeys {
 	public static final String RefGasReports_PageTitle = "RefGasReports_PageTitle";
 	public static final String Runs_DrivingSurveys = "Runs_DrivingSurveys";
 	public static final String SystemHistoryReports_PageTitle = "SystemHistoryReports_PageTitle";
+	public static final String SystemHistoryReports_ReportTitle = "SysHistoryReportSSRS_SystemHistoryReport";
+	public static final String SystemHistoryReports_PageSubTitle = "SysHistoryReportSSRS_SurveyorHistoryNotesTable";
+	public static final String SystemHistoryReports_DateColumn = "SysHistoryReportSSRS_DateTimeLogged";
+	public static final String SystemHistoryReports_NoteColumn = "SysHistoryReportSSRS_Note";
+	public static final String SystemHistoryReports_UserNameColumn = "SysHistoryReportSSRS_UserName";
+	public static final String SystemHistoryReports_NoRecords = "SysHistoryReportSSRS_NoRecord";
 	public static final String UserFeedback_PageTitle = "UserFeedback_PageTitle";
 	public static final String UserFeedback_PromptTitle = "UserFeedback_PromptTitle";
 	public static final String UserFeedback_ThankYou_PromptText = "UserFeedback_ThankYou_PromptText";

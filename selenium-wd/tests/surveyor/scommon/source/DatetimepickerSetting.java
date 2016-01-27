@@ -17,7 +17,7 @@ import common.source.TestSetup;
  * @author zlu
  *
  */
-public class DatetimepickerSetting extends SurveyorBasePage {	
+public class DatetimePickerSetting extends SurveyorBasePage {	
 	@FindBy(how = How.XPATH, using = "//*[@id='report-date-start']")
 	protected WebElement inputStartDT;
 	
@@ -39,7 +39,7 @@ public class DatetimepickerSetting extends SurveyorBasePage {
 	 * @param strBaseURL
 	 * @param strPageURL
 	 */
-	public DatetimepickerSetting(WebDriver driver, TestSetup testSetup,
+	public DatetimePickerSetting(WebDriver driver, TestSetup testSetup,
 			String strBaseURL, String strPageURL) {
 		super(driver, testSetup, strBaseURL, strPageURL);
 	}
