@@ -145,4 +145,50 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		
 		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorNameNew, analyzerName));		
 	}
+
+	/**
+	 * Test Case ID: TC99_AnalyzerMax50CharsSerialNumber_PicAdmin
+	 * Script:   	 	
+	 * - On Home Page, and click Picarro Administration -> Manage Analyzers
+	 * - Click on 'Add New Analyzer' button
+	 * - Provide more than 50 characters in Serial Number field and click OK
+	 * - Repeat same step for Edit analyzer screen
+	 * Results: - 
+	 * - User cannot enter more than 50 characters and message having limit of characters displayed
+	 */
+	@Test
+	public void TC99_AnalyzerMax50CharsSerialNumber_PicAdmin() {
+		final int MAX_SIZE = 50;
+		String customerName = "Picarro";
+		String locationName = customerName + "loc";
+		String surveyorName = locationName + testSetup.getRandomNumber() + "sur";
+		String analyzerName50 = "TC99" + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-4);
+		String analyzerName51 = "TC99" + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-4) + "A";
+		String cityName="Santa Clara";
+		
+		Log.info("\nRunning TC99_AnalyzerMax50CharsSerialNumber_PicAdmin - Test Description: More than 50 characters not allowed in Serial Number field");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		
+		manageLocationsPage.open();
+		manageLocationsPage.addNewLocation(locationName, customerName ,cityName);
+		
+		manageSurveyorPage.open();
+		manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName);
+		
+		manageAnalyzersPage.open();
+		manageAnalyzersPage.addNewAnalyzer(analyzerName50, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
+		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName50));
+		manageAnalyzersPage.editExistingAnalyzer(customerName, locationName, surveyorName, analyzerName51, ANALYZERSHAREDKEY, surveyorName);
+		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName51.substring(0, MAX_SIZE)));
+		assertFalse(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName50));
+		
+		// Reset analyzerName and create new Analyzer with 51 chars.
+		analyzerName51 = "TC99" + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-4) + "A";
+		manageAnalyzersPage.open();
+		manageAnalyzersPage.addNewAnalyzer(analyzerName51, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
+		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName51.substring(0, MAX_SIZE)));
+		assertFalse(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName50));
+	}
 }

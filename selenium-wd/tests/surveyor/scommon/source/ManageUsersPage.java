@@ -199,17 +199,17 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 	public void addNewCustomerUser(String customerName, String email,
 			String password, String role, String location) {
+		addNewCustomerUser(customerName, email, password, role, location);
+	}
+	
+	public void addNewCustomerUser(String customerName, String email,
+			String password, String role, String location, boolean enabled) {
 		Log.info(String.format("Adding new Customer user. Name=%s, Email=%s, Password=[HIDDEN], Role=%s, Location=%s", customerName, 
 				email, role, location));
 		
-		String custLoc = customerName + " - " + location;
 		this.btnAddNewCustomerUser.click();
 		
-		List<WebElement> options = this.dropDownCustomer.findElements(By.tagName("option")); 
-		for	(WebElement option : options) { 
-			if (option.getText().trim().equalsIgnoreCase(custLoc))
-				option.click(); 
-		}
+		selectCustomerLocationDropdown(customerName, location);
 		
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
@@ -221,6 +221,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 			if (roleOption.getText().trim().equalsIgnoreCase(role))
 				roleOption.click();
 		}
+
+		enableDisableUser(enabled);
 
 		this.btnOk.click();
 
@@ -575,8 +577,13 @@ public class ManageUsersPage extends SurveyorBasePage {
 		return null;
 	}
 
-	public boolean editUser(String userName, String role, String timeZone,
+	public boolean editUser(String userName, String role, String timeZone, 
 			boolean accountEnable) {
+		return editUser(userName, role, timeZone, "" /*customerLocation*/, accountEnable);
+	}
+	
+	public boolean editUser(String userName, String role, String timeZone, 
+			String customerLocation, boolean accountEnable) {
 		setPagination(PAGINATIONSETTING_100);
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -613,27 +620,17 @@ public class ManageUsersPage extends SurveyorBasePage {
 				actionEditCell.click();
 				this.waitForEditPageLoad();
 
-				List<WebElement> options = dropDownRole.findElements(By
-						.tagName("option"));
-				for (WebElement option : options) {
-					if (option.getText().trim().equals(role))
-						option.click();
+				if (role != "") {
+					selectRoleDropdown(role);
+				}
+				if (timeZone != "") {
+					selectTimeZoneDropdown(timeZone);
+				}
+				if (customerLocation != "") {
+					selectLocationDropdown(customerLocation);
 				}
 
-				List<WebElement> optionsTZ = dropDownTimeZone.findElements(By
-						.tagName("option"));
-				for (WebElement optionTZ : optionsTZ) {
-					if (optionTZ.getText().trim().equals(timeZone))
-						optionTZ.click();
-				}
-
-				if (accountEnable) {
-					if (!inputAccountEnabled.isSelected())
-						inputAccountEnabled.click();
-				} else {
-					if (inputAccountEnabled.isSelected())
-						inputAccountEnabled.click();
-				}
+				enableDisableUser(accountEnable);
 
 				this.btnOk.click();
 				this.waitForPageLoad();
@@ -664,6 +661,45 @@ public class ManageUsersPage extends SurveyorBasePage {
 		}
 
 		return false;
+	}
+
+	private void enableDisableUser(boolean accountEnable) {
+		if (accountEnable) {
+			if (!inputAccountEnabled.isSelected())
+				inputAccountEnabled.click();
+		} else {
+			if (inputAccountEnabled.isSelected())
+				inputAccountEnabled.click();
+		}
+	}
+
+	private void selectCustomerLocationDropdown(String customerName, String location) {
+		String custLoc = customerName + " - " + location;
+		selectLocationDropdown(custLoc);
+	}
+
+	private void selectLocationDropdown(String customerLocation) {
+		List<WebElement> options = this.dropDownCustomer.findElements(By.tagName("option")); 
+		for	(WebElement option : options) { 
+			if (option.getText().trim().equalsIgnoreCase(customerLocation))
+				option.click(); 
+		}
+	}
+
+	private void selectTimeZoneDropdown(String timeZone) {
+		List<WebElement> optionsTZ = dropDownTimeZone.findElements(By.tagName("option"));
+		for (WebElement optionTZ : optionsTZ) {
+			if (optionTZ.getText().trim().equals(timeZone))
+				optionTZ.click();
+		}
+	}
+
+	private void selectRoleDropdown(String role) {
+		List<WebElement> options = dropDownRole.findElements(By.tagName("option"));
+		for (WebElement option : options) {
+			if (option.getText().trim().equals(role))
+				option.click();
+		}
 	}
 
 	public boolean resetUserPassword(String userName, String newPassword) {

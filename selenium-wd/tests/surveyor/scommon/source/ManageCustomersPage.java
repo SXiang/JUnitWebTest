@@ -65,7 +65,11 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		Log.info("\nThe Manager Customers Page URL is: " + this.strPageURL);
 	}
 	
-	public void addNewCustomer(String customerName, String eula) {
+	public boolean addNewCustomer(String customerName, String eula) {
+		return addNewCustomer(customerName, eula, true /*enableCustomer*/);
+	}
+	
+	public boolean addNewCustomer(String customerName, String eula, boolean enableCustomer) {
 		this.btnAddNewCustomer.click();
 		this.waitForNewPageLoad();
 		
@@ -79,14 +83,29 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		
 		this.inputCustomerName.sendKeys(customerName);
 		this.textAreaEula.sendKeys(eula);
-		this.inputAccountEnabled.click();
+		
+		enabledDisableCustomer(enableCustomer);
 		
 		this.btnOk.click();
 		
 		if (isElementPresent(this.panelDuplicationErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
+			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
 				this.cancelAddBtn.click();
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private void enabledDisableCustomer(boolean enableCustomer) {
+		if (enableCustomer) {
+			if (!inputAccountEnabled.isSelected())
+				inputAccountEnabled.click();
+		}
+		else {
+			if (inputAccountEnabled.isSelected())
+				inputAccountEnabled.click();
 		}
 	}
 	
@@ -118,26 +137,70 @@ public class ManageCustomersPage extends SurveyorBasePage {
 			
 			Log.info(String.format("Customer: %s; Status: %s", customerNameCell.getText(), enabledStatusCell.getText()));			
 			
-			String enabledStatusString = "Enabled";
+			String enabledStatusString = Resources.getResource(ResourceKeys.Constant_Enabled);
 			if (!enabledStatus) {
-				enabledStatusString = "Disabled";
-			}
-			
-			if (customerNameCell.getText().trim().equalsIgnoreCase(customerName)) {
-				Log.info("Matches Customer Name");
-			} else {
-				Log.info(String.format("No MATCH. Looking for-[%s]. Found-[%s]",customerName, customerNameCell.getText().trim()));
-			}
-			if (enabledStatusCell.getText().trim().equalsIgnoreCase(enabledStatusString)) {
-				Log.info("Matches Enabled Status");
-			} else {
-				Log.info(String.format("No MATCH. Looking for-[%s]. Found-[%s]",enabledStatusString, enabledStatusCell.getText().trim()));
+				enabledStatusString = Resources.getResource(ResourceKeys.Constant_Disabled);
 			}
 			
 			if (customerNameCell.getText().trim().equalsIgnoreCase(customerName) 
 					&& enabledStatusCell.getText().trim().equalsIgnoreCase(enabledStatusString)) {
 				Log.info(String.format("Found existing customer with name - '%s' and enabled status - '%b' at row number - %d", 
 						customerName, enabledStatus, rowNum));
+				return true;
+			}
+			
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				
+				rowSize = newRows.size();
+				
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
+				
+				rowNum = 0;
+			}			
+		}
+		
+		return false;
+	}
+
+	public boolean findCustomerAndOpenEditPage(String customerName) {
+		setPagination(PAGINATIONSETTING_100);
+		
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		
+		String customerNameXPath;
+		String actionXPath;
+		
+		WebElement customerNameCell;
+		WebElement actionCell;
+		
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			customerNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
+			customerNameCell = table.findElement(By.xpath(customerNameXPath));
+
+			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName)) {				
+				Log.info(String.format("Found existing customer with name - '%s' at row number - %d", 
+						customerName, rowNum));				
+				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
+				actionCell = table.findElement(By.xpath(actionXPath));
+				
+				actionCell.click();
+				this.waitForEditPageLoad();
 				return true;
 			}
 			
@@ -282,6 +345,10 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		return null;
 	}
 	
+	public String getEulaText() {
+		return this.textAreaEula.getAttribute("value");
+	}
+
 	public boolean changeCustomerAccountStatus (String customerName, boolean bEnabled) {
 		setPagination(PAGINATIONSETTING_100);
 		
@@ -317,14 +384,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				actionCell.click();
 				this.waitForEditPageLoad();
 				
-				if (bEnabled) {
-					if (!inputAccountEnabled.isSelected())
-						inputAccountEnabled.click();
-				}
-				else {
-					if (inputAccountEnabled.isSelected())
-						inputAccountEnabled.click();
-				}
+				enabledDisableCustomer(bEnabled);
 				
 				this.btnOk.click();
 				
