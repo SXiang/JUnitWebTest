@@ -174,6 +174,9 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		
 		this.btnOK.click();
 		
+		Log.info("Waiting for few seconds for debugging...");
+		this.testSetup.slowdownInSeconds(3 * this.testSetup.getSlowdownInSeconds());
+		
 		if (isElementPresent(this.panelDupSurErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDupSurErrorXPath));
 			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle)))

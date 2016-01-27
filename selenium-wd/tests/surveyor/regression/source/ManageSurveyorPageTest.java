@@ -67,8 +67,12 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		manageLocationsPage.addNewLocation(locationName, customerName,cityName);
 		
 		manageSurveyorPage.open();
+		Log.info(String.format("Adding new Surveyor: Name-[%s]; Location-[%s]; Customer-[%s]", 
+				surveyorName, locationName, customerName)); 
 		manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName);
 		
+		Log.info(String.format("Find existing Surveyor: Customer-[%s]; Location-[%s]; Surveyor Name-[%s]", 
+				customerName, locationName, surveyorName)); 
 		assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorName));
 	}
 	
@@ -102,9 +106,17 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		manageLocationsPage.addNewLocation(locationName, customerName,cityName);
 		
 		manageSurveyorPage.open();
+		
+		Log.info(String.format("Adding new Surveyor: Name-[%s]; Location-[%s]; Customer-[%s]", 
+				surveyorName, locationName, customerName)); 
 		manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName);
 		
-		manageSurveyorAdminPage.editExistingSurveyor(locationName, surveyorName, surveyorNameNew);
+		Log.info(String.format("Editing Surveyor: Location-[%s]; Current Surveyor Name-[%s]; New Surveyor Name-[%s]", 
+				locationName, surveyorName, surveyorNameNew)); 
+		manageSurveyorAdminPage.editExistingSurveyor(locationName, surveyorName, surveyorNameNew, false);
+
+		Log.info(String.format("Find existing Surveyor: Customer-[%s]; Location-[%s]; New Surveyor Name-[%s]", 
+				customerName, locationName, surveyorNameNew)); 
 		assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorNameNew));
 	}
 }
