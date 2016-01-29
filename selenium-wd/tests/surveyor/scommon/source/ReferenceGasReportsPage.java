@@ -64,7 +64,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	public ReferenceGasReportsPage(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup, strBaseURL + STRURLPath);
 
-		System.out.format("\nThe Reference Gas Report Page URL is: %s\n", this.strPageURL);
+		Log.info("\nThe Reference Gas Report Page URL is: %s\n"+ this.strPageURL);
 	}
 
 	private void addNewReport(String title, String timeZone, String surUnit, String startDate, String endDate) {
@@ -369,7 +369,6 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 		ArrayList<StoredProcReferenceGas> resultsList = new ArrayList<StoredProcReferenceGas>();
 		try {
 			pdfInText = (pdfUtility.extractPDFText(fullPathtoPdf));
-			// System.out.print(pdfInText);
 			InputStream inputStream = new ByteArrayInputStream(pdfInText.getBytes());
 			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 			String line = null;
