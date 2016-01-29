@@ -861,7 +861,7 @@ public class DriverViewPageActions extends BasePageActions {
 		logAction("DriverViewPageActions.verifyPageLoaded", data, dataRowID);
 		this.getDriverViewPage().waitForPageLoad();
 		this.getDriverViewPage().waitForConnectionComplete();
-		return false;
+		return true;
 	}
 
 	public boolean verifyPositionButtonIsGreen(String data, Integer dataRowID) {
@@ -1201,7 +1201,6 @@ public class DriverViewPageActions extends BasePageActions {
 	}
 	public boolean verifyFieldNotesIsNotShownOnMap(String data, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.verifyFieldNotesIsNotShownOnMap", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_FIELD_NOTES_IS_NOT_SHOWN_ON_MAP, ARG_DATA, data);
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		return !mapUtility.isFieldNoteShown(data);
 	}
