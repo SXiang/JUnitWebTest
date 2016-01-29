@@ -3,10 +3,8 @@ package surveyor.dataaccess.source;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.sql.CallableStatement;
 
-import common.source.DateUtility;
 import common.source.Log;
 
 public class StoredProcReferenceGas extends BaseEntity {
@@ -15,6 +13,7 @@ public class StoredProcReferenceGas extends BaseEntity {
 	private String uncertainty;
 	private String delta;
 	private String testResult;
+	private String analyzerId;
 
 	public StoredProcReferenceGas() {
 		super();
@@ -31,13 +30,21 @@ public class StoredProcReferenceGas extends BaseEntity {
 	public String getUncertainty() {
 		return uncertainty;
 	}
-	
+
 	public String getDelta() {
 		return delta;
 	}
 
 	public String getTestResult() {
 		return testResult;
+	}
+
+	public String getAnalyzerId() {
+		return analyzerId;
+	}
+
+	public void setAnalyzerId(String analyzerId) {
+		this.analyzerId = analyzerId;
 	}
 
 	public void setInstallationDate(String installationDate) {
@@ -94,7 +101,7 @@ public class StoredProcReferenceGas extends BaseEntity {
 		return objReportList;
 	}
 
-	public static ArrayList<StoredProcReferenceGas> getSystemHistory(String reportId) {
+	public static ArrayList<StoredProcReferenceGas> getReferenceGas(String reportId) {
 		// Get from cache if present. Else fetch from Database.
 		ArrayList<StoredProcReferenceGas> objStoredProcReferenceGas = new StoredProcReferenceGas().get(reportId);
 		return objStoredProcReferenceGas;
@@ -104,10 +111,11 @@ public class StoredProcReferenceGas extends BaseEntity {
 		StoredProcReferenceGas objReport = new StoredProcReferenceGas();
 		try {
 			objReport.setInstallationDate(resultSet.getString("ReferenceGasDate"));
-			objReport.setUserName(resultSet.getString("UserName"));
+			objReport.setUserName(resultSet.getString("DriverName"));
 			objReport.setUncertainty(resultSet.getString("Uncertainty"));
 			objReport.setDelta(resultSet.getString("Delta"));
 			objReport.setTestResult(resultSet.getString("Disposition"));
+			objReport.setAnalyzerId(resultSet.getString("AnalyzerId"));
 
 		} catch (SQLException e) {
 			Log.error("Class Report | " + e.toString());
