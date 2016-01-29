@@ -1975,7 +1975,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		});
 	}
-	
 	@Override
 	public void waitForPageLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {

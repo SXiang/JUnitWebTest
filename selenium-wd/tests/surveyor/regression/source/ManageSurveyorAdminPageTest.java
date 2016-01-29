@@ -96,7 +96,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 
 		manageSurveyorAdminPage.open();
 		manageSurveyorAdminPage.editExistingSurveyor(locationName,
-				surveyorName, surveyorNameNew, true);
+				surveyorName, surveyorNameNew);
 
 		assertTrue(manageSurveyorAdminPage.findExistingSurveyor(locationName,
 				surveyorNameNew));
@@ -198,7 +198,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 
 		manageSurveyorAdminPage.open();
 		manageSurveyorAdminPage.editExistingSurveyor(SQACUSLOC,
-				surveyorName400Chars, surveyorName401Chars, true);
+				surveyorName400Chars, surveyorName401Chars);
 
 		String allowedSurveyorName = surveyorName401Chars.substring(0, 400);
 		Log.info("allowedSurveyorName=" + allowedSurveyorName);
@@ -239,7 +239,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 
 		manageSurveyorAdminPage.open();
 		assertFalse(manageSurveyorAdminPage.editExistingSurveyor(SQACUSLOC,
-				surveyorName, "", true));
+				surveyorName, ""));
 	}
 
 	/**

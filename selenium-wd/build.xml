@@ -51,7 +51,7 @@
 
 	<target name="compile_common" depends="init"
 			description="Compile common source code">
-		<javac srcdir="${basedir}/tests/common/source:${basedir}/tests/surveyor/scommon/source:${basedir}/tests/surveyor/scommon/actions:${basedir}/tests/surveyor/scommon/actions/data:${basedir}/tests/surveyor/dataaccess/source:${basedir}/tests/surveyor/dataaccess/source:${basedir}/tests/surveyor/dataprovider" includeantruntime="false" destdir="${basedir}/tests/common/build">
+		<javac srcdir="${basedir}/tests/common/source:${basedir}/tests/surveyor/scommon/source:${basedir}/tests/surveyor/scommon/actions:${basedir}/tests/surveyor/scommon/actions/data:${basedir}/tests/surveyor/dataaccess/source:${basedir}/tests/surveyor/dataaccess/source" includeantruntime="false" destdir="${basedir}/tests/common/build">
 			<classpath>
 				<fileset dir="${basedir}">
 					<include name="**/*.jar" />
@@ -182,7 +182,6 @@
 					<include name="**/HomePageTest.class" />
 					<include name="**/LoginPageTest.class" />
 					<include name="**/ManageAnalyzersPageTest.class" />
-					<include name="**/ManageCustomersPageTest.class" />
 					<include name="**/ManageLocationsPageTest.class" />
 					<include name="**/ManageLocationsAdminPageTest.class" />
 					<include name="**/ManageRefGasBottlesAdminPageTest.class" />

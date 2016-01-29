@@ -1,7 +1,5 @@
 package surveyor.regression.source;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.List;
 
 import org.junit.Test;
@@ -11,9 +9,8 @@ import common.source.Log;
 import common.source.OLMapUtility;
 import common.source.TestSetup;
 import common.source.OLMapUtility.IconColor;
-import surveyor.scommon.source.LatLongSelectionControl;
-import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
-import surveyor.scommon.source.ManageLocationsPage;
+import surveyor.scommon.source.BoundarySelectionControl;
+import surveyor.scommon.source.BoundarySelectionControl.ControlMode;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.SurveyorBaseTest;
@@ -28,39 +25,35 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	private static final String SURVEYOR_DB3 = "Surveyor.db3";
 	private static final String REPLAY_DB3_DEFN_FILE = "replay-db3.defn";
 
-	private static final int X_OFFSET = 100;
-	private static final int Y_OFFSET = 100;
+	private static final int RECT_X = 50;
+	private static final int RECT_Y = 50;
 	private static final int RECT_WIDTH = 100;
 	private static final int RECT_HEIGHT = 100;
 	private static final String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
 
 	private static ComplianceReportsPage complianceReportsPage = null;
 	private static DriverViewPage driverViewPage = null;
-	private static LatLongSelectionControl latLongSelectionControl = null;
-	private static ManageLocationsPage manageLocationsPage = null;
+	private static BoundarySelectionControl boundarySelectionControl = null;
 
 	public PageObjectVerificationTest() {
 		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, complianceReportsPage);
-
-		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageLocationsPage);
-
+		
 		driverViewPage = new DriverViewPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver, driverViewPage);
 		
-		latLongSelectionControl = new LatLongSelectionControl(driver);
-		PageFactory.initElements(driver, latLongSelectionControl);
+		boundarySelectionControl = new BoundarySelectionControl(driver);
+		PageFactory.initElements(driver, boundarySelectionControl);
 	}
 
 	/**
 	 * Test Case ID: <None>
-	 * NOTE: This is a test method to demonstrate the usage of LatLongSelector Control for lat/long selection.
-	 *  Actual automation tests that use LatLongSelector can use this method as a reference.
+	 * NOTE: This is a test method to demonstrate the usage of BoundarySelector Control for lat/long selection.
+	 *  Actual automation tests that use BoundarySelector can use this method as a reference.
 	 */
 	@Test
-	public void ReferenceOnly_LatLongSelectorControl_LatLongAreaSelectorTest() {
-		System.out.format("\nRunning ReferenceOnly_LatLongSelectorControl_LatLongAreaSelectorTest... \n");
+	public void ReferenceOnly_BoundarySelectorControl_LatLongAreaSelectorTest() {
+		System.out.format("\nRunning ReferenceOnly_BoundarySelectorControl_LatLongAreaSelectorTest... \n");
 
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
@@ -69,22 +62,22 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		complianceReportsPage.clickOnNewComplianceReportBtn();
 		complianceReportsPage.openLatLongAreaSelector();
 
-		latLongSelectionControl.waitForModalDialogOpen()
+		boundarySelectionControl.waitForModalDialogOpen()
 				.switchMode(ControlMode.MapInteraction)
 				.waitForMapImageLoad()
-				.drawSelectorRectangle(CANVAS_X_PATH, X_OFFSET, Y_OFFSET, RECT_WIDTH, RECT_HEIGHT)
+				.drawSelectorRectangle(CANVAS_X_PATH, RECT_X, RECT_Y, RECT_WIDTH, RECT_HEIGHT)
 				.switchMode(ControlMode.Default)
 				.clickOkButton();
 	}
 
 	/**
 	 * Test Case ID: <None>
-	 * NOTE: This is a test method to demonstrate the usage of LatLongSelector Control for Customer Boundary selection.
-	 *  Actual automation tests that use LatLongSelector can use this method as a reference.
+	 * NOTE: This is a test method to demonstrate the usage of BoundarySelector Control for Customer Boundary selection.
+	 *  Actual automation tests that use BoundarySelector can use this method as a reference.
 	 */
 	@Test
-	public void ReferenceOnly_LatLongSelectorControl_CustomerLatLongSelectorTest() {
-		System.out.format("\nRunning ReferenceOnly_LatLongSelectorControl_CustomerLatLongSelectorTest... \n");
+	public void ReferenceOnly_BoundarySelectorControl_CustomerBoundarySelectorTest() {
+		System.out.format("\nRunning ReferenceOnly_BoundarySelectorControl_CustomerBoundarySelectorTest... \n");
 
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
@@ -93,50 +86,14 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		complianceReportsPage.clickOnNewComplianceReportBtn();
 		complianceReportsPage.openCustomerBoundarySelector();
 		
-		latLongSelectionControl.waitForModalDialogOpen()
+		boundarySelectionControl.waitForModalDialogOpen()
 			.switchMode(ControlMode.MapInteraction)
 			.waitForMapImageLoad()
-			.drawSelectorRectangle(CANVAS_X_PATH, X_OFFSET, Y_OFFSET, RECT_WIDTH, RECT_HEIGHT)
+			.drawSelectorRectangle(CANVAS_X_PATH, RECT_X, RECT_Y, RECT_WIDTH, RECT_HEIGHT)
 			.switchMode(ControlMode.Default)
-			.clickOkButton()
-			.waitForModalDialogToClose();
+			.clickOkButton();
 	}
 
-	/**
-	 * Test Case ID: <None>
-	 * NOTE: This is a test method to demonstrate the usage of LatLongSelector Control for Lat/Long selection.
-	 *  Actual automation tests that use LatLongSelector can use this method as a reference.
-	 */
-	@Test
-	public void ReferenceOnly_LatLongSelectorControl_LatLongSelectorTest() {
-		System.out.format("\nRunning ReferenceOnly_LatLongSelectorControl_LatLongSelectorTest... \n");
-
-		manageLocationsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		manageLocationsPage.open();
-		manageLocationsPage.waitForPageLoad();
-		manageLocationsPage.clickOnAddNewLocationBtn();
-		manageLocationsPage.waitForNewPageLoad();
-		
-		manageLocationsPage.clickOnLatLongSelectorBtn();
-		
-		latLongSelectionControl.waitForModalDialogOpen()
-			.switchMode(ControlMode.MapInteraction)
-			.waitForMapImageLoad()
-			.selectLatLong(CANVAS_X_PATH, X_OFFSET, Y_OFFSET)
-			.switchMode(ControlMode.Default)
-			.clickOkButton()
-			.waitForModalDialogToClose();
-
-		String locationLatitudeText = manageLocationsPage.getLocationLatitudeText();
-		Log.info("locationLatitudeText=" + locationLatitudeText);
-		assertTrue(!locationLatitudeText.isEmpty());
-
-		String locationLongitudeText = manageLocationsPage.getLocationLongitudeText();
-		Log.info("locationLongitudeText=" + locationLongitudeText);
-		assertTrue(!locationLongitudeText.isEmpty());
-	}
-
-	
 	/**
 	 * Test Case ID: <None>
 	 * NOTE: This is a test method to demonstrate the usage of OLMapUtility functions.

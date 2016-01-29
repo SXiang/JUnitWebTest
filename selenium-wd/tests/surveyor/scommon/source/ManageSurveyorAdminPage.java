@@ -87,7 +87,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 		return false;
 	}	
 	
-	public boolean editExistingSurveyor(String locationName, String surveyorName, String surveyorNameNew, boolean isCustomerLogin) {
+	public boolean editExistingSurveyor(String locationName, String surveyorName, String surveyorNameNew) {
 		setPagination(PAGE_PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -111,20 +111,11 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 			loopCount = Integer.parseInt(PAGE_PAGINATIONSETTING);
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			
-			if (isCustomerLogin) {
-				locationNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
-				surveyorNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
-			} else {
-				locationNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
-				surveyorNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
-			}
+			locationNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
+			surveyorNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
 			
 			locationNameCell = table.findElement(By.xpath(locationNameXPath));
 			surveyorNameCell = table.findElement(By.xpath(surveyorNameXPath));
-			
-			Log.info(String.format("Looking for Location-[%s],Surveyor-[%s]. Found Location-[%s],Surveyor-[%s]", 
-					locationName, surveyorName, locationNameCell.getText().trim(), surveyorNameCell.getText().trim()));
 			
 			if ((locationNameCell.getText().trim()).equalsIgnoreCase(locationName) 
 					&& (surveyorNameCell.getText().trim()).equalsIgnoreCase(surveyorName)) {

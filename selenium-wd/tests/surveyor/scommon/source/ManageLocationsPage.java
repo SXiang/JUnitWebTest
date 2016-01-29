@@ -3,7 +3,6 @@
  */
 package surveyor.scommon.source;
 
-import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.BLANKFIELDERROR;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 
@@ -16,13 +15,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import common.source.BaseHelper;
 import common.source.Log;
 import common.source.TestSetup;
@@ -50,12 +47,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	@FindBy(id = "Description")
 	protected WebElement inputLocationDesc;
-	
-	@FindBy(id = "btn-select-point")
-	private WebElement latLongSelectorBtn;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='point-latitude']")
-	private WebElement inputLocationLat;
+	protected WebElement inputLocationLat;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='point-longitude']")
 	protected WebElement inputLocationLong;
@@ -123,10 +117,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr")
 	protected List<WebElement> rows;
 
-	private static LatLongSelectionControl latLongSelectionControl = null;
-
-	private String latitude;
-	private String longitude;	
+	String latitude;
+	String longitude;
 
 	/**
 	 * @param driver
@@ -139,9 +131,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 
 		Log.info("\nThe Manager Locations Page URL is: " + this.strPageURL);
-		
-		latLongSelectionControl = new LatLongSelectionControl(driver);
-		PageFactory.initElements(driver, latLongSelectionControl);
 	}
 
 	public ManageLocationsPage(WebDriver driver, String baseURL,
@@ -151,12 +140,61 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	public void addNewLocation(String locationDesc, String customer,
 			String newLocationName) {
-		addNewLocation(locationDesc, customer, newLocationName, false /*UseLatLongSelector*/ );
-	}
-	
-	public void addNewLocationUsingLatLongSelector(String locationDesc, String customer,
-			String newLocationName) {
-		addNewLocation(locationDesc, customer, newLocationName, true /*UseLatLongSelector*/ );
+
+		if (newLocationName.equalsIgnoreCase("Santa Clara")) {
+			latitude = "37.3971035425739";
+			longitude = "-121.98343231897";
+		}
+
+		this.btnAddNewLocation.click();
+
+		this.inputLocationDesc.sendKeys(locationDesc);
+		this.inputLocationLat.sendKeys(latitude);
+		this.inputLocationLong.sendKeys(longitude);
+
+		List<WebElement> options = this.dropDownCustomer.findElements(By
+				.tagName("option"));
+		for (WebElement option : options) {
+			if (customer.equalsIgnoreCase(option.getText().trim()))
+				option.click();
+		}
+
+		this.stdMinAmp.clear();
+		this.stdMinAmp.sendKeys("0.035");
+		this.opdMinAmp.clear();
+		this.opdMinAmp.sendKeys("5");
+		this.RRMinAmp.clear();
+		this.RRMinAmp.sendKeys("5");
+		if (this.assessmentMinAmp.isDisplayed()) {
+			this.assessmentMinAmp.clear();
+			this.assessmentMinAmp.sendKeys("0.035");
+		}
+		if (this.eqMinAmp.isDisplayed()) {
+			this.eqMinAmp.clear();
+			this.eqMinAmp.sendKeys("0.035");
+		}
+
+		this.NoLower.clear();
+		this.NoLower.sendKeys("-45");
+		this.YesLower.clear();
+		this.YesLower.sendKeys("-42");
+		this.YesUpper.clear();
+		this.YesUpper.sendKeys("-30");
+		this.NoUpper.clear();
+		this.NoUpper.sendKeys("-25");
+
+		this.btnOK.click();
+
+		if (isElementPresent(this.panelDuplicationErrorXPath)) {
+			WebElement panelError = driver.findElement(By
+					.xpath(this.panelDuplicationErrorXPath));
+			if (panelError
+					.getText()
+					.equalsIgnoreCase(
+							Resources
+									.getResource(ResourceKeys.Validation_SummaryTitle)))
+				this.btnCancel.click();
+		}
 	}
 
 	public boolean findExistingLocation(String customerName, String locationName) {
@@ -435,14 +473,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		return this.btnCancel;
 	}
 
-	public String getLocationLatitudeText() {
-		return this.inputLocationLat.getAttribute("value");
-	}
-
-	public String getLocationLongitudeText() {
-		return this.inputLocationLong.getAttribute("value");
-	}
-
 	public void clickOnAddNewLocationBtn() {
 		this.btnAddNewLocation.click();
 	}
@@ -455,10 +485,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.btnCancel.click();
 	}
 	
-	public void clickOnLatLongSelectorBtn() {
-		this.latLongSelectorBtn.click();
-	}
-
 	public WebElement getTheadLocation() {
 		return this.theadLocation;
 	}
@@ -550,88 +576,5 @@ public class ManageLocationsPage extends SurveyorBasePage {
             	return d.getPageSource().contains(STREditPageContentText);
 			}
 		});
-	}
-
-	private void addNewLocation(String locationDesc, String customer,
-			String newLocationName, boolean useLatLongSelector) {
-
-		if (newLocationName.equalsIgnoreCase("Santa Clara")) {
-			latitude = "37.3971035425739";
-			longitude = "-121.98343231897";
-		}
-
-		this.btnAddNewLocation.click();
-
-		this.inputLocationDesc.sendKeys(locationDesc);
-		
-		if (!useLatLongSelector) {		
-			this.inputLocationLat.sendKeys(latitude);
-			this.inputLocationLong.sendKeys(longitude);
-		} else {
-			final int X_OFFSET = 100;
-			final int Y_OFFSET = 100;
-			String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
-
-			this.clickOnLatLongSelectorBtn();
-			latLongSelectionControl.waitForModalDialogOpen()
-				.switchMode(ControlMode.MapInteraction)
-				.waitForMapImageLoad()
-				.selectLatLong(CANVAS_X_PATH, X_OFFSET, Y_OFFSET)
-				.switchMode(ControlMode.Default)
-				.clickOkButton()
-				.waitForModalDialogToClose();
-			
-			String locationLatitudeText = this.getLocationLatitudeText();
-			Log.info("Location Latitude Field value = " + locationLatitudeText);
-			assertTrue(!locationLatitudeText.isEmpty());
-
-			String locationLongitudeText = this.getLocationLongitudeText();
-			Log.info("Location Longitude Field value = " + locationLongitudeText);
-			assertTrue(!locationLongitudeText.isEmpty());
-		}
-
-		List<WebElement> options = this.dropDownCustomer.findElements(By
-				.tagName("option"));
-		for (WebElement option : options) {
-			if (customer.equalsIgnoreCase(option.getText().trim()))
-				option.click();
-		}
-
-		this.stdMinAmp.clear();
-		this.stdMinAmp.sendKeys("0.035");
-		this.opdMinAmp.clear();
-		this.opdMinAmp.sendKeys("5");
-		this.RRMinAmp.clear();
-		this.RRMinAmp.sendKeys("5");
-		if (this.assessmentMinAmp.isDisplayed()) {
-			this.assessmentMinAmp.clear();
-			this.assessmentMinAmp.sendKeys("0.035");
-		}
-		if (this.eqMinAmp.isDisplayed()) {
-			this.eqMinAmp.clear();
-			this.eqMinAmp.sendKeys("0.035");
-		}
-
-		this.NoLower.clear();
-		this.NoLower.sendKeys("-45");
-		this.YesLower.clear();
-		this.YesLower.sendKeys("-42");
-		this.YesUpper.clear();
-		this.YesUpper.sendKeys("-30");
-		this.NoUpper.clear();
-		this.NoUpper.sendKeys("-25");
-
-		this.btnOK.click();
-
-		if (isElementPresent(this.panelDuplicationErrorXPath)) {
-			WebElement panelError = driver.findElement(By
-					.xpath(this.panelDuplicationErrorXPath));
-			if (panelError
-					.getText()
-					.equalsIgnoreCase(
-							Resources
-									.getResource(ResourceKeys.Validation_SummaryTitle)))
-				this.btnCancel.click();
-		}
 	}
 }
