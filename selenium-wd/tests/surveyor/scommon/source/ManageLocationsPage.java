@@ -3,6 +3,7 @@
  */
 package surveyor.scommon.source;
 
+import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.BLANKFIELDERROR;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 
@@ -15,11 +16,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;	
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import common.source.BaseHelper;
 import common.source.Log;
 import common.source.TestSetup;
@@ -47,6 +50,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	@FindBy(id = "Description")
 	protected WebElement inputLocationDesc;
+	
+	@FindBy(id = "btn-select-point")
+	private WebElement latLongSelectorBtn;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='point-latitude']")
 	protected WebElement inputLocationLat;
@@ -117,8 +123,10 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr")
 	protected List<WebElement> rows;
 
-	String latitude;
-	String longitude;
+	private static LatLongSelectionControl latLongSelectionControl = null;
+
+	private String latitude;
+	private String longitude;
 
 	/**
 	 * @param driver
@@ -130,6 +138,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 
+		latLongSelectionControl = new LatLongSelectionControl(driver);
+		PageFactory.initElements(driver, latLongSelectionControl);
+		
 		Log.info("\nThe Manager Locations Page URL is: " + this.strPageURL);
 	}
 
@@ -138,8 +149,19 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		super(driver, testSetup, baseURL, baseURL + urlPath);
 	}
 
+	
 	public void addNewLocation(String locationDesc, String customer,
 			String newLocationName) {
+		addNewLocation(locationDesc, customer, newLocationName, false /*UseLatLongSelector*/ );
+	}
+	
+	public void addNewLocationUsingLatLongSelector(String locationDesc, String customer,
+			String newLocationName) {
+		addNewLocation(locationDesc, customer, newLocationName, true /*UseLatLongSelector*/ );
+	}
+
+	private void addNewLocation(String locationDesc, String customer,
+			String newLocationName, boolean useLatLongSelector) {
 
 		if (newLocationName.equalsIgnoreCase("Santa Clara")) {
 			latitude = "37.3971035425739";
@@ -149,8 +171,32 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.btnAddNewLocation.click();
 
 		this.inputLocationDesc.sendKeys(locationDesc);
-		this.inputLocationLat.sendKeys(latitude);
-		this.inputLocationLong.sendKeys(longitude);
+		
+		if (!useLatLongSelector) {		
+			this.inputLocationLat.sendKeys(latitude);
+			this.inputLocationLong.sendKeys(longitude);
+		} else {
+			final int X_OFFSET = 100;
+			final int Y_OFFSET = 100;
+			String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
+
+			this.clickOnLatLongSelectorBtn();
+			latLongSelectionControl.waitForModalDialogOpen()
+				.switchMode(ControlMode.MapInteraction)
+				.waitForMapImageLoad()
+				.selectLatLong(CANVAS_X_PATH, X_OFFSET, Y_OFFSET)
+				.switchMode(ControlMode.Default)
+				.clickOkButton()
+				.waitForModalDialogToClose();
+			
+			String locationLatitudeText = this.getLocationLatitudeText();
+			Log.info("Location Latitude Field value = " + locationLatitudeText);
+			assertTrue(!locationLatitudeText.isEmpty());
+
+			String locationLongitudeText = this.getLocationLongitudeText();
+			Log.info("Location Longitude Field value = " + locationLongitudeText);
+			assertTrue(!locationLongitudeText.isEmpty());
+		}
 
 		List<WebElement> options = this.dropDownCustomer.findElements(By
 				.tagName("option"));
@@ -196,7 +242,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				this.btnCancel.click();
 		}
 	}
-
+	
 	public boolean findExistingLocation(String customerName, String locationName) {
 		setPagination(PAGINATIONSETTING_100);
 
@@ -473,6 +519,14 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		return this.btnCancel;
 	}
 
+	public String getLocationLatitudeText() {
+		return this.inputLocationLat.getAttribute("value");
+	}
+
+	public String getLocationLongitudeText() {
+		return this.inputLocationLong.getAttribute("value");
+	}
+
 	public void clickOnAddNewLocationBtn() {
 		this.btnAddNewLocation.click();
 	}
@@ -483,6 +537,10 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	public void clickOnCancelBtn() {
 		this.btnCancel.click();
+	}
+	
+	public void clickOnLatLongSelectorBtn() {
+		this.latLongSelectorBtn.click();
 	}
 	
 	public WebElement getTheadLocation() {
