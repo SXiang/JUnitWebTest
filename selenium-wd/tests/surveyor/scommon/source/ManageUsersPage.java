@@ -335,7 +335,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		return false;
 	}
 
-	public boolean findExistingUser(String locationName, String userName) {
+	public boolean findExistingUser(String locationName, String userName, boolean isCustomerUser) {
 		setPagination(PAGINATIONSETTING_100);
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -358,10 +358,13 @@ public class ManageUsersPage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			locationXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-					+ "]/td[3]";
-			userNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-					+ "]/td[1]";
+			userNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			
+			if (isCustomerUser) {
+				locationXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			} else {
+				locationXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]";
+			}
 
 			locationCell = table.findElement(By.xpath(locationXPath));
 			userNameCell = table.findElement(By.xpath(userNameXPath));
@@ -583,12 +586,12 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public boolean editUser(String userName, String role, String timeZone,
-			boolean accountEnable) {
-		return editUser(userName, role, timeZone, "" /*customerLocation*/, accountEnable);
+			boolean accountEnable, boolean isCustomerUser) {
+		return editUser(userName, role, timeZone, "" /*customerLocation*/, accountEnable, isCustomerUser);
 	}
 	
 	public boolean editUser(String userName, String role, String timeZone, 
-			String customerLocation, boolean accountEnable) {
+			String customerLocation, boolean accountEnable, boolean isCustomerUser) {
 		setPagination(PAGINATIONSETTING_100);
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -617,8 +620,11 @@ public class ManageUsersPage extends SurveyorBasePage {
 			userNameCell = table.findElement(By.xpath(userNameXPath));
 
 			if ((userNameCell.getText().trim()).equalsIgnoreCase(userName)) {
-				actionEditXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-						+ "]/td[6]/a[1]";
+				if (isCustomerUser) {
+					actionEditXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[6]/a[1]";
+				} else {
+					actionEditXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[7]/a[1]";
+				}
 
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
 				Log.info("Found cell at xpath=" + actionEditXPath);

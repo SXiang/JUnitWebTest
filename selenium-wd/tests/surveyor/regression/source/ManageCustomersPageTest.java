@@ -163,7 +163,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 				USERPASSWORD, CUSUSERROLEUA, locationDesc);
 
 		Log.info(String.format("Looking for user: Customer-[%s]; Username-[%s]", customerName, userName));
-		assertTrue(manageUsersPage.findExistingUser(customerName, userName));
+		assertTrue(manageUsersPage.findExistingUser(customerName, userName, false));
 		loginPage = manageUsersPage.logout();
 
 		// verify disabled customer user cannot login.
@@ -212,7 +212,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 				CUSUSERROLEUA, locationDesc);
 
 		Log.info(String.format("Looking for User: Customer-[%s], UserName-[%s]", customerName, userName));
-		assertTrue(manageUsersPage.findExistingUser(customerName, userName));
+		assertTrue(manageUsersPage.findExistingUser(customerName, userName, false));
 		loginPage = manageUsersPage.logout();
 
 		loginPage.open();

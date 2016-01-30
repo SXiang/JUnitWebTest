@@ -89,7 +89,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 				CUSUSERROLEDR));
 
 		manageUsersAdminPage.editUser(userName, CUSUSERROLESU, TIMEZONEETUA,
-				true);
+				true, true);
 		assertTrue(manageUsersAdminPage.findExistingUser(SQACUSLOC, userName,
 				CUSUSERROLESU));
 		assertTrue(manageUsersAdminPage.getUserRole(userName).equalsIgnoreCase(
@@ -299,7 +299,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC,
 				CUSUSERROLEDR, TIMEZONEPTUA);
 		manageUsersAdminPage.editUser(userName, CUSUSERROLESU, TIMEZONEPTUA,
-				false);
+				false, true);
 
 		assertTrue(manageUsersAdminPage.getUserRole(userName).equalsIgnoreCase(
 				CUSUSERROLESU));
