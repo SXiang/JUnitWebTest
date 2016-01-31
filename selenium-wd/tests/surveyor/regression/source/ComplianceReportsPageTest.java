@@ -131,10 +131,10 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * @throws IOException
 	 * 
 	 */
-	@Ignore
+	@Test
 	public void TC517_ComplianceReportTest_VerifywithDefaults() {
 		String rptTitle = "TC517 Report" + testSetup.getRandomNumber();
-		System.out.format("\nRunning TC517: Generate compliance report with all default values/filters selected and download it, ", rptTitle);
+		Log.info("\nRunning TC517: Generate compliance report with all default values/filters selected and download it, "+ rptTitle);
 
 		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
 		complianceReportsPage.open();
@@ -169,7 +169,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBOUNDARIES, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewMap2.put(KEYVIEWNAME, "Second View");
@@ -213,8 +213,8 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYASSETPEPLASTIC, "1");
 		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
 		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "0");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICT, "1");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "1");
 
 		tablesList.add(tableMap);
 
@@ -244,7 +244,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC148 Test Description: Generate compliance report by selecting custom boundary using date range and tag filters for more than one view and export the report
 	 * 
 	 */
-	@Test
+//	@Test
 	public void TC148_ComplianceReportTest_VerifyCustomBoundarywithMultiViews() {
 		String rptTitle = "TC148 Report" + testSetup.getRandomNumber();
 
@@ -334,7 +334,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC150 Test Description: Generate Compliance Report and include Picarro Surveyor Unit filter
 	 * 
 	 */
-	@Test
+//	@Test
 	public void TC150_ComplianceReportTest_VerifyReportGenerationbySurveyor() {
 		String rptTitle = "TC150 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC150: Generate Compliance Report and include Picarro Surveyor Unit filter, %s\n", rptTitle);
@@ -402,7 +402,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC151 Test Description: Generate report by providing tag filter
 	 * 
 	 */
-	@Ignore
+	//@Test
 	public void TC151_ComplianceReportTest_VerifyReportGenerationbyTagFilter() {
 		String rptTitle = "TC151 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC151: Generate report by providing tag filter including survey with isotopic analysis data, %s\n", rptTitle);
@@ -471,7 +471,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC152 Test Description: Generate compliance report using date range and surveyor unit filters for more than one view and download the report
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC152_ComplianceReportTest_VerifyReportGenerationbyTagFilter() {
 		String rptTitle = "TC152 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC152: Generate compliance report using date range and surveyor unit filters for more than one view and download the report, %s\n", rptTitle);
@@ -557,7 +557,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC153 Test Description: Copy and modify report from previously run reports
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC153__ComplianceReportTest_VerifyCopyandModifyReportPreviouslyRun() {
 		String rptTitle = "TC153 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC153: Copy and modify report from previously run reports, %s\n", rptTitle);
@@ -629,7 +629,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC154 Test Description: Generate Compliance Report and include Coverage Percentage of the assets
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC154_ComplianceReportTest_VerifyGenerateComplianceReportforCoverageofAssets() {
 		String rptTitle = "TC154 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC154: Generate Compliance Report and include Coverage Percentage of the assets, %s\n", rptTitle);
@@ -698,7 +698,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC155 Test Description: Generate Compliance Report and include Coverage Percentage by area
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC155__ComplianceReportTest_VerifyComplianeReportGenerationbyCoveragePercentageArea() {
 		String rptTitle = "TC155 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC155: Generate Compliance Report and include Coverage Percentage by area, %s\n", rptTitle);
@@ -768,7 +768,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC156 Generate reports showing gaps that are not covered
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC156_ComplianceReportTest_VerifyComplianeReportGenerationGapsNotCoveredbySurvey() {
 		String rptTitle = "TC156 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC156: Generate reports showing gaps for report area that is not covered by survey, %s\n", rptTitle);
@@ -837,7 +837,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC157 Test Description: Check that report cannot be generated unless all filters are selected
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC157_ComplianceReportTest_VerifyReportCannotbeGeneratedUnlessAllFiltersarePresent() {
 		System.out.format("\nRunning TC157: Check that report cannot be generated unless all filters are selected");
 
@@ -853,7 +853,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC160 Test Description: Pagination - 10,25,50 and 100 Reports selection on compliance report screen
 	 * 
 	 */
-	@Ignore
+	//@Ignore
 	public void TC160_ComplianceReportTest_VerifyPagination() {
 		System.out.format("\nRunning RPT015: Pagination - 10,25,50 and 100 Reports selection on compliance report screen");
 
@@ -878,7 +878,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC163 Test Description: Screen should not refresh while searching an in-progress report, as it completes
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC163_ComplianceReportTest_VerifyScreendoesntRefreshwhileSearchingInprogressReport() {
 		String rptTitle = "TC163 Report" + testSetup.getRandomNumber();
 
@@ -944,7 +944,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC164 Test Description: Search invalid reports
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC164_ComplianceReportTest_VerifySearchInvalidReports() {
 		String rptTitle = "TC164 Report";
 		System.out.format("\nRunning TC164: Search invalid reports, %s\n", rptTitle);
@@ -962,7 +962,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC166 Test Description: Picarro Administrator can delete the specified report
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC166_ComplianceReportTest_AdminCanDeleteReport() {
 		String rptTitle = "TC166 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC166: User can delete the specified report, %s\n", rptTitle);
@@ -1030,7 +1030,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC169 Generate compliance report for provided custom boundary without having the indications, Isotopic Analysis tables data and download it
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC169_ComplianceReportTest_VerifyReportGenerationwithoutIndicationsIsotopicTable() {
 		String rptTitle = "TC169 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC169: Generate compliance report for provided custom boundary without having the indications, Isotopic Analysis tables data and download it, %s\n", rptTitle);
@@ -1098,7 +1098,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC170 Test Description: Duplicate report
 	 * 
 	 */
-	@Ignore
+	//@Ignore
 	public void TC170_ComplianceReportTest_VerifyReportDuplicate() {
 		String rptTitle = "TC170 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC170: Duplicate report, %s\n", rptTitle);
@@ -1168,7 +1168,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC173 Test Description: Generate compliance report for provided custom boundary using date range filter for manual surveys and download it
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC173_ComplianceReportTest_VerifyManualReport() {
 		String rptTitle = "TC173 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC173: Generate compliance report for provided custom boundary using date range filter for manual surveys and download it, %s\n", rptTitle);
@@ -1234,7 +1234,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC174 Test Description: Generate report for same surveys but in different modes
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC174_ComplianceReportTest_VerifySameReportDifferentModes() {
 		String rptTitle = "TC174 RR Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC174: Generate report for same surveys but in different modes, %s\n", rptTitle);
@@ -1314,7 +1314,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC175 Test Description: Generate report as Picarro Admin user for the survey done by any of the customer user
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC175_ComplianceReportTest_VerifyGenerateReportasAdminforOtherUserSurveys() {
 		String rptTitle = "TC175 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC175: Generate report as Picarro Admin user for the survey done by any of the customer user, %s\n", rptTitle);
@@ -1384,7 +1384,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC176 Test Description: Generate compliance report as customer supervisor
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC176_ComplianceReportTest_VerifyReportasCustomerSupervisor() {
 		String rptTitle = "TC176 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC176: Generate report as Picarro Admin user for the survey done by any of the customer user, %s\n", rptTitle);
@@ -1498,7 +1498,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC177 Test Description: Generate compliance report as customer admin
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC177_ComplianceReportTest_VerifyReportsCustomerAdmin() {
 		String rptTitle = "TC177 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC177: Generate compliance report as customer admin, survey owner, %s\n", rptTitle);
@@ -1584,7 +1584,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC180 Test Description: Generate Manual report from existing reports having surveys of standard or Rapid Response types using copy feature
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC180_ComplianceReportTest_VerifyCopyStandardReportAsManual() {
 		String rptTitle = "TC180 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC180: Generate Manual report from existing reports having surveys of standard or Rapid Response types using copy feature , %s\n", rptTitle);
@@ -1661,7 +1661,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC181 Test Description: Generate standard or rapid response report from existing reports having survey of Manual type using copy feature
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC181_ComplianceReportTest_VerifyCopyManualReportAsRapidResponse() {
 		String rptTitle = "TC181 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC181: Generate  standard or rapid response report from existing reports having survey of Manual type using copy feature , %s\n", rptTitle);
@@ -1736,7 +1736,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC182 Test Description: Generate standard report from existing reports having survey of Rapid Response type using copy feature
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC182_ComplianceReportTest_VerifyCopyRapidResponseReportAsStandard() {
 		String rptTitle = "TC182 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC182: Generate standard report from existing reports having survey of Rapid Response type using copy feature, %s\n", rptTitle);
@@ -1811,7 +1811,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC183 Test Description: Generate report having multiple surveys of Standard, Operator and Rapid Response types in Rapid Response report mode
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC183_ComplianceReportTest_VerifyReportwithMultipleSurveys() {
 		String rptTitle = "TC183 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC183: Generate report having multiple surveys of Standard, Operator and Rapid Response types in Rapid Response report mode, %s\n", rptTitle);
@@ -1842,7 +1842,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC184 Test Description: Very small or big report area selection not allowed
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC184_ComplianceReportTest_VerifyAreaErrorMessage() {
 		System.out.format("\nRunning TC184_: Very small or big report area selection not allowed\n");
 		String rptTitle = "TC184_Report" + testSetup.getRandomNumber();
@@ -1903,7 +1903,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC185 Test Description: Click on Cancel button present on compliance report screen
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC185_ComplianceReportTest_VerifyCancelButtonFunctionality() {
 		System.out.format("\nRunning TC185: Click on Cancel button present on compliance report screen\n");
 
@@ -1920,7 +1920,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC191 Test Description: Generate report having multiple surveys and verify Gaps for them
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC191_ComplianceReportTest_VerifyMultipleSurveyGaps() {
 		String rptTitle = "TC191 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC191: Generate report having multiple surveys and verify Gaps for them, %s\n", rptTitle);
@@ -1995,7 +1995,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC192 Test Description: Generate report having multiple surveys and provide exclusion radius
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC192_ComplianceReportTest_VerifyMultipleSurveyExclusionRadius() {
 		String rptTitle = "TC192 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC192: Generate report having multiple surveys and provide exclusion radius, %s\n", rptTitle);
@@ -2085,7 +2085,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC197 Test Description: Verify "Already Added" message is displayed if user tries to add the same survey again
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC197_ComplianceReportTest_VerifyAddSurveyErrorMessages() {
 		System.out.format("\nRunning TC197: Verify 'Already Added' message is displayed if user tries to add the same survey again\n");
 
@@ -2103,7 +2103,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC198 Test Description: Verify "Already Added" message is displayed if user tries to add the same survey again using copy functionality
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC198_ComplianceReportTest_VerifyAlreadyAddedMessageforCopy() {
 		System.out.format("\nRunning TC198: Verify 'Already Added' message is displayed if user tries to add the same survey again using copy functionality\n");
 

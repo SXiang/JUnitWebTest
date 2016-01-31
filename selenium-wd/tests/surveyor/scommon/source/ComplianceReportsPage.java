@@ -255,8 +255,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			selectPercentCoverageReportArea();
 		}
 
-		selectViewLayerAssets(true, true, true, true, true, true);
-		handleOptionalViewLayersSection(reportsCompliance);
+		handleOptionalViewLayersSection(tablesList);
 		
 		this.btnOK.click();
 	}
@@ -454,8 +453,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.userName.sendKeys(username);
 	}
 
-	private void handleOptionalViewLayersSection(Reports reportsCompliance) {
-		List<Map<String, String>> viewLayersList = reportsCompliance.getViewLayersList();
+	private void handleOptionalViewLayersSection(List<Map<String,String>> viewLayersList) {
 		if (viewLayersList != null) {
 			boolean selectAssetCastIron = viewLayersList.get(0).get(KEYASSETCASTIRON).equalsIgnoreCase("1");
 			boolean selectAssetCopper = viewLayersList.get(0).get(KEYASSETCOPPER).equalsIgnoreCase("1");
@@ -463,8 +461,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			boolean selectAssetPEPlastic = viewLayersList.get(0).get(KEYASSETPEPLASTIC).equalsIgnoreCase("1");
 			boolean selectAssetProtectedSteel = viewLayersList.get(0).get(KEYASSETPROTECTEDSTEEL).equalsIgnoreCase("1");
 			boolean selectAssetUnprotectedSteel = viewLayersList.get(0).get(KEYASSETUNPROTECTEDSTEEL).equalsIgnoreCase("1");
-			selectViewLayerAssets(selectAssetCastIron, selectAssetCopper, selectAssetOtherPlastic, 
-					selectAssetPEPlastic, selectAssetProtectedSteel, selectAssetUnprotectedSteel);
+			selectViewLayerAssets(selectAssetCastIron, selectAssetCopper, selectAssetOtherPlastic, selectAssetPEPlastic, selectAssetProtectedSteel, selectAssetUnprotectedSteel);
 			
 			boolean selectBoundaryDistrict = viewLayersList.get(0).get(KEYBOUNDARYDISTRICT).equalsIgnoreCase("1");
 			boolean selectBoundaryDistrictPlat = viewLayersList.get(0).get(KEYBOUNDARYDISTRICTPLAT).equalsIgnoreCase("1");
@@ -2111,12 +2108,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			Boolean selectAssetOtherPlastic, Boolean selectAssetPEPlastic, Boolean selectAssetProtectedSteel,
 			Boolean selectAssetUnprotectedSteel) {
 		if (selectAssetCastIron) {
+			System.out.println("Cast iron is selected");
 			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-96caf1f5-d5c5-461d-9ce3-d210c20a1bb0']")).size() > 0) {
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				js.executeScript("arguments[0].click();", checkBoxCastIron);
 			}
 		}
 		if (selectAssetCopper) {
+			System.out.println("Copper is selected");
 			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-d08fc87f-f979-4131-92a9-3d82f37f4bba']")).size() > 0) {
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				js.executeScript("arguments[0].click();", checkBoxCopper);

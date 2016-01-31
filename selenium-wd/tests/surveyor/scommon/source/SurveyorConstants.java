@@ -103,7 +103,7 @@ public final class SurveyorConstants {
 
 	public static final String SQACUSUATAG = "dmcs1-sqacusua";
 	public static final String SQACUSSUTAG = "dmcs1-sqacussu";
-	public static final String SQACUSDRTAG = "stnd-sqacudr";
+	public static final String SQACUSDRTAG = "stnd";
 	public static final String SQAPICADTAG = "dmcs1-sqapicad";
 	public static final String SQAPICUATAG = "dmcs1-sqapicua";
 	public static final String SQAPICSUTAG = "dmcs1-sqapicsu";
@@ -224,13 +224,13 @@ public final class SurveyorConstants {
 	/*
 	 * Driving survey tag for Compliance Reports
 	 */
-	public static final String PICADMNSTDTAG = "stnd-pic";
-	public static final String PICADMNRRTAG = "rr-pic";
-	public static final String PICADMNOPTAG = "op-pic";
-	public static final String PICADMNMANTAG = "man-pic";
-	public static final String CUSDRVSTDTAG = "stnd-sqacudr";
-	public static final String CUSDRVRRTAG = "rr-sqacudr";
-	public static final String CUSDRVOPTAG = "op-sqacudr";
+	public static final String PICADMNSTDTAG = "stnd";
+	public static final String PICADMNRRTAG = "rr";
+	public static final String PICADMNOPTAG = "op";
+	public static final String PICADMNMANTAG = "man";
+	public static final String CUSDRVSTDTAG = "stnd";
+	public static final String CUSDRVRRTAG = "rr";
+	public static final String CUSDRVOPTAG = "op";
 
 	
 		
