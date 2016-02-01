@@ -127,7 +127,11 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 			
 			if ((locationNameCell.getText().trim()).equalsIgnoreCase(locationName) 
 					&& (surveyorNameCell.getText().trim()).equalsIgnoreCase(surveyorName)) {
-				actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]/a";
+				if (isCustomerLogin) {
+					actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]/a";
+				} else {
+					actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]/a";
+				}
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
 				
 				Log.info("Found entry at rowNum=" + rowNum);

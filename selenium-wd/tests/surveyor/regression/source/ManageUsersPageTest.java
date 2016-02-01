@@ -66,7 +66,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD,
 				CUSUSERROLEUA, locationDesc, TIMEZONECT);
 
-		assertTrue(manageUsersPage.findExistingUser("Picarro", userName));
+		assertTrue(manageUsersPage.findExistingUser("Picarro", userName, false));
 		loginPage = manageUsersPage.logout();
 
 		loginPage.open();
@@ -106,7 +106,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.addNewCustomerUser(customerName, userName,
 				USERPASSWORD, CUSUSERROLEUA, locationDesc);
 
-		assertTrue(manageUsersPage.findExistingUser(customerName, userName));
+		assertTrue(manageUsersPage.findExistingUser(customerName, userName, false));
 		loginPage = manageUsersPage.logout();
 
 		loginPage.open();
@@ -147,8 +147,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.addNewCustomerUser(customerName, userName,
 				USERPASSWORD, CUSUSERROLEUA, locationDesc);
 
-		manageUsersPage.editUser(userName, CUSUSERROLESU, TIMEZONEETUA, true);
-		assertTrue(manageUsersPage.findExistingUser(customerName, userName));
+		manageUsersPage.editUser(userName, CUSUSERROLESU, TIMEZONEETUA, true, false);
+		assertTrue(manageUsersPage.findExistingUser(cityName, userName, false));
 		loginPage = manageUsersPage.logout();
 
 		loginPage.open();
@@ -196,8 +196,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageLocationsPage.addNewLocation(locationDescNew, customerName, cityNameNew);		
 		
 		// Edit role, location and timezone
-		manageUsersPage.editUser(userName, CUSUSERROLESU, TIMEZONEETUA, locationDescNew, true);
-		assertTrue(manageUsersPage.findExistingUser(customerName, userName));
+		manageUsersPage.editUser(userName, CUSUSERROLESU, TIMEZONEETUA, locationDescNew, true, false);
+		assertTrue(manageUsersPage.findExistingUser(cityNameNew, userName, false));
 		loginPage = manageUsersPage.logout();
 
 		loginPage.open();
@@ -221,7 +221,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning - TC95_ReEnableUser_PicAdmin - Test Description: Picarro Admin - Re-Enable User\n");
 
 		loginPage.open();
-		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
 		homePage.waitForPageLoad();
 		
@@ -233,7 +233,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD, CUSUSERROLEDR, SQACUSLOC, false);
 
 		// enable the user
-		assertTrue(manageUsersPage.editUser(userName, CUSUSERROLEDR, TIMEZONEETUA, SQACUSLOC, true /*enable user*/));
+		assertTrue(manageUsersPage.editUser(userName, CUSUSERROLEDR, TIMEZONEETUA, SQACUSLOC, true /*enable user*/, false));
 		manageUsersPage.logout();
 
 		// verify user can login correctly
@@ -261,7 +261,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 				+ "More than 50 characters not allowed in email address field\n");
 
 		loginPage.open();
-		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
 		homePage.waitForPageLoad();
 		
@@ -271,18 +271,18 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		Log.info(String.format("Creating new user - Customer=%s;Username=%s;Role=%s;Location=%s;Enabled=%b",
 				SQACUS, userName50, CUSUSERROLEDR, SQACUSLOC, false));
 		manageUsersPage.addNewCustomerUser(SQACUS, userName50, USERPASSWORD, CUSUSERROLEDR, SQACUSLOC, false);
-		assertTrue(manageUsersPage.findExistingUser(SQACUS, userName50));
-		manageUsersPage.editUser(userName51, CUSUSERROLEDR, TIMEZONEETUA, SQACUSLOC, true /*enable user*/);
-		assertTrue(manageUsersPage.findExistingUser(SQACUS, userName51.substring(0, MAX_SIZE)));
-		assertFalse(manageUsersPage.findExistingUser(SQACUS, userName51));
+		assertTrue(manageUsersPage.findExistingUser(SQACUS, userName50, true));
+		manageUsersPage.editUser(userName51, CUSUSERROLEDR, TIMEZONEETUA, SQACUSLOC, true /*enable user*/, false);
+		assertTrue(manageUsersPage.findExistingUser(SQACUS, userName51.substring(0, MAX_SIZE), false));
+		assertFalse(manageUsersPage.findExistingUser(SQACUS, userName51, false));
 		
 		// Create user with 51 characters in email.
 		userName51 = SQACUS + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-20) + "TC98" + REGBASEUSERNAME + "A";
 		Log.info(String.format("Creating new user - Customer=%s;Username=%s;Role=%s;Location=%s;Enabled=%b",
 				SQACUS, userName51, CUSUSERROLEDR, SQACUSLOC, false));
 		manageUsersPage.addNewCustomerUser(SQACUS, userName51, USERPASSWORD, CUSUSERROLEDR, SQACUSLOC, false);
-		assertTrue(manageUsersPage.findExistingUser(SQACUS, userName51.substring(0, MAX_SIZE)));
-		assertFalse(manageUsersPage.findExistingUser(SQACUS, userName51));
+		assertTrue(manageUsersPage.findExistingUser(SQACUS, userName51.substring(0, MAX_SIZE), false));
+		assertFalse(manageUsersPage.findExistingUser(SQACUS, userName51, false));
 	}
 	
 	/**
@@ -389,7 +389,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD,
 				CUSUSERROLESU, locationDesc, TIMEZONECT);
 
-		assertTrue(manageUsersPage.findExistingUser("Picarro", userName));
+		assertTrue(manageUsersPage.findExistingUser("Picarro", userName, false));
 		loginPage = manageUsersPage.logout();
 
 		loginPage.open();
@@ -417,7 +417,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD,
 				CUSUSERROLEUA, SQACUSLOC);
 
-		assertTrue(manageUsersPage.findExistingUser(SQACUS, userName));
+		assertTrue(manageUsersPage.findExistingUser(SQACUS, userName, false));
 		loginPage = manageUsersPage.logout();
 
 		loginPage.open();
