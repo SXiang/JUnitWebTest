@@ -65,6 +65,7 @@ import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorBaseTest;
 
 public class SanityIntegrationTest extends SurveyorBaseTest {
+	private static final String PICARRO_CUSTOMER = "Picarro";
 	private static ComplianceReportsPage complianceReportsPage;
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageUsersPage manageUsersPage;
@@ -316,13 +317,15 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageUsersPage.waitForNewPageLoad();
 		assertTrue(manageUsersPage.isLinkBroken());
 		manageUsersPage.clickOnCancelAddBtn();
-		manageCustomersPage.waitForPageToLoad();
+		manageUsersPage.waitForPageToLoad();
 		manageUsersPage.clickOnAddNewCustomerUserBtn();
 		manageUsersPage.waitForNewPageLoad();
 		assertTrue(manageUsersPage.isLinkBroken());
 		manageUsersPage.clickOnCancelAddBtn();
-		manageCustomersPage.waitForPageToLoad();
+		manageUsersPage.waitForPageToLoad();
+		manageUsersPage.getInputSearch().sendKeys(PICARRO_CUSTOMER);
 		manageUsersPage.clickOnFirstEditUserBtn();
+	
 		manageUsersPage.waitForEditPageLoad();
 		assertTrue(manageUsersPage.isLinkBroken());
 		manageUsersPage.clickOnCancelEditBtn();
@@ -335,7 +338,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageLocationsPage.waitForNewPageLoad();
 		assertTrue(manageLocationsPage.isLinkBroken());
 		manageLocationsPage.clickOnCancelBtn();
-		manageCustomersPage.waitForPageToLoad();
+		manageLocationsPage.waitForPageToLoad();
 		manageLocationsPage.clickOnFirstEditLocationBtn();
 		manageLocationsPage.waitForEditPageLoad();
 		assertTrue(manageLocationsPage.isLinkBroken());
@@ -349,7 +352,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageSurveyorsPage.waitForNewPageLoad();
 		assertTrue(manageSurveyorsPage.isLinkBroken());
 		manageSurveyorsPage.clickOnAddCancelBtn();
-		manageCustomersPage.waitForPageToLoad();
+		manageSurveyorsPage.waitForPageToLoad();
 		manageSurveyorsPage.clickOnFirstEditSurveyorBtn();
 		manageSurveyorsPage.waitForEditPageLoad();
 		assertTrue(manageSurveyorsPage.isLinkBroken());
@@ -363,7 +366,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageAnalyzersPage.waitForNewPageLoad();
 		assertTrue(manageAnalyzersPage.isLinkBroken());
 		manageAnalyzersPage.clickOnCancelBtn();
-		manageCustomersPage.waitForPageToLoad();
+		manageAnalyzersPage.waitForPageToLoad();
 		manageAnalyzersPage.clickOnFirstEditAnalyzerBtn();
 		manageAnalyzersPage.waitForEditPageLoad();
 		assertTrue(manageAnalyzersPage.isLinkBroken());
