@@ -1872,7 +1872,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC184 Test Description: Very small or big report area selection not allowed
 	 * 
 	 */
-	//@Test
+	@Test
 	public void TC184_ComplianceReportTest_VerifyAreaErrorMessage() {
 		System.out.format("\nRunning TC184_: Very small or big report area selection not allowed\n");
 		String rptTitle = "TC184_Report" + testSetup.getRandomNumber();
@@ -1952,7 +1952,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC191 Test Description: Generate report having multiple surveys and verify Gaps for them
 	 * 
 	 */
-	//@Test
+	@Test
 	public void TC191_ComplianceReportTest_VerifyMultipleSurveyGaps() {
 		String rptTitle = "TC191 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC191: Generate report having multiple surveys and verify Gaps for them, %s\n", rptTitle);
@@ -2028,7 +2028,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC192 Test Description: Generate report having multiple surveys and provide exclusion radius
 	 * 
 	 */
-	//@Test
+	@Test
 	public void TC192_ComplianceReportTest_VerifyMultipleSurveyExclusionRadius() {
 		String rptTitle = "TC192 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC192: Generate report having multiple surveys and provide exclusion radius, %s\n", rptTitle);
@@ -2120,7 +2120,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC197 Test Description: Verify "Already Added" message is displayed if user tries to add the same survey again
 	 * 
 	 */
-	//@Test
+	@Test
 	public void TC197_ComplianceReportTest_VerifyAddSurveyErrorMessages() {
 		System.out.format("\nRunning TC197: Verify 'Already Added' message is displayed if user tries to add the same survey again\n");
 
@@ -2138,7 +2138,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC198 Test Description: Verify "Already Added" message is displayed if user tries to add the same survey again using copy functionality
 	 * 
 	 */
-	//@Test
+	@Test
 	public void TC198_ComplianceReportTest_VerifyAlreadyAddedMessageforCopy() {
 		System.out.format("\nRunning TC198: Verify 'Already Added' message is displayed if user tries to add the same survey again using copy functionality\n");
 
