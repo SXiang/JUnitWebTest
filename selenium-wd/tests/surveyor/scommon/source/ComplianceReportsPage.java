@@ -614,8 +614,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 
 		this.btnSurveySearch.click();
-		this.checkboxSurFirst.click();
 		this.waitForSurveyTabletoLoad();
+		this.waitForSurveySelectorCheckBoxToLoad();
+		this.checkboxSurFirst.click();
 		this.btnAddSurveys.click();
 		this.inputViewLisa.click();
 		this.inputViewFOV.click();
@@ -688,7 +689,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						String srcShapeImg = this.zipShape.getAttribute("src");
 						DBConnection objDbConn = new DBConnection();
 						String reportId = objDbConn.getIdOfSpecifiedReportTitle(rptTitle, this.testSetup);
-						System.out.println("report id" + reportId);
 						reportId = reportId.substring(0, 6);
 						reportName = "CR-" + reportId;
 
@@ -2192,7 +2192,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	private void waitForFileDownload(String fileName, String downloadPath) {
-		(new WebDriverWait(driver, timeout+30)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, timeout+60)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return checkFileExists(fileName, downloadPath);
 			}
