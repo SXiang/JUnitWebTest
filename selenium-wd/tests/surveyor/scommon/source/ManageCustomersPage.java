@@ -155,6 +155,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 					&& enabledStatusCell.getText().trim().equalsIgnoreCase(enabledStatusString)) {
 				Log.info(String.format("Found existing customer with name - '%s' and enabled status - '%b' at row number - %d", 
 						customerName, enabledStatus, rowNum));
+				return true;
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {

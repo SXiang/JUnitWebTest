@@ -42,8 +42,12 @@ public final class SurveyorConstants {
 
 	public static final String CUSNAMEBASE = "sqacus";
 	public static final String CUSNAMEBASELOC = "sqacusloc";
-	public static final String CUSNAMEBASESUR = "sqacuslocsur";
-	public static final String CUSNAMEBASEANA = "sqacuslocsurana";
+	
+	// Not referenced in code. Commenting. Can be deleted post successful automation run.
+	//public static final String CUSNAMEBASESUR = "sqacuslocsur";
+	
+	// Not referenced in code. Commenting. Can be deleted post successful automation run.
+	//public static final String CUSNAMEBASEANA = "sqacuslocsurana";
 
 	public static final String SQACUS = "sqacus";
 	public static final String SQACUSLOC = "sqacusloc";

@@ -53,7 +53,9 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	public void TC68_AddNewPicarroUser() {
 		String userName = "PicarroUser" + testSetup.getRandomNumber()
 				+ "picarroUser01" + REGBASEUSERNAME;
-		String locationDesc = "Picarro - Santa Clara";
+		String customer = "Picarro";
+		String location = "Santa Clara";
+		String locationDesc = customer + " - " + location;
 
 		System.out
 				.println("\nRunning TC68 - Test Description: Picarro Admin - Add New Picarro user");
@@ -66,7 +68,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD,
 				CUSUSERROLEUA, locationDesc, TIMEZONECT);
 
-		assertTrue(manageUsersPage.findExistingUser("Picarro", userName, false));
+		assertTrue(manageUsersPage.findExistingUser(location, userName, false));
 		loginPage = manageUsersPage.logout();
 
 		loginPage.open();
@@ -86,7 +88,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + "customerUser01" + REGBASEUSERNAME;
 		String cityName = "Santa Clara";
-		String locationDesc = customerName + "-" + cityName;
+		String locationName = customerName + "loc";
 
 		System.out
 				.println("\nRunning TC69 - Test Description: Picarro Admin - Add New Customer user");
@@ -100,13 +102,13 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		manageLocationsPage.open();
 		manageLocationsPage
-				.addNewLocation(locationDesc, customerName, cityName);
+				.addNewLocation(locationName, customerName, cityName);
 
 		manageUsersPage.open();
 		manageUsersPage.addNewCustomerUser(customerName, userName,
-				USERPASSWORD, CUSUSERROLEUA, locationDesc);
+				USERPASSWORD, CUSUSERROLEUA, locationName);
 
-		assertTrue(manageUsersPage.findExistingUser(customerName, userName, false));
+		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
 		loginPage = manageUsersPage.logout();
 
 		loginPage.open();
@@ -130,7 +132,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + "customerUser01" + REGBASEUSERNAME;
 		String cityName = "Santa Clara";
-		String locationDesc = customerName + "-" + cityName;
+		String locationName = customerName + "loc";
 
 		System.out.println("\nRunning TC70 - Test Description: Picarro Admin - edit user");
 
@@ -141,14 +143,22 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageCustomersPage.addNewCustomer(customerName, eula);
 
 		manageLocationsPage.open();
-		manageLocationsPage.addNewLocation(locationDesc, customerName, cityName);
+		manageLocationsPage.addNewLocation(locationName, customerName, cityName);
 
 		manageUsersPage.open();
+		
+		Log.info(String.format("Adding new user: CustomerName=[%s]; Username=[%s]; Role=[%s]; Location=[%s]", 
+				customerName, userName, CUSUSERROLEUA, locationName)); 
 		manageUsersPage.addNewCustomerUser(customerName, userName,
-				USERPASSWORD, CUSUSERROLEUA, locationDesc);
+				USERPASSWORD, CUSUSERROLEUA, locationName);
 
+		Log.info(String.format("Editing user: Username=[%s]; Role=[%s]; Timezone=[%s]; Enabled=[%b]; IsCustomerUser=[%b]", 
+				userName, CUSUSERROLESU, TIMEZONEETUA, true, false)); 
 		manageUsersPage.editUser(userName, CUSUSERROLESU, TIMEZONEETUA, true, false);
-		assertTrue(manageUsersPage.findExistingUser(cityName, userName, false));
+		
+		Log.info(String.format("Editing user: Location=[%s]; Username=[%s]; IsCustomerUser=[%b]", 
+				cityName, userName, false)); 
+		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
 		loginPage = manageUsersPage.logout();
 
 		loginPage.open();
@@ -173,8 +183,9 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String userName = customerName + "customerUser01" + REGBASEUSERNAME;
 		String cityName = "Santa Clara";
 		String cityNameNew = "Santa Clara2";
-		String locationDesc = customerName + "-" + cityName;
-		String locationDescNew = customerName + "-" + cityNameNew;
+		String locationName = customerName + "loc";
+		String locationNameNew = customerName + "locNew";
+		String locationNameNewDesc = customerName + " - " + locationNameNew;
 
 		System.out.println("\nRunning TC87 - Test Description: Picarro Admin - edit user - change role, location and timezone of existing user");
 
@@ -185,19 +196,29 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageCustomersPage.addNewCustomer(customerName, eula);
 
 		manageLocationsPage.open();
-		manageLocationsPage.addNewLocation(locationDesc, customerName, cityName);
+		manageLocationsPage.addNewLocation(locationName, customerName, cityName);
 
 		manageUsersPage.open();
+
+		Log.info(String.format("Creating new user - Customer=%s;Username=%s;Role=%s;Location=%s;Enabled=%b",
+				customerName, userName, CUSUSERROLEUA, locationName, true));
 		manageUsersPage.addNewCustomerUser(customerName, userName,
-				USERPASSWORD, CUSUSERROLEUA, locationDesc);
+				USERPASSWORD, CUSUSERROLEUA, locationName);
 
 		// Add another location for the customer.
 		manageLocationsPage.open();
-		manageLocationsPage.addNewLocation(locationDescNew, customerName, cityNameNew);		
+		manageLocationsPage.addNewLocation(locationNameNew, customerName, cityNameNew);		
+		
+		manageUsersPage.open();
 		
 		// Edit role, location and timezone
-		manageUsersPage.editUser(userName, CUSUSERROLESU, TIMEZONEETUA, locationDescNew, true, false);
-		assertTrue(manageUsersPage.findExistingUser(cityNameNew, userName, false));
+		Log.info(String.format("Editing user - Username=%s;Role=%s;Timezone=%s;Location=%s;Enabled=%b;IsCustomerUser=%b",
+				userName, CUSUSERROLESU, TIMEZONEETUA, locationNameNew, true, false));
+		manageUsersPage.editUser(userName, CUSUSERROLESU, TIMEZONEETUA, locationNameNewDesc, true, false);
+
+		Log.info(String.format("Finding user - Location=%s;Username=%s;IsCustomerUser=%b",
+				locationNameNew, userName, false));
+		assertTrue(manageUsersPage.findExistingUser(locationNameNew, userName, false));
 		loginPage = manageUsersPage.logout();
 
 		loginPage.open();
@@ -218,6 +239,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC95_ReEnableUser_PicAdmin() {
 		String userName = SQACUS + testSetup.getRandomNumber() + "TC95" + REGBASEUSERNAME;
+		String locationDesc = SQACUS + " - " + SQACUSLOC;
+		
 		Log.info("\nRunning - TC95_ReEnableUser_PicAdmin - Test Description: Picarro Admin - Re-Enable User\n");
 
 		loginPage.open();
@@ -233,7 +256,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD, CUSUSERROLEDR, SQACUSLOC, false);
 
 		// enable the user
-		assertTrue(manageUsersPage.editUser(userName, CUSUSERROLEDR, TIMEZONEETUA, SQACUSLOC, true /*enable user*/, false));
+		assertTrue(manageUsersPage.editUser(userName, CUSUSERROLEDR, TIMEZONEETUA, locationDesc, true /*enable user*/, false));
 		manageUsersPage.logout();
 
 		// verify user can login correctly
@@ -271,18 +294,24 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		Log.info(String.format("Creating new user - Customer=%s;Username=%s;Role=%s;Location=%s;Enabled=%b",
 				SQACUS, userName50, CUSUSERROLEDR, SQACUSLOC, false));
 		manageUsersPage.addNewCustomerUser(SQACUS, userName50, USERPASSWORD, CUSUSERROLEDR, SQACUSLOC, false);
-		assertTrue(manageUsersPage.findExistingUser(SQACUS, userName50, true));
-		manageUsersPage.editUser(userName51, CUSUSERROLEDR, TIMEZONEETUA, SQACUSLOC, true /*enable user*/, false);
-		assertTrue(manageUsersPage.findExistingUser(SQACUS, userName51.substring(0, MAX_SIZE), false));
-		assertFalse(manageUsersPage.findExistingUser(SQACUS, userName51, false));
 		
+		Log.info(String.format("Finding user - Location=%s;Username=%s;IsCustomerUser=%b",
+				SQACUSLOC, userName50, false));
+		assertTrue(manageUsersPage.findExistingUser(SQACUSLOC, userName50, false));
+
 		// Create user with 51 characters in email.
 		userName51 = SQACUS + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-20) + "TC98" + REGBASEUSERNAME + "A";
 		Log.info(String.format("Creating new user - Customer=%s;Username=%s;Role=%s;Location=%s;Enabled=%b",
 				SQACUS, userName51, CUSUSERROLEDR, SQACUSLOC, false));
 		manageUsersPage.addNewCustomerUser(SQACUS, userName51, USERPASSWORD, CUSUSERROLEDR, SQACUSLOC, false);
-		assertTrue(manageUsersPage.findExistingUser(SQACUS, userName51.substring(0, MAX_SIZE), false));
-		assertFalse(manageUsersPage.findExistingUser(SQACUS, userName51, false));
+
+		Log.info(String.format("Finding user - Location=%s;Username=%s;IsCustomerUser=%b",
+				SQACUSLOC, userName51.substring(0, MAX_SIZE), false));
+		assertTrue(manageUsersPage.findExistingUser(SQACUSLOC, userName51.substring(0, MAX_SIZE), false));
+
+		Log.info(String.format("Finding user - Location=%s;Username=%s;IsCustomerUser=%b",
+				SQACUSLOC, userName51, false));
+		assertFalse(manageUsersPage.findExistingUser(SQACUSLOC, userName51, false));
 	}
 	
 	/**
@@ -377,7 +406,9 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	public void TC470_AddNewPicarroUser() {
 		String userName = "PicarroUser" + testSetup.getRandomNumber()
 				+ "picarroUser02" + REGBASEUSERNAME;
-		String locationDesc = "Picarro - Santa Clara";
+		String customer = "Picarro";
+		String location = "Santa Clara";
+		String locationDesc = customer + " - " + location;
 
 		System.out
 				.println("\nRunning TC470 - Test Description: Picarro Support - Add New Picarro user");
@@ -389,7 +420,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD,
 				CUSUSERROLESU, locationDesc, TIMEZONECT);
 
-		assertTrue(manageUsersPage.findExistingUser("Picarro", userName, false));
+		assertTrue(manageUsersPage.findExistingUser(location, userName, false));
 		loginPage = manageUsersPage.logout();
 
 		loginPage.open();
@@ -417,7 +448,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD,
 				CUSUSERROLEUA, SQACUSLOC);
 
-		assertTrue(manageUsersPage.findExistingUser(SQACUS, userName, false));
+		assertTrue(manageUsersPage.findExistingUser(SQACUSLOC, userName, false));
 		loginPage = manageUsersPage.logout();
 
 		loginPage.open();

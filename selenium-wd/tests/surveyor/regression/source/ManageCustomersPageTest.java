@@ -138,11 +138,11 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 */
 	@Test  
 	public void TC92_DisabledCustomer_PicAdmin() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC93";
-		String userName = customerName + testSetup.getRandomNumber() + REGBASEUSERNAME;
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getFixedSizeRandomNumber(12) + "TC93";
+		String userName = customerName + testSetup.getFixedSizeRandomNumber(12) + REGBASEUSERNAME;
 		String eula = customerName + ": " + EULASTRING;
 		String cityName = "Santa Clara";
-		String locationDesc = customerName + "-" + cityName;
+		String locationName = customerName + "loc";
 		Log.info("\nRunning TC93_ReenableCustomer_PicAdmin - Test Description: Re-Enable Customer");
 		
 		loginPage.open();
@@ -156,14 +156,14 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		assertTrue(manageCustomersPage.findExistingCustomer(customerName, false));
 
 		manageLocationsPage.open();
-		manageLocationsPage.addNewLocation(locationDesc, customerName, cityName);
+		manageLocationsPage.addNewLocation(locationName, customerName, cityName);
 
 		manageUsersPage.open();
 		manageUsersPage.addNewCustomerUser(customerName, userName,
-				USERPASSWORD, CUSUSERROLEUA, locationDesc);
+				USERPASSWORD, CUSUSERROLEUA, locationName);
 
-		Log.info(String.format("Looking for user: Customer-[%s]; Username-[%s]", customerName, userName));
-		assertTrue(manageUsersPage.findExistingUser(customerName, userName, false));
+		Log.info(String.format("Looking for user: Location-[%s]; Username-[%s]", customerName, userName));
+		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
 		loginPage = manageUsersPage.logout();
 
 		// verify disabled customer user cannot login.
@@ -184,12 +184,12 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC93_ReenableCustomer_PicAdmin() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC93";
-		String userName = customerName + testSetup.getRandomNumber() + REGBASEUSERNAME;
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getFixedSizeRandomNumber(12) + "TC93";
+		String userName = customerName + testSetup.getFixedSizeRandomNumber(12) + REGBASEUSERNAME;
 		String eula = customerName + ": " + EULASTRING;
 
 		String cityName = "Santa Clara";
-		String locationDesc = customerName + "-" + cityName;
+		String locationName = customerName + "loc";
 		
 		Log.info("\nRunning TC93_ReenableCustomer_PicAdmin - Test Description: Re-Enable Customer");
 		
@@ -205,14 +205,14 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		assertTrue(manageCustomersPage.findExistingCustomer(customerName, true));
 
 		manageLocationsPage.open();
-		manageLocationsPage.addNewLocation(locationDesc, customerName, cityName);
+		manageLocationsPage.addNewLocation(locationName, customerName, cityName);
 
 		manageUsersPage.open();
 		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, 
-				CUSUSERROLEUA, locationDesc);
+				CUSUSERROLEUA, locationName);
 
-		Log.info(String.format("Looking for User: Customer-[%s], UserName-[%s]", customerName, userName));
-		assertTrue(manageUsersPage.findExistingUser(customerName, userName, false));
+		Log.info(String.format("Looking for User: Location-[%s], UserName-[%s]", customerName, userName));
+		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
 		loginPage = manageUsersPage.logout();
 
 		loginPage.open();

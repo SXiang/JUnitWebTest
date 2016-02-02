@@ -159,6 +159,14 @@ public class ManageUsersPage extends SurveyorBasePage {
 		}
 	}
 
+	/**
+	 * Adds a new Picarro user.
+	 * @param email - Email for new user.
+	 * @param password - Password for new user.
+	 * @param role - Role for new user.
+	 * @param location - Location in format [Customer - Location]
+	 * @param timeZone - TimeZone for new user.
+	 */
 	public void addNewPicarroUser(String email, String password, String role,
 			String location, String timeZone) {
 		this.btnAddNewPicarroUser.click();
@@ -179,7 +187,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				roleOption.click();
 		}
 
-		List<WebElement> tzOptions = this.dropDownRole.findElements(By
+		List<WebElement> tzOptions = this.dropDownTimeZone.findElements(By
 				.tagName("option"));
 		for (WebElement tzOption : tzOptions) {
 			if (tzOption.getText().trim().equalsIgnoreCase(timeZone))
@@ -262,7 +270,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				roleOption.click();
 		}
 
-		List<WebElement> tzOptions = this.dropDownRole.findElements(By
+		List<WebElement> tzOptions = this.dropDownTimeZone.findElements(By
 				.tagName("option"));
 		for (WebElement tzOption : tzOptions) {
 			if (tzOption.getText().trim().equalsIgnoreCase(timeZone))
@@ -590,8 +598,18 @@ public class ManageUsersPage extends SurveyorBasePage {
 		return editUser(userName, role, timeZone, "" /*customerLocation*/, accountEnable, isCustomerUser);
 	}
 	
-	public boolean editUser(String userName, String role, String timeZone, 
-			String customerLocation, boolean accountEnable, boolean isCustomerUser) {
+	/**
+	 * Edits the specified user.
+	 * @param userName - Username to edit
+	 * @param roleNew - New Role
+	 * @param timeZoneNew - New timezone
+	 * @param locationDescNew - Location in format [Customer - Location]
+	 * @param accountEnable - Enable or disable user.
+	 * @param isCustomerUser - whether logged-in user is a customer user.
+	 * @return
+	 */
+	public boolean editUser(String userName, String roleNew, String timeZoneNew, 
+			String locationDescNew, boolean accountEnable, boolean isCustomerUser) {
 		setPagination(PAGINATIONSETTING_100);
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -614,10 +632,11 @@ public class ManageUsersPage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			userNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-					+ "]/td[1]";
-
+			userNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			userNameCell = table.findElement(By.xpath(userNameXPath));
+
+			Log.info(String.format("Looking for: Username-[%s], Found: Username-[%s]", 
+					userName, userNameCell.getText().trim()));
 
 			if ((userNameCell.getText().trim()).equalsIgnoreCase(userName)) {
 				if (isCustomerUser) {
@@ -631,14 +650,14 @@ public class ManageUsersPage extends SurveyorBasePage {
 				actionEditCell.click();
 				this.waitForEditPageLoad();
 
-				if (role != "") {
-					selectRoleDropdown(role);
+				if (roleNew != "") {
+					selectRoleDropdown(roleNew);
 				}
-				if (timeZone != "") {
-					selectTimeZoneDropdown(timeZone);
+				if (timeZoneNew != "") {
+					selectTimeZoneDropdown(timeZoneNew);
 				}
-				if (customerLocation != "") {
-					selectLocationDropdown(customerLocation);
+				if (locationDescNew != "") {
+					selectLocationDropdown(locationDescNew);
 				}
 
 				enableDisableUser(accountEnable);

@@ -486,7 +486,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 
 		manageUsersPage.open();
 		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, USERROLEADMIN);
-		if (!manageUsersPage.findExistingUser("Picarro", userName, false))
+		if (!manageUsersPage.findExistingUser("Santa Clara", userName, false))
 			fail("\nTC38: failed to create a non-default Picarro Administrator user.\n");
 		manageUsersPage.logout();
 
@@ -808,7 +808,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 
 		manageUsersPage.open();
 		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, PICUSERROLESUP);
-		if (!manageUsersPage.findExistingUser("Picarro", userName, false))
+		if (!manageUsersPage.findExistingUser("Santa Clara", userName, false))
 			fail("\nTC40: failed to create a Picarro user with Picarro Support role.\n");
 		manageUsersPage.logout();
 
