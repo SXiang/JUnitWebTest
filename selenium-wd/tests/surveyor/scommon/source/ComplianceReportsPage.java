@@ -57,6 +57,9 @@ import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -187,10 +190,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li[1]")
 	protected WebElement areaErrorText;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_filter']/label/input")
 	protected WebElement textBoxReportSerach;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@class='dataTables_empty']")
 	protected WebElement dataTableEmpty;
 
@@ -210,8 +213,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public void addNewReport(Reports reportsCompliance) {
 		openNewReportPage();
 		inputReportTitle(reportsCompliance.getRptTitle());
-		
-		if (reportsCompliance.getCustomer() != null && reportsCompliance.getCustomer()  != "Picarro") {
+
+		if (reportsCompliance.getCustomer() != null && reportsCompliance.getCustomer() != "Picarro") {
 			selectCustomer(reportsCompliance.getCustomer());
 			Boolean confirmed = confirmInChangeCustomerDialog();
 			if (confirmed) {
@@ -227,18 +230,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		inputExclusionRadius(reportsCompliance.getExclusionRadius());
 
-		fillCustomBoundaryTextFields(reportsCompliance.getNELat(),
-				reportsCompliance.getNELong(), reportsCompliance.getSWLat(),
-				reportsCompliance.getSWLong());
-		
-		addSurveyInformation(reportsCompliance.getSurveyorUnit(),reportsCompliance.getUserName(),reportsCompliance.getTag(),
-				reportsCompliance.getSurveyStartDate(),reportsCompliance.getSurveyEndDate(),reportsCompliance.getSurveyModeFilter(),
-				reportsCompliance.getGeoFilter());
+		fillCustomBoundaryTextFields(reportsCompliance.getNELat(), reportsCompliance.getNELong(), reportsCompliance.getSWLat(), reportsCompliance.getSWLong());
 
+		addSurveyInformation(reportsCompliance.getSurveyorUnit(), reportsCompliance.getUserName(), reportsCompliance.getTag(), reportsCompliance.getSurveyStartDate(), reportsCompliance.getSurveyEndDate(), reportsCompliance.getSurveyModeFilter(), reportsCompliance.getGeoFilter());
 
 		inputImageMapHeight(reportsCompliance.getImageMapHeight());
 		inputImageMapWidth(reportsCompliance.getImageMapWidth());
-		
+
 		addViews(reportsCompliance.getCustomer(), reportsCompliance.getViewList());
 
 		List<Map<String, String>> tablesList = reportsCompliance.getTablesList();
@@ -256,7 +254,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 
 		handleOptionalViewLayersSection(tablesList);
-		
+
 		this.btnOK.click();
 	}
 
@@ -305,7 +303,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.inputSWLat.sendKeys(swLat);
 		this.inputSWLong.sendKeys(swLong);
 	}
-	
+
 	public void addSurveyInformation(String surveyor, String username, String tag, String startDate, String endDate, SurveyModeFilter surveyModeFilter, Boolean geoFilterOn) {
 		Log.info("Adding Survey information");
 
@@ -410,7 +408,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			mode = ReportModeFilter.Manual;
 		} else if (reportMode.equalsIgnoreCase("rr")) {
 			mode = ReportModeFilter.RapidResponse;
-		} 
+		}
 		return mode;
 	}
 
@@ -422,7 +420,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					option.click();
 				}
 			}
-			
+
 			confirmInChangeCustomerDialog();
 		}
 	}
@@ -430,7 +428,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean confirmInChangeCustomerDialog() {
 		if (dropdownCustomer.isDisplayed()) {
 			if (this.isElementPresent(btnChangeCustomerXPath)) {
-				JavascriptExecutor js = (JavascriptExecutor)driver; 
+				JavascriptExecutor js = (JavascriptExecutor) driver;
 				js.executeScript("arguments[0].click();", btnChangeCustomer);
 				return true;
 			}
@@ -453,7 +451,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.userName.sendKeys(username);
 	}
 
-	private void handleOptionalViewLayersSection(List<Map<String,String>> viewLayersList) {
+	private void handleOptionalViewLayersSection(List<Map<String, String>> viewLayersList) {
 		if (viewLayersList != null) {
 			boolean selectAssetCastIron = viewLayersList.get(0).get(KEYASSETCASTIRON).equalsIgnoreCase("1");
 			boolean selectAssetCopper = viewLayersList.get(0).get(KEYASSETCOPPER).equalsIgnoreCase("1");
@@ -462,13 +460,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			boolean selectAssetProtectedSteel = viewLayersList.get(0).get(KEYASSETPROTECTEDSTEEL).equalsIgnoreCase("1");
 			boolean selectAssetUnprotectedSteel = viewLayersList.get(0).get(KEYASSETUNPROTECTEDSTEEL).equalsIgnoreCase("1");
 			selectViewLayerAssets(selectAssetCastIron, selectAssetCopper, selectAssetOtherPlastic, selectAssetPEPlastic, selectAssetProtectedSteel, selectAssetUnprotectedSteel);
-			
+
 			boolean selectBoundaryDistrict = viewLayersList.get(0).get(KEYBOUNDARYDISTRICT).equalsIgnoreCase("1");
 			boolean selectBoundaryDistrictPlat = viewLayersList.get(0).get(KEYBOUNDARYDISTRICTPLAT).equalsIgnoreCase("1");
 			selectViewLayerBoundaries(selectBoundaryDistrict, selectBoundaryDistrictPlat);
 		}
-
-	
 
 	}
 
@@ -575,7 +571,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	// Temporary solution for now and should pass the params by a data structure
 	private void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, String tag, String startDate, String endDate, String surModeFilter) {
 		openNewReportPage();
-		
+
 		this.inputTitle.clear();
 		this.inputTitle.sendKeys(title);
 
@@ -832,38 +828,22 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public enum ComplianceReportButtonType {
-		Delete,
-		Copy,
-		ReportViewer,
-		Investigate,
-		InvestigatePDF,
-		Resubmit
+		Delete, Copy, ReportViewer, Investigate, InvestigatePDF, Resubmit
 	}
-	
+
 	public enum ReportViewerThumbnailType {
-		ComplianceTablePDF,
-		ComplianceZipPDF,
-		ComplianceZipShape,
-		ComplianceZipMeta,
-		FirstView,
-		SecondView,
-		ThirdView,
-		FourthView,
-		FifthView,
-		SixthView,
-		SeventhView
+		ComplianceTablePDF, ComplianceZipPDF, ComplianceZipShape, ComplianceZipMeta, FirstView, SecondView, ThirdView, FourthView, FifthView, SixthView, SeventhView
 	}
-	
+
 	public boolean verifyComplianceReportButton(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType) throws Exception {
 		return checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, buttonType, false);
 	}
-	
+
 	public boolean clickComplianceReportButton(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType) throws Exception {
 		return checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, buttonType, true);
 	}
-	
-	private boolean checkComplianceReportButtonPresenceAndClick(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType, 
-			boolean clickButton) throws Exception {
+
+	private boolean checkComplianceReportButtonPresenceAndClick(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType, boolean clickButton) throws Exception {
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
 		setPagination(PAGINATIONSETTING);
@@ -1020,7 +1000,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		return false;
 	}
-	
+
 	public boolean findReportbySearch(String rptTitle, String strCreatedBy) {
 		setPagination(PAGINATIONSETTING);
 		this.waitForPageLoad();
@@ -1029,16 +1009,16 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		WebElement rptTitleCell;
 		WebElement createdByCell;
-		
+
 		this.getTextBoxReportSerach().sendKeys(rptTitle);
 		this.getTextBoxReportSerach().sendKeys(Keys.ENTER);
 		this.waitForPageLoad();
-		if(this.getDataTableEmpty().isDisplayed()){
+		if (this.getDataTableEmpty().isDisplayed()) {
 			return false;
 		}
 		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 		int rowSize = rows.size();
-		
+
 		int loopCount = 0;
 
 		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
@@ -1183,7 +1163,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 				this.inputTitle.clear();
 				this.inputTitle.sendKeys(rptTitleNew);
-
+				this.waitForDeleteSurveyButtonToLoad();
 				this.btnOK.click();
 
 				return true;
@@ -1488,13 +1468,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 				for (String tagValue : tag) {
 					if (tagValue != "") {
-						
+
 						inputSurveyTag(tagValue);
-						
+
 						this.btnSurveySearch.click();
 						this.waitForSurveyTabletoLoad();
 						this.checkboxSurFirst.click();
 						this.btnAddSurveys.click();
+						this.waitForAddSurveyButtonToLoad();
 					}
 				}
 
@@ -1538,7 +1519,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		default:
 			break;
 		}
-		
+
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		if (this.btnChangeRptMode.isDisplayed()) {
 			this.btnChangeRptMode.click();
@@ -1578,7 +1559,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		inputExclusionRadius(exclusionRadius);
 		inputImageMapWidth(imageMapWidth);
 		inputImageMapHeight(imageMapHeight);
-		
+
 		this.inputNELat.sendKeys(NELat);
 		this.inputNELong.sendKeys(NELong);
 		this.inputSWLat.sendKeys(SWLat);
@@ -1605,8 +1586,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				inputSurveyTag(tagValue);
 				this.btnSurveySearch.click();
 				this.waitForSurveyTabletoLoad();
+				this.waitForSurveySelectorCheckBoxToLoad();
 				this.checkboxSurFirst.click();
+				this.waitForAddSurveyButtonToLoad();
 				this.btnAddSurveys.click();
+				this.waitForAddSurveyButtonToLoad();
 				this.waitForNewPageLoad();
 			}
 		}
@@ -1619,10 +1603,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.inputViewAnno.click();
 		this.inputViewAssets.click();
 
-		if(boundary!=null){
-		 this.inputViewBoundaries.click();
-		 
-		 selectViewLayerBoundaries(true, true);
+		if (boundary != null) {
+			this.inputViewBoundaries.click();
+
+			selectViewLayerBoundaries(true, true);
 		}
 		this.btnOK.click();
 	}
@@ -1671,10 +1655,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		inputExclusionRadius(reportsCompliance.getExclusionRadius());
 		inputImageMapHeight(reportsCompliance.getImageMapHeight());
 		inputImageMapWidth(reportsCompliance.getImageMapWidth());
-		
-		fillCustomBoundaryTextFields(reportsCompliance.getNELat(),
-				reportsCompliance.getNELong(), reportsCompliance.getSWLat(),
-				reportsCompliance.getSWLong());
+
+		fillCustomBoundaryTextFields(reportsCompliance.getNELat(), reportsCompliance.getNELong(), reportsCompliance.getSWLat(), reportsCompliance.getSWLong());
 
 		List<Map<String, String>> tablesList = reportsCompliance.getTablesList();
 		if (tablesList.get(0).get(KEYINDTB).equalsIgnoreCase("1")) {
@@ -1701,7 +1683,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				inputSurveyTag(tagValue);
 				this.btnSurveySearch.click();
 				this.waitForSurveyTabletoLoad();
+				this.waitForSurveySelectorCheckBoxToLoad();
 				this.checkboxSurFirst.click();
+				this.waitForAddSurveyButtonToLoad();
 				this.btnAddSurveys.click();
 			}
 		}
@@ -1714,10 +1698,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean checkPaginationSetting(String numberOfReports) {
 		setPagination(numberOfReports);
 		this.waitForPageLoad();
-		String msgToVerify = STRPaginationMsg + numberOfReports;
-		String actualText = this.paginationMsg.getText().substring(0, 15);
 
-		if (actualText.compareTo(msgToVerify) <= 0)
+		String msgToVerify = STRPaginationMsg + numberOfReports;
+		this.waitForNumberOfRecords(msgToVerify);
+
+		if (msgToVerify.equals(this.paginationMsg.getText().substring(0, 16).trim()))
 			return true;
 
 		return false;
@@ -1855,10 +1840,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public String provideLatLongAtCustomBoundarySelectorWindow(List<String> listBoundary) {
 		String actualMsg = "";
 		openNewReportPage();
-		
+
 		inputImageMapHeight(listBoundary.get(0));
 		inputImageMapWidth(listBoundary.get(1));
-		
+
 		this.btnLatLongSelector.click();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
@@ -1946,7 +1931,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return this.areaErrorText.getText();
 
 	}
-	
+
 	public WebElement getTextBoxReportSerach() {
 		return textBoxReportSerach;
 	}
@@ -1972,6 +1957,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		});
 	}
+
 	@Override
 	public void waitForPageLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
@@ -1981,141 +1967,170 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		});
 	}
 
+	public void waitForNumberOfRecords(String actualMessage) {
+		(new WebDriverWait(driver, timeout + 50)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return paginationMsg.getText().substring(0, 16).trim().equals(actualMessage);
+			}
+		});
+	}
+
 	public void waitForNewPageLoad() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                return d.getPageSource().contains(STRNewPageContentText);
-            }
-        });
-    }
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return d.getPageSource().contains(STRNewPageContentText);
+			}
+		});
+	}
+
+	public void waitForDeletePopupLoad() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return btnDeleteConfirm.isDisplayed();
+			}
+		});
+	}
+
+	public void waitForReportGenerationtoComplete() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return btnReportViewer.isDisplayed();
+			}
+		});
+	}
+
+	public void waitForSurveyTabletoLoad() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return surveysTable.isDisplayed();
+			}
+		});
+	}
 	
-	  public void waitForDeletePopupLoad() {
-	        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-	            public Boolean apply(WebDriver d) {
-	                return btnDeleteConfirm.isDisplayed();
-	            }
-	        });
-	    }
-	  
-		public void waitForReportGenerationtoComplete() {
-			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-				public Boolean apply(WebDriver d) {
-					return btnReportViewer.isDisplayed();
-				}
-			});
-		}
+	public void waitForSurveySelectorCheckBoxToLoad() {
+		(new WebDriverWait(driver, timeout+15)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return checkboxSurFirst.isDisplayed();
+			}
+		});
+	}
+	
+	public void waitForAddSurveyButtonToLoad() {
+		(new WebDriverWait(driver, timeout+15)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return btnAddSurveys.isDisplayed();
+			}
+		});
+	}
+	
+	
+	public void waitForDeleteSurveyButtonToLoad() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return btnDeleteSurvey.isDisplayed();
+			}
+		});
+	}
 
-		public void waitForSurveyTabletoLoad() {
-			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-				public Boolean apply(WebDriver d) {
-					return surveysTable.isDisplayed();
-				}
-			});
-		}
+	public void waitForCopyReportPagetoLoad() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return d.getPageSource().contains(STRCopyPageTitle);
+			}
+		});
+	}
 
-		public void waitForCopyReportPagetoLoad() {
-			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-				public Boolean apply(WebDriver d) {
-					return d.getPageSource().contains(STRCopyPageTitle);
-				}
-			});
-		}
+	public void waitForPdfReportIcontoAppear() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return pdfImg.isDisplayed();
+			}
+		});
+	}
 
-		public void waitForPdfReportIcontoAppear() {
-			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-				public Boolean apply(WebDriver d) {
-					return pdfImg.isDisplayed();
-				}
-			});
-		}
+	public boolean waitForReportGenerationtoComplete(String rptTitle, String strCreatedBy) {
+		setPagination(PAGINATIONSETTING);
 
-		public boolean waitForReportGenerationtoComplete(String rptTitle, String strCreatedBy) {
-			setPagination(PAGINATIONSETTING);
+		String reportTitleXPath;
+		String createdByXPath;
+		WebElement rptTitleCell;
+		WebElement createdByCell;
 
-			String reportTitleXPath;
-			String createdByXPath;
-			WebElement rptTitleCell;
-			WebElement createdByCell;
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
-			List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		int rowSize = rows.size();
+		int loopCount = 0;
 
-			int rowSize = rows.size();
-			int loopCount = 0;
+		this.waitForPageLoad();
 
-			this.waitForPageLoad();
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
 
-			if (rowSize < Integer.parseInt(PAGINATIONSETTING))
-				loopCount = rowSize;
-			else
-				loopCount = Integer.parseInt(PAGINATIONSETTING);
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
-			for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-				reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-				createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
 
-				rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
-				createdByCell = table.findElement(By.xpath(createdByXPath));
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				long startTime = System.currentTimeMillis();
+				long elapsedTime = 0;
+				boolean bContinue = true;
 
-				if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
-					long startTime = System.currentTimeMillis();
-					long elapsedTime = 0;
-					boolean bContinue = true;
+				while (bContinue) {
+					try {
+						if (rowSize == 1) {
+							this.btnReportViewer = table.findElement(By.xpath("//*[@id='datatable']/tbody/tr/td[5]/a[3]"));
 
-					while (bContinue) {
-						try {
-							if (rowSize == 1) {
-								this.btnReportViewer = table.findElement(By.xpath("//*[@id='datatable']/tbody/tr/td[5]/a[3]"));
+						} else {
+							this.btnReportViewer = table.findElement(By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img"));
 
-							} else {
-								this.btnReportViewer = table.findElement(By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img"));
-
-							}
-
-							return true;
-						} catch (org.openqa.selenium.NoSuchElementException e) {
-							elapsedTime = System.currentTimeMillis() - startTime;
-							if (elapsedTime >= (ACTIONTIMEOUT+900 * 1000)) {
-								return false;
-							}
-
-							continue;
-						} catch (NullPointerException ne) {
-							Log.info("Null Pointer Exception: " + ne);
-							fail("Report failed to generate!!");
 						}
+
+						return true;
+					} catch (org.openqa.selenium.NoSuchElementException e) {
+						elapsedTime = System.currentTimeMillis() - startTime;
+						if (elapsedTime >= (ACTIONTIMEOUT + 900 * 1000)) {
+							return false;
+						}
+
+						continue;
+					} catch (NullPointerException ne) {
+						Log.info("Null Pointer Exception: " + ne);
+						fail("Report failed to generate!!");
 					}
 				}
-
-				if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
-					this.nextBtn.click();
-
-					this.waitForPageLoad();
-
-					List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
-					rowSize = newRows.size();
-					if (rowSize < Integer.parseInt(PAGINATIONSETTING))
-						loopCount = rowSize;
-					else
-						loopCount = Integer.parseInt(PAGINATIONSETTING);
-
-					rowNum = 0;
-				}
 			}
-			return false;
-		}
 
-	public void selectViewLayerAssets(Boolean selectAssetCastIron, Boolean selectAssetCopper,
-			Boolean selectAssetOtherPlastic, Boolean selectAssetPEPlastic, Boolean selectAssetProtectedSteel,
-			Boolean selectAssetUnprotectedSteel) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+
+				this.waitForPageLoad();
+
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+				rowNum = 0;
+			}
+		}
+		return false;
+	}
+
+	public void selectViewLayerAssets(Boolean selectAssetCastIron, Boolean selectAssetCopper, Boolean selectAssetOtherPlastic, Boolean selectAssetPEPlastic, Boolean selectAssetProtectedSteel, Boolean selectAssetUnprotectedSteel) {
 		if (selectAssetCastIron) {
-			System.out.println("Cast iron is selected");
 			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-96caf1f5-d5c5-461d-9ce3-d210c20a1bb0']")).size() > 0) {
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				js.executeScript("arguments[0].click();", checkBoxCastIron);
 			}
 		}
 		if (selectAssetCopper) {
-			System.out.println("Copper is selected");
 			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-d08fc87f-f979-4131-92a9-3d82f37f4bba']")).size() > 0) {
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				js.executeScript("arguments[0].click();", checkBoxCopper);
@@ -2149,13 +2164,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public void selectViewLayerBoundaries(boolean selectBoundaryDistrict, boolean selectBoundaryDistrictPlat) {
 		if (selectBoundaryDistrict) {
-			if (driver.findElements(By.xpath("//*[@id='report-boundry-layers-District']")).size() > 0) {
+			if (driver.findElements(By.xpath("//*[@id='report-boundry-layers-Small Boundary']")).size() > 0) {
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				js.executeScript("arguments[0].click();", checkBoxDistrict);
 			}
 		}
 		if (selectBoundaryDistrictPlat) {
-			if (driver.findElements(By.xpath("//*[@id='report-boundry-layers-District Plat']")).size() > 0) {
+			if (driver.findElements(By.xpath("//*[@id='report-boundry-layers-Big Boundary']")).size() > 0) {
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				js.executeScript("arguments[0].click();", checkBoxDistrictPlat);
 			}
@@ -2163,10 +2178,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public enum CustomerBoundaryType {
-		District,
-		DistrictPlat
+		District, DistrictPlat
 	}
-	
+
 	public void selectAnyCustomerBoundary(CustomerBoundaryType type) {
 		// TODO open the Boundary selector and click on any customer boundary.
 		// Could provide a search by boundary name.
@@ -2176,15 +2190,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void waitForFileDownload(String fileName, String downloadPath) {
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, timeout+30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return checkFileExists(fileName, downloadPath);
 			}
 		});
 	}
-	
+
 	private boolean checkFileExists(String fileName, String downloadPath) {
 		File dir = new File(downloadPath);
 		File[] dir_contents = dir.listFiles();
@@ -2195,7 +2209,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		return false;
 	}
-	
+
 	public void waitForPDFFileDownload() {
 		try {
 			throw new Exception("Not implemented");

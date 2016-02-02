@@ -103,16 +103,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='report-asset-layers-d08fc87f-f979-4131-92a9-3d82f37f4bba']")
 	protected WebElement checkBoxCopper;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='report-boundry-layers-District Plat']")
+	@FindBy(how = How.XPATH, using = "//*[@id='report-boundry-layers-Small Boundary']")
 	protected WebElement checkBoxDistrictPlat;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='report-boundry-layers-District']")
+	@FindBy(how = How.XPATH, using = "//*[@id='report-boundry-layers-Big Boundary']")
 	protected WebElement checkBoxDistrict;
 
-	
 	@FindBy(how = How.XPATH, using = "//*[@id='report-boundry-layers-Level 1']")
 	protected WebElement checkBoxLevel1;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='report-boundry-layers-Level 6']")
 	protected WebElement checkBoxLevel6;
 
@@ -121,10 +120,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.ID, using = "report-survey-tag")
 	protected WebElement cbTag;
-	
+
 	@FindBy(how = How.ID, using = "report-survey-driver")
 	protected WebElement userName;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[normalize-space( )='All']//input[@name='survey-mode-type']")
 	protected WebElement inputSurModeFilterAll;
 
@@ -133,10 +132,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[normalize-space( )='Operator']//input[@name='survey-mode-type']")
 	protected WebElement inputSurModeFilterOperator;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[normalize-space( )='Rapid Response']//input[@name='survey-mode-type']")
 	protected WebElement inputSurModeFilterRapidResponse;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[normalize-space( )='Manual']//input[@name='survey-mode-type']")
 	protected WebElement inputSurModeFilterManual;
 
@@ -145,7 +144,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td[7]/input")
 	protected WebElement checkboxSurFirst;
-	
+
 	@FindBy(how = How.ID, using = "report-geo-filter")
 	protected WebElement checkGeoFilter;
 
@@ -326,7 +325,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.ID, using = "report-FOV-opacity")
 	protected WebElement inputFOVOpacity;
-	
+
 	@FindBy(how = How.ID, using = "report-LISA-opacity")
 	protected WebElement inputLISAOpacity;
 
@@ -335,13 +334,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(id = "report-show-percent-coverage-forecast")
 	protected WebElement checkBoxPCF;
-	
+
 	@FindBy(how = How.XPATH, using = "//a[@data-target='#report-menu']")
 	protected WebElement linkReportMenu;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='report-compliance']")
 	protected WebElement linkComplianceReportMenu;
-	
+
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -363,7 +362,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public WebElement getBtnNewComplianceRpt() {
 		return this.btnNewComplianceRpt;
 	}
-	
+
 	public WebElement getLinkReportMenu() {
 		return linkReportMenu;
 	}
@@ -375,7 +374,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void clickLatLongAreaSelectorBtn() {
 		this.latLongMapSelectorBtn.click();
 	}
-		
+
 	/**
 	 * @param args
 	 */
