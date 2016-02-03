@@ -392,9 +392,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 	
 	public void selectSurveyCheckBox() {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
+		Actions actions = new Actions(driver);
+		actions.moveToElement(this.checkboxSurFirst).click().perform();
+		/*JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].scrollIntoView();", checkboxSurFirst);		
-		js.executeScript("arguments[0].click();", checkboxSurFirst);
+		js.executeScript("arguments[0].click();", checkboxSurFirst);*/
 	}
 
 	public void selectSurveySurveyor(String surveyorUnit) {
