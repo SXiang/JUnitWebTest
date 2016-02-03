@@ -391,7 +391,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		js.executeScript("arguments[0].click();", checkBoxIndTb);
 	}
 	
-	public void selectSurveyCheckBox() {
+	public void selectSurveyCheckBox(WebElement checkboxSurFirst) {
 		/*Actions actions = new Actions(driver);
 		actions.moveToElement(this.checkboxSurFirst).click().perform();*/
 		//checkboxSurFirst = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[1]/td[7]/input"));
@@ -626,8 +626,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		this.btnSurveySearch.click();
 		this.waitForSurveyTabletoLoad();
-		this.waitForSurveySelectorCheckBoxToLoad();
-		this.waitForSurveySelectorCheckBoxToBeEnabled();
+		checkboxSurFirst = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[1]/td[7]/input"));
+		this.waitForSurveySelectorCheckBoxToLoad(checkboxSurFirst);
+		this.waitForSurveySelectorCheckBoxToBeEnabled(checkboxSurFirst);
 		this.checkboxSurFirst.click();
 		this.btnAddSurveys.click();
 		this.inputViewLisa.click();
@@ -1603,10 +1604,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				inputSurveyTag(tagValue);
 				this.btnSurveySearch.click();
 				this.waitForSurveyTabletoLoad();
-				this.waitForSurveySelectorCheckBoxToLoad();
-				this.waitForSurveySelectorCheckBoxToBeEnabled();
-				testSetup.slowdownInSeconds(30);
-				selectSurveyCheckBox();
+				checkboxSurFirst = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[1]/td[7]/input"));
+				this.waitForSurveySelectorCheckBoxToLoad(checkboxSurFirst);
+				this.waitForSurveySelectorCheckBoxToBeEnabled(checkboxSurFirst);
+				selectSurveyCheckBox(checkboxSurFirst);
 				this.waitForAddSurveyButtonToLoad();
 				this.btnAddSurveys.click();
 				this.waitForNewPageLoad();
@@ -1708,8 +1709,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				inputSurveyTag(tagValue);
 				this.btnSurveySearch.click();
 				this.waitForSurveyTabletoLoad();
-				this.waitForSurveySelectorCheckBoxToLoad();
-				this.waitForSurveySelectorCheckBoxToBeEnabled();
+				checkboxSurFirst = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[1]/td[7]/input"));
+
+				this.waitForSurveySelectorCheckBoxToLoad(checkboxSurFirst);
+				this.waitForSurveySelectorCheckBoxToBeEnabled(checkboxSurFirst);
 				this.checkboxSurFirst.click();
 				this.waitForAddSurveyButtonToLoad();
 				this.btnAddSurveys.click();
@@ -1831,8 +1834,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				inputSurveyTag(surveyTag);
 				this.btnSurveySearch.click();
 				this.waitForSurveyTabletoLoad();
-				this.waitForSurveySelectorCheckBoxToLoad();
-				this.waitForSurveySelectorCheckBoxToBeEnabled();
+				checkboxSurFirst = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[1]/td[7]/input"));
+				this.waitForSurveySelectorCheckBoxToLoad(checkboxSurFirst);
+				this.waitForSurveySelectorCheckBoxToBeEnabled(checkboxSurFirst);
 				this.checkboxSurFirst.click();
 				this.btnAddSurveys.click();
 
@@ -2036,7 +2040,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		});
 	}
 
-	public void waitForSurveySelectorCheckBoxToLoad() {
+	public void waitForSurveySelectorCheckBoxToLoad(WebElement checkboxSurFirst) {
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return checkboxSurFirst.isDisplayed();
@@ -2044,7 +2048,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		});
 	}
 	
-	public void waitForSurveySelectorCheckBoxToBeEnabled() {
+	public void waitForSurveySelectorCheckBoxToBeEnabled(WebElement checkboxSurFirst) {
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return checkboxSurFirst.isEnabled();
