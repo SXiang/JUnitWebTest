@@ -3,8 +3,10 @@
  */
 package surveyor.scommon.source;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -16,6 +18,13 @@ import org.junit.runner.Description;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
+import com.relevantcodes.extentreports.DisplayOrder;
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.LogStatus;
+import com.relevantcodes.extentreports.NetworkMode;
+
+import common.source.DateUtility;
 import common.source.Log;
 import common.source.RegexUtility;
 import common.source.TestContext;
@@ -36,7 +45,9 @@ public class SurveyorBaseTest {
 
 	public static LoginPage loginPage;
 	public static HomePage homePage;
-
+	
+	private static ExtentTest test = null; 
+	
 	// JUnit does NOT give a good way to detect which TestClass is executing.
 	// So we watch for the Test method under execution and install simulator pre-reqs
 	// if the test under execution is a Simulator test.
@@ -45,14 +56,58 @@ public class SurveyorBaseTest {
 	public TestWatcher watcher = new TestWatcher() {
 		@Override
 		public void starting(Description description) {
+			ExtentReports report = getExtentReport();
+			test = report.startTest(description.getMethodName());
+			test.assignCategory(TestContext.INSTANCE.getTestRunCategory());
+			test.log(LogStatus.INFO, description.toString());
+			test.log(LogStatus.INFO, String.format("Starting test.. [Start Time:%s]", 
+					DateUtility.getCurrentDate()));
+
 			TestSetup.simulatorTestStarting(description);
 		}
 
 		@Override
 		public void finished(Description description) {
+			ExtentReports report = getExtentReport();
+			test.log(LogStatus.INFO, String.format("Finished test. [End Time:%s]", 
+					DateUtility.getCurrentDate()));
+			report.endTest(test);
+			report.flush();
+
 			TestSetup.simulatorTestFinishing(description);
 		}
+
+		@Override
+		protected void failed(Throwable e, Description description) {
+			test.log(LogStatus.FAIL, "FAILURE: " + e.getMessage());
+		}
+		
+		 @Override
+		 protected void succeeded(Description description) {
+			test.log(LogStatus.PASS, "PASSED");
+		}
 	};
+	
+	private static ExtentReports getExtentReport() {
+		String executionPath = null;
+		try {
+			executionPath = TestSetup.getExecutionPath(TestSetup.getRootPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String reportFilePath = executionPath + "reports" + File.separator + "report.html";	   
+		String configFilePath = executionPath + "tests" + File.separator + "extent-config.xml";
+	   
+		if (TestContext.INSTANCE.getReport() == null) {
+			ExtentReports extent = new ExtentReports(reportFilePath, true /*replaceExisting*/, DisplayOrder.NEWEST_FIRST, 
+				NetworkMode.ONLINE, Locale.US);
+			extent.addSystemInfo("ChromeDriver Version", "2.20");
+			extent.addSystemInfo("Environment", TestContext.INSTANCE.getRunEnvironment());
+			extent.loadConfig(new File(configFilePath));
+			TestContext.INSTANCE.setReport(extent);
+	   }
+	   return TestContext.INSTANCE.getReport();
+	}
 	
 	/**
 	 * @throws java.lang.Exception

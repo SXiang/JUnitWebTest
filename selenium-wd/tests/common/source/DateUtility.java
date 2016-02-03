@@ -75,6 +75,14 @@ public class DateUtility {
 	}
 
 	/**
+	 * Returns the current date for the current zone for which test is running.
+	 * 
+	 */
+	public static Date getCurrentDate() {
+		return getCalendarForCurrentZone().getTime();
+	}
+
+	/**
 	 * Returns the current zone Calendar.
 	 * 
 	 * @return
