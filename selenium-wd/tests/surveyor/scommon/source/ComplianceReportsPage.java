@@ -390,6 +390,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click();", checkBoxIndTb);
 	}
+	
+	public void selectSurveyCheckBox() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", checkboxSurFirst);
+	}
 
 	public void selectSurveySurveyor(String surveyorUnit) {
 		List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
@@ -1594,7 +1599,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				this.waitForSurveyTabletoLoad();
 				this.waitForSurveySelectorCheckBoxToLoad();
 				this.waitForSurveySelectorCheckBoxToBeEnabled();
-				this.checkboxSurFirst.click();
+				//this.checkboxSurFirst.click(); -error
+				this.selectSurveyCheckBox();
 				this.waitForAddSurveyButtonToLoad();
 				this.btnAddSurveys.click();
 				this.waitForNewPageLoad();
@@ -1819,6 +1825,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				inputSurveyTag(surveyTag);
 				this.btnSurveySearch.click();
 				this.waitForSurveyTabletoLoad();
+				this.waitForSurveySelectorCheckBoxToLoad();
+				this.waitForSurveySelectorCheckBoxToBeEnabled();
 				this.checkboxSurFirst.click();
 				this.btnAddSurveys.click();
 
