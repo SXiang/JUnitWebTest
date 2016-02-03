@@ -393,6 +393,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	
 	public void selectSurveyCheckBox() {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();", checkboxSurFirst);		
 		js.executeScript("arguments[0].click();", checkboxSurFirst);
 	}
 
@@ -1600,7 +1601,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				this.waitForSurveySelectorCheckBoxToLoad();
 				this.waitForSurveySelectorCheckBoxToBeEnabled();
 				//this.checkboxSurFirst.click(); -error
-				this.selectSurveyCheckBox();
+				selectSurveyCheckBox();
 				this.waitForAddSurveyButtonToLoad();
 				this.btnAddSurveys.click();
 				this.waitForNewPageLoad();
