@@ -162,7 +162,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		manageUsersPage.addNewCustomerUser(customerName, userName,
 				USERPASSWORD, CUSUSERROLEUA, locationName);
 
-		Log.info(String.format("Looking for user: Location-[%s]; Username-[%s]", customerName, userName));
+		Log.info(String.format("Looking for user: Location-[%s]; Username-[%s]", locationName, userName));
 		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
 		loginPage = manageUsersPage.logout();
 

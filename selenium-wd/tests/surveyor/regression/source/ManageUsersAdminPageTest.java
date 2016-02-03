@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.Log;
@@ -94,7 +95,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 				CUSUSERROLESU));
 		assertTrue(manageUsersAdminPage.getUserRole(userName).equalsIgnoreCase(
 				CUSUSERROLESU));
-		assertTrue(manageUsersAdminPage.getUserStatus(userName)
+		assertTrue(manageUsersAdminPage.getUserStatus(userName, true)
 				.equalsIgnoreCase(
 						Resources.getResource(ResourceKeys.Constant_Enabled)));
 	}
@@ -161,7 +162,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue(manageUsersAdminPage.findExistingUser(SQACUSLOC, userName,
 				CUSUSERROLEDR));
-		assertTrue(manageUsersAdminPage.getUserStatus(userName)
+		assertTrue(manageUsersAdminPage.getUserStatus(userName, true)
 				.equalsIgnoreCase(
 						Resources.getResource(ResourceKeys.Constant_Disabled)));
 		manageUsersAdminPage.logout();
@@ -304,7 +305,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		assertTrue(manageUsersAdminPage.getUserRole(userName).equalsIgnoreCase(
 				CUSUSERROLESU));
 
-		assertTrue(manageUsersAdminPage.getUserStatus(userName)
+		assertTrue(manageUsersAdminPage.getUserStatus(userName, true)
 				.equalsIgnoreCase(
 						Resources.getResource(ResourceKeys.Constant_Disabled)));
 	}
@@ -509,8 +510,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageUsersAdminPage.open();
-		if (!manageUsersAdminPage.resetUserPassword(userName, USERPASSWORD
-				+ "1"))
+		if (!manageUsersAdminPage.resetUserPassword(userName, USERPASSWORD + "1", true))
 			fail("\nTestcase TC468 - failed to reset user password.\n");
 
 		manageUsersAdminPage.logout();
