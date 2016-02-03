@@ -1605,7 +1605,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				this.waitForSurveyTabletoLoad();
 				this.waitForSurveySelectorCheckBoxToLoad();
 				this.waitForSurveySelectorCheckBoxToBeEnabled();
-				//this.checkboxSurFirst.click(); -error
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 				selectSurveyCheckBox();
 				this.waitForAddSurveyButtonToLoad();
 				this.btnAddSurveys.click();
