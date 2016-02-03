@@ -394,12 +394,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public void selectSurveyCheckBox() {
 		/*Actions actions = new Actions(driver);
 		actions.moveToElement(this.checkboxSurFirst).click().perform();*/
-		checkboxSurFirst = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[1]/td[7]/input"));
-		checkboxSurFirst.click();
+		//checkboxSurFirst = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[1]/td[7]/input"));
+		//checkboxSurFirst.click();
 		
-//		JavascriptExecutor js = (JavascriptExecutor) driver;
-//		//js.executeScript("arguments[0].scrollIntoView();", checkboxSurFirst);		
-//		js.executeScript("arguments[0].click();", checkboxSurFirst);
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		//js.executeScript("arguments[0].scrollIntoView();", checkboxSurFirst);		
+		js.executeScript("arguments[0].click();", checkboxSurFirst);
 	}
 
 	public void selectSurveySurveyor(String surveyorUnit) {
@@ -1603,7 +1603,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				inputSurveyTag(tagValue);
 				this.btnSurveySearch.click();
 				this.waitForSurveyTabletoLoad();
-				this.waitForPageLoad();
 				this.waitForSurveySelectorCheckBoxToLoad();
 				this.waitForSurveySelectorCheckBoxToBeEnabled();
 				//this.checkboxSurFirst.click(); -error
