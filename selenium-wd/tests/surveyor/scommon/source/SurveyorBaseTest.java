@@ -4,6 +4,7 @@
 package surveyor.scommon.source;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -16,9 +17,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.Log;
+import common.source.RegexUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.Resources;
+import surveyor.dataprovider.DataAnnotations;
 
 /**
  * @author zlu
@@ -99,5 +102,14 @@ public class SurveyorBaseTest {
 	 */
 	@After
 	public void tearDown() throws Exception {
+	}
+	
+	protected boolean isValidRunAsUser(String username, String functionName) {
+		String runAsUsers = DataAnnotations.getRunAsUsers(getClass(), functionName);
+		List<String> listUsers = RegexUtility.split(runAsUsers, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
+		if (!listUsers.contains(username)) {
+			return false;
+		}
+		return true;
 	}
 }

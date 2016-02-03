@@ -3,18 +3,33 @@
  */
 package surveyor.regression.source;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
 import org.openqa.selenium.support.PageFactory;
 
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
+import common.source.CryptoUtility;
 import common.source.Log;
+import common.source.RegexUtility;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.dataprovider.DataAnnotations;
+import surveyor.dataprovider.RunAs;
+import surveyor.dataprovider.UserDataProvider;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
@@ -26,11 +41,20 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  * @author zlu
  *
  */
+@RunWith(DataProviderRunner.class)
 public class ManageUsersPageTest extends SurveyorBaseTest {
+	private static final String FN_TC71_TC473_USER_RESET_PWD = "TC71_TC473_User_ResetPwd";
+	private static final String SQAPICAD_AND_SQAPICSUP = "sqapicad@picarro.com,sqapicsup@picarro.com";
 	private static ManageUsersPage manageUsersPage;
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageLocationsPage manageLocationsPage;
 
+	private enum ManageUserTestCaseType {
+		ResetPwd,
+		DuplicateUser,
+		DisabledUser
+	}
+	
 	@BeforeClass
 	public static void setupManageUsersPageTest() {
 		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
@@ -165,6 +189,96 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
 		assertTrue(homePage.checkIfAtHomePage());
 	}
+	
+	/**
+	 * Test Case IDs: 
+	 * TC71  Test Description: Reset user password as Picarro Admin.
+	 * TC473 Test Description: Reset user password as Picarro Support.
+	 */
+	@Test
+	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
+	public void TC71_TC473_User_ResetPwd(String username, String password, String role, 
+			String customerName, String customerLocation) {		
+		if (!isValidRunAsUser(username, FN_TC71_TC473_USER_RESET_PWD)) {
+			return;
+		}					
+		
+		String testCaseID = getTestCaseName(ManageUserTestCaseType.ResetPwd, username);		
+		password = CryptoUtility.decrypt(password);
+		
+		String usernameNew = SQACUS + testSetup.getRandomNumber() + testCaseID + REGBASEUSERNAME;
+		Log.info(String.format("\nRunning - %s - Reset customer user password as %s \n", 
+				testCaseID, role));
+
+		loginPage.open();
+		loginPage.loginNormalAs(username, password);
+
+		manageUsersPage.open();
+		manageUsersPage.addNewCustomerUser(SQACUS, usernameNew, password, CUSUSERROLEDR, TIMEZONECTUA, SQACUSLOC);
+
+		Log.info(String.format("Looking for user: Location-[%s]; Username-[%s]", SQACUSLOC, usernameNew));
+		assertTrue(manageUsersPage.findExistingUser(SQACUSLOC, usernameNew, false));
+
+		manageUsersPage.logout();
+
+		loginPage.open();
+		loginPage.loginNormalAs(usernameNew, password);
+
+		assertTrue(homePage.checkIfAtHomePage());
+
+		manageUsersPage.logout();
+
+		loginPage.open();
+		loginPage.loginNormalAs(username, password);
+
+		manageUsersPage.open();
+		if (!manageUsersPage.resetUserPassword(usernameNew, password + "1", false))
+			fail(String.format("\nTestcase %s - failed to reset user password.\n", testCaseID));
+
+		manageUsersPage.logout();
+
+		loginPage.open();
+		if (loginPage.loginNormalAs(usernameNew, password + "1") != null)
+			assertTrue(homePage.checkIfAtHomePage());
+		else
+			fail(String.format("\nTestcase %s - failed to login by the new password.\n", testCaseID));
+	}
+	
+	/**
+	 * Test Case ID: 
+	 * TC72 Test Description: Change password as Picarro admin
+	 */
+	@Test
+	public void TC72_ChangePwd_PicAdmin() {
+		String usernameNew = SQACUS + testSetup.getRandomNumber() + "TC72" + REGBASEUSERNAME;
+		Log.info("\nRunning - TC72 - Change customer user password \n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+
+		manageUsersPage.open();
+		manageUsersPage.addNewCustomerUser(SQACUS, usernameNew, USERPASSWORD, CUSUSERROLEDR, TIMEZONECTUA, SQACUSLOC);
+
+		Log.info(String.format("Looking for user: Location-[%s]; Username-[%s]", SQACUSLOC, usernameNew));
+		assertTrue(manageUsersPage.findExistingUser(SQACUSLOC, usernameNew, false));
+
+		manageUsersPage.logout();
+
+		loginPage.open();
+		loginPage.loginNormalAs(usernameNew, USERPASSWORD);
+		assertTrue(homePage.checkIfAtHomePage());
+
+		manageUsersPage.changeUserPassword(USERPASSWORD, USERPASSWORD + "1");
+		assertTrue(homePage.checkIfAtHomePage());
+		manageUsersPage.logout();
+
+		loginPage.open();
+		if (loginPage.loginNormalAs(usernameNew, USERPASSWORD + "1") != null)
+			assertTrue(homePage.checkIfAtHomePage());
+		else
+			fail("\nTestcase TC72 - failed to login by the new password.\n");
+	}
 
 	/**
 	 * Test Case ID: TC87_EditUserChangeRoleLocationTimezone_PicAdmin
@@ -224,6 +338,71 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
 		assertTrue(homePage.checkIfAtHomePage());
+	}
+
+	/**
+	 * Test Case IDs: 
+	 * TC90  Test Description: Pic admin not allowed to create duplicate User
+	 * TC479 Test Description: Pic support not allowed to create duplicate User
+	 */
+	@Test
+	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@RunAs(users=SQAPICAD_AND_SQAPICSUP)	
+	public void TC90_TC479_DuplicateUserCreationNotAllowed(String username, String password, String role, 
+			String customerName, String customerLocation) {
+		String testCaseID = getTestCaseName(ManageUserTestCaseType.ResetPwd, username);		
+		password = CryptoUtility.decrypt(password);
+
+		String usernameNew = SQACUS + testSetup.getFixedSizePseudoRandomString(24) + "_" + testCaseID + REGBASEUSERNAME;
+
+		Log.info(String.format("\nRunning - %s - %s not allowed to create duplicate User\n", testCaseID, role));
+
+		loginPage.open();
+		loginPage.loginNormalAs(username, password);
+
+		homePage.waitForPageLoad();
+
+		manageUsersPage.open();
+		manageUsersPage.addTestUser(usernameNew, USERPASSWORD, USERPASSWORD);
+
+		manageUsersPage.open();
+		String output = manageUsersPage.addTestUser(usernameNew, USERPASSWORD, USERPASSWORD);
+		
+		assertTrue(output.contains(DUPLICATIONERROR));
+	}
+	
+	/**
+	 * Test Case IDs: 
+	 * TC94  Test Description: Picarro Admin - Disabled User
+	 * TC474 Test Description: Picarro Support - Disabled User
+	 */
+	@Test
+	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@RunAs(users=SQAPICAD_AND_SQAPICSUP)	
+	public void TC94_TC474_DisableUser(String username, String password, String role, 
+			String customerName, String customerLocation) {
+		String testCaseID = getTestCaseName(ManageUserTestCaseType.DisabledUser, username);		
+		password = CryptoUtility.decrypt(password);
+		
+		String usernameNew = SQACUS + testSetup.getRandomNumber() + testCaseID + REGBASEUSERNAME;
+		Log.info(String.format("\nRunning - %s - Test Description: %s - Disabled User\n", testCaseID, role));
+
+		loginPage.open();
+		loginPage.loginNormalAs(username, password);
+
+		homePage.waitForPageLoad();
+
+		manageUsersPage.open();
+		manageUsersPage.addNewCustomerUser(SQACUS, usernameNew, password, CUSUSERROLEDR, SQACUSLOC, false);
+
+		Log.info(String.format("Looking for user: Location-[%s]; Username-[%s]", SQACUSLOC, usernameNew));
+		assertTrue(manageUsersPage.findExistingUser(SQACUSLOC, usernameNew, false));
+		assertTrue(manageUsersPage.getUserStatus(usernameNew, false)
+				.equalsIgnoreCase(Resources.getResource(ResourceKeys.Constant_Disabled)));
+		manageUsersPage.logout();
+
+		loginPage.open();
+		assertTrue(loginPage.loginNormalAs(usernameNew, USERPASSWORD) == null);
 	}
 
 	/**
@@ -454,5 +633,36 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
 		assertTrue(homePage.checkIfAtHomePage());
+	}
+
+	/**
+	 * Returns the testCase ID based on the username provided by DataProvider.
+	 */
+	private String getTestCaseName(ManageUserTestCaseType testCaseType, String username) {
+		String testCase = "";		
+		switch (testCaseType) {
+		case ResetPwd:
+			if (username.equalsIgnoreCase(SQAPICAD)) {
+				testCase = "TC71";
+			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
+				testCase = "TC473";
+			}
+			break;
+		case DuplicateUser:
+			if (username.equalsIgnoreCase(SQAPICAD)) {
+				testCase = "TC90";
+			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
+				testCase = "TC479";
+			}
+			break;
+		case DisabledUser:
+			if (username.equalsIgnoreCase(SQAPICAD)) {
+				testCase = "TC94";
+			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
+				testCase = "TC474";
+			}
+			break;
+		}
+		return testCase;
 	}
 }

@@ -36,6 +36,20 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageUsers_PageTitle);
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ManageUser_NewUser);
 	public static final String STREditPageContentText = Resources.getResource(ResourceKeys.ManageUser_EditUser);
+	private static final int ALLOWED_MAX_EMAIL_LENGTH = 50;
+	
+	@FindBy(id = "User.UserName-error")
+	private WebElement labelUserNameError;
+	private String labelUserNameErrorXPath = "//*[@id='User.UserName-error']";
+	
+	@FindBy(id = "User_Password-error")
+	private WebElement labelUserPwdError;
+	private String labelUserPwdErrorXPath = "//*[@id='User_Password-error']"; 
+	
+	@FindBy(id = "PasswordConfirm-error")
+	private WebElement labelPwdConfirmError;
+	private String labelPwdConfirmErrorXPath = "//*[@id='PasswordConfirm-error']";
+	
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a[1]")
 	protected WebElement btnAddNewCustomerUser;
@@ -216,7 +230,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.info(String.format("Adding new Customer user. Name=%s, Email=%s, Password=[HIDDEN], Role=%s, Location=%s", customerName, 
 				email, role, location));
 		
-		String custLoc = customerName + " - " + location;
 		this.btnAddNewCustomerUser.click();
 		
 		selectCustomerLocationDropdown(customerName, location);
@@ -249,14 +262,12 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 	public void addNewCustomerUser(String customerName, String email,
 			String password, String role, String timeZone, String location) {
+		Log.info(String.format("Adding new Customer user. CustomerName=%s, Email=%s, Password=[HIDDEN], Role=%s, TimeZone=%s, Location=%s", 
+				customerName, email, role, timeZone, location));
+
 		this.btnAddNewCustomerUser.click();
 
-		List<WebElement> options = this.dropDownCustomer.findElements(By
-				.tagName("option"));
-		for (WebElement option : options) {
-			if (customerName.equalsIgnoreCase(option.getText().trim()))
-				option.click();
-		}
+		selectCustomerLocationDropdown(customerName, location);
 
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
@@ -289,6 +300,65 @@ public class ManageUsersPage extends SurveyorBasePage {
 		
 		this.waitForPageLoad();
 	}
+
+	public String addTestUser(String email, String password1, String password2) {
+		String rtnMsg = "";
+		waitForPageToLoad();
+		this.btnAddNewCustomerUser.click();
+		this.waitForNewPageLoad();
+		
+		this.inputEmail.clear();
+		this.inputEmail.sendKeys(email);
+		
+		// If user inputted greater than allowed max characters in Email, then check if 'Max character' message label is shown. 
+		// If not remove chars from beginning to format email to valid MAX length.
+		if (email.length() > ALLOWED_MAX_EMAIL_LENGTH) {
+			if (isElementPresent(this.labelUserNameErrorXPath)) {
+				rtnMsg = this.labelUserNameError.getText().trim();
+				this.cancelAddBtn.click();
+				return rtnMsg;
+			} else {
+				int difflen = email.length() - ALLOWED_MAX_EMAIL_LENGTH;
+				this.inputEmail.clear();
+				this.inputEmail.sendKeys(email.substring(difflen, email.length()-1));
+			}
+		}
+		
+		this.inputPassword.sendKeys(password1);
+		this.inputPasswordConfirm.sendKeys(password2);
+		
+		this.btnOk.click();
+		waitForPageToLoad();
+		
+		if (isElementPresent(this.labelUserNameErrorXPath)) {
+			rtnMsg = this.labelUserNameError.getText().trim();
+			this.cancelAddBtn.click();
+			return rtnMsg;
+		}
+		
+		if (isElementPresent(this.labelUserPwdErrorXPath)) {
+			rtnMsg = this.labelUserPwdError.getText().trim();
+			this.cancelAddBtn.click();
+			return rtnMsg; 
+		}
+		
+		if (isElementPresent(this.labelPwdConfirmErrorXPath)) {
+			rtnMsg = this.labelPwdConfirmError.getText().trim();
+			this.cancelAddBtn.click();
+			return rtnMsg; 
+		}		
+		
+		if (isElementPresent(this.panelDuplicationErrorXPath)) {
+			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
+
+			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
+				rtnMsg = panelError.getText();
+				this.cancelAddBtn.click();
+			}
+		}
+		
+		return rtnMsg;
+	}	
 
 	public boolean findExistingUser(String userName) {
 		setPagination(PAGINATIONSETTING_100);
@@ -535,7 +605,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		return null;
 	}
 
-	public String getUserStatus(String userName) {
+	public String getUserStatus(String userName, boolean isCustomerUser) {
 		setPagination(PAGINATIONSETTING_100);
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -558,14 +628,19 @@ public class ManageUsersPage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			userNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-					+ "]/td[1]";
+			userNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 
 			userNameCell = table.findElement(By.xpath(userNameXPath));
-
+			
+			Log.info(String.format("Looking For: Username-[%s]; Found Username-[%s]", 
+					userName, userNameCell.getText().trim()));
+			
 			if ((userNameCell.getText().trim()).equalsIgnoreCase(userName)) {
-				userStatusXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-						+ "]/td[5]";
+				if (isCustomerUser) {
+					userStatusXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]";
+				} else {
+					userStatusXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[6]";
+				}
 				userStatusCell = table.findElement(By.xpath(userStatusXPath));
 				Log.info("Found entry at row=" + rowNum);
 				return userStatusCell.getText().trim();
@@ -576,8 +651,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
-						.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
 
@@ -693,7 +767,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		return false;
 	}
 
-	public boolean resetUserPassword(String userName, String newPassword) {
+	public boolean resetUserPassword(String userName, String newPassword, boolean isCustomerUser) {
 		setPagination(PAGINATIONSETTING_100);
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -716,17 +790,16 @@ public class ManageUsersPage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			userNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-					+ "]/td[1]";
-
+			userNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			userNameCell = table.findElement(By.xpath(userNameXPath));
 
 			if ((userNameCell.getText().trim()).equalsIgnoreCase(userName)) {
-				actionResetPWDXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-						+ "]/td[6]/a[2]";
-
-				actionResetPWDCell = table.findElement(By
-						.xpath(actionResetPWDXPath));
+				if (isCustomerUser) {
+					actionResetPWDXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[6]/a[2]";
+				} else {
+					actionResetPWDXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[7]/a[2]";
+				}
+				actionResetPWDCell = table.findElement(By.xpath(actionResetPWDXPath));
 				Log.info("Found cell at xpath=" + actionResetPWDCell);
 				actionResetPWDCell.click();
 				waitForPageToLoad();
