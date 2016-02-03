@@ -80,6 +80,9 @@ public class TestSetup {
 	private String browser;
 	private String chromeDriverPath;
 	private String ieDriverPath;
+	
+	private String runEnvironment;
+	private String testRunCategory;
 
 	private String implicitlyWaitTimeOutInSeconds;
 	private String implicitlyWaitSpecialTimeOutInSeconds;
@@ -151,6 +154,9 @@ public class TestSetup {
 			this.implicitlyWaitTimeOutInSeconds = this.testProp.getProperty("implicitlyWaitTimeOutInSeconds");
 			this.implicitlyWaitSpecialTimeOutInSeconds = this.testProp.getProperty("implicitlyWaitSpecialTimeOutInSeconds");
 			this.implicitlyWaitSpecialTimeOutInMS = this.testProp.getProperty("implicitlyWaitSpecialTimeOutInMS");
+			
+			this.runEnvironment = this.testProp.getProperty("runEnvironment");
+			this.testRunCategory = this.testProp.getProperty("testRunCategory");
 
 			this.language = this.testProp.getProperty("language");
 
@@ -632,9 +638,18 @@ public class TestSetup {
 		return dbPassword;
 	}
 
+	public String getRunEnvironment() {
+		return runEnvironment;
+	}
+
+	public String getTestRunCategory() {
+		return testRunCategory;
+	}
+
 	public static void main(String[] args) {
 		//for code testing
 		TestSetup obj = new TestSetup();
 		obj.getDriver().quit();
 	}
+
 }
