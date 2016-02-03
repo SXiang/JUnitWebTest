@@ -1856,7 +1856,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		String reportMode = "Rapid Response";
 		boolean changeMode = true;
 
-		complianceReportsPage.addNewPDReport(rptTitle, surUnit, surTag, changeMode, reportMode);
+		complianceReportsPage.addNewPDReport(rptTitle, "Picarro" ,surUnit, surTag, changeMode, reportMode);
 		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))

@@ -540,7 +540,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				driver.findElement(By.xpath(strBaseXPath)).click();
 			}
 
-			if (customer.equalsIgnoreCase("sqacus")) {
+			if (customer != null && customer.equalsIgnoreCase("sqacus")) {
 				colNum = 10;
 				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/select";
 				WebElement dropdownBaseMap = driver.findElement(By.xpath(strBaseXPath));
@@ -951,6 +951,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public void addNewPDReport(String reportTitle, String surveyor, List<String> tag, boolean changeMode, String reportMode) {
 		this.addNewReport(reportTitle, null, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, changeMode, reportMode);
+	}
+
+	public void addNewPDReport(String reportTitle, String customer, String surveyor, List<String> tag, boolean changeMode, String reportMode) {
+		this.addNewReport(reportTitle, customer, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, changeMode, reportMode);
 	}
 
 	public boolean findReport(String rptTitle, String strCreatedBy) {
@@ -1474,8 +1478,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						this.btnSurveySearch.click();
 						this.waitForSurveyTabletoLoad();
 						this.checkboxSurFirst.click();
-						this.btnAddSurveys.click();
 						this.waitForAddSurveyButtonToLoad();
+						this.btnAddSurveys.click();
+						this.waitForNewPageLoad();
 					}
 				}
 
@@ -1590,24 +1595,30 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				this.checkboxSurFirst.click();
 				this.waitForAddSurveyButtonToLoad();
 				this.btnAddSurveys.click();
-				this.waitForAddSurveyButtonToLoad();
 				this.waitForNewPageLoad();
 			}
 		}
 
-		this.inputViewLisa.click();
-		this.inputViewFOV.click();
-		this.inputViewBreadCrumb.click();
-		this.inputViewInd.click();
-		this.inputViewIso.click();
-		this.inputViewAnno.click();
-		this.inputViewAssets.click();
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
 
-		if (boundary != null) {
-			this.inputViewBoundaries.click();
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYGAPS, "1");
+		viewMap1.put(KEYASSETS, "1");
+		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
-			selectViewLayerBoundaries(true, true);
-		}
+		viewList.add(viewMap1);
+
+		addViews(customer, viewList);
+		selectViewLayerBoundaries(true, true);
+
 		this.btnOK.click();
 	}
 
@@ -1687,6 +1698,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				this.checkboxSurFirst.click();
 				this.waitForAddSurveyButtonToLoad();
 				this.btnAddSurveys.click();
+				this.waitForNewPageLoad();
 			}
 		}
 
@@ -2006,24 +2018,23 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		});
 	}
-	
+
 	public void waitForSurveySelectorCheckBoxToLoad() {
-		(new WebDriverWait(driver, timeout+15)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return checkboxSurFirst.isDisplayed();
 			}
 		});
 	}
-	
+
 	public void waitForAddSurveyButtonToLoad() {
-		(new WebDriverWait(driver, timeout+15)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return btnAddSurveys.isDisplayed();
 			}
 		});
 	}
-	
-	
+
 	public void waitForDeleteSurveyButtonToLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -2192,7 +2203,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	private void waitForFileDownload(String fileName, String downloadPath) {
-		(new WebDriverWait(driver, timeout+60)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, timeout + 60)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return checkFileExists(fileName, downloadPath);
 			}
