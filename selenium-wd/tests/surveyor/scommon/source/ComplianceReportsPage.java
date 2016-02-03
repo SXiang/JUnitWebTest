@@ -616,6 +616,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.btnSurveySearch.click();
 		this.waitForSurveyTabletoLoad();
 		this.waitForSurveySelectorCheckBoxToLoad();
+		this.waitForSurveySelectorCheckBoxToBeEnabled();
 		this.checkboxSurFirst.click();
 		this.btnAddSurveys.click();
 		this.inputViewLisa.click();
@@ -1592,6 +1593,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				this.btnSurveySearch.click();
 				this.waitForSurveyTabletoLoad();
 				this.waitForSurveySelectorCheckBoxToLoad();
+				this.waitForSurveySelectorCheckBoxToBeEnabled();
 				this.checkboxSurFirst.click();
 				this.waitForAddSurveyButtonToLoad();
 				this.btnAddSurveys.click();
@@ -1695,6 +1697,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				this.btnSurveySearch.click();
 				this.waitForSurveyTabletoLoad();
 				this.waitForSurveySelectorCheckBoxToLoad();
+				this.waitForSurveySelectorCheckBoxToBeEnabled();
 				this.checkboxSurFirst.click();
 				this.waitForAddSurveyButtonToLoad();
 				this.btnAddSurveys.click();
@@ -2023,6 +2026,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return checkboxSurFirst.isDisplayed();
+			}
+		});
+	}
+	
+	public void waitForSurveySelectorCheckBoxToBeEnabled() {
+		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return checkboxSurFirst.isEnabled();
 			}
 		});
 	}
