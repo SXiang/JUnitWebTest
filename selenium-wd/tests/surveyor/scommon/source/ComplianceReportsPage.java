@@ -1492,7 +1492,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						this.checkboxSurFirst.click();
 						this.waitForAddSurveyButtonToLoad();
 						this.btnAddSurveys.click();
-						this.waitForNewPageLoad();
+						
 					}
 				}
 
@@ -1608,7 +1608,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				selectSurveyCheckBox(checkboxSurFirst);
 				this.waitForAddSurveyButtonToLoad();
 				this.btnAddSurveys.click();
-				this.waitForNewPageLoad();
+				
 			}
 		}
 
@@ -1712,7 +1712,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				this.checkboxSurFirst.click();
 				this.waitForAddSurveyButtonToLoad();
 				this.btnAddSurveys.click();
-				this.waitForNewPageLoad();
+				
 			}
 		}
 
