@@ -1,11 +1,23 @@
 package surveyor.dataprovider;
 
+import org.junit.runner.notification.RunNotifier;
+import org.junit.runners.model.InitializationError;
+
 import com.tngtech.java.junit.dataprovider.DataProvider;
+import surveyor.scommon.source.SurveyorTestRunner;
 
-public class UserDataProvider {
-
+public class UserDataProvider extends SurveyorTestRunner {
 	public static final String USER_ROLE_INFO_PROVIDER = "dataProviderUserRoleInfo";
+
+	public UserDataProvider(Class<?> klass) throws InitializationError {
+		super(klass);
+	}
 	
+    @Override 
+    public void run(RunNotifier notifier){
+        super.run(notifier);
+    }
+
 	/**********************************************************************
 	 * #NOTE#: Password provided in the data provider will get printed
 	 * in teamcity UI (run result) and therefore needs to be an encrypted string

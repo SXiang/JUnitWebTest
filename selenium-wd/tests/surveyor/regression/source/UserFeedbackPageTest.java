@@ -9,9 +9,11 @@ import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.UserFeedbackPage;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
@@ -19,6 +21,7 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  * @author zlu
  *
  */
+@RunWith(SurveyorTestRunner.class)
 public class UserFeedbackPageTest extends SurveyorBaseTest {
 	private static UserFeedbackPage userFeedbackPage;
 

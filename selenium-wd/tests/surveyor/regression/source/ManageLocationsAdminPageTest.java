@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.scommon.source.HomePage;
@@ -35,7 +36,7 @@ import surveyor.scommon.source.ManageSurveyorAdminPage;
 import surveyor.scommon.source.ManageUsersAdminPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.SurveyorBaseTest;
-
+import surveyor.scommon.source.SurveyorTestRunner;
 import common.source.BaseHelper;
 import common.source.Log;
 
@@ -43,6 +44,7 @@ import common.source.Log;
  * @author zlu
  *
  */
+@RunWith(SurveyorTestRunner.class)
 public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	private static HomePage homePage;
 	private static ManageLocationsPage manageLocationsPage;

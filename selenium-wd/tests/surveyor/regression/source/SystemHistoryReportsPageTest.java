@@ -26,17 +26,20 @@ import java.util.Date;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.Log;
 import surveyor.scommon.source.ManageSurveyorHistoriesPage;
 import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.SystemHistoryReportsPage;
 
 /**
  * @author pmahajan
  * 
  */
+@RunWith(SurveyorTestRunner.class)
 public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	private static SystemHistoryReportsPage systemHistoryReportsPage = null;
 	private static ManageSurveyorHistoriesPage manageSurveyorHistoriesPage = null;

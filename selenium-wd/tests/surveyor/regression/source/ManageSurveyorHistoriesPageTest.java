@@ -12,15 +12,18 @@ import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.scommon.source.ManageSurveyorHistoriesPage;
 import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.SurveyorTestRunner;
 
 /**
  * @author pmahajan
  * 
  */
+@RunWith(SurveyorTestRunner.class)
 public class ManageSurveyorHistoriesPageTest extends SurveyorBaseTest {
 	private static ManageSurveyorHistoriesPage manageSurveyorHistoriesPage;
 

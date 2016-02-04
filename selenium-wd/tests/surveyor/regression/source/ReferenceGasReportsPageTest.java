@@ -28,15 +28,18 @@ import java.util.Date;
 import common.source.Log;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.scommon.source.ReferenceGasReportsPage;
 import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.SurveyorTestRunner;
 
 /**
  * @author pmahajan
  * 
  */
+@RunWith(SurveyorTestRunner.class)
 public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 	private static ReferenceGasReportsPage referenceGasReportsPage = null;
 

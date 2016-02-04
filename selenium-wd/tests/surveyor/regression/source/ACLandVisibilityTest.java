@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.dataaccess.source.ResourceKeys;
@@ -22,6 +23,8 @@ import surveyor.scommon.source.PreferencesPage;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.SurveyorTestRunner;
+
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 import java.util.ArrayList;
@@ -36,6 +39,7 @@ import common.source.Log;
  * @author zlu
  *
  */
+@RunWith(SurveyorTestRunner.class)
 public class ACLandVisibilityTest extends SurveyorBaseTest {
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageUsersPage manageUsersPage;

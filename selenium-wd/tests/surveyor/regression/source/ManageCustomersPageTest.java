@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
 import org.junit.Ignore;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.dataprovider.DataGenerator;
@@ -17,12 +18,15 @@ import surveyor.scommon.source.ManageUsersPage;
 import common.source.Log;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.SurveyorTestRunner;
+
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
  * @author zlu
  *
  */
+@RunWith(SurveyorTestRunner.class)
 public class ManageCustomersPageTest extends SurveyorBaseTest {
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageUsersPage manageUsersPage;
