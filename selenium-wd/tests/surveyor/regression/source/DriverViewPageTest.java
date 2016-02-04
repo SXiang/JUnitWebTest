@@ -17,6 +17,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
@@ -41,6 +42,8 @@ import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageUsersPage;
+import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.SurveyorTestRunner;
 
 /*
  * **** IMPORTANT ****:
@@ -49,6 +52,7 @@ import surveyor.scommon.source.ManageUsersPage;
  *  installation of Simulator pre-requisites before running the test.
  * 
  */
+@RunWith(SurveyorTestRunner.class)
 public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 
 	private static final String SURVEY_INFO_SURVEYOR1_ANALYZER1 = "Surveyor: SimAuto-Surveyor1 - SimAuto-Analyzer1";
@@ -102,12 +106,24 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 	public TestWatcher watcher = new TestWatcher() {
 		@Override
 		public void starting(Description description) {
+			SurveyorBaseTest.reportTestStarting(description);
 			TestSetup.simulatorTestStarting(description);
 		}
 
 		@Override
 		public void finished(Description description) {
+			SurveyorBaseTest.reportTestFinished();
 			TestSetup.simulatorTestFinishing(description);
+		}
+
+		@Override
+		protected void failed(Throwable e, Description description) {
+			SurveyorBaseTest.reportTestFailed(e);
+		}
+
+		 @Override
+		 protected void succeeded(Description description) {
+			 SurveyorBaseTest.reportTestSucceeded();
 		}
 	};
 

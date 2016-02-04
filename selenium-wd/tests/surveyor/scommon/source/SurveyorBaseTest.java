@@ -56,35 +56,24 @@ public class SurveyorBaseTest {
 	public TestWatcher watcher = new TestWatcher() {
 		@Override
 		public void starting(Description description) {
-			ExtentReports report = getExtentReport();
-			test = report.startTest(description.getMethodName());
-			test.assignCategory(TestContext.INSTANCE.getTestRunCategory());
-			test.log(LogStatus.INFO, description.toString());
-			test.log(LogStatus.INFO, String.format("Starting test.. [Start Time:%s]", 
-					DateUtility.getCurrentDate()));
-
+			SurveyorBaseTest.reportTestStarting(description);
 			TestSetup.simulatorTestStarting(description);
 		}
 
 		@Override
 		public void finished(Description description) {
-			ExtentReports report = getExtentReport();
-			test.log(LogStatus.INFO, String.format("Finished test. [End Time:%s]", 
-					DateUtility.getCurrentDate()));
-			report.endTest(test);
-			report.flush();
-
+			SurveyorBaseTest.reportTestFinished();
 			TestSetup.simulatorTestFinishing(description);
 		}
 
 		@Override
 		protected void failed(Throwable e, Description description) {
-			test.log(LogStatus.FAIL, "FAILURE: " + e.getMessage());
+			SurveyorBaseTest.reportTestFailed(e);
 		}
-		
+
 		 @Override
 		 protected void succeeded(Description description) {
-			test.log(LogStatus.PASS, "PASSED");
+			 SurveyorBaseTest.reportTestSucceeded();
 		}
 	};
 	
@@ -109,6 +98,47 @@ public class SurveyorBaseTest {
 	   return TestContext.INSTANCE.getReport();
 	}
 	
+	public static void reportTestStarting(Description description) {
+		reportTestStarting(description.getMethodName(), description.toString());
+	}
+
+	public static void reportTestStarting(String methodName, String firstLogLine) {
+		ExtentReports report = getExtentReport();
+		setExtentTest(report.startTest(methodName));
+		getExtentTest().assignCategory(TestContext.INSTANCE.getTestRunCategory());
+		getExtentTest().log(LogStatus.INFO, firstLogLine);
+		getExtentTest().log(LogStatus.INFO, String.format("Starting test.. [Start Time:%s]", 
+				DateUtility.getCurrentDate()));
+	}
+
+	public static void reportTestFinished() {
+		ExtentReports report = getExtentReport();
+		getExtentTest().log(LogStatus.INFO, String.format("Finished test. [End Time:%s]", 
+				DateUtility.getCurrentDate()));
+		report.endTest(getExtentTest());
+		report.flush();
+	}
+
+	public static void reportTestFailed(Throwable e) {
+		getExtentTest().log(LogStatus.FAIL, "FAILURE: " + e.getMessage());
+	}
+
+	public static void reportTestError(String errorMsg) {
+		getExtentTest().log(LogStatus.ERROR, "ERROR: " + errorMsg);
+	}
+
+	public static void reportTestSucceeded() {
+		getExtentTest().log(LogStatus.PASS, "PASSED");
+	}
+
+	public static ExtentTest getExtentTest() {
+		return test;
+	}
+
+	private static void setExtentTest(ExtentTest test) {
+		SurveyorBaseTest.test = test;
+	}
+
 	/**
 	 * @throws java.lang.Exception
 	 */

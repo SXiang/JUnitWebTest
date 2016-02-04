@@ -48,6 +48,7 @@ import java.util.Map;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.dataaccess.source.ResourceKeys;
@@ -63,7 +64,9 @@ import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.SurveyorTestRunner;
 
+@RunWith(SurveyorTestRunner.class)
 public class SanityIntegrationTest extends SurveyorBaseTest {
 	private static final String PICARRO_CUSTOMER = "Picarro";
 	private static ComplianceReportsPage complianceReportsPage;

@@ -7,18 +7,22 @@ import static org.junit.Assert.*;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.Log;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.SurveyorTestRunner;
+
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
  * @author zlu
  *
  */
+@RunWith(SurveyorTestRunner.class)
 public class ManageLocationsPageTest extends SurveyorBaseTest {
 	private static ManageLocationsPage manageLocationsPage;
 	private static ManageCustomersPage manageCustomersPage;

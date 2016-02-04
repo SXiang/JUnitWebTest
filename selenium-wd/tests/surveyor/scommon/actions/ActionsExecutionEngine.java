@@ -67,14 +67,16 @@ public class ActionsExecutionEngine implements IMethodObserver {
 		    		String testStepsSheetName = testCaseSheetName + "-TestSteps";
 		    		for (int iTestcase=1; iTestcase < iTotalTestCases; iTestcase++) {
 		    			bResult = true;
-		    			beforeTestSetup();
-		    			
 		    			testCaseID = excelUtility.getIntegerCellData(iTestcase, Constants.Excel_TestCases_Col_ID, testCaseSheetName);
 		    			testCaseRallyID = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_RallyID, testCaseSheetName);
 		    			testCaseName = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_Name, testCaseSheetName);
 		    			testCaseUserRowIDs = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_UserRowIDs, testCaseSheetName);
 		    			testCaseEnabled = excelUtility.getBooleanCellData(iTestcase, Constants.Excel_TestCases_Col_Enabled, testCaseSheetName);
 		    			testCaseRunResult = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_RunResult, testCaseSheetName);
+
+		    			Log.info(String.format("testCaseID=[%s], testCaseRallyID=[%s], testCaseUserRowIDs=[%s], testCaseName=[%s]", 
+		    					testCaseID, testCaseRallyID, testCaseUserRowIDs, testCaseName));
+		    			beforeTestSetup(testCaseID, testCaseRallyID, testCaseUserRowIDs, testCaseName);
 		    			
 		    			if (testID == Integer.valueOf(testCaseID)) {	// found match.
 		    				foundMatchingTestCase = true;
@@ -95,7 +97,14 @@ public class ActionsExecutionEngine implements IMethodObserver {
     	}
     }
 
+	private void beforeTestSetup(String testCaseID, String testCaseRallyID, String testCaseUserRowIDs,
+			String testCaseName) throws Exception {
+		SurveyorBaseTest.setUpBeforeClass();
+		SurveyorBaseTest.reportTestStarting(testCaseRallyID + " - " + testCaseName, testCaseID + " : " + testCaseName);
+	}
+
 	private void afterTestTearDown() throws Exception {
+		SurveyorBaseTest.reportTestFinished();
 		SurveyorBaseTest.tearDownAfterClass();
 	}
 
@@ -125,6 +134,7 @@ public class ActionsExecutionEngine implements IMethodObserver {
 			try {
 				bResult = executeAction(testCaseStep, testStepPageObject, testStepAction, testStepWebElement, testStepTestData, testStepTestDataRowIDs, testStepsSheetName);
 			} catch (Exception e) {
+				SurveyorBaseTest.reportTestFailed(e);
 				Log.error(String.format("Error executing action - [%s]. Exception details: %s", testStepAction, ExceptionUtility.getStackTraceString(e)));
 			}
 			
@@ -132,6 +142,7 @@ public class ActionsExecutionEngine implements IMethodObserver {
 				String failureMessage = String.format("FAILURE while executing action-'%s' on page-'%s' with test data-'%s' for rowIDs-'%s'", 
 						testStepAction, testStepPageObject, testStepTestData, testStepTestDataRowIDs);
 				excelUtility.setCellData(Constants.KEYWORD_FAIL + " : " + failureMessage, testCaseStep, Constants.Excel_TestCaseSteps_Col_Result, testCaseSheetName);
+				SurveyorBaseTest.reportTestError(failureMessage);
 				Log.info(failureMessage);
 				break;
 			}						
@@ -169,7 +180,9 @@ public class ActionsExecutionEngine implements IMethodObserver {
 	    			testCaseRunResult = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_RunResult, testCaseSheetName);
 	    			
 	    			if (testCaseEnabled.equalsIgnoreCase("true")) {
-		    			beforeTestSetup();
+	    				Log.info(String.format("testCaseID=[%s], testCaseRallyID=[%s], testCaseUserRowIDs=[%s], testCaseName=[%s]", 
+		    					testCaseID, testCaseRallyID, testCaseUserRowIDs, testCaseName));
+		    			beforeTestSetup(testCaseID, testCaseRallyID, testCaseUserRowIDs, testCaseName);
 	    				executeTestCaseAction(testCaseSheetName, testStepsSheetName, iTestcase);
 		    			afterTestTearDown();
 	    			}	    			
@@ -178,10 +191,6 @@ public class ActionsExecutionEngine implements IMethodObserver {
     	}
     }
 
-	private void beforeTestSetup() throws Exception {
-		SurveyorBaseTest.setUpBeforeClass();
-	}	
- 
 	 private boolean isExecutableTestGroup(String testCaseSheetName) {
 		if (this.getTestGroupsToExecute() == null) {
 			return true;   // If no group specified run all Groups.

@@ -3,13 +3,7 @@
  */
 package surveyor.regression.source;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -24,10 +18,8 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.CryptoUtility;
 import common.source.Log;
-import common.source.RegexUtility;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-import surveyor.dataprovider.DataAnnotations;
 import surveyor.dataprovider.RunAs;
 import surveyor.dataprovider.UserDataProvider;
 import surveyor.scommon.source.HomePage;
@@ -367,7 +359,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		manageUsersPage.open();
 		String output = manageUsersPage.addTestUser(usernameNew, USERPASSWORD, USERPASSWORD);
-		
+		Log.info("Found error message:" + output);
 		assertTrue(output.contains(DUPLICATIONERROR));
 	}
 	
