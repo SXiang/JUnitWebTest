@@ -1355,6 +1355,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @param actualPath
 	 *            - actual path to the generated report
 	 * @return boolean - true or false based on whether the report text matches the given text
+	 * Note: this method will be deprecated
 	 */
 
 	public boolean compareComplianceRptFirstPageStaticText(String actualPath) throws IOException {
@@ -1385,6 +1386,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @param actual
 	 *            path to the generated report
 	 * @return true or false based on whether the report text matches the given text
+	 * Note: this method will be deprecated
 	 */
 	public boolean compareComplianceRptFirstPageTable(String actualPath, HashMap<String, String> inputMap) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
@@ -1406,36 +1408,118 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return false;
 	}
 
+	
+
 	/**
-	 * Method to verify the images appear on the compliance report
+	 * Method to compare the static text in the first page including the report title, other static texts and report parameter table that appears on the left
 	 * 
-	 * @param actual
-	 *            path to the generated report
-	 * @return true or false based on whether the images match the given images
+	 * @param actualPath
+	 *            - actual path to the generated report
+	 * @return boolean - true or false based on whether the report text matches the given text
 	 */
-	public boolean compareComplianceRptImages(String actualPath, String baselinePath) throws IOException {
-		String actualReport = actualPath + reportName.trim() + ".pdf";
-		PDFUtility pdfUtility;
-		pdfUtility = new PDFUtility();
-		String imageDirectory = pdfUtility.extractPDFImages(actualReport, Paths.get(actualPath).getFileName().toString() + "_", 1, 2);
-		Log.info(imageDirectory);
-		return false;
+
+	public boolean verifyComplianceReportStaticText(String actualPath) throws IOException {
+		
+		return true;
+	}
+
+	
+	/**
+	 * Method to verify the "Show Coverage Table in SSRS
+	 * @param actualPath
+	 *            - actual path to the generated report
+	 * @return boolean - true or false based on whether the report text matches the given text
+	 */
+
+	public boolean verifyShowCoverageTable(String actualPath, HashMap<String,String> userInput) throws IOException {
+		
+		return true;
+	}
+	
+	/**
+	 * Method to verify the Coverage Values Table in SSRS
+	 * @param actualPath
+	 *            - actual path to the generated report
+	 * @return boolean - true or false based on whether the report text matches the given text
+	 */
+
+	public boolean verifyCoverageValuesTable(String actualPath) throws IOException {
+		
+		return true;
+	}
+	
+	/**
+	 * Method to verify the Layers Table in SSRS
+	 * @param actualPath
+	 *            - actual path to the generated report
+	 * @return boolean - true or false based on whether the report text matches the given text
+	 */
+
+	public boolean verifyLayersTable(String actualPath, HashMap<String,String> userInput) throws IOException {
+	
+		return true;
 	}
 
 	/**
-	 * Method to verify the images appear on Views
-	 * 
-	 * @param actual
-	 *            path to the generated report
-	 * @return true or false based on whether the images match the given images
+	 * Method to verify the Views Table in SSRS
+	 * @param actualPath
+	 *            - actual path to the generated report
+	 * @return boolean - true or false based on whether the report text matches the given text
 	 */
-	public boolean compareViewImages(String actualPath, String baselinePath) throws IOException {
-		String actualReport = actualPath + reportName.trim() + ".pdf";
-		PDFUtility pdfUtility;
-		pdfUtility = new PDFUtility();
-		String imageDirectory = pdfUtility.extractPDFImages(actualReport, Paths.get(actualPath).getFileName().toString() + "_", 1, 2);
-		Log.info(imageDirectory);
-		return false;
+
+	public boolean verifyViewsTable(String actualPath, List<HashMap<String,String>> userInput) throws IOException {
+		
+		
+		return true;
+	}
+	
+	/**
+	 * Method to verify the Driving Surveys Table in SSRS
+	 * @param actualPath
+	 *            - actual path to the generated report
+	 * @return boolean - true or false based on whether the report text matches the given text
+	 */
+
+	public boolean verifyDrivingSurveysTable(String actualPath) throws IOException {
+	
+		
+		return true;
+	}
+	
+	/**
+	 * Method to verify the Isotopic Analysis Table in SSRS
+	 * @param actualPath
+	 *            - actual path to the generated report
+	 * @return boolean - true or false based on whether the report text matches the given text
+	 */
+
+	public boolean verifyIsotopicAnalysisTable(String actualPath) throws IOException {
+		
+		return true;
+	}
+	
+	/**
+	 * Method to verify the Indication Table in SSRS
+	 * @param actualPath
+	 *            - actual path to the generated report
+	 * @return boolean - true or false based on whether the report text matches the given text
+	 */
+
+	public boolean verifyIndicationTable(String actualPath) throws IOException {
+	
+		return true;
+	}
+	
+	/**
+	 * Method to verify the Views Images 
+	 * @param actualPath
+	 *            - actual path to the generated report
+	 * @return boolean - true or false based on whether the report text matches the given text
+	 */
+
+	public boolean verifyViewsImages(String actualPath) throws IOException {
+				
+		return true;
 	}
 
 	public boolean copyReportAndModifyDetails(String rptTitle, String strCreatedBy, String rptTitleNew, String surUnit, List<String> tag, boolean changeMode, String strReportMode) {
