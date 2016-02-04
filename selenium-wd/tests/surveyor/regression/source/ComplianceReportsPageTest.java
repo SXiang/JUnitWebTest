@@ -59,14 +59,6 @@ import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.RSWLAT;
 import static surveyor.scommon.source.SurveyorConstants.RSWLON;
 import static surveyor.scommon.source.SurveyorConstants.REPORTMODES;
-import static surveyor.scommon.source.SurveyorConstants.REPORTTITLE;
-import static surveyor.scommon.source.SurveyorConstants.LISAINV;
-import static surveyor.scommon.source.SurveyorConstants.GAPINV;
-import static surveyor.scommon.source.SurveyorConstants.CGIINV;
-import static surveyor.scommon.source.SurveyorConstants.APPRNAME;
-import static surveyor.scommon.source.SurveyorConstants.APPRSIG;
-import static surveyor.scommon.source.SurveyorConstants.RPTCRTDATE;
-import static surveyor.scommon.source.SurveyorConstants.DATE;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.RSURSTARTDATE;
 import static surveyor.scommon.source.SurveyorConstants.RSURENDDATE;
@@ -226,13 +218,13 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICSUP))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, SQAPICSUP));
-			try {
+			/*try {
 				assertTrue(complianceReportsPage.compareComplianceRptFirstPageStaticText(testSetup.getDownloadPath()));
 
 			} catch (IOException e) {
 				Log.error(e.toString());
 				fail("\nTestcase TC517 failed.\n");
-			}
+			}*/
 
 		} else
 			fail("\nTestcase TC517 failed.\n");
@@ -317,12 +309,12 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICSUP))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, SQAPICSUP));
-			try {
+			/*try {
 				assertTrue(complianceReportsPage.compareComplianceRptFirstPageStaticText(testSetup.getDownloadPath()));
 			} catch (IOException e) {
 				Log.error(e.toString());
 				fail("\nTestcase TC148 failed.\n");
-			}
+			}*/
 
 		} else
 			fail("\nTestcase TC148 failed.\n");

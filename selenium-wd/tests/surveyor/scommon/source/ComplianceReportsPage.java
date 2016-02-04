@@ -115,9 +115,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String ComplianceReportSSRS_TimeZone = Resources.getResource(ResourceKeys.ComplianceReportSSRS_TimeZone);
 	
 	
+	/*public static final String ComplianceReportSSRS_MapHeightWidth = Resources.getResource(ResourceKeys.ComplianceReportSSRS_MapHeightWidth);
 	public static final String ComplianceReportSSRS_MapHeightWidth = Resources.getResource(ResourceKeys.ComplianceReportSSRS_MapHeightWidth);
-	public static final String ComplianceReportSSRS_MapHeightWidth = Resources.getResource(ResourceKeys.ComplianceReportSSRS_MapHeightWidth);
-	public static final String ComplianceReportSSRS_MapHeightWidth = Resources.getResource(ResourceKeys.ComplianceReportSSRS_MapHeightWidth);
+	public static final String ComplianceReportSSRS_MapHeightWidth = Resources.getResource(ResourceKeys.ComplianceReportSSRS_MapHeightWidth);*/
 	
 
 
@@ -1371,7 +1371,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		expectedReportString.add(ComplianceReportSSRS_SWLatSWLong);
 
 		
-		errro
+		//errro
 		
 		expectedReportString.add(ComplianceReportSSRS_LISAInvestigationComplete);
 		expectedReportString.add(ComplianceReportSSRS_LISAInvestigationComplete);
