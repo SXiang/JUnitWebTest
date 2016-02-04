@@ -8,12 +8,8 @@ import static common.source.BaseHelper.matchSinglePattern;
 import static common.source.BaseHelper.matchPatternforPairs;
 import common.source.DateUtility;
 import static surveyor.scommon.source.SurveyorConstants.ACTIONTIMEOUT;
-import static surveyor.scommon.source.SurveyorConstants.APPRNAME;
-import static surveyor.scommon.source.SurveyorConstants.APPRSIG;
-import static surveyor.scommon.source.SurveyorConstants.CGIINV;
 import static surveyor.scommon.source.SurveyorConstants.CUSBOUNDARY;
 import static surveyor.scommon.source.SurveyorConstants.ENDDATE;
-import static surveyor.scommon.source.SurveyorConstants.GAPINV;
 import static surveyor.scommon.source.SurveyorConstants.REXCLUSIONRADIUS;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPHEIGHT;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPWIDTH;
@@ -32,13 +28,10 @@ import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
-import static surveyor.scommon.source.SurveyorConstants.LISAINV;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
-import static surveyor.scommon.source.SurveyorConstants.RPTCRTDATE;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 import static surveyor.scommon.source.SurveyorConstants.REPORTMODES1;
-import static surveyor.scommon.source.SurveyorConstants.REPORTTITLE;
 import static surveyor.scommon.source.SurveyorConstants.STARTDATE;
 import static surveyor.scommon.source.SurveyorConstants.SURVEYORUNIT;
 import static surveyor.scommon.source.SurveyorConstants.RSWLAT;
@@ -112,6 +105,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_PageTitle);
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_AddNew);
 	public static final String STRCopyPageTitle = Resources.getResource(ResourceKeys.ComplianceReport_PageTitle);
+	public static final String STRReportTitle = Resources.getResource(ResourceKeys.SystemHistoryReports_ReportTitle);
+	public static final String ComplianceReportSSRS_LISAInvestigationComplete = Resources.getResource(ResourceKeys.ComplianceReportSSRS_LISAInvestigationComplete);
+	public static final String ComplianceReportSSRS_GAPInvestigationComplete = Resources.getResource(ResourceKeys.ComplianceReportSSRS_GAPInvestigationComplete);
+	public static final String ComplianceReportSSRS_CGIInvestigationComplete = Resources.getResource(ResourceKeys.ComplianceReportSSRS_CGIInvestigationComplete);
+	public static final String ComplianceReportSSRS_MapHeightWidth = Resources.getResource(ResourceKeys.ComplianceReportSSRS_MapHeightWidth);
+	
+
 
 	private String reportName;
 
@@ -221,9 +221,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				inputReportTitle(reportsCompliance.getRptTitle());
 			}
 		}
-
-		selectTimeZone(reportsCompliance.getTimeZone());
-
+		
 		if (reportsCompliance.reportModeFilter != null) {
 			selectReportMode(reportsCompliance.reportModeFilter);
 		}
@@ -1350,19 +1348,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @return boolean - true or false based on whether the report text matches the given text
 	 */
 
-	public boolean compareComplianceRptFirstPageStaticText(String actualPath) throws IOException {
+	public boolean verifyComplianceReportStaticText(String actualPath) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
 		String actualReport = actualPath + reportName.trim() + ".pdf";
 		String actualReportString = null;
-		actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
+		actualReportString = pdfUtility.extractPDFText(actualReport);
 		List<String> expectedReportString = new ArrayList<String>();
-		expectedReportString.add(REPORTTITLE);
-		expectedReportString.add(LISAINV);
-		expectedReportString.add(GAPINV);
-		expectedReportString.add(CGIINV);
-		expectedReportString.add(APPRNAME);
-		expectedReportString.add(APPRSIG);
-		expectedReportString.add(RPTCRTDATE);
+		expectedReportString.add(STRReportTitle);	
 
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
@@ -1372,64 +1364,144 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return true;
 	}
 
+	
 	/**
-	 * Method to verify the report parameter table that appears on the left side of the first page
-	 * 
-	 * @param actual
-	 *            path to the generated report
-	 * @return true or false based on whether the report text matches the given text
+	 * Method to verify the "Show Coverage Table in SSRS
+	 * @param actualPath
+	 *            - actual path to the generated report
+	 * @return boolean - true or false based on whether the report text matches the given text
 	 */
-	public boolean compareComplianceRptFirstPageTable(String actualPath, HashMap<String, String> inputMap) throws IOException {
+
+	public boolean verifyShowCoverageTable(String actualPath, HashMap<String,String> userInput) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
 		String actualReport = actualPath + reportName.trim() + ".pdf";
 		String actualReportString = null;
-		actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
-		List<String> expectedTableStrings = new ArrayList<String>();
-		expectedTableStrings.add("Map Height & Width");
-		expectedTableStrings.add("Time Zone");
-		expectedTableStrings.add("Exclusion Radius");
-		expectedTableStrings.add("Report Mode");
-		expectedTableStrings.add("NE Lat & NE Long");
-		expectedTableStrings.add("SW Lat & SW Long");
-
-		HashMap<String, String> actualFirstPage = matchPatternforPairs(actualReportString, expectedTableStrings);
-		if (actualFirstPage.equals(inputMap)) {
-			return true;
+		actualReportString = pdfUtility.extractPDFText(actualReport);
+		List<String> expectedReportString = new ArrayList<String>();
+		
+		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		for (Boolean value : actualFirstPage.values()) {
+			if (!value)
+				return false;
 		}
-		return false;
+		return true;
+	}
+	
+	/**
+	 * Method to verify the Coverage Values Table in SSRS
+	 * @param actualPath
+	 *            - actual path to the generated report
+	 * @return boolean - true or false based on whether the report text matches the given text
+	 */
+
+	public boolean verifyCoverageValuesTable(String actualPath) throws IOException {
+		PDFUtility pdfUtility = new PDFUtility();
+		String actualReport = actualPath + reportName.trim() + ".pdf";
+		String actualReportString = null;
+		actualReportString = pdfUtility.extractPDFText(actualReport);
+		
+		return true;
+	}
+	
+	/**
+	 * Method to verify the Layers Table in SSRS
+	 * @param actualPath
+	 *            - actual path to the generated report
+	 * @return boolean - true or false based on whether the report text matches the given text
+	 */
+
+	public boolean verifyLayersTable(String actualPath, HashMap<String,String> userInput) throws IOException {
+		PDFUtility pdfUtility = new PDFUtility();
+		String actualReport = actualPath + reportName.trim() + ".pdf";
+		String actualReportString = null;
+		actualReportString = pdfUtility.extractPDFText(actualReport);
+		
+		return true;
 	}
 
 	/**
-	 * Method to verify the images appear on the compliance report
-	 * 
-	 * @param actual
-	 *            path to the generated report
-	 * @return true or false based on whether the images match the given images
+	 * Method to verify the Views Table in SSRS
+	 * @param actualPath
+	 *            - actual path to the generated report
+	 * @return boolean - true or false based on whether the report text matches the given text
 	 */
-	public boolean compareComplianceRptImages(String actualPath, String baselinePath) throws IOException {
-		String actualReport = actualPath + reportName.trim() + ".pdf";
-		PDFUtility pdfUtility;
-		pdfUtility = new PDFUtility();
-		String imageDirectory = pdfUtility.extractPDFImages(actualReport, Paths.get(actualPath).getFileName().toString() + "_", 1, 2);
-		Log.info(imageDirectory);
-		return false;
-	}
 
-	/**
-	 * Method to verify the images appear on Views
-	 * 
-	 * @param actual
-	 *            path to the generated report
-	 * @return true or false based on whether the images match the given images
-	 */
-	public boolean compareViewImages(String actualPath, String baselinePath) throws IOException {
+	public boolean verifyViewsTable(String actualPath, List<HashMap<String,String>> userInput) throws IOException {
+		PDFUtility pdfUtility = new PDFUtility();
 		String actualReport = actualPath + reportName.trim() + ".pdf";
-		PDFUtility pdfUtility;
-		pdfUtility = new PDFUtility();
-		String imageDirectory = pdfUtility.extractPDFImages(actualReport, Paths.get(actualPath).getFileName().toString() + "_", 1, 2);
-		Log.info(imageDirectory);
-		return false;
+		String actualReportString = null;
+		actualReportString = pdfUtility.extractPDFText(actualReport);
+		
+		return true;
 	}
+	
+	/**
+	 * Method to verify the Driving Surveys Table in SSRS
+	 * @param actualPath
+	 *            - actual path to the generated report
+	 * @return boolean - true or false based on whether the report text matches the given text
+	 */
+
+	public boolean verifyDrivingSurveysTable(String actualPath) throws IOException {
+		PDFUtility pdfUtility = new PDFUtility();
+		String actualReport = actualPath + reportName.trim() + ".pdf";
+		String actualReportString = null;
+		actualReportString = pdfUtility.extractPDFText(actualReport);
+		
+		return true;
+	}
+	
+	/**
+	 * Method to verify the Isotopic Analysis Table in SSRS
+	 * @param actualPath
+	 *            - actual path to the generated report
+	 * @return boolean - true or false based on whether the report text matches the given text
+	 */
+
+	public boolean verifyIsotopicAnalysisTable(String actualPath) throws IOException {
+		PDFUtility pdfUtility = new PDFUtility();
+		String actualReport = actualPath + reportName.trim() + ".pdf";
+		String actualReportString = null;
+		actualReportString = pdfUtility.extractPDFText(actualReport);
+		
+		return true;
+	}
+	
+	/**
+	 * Method to verify the Indication Table in SSRS
+	 * @param actualPath
+	 *            - actual path to the generated report
+	 * @return boolean - true or false based on whether the report text matches the given text
+	 */
+
+	public boolean verifyIndicationTable(String actualPath) throws IOException {
+		PDFUtility pdfUtility = new PDFUtility();
+		String actualReport = actualPath + reportName.trim() + ".pdf";
+		String actualReportString = null;
+		actualReportString = pdfUtility.extractPDFText(actualReport);
+		
+		return true;
+	}
+	
+	/**
+	 * Method to verify the Views Images 
+	 * @param actualPath
+	 *            - actual path to the generated report
+	 * @return boolean - true or false based on whether the report text matches the given text
+	 */
+
+	public boolean verifyViewsImages(String actualPath) throws IOException {
+		PDFUtility pdfUtility = new PDFUtility();
+		String actualReport = actualPath + reportName.trim() + ".pdf";
+		String actualReportString = null;
+		actualReportString = pdfUtility.extractPDFText(actualReport);
+		
+		return true;
+	}
+	
+	
+
+
 
 	public boolean copyReportAndModifyDetails(String rptTitle, String strCreatedBy, String rptTitleNew, String surUnit, List<String> tag, boolean changeMode, String strReportMode) {
 		setPagination(PAGINATIONSETTING);

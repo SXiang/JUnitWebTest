@@ -209,18 +209,7 @@ public final class SurveyorConstants {
 	public static final String DRIVINGSURVEYTITLE = "Measurement Sessions - Surveyor";
 	public static final String DRIVINGSURVEYHEADER = "Driving Surveys";
 
-	/*
-	 * Compliance Report static titles
-	 */
-	public static final String REPORTTITLE = "Compliance Report";
-	public static final String LISAINV = "LISA Investigation Complete";
-	public static final String GAPINV = "GAP Investigation Complete";
-	public static final String CGIINV = "CGI Investigation Complete";
-	public static final String APPRNAME = "Approver Name";
-	public static final String APPRSIG = "Approver Signature";
-	public static final String RPTCRTDATE = "Report Creation Date";
-	public static final String DATE = "Date";
-
+	
 	/*
 	 * Driving survey tag for Compliance Reports
 	 */
