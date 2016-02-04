@@ -109,6 +109,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String ComplianceReportSSRS_LISAInvestigationComplete = Resources.getResource(ResourceKeys.ComplianceReportSSRS_LISAInvestigationComplete);
 	public static final String ComplianceReportSSRS_GAPInvestigationComplete = Resources.getResource(ResourceKeys.ComplianceReportSSRS_GAPInvestigationComplete);
 	public static final String ComplianceReportSSRS_CGIInvestigationComplete = Resources.getResource(ResourceKeys.ComplianceReportSSRS_CGIInvestigationComplete);
+	public static final String ComplianceReportSSRS_MapHeightWidth = Resources.getResource(ResourceKeys.ComplianceReportSSRS_MapHeightWidth);	
+	public static final String ComplianceReportSSRS_NELatNELong = Resources.getResource(ResourceKeys.ComplianceReportSSRS_NELatNELong);	
+	public static final String ComplianceReportSSRS_SWLatSWLong = Resources.getResource(ResourceKeys.ComplianceReportSSRS_SWLatSWLong);	
+	public static final String ComplianceReportSSRS_TimeZone = Resources.getResource(ResourceKeys.ComplianceReportSSRS_TimeZone);
+	
+	
+	public static final String ComplianceReportSSRS_MapHeightWidth = Resources.getResource(ResourceKeys.ComplianceReportSSRS_MapHeightWidth);
+	public static final String ComplianceReportSSRS_MapHeightWidth = Resources.getResource(ResourceKeys.ComplianceReportSSRS_MapHeightWidth);
 	public static final String ComplianceReportSSRS_MapHeightWidth = Resources.getResource(ResourceKeys.ComplianceReportSSRS_MapHeightWidth);
 	
 
@@ -1355,6 +1363,23 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		actualReportString = pdfUtility.extractPDFText(actualReport);
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(STRReportTitle);	
+		expectedReportString.add(ComplianceReportSSRS_LISAInvestigationComplete);
+		expectedReportString.add(ComplianceReportSSRS_GAPInvestigationComplete);
+		expectedReportString.add(ComplianceReportSSRS_CGIInvestigationComplete);
+		expectedReportString.add(ComplianceReportSSRS_MapHeightWidth);
+		expectedReportString.add(ComplianceReportSSRS_NELatNELong);
+		expectedReportString.add(ComplianceReportSSRS_SWLatSWLong);
+
+		
+		errro
+		
+		expectedReportString.add(ComplianceReportSSRS_LISAInvestigationComplete);
+		expectedReportString.add(ComplianceReportSSRS_LISAInvestigationComplete);
+		expectedReportString.add(ComplianceReportSSRS_LISAInvestigationComplete);
+		expectedReportString.add(ComplianceReportSSRS_LISAInvestigationComplete);
+		expectedReportString.add(ComplianceReportSSRS_LISAInvestigationComplete);
+		expectedReportString.add(ComplianceReportSSRS_LISAInvestigationComplete);
+
 
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
