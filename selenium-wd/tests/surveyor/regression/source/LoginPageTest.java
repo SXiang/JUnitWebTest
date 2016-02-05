@@ -18,6 +18,7 @@ import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.scommon.source.ComplianceReportsPage;
@@ -29,7 +30,9 @@ import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.PreferencesPage;
 import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.SurveyorTestRunner;
 
+@RunWith(SurveyorTestRunner.class)
 public class LoginPageTest extends SurveyorBaseTest {
 	private static ManageUsersPage manageUsersPage;
 	private static HomePage homePage;

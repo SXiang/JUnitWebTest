@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.scommon.source.ManageLocationsAdminPage;
@@ -32,7 +33,7 @@ import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageSurveyorAdminPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.SurveyorBaseTest;
-
+import surveyor.scommon.source.SurveyorTestRunner;
 import common.source.BaseHelper;
 import common.source.Log;
 
@@ -40,6 +41,7 @@ import common.source.Log;
  * @author zlu
  *
  */
+@RunWith(SurveyorTestRunner.class)
 public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	private static ManageLocationsPage manageLocationsPage;
 	private static ManageLocationsAdminPage manageLocationsAdminPage;
@@ -96,7 +98,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 
 		manageSurveyorAdminPage.open();
 		manageSurveyorAdminPage.editExistingSurveyor(locationName,
-				surveyorName, surveyorNameNew);
+				surveyorName, surveyorNameNew, true);
 
 		assertTrue(manageSurveyorAdminPage.findExistingSurveyor(locationName,
 				surveyorNameNew));
@@ -198,7 +200,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 
 		manageSurveyorAdminPage.open();
 		manageSurveyorAdminPage.editExistingSurveyor(SQACUSLOC,
-				surveyorName400Chars, surveyorName401Chars);
+				surveyorName400Chars, surveyorName401Chars, true);
 
 		String allowedSurveyorName = surveyorName401Chars.substring(0, 400);
 		Log.info("allowedSurveyorName=" + allowedSurveyorName);
@@ -239,7 +241,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 
 		manageSurveyorAdminPage.open();
 		assertFalse(manageSurveyorAdminPage.editExistingSurveyor(SQACUSLOC,
-				surveyorName, ""));
+				surveyorName, "", true));
 	}
 
 	/**

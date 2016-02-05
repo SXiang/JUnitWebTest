@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebDriver;
 
+import com.relevantcodes.extentreports.ExtentReports;
+
 public enum TestContext {
 	INSTANCE;
 	
@@ -11,6 +13,8 @@ public enum TestContext {
 	private String userCulture = "en-US";
 	private String loggedInUserName;
 	private String runUniqueId;
+
+	private ExtentReports report;
 
 	private TestContext() {
 		// Every time a context is created set a unique run ID.
@@ -111,11 +115,35 @@ public enum TestContext {
 		return baseUrl;
 	}
 
+	public String getRunEnvironment() {
+		String environment = null;
+		if (testSetup != null) {
+			environment = testSetup.getRunEnvironment();
+		}		
+		return environment;
+	}
+	
+	public String getTestRunCategory() {
+		String testRunCategory = null;
+		if (testSetup != null) {
+			testRunCategory = testSetup.getTestRunCategory();
+		}		
+		return testRunCategory;
+	}
+
 	public String getRunUniqueId() {
 		return runUniqueId;
 	}
 
 	private void setRunUniqueId(String runUniqueId) {
 		this.runUniqueId = runUniqueId;
+	}
+
+	public ExtentReports getReport() {
+		return report;
+	}
+
+	public void setReport(ExtentReports report) {
+		this.report = report;
 	}
 }

@@ -51,7 +51,7 @@
 
 	<target name="compile_common" depends="init"
 			description="Compile common source code">
-		<javac srcdir="${basedir}/tests/common/source:${basedir}/tests/surveyor/scommon/source:${basedir}/tests/surveyor/scommon/actions:${basedir}/tests/surveyor/scommon/actions/data:${basedir}/tests/surveyor/dataaccess/source:${basedir}/tests/surveyor/dataaccess/source" includeantruntime="false" destdir="${basedir}/tests/common/build">
+		<javac srcdir="${basedir}/tests/common/source:${basedir}/tests/surveyor/scommon/source:${basedir}/tests/surveyor/scommon/actions:${basedir}/tests/surveyor/scommon/actions/data:${basedir}/tests/surveyor/dataaccess/source:${basedir}/tests/surveyor/dataaccess/source:${basedir}/tests/surveyor/dataprovider" includeantruntime="false" destdir="${basedir}/tests/common/build" debug="true">
 			<classpath>
 				<fileset dir="${basedir}">
 					<include name="**/*.jar" />
@@ -66,7 +66,7 @@
 	<target name="compile_scommon" depends="compile_common"
 			description="Compile scommon source code">
 		<javac srcdir="${basedir}/tests/surveyor/scommon/source" includeantruntime="false" destdir="${basedir}/tests/surveyor/scommon/build"
-				debug="on">
+				debug="true">
 			<classpath>
 				<fileset dir="${basedir}">
 					<include name="**/*.jar" />
@@ -79,7 +79,7 @@
 	</target>
 
 	<target name="compileregression" depends="compile_scommon" description="Compile regression source code">
-		<javac srcdir="${basedir}/tests/surveyor/regression/source" includeantruntime="false" destdir="${build}">
+		<javac srcdir="${basedir}/tests/surveyor/regression/source" includeantruntime="false" destdir="${build}" debug="true">
 			<classpath>
 				<fileset dir="${basedir}/lib">
 					<include name="**/*.jar" />
@@ -92,7 +92,7 @@
 	</target>
 
 	<target name="compileSanity" depends="compile_scommon" description="Compile sanity source code">
-		<javac srcdir="${basedir}/tests/surveyor/sanity/source" includeantruntime="false" destdir="${build}">
+		<javac srcdir="${basedir}/tests/surveyor/sanity/source" includeantruntime="false" destdir="${build}" debug="true">
 			<classpath>
 				<fileset dir="${basedir}/lib">
 					<include name="**/*.jar" />
@@ -182,6 +182,7 @@
 					<include name="**/HomePageTest.class" />
 					<include name="**/LoginPageTest.class" />
 					<include name="**/ManageAnalyzersPageTest.class" />
+					<include name="**/ManageCustomersPageTest.class" />
 					<include name="**/ManageLocationsPageTest.class" />
 					<include name="**/ManageLocationsAdminPageTest.class" />
 					<include name="**/ManageRefGasBottlesAdminPageTest.class" />

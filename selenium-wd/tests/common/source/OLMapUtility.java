@@ -372,17 +372,20 @@ public class OLMapUtility {
 	 */
 	public boolean isBoundariesShownOnMap() {
 		boolean isBoundariesPresent = false;
-		boolean areBoundariesCoordsPresent = false;
 		Object BoundariesPresent = ((JavascriptExecutor)this.driver).executeScript(IS_BOUNDARIES_PRESENT_JS_FUNCTION + IS_BOUNDARIES_PRESENT_JS_FUNCTION_CALL);
 		if (BoundariesPresent.toString().equalsIgnoreCase("true")) {
 			isBoundariesPresent = true;
 		}
+		return isBoundariesPresent;
 		
+		/*
+		boolean areBoundariesCoordsPresent = false;
 		List<Object> BoundariesCoords = getBoundariesCoordinates();
 		if (BoundariesCoords != null && BoundariesCoords.size() > 0) {
 			areBoundariesCoordsPresent = true;
 		}
 		return (isBoundariesPresent && areBoundariesCoordsPresent);
+		*/
 	}
 	
 	/*

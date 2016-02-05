@@ -17,6 +17,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
@@ -41,6 +42,8 @@ import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageUsersPage;
+import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.SurveyorTestRunner;
 
 /*
  * **** IMPORTANT ****:
@@ -49,6 +52,7 @@ import surveyor.scommon.source.ManageUsersPage;
  *  installation of Simulator pre-requisites before running the test.
  * 
  */
+@RunWith(SurveyorTestRunner.class)
 public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 
 	private static final String SURVEY_INFO_SURVEYOR1_ANALYZER1 = "Surveyor: SimAuto-Surveyor1 - SimAuto-Analyzer1";
@@ -102,12 +106,24 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 	public TestWatcher watcher = new TestWatcher() {
 		@Override
 		public void starting(Description description) {
+			SurveyorBaseTest.reportTestStarting(description);
 			TestSetup.simulatorTestStarting(description);
 		}
 
 		@Override
 		public void finished(Description description) {
+			SurveyorBaseTest.reportTestFinished();
 			TestSetup.simulatorTestFinishing(description);
+		}
+
+		@Override
+		protected void failed(Throwable e, Description description) {
+			SurveyorBaseTest.reportTestFailed(e);
+		}
+
+		 @Override
+		 protected void succeeded(Description description) {
+			 SurveyorBaseTest.reportTestSucceeded();
 		}
 	};
 
@@ -625,8 +641,10 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(testSetup.getLoginUser() + ":" + testSetup.getLoginPwd(), NOTSET);
-			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start analyzer.
 			driverViewPageAction.open(EMPTY,NOTSET);
+			driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+			testEnvironmentAction.startReplay(EMPTY, 3); 	// start replay db3 file.
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			
 			driverViewPageAction.startDrivingSurvey(EMPTY, 3);
@@ -664,7 +682,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 	 *	3.Verify that 2 options shown as District and District Plat. When Any one of those toggled to ON,it  is selected then it appears on Map and when it is set to OFF it is not shown on map.
 	 */
 	// TEST needs more work on correct verification.
-	@Ignore
+	@Test
 	public void TC777_ActionTest_DriverViewFlatteningCustomerBoundaryData() {
 		try {
 			Log.info("\nRunning TC777_SimulatorTest_DriverViewFlatteningCustomerBoundaryData");
@@ -699,13 +717,14 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 	/**
 	 * Test Case ID: TC1095_ActionTest_NavigateBetweenDriverViewAndHomePage
 	 * Script: -  	
-	 *	1. Login to Pcubed via car tablet with PG&E Driver credentials and click on GIS option
-	 *	2. Toggle the ON and OFF for both options boundary options.
-	 *	3. Login to Pcubed via car tablet with Picarro Supervisor credentials and click on GIS option
+	 * 1. Log in to driver view 
+	 * 2. Click on Picarro Icon present at bottom 
+	 * 3. Go back to driver view (Click on Driver View link present below dashboard on left side menu) 
+	 * 4. Click on Back button of the browser	 
 	 * Results: - 
-	 *	1. For Boundaries it should show only 2 options 1. District 2. District Plat
-	 *	2.Verify that when Each type (District and District Plat) is selected then it appears on Map and when it is set to OFF it does not show on Map.
-	 *	3.Verify that 2 options shown as District and District Plat. When Any one of those toggled to ON,it  is selected then it appears on Map and when it is set to OFF it is not shown on map.
+	 * 1. User is navigated to Home Page 
+	 * 2. User is navigated to Driver view page 
+	 * 3. User is navigated back to Home Page
 	 */
 	@Test
 	public void TC1095_ActionTest_NavigateBetweenDriverViewAndHomePage() {
@@ -714,9 +733,14 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start analyzer.
 			driverViewPageAction.open(EMPTY,NOTSET);
+			driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+			testEnvironmentAction.startReplay(EMPTY, 3); 	// start replay db3 file.
 
+			// Let replay run for 5 seconds.
+			testEnvironmentAction.idleForSeconds("5", NOTSET);
+			
 			// goto home by clicking on picarro logo on driver view page.
 			driverViewPageAction.clickOnPicarroLogoButton(EMPTY, NOTSET);
 			
@@ -768,6 +792,8 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
 			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			driverViewPageAction.open(EMPTY,NOTSET);
+			driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
+			testEnvironmentAction.startReplay(EMPTY, 3); 	// start simulator and replay db3 file.
 
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 			
@@ -860,8 +886,10 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start analyzer.
 			driverViewPageAction.open(EMPTY,NOTSET);
+			driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+			testEnvironmentAction.startReplay(EMPTY, 3); 	// start replay db3 file.
 
 			// Verify 1.
 			driverViewPageAction.clickOnGisButton(EMPTY, NOTSET);
@@ -958,6 +986,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 	 * Results: - 
 	 *	1. Any surveys conducted within the past 8 hours that have the same tag for same surveyor and analyzer will be displayed on the map
 	 **/
+	// Partially automated.
 	@Test
 	public void TC1133_ActionTest_DriverView2SurveysSameTagSameAnalyzer8HrHistoryON() {
 		try {
@@ -1025,6 +1054,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 	 * Results: - 
 	 *	1. Previous survey having same tag value will not be present as user has changed the surveyor\analyzer
 	 **/
+	// Partially automated.
 	@Test
 	public void TC1134_ActionTest_DriverView2SurveysSameTagDifferentAnalyzers8HrHistoryON() {
 		try {
@@ -1100,6 +1130,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 	 * Results: - 
 	 *	1. Eula screen should be displayed 2. User is navigated to driver view 3. User is able to perform survey and can see all the survey data on map	 
 	 **/
+	// Partially automated.
 	@Test
 	public void TC1212_ActionTest_DriverViewStandardSurveyNewDriver() {
 		try {
@@ -1261,8 +1292,10 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator.
 			driverViewPageAction.open(EMPTY,NOTSET);
+			driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+			testEnvironmentAction.startReplay(EMPTY, 3); 	// start replay db3 file.
 
 			// start survey.
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
@@ -1349,13 +1382,19 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
+			
+			Log.info("Starting Analyzer...");
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start analyzer.
 			driverViewPageAction.open(EMPTY,NOTSET);
+			driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+			
+			Log.info("Starting Replay...");
+			testEnvironmentAction.startReplay(EMPTY, 3); 	// start replay db3 file.
 
 			// start survey.
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 			driverViewPageAction.startDrivingSurvey(EMPTY, 17);	/* Day, Overcast, Strong, Standard */
-			testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
+			testEnvironmentAction.idleForSeconds(String.valueOf(5), NOTSET);
 
 			// stop survey.
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
@@ -1369,7 +1408,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			driverViewPageAction.getDriverViewPage().clickStartSurvey();
 			driverViewPageAction.getDriverViewPage().waitForPageToLoad();
 			
-			testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
+			testEnvironmentAction.idleForSeconds(String.valueOf(5), NOTSET);
 
 			// Verify Survey has started.
 			String expectedTagValue = DriverViewPageActions.workingDataRow.surveyTag;
@@ -1403,11 +1442,15 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			
 			// stop and start survey again (with different survey parameters, except Survey Type).
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+			
+			Log.info("Stopping the Driving Survey...");			
 			driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);	
 			
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+			
+			Log.info("Starting the Driving Survey...");
 			driverViewPageAction.startDrivingSurvey(EMPTY, 18);	/* Night, Calm, CloudCover<50, Standard */
-			testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
+			testEnvironmentAction.idleForSeconds(String.valueOf(5), NOTSET);
 
 			expectedTagValue = DriverViewPageActions.workingDataRow.surveyTag;
 			expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType;
@@ -1437,6 +1480,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			assertTrue(driverViewPageAction.verifySurveyInfoSurveyorLabelEquals(expectedSurveyorValue, NOTSET));
 	
 			// Stop current simulator and start another with a different Analyzer.
+			Log.info("Stopping Analyzer...");
 			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 		} catch (Exception e) {
 			Log.error(e.toString());
@@ -1460,8 +1504,10 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 1);   /* Customer Utility admin */
-			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
+			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start analyzer.
 			driverViewPageAction.open(EMPTY,NOTSET);
+			driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+			testEnvironmentAction.startReplay(EMPTY, 3); 	// start replay db3 file.
 
 			// start survey.
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);

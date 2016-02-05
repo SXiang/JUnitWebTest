@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 
 import common.source.Log;
@@ -13,7 +14,9 @@ import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.SurveyorTestRunner;
 
+@RunWith(SurveyorTestRunner.class)
 public class ActionsVerificationTest extends SurveyorBaseTest {
 	private static final String SURVEYOR_NAME = "SimAuto-Surveyor1";
 	private static final String ANALYZER_SERIAL_NUMBER = "SimAuto-Analyzer1";

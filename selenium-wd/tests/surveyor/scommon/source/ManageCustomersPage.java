@@ -6,8 +6,10 @@ package surveyor.scommon.source;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -38,6 +40,8 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	@FindBy(id = "name")
 	private WebElement inputCustomerName;
 	
+	private static final String EULAXPath = "eula";
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='eula']")
 	private WebElement textAreaEula;
 	
@@ -65,7 +69,11 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		Log.info("\nThe Manager Customers Page URL is: " + this.strPageURL);
 	}
 	
-	public void addNewCustomer(String customerName, String eula) {
+	public boolean addNewCustomer(String customerName, String eula) {
+		return addNewCustomer(customerName, eula, true /*enableCustomer*/);
+	}
+	
+	public boolean addNewCustomer(String customerName, String eula, boolean enableCustomer) {
 		this.btnAddNewCustomer.click();
 		this.waitForNewPageLoad();
 		
@@ -78,54 +86,89 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		}
 		
 		this.inputCustomerName.sendKeys(customerName);
-		this.textAreaEula.sendKeys(eula);
-		this.inputAccountEnabled.click();
+		
+		setEULAText(eula);
+		enabledDisableCustomer(enableCustomer);
 		
 		this.btnOk.click();
 		
 		if (isElementPresent(this.panelDuplicationErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
+			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
 				this.cancelAddBtn.click();
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	private void setEULAText(String eula) {
+		sendKeysToTextArea(this.textAreaEula, eula);
+	}
+
+	private void enabledDisableCustomer(boolean enableCustomer) {
+		if (enableCustomer) {
+			if (!inputAccountEnabled.isSelected())
+				inputAccountEnabled.click();
+		}
+		else {
+			if (inputAccountEnabled.isSelected())
+				inputAccountEnabled.click();
 		}
 	}
 	
-	public boolean findExistingCustomer(String customerName) {
-		setPagination(PAGINATIONSETTING);
+	public boolean findExistingCustomer(String customerName, boolean enabledStatus) {
+		setPagination(PAGINATIONSETTING_100);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
 		String customerNameXPath;
+		String enabledStatusXPath;
 		WebElement customerNameCell;
+		WebElement enabledStatusCell;	
 		
 		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 		
 		int rowSize = rows.size();
 		int loopCount = 0;
 		
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			customerNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
 			customerNameCell = table.findElement(By.xpath(customerNameXPath));
 			
-			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName))
+			enabledStatusXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+			enabledStatusCell = table.findElement(By.xpath(enabledStatusXPath));
+			
+			Log.info(String.format("Customer: %s; Status: %s", customerNameCell.getText(), enabledStatusCell.getText()));			
+			
+			String enabledStatusString = Resources.getResource(ResourceKeys.Constant_Enabled);
+			if (!enabledStatus) {
+				enabledStatusString = Resources.getResource(ResourceKeys.Constant_Disabled);
+			}
+			
+			if (customerNameCell.getText().trim().equalsIgnoreCase(customerName) 
+					&& enabledStatusCell.getText().trim().equalsIgnoreCase(enabledStatusString)) {
+				Log.info(String.format("Found existing customer with name - '%s' and enabled status - '%b' at row number - %d", 
+						customerName, enabledStatus, rowNum));
 				return true;
-			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			}
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				
 				rowSize = newRows.size();
 				
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 				
 				rowNum = 0;
 			}			
@@ -133,9 +176,9 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		
 		return false;
 	}
-
-	public boolean editExistingCustomerName(String customerName, String newCustomerName) {
-		setPagination(PAGINATIONSETTING);
+	
+	public boolean findCustomerAndOpenEditPage(String customerName) {
+		setPagination(PAGINATIONSETTING_100);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -150,24 +193,82 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 		
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			customerNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
 			customerNameCell = table.findElement(By.xpath(customerNameXPath));
 			
-			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName)) {
+			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName)) {				
+				Log.info(String.format("Found existing customer with name - '%s' at row number - %d", 
+						customerName, rowNum));
 				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
 				actionCell = table.findElement(By.xpath(actionXPath));
 				
 				actionCell.click();
 				this.waitForEditPageLoad();
 				
-				this.inputCustomerName.clear();
-				this.inputCustomerName.sendKeys(newCustomerName);
+				return true;
+			}
+			
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				
+				rowSize = newRows.size();
+				
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
+				
+				rowNum = 0;
+			}			
+		}
+		
+		return false;
+	}
+
+	public boolean editExistingCustomerName(String customerName, String eulaNew) {
+		setPagination(PAGINATIONSETTING_100);
+		
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		
+		String customerNameXPath;
+		String actionXPath;
+		
+		WebElement customerNameCell;
+		WebElement actionCell;
+		
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			customerNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
+			customerNameCell = table.findElement(By.xpath(customerNameXPath));
+			
+			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName)) {				
+				Log.info(String.format("Found existing customer with name - '%s' at row number - %d", 
+						customerName, rowNum));
+				
+				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
+				actionCell = table.findElement(By.xpath(actionXPath));
+				
+				actionCell.click();
+				this.waitForEditPageLoad();
+				
+				setEULAText(eulaNew);
 				
 				this.btnOk.click();
 				
@@ -183,88 +284,17 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				}				
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				
 				rowSize = newRows.size();
 				
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
-				
-				rowNum = 0;
-			}			
-		}
-		
-		return false;
-	}
-
-	public boolean editExistingCustomerName(String customerName, String newCustomerName, String eulaNew) {
-		setPagination(PAGINATIONSETTING);
-		
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-		
-		String customerNameXPath;
-		String actionXPath;
-		
-		WebElement customerNameCell;
-		WebElement actionCell;
-		
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
-		
-		int rowSize = rows.size();
-		int loopCount = 0;
-		
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
-			loopCount = rowSize;
-		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
-		
-		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			customerNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
-			customerNameCell = table.findElement(By.xpath(customerNameXPath));
-			
-			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName)) {
-				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
-				actionCell = table.findElement(By.xpath(actionXPath));
-				
-				actionCell.click();
-				this.waitForEditPageLoad();
-				
-				this.inputCustomerName.clear();
-				this.inputCustomerName.sendKeys(newCustomerName);
-				
-				this.textAreaEula.clear();
-				this.textAreaEula.sendKeys(eulaNew);
-				
-				this.btnOk.click();
-				
-				if (table.isDisplayed())
-					return true;
-				
-				if (isElementPresent(this.panelDuplicationErrorXPath)){
-					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-					if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
-						this.cancelEditBtn.click();
-						return false;
-					}
-				}				
-			}
-			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
-				
-				rowSize = newRows.size();
-				
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
-					loopCount = rowSize;
-				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 				
 				rowNum = 0;
 			}			
@@ -274,7 +304,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	}
 	
 	public String getCustomerStatus(String customerName) {
-		setPagination(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING_100);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -289,10 +319,10 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 		
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			customerNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
@@ -306,17 +336,17 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				return statusCell.getText().trim();
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				
 				rowSize = newRows.size();
 				
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 				
 				rowNum = 0;
 			}			
@@ -325,8 +355,12 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		return null;
 	}
 	
+	public String getEulaText() {
+		return this.textAreaEula.getAttribute("value");
+	}
+	
 	public boolean changeCustomerAccountStatus (String customerName, boolean bEnabled) {
-		setPagination(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING_100);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		
@@ -341,46 +375,43 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 		
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			customerNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
 			customerNameCell = table.findElement(By.xpath(customerNameXPath));
 			
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName)) {
+				Log.info(String.format("Found existing customer with name - '%s' at row number - %d", 
+						customerName, rowNum));
+				
 				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
 				actionCell = table.findElement(By.xpath(actionXPath));
 				
 				actionCell.click();
+				this.waitForEditPageLoad();
 				
-				if (bEnabled) {
-					if (!inputAccountEnabled.isSelected())
-						inputAccountEnabled.click();
-				}
-				else {
-					if (inputAccountEnabled.isSelected())
-						inputAccountEnabled.click();
-				}
+				enabledDisableCustomer(bEnabled);
 				
 				this.btnOk.click();
 				
 				return true;
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				
 				rowSize = newRows.size();
 				
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 				
 				rowNum = 0;
 			}			

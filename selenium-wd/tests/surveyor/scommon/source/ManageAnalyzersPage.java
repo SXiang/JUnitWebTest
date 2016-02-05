@@ -296,14 +296,17 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 					(locationCell.getText().trim()).equalsIgnoreCase(locationName) && 
 					(surveyorCell.getText().trim()).equalsIgnoreCase(surveyorName) && 
 					analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
-				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[6]";
+				
+				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[6]/a[1]";
 				actionCell = table.findElement(By.xpath(actionXPath));
 				Log.info("Found entry at row=" + rowNum);
 				actionCell.click();
 				this.waitForEditPageLoad();
 				
-				this.inputSharedKey.clear();
-				this.inputSharedKey.sendKeys(keyNew);
+				if (!keyNew.isEmpty()) {
+					this.inputSharedKey.clear();
+					this.inputSharedKey.sendKeys(keyNew);
+				}
 				
 				List<WebElement> options = this.dropDownSurveyor.findElements(By.tagName("option"));
 				for (WebElement option : options) {

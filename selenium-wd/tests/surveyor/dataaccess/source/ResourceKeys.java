@@ -71,6 +71,14 @@ public class ResourceKeys {
 	public static final String ManageUser_NewUser = "ManageUser_NewUser";
 	public static final String ManageUser_UserNameAlreadyExists = "ManageUser_UserNameAlreadyExists";
 	public static final String RefGasReports_PageTitle = "RefGasReports_PageTitle";
+	public static final String RefGasReport_PageTitle = "RefGasReport_PageTitle";
+	public static final String RefGasReportSSRS_ReferenceGasResultTable = "RefGasReportSSRS_ReferenceGasResultTable";
+	public static final String RefGasReportSSRS_InstallationDateTime = "RefGasReportSSRS_InstallationDateTime";
+	public static final String RefGasReportSSRS_IsotopicValueUncertainty = "RefGasReportSSRS_IsotopicValueUncertainty";
+	public static final String RefGasReportSSRS_LotNumber = "RefGasReportSSRS_LotNumber#";
+	public static final String RefGasReportSSRS_TestResult = "RefGasReportSSRS_TestResult";
+	public static final String RefGasReportSSRS_NoRecord = "RefGasReportSSRS_NoRecord";
+	public static final String ReportSSRS_UserName = "ReportSSRS_UserName";
 	public static final String Runs_DrivingSurveys = "Runs_DrivingSurveys";
 	public static final String SystemHistoryReports_PageTitle = "SystemHistoryReports_PageTitle";
 	public static final String SystemHistoryReports_ReportTitle = "SysHistoryReportSSRS_SystemHistoryReport";

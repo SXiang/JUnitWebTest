@@ -6,7 +6,9 @@ package surveyor.regression.source;
 import static org.junit.Assert.*;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.dataaccess.source.ResourceKeys;
@@ -21,6 +23,8 @@ import surveyor.scommon.source.PreferencesPage;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.SurveyorTestRunner;
+
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 import java.util.ArrayList;
@@ -35,6 +39,7 @@ import common.source.Log;
  * @author zlu
  *
  */
+@RunWith(SurveyorTestRunner.class)
 public class ACLandVisibilityTest extends SurveyorBaseTest {
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageUsersPage manageUsersPage;
@@ -97,7 +102,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 * Test Case ID: TC35_CheckACLVCustomerUser_DriverRole_ReleaseNotes Test Description: Release Notes link is working and can download Release Notes
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC35_CheckACLVCustomerUser_DriverRole_ReleaseNotes() {
 		Log.info("\nRunning TC35_CheckACLVCustomerUser_DriverRole_ReleaseNotes - Test Description: Release Notes link is working and can download Release Notes");
 		loginPage.open();
@@ -264,7 +269,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 * Test Case ID: TC36_CheckUserLink_ReleaseNotes Test Description: Release Notes link is working and can download Release Notes
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC36_CheckUserLink_ReleaseNotes() {
 		Log.info("\nRunning TC36_CheckReportLink_CustomerSupervisorRole - Test Description: Release Notes link is working and can download Release Notes");
 		loginPage.open();
@@ -427,7 +432,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 * Test Case ID: TC37_CheckUserLink_ReleaseNotes Test Description: Release Notes link is working and can download Release Notes
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC37_CheckUserLink_ReleaseNotes() {
 		Log.info("\nRunning TC37_CheckReportLink_UtilityAdminRole - Test Description: Release Notes link is working and can download Release Notes");
 		loginPage.open();
@@ -478,15 +483,23 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	@Test
 	public void TC38_CheckACLV_PicAdminRole() {
 		String userName = PICNAMEPREFIX + "ad" + testSetup.getRandomNumber() + REGBASEPICUSERNAME;
-
+		String customer = "Picarro";
+		String location = "Santa Clara";
+		String locationDesc = customer + " - " + location;
+		
 		Log.info("\nRunning TC38_CheckACLV_PicAdminRole - Test Description: Check ACLV for Picarro Administrator role, non-default Administrator account\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
 		manageUsersPage.open();
-		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, USERROLEADMIN);
-		if (!manageUsersPage.findExistingUser("Picarro", userName))
+		
+		Log.info(String.format("Adding new Picarro user: Username-[%s];Role-[%s];Location-[%s];Timezone-[%s]", 
+				userName, USERROLEADMIN, locationDesc, TIMEZONECT));		
+		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, USERROLEADMIN, locationDesc, TIMEZONECT);
+		
+		Log.info(String.format("Finding user: Location-[%s];Username-[%s]", location, userName));
+		if (!manageUsersPage.findExistingUser(location, userName, false))
 			fail("\nTC38: failed to create a non-default Picarro Administrator user.\n");
 		manageUsersPage.logout();
 
@@ -591,7 +604,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 * Test Case ID: TC38_CheckUserLink_ReleaseNotes Test Description: Release Notes link is working and can download Release Notes
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC38_CheckUserLink_ReleaseNotes_PicarroAdminRole() {
 		Log.info("\nRunning TC38_CheckReportLink_PicarroAdminRole - Test Description: Release Notes link is working and can download Release Notes");
 		loginPage.open();
@@ -737,7 +750,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 * Test Case ID: TC40_CheckUserLink_ReleaseNotes Test Description: Release Notes link is working and can download Release Notes
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC40_CheckUserLink_ReleaseNotes_PicarroSupportRole() {
 		Log.info("\nRunning TC40_CheckReportLink_PicarroSupportRole - Test Description: Release Notes link is working and can download Release Notes");
 		loginPage.open();
@@ -795,6 +808,9 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	@Test
 	public void TC40_CheckACLV_PicSupportRole() {
 		String userName = PICNAMEPREFIX + "su" + testSetup.getRandomNumber() + REGBASEPICUSERNAME;
+		String customer = "Picarro";
+		String location = "Santa Clara";
+		String locationDesc = customer + " - " + location;
 
 		Log.info("\nRunning TC40_CheckACLV_PicSupportRole - Test Description: Check ACLV for Picarro user with Picarro Support role\n");
 
@@ -807,8 +823,13 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		Log.info("Creating Picarro support user with username-" + userName);
 
 		manageUsersPage.open();
-		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, PICUSERROLESUP);
-		if (!manageUsersPage.findExistingUser("Picarro", userName))
+		
+		Log.info(String.format("Adding new Picarro user: Username-[%s];Role-[%s];Location-[%s];Timezone-[%s]", 
+				userName, PICUSERROLESUP, locationDesc, TIMEZONECT));
+		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, PICUSERROLESUP, locationDesc, TIMEZONECT);
+		
+		Log.info(String.format("Finding user: Location-[%s];Username-[%s]", location, userName));
+		if (!manageUsersPage.findExistingUser(location, userName, false))
 			fail("\nTC40: failed to create a Picarro user with Picarro Support role.\n");
 		manageUsersPage.logout();
 

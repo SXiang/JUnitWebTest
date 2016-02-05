@@ -46,5 +46,10 @@
 	<classpathentry kind="lib" path="selenium-wd/lib/sqljdbc42.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/xmlbeans-2.6.0.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/datafactory-0.8.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/junit-dataprovider-1.10.2.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/extentreports-java-2.40.1.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/jsoup-1.8.3.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/freemarker-2.3.23.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

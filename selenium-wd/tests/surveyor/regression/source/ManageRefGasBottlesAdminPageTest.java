@@ -24,15 +24,18 @@ import common.source.Log;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.scommon.source.ManageRefGasBottlesAdminPage;
 import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.SurveyorTestRunner;
 
 /**
  * @author zlu
  *
  */
+@RunWith(SurveyorTestRunner.class)
 public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	private static ManageRefGasBottlesAdminPage manageRefGasBottlesAdminPage;
 	

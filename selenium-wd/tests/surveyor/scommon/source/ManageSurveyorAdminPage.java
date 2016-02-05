@@ -87,7 +87,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 		return false;
 	}	
 	
-	public boolean editExistingSurveyor(String locationName, String surveyorName, String surveyorNameNew) {
+	public boolean editExistingSurveyor(String locationName, String surveyorName, String surveyorNameNew, boolean isCustomerLogin) {
 		setPagination(PAGE_PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -111,15 +111,27 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 			loopCount = Integer.parseInt(PAGE_PAGINATIONSETTING);
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			locationNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
-			surveyorNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
-			
+			if (isCustomerLogin) {
+				locationNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
+				surveyorNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+			} else {
+				locationNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+				surveyorNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
+			}
+				
 			locationNameCell = table.findElement(By.xpath(locationNameXPath));
 			surveyorNameCell = table.findElement(By.xpath(surveyorNameXPath));
 			
+			Log.info(String.format("Looking for Location-[%s],Surveyor-[%s]. Found Location-[%s],Surveyor-[%s]", 
+					locationName, surveyorName, locationNameCell.getText().trim(), surveyorNameCell.getText().trim()));
+			
 			if ((locationNameCell.getText().trim()).equalsIgnoreCase(locationName) 
 					&& (surveyorNameCell.getText().trim()).equalsIgnoreCase(surveyorName)) {
-				actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]/a";
+				if (isCustomerLogin) {
+					actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]/a";
+				} else {
+					actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]/a";
+				}
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
 				
 				Log.info("Found entry at rowNum=" + rowNum);
