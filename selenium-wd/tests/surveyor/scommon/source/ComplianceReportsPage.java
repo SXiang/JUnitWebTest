@@ -1517,7 +1517,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @return boolean - true or false based on whether the report text matches the given text
 	 */
 
-	public boolean verifyViewsImages(String actualPath) throws IOException {
+	public boolean verifyViewsImages(String actualPath, String expectedImage) throws IOException {
 				
 		return true;
 	}
