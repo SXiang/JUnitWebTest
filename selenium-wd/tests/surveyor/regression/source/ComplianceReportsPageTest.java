@@ -615,7 +615,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
-		complianceReportsPage.copyReportAndModifyDetails(rptTitle, testSetup.getLoginUser(), rptTitle + "COPY", PICADMNSURVEYOR, tagList, false, "");
+		complianceReportsPage.copyReportAndModifyDetails(rptTitle, testSetup.getLoginUser(), rptTitle + "COPY", PICADMNSURVEYOR, tagList, false, null);
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle + "COPY", PICDFADMIN)))
 			assertTrue(complianceReportsPage.findReport(rptTitle + "COPY", PICDFADMIN));
@@ -1662,7 +1662,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNMANTAG);
-		complianceReportsPage.copyReportAndModifyDetails(rptTitle, testSetup.getLoginUser(), newRptTitle, "", tagList, true, "manual");
+		complianceReportsPage.copyReportAndModifyDetails(rptTitle, testSetup.getLoginUser(), newRptTitle, "", tagList, true, ReportModeFilter.Manual);
 		complianceReportsPage.waitForPageLoad();
 
 		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
@@ -1741,8 +1741,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		List<String> surTag = new ArrayList<String>();
 		surTag.add(PICADMNRRTAG);
 
-		String changeReportMode = "rr";
-		complianceReportsPage.copyReportAndModifyDetails(rptTitle, PICDFADMIN, newRptTitle, "", surTag, true, changeReportMode);
+		complianceReportsPage.copyReportAndModifyDetails(rptTitle, PICDFADMIN, newRptTitle, "", surTag, true, ReportModeFilter.RapidResponse);
 		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(newRptTitle, PICDFADMIN)))
@@ -1818,8 +1817,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		List<String> surTag = new ArrayList<String>();
 		surTag.add(PICADMNSTDTAG);
 
-		String changeReportMode = "standard";
-		complianceReportsPage.copyReportAndModifyDetails(rptTitle, PICDFADMIN, newRptTitle, "", surTag, true, changeReportMode);
+		complianceReportsPage.copyReportAndModifyDetails(rptTitle, PICDFADMIN, newRptTitle, "", surTag, true, ReportModeFilter.Standard);
 		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(newRptTitle, PICDFADMIN)))
@@ -1918,8 +1916,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard, ReportModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
-		complianceReportsPage.waitForPageLoad();
-
+		
 		Assert.assertEquals(complianceReportsPage.getAreaErrorText(), STRReportAreaTooLargeMsg);
 
 		complianceReportsPage.open();
@@ -2112,18 +2109,31 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC197 Test Description: Verify "Already Added" message is displayed if user tries to add the same survey again
+	 * Test Case ID: TC197 Test Description: Verify "Add Survey" message is displayed when no Survey added
 	 * 
 	 */
 	@Test
 	public void TC197_ComplianceReportTest_VerifyAddSurveyErrorMessages() {
-		System.out.format("\nRunning TC197: Verify 'Already Added' message is displayed if user tries to add the same survey again\n");
+		System.out.format("\nRunning TC197: Verify 'Add Survey' message is displayed when no Survey added\n");
+		String rptTitle = "TC197 Report" + testSetup.getRandomNumber();
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYGAPS, "0");
+		viewMap1.put(KEYASSETS, "0");
+		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
+		viewList.add(viewMap1);
 
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
-		complianceReportsPage.openNewComplianceReportPage();
-
-		assertTrue(complianceReportsPage.verifySurveyAlreadyAdded("Picarro", PICADMNSTDTAG));
+		assertTrue(complianceReportsPage.verifySurveyNotAdded(rptTitle, "Picarro",RNELAT,RNELON,RSWLAT,RSWLON, viewList));
 
 		complianceReportsPage.open();
 		complianceReportsPage.logout();

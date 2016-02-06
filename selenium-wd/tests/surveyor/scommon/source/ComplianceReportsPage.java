@@ -102,6 +102,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.ComplianceReports_PageTitle);
 	public static final String STRPaginationMsg = "Showing 1 to ";
 	public static final String STRSurveyIncludedMsg = Resources.getResource(ResourceKeys.ComplianceReport_AlreadyAdded);
+	public static final String ComplianceReport_SurveyMissingMessage = Resources.getResource(ResourceKeys.ComplianceReport_SurveyMissingMessage);
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_PageTitle);
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_AddNew);
 	public static final String STRCopyPageTitle = Resources.getResource(ResourceKeys.ComplianceReport_PageTitle);
@@ -168,6 +169,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(id = "datatableSurveys")
 	protected WebElement surveysTable;
 
+	@FindBy(id = "report-geo-filter")
+	protected WebElement checkBoxGeoFilter;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li")
+	protected WebElement msgEmptySurvey;
+	
 	@FindBy(how = How.XPATH, using = "//div[@id='surveyContent-0']//button[@class='btn btnDeleteSurvey btn-sm btn-danger']")
 	protected WebElement btnDeleteSurvey;
 
@@ -354,10 +361,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 
-		if (geoFilterOn != null) {
-			if (geoFilterOn) {
+		if ((geoFilterOn == null)||(!geoFilterOn)) {
 				this.checkGeoFilter.click();
-			}
+			
 		}
 
 		this.btnSurveySearch.click();
@@ -1356,11 +1362,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @return boolean - true or false based on whether the report text matches the given text
 	 */
 
-	public boolean verifyComplianceReportStaticText(String actualPath) throws IOException {
+	public boolean verifyComplianceReportStaticText(String actualPath, String reportTitle) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
 		String actualReport = actualPath + reportName.trim() + ".pdf";
 		String actualReportString = null;
-		actualReportString = pdfUtility.extractPDFText(actualReport);
+		actualReportString = pdfUtility.extractPDFText(actualReport,0,1);
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(STRReportTitle);	
 		expectedReportString.add(ComplianceReportSSRS_LISAInvestigationComplete);
@@ -1397,7 +1403,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @return boolean - true or false based on whether the report text matches the given text
 	 */
 
-	public boolean verifyShowCoverageTable(String actualPath, HashMap<String,String> userInput) throws IOException {
+	public boolean verifyShowCoverageTable(String actualPath, String reportTitle, HashMap<String,String> userInput) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
 		String actualReport = actualPath + reportName.trim() + ".pdf";
 		String actualReportString = null;
@@ -1419,7 +1425,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @return boolean - true or false based on whether the report text matches the given text
 	 */
 
-	public boolean verifyCoverageValuesTable(String actualPath) throws IOException {
+	public boolean verifyCoverageValuesTable(String actualPath, String reportTitle) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
 		String actualReport = actualPath + reportName.trim() + ".pdf";
 		String actualReportString = null;
@@ -1435,7 +1441,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @return boolean - true or false based on whether the report text matches the given text
 	 */
 
-	public boolean verifyLayersTable(String actualPath, HashMap<String,String> userInput) throws IOException {
+	public boolean verifyLayersTable(String actualPath, String reportTitle, HashMap<String,String> userInput) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
 		String actualReport = actualPath + reportName.trim() + ".pdf";
 		String actualReportString = null;
@@ -1451,11 +1457,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @return boolean - true or false based on whether the report text matches the given text
 	 */
 
-	public boolean verifyViewsTable(String actualPath, List<HashMap<String,String>> userInput) throws IOException {
-		PDFUtility pdfUtility = new PDFUtility();
-		String actualReport = actualPath + reportName.trim() + ".pdf";
-		String actualReportString = null;
-		actualReportString = pdfUtility.extractPDFText(actualReport);
+	public boolean verifyViewsTable(String actualPath, String reportTitle, List<HashMap<String,String>> userInput) throws IOException {
+		
 		
 		return true;
 	}
@@ -1467,7 +1470,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @return boolean - true or false based on whether the report text matches the given text
 	 */
 
-	public boolean verifyDrivingSurveysTable(String actualPath) throws IOException {
+	public boolean verifyDrivingSurveysTable(String actualPath, String reportTitle) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
 		String actualReport = actualPath + reportName.trim() + ".pdf";
 		String actualReportString = null;
@@ -1483,7 +1486,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @return boolean - true or false based on whether the report text matches the given text
 	 */
 
-	public boolean verifyIsotopicAnalysisTable(String actualPath) throws IOException {
+	public boolean verifyIsotopicAnalysisTable(String actualPath, String reportTitle) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
 		String actualReport = actualPath + reportName.trim() + ".pdf";
 		String actualReportString = null;
@@ -1499,7 +1502,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @return boolean - true or false based on whether the report text matches the given text
 	 */
 
-	public boolean verifyIndicationTable(String actualPath) throws IOException {
+	public boolean verifyIndicationTable(String actualPath, String reportTitle) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
 		String actualReport = actualPath + reportName.trim() + ".pdf";
 		String actualReportString = null;
@@ -1515,7 +1518,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @return boolean - true or false based on whether the report text matches the given text
 	 */
 
-	public boolean verifyViewsImages(String actualPath) throws IOException {
+	public boolean verifyViewsImages(String actualPath, String reportTitle) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
 		String actualReport = actualPath + reportName.trim() + ".pdf";
 		String actualReportString = null;
@@ -1528,7 +1531,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 
 
-	public boolean copyReportAndModifyDetails(String rptTitle, String strCreatedBy, String rptTitleNew, String surUnit, List<String> tag, boolean changeMode, String strReportMode) {
+	public boolean copyReportAndModifyDetails(String rptTitle, String strCreatedBy, String rptTitleNew, String surUnit, List<String> tag, boolean changeMode, ReportModeFilter strReportMode) {
 		setPagination(PAGINATIONSETTING);
 		this.waitForPageLoad();
 		String reportTitleXPath;
@@ -1565,7 +1568,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				this.inputTitle.sendKeys(rptTitleNew);
 
 				if (strReportMode != null && changeMode) {
-					selectReportMode(getReportMode(strReportMode));
+					selectReportMode(strReportMode);
 					this.waitForCopyReportPagetoLoad();
 
 				} else
@@ -1620,15 +1623,16 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void selectReportMode(ReportModeFilter mode) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		switch (mode) {
-		case Standard:
-			this.checkBoxStndRptMode.click();
+		case Standard:			
+			js.executeScript("arguments[0].click();", checkBoxStndRptMode);
 			break;
 		case RapidResponse:
-			this.checkBoxRRRptMode.click();
+			js.executeScript("arguments[0].click();", checkBoxRRRptMode);
 			break;
 		case Manual:
-			this.checkBoxManualRptMode.click();
+			js.executeScript("arguments[0].click();", checkBoxManualRptMode);
 			break;
 		default:
 			break;
@@ -1808,8 +1812,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				this.waitForSurveySelectorCheckBoxToBeEnabled();
 				this.checkboxSurFirst.click();
 				this.waitForAddSurveyButtonToLoad();
-				this.btnAddSurveys.click();
-				
+				this.btnAddSurveys.click();				
 			}
 		}
 
@@ -1899,7 +1902,25 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 
+	
+	public boolean verifySurveyNotAdded(String reportTitle, String customer, String NELat,String NELong, String SWLat, String SWLong, List<Map<String,String>> views) {
+		openNewReportPage();
+		inputReportTitle(reportTitle);
+		fillCustomBoundaryTextFields(NELat, NELong, SWLat, SWLong);
+		addViews(customer,views);
+		this.btnOK.click();
+		if (this.msgEmptySurvey.getText().equalsIgnoreCase(ComplianceReport_SurveyMissingMessage)){
+					return true;
+		}
+		
+		return false;
+	}
+	
+	
+
 	public boolean verifySurveyAlreadyAdded(String customer, String surveyTag) {
+		this.waitForCopyReportPagetoLoad();
+		this.waitForDeleteSurveyButtonToLoad();
 		if (customer != null && customer != "Picarro") {
 			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
 			for (WebElement option : optionsCustomer) {
@@ -1929,7 +1950,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				this.waitForSurveyTabletoLoad();
 				this.waitForSurveySelectorCheckBoxToLoad();
 				this.waitForSurveySelectorCheckBoxToBeEnabled();
-				this.checkboxSurFirst.click();
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkboxSurFirst);		
 				this.btnAddSurveys.click();
 
 				if (this.btnAddSurveys.getAttribute("value").equalsIgnoreCase(STRSurveyIncludedMsg))
@@ -2165,7 +2187,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void waitForCopyReportPagetoLoad() {
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, timeout+30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return d.getPageSource().contains(STRCopyPageTitle);
 			}

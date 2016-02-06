@@ -160,5 +160,7 @@ public class ResourceKeys {
 	public static final String ComplianceReportSSRS_TotalLinearAssetCoverage = "ComplianceReportSSRS_TotalLinearAssetCoverage";
 	public static final String ComplianceReportSSRS_ViewName = "ComplianceReportSSRS_ViewName";
 	public static final String ComplianceReportSSRS_ViewTable = "ComplianceReportSSRS_ViewTable";
+	public static final String ComplianceReport_SurveyMissingMessage = "ComplianceReport_SurveyMissingMessage";
+
 
 }
