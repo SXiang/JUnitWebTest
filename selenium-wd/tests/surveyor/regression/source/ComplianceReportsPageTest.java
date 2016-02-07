@@ -221,13 +221,6 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICSUP))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, SQAPICSUP));
-			/*try {
-				assertTrue(complianceReportsPage.compareComplianceRptFirstPageStaticText(testSetup.getDownloadPath()));
-
-			} catch (IOException e) {
-				Log.error(e.toString());
-				fail("\nTestcase TC517 failed.\n");
-			}*/
 
 		} else
 			fail("\nTestcase TC517 failed.\n");
@@ -312,12 +305,6 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICSUP))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, SQAPICSUP));
-			/*try {
-				assertTrue(complianceReportsPage.compareComplianceRptFirstPageStaticText(testSetup.getDownloadPath()));
-			} catch (IOException e) {
-				Log.error(e.toString());
-				fail("\nTestcase TC148 failed.\n");
-			}*/
 
 		} else
 			fail("\nTestcase TC148 failed.\n");
@@ -1830,38 +1817,6 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC183 Test Description: Generate report having multiple surveys of Standard, Operator and Rapid Response types in Rapid Response report mode
-	 * 
-	 */
-	@Test
-	public void TC183_ComplianceReportTest_VerifyReportwithMultipleSurveys() {
-		String rptTitle = "TC183 Report" + testSetup.getRandomNumber();
-		System.out.format("\nRunning TC183: Generate report having multiple surveys of Standard, Operator and Rapid Response types in Rapid Response report mode, %s\n", rptTitle);
-
-		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		complianceReportsPage.open();
-
-		String surUnit = "";
-		List<String> surTag = new ArrayList<String>();
-		surTag.add(PICADMNSTDTAG);
-		surTag.add(PICADMNRRTAG);
-		surTag.add(PICADMNOPTAG);
-		String reportMode = "Rapid Response";
-		boolean changeMode = true;
-
-		complianceReportsPage.addNewPDReport(rptTitle, "Picarro" ,surUnit, surTag, changeMode, reportMode);
-		complianceReportsPage.waitForPageLoad();
-
-		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
-			assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
-		else
-			fail("\nTestcase TC183 failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
-	}
-
-	/**
 	 * Test Case ID: TC184 Test Description: Very small or big report area selection not allowed
 	 * 
 	 */
@@ -1916,7 +1871,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard, ReportModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
-		
+
 		Assert.assertEquals(complianceReportsPage.getAreaErrorText(), STRReportAreaTooLargeMsg);
 
 		complianceReportsPage.open();
@@ -1935,174 +1890,6 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		complianceReportsPage.open();
 
 		assertTrue(complianceReportsPage.verifyCancelButtonFunctionality());
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
-	}
-
-	/**
-	 * Test Case ID: TC191 Test Description: Generate report having multiple surveys and verify Gaps for them
-	 * 
-	 */
-	@Test
-	public void TC191_ComplianceReportTest_VerifyMultipleSurveyGaps() {
-		String rptTitle = "TC191 Report" + testSetup.getRandomNumber();
-		System.out.format("\nRunning TC191: Generate report having multiple surveys and verify Gaps for them, %s\n", rptTitle);
-
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		complianceReportsPage.open();
-
-		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add(IMGMAPHEIGHT);
-		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add(RNELAT);
-		listBoundary.add(RNELON);
-		listBoundary.add(RSWLAT);
-		listBoundary.add(RSWLON);
-
-		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
-		Map<String, String> viewMap1 = new HashMap<String, String>();
-
-		viewMap1.put(KEYVIEWNAME, "First View");
-		viewMap1.put(KEYLISA, "0");
-		viewMap1.put(KEYFOV, "1");
-		viewMap1.put(KEYBREADCRUMB, "0");
-		viewMap1.put(KEYINDICATIONS, "0");
-		viewMap1.put(KEYISOTOPICCAPTURE, "0");
-		viewMap1.put(KEYANNOTATION, "0");
-		viewMap1.put(KEYGAPS, "1");
-		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "0");
-		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
-
-		viewList.add(viewMap1);
-
-		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
-		Map<String, String> tableMap = new HashMap<String, String>();
-
-		tableMap.put(KEYINDTB, "1");
-		tableMap.put(KEYISOANA, "1");
-		tableMap.put(KEYPCA, "0");
-		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYASSETCASTIRON, "1");
-		tableMap.put(KEYASSETCOPPER, "1");
-		tableMap.put(KEYASSETOTHERPLASTIC, "1");
-		tableMap.put(KEYASSETPEPLASTIC, "1");
-		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
-		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "0");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
-		tablesList.add(tableMap);
-
-		String surUnit = "";
-		String exclusionRadius = "0";
-		String strCustomer = "Picarro";
-		List<String> surTag = new ArrayList<String>();
-		surTag.add(PICADMNSTDTAG);
-		surTag.add(CUSDRVSTDTAG);
-
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, PICDFADMIN, strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList);
-		complianceReportsPage.addNewReportWithMultipleSurveysIncluded(rpt);
-		complianceReportsPage.waitForPageLoad();
-
-		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
-			assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
-
-		} else
-			fail("\nTestcase TC191 failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
-	}
-
-	/**
-	 * Test Case ID: TC192 Test Description: Generate report having multiple surveys and provide exclusion radius
-	 * 
-	 */
-	@Test
-	public void TC192_ComplianceReportTest_VerifyMultipleSurveyExclusionRadius() {
-		String rptTitle = "TC192 Report" + testSetup.getRandomNumber();
-		System.out.format("\nRunning TC192: Generate report having multiple surveys and provide exclusion radius, %s\n", rptTitle);
-
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		complianceReportsPage.open();
-
-		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add(IMGMAPHEIGHT);
-		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add(RNELAT);
-		listBoundary.add(RNELON);
-		listBoundary.add(RSWLAT);
-		listBoundary.add(RSWLON);
-
-		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
-		Map<String, String> viewMap1 = new HashMap<String, String>();
-		Map<String, String> viewMap2 = new HashMap<String, String>();
-
-		viewMap1.put(KEYVIEWNAME, "First View");
-		viewMap1.put(KEYLISA, "1");
-		viewMap1.put(KEYFOV, "1");
-		viewMap1.put(KEYBREADCRUMB, "1");
-		viewMap1.put(KEYINDICATIONS, "1");
-		viewMap1.put(KEYISOTOPICCAPTURE, "1");
-		viewMap1.put(KEYANNOTATION, "1");
-		viewMap1.put(KEYGAPS, "0");
-		viewMap1.put(KEYASSETS, "0");
-		viewMap1.put(KEYBOUNDARIES, "0");
-		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
-
-		viewMap2.put(KEYVIEWNAME, "Second View");
-		viewMap2.put(KEYLISA, "1");
-		viewMap2.put(KEYFOV, "1");
-		viewMap2.put(KEYBREADCRUMB, "1");
-		viewMap2.put(KEYINDICATIONS, "1");
-		viewMap2.put(KEYISOTOPICCAPTURE, "1");
-		viewMap2.put(KEYANNOTATION, "1");
-		viewMap2.put(KEYGAPS, "0");
-		viewMap2.put(KEYASSETS, "1");
-		viewMap2.put(KEYBOUNDARIES, "0");
-		viewMap2.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
-
-		viewList.add(viewMap1);
-		viewList.add(viewMap2);
-
-		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
-		Map<String, String> tableMap = new HashMap<String, String>();
-
-		tableMap.put(KEYINDTB, "1");
-		tableMap.put(KEYISOANA, "1");
-		tableMap.put(KEYPCA, "0");
-		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYASSETCASTIRON, "1");
-		tableMap.put(KEYASSETCOPPER, "1");
-		tableMap.put(KEYASSETOTHERPLASTIC, "1");
-		tableMap.put(KEYASSETPEPLASTIC, "1");
-		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
-		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "0");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
-		tablesList.add(tableMap);
-
-		String surUnit = "";
-		String exclusionRadius = "100";
-		String strCustomer = "Picarro";
-		List<String> surTag = new ArrayList<String>();
-		surTag.add(PICADMNSTDTAG);
-		surTag.add(PICADMNOPTAG);
-
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, PICDFADMIN, strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList);
-		complianceReportsPage.addNewReportWithMultipleSurveysIncluded(rpt);
-		complianceReportsPage.waitForPageLoad();
-
-		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
-			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
-				assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
-			} else
-				fail("\nTestcase TC192 failed.\n");
-		} else
-			fail("\nTestcase TC192 failed.\n");
 
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
@@ -2133,33 +1920,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
-		assertTrue(complianceReportsPage.verifySurveyNotAdded(rptTitle, "Picarro",RNELAT,RNELON,RSWLAT,RSWLON, viewList));
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
-	}
-
-	/**
-	 * Test Case ID: TC198 Test Description: Verify "Already Added" message is displayed if user tries to add the same survey again using copy functionality
-	 * 
-	 */
-	@Test
-	public void TC198_ComplianceReportTest_VerifyAlreadyAddedMessageforCopy() {
-		System.out.format("\nRunning TC198: Verify 'Already Added' message is displayed if user tries to add the same survey again using copy functionality\n");
-
-		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		complianceReportsPage.open();
-		String rptTitle = "TC198 Report" + testSetup.getRandomNumber();
-		String surUnit = "";
-
-		complianceReportsPage.addNewPDReport(rptTitle, surUnit, PICADMNSTDTAG);
-		complianceReportsPage.waitForPageLoad();
-
-		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
-
-		complianceReportsPage.clickOnCopyReport(rptTitle, PICDFADMIN);
-
-		assertTrue(complianceReportsPage.verifySurveyAlreadyAdded("Picarro", PICADMNSTDTAG));
+		assertTrue(complianceReportsPage.verifySurveyNotAdded(rptTitle, "Picarro", RNELAT, RNELON, RSWLAT, RSWLON, viewList));
 
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
