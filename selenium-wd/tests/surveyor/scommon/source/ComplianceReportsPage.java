@@ -113,7 +113,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String ComplianceReportSSRS_MapHeightWidth = Resources.getResource(ResourceKeys.ComplianceReportSSRS_MapHeightWidth);
 	public static final String ComplianceReportSSRS_NELatNELong = Resources.getResource(ResourceKeys.ComplianceReportSSRS_NELatNELong);
 	public static final String ComplianceReportSSRS_SWLatSWLong = Resources.getResource(ResourceKeys.ComplianceReportSSRS_SWLatSWLong);
-	public static final String ComplianceReportSSRS_TimeZone = Resources.getResource(ResourceKeys.ComplianceReportSSRS_TimeZone);
+	public static final String ComplianceReportSSRS_TimeZone = Resources.getResource(ResourceKeys.ComplianceReportSSRS_TimeZone);	
+	public static final String ComplianceReportSSRS_ShowCoverage = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowCoverage);
+	public static final String ComplianceReportSSRS_PercentCoverageAssets = Resources.getResource(ResourceKeys.ComplianceReportSSRS_PercentCoverageAssets);
+	public static final String ComplianceReportSSRS_PercentCoverageForecast = Resources.getResource(ResourceKeys.ComplianceReportSSRS_PercentCoverageForecast);
+	public static final String ComplianceReportSSRS_PercentCoverageReportArea = Resources.getResource(ResourceKeys.ComplianceReportSSRS_PercentCoverageReportArea);
 
 	private String reportName;
 
@@ -1351,6 +1355,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public boolean verifyComplianceReportStaticText(String actualPath, String reportTitle) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
+		DBConnection objDbConn = new DBConnection();
+		String reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
+		reportId = reportId.substring(0, 6);
+		reportName = "CR-" + reportId;
+		setReportName(reportName);
 		String actualReport = actualPath + reportName.trim() + ".pdf";
 		String actualReportString = null;
 		actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
@@ -1362,16 +1371,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		expectedReportString.add(ComplianceReportSSRS_MapHeightWidth);
 		expectedReportString.add(ComplianceReportSSRS_NELatNELong);
 		expectedReportString.add(ComplianceReportSSRS_SWLatSWLong);
-
-		// errro
-
-		expectedReportString.add(ComplianceReportSSRS_LISAInvestigationComplete);
-		expectedReportString.add(ComplianceReportSSRS_LISAInvestigationComplete);
-		expectedReportString.add(ComplianceReportSSRS_LISAInvestigationComplete);
-		expectedReportString.add(ComplianceReportSSRS_LISAInvestigationComplete);
-		expectedReportString.add(ComplianceReportSSRS_LISAInvestigationComplete);
-		expectedReportString.add(ComplianceReportSSRS_LISAInvestigationComplete);
-
+				
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value)
@@ -1390,11 +1390,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public boolean verifyShowCoverageTable(String actualPath, String reportTitle, HashMap<String, String> userInput) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
+		DBConnection objDbConn = new DBConnection();
+		String reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
+		reportId = reportId.substring(0, 6);
+		reportName = "CR-" + reportId;
+		setReportName(reportName);
 		String actualReport = actualPath + reportName.trim() + ".pdf";
 		String actualReportString = null;
 		actualReportString = pdfUtility.extractPDFText(actualReport);
+		System.out.println(actualReportString);
 		List<String> expectedReportString = new ArrayList<String>();
-
+		expectedReportString.add(ComplianceReportSSRS_ShowCoverage);
+		expectedReportString.add(ComplianceReportSSRS_PercentCoverageAssets);
+		expectedReportString.add(ComplianceReportSSRS_PercentCoverageForecast);
+		expectedReportString.add(ComplianceReportSSRS_PercentCoverageReportArea);
+			
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value)
