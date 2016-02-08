@@ -220,7 +220,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICSUP))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(complianceReportsPage.findReport(rptTitle, SQAPICSUP));			
+			assertTrue(complianceReportsPage.findReport(rptTitle, SQAPICSUP));
 
 		} else
 			fail("\nTestcase TC517 failed.\n");
@@ -366,7 +366,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYBOUNDARYDISTRICT, "0");
 		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
-
+		
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0", listBoundary, tablesList, PICADMNSURVEYOR, "", "", "", viewList, SurveyModeFilter.All);
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
@@ -374,6 +374,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
+
 			} else
 				fail("\nTestcase TC150 failed.\n");
 		} else
@@ -1074,8 +1075,8 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYBOUNDARYDISTRICT, "0");
 		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
-		
-		HashMap<String,String> coverageSelections=new HashMap<String,String>();
+
+		HashMap<String, String> coverageSelections = new HashMap<String, String>();
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEET, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);

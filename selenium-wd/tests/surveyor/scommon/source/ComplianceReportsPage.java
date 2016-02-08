@@ -106,7 +106,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_PageTitle);
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_AddNew);
 	public static final String STRCopyPageTitle = Resources.getResource(ResourceKeys.ComplianceReport_PageTitle);
-	public static final String STRReportTitle = Resources.getResource(ResourceKeys.SystemHistoryReports_ReportTitle);
+	public static final String STRReportTitle = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ComplianceReportSSRS);
 	public static final String ComplianceReportSSRS_LISAInvestigationComplete = Resources.getResource(ResourceKeys.ComplianceReportSSRS_LISAInvestigationComplete);
 	public static final String ComplianceReportSSRS_GAPInvestigationComplete = Resources.getResource(ResourceKeys.ComplianceReportSSRS_GAPInvestigationComplete);
 	public static final String ComplianceReportSSRS_CGIInvestigationComplete = Resources.getResource(ResourceKeys.ComplianceReportSSRS_CGIInvestigationComplete);
@@ -1357,8 +1357,31 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyComplianceReportStaticText(String actualPath, String reportTitle) throws IOException {
+		PDFUtility pdfUtility = new PDFUtility();
+		DBConnection objDbConn = new DBConnection();
+		String reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
+		reportId = reportId.substring(0, 6);
+		reportName = "CR-" + reportId;
+		setReportName(reportName);
+		String actualReport = actualPath + reportName.trim() + ".pdf";
+		String actualReportString = null;
+		actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
+		List<String> expectedReportString = new ArrayList<String>();
+		expectedReportString.add(STRReportTitle);
+		expectedReportString.add(ComplianceReportSSRS_LISAInvestigationComplete);
+		expectedReportString.add(ComplianceReportSSRS_GAPInvestigationComplete);
+		expectedReportString.add(ComplianceReportSSRS_CGIInvestigationComplete);
+		expectedReportString.add(ComplianceReportSSRS_MapHeightWidth);
+		expectedReportString.add(ComplianceReportSSRS_NELatNELong);
+		expectedReportString.add(ComplianceReportSSRS_SWLatSWLong);
 
+		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		for (Boolean value : actualFirstPage.values()) {
+			if (!value)
+				return false;
+		}
 		return true;
+
 	}
 
 	/**
@@ -1371,7 +1394,26 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyShowCoverageTable(String actualPath, String reportTitle, HashMap<String, String> userInput) throws IOException {
+		PDFUtility pdfUtility = new PDFUtility();
+		DBConnection objDbConn = new DBConnection();
+		String reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
+		reportId = reportId.substring(0, 6);
+		reportName = "CR-" + reportId;
+		setReportName(reportName);
+		String actualReport = actualPath + reportName.trim() + ".pdf";
+		String actualReportString = null;
+		actualReportString = pdfUtility.extractPDFText(actualReport);
+		List<String> expectedReportString = new ArrayList<String>();
+		expectedReportString.add(ComplianceReportSSRS_ShowCoverage);
+		expectedReportString.add(ComplianceReportSSRS_PercentCoverageAssets);
+		expectedReportString.add(ComplianceReportSSRS_PercentCoverageForecast);
+		expectedReportString.add(ComplianceReportSSRS_PercentCoverageReportArea);
 
+		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		for (Boolean value : actualFirstPage.values()) {
+			if (!value)
+				return false;
+		}
 		return true;
 	}
 
@@ -1399,8 +1441,25 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyLayersTable(String actualPath, String reportTitle, HashMap<String, String> userInput) throws IOException {
-
+		PDFUtility pdfUtility = new PDFUtility();
+		DBConnection objDbConn = new DBConnection();
+		String reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
+		reportId = reportId.substring(0, 6);
+		reportName = "CR-" + reportId;
+		setReportName(reportName);
+		String actualReport = actualPath + reportName.trim() + ".pdf";
+		String actualReportString = null;
+		actualReportString = pdfUtility.extractPDFText(actualReport);
+		List<String> expectedReportString = new ArrayList<String>();
+		expectedReportString.addAll(userInput.keySet());
+		
+		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		for (Boolean value : actualFirstPage.values()) {
+			if (!value)
+				return false;
+		}
 		return true;
+		
 	}
 
 	/**
@@ -1473,7 +1532,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 	public boolean copyReportAndModifyDetails(String rptTitle, String strCreatedBy, String rptTitleNew, String surUnit, List<String> tag, boolean changeMode, ReportModeFilter strReportMode) {
 		setPagination(PAGINATIONSETTING);
-		this.waitForPageLoad();
+		this.waitForCopyReportPagetoLoad();
 		String reportTitleXPath;
 		String createdByXPath;
 		String copyImgXPath;
@@ -1506,14 +1565,16 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				copyImg.click();
 				this.inputTitle.clear();
 				this.inputTitle.sendKeys(rptTitleNew);
-
+				
 				if (strReportMode != null && changeMode) {
 					selectReportMode(strReportMode);
 					this.waitForCopyReportPagetoLoad();
 					this.inputTitle.clear();
 					this.inputTitle.sendKeys(rptTitleNew);
-				} else
-					this.btnDeleteSurvey.click();
+				} else{
+					this.waitForDeleteSurveyButtonToLoad();
+					this.btnDeleteSurvey.click();	
+				}
 				if (surUnit != "") {
 					List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
 					for (WebElement option : optionsSU) {
