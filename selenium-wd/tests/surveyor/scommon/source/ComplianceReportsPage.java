@@ -263,8 +263,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			selectPercentCoverageReportArea();
 		}
 
-		handleOptionalViewLayersSection(tablesList);
 
+		handleOptionalViewLayersSection(tablesList);
+	
 		this.btnOK.click();
 	}
 
@@ -740,7 +741,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
 						if (elapsedTime >= (ACTIONTIMEOUT + 800 * 1000)) {
-							System.out.print("Timed out in reporting");
 							return false;
 						}
 
@@ -1179,12 +1179,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				copyImg.click();
 
 				this.waitForCopyReportPagetoLoad();
-
-				this.inputTitle.clear();
-				this.inputTitle.sendKeys(rptTitleNew);
+				this.waitForInputTitleToEnable();
 				this.waitForDeleteSurveyButtonToLoad();
-				this.btnOK.click();
-
+				this.inputTitle.clear();
+				this.inputTitle.sendKeys(rptTitleNew);				
+				System.out.println("Typed title");
+				this.waitForOkButtonToEnable();
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", btnOK);
+				
 				return true;
 			}
 
@@ -1346,70 +1349,29 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	/**
-	 * Method to compare the static text in the first page including the report title, other static texts and report parameter table that appears on the left
+	 * Method to verify the static text
 	 * 
 	 * @param actualPath
-	 *            - actual path to the generated report
-	 * @return boolean - true or false based on whether the report text matches the given text
+	 * @param reportTitle
+	 * @return
+	 * @throws IOException
 	 */
-
 	public boolean verifyComplianceReportStaticText(String actualPath, String reportTitle) throws IOException {
-		PDFUtility pdfUtility = new PDFUtility();
-		DBConnection objDbConn = new DBConnection();
-		String reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
-		reportId = reportId.substring(0, 6);
-		reportName = "CR-" + reportId;
-		setReportName(reportName);
-		String actualReport = actualPath + reportName.trim() + ".pdf";
-		String actualReportString = null;
-		actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
-		List<String> expectedReportString = new ArrayList<String>();
-		expectedReportString.add(STRReportTitle);
-		expectedReportString.add(ComplianceReportSSRS_LISAInvestigationComplete);
-		expectedReportString.add(ComplianceReportSSRS_GAPInvestigationComplete);
-		expectedReportString.add(ComplianceReportSSRS_CGIInvestigationComplete);
-		expectedReportString.add(ComplianceReportSSRS_MapHeightWidth);
-		expectedReportString.add(ComplianceReportSSRS_NELatNELong);
-		expectedReportString.add(ComplianceReportSSRS_SWLatSWLong);
-				
-		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
-		for (Boolean value : actualFirstPage.values()) {
-			if (!value)
-				return false;
-		}
+
 		return true;
 	}
 
 	/**
-	 * Method to verify the "Show Coverage Table in SSRS
+	 * Method to verify the Show Coverage Table in SSRS
 	 * 
 	 * @param actualPath
-	 *            - actual path to the generated report
-	 * @return boolean - true or false based on whether the report text matches the given text
+	 * @param reportTitle
+	 * @param userInput
+	 * @return
+	 * @throws IOException
 	 */
-
 	public boolean verifyShowCoverageTable(String actualPath, String reportTitle, HashMap<String, String> userInput) throws IOException {
-		PDFUtility pdfUtility = new PDFUtility();
-		DBConnection objDbConn = new DBConnection();
-		String reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
-		reportId = reportId.substring(0, 6);
-		reportName = "CR-" + reportId;
-		setReportName(reportName);
-		String actualReport = actualPath + reportName.trim() + ".pdf";
-		String actualReportString = null;
-		actualReportString = pdfUtility.extractPDFText(actualReport);
-		System.out.println(actualReportString);
-		List<String> expectedReportString = new ArrayList<String>();
-		expectedReportString.add(ComplianceReportSSRS_ShowCoverage);
-		expectedReportString.add(ComplianceReportSSRS_PercentCoverageAssets);
-		expectedReportString.add(ComplianceReportSSRS_PercentCoverageForecast);
-		expectedReportString.add(ComplianceReportSSRS_PercentCoverageReportArea);
-			
-		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
-		for (Boolean value : actualFirstPage.values()) {
-			if (!value)
-				return false;
-		}
+
 		return true;
 	}
 
@@ -1417,15 +1379,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * Method to verify the Coverage Values Table in SSRS
 	 * 
 	 * @param actualPath
-	 *            - actual path to the generated report
-	 * @return boolean - true or false based on whether the report text matches the given text
+	 * @param reportTitle
+	 * @return
+	 * @throws IOException
 	 */
 
 	public boolean verifyCoverageValuesTable(String actualPath, String reportTitle) throws IOException {
-		PDFUtility pdfUtility = new PDFUtility();
-		String actualReport = actualPath + reportName.trim() + ".pdf";
-		String actualReportString = null;
-		actualReportString = pdfUtility.extractPDFText(actualReport);
 
 		return true;
 	}
@@ -1434,15 +1393,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * Method to verify the Layers Table in SSRS
 	 * 
 	 * @param actualPath
-	 *            - actual path to the generated report
-	 * @return boolean - true or false based on whether the report text matches the given text
+	 * @param reportTitle
+	 * @param userInput
+	 * @return
+	 * @throws IOException
 	 */
-
 	public boolean verifyLayersTable(String actualPath, String reportTitle, HashMap<String, String> userInput) throws IOException {
-		PDFUtility pdfUtility = new PDFUtility();
-		String actualReport = actualPath + reportName.trim() + ".pdf";
-		String actualReportString = null;
-		actualReportString = pdfUtility.extractPDFText(actualReport);
 
 		return true;
 	}
@@ -1451,8 +1407,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * Method to verify the Views Table in SSRS
 	 * 
 	 * @param actualPath
-	 *            - actual path to the generated report
-	 * @return boolean - true or false based on whether the report text matches the given text
+	 * @param reportTitle
+	 * @param userInput
+	 * @return
+	 * @throws IOException
 	 */
 
 	public boolean verifyViewsTable(String actualPath, String reportTitle, List<HashMap<String, String>> userInput) throws IOException {
@@ -1464,15 +1422,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * Method to verify the Driving Surveys Table in SSRS
 	 * 
 	 * @param actualPath
-	 *            - actual path to the generated report
-	 * @return boolean - true or false based on whether the report text matches the given text
+	 * @param reportTitle
+	 * @return
+	 * @throws IOException
 	 */
-
 	public boolean verifyDrivingSurveysTable(String actualPath, String reportTitle) throws IOException {
-		PDFUtility pdfUtility = new PDFUtility();
-		String actualReport = actualPath + reportName.trim() + ".pdf";
-		String actualReportString = null;
-		actualReportString = pdfUtility.extractPDFText(actualReport);
 
 		return true;
 	}
@@ -1481,15 +1435,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * Method to verify the Isotopic Analysis Table in SSRS
 	 * 
 	 * @param actualPath
-	 *            - actual path to the generated report
-	 * @return boolean - true or false based on whether the report text matches the given text
+	 * @param reportTitle
+	 * @return
+	 * @throws IOException
 	 */
-
 	public boolean verifyIsotopicAnalysisTable(String actualPath, String reportTitle) throws IOException {
-		PDFUtility pdfUtility = new PDFUtility();
-		String actualReport = actualPath + reportName.trim() + ".pdf";
-		String actualReportString = null;
-		actualReportString = pdfUtility.extractPDFText(actualReport);
 
 		return true;
 	}
@@ -1498,15 +1448,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * Method to verify the Indication Table in SSRS
 	 * 
 	 * @param actualPath
-	 *            - actual path to the generated report
-	 * @return boolean - true or false based on whether the report text matches the given text
+	 * @param reportTitle
+	 * @return
+	 * @throws IOException
 	 */
-
 	public boolean verifyIndicationTable(String actualPath, String reportTitle) throws IOException {
-		PDFUtility pdfUtility = new PDFUtility();
-		String actualReport = actualPath + reportName.trim() + ".pdf";
-		String actualReportString = null;
-		actualReportString = pdfUtility.extractPDFText(actualReport);
 
 		return true;
 	}
@@ -1515,19 +1461,16 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * Method to verify the Views Images
 	 * 
 	 * @param actualPath
-	 *            - actual path to the generated report
-	 * @return boolean - true or false based on whether the report text matches the given text
+	 * @param reportTitle
+	 * @param expectedImage
+	 * @return
+	 * @throws IOException
 	 */
 
-	public boolean verifyViewsImages(String actualPath, String reportTitle) throws IOException {
-		PDFUtility pdfUtility = new PDFUtility();
-		String actualReport = actualPath + reportName.trim() + ".pdf";
-		String actualReportString = null;
-		actualReportString = pdfUtility.extractPDFText(actualReport);
+	public boolean verifyViewsImages(String actualPath, String reportTitle, String expectedImage) throws IOException {
 
 		return true;
 	}
-
 	public boolean copyReportAndModifyDetails(String rptTitle, String strCreatedBy, String rptTitleNew, String surUnit, List<String> tag, boolean changeMode, ReportModeFilter strReportMode) {
 		setPagination(PAGINATIONSETTING);
 		this.waitForPageLoad();
@@ -1567,7 +1510,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				if (strReportMode != null && changeMode) {
 					selectReportMode(strReportMode);
 					this.waitForCopyReportPagetoLoad();
-
+					this.inputTitle.clear();
+					this.inputTitle.sendKeys(rptTitleNew);
 				} else
 					this.btnDeleteSurvey.click();
 				if (surUnit != "") {
@@ -1583,7 +1527,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					if (tagValue != "") {
 
 						inputSurveyTag(tagValue);
-
+						this.waitForSurveySearchButtonToLoad();
 						this.btnSurveySearch.click();
 						this.waitForSurveyTabletoLoad();
 						this.checkboxSurFirst.click();
@@ -1638,6 +1582,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		if (this.btnChangeRptMode.isDisplayed()) {
 			this.btnChangeRptMode.click();
+			
 		}
 	}
 
@@ -1728,7 +1673,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		viewList.add(viewMap1);
 
 		addViews(customer, viewList);
-		selectViewLayerBoundaries(true, true);
+		
+		if (boundary != null) {
+			this.inputViewBoundaries.click();
+
+			selectViewLayerBoundaries(true, true);
+		}
 
 		this.btnOK.click();
 	}
@@ -2148,6 +2098,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		});
 	}
 
+
 	public void waitForSurveySelectorCheckBoxToLoad() {
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -2156,13 +2107,32 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		});
 	}
 
-	public void waitForSurveySelectorCheckBoxToBeEnabled() {
+	public void waitForCopyReportPagetoLoad() {
+		(new WebDriverWait(driver, timeout+30)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return d.getPageSource().contains(STRCopyPageTitle);
+
+			}
+		});
+	}
+
+public void waitForSurveySelectorCheckBoxToBeEnabled() {
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return checkboxSurFirst.isEnabled();
 			}
 		});
 	}
+
+	public void waitForPdfReportIcontoAppear() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return pdfImg.isDisplayed();
+
+			}
+		});
+	}
+
 
 	public void waitForAddSurveyButtonToLoad() {
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
@@ -2180,21 +2150,32 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		});
 	}
 
-	public void waitForCopyReportPagetoLoad() {
-		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return d.getPageSource().contains(STRCopyPageTitle);
-			}
-		});
-	}
-
-	public void waitForPdfReportIcontoAppear() {
+	public void waitForSurveySearchButtonToLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return pdfImg.isDisplayed();
+				return btnSurveySearch.isDisplayed();
 			}
 		});
 	}
+	
+	public void waitForInputTitleToEnable() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return inputTitle.isEnabled();
+			}
+		});
+	}
+	
+	public void waitForOkButtonToEnable() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return btnOK.isEnabled();
+			}
+		});
+	}
+	
+	
+	
 
 	public boolean waitForReportGenerationtoComplete(String rptTitle, String strCreatedBy) {
 		setPagination(PAGINATIONSETTING);
@@ -2232,6 +2213,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					try {
 						if (rowSize == 1) {
 							this.btnReportViewer = table.findElement(By.xpath("//*[@id='datatable']/tbody/tr/td[5]/a[3]"));
+
 
 						} else {
 							this.btnReportViewer = table.findElement(By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img"));
