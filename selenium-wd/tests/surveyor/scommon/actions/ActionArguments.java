@@ -9,6 +9,26 @@ public class ActionArguments {
 	public static boolean isEmpty(String argValue) {
 		return (argValue == null || argValue.isEmpty());
 	}
+	
+	public static List<Double> getDoubleList(String argValue) throws Exception {
+		/* Supported argument formats include:
+		 * 1. {n1,n2,n3} .. For eg "1.33,3.4,15.213"
+		 */
+		List<Double> list = new ArrayList<Double>(); 
+		if (argValue.contains(RegexUtility.COMMA_SPLIT_REGEX_PATTERN)) {
+			List<String> splitArr = RegexUtility.split(argValue, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
+			if (splitArr.size() < 2) {
+				throw new Exception(String.format("Unsupported pattern specified in argument - [%s]. "
+						+ "Supported pattern: {n1,n2,n3} .. For eg '1.33,3.4,15.213'", argValue));
+			}
+			for (int i = 0; i < splitArr.size(); i++) {
+				list.add(Double.valueOf(splitArr.get(i)));
+			}
+		} else {
+			list.add(Double.valueOf(argValue));
+		}
+		return list;
+	}
 
 	public static List<Integer> getNumericList(String argValue) throws Exception {
 		/* Supported argument formats include:
@@ -20,7 +40,8 @@ public class ActionArguments {
 		if (argValue.contains(RegexUtility.COLON_SPLIT_REGEX_PATTERN)) {
 			List<String> splitArr = RegexUtility.split(argValue, RegexUtility.COLON_SPLIT_REGEX_PATTERN);
 			if (splitArr.size() != 2) {
-				throw new Exception(String.format("Unsupported range pattern specified in argument - [%s]. Supported pattern: {n:m} .. For eg. '3:5'", argValue));
+				throw new Exception(String.format("Unsupported range pattern specified in argument - [%s]. "
+						+ "Supported pattern: {n:m} .. For eg. '3:5'", argValue));
 			}
 			Integer startRange = Integer.valueOf(splitArr.get(0));
 			Integer endRange = Integer.valueOf(splitArr.get(1));
