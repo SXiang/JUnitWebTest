@@ -43,9 +43,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "report-survey-mode-minimum-amplitude")
 	protected WebElement inputMinAmp;
 
-	// @FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[2]/div/fieldset/div[1]/div/div/div[1]/label")
-	// protected WebElement inputCusBoundary;
-
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[2]/div/fieldset/div[1]/div/div/div[1]/label")
 	protected WebElement inputCusBoundary;
 
