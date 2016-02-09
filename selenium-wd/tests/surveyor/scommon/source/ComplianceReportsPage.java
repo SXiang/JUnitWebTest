@@ -61,6 +61,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -113,11 +114,26 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String ComplianceReportSSRS_MapHeightWidth = Resources.getResource(ResourceKeys.ComplianceReportSSRS_MapHeightWidth);
 	public static final String ComplianceReportSSRS_NELatNELong = Resources.getResource(ResourceKeys.ComplianceReportSSRS_NELatNELong);
 	public static final String ComplianceReportSSRS_SWLatSWLong = Resources.getResource(ResourceKeys.ComplianceReportSSRS_SWLatSWLong);
-	public static final String ComplianceReportSSRS_TimeZone = Resources.getResource(ResourceKeys.ComplianceReportSSRS_TimeZone);	
+	public static final String ComplianceReportSSRS_TimeZone = Resources.getResource(ResourceKeys.ComplianceReportSSRS_TimeZone);
 	public static final String ComplianceReportSSRS_ShowCoverage = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowCoverage);
 	public static final String ComplianceReportSSRS_PercentCoverageAssets = Resources.getResource(ResourceKeys.ComplianceReportSSRS_PercentCoverageAssets);
 	public static final String ComplianceReportSSRS_PercentCoverageForecast = Resources.getResource(ResourceKeys.ComplianceReportSSRS_PercentCoverageForecast);
 	public static final String ComplianceReportSSRS_PercentCoverageReportArea = Resources.getResource(ResourceKeys.ComplianceReportSSRS_PercentCoverageReportArea);
+	public static final String ComplianceReportSSRS_Asset = Resources.getResource(ResourceKeys.ComplianceReportSSRS_Asset);
+	public static final String ComplianceReportSSRS_Boundary = Resources.getResource(ResourceKeys.ComplianceReportSSRS_Boundary);
+	public static final String ComplianceReportSSRS_ViewTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ViewTable);
+	public static final String ComplianceReportSSRS_ViewName = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ViewName);
+	public static final String ComplianceReportSSRS_ShowLISAs = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowLISAs);
+	public static final String ComplianceReportSSRS_ShowFOV = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowFOV);
+	public static final String ComplianceReportSSRS_ShowBreadcrumb = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowBreadcrumb);
+	public static final String ComplianceReportSSRS_ShowIndications = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowIndications);
+	public static final String ComplianceReportSSRS_ShowIsotopicAnalyses = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowIsotopicAnalyses);
+	public static final String ComplianceReportSSRS_FieldNotes = Resources.getResource(ResourceKeys.ComplianceReportSSRS_FieldNotes);
+	public static final String ComplianceReportSSRS_ShowGaps = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowGaps);
+	public static final String ComplianceReportSSRS_ShowAssets = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowAssets);
+	public static final String ComplianceReportSSRS_ShowBoundaries = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowBoundaries);
+	public static final String ComplianceReportSSRS_BaseMap = Resources.getResource(ResourceKeys.ComplianceReportSSRS_BaseMap);
+	public static final String ReportSSRS_SelectedDrivingSurveys = Resources.getResource(ResourceKeys.ReportSSRS_SelectedDrivingSurveys);
 
 	private String reportName;
 
@@ -263,9 +279,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			selectPercentCoverageReportArea();
 		}
 
-
 		handleOptionalViewLayersSection(tablesList);
-	
+
 		this.btnOK.click();
 	}
 
@@ -1182,12 +1197,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				this.waitForInputTitleToEnable();
 				this.waitForDeleteSurveyButtonToLoad();
 				this.inputTitle.clear();
-				this.inputTitle.sendKeys(rptTitleNew);				
-				System.out.println("Typed title");
+				this.inputTitle.sendKeys(rptTitleNew);
 				this.waitForOkButtonToEnable();
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				js.executeScript("arguments[0].click();", btnOK);
-				
+
 				return true;
 			}
 
@@ -1328,7 +1342,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String actualReport = actualPath + reportName.trim() + ".pdf";
 		PDFUtility pdfUtility = new PDFUtility();
 		String actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
-		// Log.info(actualReportString);
 		String[] lines = actualReportString.split("\\n");
 		Pattern pattertoMatch = Pattern.compile("Report Creation Date");
 		for (String line : lines) {
@@ -1358,14 +1371,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 	public boolean verifyComplianceReportStaticText(String actualPath, String reportTitle) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
-		DBConnection objDbConn = new DBConnection();
-		String reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
-		reportId = reportId.substring(0, 6);
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
 		reportName = "CR-" + reportId;
 		setReportName(reportName);
-		String actualReport = actualPath + reportName.trim() + ".pdf";
-		String actualReportString = null;
-		actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
+		String actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(STRReportTitle);
 		expectedReportString.add(ComplianceReportSSRS_LISAInvestigationComplete);
@@ -1395,14 +1406,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 	public boolean verifyShowCoverageTable(String actualPath, String reportTitle, HashMap<String, String> userInput) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
-		DBConnection objDbConn = new DBConnection();
-		String reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
-		reportId = reportId.substring(0, 6);
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
 		reportName = "CR-" + reportId;
 		setReportName(reportName);
-		String actualReport = actualPath + reportName.trim() + ".pdf";
-		String actualReportString = null;
-		actualReportString = pdfUtility.extractPDFText(actualReport);
+		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(ComplianceReportSSRS_ShowCoverage);
 		expectedReportString.add(ComplianceReportSSRS_PercentCoverageAssets);
@@ -1440,26 +1449,31 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean verifyLayersTable(String actualPath, String reportTitle, HashMap<String, String> userInput) throws IOException {
+	public boolean verifyLayersTable(String actualPath, String reportTitle, Map<String, String> userInput) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
-		DBConnection objDbConn = new DBConnection();
-		String reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
-		reportId = reportId.substring(0, 6);
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
 		reportName = "CR-" + reportId;
 		setReportName(reportName);
-		String actualReport = actualPath + reportName.trim() + ".pdf";
-		String actualReportString = null;
-		actualReportString = pdfUtility.extractPDFText(actualReport);
+		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		List<String> expectedReportString = new ArrayList<String>();
-		expectedReportString.addAll(userInput.keySet());
-		
+		expectedReportString.add(ComplianceReportSSRS_Asset);
+		expectedReportString.add(ComplianceReportSSRS_Boundary);
+		expectedReportString.add(KEYASSETCASTIRON);
+		expectedReportString.add(KEYASSETCOPPER);
+		expectedReportString.add(KEYASSETOTHERPLASTIC);
+		expectedReportString.add(KEYASSETPEPLASTIC);
+		expectedReportString.add(KEYASSETPROTECTEDSTEEL);
+		expectedReportString.add(KEYASSETUNPROTECTEDSTEEL);
+
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value)
 				return false;
 		}
 		return true;
-		
+
 	}
 
 	/**
@@ -1472,9 +1486,41 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 
-	public boolean verifyViewsTable(String actualPath, String reportTitle, List<HashMap<String, String>> userInput) throws IOException {
+	public boolean verifyViewsTable(String actualPath, String reportTitle, List<Map<String, String>> userInput) throws IOException {
+		PDFUtility pdfUtility = new PDFUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
+		reportName = "CR-" + reportId;
+		setReportName(reportName);
+		String actualReportString = pdfUtility.extractPDFText(actualReport);
+		List<String> expectedReportString = new ArrayList<String>();
+		expectedReportString.add(ComplianceReportSSRS_ViewTable);
+		expectedReportString.add(ComplianceReportSSRS_ViewName);
+		expectedReportString.add(ComplianceReportSSRS_ShowLISAs);
+		expectedReportString.add(ComplianceReportSSRS_ShowFOV);
+		expectedReportString.add(ComplianceReportSSRS_ShowBreadcrumb);
+		expectedReportString.add(ComplianceReportSSRS_ShowIndications);
+		expectedReportString.add(ComplianceReportSSRS_ShowIsotopicAnalyses);
+		expectedReportString.add(ComplianceReportSSRS_FieldNotes);
+		expectedReportString.add(ComplianceReportSSRS_ShowGaps);
+		expectedReportString.add(ComplianceReportSSRS_ShowAssets);
+		expectedReportString.add(ComplianceReportSSRS_ShowBoundaries);
+		expectedReportString.add(ComplianceReportSSRS_BaseMap);
 
+		Iterator<Map<String, String>> userInputIterator = userInput.iterator();
+
+		while (userInputIterator.hasNext()) {
+			expectedReportString.add(userInputIterator.next().get(KEYVIEWNAME).concat(" ").concat(KEYBASEMAP));
+		}
+
+		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		for (Boolean value : actualFirstPage.values()) {
+			if (!value)
+				return false;
+		}
 		return true;
+
 	}
 
 	/**
@@ -1486,6 +1532,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyDrivingSurveysTable(String actualPath, String reportTitle) throws IOException {
+		PDFUtility pdfUtility = new PDFUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
+		reportName = "CR-" + reportId;
+		setReportName(reportName);
+		String actualReportString = pdfUtility.extractPDFText(actualReport);
+		List<String> expectedReportString = new ArrayList<String>();
+		expectedReportString.add(ReportSSRS_SelectedDrivingSurveys);
 
 		return true;
 	}
@@ -1530,6 +1585,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		return true;
 	}
+
 	public boolean copyReportAndModifyDetails(String rptTitle, String strCreatedBy, String rptTitleNew, String surUnit, List<String> tag, boolean changeMode, ReportModeFilter strReportMode) {
 		setPagination(PAGINATIONSETTING);
 		this.waitForCopyReportPagetoLoad();
@@ -1565,15 +1621,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				copyImg.click();
 				this.inputTitle.clear();
 				this.inputTitle.sendKeys(rptTitleNew);
-				
+
 				if (strReportMode != null && changeMode) {
 					selectReportMode(strReportMode);
 					this.waitForCopyReportPagetoLoad();
 					this.inputTitle.clear();
 					this.inputTitle.sendKeys(rptTitleNew);
-				} else{
+				} else {
 					this.waitForDeleteSurveyButtonToLoad();
-					this.btnDeleteSurvey.click();	
+					this.btnDeleteSurvey.click();
 				}
 				if (surUnit != "") {
 					List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
@@ -1643,7 +1699,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		if (this.btnChangeRptMode.isDisplayed()) {
 			this.btnChangeRptMode.click();
-			
+
 		}
 	}
 
@@ -1734,7 +1790,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		viewList.add(viewMap1);
 
 		addViews(customer, viewList);
-		
+
 		if (boundary != null) {
 			this.inputViewBoundaries.click();
 
@@ -2120,7 +2176,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void waitForNumberOfRecords(String actualMessage) {
-		(new WebDriverWait(driver, timeout + 50)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return paginationMsg.getText().substring(0, 16).trim().equals(actualMessage);
 			}
@@ -2159,7 +2215,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		});
 	}
 
-
 	public void waitForSurveySelectorCheckBoxToLoad() {
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -2169,7 +2224,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void waitForCopyReportPagetoLoad() {
-		(new WebDriverWait(driver, timeout+30)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return d.getPageSource().contains(STRCopyPageTitle);
 
@@ -2177,7 +2232,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		});
 	}
 
-public void waitForSurveySelectorCheckBoxToBeEnabled() {
+	public void waitForSurveySelectorCheckBoxToBeEnabled() {
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return checkboxSurFirst.isEnabled();
@@ -2193,7 +2248,6 @@ public void waitForSurveySelectorCheckBoxToBeEnabled() {
 			}
 		});
 	}
-
 
 	public void waitForAddSurveyButtonToLoad() {
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
@@ -2218,7 +2272,7 @@ public void waitForSurveySelectorCheckBoxToBeEnabled() {
 			}
 		});
 	}
-	
+
 	public void waitForInputTitleToEnable() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -2226,7 +2280,7 @@ public void waitForSurveySelectorCheckBoxToBeEnabled() {
 			}
 		});
 	}
-	
+
 	public void waitForOkButtonToEnable() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -2234,9 +2288,6 @@ public void waitForSurveySelectorCheckBoxToBeEnabled() {
 			}
 		});
 	}
-	
-	
-	
 
 	public boolean waitForReportGenerationtoComplete(String rptTitle, String strCreatedBy) {
 		setPagination(PAGINATIONSETTING);
@@ -2274,7 +2325,6 @@ public void waitForSurveySelectorCheckBoxToBeEnabled() {
 					try {
 						if (rowSize == 1) {
 							this.btnReportViewer = table.findElement(By.xpath("//*[@id='datatable']/tbody/tr/td[5]/a[3]"));
-
 
 						} else {
 							this.btnReportViewer = table.findElement(By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img"));

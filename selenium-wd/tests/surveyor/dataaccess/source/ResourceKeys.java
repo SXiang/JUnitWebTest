@@ -129,7 +129,7 @@ public class ResourceKeys {
 	public static final String ComplianceReportSSRS_IndicationTable = "ComplianceReportSSRS_IndicationTable";
 	public static final String ComplianceReportSSRS_IsotopicAnalysisTable = "ComplianceReportSSRS_IsotopicAnalysisTable";
 	public static final String ComplianceReportSSRS_IsotopicValueUncertainty = "ComplianceReportSSRS_IsotopicValueUncertainty";
-	public static final String ComplianceReportSSRS_Layers = "ComplianceReportSSRS_IsotopicValueUncertainty";
+	public static final String ComplianceReportSSRS_Layers = "ComplianceReportSSRS_Layers";
 	public static final String ComplianceReportSSRS_LISA = "ComplianceReportSSRS_LISA";
 	public static final String ComplianceReportSSRS_LISA_Number = "ComplianceReportSSRS_LISA#";
 	public static final String ComplianceReportSSRS_LISAInvestigationComplete = "ComplianceReportSSRS_LISAInvestigationComplete";
@@ -161,6 +161,7 @@ public class ResourceKeys {
 	public static final String ComplianceReportSSRS_ViewName = "ComplianceReportSSRS_ViewName";
 	public static final String ComplianceReportSSRS_ViewTable = "ComplianceReportSSRS_ViewTable";
 	public static final String ComplianceReport_SurveyMissingMessage = "ComplianceReport_SurveyMissingMessage";
+	public static final String ReportSSRS_SelectedDrivingSurveys = "ReportSSRS_SelectedDrivingSurveys";
 
 
 }

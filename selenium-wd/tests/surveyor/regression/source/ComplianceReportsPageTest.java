@@ -367,13 +367,19 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 		
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0", listBoundary, tablesList, PICADMNSURVEYOR, "", "", "", viewList, SurveyModeFilter.All);
+		/*ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0", listBoundary, tablesList, PICADMNSURVEYOR, "", "", "", viewList, SurveyModeFilter.All);
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
-
+		
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
+				try {
+					assertTrue(complianceReportsPage.verifyLayersTable(rptTitle, testSetup.getLoginUser(),tableMap));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 			} else
 				fail("\nTestcase TC150 failed.\n");
@@ -381,7 +387,16 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 			fail("\nTestcase TC150 failed.\n");
 
 		complianceReportsPage.open();
-		complianceReportsPage.logout();
+		complianceReportsPage.logout();*/
+		
+		try {
+			rptTitle="test-picarro";
+			//assertTrue(complianceReportsPage.verifyLayersTable(testSetup.getDownloadPath() ,rptTitle,tableMap));
+			assertTrue(complianceReportsPage.verifyViewsTable(testSetup.getDownloadPath() ,rptTitle,viewList));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
