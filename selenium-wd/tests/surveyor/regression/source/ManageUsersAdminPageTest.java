@@ -398,7 +398,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-
+		
 		manageUsersAdminPage.open();
 		assertTrue(manageUsersAdminPage.searchUser(SQACUSUA, SQACUSLOC,
 				CUSUSERROLEUA, USERENABLED));

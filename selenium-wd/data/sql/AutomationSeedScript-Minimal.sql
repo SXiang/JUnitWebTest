@@ -1,7 +1,8 @@
 -- Automation seed script
 
+BEGIN TRANSACTION;
+
 BEGIN TRY
-    BEGIN TRAN
  -- sample data 
 
 DECLARE @userID uniqueidentifier
@@ -271,7 +272,7 @@ IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[User] ([Id] ,[CustomerId],[OpQualExpiration],[Active],[EulaAccepted],[TimeZoneId],[LocationId],[FirstName],[LastName],[CellPhoneNumber],[Email],[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumber],[PhoneNumberConfirmed],[TwoFactorEnabled],[LockoutEndDateUtc],[LockoutEnabled],[AccessFailedCount],[UserName]) VALUES   (N'DE734DDF-363E-49FC-8DBC-39C8C221C562',@customerId, NULL,N'1',N'1',N'00000000-0000-0000-0001-000000000000',@locationID,N'sqapicdr',N'lastName',NULL,NULL,N'0',N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',NULL,N'0',N'0',NULL,N'0',N'0','sqapicdr@picarro.com')
 -- Users assigned to Location='sqacusloc', Customer='sqacus'
 SELECT @customerId=[Id] FROM [dbo].[Customer] WHERE [Name]=N'sqacus' 
-SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='sqaTestloc'
+SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='sqacusloc'
 UPDATE [dbo].[User] SET [CustomerId]=@customerId, [OpQualExpiration]=NULL,[Active]=N'1',[EulaAccepted]=N'1',[TimeZoneId]=N'00000000-0000-0000-0001-000000000000',[LocationId]=@locationID,[FirstName]=N'sqacusua',[LastName]=N'lastName',[CellPhoneNumber]=NULL,[Email]=NULL,[EmailConfirmed]=N'0',[PasswordHash]=N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',[SecurityStamp]=N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',[PhoneNumber]=NULL,[PhoneNumberConfirmed]=N'0',[TwoFactorEnabled]=N'0',[LockoutEndDateUtc]=NULL,[LockoutEnabled]=N'0',[AccessFailedCount]=N'0' WHERE [UserName]='sqacusua@email.com'
 IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[User] ([Id] ,[CustomerId],[OpQualExpiration],[Active],[EulaAccepted],[TimeZoneId],[LocationId],[FirstName],[LastName],[CellPhoneNumber],[Email],[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumber],[PhoneNumberConfirmed],[TwoFactorEnabled],[LockoutEndDateUtc],[LockoutEnabled],[AccessFailedCount],[UserName]) VALUES   (N'DE734DDF-363E-49FC-8DBC-39C8C221C570',@customerId, NULL,N'1',N'1',N'00000000-0000-0000-0001-000000000000',@locationID,N'sqacusua',N'lastName',NULL,NULL,N'0',N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',NULL,N'0',N'0',NULL,N'0',N'0','sqacusua@email.com')
@@ -338,29 +339,6 @@ IF NOT EXISTS (SELECT * FROM [dbo].[UserRole] WHERE [RoleId]='00000000-0000-0000
 	
 	
 	
--- Add Survey entries
-SELECT @userID=[Id] FROM [dbo].[User] WHERE [UserName]='sqapicdr@picarro.com'
-SELECT @surveyModeTypeID=[Id] FROM [dbo].[SurveyModeType] WHERE Description='Standard'
-SELECT @analyzerID=[Id], @surveyorUnitID=[SurveyorUnitId] FROM [dbo].[Analyzer] WHERE SerialNumber='SimAuto-Analyzer1'
-SELECT @locationID=[LocationId] FROM [dbo].[SurveyorUnit] WHERE [Id]=@surveyorUnitID
-SELECT TOP 1 @referenceGasBottleId=[Id] FROM [dbo].[ReferenceGasBottle] WHERE [SurveyorUnitId]=@surveyorUnitID
-
-UPDATE [dbo].[Survey] SET [AnalyzerId]=@analyzerID, [SurveyorUnitId]=@surveyorUnitID, [ReferenceGasBottleId]=@referenceGasBottleId, [UserId]=@userID, [SurveyModeTypeId]=@surveyModeTypeID, [StartEpoch]=1435608605.675, [EndEpoch]=1435610674.569, [StartDateTime]=CAST(N'2015-06-29 20:10:05.677' AS DateTime), [EndDateTime]=CAST(N'2015-06-29 20:44:34.570' AS DateTime), [Tag]=N'stnd-sqacudr', [StabilityClass]=N'A', [MinimumAmplitude]=0.1, [LeakRate]=10, [Status]=N'Completed', [Deleted]=0, [ProcessingDateStarted]=CAST(N'2015-11-03 05:35:27.263' AS DateTime), [LocationId]=@locationID, [BuildNumber]=N'2.1.499ce8d' WHERE [ID]=N'271d9db6-c0bd-eb32-2b48-39d1531dc264'
-IF @@ROWCOUNT=0
-INSERT [dbo].[Survey] ([Id], [AnalyzerId], [SurveyorUnitId], [ReferenceGasBottleId], [UserId], [SurveyModeTypeId], [StartEpoch], [EndEpoch], [StartDateTime], [EndDateTime], [Tag], [StabilityClass], [MinimumAmplitude], [LeakRate], [Status], [Deleted], [ProcessingDateStarted], [LocationId], [BuildNumber]) 
-	VALUES (N'271d9db6-c0bd-eb32-2b48-39d1531dc264', @analyzerID, @surveyorUnitID, @referenceGasBottleId, @userID, @surveyModeTypeID, 1435608605.675, 1435610674.569, CAST(N'2015-06-29 20:10:05.677' AS DateTime), CAST(N'2015-06-29 20:44:34.570' AS DateTime), N'stnd-sqacudr', N'A', 0.1, 10, N'Completed', 0, CAST(N'2015-11-03 05:35:27.263' AS DateTime), @locationID, N'2.1.499ce8d')
-UPDATE [dbo].[Survey] SET [AnalyzerId]=@analyzerID, [SurveyorUnitId]=@surveyorUnitID, [ReferenceGasBottleId]=@referenceGasBottleId, [UserId]=@userID, [SurveyModeTypeId]=@surveyModeTypeID, [StartEpoch]=1435608605.675, [EndEpoch]=1435610674.569, [StartDateTime]=CAST(N'2015-06-29 20:10:05.677' AS DateTime), [EndDateTime]=CAST(N'2015-06-29 20:44:34.570' AS DateTime), [Tag]=N'stnd-sqacudr', [StabilityClass]=N'A', [MinimumAmplitude]=0.1, [LeakRate]=10, [Status]=N'Completed', [Deleted]=0, [ProcessingDateStarted]=CAST(N'2015-11-03 05:35:27.263' AS DateTime), [LocationId]=@locationID, [BuildNumber]=N'2.1.499ce8d' WHERE [ID]=N'02510f74-5ee7-cd23-5c54-39d153175095'
-IF @@ROWCOUNT=0
-INSERT [dbo].[Survey] ([Id], [AnalyzerId], [SurveyorUnitId], [ReferenceGasBottleId], [UserId], [SurveyModeTypeId], [StartEpoch], [EndEpoch], [StartDateTime], [EndDateTime], [Tag], [StabilityClass], [MinimumAmplitude], [LeakRate], [Status], [Deleted], [ProcessingDateStarted], [LocationId], [BuildNumber]) 
-	VALUES (N'02510f74-5ee7-cd23-5c54-39d153175095', @analyzerID, @surveyorUnitID, @referenceGasBottleId, @userID, @surveyModeTypeID, 1435608183.666, 1435608501.8539999, CAST(N'2015-06-29 20:03:03.667' AS DateTime), CAST(N'2015-06-29 20:08:21.853' AS DateTime), N'stnd-sqacudr', N'A', 0.1, 10, N'Completed', 0, CAST(N'2015-06-29 20:09:18.533' AS DateTime), @locationID, NULL)
-UPDATE [dbo].[Survey] SET [AnalyzerId]=@analyzerID, [SurveyorUnitId]=@surveyorUnitID, [ReferenceGasBottleId]=@referenceGasBottleId, [UserId]=@userID, [SurveyModeTypeId]=@surveyModeTypeID, [StartEpoch]=1435608605.675, [EndEpoch]=1435610674.569, [StartDateTime]=CAST(N'2015-06-29 20:10:05.677' AS DateTime), [EndDateTime]=CAST(N'2015-06-29 20:44:34.570' AS DateTime), [Tag]=N'stnd-sqacudr', [StabilityClass]=N'A', [MinimumAmplitude]=0.1, [LeakRate]=10, [Status]=N'Completed', [Deleted]=0, [ProcessingDateStarted]=CAST(N'2015-11-03 05:35:27.263' AS DateTime), [LocationId]=@locationID, [BuildNumber]=N'2.1.499ce8d' WHERE [ID]=N'43a218a4-00ae-f7bc-588a-39d15301044f'
-IF @@ROWCOUNT=0
-INSERT [dbo].[Survey] ([Id], [AnalyzerId], [SurveyorUnitId], [ReferenceGasBottleId], [UserId], [SurveyModeTypeId], [StartEpoch], [EndEpoch], [StartDateTime], [EndDateTime], [Tag], [StabilityClass], [MinimumAmplitude], [LeakRate], [Status], [Deleted], [ProcessingDateStarted], [LocationId], [BuildNumber]) 
-	VALUES (N'43a218a4-00ae-f7bc-588a-39d15301044f', @analyzerID, @surveyorUnitID, @referenceGasBottleId, @userID, @surveyModeTypeID, 1435606722.526, 1435607714.908, CAST(N'2015-06-29 19:38:42.527' AS DateTime), CAST(N'2015-06-29 19:55:14.907' AS DateTime), N'stnd-sqacudr', N'A', 0.1, 10, N'Completed', 0, CAST(N'2015-06-29 19:56:07.300' AS DateTime), @locationID, NULL)
-
-	
-
-	
 --Sample BCP import command, set the appropriate Database name, file path, SQL login user name and password
 --bcp "[SurveyorXXXX].[dbo].[Boundary]" in "...\Boundary_Sample_Data.dat" -t\t -w -U awssa -P j!RuL1Gd7A -S 20.20.64.100
 --for sqa:--bcp "[[SurveyorSQA964]].[dbo].[Boundary]" in "C:\Repo\surveyor\Src\Web\Picarro.Surveyor.Db\Seed\Boundary_Sample_Data.dat" -t\t -w -U awssa -P j!RuL1Gd7A -S 20.20.130.238
@@ -382,9 +360,6 @@ IF NOT EXISTS (SELECT * FROM [dbo].[User] WHERE [UserName]='uadmin@pge.com')
 IF NOT EXISTS (SELECT * FROM [dbo].[User] WHERE [UserName]='supervisor@pge.com')
 	INSERT INTO [dbo].[User] ([Id] ,[CustomerId],[OpQualExpiration],[Active],[EulaAccepted],[TimeZoneId],[LocationId],[FirstName],[LastName],[CellPhoneNumber],[Email],[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumber],[PhoneNumberConfirmed],[TwoFactorEnabled],[LockoutEndDateUtc],[LockoutEnabled],[AccessFailedCount],[UserName]) VALUES   (N'EE734DDF-363E-49FC-8DBC-39C8C221C552',N'e871c797-b62d-ef28-0ea7-39cae44e5c19', NULL,N'1',N'1',N'00000000-0000-0000-0001-000000000000',N'EE13ACD0-C158-ECAC-7F48-39D18113D501',N'pgesu',N'lastName',NULL,NULL,N'0',N'APz3KJuhDTxu0zR+m4imjCDxI7hcTqij1JtFVubHNeJU269uFgTQxFWxLqiFmZ6BJg==',N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',NULL,N'0',N'0',NULL,N'0',N'0','supervisor@pge.com')
 
-	
-COMMIT TRAN
-
 END TRY
 
 BEGIN CATCH
@@ -400,6 +375,14 @@ BEGIN CATCH
     --will return the complete original error message as an error message
     DECLARE @ErrorMessage nvarchar(400), @ErrorNumber int, @ErrorSeverity int, @ErrorState int, @ErrorLine int
     SELECT @ErrorMessage = N'Error %d, Line %d, Message: '+ERROR_MESSAGE(),@ErrorNumber = ERROR_NUMBER(),@ErrorSeverity = ERROR_SEVERITY(),@ErrorState = ERROR_STATE(),@ErrorLine = ERROR_LINE()
-    RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState, @ErrorNumber,@ErrorLine)
+
+ 	IF @@TRANCOUNT > 0
+        ROLLBACK TRANSACTION;
+
+	RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState, @ErrorNumber,@ErrorLine)
     
-END CATCH	
+END CATCH;
+
+IF @@TRANCOUNT > 0
+    COMMIT TRANSACTION;
+GO

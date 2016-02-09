@@ -112,7 +112,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 
 		@Override
 		public void finished(Description description) {
-			SurveyorBaseTest.reportTestFinished();
+			SurveyorBaseTest.reportTestFinished(description.getClassName());
 			TestSetup.simulatorTestFinishing(description);
 		}
 
