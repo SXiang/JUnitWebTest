@@ -350,8 +350,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			this.cbTag.clear();
 			this.cbTag.sendKeys(tag);
 		}
-		// TO DO: Implement date picker
-
+		
+		
+		
 		if (surveyModeFilter != null) {
 			switch (surveyModeFilter) {
 			case All:
@@ -1679,7 +1680,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		return false;
 	}
-
+	
 	public void selectReportMode(ReportModeFilter mode) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		switch (mode) {

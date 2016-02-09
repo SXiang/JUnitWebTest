@@ -1,5 +1,7 @@
 package common.source;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -20,6 +22,8 @@ public class RegexUtility {
 	public static final String REGEX_PATTERN_EXTRACT_FUNCTION_ARGS = "([a-zA-Z_]\\w+)\\((.+)\\)";
 	public static final String REGEX_PATTERN_EXTRACT_VALUE_WRAPPED_IN_QUOTE = "'(.+)'";
 	public static final String REGEX_PATTERN_EXTRACT_LINES_STARTING_WITH_DIGITS = "^\\d.*";
+	public static final String REGEX_PATTERN_EXTRACT_EVERYTHING = "(.*?)";
+	public static final String REGEX_PATTERN_SPACES = "\\s+";
 
 	private static int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
 	
@@ -106,8 +110,44 @@ public class RegexUtility {
 
 	}
 	
+	
+	/**
+	 * Returns a all String in between two given patterns
+	 * @param inputString
+	 * @param regexPattern1
+	 * @param regexPattern2
+	 * @return
+	 */
+	public static String getStringInBetween(String inputString, String regexPattern1, String regexPattern2) {
+		return 	getStringInBetween(inputString, regexPattern1, regexPattern2, false, false);
+	}
+	
+	
+	/**
+	 * Returns a all String in between two given patterns
+	 * @param inputString
+	 * @param regexPattern1
+	 * @param regexPattern2
+	 * @return
+	 */
+	public static String getStringInBetween(String inputString, String regexPattern1, String regexPattern2, boolean matchBeginningOfLine, boolean matchEndOfLine) {
+		String returnString = null;
+		String regexString = (matchBeginningOfLine ? "^" : "" ) + 
+				Pattern.quote(regexPattern1) + 
+				REGEX_PATTERN_EXTRACT_EVERYTHING + 
+				Pattern.quote(regexPattern2) + (matchEndOfLine ? "$" : "" );
+		Pattern pattern = Pattern.compile(regexString, flags | Pattern.DOTALL | Pattern.MULTILINE);
+		Matcher matcher = pattern.matcher(inputString);
+		while (matcher.find()) {
+			returnString = matcher.group(1); 		
+			System.out.println(returnString);
+		}
+        return returnString;
+	}
+	
+	
 	public static void main(String[] args) {
-		Log.info("Running test - testMatchesPattern_functionNameAndArgument_Success() ...");
+		/*Log.info("Running test - testMatchesPattern_functionNameAndArgument_Success() ...");
 		testMatchesPattern_functionNameAndArgument_Success();
 		Log.info("Running test - testMatchesPattern_functionNameNoArgument_FailMatch() ...");
 		testMatchesPattern_functionNameNoArgument_FailMatch();
@@ -126,7 +166,11 @@ public class RegexUtility {
 		Log.info("Running test - testMatchesPatternCN_functiongetReportRegexDatePattern_Success() ...");
 		testMatchesPatternCN_functiongetReportRegexDatePattern_Success();
 		Log.info("Running test - testMatchesPatternFR_functiongetReportRegexDatePattern_Success() ...");
-		testMatchesPatternFR_functiongetReportRegexDatePattern_Success();
+		testMatchesPatternFR_functiongetReportRegexDatePattern_Success();*/
+		
+		
+		Log.info("Running test - testGetStringInBetween_Success() ...");
+		test_functionGetStringInBetween_Success();
 	}
 
 	private static void testMatchesPattern_functionNameAndArgument_Success() {
@@ -200,4 +244,17 @@ public class RegexUtility {
 		Assert.assertTrue(groups.get(0).trim().equals("11/01/2016 4:08 AM CET"));
 	}
 	
+	private static void test_functionGetStringInBetween_Success() {
+		PDFUtility pdfUtility = new PDFUtility();
+		try {
+			String path=TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\pdfutility-tests\\MultipleSurveys.pdf";
+			String inputText=pdfUtility.extractPDFText(path);
+			String actual= RegexUtility.getStringInBetween(inputText, "la\r\nss", "Layers", true, false);
+			System.out.println(actual);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

@@ -180,8 +180,8 @@ public final class SurveyorConstants {
 	public static final String KEYASSETPEPLASTIC = "PE Plastic";
 	public static final String KEYASSETPROTECTEDSTEEL = "Un-protected Steel";
 	public static final String KEYASSETUNPROTECTEDSTEEL = "Protected Steel";
-	public static final String KEYBOUNDARYDISTRICT = "District";
-	public static final String KEYBOUNDARYDISTRICTPLAT = "District Plat";
+	public static final String KEYBOUNDARYDISTRICT = "Small Boundary";
+	public static final String KEYBOUNDARYDISTRICTPLAT = "Big Boundary";
 
 
 	public static final String KEYINDTB = "Indications Table";
