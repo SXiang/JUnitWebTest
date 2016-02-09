@@ -107,7 +107,7 @@ public final class SurveyorConstants {
 
 	public static final String SQACUSUATAG = "dmcs1-sqacusua";
 	public static final String SQACUSSUTAG = "dmcs1-sqacussu";
-	public static final String SQACUSDRTAG = "stnd-sqacudr";
+	public static final String SQACUSDRTAG = "stnd";
 	public static final String SQAPICADTAG = "dmcs1-sqapicad";
 	public static final String SQAPICUATAG = "dmcs1-sqapicua";
 	public static final String SQAPICSUTAG = "dmcs1-sqapicsu";
@@ -213,28 +213,17 @@ public final class SurveyorConstants {
 	public static final String DRIVINGSURVEYTITLE = "Measurement Sessions - Surveyor";
 	public static final String DRIVINGSURVEYHEADER = "Driving Surveys";
 
-	/*
-	 * Compliance Report static titles
-	 */
-	public static final String REPORTTITLE = "Compliance Report";
-	public static final String LISAINV = "LISA Investigation Complete";
-	public static final String GAPINV = "GAP Investigation Complete";
-	public static final String CGIINV = "CGI Investigation Complete";
-	public static final String APPRNAME = "Approver Name";
-	public static final String APPRSIG = "Approver Signature";
-	public static final String RPTCRTDATE = "Report Creation Date";
-	public static final String DATE = "Date";
-
+	
 	/*
 	 * Driving survey tag for Compliance Reports
 	 */
-	public static final String PICADMNSTDTAG = "stnd-pic";
-	public static final String PICADMNRRTAG = "rr-pic";
-	public static final String PICADMNOPTAG = "op-pic";
-	public static final String PICADMNMANTAG = "man-pic";
-	public static final String CUSDRVSTDTAG = "stnd-sqacudr";
-	public static final String CUSDRVRRTAG = "rr-sqacudr";
-	public static final String CUSDRVOPTAG = "op-sqacudr";
+	public static final String PICADMNSTDTAG = "stnd";
+	public static final String PICADMNRRTAG = "rr";
+	public static final String PICADMNOPTAG = "op";
+	public static final String PICADMNMANTAG = "man";
+	public static final String CUSDRVSTDTAG = "stnd";
+	public static final String CUSDRVRRTAG = "rr";
+	public static final String CUSDRVOPTAG = "op";
 
 	
 		

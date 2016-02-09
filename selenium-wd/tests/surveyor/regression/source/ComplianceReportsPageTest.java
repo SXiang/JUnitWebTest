@@ -59,14 +59,6 @@ import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.RSWLAT;
 import static surveyor.scommon.source.SurveyorConstants.RSWLON;
 import static surveyor.scommon.source.SurveyorConstants.REPORTMODES;
-import static surveyor.scommon.source.SurveyorConstants.REPORTTITLE;
-import static surveyor.scommon.source.SurveyorConstants.LISAINV;
-import static surveyor.scommon.source.SurveyorConstants.GAPINV;
-import static surveyor.scommon.source.SurveyorConstants.CGIINV;
-import static surveyor.scommon.source.SurveyorConstants.APPRNAME;
-import static surveyor.scommon.source.SurveyorConstants.APPRSIG;
-import static surveyor.scommon.source.SurveyorConstants.RPTCRTDATE;
-import static surveyor.scommon.source.SurveyorConstants.DATE;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.RSURSTARTDATE;
 import static surveyor.scommon.source.SurveyorConstants.RSURENDDATE;
@@ -134,10 +126,10 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * @throws IOException
 	 * 
 	 */
-	@Ignore
+	@Test
 	public void TC517_ComplianceReportTest_VerifywithDefaults() {
 		String rptTitle = "TC517 Report" + testSetup.getRandomNumber();
-		System.out.format("\nRunning TC517: Generate compliance report with all default values/filters selected and download it, ", rptTitle);
+		Log.info("\nRunning TC517: Generate compliance report with all default values/filters selected and download it, " + rptTitle);
 
 		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
 		complianceReportsPage.open();
@@ -172,7 +164,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBOUNDARIES, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewMap2.put(KEYVIEWNAME, "Second View");
@@ -216,25 +208,19 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYASSETPEPLASTIC, "1");
 		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
 		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "0");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICT, "1");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "1");
 
 		tablesList.add(tableMap);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQAPICSUP, "Picarro", TIMEZONEPT, EXCLUSIONRADIUS, listBoundary, tablesList, "", SQACUSDRTAG, viewList);
 
 		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICSUP))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, SQAPICSUP));
-			try {
-				assertTrue(complianceReportsPage.compareComplianceRptFirstPageStaticText(testSetup.getDownloadPath()));
-
-			} catch (IOException e) {
-				Log.error(e.toString());
-				fail("\nTestcase TC517 failed.\n");
-			}
 
 		} else
 			fail("\nTestcase TC517 failed.\n");
@@ -314,16 +300,11 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQAPICSUP, "Picarro", TIMEZONECT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, RSURSTARTDATE, RSURENDDATE, viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICSUP))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, SQAPICSUP));
-			try {
-				assertTrue(complianceReportsPage.compareComplianceRptFirstPageStaticText(testSetup.getDownloadPath()));
-			} catch (IOException e) {
-				Log.error(e.toString());
-				fail("\nTestcase TC148 failed.\n");
-			}
 
 		} else
 			fail("\nTestcase TC148 failed.\n");
@@ -385,27 +366,44 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYBOUNDARYDISTRICT, "0");
 		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
-
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0", listBoundary, tablesList, PICADMNSURVEYOR, "", "", "", viewList, SurveyModeFilter.All);
+		
+		/*ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0", listBoundary, tablesList, PICADMNSURVEYOR, "", "", "", viewList, SurveyModeFilter.All);
 		complianceReportsPage.addNewReport(rpt);
-
+		complianceReportsPage.waitForPageLoad();
+		
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
+				try {
+					assertTrue(complianceReportsPage.verifyLayersTable(rptTitle, testSetup.getLoginUser(),tableMap));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 			} else
 				fail("\nTestcase TC150 failed.\n");
 		} else
 			fail("\nTestcase TC150 failed.\n");
 
 		complianceReportsPage.open();
-		complianceReportsPage.logout();
+		complianceReportsPage.logout();*/
+		
+		try {
+			rptTitle="test-picarro";
+			//assertTrue(complianceReportsPage.verifyLayersTable(testSetup.getDownloadPath() ,rptTitle,tableMap));
+			assertTrue(complianceReportsPage.verifyViewsTable(testSetup.getDownloadPath() ,rptTitle,viewList));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * Test Case ID: TC151 Test Description: Generate report by providing tag filter
 	 * 
 	 */
-	@Ignore
+	@Test
 	public void TC151_ComplianceReportTest_VerifyReportGenerationbyTagFilter() {
 		String rptTitle = "TC151 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC151: Generate report by providing tag filter including survey with isotopic analysis data, %s\n", rptTitle);
@@ -457,6 +455,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQAPICSUP, "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, RSURSTARTDATE, RSURENDDATE, viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
@@ -541,6 +540,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		// Start and end date filter insertion remaining
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONECT, "0", listBoundary, tablesList, PICADMNSURVEYOR, "", RSURSTARTDATE, RSURENDDATE, viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 
 		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
@@ -612,12 +612,13 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, RSURSTARTDATE, RSURENDDATE, viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 
 		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
-		complianceReportsPage.copyReportAndModifyDetails(rptTitle, testSetup.getLoginUser(), rptTitle + "COPY", PICADMNSURVEYOR, tagList, false, "");
+		complianceReportsPage.copyReportAndModifyDetails(rptTitle, testSetup.getLoginUser(), rptTitle + "COPY", PICADMNSURVEYOR, tagList, false, null);
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle + "COPY", PICDFADMIN)))
 			assertTrue(complianceReportsPage.findReport(rptTitle + "COPY", PICDFADMIN));
@@ -684,6 +685,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
@@ -754,6 +756,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		// Start and end date filter insertion remaining
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
@@ -823,6 +826,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
@@ -856,7 +860,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC160 Test Description: Pagination - 10,25,50 and 100 Reports selection on compliance report screen
 	 * 
 	 */
-	@Ignore
+	@Test
 	public void TC160_ComplianceReportTest_VerifyPagination() {
 		System.out.format("\nRunning RPT015: Pagination - 10,25,50 and 100 Reports selection on compliance report screen");
 
@@ -867,11 +871,13 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		String paginationSetting100 = "100";
 
 		assertTrue(complianceReportsPage.checkPaginationSetting(PAGINATIONSETTING));
-		assertTrue(!(complianceReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
+		assertTrue(!(complianceReportsPage.getNumberofRecords() > Integer.parseInt(PAGINATIONSETTING)));
 		assertTrue(complianceReportsPage.checkPaginationSetting(paginationSetting25));
-		assertTrue(!(complianceReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
+		assertTrue(!(complianceReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
 		assertTrue(complianceReportsPage.checkPaginationSetting(paginationSetting50));
+		assertTrue(!(complianceReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
 		assertTrue(complianceReportsPage.checkPaginationSetting(paginationSetting100));
+		assertTrue(!(complianceReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting100)));
 
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
@@ -934,6 +940,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 
 		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
@@ -1017,6 +1024,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 
 		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
@@ -1083,11 +1091,20 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
 
+		HashMap<String, String> coverageSelections = new HashMap<String, String>();
+
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEET, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
+				try {
+					assertTrue(complianceReportsPage.verifyComplianceReportStaticText(testSetup.getDownloadPath(), rptTitle));
+					assertTrue(complianceReportsPage.verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle, coverageSelections));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			} else
 				fail("\nTestcase TC169 failed.\n");
 		} else
@@ -1101,7 +1118,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC170 Test Description: Duplicate report
 	 * 
 	 */
-	@Ignore
+	@Test
 	public void TC170_ComplianceReportTest_VerifyReportDuplicate() {
 		String rptTitle = "TC170 Report" + testSetup.getRandomNumber();
 		System.out.format("\nRunning TC170: Duplicate report, %s\n", rptTitle);
@@ -1138,9 +1155,9 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		Map<String, String> viewMap1 = new HashMap<String, String>();
 
 		viewMap1.put(KEYVIEWNAME, "First View");
-		viewMap1.put(KEYLISA, "0");
-		viewMap1.put(KEYFOV, "0");
-		viewMap1.put(KEYBREADCRUMB, "0");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
 		viewMap1.put(KEYINDICATIONS, "1");
 		viewMap1.put(KEYISOTOPICCAPTURE, "0");
 		viewMap1.put(KEYANNOTATION, "0");
@@ -1153,10 +1170,13 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, RSURSTARTDATE, RSURENDDATE, viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 
 		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
-		complianceReportsPage.copyReport(rptTitle, testSetup.getLoginUser(), rptTitle);
+		String newReportTitle = rptTitle + "COPY";
+		complianceReportsPage.copyReport(rptTitle, testSetup.getLoginUser(), newReportTitle);
+		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser())))
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
@@ -1223,6 +1243,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNMANTAG, "", "", viewList, SurveyModeFilter.Manual, ReportModeFilter.Manual);
 		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser())))
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
@@ -1289,6 +1310,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard, ReportModeFilter.RapidResponse);
 		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser())))
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
@@ -1303,6 +1325,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		complianceReportsPage.open();
 		rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard, ReportModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser())))
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
@@ -1370,6 +1393,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "sqacus", TIMEZONEMT, "0", listBoundary, tablesList, "", CUSDRVSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
@@ -1484,6 +1508,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQAPICSUP, "sqacus", TIMEZONEPT, "0", listBoundary, tablesList, "", CUSDRVSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICSUP))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
@@ -1570,6 +1595,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", CUSDRVSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 
 		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSUA))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
@@ -1639,6 +1665,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 
 		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
@@ -1646,7 +1673,8 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNMANTAG);
-		complianceReportsPage.copyReportAndModifyDetails(rptTitle, testSetup.getLoginUser(), newRptTitle, "", tagList, true, "manual");
+		complianceReportsPage.copyReportAndModifyDetails(rptTitle, testSetup.getLoginUser(), newRptTitle, "", tagList, true, ReportModeFilter.Manual);
+		complianceReportsPage.waitForPageLoad();
 
 		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
@@ -1716,6 +1744,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNMANTAG, "", "", viewList, SurveyModeFilter.Manual, ReportModeFilter.Manual);
 		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 
 		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
@@ -1723,8 +1752,8 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		List<String> surTag = new ArrayList<String>();
 		surTag.add(PICADMNRRTAG);
 
-		String changeReportMode = "rr";
-		complianceReportsPage.copyReportAndModifyDetails(rptTitle, PICDFADMIN, newRptTitle, "", surTag, true, changeReportMode);
+		complianceReportsPage.copyReportAndModifyDetails(rptTitle, PICDFADMIN, newRptTitle, "", surTag, true, ReportModeFilter.RapidResponse);
+		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(newRptTitle, PICDFADMIN)))
 			assertTrue(complianceReportsPage.findReport(newRptTitle, PICDFADMIN));
@@ -1791,6 +1820,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNRRTAG, "", "", viewList, SurveyModeFilter.RapidResponse, ReportModeFilter.RapidResponse);
 		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 
 		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
@@ -1798,44 +1828,13 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		List<String> surTag = new ArrayList<String>();
 		surTag.add(PICADMNSTDTAG);
 
-		String changeReportMode = "standard";
-		complianceReportsPage.copyReportAndModifyDetails(rptTitle, PICDFADMIN, newRptTitle, "", surTag, true, changeReportMode);
+		complianceReportsPage.copyReportAndModifyDetails(rptTitle, PICDFADMIN, newRptTitle, "", surTag, true, ReportModeFilter.Standard);
+		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(newRptTitle, PICDFADMIN)))
 			assertTrue(complianceReportsPage.findReport(newRptTitle, PICDFADMIN));
 		else
 			fail("\nTestcase TC182 failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
-	}
-
-	/**
-	 * Test Case ID: TC183 Test Description: Generate report having multiple surveys of Standard, Operator and Rapid Response types in Rapid Response report mode
-	 * 
-	 */
-	@Test
-	public void TC183_ComplianceReportTest_VerifyReportwithMultipleSurveys() {
-		String rptTitle = "TC183 Report" + testSetup.getRandomNumber();
-		System.out.format("\nRunning TC183: Generate report having multiple surveys of Standard, Operator and Rapid Response types in Rapid Response report mode, %s\n", rptTitle);
-
-		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		complianceReportsPage.open();
-
-		String surUnit = "";
-		List<String> surTag = new ArrayList<String>();
-		surTag.add(PICADMNSTDTAG);
-		surTag.add(PICADMNRRTAG);
-		surTag.add(PICADMNOPTAG);
-		String reportMode = "Rapid Response";
-		boolean changeMode = true;
-
-		complianceReportsPage.addNewPDReport(rptTitle, surUnit, surTag, changeMode, reportMode);
-
-		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
-			assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
-		else
-			fail("\nTestcase TC183 failed.\n");
 
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
@@ -1896,6 +1895,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, "", "", viewList, SurveyModeFilter.Standard, ReportModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
+
 		Assert.assertEquals(complianceReportsPage.getAreaErrorText(), STRReportAreaTooLargeMsg);
 
 		complianceReportsPage.open();
@@ -1920,105 +1920,15 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC191 Test Description: Generate report having multiple surveys and verify Gaps for them
+	 * Test Case ID: TC197 Test Description: Verify "Add Survey" message is displayed when no Survey added
 	 * 
 	 */
 	@Test
-	public void TC191_ComplianceReportTest_VerifyMultipleSurveyGaps() {
-		String rptTitle = "TC191 Report" + testSetup.getRandomNumber();
-		System.out.format("\nRunning TC191: Generate report having multiple surveys and verify Gaps for them, %s\n", rptTitle);
-
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		complianceReportsPage.open();
-
-		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add(IMGMAPHEIGHT);
-		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add(RNELAT);
-		listBoundary.add(RNELON);
-		listBoundary.add(RSWLAT);
-		listBoundary.add(RSWLON);
-
+	public void TC197_ComplianceReportTest_VerifyAddSurveyErrorMessages() {
+		System.out.format("\nRunning TC197: Verify 'Add Survey' message is displayed when no Survey added\n");
+		String rptTitle = "TC197 Report" + testSetup.getRandomNumber();
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();
-
-		viewMap1.put(KEYVIEWNAME, "First View");
-		viewMap1.put(KEYLISA, "0");
-		viewMap1.put(KEYFOV, "1");
-		viewMap1.put(KEYBREADCRUMB, "0");
-		viewMap1.put(KEYINDICATIONS, "0");
-		viewMap1.put(KEYISOTOPICCAPTURE, "0");
-		viewMap1.put(KEYANNOTATION, "0");
-		viewMap1.put(KEYGAPS, "1");
-		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "0");
-		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
-
-		viewList.add(viewMap1);
-
-		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
-		Map<String, String> tableMap = new HashMap<String, String>();
-
-		tableMap.put(KEYINDTB, "1");
-		tableMap.put(KEYISOANA, "1");
-		tableMap.put(KEYPCA, "0");
-		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYASSETCASTIRON, "1");
-		tableMap.put(KEYASSETCOPPER, "1");
-		tableMap.put(KEYASSETOTHERPLASTIC, "1");
-		tableMap.put(KEYASSETPEPLASTIC, "1");
-		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
-		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "0");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
-		tablesList.add(tableMap);
-
-		String surUnit = "";
-		String exclusionRadius = "0";
-		String strCustomer = "Picarro";
-		List<String> surTag = new ArrayList<String>();
-		surTag.add(PICADMNSTDTAG);
-		surTag.add(CUSDRVSTDTAG);
-
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, PICDFADMIN, strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList);
-		complianceReportsPage.addNewReportWithMultipleSurveysIncluded(rpt);
-
-		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
-			assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
-
-		} else
-			fail("\nTestcase TC191 failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
-	}
-
-	/**
-	 * Test Case ID: TC192 Test Description: Generate report having multiple surveys and provide exclusion radius
-	 * 
-	 */
-	@Test
-	public void TC192_ComplianceReportTest_VerifyMultipleSurveyExclusionRadius() {
-		String rptTitle = "TC192 Report" + testSetup.getRandomNumber();
-		System.out.format("\nRunning TC192: Generate report having multiple surveys and provide exclusion radius, %s\n", rptTitle);
-
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		complianceReportsPage.open();
-
-		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add(IMGMAPHEIGHT);
-		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add(RNELAT);
-		listBoundary.add(RNELON);
-		listBoundary.add(RSWLAT);
-		listBoundary.add(RSWLON);
-
-		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
-		Map<String, String> viewMap1 = new HashMap<String, String>();
-		Map<String, String> viewMap2 = new HashMap<String, String>();
-
 		viewMap1.put(KEYVIEWNAME, "First View");
 		viewMap1.put(KEYLISA, "1");
 		viewMap1.put(KEYFOV, "1");
@@ -2030,97 +1940,11 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		viewMap1.put(KEYASSETS, "0");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
-
-		viewMap2.put(KEYVIEWNAME, "Second View");
-		viewMap2.put(KEYLISA, "1");
-		viewMap2.put(KEYFOV, "1");
-		viewMap2.put(KEYBREADCRUMB, "1");
-		viewMap2.put(KEYINDICATIONS, "1");
-		viewMap2.put(KEYISOTOPICCAPTURE, "1");
-		viewMap2.put(KEYANNOTATION, "1");
-		viewMap2.put(KEYGAPS, "0");
-		viewMap2.put(KEYASSETS, "1");
-		viewMap2.put(KEYBOUNDARIES, "0");
-		viewMap2.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
-
 		viewList.add(viewMap1);
-		viewList.add(viewMap2);
-
-		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
-		Map<String, String> tableMap = new HashMap<String, String>();
-
-		tableMap.put(KEYINDTB, "1");
-		tableMap.put(KEYISOANA, "1");
-		tableMap.put(KEYPCA, "0");
-		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYASSETCASTIRON, "1");
-		tableMap.put(KEYASSETCOPPER, "1");
-		tableMap.put(KEYASSETOTHERPLASTIC, "1");
-		tableMap.put(KEYASSETPEPLASTIC, "1");
-		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
-		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "0");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
-		tablesList.add(tableMap);
-
-		String surUnit = "";
-		String exclusionRadius = "100";
-		String strCustomer = "Picarro";
-		List<String> surTag = new ArrayList<String>();
-		surTag.add(PICADMNSTDTAG);
-		surTag.add(PICADMNOPTAG);
-
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, PICDFADMIN, strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList);
-		complianceReportsPage.addNewReportWithMultipleSurveysIncluded(rpt);
-		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
-			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
-				assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
-			} else
-				fail("\nTestcase TC192 failed.\n");
-		} else
-			fail("\nTestcase TC192 failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
-	}
-
-	/**
-	 * Test Case ID: TC197 Test Description: Verify "Already Added" message is displayed if user tries to add the same survey again
-	 * 
-	 */
-	@Test
-	public void TC197_ComplianceReportTest_VerifyAddSurveyErrorMessages() {
-		System.out.format("\nRunning TC197: Verify 'Already Added' message is displayed if user tries to add the same survey again\n");
 
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
-		complianceReportsPage.openNewComplianceReportPage();
-
-		assertTrue(complianceReportsPage.verifySurveyAlreadyAdded("Picarro", PICADMNSTDTAG));
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
-	}
-
-	/**
-	 * Test Case ID: TC198 Test Description: Verify "Already Added" message is displayed if user tries to add the same survey again using copy functionality
-	 * 
-	 */
-	@Test
-	public void TC198_ComplianceReportTest_VerifyAlreadyAddedMessageforCopy() {
-		System.out.format("\nRunning TC198: Verify 'Already Added' message is displayed if user tries to add the same survey again using copy functionality\n");
-
-		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		complianceReportsPage.open();
-		String rptTitle = "TC198 Report" + testSetup.getRandomNumber();
-		String surUnit = "";
-
-		complianceReportsPage.addNewPDReport(rptTitle, surUnit, PICADMNSTDTAG);
-		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
-
-		complianceReportsPage.clickOnCopyReport(rptTitle, PICDFADMIN);
-
-		assertTrue(complianceReportsPage.verifySurveyAlreadyAdded("Picarro", PICADMNSTDTAG));
+		assertTrue(complianceReportsPage.verifySurveyNotAdded(rptTitle, "Picarro", RNELAT, RNELON, RSWLAT, RSWLON, viewList));
 
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
