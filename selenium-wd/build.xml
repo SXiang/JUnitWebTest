@@ -143,6 +143,28 @@
 		</junit>
 	</target>
 
+	<target name="testmanageusers" depends="compileregression" description="Run manage users page test cases">
+		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
+				showoutput="yes">
+			<classpath>
+				<pathelement path="${build}" />
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+
+			<batchtest fork="yes" todir="${reports}/regression/xml">
+				<formatter type="xml" />
+				<fileset dir="${build}">
+
+					<include name="**/ManageUsersPageTest.class" />
+					<include name="**/ManageUsersAdminPageTest.class" />
+
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	
 	<target name="testcompliancereport" depends="compileregression" description="Run compliance report test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
