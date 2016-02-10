@@ -3,6 +3,9 @@ import sys, subprocess, os
 # Examples:
 #    python testDeobfuscator.py nonobf
 #    python testDeobfuscator.py install
+#Pre-req:
+#	http://de4dot.com/ deobfuscator should be downloaded and extracted
+#	Script should be copied to de4dot folder after extraction
 
 
 # Returns true if decompilation failed, or false if it was succesful.
@@ -10,11 +13,6 @@ def process_file(filename):
 	print "CHECKING FILE =", filename
 	pipe = subprocess.Popen(["de4dot.exe", "-f", filename], stdout=subprocess.PIPE, stderr=None)
 	out, err = pipe.communicate()
-
-	#Uncomment based on output you want
-	#print "RETURN=", pipe.returncode
-	#print "OUTPUT=%s" % out
-	#print "ERROR=%s" % err
 
 	# de4dot return 0 if decompile was succesful, or 1 if it fails.
 	if (pipe.returncode==0):
