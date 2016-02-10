@@ -41,6 +41,12 @@ public class ReportsCompliance extends Reports {
 		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, listBoundary, tablesList, surveyorUnit, tagList, viewList);
 
 	}
+	
+	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList, ReportModeFilter reportMode) {
+		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, listBoundary, tablesList, surveyorUnit, tagList, viewList, reportMode);
+
+	}
+
 
 	public ReportsCompliance(String rptTitle, String strCreatedBy,
 			String customer, String timeZone, String exclusionRadius,

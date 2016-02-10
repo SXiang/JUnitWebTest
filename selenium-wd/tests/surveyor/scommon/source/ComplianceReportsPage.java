@@ -218,6 +218,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@class='dataTables_empty']")
 	protected WebElement dataTableEmpty;
 
+	@FindBy(how = How.XPATH, using = "//*[@id=resubmitReportModal']/div/div/div[3]/a[1]")
+	protected WebElement btnResubmitReport;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li[1]")
+	protected WebElement assetErrorText;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li[2]")
+	protected WebElement boundaryErrorText;
+
 	public enum CustomerBoundaryType {
 		District, DistrictPlat
 	}
@@ -227,8 +236,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public enum ReportViewerThumbnailType {
-		ComplianceTablePDF, ComplianceZipPDF, ComplianceZipShape, ComplianceZipMeta, 
-		FirstView, SecondView, ThirdView, FourthView, FifthView, SixthView, SeventhView
+		ComplianceTablePDF, ComplianceZipPDF, ComplianceZipShape, ComplianceZipMeta, FirstView, SecondView, ThirdView, FourthView, FifthView, SixthView, SeventhView
 	}
 
 	public enum ReportFileType {
@@ -351,7 +359,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (tag != "") {
 			inputSurveyTag(tag);
 		}
-	
 
 		this.btnSurveySearch.click();
 		this.waitForSurveyTabletoLoad();
@@ -590,9 +597,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			this.cbTag.clear();
 			this.cbTag.sendKeys(tag);
 		}
-		
-		selectStartDateForSurvey(startDate);
-		selectEndDateForSurvey(endDate);
+
+		if ((startDate != null) && (startDate != "")) {
+			selectStartDateForSurvey(startDate);
+		}
+
+		if ((endDate != null) && (endDate != "")) {
+			selectEndDateForSurvey(endDate);
+		}
 
 		if (surveyModeFilter != null) {
 			selectSurveyModeForSurvey(surveyModeFilter);
@@ -1215,7 +1227,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		return false;
 	}
-	
+
 	public boolean investigateReport(String rptTitle, String strCreatedBy) {
 		setPagination(PAGINATIONSETTING);
 
@@ -1384,6 +1396,72 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				this.waitForDeleteSurveyButtonToLoad();
 				this.inputTitle.clear();
 				this.inputTitle.sendKeys(rptTitleNew);
+				this.waitForOkButtonToEnable();
+				clickOnOKButton();
+
+				return true;
+			}
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+
+				this.waitForPageLoad();
+
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+				rowNum = 0;
+			}
+		}
+
+		return false;
+
+	}
+
+	// error
+	public boolean resubmitReport(String rptTitle, String strCreatedBy) {
+		setPagination(PAGINATIONSETTING);
+
+		this.waitForPageLoad();
+
+		String reportTitleXPath;
+		String createdByXPath;
+		String resubmitImgXPath;
+
+		WebElement rptTitleCell;
+		WebElement createdByCell;
+		WebElement resubmitImg;
+
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+
+		int rowSize = rows.size();
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				resubmitImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
+				resubmitImg = table.findElement(By.xpath(resubmitImgXPath));
+
+				resubmitImg.click();
+
+				this.waitForCopyReportPagetoLoad();
+				this.waitForInputTitleToEnable();
+
 				this.waitForOkButtonToEnable();
 				clickOnOKButton();
 
@@ -1639,6 +1717,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		return false;
 	}
+
 	public boolean checkBlankReportErrorTextPresent() {
 		openNewReportPage();
 		this.clickOnOKButton();
@@ -1731,7 +1810,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 	}
-
 
 	public boolean deleteSurveyAndIncludeAgain(String surveyTag) {
 		this.btnDeleteDrivingSurvey.click();
@@ -1933,8 +2011,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				startDate = startDate.replaceFirst("0*", "");
 			}
 			dateSetting.setDay("start", 7, startDate, false);
-			
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -2676,5 +2753,25 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void waitForResubmitButton() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return btnResubmitReport.isEnabled();
+			}
+		});
+	}
+
+	public WebElement getBtnResubmitReport() {
+		return this.btnResubmitReport;
+	}
+
+	public WebElement getAssetErrorText() {
+		return this.assetErrorText;
+	}
+
+	public WebElement getBoundaryErrorText() {
+		return this.boundaryErrorText;
 	}
 }
