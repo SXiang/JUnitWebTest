@@ -1638,6 +1638,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		return false;
 	}
+	
 	public boolean checkBlankReportErrorTextPresent() {
 		openNewReportPage();
 		this.clickOnOKButton();
@@ -2071,6 +2072,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	/**
 	 * Method to verify the static text
 	 * 
+	 * @param reportTitle
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean verifyComplianceReportStaticText(String reportTitle) throws IOException {
+		return verifyComplianceReportStaticText(testSetup.getDownloadPath(), reportTitle);
+	}
+	
+	/**
+	 * Method to verify the static text
+	 * 
 	 * @param actualPath
 	 * @param reportTitle
 	 * @return
@@ -2102,6 +2114,33 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	}
 
+	/**
+	 * Method to verify the static text
+	 * 
+	 * @param reportTitle
+	 * @param expectedReportString
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean verifyComplianceReportContainsText(String reportTitle, List<String> expectedReportString) throws IOException {
+		String actualPath = testSetup.getDownloadPath(); 
+		PDFUtility pdfUtility = new PDFUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
+		reportName = "CR-" + reportId;
+		setReportName(reportName);
+		String actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
+		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		for (Boolean value : actualFirstPage.values()) {
+			if (!value)
+				return false;
+		}
+		return true;
+
+	}
+
+	
 	/**
 	 * Method to verify the Show Coverage Table in SSRS
 	 * 
@@ -2393,6 +2432,19 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void verifyShapeFiles() {
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 1. Verify that the ZIP file has a PDF for report and 1 PDF for each view added in the Report.
+	 * 2. Verify expected content in the PDF report.
+	 * 3. Verify there are images present in the view PDFs.
+	 */
+	public void verifyReportPDFZIPFiles() {
 		try {
 			throw new Exception("Not implemented");
 		} catch (Exception e) {
