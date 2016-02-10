@@ -18,6 +18,7 @@ import surveyor.scommon.source.SurveyorBaseTest;
  * @author spulikkal
  */
 public class ActionsExecutionEngine implements IMethodObserver {
+	private static final String CLASS_NAME = "ActionsExecutionDriver";
 	private static final String DATA_FOLDER = "data";
 	private static final String TEST_CASES_XLSX = "TestCases.xlsx";
 	public Properties OR;
@@ -100,11 +101,11 @@ public class ActionsExecutionEngine implements IMethodObserver {
 	private void beforeTestSetup(String testCaseID, String testCaseRallyID, String testCaseUserRowIDs,
 			String testCaseName) throws Exception {
 		SurveyorBaseTest.setUpBeforeClass();
-		SurveyorBaseTest.reportTestStarting(testCaseRallyID + " - " + testCaseName, testCaseID + " : " + testCaseName);
+		SurveyorBaseTest.reportTestStarting(CLASS_NAME, testCaseRallyID + " - " + testCaseName, testCaseID + " : " + testCaseName);
 	}
 
 	private void afterTestTearDown() throws Exception {
-		SurveyorBaseTest.reportTestFinished();
+		SurveyorBaseTest.reportTestFinished(CLASS_NAME);
 		SurveyorBaseTest.tearDownAfterClass();
 	}
 

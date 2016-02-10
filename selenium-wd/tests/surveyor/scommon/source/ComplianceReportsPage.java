@@ -5,7 +5,6 @@ package surveyor.scommon.source;
 
 import static org.junit.Assert.fail;
 import static common.source.BaseHelper.matchSinglePattern;
-import static common.source.BaseHelper.matchPatternforPairs;
 import common.source.DateUtility;
 import static surveyor.scommon.source.SurveyorConstants.ACTIONTIMEOUT;
 import static surveyor.scommon.source.SurveyorConstants.CUSBOUNDARY;
@@ -50,12 +49,8 @@ import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 
-import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -74,22 +69,18 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import common.source.BaseHelper;
-import common.source.CSVUtility;
 import common.source.DBConnection;
 import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.Report;
-import surveyor.dataaccess.source.ReportGap;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-import surveyor.scommon.source.Reports.ReportModeFilter;
-import surveyor.scommon.source.Reports.SurveyModeFilter;
 import common.source.PDFUtility;
 
 /**
@@ -99,6 +90,8 @@ import common.source.PDFUtility;
 public class ComplianceReportsPage extends ReportsBasePage {
 	private static final int CUSTOM_BOUNDARY_RADBUTTON_GROUP_IDX = 0;
 	private static final int CUSTOMER_BOUNDARY_RADBUTTON_GROUP_IDX = 1;
+
+	public static final String BOUNDARY_SELECTOR_CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
 	public static final String STRURLPath = "/Reports/ComplianceReports";
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.ComplianceReports_PageTitle);
 	public static final String STRPaginationMsg = "Showing 1 to ";
@@ -225,6 +218,23 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@class='dataTables_empty']")
 	protected WebElement dataTableEmpty;
 
+	public enum CustomerBoundaryType {
+		District, DistrictPlat
+	}
+
+	public enum ComplianceReportButtonType {
+		Delete, Copy, ReportViewer, Investigate, InvestigatePDF, Resubmit
+	}
+
+	public enum ReportViewerThumbnailType {
+		ComplianceTablePDF, ComplianceZipPDF, ComplianceZipShape, ComplianceZipMeta, 
+		FirstView, SecondView, ThirdView, FourthView, FifthView, SixthView, SeventhView
+	}
+
+	public enum ReportFileType {
+		PDF, ZIP, MetaDataZIP, ShapeZIP
+	}
+
 	/**
 	 * @param driver
 	 * @param strBaseURL
@@ -234,6 +244,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		super(driver, strBaseURL, testSetup, strBaseURL + STRURLPath);
 
 		System.out.format("\nThe Compliance Reports Page URL is: %s\n", this.strPageURL);
+	}
+
+	private boolean checkFileExists(String fileName, String downloadPath) {
+		File dir = new File(downloadPath);
+		File[] dir_contents = dir.listFiles();
+		for (int i = 0; i < dir_contents.length; i++) {
+			if (dir_contents[i].getName().equals(fileName)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	// more generic interface and implementation, more details will be added
@@ -281,53 +302,272 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		handleOptionalViewLayersSection(tablesList);
 
-		this.btnOK.click();
+		this.clickOnOKButton();
 	}
 
-	public void selectTimeZone(String timeZone) {
-		List<WebElement> optionsTZ = this.cBoxTimezone.findElements(By.tagName("option"));
-		for (WebElement option : optionsTZ) {
-			if (timeZone.equalsIgnoreCase(option.getText().trim())) {
-				option.click();
+	// Nov. 1, 2014, this is obsolete and try not to call this for generating a
+	// compliance report.
+	// Temporary solution for now and should pass the params by a data structure
+	private void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, String tag, String startDate, String endDate, String surModeFilter) {
+		openNewReportPage();
+
+		this.inputTitle.clear();
+		this.inputTitle.sendKeys(title);
+
+		if (customer != null && customer != "Picarro") {
+			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
+			for (WebElement option : optionsCustomer) {
+				if ((customer).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+
+			if (this.isElementPresent(btnChangeCustomerXPath)) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", btnChangeCustomer);
+
+				this.inputTitle.clear();
+				this.inputTitle.sendKeys(title);
 			}
 		}
+
+		selectTimeZone(timeZone);
+		inputExclusionRadius(exclusionRadius);
+
+		this.inputNELat.sendKeys(NELat);
+		this.inputNELong.sendKeys(NELong);
+		this.inputSWLat.sendKeys(SWLat);
+		this.inputSWLong.sendKeys(SWLong);
+
+		if (surUnit != "") {
+			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
+			for (WebElement option : optionsSU) {
+				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+		}
+
+		if (tag != "") {
+			inputSurveyTag(tag);
+		}
+	
+
+		this.btnSurveySearch.click();
+		this.waitForSurveyTabletoLoad();
+		this.waitForSurveySelectorCheckBoxToLoad();
+		this.waitForSurveySelectorCheckBoxToBeEnabled();
+		this.checkboxSurFirst.click();
+		this.btnAddSurveys.click();
+		this.inputViewLisa.click();
+		this.inputViewFOV.click();
+		this.inputViewBreadCrumb.click();
+		this.inputViewInd.click();
+		this.inputViewIso.click();
+		this.inputViewAnno.click();
+		this.inputViewGaps.click();
+		this.inputViewAssets.click();
+		this.inputViewBoundaries.click();
+
+		inputImageMapHeight(imageMapHeight);
+		inputImageMapWidth(imageMapWidth);
+
+		selectViewLayerAssets(true, true, true, true, true, true);
+		selectViewLayerBoundaries(true, true);
+
+		selectIndicationsTableCheckBox();
+		this.checkBoxIsoAna.click();
+		this.checkBoxPCA.click();
+		this.checkBoxPCRA.click();
+
+		this.clickOnOKButton();
 	}
 
-	public void inputReportTitle(String rptTitle) {
+	public void addNewPDReport(String reportTitle) {
+		this.addNewReport(reportTitle, null, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, SURVEYORUNIT, TAG, STARTDATE, ENDDATE, REPORTMODES1);
+	}
+
+	public void addNewPDReport(String reportTitle, String customer) {
+		this.addNewReport(reportTitle, customer, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, SURVEYORUNIT, TAG, STARTDATE, ENDDATE, REPORTMODES1);
+	}
+
+	public void addNewPDReport(String reportTitle, String surveyor, String tag) {
+		this.addNewReport(reportTitle, null, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, REPORTMODES1);
+	}
+
+	public void addNewPDReport(String reportTitle, String customer, String surveyor, String tag) {
+		this.addNewReport(reportTitle, customer, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, REPORTMODES1);
+	}
+
+	public void addNewPDReport(String reportTitle, String surveyor, List<String> tag, boolean changeMode, String reportMode) {
+		this.addNewReport(reportTitle, null, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, changeMode, reportMode);
+	}
+
+	public void addNewPDReport(String reportTitle, String customer, String surveyor, List<String> tag, boolean changeMode, String reportMode) {
+		this.addNewReport(reportTitle, customer, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, changeMode, reportMode);
+	}
+
+	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tag, String startDate, String endDate, boolean changeMode, String strReportMode) {
+		openNewReportPage();
+
+		if (customer != null && customer != "Picarro") {
+			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
+			for (WebElement option : optionsCustomer) {
+				if ((customer).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+
+			if (this.isElementPresent(btnChangeModeXPath)) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", btnChangeMode);
+			}
+		}
+
+		if (changeMode) {
+			if (strReportMode.contentEquals(Resources.getResource(ResourceKeys.Constant_Standard)))
+				this.radioBtnStndMode.click();
+			else if (strReportMode.contentEquals("Rapid Response"))
+				this.radioBtnRRmode.click();
+			else if (strReportMode.contentEquals(Resources.getResource(ResourceKeys.Constant_Manual)))
+				this.radioBtnManualMode.click();
+		}
+
 		this.inputTitle.clear();
-		this.inputTitle.sendKeys(rptTitle);
+		this.inputTitle.sendKeys(title);
+
+		selectTimeZone(timeZone);
+		inputExclusionRadius(exclusionRadius);
+		inputImageMapWidth(imageMapWidth);
+		inputImageMapHeight(imageMapHeight);
+
+		this.inputNELat.sendKeys(NELat);
+		this.inputNELong.sendKeys(NELong);
+		this.inputSWLat.sendKeys(SWLat);
+		this.inputSWLong.sendKeys(SWLong);
+
+		this.checkBoxIndTb.click();
+		this.checkBoxIsoAna.click();
+		this.checkBoxPCA.click();
+		this.checkBoxPCRA.click();
+
+		selectViewLayerAssets(true, true, true, true, true, true);
+
+		if (surUnit != "") {
+			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
+			for (WebElement option : optionsSU) {
+				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+		}
+
+		for (String tagValue : tag) {
+			if (tagValue != "") {
+				inputSurveyTag(tagValue);
+				this.btnSurveySearch.click();
+				this.waitForSurveyTabletoLoad();
+				this.waitForSurveySelectorCheckBoxToLoad();
+				this.waitForSurveySelectorCheckBoxToBeEnabled();
+				selectSurveyCheckBox(checkboxSurFirst);
+				this.waitForAddSurveyButtonToLoad();
+				this.btnAddSurveys.click();
+
+			}
+		}
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYGAPS, "1");
+		viewMap1.put(KEYASSETS, "1");
+		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
+
+		viewList.add(viewMap1);
+
+		addViews(customer, viewList);
+
+		if (boundary != null) {
+			this.inputViewBoundaries.click();
+
+			selectViewLayerBoundaries(true, true);
+		}
+
+		this.clickOnOKButton();
 	}
 
-	public void inputImageMapWidth(String imageMapWidth) {
-		this.inputImgMapWidth.clear();
-		this.inputImgMapWidth.sendKeys(imageMapWidth);
-	}
+	public void addNewReportWithMultipleSurveysIncluded(Reports reportsCompliance) {
+		openNewReportPage();
+		inputReportTitle(reportsCompliance.getRptTitle());
 
-	public void inputImageMapHeight(String imageMapHeight) {
-		this.inputImgMapHeight.clear();
-		this.inputImgMapHeight.sendKeys(imageMapHeight);
-	}
+		if (reportsCompliance.getCustomer() != null && reportsCompliance.getCustomer() != "Picarro") {
+			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
+			for (WebElement option : optionsCustomer) {
+				if ((reportsCompliance.getCustomer()).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
 
-	public void inputExclusionRadius(String exclusionRadius) {
-		this.inputExclusionRadius.clear();
-		this.inputExclusionRadius.sendKeys(exclusionRadius);
-	}
+			if (this.isElementPresent(btnChangeCustomerXPath)) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", btnChangeCustomer);
 
-	public void inputFOVOpacity(String fovOpacity) {
-		this.inputFOVOpacity.clear();
-		this.inputFOVOpacity.sendKeys(fovOpacity);
-	}
+				inputReportTitle(reportsCompliance.getRptTitle());
+			}
+		}
 
-	public void inputLISAOpacity(String lisaOpacity) {
-		this.inputLISAOpacity.clear();
-		this.inputLISAOpacity.sendKeys(lisaOpacity);
-	}
+		selectTimeZone(reportsCompliance.getTimeZone());
 
-	public void fillCustomBoundaryTextFields(String neLat, String neLong, String swLat, String swLong) {
-		this.inputNELat.sendKeys(neLat);
-		this.inputNELong.sendKeys(neLong);
-		this.inputSWLat.sendKeys(swLat);
-		this.inputSWLong.sendKeys(swLong);
+		inputExclusionRadius(reportsCompliance.getExclusionRadius());
+		inputImageMapHeight(reportsCompliance.getImageMapHeight());
+		inputImageMapWidth(reportsCompliance.getImageMapWidth());
+
+		fillCustomBoundaryTextFields(reportsCompliance.getNELat(), reportsCompliance.getNELong(), reportsCompliance.getSWLat(), reportsCompliance.getSWLong());
+
+		List<Map<String, String>> tablesList = reportsCompliance.getTablesList();
+		if (tablesList.get(0).get(KEYINDTB).equalsIgnoreCase("1")) {
+			this.checkBoxIndTb.click();
+		}
+		if (tablesList.get(0).get(KEYISOANA).equalsIgnoreCase("1")) {
+			this.checkBoxIsoAna.click();
+		}
+		if (tablesList.get(0).get(KEYPCA).equalsIgnoreCase("1")) {
+			this.checkBoxPCA.click();
+		}
+		if (tablesList.get(0).get(KEYPCRA).equalsIgnoreCase("1")) {
+			this.checkBoxPCRA.click();
+		}
+
+		selectViewLayerAssets(true, true, true, true, true, true);
+
+		if (reportsCompliance.getSurveyorUnit() != "") {
+			selectSurveySurveyor(reportsCompliance.getSurveyorUnit());
+		}
+
+		for (String tagValue : reportsCompliance.tagList) {
+			if (tagValue != "") {
+				inputSurveyTag(tagValue);
+				this.btnSurveySearch.click();
+				this.waitForSurveyTabletoLoad();
+				this.waitForSurveySelectorCheckBoxToLoad();
+				this.waitForSurveySelectorCheckBoxToBeEnabled();
+				this.checkboxSurFirst.click();
+				this.waitForAddSurveyButtonToLoad();
+				this.btnAddSurveys.click();
+			}
+		}
+
+		addViews(reportsCompliance.getCustomer(), reportsCompliance.getViewList());
+
+		this.clickOnOKButton();
 	}
 
 	public void addSurveyInformation(String surveyor, String username, String tag, String startDate, String endDate, SurveyModeFilter surveyModeFilter, Boolean geoFilterOn) {
@@ -351,28 +591,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			this.cbTag.sendKeys(tag);
 		}
 		
-		
-		
+		selectStartDateForSurvey(startDate);
+		selectEndDateForSurvey(endDate);
+
 		if (surveyModeFilter != null) {
-			switch (surveyModeFilter) {
-			case All:
-				this.inputSurModeFilterAll.click();
-				break;
-			case Standard:
-				this.inputSurModeFilterStd.click();
-				break;
-			case Operator:
-				this.inputSurModeFilterOperator.click();
-				break;
-			case RapidResponse:
-				this.inputSurModeFilterRapidResponse.click();
-				break;
-			case Manual:
-				this.inputSurModeFilterManual.click();
-				break;
-			default:
-				break;
-			}
+			selectSurveyModeForSurvey(surveyModeFilter);
 		}
 
 		if ((geoFilterOn == null) || (!geoFilterOn)) {
@@ -385,118 +608,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		this.checkboxSurFirst.click();
 		this.btnAddSurveys.click();
-	}
-
-	public void selectGapCheckBox() {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", checkBoxGap);
-	}
-
-	public void selectPercentCoverageReportArea() {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", checkBoxPCRA);
-	}
-
-	public void selectPercentCoverageAssetCheckBox() {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", checkBoxPCA);
-	}
-
-	public void selectPercentCoverageForecastCheckBox() {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", checkBoxPCF);
-	}
-
-	public void selectIsotopicAnalysisCheckBox() {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", checkBoxIsoAna);
-	}
-
-	public void selectIndicationsTableCheckBox() {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", checkBoxIndTb);
-	}
-
-	public void selectSurveyCheckBox(WebElement checkboxSurFirst) {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", checkboxSurFirst);
-	}
-
-	public void selectSurveySurveyor(String surveyorUnit) {
-		List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
-		for (WebElement option : optionsSU) {
-			if (surveyorUnit.equalsIgnoreCase(option.getText().trim())) {
-				option.click();
-			}
-		}
-	}
-
-	public ReportModeFilter getReportMode(String reportMode) {
-		ReportModeFilter mode = ReportModeFilter.Manual;
-		if (reportMode.equalsIgnoreCase("standard")) {
-			mode = ReportModeFilter.Standard;
-		} else if (reportMode.equalsIgnoreCase("manual")) {
-			mode = ReportModeFilter.Manual;
-		} else if (reportMode.equalsIgnoreCase("rr")) {
-			mode = ReportModeFilter.RapidResponse;
-		}
-		return mode;
-	}
-
-	public void selectCustomer(String customer) {
-		if (dropdownCustomer.isDisplayed()) {
-			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
-			for (WebElement option : optionsCustomer) {
-				if (customer.equalsIgnoreCase(option.getText().trim())) {
-					option.click();
-				}
-			}
-
-			confirmInChangeCustomerDialog();
-		}
-	}
-
-	public boolean confirmInChangeCustomerDialog() {
-		if (dropdownCustomer.isDisplayed()) {
-			if (this.isElementPresent(btnChangeCustomerXPath)) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", btnChangeCustomer);
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private void openNewReportPage() {
-		this.btnNewComplianceRpt.click();
-		this.waitForNewPageLoad();
-	}
-
-	public void inputSurveyTag(String tag) {
-		this.cbTag.clear();
-		this.cbTag.sendKeys(tag);
-	}
-
-	public void inputSurveyUsername(String username) {
-		this.userName.clear();
-		this.userName.sendKeys(username);
-	}
-
-	private void handleOptionalViewLayersSection(List<Map<String, String>> viewLayersList) {
-		if (viewLayersList != null) {
-			boolean selectAssetCastIron = viewLayersList.get(0).get(KEYASSETCASTIRON).equalsIgnoreCase("1");
-			boolean selectAssetCopper = viewLayersList.get(0).get(KEYASSETCOPPER).equalsIgnoreCase("1");
-			boolean selectAssetOtherPlastic = viewLayersList.get(0).get(KEYASSETOTHERPLASTIC).equalsIgnoreCase("1");
-			boolean selectAssetPEPlastic = viewLayersList.get(0).get(KEYASSETPEPLASTIC).equalsIgnoreCase("1");
-			boolean selectAssetProtectedSteel = viewLayersList.get(0).get(KEYASSETPROTECTEDSTEEL).equalsIgnoreCase("1");
-			boolean selectAssetUnprotectedSteel = viewLayersList.get(0).get(KEYASSETUNPROTECTEDSTEEL).equalsIgnoreCase("1");
-			selectViewLayerAssets(selectAssetCastIron, selectAssetCopper, selectAssetOtherPlastic, selectAssetPEPlastic, selectAssetProtectedSteel, selectAssetUnprotectedSteel);
-
-			boolean selectBoundaryDistrict = viewLayersList.get(0).get(KEYBOUNDARYDISTRICT).equalsIgnoreCase("1");
-			boolean selectBoundaryDistrictPlat = viewLayersList.get(0).get(KEYBOUNDARYDISTRICTPLAT).equalsIgnoreCase("1");
-			selectViewLayerBoundaries(selectBoundaryDistrict, selectBoundaryDistrictPlat);
-		}
-
 	}
 
 	public void addViews(String customer, List<Map<String, String>> viewList) {
@@ -597,81 +708,52 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 
-	// Nov. 1, 2014, this is obsolete and try not to call this for generating a
-	// compliance report.
-	// Temporary solution for now and should pass the params by a data structure
-	private void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, String tag, String startDate, String endDate, String surModeFilter) {
-		openNewReportPage();
+	public void clickOnShapeZIPInReportViewer() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", zipShape);
+	}
 
-		this.inputTitle.clear();
-		this.inputTitle.sendKeys(title);
+	public void clickOnMetadataZIPInReportViewer() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", zipMeta);
+	}
 
-		if (customer != null && customer != "Picarro") {
-			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
-			for (WebElement option : optionsCustomer) {
-				if ((customer).equalsIgnoreCase(option.getText().trim())) {
-					option.click();
-				}
-			}
+	public void clickOnZIPInReportViewer() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", zipImg);
+	}
 
-			if (this.isElementPresent(btnChangeCustomerXPath)) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", btnChangeCustomer);
+	public void clickOnPDFInReportViewer() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", pdfImg);
+	}
 
-				this.inputTitle.clear();
-				this.inputTitle.sendKeys(title);
-			}
-		}
+	public void clickOnNewComplianceReportBtn() {
+		this.btnNewComplianceRpt.click();
+	}
 
-		selectTimeZone(timeZone);
-		inputExclusionRadius(exclusionRadius);
+	public void clickOnCancelBtn() {
+		this.btnCancel.click();
+	}
 
-		this.inputNELat.sendKeys(NELat);
-		this.inputNELong.sendKeys(NELong);
-		this.inputSWLat.sendKeys(SWLat);
-		this.inputSWLong.sendKeys(SWLong);
+	public void clickOnFirstCopyComplianceBtn() {
+		this.btnFirstCopyCompliance.click();
+	}
 
-		if (surUnit != "") {
-			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
-			for (WebElement option : optionsSU) {
-				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
-					option.click();
-				}
-			}
-		}
+	public void clickOnFirstInvestigateComplianceBtn() {
+		this.btnFirstInvestigateCompliance.click();
+	}
 
-		if (tag != "") {
-			inputSurveyTag(tag);
-		}
+	public void clickLatLongMapSelectorBtn() {
+		this.latLongMapSelectorBtn.click();
+	}
 
-		this.btnSurveySearch.click();
-		this.waitForSurveyTabletoLoad();
-		this.waitForSurveySelectorCheckBoxToLoad();
-		this.waitForSurveySelectorCheckBoxToBeEnabled();
-		this.checkboxSurFirst.click();
-		this.btnAddSurveys.click();
-		this.inputViewLisa.click();
-		this.inputViewFOV.click();
-		this.inputViewBreadCrumb.click();
-		this.inputViewInd.click();
-		this.inputViewIso.click();
-		this.inputViewAnno.click();
-		this.inputViewGaps.click();
-		this.inputViewAssets.click();
-		this.inputViewBoundaries.click();
+	public void clickBoundarySelectorBtn() {
+		this.boundarySelectorBtn.click();
+	}
 
-		inputImageMapHeight(imageMapHeight);
-		inputImageMapWidth(imageMapWidth);
-
-		selectViewLayerAssets(true, true, true, true, true, true);
-		selectViewLayerBoundaries(true, true);
-
-		selectIndicationsTableCheckBox();
-		this.checkBoxIsoAna.click();
-		this.checkBoxPCA.click();
-		this.checkBoxPCRA.click();
-
-		this.btnOK.click();
+	public boolean clickComplianceReportButton(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType) throws Exception {
+		return checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, buttonType, true);
 	}
 
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy) {
@@ -719,38 +801,32 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						String srcZipImg = this.zipImg.getAttribute("src");
 						String srcZipMeta = this.zipMeta.getAttribute("src");
 						String srcShapeImg = this.zipShape.getAttribute("src");
-						DBConnection objDbConn = new DBConnection();
-						String reportId = objDbConn.getIdOfSpecifiedReportTitle(rptTitle, this.testSetup);
+						Report objReport = Report.getReport(rptTitle);
+						String reportId = objReport.getId();
 						reportId = reportId.substring(0, 6);
 						reportName = "CR-" + reportId;
 
 						if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip") && srcZipMeta.contains("zip") && srcShapeImg.contains("zip")) {
-							JavascriptExecutor js = (JavascriptExecutor) driver;
-							js.executeScript("arguments[0].click();", pdfImg);
-							waitForFileDownload(reportName + ".pdf", testSetup.getDownloadPath());
-							js = (JavascriptExecutor) driver;
-							js.executeScript("arguments[0].click();", zipImg);
-							waitForFileDownload(reportName + ".zip", testSetup.getDownloadPath());
+							clickOnPDFInReportViewer();
+							waitForPDFFileDownload(reportName);
+							clickOnZIPInReportViewer();
+							waitForReportZIPFileDownload(reportName);
 							if (zipMeta.isDisplayed()) {
-								js = (JavascriptExecutor) driver;
-								js.executeScript("arguments[0].click();", zipMeta);
-								waitForFileDownload(reportName + " (1).zip", testSetup.getDownloadPath());
+								clickOnMetadataZIPInReportViewer();
+								waitForMetadataZIPFileDownload(reportName);
 							}
 							if (zipShape.isDisplayed()) {
-								js = (JavascriptExecutor) driver;
-								js.executeScript("arguments[0].click();", zipShape);
-								waitForFileDownload(reportName + " (2).zip", testSetup.getDownloadPath());
+								clickOnShapeZIPInReportViewer();
+								waitForShapeZIPFileDownload(reportName);
 							}
 							return true;
 						}
 
 						if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip")) {
-							JavascriptExecutor js = (JavascriptExecutor) driver;
-							js.executeScript("arguments[0].click();", pdfImg);
-							waitForFileDownload(reportName + ".pdf", testSetup.getDownloadPath());
-							js = (JavascriptExecutor) driver;
-							js.executeScript("arguments[0].click();", zipImg);
-							waitForFileDownload(reportName + ".zip", testSetup.getDownloadPath());
+							clickOnPDFInReportViewer();
+							waitForPDFFileDownload(reportName);
+							clickOnZIPInReportViewer();
+							waitForReportZIPFileDownload(reportName);
 							return true;
 						} else
 							return false;
@@ -828,9 +904,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 					if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip")) {
 						pdfImg.click();
-						waitForFileDownload(reportName + ".pdf", testSetup.getDownloadPath());
+						waitForPDFFileDownload(reportName);
 						zipImg.click();
-						waitForFileDownload(reportName + ".zip", testSetup.getDownloadPath());
+						waitForReportZIPFileDownload(reportName);
 						return true;
 					} else
 						return false;
@@ -856,22 +932,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 
 		return false;
-	}
-
-	public enum ComplianceReportButtonType {
-		Delete, Copy, ReportViewer, Investigate, InvestigatePDF, Resubmit
-	}
-
-	public enum ReportViewerThumbnailType {
-		ComplianceTablePDF, ComplianceZipPDF, ComplianceZipShape, ComplianceZipMeta, FirstView, SecondView, ThirdView, FourthView, FifthView, SixthView, SeventhView
-	}
-
-	public boolean verifyComplianceReportButton(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType) throws Exception {
-		return checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, buttonType, false);
-	}
-
-	public boolean clickComplianceReportButton(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType) throws Exception {
-		return checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, buttonType, true);
 	}
 
 	private boolean checkComplianceReportButtonPresenceAndClick(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType, boolean clickButton) throws Exception {
@@ -964,28 +1024,96 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return false;
 	}
 
-	public void addNewPDReport(String reportTitle) {
-		this.addNewReport(reportTitle, null, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, SURVEYORUNIT, TAG, STARTDATE, ENDDATE, REPORTMODES1);
+	public void inputReportTitle(String rptTitle) {
+		this.inputTitle.clear();
+		this.inputTitle.sendKeys(rptTitle);
 	}
 
-	public void addNewPDReport(String reportTitle, String customer) {
-		this.addNewReport(reportTitle, customer, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, SURVEYORUNIT, TAG, STARTDATE, ENDDATE, REPORTMODES1);
+	public void inputImageMapWidth(String imageMapWidth) {
+		this.inputImgMapWidth.clear();
+		this.inputImgMapWidth.sendKeys(imageMapWidth);
 	}
 
-	public void addNewPDReport(String reportTitle, String surveyor, String tag) {
-		this.addNewReport(reportTitle, null, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, REPORTMODES1);
+	public void inputImageMapHeight(String imageMapHeight) {
+		this.inputImgMapHeight.clear();
+		this.inputImgMapHeight.sendKeys(imageMapHeight);
 	}
 
-	public void addNewPDReport(String reportTitle, String customer, String surveyor, String tag) {
-		this.addNewReport(reportTitle, customer, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, REPORTMODES1);
+	public void inputExclusionRadius(String exclusionRadius) {
+		this.inputExclusionRadius.clear();
+		this.inputExclusionRadius.sendKeys(exclusionRadius);
 	}
 
-	public void addNewPDReport(String reportTitle, String surveyor, List<String> tag, boolean changeMode, String reportMode) {
-		this.addNewReport(reportTitle, null, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, changeMode, reportMode);
+	public void inputFOVOpacity(String fovOpacity) {
+		this.inputFOVOpacity.clear();
+		this.inputFOVOpacity.sendKeys(fovOpacity);
 	}
 
-	public void addNewPDReport(String reportTitle, String customer, String surveyor, List<String> tag, boolean changeMode, String reportMode) {
-		this.addNewReport(reportTitle, customer, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, changeMode, reportMode);
+	public void inputLISAOpacity(String lisaOpacity) {
+		this.inputLISAOpacity.clear();
+		this.inputLISAOpacity.sendKeys(lisaOpacity);
+	}
+
+	public void inputSurveyTag(String tag) {
+		this.cbTag.clear();
+		this.cbTag.sendKeys(tag);
+	}
+
+	public void inputSurveyUsername(String username) {
+		this.userName.clear();
+		this.userName.sendKeys(username);
+	}
+
+	public void fillCustomBoundaryTextFields(String neLat, String neLong, String swLat, String swLong) {
+		this.inputNELat.sendKeys(neLat);
+		this.inputNELong.sendKeys(neLong);
+		this.inputSWLat.sendKeys(swLat);
+		this.inputSWLong.sendKeys(swLong);
+	}
+
+	public ReportModeFilter getReportMode(String reportMode) {
+		ReportModeFilter mode = ReportModeFilter.Manual;
+		if (reportMode.equalsIgnoreCase("standard")) {
+			mode = ReportModeFilter.Standard;
+		} else if (reportMode.equalsIgnoreCase("manual")) {
+			mode = ReportModeFilter.Manual;
+		} else if (reportMode.equalsIgnoreCase("rr")) {
+			mode = ReportModeFilter.RapidResponse;
+		}
+		return mode;
+	}
+
+	public boolean confirmInChangeCustomerDialog() {
+		if (dropdownCustomer.isDisplayed()) {
+			if (this.isElementPresent(btnChangeCustomerXPath)) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", btnChangeCustomer);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void openNewReportPage() {
+		this.btnNewComplianceRpt.click();
+		this.waitForNewPageLoad();
+	}
+
+	private void handleOptionalViewLayersSection(List<Map<String, String>> viewLayersList) {
+		if (viewLayersList != null) {
+			boolean selectAssetCastIron = viewLayersList.get(0).get(KEYASSETCASTIRON).equalsIgnoreCase("1");
+			boolean selectAssetCopper = viewLayersList.get(0).get(KEYASSETCOPPER).equalsIgnoreCase("1");
+			boolean selectAssetOtherPlastic = viewLayersList.get(0).get(KEYASSETOTHERPLASTIC).equalsIgnoreCase("1");
+			boolean selectAssetPEPlastic = viewLayersList.get(0).get(KEYASSETPEPLASTIC).equalsIgnoreCase("1");
+			boolean selectAssetProtectedSteel = viewLayersList.get(0).get(KEYASSETPROTECTEDSTEEL).equalsIgnoreCase("1");
+			boolean selectAssetUnprotectedSteel = viewLayersList.get(0).get(KEYASSETUNPROTECTEDSTEEL).equalsIgnoreCase("1");
+			selectViewLayerAssets(selectAssetCastIron, selectAssetCopper, selectAssetOtherPlastic, selectAssetPEPlastic, selectAssetProtectedSteel, selectAssetUnprotectedSteel);
+
+			boolean selectBoundaryDistrict = viewLayersList.get(0).get(KEYBOUNDARYDISTRICT).equalsIgnoreCase("1");
+			boolean selectBoundaryDistrictPlat = viewLayersList.get(0).get(KEYBOUNDARYDISTRICTPLAT).equalsIgnoreCase("1");
+			selectViewLayerBoundaries(selectBoundaryDistrict, selectBoundaryDistrictPlat);
+		}
+
 	}
 
 	public boolean findReport(String rptTitle, String strCreatedBy) {
@@ -1074,6 +1202,63 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.waitForPageLoad();
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+				rowNum = 0;
+			}
+		}
+
+		return false;
+	}
+	
+	public boolean investigateReport(String rptTitle, String strCreatedBy) {
+		setPagination(PAGINATIONSETTING);
+
+		this.waitForPageLoad();
+
+		String reportTitleXPath;
+		String createdByXPath;
+		String investigateImgXPath;
+
+		WebElement rptTitleCell;
+		WebElement createdByCell;
+		WebElement investigateImg;
+
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+
+		int rowSize = rows.size();
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				investigateImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[4]/img";
+				investigateImg = table.findElement(By.xpath(investigateImgXPath));
+
+				investigateImg.click();
+				return true;
+			}
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+
+				this.waitForPageLoad();
+
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
@@ -1200,8 +1385,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				this.inputTitle.clear();
 				this.inputTitle.sendKeys(rptTitleNew);
 				this.waitForOkButtonToEnable();
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", btnOK);
+				clickOnOKButton();
 
 				return true;
 			}
@@ -1360,6 +1544,542 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			return true;
 		}
 		return false;
+	}
+
+	public boolean copyReportAndModifyDetails(String rptTitle, String strCreatedBy, String rptTitleNew, String surUnit, List<String> tag, boolean changeMode, ReportModeFilter strReportMode) {
+		setPagination(PAGINATIONSETTING);
+		this.waitForCopyReportPagetoLoad();
+		String reportTitleXPath;
+		String createdByXPath;
+		String copyImgXPath;
+
+		WebElement rptTitleCell;
+		WebElement createdByCell;
+		WebElement copyImg;
+
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+
+		int rowSize = rows.size();
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+		this.waitForPageLoad();
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
+				copyImg = table.findElement(By.xpath(copyImgXPath));
+				copyImg.click();
+				this.inputTitle.clear();
+				this.inputTitle.sendKeys(rptTitleNew);
+
+				if (strReportMode != null && changeMode) {
+					selectReportMode(strReportMode);
+					this.waitForCopyReportPagetoLoad();
+					this.inputTitle.clear();
+					this.inputTitle.sendKeys(rptTitleNew);
+				} else {
+					this.waitForDeleteSurveyButtonToLoad();
+					this.btnDeleteSurvey.click();
+				}
+				if (surUnit != "") {
+					List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
+					for (WebElement option : optionsSU) {
+						if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
+							option.click();
+						}
+					}
+				}
+
+				for (String tagValue : tag) {
+					if (tagValue != "") {
+
+						inputSurveyTag(tagValue);
+						this.waitForSurveySearchButtonToLoad();
+						this.btnSurveySearch.click();
+						this.waitForSurveyTabletoLoad();
+						this.checkboxSurFirst.click();
+						this.waitForAddSurveyButtonToLoad();
+						this.btnAddSurveys.click();
+
+					}
+				}
+
+				this.inputViewInd.click();
+				this.inputViewIso.click();
+				this.inputViewAnno.click();
+				this.clickOnOKButton();
+
+				return true;
+			}
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+				this.nextBtn.click();
+
+				this.waitForPageLoad();
+
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+				rowNum = 0;
+			}
+		}
+		return false;
+	}
+	public boolean checkBlankReportErrorTextPresent() {
+		openNewReportPage();
+		this.clickOnOKButton();
+		if (isElementPresent(strErrorText))
+			return true;
+		return false;
+	}
+
+	public boolean searchReport(String reportTitle, String reportCreatedBy) {
+		this.inputSearchReport.sendKeys(reportTitle);
+
+		if (this.tdCReportTitle.getText().contentEquals(reportTitle)) {
+			if (this.tdCReportCreatedBy.getText().contentEquals(reportCreatedBy))
+				return true;
+		}
+		return false;
+	}
+
+	public boolean checkPaginationSetting(String numberOfReports) {
+		setPagination(numberOfReports);
+		this.waitForPageLoad();
+
+		String msgToVerify = STRPaginationMsg + numberOfReports;
+		this.waitForNumberOfRecords(msgToVerify);
+
+		if (msgToVerify.equals(this.paginationMsg.getText().substring(0, 16).trim()))
+			return true;
+
+		return false;
+	}
+
+	public void openNewComplianceReportPage() {
+		openNewReportPage();
+	}
+
+	public void clickOnOKButton() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", btnOK);
+	}
+
+	public void clickOnCopyReport(String rptTitle, String strCreatedBy) {
+		setPagination(PAGINATIONSETTING);
+
+		String reportTitleXPath;
+		String createdByXPath;
+		String copyImgXPath;
+
+		WebElement rptTitleCell;
+		WebElement createdByCell;
+		WebElement copyImg;
+
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+
+		int rowSize = rows.size();
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
+				copyImg = table.findElement(By.xpath(copyImgXPath));
+
+				copyImg.click();
+				break;
+			}
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+				this.nextBtn.click();
+
+				this.waitForPageLoad();
+
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+				rowNum = 0;
+			}
+		}
+	}
+
+
+	public boolean deleteSurveyAndIncludeAgain(String surveyTag) {
+		this.btnDeleteDrivingSurvey.click();
+		this.waitForCopyReportPagetoLoad();
+
+		try {
+			driver.findElement(By.xpath(strFirstSurveyTag));
+			return false;
+		} catch (NoSuchElementException e) {
+			if (surveyTag != "") {
+				inputSurveyTag(surveyTag);
+				this.btnSurveySearch.click();
+				this.waitForSurveyTabletoLoad();
+				this.checkboxSurFirst.click();
+				this.btnAddSurveys.click();
+			}
+
+			if (isElementPresent(strFirstSurveyTag))
+				return true;
+
+			return false;
+		}
+	}
+
+	public String provideLatLongAtCustomBoundarySelectorWindow(List<String> listBoundary) {
+		String actualMsg = "";
+		openNewReportPage();
+
+		inputImageMapHeight(listBoundary.get(0));
+		inputImageMapWidth(listBoundary.get(1));
+
+		this.btnLatLongSelector.click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		String parentWindow = driver.getWindowHandle();
+		Set<String> handles = driver.getWindowHandles();
+		for (String windowHandle : handles) {
+			if (!windowHandle.equals(parentWindow)) {
+				driver.switchTo().window(windowHandle);
+				// driver.manage().window().maximize();
+
+				this.inputCustomNELat.clear();
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.inputCustomNELat.sendKeys(listBoundary.get(2));
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.inputCustomNELong.clear();
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.inputCustomNELong.sendKeys(listBoundary.get(3));
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.inputCustomSWLat.clear();
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.inputCustomSWLat.sendKeys(listBoundary.get(4));
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.inputCustomSWLong.clear();
+				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+				this.inputCustomSWLong.sendKeys(listBoundary.get(5));
+				this.btnCustomOK.click();
+				actualMsg = this.btnCustomOK.getText();
+			}
+		}
+		// driver.close();
+		// driver.switchTo().window(parentWindow);
+		return actualMsg;
+	}
+
+	public void openCustomerBoundarySelector() {
+		this.selectCustomerBoundaryRadioButton();
+		this.waitForCustomerBoundarySectionToShow();
+		this.clickBoundarySelectorBtn();
+	}
+
+	public void openCustomBoundarySelector() {
+		this.selectCustomBoundaryRadioButton();
+		this.waitForCustomBoundarySectionToShow();
+		this.clickLatLongMapSelectorBtn();
+	}
+
+	public void downloadReportPDFFile() {
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void downloadReportZIPFile() {
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void downloadMetaDataZipFile() {
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void downloadShapeZipFile() {
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public int getNumberofRecords() {
+		List<WebElement> records = this.numberofRecords;
+		return records.size();
+	}
+
+	public String getAreaErrorText() {
+		return this.areaErrorText.getText();
+
+	}
+
+	public WebElement getTextBoxReportSerach() {
+		return textBoxReportSerach;
+	}
+
+	public WebElement getDataTableEmpty() {
+		return dataTableEmpty;
+	}
+
+	public void selectTimeZone(String timeZone) {
+		List<WebElement> optionsTZ = this.cBoxTimezone.findElements(By.tagName("option"));
+		for (WebElement option : optionsTZ) {
+			if (timeZone.equalsIgnoreCase(option.getText().trim())) {
+				option.click();
+			}
+		}
+	}
+
+	public void selectGapCheckBox() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", checkBoxGap);
+	}
+
+	public void selectPercentCoverageReportArea() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", checkBoxPCRA);
+	}
+
+	public void selectPercentCoverageAssetCheckBox() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", checkBoxPCA);
+	}
+
+	public void selectPercentCoverageForecastCheckBox() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", checkBoxPCF);
+	}
+
+	public void selectIsotopicAnalysisCheckBox() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", checkBoxIsoAna);
+	}
+
+	public void selectIndicationsTableCheckBox() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", checkBoxIndTb);
+	}
+
+	public void selectSurveyCheckBox(WebElement checkboxSurFirst) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", checkboxSurFirst);
+	}
+
+	public void selectSurveySurveyor(String surveyorUnit) {
+		List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
+		for (WebElement option : optionsSU) {
+			if (surveyorUnit.equalsIgnoreCase(option.getText().trim())) {
+				option.click();
+			}
+		}
+	}
+
+	public void selectEndDateForSurvey(String endDate) {
+		try {
+			DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver, testSetup, strBaseURL, strBaseURL + STRURLPath);
+			PageFactory.initElements(driver, dateSetting);
+			if (endDate.startsWith("0")) {
+				endDate = endDate.replaceFirst("0*", "");
+			}
+			dateSetting.setDay("end", 0, endDate, false);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void selectStartDateForSurvey(String startDate) {
+		try {
+			DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver, testSetup, strBaseURL, strBaseURL + STRURLPath);
+			PageFactory.initElements(driver, dateSetting);
+			if (startDate.startsWith("0")) {
+				startDate = startDate.replaceFirst("0*", "");
+			}
+			dateSetting.setDay("start", 7, startDate, false);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void selectCustomer(String customer) {
+		if (dropdownCustomer.isDisplayed()) {
+			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
+			for (WebElement option : optionsCustomer) {
+				if (customer.equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+
+			confirmInChangeCustomerDialog();
+		}
+	}
+
+	public void selectCustomBoundaryRadioButton() {
+		this.areaBoundaryRadioButtons.get(CUSTOM_BOUNDARY_RADBUTTON_GROUP_IDX).click();
+	}
+
+	public void selectCustomerBoundaryRadioButton() {
+		this.areaBoundaryRadioButtons.get(CUSTOMER_BOUNDARY_RADBUTTON_GROUP_IDX).click();
+	}
+
+	public void selectReportMode(ReportModeFilter mode) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		switch (mode) {
+		case Standard:
+			js.executeScript("arguments[0].click();", checkBoxStndRptMode);
+			break;
+		case RapidResponse:
+			js.executeScript("arguments[0].click();", checkBoxRRRptMode);
+			break;
+		case Manual:
+			js.executeScript("arguments[0].click();", checkBoxManualRptMode);
+			break;
+		default:
+			break;
+		}
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		if (this.btnChangeRptMode.isDisplayed()) {
+			this.btnChangeRptMode.click();
+
+		}
+	}
+
+	public void selectSurveyModeForSurvey(SurveyModeFilter surveyModeFilter) {
+		switch (surveyModeFilter) {
+		case All:
+			this.inputSurModeFilterAll.click();
+			break;
+		case Standard:
+			this.inputSurModeFilterStd.click();
+			break;
+		case Operator:
+			this.inputSurModeFilterOperator.click();
+			break;
+		case RapidResponse:
+			this.inputSurModeFilterRapidResponse.click();
+			break;
+		case Manual:
+			this.inputSurModeFilterManual.click();
+			break;
+		default:
+			break;
+		}
+	}
+
+	public void selectViewLayerAssets(Boolean selectAssetCastIron, Boolean selectAssetCopper, Boolean selectAssetOtherPlastic, Boolean selectAssetPEPlastic, Boolean selectAssetProtectedSteel, Boolean selectAssetUnprotectedSteel) {
+		if (selectAssetCastIron) {
+			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-96caf1f5-d5c5-461d-9ce3-d210c20a1bb0']")).size() > 0) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxCastIron);
+			}
+		}
+		if (selectAssetCopper) {
+			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-d08fc87f-f979-4131-92a9-3d82f37f4bba']")).size() > 0) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxCopper);
+			}
+		}
+		if (selectAssetOtherPlastic) {
+			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-ad701312-c470-482a-be45-ef37770e2ce6']")).size() > 0) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxOtherPla);
+			}
+		}
+		if (selectAssetPEPlastic) {
+			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-f14735de-6c9b-4423-8533-f243a7fe4e90']")).size() > 0) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxPEPla);
+			}
+		}
+		if (selectAssetProtectedSteel) {
+			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-44353e68-0694-4f05-85cb-84d753ea278c']")).size() > 0) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxProtectedSteel);
+			}
+		}
+		if (selectAssetUnprotectedSteel) {
+			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-f3955e82-dd13-4842-84f7-502bcda6b57a']")).size() > 0) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxUnProtectedSteel);
+			}
+		}
+	}
+
+	public void selectViewLayerBoundaries(boolean selectBoundaryDistrict, boolean selectBoundaryDistrictPlat) {
+		if (selectBoundaryDistrict) {
+			if (driver.findElements(By.xpath("//*[@id='report-boundry-layers-Small Boundary']")).size() > 0) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxDistrict);
+			}
+		}
+		if (selectBoundaryDistrictPlat) {
+			if (driver.findElements(By.xpath("//*[@id='report-boundry-layers-Big Boundary']")).size() > 0) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkBoxDistrictPlat);
+			}
+		}
+	}
+
+	public void selectAnyCustomerBoundary(CustomerBoundaryType type) {
+		// TODO open the Boundary selector and click on any customer boundary.
+		// Could provide a search by boundary name.
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void validateInvestigatePDFFile() {
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public boolean verifyComplianceReportButton(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType) throws Exception {
+		return checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, buttonType, false);
 	}
 
 	/**
@@ -1546,433 +2266,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return true;
 	}
 
-	/**
-	 * Method to verify the Isotopic Analysis Table in SSRS
-	 * 
-	 * @param actualPath
-	 * @param reportTitle
-	 * @return
-	 * @throws IOException
-	 */
-	public boolean verifyIsotopicAnalysisTable(String actualPath, String reportTitle) throws IOException {
-
-		return true;
-	}
-
-	/**
-	 * Method to verify the Indication Table in SSRS
-	 * 
-	 * @param actualPath
-	 * @param reportTitle
-	 * @return
-	 * @throws IOException
-	 */
-	public boolean verifyIndicationTable(String actualPath, String reportTitle) throws IOException {
-
-		return true;
-	}
-
-	/**
-	 * Method to verify the Views Images
-	 * 
-	 * @param actualPath
-	 * @param reportTitle
-	 * @param expectedImage
-	 * @return
-	 * @throws IOException
-	 */
-
-	public boolean verifyViewsImages(String actualPath, String reportTitle, String expectedImage) throws IOException {
-
-		return true;
-	}
-
-	public boolean copyReportAndModifyDetails(String rptTitle, String strCreatedBy, String rptTitleNew, String surUnit, List<String> tag, boolean changeMode, ReportModeFilter strReportMode) {
-		setPagination(PAGINATIONSETTING);
-		this.waitForCopyReportPagetoLoad();
-		String reportTitleXPath;
-		String createdByXPath;
-		String copyImgXPath;
-
-		WebElement rptTitleCell;
-		WebElement createdByCell;
-		WebElement copyImg;
-
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
-
-		int rowSize = rows.size();
-		int loopCount = 0;
-
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
-			loopCount = rowSize;
-		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
-
-		this.waitForPageLoad();
-		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
-
-			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
-			createdByCell = table.findElement(By.xpath(createdByXPath));
-
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
-				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
-				copyImg = table.findElement(By.xpath(copyImgXPath));
-				copyImg.click();
-				this.inputTitle.clear();
-				this.inputTitle.sendKeys(rptTitleNew);
-
-				if (strReportMode != null && changeMode) {
-					selectReportMode(strReportMode);
-					this.waitForCopyReportPagetoLoad();
-					this.inputTitle.clear();
-					this.inputTitle.sendKeys(rptTitleNew);
-				} else {
-					this.waitForDeleteSurveyButtonToLoad();
-					this.btnDeleteSurvey.click();
-				}
-				if (surUnit != "") {
-					List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
-					for (WebElement option : optionsSU) {
-						if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
-							option.click();
-						}
-					}
-				}
-
-				for (String tagValue : tag) {
-					if (tagValue != "") {
-
-						inputSurveyTag(tagValue);
-						this.waitForSurveySearchButtonToLoad();
-						this.btnSurveySearch.click();
-						this.waitForSurveyTabletoLoad();
-						this.checkboxSurFirst.click();
-						this.waitForAddSurveyButtonToLoad();
-						this.btnAddSurveys.click();
-
-					}
-				}
-
-				this.inputViewInd.click();
-				this.inputViewIso.click();
-				this.inputViewAnno.click();
-				this.btnOK.click();
-
-				return true;
-			}
-
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
-				this.nextBtn.click();
-
-				this.waitForPageLoad();
-
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
-				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
-					loopCount = rowSize;
-				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
-
-				rowNum = 0;
-			}
-		}
-		return false;
-	}
-	
-	public void selectReportMode(ReportModeFilter mode) {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		switch (mode) {
-		case Standard:
-			js.executeScript("arguments[0].click();", checkBoxStndRptMode);
-			break;
-		case RapidResponse:
-			js.executeScript("arguments[0].click();", checkBoxRRRptMode);
-			break;
-		case Manual:
-			js.executeScript("arguments[0].click();", checkBoxManualRptMode);
-			break;
-		default:
-			break;
-		}
-
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		if (this.btnChangeRptMode.isDisplayed()) {
-			this.btnChangeRptMode.click();
-
-		}
-	}
-
-	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tag, String startDate, String endDate, boolean changeMode, String strReportMode) {
-		openNewReportPage();
-
-		if (customer != null && customer != "Picarro") {
-			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
-			for (WebElement option : optionsCustomer) {
-				if ((customer).equalsIgnoreCase(option.getText().trim())) {
-					option.click();
-				}
-			}
-
-			if (this.isElementPresent(btnChangeModeXPath)) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", btnChangeMode);
-			}
-		}
-
-		if (changeMode) {
-			if (strReportMode.contentEquals(Resources.getResource(ResourceKeys.Constant_Standard)))
-				this.radioBtnStndMode.click();
-			else if (strReportMode.contentEquals("Rapid Response"))
-				this.radioBtnRRmode.click();
-			else if (strReportMode.contentEquals(Resources.getResource(ResourceKeys.Constant_Manual)))
-				this.radioBtnManualMode.click();
-		}
-
-		this.inputTitle.clear();
-		this.inputTitle.sendKeys(title);
-
-		selectTimeZone(timeZone);
-		inputExclusionRadius(exclusionRadius);
-		inputImageMapWidth(imageMapWidth);
-		inputImageMapHeight(imageMapHeight);
-
-		this.inputNELat.sendKeys(NELat);
-		this.inputNELong.sendKeys(NELong);
-		this.inputSWLat.sendKeys(SWLat);
-		this.inputSWLong.sendKeys(SWLong);
-
-		this.checkBoxIndTb.click();
-		this.checkBoxIsoAna.click();
-		this.checkBoxPCA.click();
-		this.checkBoxPCRA.click();
-
-		selectViewLayerAssets(true, true, true, true, true, true);
-
-		if (surUnit != "") {
-			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
-			for (WebElement option : optionsSU) {
-				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
-					option.click();
-				}
-			}
-		}
-
-		for (String tagValue : tag) {
-			if (tagValue != "") {
-				inputSurveyTag(tagValue);
-				this.btnSurveySearch.click();
-				this.waitForSurveyTabletoLoad();
-				this.waitForSurveySelectorCheckBoxToLoad();
-				this.waitForSurveySelectorCheckBoxToBeEnabled();
-				selectSurveyCheckBox(checkboxSurFirst);
-				this.waitForAddSurveyButtonToLoad();
-				this.btnAddSurveys.click();
-
-			}
-		}
-
-		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
-		Map<String, String> viewMap1 = new HashMap<String, String>();
-
-		viewMap1.put(KEYVIEWNAME, "First View");
-		viewMap1.put(KEYLISA, "1");
-		viewMap1.put(KEYFOV, "1");
-		viewMap1.put(KEYBREADCRUMB, "1");
-		viewMap1.put(KEYINDICATIONS, "1");
-		viewMap1.put(KEYISOTOPICCAPTURE, "1");
-		viewMap1.put(KEYANNOTATION, "1");
-		viewMap1.put(KEYGAPS, "1");
-		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "1");
-		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
-
-		viewList.add(viewMap1);
-
-		addViews(customer, viewList);
-
-		if (boundary != null) {
-			this.inputViewBoundaries.click();
-
-			selectViewLayerBoundaries(true, true);
-		}
-
-		this.btnOK.click();
-	}
-
-	public boolean checkBlankReportErrorTextPresent() {
-		openNewReportPage();
-		this.btnOK.click();
-		if (isElementPresent(strErrorText))
-			return true;
-		return false;
-	}
-
-	public boolean searchReport(String reportTitle, String reportCreatedBy) {
-		this.inputSearchReport.sendKeys(reportTitle);
-
-		if (this.tdCReportTitle.getText().contentEquals(reportTitle)) {
-			if (this.tdCReportCreatedBy.getText().contentEquals(reportCreatedBy))
-				return true;
-		}
-		return false;
-	}
-
-	public void addNewReportWithMultipleSurveysIncluded(Reports reportsCompliance) {
-		openNewReportPage();
-		inputReportTitle(reportsCompliance.getRptTitle());
-
-		if (reportsCompliance.getCustomer() != null && reportsCompliance.getCustomer() != "Picarro") {
-			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
-			for (WebElement option : optionsCustomer) {
-				if ((reportsCompliance.getCustomer()).equalsIgnoreCase(option.getText().trim())) {
-					option.click();
-				}
-			}
-
-			if (this.isElementPresent(btnChangeCustomerXPath)) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", btnChangeCustomer);
-
-				inputReportTitle(reportsCompliance.getRptTitle());
-			}
-		}
-
-		// TODO : Check?? Was this call intentionally removed.
-		selectTimeZone(reportsCompliance.getTimeZone());
-
-		inputExclusionRadius(reportsCompliance.getExclusionRadius());
-		inputImageMapHeight(reportsCompliance.getImageMapHeight());
-		inputImageMapWidth(reportsCompliance.getImageMapWidth());
-
-		fillCustomBoundaryTextFields(reportsCompliance.getNELat(), reportsCompliance.getNELong(), reportsCompliance.getSWLat(), reportsCompliance.getSWLong());
-
-		List<Map<String, String>> tablesList = reportsCompliance.getTablesList();
-		if (tablesList.get(0).get(KEYINDTB).equalsIgnoreCase("1")) {
-			this.checkBoxIndTb.click();
-		}
-		if (tablesList.get(0).get(KEYISOANA).equalsIgnoreCase("1")) {
-			this.checkBoxIsoAna.click();
-		}
-		if (tablesList.get(0).get(KEYPCA).equalsIgnoreCase("1")) {
-			this.checkBoxPCA.click();
-		}
-		if (tablesList.get(0).get(KEYPCRA).equalsIgnoreCase("1")) {
-			this.checkBoxPCRA.click();
-		}
-
-		selectViewLayerAssets(true, true, true, true, true, true);
-
-		if (reportsCompliance.getSurveyorUnit() != "") {
-			selectSurveySurveyor(reportsCompliance.getSurveyorUnit());
-		}
-
-		for (String tagValue : reportsCompliance.tagList) {
-			if (tagValue != "") {
-				inputSurveyTag(tagValue);
-				this.btnSurveySearch.click();
-				this.waitForSurveyTabletoLoad();
-				this.waitForSurveySelectorCheckBoxToLoad();
-				this.waitForSurveySelectorCheckBoxToBeEnabled();
-				this.checkboxSurFirst.click();
-				this.waitForAddSurveyButtonToLoad();
-				this.btnAddSurveys.click();
-			}
-		}
-
-		addViews(reportsCompliance.getCustomer(), reportsCompliance.getViewList());
-
-		this.btnOK.click();
-	}
-
-	public boolean checkPaginationSetting(String numberOfReports) {
-		setPagination(numberOfReports);
-		this.waitForPageLoad();
-
-		String msgToVerify = STRPaginationMsg + numberOfReports;
-		this.waitForNumberOfRecords(msgToVerify);
-
-		if (msgToVerify.equals(this.paginationMsg.getText().substring(0, 16).trim()))
-			return true;
-
-		return false;
-	}
-
-	public boolean verifyCancelButtonFunctionality() {
-		openNewReportPage();
-		this.btnCancel.click();
-		this.waitForPageLoad();
-
-		if (isElementPresent(strBtnNewCompRpt))
-			return true;
-
-		return false;
-	}
-
-	public void openNewComplianceReportPage() {
-		openNewReportPage();
-	}
-
-	public void clickOnCopyReport(String rptTitle, String strCreatedBy) {
-		setPagination(PAGINATIONSETTING);
-
-		String reportTitleXPath;
-		String createdByXPath;
-		String copyImgXPath;
-
-		WebElement rptTitleCell;
-		WebElement createdByCell;
-		WebElement copyImg;
-
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
-
-		int rowSize = rows.size();
-		int loopCount = 0;
-
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
-			loopCount = rowSize;
-		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
-
-		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
-
-			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
-			createdByCell = table.findElement(By.xpath(createdByXPath));
-
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
-				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
-				copyImg = table.findElement(By.xpath(copyImgXPath));
-
-				copyImg.click();
-				break;
-			}
-
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
-				this.nextBtn.click();
-
-				this.waitForPageLoad();
-
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
-				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
-					loopCount = rowSize;
-				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
-
-				rowNum = 0;
-			}
-		}
-	}
-
 	public boolean verifySurveyNotAdded(String reportTitle, String customer, String NELat, String NELong, String SWLat, String SWLong, List<Map<String, String>> views) {
 		openNewReportPage();
 		inputReportTitle(reportTitle);
 		fillCustomBoundaryTextFields(NELat, NELong, SWLat, SWLong);
 		addViews(customer, views);
-		this.btnOK.click();
+		this.clickOnOKButton();
 		if (this.msgEmptySurvey.getText().equalsIgnoreCase(ComplianceReport_SurveyMissingMessage)) {
 			return true;
 		}
@@ -2023,130 +2322,104 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return false;
 	}
 
-	public boolean deleteSurveyAndIncludeAgain(String surveyTag) {
-		this.btnDeleteDrivingSurvey.click();
-		this.waitForCopyReportPagetoLoad();
-
+	public void verifyMetaDataFiles() {
 		try {
-			driver.findElement(By.xpath(strFirstSurveyTag));
-			return false;
-		} catch (NoSuchElementException e) {
-			if (surveyTag != "") {
-				inputSurveyTag(surveyTag);
-				this.btnSurveySearch.click();
-				this.waitForSurveyTabletoLoad();
-				this.checkboxSurFirst.click();
-				this.btnAddSurveys.click();
-			}
-
-			if (isElementPresent(strFirstSurveyTag))
-				return true;
-
-			return false;
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
-	public String provideLatLongAtCustomBoundarySelectorWindow(List<String> listBoundary) {
-		String actualMsg = "";
+	public void verifyMetaDataFilesData() {
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void verifyThumbnailInReportViewer(ReportViewerThumbnailType compliancezipmeta) {
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Method to verify the Isotopic Analysis Table in SSRS
+	 * 
+	 * @param actualPath
+	 * @param reportTitle
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean verifyIsotopicAnalysisTable(String actualPath, String reportTitle) throws IOException {
+
+		return true;
+	}
+
+	/**
+	 * Method to verify the Indication Table in SSRS
+	 * 
+	 * @param actualPath
+	 * @param reportTitle
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean verifyIndicationTable(String actualPath, String reportTitle) throws IOException {
+
+		return true;
+	}
+
+	/**
+	 * Method to verify the Views Images
+	 * 
+	 * @param actualPath
+	 * @param reportTitle
+	 * @param expectedImage
+	 * @return
+	 * @throws IOException
+	 */
+
+	public boolean verifyViewsImages(String actualPath, String reportTitle, String expectedImage) throws IOException {
+
+		return true;
+	}
+
+	public boolean verifyCancelButtonFunctionality() {
 		openNewReportPage();
-
-		inputImageMapHeight(listBoundary.get(0));
-		inputImageMapWidth(listBoundary.get(1));
-
-		this.btnLatLongSelector.click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-
-		String parentWindow = driver.getWindowHandle();
-		Set<String> handles = driver.getWindowHandles();
-		for (String windowHandle : handles) {
-			if (!windowHandle.equals(parentWindow)) {
-				driver.switchTo().window(windowHandle);
-				// driver.manage().window().maximize();
-
-				this.inputCustomNELat.clear();
-				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-				this.inputCustomNELat.sendKeys(listBoundary.get(2));
-				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-				this.inputCustomNELong.clear();
-				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-				this.inputCustomNELong.sendKeys(listBoundary.get(3));
-				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-				this.inputCustomSWLat.clear();
-				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-				this.inputCustomSWLat.sendKeys(listBoundary.get(4));
-				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-				this.inputCustomSWLong.clear();
-				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-				this.inputCustomSWLong.sendKeys(listBoundary.get(5));
-				this.btnCustomOK.click();
-				actualMsg = this.btnCustomOK.getText();
-			}
-		}
-		// driver.close();
-		// driver.switchTo().window(parentWindow);
-		return actualMsg;
-	}
-
-	public void clickOnNewComplianceReportBtn() {
-		this.btnNewComplianceRpt.click();
-	}
-
-	public void clickOnCancelBtn() {
 		this.btnCancel.click();
+		this.waitForPageLoad();
+
+		if (isElementPresent(strBtnNewCompRpt))
+			return true;
+
+		return false;
 	}
 
-	public void clickOnFirstCopyComplianceBtn() {
-		this.btnFirstCopyCompliance.click();
+	public void verifyShapeFilesData() {
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void clickOnFirstInvestigateComplianceBtn() {
-		this.btnFirstInvestigateCompliance.click();
+	public void verifyShapeFiles() {
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void openCustomerBoundarySelector() {
-		this.selectCustomerBoundaryRadioButton();
-		this.waitForCustomerBoundarySectionToShow();
-		this.clickBoundarySelectorBtn();
-	}
-
-	public void openLatLongAreaSelector() {
-		this.selectCustomBoundaryRadioButton();
-		this.waitForCustomBoundarySectionToShow();
-		this.clickLatLongMapSelectorBtn();
-	}
-
-	public void clickLatLongMapSelectorBtn() {
-		this.latLongMapSelectorBtn.click();
-	}
-
-	public void clickBoundarySelectorBtn() {
-		this.boundarySelectorBtn.click();
-	}
-
-	public void selectCustomBoundaryRadioButton() {
-		this.areaBoundaryRadioButtons.get(CUSTOM_BOUNDARY_RADBUTTON_GROUP_IDX).click();
-	}
-
-	public void selectCustomerBoundaryRadioButton() {
-		this.areaBoundaryRadioButtons.get(CUSTOMER_BOUNDARY_RADBUTTON_GROUP_IDX).click();
-	}
-
-	public int getNumberofRecords() {
-		List<WebElement> records = this.numberofRecords;
-		return records.size();
-	}
-
-	public String getAreaErrorText() {
-		return this.areaErrorText.getText();
-
-	}
-
-	public WebElement getTextBoxReportSerach() {
-		return textBoxReportSerach;
-	}
-
-	public WebElement getDataTableEmpty() {
-		return dataTableEmpty;
+	public void verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType compliancezipmeta) {
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void waitForCustomBoundarySectionToShow() {
@@ -2365,74 +2638,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return false;
 	}
 
-	public void selectViewLayerAssets(Boolean selectAssetCastIron, Boolean selectAssetCopper, Boolean selectAssetOtherPlastic, Boolean selectAssetPEPlastic, Boolean selectAssetProtectedSteel, Boolean selectAssetUnprotectedSteel) {
-		if (selectAssetCastIron) {
-			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-96caf1f5-d5c5-461d-9ce3-d210c20a1bb0']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxCastIron);
-			}
-		}
-		if (selectAssetCopper) {
-			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-d08fc87f-f979-4131-92a9-3d82f37f4bba']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxCopper);
-			}
-		}
-		if (selectAssetOtherPlastic) {
-			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-ad701312-c470-482a-be45-ef37770e2ce6']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxOtherPla);
-			}
-		}
-		if (selectAssetPEPlastic) {
-			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-f14735de-6c9b-4423-8533-f243a7fe4e90']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxPEPla);
-			}
-		}
-		if (selectAssetProtectedSteel) {
-			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-44353e68-0694-4f05-85cb-84d753ea278c']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxProtectedSteel);
-			}
-		}
-		if (selectAssetUnprotectedSteel) {
-			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-f3955e82-dd13-4842-84f7-502bcda6b57a']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxUnProtectedSteel);
-			}
-		}
-	}
-
-	public void selectViewLayerBoundaries(boolean selectBoundaryDistrict, boolean selectBoundaryDistrictPlat) {
-		if (selectBoundaryDistrict) {
-			if (driver.findElements(By.xpath("//*[@id='report-boundry-layers-Small Boundary']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxDistrict);
-			}
-		}
-		if (selectBoundaryDistrictPlat) {
-			if (driver.findElements(By.xpath("//*[@id='report-boundry-layers-Big Boundary']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxDistrictPlat);
-			}
-		}
-	}
-
-	public enum CustomerBoundaryType {
-		District, DistrictPlat
-	}
-
-	public void selectAnyCustomerBoundary(CustomerBoundaryType type) {
-		// TODO open the Boundary selector and click on any customer boundary.
-		// Could provide a search by boundary name.
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	private void waitForFileDownload(String fileName, String downloadPath) {
 		(new WebDriverWait(driver, timeout + 60)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -2441,31 +2646,20 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		});
 	}
 
-	private boolean checkFileExists(String fileName, String downloadPath) {
-		File dir = new File(downloadPath);
-		File[] dir_contents = dir.listFiles();
-		for (int i = 0; i < dir_contents.length; i++) {
-			if (dir_contents[i].getName().equals(fileName)) {
-				return true;
-			}
-		}
-		return false;
+	public void waitForMetadataZIPFileDownload(String reportName) {
+		waitForFileDownload(reportName + " (1).zip", testSetup.getDownloadPath());
 	}
 
-	public void waitForPDFFileDownload() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void waitForPDFFileDownload(String reportName) {
+		waitForFileDownload(reportName + ".pdf", testSetup.getDownloadPath());
 	}
 
-	public void validateInvestigatePDFFile() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void waitForReportZIPFileDownload(String reportName) {
+		waitForFileDownload(reportName + ".zip", testSetup.getDownloadPath());
+	}
+
+	public void waitForShapeZIPFileDownload(String reportName) {
+		waitForFileDownload(reportName + " (2).zip", testSetup.getDownloadPath());
 	}
 
 	public void waitForReportViewerPopupToShow() {
@@ -2476,71 +2670,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 
-	public void downloadMetaDataZipFile() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void verifyMetaDataFiles() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void verifyMetaDataFilesData() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void verifyThumbnailInReportViewer(ReportViewerThumbnailType compliancezipmeta) {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void downloadShapeZipFile() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void waitForShapeZipFileDownload() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void verifyShapeFilesData() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void verifyShapeFiles() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType compliancezipmeta) {
 		try {
 			throw new Exception("Not implemented");
 		} catch (Exception e) {

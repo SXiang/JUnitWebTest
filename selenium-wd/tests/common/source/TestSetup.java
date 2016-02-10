@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
@@ -33,6 +34,10 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+
+import com.relevantcodes.extentreports.DisplayOrder;
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.NetworkMode;
 
 /**
  * This is the initial class to setup up the testing environment and
@@ -414,6 +419,26 @@ public class TestSetup {
 	public static void stopAnalyzer() {
 		ProcessUtility.killProcess("Picarro.Surveyor.Analyzer.exe", /*killChildProcesses*/ true);
 		ProcessUtility.killProcess("supervisor.exe", /*killChildProcesses*/ true);
+	}
+
+	public static ExtentReports createExtentReport(String reportClassName) {
+		String executionPath = null;
+		try {
+			executionPath = TestSetup.getExecutionPath(TestSetup.getRootPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String runEnvironment = TestContext.INSTANCE.getRunEnvironment();
+		String reportFilePath = executionPath + "reports" + File.separator + 
+				String.format("report-%s-%s.html", runEnvironment, reportClassName);	   
+		String configFilePath = executionPath + "tests" + File.separator + "extent-config.xml";
+
+		ExtentReports extent = new ExtentReports(reportFilePath, true /*replaceExisting*/, DisplayOrder.NEWEST_FIRST, 
+				NetworkMode.ONLINE, Locale.US);
+		extent.addSystemInfo("ChromeDriver Version", "2.20");
+		extent.addSystemInfo("Environment", runEnvironment);
+		extent.loadConfig(new File(configFilePath));
+		return extent;
 	}
 
 	public void startReplay(String defnFileName) throws InstantiationException, IllegalAccessException, IOException {

@@ -62,7 +62,7 @@ public class SurveyorBaseTest {
 
 		@Override
 		public void finished(Description description) {
-			SurveyorBaseTest.reportTestFinished();
+			SurveyorBaseTest.reportTestFinished(description.getClassName());
 			TestSetup.simulatorTestFinishing(description);
 		}
 
@@ -77,33 +77,21 @@ public class SurveyorBaseTest {
 		}
 	};
 	
-	private static ExtentReports getExtentReport() {
-		String executionPath = null;
-		try {
-			executionPath = TestSetup.getExecutionPath(TestSetup.getRootPath());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String reportFilePath = executionPath + "reports" + File.separator + "report.html";	   
-		String configFilePath = executionPath + "tests" + File.separator + "extent-config.xml";
-	   
-		if (TestContext.INSTANCE.getReport() == null) {
-			ExtentReports extent = new ExtentReports(reportFilePath, true /*replaceExisting*/, DisplayOrder.NEWEST_FIRST, 
-				NetworkMode.ONLINE, Locale.US);
-			extent.addSystemInfo("ChromeDriver Version", "2.20");
-			extent.addSystemInfo("Environment", TestContext.INSTANCE.getRunEnvironment());
-			extent.loadConfig(new File(configFilePath));
-			TestContext.INSTANCE.setReport(extent);
+	private static ExtentReports getExtentReport(String className) {
+	   ExtentReports extentReport = TestContext.INSTANCE.getReport();
+	   if (extentReport == null) {
+		   extentReport = TestSetup.createExtentReport(className);
+		   TestContext.INSTANCE.setReport(extentReport);
 	   }
-	   return TestContext.INSTANCE.getReport();
+	   return extentReport;
 	}
 	
 	public static void reportTestStarting(Description description) {
-		reportTestStarting(description.getMethodName(), description.toString());
+		reportTestStarting(description.getClassName(), description.getMethodName(), description.toString());
 	}
 
-	public static void reportTestStarting(String methodName, String firstLogLine) {
-		ExtentReports report = getExtentReport();
+	public static void reportTestStarting(String className, String methodName, String firstLogLine) {
+		ExtentReports report = getExtentReport(className);
 		setExtentTest(report.startTest(methodName));
 		getExtentTest().assignCategory(TestContext.INSTANCE.getTestRunCategory());
 		getExtentTest().log(LogStatus.INFO, firstLogLine);
@@ -111,8 +99,8 @@ public class SurveyorBaseTest {
 				DateUtility.getCurrentDate()));
 	}
 
-	public static void reportTestFinished() {
-		ExtentReports report = getExtentReport();
+	public static void reportTestFinished(String className) {
+		ExtentReports report = getExtentReport(className);
 		getExtentTest().log(LogStatus.INFO, String.format("Finished test. [End Time:%s]", 
 				DateUtility.getCurrentDate()));
 		report.endTest(getExtentTest());

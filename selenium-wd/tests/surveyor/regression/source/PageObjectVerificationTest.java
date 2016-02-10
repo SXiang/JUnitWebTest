@@ -70,7 +70,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		complianceReportsPage.waitForPageLoad();
 
 		complianceReportsPage.clickOnNewComplianceReportBtn();
-		complianceReportsPage.openLatLongAreaSelector();
+		complianceReportsPage.openCustomBoundarySelector();
 
 		latLongSelectionControl.waitForModalDialogOpen()
 				.switchMode(ControlMode.MapInteraction)
