@@ -81,6 +81,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 				testSetup.getLoginPwd());
 
 		manageUsersPage.open();
+		manageUsersPage.waitForPageLoad();
 		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD,
 				CUSUSERROLEUA, locationDesc, TIMEZONECT);
 
@@ -114,13 +115,16 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 				testSetup.getLoginPwd());
 
 		manageCustomersPage.open();
+		manageCustomersPage.waitForPageLoad();
 		manageCustomersPage.addNewCustomer(customerName, eula);
 
 		manageLocationsPage.open();
+		manageLocationsPage.waitForPageLoad();
 		manageLocationsPage
 				.addNewLocation(locationName, customerName, cityName);
 
 		manageUsersPage.open();
+		manageUsersPage.waitForPageLoad();
 		manageUsersPage.addNewCustomerUser(customerName, userName,
 				USERPASSWORD, CUSUSERROLEUA, locationName);
 
@@ -156,12 +160,15 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
 		manageCustomersPage.open();
+		manageCustomersPage.waitForPageLoad();
 		manageCustomersPage.addNewCustomer(customerName, eula);
 
 		manageLocationsPage.open();
+		manageLocationsPage.waitForPageLoad();
 		manageLocationsPage.addNewLocation(locationName, customerName, cityName);
 
 		manageUsersPage.open();
+		manageUsersPage.waitForPageLoad();
 		
 		Log.info(String.format("Adding new user: CustomerName=[%s]; Username=[%s]; Role=[%s]; Location=[%s]", 
 				customerName, userName, CUSUSERROLEUA, locationName)); 
@@ -207,6 +214,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(username, password);
 
 		manageUsersPage.open();
+		manageUsersPage.waitForPageLoad();
 		manageUsersPage.addNewCustomerUser(SQACUS, usernameNew, password, CUSUSERROLEDR, TIMEZONECTUA, SQACUSLOC);
 
 		Log.info(String.format("Looking for user: Location-[%s]; Username-[%s]", SQACUSLOC, usernameNew));
@@ -225,6 +233,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(username, password);
 
 		manageUsersPage.open();
+		manageUsersPage.waitForPageLoad();
 		if (!manageUsersPage.resetUserPassword(usernameNew, password + "1", false))
 			fail(String.format("\nTestcase %s - failed to reset user password.\n", testCaseID));
 
@@ -250,6 +259,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
 		manageUsersPage.open();
+		manageUsersPage.waitForPageLoad();
 		manageUsersPage.addNewCustomerUser(SQACUS, usernameNew, USERPASSWORD, CUSUSERROLEDR, TIMEZONECTUA, SQACUSLOC);
 
 		Log.info(String.format("Looking for user: Location-[%s]; Username-[%s]", SQACUSLOC, usernameNew));
@@ -299,12 +309,15 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
 		manageCustomersPage.open();
+		manageCustomersPage.waitForPageLoad();
 		manageCustomersPage.addNewCustomer(customerName, eula);
 
 		manageLocationsPage.open();
+		manageLocationsPage.waitForPageLoad();
 		manageLocationsPage.addNewLocation(locationName, customerName, cityName);
 
 		manageUsersPage.open();
+		manageUsersPage.waitForPageLoad();
 
 		Log.info(String.format("Creating new user - Customer=%s;Username=%s;Role=%s;Location=%s;Enabled=%b",
 				customerName, userName, CUSUSERROLEUA, locationName, true));
@@ -313,9 +326,11 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		// Add another location for the customer.
 		manageLocationsPage.open();
+		manageLocationsPage.waitForPageLoad();
 		manageLocationsPage.addNewLocation(locationNameNew, customerName, cityNameNew);		
 		
 		manageUsersPage.open();
+		manageUsersPage.waitForPageLoad();
 		
 		// Edit role, location and timezone
 		Log.info(String.format("Editing user - Username=%s;Role=%s;Timezone=%s;Location=%s;Enabled=%b;IsCustomerUser=%b",
@@ -355,9 +370,11 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		homePage.waitForPageLoad();
 
 		manageUsersPage.open();
+		manageUsersPage.waitForPageLoad();
 		manageUsersPage.addTestUser(usernameNew, USERPASSWORD, USERPASSWORD);
 
 		manageUsersPage.open();
+		manageUsersPage.waitForPageLoad();
 		String output = manageUsersPage.addTestUser(usernameNew, USERPASSWORD, USERPASSWORD);
 		Log.info("Found error message:" + output);
 		assertTrue(output.contains(DUPLICATIONERROR));
@@ -385,6 +402,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		homePage.waitForPageLoad();
 
 		manageUsersPage.open();
+		manageUsersPage.waitForPageLoad();
 		manageUsersPage.addNewCustomerUser(SQACUS, usernameNew, password, CUSUSERROLEDR, SQACUSLOC, false);
 
 		Log.info(String.format("Looking for user: Location-[%s]; Username-[%s]", SQACUSLOC, usernameNew));
@@ -420,6 +438,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		homePage.waitForPageLoad();
 		
 		manageUsersPage.open();
+		manageUsersPage.waitForPageLoad();
 
 		// create disabled user.
 		Log.info(String.format("Creating new user - Customer=%s;Username=%s;Role=%s;Location=%s;Enabled=%b",
@@ -460,6 +479,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		homePage.waitForPageLoad();
 		
 		manageUsersPage.open();
+		manageUsersPage.waitForPageLoad();
 
 		// Create user with 50 characters in email.
 		Log.info(String.format("Creating new user - Customer=%s;Username=%s;Role=%s;Location=%s;Enabled=%b",
@@ -509,6 +529,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		pageSize = 10;
 		manageUsersPage.open();
+		manageUsersPage.waitForPageLoad();
 		manageUsersPage.setPagination(String.valueOf(pageSize));
 
 		userNameList = manageUsersPage.getUserNameList(false, pageSize);
@@ -524,6 +545,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		pageSize = 25;
 		manageUsersPage.open();
+		manageUsersPage.waitForPageLoad();
 		manageUsersPage.setPagination(String.valueOf(pageSize));
 
 		userNameList = manageUsersPage.getUserNameList(false, pageSize);
@@ -539,6 +561,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		pageSize = 50;
 		manageUsersPage.open();
+		manageUsersPage.waitForPageLoad();
 		manageUsersPage.setPagination(String.valueOf(pageSize));
 
 		userNameList = manageUsersPage.getUserNameList(false, pageSize);
@@ -554,6 +577,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		pageSize = 100;
 		manageUsersPage.open();
+		manageUsersPage.waitForPageLoad();
 		manageUsersPage.setPagination(String.valueOf(pageSize));
 
 		userNameList = manageUsersPage.getUserNameList(false, pageSize);
@@ -588,6 +612,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 
 		manageUsersPage.open();
+		manageUsersPage.waitForPageLoad();
 		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD,
 				CUSUSERROLESU, locationDesc, TIMEZONECT);
 
@@ -616,6 +641,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 
 		manageUsersPage.open();
+		manageUsersPage.waitForPageLoad();
 		manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD,
 				CUSUSERROLEUA, SQACUSLOC);
 
