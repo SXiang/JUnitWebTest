@@ -147,7 +147,7 @@ public class RegexUtility {
 	
 	
 	public static void main(String[] args) {
-		/*Log.info("Running test - testMatchesPattern_functionNameAndArgument_Success() ...");
+		Log.info("Running test - testMatchesPattern_functionNameAndArgument_Success() ...");
 		testMatchesPattern_functionNameAndArgument_Success();
 		Log.info("Running test - testMatchesPattern_functionNameNoArgument_FailMatch() ...");
 		testMatchesPattern_functionNameNoArgument_FailMatch();
@@ -166,9 +166,7 @@ public class RegexUtility {
 		Log.info("Running test - testMatchesPatternCN_functiongetReportRegexDatePattern_Success() ...");
 		testMatchesPatternCN_functiongetReportRegexDatePattern_Success();
 		Log.info("Running test - testMatchesPatternFR_functiongetReportRegexDatePattern_Success() ...");
-		testMatchesPatternFR_functiongetReportRegexDatePattern_Success();*/
-		
-		
+		testMatchesPatternFR_functiongetReportRegexDatePattern_Success();		
 		Log.info("Running test - testGetStringInBetween_Success() ...");
 		test_functionGetStringInBetween_Success();
 	}
