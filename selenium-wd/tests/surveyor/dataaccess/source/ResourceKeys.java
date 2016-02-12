@@ -28,6 +28,7 @@ public class ResourceKeys {
 	public static final String Constant_Password = "Constant_Password";
 	public static final String Constant_Satellite = "Constant_Satellite";
 	public static final String Constant_Standard = "Constant_Standard";
+	public static final String Constant_Survey = "Constant_Survey";
 	public static final String Constant_Surveyors = "Constant_Surveyors";
 	public static final String Constant_ShowingStartToEndOfTotalEntries = "Constant_ShowingStartToEndOfTotalEntries";
 	public static final String Constant_Yes = "Constant_Yes";

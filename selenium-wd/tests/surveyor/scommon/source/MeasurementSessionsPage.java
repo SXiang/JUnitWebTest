@@ -41,6 +41,9 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[8]/a[5]/img")
 	private WebElement linkDeleteSurvey;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[11]/a[1]/img")
+	private WebElement linkViewSurvey;
+	
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -482,6 +485,14 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		return false;
 	}	
 
+	public WebElement getFirstViewSurveyLink() {
+		return linkViewSurvey;
+	}
+
+	public void clickOnFirstViewSurveyLink() {
+		this.linkViewSurvey.click();
+	}
+	
 	@Override
 	public void waitForPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {

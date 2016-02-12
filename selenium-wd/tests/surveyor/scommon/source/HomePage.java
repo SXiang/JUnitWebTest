@@ -179,9 +179,7 @@ public class HomePage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='00000000-0000-0000-0001-000000000000']/a")
 	protected WebElement dropDownPST;
-	
-	
-	
+
 	/**
 	 * @param driver
 	 * @param baseURL
@@ -547,9 +545,30 @@ public class HomePage extends SurveyorBasePage {
 		if (!this.driver.getTitle().contains("Driving Surveys"))
 			return false;
 		
+		measurementSessionsPage.clickOnFirstViewSurveyLink();
+		
+		SurveyViewPage surveyViewPage = new SurveyViewPage(driver, testSetup, SurveyViewPage.STRURLPath);
+		PageFactory.initElements(driver, surveyViewPage);		
+		surveyViewPage.waitForPageLoad();		
+		surveyViewPage.checkIfAtSurveyViewPage();
+		
+		surveyViewPage.clickOnPicarroAdminLink();
+		this.waitForPageLoad();
+		
+		this.clickOnViewAllDrivingSurveysLink();
+		measurementSessionsPage.waitForPageLoad();
+		
+		measurementSessionsPage.clickOnFirstViewSurveyLink();
+		surveyViewPage.waitForPageLoad();
+		surveyViewPage.checkIfAtSurveyViewPage();
+
 		return true;
 	}
 	
+	public void clickOnViewAllDrivingSurveysLink() {
+		this.linkViewAllDrivingSurveys.click();
+	}
+
 	public WebElement getLinkSurveyors() {
 		return this.linkSurveyors;
 	}

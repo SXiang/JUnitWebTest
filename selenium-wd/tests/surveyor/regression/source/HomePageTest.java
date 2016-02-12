@@ -238,6 +238,8 @@ public class HomePageTest extends SurveyorBaseTest {
 		homePage.open();
 
 		assertTrue(homePage.checkDashBoardViewAllDrivingSurveysLink());
+		
+		
 	}
 
 	/**
