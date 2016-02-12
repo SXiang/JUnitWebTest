@@ -1,5 +1,7 @@
 package common.source;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -20,65 +22,72 @@ public class RegexUtility {
 	public static final String REGEX_PATTERN_EXTRACT_FUNCTION_ARGS = "([a-zA-Z_]\\w+)\\((.+)\\)";
 	public static final String REGEX_PATTERN_EXTRACT_VALUE_WRAPPED_IN_QUOTE = "'(.+)'";
 	public static final String REGEX_PATTERN_EXTRACT_LINES_STARTING_WITH_DIGITS = "^\\d.*";
+	public static final String REGEX_PATTERN_EXTRACT_EVERYTHING = "(.*?)";
+	public static final String REGEX_PATTERN_SPACES = "\\s+";
 
 	private static int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
-	
+
 	/**
 	 * Returns whether the specified string matches with the specified regex pattern.
 	 * 
-	 * @param inputString - string to match.
-	 * @param regexPattern - regex pattern to match against.
+	 * @param inputString
+	 *            - string to match.
+	 * @param regexPattern
+	 *            - regex pattern to match against.
 	 * @return
 	 */
 	public static boolean matchesPattern(String inputString, String regexPattern) {
-		 Pattern pattern = Pattern.compile(regexPattern, flags);
-		 Matcher matcher = pattern.matcher(inputString);
-		 return matcher.matches();
+		Pattern pattern = Pattern.compile(regexPattern, flags);
+		Matcher matcher = pattern.matcher(inputString);
+		return matcher.matches();
 	}
 
 	/**
 	 * Gets matching groups from the specified regex pattern.
 	 * 
-	 * @param inputString - string to match.
-	 * @param regexPattern - regex pattern.
+	 * @param inputString
+	 *            - string to match.
+	 * @param regexPattern
+	 *            - regex pattern.
 	 * @return
 	 */
 	public static List<String> getMatchingGroups(String inputString, String regexPattern) {
-		List<String> output = new ArrayList<String>(); 
+		List<String> output = new ArrayList<String>();
 		Pattern pattern = Pattern.compile(regexPattern, flags);
-		 Matcher matcher = pattern.matcher(inputString);
-		 if (matcher.find()) {
+		Matcher matcher = pattern.matcher(inputString);
+		if (matcher.find()) {
 			int count = matcher.groupCount();
 			for (int i = 0; i <= count; i++) {
-				 output.add(matcher.group(i));
+				output.add(matcher.group(i));
 			}
-		 }
-		 
-		 return output;
+		}
+
+		return output;
 	}
 
 	/**
-	 * Returns a list of String with matching parts after split.
-	 * If parts are empty then they are not returned in the output
+	 * Returns a list of String with matching parts after split. If parts are empty then they are not returned in the output
 	 * 
-	 * @param inputString - string to split.
-	 * @param regexPattern - regex pattern used for splitting.
+	 * @param inputString
+	 *            - string to split.
+	 * @param regexPattern
+	 *            - regex pattern used for splitting.
 	 * @return
 	 */
 	public static List<String> split(String inputString, String regexPattern) {
-		List<String> output = new ArrayList<String>(); 
+		List<String> output = new ArrayList<String>();
 		Pattern pattern = Pattern.compile(regexPattern, flags);
 		String[] items = pattern.split(inputString);
-        for(String s : items) {
-            output.add(s);
-        }
-        return output;
+		for (String s : items) {
+			output.add(s);
+		}
+		return output;
 	}
-	
+
 	/**
-	 * This methods looks at the culture of the user and determines the date format Regex accordingly Cultures supported right now: English, French, Chinese
-	 * e.g. When used in combine with getMatchingGroups method, can extract the date from a String.  
-	 * "1/23/2016 11:16 PM PST" can be extracted from a String like "1/23/2016 11:16 PM PST Administrator Automation Test Note 122291" 
+	 * This methods looks at the culture of the user and determines the date format Regex accordingly Cultures supported right now: English, French, Chinese e.g. When used in combine with
+	 * getMatchingGroups method, can extract the date from a String. "1/23/2016 11:16 PM PST" can be extracted from a String like "1/23/2016 11:16 PM PST Administrator Automation Test Note 122291"
+	 * 
 	 * @param whether
 	 *            the date check is for a report or not (Note: Pages have the same Date format without TimeZone
 	 * @return date format for the user locale
@@ -105,7 +114,39 @@ public class RegexUtility {
 		return dateFormat;
 
 	}
-	
+
+	/**
+	 * Returns a all String in between two given patterns
+	 * 
+	 * @param inputString
+	 * @param regexPattern1
+	 * @param regexPattern2
+	 * @return
+	 */
+	public static String getStringInBetween(String inputString, String regexPattern1, String regexPattern2) {
+		return getStringInBetween(inputString, regexPattern1, regexPattern2, false, false);
+	}
+
+	/**
+	 * Returns a all String in between two given patterns
+	 * 
+	 * @param inputString
+	 * @param regexPattern1
+	 * @param regexPattern2
+	 * @return
+	 */
+	public static String getStringInBetween(String inputString, String regexPattern1, String regexPattern2, boolean matchBeginningOfLine, boolean matchEndOfLine) {
+		String returnString = null;
+		String regexString = (matchBeginningOfLine ? "^" : "") + Pattern.quote(regexPattern1) + REGEX_PATTERN_EXTRACT_EVERYTHING + Pattern.quote(regexPattern2) + (matchEndOfLine ? "$" : "");
+		Pattern pattern = Pattern.compile(regexString, flags | Pattern.DOTALL | Pattern.MULTILINE);
+		Matcher matcher = pattern.matcher(inputString);
+		while (matcher.find()) {
+			returnString = matcher.group(1);
+
+		}
+		return returnString;
+	}
+
 	public static void main(String[] args) {
 		Log.info("Running test - testMatchesPattern_functionNameAndArgument_Success() ...");
 		testMatchesPattern_functionNameAndArgument_Success();
@@ -127,6 +168,8 @@ public class RegexUtility {
 		testMatchesPatternCN_functiongetReportRegexDatePattern_Success();
 		Log.info("Running test - testMatchesPatternFR_functiongetReportRegexDatePattern_Success() ...");
 		testMatchesPatternFR_functiongetReportRegexDatePattern_Success();
+		Log.info("Running test - testGetStringInBetween_Success() ...");
+		test_functionGetStringInBetween_Success();
 	}
 
 	private static void testMatchesPattern_functionNameAndArgument_Success() {
@@ -157,47 +200,59 @@ public class RegexUtility {
 		List<String> groups = RegexUtility.getMatchingGroups(testValue, REGEX_PATTERN_EXTRACT_FUNCTION_ARGS);
 		Assert.assertTrue(groups.size() == 0);
 	}
-	
+
 	private static void testSplit_SplitByCommaMultipleParts_Success() {
 		String functionArgs = "10,10,20,43";
-		List<String> paramGroups = RegexUtility.split(functionArgs , RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
+		List<String> paramGroups = RegexUtility.split(functionArgs, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
 		Assert.assertTrue(paramGroups.size() == 4);
 	}
 
 	private static void testSplit_SplitByColonEmptyPartsNotReturned_Success() {
 		String functionArgs = "10,,";
-		List<String> paramGroups = RegexUtility.split(functionArgs , RegexUtility.COLON_SPLIT_REGEX_PATTERN);
+		List<String> paramGroups = RegexUtility.split(functionArgs, RegexUtility.COLON_SPLIT_REGEX_PATTERN);
 		Assert.assertTrue(paramGroups.size() == 1);
 	}
 
 	private static void testSplit_SplitByCommaOnePart_Success() {
 		String functionArgs = "10";
-		List<String> paramGroups = RegexUtility.split(functionArgs , RegexUtility.COLON_SPLIT_REGEX_PATTERN);
+		List<String> paramGroups = RegexUtility.split(functionArgs, RegexUtility.COLON_SPLIT_REGEX_PATTERN);
 		Assert.assertTrue(paramGroups.size() == 1);
 	}
-	
+
 	private static void testMatchesPatternEN_US_functiongetReportRegexDatePattern_Success() {
 		TestContext.INSTANCE.setUserCulture("en-US");
 		String dateTime = "1/21/2016 4:09 AM PST Administrator TC76 Automation Note 811835";
 		String dateFormat = RegexUtility.getReportRegexDatePattern(true);
-		List<String> groups=RegexUtility.getMatchingGroups(dateTime, dateFormat);
+		List<String> groups = RegexUtility.getMatchingGroups(dateTime, dateFormat);
 		Assert.assertTrue(groups.get(0).trim().equals("1/21/2016 4:09 AM PST"));
 	}
-	
+
 	private static void testMatchesPatternCN_functiongetReportRegexDatePattern_Success() {
 		TestContext.INSTANCE.setUserCulture("zh-Hans");
 		String dateTime = "2016/1/21 4:08 AM CST sqapicsup@picarro.com TC1249 Automation Note 811835";
 		String dateFormat = RegexUtility.getReportRegexDatePattern(true);
-		List<String> groups=RegexUtility.getMatchingGroups(dateTime, dateFormat);
+		List<String> groups = RegexUtility.getMatchingGroups(dateTime, dateFormat);
 		Assert.assertTrue(groups.get(0).trim().equals("2016/1/21 4:08 AM CST"));
 	}
-	
+
 	private static void testMatchesPatternFR_functiongetReportRegexDatePattern_Success() {
 		TestContext.INSTANCE.setUserCulture("fr");
 		String dateTime = "11/01/2016 4:08 AM CET sqapicsup@picarro.com TC1249 Automation Note 811835";
 		String dateFormat = RegexUtility.getReportRegexDatePattern(true);
-		List<String> groups=RegexUtility.getMatchingGroups(dateTime, dateFormat);
+		List<String> groups = RegexUtility.getMatchingGroups(dateTime, dateFormat);
 		Assert.assertTrue(groups.get(0).trim().equals("11/01/2016 4:08 AM CET"));
 	}
-	
+
+	private static void test_functionGetStringInBetween_Success() {
+		PDFUtility pdfUtility = new PDFUtility();
+		try {
+			String path = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data\\test-data\\pdfutility-tests\\MultipleSurveys.pdf";
+			String inputText = pdfUtility.extractPDFText(path);
+			String actual = RegexUtility.getStringInBetween(inputText, "la\r\nss", "Layers", true, false);
+			Log.info(actual);
+		} catch (IOException e) {
+			Log.error(e.toString());
+
+		}
+	}
 }
