@@ -421,6 +421,11 @@ public class TestSetup {
 		ProcessUtility.killProcess("supervisor.exe", /*killChildProcesses*/ true);
 	}
 
+	public static void stopChromeProcesses() {
+		ProcessUtility.killProcess("chromedriver.exe", /*killChildProcesses*/ true);
+		ProcessUtility.killProcess("chrome.exe", /*killChildProcesses*/ true);
+	}
+
 	public static ExtentReports createExtentReport(String reportClassName) {
 		String executionPath = null;
 		try {

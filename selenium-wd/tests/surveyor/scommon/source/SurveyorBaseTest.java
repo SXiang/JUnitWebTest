@@ -132,6 +132,8 @@ public class SurveyorBaseTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		TestSetup.stopChromeProcesses();
+
 		testSetup = new TestSetup();
 		driver = testSetup.getDriver();
 		baseURL = testSetup.getBaseUrl();
@@ -149,7 +151,7 @@ public class SurveyorBaseTest {
 		
 		TestContext.INSTANCE.setTestSetup(testSetup);
 	}
-
+	
 	/**
 	 * @throws java.lang.Exception
 	 */

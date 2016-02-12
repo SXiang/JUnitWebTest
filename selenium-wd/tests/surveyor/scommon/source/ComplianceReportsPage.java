@@ -227,6 +227,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li[2]")
 	protected WebElement boundaryErrorText;
 
+
+	@FindBy(id ="report-ethene-vehicle-exhaust")
+	protected WebElement checkBoxetheneexhaust;
+	
+	@FindBy(id ="report-ethene-biogenic-methane")
+	protected WebElement checkBoxethenebiogenicemethane;
+	
+	
+
 	public enum CustomerBoundaryType {
 		District, DistrictPlat
 	}
@@ -2806,6 +2815,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 
+
 	public void waitForResubmitButton() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -2825,4 +2835,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public WebElement getBoundaryErrorText() {
 		return this.boundaryErrorText;
 	}
+
+	public WebElement getCheckBoxetheneexhaust() {
+		return this.checkBoxetheneexhaust;
+	}
+	
+	public WebElement getCheckBoxethenebiogenicemethane() {
+		return this.checkBoxethenebiogenicemethane;
+	}
+	
+
 }
