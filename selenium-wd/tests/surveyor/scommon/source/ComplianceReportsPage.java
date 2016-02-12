@@ -217,6 +217,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@class='dataTables_empty']")
 	protected WebElement dataTableEmpty;
 
+	@FindBy(id ="report-ethene-vehicle-exhaust")
+	//@FindBy(how = How.XPATH, using = "//*[@id='checkbox-ethene-vehicle-exhaust']")
+	protected WebElement checkBoxetheneexhaust;
+	
+	@FindBy(id ="report-ethene-biogenic-methane")
+	protected WebElement checkBoxethenebiogenicemethane;
+	
+	
 	public enum CustomerBoundaryType {
 		District, DistrictPlat
 	}
@@ -2715,4 +2723,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			e.printStackTrace();
 		}
 	}
+	
+	public WebElement getCheckBoxetheneexhaust() {
+		return this.checkBoxetheneexhaust;
+	}
+	
+	public WebElement getCheckBoxethenebiogenicemethane() {
+		return this.checkBoxethenebiogenicemethane;
+	}
+	
+	
+	
 }
