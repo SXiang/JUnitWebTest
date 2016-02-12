@@ -17,6 +17,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BaseHelper;
+import common.source.BrowserCommands;
 import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
@@ -37,9 +38,14 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	public static final String DSTAGSU = "dmcs1-sqacussu";
 	public static final String DSTAGDR = "dmcs1-sqacusdr";
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[7]")
+	private WebElement firstSurveyStatusLabel;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[8]/a[5]/img")
 	private WebElement linkDeleteSurvey;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[11]/a[1]/img")
+	private WebElement linkViewSurvey;
 	
 	/**
 	 * @param driver
@@ -482,11 +488,28 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		return false;
 	}	
 
+	public WebElement getFirstViewSurveyLink() {
+		return linkViewSurvey;
+	}
+
+	public void clickOnFirstViewSurveyLink() {
+		this.linkViewSurvey.click();
+	}
+	
 	@Override
 	public void waitForPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getPageSource().contains(STRPageContentText);
+            }
+        });
+    }
+	
+	public void waitForFirstSurveyInTableToBeCompleted() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+            	BrowserCommands.refresh();
+            	return firstSurveyStatusLabel.getText().equals("Completed");
             }
         });
     }

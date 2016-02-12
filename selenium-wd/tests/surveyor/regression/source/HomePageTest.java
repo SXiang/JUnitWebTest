@@ -10,8 +10,10 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.Log;
+import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.FleetMapPage;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.MeasurementSessionsPage;
@@ -20,6 +22,11 @@ import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorSystemsPage;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.UserFeedbackPage;
+import surveyor.scommon.source.DriverViewPage.CloudCover;
+import surveyor.scommon.source.DriverViewPage.SolarRadiation;
+import surveyor.scommon.source.DriverViewPage.SurveyTime;
+import surveyor.scommon.source.DriverViewPage.SurveyType;
+import surveyor.scommon.source.DriverViewPage.Wind;
 
 import static surveyor.scommon.source.SurveyorP3URLs.*;
 import static surveyor.scommon.source.SurveyorConstants.*;
@@ -223,35 +230,5 @@ public class HomePageTest extends SurveyorBaseTest {
 		preferencesPage.waitForPageLoad();
 		assertTrue(preferencesPage.getSelectedTimeZone().getText().equals(TIMEZONEPTUA));
 
-	}
-
-	/**
-	 * Test Case ID: TC140_VerifyAllDrivingSurveysLink_PicAdminRole Test Description: Sanity check on home page DashBoard/View All Driving Surveys Link with Picarro Admin login
-	 */
-	@Test
-	public void TC140_VerifyAllDrivingSurveysLink_PicAdminRole() {
-		Log.info("\nTestcase - TC140_VerifyAllDrivingSurveysLink_PicAdminRole: Sanity check on home page DashBoard/View All Driving Surveys " + "Link with Picarro Admin login\n");
-
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-
-		homePage.open();
-
-		assertTrue(homePage.checkDashBoardViewAllDrivingSurveysLink());
-	}
-
-	/**
-	 * Test Case ID: TC141_VerifyAllSurveyorsLink_PicAdminRole Test Description: Sanity check on home page DashBoard/View All Surveyors Link with Picarro Admin login
-	 */
-	@Test
-	public void TC141_VerifyAllSurveyorsLink_PicAdminRole() {
-		Log.info("\nTestcase - TC141_VerifyAllSurveyorsLink_PicAdminRole: Sanity check on home page DashBoard/View All Surveyors Link with Picarro Admin login\n");
-
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-
-		homePage.open();
-
-		assertTrue(homePage.checkDashBoardViewAllSurveyorsLink());
 	}
 }
