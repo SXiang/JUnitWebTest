@@ -14,7 +14,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.Log;
@@ -110,6 +109,9 @@ public class HomePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='report-system-history']")
 	private WebElement linkSystemHistory;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Surveyor']/tbody/tr[1]/td[3]/a")
+	private WebElement linkFirstOnlineSurveyor;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session']/tbody")
 	private WebElement tableRecentDrivingSurveys;
 
@@ -202,6 +204,10 @@ public class HomePage extends SurveyorBasePage {
 	public void open() {	
 		driver.get(strPageURL);
 		this.waitForPageToLoad();
+	}
+
+	public WebElement getLinkFirstOnlineSurveyor() {
+		return this.linkFirstOnlineSurveyor;
 	}
 
 	public WebElement getLinkPicAdminCalibration() {
@@ -512,16 +518,38 @@ public class HomePage extends SurveyorBasePage {
 	}	
 	
 	public boolean checkDashBoardViewAllSurveyorsLink() {
+		// 1. Verify link is Online and is clickable.
+		if (!this.getLinkFirstOnlineSurveyor().getText().equals("Online")) 
+			return false;
+
+		// Click on the first Online Surveyor
+		this.clickOnFirstOnlineSurveyorLink();
+		
+		// 2. Verify user is navigated to Observer view
+		// Wait for Observer view page to load.
+		ObserverViewPage observerViewPage = new ObserverViewPage(driver, testSetup, ObserverViewPage.STRURLPath);
+		PageFactory.initElements(driver, observerViewPage);		
+		observerViewPage.waitForPageLoad();
+		observerViewPage.waitForConnectionComplete();
+		
+		// Click on Picarro icon present at bottom of the page 
+		observerViewPage.clickPicarroLogoButton();
+		
+		// 3. Verify User is navigated back to Home page
+		// Wait for Home page to load.
+		this.waitForPageLoad();
+
+		// Click on View All Surveyors link present in Active Surveyors section		
 		this.linkViewAllSurveyors.click();
 		
+		// 4. Verify User is navigated to Surveyors Page
+		// Wait for Surveyor Systems page to load.
 		SurveyorSystemsPage surveyorSystemsPage = new SurveyorSystemsPage(driver, testSetup, SurveyorSystemsPage.STRURLPath);
 		PageFactory.initElements(driver, surveyorSystemsPage);		
 		surveyorSystemsPage.waitForPageLoad();
 		
-		if (this.testSetup.isRunningDebug()) {
-			System.out.format("\nThe current URL is: %s\n", this.driver.getCurrentUrl());
-			System.out.format("\nThe current page title is: %s\n", this.driver.getTitle());
-		}
+		Log.info(String.format("\nThe current URL is: %s\n", this.driver.getCurrentUrl()));
+		Log.info(String.format("\nThe current page title is: %s\n", this.driver.getTitle()));
 		
 		if (!this.driver.getCurrentUrl().contains("SurveyorSystems"))
 			return false;
@@ -533,8 +561,10 @@ public class HomePage extends SurveyorBasePage {
 	}	
 	
 	public boolean checkDashBoardViewAllDrivingSurveysLink() {
+		// Click on View all driving surveys.
 		this.linkViewAllDrivingSurveys.click();
 
+		// Wait for driving survey page to load.
 		MeasurementSessionsPage measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, MeasurementSessionsPage.STRURLPath);
 		PageFactory.initElements(driver, measurementSessionsPage);		
 		measurementSessionsPage.waitForPageLoad();
@@ -545,19 +575,31 @@ public class HomePage extends SurveyorBasePage {
 		if (!this.driver.getTitle().contains("Driving Surveys"))
 			return false;
 		
+		// Wait for the survey to become Completed.
+		measurementSessionsPage.waitForFirstSurveyInTableToBeCompleted();
+		
+		// Click on a recent driving survey
 		measurementSessionsPage.clickOnFirstViewSurveyLink();
 		
+		// 1. Verify User is navigated to Survey view 
+		// Wait for Survey view to load.
 		SurveyViewPage surveyViewPage = new SurveyViewPage(driver, testSetup, SurveyViewPage.STRURLPath);
 		PageFactory.initElements(driver, surveyViewPage);		
-		surveyViewPage.waitForPageLoad();		
+		surveyViewPage.waitForPageLoad();
+		surveyViewPage.waitForConnectionComplete();
 		surveyViewPage.checkIfAtSurveyViewPage();
 		
-		surveyViewPage.clickOnPicarroAdminLink();
+		// Click on Picarro icon present at bottom of the page
+		surveyViewPage.clickPicarroLogoButton();
 		this.waitForPageLoad();
 		
+		// 2. Verify User is navigated to Driving Surveys Page
+		// Click on View All Driving Surveys link present under recent driving surveys section
 		this.clickOnViewAllDrivingSurveysLink();
 		measurementSessionsPage.waitForPageLoad();
 		
+		// 3. Verify User is navigated to Survey view
+		// Select a survey and click on View Survey button
 		measurementSessionsPage.clickOnFirstViewSurveyLink();
 		surveyViewPage.waitForPageLoad();
 		surveyViewPage.checkIfAtSurveyViewPage();
@@ -567,6 +609,10 @@ public class HomePage extends SurveyorBasePage {
 	
 	public void clickOnViewAllDrivingSurveysLink() {
 		this.linkViewAllDrivingSurveys.click();
+	}
+
+	public void clickOnFirstOnlineSurveyorLink() {
+		getLinkFirstOnlineSurveyor().click();
 	}
 
 	public WebElement getLinkSurveyors() {

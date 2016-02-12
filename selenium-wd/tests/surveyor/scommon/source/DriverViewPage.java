@@ -73,22 +73,10 @@ public class DriverViewPage extends BaseMapViewPage {
 	@CacheLookup
 	private WebElement divHeaderInfoBox;
 
-	@FindBy(id = "no_analyzer")
-	@CacheLookup
-	private WebElement divNoAnalyzer;
-
 	@FindBy(id = "blocked_ui")
 	@CacheLookup
 	private WebElement divBlockedUI;
 
-	@FindBy(id = "bottom_button_position_follow")
-	@CacheLookup
-	private WebElement positionButton;
-
-	@FindBy(id = "bottom_button_status")
-	@CacheLookup
-	private WebElement statusButton;
-	
 	@FindBy(id = "mode_start_survey")
 	@CacheLookup
 	private WebElement startSurveyButton;
@@ -251,11 +239,6 @@ public class DriverViewPage extends BaseMapViewPage {
 		return false;
 	}
 
-	public DriverViewPage clickPositionButton() {
-		this.positionButton.click();
-		return this;
-	}
-
 	public DriverViewPage clickHeaderInfoBox() {
 		this.divHeaderInfoBox.click();
 		return this;
@@ -274,10 +257,6 @@ public class DriverViewPage extends BaseMapViewPage {
 	public DriverViewPage clickShutdownCancelButton() {
 		this.getShutdownCancelButton().click();
 		return this;
-	}
-
-	public boolean isPositionButtonSelected() {
-		return this.positionButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon on");
 	}
 
 	public WebElement getDivBlockedUI() {
@@ -392,21 +371,9 @@ public class DriverViewPage extends BaseMapViewPage {
 		return isShown;
 	}
 
-	public boolean togglePositionButton(boolean turnOn) throws IllegalArgumentException {
-		boolean isSelected = isPositionButtonGreen();
-		if ((isSelected && !turnOn) || (!isSelected && turnOn)) {
-			clickPositionButton();
-		}
-		return isPositionButtonGreen();
-	}
-
 	public DriverViewPage hidePositionMenu() {
 		clickPositionButton();
 		return this;
-	}
-
-	public boolean isPositionButtonGreen() {
-		return this.positionButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon on");
 	}
 
 	public boolean isPressureButtonRed() {
@@ -539,27 +506,6 @@ public class DriverViewPage extends BaseMapViewPage {
 				.executeScript(STATUS_ANEMOMETER_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
 		return pixelRed.toString().equals(GreenRGBPixels[0]) && pixelGreen.toString().equals(GreenRGBPixels[1])
 				&& pixelBlue.toString().equals(GreenRGBPixels[2]);
-	}
-
-	public DriverViewPage clickStatusButton() {
-		this.statusButton.click();
-		return this;
-	}
-
-	public boolean isStatusButtonGreen() {
-		return this.statusButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon");
-	}
-
-	public boolean isStatusButtonGreenWithPlus() {
-		return this.statusButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon open");
-	}
-
-	public boolean isStatusButtonOpen() {
-		return this.statusButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon open");
-	}
-
-	public boolean isStatusButtonRed() {
-		return this.statusButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon trouble");
 	}
 
 	/**
@@ -1037,18 +983,6 @@ public class DriverViewPage extends BaseMapViewPage {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return d.getPageSource().contains(STRPageContentText);
-			}
-		});
-	}
-
-	/**
-	 * Verifies that the page is done Connecting and Connecting element is
-	 * hidden.
-	 */
-	public void waitForConnectionComplete() {
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return divNoAnalyzer.getAttribute("class").equalsIgnoreCase("cssFade ng-hide");
 			}
 		});
 	}
