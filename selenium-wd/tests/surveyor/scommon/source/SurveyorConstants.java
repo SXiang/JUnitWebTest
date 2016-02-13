@@ -108,6 +108,8 @@ public final class SurveyorConstants {
 	public static final String SQACUSUATAG = "dmcs1-sqacusua";
 	public static final String SQACUSSUTAG = "dmcs1-sqacussu";
 	public static final String SQACUSDRTAG = "stnd";
+	public static final String SQACUSDRTAG2 = "stnd-sqacudr";
+	
 	public static final String SQAPICADTAG = "dmcs1-sqapicad";
 	public static final String SQAPICUATAG = "dmcs1-sqapicua";
 	public static final String SQAPICSUTAG = "dmcs1-sqapicsu";
@@ -225,6 +227,13 @@ public final class SurveyorConstants {
 	public static final String CUSDRVRRTAG = "rr";
 	public static final String CUSDRVOPTAG = "op";
 
+	public static final String PICADMNSTDTAG2 = "stnd-pic";
+	public static final String PICADMNRRTAG2 = "rr-pic";
+	public static final String PICADMNOPTAG2 = "op-pic";
+	public static final String PICADMNMANTAG2 = "man-pic";
+	public static final String CUSDRVSTDTAG2 = "stnd-sqacudr";
+	public static final String CUSDRVRRTAG2 = "rr-sqacudr";
+	public static final String CUSDRVOPTAG2 = "op-sqacudr";
 	
 		
 	/*

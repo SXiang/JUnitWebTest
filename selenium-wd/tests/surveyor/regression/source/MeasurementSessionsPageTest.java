@@ -41,16 +41,16 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 		strListTagPic = new ArrayList<String>();
 		
 		strListTagCusDr = new ArrayList<String>();
-		strListTagCusDr.add(SQACUSDRTAG);
+		strListTagCusDr.add(SQACUSDRTAG2);
 		
-		strListTagCus.add(CUSDRVSTDTAG);
-		strListTagCus.add(CUSDRVRRTAG);
-		strListTagCus.add(CUSDRVOPTAG);
+		strListTagCus.add(CUSDRVSTDTAG2);
+		strListTagCus.add(CUSDRVRRTAG2);
+		strListTagCus.add(CUSDRVOPTAG2);
 		
-		strListTagPic.add(PICADMNSTDTAG);
-		strListTagPic.add(PICADMNRRTAG);
-		strListTagPic.add(PICADMNOPTAG);
-		strListTagPic.add(PICADMNMANTAG);
+		strListTagPic.add(PICADMNSTDTAG2);
+		strListTagPic.add(PICADMNRRTAG2);
+		strListTagPic.add(PICADMNOPTAG2);
+		strListTagPic.add(PICADMNMANTAG2);
 	}
 	
 	/**
@@ -224,19 +224,19 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 		
 		homePage.getLinkDrivingSurveys().click();
 		
-		measurementSessionsPage.getInputSearch().sendKeys(PICADMNSTDTAG);
-		startDT = measurementSessionsPage.getStartDT(PICADMNSTDTAG, PICDFADMIN, SQAPICLOC4SUR, SQAPICLOC4SURANA, false);
+		measurementSessionsPage.getInputSearch().sendKeys(PICADMNSTDTAG2);
+		startDT = measurementSessionsPage.getStartDT(PICADMNSTDTAG2, PICDFADMIN, SQAPICLOC4SUR, SQAPICLOC4SURANA, false);
 		
-		measurementSessionsPage.actionOnDrivingSurveys(PICADMNSTDTAG, PICDFADMIN, SQAPICLOC4SUR, SQAPICLOC4SURANA, startDT, DRIVINGSURVEYSEXPORTSURVEY, false);
+		measurementSessionsPage.actionOnDrivingSurveys(PICADMNSTDTAG2, PICDFADMIN, SQAPICLOC4SUR, SQAPICLOC4SURANA, startDT, DRIVINGSURVEYSEXPORTSURVEY, false);
 		testSetup.slowdownInSeconds(15);
-		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTSURVEY, PICADMNSTDTAG, SQAPICLOC4SURANA, testSetup.getDownloadPath(), true));
+		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTSURVEY, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), true));
 		
-		measurementSessionsPage.actionOnDrivingSurveys(PICADMNSTDTAG, PICDFADMIN, SQAPICLOC4SUR, SQAPICLOC4SURANA, startDT, DRIVINGSURVEYSEXPORTPEAKS, false);
+		measurementSessionsPage.actionOnDrivingSurveys(PICADMNSTDTAG2, PICDFADMIN, SQAPICLOC4SUR, SQAPICLOC4SURANA, startDT, DRIVINGSURVEYSEXPORTPEAKS, false);
 		testSetup.slowdownInSeconds(15);
-		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTPEAKS, PICADMNSTDTAG, SQAPICLOC4SURANA, testSetup.getDownloadPath(), true));
+		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTPEAKS, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), true));
 		
-		measurementSessionsPage.actionOnDrivingSurveys(PICADMNSTDTAG, PICDFADMIN, SQAPICLOC4SUR, SQAPICLOC4SURANA, startDT, DRIVINGSURVEYSEXPORTANALYSIS, false);
+		measurementSessionsPage.actionOnDrivingSurveys(PICADMNSTDTAG2, PICDFADMIN, SQAPICLOC4SUR, SQAPICLOC4SURANA, startDT, DRIVINGSURVEYSEXPORTANALYSIS, false);
 		testSetup.slowdownInSeconds(15);
-		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTANALYSIS, PICADMNSTDTAG, SQAPICLOC4SURANA, testSetup.getDownloadPath(), true));
+		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTANALYSIS, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), true));
 	}
 }
