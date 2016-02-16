@@ -234,6 +234,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(id ="report-ethene-biogenic-methane")
 	protected WebElement checkBoxethenebiogenicemethane;
 	
+	@FindBy(how = How.XPATH, using ="//*[@id='datatableViews']/thead/tr/th[7]/div")
+	protected WebElement viewsAnalysisColumn;
 	
 
 	public enum CustomerBoundaryType {
@@ -2842,6 +2844,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	
 	public WebElement getCheckBoxethenebiogenicemethane() {
 		return this.checkBoxethenebiogenicemethane;
+	}
+	public WebElement getViewsAnalysisColumn() {
+		return this.viewsAnalysisColumn;
 	}
 	
 

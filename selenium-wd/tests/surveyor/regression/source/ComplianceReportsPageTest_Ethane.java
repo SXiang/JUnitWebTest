@@ -91,6 +91,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
@@ -134,11 +135,116 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
 		complianceReportsPage.open();
 		complianceReportsPage.openNewComplianceReportPage();
-		
+
 		assertTrue(complianceReportsPage.getCheckBoxetheneexhaust().isDisplayed());
 		assertTrue(complianceReportsPage.getCheckBoxethenebiogenicemethane().isDisplayed());
-		
+
 		complianceReportsPage.logout();
-		
+
 	}
+
+	/**
+	 * Test Case ID: TC1637 Test Description: Ethane: Compliance Report UI: Verify Ethane Filter is available in Copy Report Page
+	 * 
+	 * @throws IOException
+	 * 
+	 */
+	@Test
+	public void TC1637_Ethane_Copy_Report_VerifyCheckBoxes() {
+		String rptTitle = "TC1637 Ethane" + testSetup.getRandomNumber();
+		Log.info("\nRunning TC1637: Ethane: Compliance Report UI: Verify Ethane Filter is available in Copy Report Page, " + rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+		listBoundary.add(RNELAT);
+		listBoundary.add(RNELON);
+		listBoundary.add(RSWLAT);
+		listBoundary.add(RSWLON);
+
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "0");
+		tableMap.put(KEYISOANA, "0");
+		tableMap.put(KEYPCA, "0");
+		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
+		tablesList.add(tableMap);
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "0");
+		viewMap1.put(KEYANNOTATION, "0");
+		viewMap1.put(KEYGAPS, "0");
+		viewMap1.put(KEYASSETS, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
+
+		viewList.add(viewMap1);
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, RSURSTARTDATE, RSURENDDATE, viewList, SurveyModeFilter.Standard);
+		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
+
+		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
+		complianceReportsPage.waitForPageLoad();
+
+		complianceReportsPage.clickOnCopyReport(rptTitle, testSetup.getLoginUser());
+		complianceReportsPage.waitForPageLoad();
+
+		if (complianceReportsPage.getCheckBoxetheneexhaust().isDisplayed())
+			assertTrue(complianceReportsPage.getCheckBoxetheneexhaust().isDisplayed());
+		else
+			fail("\nTestcase TC1637 failed.\n");
+
+		if (complianceReportsPage.getCheckBoxethenebiogenicemethane().isDisplayed())
+			assertTrue(complianceReportsPage.getCheckBoxethenebiogenicemethane().isDisplayed());
+		else
+			fail("\nTestcase TC1637 failed.\n");
+
+		complianceReportsPage.logout();
+
+	}
+
+	/**
+	 * Test Case ID: TC1654 Test Description: Ethane: Compliance Report UI: Verify Analysis column in Views table
+	 * @throws InterruptedException 
+	 * 
+	 * @throws IOException
+	 * 
+	 */
+	@Test
+	public void TC1654_Ethane_Verify_Analysis_Column() throws IOException{
+		String rptTitle = "TC1654 Ethane" + testSetup.getRandomNumber();
+		Log.info("\nRunning TC1654: Ethane: Compliance Report UI: Verify Analysis column in Views table, " + rptTitle);
+
+		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
+		complianceReportsPage.open();
+		complianceReportsPage.openNewComplianceReportPage();
+
+		assertTrue(complianceReportsPage.verifyIsotopicAnalysisTable(complianceReportsPage.getViewsAnalysisColumn().getText(), "Analysis"));
+
+		complianceReportsPage.logout();
+
+	}
+
+	
+
 }
