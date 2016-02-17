@@ -157,6 +157,14 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@CacheLookup
 	private WebElement picarroLogoButton;
 
+	@FindBy(id = "btn_survey_warning_ok")
+	@CacheLookup
+	private WebElement surveyDurationWarningDialogOkButton;
+
+	@FindBy(id = "btn_survey_start_warning_ok")
+	@CacheLookup
+	private WebElement failedToStartSurveyDialogOkButton;
+
 	@FindBy(id = "no_analyzer")
 	@CacheLookup
 	private WebElement divNoAnalyzer;
@@ -261,6 +269,16 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		return this;
 	}
 
+	public BaseMapViewPage clickSurveyDurationWarningDialogOkButton() {
+		this.surveyDurationWarningDialogOkButton.click();
+		return this;
+	}
+
+	public BaseMapViewPage clickFailedToStartSurveyDialogOkButton() {
+		this.failedToStartSurveyDialogOkButton.click();
+		return this;
+	}
+	
 	public BaseMapViewPage hideModeMenu() {
 		clickModeButton();
 		return this;
