@@ -17,6 +17,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BaseHelper;
+import common.source.BrowserCommands;
 import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
@@ -37,9 +38,14 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	public static final String DSTAGSU = "dmcs1-sqacussu";
 	public static final String DSTAGDR = "dmcs1-sqacusdr";
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[7]")
+	private WebElement firstSurveyStatusLabel;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[8]/a[5]/img")
 	private WebElement linkDeleteSurvey;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[11]/a[1]/img")
+	private WebElement linkViewSurvey;
 	
 	/**
 	 * @param driver
@@ -126,7 +132,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	}
 	
 	public List<String> getTagNameList() {
-		setPagination(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING_100);
 		
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -138,17 +144,17 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 		
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			col1 = this.table.findElement(By.xpath(this.strTRXPath + "["+rowNum+"]/td[1]"));
 			
 			strListTag.add(col1.getText().trim());
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -156,10 +162,10 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 				List<WebElement> newRows = this.table.findElements(By.xpath(this.strTRXPath));
 				rowSize = newRows.size();
 				
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 				
 				rowNum = 0;
 			}
@@ -171,7 +177,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	public List<String> getDriverSurveysByTag(String driver) {
 		List<String> tagList = new ArrayList<String>();
 		
-		setPagination(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING_100);
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
 		String tagXPath;
@@ -184,10 +190,10 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 		
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			tagXPath = strTRXPath + "["+rowNum+"]/td[1]";
@@ -200,17 +206,17 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 				tagList.add(tagCell.getText().trim());
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				
 				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
 				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 				
 				rowNum = 0;
 			}
@@ -220,7 +226,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	}
 	
 	public boolean deleteDrivingSurveyByTag(String tagName, boolean deleteAll) {
-		this.setPagination(PAGINATIONSETTING);
+		this.setPagination(PAGINATIONSETTING_100);
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
 		String tagXPath;
@@ -236,10 +242,10 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 		
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			tagXPath = strTRXPath + "["+rowNum+"]/td[1]";
@@ -265,17 +271,17 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 					return false;
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				
 				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
 				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 				
 				rowNum = 0;
 			}
@@ -285,7 +291,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	}
 	
 	public String getStartDT(String tag, String user, String surveyor, String analyzer, boolean allPages) {
-		this.setPagination(PAGINATIONSETTING);
+		this.setPagination(PAGINATIONSETTING_100);
 		
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -306,10 +312,10 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 		
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			tagXPath = strTRXPath + "["+rowNum+"]/td[1]";
@@ -327,22 +333,26 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			startDTXPath = strTRXPath + "["+rowNum+"]/td[5]";
 			startDTCell = table.findElement(By.xpath(startDTXPath));
 			
+			Log.info(String.format("Look for StartDate for Tag-[%s];User=[%s];Surveyor-[%s];Analyzer=[%s]", 
+					tag, user, surveyor, analyzer));
+
 			if (tagCell.getText().trim().equalsIgnoreCase(tag) && userCell.getText().trim().equalsIgnoreCase(user) &&
 					surveyorCell.getText().trim().equalsIgnoreCase(surveyor) && analyzerCell.getText().trim().equalsIgnoreCase(analyzer)) {
+				Log.info(String.format("Found matching StartDate - %s", startDTCell.getText().trim()));
 				return startDTCell.getText().trim();
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled") && allPages) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled") && allPages) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				
 				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
 				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 				
 				rowNum = 0;
 			}
@@ -352,7 +362,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	}
 	
 	public boolean actionOnDrivingSurveys(String tag, String user, String surveyor, String analyzer, String startDT, String action, boolean allPages) {
-		this.setPagination(PAGINATIONSETTING);
+		this.setPagination(PAGINATIONSETTING_100);
 		
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
@@ -375,10 +385,10 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 		
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			tagXPath = strTRXPath + "["+rowNum+"]/td[1]";
@@ -395,10 +405,15 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			
 			startDTXPath = strTRXPath + "["+rowNum+"]/td[5]";
 			startDTCell = table.findElement(By.xpath(startDTXPath));
+			
+			Log.info(String.format("Searching for Tag-[%s];User=[%s];Surveyor-[%s];Analyzer=[%s];StartDate-[%s]", 
+					tag, user, surveyor, analyzer, startDT));
 	
 			if (tagCell.getText().trim().equalsIgnoreCase(tag) && userCell.getText().trim().equalsIgnoreCase(user) &&
 					surveyorCell.getText().trim().equalsIgnoreCase(surveyor) && analyzerCell.getText().trim().equalsIgnoreCase(analyzer) &&
 					startDTCell.getText().trim().equalsIgnoreCase(startDT)) {
+				Log.info("Found a matching row..");
+				
 				if (action.equalsIgnoreCase(DRIVINGSURVEYSEXPORTSURVEY)) {
 					actionXPath = strTRXPath + "["+rowNum+"]/td[11]/a[2]/img";
 					actionCell = table.findElement(By.xpath(actionXPath));
@@ -415,6 +430,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 					actionCell = null;				
 				
 				if (actionCell != null) {
+					Log.info("Clicking on actionCell...");
 					actionCell.click();
 					return true;
 				}
@@ -422,17 +438,17 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 					return false;
 			}
 			
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled") && allPages) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled") && allPages) {
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				
 				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
 				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 				
 				rowNum = 0;
 			}
@@ -482,11 +498,28 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		return false;
 	}	
 
+	public WebElement getFirstViewSurveyLink() {
+		return linkViewSurvey;
+	}
+
+	public void clickOnFirstViewSurveyLink() {
+		this.linkViewSurvey.click();
+	}
+	
 	@Override
 	public void waitForPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getPageSource().contains(STRPageContentText);
+            }
+        });
+    }
+	
+	public void waitForFirstSurveyInTableToBeCompleted() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+            	BrowserCommands.refresh();
+            	return firstSurveyStatusLabel.getText().equals("Completed");
             }
         });
     }

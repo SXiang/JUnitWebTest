@@ -677,6 +677,11 @@ public class TestSetup {
 		}
 	}
 
+	public static void stopChromeProcesses() {
+		ProcessUtility.killProcess("chromedriver.exe", /*killChildProcesses*/ true);
+		ProcessUtility.killProcess("chrome.exe", /*killChildProcesses*/ true);
+	}
+
 	public void startReplay(String defnFileName) throws InstantiationException, IllegalAccessException, IOException {
 		String replayCmdFolder = getExecutionPath(getRootPath()) + "data" + File.separator + "defn";
 		String defnFullPath = replayCmdFolder + File.separator + defnFileName;			

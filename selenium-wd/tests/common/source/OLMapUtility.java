@@ -10,6 +10,10 @@ import org.openqa.selenium.interactions.Actions;
 
 public class OLMapUtility {
 
+	private static final String BREADCRUMB_COLOR_RED = "#E31A1C";
+	private static final String BREADCRUMB_COLOR_GRAY = "#666666";
+	private static final String BREADCRUMB_COLOR_BLACK = "#000000";
+	private static final String BREADCRUMB_COLOR_BLUE = "#0000ff";
 	private static final String CROSSHAIR_WHITE_PNG = "crosshair-white.png";
 	private static final String CROSSHAIR_PNG = "crosshair.png";
 	private static final String CROSSHAIR_GRAY_PNG = "crosshair-gray.png";
@@ -17,6 +21,13 @@ public class OLMapUtility {
 	public enum IconColor {
 		Red,
 		White,
+		Gray
+	}
+
+	public enum BreadcrumbColor {
+		Red,
+		Blue,
+		Black,
 		Gray
 	}
 
@@ -116,6 +127,14 @@ public class OLMapUtility {
 			+ "if(features){for(var i=0;i<features.length;i++){if(features[i]&&features[i].getGeometry){geometry=features[i].getGeometry();"
 			+ "if(geometry&&geometry.getCoordinates){breadcrumbCoord.push(geometry.getCoordinates());}}}}}};}catch(err){};return breadcrumbCoord;};";
 	
+	private static final String MATCH_BREADCRUMB_COLOR_JS_FUNCTION = "function matchBreadCrumbColor(color){"
+			+ "var fillColorFound=false;try{if(sourceBreadCrumbLayer){layer=sourceBreadCrumbLayer;features=layer.getFeatures();"
+			+ "if(features){for(var i=0;i<features.length;i++){feature=features[0];style=feature.getStyle();"
+			+ "if(style&&style.getStroke&&style.getFill){fill=style.getFill();stroke=style.getStroke();"
+			+ "if(fill&&fill.getColor&&stroke&&stroke.getColor){fillColorFound=true;fcolor=fill.getColor();"
+			+ "scolor=stroke.getColor();if(fcolor!=color||scolor!=color){return false;}}}}}}}catch(err){fillColorFound=false;};"
+			+ "return fillColorFound;};";
+	
 	private static final String IS_INDICATIONS_PRESENT_JS_FUNCTION = "function isIndicationsShownOnMap(){"
 			+ "var isIndicationsSwitchOn=showIndications;var indLinksCount=getIndicationLinksCount();"
 			+ "var indNodesCount=getIndicationNodesCount();var isLinksShownOnMap=true;lastConstellation.links.forEach(function(d){"
@@ -152,6 +171,7 @@ public class OLMapUtility {
 	
 	private static final String IS_BREADCRUMBS_PRESENT_JS_FUNCTION_CALL = "return isBreadCrumbPresent();";
 	private static final String GET_BREADCRUMB_GEOMETRY_COORDINATES_FUNCTION_CALL = "return getBreadCrumbCoordinates();";
+	private static final String MATCH_BREADCRUMB_COLOR_JS_FUNCTION_CALL = "return matchBreadCrumbColor();";
 	
 	private static final String CONCENTRATION_CHART_DATA_FUNCTION_CALL = "return isConcentrationChartDataShownOnMap(5,10);";   // look for 10% white pixels in bottom 5% of the chart
 	private static final String GET_CONCENTRATION_CHART_IMAGE_DATA_FUNCTION_CALL = "return getConcentrationChartImageData();";
@@ -290,6 +310,37 @@ public class OLMapUtility {
 			areBreadcrumbCoordsPresent = true;
 		}
 		return (isBreadcrumbPresent && areBreadcrumbCoordsPresent);
+	}
+	
+	/*
+	 * Checks whether breadcrumb is shown on the map with the specified color. 
+	 * Returns true if the specified color breadcrumb is found, false otherwise. 
+	 */
+	public boolean isBreadcrumbShownOnMap(BreadcrumbColor color) {
+		String jsScript = MATCH_BREADCRUMB_COLOR_JS_FUNCTION;
+		switch (color)
+		{
+		case Gray:
+			jsScript += String.format(MATCH_BREADCRUMB_COLOR_JS_FUNCTION_CALL, BREADCRUMB_COLOR_GRAY);
+			break;
+		case Red:
+			jsScript += String.format(MATCH_BREADCRUMB_COLOR_JS_FUNCTION_CALL, BREADCRUMB_COLOR_RED);
+			break;
+		case Black:
+			jsScript += String.format(MATCH_BREADCRUMB_COLOR_JS_FUNCTION_CALL, BREADCRUMB_COLOR_BLACK);
+			break;
+		case Blue:
+			jsScript += String.format(MATCH_BREADCRUMB_COLOR_JS_FUNCTION_CALL, BREADCRUMB_COLOR_BLUE);
+			break;
+		default:
+			jsScript += String.format(MATCH_BREADCRUMB_COLOR_JS_FUNCTION_CALL, BREADCRUMB_COLOR_GRAY);
+			break;
+		}
+		Object colorMatch = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (colorMatch.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
 	}
 
 	/*
