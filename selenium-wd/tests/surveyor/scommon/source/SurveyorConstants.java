@@ -270,6 +270,7 @@ public final class SurveyorConstants {
 	public static final String RSUVMODEMANUAL = "Manual";
 	
 	public static final String SQACUSSULOC="Santa Clara";
+	public static final String DEFAULTLOC="Default";
 }
 
 	
