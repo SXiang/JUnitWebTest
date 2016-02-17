@@ -6,6 +6,8 @@ package surveyor.scommon.source;
 import java.util.List;
 import java.util.Map;
 
+import surveyor.scommon.source.Reports.ReportModeFilter;
+
 /**
  * @author zlu
  *
@@ -155,6 +157,35 @@ public class Reports {
 	public Reports(String rptTitle, String strCreatedBy, String customer,
 			String timeZone, String exclusionRadius, List<String> listBoundary,
 			List<Map<String, String>> tablesList, String surveyorUnit, String tag,String startDate, String endDate,
+			 List<Map<String, String>> viewList, SurveyModeFilter surveyMode, boolean geoFilter) {
+		this.rptTitle = rptTitle;
+		this.strCreatedBy = strCreatedBy;
+		this.setCustomer(customer);
+		this.timeZone = timeZone;
+		this.exclusionRadius = exclusionRadius;
+
+		this.listBoundary = listBoundary;
+		this.imageMapHeight = listBoundary.get(0);
+		this.imageMapWidth = listBoundary.get(1);
+		this.NELat = listBoundary.get(2);
+		this.NELong = listBoundary.get(3);
+		this.SWLat = listBoundary.get(4);
+		this.SWLong = listBoundary.get(5);
+		
+		this.tablesList = tablesList;
+		this.surveyorUnit = surveyorUnit;
+		this.tag = tag;
+		this.startDate=startDate;
+		this.endDate=endDate;
+		
+		this.viewList = viewList;
+		this.surveyModeFilter=surveyMode;
+		this.geoFilterOn=geoFilter;
+	}
+	
+	public Reports(String rptTitle, String strCreatedBy, String customer,
+			String timeZone, String exclusionRadius, List<String> listBoundary,
+			List<Map<String, String>> tablesList, String surveyorUnit, String tag,String startDate, String endDate,
 			 List<Map<String, String>> viewList, SurveyModeFilter surveyMode, String userName,Boolean geoFilterOn, ReportModeFilter reportMode) {
 		this.rptTitle = rptTitle;
 		this.strCreatedBy = strCreatedBy;
@@ -204,6 +235,32 @@ public class Reports {
 		this.tagList = tagList;
 
 		this.viewList = viewList;
+	}
+	
+	public Reports(String rptTitle, String strCreatedBy, String customer,
+			String timeZone, String exclusionRadius, List<String> listBoundary,
+			List<Map<String, String>> tablesList, String surveyorUnit,
+			List<String> tagList, List<Map<String, String>> viewList, ReportModeFilter reportMode) {
+		this.rptTitle = rptTitle;
+		this.strCreatedBy = strCreatedBy;
+		this.setCustomer(customer);
+		this.timeZone = timeZone;
+		this.exclusionRadius = exclusionRadius;
+
+		this.listBoundary = listBoundary;
+		this.imageMapHeight = listBoundary.get(0);
+		this.imageMapWidth = listBoundary.get(1);
+		this.NELat = listBoundary.get(2);
+		this.NELong = listBoundary.get(3);
+		this.SWLat = listBoundary.get(4);
+		this.SWLong = listBoundary.get(5);
+		
+		this.tablesList = tablesList;
+		this.surveyorUnit = surveyorUnit;
+		this.tagList = tagList;
+
+		this.viewList = viewList;
+		this.reportModeFilter=reportMode;
 	}
 	
 
