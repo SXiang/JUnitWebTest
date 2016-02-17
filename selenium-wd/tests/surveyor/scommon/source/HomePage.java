@@ -651,11 +651,15 @@ public class HomePage extends SurveyorBasePage {
 		return dropDownTimeZone;
 	}
 	
-	public void setDropDownTimeZone() {
+	public void setSelectedTimeZone(String newTimeZone) {
+		Select select= new Select(this.dropDownTimeZone);
+		select.selectByVisibleText(newTimeZone);
+	}	
+
+	public void setTimeZoneToPST() {
 		getDropDownPST().click();
 	}
 	
-
 	public WebElement getDropDownPST() {
 		return this.dropDownPST;
 	}
