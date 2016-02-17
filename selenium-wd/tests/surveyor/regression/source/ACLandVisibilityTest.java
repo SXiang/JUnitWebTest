@@ -230,8 +230,11 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewList.add(viewMap);
+		
+		List<String> tagList=new ArrayList<String>();
+		tagList.add(CUSDRVSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", CUSDRVSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 
 		complianceReportsPage.addNewReport(rpt);
 
@@ -394,7 +397,10 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 
 		viewList.add(viewMap);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSUA, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", CUSDRVSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
+		List<String> tagList=new ArrayList<String>();
+		tagList.add(CUSDRVSTDTAG);
+		
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSUA, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 
 		complianceReportsPage.addNewReport(rpt);
 
@@ -565,8 +571,11 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewList.add(viewMap);
+		
+		List<String> tagList=new ArrayList<String>();
+		tagList.add(CUSDRVSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, PICDFADMIN, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", CUSDRVSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, PICDFADMIN, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 
 		complianceReportsPage.addNewReport(rpt);
 
@@ -711,8 +720,11 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewList.add(viewMap);
+		
+		List<String> tagList=new ArrayList<String>();
+		tagList.add(CUSDRVSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQAPICSUP, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", CUSDRVSTDTAG, "", "", viewList, SurveyModeFilter.Standard);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQAPICSUP, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 
 		complianceReportsPage.addNewReport(rpt);
 

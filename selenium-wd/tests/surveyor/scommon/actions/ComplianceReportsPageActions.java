@@ -613,8 +613,10 @@ public class ComplianceReportsPageActions extends BasePageActions {
 		fillReportTableInfo(tableMap, new ReportOptTabularPDFContentDataReader(this.excelUtility), reportOptTabPDFRowIDs.get(0));
 		tablesList.add(tableMap);
 
+		List<String> tagList=new ArrayList<String>();
+		tagList.add(tag);
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, TestContext.INSTANCE.getLoggedInUser(), customer, timeZone, exclusionRadius,
-				listBoundary, tablesList, surveyorUnit, tag, viewList, viewLayersList);
+				listBoundary, tablesList, surveyorUnit, tagList, viewList, viewLayersList);
 		complianceReportsPage.addNewReport(rpt);
 		
 		workingReportsComp = rpt;		// Store the working report properties.

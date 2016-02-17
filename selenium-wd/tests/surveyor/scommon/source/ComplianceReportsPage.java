@@ -291,12 +291,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (reportsCompliance.reportModeFilter != null) {
 			selectReportMode(reportsCompliance.reportModeFilter);
 		}
-
+		
+		if(reportsCompliance.getExclusionRadius()!=null){
 		inputExclusionRadius(reportsCompliance.getExclusionRadius());
+		}
 
 		fillCustomBoundaryTextFields(reportsCompliance.getNELat(), reportsCompliance.getNELong(), reportsCompliance.getSWLat(), reportsCompliance.getSWLong());
 
-		addSurveyInformation(reportsCompliance.getSurveyorUnit(), reportsCompliance.getUserName(), reportsCompliance.getTag(), reportsCompliance.getSurveyStartDate(), reportsCompliance.getSurveyEndDate(), reportsCompliance.getSurveyModeFilter(), reportsCompliance.getGeoFilter());
+		addSurveyInformation(reportsCompliance.getSurveyorUnit(), reportsCompliance.getUsername(), reportsCompliance.getTagList(), reportsCompliance.getSurveyStartDate(), reportsCompliance.getSurveyEndDate(), reportsCompliance.getSurveyModeFilter(), reportsCompliance.getGeoFilter());
 
 		inputImageMapHeight(reportsCompliance.getImageMapHeight());
 		inputImageMapWidth(reportsCompliance.getImageMapWidth());
@@ -586,7 +588,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.clickOnOKButton();
 	}
 
-	public void addSurveyInformation(String surveyor, String username, String tag, String startDate, String endDate, SurveyModeFilter surveyModeFilter, Boolean geoFilterOn) {
+	public void addSurveyInformation(String surveyor, String username, List<String> tag, String startDate, String endDate, SurveyModeFilter surveyModeFilter, Boolean geoFilterOn) {
 		Log.info("Adding Survey information");
 
 		if (surveyor != null) {
@@ -601,11 +603,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (username != null) {
 			this.userName.sendKeys(username);
 		}
-
-		if (tag != "") {
-			this.cbTag.clear();
-			this.cbTag.sendKeys(tag);
+		
+		for (String tagValue : tag) {
+			if (tagValue != "") {
+				inputSurveyTag(tagValue);
+			}
 		}
+
+		
 
 		if ((startDate != null) && (startDate != "")) {
 			selectStartDateForSurvey(startDate);
@@ -826,6 +831,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						String reportId = objReport.getId();
 						reportId = reportId.substring(0, 6);
 						reportName = "CR-" + reportId;
+						System.out.println("Report name "+reportName);
 
 						if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip") && srcZipMeta.contains("zip") && srcShapeImg.contains("zip")) {
 							clickOnPDFInReportViewer();
@@ -1086,10 +1092,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void fillCustomBoundaryTextFields(String neLat, String neLong, String swLat, String swLong) {
+		if(neLat!=null){
 		this.inputNELat.sendKeys(neLat);
+		}
+		if(neLong!=null){
 		this.inputNELong.sendKeys(neLong);
+		}
+		if(swLat!=null){
 		this.inputSWLat.sendKeys(swLat);
+		}
+		if(swLong!=null){
 		this.inputSWLong.sendKeys(swLong);
+		}
 	}
 
 	public ReportModeFilter getReportMode(String reportMode) {
