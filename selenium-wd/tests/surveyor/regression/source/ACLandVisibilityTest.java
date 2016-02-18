@@ -636,14 +636,14 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		homePage.waitForPageLoad();
 		homePage.getDropDownTimeZone().click();
 		homePage.waitForPageLoad();
-		homePage.setDropDownTimeZone();
+		homePage.setTimeZoneToPST();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
 		homePage.getLinkPreference().click();
 		preferencesPage.waitForPageLoad();
 
 		assertTrue(preferencesPage.getSelectedTimeZone().getText().equalsIgnoreCase(TIMEZONE));
-		assertTrue(preferencesPage.getSelectedLocation().getText().equalsIgnoreCase(SQACUSSULOC));
+		assertTrue(preferencesPage.getSelectedLocation().getText().equalsIgnoreCase(DEFAULTLOC));
 		homePage.getLinkFleetMap().click();
 
 		fleetMapPage.waitForPageLoad();
@@ -779,7 +779,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		homePage.waitForPageLoad();
 		homePage.getDropDownTimeZone().click();
 		homePage.waitForPageLoad();
-		homePage.setDropDownTimeZone();
+		homePage.setTimeZoneToPST();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
 		homePage.getLinkPreference().click();

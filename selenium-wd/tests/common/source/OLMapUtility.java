@@ -10,6 +10,10 @@ import org.openqa.selenium.interactions.Actions;
 
 public class OLMapUtility {
 
+	private static final String BREADCRUMB_COLOR_RED = "#E31A1C";
+	private static final String BREADCRUMB_COLOR_GRAY = "#666666";
+	private static final String BREADCRUMB_COLOR_BLACK = "#000000";
+	private static final String BREADCRUMB_COLOR_BLUE = "#0000ff";
 	private static final String CROSSHAIR_WHITE_PNG = "crosshair-white.png";
 	private static final String CROSSHAIR_PNG = "crosshair.png";
 	private static final String CROSSHAIR_GRAY_PNG = "crosshair-gray.png";
@@ -17,6 +21,13 @@ public class OLMapUtility {
 	public enum IconColor {
 		Red,
 		White,
+		Gray
+	}
+
+	public enum BreadcrumbColor {
+		Red,
+		Blue,
+		Black,
 		Gray
 	}
 
@@ -47,12 +58,13 @@ public class OLMapUtility {
 			+ "var freshConstellation = JSON.parse(JSON.stringify(d3constellation)); freshConstellation.nodes.forEach(function (d) { "
 			+ "if (d.type == 'annotation') { if (!d.fixed) { if (d.text == note) { shown = true; } } } }); return shown; };";
 
-	private static final String IS_ICON_PRESENT_JS_FUNCTION = "function isIconPresent(imgFileName){var found=false;var CAR_ICON_SRC='/content/images/'+imgFileName;"
-			+ "try{layers=map.getLayers();if(layers){for(var i=0;i<layers.getLength();i++){layer=layers.item(i);"
-			+ "if(layer&&layer.getVisible&&layer.getVisible()){source=layer.getSource();if(source){if(source.getFeatures){features=source.getFeatures();"
-			+ "if(features){for(var j=0;j<layers.getLength();j++){if(features[j]&&features[j].getStyle){style=features[j].getStyle();"
-			+ "if(style){img=style.getImage();if(img){src=img.getSrc();if(src){if(src.toLowerCase()==CAR_ICON_SRC){found=true;}}}}}}}}}}}}}"
-			+ "catch(err){found=false;};return found;};";
+	private static final String IS_ICON_PRESENT_JS_FUNCTION = "function isIconPresent(imgFileName){"
+			+ "var found=false;var CAR_ICON_SRC='/content/images/'+imgFileName;try{layers=surveyormap.getLayers();"
+			+ "if(layers){for(var i=0;i<layers.getLength();i++){layer=layers.item(i);if(layer&&layer.getVisible&&layer.getVisible()){"
+			+ "source=layer.getSource();if(source){if(source.getFeatures){features=source.getFeatures();if(features){"
+			+ "for(var j=0;j<layers.getLength();j++){if(features[j]&&features[j].getStyle){style=features[j].getStyle();"
+			+ "if(style){img=style.getImage();if(img){src=img.getSrc();if(src){if(src.toLowerCase()==CAR_ICON_SRC){"
+			+ "found=true;}}}}}}}}}}}}}catch(err){found=false;};return found;};";
 	
 	private static final String IS_LISAS_PRESENT_JS_FUNCTION = "function isLisasPresent(){var found=false;try{layer=lisaLayer;"
 			+ "if(layer&&layer.getVisible&&layer.getVisible()&&layer.getStyle){style=layer.getStyle();if(style&&style.getFill&&style.getStroke){"
@@ -116,6 +128,14 @@ public class OLMapUtility {
 			+ "if(features){for(var i=0;i<features.length;i++){if(features[i]&&features[i].getGeometry){geometry=features[i].getGeometry();"
 			+ "if(geometry&&geometry.getCoordinates){breadcrumbCoord.push(geometry.getCoordinates());}}}}}};}catch(err){};return breadcrumbCoord;};";
 	
+	private static final String MATCH_BREADCRUMB_COLOR_JS_FUNCTION = "function matchBreadCrumbColor(color){"
+			+ "var fillColorFound=false;try{if(sourceBreadCrumbLayer){layer=sourceBreadCrumbLayer;features=layer.getFeatures();"
+			+ "if(features){for(var i=0;i<features.length;i++){feature=features[0];style=feature.getStyle();"
+			+ "if(style&&style.getStroke&&style.getFill){fill=style.getFill();stroke=style.getStroke();"
+			+ "if(fill&&fill.getColor&&stroke&&stroke.getColor){fillColorFound=true;fcolor=fill.getColor();"
+			+ "scolor=stroke.getColor();if(fcolor!=color||scolor!=color){return false;}}}}}}}catch(err){fillColorFound=false;};"
+			+ "return fillColorFound;};";
+	
 	private static final String IS_INDICATIONS_PRESENT_JS_FUNCTION = "function isIndicationsShownOnMap(){"
 			+ "var isIndicationsSwitchOn=showIndications;var indLinksCount=getIndicationLinksCount();"
 			+ "var indNodesCount=getIndicationNodesCount();var isLinksShownOnMap=true;lastConstellation.links.forEach(function(d){"
@@ -152,6 +172,7 @@ public class OLMapUtility {
 	
 	private static final String IS_BREADCRUMBS_PRESENT_JS_FUNCTION_CALL = "return isBreadCrumbPresent();";
 	private static final String GET_BREADCRUMB_GEOMETRY_COORDINATES_FUNCTION_CALL = "return getBreadCrumbCoordinates();";
+	private static final String MATCH_BREADCRUMB_COLOR_JS_FUNCTION_CALL = "return matchBreadCrumbColor('%s');";
 	
 	private static final String CONCENTRATION_CHART_DATA_FUNCTION_CALL = "return isConcentrationChartDataShownOnMap(5,10);";   // look for 10% white pixels in bottom 5% of the chart
 	private static final String GET_CONCENTRATION_CHART_IMAGE_DATA_FUNCTION_CALL = "return getConcentrationChartImageData();";
@@ -290,6 +311,37 @@ public class OLMapUtility {
 			areBreadcrumbCoordsPresent = true;
 		}
 		return (isBreadcrumbPresent && areBreadcrumbCoordsPresent);
+	}
+	
+	/*
+	 * Checks whether breadcrumb is shown on the map with the specified color. 
+	 * Returns true if the specified color breadcrumb is found, false otherwise. 
+	 */
+	public boolean isBreadcrumbShownOnMap(BreadcrumbColor color) {
+		String jsScript = MATCH_BREADCRUMB_COLOR_JS_FUNCTION;
+		switch (color)
+		{
+		case Gray:
+			jsScript += String.format(MATCH_BREADCRUMB_COLOR_JS_FUNCTION_CALL, BREADCRUMB_COLOR_GRAY);
+			break;
+		case Red:
+			jsScript += String.format(MATCH_BREADCRUMB_COLOR_JS_FUNCTION_CALL, BREADCRUMB_COLOR_RED);
+			break;
+		case Black:
+			jsScript += String.format(MATCH_BREADCRUMB_COLOR_JS_FUNCTION_CALL, BREADCRUMB_COLOR_BLACK);
+			break;
+		case Blue:
+			jsScript += String.format(MATCH_BREADCRUMB_COLOR_JS_FUNCTION_CALL, BREADCRUMB_COLOR_BLUE);
+			break;
+		default:
+			jsScript += String.format(MATCH_BREADCRUMB_COLOR_JS_FUNCTION_CALL, BREADCRUMB_COLOR_GRAY);
+			break;
+		}
+		Object colorMatch = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (colorMatch.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
 	}
 
 	/*

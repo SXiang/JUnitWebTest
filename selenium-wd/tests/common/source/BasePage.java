@@ -245,6 +245,16 @@ public class BasePage {
 		}
 	}
 
+	protected boolean isAttributePresentOnElement(WebElement element, String attribute) {
+	    try {
+	        String value = element.getAttribute(attribute);
+	        if (value != null){
+	            return true;
+	        }
+	    } catch (Exception e) {}
+
+	    return false;
+	}
 
 	protected void sendKeysToTextArea(WebElement textAreaEula, String eula) {
 		// Chromedriver does NOT send keys correctly to TextArea for some controls. 

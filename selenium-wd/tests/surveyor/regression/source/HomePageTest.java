@@ -223,7 +223,7 @@ public class HomePageTest extends SurveyorBaseTest {
 		homePage.waitForPageLoad();
 		homePage.getDropDownTimeZone().click();
 		homePage.waitForPageLoad();
-		homePage.setDropDownTimeZone();
+		homePage.setTimeZoneToPST();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
 		homePage.getLinkPreference().click();

@@ -7,6 +7,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import common.source.OLMapUtility;
 import common.source.BrowserCommands;
+import common.source.DateUtility;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.OLMapUtility.IconColor;
@@ -1189,6 +1190,42 @@ public class DriverViewPageActions extends BasePageActions {
 		return getDriverViewPage().getTimeRemainingLabelText().startsWith(data);
 	}
 	
+	/**
+	 * Executes verifySurveyInfoTimeElapsedIsTickingForward action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws InterruptedException 
+	 */
+	public boolean verifySurveyInfoTimeElapsedIsTickingForward(String data, Integer dataRowID) throws InterruptedException {
+		logAction("DriverViewPageActions.verifySurveyInfoTimeElapsedIsTickingForward", data, dataRowID);
+		return DateUtility.isTimeTickingForward(getDriverViewPage().getTimeElapsedLabel());
+	}
+ 
+	/**
+	 * Executes verifySurveyInfoTimeLabelIsTickingForward action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws InterruptedException 
+	 */
+	public boolean verifySurveyInfoTimeLabelIsTickingForward(String data, Integer dataRowID) throws InterruptedException {
+		logAction("DriverViewPageActions.verifySurveyInfoTimeLabelIsTickingForward", data, dataRowID);
+		return DateUtility.isTimeTickingForward(getDriverViewPage().getTimeLabel());
+	}
+ 
+	/**
+	 * Executes verifySurveyInfoTimeRemainingLabelIsTickingBackward action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws InterruptedException 
+	 */
+	public boolean verifySurveyInfoTimeRemainingLabelIsTickingBackward(String data, Integer dataRowID) throws InterruptedException {
+		logAction("DriverViewPageActions.verifySurveyInfoTimeRemainingLabelIsTickingBackward", data, dataRowID);
+		return DateUtility.isTimeTickingBackward(getDriverViewPage().getTimeRemainingLabel());
+	}
+	
 	public boolean verifyFieldNotesIsShownOnMap(String data, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.verifyFieldNotesIsShownOnMap", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_FIELD_NOTES_IS_SHOWN_ON_MAP, ARG_DATA, data);
@@ -1421,6 +1458,9 @@ public class DriverViewPageActions extends BasePageActions {
 		else if (actionName.equals("verifySurveyInfoTimeElapsedLabelStartsWith")) { return this.verifySurveyInfoTimeElapsedLabelStartsWith(data, dataRowID); }
 		else if (actionName.equals("verifySurveyInfoTimeRemainingLabelEquals")) { return this.verifySurveyInfoTimeRemainingLabelEquals(data, dataRowID); }
 		else if (actionName.equals("verifySurveyInfoTimeRemainingLabelStartsWith")) { return this.verifySurveyInfoTimeRemainingLabelStartsWith(data, dataRowID); }
+		else if (actionName.equals("verifySurveyInfoTimeElapsedIsTickingForward")) { return this.verifySurveyInfoTimeElapsedIsTickingForward(data, dataRowID); }
+		else if (actionName.equals("verifySurveyInfoTimeLabelIsTickingForward")) { return this.verifySurveyInfoTimeLabelIsTickingForward(data, dataRowID); }
+		else if (actionName.equals("verifySurveyInfoTimeRemainingLabelIsTickingBackward")) { return this.verifySurveyInfoTimeRemainingLabelIsTickingBackward(data, dataRowID); }
 		else if (actionName.equals("verifySurveyInfoZoomLevelLabelEquals")) { return this.verifySurveyInfoZoomLevelLabelEquals(data, dataRowID); }
 		else if (actionName.equals("verifySystemShutdownButtonIsDisabled")) { return this.verifySystemShutdownButtonIsDisabled(data, dataRowID); }
 		else if (actionName.equals("verifySystemShutdownButtonIsEnabled")) { return this.verifySystemShutdownButtonIsEnabled(data, dataRowID); }

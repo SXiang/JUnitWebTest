@@ -716,11 +716,10 @@ public class HomePage extends SurveyorBasePage {
 		return dropDownTimeZone;
 	}
 	
-	public void setDropDownTimeZone() {
+	public void setTimeZoneToPST() {
 		getDropDownPST().click();
 	}
 	
-
 	public WebElement getDropDownPST() {
 		return this.dropDownPST;
 	}

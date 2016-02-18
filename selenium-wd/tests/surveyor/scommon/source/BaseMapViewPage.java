@@ -10,6 +10,8 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 
 public class BaseMapViewPage extends SurveyorBasePage {
 
@@ -155,9 +157,33 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@CacheLookup
 	private WebElement picarroLogoButton;
 
+	@FindBy(id = "btn_survey_warning_ok")
+	@CacheLookup
+	private WebElement surveyDurationWarningDialogOkButton;
+
+	@FindBy(id = "btn_survey_start_warning_ok")
+	@CacheLookup
+	private WebElement failedToStartSurveyDialogOkButton;
+
 	@FindBy(id = "no_analyzer")
 	@CacheLookup
 	private WebElement divNoAnalyzer;
+
+	@FindBy(id = "survey_duration_warning")
+	@CacheLookup
+	protected WebElement divSurveyDurationWarning;
+
+	@FindBy(id = "survey_start_warning")
+	@CacheLookup
+	protected WebElement divSurveyStartWarning;
+	
+	@FindBy(id = "survey_warning_message")
+	@CacheLookup
+	protected WebElement spanSurveyWarningMessage;
+	
+	@FindBy(id = "survey_start_warning_message")
+	@CacheLookup
+	protected WebElement spanSurveyFailedToStartMessage;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='map']/div/div[2]/div[2]/button[1]")
 	@CacheLookup
@@ -166,7 +192,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='map']/div/div[2]/div[2]/button[2]")
 	@CacheLookup
 	protected WebElement zoomOutButton;
-	
+
 	public BaseMapViewPage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
 		super(driver, testSetup, strBaseURL, strPageURL);
 	}
@@ -243,6 +269,16 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		return this;
 	}
 
+	public BaseMapViewPage clickSurveyDurationWarningDialogOkButton() {
+		this.surveyDurationWarningDialogOkButton.click();
+		return this;
+	}
+
+	public BaseMapViewPage clickFailedToStartSurveyDialogOkButton() {
+		this.failedToStartSurveyDialogOkButton.click();
+		return this;
+	}
+	
 	public BaseMapViewPage hideModeMenu() {
 		clickModeButton();
 		return this;
@@ -256,14 +292,62 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		return this.positionButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon on");
 	}
 
-	public boolean togglePositionButton(boolean turnOn) throws IllegalArgumentException {
-		boolean isSelected = isPositionButtonGreen();
-		if ((isSelected && !turnOn) || (!isSelected && turnOn)) {
-			clickPositionButton();
+	/**
+	 * Verifies that the page is done Connecting dialog is shown.
+	 */
+	public boolean isConnectionCompleteDialogShown() {
+		if (divNoAnalyzer != null && divNoAnalyzer.isDisplayed()) {
+			return divNoAnalyzer.getAttribute("class").equalsIgnoreCase("cssFade");
 		}
-		return isPositionButtonGreen();
+		return false;
 	}
 
+	/**
+	 * Verifies that the survey warning dialog is shown.
+	 */
+	public boolean isSurveyDurationWarningDialogShown() {
+		if (divSurveyDurationWarning != null && divSurveyDurationWarning.isDisplayed()) {
+			return divSurveyDurationWarning.getAttribute("class").equalsIgnoreCase("cssFade");
+		}
+		return false;
+	}
+
+	/**
+	 * Verifies that correct message is shown in Survey Duration warning dialog.
+	 */
+	public boolean isCorrectSurveyDurationWarningMessageShowing() {
+		if (isSurveyDurationWarningDialogShown()) {
+			String surveyStopInMessage = Resources.getResource(ResourceKeys.Survey_SurveyWillStopIn);
+			String surveyMinutesAndMessage = Resources.getResource(ResourceKeys.Survey_MinutesAnd);
+			String surveySecondsMessage = Resources.getResource(ResourceKeys.Survey_Seconds);
+			String msgText = spanSurveyWarningMessage.getText();
+			return msgText.contains(surveyStopInMessage) && msgText.contains(surveyMinutesAndMessage) &&
+					msgText.contains(surveySecondsMessage);
+		}
+		return false;
+	}
+
+	/**
+	 * Verifies that the survey start dialog is shown.
+	 */
+	public boolean isSurveyFailedToStartDialogShown() {
+		if (divSurveyStartWarning != null && divSurveyStartWarning.isDisplayed()) {
+			return divSurveyStartWarning.getAttribute("class").equalsIgnoreCase("cssFade");
+		}
+		return false;
+	}
+
+	/**
+	 * Verifies that correct message is shown in Survey Duration warning dialog.
+	 */
+	public boolean isCorrectSurveyFailedToStartMessageShowing() {
+		if (isSurveyFailedToStartDialogShown()) {
+			String msgText = spanSurveyFailedToStartMessage.getText();
+			return msgText.equals(Resources.getResource(ResourceKeys.Dialog_SurveyFailedtoStart));
+		}
+		return false;
+	}
+	
 	public boolean isStatusButtonGreen() {
 		return this.statusButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon");
 	}
@@ -278,6 +362,14 @@ public class BaseMapViewPage extends SurveyorBasePage {
 
 	public boolean isStatusButtonRed() {
 		return this.statusButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon trouble");
+	}
+
+	public boolean togglePositionButton(boolean turnOn) throws IllegalArgumentException {
+		boolean isSelected = isPositionButtonGreen();
+		if ((isSelected && !turnOn) || (!isSelected && turnOn)) {
+			clickPositionButton();
+		}
+		return isPositionButtonGreen();
 	}
 
 	public BaseMapViewPage clickStatusButton() {
@@ -796,7 +888,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			throw new IllegalArgumentException("Display switch type unknown and not currently handled.");
 		}
 	}
-	
+
 	/**
 	 * Verifies that the page is done Connecting and Connecting element is
 	 * hidden.
@@ -805,6 +897,28 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return divNoAnalyzer.getAttribute("class").equalsIgnoreCase("cssFade ng-hide");
+			}
+		});
+	}
+
+	/**
+	 * Waits for the survey duration warning dialog to close.
+	 */
+	public void waitForSurveyDurationWarningDialogToClose() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return divSurveyDurationWarning.getAttribute("class").equalsIgnoreCase("cssFade ng-hide");
+			}
+		});
+	}
+
+	/**
+	 * Waits for the survey start warning dialog to close.
+	 */
+	public void waitForSurveyFailedToStartDialogToClose() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return divSurveyStartWarning.getAttribute("class").equalsIgnoreCase("cssFade ng-hide");
 			}
 		});
 	}
