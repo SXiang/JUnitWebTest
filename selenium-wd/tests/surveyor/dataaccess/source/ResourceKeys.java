@@ -129,6 +129,7 @@ public class ResourceKeys {
 	public static final String ManageUser_UserNameAlreadyExists = "ManageUser_UserNameAlreadyExists";
 	public static final String RefGasReports_PageTitle = "RefGasReports_PageTitle";
 	public static final String RefGasReport_PageTitle = "RefGasReport_PageTitle";
+	public static final String RefGasReportSSRS_ReferenceGasReport = "RefGasReportSSRS_ReferenceGasReport";
 	public static final String RefGasReportSSRS_ReferenceGasResultTable = "RefGasReportSSRS_ReferenceGasResultTable";
 	public static final String RefGasReportSSRS_InstallationDateTime = "RefGasReportSSRS_InstallationDateTime";
 	public static final String RefGasReportSSRS_IsotopicValueUncertainty = "RefGasReportSSRS_IsotopicValueUncertainty";
