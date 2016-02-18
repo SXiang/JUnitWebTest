@@ -346,9 +346,6 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		boolean breadcrumbShownOnMap = mapUtility.isBreadcrumbShownOnMap();
 		Log.info("breadcrumbShownOnMap = " + breadcrumbShownOnMap);
 
-		boolean breadcrumbShownOnMapGray = mapUtility.isBreadcrumbShownOnMap(BreadcrumbColor.Gray);
-		Log.info("breadcrumbShownOnMapGray = " + breadcrumbShownOnMapGray);
-
 		boolean fovShownOnMap = mapUtility.isFOVShownOnMap();
 		Log.info("fovShownOnMap = " + fovShownOnMap);
 

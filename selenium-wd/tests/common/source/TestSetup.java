@@ -653,8 +653,6 @@ public class TestSetup {
 		// Execute replay script from the contained folder.
 		try {
 			String replayCmdFolder = getExecutionPath(getRootPath()) + "data" + File.separator + "defn";
-			// String defnFullPath = replayCmdFolder + File.separator +
-			// defnFileName;
 			String replayCmdFullPath = replayCmdFolder + File.separator + REPLAY_DEFN_CURL_FILE;
 			String command = "cd \"" + replayCmdFolder + "\" && " + replayCmdFullPath + " " + defnFileName;
 			Log.info("Executing replay script. Command -> " + command);
