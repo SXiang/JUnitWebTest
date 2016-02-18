@@ -12,7 +12,7 @@ public class DBConnection {
 	ResultSet rs = null;
 	String dbClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 
-	public Connection establishConnection(String dbUrl, String dbUser,
+	private Connection establishConnection(String dbUrl, String dbUser,
 			String dbPassword) {
 		try {
 			Class.forName(dbClass);
@@ -26,7 +26,7 @@ public class DBConnection {
 		return con;
 	}
 
-	public ResultSet executeQuery(Connection con, String query) {
+	private ResultSet executeQuery(Connection con, String query) {
 		try {
 			if (con != null) {
 				stmt = con.createStatement();
@@ -34,18 +34,11 @@ public class DBConnection {
 			}
 		} catch (SQLException e) {
 			Log.error(e.toString());
-			if (con != null) {
-				try {
-					con.close();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
-			}
 		}
 		return rs;
 	}
 
-	public void closeConnection(Connection con) {
+	private void closeConnection(Connection con) {
 		if (con != null) {
 			try {
 				con.close();
@@ -62,13 +55,12 @@ public class DBConnection {
 				+ testSetup.getDbPortNo() + ";DatabaseName="
 				+ testSetup.getDbName();
 		
-		String query = "Select Id from Report where reportTitle='"
-				+ reportTitle + "'";
+		String query = "Select Id from Report where reportTitle='" + reportTitle + "'";
 
-		con = this.establishConnection(dbUrl, testSetup.getDbUser(),
-				testSetup.getDbPassword());
-		rs = this.executeQuery(con, query);
 		try {
+			con = this.establishConnection(dbUrl, testSetup.getDbUser(),
+					testSetup.getDbPassword());
+			rs = this.executeQuery(con, query);
 			while (rs.next()) {
 				reportId = rs.getString(1);
 				Log.info("Inner reportId: " + reportId);
@@ -76,6 +68,7 @@ public class DBConnection {
 			}
 		} catch (SQLException e) {
 			Log.error(e.toString());
+		} finally {
 			this.closeConnection(con);
 		}
 		return reportId;

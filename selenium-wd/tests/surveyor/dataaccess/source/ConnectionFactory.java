@@ -2,6 +2,10 @@ package surveyor.dataaccess.source;
 
 import java.sql.*;
 import java.util.Hashtable;
+import org.junit.Rule;
+import org.junit.rules.ExternalResource;
+
+import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.TestContext;
 
@@ -12,6 +16,32 @@ public class ConnectionFactory {
 	
 	private static Hashtable<String, Connection> connectionCache = new Hashtable<String, Connection>();
 
+	@Rule
+	public ExternalResource resource= new ExternalResource() {
+		@Override
+		protected void before() throws Throwable {
+			// Connections can be opened on-demand by the tests.
+		};
+		
+		@Override
+		protected void after() {
+			if (connectionCache!=null && connectionCache.size() > 0) {
+				// If there is an open connection after the test, close it.
+				for (String connString : connectionCache.keySet()) {
+					Connection conn = connectionCache.get(connString);
+					try {
+						if (conn!=null) {
+							conn.close();
+						}
+					} catch (SQLException e) {
+						Log.error(String.format("Exception when closing connection: Exception message - ", 
+								ExceptionUtility.getStackTraceString(e)));
+					}
+				}
+			}
+		};
+	};
+	
 	public static Connection createConnection() {
 		Connection conn = null;
 

@@ -854,13 +854,16 @@ public class TestSetup {
 		String harDataFile = TestSetup.getUUIDString() + "_HarData.dat";
 		String harDataFullPath = Paths.get(TestSetup.getSystemTempDirectory(), harDataFile).toString();
 		Log.info(String.format("Creating HAR data file at: %s", harDataFullPath));
+		BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(harDataFullPath));
 		try {
 			// HarData file should be created in the system temp directory.
-			harData.writeTo(new BufferedWriter(new FileWriter(harDataFullPath)));
+			harData.writeTo(bufferedWriter);
 			Log.info(String.format("Created HAR data file at: %s", harDataFullPath));
 		} catch (IOException e) {
 			// No exception thrown here. 
 			e.printStackTrace();
+		} finally {
+			bufferedWriter.close();
 		}
 		Assert.assertTrue(FileUtility.readFileContents(harDataFullPath).length()>0, "HarData file should have content.");
 	}
