@@ -206,13 +206,9 @@ public class Survey extends BaseEntity {
 	public List<Survey> get(String tag) {
 		ArrayList<Survey> objSurveyList = null;
 		
-		// Get from cache if present. Else fetch from Database.
-		if (DBCache.INSTANCE.containsKey(CACHE_KEY+tag)) {
-			objSurveyList = (ArrayList<Survey>)DBCache.INSTANCE.get(CACHE_KEY+tag);
-		} else {
-			String SQL = "SELECT * FROM dbo.[Survey] WHERE Tag='" + tag + "'";
-			objSurveyList = load(SQL);
-		}
+		String SQL = "SELECT * FROM dbo.[Survey] WHERE Tag='" + tag + "'";
+		objSurveyList = load(SQL);
+
 		return objSurveyList;
 	}
  

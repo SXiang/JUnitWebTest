@@ -15,6 +15,7 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
 public class DateUtility {
@@ -23,9 +24,9 @@ public class DateUtility {
 	 * Compares the first time string with second time string and returns if the first time string is greater than the second.
 	 * 
 	 * @param timeString1
-	 *            - Time string in 00:00:00 format.
+	 *            - Time string in 00:00:00 format or 00:00:00 PST format.
 	 * @param timeString2
-	 *            - Time string in 00:00:00 format.
+	 *            - Time string in 00:00:00 format or 00:00:00 PST format.
 	 * @return - returns if first time string is greater than second time string.
 	 */
 	public static boolean isFirstTimeGreater(String timeString1, String timeString2) {
@@ -57,6 +58,70 @@ public class DateUtility {
 			}
 		}
 		return isGreater;
+	}
+
+	/**
+	 * Checks if the time displayed in a WebElement is ticking forward.
+	 * This method expects the time displayed in the WebElement to be in one of the 3 formats:
+	 * 	1. Time: 2:00:28 PM PST
+	 *  2. Elapsed: 2:00:28 PM PST
+	 *  3. Remaining: 2:00:28 PM PST 
+	 * @throws InterruptedException 
+	 */
+	public static boolean isTimeTickingForward(WebElement element) throws InterruptedException {
+		return isTimeTickingForwardBackward(element, true);
+	}
+
+	/**
+	 * Checks if the time displayed in a WebElement is ticking backward.
+	 * This method expects the time displayed in the WebElement to be in one of the 3 formats:
+	 * 	1. Time: 2:00:28 PM PST
+	 *  2. Elapsed: 2:00:28 PM PST
+	 *  3. Remaining: 2:00:28 PM PST 
+	 * @throws InterruptedException 
+	 */
+	public static boolean isTimeTickingBackward(WebElement element) throws InterruptedException {
+		return isTimeTickingForwardBackward(element, false);
+	}
+
+	private static boolean isTimeTickingForwardBackward(WebElement element, boolean checkForwardTick) throws InterruptedException {
+		final String TIME_PREFIX = "Time: ";
+		final String ELAPSED_TIME_PREFIX = "Elapsed: ";
+		final String REMAINING_TIME_PREFIX = "Remaining: ";
+		final int ONE_SECOND_IN_MILLISEC = 1000;
+		
+		int iterations = 3;
+		String prevTimeString = "";
+		String currTimeString = "";
+		do {
+			currTimeString = element.getText();
+			currTimeString = currTimeString.replace(TIME_PREFIX, "");
+			currTimeString = currTimeString.replace(ELAPSED_TIME_PREFIX, "");
+			currTimeString = currTimeString.replace(REMAINING_TIME_PREFIX, "");
+
+			List<String> timeParts = RegexUtility.split(currTimeString, RegexUtility.SPACE_SPLIT_REGEX_PATTERN);
+			if (timeParts == null) {
+				throw new IllegalArgumentException("Element time string should be in '00:00:00' or '00:00:00 PST' format.");
+			}
+			currTimeString = timeParts.get(0);
+			
+			if (prevTimeString != "") {
+				if (checkForwardTick) {
+					if (!isFirstTimeGreater(currTimeString, prevTimeString)) {
+						return false;
+					}
+				} else {
+					if (isFirstTimeGreater(currTimeString, prevTimeString)) {
+						return false;
+					}
+				}
+			}
+			prevTimeString = currTimeString;
+			Thread.sleep(ONE_SECOND_IN_MILLISEC);
+
+		} while (iterations-- > 0);
+		
+		return true;
 	}
 
 	/**

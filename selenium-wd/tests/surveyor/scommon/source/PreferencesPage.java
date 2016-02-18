@@ -111,7 +111,5 @@ public class PreferencesPage extends SurveyorBasePage {
 	public void setSelectedTimeZone(String newTimeZone) {
 		Select select= new Select(this.dropDownTimeZone);
 		select.selectByVisibleText(newTimeZone);
-		
-		
 	}
 }
