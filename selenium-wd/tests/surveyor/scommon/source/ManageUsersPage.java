@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -37,6 +38,9 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ManageUser_NewUser);
 	public static final String STREditPageContentText = Resources.getResource(ResourceKeys.ManageUser_EditUser);
 	private static final int ALLOWED_MAX_EMAIL_LENGTH = 50;
+	private static final String USERNAME_ERROR_MSG_JS_FUNCTION = "function getUserErrMsg() { var errMsg = this.document.getElementById('User.UserName-error'); "
+			+ "if (errMsg) { return errMsg.textContent; } return ''; };";
+	private static final String USERNAME_ERROR_MSG_JS_FUNCTION_CALL = "return getUserErrMsg();";
 	
 	@FindBy(id = "User.UserName-error")
 	private WebElement labelUserNameError;
@@ -349,10 +353,10 @@ public class ManageUsersPage extends SurveyorBasePage {
 		}		
 		
 		if (isElementPresent(this.panelDuplicationErrorXPath)) {
-			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-
-			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
-				rtnMsg = panelError.getText();
+			// Get error message using javascript. This is to avoid CI failures when using validation webelement. 
+			String userErrMsg = getUsernameErrorMessage();
+			if (userErrMsg.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
+				rtnMsg = userErrMsg;
 				this.cancelAddBtn.click();
 			}
 		}
@@ -892,6 +896,12 @@ public class ManageUsersPage extends SurveyorBasePage {
 		return false;
 	}
 
+	private String getUsernameErrorMessage() {
+		Object userErrorMsg = ((JavascriptExecutor)this.driver).executeScript(USERNAME_ERROR_MSG_JS_FUNCTION + 
+				USERNAME_ERROR_MSG_JS_FUNCTION_CALL);
+		return String.valueOf(userErrorMsg);
+	}
+	
 	private void enableDisableUser(boolean accountEnable) {
 		if (accountEnable) {
 			if (!inputAccountEnabled.isSelected())

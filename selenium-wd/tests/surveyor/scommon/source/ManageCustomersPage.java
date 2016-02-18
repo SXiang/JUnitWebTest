@@ -99,6 +99,8 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				return false;
 			}
 		}
+		
+		this.waitForPageLoad();
 		return true;
 	}
 	

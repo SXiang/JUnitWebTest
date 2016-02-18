@@ -24,6 +24,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import common.source.BaseHelper;
 import common.source.DBConnection;
 import common.source.DateUtility;
@@ -46,6 +49,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	public static final String STRURLPath = "/Reports/ReferenceGasReports";
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.RefGasReports_PageTitle);
 	public static final String STRReportTitle = Resources.getResource(ResourceKeys.RefGasReport_PageTitle);
+	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.RefGasReportSSRS_ReferenceGasReport);
 	public static final String STRReportSubTitle = Resources.getResource(ResourceKeys.RefGasReportSSRS_ReferenceGasResultTable);
 	public static final String STRReportTableColumnDate = Resources.getResource(ResourceKeys.RefGasReportSSRS_InstallationDateTime);
 	public static final String STRReportTableColumnUserName = Resources.getResource(ResourceKeys.ReportSSRS_UserName);
@@ -417,14 +421,31 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 
 	public boolean verifyCancelButtonFunctionality() {
 		this.btnNewRefGasRpt.click();
+		this.waitForNewPageLoad();
 		this.btnCancel.click();
-		testSetup.slowdownInSeconds(3);
-
+		this.waitForPageLoad();
 		if (isElementPresent(strNewRefGasRpt))
 			return true;
 
 		return false;
 	}
+	
+    @Override
+	public void waitForPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRReportTitle);
+            }
+        });
+    }
+
+	public void waitForNewPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRNewPageContentText);
+            }
+        });
+    }
 
 	/**
 	 * @param args
