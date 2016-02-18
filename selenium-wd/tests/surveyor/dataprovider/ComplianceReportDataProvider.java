@@ -37,6 +37,7 @@ import static surveyor.scommon.source.SurveyorConstants.RSWLON;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSDRTAG;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPTUA;
+import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import static surveyor.scommon.source.SurveyorConstants.SQAPICSUP;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSURVEYOR;
@@ -135,7 +136,7 @@ public class ComplianceReportDataProvider extends SurveyorTestRunner {
 		List<Map<String, String>> viewList7 = new ArrayList<Map<String, String>>();
 		viewList7.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "0", Resources.getResource(ResourceKeys.Constant_Map)));
 		List<Map<String, String>> tablesList7 = new ArrayList<Map<String, String>>();
-		tablesList7.add(createOptionalTable("1", "1", "0", "0", "1", "1", "1", "1", "1", "1", "1", "0"));
+		tablesList7.add(createOptionalTable("1", "1", "0", "0", "1", "1", "1", "1", "1", "1", "0", "0"));
 		List<String> tagList7 = new ArrayList<String>();
 		tagList7.add(PICADMNSTDTAG);
 		
@@ -216,7 +217,62 @@ public class ComplianceReportDataProvider extends SurveyorTestRunner {
 		List<Map<String, String>> tablesList17 = new ArrayList<Map<String, String>>();
 		tablesList17.add(createOptionalTable("1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"));
 		List<String> tagList17 = new ArrayList<String>();
-		tagList17.add(CUSDRVSTDTAG);
+		tagList17.add(CUSDRVSTDTAG); // include 8 hr survey
+		
+		List<Map<String, String>> viewList18 = new ArrayList<Map<String, String>>();
+		viewList18.add(createViewsMapTable("First View", "0", "0", "0", "0", "1", "0", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList18.add(createViewsMapTable("Second View", "1", "1", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList18.add(createViewsMapTable("Third View", "0", "0", "1", "1", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		List<Map<String, String>> tablesList18 = new ArrayList<Map<String, String>>();
+		tablesList18.add(createOptionalTable("1", "1", "0", "0", "1", "1", "0", "0", "0", "0", "1", "0"));
+		List<String> tagList18 = new ArrayList<String>();
+		tagList18.add(SQACUSDRTAG);
+		
+		List<Map<String, String>> viewList19 = new ArrayList<Map<String, String>>();
+		viewList19.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList19.add(createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList19.add(createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "None"));
+		viewList19.add(createViewsMapTable("Fourth View", "1", "1", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList19.add(createViewsMapTable("Fifth View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList19.add(createViewsMapTable("Sixsth View", "1", "1", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList19.add(createViewsMapTable("Seventh View", "0", "0", "1", "1", "1", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		List<Map<String, String>> tablesList19 = new ArrayList<Map<String, String>>();
+		tablesList19.add(createOptionalTable("1", "1", "0", "0", "1", "1", "0", "0", "0", "0", "1", "0"));
+		List<String> tagList19 = new ArrayList<String>();
+		tagList19.add(SQACUSDRTAG);
+		
+		List<Map<String, String>> viewList20 = new ArrayList<Map<String, String>>();
+		viewList20.add(createViewsMapTable("First View", "1", "0", "0", "1", "1", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
+		List<Map<String, String>> tablesList20 = new ArrayList<Map<String, String>>();
+		tablesList20.add(createOptionalTable("1", "1", "0", "0", "1", "1", "0", "0", "0", "0", "0", "0"));
+		List<String> tagList20 = new ArrayList<String>();
+		tagList20.add(SQACUSDRTAG); //include a survey with no LISAS
+		
+		List<Map<String, String>> viewList21 = new ArrayList<Map<String, String>>();
+		viewList21.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList21.add(createViewsMapTable("Second View", "0", "0", "1", "1", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList21.add(createViewsMapTable("Third View", "1", "1", "0", "0", "1", "0", "0", "0", "0", "None"));		
+		List<Map<String, String>> tablesList21 = new ArrayList<Map<String, String>>();
+		tablesList21.add(createOptionalTable("1", "0", "0", "0", "1", "1", "1", "1", "1", "1", "1", "1"));
+		List<String> tagList21 = new ArrayList<String>();
+		tagList21.add(CUSDRVSTDTAG); 
+		
+		List<Map<String, String>> viewList22 = new ArrayList<Map<String, String>>();
+		viewList22.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList22.add(createViewsMapTable("Second View", "1", "0", "1", "1", "0", "0", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList22.add(createViewsMapTable("Third View", "1", "1", "0", "1", "1", "0", "1", "0", "0", "None"));		
+		List<Map<String, String>> tablesList22 = new ArrayList<Map<String, String>>();
+		tablesList22.add(createOptionalTable("1", "0", "0", "0", "1", "1", "1", "1", "1", "1", "1", "1"));
+		List<String> tagList22 = new ArrayList<String>();
+		tagList22.add(CUSDRVSTDTAG); 
+		
+		List<Map<String, String>> viewList23 = new ArrayList<Map<String, String>>();
+		viewList23.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		List<Map<String, String>> tablesList23 = new ArrayList<Map<String, String>>();
+		tablesList23.add(createOptionalTable("1", "0", "0", "0", "1", "1", "1", "1", "1", "1", "1", "1"));
+		List<String> tagList23 = new ArrayList<String>();
+		tagList23.add(CUSDRVSTDTAG); 
+
 
 		return new Object[][] {
 				/*
@@ -228,8 +284,8 @@ public class ComplianceReportDataProvider extends SurveyorTestRunner {
 				{ "1", SQAPICSUP, "oeHwHqmv621dZ1MRE2BSdw==", "Picarro", TIMEZONEPTUA, EXCLUSIONRADIUS, null, null, null, null, null, null, null, null, null, null, createBoundaryList(), tagList1, tablesList1, viewList1, null },
 				{ "2", SQAPICSUP, "oeHwHqmv621dZ1MRE2BSdw==", "Picarro", TIMEZONEPTUA, EXCLUSIONRADIUS, null, null, null, null, null, null, null, null, null, null, createBoundaryList(), tagList2, tablesList2, viewList2, null }, // include date range
 				{ "3", PICDFADMIN, "6NZYEwkq24lm9xBekD04sg==", "Picarro", TIMEZONECTUA, EXCLUSIONRADIUS, PICADMNSURVEYOR, null, null, null, null, null, null, null, SurveyModeFilter.All, null, createBoundaryList(), tagList3, tablesList3, viewList3, null },
-				{ "4", PICDFADMIN, "6NZYEwkq24lm9xBekD04sg==", "Picarro", TIMEZONEETUA, "0", null, null, RSURSTARTDATE, RSURENDDATE, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList4, tablesList4, viewList4, null },
-				{ "5", PICDFADMIN, "6NZYEwkq24lm9xBekD04sg==", "Picarro", TIMEZONECTUA, "0", PICADMNSURVEYOR, null, RSURSTARTDATE, RSURENDDATE, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList5, tablesList5, viewList5, null },
+				{ "4", PICDFADMIN, "6NZYEwkq24lm9xBekD04sg==", "Picarro", TIMEZONEETUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList4, tablesList4, viewList4, null }, //include dates
+				{ "5", PICDFADMIN, "6NZYEwkq24lm9xBekD04sg==", "Picarro", TIMEZONECTUA, "0", PICADMNSURVEYOR, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList5, tablesList5, viewList5, null }, //include dates
 				{ "6", PICDFADMIN, "6NZYEwkq24lm9xBekD04sg==", "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList6, tablesList6, viewList6, null },
 				{ "7", PICDFADMIN, "6NZYEwkq24lm9xBekD04sg==", "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList7, tablesList7, viewList7, null },
 				{ "8", PICDFADMIN, "6NZYEwkq24lm9xBekD04sg==", "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList8, tablesList8, viewList8, null },
@@ -238,16 +294,20 @@ public class ComplianceReportDataProvider extends SurveyorTestRunner {
 				{ "11", PICDFADMIN, "6NZYEwkq24lm9xBekD04sg==", "sqacus", TIMEZONEMTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList11, tablesList11, viewList11, null },
 				{ "12", SQAPICSUP, "oeHwHqmv621dZ1MRE2BSdw==", "sqacus", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList12, tablesList12, viewList12, null },
 				{ "13", SQACUSSU, "oeHwHqmv621dZ1MRE2BSdw==", "sqacus", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList13, tablesList13, viewList13, null },
-				{ "14", PICDFADMIN, "6NZYEwkq24lm9xBekD04sg==", "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, null, null, createBoundaryList(), tagList13, tablesList13, viewList13, null },
-				{ "15", PICDFADMIN, "6NZYEwkq24lm9xBekD04sg==", "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, null, null, createBoundaryList(), tagList13, tablesList13, viewList13, null },//Include Date filter for 30 days
-				{ "16", SQACUSSU, "oeHwHqmv621dZ1MRE2BSdw==", "sqacus", TIMEZONECTUA, "150", null, null, null, null, null, null, true, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList13, tablesList13, viewList13, null },
-				{ "17", SQACUSSU, "oeHwHqmv621dZ1MRE2BSdw==", "sqacus", TIMEZONEETUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList13, tablesList13, viewList13, null }
+				{ "14", PICDFADMIN, "6NZYEwkq24lm9xBekD04sg==", "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, null, null, createBoundaryList(), tagList14, tablesList14, viewList14, null },
+				{ "15", PICDFADMIN, "6NZYEwkq24lm9xBekD04sg==", "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, null, null, createBoundaryList(), tagList15, tablesList15, viewList15, null },//Include Date filter for 30 days
+				{ "16", SQACUSSU, "oeHwHqmv621dZ1MRE2BSdw==", "sqacus", TIMEZONECTUA, "150", null, null, null, null, null, null, true, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList16, tablesList16, viewList16, null },
+				{ "17", SQACUSSU, "oeHwHqmv621dZ1MRE2BSdw==", "sqacus", TIMEZONEETUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList17, tablesList17, viewList17, null },
+				{ "18", PICDFADMIN, "6NZYEwkq24lm9xBekD04sg==", "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, null, null, createBoundaryList(), tagList18, tablesList18, viewList18, null },
+				{ "19", PICDFADMIN, "6NZYEwkq24lm9xBekD04sg==", "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, null, null, createBoundaryList(), tagList19, tablesList19, viewList19, null },
+				{ "20", PICDFADMIN, "6NZYEwkq24lm9xBekD04sg==", "Picarro", TIMEZONEMTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList20, tablesList20, viewList20, null }, //include dates
+				{ "21", SQACUSSU, "oeHwHqmv621dZ1MRE2BSdw==", "sqacus", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList21, tablesList21, viewList21, null } ,
+				{"22", SQACUSSU, "oeHwHqmv621dZ1MRE2BSdw==", "sqacus", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList22, tablesList22, viewList22, null },
+				{"23", SQACUSSU, "oeHwHqmv621dZ1MRE2BSdw==", "sqacus", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList23, tablesList23, viewList23, null }
 
 		};
 
 	}
-
-
 
 	private static HashMap<String, String> createViewsMapTable(String viewName, String lisa, String fov, String breadcrumb, String indications, String isotopic, String annotation, String gap, String asset, String boundary, String map) {
 		HashMap<String, String> viewMap = new HashMap<String, String>();
@@ -293,12 +353,6 @@ public class ComplianceReportDataProvider extends SurveyorTestRunner {
 		return tableMap;
 	}
 
-	/*
-	 * { "sqacusua@email.com","oeHwHqmv621dZ1MRE2BSdw==","Customer Utility Admin","sqacus","sqacusloc" }, { "sqacussu@email.com","oeHwHqmv621dZ1MRE2BSdw==","Customer Supervisor","sqacus","sqaTestloc"
-	 * }, { "sqacusdr1@email.com","oeHwHqmv621dZ1MRE2BSdw==","Customer Driver","sqacus","sqacusloc" }, { "sqapicad@picarro.com","oeHwHqmv621dZ1MRE2BSdw==","Picarro Admin","Picarro","Santa Clara" }, {
-	 * "sqapicsup@picarro.com","oeHwHqmv621dZ1MRE2BSdw==","Picarro Support","Picarro","Santa Clara" }, { "Administrator","6NZYEwkq24lm9xBekD04sg==","Picarro Admin","Picarro","Santa Clara" }, {
-	 * "sqapgeua@email.com","oeHwHqmv621dZ1MRE2BSdw==","PGE Customer Utility Admin","PG&E","pge_SC" }, { "sqapgesu@email.com","oeHwHqmv621dZ1MRE2BSdw==","PGE Customer Supervisor","PG&E","pge_SC" }, {
-	 * "sqapgedr1@email.com","oeHwHqmv621dZ1MRE2BSdw==","PGE Customer Driver","PG&E","pge_SC" } };
-	 */
+	
 
 }

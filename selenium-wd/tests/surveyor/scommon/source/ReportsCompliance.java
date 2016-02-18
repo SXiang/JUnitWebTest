@@ -20,96 +20,38 @@ public class ReportsCompliance extends Reports {
 
 	// temporary leave some fields here and will be moved to base class later
 
-	
-	/**
-	 * 
-	 */
-	
 	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tag, List<Map<String, String>> viewList) {
-		super( rptTitle,  strCreatedBy,  customer,  timeZone,  exclusionRadius,  listBoundary,  tablesList,  surveyorUnit, tag, viewList);
+		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, listBoundary, tablesList, surveyorUnit, tag, viewList);
 	}
 
 	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tag, List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) {
-		super( rptTitle,  strCreatedBy,  customer,  timeZone,  exclusionRadius,  listBoundary,  tablesList,  surveyorUnit,  tag, viewList,  viewLayersList);
+		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, listBoundary, tablesList, surveyorUnit, tag, viewList, viewLayersList);
 	}
 
 	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tag, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode) {
-		super( rptTitle,  strCreatedBy,  customer,  timeZone,  exclusionRadius,  listBoundary,  tablesList,  surveyorUnit,  tag,  startDate,  endDate,  viewList,  surveyMode);
+		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, listBoundary, tablesList, surveyorUnit, tag, startDate, endDate, viewList, surveyMode);
 	}
 
 	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tag, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode, ReportModeFilter reportMode) {
-		super( rptTitle,  strCreatedBy,  customer,  timeZone,  exclusionRadius, listBoundary, tablesList,  surveyorUnit,  tag,  startDate,  endDate,  viewList,  surveyMode,  reportMode);
+		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, listBoundary, tablesList, surveyorUnit, tag, startDate, endDate, viewList, surveyMode, reportMode);
 	}
 
 	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tag, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode, Boolean geoFilter) {
-		super( rptTitle,  strCreatedBy,  customer,  timeZone,  exclusionRadius, listBoundary,  tablesList,  surveyorUnit,  tag,  startDate,  endDate, viewList,  surveyMode,  geoFilter);
+		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, listBoundary, tablesList, surveyorUnit, tag, startDate, endDate, viewList, surveyMode, geoFilter);
 	}
 
 	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tag, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode, String userName, Boolean geoFilterOn, ReportModeFilter reportMode) {
-		super( rptTitle,  strCreatedBy,  customer,  timeZone,  exclusionRadius, listBoundary,  tablesList,  surveyorUnit, tag,  startDate,  endDate,  viewList,  surveyMode,  userName,  geoFilterOn,  reportMode);
+		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, listBoundary, tablesList, surveyorUnit, tag, startDate, endDate, viewList, surveyMode, userName, geoFilterOn, reportMode);
 	}
-
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList, ReportModeFilter reportMode) {
-		super( rptTitle,  strCreatedBy,  customer,  timeZone,  exclusionRadius, listBoundary,  tablesList,  surveyorUnit, tagList,  viewList,  reportMode);
-	}
-	
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, 
-			String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, 
-			EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList, List<Map<String, String>> viewList,
-			List<Map<String, String>> viewLayersList) {
-		super( rptTitle,  strCreatedBy,  customer,  timeZone,  exclusionRadius,  surveyorUnit,  userName, 
-				 startDate,  endDate,  fovOpacity,  lisaOpacity,  geoFilter,  reportMode,  surveyModeFilter, 
-				 ethaneFilter,  listBoundary,  tagList,  tablesList,  viewList,
-				 viewLayersList);
-	}
-	
-
-	
-	
-
-	/*public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, 
-			String surveyorUnit, List<String> tag, String startDate, String endDate, 
-			List<Map<String, String>> viewList, SurveyModeFilter surveyMode) {
-		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius,surveyorUnit,null,startDate, endDate,null, null,null, null, surveyMode, null, listBoundary, tag, tablesList,   viewList, null);
-	}
-	
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, 
-			List<Map<String, String>> tablesList,
-			String surveyorUnit, List<String> tag, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode, GeographicFilter geoFilter) {
-		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius,surveyorUnit,null,startDate,endDate, null, null , geoFilter,null, surveyMode,null, listBoundary, tag, tablesList,    
-				viewList, null);
-	}
-
-
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tag, 
-			String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode, ReportModeFilter reportMode) {
-		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit, null,startDate, endDate,null, null,null, reportMode, surveyMode, null,
-				listBoundary,  tag, tablesList, viewList, null  );
-	}
-	
-	
-	
 
 	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList, ReportModeFilter reportMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, listBoundary, tablesList, surveyorUnit, tagList, viewList, reportMode);
-
 	}
 
-
-	public ReportsCompliance(String rptTitle, String strCreatedBy,
-			String customer, String timeZone, String exclusionRadius,
-			List<String> listBoundary, List<Map<String, String>> tablesList,
-			String surveyorUnit, String tag, List<Map<String, String>> viewList,
+	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList, List<Map<String, String>> viewList,
 			List<Map<String, String>> viewLayersList) {
-		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius,
-				listBoundary, tablesList, surveyorUnit, tag, viewList, viewLayersList);
-	
-	}*/
-
-
-	
-	
-	
+		super(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
+	}
 
 	/**
 	 * @param args

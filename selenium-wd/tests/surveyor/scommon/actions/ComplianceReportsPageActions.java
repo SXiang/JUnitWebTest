@@ -303,9 +303,12 @@ public class ComplianceReportsPageActions extends BasePageActions {
 			modeFilter = SurveyModeFilter.RapidResponse;
 		} 
 		
+		List<String> surveyTag= new ArrayList<String>();
+		surveyTag.add(dataRow.surveyTag);
+		
 		this.complianceReportsPage.addSurveyInformation(dataRow.surveySurveyor, 
-				dataRow.surveyUsername, 
-				dataRow.surveyTag, 
+				dataRow.surveyUsername, 				
+				surveyTag, 
 				dataRow.surveyStartDate, 
 				dataRow.surveyEndDate, 
 				modeFilter, 
