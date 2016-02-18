@@ -339,14 +339,26 @@ public class DriverViewPage extends BaseMapViewPage {
 		return driver.findElement(By.id("stabilityClass")).getText();
 	}
 
+	public WebElement getTimeElapsedLabel() {
+		return driver.findElement(By.id("timeElapsed"));
+	}
+
 	public String getTimeElapsedLabelText() {
 		return driver.findElement(By.id("timeElapsed")).getText();
 	}
+
+	public WebElement getTimeLabel() {
+		return driver.findElement(By.id("currentTime"));
+	}	
 
 	public String getTimeLabelText() {
 		return driver.findElement(By.id("currentTime")).getText();
 	}	
 	
+	public WebElement getTimeRemainingLabel() {
+		return driver.findElement(By.id("timeRemaining"));
+	}
+
 	public String getTimeRemainingLabelText() {
 		return driver.findElement(By.id("timeRemaining")).getText();
 	}

@@ -98,6 +98,13 @@ public class DateUtility {
 			currTimeString = currTimeString.replace(TIME_PREFIX, "");
 			currTimeString = currTimeString.replace(ELAPSED_TIME_PREFIX, "");
 			currTimeString = currTimeString.replace(REMAINING_TIME_PREFIX, "");
+
+			List<String> timeParts = RegexUtility.split(currTimeString, RegexUtility.SPACE_SPLIT_REGEX_PATTERN);
+			if (timeParts == null) {
+				throw new IllegalArgumentException("Element time string should be in '00:00:00' or '00:00:00 PST' format.");
+			}
+			currTimeString = timeParts.get(0);
+			
 			if (prevTimeString != "") {
 				if (checkForwardTick) {
 					if (!isFirstTimeGreater(currTimeString, prevTimeString)) {

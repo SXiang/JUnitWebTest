@@ -58,12 +58,13 @@ public class OLMapUtility {
 			+ "var freshConstellation = JSON.parse(JSON.stringify(d3constellation)); freshConstellation.nodes.forEach(function (d) { "
 			+ "if (d.type == 'annotation') { if (!d.fixed) { if (d.text == note) { shown = true; } } } }); return shown; };";
 
-	private static final String IS_ICON_PRESENT_JS_FUNCTION = "function isIconPresent(imgFileName){var found=false;var CAR_ICON_SRC='/content/images/'+imgFileName;"
-			+ "try{layers=map.getLayers();if(layers){for(var i=0;i<layers.getLength();i++){layer=layers.item(i);"
-			+ "if(layer&&layer.getVisible&&layer.getVisible()){source=layer.getSource();if(source){if(source.getFeatures){features=source.getFeatures();"
-			+ "if(features){for(var j=0;j<layers.getLength();j++){if(features[j]&&features[j].getStyle){style=features[j].getStyle();"
-			+ "if(style){img=style.getImage();if(img){src=img.getSrc();if(src){if(src.toLowerCase()==CAR_ICON_SRC){found=true;}}}}}}}}}}}}}"
-			+ "catch(err){found=false;};return found;};";
+	private static final String IS_ICON_PRESENT_JS_FUNCTION = "function isIconPresent(imgFileName){"
+			+ "var found=false;var CAR_ICON_SRC='/content/images/'+imgFileName;try{layers=surveyormap.getLayers();"
+			+ "if(layers){for(var i=0;i<layers.getLength();i++){layer=layers.item(i);if(layer&&layer.getVisible&&layer.getVisible()){"
+			+ "source=layer.getSource();if(source){if(source.getFeatures){features=source.getFeatures();if(features){"
+			+ "for(var j=0;j<layers.getLength();j++){if(features[j]&&features[j].getStyle){style=features[j].getStyle();"
+			+ "if(style){img=style.getImage();if(img){src=img.getSrc();if(src){if(src.toLowerCase()==CAR_ICON_SRC){"
+			+ "found=true;}}}}}}}}}}}}}catch(err){found=false;};return found;};";
 	
 	private static final String IS_LISAS_PRESENT_JS_FUNCTION = "function isLisasPresent(){var found=false;try{layer=lisaLayer;"
 			+ "if(layer&&layer.getVisible&&layer.getVisible()&&layer.getStyle){style=layer.getStyle();if(style&&style.getFill&&style.getStroke){"
@@ -171,7 +172,7 @@ public class OLMapUtility {
 	
 	private static final String IS_BREADCRUMBS_PRESENT_JS_FUNCTION_CALL = "return isBreadCrumbPresent();";
 	private static final String GET_BREADCRUMB_GEOMETRY_COORDINATES_FUNCTION_CALL = "return getBreadCrumbCoordinates();";
-	private static final String MATCH_BREADCRUMB_COLOR_JS_FUNCTION_CALL = "return matchBreadCrumbColor();";
+	private static final String MATCH_BREADCRUMB_COLOR_JS_FUNCTION_CALL = "return matchBreadCrumbColor('%s');";
 	
 	private static final String CONCENTRATION_CHART_DATA_FUNCTION_CALL = "return isConcentrationChartDataShownOnMap(5,10);";   // look for 10% white pixels in bottom 5% of the chart
 	private static final String GET_CONCENTRATION_CHART_IMAGE_DATA_FUNCTION_CALL = "return getConcentrationChartImageData();";

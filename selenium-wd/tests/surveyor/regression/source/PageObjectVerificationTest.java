@@ -8,9 +8,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.DateUtility;
 import common.source.Log;
 import common.source.OLMapUtility;
 import common.source.TestSetup;
+import common.source.OLMapUtility.BreadcrumbColor;
 import common.source.OLMapUtility.IconColor;
 import surveyor.scommon.source.LatLongSelectionControl;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
@@ -141,6 +143,142 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: <None>
+	 * NOTE: This is a test method to test car icon color is showing correctly.
+	 */
+	@Test
+	public void ReferenceOnly_SimulatorTest_CarIconColorVerification() {
+		Log.info("Running ReferenceOnly_SimulatorTest_CarIconColorVerification");
+
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+
+		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
+
+		driverViewPage.open();
+		driverViewPage.waitForPageLoad();
+		driverViewPage.waitForConnectionComplete();
+
+		Log.info("Clicking on MODE button");
+		driverViewPage.clickModeButton();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
+		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
+		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
+
+		// Let the survey run for a few seconds.
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		// check car icon shown is RED
+		OLMapUtility mapUtility = new OLMapUtility(this.driver);
+		assertTrue(mapUtility.isCrossHairIconShownOnMap(IconColor.Red));
+
+		Log.info("Clicking on MODE button");
+		driverViewPage.clickModeButton();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		driverViewPage.stopDrivingSurvey();
+
+		// Wait for a few seconds.
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		// check car icon shown is GRAY
+		assertTrue(mapUtility.isCrossHairIconShownOnMap(IconColor.Gray));
+		
+		TestSetup.stopAnalyzer();
+	}
+
+	/**
+	 * Test Case ID: <None>
+	 * NOTE: This is a test method to test breadcrumb color is showing correctly.
+	 */
+	@Test
+	public void ReferenceOnly_SimulatorTest_BreadcrumbColorVerification() {
+		Log.info("Running ReferenceOnly_SimulatorTest_BreadcrumbColorVerification");
+
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+
+		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
+
+		driverViewPage.open();
+		driverViewPage.waitForPageLoad();
+		driverViewPage.waitForConnectionComplete();
+
+		Log.info("Clicking on MODE button");
+		driverViewPage.clickModeButton();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
+		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
+		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
+
+		// Let the survey run for a few seconds.
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		// check breadcrumb color shown is BLUE
+		OLMapUtility mapUtility = new OLMapUtility(this.driver);
+		assertTrue(mapUtility.isBreadcrumbShownOnMap(BreadcrumbColor.Blue));
+
+		Log.info("Clicking on MODE button");
+		driverViewPage.clickModeButton();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		driverViewPage.stopDrivingSurvey();
+
+		// Wait for a few seconds.
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		// check breadcrumb color shown is GRAY
+		assertTrue(mapUtility.isBreadcrumbShownOnMap(BreadcrumbColor.Gray));
+		
+		TestSetup.stopAnalyzer();
+	}
+	
+	/**
+	 * Test Case ID: <None>
+	 * NOTE: This is a test method to test the DateTime.isTimeTickingBackward & isTimeTickingForward methods.
+	 * @throws InterruptedException 
+	 */
+	@Test
+	public void ReferenceOnly_SimulatorTest_DatetimeTicksTest() throws InterruptedException {
+		Log.info("Running ReferenceOnly_SimulatorTest_DatetimeTicksTest");
+
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+
+		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
+
+		driverViewPage.open();
+		driverViewPage.waitForPageLoad();
+		driverViewPage.waitForConnectionComplete();
+		
+		Log.info("Clicking on MODE button");
+		driverViewPage.clickModeButton();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
+		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
+		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
+		
+		// Open Header box and check the survey information.
+		driverViewPage.clickHeaderInfoBox();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		Log.info("ELAPSED:[" + driverViewPage.getTimeElapsedLabelText() + "]");
+		assertTrue(DateUtility.isTimeTickingForward(driverViewPage.getTimeElapsedLabel()));
+		
+		Log.info("REMAINING:[" + driverViewPage.getTimeRemainingLabelText() + "]");
+		assertTrue(DateUtility.isTimeTickingBackward(driverViewPage.getTimeRemainingLabel()));
+		
+		Log.info("TIME:[" + driverViewPage.getTimeLabelText() + "]");
+		assertTrue(DateUtility.isTimeTickingForward(driverViewPage.getTimeLabel()));
+		
+		Log.info("Clicking on MODE button");
+		driverViewPage.clickModeButton();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		driverViewPage.stopDrivingSurvey();
+		
+		TestSetup.stopAnalyzer();
+	}
+	
+	
+	/**
+	 * Test Case ID: <None>
 	 * NOTE: This is a test method to demonstrate the usage of OLMapUtility functions.
 	 *  Actual automation tests that use OLMapUtility can use this method as a reference.
 	 */
@@ -207,6 +345,9 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 
 		boolean breadcrumbShownOnMap = mapUtility.isBreadcrumbShownOnMap();
 		Log.info("breadcrumbShownOnMap = " + breadcrumbShownOnMap);
+
+		boolean breadcrumbShownOnMapGray = mapUtility.isBreadcrumbShownOnMap(BreadcrumbColor.Gray);
+		Log.info("breadcrumbShownOnMapGray = " + breadcrumbShownOnMapGray);
 
 		boolean fovShownOnMap = mapUtility.isFOVShownOnMap();
 		Log.info("fovShownOnMap = " + fovShownOnMap);
@@ -303,6 +444,8 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		driverViewPage.stopDrivingSurvey();
+		
+		TestSetup.stopAnalyzer();
 	}
 
 }
