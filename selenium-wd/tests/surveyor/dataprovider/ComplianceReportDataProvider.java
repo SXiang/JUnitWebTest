@@ -67,7 +67,7 @@ import surveyor.scommon.source.Reports.EthaneFilter;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 
-public class ComplianceReportDataProvider extends SurveyorTestRunner {
+public class ComplianceReportDataProvider extends ReportDataProvider {
 	public static final String COMPLIANCE_REPORT_PROVIDER = "dataProviderComplianceReport";
 
 	public ComplianceReportDataProvider(Class<?> klass) throws InitializationError {
@@ -303,51 +303,5 @@ public class ComplianceReportDataProvider extends SurveyorTestRunner {
 		};
 
 	}
-
-	private static HashMap<String, String> createViewsMapTable(String viewName, String lisa, String fov, String breadcrumb, String indications, String isotopic, String annotation, String gap, String asset, String boundary, String map) {
-		HashMap<String, String> viewMap = new HashMap<String, String>();
-		viewMap.put(KEYVIEWNAME, viewName);
-		viewMap.put(KEYLISA, lisa);
-		viewMap.put(KEYFOV, fov);
-		viewMap.put(KEYBREADCRUMB, breadcrumb);
-		viewMap.put(KEYINDICATIONS, indications);
-		viewMap.put(KEYISOTOPICCAPTURE, isotopic);
-		viewMap.put(KEYANNOTATION, annotation);
-		viewMap.put(KEYGAPS, gap);
-		viewMap.put(KEYASSETS, asset);
-		viewMap.put(KEYBOUNDARIES, boundary);
-		viewMap.put(KEYBASEMAP, map);
-		return viewMap;
-	}
-
-	private static List<String> createBoundaryList() {
-		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add(IMGMAPHEIGHT);
-		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add(RNELAT);
-		listBoundary.add(RNELON);
-		listBoundary.add(RSWLAT);
-		listBoundary.add(RSWLON);
-		return listBoundary;
-	}
-
-	private static HashMap<String, String> createOptionalTable(String indication, String isotopic, String pca, String pcra, String iron, String copper, String otherPlastic, String plastic, String protectedSteel, String unprotecetdSteel, String district, String districtPlat) {
-		HashMap<String, String> tableMap = new HashMap<String, String>();
-		tableMap.put(KEYINDTB, indication);
-		tableMap.put(KEYISOANA, isotopic);
-		tableMap.put(KEYPCA, pca);
-		tableMap.put(KEYPCRA, pcra);
-		tableMap.put(KEYASSETCASTIRON, iron);
-		tableMap.put(KEYASSETCOPPER, copper);
-		tableMap.put(KEYASSETOTHERPLASTIC, otherPlastic);
-		tableMap.put(KEYASSETPEPLASTIC, plastic);
-		tableMap.put(KEYASSETPROTECTEDSTEEL, protectedSteel);
-		tableMap.put(KEYASSETUNPROTECTEDSTEEL, unprotecetdSteel);
-		tableMap.put(KEYBOUNDARYDISTRICT, district);
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, districtPlat);
-		return tableMap;
-	}
-
-	
 
 }
