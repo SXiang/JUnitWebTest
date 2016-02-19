@@ -1,8 +1,9 @@
 package surveyor.scommon.source;
 
 import org.junit.runner.notification.RunNotifier;
-import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
+
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 
 /**
  * This is a custom test runner created to add the RunExecutionListener as a 
@@ -13,7 +14,7 @@ import org.junit.runners.model.InitializationError;
  * @author spulikkal
  *
  */
-public class SurveyorTestRunner extends BlockJUnit4ClassRunner {
+public class SurveyorTestRunner extends DataProviderRunner {
 
     public SurveyorTestRunner(Class<?> klass) throws InitializationError {
         super(klass);
