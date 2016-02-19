@@ -127,7 +127,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 	 * @throws IOException
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC1634_Ethane_VerifyCheckBoxes() {
 		String rptTitle = "TC1634 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1634: Ethane: Compliance Report UI: Verify Ethane Filter is available - New Compliance Report, " + rptTitle);
@@ -231,7 +231,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 	 * 
 	 */
 	@Test
-	public void TC1654_Ethane_Verify_Analysis_Column() throws IOException{
+	public void TC1654_Ethane_Verify_Analyses_Column_View_Table() throws IOException{
 		String rptTitle = "TC1654 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1654: Ethane: Compliance Report UI: Verify Analysis column in Views table, " + rptTitle);
 
@@ -239,12 +239,132 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.open();
 		complianceReportsPage.openNewComplianceReportPage();
 
-		assertTrue(complianceReportsPage.verifyIsotopicAnalysisTable(complianceReportsPage.getViewsAnalysisColumn().getText(), "Analysis"));
+		assertTrue(complianceReportsPage.getViewsAnalysesColumn().getText().equalsIgnoreCase("Analyses"));
 
+		complianceReportsPage.logout();
+	}
+
+	/**
+	 * Test Case ID: TC1636 Test Description: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane Standard mode surveys are displayed
+	 * @throws InterruptedException 
+	 * 
+	 * @throws IOException
+	 * 
+	 */
+	@Test
+	public void TC1636_Ethane_Verify_NONEthane_Survey() throws IOException, InterruptedException{
+		String rptTitle = "TC1636 Ethane" + testSetup.getRandomNumber();
+		Log.info("\nRunning TC1636: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane Standard mode surveys are displayed" + rptTitle);
+
+		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
+		complianceReportsPage.open();
+		complianceReportsPage.openNewComplianceReportPage();
+
+		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.Standard, "stnd"));
+
+		/*driver.navigate().refresh();
+		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.Standard, "ethane"));
+		 */
+		driver.navigate().refresh();
+		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, "stnd"));
+
+		/*driver.navigate().refresh();
+		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, "ethane"));
+		 */
 		complianceReportsPage.logout();
 
 	}
 
-	
+	/**
+	 * Test Case ID: TC1654 Test Description: Ethane: Compliance Report UI: Verify Analysis column in Optional Tabular PDF Content table
+	 * @throws InterruptedException 
+	 * 
+	 * @throws IOException
+	 * 
+	 */
+	@Test
+	public void TC1725_Ethane_Verify_Analysis_Column_Tubular_Content() throws IOException{
+		String rptTitle = "TC1725 Ethane" + testSetup.getRandomNumber();
+		Log.info("\nRunning TC1725: Ethane: Compliance Report UI: Verify Analysis column in Optional Tabular PDF Content table" + rptTitle);
+
+		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
+		complianceReportsPage.open();
+		complianceReportsPage.openNewComplianceReportPage();
+
+		System.out.println(complianceReportsPage.getTubularAnalysisOption().getText());
+		assertTrue(complianceReportsPage.getTubularAnalysisOption().getText().equalsIgnoreCase("Analysis"));
+
+		complianceReportsPage.logout();
+	}
+
+	/**
+	 * Test Case ID: TC1639 Test Description: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane operator mode surveys are displayed
+	 * @throws InterruptedException 
+	 * 
+	 * @throws IOException
+	 * 
+	 */
+	@Test
+	public void TC1639_Ethane_Verify_Ethane_NONEthane_Survey_Via_Operator_SurveyMode() throws IOException, InterruptedException{
+		String rptTitle = "TC1639 Ethane" + testSetup.getRandomNumber();
+		Log.info("\nRunning TC1639: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane operator mode surveys are displayed" + rptTitle);
+
+		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
+		complianceReportsPage.open();
+		complianceReportsPage.openNewComplianceReportPage();
+
+		assertTrue(complianceReportsPage.verifySurveysTableViaSurveyMode(true, ReportModeFilter.Standard, SurveyModeFilter.Operator));
+		
+		driver.navigate().refresh();
+		assertTrue(complianceReportsPage.verifySurveysTableViaSurveyMode(true, ReportModeFilter.RapidResponse, SurveyModeFilter.Operator));
+		
+		complianceReportsPage.logout();
+
+	}
+
+	/**
+	 * Test Case ID:  	TC1653 Test Description: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane Rapid response mode surveys are displayed
+	 * @throws InterruptedException 
+	 * 
+	 * @throws IOException
+	 * 
+	 */
+	@Test
+	public void TC1653_Ethane_Verify_Ethane_NONEthane_Survey_Via_RapidResponse_SurveyMode() throws IOException, InterruptedException{
+		String rptTitle = "TC1653 Ethane" + testSetup.getRandomNumber();
+		Log.info("\nRunning TC1653: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane Rapid response mode surveys are displayed" + rptTitle);
+
+		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
+		complianceReportsPage.open();
+		complianceReportsPage.openNewComplianceReportPage();
+
+		assertTrue(complianceReportsPage.verifySurveysTableViaSurveyMode(true, ReportModeFilter.RapidResponse, SurveyModeFilter.RapidResponse));
+		
+		complianceReportsPage.logout();
+
+	}
+
+	/**
+	 * Test Case ID:TC1640 Test Description: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane manual mode surveys are displayed
+	 * @throws InterruptedException 
+	 * 
+	 * @throws IOException
+	 * 
+	 */
+	@Test
+	public void TC1640_Ethane_Verify_Ethane_NONEthane_Survey_Via_Manual_SurveyMode() throws IOException, InterruptedException{
+		String rptTitle = "TC1640 Ethane" + testSetup.getRandomNumber();
+		Log.info("\nRunning TC1640: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane manual mode surveys are displayed" + rptTitle);
+
+		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
+		complianceReportsPage.open();
+		complianceReportsPage.openNewComplianceReportPage();
+
+		assertTrue(complianceReportsPage.verifySurveysTableViaSurveyMode(true, ReportModeFilter.Manual, SurveyModeFilter.Manual));
+		
+		complianceReportsPage.logout();
+
+	}
+
 
 }

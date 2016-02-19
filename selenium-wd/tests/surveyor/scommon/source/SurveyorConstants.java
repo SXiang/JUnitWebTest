@@ -174,8 +174,6 @@ public final class SurveyorConstants {
 	public static final String KEYASSETS = "Assets";
 	public static final String KEYBOUNDARIES = "Boundaries";
 	public static final String KEYBASEMAP = "Base Map";
-
-	
 	public static final String KEYASSETCASTIRON = "Cast Iron";
 	public static final String KEYASSETCOPPER = "Copper";
 	public static final String KEYASSETOTHERPLASTIC = "Other Plastic";

@@ -372,6 +372,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 		this.latLongMapSelectorBtn.click();
 	}
 
+	public WebElement getCbTag(){
+		return cbTag;
+	}
+	
+	public WebElement getBtnSurveySearch(){
+		return btnSurveySearch;
+	}
 	/**
 	 * @param args
 	 */
