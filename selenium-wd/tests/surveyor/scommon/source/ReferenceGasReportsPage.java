@@ -377,27 +377,31 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 			String line = null;
 
-			while ((line = bufferReader.readLine()) != null) {
-				if (line.matches(REGEX_PATTERN_EXTRACT_LINES_STARTING_WITH_DIGITS)) {
-					if (!line.contains("Date Printed")) {
-						if (line.length() > 45) {
-							StoredProcReferenceGas storedProcRefGas = new StoredProcReferenceGas();
-							String parts[] = line.split("\\s+");
-							String firstPart[] = Arrays.copyOfRange(parts, 0, 4);
-							String dateInstalled = String.join(" ", firstPart);
-							storedProcRefGas.setInstallationDate(dateInstalled);
-							storedProcRefGas.setUserName(parts[4]);
-							LotNumberInReport = parts[5].trim();
-							String[] uncertaintyDelta = parts[6].split("/");
-							String delta = uncertaintyDelta[0].replace("+", "").trim();
-							String uncertainty = uncertaintyDelta[1].replace("-", "").trim();
-							storedProcRefGas.setUncertainty(uncertainty);
-							storedProcRefGas.setDelta(delta);
-							storedProcRefGas.setTestResult(parts[7]);
-							resultsList.add(storedProcRefGas);
+			try {
+				while ((line = bufferReader.readLine()) != null) {
+					if (line.matches(REGEX_PATTERN_EXTRACT_LINES_STARTING_WITH_DIGITS)) {
+						if (!line.contains("Date Printed")) {
+							if (line.length() > 45) {
+								StoredProcReferenceGas storedProcRefGas = new StoredProcReferenceGas();
+								String parts[] = line.split("\\s+");
+								String firstPart[] = Arrays.copyOfRange(parts, 0, 4);
+								String dateInstalled = String.join(" ", firstPart);
+								storedProcRefGas.setInstallationDate(dateInstalled);
+								storedProcRefGas.setUserName(parts[4]);
+								LotNumberInReport = parts[5].trim();
+								String[] uncertaintyDelta = parts[6].split("/");
+								String delta = uncertaintyDelta[0].replace("+", "").trim();
+								String uncertainty = uncertaintyDelta[1].replace("-", "").trim();
+								storedProcRefGas.setUncertainty(uncertainty);
+								storedProcRefGas.setDelta(delta);
+								storedProcRefGas.setTestResult(parts[7]);
+								resultsList.add(storedProcRefGas);
+							}
 						}
 					}
 				}
+			} finally {
+				bufferReader.close();
 			}
 		} catch (IOException e) {
 			Log.info(e.toString());

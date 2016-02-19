@@ -43,12 +43,6 @@ public final class SurveyorConstants {
 	public static final String CUSNAMEBASE = "sqacus";
 	public static final String CUSNAMEBASELOC = "sqacusloc";
 	
-	// Not referenced in code. Commenting. Can be deleted post successful automation run.
-	//public static final String CUSNAMEBASESUR = "sqacuslocsur";
-	
-	// Not referenced in code. Commenting. Can be deleted post successful automation run.
-	//public static final String CUSNAMEBASEANA = "sqacuslocsurana";
-
 	public static final String SQACUS = "sqacus";
 	public static final String SQACUSLOC = "sqacusloc";
 	public static final String SQAPIC = "sqapic";
@@ -141,7 +135,6 @@ public final class SurveyorConstants {
 
 	public static final int ACTIONTIMEOUT = 300; // in seconds
 
-	// public static final String PAGINATIONSETTING = "100";
 	public static final String PAGINATIONSETTING = "10"; // Selenium WebDriver issues so set it to 10 only for now
 	public static final String PAGINATIONSETTING_25 = "25";
 	public static final String PAGINATIONSETTING_50 = "50";

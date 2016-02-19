@@ -50,8 +50,6 @@ public class ExcelUtility {
             cellDataMap.put(key, cellData);
             return cellData;
          } catch (Exception e) {
-             //Log.info("Class ExcelUtility | Method getCellData | Exception msg : "+e.getMessage());
-             //TestExecutionEngine.bResult = false;
              return "<ERROR>";
          }
      }
@@ -62,8 +60,6 @@ public class ExcelUtility {
     		FileInputStream excelFile = new FileInputStream(path);
             excelWorkbook = new XSSFWorkbook(excelFile);
     	} catch (Exception e) {
-    		//Log.info("Class ExcelUtility | Method setExcelFile | Exception msg : "+e.getMessage());
-    		//TestExecutionEngine.bResult = false;
     	}
 	}
 
@@ -108,7 +104,6 @@ public class ExcelUtility {
 			num=excelWorksheet.getLastRowNum()+1;
 		} catch (Exception e) {
 			Log.error("Class ExcelUtility | Method getRowCount | Exception msg : "+e.getMessage());
-			//TestExecutionEngine.bResult = false;
 		}
 		return num;
 	}
@@ -116,7 +111,6 @@ public class ExcelUtility {
 	public int getRowContains(String testCaseID, int colNum, String SheetName) throws Exception{
 		int num=0;	
 		try {
-		    //ExcelWSheet = ExcelWBook.getSheet(SheetName);
 			int rowCount = this.getRowCount(SheetName);
 			for (; num<rowCount; num++){
 				if  (this.getIntegerCellData(num,colNum,SheetName).equalsIgnoreCase(testCaseID)){
@@ -125,7 +119,6 @@ public class ExcelUtility {
 			}       			
 		} catch (Exception e) {
 			Log.error("Class ExcelUtility | Method getRowContains | Exception msg : "+e.getMessage());
-			//TestExecutionEngine.bResult = false;
 		}
 		return num;
 	}
@@ -141,15 +134,8 @@ public class ExcelUtility {
     		
     		// If we did NOT find the last test step then return the startIdx itself.
     		return testCasesStartIdx;
-
-    		/*
-    		excelWorksheet = excelWorkbook.getSheet(sheetName);
-    		int number=excelWorksheet.getLastRowNum()+1;
-    		return number;
-    		*/
 		} catch (Exception e) {
 			Log.error("Class ExcelUtility | Method getRowContains | Exception msg : "+e.getMessage());
-			//TestExecutionEngine.bResult = false;
 			return 0;
         }
 	}
@@ -167,12 +153,13 @@ public class ExcelUtility {
 				cellText.setCellValue(result);
 			}
 			FileOutputStream fileOut = new FileOutputStream(this.excelFilePath);
-			excelWorkbook.write(fileOut);
-			//fileOut.flush();
-			fileOut.close();
+			try {
+				excelWorkbook.write(fileOut);
+			} finally {
+				fileOut.close();
+			}
 			excelWorkbook = new XSSFWorkbook(new FileInputStream(this.excelFilePath));
 		 } catch(Exception e) {
-			 //TestExecutionEngine.bResult = false;
          }
 	}
 }

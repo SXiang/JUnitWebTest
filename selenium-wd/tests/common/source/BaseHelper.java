@@ -50,14 +50,15 @@ public class BaseHelper {
 			File f = new File(outputFolder + File.separator + entryName);
 			f.getParentFile().mkdirs();
 			FileOutputStream fos = new FileOutputStream(f);
-
-			int len;
-			byte buffer[] = new byte[1024];
-			while ((len = zis.read(buffer)) > 0) {
-				fos.write(buffer, 0, len);
+			try {
+				int len;
+				byte buffer[] = new byte[1024];
+				while ((len = zis.read(buffer)) > 0) {
+					fos.write(buffer, 0, len);
+				}
+			} finally {
+				fos.close();
 			}
-
-			fos.close();
 
 			ze = zis.getNextEntry();
 		}
@@ -80,15 +81,15 @@ public class BaseHelper {
 			File f = new File(outputFolder + File.separator + entryName);
 			f.getParentFile().mkdirs();
 			FileOutputStream fos = new FileOutputStream(f);
-
-			int len;
-			byte buffer[] = new byte[1024];
-			while ((len = zis.read(buffer)) > 0) {
-				fos.write(buffer, 0, len);
+			try {
+				int len;
+				byte buffer[] = new byte[1024];
+				while ((len = zis.read(buffer)) > 0) {
+					fos.write(buffer, 0, len);
+				}
+			} finally {
+				fos.close();
 			}
-
-			fos.close();
-
 			ze = zis.getNextEntry();
 		}
 
