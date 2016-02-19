@@ -135,8 +135,8 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.open();
 		complianceReportsPage.openNewComplianceReportPage();
 		
-		assertTrue(complianceReportsPage.getCheckBoxetheneexhaust().isDisplayed());
-		assertTrue(complianceReportsPage.getCheckBoxethenebiogenicemethane().isDisplayed());
+		assertTrue(complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed());
+		assertTrue(complianceReportsPage.getCheckBoxEtheneBiogeniceMethane().isDisplayed());
 		
 		complianceReportsPage.logout();
 		

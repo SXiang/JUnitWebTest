@@ -27,13 +27,15 @@ import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.SurveyorTestRunner;
+
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
  * @author zlu
  *
  */
-@RunWith(DataProviderRunner.class)
+@RunWith(SurveyorTestRunner.class)
 public class ManageUsersPageTest extends SurveyorBaseTest {
 	private static final String FN_TC71_TC473_USER_RESET_PWD = "TC71_TC473_User_ResetPwd";
 	private static final String SQAPICAD_AND_SQAPICSUP = "sqapicad@picarro.com,sqapicsup@picarro.com";

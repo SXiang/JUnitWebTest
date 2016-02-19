@@ -58,28 +58,28 @@ public class Reports {
 	}
 
 	
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tag, List<Map<String, String>> viewList) {
-		this(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit, null, null, null, null, null, null, null, null, null, listBoundary, tag, tablesList, viewList, null);
+	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList) {
+		this(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit, null, null, null, null, null, null, null, null, null, listBoundary, tagList, tablesList, viewList, null);
 	}
 
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tag, List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) {
-		this(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit, null, null, null, null, null, null, null, null, null, listBoundary, tag, tablesList, viewList, viewLayersList);
+	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) {
+		this(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit, null, null, null, null, null, null, null, null, null, listBoundary, tagList, tablesList, viewList, viewLayersList);
 	}
 
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tag, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode) {
-		this(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit, null, startDate, endDate, null, null, null, null, surveyMode, null, listBoundary, tag, tablesList, viewList, null);
+	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode) {
+		this(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit, null, startDate, endDate, null, null, null, null, surveyMode, null, listBoundary, tagList, tablesList, viewList, null);
 	}
 
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tag, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode, ReportModeFilter reportMode) {
-		this(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit, null, startDate, endDate, null, null, null, reportMode, surveyMode, null, listBoundary, tag, tablesList, viewList, null);
+	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode, ReportModeFilter reportMode) {
+		this(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit, null, startDate, endDate, null, null, null, reportMode, surveyMode, null, listBoundary, tagList, tablesList, viewList, null);
 	}
 
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tag, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode, boolean geoFilter) {
-		this(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit, null, startDate, endDate, null, null, geoFilter, null, surveyMode, null, listBoundary, tag, tablesList, viewList, null);
+	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode, boolean geoFilter) {
+		this(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit, null, startDate, endDate, null, null, geoFilter, null, surveyMode, null, listBoundary, tagList, tablesList, viewList, null);
 	}
 
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tag, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode, String userName, boolean geoFilterOn, ReportModeFilter reportMode) {
-		this(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, null, null, geoFilterOn, reportMode, surveyMode, null, listBoundary, tag, tablesList, viewList, null);
+	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode, String userName, boolean geoFilterOn, ReportModeFilter reportMode) {
+		this(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, null, null, geoFilterOn, reportMode, surveyMode, null, listBoundary, tagList, tablesList, viewList, null);
 	}
 
 	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList, ReportModeFilter reportMode) {

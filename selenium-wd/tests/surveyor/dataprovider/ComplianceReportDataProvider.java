@@ -274,14 +274,9 @@ public class ComplianceReportDataProvider extends SurveyorTestRunner {
 		tagList23.add(CUSDRVSTDTAG); 
 
 
-		return new Object[][] {
-				/*
-				 * String index, String strCreatedBy, String password(encrypted), String customer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate,
-				 * String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String>
-				 * listBoundary, List<String> tagList, List<Map<String, String>> tablesList, List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList
-				 */
-
-				{ "1", SQAPICSUP, "oeHwHqmv621dZ1MRE2BSdw==", "Picarro", TIMEZONEPTUA, EXCLUSIONRADIUS, null, null, null, null, null, null, null, null, null, null, createBoundaryList(), tagList1, tablesList1, viewList1, null },
+		return new Object[][] {				
+				{ "1"/*index*/, SQAPICSUP/*strCreatedBy*/, "oeHwHqmv621dZ1MRE2BSdw=="/*password(encrypted)*/, "Picarro"/*customer*/, TIMEZONEPTUA/*timeZone*/, EXCLUSIONRADIUS/*exclusionRadius*/, null/*surveyorUnit*/, null/*userName*/, null/*startDate*/,
+					null/*endDate*/, null/*fovOpacity*/, null/*lisaOpacity*/, null/*geoFilter*/, null/*reportMode*/, null/*surveyModeFilter*/, null/*ethaneFilter*/, createBoundaryList()/*listBoundary*/, tagList1/*tagList*/, tablesList1/*tablesList*/, viewList1/*viewList*/, null/*viewLayersList*/ },
 				{ "2", SQAPICSUP, "oeHwHqmv621dZ1MRE2BSdw==", "Picarro", TIMEZONEPTUA, EXCLUSIONRADIUS, null, null, null, null, null, null, null, null, null, null, createBoundaryList(), tagList2, tablesList2, viewList2, null }, // include date range
 				{ "3", PICDFADMIN, "6NZYEwkq24lm9xBekD04sg==", "Picarro", TIMEZONECTUA, EXCLUSIONRADIUS, PICADMNSURVEYOR, null, null, null, null, null, null, null, SurveyModeFilter.All, null, createBoundaryList(), tagList3, tablesList3, viewList3, null },
 				{ "4", PICDFADMIN, "6NZYEwkq24lm9xBekD04sg==", "Picarro", TIMEZONEETUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList4, tablesList4, viewList4, null }, //include dates
