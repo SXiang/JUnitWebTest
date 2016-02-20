@@ -1214,7 +1214,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.getTextBoxReportSerach().sendKeys(Keys.ENTER);
 		this.waitForPageLoad();
 
-		if (driver.findElements(By.xpath("//*[@class='dataTables_empty']")).size() < 1) {
+		if (driver.findElements(By.xpath("//*[@class='dataTables_empty']")).size() ==  1) {
 			return false;
 		}
 		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
