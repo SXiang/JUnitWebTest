@@ -95,10 +95,16 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
+import common.source.CryptoUtility;
 import common.source.Log;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.dataprovider.ComplianceReportDataProvider;
+import surveyor.dataprovider.ComplianceReportEthaneDataProvider;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.Reports.EthaneFilter;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
@@ -113,11 +119,15 @@ import surveyor.scommon.source.SurveyorTestRunner;
 public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 	private static ComplianceReportsPage complianceReportsPage = null;
 	private String STRReportAreaTooLargeMsg = "Please make sure your selected boundary is more than 0.5kms and less than 25kms";
+	private String STRReportAssetNotSelectedMsg = "View(s) with Assets, Please select at least one Asset Layer";
+	private String STRReportBoundaryNotSelectedMsg = "View(s) with Boundaries, Please select at least one Boundary Layer";
+	private static HashMap<String, String> testCaseMap = new HashMap<String, String>();
 
 	@BeforeClass
 	public static void setupComplianceReportsPageTest() {
 		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, complianceReportsPage);
+		createTestCaseMap();
 
 	}
 
@@ -136,8 +146,8 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.open();
 		complianceReportsPage.openNewComplianceReportPage();
 
-		assertTrue(complianceReportsPage.getCheckBoxetheneexhaust().isDisplayed());
-		assertTrue(complianceReportsPage.getCheckBoxethenebiogenicemethane().isDisplayed());
+		assertTrue(complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed());
+		assertTrue(complianceReportsPage.getCheckBoxEtheneBiogeniceMethane().isDisplayed());
 
 		complianceReportsPage.logout();
 
@@ -149,7 +159,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 	 * @throws IOException
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC1637_Ethane_Copy_Report_VerifyCheckBoxes() {
 		String rptTitle = "TC1637 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1637: Ethane: Compliance Report UI: Verify Ethane Filter is available in Copy Report Page, " + rptTitle);
@@ -199,7 +209,10 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 
 		viewList.add(viewMap1);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", PICADMNSTDTAG, RSURSTARTDATE, RSURENDDATE, viewList, SurveyModeFilter.Standard);
+		List<String> tagList = new ArrayList<String>();
+		tagList.add(PICADMNSTDTAG);
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -209,13 +222,13 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.clickOnCopyReport(rptTitle, testSetup.getLoginUser());
 		complianceReportsPage.waitForPageLoad();
 
-		if (complianceReportsPage.getCheckBoxetheneexhaust().isDisplayed())
-			assertTrue(complianceReportsPage.getCheckBoxetheneexhaust().isDisplayed());
+		if (complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed())
+			assertTrue(complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed());
 		else
 			fail("\nTestcase TC1637 failed.\n");
 
-		if (complianceReportsPage.getCheckBoxethenebiogenicemethane().isDisplayed())
-			assertTrue(complianceReportsPage.getCheckBoxethenebiogenicemethane().isDisplayed());
+		if (complianceReportsPage.getCheckBoxEtheneBiogeniceMethane().isDisplayed())
+			assertTrue(complianceReportsPage.getCheckBoxEtheneBiogeniceMethane().isDisplayed());
 		else
 			fail("\nTestcase TC1637 failed.\n");
 
@@ -230,7 +243,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 	 * @throws IOException
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC1654_Ethane_Verify_Analyses_Column_View_Table() throws IOException{
 		String rptTitle = "TC1654 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1654: Ethane: Compliance Report UI: Verify Analysis column in Views table, " + rptTitle);
@@ -251,7 +264,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 	 * @throws IOException
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC1636_Ethane_Verify_NONEthane_Survey() throws IOException, InterruptedException{
 		String rptTitle = "TC1636 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1636: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane Standard mode surveys are displayed" + rptTitle);
@@ -260,16 +273,16 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.open();
 		complianceReportsPage.openNewComplianceReportPage();
 
-		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.Standard, "stnd"));
+		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.Standard, CUSDRVSTDTAG));
 
 		/*driver.navigate().refresh();
-		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.Standard, "ethane"));
+		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.Standard, CUSDRVETHTAG));
 		 */
 		driver.navigate().refresh();
-		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, "stnd"));
+		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVSTDTAG));
 
 		/*driver.navigate().refresh();
-		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, "ethane"));
+		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVETHTAG));
 		 */
 		complianceReportsPage.logout();
 
@@ -282,7 +295,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 	 * @throws IOException
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC1725_Ethane_Verify_Analysis_Column_Tubular_Content() throws IOException{
 		String rptTitle = "TC1725 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1725: Ethane: Compliance Report UI: Verify Analysis column in Optional Tabular PDF Content table" + rptTitle);
@@ -304,7 +317,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 	 * @throws IOException
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC1639_Ethane_Verify_Ethane_NONEthane_Survey_Via_Operator_SurveyMode() throws IOException, InterruptedException{
 		String rptTitle = "TC1639 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1639: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane operator mode surveys are displayed" + rptTitle);
@@ -314,10 +327,10 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.openNewComplianceReportPage();
 
 		assertTrue(complianceReportsPage.verifySurveysTableViaSurveyMode(true, ReportModeFilter.Standard, SurveyModeFilter.Operator));
-		
+
 		driver.navigate().refresh();
 		assertTrue(complianceReportsPage.verifySurveysTableViaSurveyMode(true, ReportModeFilter.RapidResponse, SurveyModeFilter.Operator));
-		
+
 		complianceReportsPage.logout();
 
 	}
@@ -329,7 +342,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 	 * @throws IOException
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC1653_Ethane_Verify_Ethane_NONEthane_Survey_Via_RapidResponse_SurveyMode() throws IOException, InterruptedException{
 		String rptTitle = "TC1653 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1653: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane Rapid response mode surveys are displayed" + rptTitle);
@@ -339,7 +352,12 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.openNewComplianceReportPage();
 
 		assertTrue(complianceReportsPage.verifySurveysTableViaSurveyMode(true, ReportModeFilter.RapidResponse, SurveyModeFilter.RapidResponse));
-		
+
+
+		assertTrue(complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed());
+		assertTrue(complianceReportsPage.getCheckBoxEtheneBiogeniceMethane().isDisplayed());
+
+
 		complianceReportsPage.logout();
 
 	}
@@ -351,7 +369,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 	 * @throws IOException
 	 * 
 	 */
-	@Test
+	//@Test
 	public void TC1640_Ethane_Verify_Ethane_NONEthane_Survey_Via_Manual_SurveyMode() throws IOException, InterruptedException{
 		String rptTitle = "TC1640 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1640: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane manual mode surveys are displayed" + rptTitle);
@@ -361,10 +379,60 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.openNewComplianceReportPage();
 
 		assertTrue(complianceReportsPage.verifySurveysTableViaSurveyMode(true, ReportModeFilter.Manual, SurveyModeFilter.Manual));
-		
+
 		complianceReportsPage.logout();
 
 	}
+	
+	
+	//Using data provider 12 test cases-generate reports with different report mode and different ethane checkbox selection
+	
+	@Test
+	@UseDataProvider(value = ComplianceReportEthaneDataProvider.COMPLIANCE_ETHANE_REPORT_PROVIDER, location = ComplianceReportEthaneDataProvider.class)
+	public void ComplianceReportTest_VerifyEthaneReport(String index, String strCreatedBy, String password, String cutomer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
+			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) {
+		String rptTitle = null;
+		if (getTestCaseName(index).equals("TC203")) {
+			rptTitle = getTestCaseName(index) + " " + "Report" + testSetup.getRandomNumber() + "#<>$";
+		} else {
+			rptTitle = getTestCaseName(index) + " " + "Report" + testSetup.getRandomNumber();
+		}
+		Log.info("\nRunning " + getTestCaseName(index) + " - " + rptTitle);
 
+		complianceReportsPage.login(strCreatedBy, CryptoUtility.decrypt(password));
+		complianceReportsPage.open();
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
+
+		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle, strCreatedBy))) {
+			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
+			assertTrue(complianceReportsPage.findReport(rptTitle, strCreatedBy));
+
+		} else
+			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
+
+		complianceReportsPage.open();
+		complianceReportsPage.logout();
+	}
+	private static String getTestCaseName(String key) {
+		return testCaseMap.get(key);
+	}
+
+	private static void createTestCaseMap() {
+		testCaseMap.put("1", "TC1638");
+		testCaseMap.put("2", "TC1658");
+		testCaseMap.put("3", "TC1642");
+		testCaseMap.put("4", "TC1709");
+		testCaseMap.put("5", "TC1710");
+		testCaseMap.put("6", "TC1711");
+		testCaseMap.put("7", "TC1712");
+		testCaseMap.put("8", "TC1713");
+		testCaseMap.put("9", "TC1714");
+		testCaseMap.put("10", "TC1715");
+		testCaseMap.put("11", "TC1716");
+	}
 
 }

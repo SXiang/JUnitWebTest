@@ -24,6 +24,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import common.source.BaseHelper;
 import common.source.DBConnection;
 import common.source.DateUtility;
@@ -46,6 +49,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	public static final String STRURLPath = "/Reports/ReferenceGasReports";
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.RefGasReports_PageTitle);
 	public static final String STRReportTitle = Resources.getResource(ResourceKeys.RefGasReport_PageTitle);
+	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.RefGasReportSSRS_ReferenceGasReport);
 	public static final String STRReportSubTitle = Resources.getResource(ResourceKeys.RefGasReportSSRS_ReferenceGasResultTable);
 	public static final String STRReportTableColumnDate = Resources.getResource(ResourceKeys.RefGasReportSSRS_InstallationDateTime);
 	public static final String STRReportTableColumnUserName = Resources.getResource(ResourceKeys.ReportSSRS_UserName);
@@ -373,27 +377,31 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 			String line = null;
 
-			while ((line = bufferReader.readLine()) != null) {
-				if (line.matches(REGEX_PATTERN_EXTRACT_LINES_STARTING_WITH_DIGITS)) {
-					if (!line.contains("Date Printed")) {
-						if (line.length() > 45) {
-							StoredProcReferenceGas storedProcRefGas = new StoredProcReferenceGas();
-							String parts[] = line.split("\\s+");
-							String firstPart[] = Arrays.copyOfRange(parts, 0, 4);
-							String dateInstalled = String.join(" ", firstPart);
-							storedProcRefGas.setInstallationDate(dateInstalled);
-							storedProcRefGas.setUserName(parts[4]);
-							LotNumberInReport = parts[5].trim();
-							String[] uncertaintyDelta = parts[6].split("/");
-							String delta = uncertaintyDelta[0].replace("+", "").trim();
-							String uncertainty = uncertaintyDelta[1].replace("-", "").trim();
-							storedProcRefGas.setUncertainty(uncertainty);
-							storedProcRefGas.setDelta(delta);
-							storedProcRefGas.setTestResult(parts[7]);
-							resultsList.add(storedProcRefGas);
+			try {
+				while ((line = bufferReader.readLine()) != null) {
+					if (line.matches(REGEX_PATTERN_EXTRACT_LINES_STARTING_WITH_DIGITS)) {
+						if (!line.contains("Date Printed")) {
+							if (line.length() > 45) {
+								StoredProcReferenceGas storedProcRefGas = new StoredProcReferenceGas();
+								String parts[] = line.split("\\s+");
+								String firstPart[] = Arrays.copyOfRange(parts, 0, 4);
+								String dateInstalled = String.join(" ", firstPart);
+								storedProcRefGas.setInstallationDate(dateInstalled);
+								storedProcRefGas.setUserName(parts[4]);
+								LotNumberInReport = parts[5].trim();
+								String[] uncertaintyDelta = parts[6].split("/");
+								String delta = uncertaintyDelta[0].replace("+", "").trim();
+								String uncertainty = uncertaintyDelta[1].replace("-", "").trim();
+								storedProcRefGas.setUncertainty(uncertainty);
+								storedProcRefGas.setDelta(delta);
+								storedProcRefGas.setTestResult(parts[7]);
+								resultsList.add(storedProcRefGas);
+							}
 						}
 					}
 				}
+			} finally {
+				bufferReader.close();
 			}
 		} catch (IOException e) {
 			Log.info(e.toString());
@@ -417,14 +425,31 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 
 	public boolean verifyCancelButtonFunctionality() {
 		this.btnNewRefGasRpt.click();
+		this.waitForNewPageLoad();
 		this.btnCancel.click();
-		testSetup.slowdownInSeconds(3);
-
+		this.waitForPageLoad();
 		if (isElementPresent(strNewRefGasRpt))
 			return true;
 
 		return false;
 	}
+	
+    @Override
+	public void waitForPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRReportTitle);
+            }
+        });
+    }
+
+	public void waitForNewPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRNewPageContentText);
+            }
+        });
+    }
 
 	/**
 	 * @param args

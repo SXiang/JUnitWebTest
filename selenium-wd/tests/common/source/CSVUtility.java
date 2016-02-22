@@ -24,13 +24,16 @@ public class CSVUtility {
 	 */
 	
 	public List<String> getHeadings(String fileAbsolutePath) throws FileNotFoundException, IOException{
-		CSVParser parser = new CSVParser(new FileReader(fileAbsolutePath),CSVFormat.EXCEL.withHeader());
-		Map<String,Integer> headerMap=parser.getHeaderMap();
 		ArrayList<String> headers=new ArrayList<String>();
-		for(String key:headerMap.keySet()){
-			headers.add(key);
+		CSVParser parser = new CSVParser(new FileReader(fileAbsolutePath),CSVFormat.EXCEL.withHeader());
+		try {
+			Map<String,Integer> headerMap=parser.getHeaderMap();
+			for(String key:headerMap.keySet()){
+				headers.add(key);
+			}
+		} finally {
+			parser.close();
 		}
-		parser.close();	
 		return headers;			
 	}
 	
@@ -43,19 +46,22 @@ public class CSVUtility {
 	public List<HashMap<String,String>> getAllRows(String fileAbsolutePath) throws FileNotFoundException, IOException{
 		List<HashMap<String,String>> rowsList=new ArrayList<HashMap<String,String>>();
 		CSVParser parser = new CSVParser(new FileReader(fileAbsolutePath),CSVFormat.EXCEL.withHeader());
-		Map<String,Integer> headerMap=parser.getHeaderMap();
-		List<CSVRecord> rows=parser.getRecords();
-		Iterator<CSVRecord> rowIterator=rows.iterator();
-		while(rowIterator.hasNext()){
-			CSVRecord currentRow=rowIterator.next();
-			HashMap<String, String> rowMap=new HashMap<String, String>();
-			for(String key:headerMap.keySet()){
-				rowMap.put(key, currentRow.get(key));				
+		try {
+			Map<String,Integer> headerMap=parser.getHeaderMap();
+			List<CSVRecord> rows=parser.getRecords();
+			Iterator<CSVRecord> rowIterator=rows.iterator();
+			while(rowIterator.hasNext()){
+				CSVRecord currentRow=rowIterator.next();
+				HashMap<String, String> rowMap=new HashMap<String, String>();
+				for(String key:headerMap.keySet()){
+					rowMap.put(key, currentRow.get(key));				
+				}
+				rowsList.add(rowMap);
+				
 			}
-			rowsList.add(rowMap);
-			
+		} finally {
+			parser.close();
 		}
-		parser.close();	
 		return rowsList;	
 	}
 	
@@ -133,5 +139,4 @@ public class CSVUtility {
 		 }
 		}
 	}
-
 }

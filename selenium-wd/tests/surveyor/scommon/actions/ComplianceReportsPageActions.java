@@ -303,9 +303,12 @@ public class ComplianceReportsPageActions extends BasePageActions {
 			modeFilter = SurveyModeFilter.RapidResponse;
 		} 
 		
+		List<String> surveyTag= new ArrayList<String>();
+		surveyTag.add(dataRow.surveyTag);
+		
 		this.complianceReportsPage.addSurveyInformation(dataRow.surveySurveyor, 
-				dataRow.surveyUsername, 
-				dataRow.surveyTag, 
+				dataRow.surveyUsername, 				
+				surveyTag, 
 				dataRow.surveyStartDate, 
 				dataRow.surveyEndDate, 
 				modeFilter, 
@@ -613,8 +616,10 @@ public class ComplianceReportsPageActions extends BasePageActions {
 		fillReportTableInfo(tableMap, new ReportOptTabularPDFContentDataReader(this.excelUtility), reportOptTabPDFRowIDs.get(0));
 		tablesList.add(tableMap);
 
+		List<String> tagList=new ArrayList<String>();
+		tagList.add(tag);
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, TestContext.INSTANCE.getLoggedInUser(), customer, timeZone, exclusionRadius,
-				listBoundary, tablesList, surveyorUnit, tag, viewList, viewLayersList);
+				listBoundary, tablesList, surveyorUnit, tagList, viewList, viewLayersList);
 		complianceReportsPage.addNewReport(rpt);
 		
 		workingReportsComp = rpt;		// Store the working report properties.

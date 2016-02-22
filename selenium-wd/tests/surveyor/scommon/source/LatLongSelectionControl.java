@@ -219,7 +219,8 @@ public class LatLongSelectionControl extends BaseControl {
      */
 	public LatLongSelectionControl waitForModalDialogOpen() {
 		Log.info("Wait for map modal dialog to open.");
-		WebElement myModal = this.mapModalDialog;
+		WebDriverWait wait = new WebDriverWait(driver, timeout);
+		WebElement myModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("myModal")));
 		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return !myModal.getAttribute("style").contains("display:none") && !myModal.getAttribute("style").contains("display: none");
@@ -235,7 +236,8 @@ public class LatLongSelectionControl extends BaseControl {
      */
 	public LatLongSelectionControl waitForModalDialogToClose() {
 		Log.info("Wait for map modal dialog to close.");
-		WebElement myModal = this.mapModalDialog;
+		WebDriverWait wait = new WebDriverWait(driver, timeout);
+		WebElement myModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("myModal")));
 		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return myModal.getAttribute("style").contains("display:none") || myModal.getAttribute("style").contains("display: none");

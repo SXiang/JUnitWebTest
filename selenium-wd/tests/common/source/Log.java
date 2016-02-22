@@ -45,8 +45,11 @@ public class Log {
 	    try { 
 	    	String log4JPropFilePath = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "tests" + File.separator + "log4j.properties";;
 	        InputStream inputStream = new FileInputStream(log4JPropFilePath); 
-	        props.load(inputStream); 
-	        inputStream.close(); 
+	        try {
+	        	props.load(inputStream);
+	        } finally {
+	        	inputStream.close();
+	        }
 	    } catch (IOException ex) { 
 	        Log.info("Could not load configuration file."); 
 	    } 

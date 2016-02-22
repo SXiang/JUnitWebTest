@@ -48,6 +48,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICT;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
+import surveyor.scommon.source.Reports.EthaneFilter;
 
 import java.io.File;
 import java.io.IOException;
@@ -227,18 +228,20 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li[2]")
 	protected WebElement boundaryErrorText;
 
+	@FindBy(id = "report-ethene-vehicle-exhaust")
+	protected WebElement checkBoxVehicleExhaust;
 
-	@FindBy(id ="report-ethene-vehicle-exhaust")
-	protected WebElement checkBoxetheneexhaust;
 
-	@FindBy(id ="report-ethene-biogenic-methane")
-	protected WebElement checkBoxethenebiogenicemethane;
 
 	@FindBy(how = How.XPATH, using ="//*[@id='datatableViews']/thead/tr/th[7]/div")
 	protected WebElement viewsAnalysesColumn;
 
 	@FindBy(how = How.XPATH, using ="//*[@id='page-wrapper']/div/div[3]/div/div[11]/div/div/div/div[2]/div/label")
 	protected WebElement tubularAnalysisOption;
+
+	@FindBy(id = "report-ethene-biogenic-methane")
+	protected WebElement checkBoxEtheneBiogeniceMethane;
+
 
 	public enum CustomerBoundaryType {
 		District, DistrictPlat
@@ -292,15 +295,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 
+		if (reportsCompliance.getEthaneFilter() != null) {
+			selectEthaneFilter(reportsCompliance.getEthaneFilter());
+		}
+
 		if (reportsCompliance.reportModeFilter != null) {
 			selectReportMode(reportsCompliance.reportModeFilter);
 		}
 
-		inputExclusionRadius(reportsCompliance.getExclusionRadius());
+		if (reportsCompliance.getExclusionRadius() != null) {
+			inputExclusionRadius(reportsCompliance.getExclusionRadius());
+		}
 
 		fillCustomBoundaryTextFields(reportsCompliance.getNELat(), reportsCompliance.getNELong(), reportsCompliance.getSWLat(), reportsCompliance.getSWLong());
 
-		addSurveyInformation(reportsCompliance.getSurveyorUnit(), reportsCompliance.getUserName(), reportsCompliance.getTag(), reportsCompliance.getSurveyStartDate(), reportsCompliance.getSurveyEndDate(), reportsCompliance.getSurveyModeFilter(), reportsCompliance.getGeoFilter());
+		addSurveyInformation(reportsCompliance.getSurveyorUnit(), reportsCompliance.getUsername(), reportsCompliance.getTagList(), reportsCompliance.getSurveyStartDate(), reportsCompliance.getSurveyEndDate(), reportsCompliance.getSurveyModeFilter(), reportsCompliance.getGeoFilter());
 
 		inputImageMapHeight(reportsCompliance.getImageMapHeight());
 		inputImageMapWidth(reportsCompliance.getImageMapWidth());
@@ -427,7 +436,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.addNewReport(reportTitle, customer, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, changeMode, reportMode);
 	}
 
-	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tag, String startDate, String endDate, boolean changeMode, String strReportMode) {
+	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList, String startDate, String endDate, boolean changeMode, String strReportMode) {
 		openNewReportPage();
 
 		if (customer != null && customer != "Picarro") {
@@ -482,7 +491,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 
-		for (String tagValue : tag) {
+		for (String tagValue : tagList) {
 			if (tagValue != "") {
 				inputSurveyTag(tagValue);
 				this.btnSurveySearch.click();
@@ -590,7 +599,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.clickOnOKButton();
 	}
 
-	public void addSurveyInformation(String surveyor, String username, String tag, String startDate, String endDate, SurveyModeFilter surveyModeFilter, Boolean geoFilterOn) {
+	public void addSurveyInformation(String surveyor, String username, List<String> tagList, String startDate, String endDate, SurveyModeFilter surveyModeFilter, Boolean geoFilterOn) {
 		Log.info("Adding Survey information");
 
 		if (surveyor != null) {
@@ -604,11 +613,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		if (username != null) {
 			this.userName.sendKeys(username);
-		}
-
-		if (tag != "") {
-			this.cbTag.clear();
-			this.cbTag.sendKeys(tag);
 		}
 
 		if ((startDate != null) && (startDate != "")) {
@@ -628,11 +632,19 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		}
 
-		this.btnSurveySearch.click();
-		this.waitForSurveyTabletoLoad();
+		for (String tagValue : tagList) {
+			if (tagValue != "") {
+				inputSurveyTag(tagValue);
+				this.btnSurveySearch.click();
+				this.waitForSurveyTabletoLoad();
+				this.waitForSurveySelectorCheckBoxToLoad();
+				this.waitForSurveySelectorCheckBoxToBeEnabled();
+				this.checkboxSurFirst.click();
+				this.waitForAddSurveyButtonToLoad();
+				this.btnAddSurveys.click();
+			}
+		}
 
-		this.checkboxSurFirst.click();
-		this.btnAddSurveys.click();
 	}
 
 	public void addViews(String customer, List<Map<String, String>> viewList) {
@@ -830,6 +842,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						String reportId = objReport.getId();
 						reportId = reportId.substring(0, 6);
 						reportName = "CR-" + reportId;
+						System.out.println("Report name " + reportName);
 
 						if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip") && srcZipMeta.contains("zip") && srcShapeImg.contains("zip")) {
 							clickOnPDFInReportViewer();
@@ -1090,10 +1103,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void fillCustomBoundaryTextFields(String neLat, String neLong, String swLat, String swLong) {
-		this.inputNELat.sendKeys(neLat);
-		this.inputNELong.sendKeys(neLong);
-		this.inputSWLat.sendKeys(swLat);
-		this.inputSWLong.sendKeys(swLong);
+		if (neLat != null) {
+			this.inputNELat.sendKeys(neLat);
+		}
+		if (neLong != null) {
+			this.inputNELong.sendKeys(neLong);
+		}
+		if (swLat != null) {
+			this.inputSWLat.sendKeys(swLat);
+		}
+		if (swLong != null) {
+			this.inputSWLong.sendKeys(swLong);
+		}
 	}
 
 	public ReportModeFilter getReportMode(String reportMode) {
@@ -1201,7 +1222,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.getTextBoxReportSerach().sendKeys(rptTitle);
 		this.getTextBoxReportSerach().sendKeys(Keys.ENTER);
 		this.waitForPageLoad();
-		if (this.getDataTableEmpty().isDisplayed()) {
+
+		if (driver.findElements(By.xpath("//*[@class='dataTables_empty']")).size() < 1) {
 			return false;
 		}
 		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
@@ -1637,7 +1659,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return false;
 	}
 
-	public boolean copyReportAndModifyDetails(String rptTitle, String strCreatedBy, String rptTitleNew, String surUnit, List<String> tag, boolean changeMode, ReportModeFilter strReportMode) {
+	public boolean copyReportAndModifyDetails(String rptTitle, String strCreatedBy, String rptTitleNew, String surUnit, List<String> tagList, boolean changeMode, ReportModeFilter strReportMode) {
 		setPagination(PAGINATIONSETTING);
 		this.waitForCopyReportPagetoLoad();
 		String reportTitleXPath;
@@ -1691,7 +1713,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					}
 				}
 
-				for (String tagValue : tag) {
+				for (String tagValue : tagList) {
 					if (tagValue != "") {
 
 						inputSurveyTag(tagValue);
@@ -2074,6 +2096,25 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 
+	public void selectEthaneFilter(EthaneFilter ethaneFilter) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		switch (ethaneFilter) {
+		case ExcludeVehicleExhaust:
+			js.executeScript("arguments[0].click();", checkBoxVehicleExhaust);
+			break;
+		case ExcludeBiogenicMethane:
+			js.executeScript("arguments[0].click();", checkBoxEtheneBiogeniceMethane);
+			break;
+		case Both:
+			js.executeScript("arguments[0].click();", checkBoxVehicleExhaust);
+			js.executeScript("arguments[0].click();", checkBoxEtheneBiogeniceMethane);
+			break;
+		default:
+			break;
+		}
+
+	}
+
 	public void selectSurveyModeForSurvey(SurveyModeFilter surveyModeFilter) {
 		switch (surveyModeFilter) {
 		case All:
@@ -2226,7 +2267,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyComplianceReportContainsText(String reportTitle, List<String> expectedReportString) throws IOException {
-		String actualPath = testSetup.getDownloadPath(); 
+		String actualPath = testSetup.getDownloadPath();
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2543,9 +2584,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	/**
-	 * 1. Verify that the ZIP file has a PDF for report and 1 PDF for each view added in the Report.
-	 * 2. Verify expected content in the PDF report.
-	 * 3. Verify there are images present in the view PDFs.
+	 * 1. Verify that the ZIP file has a PDF for report and 1 PDF for each view added in the Report. 2. Verify expected content in the PDF report. 3. Verify there are images present in the view PDFs.
 	 */
 	public void verifyReportPDFZIPFiles() {
 		try {
@@ -2819,7 +2858,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 
-
 	public void waitForResubmitButton() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -2840,19 +2878,20 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return this.boundaryErrorText;
 	}
 
-	public WebElement getCheckBoxetheneexhaust() {
-		return this.checkBoxetheneexhaust;
+	public WebElement getCheckBoxVehicleExhaust() {
+		return checkBoxVehicleExhaust;
 	}
 
-	public WebElement getCheckBoxethenebiogenicemethane() {
-		return this.checkBoxethenebiogenicemethane;
-	}
 	public WebElement getViewsAnalysesColumn() {
 		return this.viewsAnalysesColumn;
 	}
 
 	public WebElement getTubularAnalysisOption() {
 		return this.tubularAnalysisOption;
+	}
+	
+	public WebElement getCheckBoxEtheneBiogeniceMethane() {
+		return checkBoxEtheneBiogeniceMethane;
 	}
 	/**
 	 * Method to verify the Driving Surveys Table in SSRS
@@ -2874,7 +2913,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			this.getBtnSurveySearch().click();
 			this.waitForSurveyTabletoLoad();
 
-			WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
+				WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
 			List<WebElement> Rows = tabledata.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
 			for (int getrowvalue=1; getrowvalue < Rows.size(); getrowvalue++)
 			{ 

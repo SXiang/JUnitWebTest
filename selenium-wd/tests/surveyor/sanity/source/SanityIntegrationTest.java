@@ -30,6 +30,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
+import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSDR;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSDRTAG;
@@ -234,10 +235,13 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		tableMap.put(KEYBOUNDARYDISTRICT, "0");
 		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
+		
+		List<String> tagList=new ArrayList<String>();
+		tagList.add(SQACUSDRTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU,
 				CUSNAMEBASE, TIMEZONEPT, "0", listBoundary, tablesList,
-				SQACUSLOCSUR, SQACUSDRTAG, viewList);
+				SQACUSLOCSUR,tagList , viewList);
 		complianceReportsPage.addNewReport(rpt);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());

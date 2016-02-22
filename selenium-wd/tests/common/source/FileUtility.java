@@ -28,11 +28,13 @@ public class FileUtility {
 		StringBuilder builder = new StringBuilder();
 		
 		BufferedReader buffReader = new BufferedReader(new FileReader(filePath));
-		while ((lineText = buffReader.readLine()) != null) {
-			builder.append(lineText);
+		try {
+			while ((lineText = buffReader.readLine()) != null) {
+				builder.append(lineText);
+			} 
+		} finally {
+			buffReader.close();
 		}
-		buffReader.close();
-		
 		return builder.toString();		
 	}
 
@@ -47,10 +49,13 @@ public class FileUtility {
 		List<String> list = new ArrayList<String>();
 		
 		BufferedReader buffReader = new BufferedReader(new FileReader(filePath));
-		while ((lineText = buffReader.readLine()) != null) {
-			list.add(lineText);
+		try {
+			while ((lineText = buffReader.readLine()) != null) {
+				list.add(lineText);
+			}
+		} finally {
+			buffReader.close();
 		}
-		buffReader.close();
 		
 		return list;		
 	}
@@ -61,8 +66,11 @@ public class FileUtility {
 	 */
 	public static void writeToFile(String filePath, String fileContent) throws IOException {
 		BufferedWriter buffWriter = new BufferedWriter(new FileWriter(filePath));
-		buffWriter.write(fileContent);
-		buffWriter.close();
+		try {
+			buffWriter.write(fileContent);
+		} finally {
+			buffWriter.close();
+		}	
 	}
 
 	/*
@@ -79,15 +87,16 @@ public class FileUtility {
 		String lineText = null;
 		BufferedReader buffReader = new BufferedReader(new FileReader(filePath));
 		BufferedWriter buffWriter = new BufferedWriter(new FileWriter(writeFile));
-		while ((lineText = buffReader.readLine()) != null) {
-			lineText = lineText.replace(searchForText, replaceWithText);
-			buffWriter.write(lineText);
-			buffWriter.newLine();
-		}
-		
-		buffWriter.close();
-		buffReader.close();
-		
+		try {
+			while ((lineText = buffReader.readLine()) != null) {
+				lineText = lineText.replace(searchForText, replaceWithText);
+				buffWriter.write(lineText);
+				buffWriter.newLine();
+			}
+		} finally {
+			buffWriter.close();
+			buffReader.close();
+		}		
 		// Copy working file to source.
 		Files.copy(Paths.get(workingFullPath), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
 		

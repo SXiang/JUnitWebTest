@@ -230,15 +230,11 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.NoUpper.sendKeys("-25");
 
 		this.btnOK.click();
+		this.waitForPageToLoad();
 
 		if (isElementPresent(this.panelDuplicationErrorXPath)) {
-			WebElement panelError = driver.findElement(By
-					.xpath(this.panelDuplicationErrorXPath));
-			if (panelError
-					.getText()
-					.equalsIgnoreCase(
-							Resources
-									.getResource(ResourceKeys.Validation_SummaryTitle)))
+			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
+			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
 				this.btnCancel.click();
 		}
 	}
