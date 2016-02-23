@@ -144,7 +144,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PROVIDER, location = ComplianceReportDataProvider.class)
 	public void ComplianceReportTest_VerifyNonEthaneReport(String index, String strCreatedBy, String password, String cutomer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
-			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) {
+			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws IOException {
 		String rptTitle = null;
 		if (getTestCaseName(index).equals("TC203")) {
 			rptTitle = getTestCaseName(index) + " " + "Report" + testSetup.getRandomNumber() + "#<>$";
@@ -164,6 +164,8 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, strCreatedBy))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, strCreatedBy));
+			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rptTitle));
+			assertTrue(complianceReportsPage.verifyShowCoverageTable(testSetup.getDownloadPath(),rptTitle));
 
 		} else
 			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");

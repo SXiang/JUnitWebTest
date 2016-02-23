@@ -2284,7 +2284,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean verifyShowCoverageTable(String actualPath, String reportTitle, HashMap<String, String> userInput) throws IOException {
+	public boolean verifyShowCoverageTable(String actualPath, String reportTitle) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2292,6 +2292,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		reportName = "CR-" + reportId;
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
+		System.out.print(actualReportString);
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(ComplianceReportSSRS_ShowCoverage);
 		expectedReportString.add(ComplianceReportSSRS_PercentCoverageAssets);
