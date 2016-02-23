@@ -63,7 +63,7 @@ def puts(str):
 # Returns true if decompilation failed, or false if it was succesful.
 def process_file(filename):
 	tc_test_started(filename)
-	puts("CHECKING FILE: " + filename)
+	puts("Testing file for obfuscation: " + filename)
 	pipe = subprocess.Popen(["de4dot.exe", "-f", filename], stdout=subprocess.PIPE, stderr=None)
 	out, err = pipe.communicate()
 
@@ -98,16 +98,19 @@ def process_dir(dirname):
 
 def extract_7z(path):
 	tc_suite_started(path+os.sep)
-	if not os.path.exists("C:\\extract"):
+	if not os.path.exists("C:\extract"):
+		puts("Creating Folder: C:\\extract")
 		os.makedirs("C:\\extract")
     	os.chmod("C:\\extract", stat.S_IRWXU)
     	os.chmod("C:\\extract", stat.S_IRWXG)
     	os.chmod("C:\\extract", stat.S_IRWXO)
 	pipe = subprocess.Popen([r"C:\Program Files\7-Zip\7z.exe", "e", path, "-oC:\\extract", "-y"], stdout=subprocess.PIPE, stderr=None)
+	puts("Extracted: "+path+ " to: C:\extract")
 	out, err = pipe.communicate()
 	process_dir("C:\\extract")
-	#shutil.rmtree("C:\\extract")
-
+	os.system('rmdir /S /Q \"{}\"'.format("C:\\extract"))
+	#shutil.rmtree("C:\extract")
+	
 
 # This is to fix windows cp65001 encoding issue.
 import codecs
