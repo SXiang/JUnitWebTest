@@ -104,7 +104,7 @@ def extract_7z(path):
 	pipe = subprocess.Popen([r"C:\Program Files\7-Zip\7z", "e", path, "-oC:\\extract", "-y"], stdout=subprocess.PIPE, stderr=None)
 	out, err = pipe.communicate()
 	process_dir("C:\\extract")
-	shutil.rmtree("C:\\extract")
+	#shutil.rmtree("C:\\extract")
 
 
 # This is to fix windows cp65001 encoding issue.
