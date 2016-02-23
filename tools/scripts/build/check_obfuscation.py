@@ -22,7 +22,7 @@
 
 
 
-import sys, subprocess, os, shutil, stat
+import sys, subprocess, os, stat
 from optparse import OptionParser
 
 ############################################################
@@ -109,9 +109,7 @@ def extract_7z(path):
 	out, err = pipe.communicate()
 	process_dir("C:\\extract")
 	os.system('rmdir /S /Q \"{}\"'.format("C:\\extract"))
-	#shutil.rmtree("C:\extract")
 	
-
 # This is to fix windows cp65001 encoding issue.
 import codecs
 codecs.register(lambda name: codecs.lookup('utf-8') if name == 'cp65001' else None)
