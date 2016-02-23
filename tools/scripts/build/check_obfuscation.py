@@ -101,6 +101,8 @@ def extract_7z(path):
 	if not os.path.exists("C:\\extract"):
 		os.makedirs("C:\\extract")
     	os.chmod("C:\\extract", stat.S_IRWXU)
+    	os.chmod("C:\\extract", stat.S_IRWXG)
+    	os.chmod("C:\\extract", stat.S_IRWXO)
 	pipe = subprocess.Popen([r"C:\Program Files\7-Zip\7z.exe", "e", path, "-oC:\\extract", "-y"], stdout=subprocess.PIPE, stderr=None)
 	out, err = pipe.communicate()
 	process_dir("C:\\extract")
