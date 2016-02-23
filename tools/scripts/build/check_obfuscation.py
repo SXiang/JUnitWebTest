@@ -4,6 +4,7 @@
 #   -h, --help            show this help message and exit
 #   -f FILE, --file=FILE  File to be checked.
 #   -d DIR, --dir=DIR     Directtory to be checked.
+#	-z ZIP, --7zip=ZIP    7Zip to be checked.
 #   -t, --teamcity        Print Teamcity service messages.
 
 
@@ -21,7 +22,7 @@
 
 
 
-import sys, subprocess, os
+import sys, subprocess, os, shutil, stat
 from optparse import OptionParser
 
 ############################################################
@@ -61,11 +62,8 @@ def puts(str):
 
 # Returns true if decompilation failed, or false if it was succesful.
 def process_file(filename):
-	#print "##teamcity[testStarted name='" + filename + "']"
 	tc_test_started(filename)
 	puts("CHECKING FILE: " + filename)
-	##teamcity[testFailed name='MyTest.test1' message='failure message' details='message and stack trace']
-	##teamcity[testFinished name='MyTest.test1']
 	pipe = subprocess.Popen(["de4dot.exe", "-f", filename], stdout=subprocess.PIPE, stderr=None)
 	out, err = pipe.communicate()
 
@@ -98,6 +96,16 @@ def process_dir(dirname):
 			process_dir(os.path.join(dirname, dname))
 	tc_suite_finished(dirname+os.sep)
 
+def extract_7z(path):
+	tc_suite_started(path+os.sep)
+	if not os.path.exists("C:\\extract"):
+		os.makedirs("C:\\extract")
+    	os.chmod("C:\\extract", stat.S_IRWXU)
+	pipe = subprocess.Popen([r"C:\Program Files\7-Zip\7z", "e", path, "-oC:\\extract", "-y"], stdout=subprocess.PIPE, stderr=None)
+	out, err = pipe.communicate()
+	process_dir("C:\\extract")
+	shutil.rmtree("C:\\extract")
+
 
 # This is to fix windows cp65001 encoding issue.
 import codecs
@@ -105,17 +113,12 @@ codecs.register(lambda name: codecs.lookup('utf-8') if name == 'cp65001' else No
 parser = OptionParser()
 parser.add_option("-f", "--file",      dest="filenames",   action="append", metavar="FILE", help="File to be checked.")
 parser.add_option("-d", "--dir",       dest="directories", action="append", metavar="DIR",  help="Directtory to be checked.")
+parser.add_option("-z", "--7zip",       dest="zip", action="append", metavar="ZIP",  help="7Zip to be checked.")
 parser.add_option("-t", "--teamcity",  dest="teamcity",    action="store_true",  help="Print Teamcity service messages.")
 
 (options, args) = parser.parse_args()
 
-# print "OPTIONS", options
-# print "OPTIONS.filenames",   options.filenames
-# print "OPTIONS.directories", options.directories
-# print "ARGS", args
-# print "len(ARGS)", len(args)
-
-if (options.directories is None) and (options.filenames is None) and (len(args) < 1):
+if (options.directories is None) and (options.filenames is None) and (options.zip is None) and (len(args) < 1):
 	parser.print_help()
 
 if options.filenames:
@@ -123,6 +126,10 @@ if options.filenames:
 		ret = process_file(fname)
 		if ret==False:
 			exit(1)
+
+if options.zip:
+	for zip in options.zip:
+		extract_7z(zip)	
 
 if options.directories:
 	for dname in options.directories:
