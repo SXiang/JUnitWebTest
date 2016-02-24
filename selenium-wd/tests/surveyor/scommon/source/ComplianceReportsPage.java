@@ -231,8 +231,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(id = "report-ethene-vehicle-exhaust")
 	protected WebElement checkBoxVehicleExhaust;
 
+
+
+	@FindBy(how = How.XPATH, using ="//*[@id='datatableViews']/thead/tr/th[7]/div")
+	protected WebElement viewsAnalysesColumn;
+
+	@FindBy(how = How.XPATH, using ="//*[@id='page-wrapper']/div/div[3]/div/div[11]/div/div/div/div[2]/div/label")
+	protected WebElement tubularAnalysisOption;
+
 	@FindBy(id = "report-ethene-biogenic-methane")
 	protected WebElement checkBoxEtheneBiogeniceMethane;
+
 
 	public enum CustomerBoundaryType {
 		District, DistrictPlat
@@ -2275,6 +2284,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	}
 
+
 	/**
 	 * Method to verify the Show Coverage Table in SSRS
 	 * 
@@ -2872,8 +2882,91 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return checkBoxVehicleExhaust;
 	}
 
+	public WebElement getViewsAnalysesColumn() {
+		return this.viewsAnalysesColumn;
+	}
+
+	public WebElement getTubularAnalysisOption() {
+		return this.tubularAnalysisOption;
+	}
+
 	public WebElement getCheckBoxEtheneBiogeniceMethane() {
 		return checkBoxEtheneBiogeniceMethane;
+	}
+	/**
+	 * Method to verify the Driving Surveys Table in SSRS
+	 * 
+	 * @param actualPath
+	 * @param reportTitle
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean verifySurveysTableViaTag(boolean changeMode, ReportModeFilter strReportMode, String tag) throws IOException {
+		boolean result = false;
+
+		if (strReportMode != null && changeMode) {
+			selectReportMode(strReportMode);
+
+			this.getCbTag().clear();
+			this.getCbTag().sendKeys(tag);
+			this.waitForSurveySearchButtonToLoad();
+			this.getBtnSurveySearch().click();
+			this.waitForSurveyTabletoLoad();
+
+			WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
+			List<WebElement> Rows = tabledata.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
+			for (int getrowvalue=1; getrowvalue < Rows.size(); getrowvalue++)
+			{ 
+				List<WebElement> Columns = Rows.get(getrowvalue).findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[6]"));
+				for (int getcolumnvalue =1;getcolumnvalue<Columns.size(); getcolumnvalue++ )
+				{
+					String cellValue=driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr["+getrowvalue+"]/td[6]")).getText(); 
+					if (cellValue.contains(tag)) {
+						result = true;
+						break;
+					}
+					result=false ;
+				}
+			}
+		}
+		return result;
+	}
+
+	public boolean verifySurveysTableViaSurveyMode(boolean changeMode, ReportModeFilter strReportMode, SurveyModeFilter surveyModeFilter ) throws IOException {
+		boolean result = false;
+
+		if (strReportMode != null && changeMode) {
+			selectReportMode(strReportMode);
+
+			this.waitForSurveySearchButtonToLoad();
+			this.getBtnSurveySearch().click();
+			this.waitForSurveyTabletoLoad();
+
+			WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
+			List<WebElement> Rows = tabledata.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
+			for (int getrowvalue=1; getrowvalue < Rows.size(); getrowvalue++)
+			{ 
+				List<WebElement> Columns = Rows.get(getrowvalue).findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[5]"));
+				for (int getcolumnvalue =0;getcolumnvalue<Columns.size(); getcolumnvalue++ )
+				{
+					String cellValue=driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr["+getrowvalue+"]/td[5]")).getText(); 
+					if (cellValue.contains(" ")){
+						String str=cellValue.replaceAll("\\s+", "");
+		
+						if (surveyModeFilter.name().equalsIgnoreCase(str)) {
+							result = true;
+							break;
+						}
+					}
+					if (surveyModeFilter.name().equalsIgnoreCase(cellValue)) {
+						result = true;
+						break;
+					}
+				}
+
+			}
+		}
+		return result;
 	}
 
 }

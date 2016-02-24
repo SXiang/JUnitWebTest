@@ -103,6 +103,9 @@ public final class SurveyorConstants {
 	public static final String SQACUSSUTAG = "dmcs1-sqacussu";
 	public static final String SQACUSDRTAG = "stnd";
 	public static final String SQACUSDRTAG2 = "stnd-sqacudr";
+	public static final String SQACUSRRTAG = "Rapid";
+	public static final String SQACUSMNTAG= "Manual";
+	
 	
 	public static final String SQAPICADTAG = "dmcs1-sqapicad";
 	public static final String SQAPICUATAG = "dmcs1-sqapicua";
@@ -122,6 +125,7 @@ public final class SurveyorConstants {
 	public static final String CUSBOUNDARY = Resources.getResource(ResourceKeys.ComplianceReport_CustomBoundary);
 	public static final String IMGMAPHEIGHT = "8.5";
 	public static final String IMGMAPWIDTH = "11";
+	
 	public static final String NELAT = "37.421980615353675";
 	public static final String NELON = "121.93639755249023";
 	public static final String SWLAT = "37.39566424530531";
@@ -167,8 +171,6 @@ public final class SurveyorConstants {
 	public static final String KEYASSETS = "Assets";
 	public static final String KEYBOUNDARIES = "Boundaries";
 	public static final String KEYBASEMAP = "Base Map";
-
-	
 	public static final String KEYASSETCASTIRON = "Cast Iron";
 	public static final String KEYASSETCOPPER = "Copper";
 	public static final String KEYASSETOTHERPLASTIC = "Other Plastic";
@@ -177,7 +179,6 @@ public final class SurveyorConstants {
 	public static final String KEYASSETUNPROTECTEDSTEEL = "Protected Steel";
 	public static final String KEYBOUNDARYDISTRICT = "Small Boundary";
 	public static final String KEYBOUNDARYDISTRICTPLAT = "Big Boundary";
-
 
 	public static final String KEYINDTB = "Indications Table";
 	public static final String KEYISOANA = "Isotopic Analysis";
@@ -219,7 +220,7 @@ public final class SurveyorConstants {
 	public static final String CUSDRVSTDTAG = "stnd";
 	public static final String CUSDRVRRTAG = "rr";
 	public static final String CUSDRVOPTAG = "op";
-
+	public static final String CUSDRVETHTAG= "ethane";  //change it to ethane survey
 	public static final String PICADMNSTDTAG2 = "stnd-pic";
 	public static final String PICADMNRRTAG2 = "rr-pic";
 	public static final String PICADMNOPTAG2 = "op-pic";
@@ -246,6 +247,15 @@ public final class SurveyorConstants {
 
 	public static final String REXCLUSIONRADIUS = "3";
 
+	/*
+	 * Lat Long for Ethane Reporting
+	 */
+	public static final String ETHRNELAT = "37.42324";
+	public static final String ETHRNELON = "-121.93172";
+	public static final String ETHRSWLAT = "37.40177";
+	public static final String ETHRSWLON = "-121.99004";
+
+	public static final String ETHREXCLUSIONRADIUS = "3";
 
 	/*
 	 * Start & end date for survey
