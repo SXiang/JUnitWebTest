@@ -80,6 +80,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICT;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
+import static surveyor.scommon.source.SurveyorConstants.KEYINDCLR;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -278,13 +279,13 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 
 		driver.navigate().refresh();
 		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.Standard, CUSDRVETHTAG));
-
+		 		 
 		driver.navigate().refresh();
 		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVSTDTAG));
 
 		driver.navigate().refresh();
 		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVETHTAG));
-
+		 		 
 		complianceReportsPage.logout();
 
 	}
@@ -434,4 +435,50 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		testCaseMap.put("11", "TC1715");  //rapid--both
 		testCaseMap.put("12", "TC1713");  //rapid--none		
 	}
+
+	/**
+	 * Test Case ID:TC1640 Test Description: Compliance Report Generation : Remove user selection color for Indication Table
+	 * @throws InterruptedException 
+	 * 
+	 * @throws IOException
+	 * 
+	 */
+	@Test
+	public void TC1717_Ethane_Verify_Indication_Table_Color_Selection_Removal() throws IOException, InterruptedException{
+		String rptTitle = "TC1717 Ethane" + testSetup.getRandomNumber();
+		Log.info("\nRunning TC1717: Compliance Report Generation : Remove user selection color for Indications" + rptTitle);
+
+		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
+		complianceReportsPage.open();
+		complianceReportsPage.openNewComplianceReportPage();
+
+		complianceReportsPage.getBtnSurveySearch().click();
+		complianceReportsPage.waitForSurveyTabletoLoad();
+		complianceReportsPage.waitForSurveySelectorCheckBoxToLoad();
+		complianceReportsPage.waitForSurveySelectorCheckBoxToBeEnabled();
+		complianceReportsPage.getCheckboxSurFirst().click();
+		complianceReportsPage.getBtnAddSurveys().click();
+
+		complianceReportsPage.verifyIfIndrivingSurvey(KEYINDCLR);
+	}
+	
+	@Test
+	public void TC1719_Ethane_Copy_Report_Verify_Indication_Table_Color() throws IOException, InterruptedException{
+		String rptTitle = "TC1719 Ethane" + testSetup.getRandomNumber();
+		Log.info("\nRunning TC1719: Compliance Report Generation : COPY generated report should show default color only for Indication" + rptTitle);
+
+		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
+		complianceReportsPage.open();
+		complianceReportsPage.openNewComplianceReportPage();
+
+		complianceReportsPage.getBtnSurveySearch().click();
+		complianceReportsPage.waitForSurveyTabletoLoad();
+		complianceReportsPage.waitForSurveySelectorCheckBoxToLoad();
+		complianceReportsPage.waitForSurveySelectorCheckBoxToBeEnabled();
+		complianceReportsPage.getCheckboxSurFirst().click();
+		complianceReportsPage.getBtnAddSurveys().click();
+
+		complianceReportsPage.verifyIfIndrivingSurvey(KEYINDCLR);
+	}
+	
 }
