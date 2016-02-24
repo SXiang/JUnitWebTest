@@ -83,6 +83,7 @@ import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import common.source.PDFUtility;
+import common.source.RegexUtility;
 
 /**
  * @author zlu
@@ -127,6 +128,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String ComplianceReportSSRS_ShowAssets = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowAssets);
 	public static final String ComplianceReportSSRS_ShowBoundaries = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowBoundaries);
 	public static final String ComplianceReportSSRS_BaseMap = Resources.getResource(ResourceKeys.ComplianceReportSSRS_BaseMap);
+	public static final String ComplianceReportSSRS_TotalLinearAssetCoverage =Resources.getResource(ResourceKeys.ComplianceReportSSRS_TotalLinearAssetCoverage);
 	public static final String ReportSSRS_SelectedDrivingSurveys = Resources.getResource(ResourceKeys.ReportSSRS_SelectedDrivingSurveys);
 
 	private String reportName;
@@ -2292,7 +2294,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		reportName = "CR-" + reportId;
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
-		System.out.print(actualReportString);
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(ComplianceReportSSRS_ShowCoverage);
 		expectedReportString.add(ComplianceReportSSRS_PercentCoverageAssets);
@@ -2317,7 +2318,24 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 
 	public boolean verifyCoverageValuesTable(String actualPath, String reportTitle) throws IOException {
-
+		PDFUtility pdfUtility = new PDFUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
+		reportName = "CR-" + reportId;
+		setReportName(reportName);
+		String actualReportString = pdfUtility.extractPDFText(actualReport);
+		List<String> expectedReportString = new ArrayList<String>();
+		expectedReportString.add(ComplianceReportSSRS_TotalLinearAssetCoverage);
+		expectedReportString.add(ComplianceReportSSRS_PercentCoverageReportArea);		
+		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		for (Boolean value : actualFirstPage.values()) {
+			if (!value)
+				return false;
+		}
+		
+		String nextLine = RegexUtility.getNextLineAfterPattern(actualReportString, "Coverage Values");
+		System.out.println(nextLine);
 		return true;
 	}
 

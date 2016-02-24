@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -146,6 +147,19 @@ public class RegexUtility {
 		}
 		return returnString;
 	}
+	
+	/**
+	 * Returns next line after a pattern
+	 * 
+	 * @param inputString
+	 * @param regexPattern
+	 * @return
+	 */
+	public static String getNextLineAfterPattern(String inputString, String subString) {
+		String remaining= inputString.substring(inputString.lastIndexOf(subString));
+		String splits[]= remaining.split("\\n");
+		return splits[1].trim();
+	}
 
 	public static void main(String[] args) {
 		Log.info("Running test - testMatchesPattern_functionNameAndArgument_Success() ...");
@@ -169,7 +183,8 @@ public class RegexUtility {
 		Log.info("Running test - testMatchesPatternFR_functiongetReportRegexDatePattern_Success() ...");
 		testMatchesPatternFR_functiongetReportRegexDatePattern_Success();
 		Log.info("Running test - testGetStringInBetween_Success() ...");
-		test_functionGetStringInBetween_Success();
+		test_functionGetStringInBetween_Success();		
+		testgetNextLineAfterPattern_Success();
 	}
 
 	private static void testMatchesPattern_functionNameAndArgument_Success() {
@@ -247,12 +262,26 @@ public class RegexUtility {
 		PDFUtility pdfUtility = new PDFUtility();
 		try {
 			String path = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data\\test-data\\pdfutility-tests\\MultipleSurveys.pdf";
-			String inputText = pdfUtility.extractPDFText(path);
+			String inputText = pdfUtility.extractPDFText(path);			
 			String actual = RegexUtility.getStringInBetween(inputText, "la\r\nss", "Layers", true, false);
 			Log.info(actual);
 		} catch (IOException e) {
 			Log.error(e.toString());
 
 		}
+	}
+	
+	private static void testgetNextLineAfterPattern_Success() {
+		PDFUtility pdfUtility = new PDFUtility();
+		try {
+			String path = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data\\test-data\\pdfutility-tests\\MultipleSurveys.pdf";
+			String inputText = pdfUtility.extractPDFText(path);
+			String nextLine = RegexUtility.getNextLineAfterPattern(inputText, "Coverage Values");
+			Assert.assertTrue(nextLine.equals("20%Total Linear Asset Coverage Percent Coverage Report Area 9%"));
+		} catch (IOException e) {
+			Log.error(e.toString());
+
+		}
+		
 	}
 }

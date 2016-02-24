@@ -166,7 +166,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 			assertTrue(complianceReportsPage.findReport(rptTitle, strCreatedBy));
 			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rptTitle));
 			assertTrue(complianceReportsPage.verifyShowCoverageTable(testSetup.getDownloadPath(),rptTitle));
-
+			assertTrue(complianceReportsPage.verifyCoverageValuesTable(testSetup.getDownloadPath(),rptTitle));
 		} else
 			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
 
