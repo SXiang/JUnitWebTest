@@ -8,6 +8,7 @@ import surveyor.scommon.source.SurveyorTestRunner;
 
 public class UserDataProvider extends SurveyorTestRunner {
 	public static final String USER_ROLE_INFO_PROVIDER = "dataProviderUserRoleInfo";
+	public static final String USER_ADMIN_SUPPORT_PROVIDER = "dataProviderPicarroAdminSupportRoleInfo";
 
 	public UserDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
@@ -47,6 +48,19 @@ public class UserDataProvider extends SurveyorTestRunner {
         return new String[][] {		// Username, Password(ENCRYPTED), Role, CustomerName, CustomerLocation
         	{ "sqapicad@picarro.com","oeHwHqmv621dZ1MRE2BSdw==","Picarro Admin","Picarro","Santa Clara" },
         	{ "sqapicsup@picarro.com","oeHwHqmv621dZ1MRE2BSdw==","Picarro Support","Picarro","Santa Clara" }
+            };
+        // @formatter:on
+    }
+    
+    @DataProvider
+    public static Object[][] dataProviderPicarroAdminSupportRoleInfo() {
+        // @formatter:off"
+        return new String[][] {		// Username, Password(NonENCRYPTED)
+        	//{ "sqapicsup@picarro.com","sqa#Picarro$0" },
+        	//{ "Administrator","FastLane!911" }
+        		{ "sqapicsup@picarro.com","oeHwHqmv621dZ1MRE2BSdw==" },
+                { "Administrator","6NZYEwkq24lm9xBekD04sg==" }
+        	
             };
         // @formatter:on
     }

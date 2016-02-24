@@ -5,17 +5,23 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+import java.util.Map;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
+import common.source.CryptoUtility;
 import common.source.Log;
+import surveyor.dataprovider.UserDataProvider;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
-
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
@@ -51,17 +57,28 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 * - User is navigated to Manage Locations page and new location entry is present in the table	 
 	 */
 	@Test
-	public void TC16_AddLocationUsingLatLongSelector_PicAdmin() {
-		String locationName = testSetup.getRandomNumber() + "TC16";
+	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
+	public void TC16_TC18_AddLocationUsingLatLongSelector_PicAdminSupport(String user, String pswd ) {
+		String tcID ;
+		if(user.equalsIgnoreCase("administrator")){
+			tcID ="TC16";
+		}else {
+			tcID ="TC18";
+		}
+		String password = CryptoUtility.decrypt(pswd);
+		String locationName = testSetup.getFixedSizeRandomNumber(8) + tcID;
 		String cityName = "Santa Clara";
-
-		Log.info("\nRunning - TC16_AddLocationUsingLatLongSelector_PicAdmin - Test Description: Add new location\n");
+		System.out.println("user: "+user);
+		System.out.println("pswd: "+pswd);
+		System.out.println("------------------------");
+		Log.info("\nRunning -"+ tcID+"_AddLocationUsingLatLongSelector_PicAdmin - Test Description: Add new location\n");
 		// Add Location as Picarro admin.
 		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		loginPage.loginNormalAs(user, password);
 
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocationUsingLatLongSelector(locationName, SQACUS, cityName);
+		
 		
 		// TODO$: Check the locator icon shows up correctly in the selector dialog.
 		
