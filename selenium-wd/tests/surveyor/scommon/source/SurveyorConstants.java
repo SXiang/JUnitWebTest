@@ -180,7 +180,6 @@ public final class SurveyorConstants {
 	public static final String KEYBOUNDARYDISTRICT = "Small Boundary";
 	public static final String KEYBOUNDARYDISTRICTPLAT = "Big Boundary";
 
-
 	public static final String KEYINDTB = "Indications Table";
 	public static final String KEYISOANA = "Isotopic Analysis";
 	public static final String KEYPCA = "Percent Coverage Assets";
@@ -229,7 +228,6 @@ public final class SurveyorConstants {
 	public static final String CUSDRVSTDTAG2 = "stnd-sqacudr";
 	public static final String CUSDRVRRTAG2 = "rr-sqacudr";
 	public static final String CUSDRVOPTAG2 = "op-sqacudr";
-	public static final String CUSVIEWANALS = "Analysis";
 	
 		
 	/*

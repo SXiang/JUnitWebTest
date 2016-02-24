@@ -2889,7 +2889,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public WebElement getTubularAnalysisOption() {
 		return this.tubularAnalysisOption;
 	}
-	
+
 	public WebElement getCheckBoxEtheneBiogeniceMethane() {
 		return checkBoxEtheneBiogeniceMethane;
 	}
@@ -2913,7 +2913,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			this.getBtnSurveySearch().click();
 			this.waitForSurveyTabletoLoad();
 
-				WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
+			WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
 			List<WebElement> Rows = tabledata.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
 			for (int getrowvalue=1; getrowvalue < Rows.size(); getrowvalue++)
 			{ 
@@ -2950,11 +2950,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				for (int getcolumnvalue =0;getcolumnvalue<Columns.size(); getcolumnvalue++ )
 				{
 					String cellValue=driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr["+getrowvalue+"]/td[5]")).getText(); 
-					System.out.println(cellValue);
 					if (cellValue.contains(" ")){
 						String str=cellValue.replaceAll("\\s+", "");
-						System.out.println("str :::" + str);
-
+		
 						if (surveyModeFilter.name().equalsIgnoreCase(str)) {
 							result = true;
 							break;
@@ -2968,6 +2966,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 			}
 		}
-	return result;
-}
+		return result;
+	}
+
 }

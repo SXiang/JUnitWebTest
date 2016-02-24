@@ -80,7 +80,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICT;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
-import static surveyor.scommon.source.SurveyorConstants.CUSVIEWANALS;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -254,7 +253,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.open();
 		complianceReportsPage.openNewComplianceReportPage();
 
-		assertTrue(complianceReportsPage.getViewsAnalysesColumn().getText().equalsIgnoreCase(CUSVIEWANALS));
+		assertTrue(complianceReportsPage.getViewsAnalysesColumn().getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.ComplianceReportSSRS_Analysis)));
 
 		complianceReportsPage.logout();
 	}
@@ -277,15 +276,15 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 
 		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.Standard, CUSDRVSTDTAG));
 
-/*		driver.navigate().refresh();
+		driver.navigate().refresh();
 		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.Standard, CUSDRVETHTAG));
-*/		 
+
 		driver.navigate().refresh();
 		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVSTDTAG));
 
-/*		driver.navigate().refresh();
+		driver.navigate().refresh();
 		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVETHTAG));
-*/		 
+
 		complianceReportsPage.logout();
 
 	}
@@ -307,7 +306,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.openNewComplianceReportPage();
 
 		System.out.println(complianceReportsPage.getTubularAnalysisOption().getText());
-		assertTrue(complianceReportsPage.getTubularAnalysisOption().getText().equalsIgnoreCase(" " + CUSVIEWANALS));
+		assertTrue(complianceReportsPage.getTubularAnalysisOption().getText().equalsIgnoreCase(" " + Resources.getResource(ResourceKeys.ComplianceReportSSRS_Analysis)));
 
 		complianceReportsPage.logout();
 	}
@@ -356,8 +355,8 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		assertTrue(complianceReportsPage.verifySurveysTableViaSurveyMode(true, ReportModeFilter.RapidResponse, SurveyModeFilter.RapidResponse));
 
 
-		assertTrue(complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed());
-		assertTrue(complianceReportsPage.getCheckBoxEtheneBiogeniceMethane().isDisplayed());
+		complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed();
+		complianceReportsPage.getCheckBoxEtheneBiogeniceMethane().isDisplayed();
 
 
 		complianceReportsPage.logout();
@@ -435,5 +434,4 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		testCaseMap.put("11", "TC1715");  //rapid--both
 		testCaseMap.put("12", "TC1713");  //rapid--none		
 	}
-
 }
