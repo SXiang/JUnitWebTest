@@ -55,9 +55,7 @@ public class UserDataProvider extends SurveyorTestRunner {
     @DataProvider
     public static Object[][] dataProviderPicarroAdminSupportRoleInfo() {
         // @formatter:off"
-        return new String[][] {		// Username, Password(NonENCRYPTED)
-        	//{ "sqapicsup@picarro.com","sqa#Picarro$0" },
-        	//{ "Administrator","FastLane!911" }
+        return new String[][] {		
         		{ "sqapicsup@picarro.com","oeHwHqmv621dZ1MRE2BSdw==" },
                 { "Administrator","6NZYEwkq24lm9xBekD04sg==" }
         	
