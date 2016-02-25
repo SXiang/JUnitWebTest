@@ -82,6 +82,7 @@ import common.source.TestSetup;
 import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.dataaccess.source.StoredProcComplianceGetCoverage;
 import common.source.PDFUtility;
 import common.source.RegexUtility;
 
@@ -260,7 +261,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public ComplianceReportsPage(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup, strBaseURL + STRURLPath);
 
-		System.out.format("\nThe Compliance Reports Page URL is: %s\n", this.strPageURL);
+		Log.info("\nThe Compliance Reports Page URL is: %s\n"+ this.strPageURL);
 	}
 
 	private boolean checkFileExists(String fileName, String downloadPath) {
@@ -2317,7 +2318,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 
-	public boolean verifyCoverageValuesTable(String actualPath, String reportTitle) throws IOException {
+	public boolean verifyCoverageValuesTable(String actualPath, String reportTitle, Map<String, String> userSelection) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2325,17 +2326,35 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		reportName = "CR-" + reportId;
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
+		String nextLine = RegexUtility.getNextLineAfterPattern(actualReportString, "Coverage Values");
+		List<String> matches=RegexUtility.split(nextLine.trim(), "%");
+		StoredProcComplianceGetCoverage coverageReportObj=new StoredProcComplianceGetCoverage();
+		String PCA =matches.get(0).replaceAll("[\\D+]", "");
+		coverageReportObj.setPercentCoverageAssets(PCA);
+		String PCRA= matches.get(1).replaceAll("[\\D+]", "");
+		coverageReportObj.setPercentCoverageReportArea(PCRA);
+		StoredProcComplianceGetCoverage storedProcObj=StoredProcComplianceGetCoverage.getCoverage(reportId);
 		List<String> expectedReportString = new ArrayList<String>();
+		if(userSelection.get(KEYPCA).equals("1")){
 		expectedReportString.add(ComplianceReportSSRS_TotalLinearAssetCoverage);
-		expectedReportString.add(ComplianceReportSSRS_PercentCoverageReportArea);		
+		}
+		if(userSelection.get(KEYPCRA).equals("1")){
+		expectedReportString.add(ComplianceReportSSRS_PercentCoverageReportArea);
+		}
+		
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+	
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value)
 				return false;
 		}
 		
-		String nextLine = RegexUtility.getNextLineAfterPattern(actualReportString, "Coverage Values");
-		System.out.println(nextLine);
+		if(!storedProcObj.isCoverageValuesEquals(coverageReportObj)){
+			return false;
+		}
+		
+		
+		
 		return true;
 	}
 
@@ -2406,6 +2425,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		expectedReportString.add(ComplianceReportSSRS_ShowAssets);
 		expectedReportString.add(ComplianceReportSSRS_ShowBoundaries);
 		expectedReportString.add(ComplianceReportSSRS_BaseMap);
+		
+		String viewTable = RegexUtility.getStringInBetween(actualReportString, "Selected Views", "View Table", false, false);
+		System.out.println("Views "+ viewTable);
 
 		Iterator<Map<String, String>> userInputIterator = userInput.iterator();
 

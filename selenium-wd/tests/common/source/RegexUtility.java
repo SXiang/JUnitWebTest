@@ -129,7 +129,7 @@ public class RegexUtility {
 	}
 
 	/**
-	 * Returns a all String in between two given patterns
+	 * Returns all String in between two given patterns
 	 * 
 	 * @param inputString
 	 * @param regexPattern1
@@ -157,7 +157,7 @@ public class RegexUtility {
 	 */
 	public static String getNextLineAfterPattern(String inputString, String subString) {
 		String remaining= inputString.substring(inputString.lastIndexOf(subString));
-		String splits[]= remaining.split("\\n");
+		String splits[]= remaining.split("\\n");		
 		return splits[1].trim();
 	}
 
