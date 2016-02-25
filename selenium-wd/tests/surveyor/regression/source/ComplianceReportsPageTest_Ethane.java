@@ -86,8 +86,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -112,6 +114,7 @@ import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
 
 /**
  * 
@@ -279,13 +282,13 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 
 		driver.navigate().refresh();
 		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.Standard, CUSDRVETHTAG));
-		 		 
+
 		driver.navigate().refresh();
 		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVSTDTAG));
 
 		driver.navigate().refresh();
 		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVETHTAG));
-		 		 
+
 		complianceReportsPage.logout();
 
 	}
@@ -338,7 +341,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID:  	TC1653 Test Description: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane Rapid response mode surveys are displayed
+	 * Test Case ID: TC1653 Test Description: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane Rapid response mode surveys are displayed
 	 * @throws InterruptedException 
 	 * 
 	 * @throws IOException
@@ -437,7 +440,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID:TC1640 Test Description: Compliance Report Generation : Remove user selection color for Indication Table
+	 * Test Case ID:TC1717 Test Description: Compliance Report Generation : Remove user selection color for Indications
 	 * @throws InterruptedException 
 	 * 
 	 * @throws IOException
@@ -460,25 +463,112 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.getBtnAddSurveys().click();
 
 		complianceReportsPage.verifyIfIndrivingSurvey(KEYINDCLR);
+
+		complianceReportsPage.logout();
+
 	}
-	
+
+	/**
+	 * Test Case ID:TC1719 Test Description: Compliance Report Generation : COPY generated report should show default color only for Indication
+	 * @throws InterruptedException 
+	 * 
+	 * @throws IOException
+	 * 
+	 */
 	@Test
 	public void TC1719_Ethane_Copy_Report_Verify_Indication_Table_Color() throws IOException, InterruptedException{
 		String rptTitle = "TC1719 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1719: Compliance Report Generation : COPY generated report should show default color only for Indication" + rptTitle);
 
-		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
+		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
-		complianceReportsPage.openNewComplianceReportPage();
 
-		complianceReportsPage.getBtnSurveySearch().click();
-		complianceReportsPage.waitForSurveyTabletoLoad();
-		complianceReportsPage.waitForSurveySelectorCheckBoxToLoad();
-		complianceReportsPage.waitForSurveySelectorCheckBoxToBeEnabled();
-		complianceReportsPage.getCheckboxSurFirst().click();
-		complianceReportsPage.getBtnAddSurveys().click();
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+		listBoundary.add(RNELAT);
+		listBoundary.add(RNELON);
+		listBoundary.add(RSWLAT);
+		listBoundary.add(RSWLON);
+
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "0");
+		tableMap.put(KEYISOANA, "0");
+		tableMap.put(KEYPCA, "0");
+		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
+		tablesList.add(tableMap);
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "0");
+		viewMap1.put(KEYFOV, "0");
+		viewMap1.put(KEYBREADCRUMB, "0");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "0");
+		viewMap1.put(KEYANNOTATION, "0");
+		viewMap1.put(KEYGAPS, "0");
+		viewMap1.put(KEYASSETS, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
+		viewList.add(viewMap1);
+
+		List<String> tagList = new ArrayList<String>();
+		tagList.add(PICADMNSTDTAG);
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
+
+		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
+		complianceReportsPage.waitForPageLoad();
+
+		complianceReportsPage.clickOnCopyReport(rptTitle, testSetup.getLoginUser());
+		complianceReportsPage.waitForPageLoad();
 
 		complianceReportsPage.verifyIfIndrivingSurvey(KEYINDCLR);
+
+		complianceReportsPage.logout();
+
+	}
+
+	/**
+	 * Test Case ID:TC1727 Test Description: Compliance Report Generation : COPY generated report with custom selected Indication color should show default color only for Indication- customized Indication color
+	 * @throws InterruptedException 
+	 * 
+	 * @throws IOException
+	 * 
+	 */
+	@Test
+	public void TC1727_Ethane_Verify_Indication_Table_Color_Copy_Customized_Colored_Report() throws IOException, InterruptedException{
+		//Using Existing Customized Indication Color report NO: # test12345
+		String rptTitle = "TC1727 Ethane" + testSetup.getRandomNumber();
+		Log.info("\nRunning TC1727: Compliance Report Generation : COPY generated report with custom selected Indication color should show default color only for Indication- customized Indication color" + rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		complianceReportsPage.findReportbySearch("test12345", testSetup.getLoginUser());
+
+		complianceReportsPage.clickOnCopyReport("test12345", testSetup.getLoginUser());
+		complianceReportsPage.waitForPageLoad();
+
+		complianceReportsPage.verifyIfIndrivingSurvey(KEYINDCLR);
+
+		complianceReportsPage.logout();
+
 	}
 	
+
 }
