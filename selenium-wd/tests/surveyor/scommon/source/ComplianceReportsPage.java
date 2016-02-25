@@ -222,6 +222,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id=resubmitReportModal']/div/div/div[3]/a[1]")
 	protected WebElement btnResubmitReport;
 
+	@FindBy(id = "resubmitReportModal")
+	protected WebElement resubmitReportModal;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='resubmitReportModal']/div/div/div[3]/a[1]")
+	protected WebElement btnProcessResubmit;
+
 	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li[1]")
 	protected WebElement assetErrorText;
 
@@ -239,7 +245,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(id = "report-ethene-biogenic-methane")
 	protected WebElement checkBoxEtheneBiogeniceMethane;
-
 
 	public enum CustomerBoundaryType {
 		District, DistrictPlat
@@ -1032,6 +1037,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					if (buttonImg.isDisplayed()) {
 						if (clickButton) {
 							buttonImg.click();
+							// If resubmit then wait for modal and confirm resubmit.
+							if (buttonType == ComplianceReportButtonType.Resubmit) {
+								this.waitForResubmitPopupToShow();
+								this.btnProcessResubmit.click();
+								this.waitForResubmitPopupToClose();
+							}
 						}
 						return true;
 					}
@@ -2605,6 +2616,26 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return !dvAreaModeCustom.getAttribute("style").contains("display:none");
+			}
+		});
+	}
+
+	private void waitForResubmitPopupToShow() {
+		WebElement resubmitPopupSection = this.driver.findElement(By.id("resubmitReportModal"));
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return resubmitPopupSection.getAttribute("style").contains("display:block") 
+						|| resubmitPopupSection.getAttribute("style").contains("display: block");
+			}
+		});
+	}
+
+	private void waitForResubmitPopupToClose() {
+		WebElement resubmitPopupSection = this.driver.findElement(By.id("resubmitReportModal"));
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return resubmitPopupSection.getAttribute("style").contains("display:none") 
+						|| resubmitPopupSection.getAttribute("style").contains("display: none");
 			}
 		});
 	}
