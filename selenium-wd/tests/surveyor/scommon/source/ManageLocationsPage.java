@@ -181,14 +181,16 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
 
 			this.clickOnLatLongSelectorBtn();
-			latLongSelectionControl.waitForModalDialogOpen()
-				.switchMode(ControlMode.MapInteraction)
-				.waitForMapImageLoad()
-				.selectLatLong(CANVAS_X_PATH, X_OFFSET, Y_OFFSET)
-				.switchMode(ControlMode.Default)
-				.clickOkButton()
-				.waitForModalDialogToClose();
-			
+		
+        	latLongSelectionControl.waitForModalDialogOpen()
+			.switchMode(ControlMode.MapInteraction)
+			.waitForMapImageLoad()
+			.selectLatLong(CANVAS_X_PATH, X_OFFSET, Y_OFFSET)
+			.switchMode(ControlMode.Default)
+        	.clickOkButton()
+			.waitForModalDialogToClose();
+ 
+													
 			String locationLatitudeText = this.getLocationLatitudeText();
 			Log.info("Location Latitude Field value = " + locationLatitudeText);
 			assertTrue(!locationLatitudeText.isEmpty());

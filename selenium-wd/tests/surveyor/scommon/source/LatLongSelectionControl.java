@@ -31,7 +31,7 @@ public class LatLongSelectionControl extends BaseControl {
     private static final String GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION_CALL = "return getBoundarySelectorCanvasImageData();";
 
     @FindBy(id = "boundary-feature-class")
-    @CacheLookup
+   @CacheLookup
     private WebElement filterByTypeDropDown;
     
     @FindBy(id = "boundary-search-text")
@@ -39,7 +39,6 @@ public class LatLongSelectionControl extends BaseControl {
     private WebElement selectByNameTextField;    
     
     @FindBy(id = "button-map-dialog-ok")
-    @CacheLookup
     private WebElement okButton;
 
     @FindBy(id = "button-map-dialog-cancel")
