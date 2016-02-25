@@ -997,7 +997,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
@@ -1006,22 +1006,22 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				try {
 					switch (buttonType) {
 					case Delete:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[1]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]/img";
 						break;
 					case Copy:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[2]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
 						break;
 					case ReportViewer:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[3]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img";
 						break;
 					case Investigate:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[4]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[4]/img";
 						break;
 					case InvestigatePDF:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[5]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[5]/img";
 						break;
 					case Resubmit:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[6]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[6]/img";
 						break;
 					default:
 						throw new Exception("ButtonType NOT supported.");
@@ -2982,4 +2982,5 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	return result;
 
 	}
+	
 }
