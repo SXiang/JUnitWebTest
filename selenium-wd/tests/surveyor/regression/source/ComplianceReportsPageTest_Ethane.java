@@ -424,6 +424,76 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 	}
 
 	/**
+	 * Test Case ID:TC1718 Test Description: Compliance Report Generation : newly generated report should show default color only for Indication
+	 * @throws InterruptedException 
+	 * 
+	 * @throws IOException
+	 * 
+	 */
+	@Test
+	public void TC1718_Ethane_Generate_Report_Verify_Indication_Table_Color() throws IOException, InterruptedException{
+		String rptTitle = "TC1718 Ethane" + testSetup.getRandomNumber();
+		Log.info("\nRunning TC1718: Compliance Report Generation : newly generated report should show default color only for Indication" + rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+		listBoundary.add(RNELAT);
+		listBoundary.add(RNELON);
+		listBoundary.add(RSWLAT);
+		listBoundary.add(RSWLON);
+
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "0");
+		tableMap.put(KEYISOANA, "0");
+		tableMap.put(KEYPCA, "0");
+		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
+		tablesList.add(tableMap);
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "0");
+		viewMap1.put(KEYFOV, "0");
+		viewMap1.put(KEYBREADCRUMB, "0");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "0");
+		viewMap1.put(KEYANNOTATION, "0");
+		viewMap1.put(KEYGAPS, "0");
+		viewMap1.put(KEYASSETS, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
+		viewList.add(viewMap1);
+
+		List<String> tagList = new ArrayList<String>();
+		tagList.add(PICADMNSTDTAG);
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
+
+		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
+		complianceReportsPage.waitForPageLoad();
+
+		complianceReportsPage.logout();
+
+	}
+
+	/**
 	 * Test Case ID:TC1719 Test Description: Compliance Report Generation : COPY generated report should show default color only for Indication
 	 * @throws InterruptedException 
 	 * 
