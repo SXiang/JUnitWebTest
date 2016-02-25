@@ -222,6 +222,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id=resubmitReportModal']/div/div/div[3]/a[1]")
 	protected WebElement btnResubmitReport;
 
+	@FindBy(id = "resubmitReportModal")
+	protected WebElement resubmitReportModal;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='resubmitReportModal']/div/div/div[3]/a[1]")
+	protected WebElement btnProcessResubmit;
+
 	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li[1]")
 	protected WebElement assetErrorText;
 
@@ -231,8 +237,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(id = "report-ethene-vehicle-exhaust")
 	protected WebElement checkBoxVehicleExhaust;
 
-
-
 	@FindBy(how = How.XPATH, using ="//*[@id='datatableViews']/thead/tr/th[7]/div")
 	protected WebElement viewsAnalysesColumn;
 
@@ -241,7 +245,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(id = "report-ethene-biogenic-methane")
 	protected WebElement checkBoxEtheneBiogeniceMethane;
-
 
 	public enum CustomerBoundaryType {
 		District, DistrictPlat
@@ -999,7 +1002,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
@@ -1008,22 +1011,22 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				try {
 					switch (buttonType) {
 					case Delete:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[1]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]/img";
 						break;
 					case Copy:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[2]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
 						break;
 					case ReportViewer:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[3]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img";
 						break;
 					case Investigate:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[4]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[4]/img";
 						break;
 					case InvestigatePDF:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[5]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[5]/img";
 						break;
 					case Resubmit:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[6]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[6]/img";
 						break;
 					default:
 						throw new Exception("ButtonType NOT supported.");
@@ -1034,6 +1037,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					if (buttonImg.isDisplayed()) {
 						if (clickButton) {
 							buttonImg.click();
+							// If resubmit then wait for modal and confirm resubmit.
+							if (buttonType == ComplianceReportButtonType.Resubmit) {
+								this.waitForResubmitPopupToShow();
+								this.btnProcessResubmit.click();
+								this.waitForResubmitPopupToClose();
+							}
 						}
 						return true;
 					}
@@ -2607,6 +2616,26 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return !dvAreaModeCustom.getAttribute("style").contains("display:none");
+			}
+		});
+	}
+
+	private void waitForResubmitPopupToShow() {
+		WebElement resubmitPopupSection = this.driver.findElement(By.id("resubmitReportModal"));
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return resubmitPopupSection.getAttribute("style").contains("display:block") 
+						|| resubmitPopupSection.getAttribute("style").contains("display: block");
+			}
+		});
+	}
+
+	private void waitForResubmitPopupToClose() {
+		WebElement resubmitPopupSection = this.driver.findElement(By.id("resubmitReportModal"));
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return resubmitPopupSection.getAttribute("style").contains("display:none") 
+						|| resubmitPopupSection.getAttribute("style").contains("display: none");
 			}
 		});
 	}
