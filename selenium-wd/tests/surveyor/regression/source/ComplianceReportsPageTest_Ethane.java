@@ -7,6 +7,10 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVETHTAG;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
+import static surveyor.scommon.source.SurveyorConstants.ETHRNELAT;
+import static surveyor.scommon.source.SurveyorConstants.ETHRNELON;
+import static surveyor.scommon.source.SurveyorConstants.ETHRSWLAT;
+import static surveyor.scommon.source.SurveyorConstants.ETHRSWLON;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPHEIGHT;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPWIDTH;
 import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
@@ -32,7 +36,8 @@ import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
-import static surveyor.scommon.source.SurveyorConstants.KEYSAMPLRPT;
+import static surveyor.scommon.source.SurveyorConstants.KEYRSBSAMPLRPT;
+import static surveyor.scommon.source.SurveyorConstants.KEYCPSAMPLRPT;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
@@ -43,6 +48,7 @@ import static surveyor.scommon.source.SurveyorConstants.SQAPICSUP;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
+import static surveyor.scommon.source.SurveyorConstants.ETHREXCLUSIONRADIUS;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -441,42 +447,42 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		List<String> listBoundary = new ArrayList<String>();
 		listBoundary.add(IMGMAPHEIGHT);
 		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add(RNELAT);
-		listBoundary.add(RNELON);
-		listBoundary.add(RSWLAT);
-		listBoundary.add(RSWLON);
-
+		listBoundary.add(ETHRNELAT);
+		listBoundary.add(ETHRNELON);
+		listBoundary.add(ETHRSWLAT);
+		listBoundary.add(ETHRSWLON);
+		
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();
 
-		tableMap.put(KEYINDTB, "0");
-		tableMap.put(KEYISOANA, "0");
-		tableMap.put(KEYPCA, "0");
-		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYINDTB, "1");
+		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYPCA, "1");
+		tableMap.put(KEYPCRA, "1");
 		tableMap.put(KEYASSETCASTIRON, "1");
 		tableMap.put(KEYASSETCOPPER, "1");
 		tableMap.put(KEYASSETOTHERPLASTIC, "1");
 		tableMap.put(KEYASSETPEPLASTIC, "1");
 		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
 		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "0");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICT, "1");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "1");
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();
 
 		viewMap1.put(KEYVIEWNAME, "First View");
-		viewMap1.put(KEYLISA, "0");
-		viewMap1.put(KEYFOV, "0");
-		viewMap1.put(KEYBREADCRUMB, "0");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
 		viewMap1.put(KEYINDICATIONS, "1");
-		viewMap1.put(KEYISOTOPICCAPTURE, "0");
-		viewMap1.put(KEYANNOTATION, "0");
-		viewMap1.put(KEYGAPS, "0");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
-		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 		viewList.add(viewMap1);
 
 		List<String> tagList = new ArrayList<String>();
@@ -489,6 +495,14 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 		complianceReportsPage.waitForPageLoad();
 
+		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
+			assertTrue(complianceReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
+			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
+
+		} else
+			fail("\nTestcase TC1718 failed.\n");
+
+		complianceReportsPage.open();
 		complianceReportsPage.logout();
 
 	}
@@ -511,42 +525,42 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		List<String> listBoundary = new ArrayList<String>();
 		listBoundary.add(IMGMAPHEIGHT);
 		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add(RNELAT);
-		listBoundary.add(RNELON);
-		listBoundary.add(RSWLAT);
-		listBoundary.add(RSWLON);
-
+		listBoundary.add(ETHRNELAT);
+		listBoundary.add(ETHRNELON);
+		listBoundary.add(ETHRSWLAT);
+		listBoundary.add(ETHRSWLON);
+		
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();
 
-		tableMap.put(KEYINDTB, "0");
-		tableMap.put(KEYISOANA, "0");
-		tableMap.put(KEYPCA, "0");
-		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYINDTB, "1");
+		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYPCA, "1");
+		tableMap.put(KEYPCRA, "1");
 		tableMap.put(KEYASSETCASTIRON, "1");
 		tableMap.put(KEYASSETCOPPER, "1");
 		tableMap.put(KEYASSETOTHERPLASTIC, "1");
 		tableMap.put(KEYASSETPEPLASTIC, "1");
 		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
 		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "0");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICT, "1");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "1");
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();
 
 		viewMap1.put(KEYVIEWNAME, "First View");
-		viewMap1.put(KEYLISA, "0");
-		viewMap1.put(KEYFOV, "0");
-		viewMap1.put(KEYBREADCRUMB, "0");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
 		viewMap1.put(KEYINDICATIONS, "1");
-		viewMap1.put(KEYISOTOPICCAPTURE, "0");
-		viewMap1.put(KEYANNOTATION, "0");
-		viewMap1.put(KEYGAPS, "0");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
-		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 		viewList.add(viewMap1);
 
 		List<String> tagList = new ArrayList<String>();
@@ -577,25 +591,23 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC1727_Ethane_Verify_Indication_Table_Color_Copy_Customized_Colored_Report() throws IOException, InterruptedException{
-		//Using Existing Customized Indication Color report NO: # test12345
+		//Using Existing Customized Indication Color report NO: # test1234
 		String rptTitle = "TC1727 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1727: Compliance Report Generation : COPY generated report with custom selected Indication color should show default color only for Indication- customized Indication color" + rptTitle);
 
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
 
-		complianceReportsPage.findReportbySearch(KEYSAMPLRPT, testSetup.getLoginUser());
+		complianceReportsPage.findReportbySearch(KEYCPSAMPLRPT, testSetup.getLoginUser());
 
-		complianceReportsPage.clickOnCopyReport(KEYSAMPLRPT, testSetup.getLoginUser());
+		complianceReportsPage.clickOnCopyReport(KEYCPSAMPLRPT, testSetup.getLoginUser());
 		complianceReportsPage.waitForPageLoad();
 
-		complianceReportsPage.verifyIfIndrivingSurvey(KEYINDCLR);
+		complianceReportsPage.verifyIfIndrivingSurvey(KEYCPSAMPLRPT);
 
 		complianceReportsPage.logout();
 
 	}
-
-
 
 
 	/**
@@ -605,17 +617,17 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC1728_Ethane_Verify_Indication_Table_Color_Resubmmit_Customized_Colored_Report() throws Exception{
-		//Using Existing Customized Indication Color report NO: # test12345
+		//Using Existing Customized Indication Color report NO: # AutomationTestReport
 		String rptTitle = "TC1728 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1728: Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- customized Indication color" + rptTitle);
 
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
 
-		complianceReportsPage.findReportbySearch(KEYSAMPLRPT, testSetup.getLoginUser());
+		complianceReportsPage.findReportbySearch(KEYRSBSAMPLRPT, testSetup.getLoginUser());
 
 		try {
-			complianceReportsPage.clickComplianceReportButton(KEYSAMPLRPT, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
+			complianceReportsPage.clickComplianceReportButton(KEYRSBSAMPLRPT, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
 			complianceReportsPage.waitForResubmitButton();
 			complianceReportsPage.getBtnResubmitReport().click();
 		} catch (Exception e) {
@@ -623,9 +635,9 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		}
 		complianceReportsPage.waitForPageLoad();
 
-		if ((complianceReportsPage.checkActionStatus(KEYSAMPLRPT, testSetup.getLoginUser()))) {
-			assertTrue(complianceReportsPage.validatePdfFiles(KEYSAMPLRPT, testSetup.getDownloadPath()));
-			assertTrue(complianceReportsPage.findReport(KEYSAMPLRPT, testSetup.getLoginUser()));
+		if ((complianceReportsPage.checkActionStatus(KEYRSBSAMPLRPT, testSetup.getLoginUser()))) {
+			assertTrue(complianceReportsPage.validatePdfFiles(KEYRSBSAMPLRPT, testSetup.getDownloadPath()));
+			assertTrue(complianceReportsPage.findReport(KEYRSBSAMPLRPT, testSetup.getLoginUser()));
 
 		} else
 			fail("\nTestcase TC1728 failed.\n");
@@ -653,42 +665,42 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		List<String> listBoundary = new ArrayList<String>();
 		listBoundary.add(IMGMAPHEIGHT);
 		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add(RNELAT);
-		listBoundary.add(RNELON);
-		listBoundary.add(RSWLAT);
-		listBoundary.add(RSWLON);
-
+		listBoundary.add(ETHRNELAT);
+		listBoundary.add(ETHRNELON);
+		listBoundary.add(ETHRSWLAT);
+		listBoundary.add(ETHRSWLON);
+		
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();
 
-		tableMap.put(KEYINDTB, "0");
-		tableMap.put(KEYISOANA, "0");
-		tableMap.put(KEYPCA, "0");
-		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYINDTB, "1");
+		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYPCA, "1");
+		tableMap.put(KEYPCRA, "1");
 		tableMap.put(KEYASSETCASTIRON, "1");
 		tableMap.put(KEYASSETCOPPER, "1");
 		tableMap.put(KEYASSETOTHERPLASTIC, "1");
 		tableMap.put(KEYASSETPEPLASTIC, "1");
 		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
 		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "0");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICT, "1");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "1");
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();
 
 		viewMap1.put(KEYVIEWNAME, "First View");
-		viewMap1.put(KEYLISA, "0");
-		viewMap1.put(KEYFOV, "0");
-		viewMap1.put(KEYBREADCRUMB, "0");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
 		viewMap1.put(KEYINDICATIONS, "1");
-		viewMap1.put(KEYISOTOPICCAPTURE, "0");
-		viewMap1.put(KEYANNOTATION, "0");
-		viewMap1.put(KEYGAPS, "0");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
-		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 		viewList.add(viewMap1);
 
 		List<String> tagList = new ArrayList<String>();

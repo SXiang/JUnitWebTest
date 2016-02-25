@@ -155,7 +155,7 @@ public class SurveyorBaseTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@AfterClass
+	//@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 		homePage.open();
 		
