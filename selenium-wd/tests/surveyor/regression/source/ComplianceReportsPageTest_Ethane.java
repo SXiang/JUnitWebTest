@@ -115,8 +115,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		assertTrue(complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed());
 		assertTrue(complianceReportsPage.getCheckBoxEtheneBiogeniceMethane().isDisplayed());
 
-		complianceReportsPage.logout();
-
 	}
 
 	/**
@@ -182,7 +180,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
-		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 		complianceReportsPage.waitForPageLoad();
 
 		complianceReportsPage.clickOnCopyReport(rptTitle, testSetup.getLoginUser());
@@ -197,8 +195,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 			assertTrue(complianceReportsPage.getCheckBoxEtheneBiogeniceMethane().isDisplayed());
 		else
 			fail("\nTestcase TC1637 failed.\n");
-
-		complianceReportsPage.logout();
 
 	}
 
@@ -219,8 +215,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.openNewComplianceReportPage();
 
 		assertTrue(complianceReportsPage.getViewsAnalysesColumn().getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.ComplianceReportSSRS_Analysis)));
-
-		complianceReportsPage.logout();
 	}
 
 	/**
@@ -249,9 +243,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 
 		driver.navigate().refresh();
 		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVETHTAG));
-
-		complianceReportsPage.logout();
-
 	}
 
 	/**
@@ -272,8 +263,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 
 		System.out.println(complianceReportsPage.getTubularAnalysisOption().getText());
 		assertTrue(complianceReportsPage.getTubularAnalysisOption().getText().equalsIgnoreCase(" " + Resources.getResource(ResourceKeys.ComplianceReportSSRS_Analysis)));
-
-		complianceReportsPage.logout();
 	}
 
 	/**
@@ -296,9 +285,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 
 		driver.navigate().refresh();
 		assertTrue(complianceReportsPage.verifySurveysTableViaSurveyMode(true, ReportModeFilter.RapidResponse, SurveyModeFilter.Operator));
-
-		complianceReportsPage.logout();
-
 	}
 
 	/**
@@ -323,9 +309,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed();
 		complianceReportsPage.getCheckBoxEtheneBiogeniceMethane().isDisplayed();
 
-
-		complianceReportsPage.logout();
-
 	}
 
 	/**
@@ -345,8 +328,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.openNewComplianceReportPage();
 
 		assertTrue(complianceReportsPage.verifySurveysTableViaSurveyMode(true, ReportModeFilter.Manual, SurveyModeFilter.Manual));
-
-		complianceReportsPage.logout();
 
 	}
 
@@ -377,9 +358,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 
 		} else
 			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 	private static String getTestCaseName(String key) {
 		return testCaseMap.get(key);
@@ -424,8 +402,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.getBtnAddSurveys().click();
 
 		complianceReportsPage.verifyIfIndrivingSurvey(KEYINDCLR);
-
-		complianceReportsPage.logout();
 
 	}
 
@@ -492,7 +468,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
-		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
@@ -501,9 +477,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 
 		} else
 			fail("\nTestcase TC1718 failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 
 	}
 
@@ -570,15 +543,13 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
-		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 		complianceReportsPage.waitForPageLoad();
 
 		complianceReportsPage.clickOnCopyReport(rptTitle, testSetup.getLoginUser());
 		complianceReportsPage.waitForPageLoad();
 
 		complianceReportsPage.verifyIfIndrivingSurvey(KEYINDCLR);
-
-		complianceReportsPage.logout();
 
 	}
 
@@ -605,8 +576,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 
 		complianceReportsPage.verifyIfIndrivingSurvey(KEYCPSAMPLRPT);
 
-		complianceReportsPage.logout();
-
 	}
 
 
@@ -626,13 +595,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 
 		complianceReportsPage.findReportbySearch(KEYRSBSAMPLRPT, testSetup.getLoginUser());
 
-		try {
-			complianceReportsPage.clickComplianceReportButton(KEYRSBSAMPLRPT, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
-			complianceReportsPage.waitForResubmitButton();
-			complianceReportsPage.getBtnResubmitReport().click();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		complianceReportsPage.clickComplianceReportButton(KEYRSBSAMPLRPT, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
 		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(KEYRSBSAMPLRPT, testSetup.getLoginUser()))) {
@@ -643,8 +606,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 			fail("\nTestcase TC1728 failed.\n");
 
 		complianceReportsPage.open();
-		complianceReportsPage.logout();
-
 	}
 
 	/**
@@ -655,7 +616,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 	 * 
 	 */
 	@Test
-	public void TC1729_Ethane_Resubmit_Report_Verify_Indication_Table_Color() throws IOException, InterruptedException{
+	public void TC1729_Ethane_Resubmit_Report_Verify_Indication_Table_Color() throws Exception{
 		String rptTitle = "TC1729 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1729: Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- Default Indication color" + rptTitle);
 
@@ -710,18 +671,12 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
-		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 		complianceReportsPage.waitForPageLoad();
 
 		complianceReportsPage.findReportbySearch(rptTitle, testSetup.getLoginUser());
 
-		try {
-			complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
-			complianceReportsPage.waitForResubmitButton();
-			complianceReportsPage.getBtnResubmitReport().click();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
 		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
@@ -732,7 +687,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 			fail("\nTestcase TC1729 failed.\n");
 
 		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 
 }

@@ -6,7 +6,9 @@ package surveyor.scommon.source;
 import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.BLANKFIELDERROR;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
-
+import static surveyor.scommon.source.SurveyorConstants.SQACUSSULOC;
+import static surveyor.scommon.source.SurveyorConstants.ETHRNELAT;
+import static surveyor.scommon.source.SurveyorConstants.ETHRNELON;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +52,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	@FindBy(id = "Description")
 	protected WebElement inputLocationDesc;
-	
+
 	@FindBy(id = "btn-select-point")
 	private WebElement latLongSelectorBtn;
 
@@ -110,18 +112,27 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(id = "point-longitude-error")
 	private WebElement labelLongValueError;
 	private String labelLongValueErrorXPath = "//label[@id='point-longitude-error']";
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[1]")
-    protected WebElement tdCustomerValue;
-    
-    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[2]")
-    protected WebElement tdLocationValue;
+	protected WebElement tdCustomerValue;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[2]")
+	protected WebElement tdLocationValue;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/thead/tr/th[2]")
 	protected WebElement theadLocation;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr")
 	protected List<WebElement> rows;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='location-form']/fieldset/div[11]/legend")
+	protected WebElement ethMthRtioLbl;
+
+	@FindBy(how = How.ID, using = "Min")
+	protected WebElement ethMthMinUnit;
+
+	@FindBy(how = How.ID, using = "Max")
+	protected WebElement ethMthMaxUnit;
 
 	private static LatLongSelectionControl latLongSelectionControl = null;
 
@@ -140,7 +151,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 		latLongSelectionControl = new LatLongSelectionControl(driver);
 		PageFactory.initElements(driver, latLongSelectionControl);
-		
+
 		Log.info("\nThe Manager Locations Page URL is: " + this.strPageURL);
 	}
 
@@ -149,12 +160,12 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		super(driver, testSetup, baseURL, baseURL + urlPath);
 	}
 
-	
+
 	public void addNewLocation(String locationDesc, String customer,
 			String newLocationName) {
 		addNewLocation(locationDesc, customer, newLocationName, false /*UseLatLongSelector*/ );
 	}
-	
+
 	public void addNewLocationUsingLatLongSelector(String locationDesc, String customer,
 			String newLocationName) {
 		addNewLocation(locationDesc, customer, newLocationName, true /*UseLatLongSelector*/ );
@@ -171,7 +182,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.btnAddNewLocation.click();
 
 		this.inputLocationDesc.sendKeys(locationDesc);
-		
+
 		if (!useLatLongSelector) {		
 			this.inputLocationLat.sendKeys(latitude);
 			this.inputLocationLong.sendKeys(longitude);
@@ -181,16 +192,101 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
 
 			this.clickOnLatLongSelectorBtn();
-		
-        	latLongSelectionControl.waitForModalDialogOpen()
+
+			latLongSelectionControl.waitForModalDialogOpen()
 			.switchMode(ControlMode.MapInteraction)
 			.waitForMapImageLoad()
 			.selectLatLong(CANVAS_X_PATH, X_OFFSET, Y_OFFSET)
 			.switchMode(ControlMode.Default)
-        	.clickOkButton()
+			.clickOkButton()
 			.waitForModalDialogToClose();
- 
-													
+
+
+			String locationLatitudeText = this.getLocationLatitudeText();
+			Log.info("Location Latitude Field value = " + locationLatitudeText);
+			assertTrue(!locationLatitudeText.isEmpty());
+
+			String locationLongitudeText = this.getLocationLongitudeText();
+			Log.info("Location Longitude Field value = " + locationLongitudeText);
+			assertTrue(!locationLongitudeText.isEmpty());
+		}
+
+		List<WebElement> options = this.dropDownCustomer.findElements(By
+				.tagName("option"));
+		for (WebElement option : options) {
+			if (customer.equalsIgnoreCase(option.getText().trim()))
+				option.click();
+		}
+
+		this.stdMinAmp.sendKeys("0.035");
+		this.stdMinAmp.clear();
+		this.opdMinAmp.clear();
+		this.opdMinAmp.sendKeys("5");
+		this.RRMinAmp.clear();
+		this.RRMinAmp.sendKeys("5");
+		if (this.assessmentMinAmp.isDisplayed()) {
+			this.assessmentMinAmp.clear();
+			this.assessmentMinAmp.sendKeys("0.035");
+		}
+		if (this.eqMinAmp.isDisplayed()) {
+			this.eqMinAmp.clear();
+			this.eqMinAmp.sendKeys("0.035");
+		}
+
+		this.NoLower.clear();
+		this.NoLower.sendKeys("-45");
+		this.YesLower.clear();
+		this.YesLower.sendKeys("-42");
+		this.YesUpper.clear();
+		this.YesUpper.sendKeys("-30");
+		this.NoUpper.clear();
+		this.NoUpper.sendKeys("-25");
+
+		this.btnOK.click();
+		this.waitForPageToLoad();
+
+		if (isElementPresent(this.panelDuplicationErrorXPath)) {
+			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
+			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
+				this.btnCancel.click();
+		}
+	}
+
+	public void addEthaneNewLocation(String locationDesc, String customer,
+			String newLocationName, String ethMthMin, String ethMthMax) {
+		addEthaneNewLocation(locationDesc, customer, newLocationName, false /*UseLatLongSelector*/, ethMthMin,  ethMthMax);
+	}
+	public void addEthaneNewLocation(String locationDesc, String customer,
+			String newLocationName, boolean useLatLongSelector, String ethMthMin, String ethMthMax) {
+
+		if (newLocationName.equalsIgnoreCase(SQACUSSULOC)) {
+			latitude = ETHRNELAT;
+			longitude = ETHRNELON;
+		}
+
+		this.btnAddNewLocation.click();
+
+		this.inputLocationDesc.sendKeys(locationDesc);
+
+		if (!useLatLongSelector) {		
+			this.inputLocationLat.sendKeys(latitude);
+			this.inputLocationLong.sendKeys(longitude);
+		} else {
+			final int X_OFFSET = 100;
+			final int Y_OFFSET = 100;
+			String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
+
+			this.clickOnLatLongSelectorBtn();
+
+			latLongSelectionControl.waitForModalDialogOpen()
+			.switchMode(ControlMode.MapInteraction)
+			.waitForMapImageLoad()
+			.selectLatLong(CANVAS_X_PATH, X_OFFSET, Y_OFFSET)
+			.switchMode(ControlMode.Default)
+			.clickOkButton()
+			.waitForModalDialogToClose();
+
+
 			String locationLatitudeText = this.getLocationLatitudeText();
 			Log.info("Location Latitude Field value = " + locationLatitudeText);
 			assertTrue(!locationLatitudeText.isEmpty());
@@ -231,6 +327,24 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.NoUpper.clear();
 		this.NoUpper.sendKeys("-25");
 
+		if (ethMthMin != "") {
+			List<WebElement> optionsMIN = this.ethMthMinUnit.findElements(By.tagName("option"));
+			for (WebElement option : optionsMIN) {
+				if ((ethMthMin).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+		}
+
+		if (ethMthMax != "") {
+			List<WebElement> optionsMAX = this.ethMthMaxUnit.findElements(By.tagName("option"));
+			for (WebElement option : optionsMAX) {
+				if ((ethMthMax).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+		}
+
 		this.btnOK.click();
 		this.waitForPageToLoad();
 
@@ -240,7 +354,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				this.btnCancel.click();
 		}
 	}
-	
+
 	public boolean findExistingLocation(String customerName, String locationName) {
 		setPagination(PAGINATIONSETTING_100);
 
@@ -275,7 +389,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			if ((customerNameCell.getText().trim())
 					.equalsIgnoreCase(customerName)
 					&& (locationNameCell.getText().trim())
-							.equalsIgnoreCase(locationName)) {
+					.equalsIgnoreCase(locationName)) {
 				Log.info("Found entry at row=" + rowNum);
 				return true;
 			}
@@ -339,7 +453,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			if ((customerNameCell.getText().trim())
 					.equalsIgnoreCase(customerName)
 					&& (locationNameCell.getText().trim())
-							.equalsIgnoreCase(locationName)) {
+					.equalsIgnoreCase(locationName)) {
 				actionEditXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 						+ "]/td[5]";
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
@@ -366,8 +480,115 @@ public class ManageLocationsPage extends SurveyorBasePage {
 							.getText()
 							.equalsIgnoreCase(
 									Resources
-											.getResource(ResourceKeys.Validation_SummaryTitle))) {
-//						this.btnCancel.click();
+									.getResource(ResourceKeys.Validation_SummaryTitle))) {
+						//						this.btnCancel.click();
+						return false;
+					}
+				}
+				return true;
+			}
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
+					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+				this.testSetup.slowdownInSeconds(this.testSetup
+						.getSlowdownInSeconds());
+				List<WebElement> newRows = table.findElements(By
+						.xpath("//*[@id='datatable']/tbody/tr"));
+
+				rowSize = newRows.size();
+
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
+
+				rowNum = 0;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean editExistingEthaneLocation(String customerName,
+			String locationName, String newEthMthMin, String newEthMthMax ) {
+		setPagination(PAGINATIONSETTING_100);
+
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+
+		String customerNameXPath;
+		String locationNameXPath;
+		String actionEditXPath;
+
+		WebElement customerNameCell;
+		WebElement locationNameCell;
+		WebElement actionEditCell;
+
+		List<WebElement> rows = table.findElements(By
+				.xpath("//*[@id='datatable']/tbody/tr"));
+
+		int rowSize = rows.size();
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			customerNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
+					+ "]/td[1]";
+			locationNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
+					+ "]/td[2]";
+
+			customerNameCell = table.findElement(By.xpath(customerNameXPath));
+			locationNameCell = table.findElement(By.xpath(locationNameXPath));
+
+			if ((customerNameCell.getText().trim())
+					.equalsIgnoreCase(customerName)
+					&& (locationNameCell.getText().trim())
+					.equalsIgnoreCase(locationName)) {
+				actionEditXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
+						+ "]/td[5]";
+				actionEditCell = table.findElement(By.xpath(actionEditXPath));
+				Log.info("Found entry at row=" + rowNum);
+
+				actionEditCell.click();
+
+
+				if (newEthMthMin != "") {
+					List<WebElement> optionsMIN = this.ethMthMinUnit.findElements(By.tagName("option"));
+					for (WebElement option : optionsMIN) {
+						if ((newEthMthMin).equalsIgnoreCase(option.getText().trim())) {
+							option.click();
+						}
+					}
+				}
+
+				if (newEthMthMax != "") {
+					List<WebElement> optionsMAX = this.ethMthMaxUnit.findElements(By.tagName("option"));
+					for (WebElement option : optionsMAX) {
+						if ((newEthMthMax).equalsIgnoreCase(option.getText().trim())) {
+							option.click();
+						}
+					}
+				}
+
+
+
+				String curURL = driver.getCurrentUrl();
+
+				this.btnOK.click();
+
+				if (isElementPresent(this.panelDuplicationErrorXPath)) {
+					WebElement panelError = driver.findElement(By
+							.xpath(this.panelDuplicationErrorXPath));
+					if (panelError
+							.getText()
+							.equalsIgnoreCase(
+									Resources
+									.getResource(ResourceKeys.Validation_SummaryTitle))) {
+						//						this.btnCancel.click();
 						return false;
 					}
 				}
@@ -435,7 +656,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			if ((customerNameCell.getText().trim())
 					.equalsIgnoreCase(customerName)
 					&& (locationNameCell.getText().trim())
-							.equalsIgnoreCase(locationName)) {
+					.equalsIgnoreCase(locationName)) {
 				actionEditXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 						+ "]/td[5]";
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
@@ -480,7 +701,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 							.getText()
 							.equalsIgnoreCase(
 									Resources
-											.getResource(ResourceKeys.Validation_SummaryTitle))) {
+									.getResource(ResourceKeys.Validation_SummaryTitle))) {
 						this.btnCancel.click();
 						return false;
 					}
@@ -536,15 +757,19 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public void clickOnCancelBtn() {
 		this.btnCancel.click();
 	}
-	
+
 	public void clickOnLatLongSelectorBtn() {
 		this.latLongSelectorBtn.click();
 	}
-	
+
 	public WebElement getTheadLocation() {
 		return this.theadLocation;
 	}
-	
+
+	public WebElement getEthMthRtoLbl() {
+		return 	ethMthRtioLbl;
+	}
+
 	public List<String> getLocationList(boolean allPages, int paginationSize) {
 		List<String> locationList = new ArrayList<String>();
 
@@ -604,32 +829,32 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		}
 		return false;
 	}
-	
+
 	public boolean isDuplicateLocMsgPresent(){
 		return this.liDuplicateMsg.getText().equals(STRDuplicateLocMsg);
 	}
 
-    @Override
+	@Override
 	public void waitForPageLoad() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                return d.getPageSource().contains(STRPageContentText);
-            }
-        });
-    }
-    
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return d.getPageSource().contains(STRPageContentText);
+			}
+		});
+	}
+
 	public void waitForNewPageLoad() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                return d.getPageSource().contains(STRNewPageContentText);
-            }
-        });
-    }
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return d.getPageSource().contains(STRNewPageContentText);
+			}
+		});
+	}
 
 	public void waitForEditPageLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-            	return d.getPageSource().contains(STREditPageContentText);
+				return d.getPageSource().contains(STREditPageContentText);
 			}
 		});
 	}
