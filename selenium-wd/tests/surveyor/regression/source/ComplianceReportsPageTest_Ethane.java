@@ -605,7 +605,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		} else
 			fail("\nTestcase TC1728 failed.\n");
 
-		complianceReportsPage.open();
 	}
 
 	/**
@@ -685,8 +684,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 
 		} else
 			fail("\nTestcase TC1729 failed.\n");
-
-		complianceReportsPage.open();
 	}
 
 }

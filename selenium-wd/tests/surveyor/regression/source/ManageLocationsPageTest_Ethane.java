@@ -50,7 +50,7 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 	 * @throws IOException
 	 * 
 	 */
-	//@Test
+	@Test
 	public void TC1695_Manage_Locations_Ethane_Methane_Ratio_Column() {
 		Log.info("\nRunning - TC1695 - Test Description: Ethane: Verify Manage Locations page appears when logged in as Picarro Admin");
 
@@ -58,21 +58,19 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageLocationsPage.open();
-		
-		manageLocationsPage.getBtnAddNewLocation().click();
-		
-		assertTrue(manageLocationsPage.getEthMthRtoLbl().isDisplayed());
 
-		manageLocationsPage.logout();
+		manageLocationsPage.getBtnAddNewLocation().click();
+
+		assertTrue(manageLocationsPage.getEthMthRtoLbl().isDisplayed());
 	}
-	
+
 	/**
 	 * Test Case ID: TC1696 Test Description: Ethane: Verify True Ethane/Methane ratio can be updated and saved
 	 * 
 	 * @throws IOException
 	 * 
 	 */
-	//@Test
+	@Test
 	public void TC1696_Manage_Locations_Edit_Ethane_Methane_Ratio_Column() {
 		String locationName= AUTLCTNM;
 		Log.info("\nRunning - TC1696 - Test Description: Ethane: Verify True Ethane/Methane ratio can be updated and saved");
@@ -81,20 +79,18 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageLocationsPage.open();
-		
+
 		manageLocationsPage.editExistingEthaneLocation(SQACUS, locationName, "5", "10");
 		assertTrue(manageLocationsPage.findExistingLocation(SQACUS, locationName));
-	
-		manageLocationsPage.logout();
 	}
-	
+
 	/**
 	 * Test Case ID: TC1697 Test Description: Ethane: Verify setting the Ethane/Methane ratio for the first time
 	 * 
 	 * @throws IOException
 	 * 
 	 */
-	//@Test
+	@Test
 	public void TC1697_Manage_Locations_Add_Ethane_Methane_Ratio_Column() {
 		String locationName = "TC1697 Ethane "+ testSetup.getRandomNumber();
 		Log.info("\nRunning - TC1697 - Test Description: Ethane: Verify setting the Ethane/Methane ratio for the first time");
@@ -103,11 +99,9 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageLocationsPage.open();
-		
+
 		manageLocationsPage.addEthaneNewLocation(locationName, SQACUS, SQACUSSULOC, "2", "2");
 		assertTrue(manageLocationsPage.findExistingLocation(SQACUS, locationName));
-		
-		manageLocationsPage.logout();
 	}
 
 	/**
@@ -124,14 +118,12 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 
 		manageLocationsPage.open();
-		
-		manageLocationsPage.getBtnAddNewLocation().click();
-		
-		assertTrue(manageLocationsPage.getEthMthRtoLbl().isDisplayed());
 
-		manageLocationsPage.logout();
+		manageLocationsPage.getBtnAddNewLocation().click();
+
+		assertTrue(manageLocationsPage.getEthMthRtoLbl().isDisplayed());
 	}
 
-	
+
 }
 
