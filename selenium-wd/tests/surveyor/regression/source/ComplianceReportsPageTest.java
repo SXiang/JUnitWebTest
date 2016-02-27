@@ -146,7 +146,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	public void ComplianceReportTest_VerifyNonEthaneReport(String index, String strCreatedBy, String password, String cutomer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
 			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws IOException {
 		String rptTitle = null;
-		/*if (getTestCaseName(index).equals("TC203")) {
+		if (getTestCaseName(index).equals("TC203")) {
 			rptTitle = getTestCaseName(index) + " " + "Report" + testSetup.getRandomNumber() + "#<>$";
 		} else {
 			rptTitle = getTestCaseName(index) + " " + "Report" + testSetup.getRandomNumber();
@@ -165,23 +165,26 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, strCreatedBy));
 			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rptTitle));
-			if(tablesList!=null){
-			if((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))){
-			  assertTrue(complianceReportsPage.verifyShowCoverageTable(testSetup.getDownloadPath(),rptTitle));
-			  assertTrue(complianceReportsPage.verifyCoverageValuesTable(testSetup.getDownloadPath(),rptTitle,tablesList.get(0)));			 
+			if (tablesList != null) {
+				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
+					assertTrue(complianceReportsPage.verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle));
+					assertTrue(complianceReportsPage.verifyCoverageValuesTable(testSetup.getDownloadPath(), rptTitle, tablesList.get(0)));
+				}
+				if (cutomer.equalsIgnoreCase("Picarro")) {
+					assertTrue(complianceReportsPage.verifyLayersTable(testSetup.getDownloadPath(), rptTitle, tablesList.get(0)));
+				}
+				assertTrue(complianceReportsPage.verifyViewsTable(testSetup.getDownloadPath(), rptTitle, viewList));
+				assertTrue(complianceReportsPage.verifyDrivingSurveysTable(testSetup.getDownloadPath(), rptTitle));
+				if (tablesList.get(0).get(KEYISOANA).equals("1")) {
+					assertTrue(complianceReportsPage.verifyIsotopicAnalysisTable(testSetup.getDownloadPath(), rptTitle));
+				}
+				if (tablesList.get(0).get(KEYINDTB).equals("1")) {
+					assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
+				}
 			}
-			if(cutomer.equalsIgnoreCase("Picarro")){
-				assertTrue(complianceReportsPage.verifyLayersTable(testSetup.getDownloadPath(),rptTitle,tablesList.get(0)));					
-			}
-			assertTrue(complianceReportsPage.verifyViewsTable(testSetup.getDownloadPath(),rptTitle, viewList));				
-		}
 		} else
-			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");*/
-		
-		assertTrue(complianceReportsPage.verifyViewsTable("C:\\Users\\cnanayakkara\\Downloads\\","TC517 Report521675", viewList));	
+			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
 
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 
 	private static String getTestCaseName(String key) {

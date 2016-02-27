@@ -147,7 +147,7 @@ public class RegexUtility {
 		}
 		return returnString;
 	}
-	
+
 	/**
 	 * Returns next line after a pattern
 	 * 
@@ -156,8 +156,8 @@ public class RegexUtility {
 	 * @return
 	 */
 	public static String getNextLineAfterPattern(String inputString, String subString) {
-		String remaining= inputString.substring(inputString.lastIndexOf(subString));
-		String splits[]= remaining.split("\\n");		
+		String remaining = inputString.substring(inputString.lastIndexOf(subString));
+		String splits[] = remaining.split("\\n");
 		return splits[1].trim();
 	}
 
@@ -183,7 +183,7 @@ public class RegexUtility {
 		Log.info("Running test - testMatchesPatternFR_functiongetReportRegexDatePattern_Success() ...");
 		testMatchesPatternFR_functiongetReportRegexDatePattern_Success();
 		Log.info("Running test - testGetStringInBetween_Success() ...");
-		test_functionGetStringInBetween_Success();		
+		test_functionGetStringInBetween_Success();
 		testgetNextLineAfterPattern_Success();
 	}
 
@@ -262,7 +262,7 @@ public class RegexUtility {
 		PDFUtility pdfUtility = new PDFUtility();
 		try {
 			String path = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data\\test-data\\pdfutility-tests\\MultipleSurveys.pdf";
-			String inputText = pdfUtility.extractPDFText(path);			
+			String inputText = pdfUtility.extractPDFText(path);
 			String actual = RegexUtility.getStringInBetween(inputText, "la\r\nss", "Layers", true, false);
 			Log.info(actual);
 		} catch (IOException e) {
@@ -270,7 +270,7 @@ public class RegexUtility {
 
 		}
 	}
-	
+
 	private static void testgetNextLineAfterPattern_Success() {
 		PDFUtility pdfUtility = new PDFUtility();
 		try {
@@ -282,6 +282,6 @@ public class RegexUtility {
 			Log.error(e.toString());
 
 		}
-		
+
 	}
 }

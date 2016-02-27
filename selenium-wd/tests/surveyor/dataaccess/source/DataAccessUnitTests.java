@@ -3,6 +3,7 @@ package surveyor.dataaccess.source;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.testng.Assert;
 
@@ -20,7 +21,7 @@ public class DataAccessUnitTests {
 			rootPath = TestSetup.getRootPath();
 			testSetup.loadTestProperties(rootPath);
 		} catch (IOException e) {
-			Log.error(e.getMessage());			
+			Log.error(e.getMessage());
 		}
 		testSetup.initializeDBProperties();
 		TestContext.INSTANCE.setTestSetup(testSetup);
@@ -59,6 +60,18 @@ public class DataAccessUnitTests {
 		testReportCaptureEvent_GetReportCaptureEventByReportId_Invalid();
 		Log.info("Executing testStoredProcSystemHistory_GetStoredProcSystemHistoryByReportId_Valid() ...");
 		testStoredProcSystemHistory_GetStoredProcSystemHistoryByReportId_Valid();
+		Log.info("Executing testStoredProcComplianceAssessmentGetReportDrivingSurveys_getReportDrivingSurveys_Valid() ...");
+		testStoredProcComplianceAssessmentGetReportDrivingSurveys_getReportDrivingSurveys_Valid();
+		Log.info("Executing testStoredProcComplianceGetIsotopics_getReportIsotopics_Valid() ...");
+		testStoredProcComplianceGetIsotopics_getReportIsotopics_Valid();
+		Log.info("Executing testStoredProcComplianceGetIndications_getReportIndications_Valid() ...");
+		testStoredProcComplianceGetIndications_getReportIndications_Valid();
+		Log.info("Executing testReport_GetReportViewByReportTitle_Valid() ...");
+		testReport_GetReportViewByReportTitle_Valid();
+		Log.info("Executing testGetMapTypeId_Valid().....");
+		testGetMapTypeId_Valid();
+		Log.info("DONE!");
+
 	}
 
 	private static void testSurvey_GetSurveyByTag_Valid() {
@@ -161,6 +174,18 @@ public class DataAccessUnitTests {
 		Assert.assertTrue(objReportCaptureEvent == null, "Value should be NULL.");
 	}
 
+	private static void testReport_GetReportViewByReportTitle_Valid() {
+		String validReportId = "5B8CBAD2-DAF4-F04F-5F3F-39D62D5A3B25";
+		List<ReportView> objReport = ReportView.getReportView(validReportId);
+		Assert.assertTrue(!objReport.isEmpty(), "Value cannot be NULL.");
+	}
+
+	private static void testGetMapTypeId_Valid() {
+		String validMapType = "Map";
+		String mapId = BaseMapType.getBaseMapTypeId(validMapType);
+		Assert.assertTrue(mapId != null, "Value cannot be NULL.");
+	}
+
 	private static void testStoredProcSystemHistory_GetStoredProcSystemHistoryByReportId_Valid() {
 		String validReportId = "A4E41CC1-7E43-2918-A24D-39D577864CB0";
 		ArrayList<StoredProcSystemHistory> objStoredProcSystemHistory = StoredProcSystemHistory.getSystemHistory(validReportId);
@@ -169,9 +194,40 @@ public class DataAccessUnitTests {
 			StoredProcSystemHistory storedProcSystemHistoryObj = iterator.next();
 			Assert.assertTrue(storedProcSystemHistoryObj != null, "Value cannot be NULL.");
 
-		}	
-		
+		}
+	}
 
+	private static void testStoredProcComplianceAssessmentGetReportDrivingSurveys_getReportDrivingSurveys_Valid() {
+		String validReportId = "5B8CBAD2-DAF4-F04F-5F3F-39D62D5A3B25";
+		ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys> listStoredProcDrivingSurvey = StoredProcComplianceAssessmentGetReportDrivingSurveys.getReportDrivingSurveys(validReportId);
+		Iterator<StoredProcComplianceAssessmentGetReportDrivingSurveys> iterator = listStoredProcDrivingSurvey.iterator();
+		while (iterator.hasNext()) {
+			StoredProcComplianceAssessmentGetReportDrivingSurveys objStoredProcDrivingSurvey = iterator.next();
+			Assert.assertTrue(objStoredProcDrivingSurvey != null, "Value cannot be NULL.");
+
+		}
+	}
+
+	private static void testStoredProcComplianceGetIsotopics_getReportIsotopics_Valid() {
+		String validReportId = "5B8CBAD2-DAF4-F04F-5F3F-39D62D5A3B25";
+		ArrayList<StoredProcComplianceGetIsotopics> listStoredProcIsotopics = StoredProcComplianceGetIsotopics.getReportIsotopics(validReportId);
+		Iterator<StoredProcComplianceGetIsotopics> iterator = listStoredProcIsotopics.iterator();
+		while (iterator.hasNext()) {
+			StoredProcComplianceGetIsotopics objStoredProcIsotopics = iterator.next();
+			Assert.assertTrue(objStoredProcIsotopics != null, "Value cannot be NULL.");
+
+		}
+	}
+
+	private static void testStoredProcComplianceGetIndications_getReportIndications_Valid() {
+		String validReportId = "5B8CBAD2-DAF4-F04F-5F3F-39D62D5A3B25";
+		ArrayList<StoredProcComplianceGetIndications> listStoredProcIndications = StoredProcComplianceGetIndications.getReportIndications(validReportId);
+		Iterator<StoredProcComplianceGetIndications> iterator = listStoredProcIndications.iterator();
+		while (iterator.hasNext()) {
+			StoredProcComplianceGetIndications objStoredProcIndications = iterator.next();
+			Assert.assertTrue(objStoredProcIndications != null, "Value cannot be NULL.");
+
+		}
 	}
 
 }
