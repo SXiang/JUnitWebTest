@@ -68,6 +68,34 @@ public class StoredProcComplianceGetIsotopics extends BaseEntity {
 	public void setText(String text) {
 		this.text = text;
 	}
+	
+	public boolean isEquals(StoredProcComplianceGetIsotopics obj) {
+		if (!this.getSurveyorUnitName().trim().equals(obj.getSurveyorUnitName().trim())) {
+			return false;
+		}
+		if (!this.getDisposition().trim().equals(obj.getDisposition().trim())) {
+			return false;
+		}
+		if (this.getDelta()!=(obj.getDelta())) {
+			return false;
+		}
+		if (this.getUncertainty()!=(obj.getUncertainty())) {
+			return false;
+		}
+		if (!this.getText().trim().equals(obj.getText().trim())) {
+			return false;
+		}
+		return true;
+	}
+
+	public boolean isInList(ArrayList<StoredProcComplianceGetIsotopics> list) {
+		for (StoredProcComplianceGetIsotopics storedProcIsotopics : list) {
+			if (this.isEquals(storedProcIsotopics)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public ArrayList<StoredProcComplianceGetIsotopics> get(String reportId) {
 		ArrayList<StoredProcComplianceGetIsotopics> objReportList = load(reportId);

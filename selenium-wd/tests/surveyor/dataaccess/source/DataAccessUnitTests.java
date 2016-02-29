@@ -70,6 +70,8 @@ public class DataAccessUnitTests {
 		testReport_GetReportViewByReportTitle_Valid();
 		Log.info("Executing testGetMapTypeId_Valid().....");
 		testGetMapTypeId_Valid();
+		Log.info("Executing testStoredProcComplianceGetGaps_getReportGaps_Valid().....");
+		testStoredProcComplianceGetGaps_getReportGaps_Valid();
 		Log.info("DONE!");
 
 	}
@@ -226,6 +228,17 @@ public class DataAccessUnitTests {
 		while (iterator.hasNext()) {
 			StoredProcComplianceGetIndications objStoredProcIndications = iterator.next();
 			Assert.assertTrue(objStoredProcIndications != null, "Value cannot be NULL.");
+
+		}
+	}
+	
+	private static void testStoredProcComplianceGetGaps_getReportGaps_Valid() {
+		String validReportId = "955B11D6-0E82-9DA5-AC4B-39D63B0A84A6";
+		ArrayList<StoredProcComplianceGetGaps> listStoredProcGaps = StoredProcComplianceGetGaps.getReportGaps(validReportId);
+		Iterator<StoredProcComplianceGetGaps> iterator = listStoredProcGaps.iterator();
+		while (iterator.hasNext()) {
+			StoredProcComplianceGetGaps objStoredProcGaps = iterator.next();
+			Assert.assertTrue(objStoredProcGaps != null, "Value cannot be NULL.");
 
 		}
 	}

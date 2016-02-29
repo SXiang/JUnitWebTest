@@ -78,6 +78,34 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 		ArrayList<StoredProcComplianceGetIndications> objStoredProcComplianceGetIndications = new StoredProcComplianceGetIndications().get(reportId);
 		return objStoredProcComplianceGetIndications;
 	}
+	
+	public boolean isEquals(StoredProcComplianceGetIndications obj) {
+		if (!this.getPeakNumber().trim().equals(obj.getPeakNumber().trim())) {
+			return false;
+		}		
+		if (!this.getSurveyorUnitName().trim().equals(obj.getSurveyorUnitName().trim())) {
+			return false;
+		}
+		if (this.getAmplitude()!=(obj.getAmplitude())) {
+			return false;
+		}
+		if (this.getCh4()!=(obj.getCh4())) {
+			return false;
+		}
+		if (!this.getText().trim().equals(obj.getText().trim())) {
+			return false;
+		}
+		return true;
+	}
+
+	public boolean isInList(ArrayList<StoredProcComplianceGetIndications> list) {
+		for (StoredProcComplianceGetIndications storedProcIndications : list) {
+			if (this.isEquals(storedProcIndications)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	private StoredProcComplianceGetIndications loadFrom(ResultSet resultSet) {
 		StoredProcComplianceGetIndications objReport = new StoredProcComplianceGetIndications();
