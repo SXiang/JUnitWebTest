@@ -162,106 +162,21 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 
 	public void addNewLocation(String locationDesc, String customer,
-			String newLocationName) {
-		addNewLocation(locationDesc, customer, newLocationName, false /*UseLatLongSelector*/ );
+			String newLocationName, String ethMthMin, String ethMthMax) {
+		addNewLocation(locationDesc, customer, newLocationName, false /*UseLatLongSelector*/,  ethMthMin, ethMthMax);
 	}
 
 	public void addNewLocationUsingLatLongSelector(String locationDesc, String customer,
-			String newLocationName) {
-		addNewLocation(locationDesc, customer, newLocationName, true /*UseLatLongSelector*/ );
+			String newLocationName, String ethMthMin, String ethMthMax) {
+		addNewLocation(locationDesc, customer, newLocationName, true /*UseLatLongSelector*/, ethMthMin, ethMthMax );
 	}
 
 	private void addNewLocation(String locationDesc, String customer,
-			String newLocationName, boolean useLatLongSelector) {
+			String newLocationName, boolean useLatLongSelector, String ethMthMin, String ethMthMax) {
 
 		if (newLocationName.equalsIgnoreCase("Santa Clara")) {
 			latitude = "37.3971035425739";
 			longitude = "-121.98343231897";
-		}
-
-		this.btnAddNewLocation.click();
-
-		this.inputLocationDesc.sendKeys(locationDesc);
-
-		if (!useLatLongSelector) {		
-			this.inputLocationLat.sendKeys(latitude);
-			this.inputLocationLong.sendKeys(longitude);
-		} else {
-			final int X_OFFSET = 100;
-			final int Y_OFFSET = 100;
-			String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
-
-			this.clickOnLatLongSelectorBtn();
-
-			latLongSelectionControl.waitForModalDialogOpen()
-			.switchMode(ControlMode.MapInteraction)
-			.waitForMapImageLoad()
-			.selectLatLong(CANVAS_X_PATH, X_OFFSET, Y_OFFSET)
-			.switchMode(ControlMode.Default)
-			.clickOkButton()
-			.waitForModalDialogToClose();
-
-
-			String locationLatitudeText = this.getLocationLatitudeText();
-			Log.info("Location Latitude Field value = " + locationLatitudeText);
-			assertTrue(!locationLatitudeText.isEmpty());
-
-			String locationLongitudeText = this.getLocationLongitudeText();
-			Log.info("Location Longitude Field value = " + locationLongitudeText);
-			assertTrue(!locationLongitudeText.isEmpty());
-		}
-
-		List<WebElement> options = this.dropDownCustomer.findElements(By
-				.tagName("option"));
-		for (WebElement option : options) {
-			if (customer.equalsIgnoreCase(option.getText().trim()))
-				option.click();
-		}
-
-		this.stdMinAmp.sendKeys("0.035");
-		this.stdMinAmp.clear();
-		this.opdMinAmp.clear();
-		this.opdMinAmp.sendKeys("5");
-		this.RRMinAmp.clear();
-		this.RRMinAmp.sendKeys("5");
-		if (this.assessmentMinAmp.isDisplayed()) {
-			this.assessmentMinAmp.clear();
-			this.assessmentMinAmp.sendKeys("0.035");
-		}
-		if (this.eqMinAmp.isDisplayed()) {
-			this.eqMinAmp.clear();
-			this.eqMinAmp.sendKeys("0.035");
-		}
-
-		this.NoLower.clear();
-		this.NoLower.sendKeys("-45");
-		this.YesLower.clear();
-		this.YesLower.sendKeys("-42");
-		this.YesUpper.clear();
-		this.YesUpper.sendKeys("-30");
-		this.NoUpper.clear();
-		this.NoUpper.sendKeys("-25");
-
-		this.btnOK.click();
-		this.waitForPageToLoad();
-
-		if (isElementPresent(this.panelDuplicationErrorXPath)) {
-			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
-				this.btnCancel.click();
-		}
-	}
-
-	public void addEthaneNewLocation(String locationDesc, String customer,
-			String newLocationName, String ethMthMin, String ethMthMax) {
-		addEthaneNewLocation(locationDesc, customer, newLocationName, false /*UseLatLongSelector*/, ethMthMin,  ethMthMax);
-	}
-	public void addEthaneNewLocation(String locationDesc, String customer,
-			String newLocationName, boolean useLatLongSelector, String ethMthMin, String ethMthMax) {
-
-		if (newLocationName.equalsIgnoreCase(SQACUSSULOC)) {
-			latitude = ETHRNELAT;
-			longitude = ETHRNELON;
 		}
 
 		this.btnAddNewLocation.click();
@@ -416,8 +331,14 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		return false;
 	}
 
+	public boolean editPDExistingLocation(String customerName, String locationName, String newLocationName, String latValue, String longValue, String newEthMthMin, String newEthMthMax) {
+		return this.editExistingLocation(customerName, locationName, newLocationName, latValue, longValue, newEthMthMin, newEthMthMax);
+	}
+
 	public boolean editExistingLocation(String customerName,
-			String locationName, String newLocationName) {
+			String locationName, String newLocationName, String latValue,
+			String longValue, String newEthMthMin, String newEthMthMax)
+	{
 		setPagination(PAGINATIONSETTING_100);
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -450,16 +371,46 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			customerNameCell = table.findElement(By.xpath(customerNameXPath));
 			locationNameCell = table.findElement(By.xpath(locationNameXPath));
 
-			if ((customerNameCell.getText().trim())
-					.equalsIgnoreCase(customerName)
-					&& (locationNameCell.getText().trim())
+			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName) && (locationNameCell.getText().trim())
 					.equalsIgnoreCase(locationName)) {
-				actionEditXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-						+ "]/td[5]";
+				actionEditXPath = "//*[@id='datatable']/tbody/tr[" + rowNum	+ "]/td[5]";
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
 				Log.info("Found entry at row=" + rowNum);
 
 				actionEditCell.click();
+				this.waitForEditPageLoad();
+
+				if (this.inputLocationDesc!=null){
+					this.inputLocationDesc.clear();
+					this.inputLocationDesc.sendKeys(newLocationName);
+				}
+				if (this.inputLocationLat!=null){
+					this.inputLocationLat.clear();
+					this.inputLocationLat.sendKeys(latValue);
+				}
+
+				if (this.inputLocationLong!=null){
+					this.inputLocationLong.clear();
+					this.inputLocationLong.sendKeys(longValue);
+				}
+
+				if (newEthMthMin != "") {
+					List<WebElement> optionsMIN = this.ethMthMinUnit.findElements(By.tagName("option"));
+					for (WebElement option : optionsMIN) {
+						if ((newEthMthMin).equalsIgnoreCase(option.getText().trim())) {
+							option.click();
+						}
+					}
+				}
+
+				if (newEthMthMax != "") {
+					List<WebElement> optionsMAX = this.ethMthMaxUnit.findElements(By.tagName("option"));
+					for (WebElement option : optionsMAX) {
+						if ((newEthMthMax).equalsIgnoreCase(option.getText().trim())) {
+							option.click();
+						}
+					}
+				}
 
 				this.inputLocationDesc.clear();
 				this.inputLocationDesc.sendKeys(newLocationName);
@@ -481,7 +432,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 							.equalsIgnoreCase(
 									Resources
 									.getResource(ResourceKeys.Validation_SummaryTitle))) {
-						//						this.btnCancel.click();
 						return false;
 					}
 				}
@@ -508,10 +458,17 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		}
 
 		return false;
+
+	}	
+
+	public boolean editCAExistingLocation(String customerName, String locationName, String newLocationName, String latValue, String longValue) {
+		return this.editExistingLocationAsCustAdm(customerName, locationName, newLocationName, latValue, longValue);
 	}
 
-	public boolean editExistingEthaneLocation(String customerName,
-			String locationName, String newEthMthMin, String newEthMthMax ) {
+	public boolean editExistingLocationAsCustAdm(String customerName,
+			String locationName, String newLocationName, String latValue,
+			String longValue)
+	{
 		setPagination(PAGINATIONSETTING_100);
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -544,42 +501,41 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			customerNameCell = table.findElement(By.xpath(customerNameXPath));
 			locationNameCell = table.findElement(By.xpath(locationNameXPath));
 
-			if ((customerNameCell.getText().trim())
-					.equalsIgnoreCase(customerName)
-					&& (locationNameCell.getText().trim())
+			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName) && (locationNameCell.getText().trim())
 					.equalsIgnoreCase(locationName)) {
-				actionEditXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-						+ "]/td[5]";
+				actionEditXPath = "//*[@id='datatable']/tbody/tr[" + rowNum	+ "]/td[5]";
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
 				Log.info("Found entry at row=" + rowNum);
 
 				actionEditCell.click();
+				this.waitForEditPageLoad();
 
-
-				if (newEthMthMin != "") {
-					List<WebElement> optionsMIN = this.ethMthMinUnit.findElements(By.tagName("option"));
-					for (WebElement option : optionsMIN) {
-						if ((newEthMthMin).equalsIgnoreCase(option.getText().trim())) {
-							option.click();
-						}
-					}
+				if (this.inputLocationDesc!=null){
+					this.inputLocationDesc.clear();
+					this.inputLocationDesc.sendKeys(newLocationName);
+				}
+				if (this.inputLocationLat!=null){
+					this.inputLocationLat.clear();
+					this.inputLocationLat.sendKeys(latValue);
 				}
 
-				if (newEthMthMax != "") {
-					List<WebElement> optionsMAX = this.ethMthMaxUnit.findElements(By.tagName("option"));
-					for (WebElement option : optionsMAX) {
-						if ((newEthMthMax).equalsIgnoreCase(option.getText().trim())) {
-							option.click();
-						}
-					}
+				if (this.inputLocationLong!=null){
+					this.inputLocationLong.clear();
+					this.inputLocationLong.sendKeys(longValue);
 				}
 
-
+				this.inputLocationDesc.clear();
+				this.inputLocationDesc.sendKeys(newLocationName);
 
 				String curURL = driver.getCurrentUrl();
 
 				this.btnOK.click();
 
+				if (newLocationName.equalsIgnoreCase("")) {
+					if (driver.getCurrentUrl().equalsIgnoreCase(curURL))
+						return false;
+				}
+
 				if (isElementPresent(this.panelDuplicationErrorXPath)) {
 					WebElement panelError = driver.findElement(By
 							.xpath(this.panelDuplicationErrorXPath));
@@ -588,7 +544,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 							.equalsIgnoreCase(
 									Resources
 									.getResource(ResourceKeys.Validation_SummaryTitle))) {
-						//						this.btnCancel.click();
 						return false;
 					}
 				}
@@ -615,120 +570,22 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		}
 
 		return false;
-	}
 
-	public boolean editExistingLocation(String customerName,
-			String locationName, String newLocationName, String latValue,
-			String longValue) {
-		String rtnMsg = "";
-		setPagination(PAGINATIONSETTING_100);
+	}	
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
-		String customerNameXPath;
-		String locationNameXPath;
-		String actionEditXPath;
 
-		WebElement customerNameCell;
-		WebElement locationNameCell;
-		WebElement actionEditCell;
 
-		List<WebElement> rows = table.findElements(By
-				.xpath("//*[@id='datatable']/tbody/tr"));
 
-		int rowSize = rows.size();
-		int loopCount = 0;
 
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
-			loopCount = rowSize;
-		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
-		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			customerNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-					+ "]/td[1]";
-			locationNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-					+ "]/td[2]";
 
-			customerNameCell = table.findElement(By.xpath(customerNameXPath));
-			locationNameCell = table.findElement(By.xpath(locationNameXPath));
 
-			if ((customerNameCell.getText().trim())
-					.equalsIgnoreCase(customerName)
-					&& (locationNameCell.getText().trim())
-					.equalsIgnoreCase(locationName)) {
-				actionEditXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-						+ "]/td[5]";
-				actionEditCell = table.findElement(By.xpath(actionEditXPath));
-				Log.info("Found entry at row=" + rowNum);
 
-				actionEditCell.click();
 
-				this.inputLocationDesc.clear();
-				this.inputLocationDesc.sendKeys(newLocationName);
-				this.inputLocationLat.clear();
-				this.inputLocationLat.sendKeys(latValue);
-				this.inputLocationLong.clear();
-				this.inputLocationLong.sendKeys(longValue);
 
-				this.btnOK.click();
 
-				if (isElementPresent(this.labelLocDescErrorXPath)) {
-					rtnMsg = this.labelLocDescError.getText().trim();
-					if (rtnMsg.equalsIgnoreCase(BLANKFIELDERROR))
-						this.btnCancel.click();
-					return false;
-				}
 
-				if (isElementPresent(this.labelLatValueErrorXPath)) {
-					rtnMsg = this.labelLatValueError.getText().trim();
-					if (rtnMsg.equalsIgnoreCase(BLANKFIELDERROR))
-						this.btnCancel.click();
-					return false;
-				}
-
-				if (isElementPresent(this.labelLongValueErrorXPath)) {
-					rtnMsg = this.labelLongValueError.getText().trim();
-					if (rtnMsg.equalsIgnoreCase(BLANKFIELDERROR))
-						this.btnCancel.click();
-					return false;
-				}
-
-				if (isElementPresent(this.panelDuplicationErrorXPath)) {
-					WebElement panelError = driver.findElement(By
-							.xpath(this.panelDuplicationErrorXPath));
-					if (panelError
-							.getText()
-							.equalsIgnoreCase(
-									Resources
-									.getResource(ResourceKeys.Validation_SummaryTitle))) {
-						this.btnCancel.click();
-						return false;
-					}
-				}
-				return true;
-			}
-
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
-					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
-						.xpath("//*[@id='datatable']/tbody/tr"));
-
-				rowSize = newRows.size();
-
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
-					loopCount = rowSize;
-				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
-
-				rowNum = 0;
-			}
-		}
-		return false;
-	}
 
 	public WebElement getBtnAddNewLocation() {
 		return this.btnAddNewLocation;

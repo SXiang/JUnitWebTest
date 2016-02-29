@@ -72,16 +72,20 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC1696_Manage_Locations_Edit_Ethane_Methane_Ratio_Column() {
-		String locationName= AUTLCTNM;
-		Log.info("\nRunning - TC1696 - Test Description: Ethane: Verify True Ethane/Methane ratio can be updated and saved");
+		String locationName = "TC1696 Ethane "+ testSetup.getRandomNumber();
+		String locationNewName= locationName + "_New";
+		Log.info("\nRunning - TC1696 - Test Description: Ethane: Verify setting the Ethane/Methane ratio for the first time");
 
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageLocationsPage.open();
 
-		manageLocationsPage.editExistingEthaneLocation(SQACUS, locationName, "5", "10");
+		manageLocationsPage.addNewLocation(locationName, SQACUS, SQACUSSULOC, "2", "2");
 		assertTrue(manageLocationsPage.findExistingLocation(SQACUS, locationName));
+
+		manageLocationsPage.editPDExistingLocation(SQACUS, locationName, locationNewName, ETHRNELAT, ETHRNELAT, "5", "7");
+		assertTrue(manageLocationsPage.findExistingLocation(SQACUS, locationNewName));
 	}
 
 	/**
@@ -100,7 +104,7 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 
 		manageLocationsPage.open();
 
-		manageLocationsPage.addEthaneNewLocation(locationName, SQACUS, SQACUSSULOC, "2", "2");
+		manageLocationsPage.addNewLocation(locationName, SQACUS, SQACUSSULOC, "2", "2");
 		assertTrue(manageLocationsPage.findExistingLocation(SQACUS, locationName));
 	}
 
