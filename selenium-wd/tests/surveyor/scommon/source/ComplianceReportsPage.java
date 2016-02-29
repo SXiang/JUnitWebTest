@@ -2644,16 +2644,43 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 
-	public boolean verifyReportMetaDataFile(String actualPath, String reportTitle) throws FileNotFoundException, IOException {
+	public boolean verifyReporSurveytMetaDataFile(String actualPath, String reportTitle) throws FileNotFoundException, IOException {
 		CSVUtility csvUtility = new CSVUtility();
 		ZipUtility zip = new ZipUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
 		String pathToMetaDataUnZip = actualPath + "//CR-" + reportId.substring(0, 6) + " (1)";
-		String pathToCsv = pathToMetaDataUnZip + "//" + "CR-" + reportId.substring(0, 6) + "-Report.csv";
+		String pathToCsv = pathToMetaDataUnZip + "//" + "CR-" + reportId.substring(0, 6) + "-ReportSurvey.csv";
 		reportName = "CR-" + reportId;
 		setReportName(reportName);
-		List<HashMap<String, String>> rows = csvUtility.getAllRows(pathToCsv);
+		List<HashMap<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
+		Iterator<HashMap<String, String>> csvIterator = csvRows.iterator();
+		List<StoredProcComplianceAssessmentGetReportDrivingSurveys> reportList = new ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys>();
+		while (csvIterator.hasNext()) {
+			StoredProcComplianceAssessmentGetReportDrivingSurveys reportDrivingObj = new StoredProcComplianceAssessmentGetReportDrivingSurveys();
+			HashMap<String, String> csvRow = csvIterator.next();
+			if (!csvRow.get("ReportId").trim().toLowerCase().equals(reportId.trim().toLowerCase())) {
+				return false;
+			}
+			if (!csvRow.get("ReportName").trim().equals(reportName.trim().substring(0, 9))) {
+				return false;
+			}
+			reportDrivingObj.setStartDateTimeWithTZ(csvRow.get("SurveyStartDateTime").trim());
+			reportDrivingObj.setEndDateTimeWithTZ(csvRow.get("SurveyEndDateTime").trim());
+			reportDrivingObj.setUserName(csvRow.get("UserName").trim());
+			reportDrivingObj.setDescription(csvRow.get("Surveyor").trim());
+			reportDrivingObj.setAnalyzerId(csvRow.get("Analyzer").trim());
+			reportDrivingObj.setTag(csvRow.get("Tag").trim());
+			reportDrivingObj.setStabilityClass(csvRow.get("StabilityClass").trim());
+			reportList.add(reportDrivingObj);
+		}
+		ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys> listFromStoredProc = StoredProcComplianceAssessmentGetReportDrivingSurveys.getReportDrivingSurveys(reportId);
+		Iterator<StoredProcComplianceAssessmentGetReportDrivingSurveys> reportIterator = reportList.iterator();
+		while (reportIterator.hasNext()) {
+			if (!reportIterator.next().isInList(listFromStoredProc)) {
+				return false;
+			}
+		}
 		return true;
 	}
 
