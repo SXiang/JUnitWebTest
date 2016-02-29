@@ -116,7 +116,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageLocationsAdminPage.open();
-		manageLocationsAdminPage.editExistingLocation(SQACUS, locationName,
+		manageLocationsAdminPage.editPDExistingLocation(SQACUS, locationName,
 				locationNameNew);
 		assertTrue(manageLocationsAdminPage.findExistingLocation(SQACUS,
 				locationNameNew));
@@ -151,7 +151,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		manageLocationsAdminPage.open();
 
-		assertFalse(manageLocationsAdminPage.editExistingLocation(SQACUS,
+		assertFalse(manageLocationsAdminPage.editPDExistingLocation(SQACUS,
 				locationName1, locationName2));
 		assertTrue(manageLocationsAdminPage.isDuplicateLocMsgPresent());
 	}
@@ -184,13 +184,13 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageLocationsAdminPage.open();
-		assertFalse(manageLocationsAdminPage.editExistingLocation(SQACUS,
+		assertFalse(manageLocationsAdminPage.editPDExistingLocation(SQACUS,
 				locationName, "", RNELAT, RNELON));
 
-		assertFalse(manageLocationsAdminPage.editExistingLocation(SQACUS,
+		assertFalse(manageLocationsAdminPage.editPDExistingLocation(SQACUS,
 				locationName, locationName, "", RNELON));
 
-		assertFalse(manageLocationsAdminPage.editExistingLocation(SQACUS,
+		assertFalse(manageLocationsAdminPage.editPDExistingLocation(SQACUS,
 				locationName, locationName, RNELAT, ""));
 	}
 
