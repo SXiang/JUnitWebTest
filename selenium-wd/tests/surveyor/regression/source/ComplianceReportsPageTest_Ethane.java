@@ -469,8 +469,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.waitForPageLoad();
 
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
-		complianceReportsPage.waitForPageLoad();
-
+		
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
@@ -547,8 +546,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.waitForPageLoad();
 
 		complianceReportsPage.clickOnCopyReport(rptTitle, testSetup.getLoginUser());
-		complianceReportsPage.waitForPageLoad();
-
+		
 		complianceReportsPage.verifyIfInDrivingSurvey(KEYINDCLR);
 
 	}
@@ -585,7 +583,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC1728_Ethane_Verify_Indication_Table_Color_Resubmmit_Customized_Colored_Report() throws Exception{
-		//Using Existing Customized Indication Color report NO: # AutomationTestReport
 		String rptTitle = "TC1728 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1728: Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- customized Indication color" + rptTitle);
 
@@ -670,8 +667,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.waitForPageLoad();
 
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
-		complianceReportsPage.waitForPageLoad();
-
+		
 		complianceReportsPage.findReportbySearch(rptTitle, testSetup.getLoginUser());
 
 		complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
