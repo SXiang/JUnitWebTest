@@ -211,6 +211,15 @@ public class Survey extends BaseEntity {
 
 		return objSurveyList;
 	}
+	
+	public List<Survey> getById(String surveyId) {
+		ArrayList<Survey> objSurveyList = null;
+		
+		String SQL = "SELECT * FROM dbo.[Survey] WHERE Id=" +surveyId;
+		objSurveyList = load(SQL);
+
+		return objSurveyList;
+	}
  
 	private static Survey loadFrom(ResultSet resultSet) {
 		Survey objSurvey = new Survey();
