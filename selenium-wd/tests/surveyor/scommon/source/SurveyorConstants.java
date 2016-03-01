@@ -278,8 +278,6 @@ public final class SurveyorConstants {
 	public static final String SQACUSSULOC="Santa Clara";
 	public static final String DEFAULTLOC="Default";
 	
-	
-	public static final String AUTLCTNM = "AutomationTestData_DoNotDelete";
 }
 
 	

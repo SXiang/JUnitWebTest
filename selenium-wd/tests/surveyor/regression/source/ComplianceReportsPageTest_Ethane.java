@@ -401,7 +401,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.getCheckboxSurFirst().click();
 		complianceReportsPage.getBtnAddSurveys().click();
 
-		complianceReportsPage.verifyIfIndrivingSurvey(KEYINDCLR);
+		complianceReportsPage.verifyIfInDrivingSurvey(KEYINDCLR);
 
 	}
 
@@ -549,7 +549,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.clickOnCopyReport(rptTitle, testSetup.getLoginUser());
 		complianceReportsPage.waitForPageLoad();
 
-		complianceReportsPage.verifyIfIndrivingSurvey(KEYINDCLR);
+		complianceReportsPage.verifyIfInDrivingSurvey(KEYINDCLR);
 
 	}
 
@@ -562,7 +562,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC1727_Ethane_Verify_Indication_Table_Color_Copy_Customized_Colored_Report() throws IOException, InterruptedException{
-		//Using Existing Customized Indication Color report NO: # test1234
 		String rptTitle = "TC1727 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1727: Compliance Report Generation : COPY generated report with custom selected Indication color should show default color only for Indication- customized Indication color" + rptTitle);
 
@@ -574,7 +573,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.clickOnCopyReport(KEYCPSAMPLRPT, testSetup.getLoginUser());
 		complianceReportsPage.waitForPageLoad();
 
-		complianceReportsPage.verifyIfIndrivingSurvey(KEYCPSAMPLRPT);
+		complianceReportsPage.verifyIfInDrivingSurvey(KEYCPSAMPLRPT);
 
 	}
 
