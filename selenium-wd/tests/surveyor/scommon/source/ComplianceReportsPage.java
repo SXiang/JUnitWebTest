@@ -2640,7 +2640,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 
-	public boolean verifyReportSurveytMetaDataFile(String actualPath, String reportTitle) throws FileNotFoundException, IOException {
+	public boolean verifyReportSurveyMetaDataFile(String actualPath, String reportTitle) throws FileNotFoundException, IOException {
 		CSVUtility csvUtility = new CSVUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
