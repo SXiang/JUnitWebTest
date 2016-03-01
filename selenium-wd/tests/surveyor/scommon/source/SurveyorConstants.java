@@ -87,6 +87,10 @@ public final class SurveyorConstants {
 	public static final String SQACUSLOC2SUR = "sqacusloc2sur";
 	public static final String SQACUSLOC3SUR = "sqacusloc3sur";
 
+	public static final String SQAETHCUST= "PG&E";
+	public static final String SQAETHSUR="Ethane Car";
+	public static final String SQAETHLOC= "PG&E - Menlo Park";
+	
 	public static final String SQAPICLOCSURANA = "sqapiclocsurana";
 	public static final String SQAPICLOC0SURANA = "sqapicloc0surana";
 	public static final String SQAPICLOC1SURANA = "sqapicloc1surana";
