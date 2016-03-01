@@ -3394,4 +3394,20 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return result;
 	}
 
+	public boolean verifyIfInDrivingSurvey(String columnName)
+	{
+		boolean result = false;
+		int count = driver.findElements(By.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div")).size();
+		for (int i=1; i < count +1 ; i++)
+		{
+			String str= driver.findElement(By.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div["+i+"]/label")).getText();
+			if (str != columnName)
+			{
+				result=true;
+			}
+		}
+	return result;
+
+	}
+	
 }

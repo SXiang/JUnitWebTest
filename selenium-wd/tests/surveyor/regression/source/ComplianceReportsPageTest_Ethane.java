@@ -4,16 +4,31 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static surveyor.scommon.source.SurveyorConstants.CUSNAMEBASE;
+import static surveyor.scommon.source.SurveyorConstants.CUSDRVETHTAG;
+import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
+import static surveyor.scommon.source.SurveyorConstants.ETHRNELAT;
+import static surveyor.scommon.source.SurveyorConstants.ETHRNELON;
+import static surveyor.scommon.source.SurveyorConstants.ETHRSWLAT;
+import static surveyor.scommon.source.SurveyorConstants.ETHRSWLON;
+import static surveyor.scommon.source.SurveyorConstants.IMGMAPHEIGHT;
+import static surveyor.scommon.source.SurveyorConstants.IMGMAPWIDTH;
 import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETCASTIRON;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETCOPPER;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETPEPLASTIC;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
+import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICT;
+import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
 import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
 import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
 import static surveyor.scommon.source.SurveyorConstants.KEYGAPS;
+import static surveyor.scommon.source.SurveyorConstants.KEYINDCLR;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
@@ -21,80 +36,30 @@ import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
+import static surveyor.scommon.source.SurveyorConstants.KEYRSBSAMPLRPT;
+import static surveyor.scommon.source.SurveyorConstants.KEYCPSAMPLRPT;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
-import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
-import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
-import static surveyor.scommon.source.SurveyorConstants.SQACUS;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC1SUR;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC2SUR;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSSUUSER;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSSUTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSUATAG;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICADMANUALTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICADRRTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICADSTNDTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICADTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSDRTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICSUP;
-
-import static surveyor.scommon.source.SurveyorConstants.SQAPICDRTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICLOC3SUR;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICSUTAG;
-
-import static surveyor.scommon.source.SurveyorConstants.SQACRPTTAG;
-import static surveyor.scommon.source.SurveyorConstants.SURVEYORUNIT;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONECT;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONEET;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
-import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
-import static surveyor.scommon.source.SurveyorConstants.IMGMAPHEIGHT;
-import static surveyor.scommon.source.SurveyorConstants.IMGMAPWIDTH;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
-import static surveyor.scommon.source.SurveyorConstants.EXCLUSIONRADIUS;
+import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.RSWLAT;
 import static surveyor.scommon.source.SurveyorConstants.RSWLON;
-import static surveyor.scommon.source.SurveyorConstants.REPORTMODES;
-import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
-import static surveyor.scommon.source.SurveyorConstants.RSURSTARTDATE;
-import static surveyor.scommon.source.SurveyorConstants.RSURENDDATE;
-import static surveyor.scommon.source.SurveyorConstants.RSUVMODESTD;
-import static surveyor.scommon.source.SurveyorConstants.RSUVMODEOP;
-import static surveyor.scommon.source.SurveyorConstants.RSUVMODERR;
-import static surveyor.scommon.source.SurveyorConstants.PICADMNSURVEYOR;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICSUP;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
-import static surveyor.scommon.source.SurveyorConstants.PICADMNMANTAG;
-import static surveyor.scommon.source.SurveyorConstants.PICADMNRRTAG;
-import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
-import static surveyor.scommon.source.SurveyorConstants.CUSDRVETHTAG;
-import static surveyor.scommon.source.SurveyorConstants.PICADMNOPTAG;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETCASTIRON;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETCOPPER;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETPEPLASTIC;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
-import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICT;
-import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
+import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
+import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
+import static surveyor.scommon.source.SurveyorConstants.ETHREXCLUSIONRADIUS;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
 
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
@@ -102,9 +67,9 @@ import common.source.CryptoUtility;
 import common.source.Log;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.dataprovider.ComplianceReportEthaneDataProvider;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
 import surveyor.scommon.source.Reports.EthaneFilter;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
@@ -149,8 +114,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 
 		assertTrue(complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed());
 		assertTrue(complianceReportsPage.getCheckBoxEtheneBiogeniceMethane().isDisplayed());
-
-		complianceReportsPage.logout();
 
 	}
 
@@ -217,12 +180,10 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
-		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
-		complianceReportsPage.waitForPageLoad();
-
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
+		
 		complianceReportsPage.clickOnCopyReport(rptTitle, testSetup.getLoginUser());
-		complianceReportsPage.waitForPageLoad();
-
+		
 		if (complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed())
 			assertTrue(complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed());
 		else
@@ -232,8 +193,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 			assertTrue(complianceReportsPage.getCheckBoxEtheneBiogeniceMethane().isDisplayed());
 		else
 			fail("\nTestcase TC1637 failed.\n");
-
-		complianceReportsPage.logout();
 
 	}
 
@@ -254,8 +213,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.openNewComplianceReportPage();
 
 		assertTrue(complianceReportsPage.getViewsAnalysesColumn().getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.ComplianceReportSSRS_Analysis)));
-
-		complianceReportsPage.logout();
 	}
 
 	/**
@@ -284,9 +241,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 
 		driver.navigate().refresh();
 		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVETHTAG));
-
-		complianceReportsPage.logout();
-
 	}
 
 	/**
@@ -307,8 +261,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 
 		System.out.println(complianceReportsPage.getTubularAnalysisOption().getText());
 		assertTrue(complianceReportsPage.getTubularAnalysisOption().getText().equalsIgnoreCase(" " + Resources.getResource(ResourceKeys.ComplianceReportSSRS_Analysis)));
-
-		complianceReportsPage.logout();
 	}
 
 	/**
@@ -331,13 +283,10 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 
 		driver.navigate().refresh();
 		assertTrue(complianceReportsPage.verifySurveysTableViaSurveyMode(true, ReportModeFilter.RapidResponse, SurveyModeFilter.Operator));
-
-		complianceReportsPage.logout();
-
 	}
 
 	/**
-	 * Test Case ID:  	TC1653 Test Description: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane Rapid response mode surveys are displayed
+	 * Test Case ID: TC1653 Test Description: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane Rapid response mode surveys are displayed
 	 * @throws InterruptedException 
 	 * 
 	 * @throws IOException
@@ -358,9 +307,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed();
 		complianceReportsPage.getCheckBoxEtheneBiogeniceMethane().isDisplayed();
 
-
-		complianceReportsPage.logout();
-
 	}
 
 	/**
@@ -380,8 +326,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.openNewComplianceReportPage();
 
 		assertTrue(complianceReportsPage.verifySurveysTableViaSurveyMode(true, ReportModeFilter.Manual, SurveyModeFilter.Manual));
-
-		complianceReportsPage.logout();
 
 	}
 
@@ -412,9 +356,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 
 		} else
 			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 	private static String getTestCaseName(String key) {
 		return testCaseMap.get(key);
@@ -434,4 +375,307 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		testCaseMap.put("11", "TC1715");  //rapid--both
 		testCaseMap.put("12", "TC1713");  //rapid--none		
 	}
+
+	/**
+	 * Test Case ID:TC1717 Test Description: Compliance Report Generation : Remove user selection color for Indications
+	 * @throws InterruptedException 
+	 * 
+	 * @throws IOException
+	 * 
+	 */
+	@Test
+	public void TC1717_Ethane_Verify_Indication_Table_Color_Selection_Removal() throws IOException, InterruptedException{
+		String rptTitle = "TC1717 Ethane" + testSetup.getRandomNumber();
+		Log.info("\nRunning TC1717: Compliance Report Generation : Remove user selection color for Indications" + rptTitle);
+
+		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
+		complianceReportsPage.open();
+		complianceReportsPage.openNewComplianceReportPage();
+
+		complianceReportsPage.getBtnSurveySearch().click();
+		complianceReportsPage.waitForSurveyTabletoLoad();
+		complianceReportsPage.waitForSurveySelectorCheckBoxToLoad();
+		complianceReportsPage.waitForSurveySelectorCheckBoxToBeEnabled();
+		complianceReportsPage.getCheckboxSurFirst().click();
+		complianceReportsPage.getBtnAddSurveys().click();
+
+		complianceReportsPage.verifyIfInDrivingSurvey(KEYINDCLR);
+
+	}
+
+	/**
+	 * Test Case ID:TC1718 Test Description: Compliance Report Generation : newly generated report should show default color only for Indication
+	 * @throws InterruptedException 
+	 * 
+	 * @throws IOException
+	 * 
+	 */
+	@Test
+	public void TC1718_Ethane_Generate_Report_Verify_Indication_Table_Color() throws IOException, InterruptedException{
+		String rptTitle = "TC1718 Ethane" + testSetup.getRandomNumber();
+		Log.info("\nRunning TC1718: Compliance Report Generation : newly generated report should show default color only for Indication" + rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+		listBoundary.add(ETHRNELAT);
+		listBoundary.add(ETHRNELON);
+		listBoundary.add(ETHRSWLAT);
+		listBoundary.add(ETHRSWLON);
+		
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "1");
+		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYPCA, "1");
+		tableMap.put(KEYPCRA, "1");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "1");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "1");
+		tablesList.add(tableMap);
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYGAPS, "1");
+		viewMap1.put(KEYASSETS, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
+		viewList.add(viewMap1);
+
+		List<String> tagList = new ArrayList<String>();
+		tagList.add(PICADMNSTDTAG);
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
+
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
+		
+		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
+			assertTrue(complianceReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
+			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
+
+		} else
+			fail("\nTestcase TC1718 failed.\n");
+
+	}
+
+	/**
+	 * Test Case ID:TC1719 Test Description: Compliance Report Generation : COPY generated report should show default color only for Indication
+	 * @throws InterruptedException 
+	 * 
+	 * @throws IOException
+	 * 
+	 */
+	@Test
+	public void TC1719_Ethane_Copy_Report_Verify_Indication_Table_Color() throws IOException, InterruptedException{
+		String rptTitle = "TC1719 Ethane" + testSetup.getRandomNumber();
+		Log.info("\nRunning TC1719: Compliance Report Generation : COPY generated report should show default color only for Indication" + rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+		listBoundary.add(ETHRNELAT);
+		listBoundary.add(ETHRNELON);
+		listBoundary.add(ETHRSWLAT);
+		listBoundary.add(ETHRSWLON);
+		
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "1");
+		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYPCA, "1");
+		tableMap.put(KEYPCRA, "1");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "1");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "1");
+		tablesList.add(tableMap);
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYGAPS, "1");
+		viewMap1.put(KEYASSETS, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
+		viewList.add(viewMap1);
+
+		List<String> tagList = new ArrayList<String>();
+		tagList.add(PICADMNSTDTAG);
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
+
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
+		
+		complianceReportsPage.clickOnCopyReport(rptTitle, testSetup.getLoginUser());
+		
+		complianceReportsPage.verifyIfInDrivingSurvey(KEYINDCLR);
+
+	}
+
+	/**
+	 * Test Case ID:TC1727 Test Description: Compliance Report Generation : COPY generated report with custom selected Indication color should show default color only for Indication- customized Indication color
+	 * @throws InterruptedException 
+	 * 
+	 * @throws IOException
+	 * 
+	 */
+	@Test
+	public void TC1727_Ethane_Verify_Indication_Table_Color_Copy_Customized_Colored_Report() throws IOException, InterruptedException{
+		String rptTitle = "TC1727 Ethane" + testSetup.getRandomNumber();
+		Log.info("\nRunning TC1727: Compliance Report Generation : COPY generated report with custom selected Indication color should show default color only for Indication- customized Indication color" + rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		complianceReportsPage.findReportbySearch(KEYCPSAMPLRPT, testSetup.getLoginUser());
+
+		complianceReportsPage.clickOnCopyReport(KEYCPSAMPLRPT, testSetup.getLoginUser());
+		complianceReportsPage.waitForPageLoad();
+
+		complianceReportsPage.verifyIfInDrivingSurvey(KEYCPSAMPLRPT);
+
+	}
+
+
+	/**
+	 * Test Case ID:TC1728 Test Description: Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- customized Indication color
+	 * @throws Exception 
+	 * 
+	 */
+	@Test
+	public void TC1728_Ethane_Verify_Indication_Table_Color_Resubmmit_Customized_Colored_Report() throws Exception{
+		String rptTitle = "TC1728 Ethane" + testSetup.getRandomNumber();
+		Log.info("\nRunning TC1728: Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- customized Indication color" + rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		complianceReportsPage.findReportbySearch(KEYRSBSAMPLRPT, testSetup.getLoginUser());
+
+		complianceReportsPage.clickComplianceReportButton(KEYRSBSAMPLRPT, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
+		complianceReportsPage.waitForPageLoad();
+
+		if ((complianceReportsPage.checkActionStatus(KEYRSBSAMPLRPT, testSetup.getLoginUser()))) {
+			assertTrue(complianceReportsPage.validatePdfFiles(KEYRSBSAMPLRPT, testSetup.getDownloadPath()));
+			assertTrue(complianceReportsPage.findReport(KEYRSBSAMPLRPT, testSetup.getLoginUser()));
+
+		} else
+			fail("\nTestcase TC1728 failed.\n");
+
+	}
+
+	/**
+	 * Test Case ID:TC1729 Test Description: Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- Default Indication color
+	 * @throws InterruptedException 
+	 * 
+	 * @throws IOException
+	 * 
+	 */
+	@Test
+	public void TC1729_Ethane_Resubmit_Report_Verify_Indication_Table_Color() throws Exception{
+		String rptTitle = "TC1729 Ethane" + testSetup.getRandomNumber();
+		Log.info("\nRunning TC1729: Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- Default Indication color" + rptTitle);
+
+		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		complianceReportsPage.open();
+
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+		listBoundary.add(ETHRNELAT);
+		listBoundary.add(ETHRNELON);
+		listBoundary.add(ETHRSWLAT);
+		listBoundary.add(ETHRSWLON);
+		
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "1");
+		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYPCA, "1");
+		tableMap.put(KEYPCRA, "1");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "1");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "1");
+		tablesList.add(tableMap);
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYGAPS, "1");
+		viewMap1.put(KEYASSETS, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
+		viewList.add(viewMap1);
+
+		List<String> tagList = new ArrayList<String>();
+		tagList.add(PICADMNSTDTAG);
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
+
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
+		
+		complianceReportsPage.findReportbySearch(rptTitle, testSetup.getLoginUser());
+
+		complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
+		complianceReportsPage.waitForPageLoad();
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
+			assertTrue(complianceReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
+			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
+
+		} else
+			fail("\nTestcase TC1729 failed.\n");
+	}
+
 }

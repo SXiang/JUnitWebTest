@@ -379,6 +379,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public WebElement getBtnSurveySearch(){
 		return btnSurveySearch;
 	}
+	
+	public WebElement getCheckboxSurFirst(){
+		return checkboxSurFirst;
+	}
+	
+	public WebElement getBtnAddSurveys(){
+		return btnAddSurveys;
+	}
+	
 	/**
 	 * @param args
 	 */

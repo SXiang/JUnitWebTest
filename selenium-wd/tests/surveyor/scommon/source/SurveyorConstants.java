@@ -183,7 +183,10 @@ public final class SurveyorConstants {
 	public static final String KEYASSETUNPROTECTEDSTEEL = "Protected Steel";
 	public static final String KEYBOUNDARYDISTRICT = "Small Boundary";
 	public static final String KEYBOUNDARYDISTRICTPLAT = "Big Boundary";
-
+	public static final String KEYRSBSAMPLRPT= "AutomationTestReport";
+	public static final String KEYCPSAMPLRPT= "test1234";
+	public static final String KEYINDCLR = "Indication Color";
+	
 	public static final String KEYINDTB = "Indications Table";
 	public static final String KEYISOANA = "Isotopic Analysis";
 	public static final String KEYPCA = "Percent Coverage Assets";
@@ -278,6 +281,7 @@ public final class SurveyorConstants {
 	
 	public static final String SQACUSSULOC="Santa Clara";
 	public static final String DEFAULTLOC="Default";
+	
 }
 
 	
