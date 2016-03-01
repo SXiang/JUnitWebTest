@@ -186,7 +186,7 @@
 		</junit>
 	</target>
 
-	<target name="testcompliancereport" depends="compileregression" description="Run compliance report test cases">
+	<target name="testcompliancereportethane" depends="compileregression" description="Run compliance report for ethane test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<classpath>
@@ -207,7 +207,7 @@
 		</junit>
 	</target>
 
-		<target name="testcompliancereport" depends="compileregression" description="Run compliance report test cases">
+		<target name="testmanagelocationethane" depends="compileregression" description="Run manage locations for ethane test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<classpath>
@@ -228,7 +228,7 @@
 		</junit>
 	</target>
 
-		<target name="testcompliancereport" depends="compileregression" description="Run compliance report test cases">
+		<target name="testmanagerefgasbottolesethane" depends="compileregression" description="Run manage ref gas bottles for ethane test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<classpath>
