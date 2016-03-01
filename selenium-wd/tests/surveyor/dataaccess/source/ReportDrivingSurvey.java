@@ -3,6 +3,8 @@ package surveyor.dataaccess.source;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
 import common.source.Log;
  
 public class ReportDrivingSurvey extends BaseEntity {
@@ -115,6 +117,22 @@ public class ReportDrivingSurvey extends BaseEntity {
 		}
 		return objReportDrivingSurvey;
 	}
+	
+	public List<ReportDrivingSurvey> getDrivingSurveys(String reportId) {
+		List<ReportDrivingSurvey> objReportDrivingSurveyList = new ArrayList<ReportDrivingSurvey>();
+		
+		// Get from cache if present. Else fetch from Database.
+		if (DBCache.INSTANCE.containsKey(CACHE_KEY+reportId)) {
+			objReportDrivingSurveyList = (List<ReportDrivingSurvey>)DBCache.INSTANCE.get(CACHE_KEY+reportId);
+		} else {
+			String SQL = "SELECT * FROM dbo.[ReportDrivingSurvey] WHERE ReportId='" + reportId;
+			objReportDrivingSurveyList = load(SQL);
+			DBCache.INSTANCE.set(CACHE_KEY + reportId , objReportDrivingSurveyList);
+			
+		}
+		return objReportDrivingSurveyList;
+	}
+ 
  
 	private static ReportDrivingSurvey loadFrom(ResultSet resultSet) {
 		ReportDrivingSurvey objReportDrivingSurvey = new ReportDrivingSurvey();
