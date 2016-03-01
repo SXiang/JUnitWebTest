@@ -28,6 +28,10 @@ public class StoredProcComplianceGetGaps extends BaseEntity {
 		super();
 	}
 
+	public String toString() {
+		return this.getColA().concat(this.getColB().concat(this.getColC()).concat(this.getColD()).concat(this.getColE()).concat(this.getColF()).concat(this.getColG()).concat(this.getColH()).concat(this.getColI()).concat(this.getColJ()).concat(this.getColK()).concat(this.getColL()));
+	}
+
 	public String getRowNumber() {
 		String returnVal = (rowNumber != null) ? rowNumber : "";
 		return returnVal;

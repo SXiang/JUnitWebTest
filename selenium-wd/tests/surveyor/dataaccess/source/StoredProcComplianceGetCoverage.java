@@ -16,109 +16,74 @@ public class StoredProcComplianceGetCoverage extends BaseEntity {
 	private String showPercentCoverageForecast;
 	private String percentCoverageAssets;
 	private String percentCoverageReportArea;
-	
 
 	public StoredProcComplianceGetCoverage() {
 		super();
 	}
 
-	
-
 	public Integer getShowPercentCoverageAssetsasINT() {
 		return this.showPercentCoverageAssetsasINT;
 	}
-
-
 
 	public void setShowPercentCoverageAssetsasINT(Integer showPercentCoverageAssetsasINT) {
 		this.showPercentCoverageAssetsasINT = showPercentCoverageAssetsasINT;
 	}
 
-
-
 	public Integer getShowPercentCoverageReportAreaasINT() {
 		return this.showPercentCoverageReportAreaasINT;
 	}
-
-
 
 	public void setShowPercentCoverageReportAreaasINT(Integer showPercentCoverageReportAreaasINT) {
 		this.showPercentCoverageReportAreaasINT = showPercentCoverageReportAreaasINT;
 	}
 
-
-
 	public Integer getShowPercentCoverageForecastasINT() {
 		return this.showPercentCoverageForecastasINT;
 	}
-
-
 
 	public void setShowPercentCoverageForecastasINT(Integer showPercentCoverageForecastasINT) {
 		this.showPercentCoverageForecastasINT = showPercentCoverageForecastasINT;
 	}
 
-
-
 	public String getShowPercentCoverageAssets() {
 		return this.showPercentCoverageAssets;
 	}
-
-
 
 	public void setShowPercentCoverageAssets(String showPercentCoverageAssets) {
 		this.showPercentCoverageAssets = showPercentCoverageAssets;
 	}
 
-
-
 	public String getShowPercentCoverageReportArea() {
 		return this.showPercentCoverageReportArea;
 	}
-
-
 
 	public void setShowPercentCoverageReportArea(String showPercentCoverageReportArea) {
 		this.showPercentCoverageReportArea = showPercentCoverageReportArea;
 	}
 
-
-
 	public String getShowPercentCoverageForecast() {
 		return this.showPercentCoverageForecast;
 	}
-
-
 
 	public void setShowPercentCoverageForecast(String showPercentCoverageForecast) {
 		this.showPercentCoverageForecast = showPercentCoverageForecast;
 	}
 
-
-
 	public String getPercentCoverageAssets() {
 		return this.percentCoverageAssets;
 	}
-
-
 
 	public void setPercentCoverageAssets(String percentCoverageAssets) {
 		this.percentCoverageAssets = percentCoverageAssets;
 	}
 
-
-
 	public String getPercentCoverageReportArea() {
 		return this.percentCoverageReportArea;
 	}
 
-
-
 	public void setPercentCoverageReportArea(String percentCoverageReportArea) {
 		this.percentCoverageReportArea = percentCoverageReportArea;
 	}
-
-
 
 	public boolean isCoverageValuesEquals(StoredProcComplianceGetCoverage obj) {
 		if (!((this.getPercentCoverageAssets().replaceAll("%", "").trim()).equals(obj.getPercentCoverageAssets().trim()))) {
@@ -129,18 +94,16 @@ public class StoredProcComplianceGetCoverage extends BaseEntity {
 		}
 		return true;
 	}
-	
+
 	public static StoredProcComplianceGetCoverage getCoverage(String reportId) {
 		StoredProcComplianceGetCoverage objStoredProcCoverage = new StoredProcComplianceGetCoverage().get(reportId);
 		return objStoredProcCoverage;
 	}
 
-	
 	public StoredProcComplianceGetCoverage get(String reportId) {
 		StoredProcComplianceGetCoverage objReportList = load(reportId);
 		return objReportList;
 	}
-
 
 	private StoredProcComplianceGetCoverage loadFrom(ResultSet resultSet) {
 		StoredProcComplianceGetCoverage objReport = new StoredProcComplianceGetCoverage();
@@ -152,8 +115,8 @@ public class StoredProcComplianceGetCoverage extends BaseEntity {
 			objReport.setShowPercentCoverageReportArea(resultSet.getString("ShowPercentCoverageReportArea"));
 			objReport.setShowPercentCoverageForecast(resultSet.getString("ShowPercentCoverageForecast"));
 			objReport.setPercentCoverageAssets(resultSet.getString("PercentCoverageAssets"));
-			objReport.setPercentCoverageReportArea(resultSet.getString("PercentCoverageReportArea"));			
-			
+			objReport.setPercentCoverageReportArea(resultSet.getString("PercentCoverageReportArea"));
+
 		} catch (SQLException e) {
 			Log.error("Class Report | " + e.toString());
 		}
@@ -170,7 +133,7 @@ public class StoredProcComplianceGetCoverage extends BaseEntity {
 			resultSet = proc_stmt.executeQuery();
 			while (resultSet.next()) {
 				objReport = loadFrom(resultSet);
-							}
+			}
 
 		} catch (SQLException e) {
 			Log.error(e.toString());

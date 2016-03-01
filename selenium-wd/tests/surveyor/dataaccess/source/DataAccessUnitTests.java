@@ -203,6 +203,7 @@ public class DataAccessUnitTests {
 		String validReportId = "5B8CBAD2-DAF4-F04F-5F3F-39D62D5A3B25";
 		ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys> listStoredProcDrivingSurvey = StoredProcComplianceAssessmentGetReportDrivingSurveys.getReportDrivingSurveys(validReportId);
 		Iterator<StoredProcComplianceAssessmentGetReportDrivingSurveys> iterator = listStoredProcDrivingSurvey.iterator();
+		Assert.assertTrue(iterator.hasNext());
 		while (iterator.hasNext()) {
 			StoredProcComplianceAssessmentGetReportDrivingSurveys objStoredProcDrivingSurvey = iterator.next();
 			Assert.assertTrue(objStoredProcDrivingSurvey != null, "Value cannot be NULL.");
@@ -214,6 +215,7 @@ public class DataAccessUnitTests {
 		String validReportId = "5B8CBAD2-DAF4-F04F-5F3F-39D62D5A3B25";
 		ArrayList<StoredProcComplianceGetIsotopics> listStoredProcIsotopics = StoredProcComplianceGetIsotopics.getReportIsotopics(validReportId);
 		Iterator<StoredProcComplianceGetIsotopics> iterator = listStoredProcIsotopics.iterator();
+		Assert.assertTrue(iterator.hasNext());
 		while (iterator.hasNext()) {
 			StoredProcComplianceGetIsotopics objStoredProcIsotopics = iterator.next();
 			Assert.assertTrue(objStoredProcIsotopics != null, "Value cannot be NULL.");
@@ -225,17 +227,19 @@ public class DataAccessUnitTests {
 		String validReportId = "5B8CBAD2-DAF4-F04F-5F3F-39D62D5A3B25";
 		ArrayList<StoredProcComplianceGetIndications> listStoredProcIndications = StoredProcComplianceGetIndications.getReportIndications(validReportId);
 		Iterator<StoredProcComplianceGetIndications> iterator = listStoredProcIndications.iterator();
+		Assert.assertTrue(iterator.hasNext());
 		while (iterator.hasNext()) {
 			StoredProcComplianceGetIndications objStoredProcIndications = iterator.next();
 			Assert.assertTrue(objStoredProcIndications != null, "Value cannot be NULL.");
 
 		}
 	}
-	
+
 	private static void testStoredProcComplianceGetGaps_getReportGaps_Valid() {
 		String validReportId = "955B11D6-0E82-9DA5-AC4B-39D63B0A84A6";
 		ArrayList<StoredProcComplianceGetGaps> listStoredProcGaps = StoredProcComplianceGetGaps.getReportGaps(validReportId);
 		Iterator<StoredProcComplianceGetGaps> iterator = listStoredProcGaps.iterator();
+		Assert.assertTrue(iterator.hasNext());
 		while (iterator.hasNext()) {
 			StoredProcComplianceGetGaps objStoredProcGaps = iterator.next();
 			Assert.assertTrue(objStoredProcGaps != null, "Value cannot be NULL.");

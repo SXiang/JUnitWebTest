@@ -11,7 +11,7 @@ import common.source.Log;
 public class ReportView extends BaseEntity {
 	private static final String CACHE_KEY = "REPORTVIEW.";
 
-	private Object baseMapType_Id;
+	private Object baseMapTypeId;
 	private String showIndications;
 	private Object reportId;
 	private Integer viewNameOrder;
@@ -31,12 +31,12 @@ public class ReportView extends BaseEntity {
 		super();
 	}
 
-	public Object getBaseMapType_Id() {
-		return baseMapType_Id;
+	public Object getBaseMapTypeId() {
+		return baseMapTypeId;
 	}
 
-	public void setBaseMapType_Id(Object baseMapType_Id) {
-		this.baseMapType_Id = baseMapType_Id;
+	public void setBaseMapTypeId(Object baseMapTypeId) {
+		this.baseMapTypeId = baseMapTypeId;
 	}
 
 	public String getShowIndications() {
@@ -193,7 +193,7 @@ public class ReportView extends BaseEntity {
 	private static ReportView loadFrom(ResultSet resultSet) {
 		ReportView objReportView = new ReportView();
 		try {
-			objReportView.setBaseMapType_Id(resultSet.getObject("BaseMapType_Id"));
+			objReportView.setBaseMapTypeId(resultSet.getObject("BaseMapType_Id"));
 			objReportView.setShowIndications(resultSet.getString("ShowIndications"));
 			objReportView.setReportId(resultSet.getObject("ReportId"));
 			objReportView.setViewNameOrder(resultSet.getInt("ViewNameOrder"));
@@ -227,14 +227,13 @@ public class ReportView extends BaseEntity {
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(SQL);
 
-			while (resultSet.next()) {
+			while (resultSet.next()) {				
 				ReportView objReportView = loadFrom(resultSet);
 				objReportViewList.add(objReportView);
+				DBCache.INSTANCE.set(CACHE_KEY + objReportView.getReportId(), objReportViewList);
 
 			}
-			// add to cache.
-			DBCache.INSTANCE.set(CACHE_KEY + reportId, objReportViewList);
-
+			
 		} catch (SQLException e) {
 			Log.error("Class ReportView | " + e.toString());
 		}

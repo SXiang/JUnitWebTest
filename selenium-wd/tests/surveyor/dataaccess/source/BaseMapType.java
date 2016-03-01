@@ -83,7 +83,7 @@ public class BaseMapType extends BaseEntity {
 				objBaseMapTypeList.add(objBaseMapType);
 
 				// add to cache.
-				DBCache.INSTANCE.set(CACHE_KEY + description, objBaseMapType);
+				DBCache.INSTANCE.set(CACHE_KEY + objBaseMapType.getDescription(), objBaseMapType);
 			}
 
 		} catch (SQLException e) {

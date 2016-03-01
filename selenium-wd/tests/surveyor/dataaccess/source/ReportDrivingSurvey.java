@@ -122,7 +122,7 @@ public class ReportDrivingSurvey extends BaseEntity {
 		List<ReportDrivingSurvey> objReportDrivingSurveyList = new ArrayList<ReportDrivingSurvey>();
 		
 		// Get from cache if present. Else fetch from Database.
-		if (DBCache.INSTANCE.containsKey(CACHE_KEY+reportId+"_"+surveyId)) {
+		if (DBCache.INSTANCE.containsKey(CACHE_KEY+reportId)) {
 			objReportDrivingSurveyList = (List<ReportDrivingSurvey>)DBCache.INSTANCE.get(CACHE_KEY+reportId);
 		} else {
 			String SQL = "SELECT * FROM dbo.[ReportDrivingSurvey] WHERE ReportId='" + reportId;

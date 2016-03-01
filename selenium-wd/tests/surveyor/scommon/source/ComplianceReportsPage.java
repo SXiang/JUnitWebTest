@@ -859,18 +859,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 							waitForPDFFileDownload(reportName);
 							clickOnZIPInReportViewer();
 							waitForReportZIPFileDownload(reportName);
-							String pathToMetaDataZip = testSetup.getDownloadPath() + "//CR-" + reportId.substring(0, 6) + " (1).zip";
-							String pathToMetaDataUnZip = testSetup.getDownloadPath() + "//CR-" + reportId.substring(0, 6) + " (1)";
 							if (zipMeta.isDisplayed()) {
 								clickOnMetadataZIPInReportViewer();
 								waitForMetadataZIPFileDownload(reportName);
-								ZipUtility zip = new ZipUtility();
-								File metaDataUnzipFolder = new File(pathToMetaDataUnZip);
-								if (!metaDataUnzipFolder.exists()) {
-									metaDataUnzipFolder.mkdir();
+								try {
+									BaseHelper.deCompressZipFile(reportName + " (1)", testSetup.getDownloadPath());
+								} catch (Exception e) {
+									Log.error(e.toString());
 								}
-
-								zip.unZip(pathToMetaDataZip, pathToMetaDataUnZip);
 							}
 							if (zipShape.isDisplayed()) {
 								clickOnShapeZIPInReportViewer();
@@ -2544,16 +2540,16 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 				}
 				String lineWithoutDates = remaining.trim();
-				String[] splitWithSapce = lineWithoutDates.split("\\s+");
-				reportSurveyEntry.setUserName(splitWithSapce[1].trim());
-				remaining = remaining.replace(splitWithSapce[1], "");
-				reportSurveyEntry.setStabilityClass(splitWithSapce[splitWithSapce.length - 1].trim());
-				remaining = remaining.replace(splitWithSapce[splitWithSapce.length - 1], "");
-				reportSurveyEntry.setTag(splitWithSapce[splitWithSapce.length - 2].trim());
-				remaining = remaining.replace(splitWithSapce[splitWithSapce.length - 2], "");
-				reportSurveyEntry.setAnalyzerId(splitWithSapce[splitWithSapce.length - 3].trim());
-				remaining = remaining.replace(splitWithSapce[splitWithSapce.length - 3], "");
-				reportSurveyEntry.setDescription(remaining.replace(splitWithSapce[0].trim(), "").trim());
+				String[] splitWithSpace = lineWithoutDates.split("\\s+");
+				reportSurveyEntry.setUserName(splitWithSpace[1].trim());
+				remaining = remaining.replace(splitWithSpace[1], "");
+				reportSurveyEntry.setStabilityClass(splitWithSpace[splitWithSpace.length - 1].trim());
+				remaining = remaining.replace(splitWithSpace[splitWithSpace.length - 1], "");
+				reportSurveyEntry.setTag(splitWithSpace[splitWithSpace.length - 2].trim());
+				remaining = remaining.replace(splitWithSpace[splitWithSpace.length - 2], "");
+				reportSurveyEntry.setAnalyzerId(splitWithSpace[splitWithSpace.length - 3].trim());
+				remaining = remaining.replace(splitWithSpace[splitWithSpace.length - 3], "");
+				reportSurveyEntry.setDescription(remaining.replace(splitWithSpace[0].trim(), "").trim());
 				reportSurveyList.add(reportSurveyEntry);
 			}
 			ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys> listFromStoredProc = StoredProcComplianceAssessmentGetReportDrivingSurveys.getReportDrivingSurveys(reportId);
@@ -2644,9 +2640,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 
-	public boolean verifyReporSurveytMetaDataFile(String actualPath, String reportTitle) throws FileNotFoundException, IOException {
+	public boolean verifyReportSurveytMetaDataFile(String actualPath, String reportTitle) throws FileNotFoundException, IOException {
 		CSVUtility csvUtility = new CSVUtility();
-		ZipUtility zip = new ZipUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
 		String pathToMetaDataUnZip = actualPath + "//CR-" + reportId.substring(0, 6) + " (1)";
@@ -2814,9 +2809,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				ArrayList<String> storedProcConvStringList = new ArrayList<String>();
 				while (lineIterator.hasNext()) {
 					StoredProcComplianceGetIsotopics objStoredProc = lineIterator.next();
-					String delta = (objStoredProc.getDelta() == 0.0) ? "0" : Float.toString(objStoredProc.getDelta());
-					String uncertainty = (objStoredProc.getUncertainty() == 0.0) ? "0" : Float.toString(objStoredProc.getUncertainty());
-					String objAsString = objStoredProc.getSurveyorUnitName().concat(" ").concat(objStoredProc.getDateTime()).concat(" ").concat(objStoredProc.getDisposition()).concat(" ").concat(delta).concat("+/-").concat(uncertainty).concat(" ").concat(objStoredProc.getText());
+					String objAsString = objStoredProc.toString();
 					storedProcConvStringList.add(objAsString.trim());
 				}
 
@@ -2869,7 +2862,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			ArrayList<String> storedProcConvStringList = new ArrayList<String>();
 			while (lineIterator.hasNext()) {
 				StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
-				String objAsString = objStoredProc.getPeakNumber().concat(" ").concat(objStoredProc.getSurveyorUnitName()).concat(" ").concat(objStoredProc.getDateTime()).concat(" ").concat(Float.toString(objStoredProc.getAmplitude())).concat(" ").concat(Float.toString(objStoredProc.getCh4())).concat(" ").concat(objStoredProc.getText());
+				String objAsString = objStoredProc.toString();
 				storedProcConvStringList.add(objAsString.trim());
 			}
 
@@ -2921,7 +2914,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			ArrayList<String> storedProcConvStringList = new ArrayList<String>();
 			while (lineIterator.hasNext()) {
 				StoredProcComplianceGetGaps objStoredProc = lineIterator.next();
-				String objAsString = objStoredProc.getColA().concat(objStoredProc.getColB().concat(objStoredProc.getColC()).concat(objStoredProc.getColD()).concat(objStoredProc.getColE()).concat(objStoredProc.getColF()).concat(objStoredProc.getColG()).concat(objStoredProc.getColH()).concat(objStoredProc.getColI()).concat(objStoredProc.getColJ()).concat(objStoredProc.getColK()).concat(objStoredProc.getColL()));
+				String objAsString = objStoredProc.toString();
 				storedProcConvStringList.add(objAsString.trim());
 			}
 			if (!reportGapsList.equals(storedProcConvStringList)) {
