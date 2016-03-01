@@ -186,7 +186,7 @@
 		</junit>
 	</target>
 
-	<target name="testcompliancereportethane" depends="compileregression" description="Run compliance report for ethane test cases">
+	<target name="testthane" depends="compileregression" description="Run ethane test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<classpath>
@@ -201,53 +201,14 @@
 				<fileset dir="${build}">
 
 					<include name="**/ComplianceReportsPageTest_Ethane.class" />
-
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
-		<target name="testmanagelocationethane" depends="compileregression" description="Run manage locations for ethane test cases">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-				showoutput="yes">
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-
-			<batchtest fork="yes" todir="${reports}/regression/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-
 					<include name="**/ManageLocationsPageTest_Ethane.class" />
-
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
-		<target name="testmanagerefgasbottolesethane" depends="compileregression" description="Run manage ref gas bottles for ethane test cases">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-				showoutput="yes">
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-
-			<batchtest fork="yes" todir="${reports}/regression/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-
 					<include name="**/ManageRefGasBottlesPageTests_Ethane.class" />
 
 				</fileset>
 			</batchtest>
 		</junit>
 	</target>
+
 
 	<target name="testregression" depends="compileregression" description="Run regression test suite">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
