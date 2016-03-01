@@ -181,11 +181,9 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.waitForPageLoad();
 
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
-		complianceReportsPage.waitForPageLoad();
-
+		
 		complianceReportsPage.clickOnCopyReport(rptTitle, testSetup.getLoginUser());
-		complianceReportsPage.waitForPageLoad();
-
+		
 		if (complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed())
 			assertTrue(complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed());
 		else
@@ -543,8 +541,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.waitForPageLoad();
 
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
-		complianceReportsPage.waitForPageLoad();
-
+		
 		complianceReportsPage.clickOnCopyReport(rptTitle, testSetup.getLoginUser());
 		
 		complianceReportsPage.verifyIfInDrivingSurvey(KEYINDCLR);
