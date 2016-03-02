@@ -252,7 +252,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.NoUpper.clear();
 		this.NoUpper.sendKeys("-25");
 
-		if (ethMthMin != "") {
+		if (ethMthMin != null && ethMthMin != "") {
 			List<WebElement> optionsMIN = this.ethMthMinUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsMIN) {
 				if ((ethMthMin).equalsIgnoreCase(option.getText().trim())) {
@@ -261,7 +261,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			}
 		}
 
-		if (ethMthMax != "") {
+		if (ethMthMax != null && ethMthMax != "") {
 			List<WebElement> optionsMAX = this.ethMthMaxUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsMAX) {
 				if ((ethMthMax).equalsIgnoreCase(option.getText().trim())) {
