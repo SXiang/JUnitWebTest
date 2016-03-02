@@ -186,7 +186,7 @@
 		</junit>
 	</target>
 
-	<target name="testcompliancereport" depends="compileregression" description="Run compliance report test cases">
+	<target name="testethane" depends="compileregression" description="Run ethane test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<classpath>
@@ -201,11 +201,14 @@
 				<fileset dir="${build}">
 
 					<include name="**/ComplianceReportsPageTest_Ethane.class" />
+					<include name="**/ManageLocationsPageTest_Ethane.class" />
+					<include name="**/ManageRefGasBottlesPageTests_Ethane.class" />
 
 				</fileset>
 			</batchtest>
 		</junit>
 	</target>
+
 
 	<target name="testregression" depends="compileregression" description="Run regression test suite">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
@@ -240,6 +243,8 @@
 					<include name="**/SystemHistoryReportsPageTest.class" />	
 					<include name="**/ReferenceGasReportsPageTest.class" />		
 					<include name="**/ComplianceReportsPageTest_Ethane.class" />
+					<include name="**/ManageLocationsPageTest_Ethane.class" />
+					<include name="**/ManageRefGasBottlesPageTests_Ethane.class" />
 				</fileset>
 			</batchtest>
 		</junit>
