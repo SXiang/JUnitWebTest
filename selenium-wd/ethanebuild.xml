@@ -186,7 +186,7 @@
 		</junit>
 	</target>
 
-	<target name="testthane" depends="compileregression" description="Run ethane test cases">
+	<target name="testethane" depends="compileregression" description="Run ethane test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<classpath>
