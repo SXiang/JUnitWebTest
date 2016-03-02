@@ -866,7 +866,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						reportId = reportId.substring(0, 6);
 						reportName = "CR-" + reportId;
 
-						if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip") && srcZipMeta.contains("zip") && srcShapeImg.contains("zip")) {
+						//if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip") && srcZipMeta.contains("zip") && srcShapeImg.contains("zip")) {
+							System.out.println("Met all 4");
 							clickOnPDFInReportViewer();
 							waitForPDFFileDownload(reportName);
 							clickOnZIPInReportViewer();
@@ -885,16 +886,16 @@ public class ComplianceReportsPage extends ReportsBasePage {
 								waitForShapeZIPFileDownload(reportName);
 							}
 							return true;
-						}
+						//}
 
-						if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip")) {
+						/*if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip")) {
 							clickOnPDFInReportViewer();
 							waitForPDFFileDownload(reportName);
 							clickOnZIPInReportViewer();
 							waitForReportZIPFileDownload(reportName);
 							return true;
 						} else
-							return false;
+							return false;*/
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
 						if (elapsedTime >= (ACTIONTIMEOUT + 800 * 1000)) {
@@ -1725,17 +1726,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
 				copyImg = table.findElement(By.xpath(copyImgXPath));
 				copyImg.click();
+				this.waitForCopyReportPagetoLoad();
 				this.inputTitle.clear();
-				this.inputTitle.sendKeys(rptTitleNew);
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].value='"+rptTitleNew+"';", inputTitle);
 
 				if (strReportMode != null && changeMode) {
 					selectReportMode(strReportMode);
 					this.waitForCopyReportPagetoLoad();
 					this.inputTitle.clear();
-					this.inputTitle.sendKeys(rptTitleNew);
+					js.executeScript("arguments[0].value='"+rptTitleNew+"';", inputTitle);
 				} else {
+					this.waitForCopyReportPagetoLoad();
+					js.executeScript("window.scrollBy(0,250)", "");
 					this.waitForDeleteSurveyButtonToLoad();
-					this.btnDeleteSurvey.click();
+					js.executeScript("arguments[0].click();", this.btnDeleteSurvey);					
 				}
 				if (surUnit != "") {
 					List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
@@ -1746,6 +1751,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					}
 				}
 
+				System.out.println(tagList);
 				for (String tagValue : tagList) {
 					if (tagValue != "") {
 
@@ -1758,6 +1764,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						this.btnAddSurveys.click();
 
 					}
+				}
+				
+				if(tagList.isEmpty()){
+					this.btnSurveySearch.click();
+					this.waitForSurveyTabletoLoad();
+					this.checkboxSurFirst.click();
+					this.waitForAddSurveyButtonToLoad();
+					this.btnAddSurveys.click();
+					
 				}
 
 				this.inputViewInd.click();
@@ -3087,7 +3102,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void waitForSurveyTabletoLoad() {
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, timeout +30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return surveysTable.isDisplayed();
 			}
@@ -3120,7 +3135,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void waitForPdfReportIcontoAppear() {
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, timeout+30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return pdfImg.isDisplayed();
 
@@ -3137,7 +3152,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void waitForDeleteSurveyButtonToLoad() {
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, timeout+30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return btnDeleteSurvey.isDisplayed();
 			}

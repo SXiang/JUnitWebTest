@@ -722,7 +722,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 		String newRptTitle = rptTitle + "COPY";
 
 		List<String> tagListCopy = new ArrayList<String>();
-		tagList.add(PICADMNMANTAG);
+		tagListCopy.add(PICADMNMANTAG);
 		complianceReportsPage.copyReportAndModifyDetails(rptTitle, testSetup.getLoginUser(), newRptTitle, "", tagListCopy, true, ReportModeFilter.Manual);
 		complianceReportsPage.waitForPageLoad();
 
