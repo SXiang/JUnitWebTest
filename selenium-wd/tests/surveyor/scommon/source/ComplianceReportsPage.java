@@ -257,10 +257,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(id = "report-ethene-vehicle-exhaust")
 	protected WebElement checkBoxVehicleExhaust;
 
-	@FindBy(how = How.XPATH, using ="//*[@id='datatableViews']/thead/tr/th[7]/div")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/thead/tr/th[7]/div")
 	protected WebElement viewsAnalysesColumn;
 
-	@FindBy(how = How.XPATH, using ="//*[@id='page-wrapper']/div/div[3]/div/div[11]/div/div/div/div[2]/div/label")
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[3]/div/div[11]/div/div/div/div[2]/div/label")
 	protected WebElement tubularAnalysisOption;
 
 	@FindBy(id = "report-ethene-biogenic-methane")
@@ -866,36 +866,32 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						reportId = reportId.substring(0, 6);
 						reportName = "CR-" + reportId;
 
-						//if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip") && srcZipMeta.contains("zip") && srcShapeImg.contains("zip")) {
-							System.out.println("Met all 4");
-							clickOnPDFInReportViewer();
-							waitForPDFFileDownload(reportName);
-							clickOnZIPInReportViewer();
-							waitForReportZIPFileDownload(reportName);
-							if (zipMeta.isDisplayed()) {
-								clickOnMetadataZIPInReportViewer();
-								waitForMetadataZIPFileDownload(reportName);
-								try {
-									BaseHelper.deCompressZipFile(reportName + " (1)", testSetup.getDownloadPath());
-								} catch (Exception e) {
-									Log.error(e.toString());
-								}
+						// if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip") && srcZipMeta.contains("zip") && srcShapeImg.contains("zip")) {
+						System.out.println("Met all 4");
+						clickOnPDFInReportViewer();
+						waitForPDFFileDownload(reportName);
+						clickOnZIPInReportViewer();
+						waitForReportZIPFileDownload(reportName);
+						if (zipMeta.isDisplayed()) {
+							clickOnMetadataZIPInReportViewer();
+							waitForMetadataZIPFileDownload(reportName);
+							try {
+								BaseHelper.deCompressZipFile(reportName + " (1)", testSetup.getDownloadPath());
+							} catch (Exception e) {
+								Log.error(e.toString());
 							}
-							if (zipShape.isDisplayed()) {
-								clickOnShapeZIPInReportViewer();
-								waitForShapeZIPFileDownload(reportName);
-							}
-							return true;
-						//}
+						}
+						if (zipShape.isDisplayed()) {
+							clickOnShapeZIPInReportViewer();
+							waitForShapeZIPFileDownload(reportName);
+						}
+						return true;
+						// }
 
-						/*if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip")) {
-							clickOnPDFInReportViewer();
-							waitForPDFFileDownload(reportName);
-							clickOnZIPInReportViewer();
-							waitForReportZIPFileDownload(reportName);
-							return true;
-						} else
-							return false;*/
+						/*
+						 * if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip")) { clickOnPDFInReportViewer(); waitForPDFFileDownload(reportName); clickOnZIPInReportViewer();
+						 * waitForReportZIPFileDownload(reportName); return true; } else return false;
+						 */
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
 						if (elapsedTime >= (ACTIONTIMEOUT + 800 * 1000)) {
@@ -1729,18 +1725,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				this.waitForCopyReportPagetoLoad();
 				this.inputTitle.clear();
 				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].value='"+rptTitleNew+"';", inputTitle);
+				js.executeScript("arguments[0].value='" + rptTitleNew + "';", inputTitle);
 
 				if (strReportMode != null && changeMode) {
 					selectReportMode(strReportMode);
 					this.waitForCopyReportPagetoLoad();
 					this.inputTitle.clear();
-					js.executeScript("arguments[0].value='"+rptTitleNew+"';", inputTitle);
+					js.executeScript("arguments[0].value='" + rptTitleNew + "';", inputTitle);
 				} else {
 					this.waitForCopyReportPagetoLoad();
 					js.executeScript("window.scrollBy(0,250)", "");
 					this.waitForDeleteSurveyButtonToLoad();
-					js.executeScript("arguments[0].click();", this.btnDeleteSurvey);					
+					js.executeScript("arguments[0].click();", this.btnDeleteSurvey);
 				}
 				if (surUnit != "") {
 					List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
@@ -1765,14 +1761,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 					}
 				}
-				
-				if(tagList.isEmpty()){
+
+				if (tagList.isEmpty()) {
 					this.btnSurveySearch.click();
 					this.waitForSurveyTabletoLoad();
 					this.checkboxSurFirst.click();
 					this.waitForAddSurveyButtonToLoad();
 					this.btnAddSurveys.click();
-					
+
 				}
 
 				this.inputViewInd.click();
@@ -2332,7 +2328,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	}
 
-
 	/**
 	 * Method to verify the Show Coverage Table in SSRS
 	 * 
@@ -2543,9 +2538,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			StringBuilder lineBuilder = new StringBuilder();
 			while ((line = bufferReader.readLine()) != null) {
 				if (line.length() > 3) {
-					lineBuilder.append(line).append(" ");
+					lineBuilder.append(line);
 					countLines++;
-					if (countLines % 4 == 0) {
+					if (countLines == 4 || countLines == 6) {
+						lineBuilder.append(" ");
+					}
+
+					if (countLines % 8 == 0) {
 						lineList.add(lineBuilder.toString());
 						lineBuilder = new StringBuilder();
 					}
@@ -3035,8 +3034,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		WebElement resubmitPopupSection = this.driver.findElement(By.id("resubmitReportModal"));
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return resubmitPopupSection.getAttribute("style").contains("display:block") 
-						|| resubmitPopupSection.getAttribute("style").contains("display: block");
+				return resubmitPopupSection.getAttribute("style").contains("display:block") || resubmitPopupSection.getAttribute("style").contains("display: block");
 			}
 		});
 	}
@@ -3045,8 +3043,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		WebElement resubmitPopupSection = this.driver.findElement(By.id("resubmitReportModal"));
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return resubmitPopupSection.getAttribute("style").contains("display:none") 
-						|| resubmitPopupSection.getAttribute("style").contains("display: none");
+				return resubmitPopupSection.getAttribute("style").contains("display:none") || resubmitPopupSection.getAttribute("style").contains("display: none");
 			}
 		});
 	}
@@ -3102,7 +3099,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void waitForSurveyTabletoLoad() {
-		(new WebDriverWait(driver, timeout +30)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return surveysTable.isDisplayed();
 			}
@@ -3135,7 +3132,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void waitForPdfReportIcontoAppear() {
-		(new WebDriverWait(driver, timeout+30)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return pdfImg.isDisplayed();
 
@@ -3152,7 +3149,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void waitForDeleteSurveyButtonToLoad() {
-		(new WebDriverWait(driver, timeout+30)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return btnDeleteSurvey.isDisplayed();
 			}
@@ -3333,6 +3330,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public WebElement getCheckBoxEtheneBiogeniceMethane() {
 		return checkBoxEtheneBiogeniceMethane;
 	}
+
 	/**
 	 * Method to verify the Driving Surveys Table in SSRS
 	 * 
@@ -3355,24 +3353,22 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 			WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
 			List<WebElement> Rows = tabledata.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
-			for (int getrowvalue=1; getrowvalue < Rows.size(); getrowvalue++)
-			{ 
+			for (int getrowvalue = 1; getrowvalue < Rows.size(); getrowvalue++) {
 				List<WebElement> Columns = Rows.get(getrowvalue).findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[6]"));
-				for (int getcolumnvalue =1;getcolumnvalue<Columns.size(); getcolumnvalue++ )
-				{
-					String cellValue=driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr["+getrowvalue+"]/td[6]")).getText(); 
+				for (int getcolumnvalue = 1; getcolumnvalue < Columns.size(); getcolumnvalue++) {
+					String cellValue = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[6]")).getText();
 					if (cellValue.contains(tag)) {
 						result = true;
 						break;
 					}
-					result=false ;
+					result = false;
 				}
 			}
 		}
 		return result;
 	}
 
-	public boolean verifySurveysTableViaSurveyMode(boolean changeMode, ReportModeFilter strReportMode, SurveyModeFilter surveyModeFilter ) throws IOException {
+	public boolean verifySurveysTableViaSurveyMode(boolean changeMode, ReportModeFilter strReportMode, SurveyModeFilter surveyModeFilter) throws IOException {
 		boolean result = false;
 
 		if (strReportMode != null && changeMode) {
@@ -3384,15 +3380,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 			WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
 			List<WebElement> Rows = tabledata.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
-			for (int getrowvalue=1; getrowvalue < Rows.size(); getrowvalue++)
-			{ 
+			for (int getrowvalue = 1; getrowvalue < Rows.size(); getrowvalue++) {
 				List<WebElement> Columns = Rows.get(getrowvalue).findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[5]"));
-				for (int getcolumnvalue =0;getcolumnvalue<Columns.size(); getcolumnvalue++ )
-				{
-					String cellValue=driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr["+getrowvalue+"]/td[5]")).getText(); 
-					if (cellValue.contains(" ")){
-						String str=cellValue.replaceAll("\\s+", "");
-		
+				for (int getcolumnvalue = 0; getcolumnvalue < Columns.size(); getcolumnvalue++) {
+					String cellValue = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[5]")).getText();
+					if (cellValue.contains(" ")) {
+						String str = cellValue.replaceAll("\\s+", "");
+
 						if (surveyModeFilter.name().equalsIgnoreCase(str)) {
 							result = true;
 							break;
