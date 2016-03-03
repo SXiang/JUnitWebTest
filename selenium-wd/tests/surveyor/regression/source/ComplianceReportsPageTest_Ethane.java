@@ -594,33 +594,6 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 
 
 	/**
-	 * Test Case ID:TC1728 Test Description: Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- customized Indication color
-	 * @throws Exception 
-	 * 
-	 */
-	@Test
-	public void TC1728_Ethane_Verify_Indication_Table_Color_Resubmmit_Customized_Colored_Report() throws Exception{
-		String rptTitle = "TC1728 Ethane" + testSetup.getRandomNumber();
-		Log.info("\nRunning TC1728: Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- customized Indication color" + rptTitle);
-
-		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		complianceReportsPage.open();
-
-		complianceReportsPage.findReportbySearch(KEYRSBSAMPLRPT, testSetup.getLoginUser());
-
-		complianceReportsPage.clickComplianceReportButton(KEYRSBSAMPLRPT, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
-		complianceReportsPage.waitForPageLoad();
-
-		if ((complianceReportsPage.checkActionStatus(KEYRSBSAMPLRPT, testSetup.getLoginUser()))) {
-			assertTrue(complianceReportsPage.validatePdfFiles(KEYRSBSAMPLRPT, testSetup.getDownloadPath()));
-			assertTrue(complianceReportsPage.findReport(KEYRSBSAMPLRPT, testSetup.getLoginUser()));
-
-		} else
-			fail("\nTestcase TC1728 failed.\n");
-
-	}
-
-	/**
 	 * Test Case ID:TC1729 Test Description: Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- Default Indication color
 	 * @throws InterruptedException 
 	 * 
