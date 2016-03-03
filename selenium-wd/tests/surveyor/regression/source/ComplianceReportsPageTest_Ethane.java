@@ -336,7 +336,7 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 	@Test
 	@UseDataProvider(value = ComplianceReportEthaneDataProvider.COMPLIANCE_ETHANE_REPORT_PROVIDER, location = ComplianceReportEthaneDataProvider.class)
 	public void ComplianceReportTest_VerifyEthaneReport(String index, String strCreatedBy, String password, String cutomer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
-			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) {
+			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws IOException {
 		String rptTitle = null;
 		rptTitle = getTestCaseName(index) + " " + "Report" + testSetup.getRandomNumber();
 
@@ -353,9 +353,27 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, strCreatedBy))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, strCreatedBy));
-
+			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rptTitle));
+			if (tablesList != null) {
+				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
+					assertTrue(complianceReportsPage.verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle));
+					assertTrue(complianceReportsPage.verifyCoverageValuesTable(testSetup.getDownloadPath(), rptTitle, tablesList.get(0)));
+				}
+				if (cutomer.equalsIgnoreCase("Picarro")) {
+					assertTrue(complianceReportsPage.verifyLayersTable(testSetup.getDownloadPath(), rptTitle, tablesList.get(0)));
+				}
+				assertTrue(complianceReportsPage.verifyViewsTable(testSetup.getDownloadPath(), rptTitle, viewList));
+				assertTrue(complianceReportsPage.verifyDrivingSurveysTable(testSetup.getDownloadPath(), rptTitle));
+				if (tablesList.get(0).get(KEYISOANA).equals("1")) {
+					assertTrue(complianceReportsPage.verifyIsotopicAnalysisTable(testSetup.getDownloadPath(), rptTitle));
+				}
+				if (tablesList.get(0).get(KEYINDTB).equals("1")) {
+					assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
+				}
+			}
 		} else
 			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
+
 	}
 	private static String getTestCaseName(String key) {
 		return testCaseMap.get(key);
@@ -467,6 +485,8 @@ public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
 		complianceReportsPage.waitForPageLoad();
 
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
+
+		
 		
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
