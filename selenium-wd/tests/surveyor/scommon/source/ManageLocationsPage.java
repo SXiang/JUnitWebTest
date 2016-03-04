@@ -401,17 +401,20 @@ public class ManageLocationsPage extends SurveyorBasePage {
 					this.inputLocationDesc.clear();
 					this.inputLocationDesc.sendKeys(newLocationName);
 				}
-				
-				if (latValue!=null ){
-					this.inputLocationLat.clear();
-					this.inputLocationLat.sendKeys(latValue);
+
+				if (latValue != null && latValue !=""){
+					if (latValue!=null ){
+						this.inputLocationLat.clear();
+						this.inputLocationLat.sendKeys(latValue);
+					}
 				}
-				
-				if (longValue!=null){
-					this.inputLocationLong.clear();
-					this.inputLocationLong.sendKeys(longValue);
+				if (longValue != null && longValue !=""){
+					if (longValue!=null){
+						this.inputLocationLong.clear();
+						this.inputLocationLong.sendKeys(longValue);
+					}
 				}
-				
+
 				if (newEthMthMin != null && newEthMthMin !="") {
 					List<WebElement> optionsMIN = this.ethMthMinUnit.findElements(By.tagName("option"));
 					for (WebElement option : optionsMIN) {
