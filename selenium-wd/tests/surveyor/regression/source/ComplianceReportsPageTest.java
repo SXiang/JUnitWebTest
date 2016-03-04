@@ -185,6 +185,7 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 			}
 		} else
 			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
+		//assertTrue(complianceReportsPage.verifyDrivingSurveysTable("C:\\Users\\cnanayakkara\\Downloads", ""));
 
 	}
 

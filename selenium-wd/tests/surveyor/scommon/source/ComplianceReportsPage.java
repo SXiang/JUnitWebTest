@@ -1746,8 +1746,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						}
 					}
 				}
-
-				System.out.println(tagList);
+				
 				for (String tagValue : tagList) {
 					if (tagValue != "") {
 
@@ -2529,6 +2528,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				return false;
 		}
 		String surveyTable = RegexUtility.getStringInBetween(actualReportString, "Indication Table", "LISA # Surveyor Date/Time Amplitude(ppm)");
+		System.out.println(surveyTable);		
 		InputStream inputStream = new ByteArrayInputStream(surveyTable.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 		String line = null;
