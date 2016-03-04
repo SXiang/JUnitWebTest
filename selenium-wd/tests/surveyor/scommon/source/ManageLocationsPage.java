@@ -403,13 +403,13 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				}
 
 				if (latValue != null && latValue !=""){
-					if (latValue!=null ){
+					if (this.inputLocationLat!=null ){
 						this.inputLocationLat.clear();
 						this.inputLocationLat.sendKeys(latValue);
 					}
 				}
 				if (longValue != null && longValue !=""){
-					if (longValue!=null){
+					if (this.inputLocationLong!=null){
 						this.inputLocationLong.clear();
 						this.inputLocationLong.sendKeys(longValue);
 					}
