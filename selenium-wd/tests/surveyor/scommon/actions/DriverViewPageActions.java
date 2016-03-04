@@ -1302,6 +1302,534 @@ public class DriverViewPageActions extends BasePageActions {
 		return this.driverViewPage.checkIfAtDriverViewPage();
 	}
 
+	/**
+	 * Executes verifyDisplaySwitch8HourHistoryButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyDisplaySwitch8HourHistoryButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyDisplaySwitch8HourHistoryButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isDisplaySwitch8HourHistoryButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyDisplaySwitchWindroseButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyDisplaySwitchWindroseButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyDisplaySwitchWindroseButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isDisplaySwitchWindroseButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyDisplaySwitchConcentrationChartButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyDisplaySwitchConcentrationChartButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyDisplaySwitchConcentrationChartButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isDisplaySwitchConcentrationChartButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyDisplaySwitchNotesButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyDisplaySwitchNotesButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyDisplaySwitchNotesButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isDisplaySwitchNotesButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyDisplaySwitchIsotopicAnalysisButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyDisplaySwitchIsotopicAnalysisButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyDisplaySwitchIsotopicAnalysisButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isDisplaySwitchIsotopicAnalysisButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyDisplaySwitchIndicationsButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyDisplaySwitchIndicationsButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyDisplaySwitchIndicationsButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isDisplaySwitchIndicationsButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyDisplaySwitchLisasButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyDisplaySwitchLisasButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyDisplaySwitchLisasButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isDisplaySwitchLisasButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyDisplaySwitchFovsButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyDisplaySwitchFovsButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyDisplaySwitchFovsButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isDisplaySwitchFovsButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyGisMaterialTypeCastIronButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGisMaterialTypeCastIronButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyGisMaterialTypeCastIronButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isGisMaterialTypeCastIronButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyGisMaterialTypeCopperButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGisMaterialTypeCopperButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyGisMaterialTypeCopperButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isGisMaterialTypeCopperButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyGisMaterialTypeOtherPlasticButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGisMaterialTypeOtherPlasticButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyGisMaterialTypeOtherPlasticButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isGisMaterialTypeOtherPlasticButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyGisMaterialTypePEPlasticButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGisMaterialTypePEPlasticButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyGisMaterialTypePEPlasticButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isGisMaterialTypePEPlasticButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyGisMaterialTypeProtectedSteelButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGisMaterialTypeProtectedSteelButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyGisMaterialTypeProtectedSteelButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isGisMaterialTypeProtectedSteelButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyGisMaterialTypeUnProtectedSteelButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGisMaterialTypeUnProtectedSteelButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyGisMaterialTypeUnProtectedSteelButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isGisMaterialTypeUnProtectedSteelButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyGisUseAllPipesButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGisUseAllPipesButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyGisUseAllPipesButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isGisUseAllPipesButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyGisBoundaryBigBoundaryButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGisBoundaryBigBoundaryButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyGisBoundaryBigBoundaryButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isGisBoundaryBigBoundaryButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyGisBoundarySmallBoundaryButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGisBoundarySmallBoundaryButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyGisBoundarySmallBoundaryButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isGisBoundarySmallBoundaryButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyGisUseAllBoundariesButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGisUseAllBoundariesButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyGisUseAllBoundariesButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isGisUseAllBoundariesButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyStartSurveyButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyStartSurveyButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyStartSurveyButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isStartSurveyButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyStartEQSurveyButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyStartEQSurveyButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyStartEQSurveyButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isStartEQSurveyButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifySystemShutdownButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifySystemShutdownButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifySystemShutdownButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isSystemShutdownButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyStopDrivingSurveyButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyStopDrivingSurveyButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyStopDrivingSurveyButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isStopDrivingSurveyButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyStartIsotopicCaptureButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyStartIsotopicCaptureButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyStartIsotopicCaptureButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isStartIsotopicCaptureButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyRefBottleMeasButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyRefBottleMeasButtonIsVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyRefBottleMeasButtonIsVisible", data, dataRowID);
+		return this.driverViewPage.isRefBottleMeasButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyDisplaySwitch8HourHistoryButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyDisplaySwitch8HourHistoryButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyDisplaySwitch8HourHistoryButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isDisplaySwitch8HourHistoryButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyDisplaySwitchWindroseButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyDisplaySwitchWindroseButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyDisplaySwitchWindroseButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isDisplaySwitchWindroseButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyDisplaySwitchConcentrationChartButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyDisplaySwitchConcentrationChartButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyDisplaySwitchConcentrationChartButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isDisplaySwitchConcentrationChartButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyDisplaySwitchNotesButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyDisplaySwitchNotesButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyDisplaySwitchNotesButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isDisplaySwitchNotesButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isDisplaySwitchIsotopicAnalysisButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyDisplaySwitchIndicationsButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyDisplaySwitchIndicationsButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyDisplaySwitchIndicationsButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isDisplaySwitchIndicationsButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyDisplaySwitchLisasButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyDisplaySwitchLisasButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyDisplaySwitchLisasButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isDisplaySwitchLisasButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyDisplaySwitchFovsButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyDisplaySwitchFovsButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyDisplaySwitchFovsButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isDisplaySwitchFovsButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyGisMaterialTypeCastIronButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGisMaterialTypeCastIronButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyGisMaterialTypeCastIronButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isGisMaterialTypeCastIronButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyGisMaterialTypeCopperButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGisMaterialTypeCopperButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyGisMaterialTypeCopperButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isGisMaterialTypeCopperButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyGisMaterialTypeOtherPlasticButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGisMaterialTypeOtherPlasticButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyGisMaterialTypeOtherPlasticButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isGisMaterialTypeOtherPlasticButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyGisMaterialTypePEPlasticButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGisMaterialTypePEPlasticButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyGisMaterialTypePEPlasticButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isGisMaterialTypePEPlasticButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyGisMaterialTypeProtectedSteelButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGisMaterialTypeProtectedSteelButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyGisMaterialTypeProtectedSteelButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isGisMaterialTypeProtectedSteelButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyGisMaterialTypeUnProtectedSteelButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGisMaterialTypeUnProtectedSteelButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyGisMaterialTypeUnProtectedSteelButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isGisMaterialTypeUnProtectedSteelButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyGisUseAllPipesButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGisUseAllPipesButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyGisUseAllPipesButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isGisUseAllPipesButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyGisBoundaryBigBoundaryButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGisBoundaryBigBoundaryButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyGisBoundaryBigBoundaryButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isGisBoundaryBigBoundaryButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyGisBoundarySmallBoundaryButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGisBoundarySmallBoundaryButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyGisBoundarySmallBoundaryButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isGisBoundarySmallBoundaryButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyGisUseAllBoundariesButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGisUseAllBoundariesButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyGisUseAllBoundariesButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isGisUseAllBoundariesButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyStartSurveyButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyStartSurveyButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyStartSurveyButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isStartSurveyButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyStartEQSurveyButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyStartEQSurveyButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyStartEQSurveyButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isStartEQSurveyButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifySystemShutdownButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifySystemShutdownButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifySystemShutdownButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isSystemShutdownButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyStopDrivingSurveyButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyStopDrivingSurveyButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyStopDrivingSurveyButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isStopDrivingSurveyButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyStartIsotopicCaptureButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyStartIsotopicCaptureButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyStartIsotopicCaptureButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isStartIsotopicCaptureButtonVisible();
+	}
+ 
+	/**
+	 * Executes verifyRefBottleMeasButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyRefBottleMeasButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyRefBottleMeasButtonIsNotVisible", data, dataRowID);
+		return !this.driverViewPage.isRefBottleMeasButtonVisible();
+	}
+ 
 	/* Invoke action using specified ActionName */
 	@Override
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
@@ -1470,6 +1998,54 @@ public class DriverViewPageActions extends BasePageActions {
 		else if (actionName.equals("verifyWBTempButtonIsRed")) { return this.verifyWBTempButtonIsRed(data, dataRowID); }
 		else if (actionName.equals("verifyWindRoseIsNotShownOnMap")) { return this.verifyWindRoseIsNotShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyWindRoseIsShownOnMap")) { return this.verifyWindRoseIsShownOnMap(data, dataRowID); }
+		else if (actionName.equals("verifyDisplaySwitch8HourHistoryButtonIsVisible")) { return this.verifyDisplaySwitch8HourHistoryButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyDisplaySwitchWindroseButtonIsVisible")) { return this.verifyDisplaySwitchWindroseButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyDisplaySwitchConcentrationChartButtonIsVisible")) { return this.verifyDisplaySwitchConcentrationChartButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyDisplaySwitchNotesButtonIsVisible")) { return this.verifyDisplaySwitchNotesButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyDisplaySwitchIsotopicAnalysisButtonIsVisible")) { return this.verifyDisplaySwitchIsotopicAnalysisButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyDisplaySwitchIndicationsButtonIsVisible")) { return this.verifyDisplaySwitchIndicationsButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyDisplaySwitchLisasButtonIsVisible")) { return this.verifyDisplaySwitchLisasButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyDisplaySwitchFovsButtonIsVisible")) { return this.verifyDisplaySwitchFovsButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyGisMaterialTypeCastIronButtonIsVisible")) { return this.verifyGisMaterialTypeCastIronButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyGisMaterialTypeCopperButtonIsVisible")) { return this.verifyGisMaterialTypeCopperButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyGisMaterialTypeOtherPlasticButtonIsVisible")) { return this.verifyGisMaterialTypeOtherPlasticButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyGisMaterialTypePEPlasticButtonIsVisible")) { return this.verifyGisMaterialTypePEPlasticButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyGisMaterialTypeProtectedSteelButtonIsVisible")) { return this.verifyGisMaterialTypeProtectedSteelButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyGisMaterialTypeUnProtectedSteelButtonIsVisible")) { return this.verifyGisMaterialTypeUnProtectedSteelButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyGisUseAllPipesButtonIsVisible")) { return this.verifyGisUseAllPipesButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyGisBoundaryBigBoundaryButtonIsVisible")) { return this.verifyGisBoundaryBigBoundaryButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyGisBoundarySmallBoundaryButtonIsVisible")) { return this.verifyGisBoundarySmallBoundaryButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyGisUseAllBoundariesButtonIsVisible")) { return this.verifyGisUseAllBoundariesButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyStartSurveyButtonIsVisible")) { return this.verifyStartSurveyButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyStartEQSurveyButtonIsVisible")) { return this.verifyStartEQSurveyButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifySystemShutdownButtonIsVisible")) { return this.verifySystemShutdownButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyStopDrivingSurveyButtonIsVisible")) { return this.verifyStopDrivingSurveyButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyStartIsotopicCaptureButtonIsVisible")) { return this.verifyStartIsotopicCaptureButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyRefBottleMeasButtonIsVisible")) { return this.verifyRefBottleMeasButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyDisplaySwitch8HourHistoryButtonIsNotVisible")) { return this.verifyDisplaySwitch8HourHistoryButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyDisplaySwitchWindroseButtonIsNotVisible")) { return this.verifyDisplaySwitchWindroseButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyDisplaySwitchConcentrationChartButtonIsNotVisible")) { return this.verifyDisplaySwitchConcentrationChartButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyDisplaySwitchNotesButtonIsNotVisible")) { return this.verifyDisplaySwitchNotesButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible")) { return this.verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyDisplaySwitchIndicationsButtonIsNotVisible")) { return this.verifyDisplaySwitchIndicationsButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyDisplaySwitchLisasButtonIsNotVisible")) { return this.verifyDisplaySwitchLisasButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyDisplaySwitchFovsButtonIsNotVisible")) { return this.verifyDisplaySwitchFovsButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyGisMaterialTypeCastIronButtonIsNotVisible")) { return this.verifyGisMaterialTypeCastIronButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyGisMaterialTypeCopperButtonIsNotVisible")) { return this.verifyGisMaterialTypeCopperButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyGisMaterialTypeOtherPlasticButtonIsNotVisible")) { return this.verifyGisMaterialTypeOtherPlasticButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyGisMaterialTypePEPlasticButtonIsNotVisible")) { return this.verifyGisMaterialTypePEPlasticButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyGisMaterialTypeProtectedSteelButtonIsNotVisible")) { return this.verifyGisMaterialTypeProtectedSteelButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyGisMaterialTypeUnProtectedSteelButtonIsNotVisible")) { return this.verifyGisMaterialTypeUnProtectedSteelButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyGisUseAllPipesButtonIsNotVisible")) { return this.verifyGisUseAllPipesButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyGisBoundaryBigBoundaryButtonIsNotVisible")) { return this.verifyGisBoundaryBigBoundaryButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyGisBoundarySmallBoundaryButtonIsNotVisible")) { return this.verifyGisBoundarySmallBoundaryButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyGisUseAllBoundariesButtonIsNotVisible")) { return this.verifyGisUseAllBoundariesButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyStartSurveyButtonIsNotVisible")) { return this.verifyStartSurveyButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyStartEQSurveyButtonIsNotVisible")) { return this.verifyStartEQSurveyButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifySystemShutdownButtonIsNotVisible")) { return this.verifySystemShutdownButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyStopDrivingSurveyButtonIsNotVisible")) { return this.verifyStopDrivingSurveyButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyStartIsotopicCaptureButtonIsNotVisible")) { return this.verifyStartIsotopicCaptureButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyRefBottleMeasButtonIsNotVisible")) { return this.verifyRefBottleMeasButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("waitForConnectionToComplete")) { return this.waitForConnectionToComplete(data, dataRowID); }		
 		return false;
 	}

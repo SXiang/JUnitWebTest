@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.TestSetup;
+import common.source.WebElementExtender;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 
@@ -25,6 +26,30 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@CacheLookup
 	private WebElement statusButton;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[1]")
+	private WebElement displaySwitch8HourHistoryDivElement;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[2]")
+	private WebElement displaySwitchWindroseDivElement;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[3]")
+	private WebElement displaySwitchConcentrationChartDivElement;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[4]")
+	private WebElement displaySwitchNotesDivElement;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[5]")
+	private WebElement displaySwitchIsotopicAnalysisDivElement;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]")
+	private WebElement displaySwitchIndicationsDivElement;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[7]")
+	private WebElement displaySwitchLisasDivElement;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[8]")
+	private WebElement displaySwitchFovsDivElement;
+
 	@FindBy(id = "display_switch_8hour_history")
 	@CacheLookup
 	protected WebElement displaySwitch8HourHistory;
@@ -64,6 +89,36 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(id = "map_switch_map")
 	@CacheLookup
 	protected WebElement mapSwitchMap;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='gis_left']/li[1]/div")
+	protected WebElement materialTypeCopperDivElement;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='gis_left']/li[2]/div")
+	protected WebElement materialTypeUnProtectedSteelDivElement;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='gis_left']/li[3]/div")
+	protected WebElement materialTypeProtectedSteelDivElement;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='gis_left']/li[4]/div")
+	protected WebElement materialTypeCastIronDivElement;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='gis_left']/li[5]/div")
+	protected WebElement materialTypeOtherPlasticDivElement;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='gis_left']/li[6]/div")
+	protected WebElement materialTypePEPlasticDivElement;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='gis_left']/div[3]")
+	protected WebElement useAllPipesDivElement;
+		
+	@FindBy(how = How.XPATH, using = "//*[@id='gis_right']/li[1]/div")
+	protected WebElement boundariesSmallBoundaryDivElement;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='gis_right']/li[2]/div")
+	protected WebElement boundariesBigBoundaryDivElement;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='gis_right']/div[3]")
+	protected WebElement useAllBoundariesDivElement;
 
 	@FindBy(id = "d08fc87f-f979-4131-92a9-3d82f37f4bba")
 	@CacheLookup
@@ -284,12 +339,102 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		return this;
 	}
 	
+	public boolean isDisplaySwitch8HourHistoryButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.displaySwitch8HourHistoryDivElement,"ng-cloak") ||
+					this.displaySwitch8HourHistoryDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isDisplaySwitchWindroseButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.displaySwitchWindroseDivElement,"ng-cloak") ||
+					this.displaySwitchWindroseDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isDisplaySwitchConcentrationChartButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.displaySwitchConcentrationChartDivElement,"ng-cloak") ||
+					this.displaySwitchConcentrationChartDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isDisplaySwitchNotesButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.displaySwitchNotesDivElement,"ng-cloak") ||
+					this.displaySwitchNotesDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isDisplaySwitchIsotopicAnalysisButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.displaySwitchIsotopicAnalysisDivElement,"ng-cloak") ||
+					this.displaySwitchIsotopicAnalysisDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isDisplaySwitchIndicationsButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.displaySwitchIndicationsDivElement,"ng-cloak") ||
+					this.displaySwitchIndicationsDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isDisplaySwitchLisasButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.displaySwitchLisasDivElement,"ng-cloak") ||
+					this.displaySwitchLisasDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isDisplaySwitchFovsButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.displaySwitchFovsDivElement,"ng-cloak") ||
+					this.displaySwitchFovsDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
 	public boolean isPositionButtonSelected() {
 		return this.positionButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon on");
 	}
 
 	public boolean isPositionButtonGreen() {
 		return this.positionButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon on");
+	}
+
+	public boolean isGisMaterialTypeCastIronButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.materialTypeCastIronDivElement,"ng-cloak") ||
+					this.materialTypeCastIronDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isGisMaterialTypeCopperButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.materialTypeCopperDivElement,"ng-cloak") ||
+					this.materialTypeCopperDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isGisMaterialTypeOtherPlasticButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.materialTypeOtherPlasticDivElement,"ng-cloak") ||
+					this.materialTypeOtherPlasticDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isGisMaterialTypePEPlasticButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.materialTypePEPlasticDivElement,"ng-cloak") ||
+					this.materialTypePEPlasticDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isGisMaterialTypeProtectedSteelButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.materialTypeProtectedSteelDivElement,"ng-cloak") ||
+					this.materialTypeProtectedSteelDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isGisMaterialTypeUnProtectedSteelButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.materialTypeUnProtectedSteelDivElement,"ng-cloak") ||
+					this.materialTypeUnProtectedSteelDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isGisUseAllPipesButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.useAllPipesDivElement,"ng-cloak") ||
+					this.useAllPipesDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isGisBoundaryBigBoundaryButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.boundariesBigBoundaryDivElement,"ng-cloak") ||
+					this.boundariesBigBoundaryDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isGisBoundarySmallBoundaryButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.boundariesSmallBoundaryDivElement,"ng-cloak") ||
+					this.boundariesSmallBoundaryDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isGisUseAllBoundariesButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.useAllBoundariesDivElement,"ng-cloak") ||
+					this.useAllBoundariesDivElement.getAttribute("class").contains("ng-hide"));
 	}
 
 	/**

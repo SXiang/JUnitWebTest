@@ -146,6 +146,47 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	 * NOTE: This is a test method to test car icon color is showing correctly.
 	 */
 	@Test
+	public void ReferenceOnly_SimulatorTest_ButtonsVisibleVerification() {
+		Log.info("Running ReferenceOnly_SimulatorTest_CarIconColorVerification");
+
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+
+		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
+
+		driverViewPage.open();
+		driverViewPage.waitForPageLoad();
+		driverViewPage.waitForConnectionComplete();
+
+		Log.info("Clicking on MODE button");
+		driverViewPage.clickModeButton();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		assertTrue(driverViewPage.isStartSurveyButtonVisible());
+		assertTrue(driverViewPage.isSystemShutdownButtonVisible());
+		
+		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
+		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
+		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
+
+		// Let the survey run for a few seconds.
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		Log.info("Clicking on MODE button");
+		driverViewPage.clickModeButton();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		assertTrue(!driverViewPage.isStartSurveyButtonVisible());
+		assertTrue(driverViewPage.isStopDrivingSurveyButtonVisible());
+		
+		TestSetup.stopAnalyzer();
+	}
+	
+	/**
+	 * Test Case ID: <None>
+	 * NOTE: This is a test method to test car icon color is showing correctly.
+	 */
+	@Test
 	public void ReferenceOnly_SimulatorTest_CarIconColorVerification() {
 		Log.info("Running ReferenceOnly_SimulatorTest_CarIconColorVerification");
 
