@@ -143,7 +143,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: <None>
-	 * NOTE: This is a test method to test car icon color is showing correctly.
+	 * NOTE: This is a test method to test buttons visibility on driver view.
 	 */
 	@Test
 	public void ReferenceOnly_SimulatorTest_ButtonsVisibleVerification() {
