@@ -45,7 +45,11 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 
 	@FindBy(id = "BatchId")
 	private WebElement inputLotNumber;
-
+	
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='EthaneToMethaneRatio']")
+	private WebElement inputEthMthRto;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='IsotopicValue']")
 	private WebElement inputIsoValue;
 
@@ -108,13 +112,25 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 
 	public void addNewRefGasBottle(String strLotNumber, String strIsoValue,
 			String strCusName, String strLocName, String strSurveyor) {
+		this.addRefGasBottle(strLotNumber, strIsoValue, null, strCusName, strLocName, strSurveyor);
+	}
+
+	public void addNewRefGasBottle(String strLotNumber, String strIsoValue, String ethMthRto,
+			String strCusName, String strLocName, String strSurveyor) {
+		this.addRefGasBottle(strLotNumber, strIsoValue, ethMthRto, strCusName, strLocName, strSurveyor);
+	}
+
+	public void addRefGasBottle(String strLotNumber, String strIsoValue, String ethMthRto,
+			String strCusName, String strLocName, String strSurveyor) {
 		this.btnAddNewRefGasBottle.click();
 
 		this.inputLotNumber.clear();
 		this.inputLotNumber.sendKeys(strLotNumber);
 		this.inputIsoValue.clear();
 		this.inputIsoValue.sendKeys(strIsoValue);
-
+		this.inputEthMthRto.clear();
+		this.inputEthMthRto.sendKeys(ethMthRto);
+		
 		List<WebElement> options = this.dropdownSurveyor.findElements(By
 				.tagName("option"));
 		for (WebElement option : options) {
@@ -126,9 +142,10 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 									+ strSurveyor))
 				option.click();
 		}
-
+		
 		this.btnOK.click();
 
+		
 		if (isElementPresent(this.panelDupRgbErrorXPath)) {
 			WebElement panelError = driver.findElement(By
 					.xpath(this.panelDupRgbErrorXPath));
@@ -143,14 +160,14 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		this.waitForPageLoad();
 	}
 
-	public boolean addNewRefGasBottle(String strLotNumber, String strIsoValue,
+	public boolean addNewRefGasBottle(String strLotNumber, String strIsoValue,  
 			String strCusName, String strLocName, String strSurveyor,
 			boolean bFlag) {
 		this.btnAddNewRefGasBottle.click();
 		this.inputLotNumber.sendKeys(strLotNumber);
 		this.inputIsoValue.clear();
 		this.inputIsoValue.sendKeys(strIsoValue);
-
+		
 		List<WebElement> options = this.dropdownSurveyor.findElements(By
 				.tagName("option"));
 		for (WebElement option : options) {
@@ -309,6 +326,17 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		return this.btnAddNewRefGasBottle;
 	}
 
+	public WebElement getInputLotNumber(){
+		return this.inputLotNumber;
+	}
+	
+	public WebElement getInputIsoValue(){
+		return this.inputIsoValue;
+	}
+	public WebElement getBtnOk() {
+		return this.btnOk;
+	}
+
 	public WebElement getBtnCancel() {
 		return this.btnCancel;
 	}
@@ -426,7 +454,11 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	public WebElement getTheadIsoValue() {
 		return this.theadIsoValue;
 	}
-
+	
+	public WebElement getInputEthMthRto() {
+		return this.inputEthMthRto;
+	}
+	
 	public List<String> getSurveyorList(boolean allPages, int paginationSize) {
 		List<String> surveyorList = new ArrayList<String>();
 

@@ -265,6 +265,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(id = "report-ethene-biogenic-methane")
 	protected WebElement checkBoxEtheneBiogeniceMethane;
+	
+	@FindBy(how = How.XPATH, using ="//*[@id='datatable']/tbody/tr[1]/td[1]")
+	protected WebElement fstRptTilNm;
+
 
 	public enum CustomerBoundaryType {
 		District, DistrictPlat
@@ -3331,6 +3335,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return checkBoxEtheneBiogeniceMethane;
 	}
 
+	
+	public WebElement getFstRptTilNm() {
+		return fstRptTilNm;
+	}
+	
+	
+
 	/**
 	 * Method to verify the Driving Surveys Table in SSRS
 	 * 
@@ -3403,4 +3414,20 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return result;
 	}
 
+	public boolean verifyIfInDrivingSurvey(String columnName)
+	{
+		boolean result = false;
+		int count = driver.findElements(By.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div")).size();
+		for (int i=1; i < count +1 ; i++)
+		{
+			String str= driver.findElement(By.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div["+i+"]/label")).getText();
+			if (str != columnName)
+			{
+				result=true;
+			}
+		}
+	return result;
+
+	}
+	
 }

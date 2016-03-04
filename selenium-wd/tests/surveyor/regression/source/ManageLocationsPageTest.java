@@ -116,7 +116,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		
 		// TODO$: Check the locator icon shows up correctly in the selector dialog.
 		
-		manageLocationsPage.editExistingLocation(SQACUS, locationName, locationNameNew);
+		manageLocationsPage.editPDExistingLocation(SQACUS, locationName, locationNameNew);
 		assertTrue(manageLocationsPage.findExistingLocation(SQACUS, locationNameNew));
 	}
 	
@@ -171,7 +171,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName,  customerName, cityName);
 		
-		manageLocationsPage.editExistingLocation(customerName, locationName, newLocationName);
+		manageLocationsPage.editPDExistingLocation(customerName, locationName, newLocationName);
 		assertTrue(manageLocationsPage.findExistingLocation(customerName, newLocationName));
 	}
 	
@@ -203,7 +203,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName,  customerName, cityName);
 		
-		manageLocationsPage.editExistingLocation(customerName, locationName, newLocationName);
+		manageLocationsPage.editPDExistingLocation(customerName, locationName, newLocationName);
 		assertTrue(manageLocationsPage.findExistingLocation(customerName, newLocationName));
 	}
 	

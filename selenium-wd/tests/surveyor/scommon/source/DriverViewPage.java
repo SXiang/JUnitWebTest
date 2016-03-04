@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.Log;
 import common.source.TestSetup;
+import common.source.WebElementExtender;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 
@@ -77,6 +78,30 @@ public class DriverViewPage extends BaseMapViewPage {
 	@CacheLookup
 	private WebElement divBlockedUI;
 
+	@FindBy(id = "mode_start_survey_element")
+	private WebElement startSurveyButtonDivElement;
+
+	@FindBy(id = "mode_start_eq_survey_element")
+	private WebElement startEQSurveyButtonDivElement;
+
+	@FindBy(id = "mode_stop_survey_element")
+	private WebElement stopSurveyButtonDivElement;
+	
+	@FindBy(id = "mode_shutdown_analyzer_element")
+	private WebElement systemShutdownButtonDivElement;
+	
+	@FindBy(id = "mode_start_isotopic_capture_element")
+	private WebElement startIsotopicCaptureButtonDivElement;
+
+	@FindBy(id = "mode_cancel_capture")
+	private WebElement cancelCaptureButton;
+
+	@FindBy(id = "mode_cancel_capture_element")
+	private WebElement cancelCaptureButtonDivElement;
+
+	@FindBy(id = "mode_start_reference_element")
+	private WebElement refBottleMeasButtonDivElement;
+	
 	@FindBy(id = "mode_start_survey")
 	@CacheLookup
 	private WebElement startSurveyButton;
@@ -267,6 +292,11 @@ public class DriverViewPage extends BaseMapViewPage {
 		return this.startSurveyButton;
 	}
 
+	public boolean isStartSurveyButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.startSurveyButtonDivElement,"ng-cloak") ||
+					this.startSurveyButtonDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
 	public boolean isStartSurveyButtonEnabled() {
 		return this.startSurveyButton.getAttribute("class").equalsIgnoreCase("trigger_button on");
 	}
@@ -279,12 +309,22 @@ public class DriverViewPage extends BaseMapViewPage {
 		return this.startEQSurveyButton.getAttribute("class").equalsIgnoreCase("trigger_button on");
 	}
 
+	public boolean isStartEQSurveyButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.startEQSurveyButtonDivElement,"ng-cloak") ||
+					this.startEQSurveyButtonDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
 	public WebElement getSystemShutdownButton() {
 		return this.systemShutdownButton;
 	}
 
 	public boolean isSystemShutdownButtonEnabled() {
 		return this.systemShutdownButton.getAttribute("class").equalsIgnoreCase("trigger_button on");
+	}
+
+	public boolean isSystemShutdownButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.systemShutdownButtonDivElement,"ng-cloak") ||
+					this.systemShutdownButtonDivElement.getAttribute("class").contains("ng-hide"));
 	}
 
 	public WebElement getShutdownConfirmButton() {
@@ -303,6 +343,11 @@ public class DriverViewPage extends BaseMapViewPage {
 		return this.stopSurveyButton.getAttribute("class").equalsIgnoreCase("trigger_button on");
 	}
 
+	public boolean isStopDrivingSurveyButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.stopSurveyButtonDivElement,"ng-cloak") ||
+					this.stopSurveyButtonDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
 	public WebElement getStartIsotopicCaptureButton() {
 		return this.startIsotopicCaptureButton;
 	}
@@ -311,12 +356,35 @@ public class DriverViewPage extends BaseMapViewPage {
 		return this.startIsotopicCaptureButton.getAttribute("class").equalsIgnoreCase("trigger_button on");
 	}
 
+	public boolean isStartIsotopicCaptureButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.startIsotopicCaptureButtonDivElement,"ng-cloak") ||
+					this.startIsotopicCaptureButtonDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public WebElement getCancelCaptureButton() {
+		return this.cancelCaptureButton;
+	}
+
+	public boolean isCancelCaptureButtonEnabled() {
+		return this.cancelCaptureButton.getAttribute("class").equalsIgnoreCase("trigger_button on");
+	}
+
+	public boolean isCancelCaptureButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.cancelCaptureButtonDivElement,"ng-cloak") ||
+					this.cancelCaptureButtonDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
 	public WebElement getRefBottleMeasButton() {
 		return this.refBottleMeasButton;
 	}
 
 	public boolean isRefBottleMeasButtonEnabled() {
 		return this.refBottleMeasButton.getAttribute("class").equalsIgnoreCase("trigger_button on");
+	}
+
+	public boolean isRefBottleMeasButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.refBottleMeasButtonDivElement,"ng-cloak") ||
+					this.refBottleMeasButtonDivElement.getAttribute("class").contains("ng-hide"));
 	}
 
 	public String getTagLabelText() {
