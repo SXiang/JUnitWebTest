@@ -265,6 +265,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(id = "report-ethene-biogenic-methane")
 	protected WebElement checkBoxEtheneBiogeniceMethane;
+	
+	@FindBy(how = How.XPATH, using ="//*[@id='datatable']/tbody/tr[1]/td[1]")
+	protected WebElement fstRptTilNm;
+
 
 	public enum CustomerBoundaryType {
 		District, DistrictPlat
@@ -3318,6 +3322,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public WebElement getCheckBoxEtheneBiogeniceMethane() {
 		return checkBoxEtheneBiogeniceMethane;
 	}
+	
+	public WebElement getFstRptTilNm() {
+		return fstRptTilNm;
+	}
+	
+	
 	/**
 	 * Method to verify the Driving Surveys Table in SSRS
 	 * 
