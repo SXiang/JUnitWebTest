@@ -21,7 +21,16 @@ import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.JavascriptExecutor;
 
 public class WebElementExtender {
-	
+
+   public static boolean isAttributePresent(WebElement element, String attributeName)
+   {
+	   try {
+	       String attrValue = element.getAttribute(attributeName);
+	       return (attrValue != null);
+	   } catch (Exception e) {}
+	   return false;
+   }
+
    public static void setAttribute(WebElement element, String attributeName, String value)
    {
        WrapsDriver wrappedElement = (WrapsDriver) element;
