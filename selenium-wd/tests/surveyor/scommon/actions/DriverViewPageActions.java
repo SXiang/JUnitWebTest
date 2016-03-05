@@ -3,11 +3,8 @@ package surveyor.scommon.actions;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.PageFactory;
-
 import common.source.OLMapUtility;
 import common.source.BrowserCommands;
-import common.source.DateUtility;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.OLMapUtility.IconColor;
@@ -25,51 +22,27 @@ import surveyor.scommon.source.DriverViewPage.SurveyTime;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.DriverViewPage.Wind;
 
-public class DriverViewPageActions extends BasePageActions {
+public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	
-	private static final String SPLIT_BY_COMMA_REGEX_PATTERN = ",";
 	private static final String FN_ENTER_FIELD_NOTES = "enterFieldNotes";
 	private static final String FN_VERIFY_GIS_SWITCH_IS_OFF = "verifyGisSwitchIsOff";
 	private static final String FN_VERIFY_DISPLAY_SWITCH_IS_OFF = "verifyDisplaySwitchIsOff";
 	private static final String FN_VERIFY_MAP_SWITCH_OFF = "verifyMapSwitchOff";
 	private static final String FN_VERIFY_MAP_SWITCH_ON = "verifyMapSwitchOn";
-	private static final String FN_VERIFY_FIELD_NOTES_IS_SHOWN_ON_MAP = "verifyFieldNotesIsShownOnMap";
-	private static final String FN_VERIFY_FIELD_NOTES_IS_NOT_SHOWN_ON_MAP = "verifyFieldNotesIsNotShownOnMap";
 	private static final String FN_VERIFY_GIS_SWITCH_IS_ON = "verifyGisSwitchIsOn";
 	private static final String FN_VERIFY_DISPLAY_SWITCH_IS_ON = "verifyDisplaySwitchIsOn";
-	private static final String FN_VERIFY_SURVEY_INFO_ANALYZER_LABEL_EQUALS = "verifySurveyInfoAnalyzerLabelEquals";
-	private static final String FN_VERIFY_SURVEY_INFO_SURVEYOR_LABEL_EQUALS = "verifySurveyInfoSurveyorLabelEquals";
-	private static final String FN_VERIFY_SURVEY_INFO_DRIVER_LABEL_EQUALS = "verifySurveyInfoDriverLabelEquals";
-	private static final String FN_VERIFY_SURVEY_INFO_STABILITY_CLASS_LABEL_EQUALS = "verifySurveyInfoStabilityClassLabelEquals";
-	private static final String FN_VERIFY_SURVEY_INFO_ZOOM_LEVEL_LABEL_EQUALS = "verifySurveyInfoZoomLevelLabelEquals";
-	private static final String FN_VERIFY_SURVEY_INFO_SURVEY_STATUS_LABEL_EQUALS = "verifySurveyInfoSurveyStatusLabelEquals";
-	private static final String FN_VERIFY_SURVEY_INFO_TAG_LABEL_EQUALS = "verifySurveyInfoTagLabelEquals";
-	private static final String FN_VERIFY_SURVEY_INFO_TIME_LABEL_STARTS_WITH = "verifySurveyInfoTimeLabelStartsWith";
-	private static final String FN_VERIFY_SURVEY_INFO_TIME_LABEL_EQUALS = "verifySurveyInfoTimeLabelEquals";
-	private static final String FN_VERIFY_SURVEY_INFO_TIME_REMAINING_LABEL_EQUALS = "verifySurveyInfoTimeRemainingLabelEquals";
-	private static final String FN_VERIFY_SURVEY_INFO_TIME_ELAPSED_LABEL_EQUALS = "verifySurveyInfoTimeElapsedLabelEquals";
-	private static final String FN_VERIFY_SURVEY_INFO_TIME_ELAPSED_LABEL_STARTS_WITH = "verifySurveyInfoTimeElapsedLabelStartsWith";
-	private static final String FN_VERIFY_SURVEY_INFO_TIME_REMAINING_LABEL_STARTS_WITH = "verifySurveyInfoTimeRemainingLabelStartsWith";
-	private static final String FN_VERIFY_SURVEY_INFO_MODE_LABEL_EQUALS = "verifySurveyInfoModeLabelEquals";
 	private static final String FN_VERIFY_CROSS_HAIR_ICON_IS_SHOWN_ON_MAP = "verifyCrossHairIconIsShownOnMap";
 	private static final String FN_START_DRIVING_SURVEY = "startDrivingSurvey";
 	private static final String CLS_DRIVER_VIEW_PAGE_ACTIONS = "DriverViewPageActions::";
 	
-	private DriverViewPage driverViewPage = null;
 	private DriverViewDataReader dataReader = null;
 
 	public static DriverViewDataRow workingDataRow = null;    // Stores the workingDataRow from startSurvey action
 
 
 	public DriverViewPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
-		super(driver, strBaseURL);
-		initializeDriverViewPage(driver, strBaseURL, testSetup);
+		super(driver, strBaseURL, testSetup);
 		setDataReader(new DriverViewDataReader(this.excelUtility));
-	}
-
-	public void initializeDriverViewPage(WebDriver driver, String strBaseURL, TestSetup testSetup) {
-		setDriverViewPage(new DriverViewPage(driver, testSetup, strBaseURL));
-		PageFactory.initElements(driver, getDriverViewPage());
 	}
 
 	public boolean clickOnCurtainArrowDownButton(String data, Integer dataRowID) {
@@ -208,13 +181,6 @@ public class DriverViewPageActions extends BasePageActions {
 		return true;
 	}
 
-	public boolean clickOnHeaderInfoBox(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.clickOnHeaderInfoBox", data, dataRowID);
-		getDriverViewPage().clickHeaderInfoBox();
-		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
-		return true;
-	}
-
 	public boolean hideCurtainView(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.hideCurtainView", data, dataRowID);
 		getDriverViewPage().hideCurtainMenu();
@@ -282,7 +248,7 @@ public class DriverViewPageActions extends BasePageActions {
 		CloudCover cloudCover = CloudCover.LessThan50;
 		SurveyType type = SurveyType.Standard;
 		if (!ActionArguments.isEmpty(commaSeperatedValues)){
-			List<String> listValues = RegexUtility.split(commaSeperatedValues, SPLIT_BY_COMMA_REGEX_PATTERN);
+			List<String> listValues = RegexUtility.split(commaSeperatedValues, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
 			surveyTag = ActionArguments.evaluateArgForFunction(listValues.get(0));
 			time = getSurveyTime(listValues.get(1));
 			radiation = getSolarRadiation(listValues.get(2));
@@ -391,7 +357,7 @@ public class DriverViewPageActions extends BasePageActions {
 	public boolean refreshPage(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.refreshPage", data, dataRowID);
 		BrowserCommands.refresh();
-		initializeDriverViewPage(TestContext.INSTANCE.getDriver(), 
+		initializePageObject(TestContext.INSTANCE.getDriver(), 
 				TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
 		return true;
 	}
@@ -723,31 +689,8 @@ public class DriverViewPageActions extends BasePageActions {
 		return true;
 	}
 	
-	/* Position Button */
-	public boolean turnOnPosition(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.turnOnPosition", data, dataRowID);
-		getDriverViewPage().togglePositionButton(true);
-		return true;
-	}
-
-	public boolean turnOffPosition(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.turnOnPosition", data, dataRowID);
-		getDriverViewPage().togglePositionButton(false);
-		return true;
-	}
-
 	/* Button state verification methods */
 	
-	public boolean verifyAnemometerButtonIsGreen(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.verifyAnemometerButtonIsGreen", data, dataRowID);
-		return getDriverViewPage().isAnemometerButtonGreen();
-	}
-
-	public boolean verifyAnemometerButtonIsRed(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.verifyAnemometerButtonIsRed", data, dataRowID);
-		return getDriverViewPage().isAnemometerButtonRed();
-	}
-
 	public boolean verifyDisplaySwitchIsOn(String data, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.verifyDisplaySwitchIsOn", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_DISPLAY_SWITCH_IS_ON, ARG_DATA, data);
@@ -776,16 +719,6 @@ public class DriverViewPageActions extends BasePageActions {
 		logAction("DriverViewPageActions.verifyDisplaySwitchIsOff", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_DISPLAY_SWITCH_IS_OFF, ARG_DATA, data);
 		return !verifyDisplaySwitchIsOn(data, dataRowID);
-	}
-
-	public boolean verifyFlowButtonIsGreen(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.verifyFlowButtonIsGreen", data, dataRowID);
-		return getDriverViewPage().isFlowButtonGreen();
-	}
-
-	public boolean verifyFlowButtonIsRed(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.verifyFlowButtonIsRed", data, dataRowID);
-		return getDriverViewPage().isFlowButtonRed();
 	}
 
 	public boolean verifyGisSwitchIsOn(String data, Integer dataRowID) throws Exception {
@@ -836,26 +769,6 @@ public class DriverViewPageActions extends BasePageActions {
 		logAction("DriverViewPageActions.verifyGisSwitchIsOff", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_GIS_SWITCH_IS_OFF, ARG_DATA, data);
 		return !verifyGisSwitchIsOn(data, dataRowID);
-	}
-
-	public boolean verifyGPSButtonIsGreen(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.verifyGPSButtonIsGreen", data, dataRowID);
-		return getDriverViewPage().isGPSButtonGreen();
-	}
-
-	public boolean verifyGPSButtonIsRed(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.verifyGPSButtonIsRed", data, dataRowID);
-		return getDriverViewPage().isGPSButtonRed();
-	}
-
-	public boolean verifyHBTempButtonIsGreen(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.verifyHBTempButtonIsGreen", data, dataRowID);
-		return getDriverViewPage().isHBTempButtonGreen();
-	}
-
-	public boolean verifyHBTempButtonIsRed(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.verifyHBTempButtonIsRed", data, dataRowID);
-		return getDriverViewPage().isHBTempButtonRed();
 	}
 
 	public boolean verifyPageLoaded(String data, Integer dataRowID) {
@@ -1094,158 +1007,13 @@ public class DriverViewPageActions extends BasePageActions {
 		return !verifyCrossHairIconIsShownOnMap(data, dataRowID);
 	}
 
-	/* SurveyInfo - Labels */
-	public boolean verifySurveyInfoModeLabelEquals(String data, Integer dataRowID) throws Exception {
-		logAction("DriverViewPageActions.verifySurveyInfoModeLabelEquals", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_MODE_LABEL_EQUALS, ARG_DATA, data);
-		log(String.format("Looking for Text-[%s], Found Survey Mode Label Text-[%s]", data, getDriverViewPage().getSurveyModeLabelText()));
-		return getDriverViewPage().getSurveyModeLabelText().equals(data);
-	}
-	public boolean verifySurveyInfoSurveyStatusLabelEquals(String data, Integer dataRowID) throws Exception {
-		logAction("DriverViewPageActions.verifySurveyInfoSurveyStatusLabelEquals", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_SURVEY_STATUS_LABEL_EQUALS, ARG_DATA, data);
-		log(String.format("Looking for Text-[%s], Found Survey Status Label Text-[%s]", data, getDriverViewPage().getSurveyStatusLabelText()));
-		return getDriverViewPage().getSurveyStatusLabelText().equals(data);
-	}
+	/* SurveyInfo - Label method dependent on workingDataRow. All other methods in Base Class. */
 	public boolean verifySurveyInfoTagLabelEquals(String data, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.verifySurveyInfoTagLabelEquals", data, dataRowID);
-
 		String actualTagValue = getDriverViewPage().getTagLabelText();
-		String expectedTagValue = null;
-		if (!ActionArguments.isEmpty(data)) {
-			expectedTagValue = "Tag: " + data;
-		} else if (dataRowID > 0) {
-			expectedTagValue = "Tag: " + workingDataRow.surveyTag;
-		} else {
-			throw new Exception(String.format("Either data or dataRowID must be passed for %s action.", FN_VERIFY_SURVEY_INFO_TAG_LABEL_EQUALS));
-		}
-		
-		log(String.format("Looking for Text-[%s], Found Survey Tag Label Text-[%s]", expectedTagValue, actualTagValue));
-		return actualTagValue.equals(expectedTagValue);
+		return verifySurveyInfoTagLabelEquals(data, dataRowID, workingDataRow, actualTagValue);
 	}
-	public boolean verifySurveyInfoTimeLabelStartsWith(String data, Integer dataRowID) throws Exception {
-		logAction("DriverViewPageActions.verifySurveyInfoTimeLabelStartsWith", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_TIME_LABEL_STARTS_WITH, ARG_DATA, data);
-		log(String.format("Looking for Text-[%s], Found Time Label Text-[%s]", data, getDriverViewPage().getTimeLabelText()));
-		return getDriverViewPage().getTimeLabelText().startsWith(data);
-	}
-	public boolean verifySurveyInfoTimeLabelEquals(String data, Integer dataRowID) throws Exception {
-		logAction("DriverViewPageActions.verifySurveyInfoTimeLabelEquals", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_TIME_LABEL_EQUALS, ARG_DATA, data);
-		log(String.format("Looking for Text-[%s], Found Time Label Text-[%s]", data, getDriverViewPage().getTimeElapsedLabelText()));
-		return getDriverViewPage().getTimeElapsedLabelText().equals(data);
-	}
-	public boolean verifySurveyInfoTimeElapsedLabelEquals(String data, Integer dataRowID) throws Exception {
-		logAction("DriverViewPageActions.verifySurveyInfoTimeElapsedLabelEquals", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_TIME_ELAPSED_LABEL_EQUALS, ARG_DATA, data);
-		log(String.format("Looking for Text-[%s], Found Time Elapsed Label Text-[%s]", data, getDriverViewPage().getTimeElapsedLabelText()));
-		return getDriverViewPage().getTimeElapsedLabelText().equals(data);
-	}
-	public boolean verifySurveyInfoTimeRemainingLabelEquals(String data, Integer dataRowID) throws Exception {
-		logAction("DriverViewPageActions.verifySurveyInfoTimeRemainingLabelEquals", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_TIME_REMAINING_LABEL_EQUALS, ARG_DATA, data);
-		log(String.format("Looking for Text-[%s], Found Time Remaining Label Text-[%s]", data, getDriverViewPage().getTimeRemainingLabelText()));
-		return getDriverViewPage().getTimeRemainingLabelText().equals(data);
-	}
-	public boolean verifySurveyInfoZoomLevelLabelEquals(String data, Integer dataRowID) throws Exception {
-		logAction("DriverViewPageActions.verifySurveyInfoZoomLevelLabelEquals", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_ZOOM_LEVEL_LABEL_EQUALS, ARG_DATA, data);
-		log(String.format("Looking for Text-[%s], Found Zoom Level Label Text-[%s]", data, getDriverViewPage().getZoomLevelLabelText()));
-		return getDriverViewPage().getZoomLevelLabelText().equals(data);
-	}
-	public boolean verifySurveyInfoStabilityClassLabelEquals(String data, Integer dataRowID) throws Exception {
-		logAction("DriverViewPageActions.verifySurveyInfoStabilityClassLabelEquals", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_STABILITY_CLASS_LABEL_EQUALS, ARG_DATA, data);
-		log(String.format("Looking for Text-[%s], Found Stability Class Label Text-[%s]", data, getDriverViewPage().getStabilityClassLabelText()));
-		return getDriverViewPage().getStabilityClassLabelText().equals(data);
-	}
-	public boolean verifySurveyInfoDriverLabelEquals(String data, Integer dataRowID) throws Exception {
-		logAction("DriverViewPageActions.verifySurveyInfoDriverLabelEquals", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_DRIVER_LABEL_EQUALS, ARG_DATA, data);
-		log(String.format("Looking for Text-[%s], Found Driver Label Text-[%s]", data, getDriverViewPage().getDriverLabelText()));
-		return getDriverViewPage().getDriverLabelText().equals(data);
-	}
-	public boolean verifySurveyInfoSurveyorLabelEquals(String data, Integer dataRowID) throws Exception {
-		logAction("DriverViewPageActions.verifySurveyInfoSurveyorLabelEquals", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_SURVEYOR_LABEL_EQUALS, ARG_DATA, data);
-		log(String.format("Looking for Text-[%s], Found Surveyor Label Text-[%s]", data, getDriverViewPage().getSurveyorLabelText()));
-		return getDriverViewPage().getSurveyorLabelText().equals(data);
-	}
-	public boolean verifySurveyInfoAnalyzerLabelEquals(String data, Integer dataRowID) throws Exception {
-		logAction("DriverViewPageActions.verifySurveyInfoAnalyzerLabelEquals", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_ANALYZER_LABEL_EQUALS, ARG_DATA, data);
-		log(String.format("Looking for Text-[%s], Found Analyzer Label Text-[%s]", data, getDriverViewPage().getAnalyzerLabelText()));
-		return getDriverViewPage().getAnalyzerLabelText().equals(data);
-	}
-	public boolean verifySurveyInfoTimeElapsedLabelStartsWith(String data, Integer dataRowID) throws Exception {
-		logAction("DriverViewPageActions.verifySurveyInfoTimeElapsedLabelStartsWith", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_TIME_ELAPSED_LABEL_STARTS_WITH, ARG_DATA, data);
-		log(String.format("Looking for Text-[%s], Found Time Elapsed Label Text-[%s]", data, getDriverViewPage().getTimeElapsedLabelText()));
-		return getDriverViewPage().getTimeElapsedLabelText().startsWith(data);
-	}
-	public boolean verifySurveyInfoTimeRemainingLabelStartsWith(String data, Integer dataRowID) throws Exception {
-		logAction("DriverViewPageActions.verifySurveyInfoTimeRemainingLabelStartsWith", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_TIME_REMAINING_LABEL_STARTS_WITH, ARG_DATA, data);
-		log(String.format("Looking for Text-[%s], Found Time Remaining Label Text-[%s]", data, getDriverViewPage().getTimeRemainingLabelText()));
-		return getDriverViewPage().getTimeRemainingLabelText().startsWith(data);
-	}
-	
-	/**
-	 * Executes verifySurveyInfoTimeElapsedIsTickingForward action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws InterruptedException 
-	 */
-	public boolean verifySurveyInfoTimeElapsedIsTickingForward(String data, Integer dataRowID) throws InterruptedException {
-		logAction("DriverViewPageActions.verifySurveyInfoTimeElapsedIsTickingForward", data, dataRowID);
-		return DateUtility.isTimeTickingForward(getDriverViewPage().getTimeElapsedLabel());
-	}
- 
-	/**
-	 * Executes verifySurveyInfoTimeLabelIsTickingForward action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws InterruptedException 
-	 */
-	public boolean verifySurveyInfoTimeLabelIsTickingForward(String data, Integer dataRowID) throws InterruptedException {
-		logAction("DriverViewPageActions.verifySurveyInfoTimeLabelIsTickingForward", data, dataRowID);
-		return DateUtility.isTimeTickingForward(getDriverViewPage().getTimeLabel());
-	}
- 
-	/**
-	 * Executes verifySurveyInfoTimeRemainingLabelIsTickingBackward action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws InterruptedException 
-	 */
-	public boolean verifySurveyInfoTimeRemainingLabelIsTickingBackward(String data, Integer dataRowID) throws InterruptedException {
-		logAction("DriverViewPageActions.verifySurveyInfoTimeRemainingLabelIsTickingBackward", data, dataRowID);
-		return DateUtility.isTimeTickingBackward(getDriverViewPage().getTimeRemainingLabel());
-	}
-	
-	public boolean verifyFieldNotesIsShownOnMap(String data, Integer dataRowID) throws Exception {
-		logAction("DriverViewPageActions.verifyFieldNotesIsShownOnMap", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_FIELD_NOTES_IS_SHOWN_ON_MAP, ARG_DATA, data);
-		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
-		return mapUtility.isFieldNoteShown(data);
-	}
-	public boolean verifyWindRoseIsShownOnMap(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.verifyWindRoseIsShownOnMap", data, dataRowID);
-		return this.getDriverViewPage().isWindRoseShown();
-	}
-	public boolean verifyFieldNotesIsNotShownOnMap(String data, Integer dataRowID) throws Exception {
-		logAction("DriverViewPageActions.verifyFieldNotesIsNotShownOnMap", data, dataRowID);
-		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
-		return !mapUtility.isFieldNoteShown(data);
-	}
-	public boolean verifyWindRoseIsNotShownOnMap(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.verifyWindRoseIsNotShownOnMap", data, dataRowID);
-		return !this.getDriverViewPage().isWindRoseShown();
-	}
-	
+
 	/* TO BE IMPLEMENTED METHODS */
 	public boolean verifyCarIconIsNotInCenter(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyCarIconIsNotInCenter", data, dataRowID);
@@ -1299,7 +1067,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyDriverViewPageIsOpened(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyDriverViewPageIsOpened", data, dataRowID);
-		return this.driverViewPage.checkIfAtDriverViewPage();
+		return getDriverViewPage().checkIfAtDriverViewPage();
 	}
 
 	/**
@@ -1310,7 +1078,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyDisplaySwitch8HourHistoryButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyDisplaySwitch8HourHistoryButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isDisplaySwitch8HourHistoryButtonVisible();
+		return getDriverViewPage().isDisplaySwitch8HourHistoryButtonVisible();
 	}
  
 	/**
@@ -1321,7 +1089,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyDisplaySwitchWindroseButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyDisplaySwitchWindroseButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isDisplaySwitchWindroseButtonVisible();
+		return getDriverViewPage().isDisplaySwitchWindroseButtonVisible();
 	}
  
 	/**
@@ -1332,7 +1100,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyDisplaySwitchConcentrationChartButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyDisplaySwitchConcentrationChartButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isDisplaySwitchConcentrationChartButtonVisible();
+		return getDriverViewPage().isDisplaySwitchConcentrationChartButtonVisible();
 	}
  
 	/**
@@ -1343,7 +1111,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyDisplaySwitchNotesButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyDisplaySwitchNotesButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isDisplaySwitchNotesButtonVisible();
+		return getDriverViewPage().isDisplaySwitchNotesButtonVisible();
 	}
  
 	/**
@@ -1354,7 +1122,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyDisplaySwitchIsotopicAnalysisButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyDisplaySwitchIsotopicAnalysisButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isDisplaySwitchIsotopicAnalysisButtonVisible();
+		return getDriverViewPage().isDisplaySwitchIsotopicAnalysisButtonVisible();
 	}
  
 	/**
@@ -1365,7 +1133,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyDisplaySwitchIndicationsButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyDisplaySwitchIndicationsButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isDisplaySwitchIndicationsButtonVisible();
+		return getDriverViewPage().isDisplaySwitchIndicationsButtonVisible();
 	}
  
 	/**
@@ -1376,7 +1144,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyDisplaySwitchLisasButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyDisplaySwitchLisasButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isDisplaySwitchLisasButtonVisible();
+		return getDriverViewPage().isDisplaySwitchLisasButtonVisible();
 	}
  
 	/**
@@ -1387,7 +1155,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyDisplaySwitchFovsButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyDisplaySwitchFovsButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isDisplaySwitchFovsButtonVisible();
+		return getDriverViewPage().isDisplaySwitchFovsButtonVisible();
 	}
  
 	/**
@@ -1398,7 +1166,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyGisMaterialTypeCastIronButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyGisMaterialTypeCastIronButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isGisMaterialTypeCastIronButtonVisible();
+		return getDriverViewPage().isGisMaterialTypeCastIronButtonVisible();
 	}
  
 	/**
@@ -1409,7 +1177,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyGisMaterialTypeCopperButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyGisMaterialTypeCopperButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isGisMaterialTypeCopperButtonVisible();
+		return getDriverViewPage().isGisMaterialTypeCopperButtonVisible();
 	}
  
 	/**
@@ -1420,7 +1188,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyGisMaterialTypeOtherPlasticButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyGisMaterialTypeOtherPlasticButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isGisMaterialTypeOtherPlasticButtonVisible();
+		return getDriverViewPage().isGisMaterialTypeOtherPlasticButtonVisible();
 	}
  
 	/**
@@ -1431,7 +1199,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyGisMaterialTypePEPlasticButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyGisMaterialTypePEPlasticButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isGisMaterialTypePEPlasticButtonVisible();
+		return getDriverViewPage().isGisMaterialTypePEPlasticButtonVisible();
 	}
  
 	/**
@@ -1442,7 +1210,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyGisMaterialTypeProtectedSteelButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyGisMaterialTypeProtectedSteelButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isGisMaterialTypeProtectedSteelButtonVisible();
+		return getDriverViewPage().isGisMaterialTypeProtectedSteelButtonVisible();
 	}
  
 	/**
@@ -1453,7 +1221,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyGisMaterialTypeUnProtectedSteelButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyGisMaterialTypeUnProtectedSteelButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isGisMaterialTypeUnProtectedSteelButtonVisible();
+		return getDriverViewPage().isGisMaterialTypeUnProtectedSteelButtonVisible();
 	}
  
 	/**
@@ -1464,7 +1232,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyGisUseAllPipesButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyGisUseAllPipesButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isGisUseAllPipesButtonVisible();
+		return getDriverViewPage().isGisUseAllPipesButtonVisible();
 	}
  
 	/**
@@ -1475,7 +1243,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyGisBoundaryBigBoundaryButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyGisBoundaryBigBoundaryButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isGisBoundaryBigBoundaryButtonVisible();
+		return getDriverViewPage().isGisBoundaryBigBoundaryButtonVisible();
 	}
  
 	/**
@@ -1486,7 +1254,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyGisBoundarySmallBoundaryButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyGisBoundarySmallBoundaryButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isGisBoundarySmallBoundaryButtonVisible();
+		return getDriverViewPage().isGisBoundarySmallBoundaryButtonVisible();
 	}
  
 	/**
@@ -1497,7 +1265,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyGisUseAllBoundariesButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyGisUseAllBoundariesButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isGisUseAllBoundariesButtonVisible();
+		return getDriverViewPage().isGisUseAllBoundariesButtonVisible();
 	}
  
 	/**
@@ -1508,7 +1276,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyStartSurveyButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyStartSurveyButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isStartSurveyButtonVisible();
+		return getDriverViewPage().isStartSurveyButtonVisible();
 	}
  
 	/**
@@ -1519,7 +1287,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyStartEQSurveyButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyStartEQSurveyButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isStartEQSurveyButtonVisible();
+		return getDriverViewPage().isStartEQSurveyButtonVisible();
 	}
  
 	/**
@@ -1530,7 +1298,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifySystemShutdownButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifySystemShutdownButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isSystemShutdownButtonVisible();
+		return getDriverViewPage().isSystemShutdownButtonVisible();
 	}
  
 	/**
@@ -1541,7 +1309,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyStopDrivingSurveyButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyStopDrivingSurveyButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isStopDrivingSurveyButtonVisible();
+		return getDriverViewPage().isStopDrivingSurveyButtonVisible();
 	}
  
 	/**
@@ -1552,7 +1320,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyStartIsotopicCaptureButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyStartIsotopicCaptureButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isStartIsotopicCaptureButtonVisible();
+		return getDriverViewPage().isStartIsotopicCaptureButtonVisible();
 	}
  
 	/**
@@ -1563,7 +1331,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyRefBottleMeasButtonIsVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyRefBottleMeasButtonIsVisible", data, dataRowID);
-		return this.driverViewPage.isRefBottleMeasButtonVisible();
+		return getDriverViewPage().isRefBottleMeasButtonVisible();
 	}
  
 	/**
@@ -1574,7 +1342,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyDisplaySwitch8HourHistoryButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyDisplaySwitch8HourHistoryButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isDisplaySwitch8HourHistoryButtonVisible();
+		return !getDriverViewPage().isDisplaySwitch8HourHistoryButtonVisible();
 	}
  
 	/**
@@ -1585,7 +1353,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyDisplaySwitchWindroseButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyDisplaySwitchWindroseButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isDisplaySwitchWindroseButtonVisible();
+		return !getDriverViewPage().isDisplaySwitchWindroseButtonVisible();
 	}
  
 	/**
@@ -1596,7 +1364,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyDisplaySwitchConcentrationChartButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyDisplaySwitchConcentrationChartButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isDisplaySwitchConcentrationChartButtonVisible();
+		return !getDriverViewPage().isDisplaySwitchConcentrationChartButtonVisible();
 	}
  
 	/**
@@ -1607,7 +1375,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyDisplaySwitchNotesButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyDisplaySwitchNotesButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isDisplaySwitchNotesButtonVisible();
+		return !getDriverViewPage().isDisplaySwitchNotesButtonVisible();
 	}
  
 	/**
@@ -1618,7 +1386,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isDisplaySwitchIsotopicAnalysisButtonVisible();
+		return !getDriverViewPage().isDisplaySwitchIsotopicAnalysisButtonVisible();
 	}
  
 	/**
@@ -1629,7 +1397,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyDisplaySwitchIndicationsButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyDisplaySwitchIndicationsButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isDisplaySwitchIndicationsButtonVisible();
+		return !getDriverViewPage().isDisplaySwitchIndicationsButtonVisible();
 	}
  
 	/**
@@ -1640,7 +1408,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyDisplaySwitchLisasButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyDisplaySwitchLisasButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isDisplaySwitchLisasButtonVisible();
+		return !getDriverViewPage().isDisplaySwitchLisasButtonVisible();
 	}
  
 	/**
@@ -1651,7 +1419,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyDisplaySwitchFovsButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyDisplaySwitchFovsButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isDisplaySwitchFovsButtonVisible();
+		return !getDriverViewPage().isDisplaySwitchFovsButtonVisible();
 	}
  
 	/**
@@ -1662,7 +1430,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyGisMaterialTypeCastIronButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyGisMaterialTypeCastIronButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isGisMaterialTypeCastIronButtonVisible();
+		return !getDriverViewPage().isGisMaterialTypeCastIronButtonVisible();
 	}
  
 	/**
@@ -1673,7 +1441,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyGisMaterialTypeCopperButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyGisMaterialTypeCopperButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isGisMaterialTypeCopperButtonVisible();
+		return !getDriverViewPage().isGisMaterialTypeCopperButtonVisible();
 	}
  
 	/**
@@ -1684,7 +1452,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyGisMaterialTypeOtherPlasticButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyGisMaterialTypeOtherPlasticButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isGisMaterialTypeOtherPlasticButtonVisible();
+		return !getDriverViewPage().isGisMaterialTypeOtherPlasticButtonVisible();
 	}
  
 	/**
@@ -1695,7 +1463,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyGisMaterialTypePEPlasticButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyGisMaterialTypePEPlasticButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isGisMaterialTypePEPlasticButtonVisible();
+		return !getDriverViewPage().isGisMaterialTypePEPlasticButtonVisible();
 	}
  
 	/**
@@ -1706,7 +1474,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyGisMaterialTypeProtectedSteelButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyGisMaterialTypeProtectedSteelButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isGisMaterialTypeProtectedSteelButtonVisible();
+		return !getDriverViewPage().isGisMaterialTypeProtectedSteelButtonVisible();
 	}
  
 	/**
@@ -1717,7 +1485,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyGisMaterialTypeUnProtectedSteelButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyGisMaterialTypeUnProtectedSteelButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isGisMaterialTypeUnProtectedSteelButtonVisible();
+		return !getDriverViewPage().isGisMaterialTypeUnProtectedSteelButtonVisible();
 	}
  
 	/**
@@ -1728,7 +1496,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyGisUseAllPipesButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyGisUseAllPipesButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isGisUseAllPipesButtonVisible();
+		return !getDriverViewPage().isGisUseAllPipesButtonVisible();
 	}
  
 	/**
@@ -1739,7 +1507,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyGisBoundaryBigBoundaryButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyGisBoundaryBigBoundaryButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isGisBoundaryBigBoundaryButtonVisible();
+		return !getDriverViewPage().isGisBoundaryBigBoundaryButtonVisible();
 	}
  
 	/**
@@ -1750,7 +1518,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyGisBoundarySmallBoundaryButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyGisBoundarySmallBoundaryButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isGisBoundarySmallBoundaryButtonVisible();
+		return !getDriverViewPage().isGisBoundarySmallBoundaryButtonVisible();
 	}
  
 	/**
@@ -1761,7 +1529,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyGisUseAllBoundariesButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyGisUseAllBoundariesButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isGisUseAllBoundariesButtonVisible();
+		return !getDriverViewPage().isGisUseAllBoundariesButtonVisible();
 	}
  
 	/**
@@ -1772,7 +1540,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyStartSurveyButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyStartSurveyButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isStartSurveyButtonVisible();
+		return !getDriverViewPage().isStartSurveyButtonVisible();
 	}
  
 	/**
@@ -1783,7 +1551,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyStartEQSurveyButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyStartEQSurveyButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isStartEQSurveyButtonVisible();
+		return !getDriverViewPage().isStartEQSurveyButtonVisible();
 	}
  
 	/**
@@ -1794,7 +1562,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifySystemShutdownButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifySystemShutdownButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isSystemShutdownButtonVisible();
+		return !getDriverViewPage().isSystemShutdownButtonVisible();
 	}
  
 	/**
@@ -1805,7 +1573,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyStopDrivingSurveyButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyStopDrivingSurveyButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isStopDrivingSurveyButtonVisible();
+		return !getDriverViewPage().isStopDrivingSurveyButtonVisible();
 	}
  
 	/**
@@ -1816,7 +1584,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyStartIsotopicCaptureButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyStartIsotopicCaptureButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isStartIsotopicCaptureButtonVisible();
+		return !getDriverViewPage().isStartIsotopicCaptureButtonVisible();
 	}
  
 	/**
@@ -1827,7 +1595,7 @@ public class DriverViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyRefBottleMeasButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyRefBottleMeasButtonIsNotVisible", data, dataRowID);
-		return !this.driverViewPage.isRefBottleMeasButtonVisible();
+		return !getDriverViewPage().isRefBottleMeasButtonVisible();
 	}
  
 	/* Invoke action using specified ActionName */
@@ -1932,8 +1700,8 @@ public class DriverViewPageActions extends BasePageActions {
 		else if (actionName.equals("verifyDisplaySwitchIsOff")) { return this.verifyDisplaySwitchIsOff(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchIsOn")) { return this.verifyDisplaySwitchIsOn(data, dataRowID); }
 		else if (actionName.equals("verifyDriverViewPageIsOpened")) { return this.verifyDriverViewPageIsOpened(data, dataRowID); }
-		else if (actionName.equals(FN_VERIFY_FIELD_NOTES_IS_NOT_SHOWN_ON_MAP)) { return this.verifyFieldNotesIsNotShownOnMap(data, dataRowID); }
-		else if (actionName.equals(FN_VERIFY_FIELD_NOTES_IS_SHOWN_ON_MAP)) { return this.verifyFieldNotesIsShownOnMap(data, dataRowID); }
+		else if (actionName.equals("verifyFieldNotesIsNotShownOnMap")) { return this.verifyFieldNotesIsNotShownOnMap(data, dataRowID); }
+		else if (actionName.equals("verifyFieldNotesIsShownOnMap")) { return this.verifyFieldNotesIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyFlowButtonIsGreen")) { return this.verifyFlowButtonIsGreen(data, dataRowID); }
 		else if (actionName.equals("verifyFlowButtonIsRed")) { return this.verifyFlowButtonIsRed(data, dataRowID); }
 		else if (actionName.equals("verifyFOVIsNotShownOnMap")) { return this.verifyFOVIsNotShownOnMap(data, dataRowID); }
@@ -2062,10 +1830,6 @@ public class DriverViewPageActions extends BasePageActions {
 	}
 
 	public DriverViewPage getDriverViewPage() {
-		return driverViewPage;
-	}
-
-	public void setDriverViewPage(DriverViewPage driverViewPage) {
-		this.driverViewPage = driverViewPage;
+		return (DriverViewPage)this.pageObject;
 	}
 }
