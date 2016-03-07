@@ -10,6 +10,8 @@ public class ResourceKeys {
 	public static final String ComplianceReport_PercentCoverageReportArea = "ComplianceReport_PercentCoverageReportArea";
 	public static final String ComplianceReports_AddNew = "ComplianceReports_AddNew";
 	public static final String ComplianceReports_PageTitle = "ComplianceReports_PageTitle";
+	public static final String EqReports_PageTitle = "EQReports_PageTitle";
+	public static final String EqReports_AddNew = "EqReports_AddNew";
 	public static final String ComplianceReportSSRS_AdditionalSurveys = "ComplianceReportSSRS_AdditionalSurveys";
 	public static final String ComplianceReportSSRS_Amplitude = "ComplianceReportSSRS_Amplitude(ppm)";
 	public static final String ComplianceReportSSRS_Analysis = "ComplianceReportSSRS_Analysis";
@@ -169,4 +171,6 @@ public class ResourceKeys {
 	public static final String Validation_EnterValueInRange = "Validation_EnterValueInRange";
 	public static final String Validation_EnterValueLessThanOrEqual = "Validation_EnterValueLessThanOrEqual";
 	public static final String Validation_EnterValueGreaterThanOrEqual = "Validation_EnterValueGreaterThanOrEqual";
+	public static final String Eq_Select_Area = "line(s) selected";
+ 
 }

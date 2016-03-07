@@ -16,6 +16,8 @@ import common.source.OLMapUtility;
 import common.source.TestSetup;
 import common.source.OLMapUtility.BreadcrumbColor;
 import common.source.OLMapUtility.IconColor;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.Coordinates;
 import surveyor.scommon.source.LatLongSelectionControl;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
@@ -30,14 +32,16 @@ import surveyor.scommon.source.DriverViewPage.SurveyTime;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.DriverViewPage.Wind;
 import surveyor.scommon.source.EqReportsPage;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
+
 
 @RunWith(SurveyorTestRunner.class)
 public class PageObjectVerificationTest extends SurveyorBaseTest {
 
 	private static final String SURVEYOR_DB3 = "Surveyor.db3";
 	private static final String REPLAY_DB3_DEFN_FILE = "replay-db3.defn";
-	private static final String EQ_SELECT_AREA = "line(s) selected";
-
+	
 	private static final int X_OFFSET = 100;
 	private static final int Y_OFFSET = 100;
 	private static final int RECT_WIDTH = 100;
@@ -509,9 +513,8 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		eqReportsPage.open();
 
 		eqReportsPage.clickOnNewEQReportBtn();
-		eqReportsPage.waitForPageToLoad();
+		eqReportsPage.waitForNewPageLoad();
 
-		eqReportsPage.getSelectArea().isDisplayed();
 		eqReportsPage.getSelectArea().click();
 
 		List <Coordinates> listOfCords = new ArrayList <Coordinates>();
@@ -527,7 +530,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 								.clickOkButton();
 
 		eqReportsPage.waitForPageToLoad();
-		assertTrue(eqReportsPage.getEqRptArea().getAttribute("value").contains(EQ_SELECT_AREA));
+		assertTrue(eqReportsPage.getEqRptArea().getAttribute("value").contains(Resources.getResource(ResourceKeys.Eq_Select_Area)));
 	}
 
 

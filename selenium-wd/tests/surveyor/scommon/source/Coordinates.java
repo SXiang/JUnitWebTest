@@ -1,39 +1,36 @@
 package surveyor.scommon.source;
 
 public class Coordinates {
-	
-	private int _x;
-	private int _y;
-	
-	public Coordinates (int x_, int y_){
-		this._x = x_;
-		this._y = y_;
+
+	private int x;
+	private int y;
+
+	public Coordinates (int x, int y){
+		this.x = x;
+		this.y = y;
 	}
 	/**
 	 * @return the x
 	 */
 	public int getX() {
-		return _x;
+		return x;
 	}
 	/**
 	 * @param x the x to set
 	 */
 	public void setX(int x) {
-		this._x = x;
+		this.x = x;
 	}
 	/**
 	 * @return the y
 	 */
 	public int getY() {
-		return _y;
+		return y;
 	}
 	/**
 	 * @param y the y to set
 	 */
 	public void setY(int y) {
-		this._y = y;
+		this.y = y;
 	}
-	
-	
-
 }

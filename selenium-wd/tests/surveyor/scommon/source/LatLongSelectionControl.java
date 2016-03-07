@@ -271,7 +271,7 @@ public class LatLongSelectionControl extends BaseControl {
 	 *
 	 * @return the LatLongSelectionControl class instance.
 	 */
-	public LatLongSelectionControl selectSegment(String canvasXPath, List<Coordinates> coordinates_) {
+	public LatLongSelectionControl selectSegment(String canvasXPath, List<Coordinates> coordinates) {
 		WebElement canvas = driver.findElement(By.xpath(canvasXPath));
 		if (canvas != null && canvas.isDisplayed()) 
 		{
@@ -279,7 +279,7 @@ public class LatLongSelectionControl extends BaseControl {
 		}
 		Log.info("[LatLongSelectionControl]: Performing click Action on the canvas element");
 		Actions builder = new Actions(driver);
-		Iterator<Coordinates> iter = coordinates_.iterator();
+		Iterator<Coordinates> iter = coordinates.iterator();
 		Coordinates cord = iter.next();
 		builder.moveToElement(canvas, cord.getX(), cord.getY())
 				.click()
