@@ -1,5 +1,8 @@
 package surveyor.scommon.source;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -22,243 +25,278 @@ public class LatLongSelectionControl extends BaseControl {
 		Default
 	}
 
-    private static final String GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION = "function getBoundarySelectorCanvasImageData(){var imgData=null;var mapFrame=window.frames[1];"
-    		+ "if(mapFrame){frameDoc=mapFrame.document;if(frameDoc){divEl=frameDoc.getElementById(\"map\");"
-    		+ "if(divEl){canvasElement=divEl.getElementsByClassName(\"ol-unselectable\")[0];ctx=canvasElement.getContext('2d');"
-    		+ "imgData=ctx.getImageData(0,0,canvasElement.width,canvasElement.height);}}};"
-    		+ "return imgData;};";
-    
-    private static final String GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION_CALL = "return getBoundarySelectorCanvasImageData();";
+	private static final String GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION = "function getBoundarySelectorCanvasImageData(){var imgData=null;var mapFrame=window.frames[1];"
+			+ "if(mapFrame){frameDoc=mapFrame.document;if(frameDoc){divEl=frameDoc.getElementById(\"map\");"
+			+ "if(divEl){canvasElement=divEl.getElementsByClassName(\"ol-unselectable\")[0];ctx=canvasElement.getContext('2d');"
+			+ "imgData=ctx.getImageData(0,0,canvasElement.width,canvasElement.height);}}};"
+			+ "return imgData;};";
 
-    @FindBy(id = "boundary-feature-class")
-   @CacheLookup
-    private WebElement filterByTypeDropDown;
-    
-    @FindBy(id = "boundary-search-text")
-    @CacheLookup
-    private WebElement selectByNameTextField;    
-    
-    @FindBy(id = "button-map-dialog-ok")
-    private WebElement okButton;
+	private static final String GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION_CALL = "return getBoundarySelectorCanvasImageData();";
 
-    @FindBy(id = "button-map-dialog-cancel")
-    @CacheLookup
-    private WebElement cancelButton;
+	@FindBy(id = "boundary-feature-class")
+	@CacheLookup
+	private WebElement filterByTypeDropDown;
 
-    @FindBy(id = "latitude")
-    @CacheLookup
-    private WebElement latitude;
+	@FindBy(id = "boundary-search-text")
+	@CacheLookup
+	private WebElement selectByNameTextField;    
 
-    @FindBy(id = "longitude")
-    @CacheLookup
-    private WebElement longitude;
+	@FindBy(id = "button-map-dialog-ok")
+	private WebElement okButton;
 
-    @FindBy(id = "zoom-level")
-    @CacheLookup
-    private WebElement zoomLevel;
+	@FindBy(id = "button-map-dialog-cancel")
+	@CacheLookup
+	private WebElement cancelButton;
 
-    @FindBy(id = "info")
-    @CacheLookup
-    private WebElement selectionInfo;
+	@FindBy(id = "latitude")
+	@CacheLookup
+	private WebElement latitude;
 
-    @FindBy(id = "myModal")
-    @CacheLookup
-    private WebElement mapModalDialog;
+	@FindBy(id = "longitude")
+	@CacheLookup
+	private WebElement longitude;
 
-    public LatLongSelectionControl(WebDriver driver) {
-        super(driver);
-    }
+	@FindBy(id = "zoom-level")
+	@CacheLookup
+	private WebElement zoomLevel;
 
-    /**
-     * Returns the latitude text.
-     */
-    public String getLatitude() {
-    	return latitude.getText();
-    }
-    
-    /**
-     * Returns the longitude text.
-     */
-    public String getLongitude() {
-    	return longitude.getText();
-    }
+	@FindBy(id = "info")
+	@CacheLookup
+	private WebElement selectionInfo;
 
-    /**
-     * Returns the zoom level text.
-     */
-    public String getZoomLevel() {
-    	return zoomLevel.getText();
-    }
-    
-    /**
-     * Returns the selection info text.
-     */
-    public String getSelectionInfo() {
-    	return selectionInfo.getText();
-    }
-    
-    /**
-     * Draws a selector rectangle of specified width and height from the specified offset.
-     *
-     * @return the LatLongSelectionControl class instance.
-     */
-    public LatLongSelectionControl drawSelectorRectangle(String canvasXPath, int xOffset, int yOffset, int width, int height) {
+	@FindBy(id = "myModal")
+	@CacheLookup
+	private WebElement mapModalDialog;
+
+	public LatLongSelectionControl(WebDriver driver) {
+		super(driver);
+	}
+
+	/**
+	 * Returns the latitude text.
+	 */
+	public String getLatitude() {
+		return latitude.getText();
+	}
+
+	/**
+	 * Returns the longitude text.
+	 */
+	public String getLongitude() {
+		return longitude.getText();
+	}
+
+	/**
+	 * Returns the zoom level text.
+	 */
+	public String getZoomLevel() {
+		return zoomLevel.getText();
+	}
+
+	/**
+	 * Returns the selection info text.
+	 */
+	public String getSelectionInfo() {
+		return selectionInfo.getText();
+	}
+
+	/**
+	 * Draws a selector rectangle of specified width and height from the specified offset.
+	 *
+	 * @return the LatLongSelectionControl class instance.
+	 */
+	public LatLongSelectionControl drawSelectorRectangle(String canvasXPath, int xOffset, int yOffset, int width, int height) {
 		WebElement canvas = driver.findElement(By.xpath(canvasXPath));
 		if (canvas != null && canvas.isDisplayed()) {
 			Log.info("[LatLongSelectionControl]: Found canvas element");
 		}
-		
+
 		Log.info("[LatLongSelectionControl]: Performing draw rectangle action on the canvas element");
 		Actions builder = new Actions(driver);
 		builder.moveToElement(canvas, xOffset, yOffset)
-			.keyDown(Keys.SHIFT)
-			.clickAndHold(canvas)
-			.moveByOffset(xOffset + width, yOffset + height)
-			.release()
-			.keyUp(Keys.SHIFT)
-			.build()
-			.perform();
+		.keyDown(Keys.SHIFT)
+		.clickAndHold(canvas)
+		.moveByOffset(xOffset + width, yOffset + height)
+		.release()
+		.keyUp(Keys.SHIFT)
+		.build()
+		.perform();
 
 		return this;
-    }
+	}
 
-    /**
-     * Click on the specified (x,y) offset in the canvas.
-     *
-     * @return the LatLongSelectionControl class instance.
-     */
-    public LatLongSelectionControl selectLatLong(String canvasXPath, int xOffset, int yOffset) {
+	/**
+	 * Click on the specified (x,y) offset in the canvas.
+	 *
+	 * @return the LatLongSelectionControl class instance.
+	 */
+	public LatLongSelectionControl selectLatLong(String canvasXPath, int xOffset, int yOffset) {
 		WebElement canvas = driver.findElement(By.xpath(canvasXPath));
 		if (canvas != null && canvas.isDisplayed()) {
 			Log.info("[LatLongSelectionControl]: Found canvas element");
 		}
-		
+
 		Log.info("[LatLongSelectionControl]: Performing click Action on the canvas element");
 		Actions builder = new Actions(driver);
 		builder.moveToElement(canvas, xOffset, yOffset)
-			.moveByOffset(xOffset, yOffset)
-			.keyDown(Keys.SHIFT)
-			.click()
-			.keyUp(Keys.SHIFT)
-			.build()
-			.perform();
+		.moveByOffset(xOffset, yOffset)
+		.keyDown(Keys.SHIFT)
+		.click()
+		.keyUp(Keys.SHIFT)
+		.build()
+		.perform();
 
 		return this;
-    }
+	}
 
-    
-    /**
-     * Switches between interactions on web elements on the map iframe vs interaction on the web elements in container page.
-     * 
-     * REMARKS: 
-     * We need the 2 modes since this control has elements from both an iframe (which has the map) as well as container document.
-     * When interacting with map use the MapInteraction mode.
-     * When interacting with web elements other than the Map (for eg. OK/Cancel buttons) use the default mode.
-     *
-     * @return the LatLongSelectionControl class instance.
-     */
+
+	/**
+	 * Switches between interactions on web elements on the map iframe vs interaction on the web elements in container page.
+	 * 
+	 * REMARKS: 
+	 * We need the 2 modes since this control has elements from both an iframe (which has the map) as well as container document.
+	 * When interacting with map use the MapInteraction mode.
+	 * When interacting with web elements other than the Map (for eg. OK/Cancel buttons) use the default mode.
+	 *
+	 * @return the LatLongSelectionControl class instance.
+	 */
 	public LatLongSelectionControl switchMode(ControlMode mode) {
 		switch (mode)
 		{
-			case MapInteraction:
-				driver.switchTo().frame("target");
-				break;
-			case Default:
-				driver.switchTo().defaultContent();
-				break;
+		case MapInteraction:
+			driver.switchTo().frame("target");
+			break;
+		case Default:
+			driver.switchTo().defaultContent();
+			break;
 		}
-		
+
 		return this;
 	}
-    
-    /**
-     * Click on OK Button.
-     *
-     * @return the LatLongSelectionControl class instance.
-     */
-    public LatLongSelectionControl clickOkButton() {
-        okButton.click();
-        return this;
-    }
 
-    /**
-     * Click on Cancel Button.
-     *
-     * @return the LatLongSelectionControl class instance.
-     */
-    public LatLongSelectionControl clickCancelButton() {
-        cancelButton.click();
-        return this;
-    }
+	/**
+	 * Click on OK Button.
+	 *
+	 * @return the LatLongSelectionControl class instance.
+	 */
+	public LatLongSelectionControl clickOkButton() {
+		okButton.click();
+		return this;
+	}
 
-    /**
-     * Set value to selectByName Text field.
-     *
-     * @return the LatLongSelectionControl class instance.
-     */
-    public LatLongSelectionControl setTitleTextField(String name) {
-    	selectByNameTextField.sendKeys(name);
-        return this;
-    }
+	/**
+	 * Click on Cancel Button.
+	 *
+	 * @return the LatLongSelectionControl class instance.
+	 */
+	public LatLongSelectionControl clickCancelButton() {
+		cancelButton.click();
+		return this;
+	}
 
-    /**
-     * Set value to filterByType Drop Down List field.
-     *
-     * @return the LatLongSelectionControl class instance.
-     */
-    public LatLongSelectionControl setFilterByTypeDropDownListField(String filterByTypeValue) {
-        new Select(filterByTypeDropDown).selectByVisibleText(filterByTypeValue);
-        return this;
-    }
+	/**
+	 * Set value to selectByName Text field.
+	 *
+	 * @return the LatLongSelectionControl class instance.
+	 */
+	public LatLongSelectionControl setTitleTextField(String name) {
+		selectByNameTextField.sendKeys(name);
+		return this;
+	}
 
-    /**
-     * Waits for the modal map dialog to be opened.
-     *
-     * @return the LatLongSelectionControl class instance.
-     */
+	/**
+	 * Set value to filterByType Drop Down List field.
+	 *
+	 * @return the LatLongSelectionControl class instance.
+	 */
+	public LatLongSelectionControl setFilterByTypeDropDownListField(String filterByTypeValue) {
+		new Select(filterByTypeDropDown).selectByVisibleText(filterByTypeValue);
+		return this;
+	}
+
+	/**
+	 * Waits for the modal map dialog to be opened.
+	 *
+	 * @return the LatLongSelectionControl class instance.
+	 */
 	public LatLongSelectionControl waitForModalDialogOpen() {
 		Log.info("Wait for map modal dialog to open.");
 		WebDriverWait wait = new WebDriverWait(driver, timeout);
 		WebElement myModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("myModal")));
 		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                return !myModal.getAttribute("style").contains("display:none") && !myModal.getAttribute("style").contains("display: none");
-            }
-        });
+			public Boolean apply(WebDriver d) {
+				return !myModal.getAttribute("style").contains("display:none") && !myModal.getAttribute("style").contains("display: none");
+			}
+		});
 		return this;
 	}
-	
+
 	/**
-     * Waits for the modal map dialog to close.
-     *
-     * @return the LatLongSelectionControl class instance.
-     */
+	 * Waits for the modal map dialog to close.
+	 *
+	 * @return the LatLongSelectionControl class instance.
+	 */
 	public LatLongSelectionControl waitForModalDialogToClose() {
 		Log.info("Wait for map modal dialog to close.");
 		WebDriverWait wait = new WebDriverWait(driver, timeout);
 		WebElement myModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("myModal")));
 		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                return myModal.getAttribute("style").contains("display:none") || myModal.getAttribute("style").contains("display: none");
-            }
-        });
+			public Boolean apply(WebDriver d) {
+				return myModal.getAttribute("style").contains("display:none") || myModal.getAttribute("style").contains("display: none");
+			}
+		});
 		return this;
 	}
 
-    /**
-     * Waits for the image to be loaded in the modal map dialog.
-     *
-     * @return the LatLongSelectionControl class instance.
-     */
+	/**
+	 * Waits for the image to be loaded in the modal map dialog.
+	 *
+	 * @return the LatLongSelectionControl class instance.
+	 */
 	public LatLongSelectionControl waitForMapImageLoad() {
 		// Wait for image data on the canvas to be present.
 		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-        		Object imageData = ((JavascriptExecutor)d).executeScript(GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION + 
-        				GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION_CALL);
-                return (imageData == null);
-            }
-        });
+			public Boolean apply(WebDriver d) {
+				Object imageData = ((JavascriptExecutor)d).executeScript(GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION + 
+						GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION_CALL);
+				return (imageData == null);
+			}
+		});
 		return this;
 	}
+
+
+	/**
+	 * 
+	 *
+	 * @return the LatLongSelectionControl class instance.
+	 */
+	public LatLongSelectionControl selectSegment(String canvasXPath, List<Coordinates> coordinates_) {
+		WebElement canvas = driver.findElement(By.xpath(canvasXPath));
+		if (canvas != null && canvas.isDisplayed()) 
+		{
+			Log.info("[LatLongSelectionControl]: Found canvas element");
+		}
+		Log.info("[LatLongSelectionControl]: Performing click Action on the canvas element");
+		Actions builder = new Actions(driver);
+		Iterator<Coordinates> iter = coordinates_.iterator();
+		Coordinates cord = iter.next();
+		builder.moveToElement(canvas, cord.getX(), cord.getY())
+				.click()
+				.build()
+				.perform();
+
+		while(iter.hasNext())
+		{
+			cord= iter.next();
+			builder.moveByOffset(cord.getX(), cord.getY())
+					.click()
+					.build()
+					.perform();
+			
+			builder.doubleClick().build().perform();
+		}
+		return this;
+	}
+
 }

@@ -2,10 +2,12 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.DateUtility;
@@ -14,6 +16,7 @@ import common.source.OLMapUtility;
 import common.source.TestSetup;
 import common.source.OLMapUtility.BreadcrumbColor;
 import common.source.OLMapUtility.IconColor;
+import surveyor.scommon.source.Coordinates;
 import surveyor.scommon.source.LatLongSelectionControl;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.ManageLocationsPage;
@@ -26,12 +29,14 @@ import surveyor.scommon.source.DriverViewPage.SolarRadiation;
 import surveyor.scommon.source.DriverViewPage.SurveyTime;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.DriverViewPage.Wind;
+import surveyor.scommon.source.EqReportsPage;
 
 @RunWith(SurveyorTestRunner.class)
 public class PageObjectVerificationTest extends SurveyorBaseTest {
-	
+
 	private static final String SURVEYOR_DB3 = "Surveyor.db3";
 	private static final String REPLAY_DB3_DEFN_FILE = "replay-db3.defn";
+	private static final String EQ_SELECT_AREA = "line(s) selected";
 
 	private static final int X_OFFSET = 100;
 	private static final int Y_OFFSET = 100;
@@ -43,6 +48,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	private static DriverViewPage driverViewPage = null;
 	private static LatLongSelectionControl latLongSelectionControl = null;
 	private static ManageLocationsPage manageLocationsPage = null;
+	private static EqReportsPage eqReportsPage = null;
 
 	public PageObjectVerificationTest() {
 		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
@@ -50,12 +56,16 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 
 		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, manageLocationsPage);
-		
+
 		driverViewPage = new DriverViewPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver, driverViewPage);
-		
+
 		latLongSelectionControl = new LatLongSelectionControl(driver);
 		PageFactory.initElements(driver, latLongSelectionControl);
+
+		eqReportsPage = new EqReportsPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver, eqReportsPage);
+
 	}
 
 	/**
@@ -75,11 +85,11 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		complianceReportsPage.openCustomBoundarySelector();
 
 		latLongSelectionControl.waitForModalDialogOpen()
-				.switchMode(ControlMode.MapInteraction)
-				.waitForMapImageLoad()
-				.drawSelectorRectangle(CANVAS_X_PATH, X_OFFSET, Y_OFFSET, RECT_WIDTH, RECT_HEIGHT)
-				.switchMode(ControlMode.Default)
-				.clickOkButton();
+		.switchMode(ControlMode.MapInteraction)
+		.waitForMapImageLoad()
+		.drawSelectorRectangle(CANVAS_X_PATH, X_OFFSET, Y_OFFSET, RECT_WIDTH, RECT_HEIGHT)
+		.switchMode(ControlMode.Default)
+		.clickOkButton();
 	}
 
 	/**
@@ -97,7 +107,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 
 		complianceReportsPage.clickOnNewComplianceReportBtn();
 		complianceReportsPage.openCustomerBoundarySelector();
-		
+
 		latLongSelectionControl.waitForModalDialogOpen()
 		.switchMode(ControlMode.MapInteraction)
 		.waitForMapImageLoad()
@@ -106,7 +116,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		.clickOkButton()
 		.waitForModalDialogToClose();
 	}
-	
+
 	/**
 	 * Test Case ID: <None>
 	 * NOTE: This is a test method to demonstrate the usage of LatLongSelector Control for Lat/Long selection.
@@ -115,27 +125,27 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	@Test
 	public void ReferenceOnly_LatLongSelectorControl_LatLongSelectorTest() {
 		System.out.format("\nRunning ReferenceOnly_LatLongSelectorControl_LatLongSelectorTest... \n");
-	
+
 		manageLocationsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		manageLocationsPage.open();
 		manageLocationsPage.waitForPageLoad();
 		manageLocationsPage.clickOnAddNewLocationBtn();
 		manageLocationsPage.waitForNewPageLoad();
-		
+
 		manageLocationsPage.clickOnLatLongSelectorBtn();
-		
+
 		latLongSelectionControl.waitForModalDialogOpen()
-			.switchMode(ControlMode.MapInteraction)
-			.waitForMapImageLoad()
-			.selectLatLong(CANVAS_X_PATH, X_OFFSET, Y_OFFSET)
-			.switchMode(ControlMode.Default)
-			.clickOkButton()
-			.waitForModalDialogToClose();
-	
+		.switchMode(ControlMode.MapInteraction)
+		.waitForMapImageLoad()
+		.selectLatLong(CANVAS_X_PATH, X_OFFSET, Y_OFFSET)
+		.switchMode(ControlMode.Default)
+		.clickOkButton()
+		.waitForModalDialogToClose();
+
 		String locationLatitudeText = manageLocationsPage.getLocationLatitudeText();
 		Log.info("locationLatitudeText=" + locationLatitudeText);
 		assertTrue(!locationLatitudeText.isEmpty());
-	
+
 		String locationLongitudeText = manageLocationsPage.getLocationLongitudeText();
 		Log.info("locationLongitudeText=" + locationLongitudeText);
 		assertTrue(!locationLongitudeText.isEmpty());
@@ -161,10 +171,10 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
+
 		assertTrue(driverViewPage.isStartSurveyButtonVisible());
 		assertTrue(driverViewPage.isSystemShutdownButtonVisible());
-		
+
 		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
 		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
@@ -178,10 +188,10 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 
 		assertTrue(!driverViewPage.isStartSurveyButtonVisible());
 		assertTrue(driverViewPage.isStopDrivingSurveyButtonVisible());
-		
+
 		TestSetup.stopAnalyzer();
 	}
-	
+
 	/**
 	 * Test Case ID: <None>
 	 * NOTE: This is a test method to test car icon color is showing correctly.
@@ -202,7 +212,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
+
 		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
 		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
@@ -222,7 +232,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		// check car icon shown is GRAY
 		assertTrue(mapUtility.isCrossHairIconShownOnMap(IconColor.Gray));
-		
+
 		TestSetup.stopAnalyzer();
 	}
 
@@ -246,7 +256,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
+
 		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
 		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
@@ -266,10 +276,10 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		// check breadcrumb color shown is GRAY
 		assertTrue(mapUtility.isBreadcrumbShownOnMap(BreadcrumbColor.Gray));
-		
+
 		TestSetup.stopAnalyzer();
 	}
-	
+
 	/**
 	 * Test Case ID: <None>
 	 * NOTE: This is a test method to test the DateTime.isTimeTickingBackward & isTimeTickingForward methods.
@@ -287,37 +297,37 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		driverViewPage.open();
 		driverViewPage.waitForPageLoad();
 		driverViewPage.waitForConnectionComplete();
-		
+
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
+
 		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
 		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
-		
+
 		// Open Header box and check the survey information.
 		driverViewPage.clickHeaderInfoBox();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
+
 		Log.info("ELAPSED:[" + driverViewPage.getTimeElapsedLabelText() + "]");
 		assertTrue(DateUtility.isTimeTickingForward(driverViewPage.getTimeElapsedLabel()));
-		
+
 		Log.info("REMAINING:[" + driverViewPage.getTimeRemainingLabelText() + "]");
 		assertTrue(DateUtility.isTimeTickingBackward(driverViewPage.getTimeRemainingLabel()));
-		
+
 		Log.info("TIME:[" + driverViewPage.getTimeLabelText() + "]");
 		assertTrue(DateUtility.isTimeTickingForward(driverViewPage.getTimeLabel()));
-		
+
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		driverViewPage.stopDrivingSurvey();
-		
+
 		TestSetup.stopAnalyzer();
 	}
-	
-	
+
+
 	/**
 	 * Test Case ID: <None>
 	 * NOTE: This is a test method to demonstrate the usage of OLMapUtility functions.
@@ -335,11 +345,11 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		driverViewPage.open();
 		driverViewPage.waitForPageLoad();
 		driverViewPage.waitForConnectionComplete();
-		
+
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
+
 		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
 		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
@@ -347,7 +357,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		// Zoom out twice so that the indications will still keep showing in the view.
 		driverViewPage.clickZoomOutButton();
 		driverViewPage.clickZoomOutButton();
-		
+
 		// Let the test run for a few seconds.
 		testSetup.slowdownInSeconds(5 * testSetup.getSlowdownInSeconds());
 
@@ -355,29 +365,29 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		// This is necessary to click on correct co-ordinates.
 		Log.info("Stopping replay...");
 		TestSetup.stopReplay();
-		
+
 		// Call the various OLMapUtility methods.
 		OLMapUtility mapUtility = new OLMapUtility(driver);
-		
+
 		String mapCanvasXPath = "//*[@id='map']/div/canvas";
 		boolean clickFirstIndicationOnMap = mapUtility.clickFirstIndicationOnMap(mapCanvasXPath);
 		Log.info("clickFirstIndicationOnMap = " + clickFirstIndicationOnMap);
-		
+
 		driverViewPage.waitForFieldNotesDialogToOpen();
-		
+
 		Log.info("Entering dummy text in field notes");
 		String fieldNote = "Dummy field note";
 		driverViewPage.setFieldNotesTextField(fieldNote);
-		
+
 		Log.info("Clicking on Field notes Save button");
 		driverViewPage.clickFieldNotesSaveButton();
-		
+
 		Log.info("Waiting for field notes dialog to close");
 		driverViewPage.waitForFieldNotesDialogToClose();
-		
+
 		boolean isFieldNotesShown = mapUtility.isFieldNoteShown(fieldNote);
 		Log.info("isFieldNotesShown = " + isFieldNotesShown);
-		
+
 		boolean chartDataShowingOnMap = mapUtility.isConcentrationChartDataShowingOnMap();
 		Log.info("chartDataShowingOnMap = " + chartDataShowingOnMap);
 
@@ -398,10 +408,10 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 
 		crossHairIconShownOnMap = mapUtility.isCrossHairIconShownOnMap(IconColor.Red);
 		Log.info("[RED] crossHairIconShownOnMap = " + crossHairIconShownOnMap);
-		
+
 		crossHairIconShownOnMap = mapUtility.isCrossHairIconShownOnMap(IconColor.White);
 		Log.info("[WHITE] crossHairIconShownOnMap = " + crossHairIconShownOnMap);
-				
+
 		Integer linksCount = mapUtility.getIndicationsLinksCount();
 		Log.info("INDICATIONS linksCount = " + linksCount);
 
@@ -443,7 +453,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 				Log.info(obj.toString());
 			}
 		}
-		
+
 		Log.info("Getting ConcentrationChart Image Data...");
 		List<Object> concentrationChartData = mapUtility.getConcentrationChartImageData();
 		if (concentrationChartData != null)
@@ -482,8 +492,43 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		driverViewPage.stopDrivingSurvey();
-		
+
 		TestSetup.stopAnalyzer();
 	}
+
+	/**
+	 * Test Case ID: <None>
+	 * NOTE: This is a test method to demonstrate the usage of LatLongSelector Control for segment selection.
+	 *  Actual automation tests that use EQ select area can use this method as a reference.
+	 */
+	@Test
+	public void ReferenceOnly_EQSegmentSelectorTest() {
+		System.out.format("\nRunning ReferenceOnly_EQSegmentSelectorTest... \n");
+
+		eqReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		eqReportsPage.open();
+
+		eqReportsPage.clickOnNewEQReportBtn();
+		eqReportsPage.waitForPageToLoad();
+
+		eqReportsPage.getSelectArea().isDisplayed();
+		eqReportsPage.getSelectArea().click();
+
+		List <Coordinates> listOfCords = new ArrayList <Coordinates>();
+		listOfCords.add(0, new Coordinates(200,200));
+		listOfCords.add(1, new Coordinates(220,300));
+		listOfCords.add(2, new Coordinates(240,400));
+
+		latLongSelectionControl.waitForModalDialogOpen()
+								.switchMode(ControlMode.MapInteraction)
+								.waitForMapImageLoad()
+								.selectSegment(CANVAS_X_PATH, listOfCords)
+								.switchMode(ControlMode.Default)
+								.clickOkButton();
+
+		eqReportsPage.waitForPageToLoad();
+		assertTrue(eqReportsPage.getEqRptArea().getAttribute("value").contains(EQ_SELECT_AREA));
+	}
+
 
 }
