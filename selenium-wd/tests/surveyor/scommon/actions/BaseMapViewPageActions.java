@@ -228,6 +228,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".turnOnAllBoundaries", data, dataRowID);
 		turnOnBoundariesDistrict(data, dataRowID);
 		turnOnBoundariesDistrictPlat(data, dataRowID);
+		turnOnAllBoundaries(data, dataRowID);
 		return true;
 	}
  
@@ -373,6 +374,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".turnOffAllBoundaries", data, dataRowID);
 		turnOffBoundariesDistrict(data, dataRowID);
 		turnOffBoundariesDistrictPlat(data, dataRowID);
+		turnOffAllBoundaries(data, dataRowID);
 		return true;
 	}
  
