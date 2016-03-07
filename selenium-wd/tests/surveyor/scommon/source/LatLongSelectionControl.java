@@ -279,24 +279,24 @@ public class LatLongSelectionControl extends BaseControl {
 		}
 		Log.info("[LatLongSelectionControl]: Performing click Action on the canvas element");
 		Actions builder = new Actions(driver);
-		Iterator<Coordinates> iter = coordinates.iterator();
-		Coordinates cord = iter.next();
-		builder.moveToElement(canvas, cord.getX(), cord.getY())
-				.click()
+
+		for (int i =0; i < coordinates.size(); i++)
+		{
+			Coordinates cord = coordinates.get(i);
+			builder.moveToElement(canvas, cord.getX(), cord.getY())
+			.click()
+			.build()
+			.perform();
+
+			if (i == coordinates.size()-1)
+			{
+				builder.moveToElement(canvas, cord.getX(), cord.getY())
+				.doubleClick()
 				.build()
 				.perform();
 
-		while(iter.hasNext())
-		{
-			cord= iter.next();
-			builder.moveByOffset(cord.getX(), cord.getY())
-					.click()
-					.build()
-					.perform();
-			
-			builder.doubleClick().build().perform();
+			}
 		}
 		return this;
 	}
-
 }
