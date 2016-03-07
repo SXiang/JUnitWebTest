@@ -530,7 +530,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 								.clickOkButton();
 
 		eqReportsPage.waitForPageToLoad();
-		assertTrue(eqReportsPage.getEqRptArea().getAttribute("value").contains(Resources.getResource(ResourceKeys.Eq_Select_Area)));
+		assertTrue(eqReportsPage.getEqRptArea().getAttribute("value").contains(Resources.getResource(ResourceKeys.Dialog_LineSelected)));
 	}
 
 

@@ -16,7 +16,7 @@ public class EqReportsPage extends ReportsBasePage {
 
 	public static final String EQRPTURLPath= "/Reports/EQReports";
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.EqReports_PageTitle);
-	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.EqReports_AddNew);
+	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.EqReport_PageTitle);
 	
 	@FindBy(how = How.XPATH, using = "//*[@href='/Reports/EQReport']")
 	protected WebElement btnNewEQRpt;
