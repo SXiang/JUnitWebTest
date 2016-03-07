@@ -586,7 +586,6 @@ public class HomePage extends SurveyorBasePage {
 		SurveyViewPage surveyViewPage = new SurveyViewPage(driver, testSetup, SurveyViewPage.STRURLPath);
 		PageFactory.initElements(driver, surveyViewPage);		
 		surveyViewPage.waitForPageLoad();
-		surveyViewPage.waitForConnectionComplete();
 		surveyViewPage.checkIfAtSurveyViewPage();
 		
 		// Click on Picarro icon present at bottom of the page
