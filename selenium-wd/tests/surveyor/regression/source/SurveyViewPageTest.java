@@ -198,8 +198,8 @@ public class SurveyViewPageTest {
 	 * Script: -  	
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click Display
-	 *	- Indications - ON
 	 *	- All other options - OFF
+	 *	- Indications - ON
 	 *	- - Click GIS
 	 *	- All options OFF
 	 *	- - Click on Map and turn Satellite view ON
@@ -208,33 +208,29 @@ public class SurveyViewPageTest {
 	 *	- - All other survey data, assets and boundaries are not displayed
 	 */
 	@Test
-	public void TC1000_SurveyView_ViewIndicationsRapidResponseSurveySatelliteViewWhenNoGISLoaded() {
-		try {
-			Log.info("\nRunning TC1000_ActionTest_SurveyView_ViewIndicationsRapidResponseSurveySatelliteViewWhenNoGISLoaded ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-			//assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1000_SurveyView_ViewIndicationsRapidResponseSurveySatelliteViewWhenNoGISLoaded() throws Exception {
+		Log.info("\nRunning TC1000_ActionTest_SurveyView_ViewIndicationsRapidResponseSurveySatelliteViewWhenNoGISLoaded ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		
+		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -242,9 +238,9 @@ public class SurveyViewPageTest {
 	 * Script: -  	
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click Display
+	 *	- All other options - OFF
 	 *	- LISA - ON
 	 *	- Field Notes - ON
-	 *	- All other options - OFF
 	 *	- - Click GIS
 	 *	- All options OFF
 	 *	- - Click on Map and turn Map view ON
@@ -254,40 +250,35 @@ public class SurveyViewPageTest {
 	 *	- - Indications and FOV are not displayed on map
 	 */
 	@Test
-	public void TC1001_SurveyView_ViewRapidResponseSurveyMapViewWhenLISAFieldNotesAreOnGISOff() {
-		try {
-			Log.info("\nRunning TC1001_ActionTest_SurveyView_ViewRapidResponseSurveyMapViewWhenLISAFieldNotesAreOnGISOff ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1_ANALYZER1, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_A, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-			//assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1001_SurveyView_ViewRapidResponseSurveyMapViewWhenLISAFieldNotesAreOnGISOff() throws Exception {
+		Log.info("\nRunning TC1001_ActionTest_SurveyView_ViewRapidResponseSurveyMapViewWhenLISAFieldNotesAreOnGISOff ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1_ANALYZER1, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_A, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -295,9 +286,9 @@ public class SurveyViewPageTest {
 	 * Script: -  	
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click Display
+	 *	- All other options - OFF
 	 *	- LISA - ON
 	 *	- Field Notes - ON
-	 *	- All other options - OFF
 	 *	- - Click GIS
 	 *	- All options OFF
 	 *	- - Click on Map and turn Satellite view ON
@@ -307,40 +298,35 @@ public class SurveyViewPageTest {
 	 *	- - Indications and FOV are not displayed on map in satellite view
 	 */
 	@Test
-	public void TC1002_SurveyView_ViewRapidResponseSurveySatelliteViewWhenLISAFieldNotesAreOnGISOff() {
-		try {
-			Log.info("\nRunning TC1002_ActionTest_SurveyView_ViewRapidResponseSurveySatelliteViewWhenLISAFieldNotesAreOnGISOff ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1_ANALYZER1, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_A, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-			//assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1002_SurveyView_ViewRapidResponseSurveySatelliteViewWhenLISAFieldNotesAreOnGISOff() throws Exception {
+		Log.info("\nRunning TC1002_ActionTest_SurveyView_ViewRapidResponseSurveySatelliteViewWhenLISAFieldNotesAreOnGISOff ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1_ANALYZER1, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_A, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -348,9 +334,9 @@ public class SurveyViewPageTest {
 	 * Script: -  	
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click Display
+	 *	- All other options - OFF
 	 *	- FOV - ON
 	 *	- Indications - ON
-	 *	- All other options - OFF
 	 *	- - Click GIS
 	 *	- All options ON
 	 *	- - Click on Map and turn Map view ON
@@ -360,42 +346,37 @@ public class SurveyViewPageTest {
 	 *	- - Lisa and field notes (if any) are not present on map
 	 */
 	@Test
-	public void TC1003_SurveyView_ViewRapidResponseSurveyMapViewWhenFovIndicationOnGISOn() {
-		try {
-			Log.info("\nRunning TC1003_ActionTest_SurveyView_ViewRapidResponseSurveyMapViewWhenFovIndicationOnGISOn ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1_ANALYZER1, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_A, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-			//assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyAssetIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1003_SurveyView_ViewRapidResponseSurveyMapViewWhenFovIndicationOnGISOn() throws Exception {
+		Log.info("\nRunning TC1003_ActionTest_SurveyView_ViewRapidResponseSurveyMapViewWhenFovIndicationOnGISOn ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1_ANALYZER1, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_A, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -403,9 +384,9 @@ public class SurveyViewPageTest {
 	 * Script: -  	
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click Display
+	 *	- All other options - OFF
 	 *	- FOV - ON
 	 *	- Indications - ON
-	 *	- All other options - OFF
 	 *	- - Click GIS
 	 *	- All options ON
 	 *	- - Click on Map and turn Satellite view ON
@@ -415,42 +396,37 @@ public class SurveyViewPageTest {
 	 *	- - Lisa and field notes (if any) are not present on map
 	 */
 	@Test
-	public void TC1004_SurveyView_ViewRapidResponseSurveySatelliteViewWhenFovIndicationOnGISOn() {
-		try {
-			Log.info("\nRunning TC1004_ActionTest_SurveyView_ViewRapidResponseSurveySatelliteViewWhenFovIndicationOnGISOn ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1_ANALYZER1, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_A, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-			//assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyAssetIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1004_SurveyView_ViewRapidResponseSurveySatelliteViewWhenFovIndicationOnGISOn() throws Exception {
+		Log.info("\nRunning TC1004_ActionTest_SurveyView_ViewRapidResponseSurveySatelliteViewWhenFovIndicationOnGISOn ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1_ANALYZER1, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_A, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -460,41 +436,36 @@ public class SurveyViewPageTest {
 	 *	- - Click Display
 	 *	- All options - ON
 	 *	- - Click GIS
-	 *	- Assets: Protected steel, UnProtected Steel - ON
 	 *	- Boundaries: OFF
+	 *	- Assets: Protected steel, UnProtected Steel - ON
 	 *	- - Click on Map and turn Map view ON
 	 *	- - Breadcrumb, Indications, LISA, FOV and survey information is displayed on map
 	 * Results: - 
 	 *	- - Boundaries not displayed on map
 	 */
 	@Test
-	public void TC1005_SurveyView_ViewRapidResponseSurveyMapViewWhenAllDisplayOptionsAreOn() {
-		try {
-			Log.info("\nRunning TC1005_ActionTest_SurveyView_ViewRapidResponseSurveyMapViewWhenAllDisplayOptionsAreOn ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllAssets(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnMaterialTypeOtherPlastic(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnMaterialTypeCopper(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllBoundaries(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-			//assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1005_SurveyView_ViewRapidResponseSurveyMapViewWhenAllDisplayOptionsAreOn() throws Exception {
+		Log.info("\nRunning TC1005_ActionTest_SurveyView_ViewRapidResponseSurveyMapViewWhenAllDisplayOptionsAreOn ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssets(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMaterialTypeOtherPlastic(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMaterialTypeCopper(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -504,41 +475,36 @@ public class SurveyViewPageTest {
 	 *	- - Click Display
 	 *	- All options - ON
 	 *	- - Click GIS
-	 *	- Assets: Other Plastic, Copper - ON
 	 *	- Boundaries: OFF
+	 *	- Assets: Other Plastic, Copper - ON
 	 *	- - Click on Map and turn Satellite view ON
 	 *	- - Breadcrumb, Indications, LISA, FOV and survey information is displayed on map in satellite view
 	 * Results: - 
 	 *	- - Boundaries not displayed on map in satellite view
 	 */
 	@Test
-	public void TC1006_SurveyView_ViewRapidResponseSurveySatelliteViewWhenAllDisplayOptionsAreONOtherPlasticCopperAssetsONBoundariesOFF() {
-		try {
-			Log.info("\nRunning TC1006_ActionTest_SurveyView_ViewRapidResponseSurveySatelliteViewWhenAllDisplayOptionsAreONOtherPlasticCopperAssetsONBoundariesOFF ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllAssets(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnMaterialTypeProtectedSteel(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnMaterialTypeUnprotectedSteel(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllBoundaries(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-			//assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1006_SurveyView_ViewRapidResponseSurveySatelliteViewWhenAllDisplayOptionsAreONOtherPlasticCopperAssetsONBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1006_ActionTest_SurveyView_ViewRapidResponseSurveySatelliteViewWhenAllDisplayOptionsAreONOtherPlasticCopperAssetsONBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssets(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMaterialTypeProtectedSteel(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMaterialTypeUnprotectedSteel(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -546,8 +512,8 @@ public class SurveyViewPageTest {
 	 * Script: -  	
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click Display
-	 *	- Lisa - ON
 	 *	- All other options - OFF
+	 *	- Lisa - ON
 	 *	- - Click GIS
 	 *	- All options OFF
 	 *	- - Click on Map and turn Map view ON
@@ -556,33 +522,28 @@ public class SurveyViewPageTest {
 	 *	- - All other survey data, assets and boundaries are not displayed
 	 */
 	@Test
-	public void TC1007_SurveyView_ViewRapidResponseSurveyMapViewWhenLISAONAssetsBoundariesOFF() {
-		try {
-			Log.info("\nRunning TC1007_ActionTest_SurveyView_ViewRapidResponseSurveyMapViewWhenLISAONAssetsBoundariesOFF ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1007_SurveyView_ViewRapidResponseSurveyMapViewWhenLISAONAssetsBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1007_ActionTest_SurveyView_ViewRapidResponseSurveyMapViewWhenLISAONAssetsBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -590,8 +551,8 @@ public class SurveyViewPageTest {
 	 * Script: -  	
 	 *	- -On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click Display
-	 *	- Lisa - ON
 	 *	- All other options - OFF
+	 *	- Lisa - ON
 	 *	- - Click GIS
 	 *	- All options OFF
 	 *	- - Click on Map and turn Satellite view ON
@@ -600,33 +561,28 @@ public class SurveyViewPageTest {
 	 *	- - All other survey data, assets and boundaries are not displayed
 	 */
 	@Test
-	public void TC1008_SurveyView_ViewRapidResponseSurveySatelliteViewWhenLISAONAssetsBoundariesOFF() {
-		try {
-			Log.info("\nRunning TC1008_ActionTest_SurveyView_ViewRapidResponseSurveySatelliteViewWhenLISAONAssetsBoundariesOFF ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1008_SurveyView_ViewRapidResponseSurveySatelliteViewWhenLISAONAssetsBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1008_ActionTest_SurveyView_ViewRapidResponseSurveySatelliteViewWhenLISAONAssetsBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -634,8 +590,8 @@ public class SurveyViewPageTest {
 	 * Script: -  	
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click Display
-	 *	- FOV - ON
 	 *	- All other options - OFF
+	 *	- FOV - ON
 	 *	- - Click GIS
 	 *	- All options OFF
 	 *	- - Click on Map and turn Map view ON
@@ -644,33 +600,28 @@ public class SurveyViewPageTest {
 	 *	- - All other survey data, assets and boundaries are not displayed
 	 */
 	@Test
-	public void TC1009_SurveyView_ViewRapidResponseSurveyMapViewWhenFOVONAssetsBoundariesOFF() {
-		try {
-			Log.info("\nRunning TC1009_ActionTest_SurveyView_ViewRapidResponseSurveyMapViewWhenFOVONAssetsBoundariesOFF ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1009_SurveyView_ViewRapidResponseSurveyMapViewWhenFOVONAssetsBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1009_ActionTest_SurveyView_ViewRapidResponseSurveyMapViewWhenFOVONAssetsBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -678,8 +629,8 @@ public class SurveyViewPageTest {
 	 * Script: -  	
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click Display
-	 *	- FOV - ON
 	 *	- All other options - OFF
+	 *	- FOV - ON
 	 *	- - Click GIS
 	 *	- All options OFF
 	 *	- - Click on Map and turn Satellite view ON
@@ -688,33 +639,28 @@ public class SurveyViewPageTest {
 	 *	- - All other survey data, assets and boundaries are not displayed
 	 */
 	@Test
-	public void TC1010_SurveyView_ViewRapidResponseSurveySatelliteViewWhenFOVONAssetsBoundariesOFF() {
-		try {
-			Log.info("\nRunning TC1010_ActionTest_SurveyView_ViewRapidResponseSurveySatelliteViewWhenFOVONAssetsBoundariesOFF ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1010_SurveyView_ViewRapidResponseSurveySatelliteViewWhenFOVONAssetsBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1010_ActionTest_SurveyView_ViewRapidResponseSurveySatelliteViewWhenFOVONAssetsBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -722,8 +668,8 @@ public class SurveyViewPageTest {
 	 * Script: -  	
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click Display
-	 *	- Field Notes - ON
 	 *	- All other options - OFF
+	 *	- Field Notes - ON
 	 *	- - Click GIS
 	 *	- All options OFF
 	 *	- - Click on Map and turn Map view ON
@@ -732,33 +678,28 @@ public class SurveyViewPageTest {
 	 *	- - All other survey data, assets and boundaries are not displayed
 	 */
 	@Test
-	public void TC1011_SurveyView_ViewRapidResponseSurveyMapViewWhenFieldNotesONAssetsBoundariesOFF() {
-		try {
-			Log.info("\nRunning TC1011_ActionTest_SurveyView_ViewRapidResponseSurveyMapViewWhenFieldNotesONAssetsBoundariesOFF ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1011_SurveyView_ViewRapidResponseSurveyMapViewWhenFieldNotesONAssetsBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1011_ActionTest_SurveyView_ViewRapidResponseSurveyMapViewWhenFieldNotesONAssetsBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -766,8 +707,8 @@ public class SurveyViewPageTest {
 	 * Script: -  	
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click Display
-	 *	- Field Notes - ON
 	 *	- All other options - OFF
+	 *	- Field Notes - ON
 	 *	- - Click GIS
 	 *	- All options OFF
 	 *	- - Click on Map and turn Satellite view ON
@@ -776,33 +717,28 @@ public class SurveyViewPageTest {
 	 *	- - All other survey data, assets and boundaries are not displayed
 	 */
 	@Test
-	public void TC1012_SurveyView_ViewRapidResponseSurveySatellliteViewWhenFieldNotesONAssetsBoundariesOFF() {
-		try {
-			Log.info("\nRunning TC1012_ActionTest_SurveyView_ViewRapidResponseSurveySatellliteViewWhenFieldNotesONAssetsBoundariesOFF ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1012_SurveyView_ViewRapidResponseSurveySatellliteViewWhenFieldNotesONAssetsBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1012_ActionTest_SurveyView_ViewRapidResponseSurveySatellliteViewWhenFieldNotesONAssetsBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -810,8 +746,8 @@ public class SurveyViewPageTest {
 	 * Script: -  	
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click Display
-	 *	- Isotopic Analysis - ON
 	 *	- All other options - OFF
+	 *	- Isotopic Analysis - ON
 	 *	- - Click GIS
 	 *	- All options OFF
 	 *	- - Click on Map and turn Map view ON
@@ -819,31 +755,26 @@ public class SurveyViewPageTest {
 	 *	- - All other survey data, assets and boundaries are not displayed
 	 */
 	@Test
-	public void TC1013_SurveyView_ViewRapidResponseSurveyMapViewWhenIsotopicAnalysisONAssetsBoundariesOFF() {
-		try {
-			Log.info("\nRunning TC1013_ActionTest_SurveyView_ViewRapidResponseSurveyMapViewWhenIsotopicAnalysisONAssetsBoundariesOFF ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnIsotopicAnalysis(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1013_SurveyView_ViewRapidResponseSurveyMapViewWhenIsotopicAnalysisONAssetsBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1013_ActionTest_SurveyView_ViewRapidResponseSurveyMapViewWhenIsotopicAnalysisONAssetsBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnIsotopicAnalysis(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -851,8 +782,8 @@ public class SurveyViewPageTest {
 	 * Script: -  	
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click Display
-	 *	- Isotopic Analysis - ON
 	 *	- All other options - OFF
+	 *	- Isotopic Analysis - ON
 	 *	- - Click GIS
 	 *	- All options OFF
 	 *	- - Click on Map and turn Satellite view ON
@@ -860,31 +791,26 @@ public class SurveyViewPageTest {
 	 *	- - All other survey data, assets and boundaries are not displayed
 	 */
 	@Test
-	public void TC1014_SurveyView_ViewRapidResponseSurveySatelliteViewWhenIsotopicAnalysisONAssetsBoundariesOFF() {
-		try {
-			Log.info("\nRunning TC1014_ActionTest_SurveyView_ViewRapidResponseSurveySatelliteViewWhenIsotopicAnalysisONAssetsBoundariesOFF ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnIsotopicAnalysis(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1014_SurveyView_ViewRapidResponseSurveySatelliteViewWhenIsotopicAnalysisONAssetsBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1014_ActionTest_SurveyView_ViewRapidResponseSurveySatelliteViewWhenIsotopicAnalysisONAssetsBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnIsotopicAnalysis(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -892,41 +818,36 @@ public class SurveyViewPageTest {
 	 * Script: -  	
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Display: All OFF
-	 *	- - Map View: Satellite
 	 *	- - GIS: All OFF
+	 *	- - Map View: Satellite
 	 *	- - User should see only Breadcrumb in satellite view
 	 * Results: - 
 	 *	- - All other survey data, assets and boundaries are not displayed
 	 */
 	@Test
-	public void TC1016_SurveyView_ViewManualSurveySatelliteViewWhenGISDisplayOptionsAreOFF() {
-		try {
-			Log.info("\nRunning TC1016_ActionTest_SurveyView_ViewManualSurveySatelliteViewWhenGISDisplayOptionsAreOFF ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1016_SurveyView_ViewManualSurveySatelliteViewWhenGISDisplayOptionsAreOFF() throws Exception {
+		Log.info("\nRunning TC1016_ActionTest_SurveyView_ViewManualSurveySatelliteViewWhenGISDisplayOptionsAreOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -941,30 +862,25 @@ public class SurveyViewPageTest {
 	 *	- - All other survey data is not displayed
 	 */
 	@Test
-	public void TC1017_SurveyView_ViewIndicationsDataManualSurveySatelliteViewWhenGISDataLoaded() {
-		try {
-			Log.info("\nRunning TC1017_ActionTest_SurveyView_ViewIndicationsDataManualSurveySatelliteViewWhenGISDataLoaded ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1017_SurveyView_ViewIndicationsDataManualSurveySatelliteViewWhenGISDataLoaded() throws Exception {
+		Log.info("\nRunning TC1017_ActionTest_SurveyView_ViewIndicationsDataManualSurveySatelliteViewWhenGISDataLoaded ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -979,30 +895,25 @@ public class SurveyViewPageTest {
 	 *	- - All other survey data is not displayed
 	 */
 	@Test
-	public void TC1018_SurveyView_ViewFOVDataManualSurveySatellliteViewWhenGISDataLoaded() {
-		try {
-			Log.info("\nRunning TC1018_ActionTest_SurveyView_ViewFOVDataManualSurveySatellliteViewWhenGISDataLoaded ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1018_SurveyView_ViewFOVDataManualSurveySatellliteViewWhenGISDataLoaded() throws Exception {
+		Log.info("\nRunning TC1018_ActionTest_SurveyView_ViewFOVDataManualSurveySatellliteViewWhenGISDataLoaded ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -1018,38 +929,33 @@ public class SurveyViewPageTest {
 	 *	- - User should see Breadcrumb, FOV, Indications, LISA, Capture results (if any) and Field Notes (if any) on map in satellite view
 	 */
 	@Test
-	public void TC1019_SurveyView_ViewFOVIndicationsLisasDataManualSurveySatelliteViewWhenAssetsAreLoaded() {
-		try {
-			Log.info("\nRunning TC1019_ActionTest_SurveyView_ViewFOVIndicationsLisasDataManualSurveySatelliteViewWhenAssetsAreLoaded ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnAllAssets(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllBoundaries(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1_ANALYZER1, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_A, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-			//assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1019_SurveyView_ViewFOVIndicationsLisasDataManualSurveySatelliteViewWhenAssetsAreLoaded() throws Exception {
+		Log.info("\nRunning TC1019_ActionTest_SurveyView_ViewFOVIndicationsLisasDataManualSurveySatelliteViewWhenAssetsAreLoaded ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllAssets(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllBoundaries(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1_ANALYZER1, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_A, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -1066,40 +972,35 @@ public class SurveyViewPageTest {
 	 *	- - Only boundaries are displayed. Assets are not displayed
 	 */
 	@Test
-	public void TC1020_SurveyView_ViewFOVIndicationsLisasDataManualSurveySatelliteViewWhenBoundariesLoadedIntoGIS() {
-		try {
-			Log.info("\nRunning TC1020_ActionTest_SurveyView_ViewFOVIndicationsLisasDataManualSurveySatelliteViewWhenBoundariesLoadedIntoGIS ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllAssets(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnAllBoundaries(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1_ANALYZER1, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_A, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-			//assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1020_SurveyView_ViewFOVIndicationsLisasDataManualSurveySatelliteViewWhenBoundariesLoadedIntoGIS() throws Exception {
+		Log.info("\nRunning TC1020_ActionTest_SurveyView_ViewFOVIndicationsLisasDataManualSurveySatelliteViewWhenBoundariesLoadedIntoGIS ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssets(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllBoundaries(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1_ANALYZER1, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_A, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -1107,39 +1008,34 @@ public class SurveyViewPageTest {
 	 * Script: -  	
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Display: Indications ON
-	 *	- LISA ON
 	 *	- All other options OFF
+	 *	- LISA ON
 	 *	- - Map View: Satellite
 	 *	- - GIS: All ON
 	 * Results: - 
 	 *	- - All other survey data is not displayed
 	 */
 	@Test
-	public void TC1021_SurveyView_ViewIndicationsLisasDataManualSurveySatelliteViewWhenGISDataLoaded() {
-		try {
-			Log.info("\nRunning TC1021_ActionTest_SurveyView_ViewIndicationsLisasDataManualSurveySatelliteViewWhenGISDataLoaded ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1021_SurveyView_ViewIndicationsLisasDataManualSurveySatelliteViewWhenGISDataLoaded() throws Exception {
+		Log.info("\nRunning TC1021_ActionTest_SurveyView_ViewIndicationsLisasDataManualSurveySatelliteViewWhenGISDataLoaded ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -1147,8 +1043,8 @@ public class SurveyViewPageTest {
 	 * Script: -  	
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click Display
-	 *	- Indications - ON
 	 *	- All other options - OFF
+	 *	- Indications - ON
 	 *	- - Click GIS
 	 *	- All options OFF
 	 *	- - Click on Map and turn Satellite view ON
@@ -1157,33 +1053,28 @@ public class SurveyViewPageTest {
 	 *	- - All other survey data, assets and boundaries are not displayed
 	 */
 	@Test
-	public void TC1022_SurveyView_ViewIndicationsManualSurveySatelliteViewWhenNoGISLoaded() {
-		try {
-			Log.info("\nRunning TC1022_ActionTest_SurveyView_ViewIndicationsManualSurveySatelliteViewWhenNoGISLoaded ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-			//assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1022_SurveyView_ViewIndicationsManualSurveySatelliteViewWhenNoGISLoaded() throws Exception {
+		Log.info("\nRunning TC1022_ActionTest_SurveyView_ViewIndicationsManualSurveySatelliteViewWhenNoGISLoaded ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -1191,9 +1082,9 @@ public class SurveyViewPageTest {
 	 * Script: -  	
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click Display
+	 *	- All other options - OFF
 	 *	- LISA - ON
 	 *	- Field Notes - ON
-	 *	- All other options - OFF
 	 *	- - Click GIS
 	 *	- All options OFF
 	 *	- - Click on Map and turn Map view ON
@@ -1203,40 +1094,35 @@ public class SurveyViewPageTest {
 	 *	- - Indications and FOV are not displayed on map
 	 */
 	@Test
-	public void TC1023_SurveyView_ViewManualSurveyMapViewWhenLISAFieldNotesAreOnGISOff() {
-		try {
-			Log.info("\nRunning TC1023_ActionTest_SurveyView_ViewManualSurveyMapViewWhenLISAFieldNotesAreOnGISOff ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1_ANALYZER1, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_A, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-			//assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1023_SurveyView_ViewManualSurveyMapViewWhenLISAFieldNotesAreOnGISOff() throws Exception {
+		Log.info("\nRunning TC1023_ActionTest_SurveyView_ViewManualSurveyMapViewWhenLISAFieldNotesAreOnGISOff ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1_ANALYZER1, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_A, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -1244,9 +1130,9 @@ public class SurveyViewPageTest {
 	 * Script: -  	
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click Display
+	 *	- All other options - OFF
 	 *	- LISA - ON
 	 *	- Field Notes - ON
-	 *	- All other options - OFF
 	 *	- - Click GIS
 	 *	- All options OFF
 	 *	- - Click on Map and turn Satellite view ON
@@ -1256,40 +1142,35 @@ public class SurveyViewPageTest {
 	 *	- - Indications and FOV are not displayed on map in satellite view
 	 */
 	@Test
-	public void TC1024_SurveyView_ViewManualSurveySatelliteViewWhenLISAFieldNotesAreOnGISOff() {
-		try {
-			Log.info("\nRunning TC1024_ActionTest_SurveyView_ViewManualSurveySatelliteViewWhenLISAFieldNotesAreOnGISOff ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1_ANALYZER1, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_A, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-			//assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1024_SurveyView_ViewManualSurveySatelliteViewWhenLISAFieldNotesAreOnGISOff() throws Exception {
+		Log.info("\nRunning TC1024_ActionTest_SurveyView_ViewManualSurveySatelliteViewWhenLISAFieldNotesAreOnGISOff ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1_ANALYZER1, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_A, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -1297,9 +1178,9 @@ public class SurveyViewPageTest {
 	 * Script: -  	
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click Display
+	 *	- All other options - OFF
 	 *	- FOV - ON
 	 *	- Indications - ON
-	 *	- All other options - OFF
 	 *	- - Click GIS
 	 *	- All options ON
 	 *	- - Click on Map and turn Map view ON
@@ -1309,41 +1190,36 @@ public class SurveyViewPageTest {
 	 *	- - Lisa and field notes (if any) are not present on map
 	 */
 	@Test
-	public void TC1025_SurveyView_ViewManualSurveyMapViewWhenFovIndicationOnGISOn() {
-		try {
-			Log.info("\nRunning TC1025_ActionTest_SurveyView_ViewManualSurveyMapViewWhenFovIndicationOnGISOn ...");
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-			homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
-			assertTrue(surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
-			surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
-			surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-			surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-			surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-			assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1_ANALYZER1, NOTSET));
-			assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_A, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-			//assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyAssetIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-			assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
-		} catch (Exception e) {
-			Log.error(e.toString());
-			assertTrue(false);	// fail test on exception.
-		}
+	public void TC1025_SurveyView_ViewManualSurveyMapViewWhenFovIndicationOnGISOn() throws Exception {
+		Log.info("\nRunning TC1025_ActionTest_SurveyView_ViewManualSurveyMapViewWhenFovIndicationOnGISOn ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		homePageAction.clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.surveyTag, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1_ANALYZER1, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_A, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(EMPTY, NOTSET));
 	}
 }

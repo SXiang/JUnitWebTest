@@ -125,6 +125,27 @@
 		</junit>
 	</target>
 
+	<target name="testsurveyview" depends="compileregression" description="Run survey view test cases">
+		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
+				showoutput="yes">
+			<classpath>
+				<pathelement path="${build}" />
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+
+			<batchtest fork="yes" todir="${reports}/regression/xml">
+				<formatter type="xml" />
+				<fileset dir="${build}">
+
+					<include name="**/SurveyViewPageTest.class" />
+
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
 	<target name="testlogin" depends="compileregression" description="Run login page test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
