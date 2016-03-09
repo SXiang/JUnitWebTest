@@ -2,17 +2,30 @@ package surveyor.scommon.actions;
 
 import org.openqa.selenium.WebDriver;
 
+import common.source.BrowserCommands;
+import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.actions.data.DriverViewDataReader;
 import surveyor.scommon.source.SurveyViewPage;
 
 public class SurveyViewPageActions extends BaseMapViewPageActions {
+	private static final String FN_VERIFY_SURVEY_INFO_ANALYZER_LABEL_EQUALS = "verifySurveyInfoAnalyzerLabelEquals";
+	private static final String FN_VERIFY_SURVEY_INFO_SURVEYOR_LABEL_EQUALS = "verifySurveyInfoSurveyorLabelEquals";
+	private static final String FN_VERIFY_SURVEY_INFO_DRIVER_LABEL_EQUALS = "verifySurveyInfoDriverLabelEquals";
+	private static final String FN_VERIFY_SURVEY_INFO_STABILITY_CLASS_LABEL_EQUALS = "verifySurveyInfoStabilityClassLabelEquals";
+	private static final String FN_VERIFY_SURVEY_INFO_START_TIME_LABEL_EQUALS = "verifySurveyInfoStartTimeLabelEquals";
+	private static final String FN_VERIFY_SURVEY_INFO_START_TIME_LABEL_STARTS_WITH = "verifySurveyInfoStartTimeLabelStartsWith";
+	private static final String FN_VERIFY_SURVEY_INFO_END_TIME_LABEL_EQUALS = "verifySurveyInfoEndTimeLabelEquals";
+	private static final String FN_VERIFY_SURVEY_INFO_END_TIME_LABEL_STARTS_WITH = "verifySurveyInfoEndTimeLabelStartsWith";
+	private static final String FN_VERIFY_SURVEY_INFO_MODE_LABEL_EQUALS = "verifySurveyInfoModeLabelEquals";
+	private static final String CLS_SURVEY_VIEW_PAGE_ACTIONS = "SurveyViewPageActions::";
 
 	// Use the Driver view data reader as the input could be read from DriverViewTestData.
 	private DriverViewDataReader dataReader = null;
 
 	public SurveyViewPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup);
+		initializePageObject(driver, new SurveyViewPage(driver, testSetup, strBaseURL));
 		setDataReader(new DriverViewDataReader(this.excelUtility));
 	}
 
@@ -23,11 +36,62 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 	 * @return - returns whether the action was successful or not.
 	 */
 	public boolean open(String data, Integer dataRowID) {
-		logAction("SurveyViewPageActions.open", data, dataRowID);
+		logAction(getRuntimeType() + ".open", data, dataRowID);
 		getSurveyViewPage().open();
 		return true;
 	}
+	
+	/**
+	 * Executes refreshPage action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean refreshPage(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".refreshPage", data, dataRowID);
+		BrowserCommands.refresh();
+		SurveyViewPage surveyViewPage = new SurveyViewPage(TestContext.INSTANCE.getDriver(), 
+				TestContext.INSTANCE.getTestSetup(),
+				TestContext.INSTANCE.getBaseUrl());
+		initializePageObject(TestContext.INSTANCE.getDriver(), surveyViewPage);
+		return true;
+	}
+	
+	@Override
+	public boolean turnOffAllDisplayOptions(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".turnOffAllDisplayOptions", data, dataRowID);
+		turnOffFOVs(data, dataRowID);
+		turnOffIndications(data, dataRowID);
+		turnOffIsotopicAnalysis(data, dataRowID);
+		turnOffLisas(data, dataRowID);
+		turnOffNotes(data, dataRowID);
+		return true;
+	}
  
+	@Override
+	public boolean turnOnAllDisplayOptions(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".turnOnAllDisplayOptions", data, dataRowID);
+		turnOnFOVs(data, dataRowID);
+		turnOnIndications(data, dataRowID);
+		turnOnIsotopicAnalysis(data, dataRowID);
+		turnOnLisas(data, dataRowID);
+		turnOnNotes(data, dataRowID);
+		return true;
+	}
+
+	/**
+	 * Executes verifySurveyViewPageIsOpened action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyPageLoaded(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyPageLoaded", data, dataRowID);
+		this.getSurveyViewPage().waitForPageLoad();
+		this.getSurveyViewPage().waitForUIUnBlock();
+		return true;
+	}
+
 	/**
 	 * Executes verifySurveyViewPageIsOpened action.
 	 * @param data - specifies the input data passed to the action.
@@ -35,10 +99,71 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 	 * @return - returns whether the action was successful or not.
 	 */
 	public boolean verifySurveyViewPageIsOpened(String data, Integer dataRowID) {
-		logAction("SurveyViewPageActions.verifySurveyViewPageIsOpened", data, dataRowID);
+		logAction(getRuntimeType() + ".verifySurveyViewPageIsOpened", data, dataRowID);
 		return getSurveyViewPage().checkIfAtSurveyViewPage();
 	}
-	
+
+	/* SurveyInfo - Labels */
+	public boolean verifySurveyInfoTagLabelEquals(String data, Integer dataRowID) throws Exception {
+		logAction(getRuntimeType() + ".verifySurveyInfoTagLabelEquals", data, dataRowID);
+		String actualTagValue = getSurveyViewPage().getTagLabelText();
+		return verifySurveyInfoTagLabelEquals(data, dataRowID, DriverViewPageActions.workingDataRow, actualTagValue);
+	}
+	public boolean verifySurveyInfoModeLabelEquals(String data, Integer dataRowID) throws Exception {
+		logAction(getRuntimeType() + ".verifySurveyInfoModeLabelEquals", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty(CLS_SURVEY_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_MODE_LABEL_EQUALS, ARG_DATA, data);
+		log(String.format("Looking for Text-[%s], Found Survey Mode Label Text-[%s]", data, getSurveyViewPage().getSurveyModeLabelText()));
+		return getSurveyViewPage().getSurveyModeLabelText().equals(data);
+	}
+	public boolean verifySurveyInfoStartTimeLabelEquals(String data, Integer dataRowID) throws Exception {
+		logAction(getRuntimeType() + ".verifySurveyInfoStartTimeLabelEquals", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty(CLS_SURVEY_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_START_TIME_LABEL_EQUALS, ARG_DATA, data);
+		log(String.format("Looking for Text-[%s], Found Start Time Label Text-[%s]", data, getSurveyViewPage().getStartTimeLabelText()));
+		return getSurveyViewPage().getStartTimeLabelText().equals(data);
+	}
+	public boolean verifySurveyInfoEndTimeLabelEquals(String data, Integer dataRowID) throws Exception {
+		logAction(getRuntimeType() + ".verifySurveyInfoEndTimeLabelEquals", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty(CLS_SURVEY_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_END_TIME_LABEL_EQUALS, ARG_DATA, data);
+		log(String.format("Looking for Text-[%s], Found End Time Label Text-[%s]", data, getSurveyViewPage().getEndTimeLabelText()));
+		return getSurveyViewPage().getEndTimeLabelText().equals(data);
+	}
+	public boolean verifySurveyInfoStabilityClassLabelEquals(String data, Integer dataRowID) throws Exception {
+		logAction(getRuntimeType() + ".verifySurveyInfoStabilityClassLabelEquals", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty(CLS_SURVEY_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_STABILITY_CLASS_LABEL_EQUALS, ARG_DATA, data);
+		log(String.format("Looking for Text-[%s], Found Stability Class Label Text-[%s]", data, getSurveyViewPage().getStabilityClassLabelText()));
+		return getSurveyViewPage().getStabilityClassLabelText().equals(data);
+	}
+	public boolean verifySurveyInfoDriverLabelEquals(String data, Integer dataRowID) throws Exception {
+		logAction(getRuntimeType() + ".verifySurveyInfoDriverLabelEquals", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty(CLS_SURVEY_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_DRIVER_LABEL_EQUALS, ARG_DATA, data);
+		log(String.format("Looking for Text-[%s], Found Driver Label Text-[%s]", data, getSurveyViewPage().getDriverLabelText()));
+		return getSurveyViewPage().getDriverLabelText().equals(data);
+	}
+	public boolean verifySurveyInfoSurveyorLabelEquals(String data, Integer dataRowID) throws Exception {
+		logAction(getRuntimeType() + ".verifySurveyInfoSurveyorLabelEquals", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty(CLS_SURVEY_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_SURVEYOR_LABEL_EQUALS, ARG_DATA, data);
+		log(String.format("Looking for Text-[%s], Found Surveyor Label Text-[%s]", data, getSurveyViewPage().getSurveyorLabelText()));
+		return getSurveyViewPage().getSurveyorLabelText().equals(data);
+	}
+	public boolean verifySurveyInfoAnalyzerLabelEquals(String data, Integer dataRowID) throws Exception {
+		logAction(getRuntimeType() + ".verifySurveyInfoAnalyzerLabelEquals", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty(CLS_SURVEY_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_ANALYZER_LABEL_EQUALS, ARG_DATA, data);
+		log(String.format("Looking for Text-[%s], Found Analyzer Label Text-[%s]", data, getSurveyViewPage().getAnalyzerLabelText()));
+		return getSurveyViewPage().getAnalyzerLabelText().equals(data);
+	}
+	public boolean verifySurveyInfoStartTimeLabelStartsWith(String data, Integer dataRowID) throws Exception {
+		logAction(getRuntimeType() + ".verifySurveyInfoStartTimeLabelStartsWith", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty(CLS_SURVEY_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_START_TIME_LABEL_STARTS_WITH, ARG_DATA, data);
+		log(String.format("Looking for Text-[%s], Found Start Time Label Text-[%s]", data, getSurveyViewPage().getStartTimeLabelText()));
+		return getSurveyViewPage().getStartTimeLabelText().startsWith(data);
+	}
+	public boolean verifySurveyInfoEndTimeLabelStartsWith(String data, Integer dataRowID) throws Exception {
+		logAction(getRuntimeType() + ".verifySurveyInfoEndTimeLabelStartsWith", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty(CLS_SURVEY_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_INFO_END_TIME_LABEL_STARTS_WITH, ARG_DATA, data);
+		log(String.format("Looking for Text-[%s], Found End Time Label Text-[%s]", data, getSurveyViewPage().getEndTimeLabelText()));
+		return getSurveyViewPage().getEndTimeLabelText().startsWith(data);
+	}
+
 	/* Invoke action using specified ActionName */
 	@Override
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
@@ -180,6 +305,17 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		else if (actionName.equals("verifyGisBoundaryBigBoundaryButtonIsNotVisible")) { return this.verifyGisBoundaryBigBoundaryButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyGisBoundarySmallBoundaryButtonIsNotVisible")) { return this.verifyGisBoundarySmallBoundaryButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyGisUseAllBoundariesButtonIsNotVisible")) { return this.verifyGisUseAllBoundariesButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyPageLoaded")) { return this.verifyPageLoaded(data, dataRowID); }
+		else if (actionName.equals("verifySurveyInfoTagLabelEquals")) { return this.verifySurveyInfoTagLabelEquals(data, dataRowID); }
+		else if (actionName.equals("verifySurveyInfoModeLabelEquals")) { return this.verifySurveyInfoModeLabelEquals(data, dataRowID); }
+		else if (actionName.equals("verifySurveyInfoStartTimeLabelEquals")) { return this.verifySurveyInfoStartTimeLabelEquals(data, dataRowID); }
+		else if (actionName.equals("verifySurveyInfoEndTimeLabelEquals")) { return this.verifySurveyInfoEndTimeLabelEquals(data, dataRowID); }
+		else if (actionName.equals("verifySurveyInfoStabilityClassLabelEquals")) { return this.verifySurveyInfoStabilityClassLabelEquals(data, dataRowID); }
+		else if (actionName.equals("verifySurveyInfoDriverLabelEquals")) { return this.verifySurveyInfoDriverLabelEquals(data, dataRowID); }
+		else if (actionName.equals("verifySurveyInfoSurveyorLabelEquals")) { return this.verifySurveyInfoSurveyorLabelEquals(data, dataRowID); }
+		else if (actionName.equals("verifySurveyInfoAnalyzerLabelEquals")) { return this.verifySurveyInfoAnalyzerLabelEquals(data, dataRowID); }
+		else if (actionName.equals("verifySurveyInfoStartTimeLabelStartsWith")) { return this.verifySurveyInfoStartTimeLabelStartsWith(data, dataRowID); }
+		else if (actionName.equals("verifySurveyInfoEndTimeLabelStartsWith")) { return this.verifySurveyInfoEndTimeLabelStartsWith(data, dataRowID); }
 		return false;
 	}
 

@@ -11,10 +11,19 @@ import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class SurveyViewPage extends BaseMapViewPage {
+	private static final String SURVEY_INFO_ANALYZER_LABEL_XPATH = "//*[@id='header_info_historical']/div[5]";
+	private static final String SURVEY_INFO_SURVEYOR_LABEL_XPATH = "//*[@id='header_info_historical']/div[6]";
+	private static final String SURVEY_INFO_END_TIME_LABEL_XPATH = "//*[@id='header_info_historical']/div[8]";
+	private static final String SURVEY_INFO_START_TIME_LABEL_XPATH = "//*[@id='header_info_historical']/div[7]";
+	private static final String SURVEY_INFO_STABILITY_CLASS_LABEL_XPATH = "//*[@id='header_info_historical']/div[4]";
+	private static final String SURVEY_INFO_DRIVER_LABEL_XPATH = "//*[@id='header_info_historical']/div[3]";
+	private static final String SURVEY_INFO_MODE_LABEL_XPATH = "//*[@id='header_info_historical']/div[2]";
+	private static final String SURVEY_INFO_TAG_LABEL_XPATH = "//*[@id='header_info_historical']/div[1]";
 	public static final String STRURLPath = "/Live/Survey/";
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.Constant_Survey);
 	public static final String STRPageContentText = "Map View";
@@ -99,28 +108,28 @@ public class SurveyViewPage extends BaseMapViewPage {
     @CacheLookup
     private WebElement termsOfUse;
     
-    @FindBy(how = How.XPATH, using = "//*[@id='header_info_historical']/div[1]")
+    @FindBy(how = How.XPATH, using = SURVEY_INFO_TAG_LABEL_XPATH)
 	private WebElement labelTag;
 
-    @FindBy(how = How.XPATH, using = "//*[@id='header_info_historical']/div[2]")
+    @FindBy(how = How.XPATH, using = SURVEY_INFO_MODE_LABEL_XPATH)
 	private WebElement labelMode;
 
-    @FindBy(how = How.XPATH, using = "//*[@id='header_info_historical']/div[3]")
+    @FindBy(how = How.XPATH, using = SURVEY_INFO_DRIVER_LABEL_XPATH)
 	private WebElement labelDriver;
 
-    @FindBy(how = How.XPATH, using = "//*[@id='header_info_historical']/div[4]")
+    @FindBy(how = How.XPATH, using = SURVEY_INFO_STABILITY_CLASS_LABEL_XPATH)
 	private WebElement labelStabilityClass;
 
-    @FindBy(how = How.XPATH, using = "//*[@id='header_info_historical']/div[5]")
+    @FindBy(how = How.XPATH, using = SURVEY_INFO_ANALYZER_LABEL_XPATH)
 	private WebElement labelAnalyzer;
 
-    @FindBy(how = How.XPATH, using = "//*[@id='header_info_historical']/div[6]")
+    @FindBy(how = How.XPATH, using = SURVEY_INFO_SURVEYOR_LABEL_XPATH)
 	private WebElement labelSurveyor;
 
-    @FindBy(how = How.XPATH, using = "//*[@id='header_info_historical']/div[7]")
+    @FindBy(how = How.XPATH, using = SURVEY_INFO_START_TIME_LABEL_XPATH)
 	private WebElement labelStartTime;
 
-    @FindBy(how = How.XPATH, using = "//*[@id='header_info_historical']/div[8]")
+    @FindBy(how = How.XPATH, using = SURVEY_INFO_END_TIME_LABEL_XPATH)
 	private WebElement labelEndTime;
 
 	/**
@@ -341,7 +350,47 @@ public class SurveyViewPage extends BaseMapViewPage {
         return this;
     }
 
-    /**
+	public String getTagLabelText() {
+		return driver.findElement(By.xpath(SURVEY_INFO_TAG_LABEL_XPATH)).getText();
+	}
+
+	public String getSurveyModeLabelText() {
+		return driver.findElement(By.xpath(SURVEY_INFO_MODE_LABEL_XPATH)).getText();
+	}
+
+	public String getDriverLabelText() {
+		return driver.findElement(By.xpath(SURVEY_INFO_DRIVER_LABEL_XPATH)).getText();
+	}
+
+	public String getStabilityClassLabelText() {
+		return driver.findElement(By.xpath(SURVEY_INFO_STABILITY_CLASS_LABEL_XPATH)).getText();
+	}
+
+	public WebElement getStartTimeLabel() {
+		return driver.findElement(By.xpath(SURVEY_INFO_START_TIME_LABEL_XPATH));
+	}
+
+	public String getStartTimeLabelText() {
+		return driver.findElement(By.xpath(SURVEY_INFO_START_TIME_LABEL_XPATH)).getText();
+	}
+
+	public WebElement getEndTimeLabel() {
+		return driver.findElement(By.xpath(SURVEY_INFO_END_TIME_LABEL_XPATH));
+	}
+
+	public String getEndTimeLabelText() {
+		return driver.findElement(By.xpath(SURVEY_INFO_END_TIME_LABEL_XPATH)).getText();
+	}
+
+	public String getSurveyorLabelText() {
+		return driver.findElement(By.xpath(SURVEY_INFO_SURVEYOR_LABEL_XPATH)).getText();
+	}
+
+	public String getAnalyzerLabelText() {
+		return driver.findElement(By.xpath(SURVEY_INFO_ANALYZER_LABEL_XPATH)).getText();
+	}
+
+	/**
      * Submit the form to target page.
      *
      * @return the SurveyViewPage class instance.

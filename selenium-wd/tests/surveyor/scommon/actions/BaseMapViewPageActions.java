@@ -11,6 +11,7 @@ import common.source.TestSetup;
 import surveyor.scommon.source.BaseMapViewPage.DisplaySwitchType;
 import surveyor.scommon.source.BaseMapViewPage.GisSwitchType;
 import surveyor.scommon.source.BaseMapViewPage.MapSwitchType;
+import surveyor.scommon.actions.data.DriverViewDataReader.DriverViewDataRow;
 import surveyor.scommon.source.BaseMapViewPage;
 
 public class BaseMapViewPageActions extends BasePageActions {
@@ -24,6 +25,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	private static final String FN_VERIFY_GIS_SWITCH_IS_ON = "verifyGisSwitchIsOn";
 	private static final String FN_VERIFY_DISPLAY_SWITCH_IS_ON = "verifyDisplaySwitchIsOn";
 	private static final String FN_VERIFY_CROSS_HAIR_ICON_IS_SHOWN_ON_MAP = "verifyCrossHairIconIsShownOnMap";
+	private static final String FN_VERIFY_SURVEY_INFO_TAG_LABEL_EQUALS = "verifySurveyInfoTagLabelEquals";
 	
 	private static final String CLS_BASEMAP_VIEW_PAGE_ACTIONS = "BaseMapViewPageActions::";
 	
@@ -31,11 +33,10 @@ public class BaseMapViewPageActions extends BasePageActions {
 
 	public BaseMapViewPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL);
-		initializePageObject(driver, strBaseURL, testSetup);
 	}
 
-	public void initializePageObject(WebDriver driver, String strBaseURL, TestSetup testSetup) {
-		setPageObject(new BaseMapViewPage(driver, testSetup, strBaseURL, strBaseURL));
+	public void initializePageObject(WebDriver driver, BaseMapViewPage pageObj) {
+		setPageObject(pageObj);
 		PageFactory.initElements(driver, getPageObject());
 	}
 
@@ -155,20 +156,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return true;
 	}
 
-	/**
-	 * Executes refreshPage action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean refreshPage(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".refreshPage", data, dataRowID);
-		BrowserCommands.refresh();
-		initializePageObject(TestContext.INSTANCE.getDriver(), 
-				TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
-		return true;
-	}
-	
 	public boolean turnOnMapView(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnMapView", data, dataRowID);
 		getPageObject().toggleMapSwitch(MapSwitchType.Map, true);
@@ -228,7 +215,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".turnOnAllBoundaries", data, dataRowID);
 		turnOnBoundariesDistrict(data, dataRowID);
 		turnOnBoundariesDistrictPlat(data, dataRowID);
-		turnOnAllBoundaries(data, dataRowID);
 		return true;
 	}
  
@@ -374,7 +360,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".turnOffAllBoundaries", data, dataRowID);
 		turnOffBoundariesDistrict(data, dataRowID);
 		turnOffBoundariesDistrictPlat(data, dataRowID);
-		turnOffAllBoundaries(data, dataRowID);
 		return true;
 	}
  
@@ -1119,5 +1104,19 @@ public class BaseMapViewPageActions extends BasePageActions {
 			return "SurveyViewPageActions";
 		}
 		return "";
+	}
+	
+	protected boolean verifySurveyInfoTagLabelEquals(String data, Integer dataRowID, DriverViewDataRow workingDataRow, String actualTagValue) throws Exception {
+		String expectedTagValue = null;
+		if (!ActionArguments.isEmpty(data)) {
+			expectedTagValue = "Tag: " + data;
+		} else if (dataRowID > 0) {
+			expectedTagValue = "Tag: " + workingDataRow.surveyTag;
+		} else {
+			throw new Exception(String.format("Either data or dataRowID must be passed for %s action.", FN_VERIFY_SURVEY_INFO_TAG_LABEL_EQUALS));
+		}
+		
+		log(String.format("Looking for Text-[%s], Found Survey Tag Label Text-[%s]", expectedTagValue, actualTagValue));
+		return actualTagValue.equals(expectedTagValue);
 	}
 }
