@@ -128,8 +128,11 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		this.inputLotNumber.sendKeys(strLotNumber);
 		this.inputIsoValue.clear();
 		this.inputIsoValue.sendKeys(strIsoValue);
-		this.inputEthMthRto.clear();
-		this.inputEthMthRto.sendKeys(ethMthRto);
+		
+		if ((ethMthRto != null) && (ethMthRto != "")) { 
+			this.inputEthMthRto.clear();
+			this.inputEthMthRto.sendKeys(ethMthRto);
+		}
 		
 		List<WebElement> options = this.dropdownSurveyor.findElements(By
 				.tagName("option"));
