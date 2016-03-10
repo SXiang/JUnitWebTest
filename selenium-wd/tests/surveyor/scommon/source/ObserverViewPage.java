@@ -12,7 +12,7 @@ import surveyor.dataaccess.source.Resources;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class ObserverViewPage extends BaseMapViewPage {
+public class ObserverViewPage extends BaseDrivingViewPage {
 	public static final String STRURLPath = "/Live/Observer";
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.Constant_Observer);
 	public static final String STRPageContentText = "Map View";

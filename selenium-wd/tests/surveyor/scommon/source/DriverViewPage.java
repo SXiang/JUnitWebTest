@@ -3,7 +3,6 @@ package surveyor.scommon.source;
 import java.util.Map;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -16,24 +15,9 @@ import surveyor.dataaccess.source.Resources;
 
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 import org.openqa.selenium.WebElement;
 
-public class DriverViewPage extends BaseMapViewPage {
-	private static final String IMG_DATA_DATA_0 = "return imgData.data[0];";
-	private static final String IMG_DATA_DATA_1 = "return imgData.data[1];";
-	private static final String IMG_DATA_DATA_2 = "return imgData.data[2];";
-	private static final String[] GreenRGBPixels = new String[] { "21", "255", "0" };
-	private static final String[] RedRGBPixels = new String[] { "255", "2", "0" };
-
-	public static final String STATUS_PRESSURE_CANVAS_CTX = "test_ctx = $(\"#status_pressure_canvas\")[0].getContext('2d');";
-	public static final String STATUS_WARM_CANVAS_CTX = "test_ctx = $(\"#status_warm_canvas\")[0].getContext('2d');";
-	public static final String STATUS_TEMP_CANVAS_CTX = "test_ctx = $(\"#status_temp_canvas\")[0].getContext('2d');";
-	public static final String STATUS_FLOW_CANVAS_CTX = "test_ctx = $(\"#status_flow_canvas\")[0].getContext('2d');";
-	public static final String STATUS_GPS_CANVAS_CTX = "test_ctx = $(\"#status_gps_canvas\")[0].getContext('2d');";
-	public static final String STATUS_ANEMOMETER_CANVAS_CTX = "test_ctx = $(\"#status_anemometer_canvas\")[0].getContext('2d');";
-	private static final String CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA = "centerX = 40;centerY = 40;fontY = 12;paddingY = 5;rectWidth = 1;rectHeight = 1;var imgData=test_ctx.getImageData(centerX,centerY-fontY-paddingY,rectWidth,rectHeight);";
-
+public class DriverViewPage extends BaseDrivingViewPage {
 	public static final String STRURLPath = "/Live/Driver?address=https%3A%2F%2Flocalhost&port=5600&serialNumber="
 			+ TestSetup.TEST_ANALYZER_SERIAL_NUMBER;
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.Constant_Live);
@@ -62,22 +46,14 @@ public class DriverViewPage extends BaseMapViewPage {
 	private Map<String, String> data;
 	private int timeout = 15;
 
-	@FindBy(id = "canvas_rose")
-	@CacheLookup
-	private WebElement windRose;
-	
-	@FindBy(id = "canvas_rose_arrow")
-	@CacheLookup
-	private WebElement windRoseArrow;
-	
-	@FindBy(id = "header_info_box_upper_left")
-	@CacheLookup
-	private WebElement divHeaderInfoBox;
-
 	@FindBy(id = "blocked_ui")
 	@CacheLookup
 	private WebElement divBlockedUI;
 
+	@FindBy(id = "bottom_button_mode")
+	@CacheLookup
+	private WebElement modeButton;
+	
 	@FindBy(id = "mode_start_survey_element")
 	private WebElement startSurveyButtonDivElement;
 
@@ -245,7 +221,31 @@ public class DriverViewPage extends BaseMapViewPage {
 	@FindBy(id = "annotation_modal")
 	@CacheLookup
 	private WebElement fieldNotesModalDialog;
+
+	@FindBy(id = "btn_survey_warning_ok")
+	@CacheLookup
+	private WebElement surveyDurationWarningDialogOkButton;
+
+	@FindBy(id = "btn_survey_start_warning_ok")
+	@CacheLookup
+	private WebElement failedToStartSurveyDialogOkButton;
+
+	@FindBy(id = "survey_duration_warning")
+	@CacheLookup
+	protected WebElement divSurveyDurationWarning;
+
+	@FindBy(id = "survey_start_warning")
+	@CacheLookup
+	protected WebElement divSurveyStartWarning;
 	
+	@FindBy(id = "survey_warning_message")
+	@CacheLookup
+	protected WebElement spanSurveyWarningMessage;
+	
+	@FindBy(id = "survey_start_warning_message")
+	@CacheLookup
+	protected WebElement spanSurveyFailedToStartMessage;
+
 	/**
 	 * @param driver
 	 * @param baseURL
@@ -264,8 +264,13 @@ public class DriverViewPage extends BaseMapViewPage {
 		return false;
 	}
 
-	public DriverViewPage clickHeaderInfoBox() {
-		this.divHeaderInfoBox.click();
+	public DriverViewPage clickModeButton() {
+		this.modeButton.click();
+		return this;
+	}
+
+	public DriverViewPage hideModeMenu() {
+		clickModeButton();
 		return this;
 	}
 
@@ -386,206 +391,66 @@ public class DriverViewPage extends BaseMapViewPage {
 		return !(WebElementExtender.isAttributePresent(this.refBottleMeasButtonDivElement,"ng-cloak") ||
 					this.refBottleMeasButtonDivElement.getAttribute("class").contains("ng-hide"));
 	}
-
-	public String getTagLabelText() {
-		return driver.findElement(By.id("tag")).getText();
-	}
-
-	public String getSurveyModeLabelText() {
-		return driver.findElement(By.id("surveyMode")).getText();
-	}
-
-	public String getSurveyStatusLabelText() {
-		return driver.findElement(By.id("headerInfoStatus")).getText();
-	}
-
-	public String getDriverLabelText() {
-		return driver.findElement(By.id("driver")).getText();
-	}
-
-	public String getStabilityClassLabelText() {
-		return driver.findElement(By.id("stabilityClass")).getText();
-	}
-
-	public WebElement getTimeElapsedLabel() {
-		return driver.findElement(By.id("timeElapsed"));
-	}
-
-	public String getTimeElapsedLabelText() {
-		return driver.findElement(By.id("timeElapsed")).getText();
-	}
-
-	public WebElement getTimeLabel() {
-		return driver.findElement(By.id("currentTime"));
-	}	
-
-	public String getTimeLabelText() {
-		return driver.findElement(By.id("currentTime")).getText();
-	}	
 	
-	public WebElement getTimeRemainingLabel() {
-		return driver.findElement(By.id("timeRemaining"));
-	}
-
-	public String getTimeRemainingLabelText() {
-		return driver.findElement(By.id("timeRemaining")).getText();
-	}
-
-	public String getSurveyorLabelText() {
-		return driver.findElement(By.id("surveyorAnalyzer")).getText();
-	}
-
-	public String getZoomLevelLabelText() {
-		return driver.findElement(By.id("zoomLevel")).getText();
-	}
-
-	public String getAnalyzerLabelText() {
-		return driver.findElement(By.id("headerInfoStatus")).getText();
-	}
-
-	public boolean isWindRoseShown() {
-		boolean isShown = true;
-		if ((this.windRose.getAttribute("class").contains("ng-hide")) && (this.windRoseArrow.getAttribute("class").contains("ng-hide"))) {
-			isShown = false;
-		}
-		return isShown;
-	}
-
-	public DriverViewPage hidePositionMenu() {
-		clickPositionButton();
+	public DriverViewPage clickSurveyDurationWarningDialogOkButton() {
+		this.surveyDurationWarningDialogOkButton.click();
 		return this;
 	}
 
-	public boolean isPressureButtonRed() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_PRESSURE_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_PRESSURE_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_PRESSURE_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(RedRGBPixels[0]) && pixelGreen.toString().equals(RedRGBPixels[1])
-				&& pixelBlue.toString().equals(RedRGBPixels[2]);
+	public DriverViewPage clickFailedToStartSurveyDialogOkButton() {
+		this.failedToStartSurveyDialogOkButton.click();
+		return this;
+	}
+	
+	/**
+	 * Verifies that the survey warning dialog is shown.
+	 */
+	public boolean isSurveyDurationWarningDialogShown() {
+		if (divSurveyDurationWarning != null && divSurveyDurationWarning.isDisplayed()) {
+			return divSurveyDurationWarning.getAttribute("class").equalsIgnoreCase("cssFade");
+		}
+		return false;
 	}
 
-	public boolean isPressureButtonGreen() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_PRESSURE_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_PRESSURE_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_PRESSURE_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(GreenRGBPixels[0]) && pixelGreen.toString().equals(GreenRGBPixels[1])
-				&& pixelBlue.toString().equals(GreenRGBPixels[2]);
+	/**
+	 * Verifies that correct message is shown in Survey Duration warning dialog.
+	 */
+	public boolean isCorrectSurveyDurationWarningMessageShowing() {
+		if (isSurveyDurationWarningDialogShown()) {
+			String surveyStopInMessage = Resources.getResource(ResourceKeys.Survey_SurveyWillStopIn);
+			String surveyMinutesAndMessage = Resources.getResource(ResourceKeys.Survey_MinutesAnd);
+			String surveySecondsMessage = Resources.getResource(ResourceKeys.Survey_Seconds);
+			String msgText = spanSurveyWarningMessage.getText();
+			return msgText.contains(surveyStopInMessage) && msgText.contains(surveyMinutesAndMessage) &&
+					msgText.contains(surveySecondsMessage);
+		}
+		return false;
 	}
 
-	public boolean isHBTempButtonRed() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_WARM_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_WARM_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_WARM_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(RedRGBPixels[0]) && pixelGreen.toString().equals(RedRGBPixels[1])
-				&& pixelBlue.toString().equals(RedRGBPixels[2]);
+	/**
+	 * Verifies that the survey start dialog is shown.
+	 */
+	public boolean isSurveyFailedToStartDialogShown() {
+		if (divSurveyStartWarning != null && divSurveyStartWarning.isDisplayed()) {
+			return divSurveyStartWarning.getAttribute("class").equalsIgnoreCase("cssFade");
+		}
+		return false;
 	}
 
-	public boolean isHBTempButtonGreen() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_WARM_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_WARM_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_WARM_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(GreenRGBPixels[0]) && pixelGreen.toString().equals(GreenRGBPixels[1])
-				&& pixelBlue.toString().equals(GreenRGBPixels[2]);
+	/**
+	 * Verifies that correct message is shown in Survey Duration warning dialog.
+	 */
+	public boolean isCorrectSurveyFailedToStartMessageShowing() {
+		if (isSurveyFailedToStartDialogShown()) {
+			String msgText = spanSurveyFailedToStartMessage.getText();
+			return msgText.equals(Resources.getResource(ResourceKeys.Dialog_SurveyFailedtoStart));
+		}
+		return false;
 	}
-
-	public boolean isWBTempButtonRed() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_TEMP_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_TEMP_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_TEMP_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(RedRGBPixels[0]) && pixelGreen.toString().equals(RedRGBPixels[1])
-				&& pixelBlue.toString().equals(RedRGBPixels[2]);
-	}
-
-	public boolean isWBTempButtonGreen() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_TEMP_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_TEMP_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_TEMP_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(GreenRGBPixels[0]) && pixelGreen.toString().equals(GreenRGBPixels[1])
-				&& pixelBlue.toString().equals(GreenRGBPixels[2]);
-	}
-
-	public boolean isFlowButtonRed() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(RedRGBPixels[0]) && pixelGreen.toString().equals(RedRGBPixels[1])
-				&& pixelBlue.toString().equals(RedRGBPixels[2]);
-	}
-
-	public boolean isFlowButtonGreen() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(GreenRGBPixels[0]) && pixelGreen.toString().equals(GreenRGBPixels[1])
-				&& pixelBlue.toString().equals(GreenRGBPixels[2]);
-	}
-
-	public boolean isGPSButtonRed() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(RedRGBPixels[0]) && pixelGreen.toString().equals(RedRGBPixels[1])
-				&& pixelBlue.toString().equals(RedRGBPixels[2]);
-	}
-
-	public boolean isGPSButtonGreen() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(GreenRGBPixels[0]) && pixelGreen.toString().equals(GreenRGBPixels[1])
-				&& pixelBlue.toString().equals(GreenRGBPixels[2]);
-	}
-
-	public boolean isAnemometerButtonRed() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_ANEMOMETER_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_ANEMOMETER_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_ANEMOMETER_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(RedRGBPixels[0]) && pixelGreen.toString().equals(RedRGBPixels[1])
-				&& pixelBlue.toString().equals(RedRGBPixels[2]);
-	}
-
-	public boolean isAnemometerButtonGreen() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_ANEMOMETER_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_ANEMOMETER_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_ANEMOMETER_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(GreenRGBPixels[0]) && pixelGreen.toString().equals(GreenRGBPixels[1])
-				&& pixelBlue.toString().equals(GreenRGBPixels[2]);
+	
+	public DriverViewPage hidePositionMenu() {
+		clickPositionButton();
+		return this;
 	}
 
 	/**
@@ -888,7 +753,6 @@ public class DriverViewPage extends BaseMapViewPage {
 	public DriverViewPage setFieldNotesTextField(String fieldNotes) {
 		Log.info(String.format("Adding fields notes text - %s", fieldNotes));
 		fieldNotesTextField = driver.findElement(By.id("anno_input"));
-		//fieldNotesTextField.clear();
 		fieldNotesTextField.sendKeys(fieldNotes);
 		return this;
 	}
@@ -1096,6 +960,28 @@ public class DriverViewPage extends BaseMapViewPage {
 		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return fieldNotesModalDialog.getAttribute("class").equalsIgnoreCase("ng-hide");
+			}
+		});
+	}
+
+	/**
+	 * Waits for the survey duration warning dialog to close.
+	 */
+	public void waitForSurveyDurationWarningDialogToClose() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return divSurveyDurationWarning.getAttribute("class").equalsIgnoreCase("cssFade ng-hide");
+			}
+		});
+	}
+
+	/**
+	 * Waits for the survey start warning dialog to close.
+	 */
+	public void waitForSurveyFailedToStartDialogToClose() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return divSurveyStartWarning.getAttribute("class").equalsIgnoreCase("cssFade ng-hide");
 			}
 		});
 	}

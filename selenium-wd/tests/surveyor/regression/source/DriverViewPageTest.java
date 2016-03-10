@@ -700,7 +700,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			loginPageAction.login(EMPTY, 2);   /* Customer Supervisor */
 			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			// To get a new instance of Driver view page, initialize the driver view page.
-			driverViewPageAction.initializeDriverViewPage(TestContext.INSTANCE.getDriver(), 
+			driverViewPageAction.initializePageObject(TestContext.INSTANCE.getDriver(), 
 					TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());		
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnGisButton(EMPTY,NOTSET);
@@ -750,7 +750,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			BrowserCommands.goBack();
 			
 			// To get a new instance of Driver view page, initialize the driver view page.
-			driverViewPageAction.initializeDriverViewPage(TestContext.INSTANCE.getDriver(), 
+			driverViewPageAction.initializePageObject(TestContext.INSTANCE.getDriver(), 
 					TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());		
 			
 			assertTrue(driverViewPageAction.verifyPageLoaded(EMPTY,NOTSET));
@@ -1085,7 +1085,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 
 			// To get a new instance of Driver view page, initialize the driver view page.
-			driverViewPageAction.initializeDriverViewPage(TestContext.INSTANCE.getDriver(), 
+			driverViewPageAction.initializePageObject(TestContext.INSTANCE.getDriver(), 
 					TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());		
 
 			testEnvironmentAction.startAnalyzer(EMPTY, 4);
