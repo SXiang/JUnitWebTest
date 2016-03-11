@@ -54,10 +54,16 @@ public class SurveyViewPageTest {
 	private static final String TEST_SURVEY_RAPID_RESP_TAG = "rr-pic";
 	private static final String TEST_SURVEY_RAPID_RESP_TYPE = "Rapid Response";
 	private static final String TEST_SURVEY_RAPID_RESP_USERNAME = "Administrator";
-	private static final String TEST_SURVEY_MANUAL_ID = "4D7BF7AC-6CC2-9B18-1894-39D4B546927B";
-	private static final String TEST_SURVEY_MANUAL_TAG = "man-pic";
-	private static final String TEST_SURVEY_MANUAL_TYPE = "Manual";
-	private static final String TEST_SURVEY_MANUAL_USERNAME = "Administrator";
+	private static final String TEST_SURVEY_MANUAL1_ID = "4D7BF7AC-6CC2-9B18-1894-39D4B546927B";
+	private static final String TEST_SURVEY_MANUAL1_TAG = "man-pic";
+	private static final String TEST_SURVEY_MANUAL1_TYPE = "Manual";
+	private static final String TEST_SURVEY_MANUAL1_USERNAME = "Administrator";
+	
+	// Use this Manual survey for verifying Field notes are present.
+	private static final String TEST_SURVEY_MANUAL2_ID = "2278D26F-8D69-B070-56FD-39D4B552F8F2";
+	private static final String TEST_SURVEY_MANUAL2_TAG = "man-pic";
+	private static final String TEST_SURVEY_MANUAL2_TYPE = "Manual";
+	private static final String TEST_SURVEY_MANUAL2_USERNAME = "Administrator";
 
 	private static final String EMPTY = "";
 	private static final Integer NOTSET = -1;
@@ -818,7 +824,7 @@ public class SurveyViewPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_MANUAL_ID, NOTSET);
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
@@ -827,9 +833,9 @@ public class SurveyViewPageTest {
 		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_MANUAL_TAG, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_MANUAL_TYPE, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_MANUAL_USERNAME, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_MANUAL1_TAG, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_MANUAL1_TYPE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_MANUAL1_USERNAME, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
@@ -862,7 +868,7 @@ public class SurveyViewPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_MANUAL_ID, NOTSET);
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
@@ -899,7 +905,7 @@ public class SurveyViewPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_MANUAL_ID, NOTSET);
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
@@ -938,7 +944,7 @@ public class SurveyViewPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_MANUAL_ID, NOTSET);
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
@@ -948,9 +954,9 @@ public class SurveyViewPageTest {
 		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnAllAssets(EMPTY, NOTSET);
 		surveyViewPageAction.turnOffAllBoundaries(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_MANUAL_TAG, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_MANUAL_TYPE, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_MANUAL_USERNAME, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_MANUAL1_TAG, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_MANUAL1_TYPE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_MANUAL1_USERNAME, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
@@ -962,10 +968,23 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-		// TODO: The manual survey data we have pushed in Automation environment does NOT have Field Notes.
-		//assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES, NOTSET));
 		assertTrue(surveyViewPageAction.verifyAssetIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+
+		// Use the second manual survey for Field notes verification.
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL2_ID, NOTSET);
+		surveyViewPageAction.refreshPage(EMPTY, NOTSET);	// refresh the page to re-initialize the page object.
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllAssets(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllBoundaries(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES, NOTSET));
+
 	}
  
 	/**
@@ -988,7 +1007,7 @@ public class SurveyViewPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_MANUAL_ID, NOTSET);
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
@@ -998,9 +1017,9 @@ public class SurveyViewPageTest {
 		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOffAllAssets(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnAllBoundaries(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_MANUAL_TAG, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_MANUAL_TYPE, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_MANUAL_USERNAME, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_MANUAL1_TAG, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_MANUAL1_TYPE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_MANUAL1_USERNAME, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
@@ -1012,10 +1031,22 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));		
-		// TODO: The manual survey data we have pushed in Automation environment does NOT have Field Notes.
-		//assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+
+		// Use the second manual survey for Field notes verification.
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL2_ID, NOTSET);
+		surveyViewPageAction.refreshPage(EMPTY, NOTSET);	// refresh the page to re-initialize the page object.
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssets(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllBoundaries(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES, NOTSET));
 	}
  
 	/**
@@ -1037,7 +1068,7 @@ public class SurveyViewPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_MANUAL_ID, NOTSET);
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
@@ -1078,7 +1109,7 @@ public class SurveyViewPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_MANUAL_ID, NOTSET);
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
@@ -1121,7 +1152,7 @@ public class SurveyViewPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_MANUAL_ID, NOTSET);
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
@@ -1132,9 +1163,9 @@ public class SurveyViewPageTest {
 		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_MANUAL_TAG, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_MANUAL_TYPE, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_MANUAL_USERNAME, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_MANUAL1_TAG, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_MANUAL1_TYPE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_MANUAL1_USERNAME, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
@@ -1142,10 +1173,23 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		// TODO: The manual survey data we have pushed in Automation environment does NOT have Field Notes.
-		//assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+
+		// Use the second manual survey for Field notes verification.
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL2_ID, NOTSET);
+		surveyViewPageAction.refreshPage(EMPTY, NOTSET);	// refresh the page to re-initialize the page object.
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES, NOTSET));
 	}
  
 	/**
@@ -1170,7 +1214,7 @@ public class SurveyViewPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_MANUAL_ID, NOTSET);
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
@@ -1181,9 +1225,9 @@ public class SurveyViewPageTest {
 		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_MANUAL_TAG, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_MANUAL_TYPE, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_MANUAL_USERNAME, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_MANUAL1_TAG, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_MANUAL1_TYPE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_MANUAL1_USERNAME, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
@@ -1191,10 +1235,23 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		// TODO: The manual survey data we have pushed in Automation environment does NOT have Field Notes.
-		//assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+
+		// Use the second manual survey for Field notes verification.
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL2_ID, NOTSET);
+		surveyViewPageAction.refreshPage(EMPTY, NOTSET);	// refresh the page to re-initialize the page object.
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES, NOTSET));
 	}
  
 	/**
@@ -1219,7 +1276,7 @@ public class SurveyViewPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_MANUAL_ID, NOTSET);
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
@@ -1230,9 +1287,9 @@ public class SurveyViewPageTest {
 		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_MANUAL_TAG, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_MANUAL_TYPE, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_MANUAL_USERNAME, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_MANUAL1_TAG, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_MANUAL1_TYPE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_MANUAL1_USERNAME, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
