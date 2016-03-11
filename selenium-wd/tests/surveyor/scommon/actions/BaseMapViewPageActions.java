@@ -11,12 +11,16 @@ import common.source.TestSetup;
 import surveyor.scommon.source.BaseMapViewPage.DisplaySwitchType;
 import surveyor.scommon.source.BaseMapViewPage.GisSwitchType;
 import surveyor.scommon.source.BaseMapViewPage.MapSwitchType;
+import surveyor.scommon.actions.data.DriverViewDataReader.DriverViewDataRow;
 import surveyor.scommon.source.BaseMapViewPage;
 
 public class BaseMapViewPageActions extends BasePageActions {
-
 	private static final String FN_VERIFY_FIELD_NOTES_IS_SHOWN_ON_MAP = "verifyFieldNotesIsShownOnMap";
-
+	private static final String FN_VERIFY_FIELD_NOTES_IS_NOT_SHOWN_ON_MAP = "verifyFieldNotesIsNotShownOnMap";
+	private static final String FN_VERIFY_ISOTOPIC_CAPTURE_RESULT_IS_PRESENT_ON_MAP = "verifyIsotopicCaptureResultIsPresentOnMap";
+	private static final String FN_VERIFY_ISOTOPIC_CAPTURE_RESULT_IS_NOT_PRESENT_ON_MAP = "verifyIsotopicCaptureResultIsNotPresentOnMap";
+	private static final String FN_VERIFY_REF_GAS_CAPTURE_RESULT_IS_PRESENT_ON_MAP = "verifyRefGasCaptureResultIsPresentOnMap";
+	private static final String FN_VERIFY_REF_GAS_CAPTURE_RESULT_IS_NOT_PRESENT_ON_MAP = "verifyRefGasCaptureResultIsNotPresentOnMap";
 	private static final String FN_VERIFY_GIS_SWITCH_IS_OFF = "verifyGisSwitchIsOff";
 	private static final String FN_VERIFY_DISPLAY_SWITCH_IS_OFF = "verifyDisplaySwitchIsOff";
 	private static final String FN_VERIFY_MAP_SWITCH_OFF = "verifyMapSwitchOff";
@@ -24,6 +28,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	private static final String FN_VERIFY_GIS_SWITCH_IS_ON = "verifyGisSwitchIsOn";
 	private static final String FN_VERIFY_DISPLAY_SWITCH_IS_ON = "verifyDisplaySwitchIsOn";
 	private static final String FN_VERIFY_CROSS_HAIR_ICON_IS_SHOWN_ON_MAP = "verifyCrossHairIconIsShownOnMap";
+	private static final String FN_VERIFY_SURVEY_INFO_TAG_LABEL_EQUALS = "verifySurveyInfoTagLabelEquals";
 	
 	private static final String CLS_BASEMAP_VIEW_PAGE_ACTIONS = "BaseMapViewPageActions::";
 	
@@ -31,11 +36,10 @@ public class BaseMapViewPageActions extends BasePageActions {
 
 	public BaseMapViewPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL);
-		initializePageObject(driver, strBaseURL, testSetup);
 	}
 
-	public void initializePageObject(WebDriver driver, String strBaseURL, TestSetup testSetup) {
-		setPageObject(new BaseMapViewPage(driver, testSetup, strBaseURL, strBaseURL));
+	public void initializePageObject(WebDriver driver, BaseMapViewPage pageObj) {
+		setPageObject(pageObj);
 		PageFactory.initElements(driver, getPageObject());
 	}
 
@@ -155,20 +159,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return true;
 	}
 
-	/**
-	 * Executes refreshPage action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean refreshPage(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".refreshPage", data, dataRowID);
-		BrowserCommands.refresh();
-		initializePageObject(TestContext.INSTANCE.getDriver(), 
-				TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
-		return true;
-	}
-	
 	public boolean turnOnMapView(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnMapView", data, dataRowID);
 		getPageObject().toggleMapSwitch(MapSwitchType.Map, true);
@@ -228,7 +218,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".turnOnAllBoundaries", data, dataRowID);
 		turnOnBoundariesDistrict(data, dataRowID);
 		turnOnBoundariesDistrictPlat(data, dataRowID);
-		turnOnAllBoundaries(data, dataRowID);
 		return true;
 	}
  
@@ -374,7 +363,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".turnOffAllBoundaries", data, dataRowID);
 		turnOffBoundariesDistrict(data, dataRowID);
 		turnOffBoundariesDistrictPlat(data, dataRowID);
-		turnOffAllBoundaries(data, dataRowID);
 		return true;
 	}
  
@@ -1078,6 +1066,12 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return !this.pageObject.isGisBoundarySmallBoundaryButtonVisible();
 	}
  
+	/**
+	 * Executes verifyFieldNotesIsShownOnMap action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
 	public boolean verifyFieldNotesIsShownOnMap(String data, Integer dataRowID) throws Exception {
 		logAction(getRuntimeType() + ".verifyFieldNotesIsShownOnMap", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty(CLS_BASEMAP_VIEW_PAGE_ACTIONS + FN_VERIFY_FIELD_NOTES_IS_SHOWN_ON_MAP, ARG_DATA, data);
@@ -1085,10 +1079,69 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return mapUtility.isFieldNoteShown(data);
 	}
 
+	/**
+	 * Executes verifyFieldNotesIsNotShownOnMap action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
 	public boolean verifyFieldNotesIsNotShownOnMap(String data, Integer dataRowID) throws Exception {
 		logAction(getRuntimeType() + ".verifyFieldNotesIsNotShownOnMap", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty(CLS_BASEMAP_VIEW_PAGE_ACTIONS + FN_VERIFY_FIELD_NOTES_IS_NOT_SHOWN_ON_MAP, ARG_DATA, data);
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		return !mapUtility.isFieldNoteShown(data);
+	}
+
+	/**
+	 * Executes verifyIsotopicCaptureResultIsPresentOnMap action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyIsotopicCaptureResultIsPresentOnMap(String data, Integer dataRowID) throws Exception {
+		logAction(getRuntimeType() + ".verifyIsotopicCaptureResultIsPresentOnMap", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty(CLS_BASEMAP_VIEW_PAGE_ACTIONS + FN_VERIFY_ISOTOPIC_CAPTURE_RESULT_IS_PRESENT_ON_MAP, ARG_DATA, data);
+		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
+		return mapUtility.isIsotopicCaptureResultPresent(data);
+	}
+
+	/**
+	 * Executes verifyIsotopicCaptureResultIsNotPresentOnMap action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyIsotopicCaptureResultIsNotPresentOnMap(String data, Integer dataRowID) throws Exception {
+		logAction(getRuntimeType() + ".verifyIsotopicCaptureResultIsNotPresentOnMap", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty(CLS_BASEMAP_VIEW_PAGE_ACTIONS + FN_VERIFY_ISOTOPIC_CAPTURE_RESULT_IS_NOT_PRESENT_ON_MAP, ARG_DATA, data);
+		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
+		return !mapUtility.isIsotopicCaptureResultPresent(data);
+	}
+
+	/**
+	 * Executes verifyRefGasCaptureResultIsPresentOnMap action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyRefGasCaptureResultIsPresentOnMap(String data, Integer dataRowID) throws Exception {
+		logAction(getRuntimeType() + ".verifyRefGasCaptureResultIsPresentOnMap", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty(CLS_BASEMAP_VIEW_PAGE_ACTIONS + FN_VERIFY_REF_GAS_CAPTURE_RESULT_IS_PRESENT_ON_MAP, ARG_DATA, data);
+		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
+		return mapUtility.isRefGasCaptureResultPresent(data);
+	}
+
+	/**
+	 * Executes verifyRefGasCaptureResultIsNotPresentOnMap action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyRefGasCaptureResultIsNotPresentOnMap(String data, Integer dataRowID) throws Exception {
+		logAction(getRuntimeType() + ".verifyRefGasCaptureResultIsNotPresentOnMap", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty(CLS_BASEMAP_VIEW_PAGE_ACTIONS + FN_VERIFY_REF_GAS_CAPTURE_RESULT_IS_NOT_PRESENT_ON_MAP, ARG_DATA, data);
+		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
+		return !mapUtility.isRefGasCaptureResultPresent(data);
 	}
 
 	/**
@@ -1119,5 +1172,19 @@ public class BaseMapViewPageActions extends BasePageActions {
 			return "SurveyViewPageActions";
 		}
 		return "";
+	}
+	
+	protected boolean verifySurveyInfoTagLabelEquals(String data, Integer dataRowID, DriverViewDataRow workingDataRow, String actualTagValue) throws Exception {
+		String expectedTagValue = null;
+		if (!ActionArguments.isEmpty(data)) {
+			expectedTagValue = "Tag: " + data;
+		} else if (dataRowID > 0) {
+			expectedTagValue = "Tag: " + workingDataRow.surveyTag;
+		} else {
+			throw new Exception(String.format("Either data or dataRowID must be passed for %s action.", FN_VERIFY_SURVEY_INFO_TAG_LABEL_EQUALS));
+		}
+		
+		log(String.format("Looking for Text-[%s], Found Survey Tag Label Text-[%s]", expectedTagValue, actualTagValue));
+		return actualTagValue.equals(expectedTagValue);
 	}
 }

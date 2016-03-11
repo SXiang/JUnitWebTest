@@ -16,6 +16,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import common.source.BrowserCommands;
 import common.source.Log;
 import common.source.TestSetup;
 
@@ -114,6 +115,9 @@ public class HomePage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session']/tbody")
 	private WebElement tableRecentDrivingSurveys;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session']/tbody/tr[1]/td[5]/a")
+	private WebElement firstDrivingSurveyLink;
 
 	private String strTRRDSXPath = "//*[@id='datatable-Session']/tbody/tr";
 	
@@ -690,7 +694,31 @@ public class HomePage extends SurveyorBasePage {
 				option.click();		
 		}
 	}	
-	
+
+	public void clickOnFirstMatchingDrivingSurvey(String surveyTag) {
+		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
+		String tagXPath;
+		String completedLinkXPath;
+		WebElement tagCell;
+		WebElement completedLink;
+		
+		List<WebElement> rows = this.tableRecentDrivingSurveys.findElements(By.xpath(this.strTRRDSXPath));
+		for (int rowNum = 1; rowNum <= rows.size(); rowNum++) {
+			tagXPath = this.strTRRDSXPath + "["+rowNum+"]/td[1]";
+			tagCell = this.tableRecentDrivingSurveys.findElement(By.xpath(tagXPath));
+			
+			if (tagCell.getText().trim().equalsIgnoreCase(surveyTag)) {
+				completedLinkXPath = this.strTRRDSXPath + "["+rowNum+"]/td[5]/a";
+				completedLink = this.tableRecentDrivingSurveys.findElement(By.xpath(completedLinkXPath));
+				Log.info("Found survey tag. Clicking on the Completed link");
+				completedLink.click();
+				Log.info("DONE clicking on the Completed link");
+				break;
+			}
+		}
+	}
+
 	public List<String> getTagListRecentDrivingSurveys() {
 		List<String> tagList = new ArrayList<String>();
 		
@@ -755,6 +783,15 @@ public class HomePage extends SurveyorBasePage {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getPageSource().contains(STRPageContentText);
+            }
+        });
+    }
+	
+	public void waitForFirstDrivingSurveyToBeCompleted() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+            	BrowserCommands.refresh();
+            	return firstDrivingSurveyLink.getText().equals("Completed");
             }
         });
     }

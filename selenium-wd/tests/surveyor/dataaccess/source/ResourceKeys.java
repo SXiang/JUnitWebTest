@@ -144,6 +144,18 @@ public class ResourceKeys {
 	public static final String Survey_MinutesAnd = "Survey_MinutesAnd";
 	public static final String Survey_Seconds = "Survey_Seconds";
 	public static final String Survey_SurveyWillStopIn = "Survey_SurveyWillStopIn";
+	
+	// Constants for Capture results.
+	public static final String Survey_Rerun = "Survey_Rerun"; 
+	public static final String Survey_IsotopicCanceled = "Survey_IsotopicCanceled"; 
+	public static final String Survey_Passed = "Survey_Passed"; 
+	public static final String Survey_Unknown = "Survey_Unknown"; 
+	public static final String Survey_SampleSizeTooSmall = "Survey_SampleSizeTooSmall";
+	public static final String Survey_UncertaintyOutOfRange = "Survey_UncertaintyOutOfRange"; 
+	public static final String Survey_DeltaOutOfRange = "Survey_DeltaOutOfRange"; 
+	public static final String Survey_NotNaturalGas = "Survey_NotNaturalGas"; 
+	public static final String Survey_NaturalGas = "Survey_NaturalGas";
+	
 	public static final String SystemHistoryReports_PageTitle = "SystemHistoryReports_PageTitle";
 	public static final String SystemHistoryReports_ReportTitle = "SysHistoryReportSSRS_SystemHistoryReport";
 	public static final String SystemHistoryReports_PageSubTitle = "SysHistoryReportSSRS_SurveyorHistoryNotesTable";

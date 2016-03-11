@@ -38,8 +38,28 @@ public class RunExecutionListener extends RunListener {
      */ 
     @Override 
     public void testFailure(final Failure failure) throws Exception { 
-    	SurveyorBaseTest.getExtentTest().log(LogStatus.FAIL, 
-    			ExceptionUtility.getStackTraceString(failure.getException()));
+    	StringBuilder exceptionMessage = new StringBuilder();
+    	String stackTraceString = "";
+    	String failingMethod = "";
+    	if (failure != null) {
+    		if (failure.getDescription() != null) {
+    			failingMethod = failure.getDescription().getMethodName();
+    		}
+    		if (failure.getException() != null) {
+    			stackTraceString = ExceptionUtility.getStackTraceString(failure.getException());
+    		}
+    	}
+    	if (failingMethod == "" && stackTraceString == "") {
+    		exceptionMessage.append("Test method failed. Refer failing method name above.");
+    	} else {
+	    	if (failingMethod != "") {
+	    		exceptionMessage.append(String.format("Failure in {0}. ", failingMethod));
+	    	}
+	    	if (stackTraceString != "") {
+	    		exceptionMessage.append(String.format("EXCEPTION: {0}", stackTraceString));
+	    	}
+    	}
+		SurveyorBaseTest.getExtentTest().log(LogStatus.FAIL, exceptionMessage.toString());
     }
     
     /**
