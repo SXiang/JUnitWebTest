@@ -237,6 +237,7 @@
 					<include name="**/MeasurementSessionsPageTest.class" />
 					<include name="**/UserFeedbackPageTest.class" />
 					<include name="**/UserFeedbackAdminPageTest.class" />
+					<include name="**/SurveyViewPageTest.class" />
 					<include name="**/SystemHistoryReportsPageTest.class" />	
 					<include name="**/ReferenceGasReportsPageTest.class" />		
 				</fileset>
