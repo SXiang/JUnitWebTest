@@ -54,9 +54,19 @@ public class OLMapUtility {
 			+ "if (overlay) { element = overlay.getElement(); if (element) { if (element.id == 'annotation_modal') "
 			+ "{ return !(overlay.getPosition() == undefined); } } } } } } catch (err) { shown = false; }; return shown; };";
 
-	private static final String IS_FIELD_NOTE_SHOWN_FUNCTION = "function isFieldNoteShownOnMap(note) { var shown = false; "
-			+ "var freshConstellation = JSON.parse(JSON.stringify(d3constellation)); freshConstellation.nodes.forEach(function (d) { "
-			+ "if (d.type == 'annotation') { if (!d.fixed) { if (d.text == note) { shown = true; } } } }); return shown; };";
+	private static final String IS_FIELD_NOTE_SHOWN_FUNCTION = "function isFieldNoteShownOnMap(note){var noteFound=false;"
+			+ "var freshConstellation=JSON.parse(JSON.stringify(d3constellation));freshConstellation.nodes.forEach(function(d){"
+			+ "if(d.type=='annotation'){if(!d.fixed){if(d.text==note){noteFound=true;}}}});return noteFound&&showAnnotations;};";
+
+	private static final String IS_ISOTOPIC_CAPTURE_RESULT_PRESENT_FUNCTION = "function isIsotopicCaptureResultPresent(result){"
+			+ "var resultFound=false;var freshConstellation=JSON.parse(JSON.stringify(d3constellation));"
+			+ "freshConstellation.nodes.forEach(function(d){if(d.type=='capture'&&!d.isRefGas){if(!d.fixed){"
+			+ "if(d.text==result){resultFound=true;}}}});return resultFound&&showIsotopicAnalysis;};";
+	
+	private static final String IS_REFGAS_CAPTURE_RESULT_PRESENT_FUNCTION = "function isReferenceGasCaptureResultPresent(result){"
+			+ "var resultFound=false;var freshConstellation=JSON.parse(JSON.stringify(d3constellation));"
+			+ "freshConstellation.nodes.forEach(function(d){if(d.type=='capture'&&d.isRefGas){if(!d.fixed){"
+			+ "if(d.text==result){resultFound=true;}}}});return resultFound&&showIsotopicAnalysisRefGas;};";
 
 	private static final String IS_ICON_PRESENT_JS_FUNCTION = "function isIconPresent(imgFileName){"
 			+ "var found=false;var CAR_ICON_SRC='/content/images/'+imgFileName;try{layers=surveyormap.getLayers();"
@@ -159,6 +169,10 @@ public class OLMapUtility {
 	
 	private static final String IS_FIELD_NOTES_DIALOG_SHOWN_JS_FUNCTION_CALL = "return isFieldNotesDialogShown();";
 	private static final String IS_FIELD_NOTE_SHOWN_JS_FUNCTION_CALL = "return isFieldNoteShownOnMap('%s');";
+
+	private static final String IS_ISOTOPIC_CAPTURE_RESULT_PRESENT_FUNCTION_CALL = "return isIsotopicCaptureResultPresent('%s');";
+	private static final String IS_REFGAS_CAPTURE_RESULT_PRESENT_FUNCTION_CALL = "return isReferenceGasCaptureResultPresent('%s');";
+	
 	private static final String IS_ICON_PRESENT_JS_FUNCTION_CALL = "return isIconPresent('%s');";
 
 	private static final String IS_LISAS_PRESENT_JS_FUNCTION_CALL = "return isLisasPresent();";
@@ -499,6 +513,32 @@ public class OLMapUtility {
 		String jsScript = IS_FIELD_NOTE_SHOWN_FUNCTION + String.format(IS_FIELD_NOTE_SHOWN_JS_FUNCTION_CALL, fieldNote);
 		Object fieldNoteShown = ((JavascriptExecutor)this.driver).executeScript(jsScript);
 		if (fieldNoteShown.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
+	}
+
+	/*
+	 * Checks whether specified Isotopic Capture result is shown on the map. 
+	 * Returns true if specified Isotopic Capture result is shown on the map, false otherwise. 
+	 */
+	public boolean isIsotopicCaptureResultPresent(String result) {
+		String jsScript = IS_ISOTOPIC_CAPTURE_RESULT_PRESENT_FUNCTION + String.format(IS_ISOTOPIC_CAPTURE_RESULT_PRESENT_FUNCTION_CALL, result);
+		Object captureResultShown = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (captureResultShown.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
+	}
+
+	/*
+	 * Checks whether specified Reference Gas Capture result is shown on the map. 
+	 * Returns true if specified Reference Gas Capture result is shown on the map, false otherwise. 
+	 */
+	public boolean isRefGasCaptureResultPresent(String result) {
+		String jsScript = IS_REFGAS_CAPTURE_RESULT_PRESENT_FUNCTION + String.format(IS_REFGAS_CAPTURE_RESULT_PRESENT_FUNCTION_CALL, result);
+		Object captureResultShown = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (captureResultShown.toString().equalsIgnoreCase("true")) {
 			return true;
 		}
 		return false;

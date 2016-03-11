@@ -168,6 +168,27 @@ public class DateUtility {
 	}
 
 	/**
+	 * This function takes an input datetime string String and compare the format is correct with the given locale long datetime format
+	 * 
+	 * @param inputDateTime
+	 *            - given date time in String, reports- whether the format check is as per long date format.
+	 * @return whether the String is a match for the locale format
+	 */
+	public boolean compareLongDateTimeFormat(String inputDateTime) {
+		TemporalAccessor inputDate;
+		Locale locale = Locale.forLanguageTag(getLanguageTag());
+		try {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(getLongDateFormat(), locale);
+			inputDate = formatter.parse(inputDateTime.trim());
+			if (inputDate != null) {
+				return true;
+			}
+		} catch (DateTimeParseException e) {
+		}
+		return false;
+	}
+	
+	/**
 	 * This function takes a Date/Time format in String and compare the format is correct with the given locale format
 	 * 
 	 * @param inputDateTime
@@ -238,6 +259,29 @@ public class DateUtility {
 		return false;
 	}
 
+	/**
+	 * This methods looks at the culture of the user and determines the long date format 
+	 * according to Cultures supported right now: English, French, Chinese
+	 * 
+	 * @return date format for the user locale
+	 */
+
+	public String getLongDateFormat() {
+		String culture = TestContext.INSTANCE.getUserCulture();
+		String dateFormat = null;
+		if (culture.equals("en-US")) {
+			dateFormat = "M/d/yyyy h[h]:mm:ss a zzz";
+		}
+		if (culture.equals("fr")) {
+			dateFormat = "d/M/yyyy H[H]:mm:ss zzz";
+		}
+		if (culture.equals("zh-Hans")) {
+			dateFormat = "YYYY/M/d H[H]:mm:ss zzz";
+		}
+		return dateFormat;
+
+	}
+	
 	/**
 	 * This methods looks at the culture of the user and determines the date format accordingly Cultures supported right now: English, French, Chinese
 	 * 
@@ -342,9 +386,21 @@ public class DateUtility {
 
 		DateUtility date = new DateUtility();
 		String result;
-		// Unit tests - compareDateTimeFormat(String inputDateTime, boolean reports)
+		// Unit tests - compareLongDateTimeFormat(String inputDateTime)
+		Log.info("Executing Unit tests for compareLongDateTimeFormat(String inputDateTime)");
 		TestContext.INSTANCE.setUserCulture("en-US");
-		// US -en Report format tests
+		Log.info(result = (date.compareLongDateTimeFormat("3/9/2016 6:04:41 PM CST")) ? "PASS" : "FAIL");
+		Log.info(result = (date.compareLongDateTimeFormat("24/01/2015 18:42:01 PM CST")) ? "FAIL" : "PASS");
+		TestContext.INSTANCE.setUserCulture("fr");
+		Log.info(result = (date.compareLongDateTimeFormat("12/14/2015 8:42:01 CET")) ? "FAIL" : "PASS");
+		Log.info(result = (date.compareLongDateTimeFormat("24/01/2015 18:42:01 CET")) ? "PASS" : "FAIL");
+		TestContext.INSTANCE.setUserCulture("zh-Hans");
+		Log.info(result = (date.compareLongDateTimeFormat("2015/01/12 18:42:22 CST")) ? "PASS" : "FAIL");
+		Log.info(result = (date.compareLongDateTimeFormat("24/01/2015 18:42:22 CST")) ? "FAIL" : "PASS");
+
+		// Unit tests - compareDateTimeFormat(String inputDateTime, boolean reports)
+		Log.info("Executing Unit tests for compareDateTimeFormat(String inputDateTime, boolean reports)");
+		TestContext.INSTANCE.setUserCulture("en-US");
 		Log.info(result = (date.compareDateTimeFormat("12/14/2015 8:42 PM PST", true)) ? "PASS" : "FAIL");
 		Log.info(result = (date.compareDateTimeFormat("24/01/2015 18:42 CST", true)) ? "FAIL" : "PASS");
 		Log.info(result = (date.compareDateTimeFormat("24/01/2015 18:42 PM CST", true)) ? "FAIL" : "PASS");

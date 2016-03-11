@@ -251,6 +251,10 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyGisBoundaryBigBoundaryButtonIsNotVisible")) { return this.verifyGisBoundaryBigBoundaryButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyGisBoundarySmallBoundaryButtonIsNotVisible")) { return this.verifyGisBoundarySmallBoundaryButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyGisUseAllBoundariesButtonIsNotVisible")) { return this.verifyGisUseAllBoundariesButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyIsotopicCaptureResultIsPresentOnMap")) { return this.verifyIsotopicCaptureResultIsPresentOnMap(data, dataRowID); }
+		else if (actionName.equals("verifyIsotopicCaptureResultIsNotPresentOnMap")) { return this.verifyIsotopicCaptureResultIsNotPresentOnMap(data, dataRowID); }
+		else if (actionName.equals("verifyRefGasCaptureResultIsPresentOnMap")) { return this.verifyRefGasCaptureResultIsPresentOnMap(data, dataRowID); }
+		else if (actionName.equals("verifyRefGasCaptureResultIsNotPresentOnMap")) { return this.verifyRefGasCaptureResultIsNotPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("waitForConnectionToComplete")) { return this.waitForConnectionToComplete(data, dataRowID); }		
 		return false;
 	}

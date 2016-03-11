@@ -131,6 +131,9 @@ public class SurveyViewPage extends BaseMapViewPage {
 
     @FindBy(how = How.XPATH, using = SURVEY_INFO_END_TIME_LABEL_XPATH)
 	private WebElement labelEndTime;
+    
+    // Survey ID used for opening the specified survey page.
+    private String surveyId;    
 
 	/**
 	 * @param driver
@@ -141,6 +144,12 @@ public class SurveyViewPage extends BaseMapViewPage {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 
 		Log.info("\nThe SurveyView Page URL is: " + this.strPageURL);
+	}
+
+	@Override
+	public void open() {
+		driver.get(strPageURL + getSurveyId());
+		this.waitForPageLoad();
 	}
 	
 	public boolean checkIfAtSurveyViewPage() {
@@ -406,7 +415,7 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage verifyPageLoaded() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+        (new WebDriverWait(driver, timeout * 2)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getPageSource().contains(STRPageContentText);
             }
@@ -420,7 +429,7 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage verifyPageUrl() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+        (new WebDriverWait(driver, timeout * 2)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getCurrentUrl().contains(STRURLPath);
             }
@@ -432,10 +441,18 @@ public class SurveyViewPage extends BaseMapViewPage {
 	 * Verify that the page loaded completely.
 	 */
 	public void waitForPageLoad() {
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, timeout * 2)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return d.getPageSource().contains(STRPageContentText);
 			}
 		});
+	}
+
+	public String getSurveyId() {
+		return surveyId;
+	}
+
+	public void setSurveyId(String surveyId) {
+		this.surveyId = surveyId;
 	}
 }

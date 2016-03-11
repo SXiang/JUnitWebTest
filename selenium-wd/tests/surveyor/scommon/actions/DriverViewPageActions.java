@@ -1816,6 +1816,10 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyStopDrivingSurveyButtonIsNotVisible")) { return this.verifyStopDrivingSurveyButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyStartIsotopicCaptureButtonIsNotVisible")) { return this.verifyStartIsotopicCaptureButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyRefBottleMeasButtonIsNotVisible")) { return this.verifyRefBottleMeasButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyIsotopicCaptureResultIsPresentOnMap")) { return this.verifyIsotopicCaptureResultIsPresentOnMap(data, dataRowID); }
+		else if (actionName.equals("verifyIsotopicCaptureResultIsNotPresentOnMap")) { return this.verifyIsotopicCaptureResultIsNotPresentOnMap(data, dataRowID); }
+		else if (actionName.equals("verifyRefGasCaptureResultIsPresentOnMap")) { return this.verifyRefGasCaptureResultIsPresentOnMap(data, dataRowID); }
+		else if (actionName.equals("verifyRefGasCaptureResultIsNotPresentOnMap")) { return this.verifyRefGasCaptureResultIsNotPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("waitForConnectionToComplete")) { return this.waitForConnectionToComplete(data, dataRowID); }		
 		return false;
 	}

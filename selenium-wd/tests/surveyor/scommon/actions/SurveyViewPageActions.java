@@ -1,8 +1,11 @@
 package surveyor.scommon.actions;
 
+import static org.junit.Assert.assertTrue;
+
 import org.openqa.selenium.WebDriver;
 
 import common.source.BrowserCommands;
+import common.source.DateUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.actions.data.DriverViewDataReader;
@@ -18,11 +21,15 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 	private static final String FN_VERIFY_SURVEY_INFO_END_TIME_LABEL_EQUALS = "verifySurveyInfoEndTimeLabelEquals";
 	private static final String FN_VERIFY_SURVEY_INFO_END_TIME_LABEL_STARTS_WITH = "verifySurveyInfoEndTimeLabelStartsWith";
 	private static final String FN_VERIFY_SURVEY_INFO_MODE_LABEL_EQUALS = "verifySurveyInfoModeLabelEquals";
+	private static final String SURVEY_INFO_START_TIME_PREFIX = "Start Time: ";
+	private static final String SURVEY_INFO_END_TIME_PREFIX = "End Time: ";
 	private static final String CLS_SURVEY_VIEW_PAGE_ACTIONS = "SurveyViewPageActions::";
 
 	// Use the Driver view data reader as the input could be read from DriverViewTestData.
 	private DriverViewDataReader dataReader = null;
 
+	private DateUtility dateUtility = new DateUtility();
+	
 	public SurveyViewPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup);
 		initializePageObject(driver, new SurveyViewPage(driver, testSetup, strBaseURL));
@@ -37,6 +44,7 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 	 */
 	public boolean open(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".open", data, dataRowID);
+		getSurveyViewPage().setSurveyId(data);
 		getSurveyViewPage().open();
 		return true;
 	}
@@ -164,6 +172,30 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		return getSurveyViewPage().getEndTimeLabelText().startsWith(data);
 	}
 
+	/**
+	 * Executes verifySurveyInfoStartTimeLabelHasCorrectTimeFormat action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(String data, Integer dataRowID) {
+		logAction("SurveyViewPageActions.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat", data, dataRowID);
+		String startTimeText = getSurveyViewPage().getStartTimeLabelText().replace(SURVEY_INFO_START_TIME_PREFIX, "");
+		return dateUtility.compareLongDateTimeFormat(startTimeText);
+	}
+ 
+	/**
+	 * Executes verifySurveyInfoEndTimeLabelHasCorrectTimeFormat action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(String data, Integer dataRowID) {
+		logAction("SurveyViewPageActions.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat", data, dataRowID);
+		String endTimeText = getSurveyViewPage().getEndTimeLabelText().replace(SURVEY_INFO_END_TIME_PREFIX, "");
+		return dateUtility.compareLongDateTimeFormat(endTimeText);
+	}
+ 
 	/* Invoke action using specified ActionName */
 	@Override
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
@@ -316,6 +348,12 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		else if (actionName.equals("verifySurveyInfoAnalyzerLabelEquals")) { return this.verifySurveyInfoAnalyzerLabelEquals(data, dataRowID); }
 		else if (actionName.equals("verifySurveyInfoStartTimeLabelStartsWith")) { return this.verifySurveyInfoStartTimeLabelStartsWith(data, dataRowID); }
 		else if (actionName.equals("verifySurveyInfoEndTimeLabelStartsWith")) { return this.verifySurveyInfoEndTimeLabelStartsWith(data, dataRowID); }
+		else if (actionName.equals("verifySurveyInfoStartTimeLabelHasCorrectTimeFormat")) { return this.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(data, dataRowID); }
+		else if (actionName.equals("verifySurveyInfoEndTimeLabelHasCorrectTimeFormat")) { return this.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(data, dataRowID); }
+		else if (actionName.equals("verifyIsotopicCaptureResultIsPresentOnMap")) { return this.verifyIsotopicCaptureResultIsPresentOnMap(data, dataRowID); }
+		else if (actionName.equals("verifyIsotopicCaptureResultIsNotPresentOnMap")) { return this.verifyIsotopicCaptureResultIsNotPresentOnMap(data, dataRowID); }
+		else if (actionName.equals("verifyRefGasCaptureResultIsPresentOnMap")) { return this.verifyRefGasCaptureResultIsPresentOnMap(data, dataRowID); }
+		else if (actionName.equals("verifyRefGasCaptureResultIsNotPresentOnMap")) { return this.verifyRefGasCaptureResultIsNotPresentOnMap(data, dataRowID); }
 		return false;
 	}
 
