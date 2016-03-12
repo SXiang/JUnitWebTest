@@ -67,7 +67,7 @@ import surveyor.scommon.source.SurveyorTestRunner;
  * 
  */
 @RunWith(SurveyorTestRunner.class)
-public class ComplianceReportsPageTest_CustomBuildRunner extends SurveyorBaseTest {
+public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPageTest {
 	private static ComplianceReportsPage complianceReportsPage = null;
 
 	@BeforeClass

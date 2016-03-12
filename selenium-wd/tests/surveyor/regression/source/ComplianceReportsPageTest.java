@@ -120,7 +120,7 @@ import surveyor.dataprovider.ComplianceReportDataProvider;
  * 
  */
 @RunWith(SurveyorTestRunner.class)
-public class ComplianceReportsPageTest extends SurveyorBaseTest {
+public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	private static ComplianceReportsPage complianceReportsPage = null;
 	private String STRReportAreaTooLargeMsg = "Please make sure your selected boundary is more than 0.5kms and less than 25kms";
 	private String STRReportAssetNotSelectedMsg = "View(s) with Assets, Please select at least one Asset Layer";

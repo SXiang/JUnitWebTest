@@ -82,7 +82,7 @@ import surveyor.scommon.source.SurveyorTestRunner;
  * 
  */
 @RunWith(SurveyorTestRunner.class)
-public class ComplianceReportsPageTest_Ethane extends SurveyorBaseTest {
+public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	private static ComplianceReportsPage complianceReportsPage = null;
 	private String STRReportAreaTooLargeMsg = "Please make sure your selected boundary is more than 0.5kms and less than 25kms";
 	private String STRReportAssetNotSelectedMsg = "View(s) with Assets, Please select at least one Asset Layer";

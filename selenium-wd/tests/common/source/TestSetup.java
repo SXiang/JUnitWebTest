@@ -130,6 +130,11 @@ public class TestSetup {
 	private String dbPassword;
 	private String computerName;
 
+	private boolean collectReportJobPerfMetric;
+	private boolean generateBaselineSSRSImages;
+	private boolean generateBaselineViewImages;
+	private boolean generateBaselineShapeFiles;
+
 	public TestSetup() {
 		initialize();
 	}
@@ -487,6 +492,38 @@ public class TestSetup {
 		return testRunCategory;
 	}
 
+	public boolean isGenerateBaselineShapeFiles() {
+		return generateBaselineShapeFiles;
+	}
+
+	public void setGenerateBaselineShapeFiles(boolean generateBaselineShapeFiles) {
+		this.generateBaselineShapeFiles = generateBaselineShapeFiles;
+	}
+
+	public boolean isGenerateBaselineViewImages() {
+		return generateBaselineViewImages;
+	}
+
+	public void setGenerateBaselineViewImages(boolean generateBaselineViewImages) {
+		this.generateBaselineViewImages = generateBaselineViewImages;
+	}
+
+	public boolean isGenerateBaselineSSRSImages() {
+		return generateBaselineSSRSImages;
+	}
+
+	public void setGenerateBaselineSSRSImages(boolean generateBaselineSSRSImages) {
+		this.generateBaselineSSRSImages = generateBaselineSSRSImages;
+	}
+
+	public boolean isCollectReportJobPerfMetric() {
+		return collectReportJobPerfMetric;
+	}
+
+	public void setCollectReportJobPerfMetric(boolean collectReportJobPerfMetric) {
+		this.collectReportJobPerfMetric = collectReportJobPerfMetric;
+	}
+
 	public void initialize() {
 		try {
 
@@ -527,6 +564,11 @@ public class TestSetup {
 
 			this.runEnvironment = this.testProp.getProperty("runEnvironment");
 			this.testRunCategory = this.testProp.getProperty("testRunCategory");
+			
+			this.setCollectReportJobPerfMetric(Boolean.valueOf(this.testProp.getProperty("complianceReport_collectReportJobPerfMetric")));
+			this.setGenerateBaselineSSRSImages(Boolean.valueOf(this.testProp.getProperty("complianceReport_generateBaselineSSRSImages")));
+			this.setGenerateBaselineViewImages(Boolean.valueOf(this.testProp.getProperty("complianceReport_generateBaselineViewImages")));
+			this.setGenerateBaselineShapeFiles(Boolean.valueOf(this.testProp.getProperty("complianceReport_generateBaselineShapeFiles")));
 
 			this.language = this.testProp.getProperty("language");
 
