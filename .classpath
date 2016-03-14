@@ -52,7 +52,6 @@
 	<classpathentry kind="lib" path="selenium-wd/lib/jsoup-1.8.3.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/freemarker-2.3.23.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/browsermob-dist-2.1.0-beta-4.jar"/>
-	<classpathentry kind="lib" path="selenium-wd/lib/http-builder-0.6.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/httpclient-4.5.1.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/httpclient-cache-4.5.1.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/httpclient-win-4.5.1.jar"/>

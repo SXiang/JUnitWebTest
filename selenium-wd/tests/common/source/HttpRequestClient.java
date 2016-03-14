@@ -52,16 +52,16 @@ public class HttpRequestClient {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		testPostRequest_Success();
-	}
-
+		testPostRequest_AutomationReportingAPI_Success();
+	}	
+	
 	/**
 	 * Test postRequest() method for success case. 
 	 * ASSUMES Web API endpoint for reporting "http://localhost:59402/api/results" is ALIVE.
-	 * @param string
+	 * NOTE: Use this ONLY when the Automation Reporting API endpoint is to be tested.
 	 */
-	private static void testPostRequest_Success() {
-		String url = "http://localhost:59402/api/results/SQAAuto/1456382592.0/1456857856.0";
+	private static void testPostRequest_AutomationReportingAPI_Success() {
+		String url = "http://localhost:59402/api/results";
 		String requestBody = "{\"HtmlString\":\"<html></html>\",\"Environment\":\"SQAAuto\",\"StartEpoch\":\"1455343445\",\"EndEpoch\":\"1455343446\"}";
 		postRequest(url, requestBody);
 	}
