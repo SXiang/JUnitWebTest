@@ -18,8 +18,12 @@ import org.nocrala.tools.gis.data.esri.shapefile.shape.shapes.MultiPointZShape;
 import org.nocrala.tools.gis.data.esri.shapefile.shape.shapes.PointMShape;
 import org.nocrala.tools.gis.data.esri.shapefile.shape.shapes.PointShape;
 import org.nocrala.tools.gis.data.esri.shapefile.shape.shapes.PointZShape;
+import org.nocrala.tools.gis.data.esri.shapefile.shape.shapes.PolygonMShape;
 import org.nocrala.tools.gis.data.esri.shapefile.shape.shapes.PolygonShape;
+import org.nocrala.tools.gis.data.esri.shapefile.shape.shapes.PolygonZShape;
+import org.nocrala.tools.gis.data.esri.shapefile.shape.shapes.PolylineMShape;
 import org.nocrala.tools.gis.data.esri.shapefile.shape.shapes.PolylineShape;
+import org.nocrala.tools.gis.data.esri.shapefile.shape.shapes.PolylineZShape;
 
 public class ShapeFileReaderComparer implements IShapeFileComparer {
 
@@ -85,6 +89,18 @@ public class ShapeFileReaderComparer implements IShapeFileComparer {
 	      	  	PolylineShape aPolyLine2 = (PolylineShape) shape2;
 	      	  	assertPolylineShapeEquals(aPolyLine1, aPolyLine2);
 	  	        break;
+            case POLYLINE_M:
+	      	  	debugLog("[FILE-1,2]: Found a POLYLINE_M");
+      	  		PolylineMShape aPolyLineM1 = (PolylineMShape) shape1;
+      	  		PolylineMShape aPolyLineM2 = (PolylineMShape) shape2;
+	      	  	assertPolylineMShapeEquals(aPolyLineM1, aPolyLineM2);
+	  	        break;
+            case POLYLINE_Z:
+	      	  	debugLog("[FILE-1,2]: Found a POLYLINE_Z");
+				PolylineZShape aPolyLineZ1 = (PolylineZShape) shape1;
+				PolylineZShape aPolyLineZ2 = (PolylineZShape) shape2;
+	      	  	assertPolylineZShapeEquals(aPolyLineZ1, aPolyLineZ2);
+	  	        break;
             case MULTIPATCH:
 				debugLog("[FILE-1,2]: Found a MULTIPATCH");
 				MultiPatchShape aMultiPatch1 = (MultiPatchShape) shape1;
@@ -114,6 +130,18 @@ public class ShapeFileReaderComparer implements IShapeFileComparer {
     			PolygonShape aPolygon1 = (PolygonShape) shape1;
     			PolygonShape aPolygon2 = (PolygonShape) shape2;
     			assertPolygonShapeEquals(aPolygon1, aPolygon2);
+				break;
+            case POLYGON_M:
+        		debugLog("[FILE-1,2]: Found a POLYGON_M");
+        		PolygonMShape aPolygonM1 = (PolygonMShape) shape1;
+        		PolygonMShape aPolygonM2 = (PolygonMShape) shape2;
+    			assertPolygonMShapeEquals(aPolygonM1, aPolygonM2);
+				break;
+            case POLYGON_Z:
+        		debugLog("[FILE-1,2]: Found a POLYGON_Z");
+        		PolygonZShape aPolygonZ1 = (PolygonZShape) shape1;
+        		PolygonZShape aPolygonZ2 = (PolygonZShape) shape2;
+    			assertPolygonZShapeEquals(aPolygonZ1, aPolygonZ2);
 				break;
             default:
               Log.error("ERROR: Read other type of shape.");
@@ -153,7 +181,7 @@ public class ShapeFileReaderComparer implements IShapeFileComparer {
 
 		debugLog("[FILE-1]: MinX=" + aPolygon1.getBoxMinX() + ",MinY=" + aPolygon1.getBoxMinY() + 
 				",MaxX=" + aPolygon1.getBoxMaxX() + ",MaxY=" + aPolygon1.getBoxMaxY());
-		debugLog("[FILE-1]: MinX=" + aPolygon2.getBoxMinX() + ",MinY=" + aPolygon2.getBoxMinY() + 
+		debugLog("[FILE-2]: MinX=" + aPolygon2.getBoxMinX() + ",MinY=" + aPolygon2.getBoxMinY() + 
 				",MaxX=" + aPolygon2.getBoxMaxX() + ",MaxY=" + aPolygon2.getBoxMaxY());
 		if ((aPolygon1.getBoxMinX() != aPolygon2.getBoxMinX()) 
 				|| (aPolygon1.getBoxMinY() != aPolygon2.getBoxMinY())
@@ -166,6 +194,106 @@ public class ShapeFileReaderComparer implements IShapeFileComparer {
 		for (int i = 0; i < aPolygon1.getNumberOfParts(); i++) {
 			PointData[] points1 = aPolygon1.getPointsOfPart(i);
 			PointData[] points2 = aPolygon2.getPointsOfPart(i);
+			debugLog("[FILE-1]: Part " + i + " has " + points1.length + " points.");
+			debugLog("[FILE-2]: Part " + i + " has " + points2.length + " points.");
+			assertPointDataArrayEquals(points1, points2);
+		}
+	}
+
+	private void assertPolygonMShapeEquals(PolygonMShape aPolygonM1, PolygonMShape aPolygonM2) throws Exception {
+		debugLog("[FILE-1,2]: Checking PolygonM");
+		if (aPolygonM1 == null && aPolygonM2 != null ) {
+			throwAssertFailure("FAILURE (assertPolygonMShapeEquals): PolygonMShape1 NULL. PolygonMShape2 Not NULL!");
+		}
+		if (aPolygonM1 != null && aPolygonM2 == null ) {
+			throwAssertFailure("FAILURE (assertPolygonMShapeEquals): PolygonMShape2 NULL. PolygonMShape1 Not NULL!");
+		}		
+		debugLog(String.format("[FILE-1]: PolygonMShape (NumPoints=%s,NumParts=%s)",
+				aPolygonM1.getNumberOfPoints(),aPolygonM1.getNumberOfParts()));
+		debugLog(String.format("[FILE-2]: PolygonMShape (NumPoints=%s,NumParts=%s)",
+				aPolygonM1.getNumberOfPoints(),aPolygonM2.getNumberOfParts()));
+
+		if (aPolygonM1.getNumberOfParts() != aPolygonM2.getNumberOfParts()) {
+			throwAssertFailure("FAILURE (assertPolygonMShapeEquals): Found NumberOfParts that are different!");
+		}
+		if (aPolygonM1.getNumberOfPoints() != aPolygonM2.getNumberOfPoints()) {
+			throwAssertFailure("FAILURE (assertPolygonMShapeEquals): Found NumberOfPoints that are different!");
+		}
+
+		debugLog("[FILE-1]: MinM=" + aPolygonM1.getMinM() + ",MaxM=" + aPolygonM1.getMaxM());
+		debugLog("[FILE-2]: MinM=" + aPolygonM2.getMinM() + ",MaxM=" + aPolygonM2.getMaxM());
+		if ((aPolygonM1.getMinM() != aPolygonM2.getMinM()) 
+				|| (aPolygonM1.getMaxM() != aPolygonM2.getMaxM())) {
+			throwAssertFailure("FAILURE (assertPolygonMShapeEquals): Found MinM/MaxM that are different!");
+		}
+
+		debugLog("[FILE-1]: MinX=" + aPolygonM1.getBoxMinX() + ",MinY=" + aPolygonM1.getBoxMinY() + 
+				",MaxX=" + aPolygonM1.getBoxMaxX() + ",MaxY=" + aPolygonM1.getBoxMaxY());
+		debugLog("[FILE-2]: MinX=" + aPolygonM2.getBoxMinX() + ",MinY=" + aPolygonM2.getBoxMinY() + 
+				",MaxX=" + aPolygonM2.getBoxMaxX() + ",MaxY=" + aPolygonM2.getBoxMaxY());
+		if ((aPolygonM1.getBoxMinX() != aPolygonM2.getBoxMinX()) 
+				|| (aPolygonM1.getBoxMinY() != aPolygonM2.getBoxMinY())
+				|| (aPolygonM1.getBoxMaxX() != aPolygonM2.getBoxMaxX())
+				|| (aPolygonM1.getBoxMaxY() != aPolygonM2.getBoxMaxY())) {
+			throwAssertFailure("FAILURE (assertPolygonMShapeEquals): Found BoxMin/Max that are different!");
+		}
+		
+		// Number of parts and number of points are the SAME.
+		for (int i = 0; i < aPolygonM1.getNumberOfParts(); i++) {
+			PointData[] points1 = aPolygonM1.getPointsOfPart(i);
+			PointData[] points2 = aPolygonM2.getPointsOfPart(i);
+			debugLog("[FILE-1]: Part " + i + " has " + points1.length + " points.");
+			debugLog("[FILE-2]: Part " + i + " has " + points2.length + " points.");
+			assertPointDataArrayEquals(points1, points2);
+		}
+	}
+
+	private void assertPolygonZShapeEquals(PolygonZShape aPolygonZ1, PolygonZShape aPolygonZ2) throws Exception {
+		debugLog("[FILE-1,2]: Checking PolygonZ");
+		if (aPolygonZ1 == null && aPolygonZ2 != null ) {
+			throwAssertFailure("FAILURE (assertPolygonZShapeEquals): PolygonZShape1 NULL. PolygonZShape2 Not NULL!");
+		}
+		if (aPolygonZ1 != null && aPolygonZ2 == null ) {
+			throwAssertFailure("FAILURE (assertPolygonZShapeEquals): PolygonZShape2 NULL. PolygonZShape1 Not NULL!");
+		}		
+		debugLog(String.format("[FILE-1]: PolygonZShape (NumPoints=%s,NumParts=%s)",
+				aPolygonZ1.getNumberOfPoints(),aPolygonZ1.getNumberOfParts()));
+		debugLog(String.format("[FILE-2]: PolygonZShape (NumPoints=%s,NumParts=%s)",
+				aPolygonZ1.getNumberOfPoints(),aPolygonZ2.getNumberOfParts()));
+
+		if (aPolygonZ1.getNumberOfParts() != aPolygonZ2.getNumberOfParts()) {
+			throwAssertFailure("FAILURE (assertPolygonZShapeEquals): Found NumberOfParts that are different!");
+		}
+		if (aPolygonZ1.getNumberOfPoints() != aPolygonZ2.getNumberOfPoints()) {
+			throwAssertFailure("FAILURE (assertPolygonZShapeEquals): Found NumberOfPoints that are different!");
+		}
+
+		debugLog("[FILE-1]: MinM=" + aPolygonZ1.getMinM() + ",MaxM=" + aPolygonZ1.getMaxM() + 
+				"MinZ=" + aPolygonZ1.getMinZ() + ",MaxZ=" + aPolygonZ1.getMaxZ());
+		debugLog("[FILE-2]: MinM=" + aPolygonZ2.getMinM() + ",MaxM=" + aPolygonZ2.getMaxM() +
+				"MinZ=" + aPolygonZ2.getMinZ() + ",MaxZ=" + aPolygonZ2.getMaxZ());
+		if ((aPolygonZ1.getMinM() != aPolygonZ2.getMinM()) 
+				|| (aPolygonZ1.getMaxM() != aPolygonZ2.getMaxM())
+				|| (aPolygonZ1.getMinZ() != aPolygonZ2.getMinZ())
+				|| (aPolygonZ1.getMaxZ() != aPolygonZ2.getMaxZ())) {
+			throwAssertFailure("FAILURE (assertPolygonZShapeEquals): Found MinM/MaxM, MinZ/MaxZ that are different!");
+		}
+
+		debugLog("[FILE-1]: MinX=" + aPolygonZ1.getBoxMinX() + ",MinY=" + aPolygonZ1.getBoxMinY() + 
+				",MaxX=" + aPolygonZ1.getBoxMaxX() + ",MaxY=" + aPolygonZ1.getBoxMaxY());
+		debugLog("[FILE-2]: MinX=" + aPolygonZ2.getBoxMinX() + ",MinY=" + aPolygonZ2.getBoxMinY() + 
+				",MaxX=" + aPolygonZ2.getBoxMaxX() + ",MaxY=" + aPolygonZ2.getBoxMaxY());
+		if ((aPolygonZ1.getBoxMinX() != aPolygonZ2.getBoxMinX()) 
+				|| (aPolygonZ1.getBoxMinY() != aPolygonZ2.getBoxMinY())
+				|| (aPolygonZ1.getBoxMaxX() != aPolygonZ2.getBoxMaxX())
+				|| (aPolygonZ1.getBoxMaxY() != aPolygonZ2.getBoxMaxY())) {
+			throwAssertFailure("FAILURE (assertPolygonZShapeEquals): Found BoxMin/Max that are different!");
+		}
+		
+		// Number of parts and number of points are the SAME.
+		for (int i = 0; i < aPolygonZ1.getNumberOfParts(); i++) {
+			PointData[] points1 = aPolygonZ1.getPointsOfPart(i);
+			PointData[] points2 = aPolygonZ2.getPointsOfPart(i);
 			debugLog("[FILE-1]: Part " + i + " has " + points1.length + " points.");
 			debugLog("[FILE-2]: Part " + i + " has " + points2.length + " points.");
 			assertPointDataArrayEquals(points1, points2);
@@ -345,6 +473,96 @@ public class ShapeFileReaderComparer implements IShapeFileComparer {
 		for (int i = 0; i < aPolyLine1.getNumberOfParts(); i++) {
 			PointData[] points1 = aPolyLine1.getPointsOfPart(i);
 			PointData[] points2 = aPolyLine2.getPointsOfPart(i);
+			debugLog("[FILE-1]: Part " + i + " has " + points1.length + " points.");
+			debugLog("[FILE-2]: Part " + i + " has " + points2.length + " points.");
+			assertPointDataArrayEquals(points1, points2);
+		}
+	}
+
+	private void assertPolylineMShapeEquals(PolylineMShape aPolylineM1, PolylineMShape aPolylineM2) throws Exception {
+		debugLog("[FILE-1,2]: Checking PolylineM");
+		if (aPolylineM1 == null && aPolylineM2 != null ) {
+			throwAssertFailure("FAILURE (assertPolylineMShapeEquals): PolylineMShape1 NULL. PolylineMShape2 Not NULL!");
+		}
+		if (aPolylineM1 != null && aPolylineM2 == null ) {
+			throwAssertFailure("FAILURE (assertPolylineMShapeEquals): PolylineMShape2 NULL. PolylineMShape1 Not NULL!");
+		}		
+		debugLog(String.format("[FILE-1]: PolylineMShape (NumPoints=%s,NumParts=%s)",
+				aPolylineM1.getNumberOfPoints(),aPolylineM1.getNumberOfParts()));
+		debugLog(String.format("[FILE-2]: PolylineMShape (NumPoints=%s,NumParts=%s)",
+				aPolylineM2.getNumberOfPoints(),aPolylineM2.getNumberOfParts()));
+		if (aPolylineM1.getNumberOfParts() != aPolylineM2.getNumberOfParts()) {
+			throwAssertFailure("FAILURE (assertPolylineMShapeEquals): Found NumberOfParts that are different!");
+		}
+		if (aPolylineM1.getNumberOfPoints() != aPolylineM2.getNumberOfPoints()) {
+			throwAssertFailure("FAILURE (assertPolylineMShapeEquals): Found NumberOfPoints that are different!");
+		}
+		
+		debugLog("[FILE-1]: MinM=" + aPolylineM1.getMinM() + ",MaxM=" + aPolylineM1.getMaxM());
+		debugLog("[FILE-2]: MinM=" + aPolylineM2.getMinM() + ",MaxM=" + aPolylineM2.getMaxM());
+		if ((aPolylineM1.getMinM() != aPolylineM2.getMinM()) 
+				|| (aPolylineM1.getMaxM() != aPolylineM2.getMaxM())) {
+			throwAssertFailure("FAILURE (assertPolylineMShapeEquals): Found MinM/MaxM that are different!");
+		}
+		
+		if ((aPolylineM1.getBoxMinX() != aPolylineM2.getBoxMinX()) 
+				|| (aPolylineM1.getBoxMinY() != aPolylineM2.getBoxMinY())
+				|| (aPolylineM1.getBoxMaxX() != aPolylineM2.getBoxMaxX())
+				|| (aPolylineM1.getBoxMaxY() != aPolylineM2.getBoxMaxY())) {
+			throwAssertFailure("FAILURE (assertPolylineMShapeEquals): Found BoxMin/Max that are different!");
+		}
+		
+		// Number of parts and number of points are the SAME.
+		for (int i = 0; i < aPolylineM1.getNumberOfParts(); i++) {
+			PointData[] points1 = aPolylineM1.getPointsOfPart(i);
+			PointData[] points2 = aPolylineM2.getPointsOfPart(i);
+			debugLog("[FILE-1]: Part " + i + " has " + points1.length + " points.");
+			debugLog("[FILE-2]: Part " + i + " has " + points2.length + " points.");
+			assertPointDataArrayEquals(points1, points2);
+		}
+	}
+
+	private void assertPolylineZShapeEquals(PolylineZShape aPolylineZ1, PolylineZShape aPolylineZ2) throws Exception {
+		debugLog("[FILE-1,2]: Checking PolylineZ");
+		if (aPolylineZ1 == null && aPolylineZ2 != null ) {
+			throwAssertFailure("FAILURE (assertPolylineZShapeEquals): PolylineZShape1 NULL. PolylineZShape2 Not NULL!");
+		}
+		if (aPolylineZ1 != null && aPolylineZ2 == null ) {
+			throwAssertFailure("FAILURE (assertPolylineZShapeEquals): PolylineZShape2 NULL. PolylineZShape1 Not NULL!");
+		}		
+		debugLog(String.format("[FILE-1]: PolylineZShape (NumPoints=%s,NumParts=%s)",
+				aPolylineZ1.getNumberOfPoints(),aPolylineZ1.getNumberOfParts()));
+		debugLog(String.format("[FILE-2]: PolylineZShape (NumPoints=%s,NumParts=%s)",
+				aPolylineZ2.getNumberOfPoints(),aPolylineZ2.getNumberOfParts()));
+		if (aPolylineZ1.getNumberOfParts() != aPolylineZ2.getNumberOfParts()) {
+			throwAssertFailure("FAILURE (assertPolylineZShapeEquals): Found NumberOfParts that are different!");
+		}
+		if (aPolylineZ1.getNumberOfPoints() != aPolylineZ2.getNumberOfPoints()) {
+			throwAssertFailure("FAILURE (assertPolylineZShapeEquals): Found NumberOfPoints that are different!");
+		}
+		
+		debugLog("[FILE-1]: MinM=" + aPolylineZ1.getMinM() + ",MaxM=" + aPolylineZ1.getMaxM() + 
+				"MinZ=" + aPolylineZ1.getMinZ() + ",MaxZ=" + aPolylineZ1.getMaxZ());
+		debugLog("[FILE-2]: MinM=" + aPolylineZ2.getMinM() + ",MaxM=" + aPolylineZ2.getMaxM() +
+				"MinZ=" + aPolylineZ2.getMinZ() + ",MaxZ=" + aPolylineZ2.getMaxZ());
+		if ((aPolylineZ1.getMinM() != aPolylineZ2.getMinM()) 
+				|| (aPolylineZ1.getMaxM() != aPolylineZ2.getMaxM())
+				|| (aPolylineZ1.getMinZ() != aPolylineZ2.getMinZ())
+				|| (aPolylineZ1.getMaxZ() != aPolylineZ2.getMaxZ())) {
+			throwAssertFailure("FAILURE (assertPolylineZShapeEquals): Found MinM/MaxM, MinZ/MaxZ that are different!");
+		}
+		
+		if ((aPolylineZ1.getBoxMinX() != aPolylineZ2.getBoxMinX()) 
+				|| (aPolylineZ1.getBoxMinY() != aPolylineZ2.getBoxMinY())
+				|| (aPolylineZ1.getBoxMaxX() != aPolylineZ2.getBoxMaxX())
+				|| (aPolylineZ1.getBoxMaxY() != aPolylineZ2.getBoxMaxY())) {
+			throwAssertFailure("FAILURE (assertPolylineZShapeEquals): Found BoxMin/Max that are different!");
+		}
+		
+		// Number of parts and number of points are the SAME.
+		for (int i = 0; i < aPolylineZ1.getNumberOfParts(); i++) {
+			PointData[] points1 = aPolylineZ1.getPointsOfPart(i);
+			PointData[] points2 = aPolylineZ2.getPointsOfPart(i);
 			debugLog("[FILE-1]: Part " + i + " has " + points1.length + " points.");
 			debugLog("[FILE-2]: Part " + i + " has " + points2.length + " points.");
 			assertPointDataArrayEquals(points1, points2);
