@@ -177,13 +177,16 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC36_CheckReportLink_SupervisorRole Test Description: Check Reports link for customer user with Supervisor role
+	 * @throws Exception 
 	 * 
 	 */
 
 	@Test
-	public void TC36_CheckReportLink_SupervisorRole() {
-		String rptTitle = "TC36 Report" + testSetup.getRandomNumber();
-		Log.info("\nRunning TC36_CheckReportLink_SupervisorRole - Test Description: Report link is working and user is able to view report's menu");
+	public void TC36_CheckReportLink_SupervisorRole() throws Exception {
+		String testCaseID = "TC36";
+		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		Log.info("\nRunning " + testCaseID
+				+ "_CheckReportLink_SupervisorRole - Test Description: Report link is working and user is able to view report's menu");
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
@@ -238,7 +241,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 
 		complianceReportsPage.addNewReport(rpt);
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSUA))) {
+		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSUA, testCaseID))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findReport(rptTitle, SQACUSUA));
 			} else
@@ -344,12 +347,15 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC37_CheckReportLink_UtilityAdminRole Test Description: Check ACLV for customer user with Utility Administrator role
+	 * @throws Exception 
 	 * 
 	 */
 	@Test
-	public void TC37_CheckReportLink_UtilityAdminRole() {
-		String rptTitle = "TC37 Report" + testSetup.getRandomNumber();
-		Log.info("\nRunning TC37_CheckReportLink_UtilityAdminRole - Test Description: Report link is working and user is able to view report's menu");
+	public void TC37_CheckReportLink_UtilityAdminRole() throws Exception {
+		String testCaseID = "TC37";
+		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		Log.info("\nRunning " + testCaseID
+				+ "_CheckReportLink_UtilityAdminRole - Test Description: Report link is working and user is able to view report's menu");
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
@@ -404,7 +410,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 
 		complianceReportsPage.addNewReport(rpt);
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSUA))) {
+		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSUA, testCaseID))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findReport(rptTitle, SQACUSUA));
 			} else
@@ -519,12 +525,15 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC38_CheckReportLink_PicarroAdminRole Test Description: Check ACLV for customer user with Utility Administrator role
+	 * @throws Exception 
 	 * 
 	 */
 	@Test
-	public void TC38_CheckReportLink_PicarroAdminRole() {
-		String rptTitle = "TC38 Report" + testSetup.getRandomNumber();
-		Log.info("\nRunning TC38_CheckReportLink_PicarroAdminRole - Test Description: Report link is working and user is able to view report's menu");
+	public void TC38_CheckReportLink_PicarroAdminRole() throws Exception {
+		String testCaseID = "TC38";
+		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		Log.info("\nRunning " + testCaseID
+				+ "_CheckReportLink_PicarroAdminRole - Test Description: Report link is working and user is able to view report's menu");
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
@@ -579,7 +588,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 
 		complianceReportsPage.addNewReport(rpt);
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
+		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN, testCaseID))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
 			} else
@@ -668,12 +677,15 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC40_CheckReportLink_PicarroSupportRole Test Description: Check ACLV for Picarro Support role
+	 * @throws Exception 
 	 * 
 	 */
 	@Test
-	public void TC40_CheckReportLink_PicarroSupportRole() {
-		String rptTitle = "TC40 Report" + testSetup.getRandomNumber();
-		Log.info("\nRunning TC40_CheckReportLink_PicarroSupportRole - Test Description: Report link is working and user is able to view report's menu");
+	public void TC40_CheckReportLink_PicarroSupportRole() throws Exception {
+		String testCaseID = "TC40";
+		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		Log.info("\nRunning " + testCaseID
+				+ "_CheckReportLink_PicarroSupportRole - Test Description: Report link is working and user is able to view report's menu");
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 
@@ -728,7 +740,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 
 		complianceReportsPage.addNewReport(rpt);
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICSUP))) {
+		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICSUP, testCaseID))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findReport(rptTitle, SQAPICSUP));
 			} else

@@ -1517,7 +1517,7 @@ public class ComplianceReportsPageActions extends BasePageActions {
 		String rptTitle = compRptDataRow.title;
 
 		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
-		if ((complianceReportsPage.checkActionStatus(rptTitle, customerName))) {
+		if ((complianceReportsPage.checkActionStatus(rptTitle, customerName, null))) {
 			if ((!complianceReportsPage.findReport(rptTitle, customerName)) || 
 					(!complianceReportsPage.validatePdfFiles(workingReportsComp, 
 							TestContext.INSTANCE.getTestSetup().getDownloadPath()))) {
