@@ -15,7 +15,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.testng.Assert;
 
@@ -80,19 +84,18 @@ public class FileUtility {
 	 * Searches the specified file for 'searchForText' and replaces it with 'replaceWithText'
 	 * Creates a copy with the updated content and replaces the source file with the copy file.
 	 */
-	public static void updateFile(String filePath, String searchForText, String replaceWithText) throws IOException {
-
+	public static void updateFile(String filePath, Hashtable<String,String> placeholderMap) throws IOException {
 		String workingFile = TestSetup.getUUIDString() + "_" + Paths.get(filePath).getFileName();
 		String workingFullPath = Paths.get(TestSetup.getSystemTempDirectory(), workingFile).toString();
-		
 		File writeFile = new File(workingFullPath);
-		
 		String lineText = null;
 		BufferedReader buffReader = new BufferedReader(new FileReader(filePath));
 		BufferedWriter buffWriter = new BufferedWriter(new FileWriter(writeFile));
 		try {
 			while ((lineText = buffReader.readLine()) != null) {
-				lineText = lineText.replace(searchForText, replaceWithText);
+				for (Entry<String, String> entry : placeholderMap.entrySet()) {
+					lineText = lineText.replace(entry.getKey(), entry.getValue());
+				}
 				buffWriter.write(lineText);
 				buffWriter.newLine();
 			}
@@ -229,6 +232,20 @@ public class FileUtility {
 	}
 
 	/*
+	 * Checks and creates the specified directory if it does NOT exist.
+	 */
+	public static void createDirectoryIfNotExists(String directoryPath) {
+		File newDir = new File(directoryPath);
+		if (!newDir.exists()) {
+			try {
+				newDir.mkdir();
+			} catch (SecurityException ex) {
+				Log.error("Error creating new directory - " + directoryPath + " EXCEPTION: " + ExceptionUtility.getStackTraceString(ex));
+			}
+		}
+	}
+
+	/*
 	 * Deletes specified file.
 	 */
 	public static void deleteFile(Path file) {
@@ -245,17 +262,24 @@ public class FileUtility {
 	}
 	
 	/*
-	 * Delete files in the specified directory.
+	 * Delete files in the specified directory and then deletes the directory. 
 	 */
 	public static void deleteDirectoryAndFiles(Path directory) throws IOException {
+		deleteFilesInDirectory(directory);
+	    
+		// Next delete the directory.
+		deleteFile(directory);
+	}
+
+	/*
+	 * Delete files in the specified directory.
+	 */
+	public static void deleteFilesInDirectory(Path directory) throws IOException {
 		DirectoryStream<Path> stream = Files.newDirectoryStream(directory);
 	    // First delete all files in directory
 		for (Path file: stream) {
 	    	deleteFile(file);
 	    }
-	    
-		// Next delete the directory.
-		deleteFile(directory);
 	}
 	
 	public static void main(String[] args) throws IOException {

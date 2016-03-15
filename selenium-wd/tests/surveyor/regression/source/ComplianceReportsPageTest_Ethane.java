@@ -336,11 +336,12 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	@Test
 	@UseDataProvider(value = ComplianceReportEthaneDataProvider.COMPLIANCE_ETHANE_REPORT_PROVIDER, location = ComplianceReportEthaneDataProvider.class)
 	public void ComplianceReportTest_VerifyEthaneReport(String index, String strCreatedBy, String password, String cutomer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
-			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws IOException {
+			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws Exception {
 		String rptTitle = null;
-		rptTitle = getTestCaseName(index) + " " + "Report" + testSetup.getRandomNumber();
+		String testCaseName = getTestCaseName(index);
+		rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
 
-		Log.info("\nRunning " + getTestCaseName(index) + " - " + rptTitle);
+		Log.info("\nRunning " + testCaseName + " - " + rptTitle);
 
 		complianceReportsPage.login(strCreatedBy, CryptoUtility.decrypt(password));
 		complianceReportsPage.open();
@@ -350,7 +351,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle, strCreatedBy))) {
+		if ((complianceReportsPage.checkActionStatus(rptTitle, strCreatedBy, testCaseName))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, strCreatedBy));
 			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rptTitle));
@@ -372,7 +373,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 				}
 			}
 		} else
-			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
+			fail("\nTestcase " + testCaseName + " failed.\n");
 
 	}
 	private static String getTestCaseName(String key) {
@@ -423,15 +424,15 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID:TC1718 Test Description: Compliance Report Generation : newly generated report should show default color only for Indication
-	 * @throws InterruptedException 
-	 * 
-	 * @throws IOException
+	 * @throws Exception 
 	 * 
 	 */
 	@Test
-	public void TC1718_Ethane_Generate_Report_Verify_Indication_Table_Color() throws IOException, InterruptedException{
-		String rptTitle = "TC1718 Ethane" + testSetup.getRandomNumber();
-		Log.info("\nRunning TC1718: Compliance Report Generation : newly generated report should show default color only for Indication" + rptTitle);
+	public void TC1718_Ethane_Generate_Report_Verify_Indication_Table_Color() throws Exception{
+		String testCaseID = "TC1718";
+		String rptTitle = testCaseID + " Ethane" + testSetup.getRandomNumber();
+		Log.info("\nRunning " + testCaseID
+				+ ": Compliance Report Generation : newly generated report should show default color only for Indication" + rptTitle);
 
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
@@ -486,9 +487,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 
-		
-		
-		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
+		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
 
@@ -602,8 +601,10 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 */
 	@Test
 	public void TC1729_Ethane_Resubmit_Report_Verify_Indication_Table_Color() throws Exception{
-		String rptTitle = "TC1729 Ethane" + testSetup.getRandomNumber();
-		Log.info("\nRunning TC1729: Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- Default Indication color" + rptTitle);
+		String testCaseID = "TC1729";
+		String rptTitle = testCaseID + " Ethane" + testSetup.getRandomNumber();
+		Log.info("\nRunning " + testCaseID
+				+ ": Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- Default Indication color" + rptTitle);
 
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
@@ -663,7 +664,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
 		complianceReportsPage.waitForPageLoad();
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
+		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
 

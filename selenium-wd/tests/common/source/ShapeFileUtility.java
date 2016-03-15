@@ -1,5 +1,6 @@
 package common.source;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -37,25 +38,23 @@ import org.nocrala.tools.gis.data.esri.shapefile.shape.shapes.PolylineShape;
  */
 public class ShapeFileUtility {
 
-	public enum ShapeFileComparisonMethod {
-		ConvertToGeoJsonAndCompare,
-		CompareUsingShapeFileReader
-	}
-	
+	private IShapeFileComparer shapeFileComparer;
+
 	public ShapeFileUtility() {
+		// By default use the GeoJson Shape file comparer, if not specified by the caller.
+		this(getDefaultComparer());
 	}
 
-	public static String convertShapeToGeoJson(String shapeFilePath) throws Exception {
-		throw new Exception("To be implemented");
+	public ShapeFileUtility(IShapeFileComparer shapeFileComparer) {
+		this.shapeFileComparer = shapeFileComparer;
+	}
+
+	private static GeoJsonShapeFileComparer getDefaultComparer() {
+		return new GeoJsonShapeFileComparer();
 	}
 	
-	public static boolean compareShapeFiles(String shapeFilePath1, String shapeFilePath2) throws Exception {
-		// By default use the 'ConvertToGeoJsonAndCompare' comparison method.
-		return compareShapeFiles(shapeFilePath1, shapeFilePath2, ShapeFileComparisonMethod.ConvertToGeoJsonAndCompare);
-	}
-
-	public static boolean compareShapeFiles(String shapeFilePath1, String shapeFilePath2, ShapeFileComparisonMethod comparisonMethod) throws Exception {
-		throw new Exception("To be implemented.");
+	public void assertEquals(String shapeFilePath1, String shapeFilePath2) throws Exception {
+		shapeFileComparer.assertEquals(shapeFilePath1, shapeFilePath2);
 	}
 
 	public static void main(String[] args) throws IOException, InvalidShapeFileException {
@@ -126,7 +125,7 @@ public class ShapeFileUtility {
           case MULTIPOINT_Z:
       	  	Log.info("Found a MULTIPOINT_Z");
       	  MultiPointMShape aMultiPointM = (MultiPointMShape) s;
-            // Do something with the MultiPointZ shape...
+            // Do something with the MultiPointZ shape...	
             break;
           case POLYGON:
             PolygonShape aPolygon = (PolygonShape) s;

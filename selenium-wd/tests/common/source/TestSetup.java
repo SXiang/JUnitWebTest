@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
@@ -679,7 +680,9 @@ public class TestSetup {
 			Files.copy(Paths.get(defnFullPath), Paths.get(workingDefnFullPath));
 
 			// Update the working copy.
-			FileUtility.updateFile(workingDefnFullPath, "%DB3_FILE_PATH%", db3FileFullPath);
+			Hashtable<String, String> placeholderMap = new Hashtable<String, String>();
+			placeholderMap.put("%DB3_FILE_PATH%", db3FileFullPath);
+			FileUtility.updateFile(workingDefnFullPath, placeholderMap);
 
 			// Replay DB3 script
 			replayDB3Script(workingDefnFile);
@@ -816,10 +819,12 @@ public class TestSetup {
 			Files.copy(Paths.get(updCmdFullPath), Paths.get(workingUpdCmdFullPath));
 
 			// Update the working copy.
-			FileUtility.updateFile(workingUpdCmdFullPath, "%WORKING_DIR%", workingFolder);
-			FileUtility.updateFile(workingUpdCmdFullPath, "%1%", analyzerSerialNumber);
-			FileUtility.updateFile(workingUpdCmdFullPath, "%2%", analyzerSharedKey);
-			FileUtility.updateFile(workingUpdCmdFullPath, "%3%", String.valueOf(maxSurveyDuration));
+			Hashtable<String, String> placeholderMap = new Hashtable<String, String>();
+			placeholderMap.put("%WORKING_DIR%", workingFolder);
+			placeholderMap.put("%1%", analyzerSerialNumber);
+			placeholderMap.put("%2%", analyzerSharedKey);
+			placeholderMap.put("%3%", String.valueOf(maxSurveyDuration));
+			FileUtility.updateFile(workingUpdCmdFullPath, placeholderMap);
 
 			// Execute update config cmd.
 			executeUpdateConfigCmd(workingUpdCmdFile);

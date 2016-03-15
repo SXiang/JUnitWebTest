@@ -79,12 +79,15 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 	/**
 	 * Test Case ID: TC183 Test Description: Generate report having multiple surveys of Standard, Operator and Rapid Response types in Rapid Response report mode
+	 * @throws Exception 
 	 * 
 	 */
 	@Test
-	public void TC183_ComplianceReportTest_VerifyReportwithMultipleSurveys() {
-		String rptTitle = "TC183 Report" + testSetup.getRandomNumber();
-		System.out.format("\nRunning TC183: Generate report having multiple surveys of Standard, Operator and Rapid Response types in Rapid Response report mode, %s\n", rptTitle);
+	public void TC183_ComplianceReportTest_VerifyReportwithMultipleSurveys() throws Exception {
+		String testCaseID = "TC183";
+		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		System.out.format("\nRunning " + testCaseID
+				+ ": Generate report having multiple surveys of Standard, Operator and Rapid Response types in Rapid Response report mode, %s\n", rptTitle);
 
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
@@ -100,7 +103,7 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		complianceReportsPage.addNewPDReport(rptTitle, "Picarro", surUnit, surTag, changeMode, reportMode);
 		complianceReportsPage.waitForPageLoad();
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN)))
+		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN, testCaseID)))
 			assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
 		else
 			fail("\nTestcase TC183 failed.\n");
@@ -111,12 +114,14 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 	/**
 	 * Test Case ID: TC191 Test Description: Generate report having multiple surveys and verify Gaps for them
+	 * @throws Exception 
 	 * 
 	 */
 	@Test
-	public void TC191_ComplianceReportTest_VerifyMultipleSurveyGaps() {
-		String rptTitle = "TC191 Report" + testSetup.getRandomNumber();
-		System.out.format("\nRunning TC191: Generate report having multiple surveys and verify Gaps for them, %s\n", rptTitle);
+	public void TC191_ComplianceReportTest_VerifyMultipleSurveyGaps() throws Exception {
+		String testCaseID = "TC191";
+		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		System.out.format("\nRunning " + testCaseID + ": Generate report having multiple surveys and verify Gaps for them, %s\n", rptTitle);
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -175,7 +180,7 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		complianceReportsPage.addNewReportWithMultipleSurveysIncluded(rpt);
 		complianceReportsPage.waitForPageLoad();
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
+		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN, testCaseID))) {
 			assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
 
 		} else
@@ -187,12 +192,14 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 	/**
 	 * Test Case ID: TC192 Test Description: Generate report having multiple surveys and provide exclusion radius
+	 * @throws Exception 
 	 * 
 	 */
 	@Test
-	public void TC192_ComplianceReportTest_VerifyMultipleSurveyExclusionRadius() {
-		String rptTitle = "TC192 Report" + testSetup.getRandomNumber();
-		System.out.format("\nRunning TC192: Generate report having multiple surveys and provide exclusion radius, %s\n", rptTitle);
+	public void TC192_ComplianceReportTest_VerifyMultipleSurveyExclusionRadius() throws Exception {
+		String testCaseID = "TC192";
+		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		System.out.format("\nRunning " + testCaseID + ": Generate report having multiple surveys and provide exclusion radius, %s\n", rptTitle);
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -265,7 +272,7 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		complianceReportsPage.addNewReportWithMultipleSurveysIncluded(rpt);
 		complianceReportsPage.waitForPageLoad();
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
+		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN, testCaseID))) {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
 			} else
@@ -306,11 +313,14 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 	/**
 	 * Test Case ID: TC1321 Test Description: Generate Compliance Report as Customer Supervisor user and include Percent Coverage Forecast Note: Need 3 standard mode survey tags, Need to change qacus
 	 * to include Percentage Forecast
+	 * @throws Exception 
 	 */
 	@Test
-	public void TC1321_ComplianceReportTest_VerifyMultipleSurveyGaps() {
-		String rptTitle = "TC1321 Report" + testSetup.getRandomNumber();
-		System.out.format("\nRunning TC1321: Generate Compliance Report as Customer Supervisor user and include Percent Coverage Forecast, %s\n", rptTitle);
+	public void TC1321_ComplianceReportTest_VerifyMultipleSurveyGaps() throws Exception {
+		String testCaseID = "TC1321";
+		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		System.out.format("\nRunning " + testCaseID
+				+ ": Generate Compliance Report as Customer Supervisor user and include Percent Coverage Forecast, %s\n", rptTitle);
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -368,7 +378,7 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		complianceReportsPage.addNewReportWithMultipleSurveysIncluded(rpt);
 		complianceReportsPage.waitForPageLoad();
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
+		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
 
 		} else
@@ -381,11 +391,14 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 	/**
 	 * Test Case ID: TC1351 Test Description: Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 3 surveys with different tags Note: Need 3 standard mode survey tags,
 	 * Need to change qacus to include Percentage Forecast
+	 * @throws Exception 
 	 */
 	@Test
-	public void TC1351_ComplianceReportTest_VerifyMultipleSurveyGaps() {
-		String rptTitle = "TC1321 Report" + testSetup.getRandomNumber();
-		System.out.format("\nRunning TC1321: Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 3 surveys with different tags, %s\n", rptTitle);
+	public void TC1351_ComplianceReportTest_VerifyMultipleSurveyGaps() throws Exception {
+		String testCaseID = "TC1321";
+		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		System.out.format("\nRunning " + testCaseID
+				+ ": Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 3 surveys with different tags, %s\n", rptTitle);
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -443,7 +456,7 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		complianceReportsPage.addNewReportWithMultipleSurveysIncluded(rpt);
 		complianceReportsPage.waitForPageLoad();
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser()))) {
+		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
 
 		} else

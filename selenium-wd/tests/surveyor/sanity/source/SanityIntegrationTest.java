@@ -153,14 +153,17 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC739 Test Description: Generate compliance report as
 	 * customer supervisor user by selecting report area using custom boundary
+	 * @throws Exception 
 	 * 
 	 */
 	@Test
-	public void TC739_GenerateComplianceReport_CustomerSupervisor() {
-		String rptTitle = "Customer Supervisor Report TC739 "
+	public void TC739_GenerateComplianceReport_CustomerSupervisor() throws Exception {
+		String testCaseID = "TC739";
+		String rptTitle = "Customer Supervisor Report " + testCaseID + " "
 				+ testSetup.getRandomNumber();
 		System.out
-				.format("\nRunning TC739: Generate compliance report as customer supervisor user by selecting report area using custom boundary, %s\n",
+				.format("\nRunning " + testCaseID
+						+ ": Generate compliance report as customer supervisor user by selecting report area using custom boundary, %s\n",
 						rptTitle);
 
 		complianceReportsPage.login(SQACUSSU, USERPASSWORD);
@@ -245,7 +248,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		complianceReportsPage.addNewReport(rpt);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSSU))) {
+		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSSU, testCaseID))) {
 			assertTrue(complianceReportsPage.findReport(rptTitle, SQACUSSU));
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt,
 					testSetup.getDownloadPath()));
