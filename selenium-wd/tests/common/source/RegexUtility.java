@@ -17,6 +17,7 @@ import org.testng.Assert;
  *
  */
 public class RegexUtility {
+	public static final String NEWLINE_SPLIT_REGEX_PATTERN = "\\r?\\n";
 	public static final String SPACE_SPLIT_REGEX_PATTERN = " ";
 	public static final String COLON_SPLIT_REGEX_PATTERN = ":";
 	public static final String COMMA_SPLIT_REGEX_PATTERN = ",";
