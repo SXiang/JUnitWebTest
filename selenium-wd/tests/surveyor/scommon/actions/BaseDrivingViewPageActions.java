@@ -15,7 +15,6 @@ public class BaseDrivingViewPageActions extends BaseMapViewPageActions {
 	private static final String FN_VERIFY_SURVEY_INFO_STABILITY_CLASS_LABEL_EQUALS = "verifySurveyInfoStabilityClassLabelEquals";
 	private static final String FN_VERIFY_SURVEY_INFO_ZOOM_LEVEL_LABEL_EQUALS = "verifySurveyInfoZoomLevelLabelEquals";
 	private static final String FN_VERIFY_SURVEY_INFO_SURVEY_STATUS_LABEL_EQUALS = "verifySurveyInfoSurveyStatusLabelEquals";
-	private static final String FN_VERIFY_SURVEY_INFO_TAG_LABEL_EQUALS = "verifySurveyInfoTagLabelEquals";
 	private static final String FN_VERIFY_SURVEY_INFO_TIME_LABEL_STARTS_WITH = "verifySurveyInfoTimeLabelStartsWith";
 	private static final String FN_VERIFY_SURVEY_INFO_TIME_LABEL_EQUALS = "verifySurveyInfoTimeLabelEquals";
 	private static final String FN_VERIFY_SURVEY_INFO_TIME_REMAINING_LABEL_EQUALS = "verifySurveyInfoTimeRemainingLabelEquals";
@@ -303,19 +302,5 @@ public class BaseDrivingViewPageActions extends BaseMapViewPageActions {
 	
 	public BaseDrivingViewPage getBaseDrivingViewPage() {
 		return (BaseDrivingViewPage)this.pageObject;
-	}
-
-	protected boolean verifySurveyInfoTagLabelEquals(String data, Integer dataRowID, DriverViewDataRow workingDataRow, String actualTagValue) throws Exception {
-		String expectedTagValue = null;
-		if (!ActionArguments.isEmpty(data)) {
-			expectedTagValue = "Tag: " + data;
-		} else if (dataRowID > 0) {
-			expectedTagValue = "Tag: " + workingDataRow.surveyTag;
-		} else {
-			throw new Exception(String.format("Either data or dataRowID must be passed for %s action.", FN_VERIFY_SURVEY_INFO_TAG_LABEL_EQUALS));
-		}
-		
-		log(String.format("Looking for Text-[%s], Found Survey Tag Label Text-[%s]", expectedTagValue, actualTagValue));
-		return actualTagValue.equals(expectedTagValue);
 	}
 }

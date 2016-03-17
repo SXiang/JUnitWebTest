@@ -1,11 +1,15 @@
 package surveyor.scommon.source;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import common.source.TestSetup;
 import common.source.WebElementExtender;
 
@@ -203,6 +207,10 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@CacheLookup
 	protected WebElement zoomOutButton;
 
+	@FindBy(id = "blocked_ui")
+	@CacheLookup
+	private WebElement divBlockedUI;
+
 	public BaseMapViewPage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
 		super(driver, testSetup, strBaseURL, strPageURL);
 	}
@@ -309,6 +317,9 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		return this;
 	}
 
+	public WebElement getDivBlockedUI() {
+		return this.divBlockedUI;
+	}
 
 	public boolean isDisplaySwitch8HourHistoryButtonVisible() {
 		return !(WebElementExtender.isAttributePresent(this.displaySwitch8HourHistoryDivElement,"ng-cloak") ||
@@ -869,5 +880,16 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		default:
 			throw new IllegalArgumentException("Display switch type unknown and not currently handled.");
 		}
+	}
+	
+	/**
+	 * Verifies that the page UI is no longer blocked.
+	 */
+	public void waitForUIUnBlock() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return divBlockedUI.getAttribute("class").equalsIgnoreCase("ng-hide");
+			}
+		});
 	}
 }

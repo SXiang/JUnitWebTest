@@ -6,6 +6,8 @@ package surveyor.scommon.source;
 import static org.junit.Assert.fail;
 import static common.source.BaseHelper.matchSinglePattern;
 import common.source.DateUtility;
+import common.source.FileUtility;
+
 import static surveyor.scommon.source.SurveyorConstants.ACTIONTIMEOUT;
 import static surveyor.scommon.source.SurveyorConstants.CUSBOUNDARY;
 import static surveyor.scommon.source.SurveyorConstants.ENDDATE;
@@ -57,6 +59,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,6 +74,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -99,6 +105,8 @@ import surveyor.dataaccess.source.StoredProcComplianceGetIsotopics;
 import surveyor.dataaccess.source.StoredProcReferenceGas;
 import common.source.PDFUtility;
 import common.source.RegexUtility;
+import common.source.ShapeToGeoJsonConverter;
+import common.source.TestContext;
 
 /**
  * @author zlu
@@ -820,7 +828,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, buttonType, true);
 	}
 
-	public boolean checkActionStatus(String rptTitle, String strCreatedBy) {
+	public boolean checkActionStatus(String rptTitle, String strCreatedBy, String testCaseID) throws Exception {
 		setPagination(PAGINATIONSETTING);
 		this.waitForPageLoad();
 		String reportTitleXPath;
@@ -887,6 +895,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 							if (zipShape.isDisplayed()) {
 								clickOnShapeZIPInReportViewer();
 								waitForShapeZIPFileDownload(reportName);
+								if (testCaseID != null) {
+									checkAndGenerateBaselineShapeAndGeoJsonFiles(reportName, testCaseID);
+								}
 							}
 							return true;
 						}
@@ -929,6 +940,74 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return false;
 	}
 
+	private void checkAndGenerateBaselineShapeAndGeoJsonFiles(String reportName, String testCaseID) throws Exception {
+		boolean isGenerateBaselineShapeFiles = TestContext.INSTANCE.getTestSetup().isGenerateBaselineShapeFiles();
+		if (isGenerateBaselineShapeFiles) {
+			Path unzipDirectory = Paths.get(testSetup.getDownloadPath(), reportName + " (2)");
+			List<String> filesInDirectory = FileUtility.getFilesInDirectory(unzipDirectory, "*.shp,*.dbf,*.prj,*.shx");
+			for (String filePath : filesInDirectory) {
+				generateBaselineShapeAndGeoJsonFiles(testCaseID, filePath);
+			}
+		}
+	}
+
+	protected void generateBaselinePerfFiles(String testCaseID, String reportId, String startTime, String endTime, Integer processingTimeInMs) throws IOException {
+		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
+		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" 
+				+ File.separator + "report-job-metrics" + File.separator + testCaseID;
+		// Create the directory for test case if it does not exist.
+		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
+		Path expectedFilePath = Paths.get(expectedDataFolderPath, String.format("%s.csv", testCaseID));
+		String reportMetricString = String.format("%s,%s,%s,%d", reportId, startTime, endTime, processingTimeInMs);
+		FileUtility.createOrWriteToExistingTextFile(expectedFilePath, reportMetricString);
+	}
+
+	protected void generateBaselineSSRSImage(String testCaseID, String imageFileFullPath) throws IOException {
+		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" 
+				+ File.separator + "ssrs-images" + File.separator + testCaseID;
+		// Create the directory for test case if it does not exist.
+		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
+		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
+		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);		
+		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
+	}
+
+	protected void generateBaselineViewImage(String testCaseID, String imageFileFullPath) throws IOException {
+		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" 
+				+ File.separator + "view-images" + File.separator + testCaseID;
+		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
+		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);		
+		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
+	}
+
+	protected void generateBaselineShapeAndGeoJsonFiles(String testCaseID, String shapeFileFullPath) throws Exception {
+		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" 
+				+ File.separator + "shape-files" + File.separator + testCaseID;
+		// Create the directory for test case if it does not exist.
+		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
+		String expectedFilename = FileUtility.getFileName(shapeFileFullPath);
+		String expectedFileExt = FileUtility.getFileExtension(shapeFileFullPath);
+		if (expectedFileExt == "dbf" || expectedFileExt == "prj" || expectedFileExt == "shp" || expectedFileExt == "shx") {			
+			// Delete existing files in directory (if any).
+			FileUtility.deleteFilesInDirectory(Paths.get(expectedDataFolderPath));
+			
+			// Copy the file to the test case folder.
+			String expectedFilenameWithoutExt = expectedFilename.replace(".shp", "");
+			Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);		
+			FileUtils.copyFile(new File(shapeFileFullPath), new File(expectedFilePath.toString()));		
+		
+			// If specified file is .shp get GeoJson string for the shape file and store the .geojson.
+			if (expectedFileExt == "shp") {
+				String geoJsonString = ShapeToGeoJsonConverter.convertToJsonString(shapeFileFullPath);
+				Path expectedGeoJsonFilePath = Paths.get(expectedDataFolderPath, expectedFilenameWithoutExt + ".geojson");		
+				FileUtility.createTextFile(expectedGeoJsonFilePath, geoJsonString);
+			}
+		}
+	}
+	
 	public boolean checkActionStatusInSeconds(String rptTitle, String strCreatedBy, int seconds) {
 
 		setPagination(PAGINATIONSETTING);

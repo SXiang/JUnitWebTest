@@ -11,10 +11,19 @@ import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class SurveyViewPage extends BaseMapViewPage {
+	private static final String SURVEY_INFO_ANALYZER_LABEL_XPATH = "//*[@id='header_info_historical']/div[5]";
+	private static final String SURVEY_INFO_SURVEYOR_LABEL_XPATH = "//*[@id='header_info_historical']/div[6]";
+	private static final String SURVEY_INFO_END_TIME_LABEL_XPATH = "//*[@id='header_info_historical']/div[8]";
+	private static final String SURVEY_INFO_START_TIME_LABEL_XPATH = "//*[@id='header_info_historical']/div[7]";
+	private static final String SURVEY_INFO_STABILITY_CLASS_LABEL_XPATH = "//*[@id='header_info_historical']/div[4]";
+	private static final String SURVEY_INFO_DRIVER_LABEL_XPATH = "//*[@id='header_info_historical']/div[3]";
+	private static final String SURVEY_INFO_MODE_LABEL_XPATH = "//*[@id='header_info_historical']/div[2]";
+	private static final String SURVEY_INFO_TAG_LABEL_XPATH = "//*[@id='header_info_historical']/div[1]";
 	public static final String STRURLPath = "/Live/Survey/";
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.Constant_Survey);
 	public static final String STRPageContentText = "Map View";
@@ -99,29 +108,32 @@ public class SurveyViewPage extends BaseMapViewPage {
     @CacheLookup
     private WebElement termsOfUse;
     
-    @FindBy(how = How.XPATH, using = "//*[@id='header_info_historical']/div[1]")
+    @FindBy(how = How.XPATH, using = SURVEY_INFO_TAG_LABEL_XPATH)
 	private WebElement labelTag;
 
-    @FindBy(how = How.XPATH, using = "//*[@id='header_info_historical']/div[2]")
+    @FindBy(how = How.XPATH, using = SURVEY_INFO_MODE_LABEL_XPATH)
 	private WebElement labelMode;
 
-    @FindBy(how = How.XPATH, using = "//*[@id='header_info_historical']/div[3]")
+    @FindBy(how = How.XPATH, using = SURVEY_INFO_DRIVER_LABEL_XPATH)
 	private WebElement labelDriver;
 
-    @FindBy(how = How.XPATH, using = "//*[@id='header_info_historical']/div[4]")
+    @FindBy(how = How.XPATH, using = SURVEY_INFO_STABILITY_CLASS_LABEL_XPATH)
 	private WebElement labelStabilityClass;
 
-    @FindBy(how = How.XPATH, using = "//*[@id='header_info_historical']/div[5]")
+    @FindBy(how = How.XPATH, using = SURVEY_INFO_ANALYZER_LABEL_XPATH)
 	private WebElement labelAnalyzer;
 
-    @FindBy(how = How.XPATH, using = "//*[@id='header_info_historical']/div[6]")
+    @FindBy(how = How.XPATH, using = SURVEY_INFO_SURVEYOR_LABEL_XPATH)
 	private WebElement labelSurveyor;
 
-    @FindBy(how = How.XPATH, using = "//*[@id='header_info_historical']/div[7]")
+    @FindBy(how = How.XPATH, using = SURVEY_INFO_START_TIME_LABEL_XPATH)
 	private WebElement labelStartTime;
 
-    @FindBy(how = How.XPATH, using = "//*[@id='header_info_historical']/div[8]")
+    @FindBy(how = How.XPATH, using = SURVEY_INFO_END_TIME_LABEL_XPATH)
 	private WebElement labelEndTime;
+    
+    // Survey ID used for opening the specified survey page.
+    private String surveyId;    
 
 	/**
 	 * @param driver
@@ -132,6 +144,12 @@ public class SurveyViewPage extends BaseMapViewPage {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 
 		Log.info("\nThe SurveyView Page URL is: " + this.strPageURL);
+	}
+
+	@Override
+	public void open() {
+		driver.get(strPageURL + getSurveyId());
+		this.waitForPageLoad();
 	}
 	
 	public boolean checkIfAtSurveyViewPage() {
@@ -341,7 +359,47 @@ public class SurveyViewPage extends BaseMapViewPage {
         return this;
     }
 
-    /**
+	public String getTagLabelText() {
+		return driver.findElement(By.xpath(SURVEY_INFO_TAG_LABEL_XPATH)).getText();
+	}
+
+	public String getSurveyModeLabelText() {
+		return driver.findElement(By.xpath(SURVEY_INFO_MODE_LABEL_XPATH)).getText();
+	}
+
+	public String getDriverLabelText() {
+		return driver.findElement(By.xpath(SURVEY_INFO_DRIVER_LABEL_XPATH)).getText();
+	}
+
+	public String getStabilityClassLabelText() {
+		return driver.findElement(By.xpath(SURVEY_INFO_STABILITY_CLASS_LABEL_XPATH)).getText();
+	}
+
+	public WebElement getStartTimeLabel() {
+		return driver.findElement(By.xpath(SURVEY_INFO_START_TIME_LABEL_XPATH));
+	}
+
+	public String getStartTimeLabelText() {
+		return driver.findElement(By.xpath(SURVEY_INFO_START_TIME_LABEL_XPATH)).getText();
+	}
+
+	public WebElement getEndTimeLabel() {
+		return driver.findElement(By.xpath(SURVEY_INFO_END_TIME_LABEL_XPATH));
+	}
+
+	public String getEndTimeLabelText() {
+		return driver.findElement(By.xpath(SURVEY_INFO_END_TIME_LABEL_XPATH)).getText();
+	}
+
+	public String getSurveyorLabelText() {
+		return driver.findElement(By.xpath(SURVEY_INFO_SURVEYOR_LABEL_XPATH)).getText();
+	}
+
+	public String getAnalyzerLabelText() {
+		return driver.findElement(By.xpath(SURVEY_INFO_ANALYZER_LABEL_XPATH)).getText();
+	}
+
+	/**
      * Submit the form to target page.
      *
      * @return the SurveyViewPage class instance.
@@ -357,7 +415,7 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage verifyPageLoaded() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+        (new WebDriverWait(driver, timeout * 2)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getPageSource().contains(STRPageContentText);
             }
@@ -371,7 +429,7 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage verifyPageUrl() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+        (new WebDriverWait(driver, timeout * 2)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getCurrentUrl().contains(STRURLPath);
             }
@@ -383,10 +441,18 @@ public class SurveyViewPage extends BaseMapViewPage {
 	 * Verify that the page loaded completely.
 	 */
 	public void waitForPageLoad() {
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, timeout * 2)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return d.getPageSource().contains(STRPageContentText);
 			}
 		});
+	}
+
+	public String getSurveyId() {
+		return surveyId;
+	}
+
+	public void setSurveyId(String surveyId) {
+		this.surveyId = surveyId;
 	}
 }

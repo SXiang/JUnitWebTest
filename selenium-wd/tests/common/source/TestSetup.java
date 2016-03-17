@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
@@ -129,6 +130,11 @@ public class TestSetup {
 	private String dbUser;
 	private String dbPassword;
 	private String computerName;
+
+	private boolean collectReportJobPerfMetric;
+	private boolean generateBaselineSSRSImages;
+	private boolean generateBaselineViewImages;
+	private boolean generateBaselineShapeFiles;
 
 	public TestSetup() {
 		initialize();
@@ -487,6 +493,38 @@ public class TestSetup {
 		return testRunCategory;
 	}
 
+	public boolean isGenerateBaselineShapeFiles() {
+		return generateBaselineShapeFiles;
+	}
+
+	public void setGenerateBaselineShapeFiles(boolean generateBaselineShapeFiles) {
+		this.generateBaselineShapeFiles = generateBaselineShapeFiles;
+	}
+
+	public boolean isGenerateBaselineViewImages() {
+		return generateBaselineViewImages;
+	}
+
+	public void setGenerateBaselineViewImages(boolean generateBaselineViewImages) {
+		this.generateBaselineViewImages = generateBaselineViewImages;
+	}
+
+	public boolean isGenerateBaselineSSRSImages() {
+		return generateBaselineSSRSImages;
+	}
+
+	public void setGenerateBaselineSSRSImages(boolean generateBaselineSSRSImages) {
+		this.generateBaselineSSRSImages = generateBaselineSSRSImages;
+	}
+
+	public boolean isCollectReportJobPerfMetric() {
+		return collectReportJobPerfMetric;
+	}
+
+	public void setCollectReportJobPerfMetric(boolean collectReportJobPerfMetric) {
+		this.collectReportJobPerfMetric = collectReportJobPerfMetric;
+	}
+
 	public void initialize() {
 		try {
 
@@ -527,6 +565,11 @@ public class TestSetup {
 
 			this.runEnvironment = this.testProp.getProperty("runEnvironment");
 			this.testRunCategory = this.testProp.getProperty("testRunCategory");
+			
+			this.setCollectReportJobPerfMetric(Boolean.valueOf(this.testProp.getProperty("complianceReport_collectReportJobPerfMetric")));
+			this.setGenerateBaselineSSRSImages(Boolean.valueOf(this.testProp.getProperty("complianceReport_generateBaselineSSRSImages")));
+			this.setGenerateBaselineViewImages(Boolean.valueOf(this.testProp.getProperty("complianceReport_generateBaselineViewImages")));
+			this.setGenerateBaselineShapeFiles(Boolean.valueOf(this.testProp.getProperty("complianceReport_generateBaselineShapeFiles")));
 
 			this.language = this.testProp.getProperty("language");
 
@@ -637,7 +680,9 @@ public class TestSetup {
 			Files.copy(Paths.get(defnFullPath), Paths.get(workingDefnFullPath));
 
 			// Update the working copy.
-			FileUtility.updateFile(workingDefnFullPath, "%DB3_FILE_PATH%", db3FileFullPath);
+			Hashtable<String, String> placeholderMap = new Hashtable<String, String>();
+			placeholderMap.put("%DB3_FILE_PATH%", db3FileFullPath);
+			FileUtility.updateFile(workingDefnFullPath, placeholderMap);
 
 			// Replay DB3 script
 			replayDB3Script(workingDefnFile);
@@ -774,10 +819,12 @@ public class TestSetup {
 			Files.copy(Paths.get(updCmdFullPath), Paths.get(workingUpdCmdFullPath));
 
 			// Update the working copy.
-			FileUtility.updateFile(workingUpdCmdFullPath, "%WORKING_DIR%", workingFolder);
-			FileUtility.updateFile(workingUpdCmdFullPath, "%1%", analyzerSerialNumber);
-			FileUtility.updateFile(workingUpdCmdFullPath, "%2%", analyzerSharedKey);
-			FileUtility.updateFile(workingUpdCmdFullPath, "%3%", String.valueOf(maxSurveyDuration));
+			Hashtable<String, String> placeholderMap = new Hashtable<String, String>();
+			placeholderMap.put("%WORKING_DIR%", workingFolder);
+			placeholderMap.put("%1%", analyzerSerialNumber);
+			placeholderMap.put("%2%", analyzerSharedKey);
+			placeholderMap.put("%3%", String.valueOf(maxSurveyDuration));
+			FileUtility.updateFile(workingUpdCmdFullPath, placeholderMap);
 
 			// Execute update config cmd.
 			executeUpdateConfigCmd(workingUpdCmdFile);
