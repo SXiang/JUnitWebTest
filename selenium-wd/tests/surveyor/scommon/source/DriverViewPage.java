@@ -46,10 +46,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	private Map<String, String> data;
 	private int timeout = 15;
 
-	@FindBy(id = "blocked_ui")
-	@CacheLookup
-	private WebElement divBlockedUI;
-
 	@FindBy(id = "bottom_button_mode")
 	@CacheLookup
 	private WebElement modeButton;
@@ -287,10 +283,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	public DriverViewPage clickShutdownCancelButton() {
 		this.getShutdownCancelButton().click();
 		return this;
-	}
-
-	public WebElement getDivBlockedUI() {
-		return this.divBlockedUI;
 	}
 
 	public WebElement getStartSurveyButton() {
@@ -927,17 +919,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return d.getPageSource().contains(STRPageContentText);
-			}
-		});
-	}
-
-	/**
-	 * Verifies that the page UI is no longer blocked.
-	 */
-	public void waitForUIUnBlock() {
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return divBlockedUI.getAttribute("class").equalsIgnoreCase("ng-hide");
 			}
 		});
 	}

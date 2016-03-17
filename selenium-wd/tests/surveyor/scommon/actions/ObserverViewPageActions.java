@@ -2,6 +2,8 @@ package surveyor.scommon.actions;
 
 import org.openqa.selenium.WebDriver;
 
+import common.source.BrowserCommands;
+import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.actions.data.DriverViewDataReader;
 import surveyor.scommon.source.ObserverViewPage;
@@ -13,6 +15,7 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 	
 	public ObserverViewPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup);
+		initializePageObject(driver, new ObserverViewPage(driver, testSetup, strBaseURL));
 		setDataReader(new DriverViewDataReader(this.excelUtility));
 	}
 
@@ -25,6 +28,22 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 	public boolean open(String data, Integer dataRowID) {
 		logAction("ObserverViewPageActions.open", data, dataRowID);
 		getObserverViewPage().open();
+		return true;
+	}
+	
+	/**
+	 * Executes refreshPage action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean refreshPage(String data, Integer dataRowID) {
+		logAction("ObserverViewPageActions.refreshPage", data, dataRowID);
+		BrowserCommands.refresh();
+		ObserverViewPage observerViewPage = new ObserverViewPage(TestContext.INSTANCE.getDriver(), 
+				TestContext.INSTANCE.getTestSetup(),
+				TestContext.INSTANCE.getBaseUrl());
+		initializePageObject(TestContext.INSTANCE.getDriver(), observerViewPage);
 		return true;
 	}
  
@@ -232,6 +251,10 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyGisBoundaryBigBoundaryButtonIsNotVisible")) { return this.verifyGisBoundaryBigBoundaryButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyGisBoundarySmallBoundaryButtonIsNotVisible")) { return this.verifyGisBoundarySmallBoundaryButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyGisUseAllBoundariesButtonIsNotVisible")) { return this.verifyGisUseAllBoundariesButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyIsotopicCaptureResultIsPresentOnMap")) { return this.verifyIsotopicCaptureResultIsPresentOnMap(data, dataRowID); }
+		else if (actionName.equals("verifyIsotopicCaptureResultIsNotPresentOnMap")) { return this.verifyIsotopicCaptureResultIsNotPresentOnMap(data, dataRowID); }
+		else if (actionName.equals("verifyRefGasCaptureResultIsPresentOnMap")) { return this.verifyRefGasCaptureResultIsPresentOnMap(data, dataRowID); }
+		else if (actionName.equals("verifyRefGasCaptureResultIsNotPresentOnMap")) { return this.verifyRefGasCaptureResultIsNotPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("waitForConnectionToComplete")) { return this.waitForConnectionToComplete(data, dataRowID); }		
 		return false;
 	}

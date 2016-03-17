@@ -39,9 +39,9 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 
 	public static DriverViewDataRow workingDataRow = null;    // Stores the workingDataRow from startSurvey action
 
-
 	public DriverViewPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup);
+		initializePageObject(driver, new DriverViewPage(driver, testSetup, strBaseURL));
 		setDataReader(new DriverViewDataReader(this.excelUtility));
 	}
 
@@ -357,8 +357,10 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	public boolean refreshPage(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.refreshPage", data, dataRowID);
 		BrowserCommands.refresh();
-		initializePageObject(TestContext.INSTANCE.getDriver(), 
-				TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
+		DriverViewPage driverViewPage = new DriverViewPage(TestContext.INSTANCE.getDriver(), 
+				TestContext.INSTANCE.getTestSetup(),
+				TestContext.INSTANCE.getBaseUrl());
+		initializePageObject(TestContext.INSTANCE.getDriver(), driverViewPage);
 		return true;
 	}
 	
@@ -1814,6 +1816,10 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyStopDrivingSurveyButtonIsNotVisible")) { return this.verifyStopDrivingSurveyButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyStartIsotopicCaptureButtonIsNotVisible")) { return this.verifyStartIsotopicCaptureButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyRefBottleMeasButtonIsNotVisible")) { return this.verifyRefBottleMeasButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyIsotopicCaptureResultIsPresentOnMap")) { return this.verifyIsotopicCaptureResultIsPresentOnMap(data, dataRowID); }
+		else if (actionName.equals("verifyIsotopicCaptureResultIsNotPresentOnMap")) { return this.verifyIsotopicCaptureResultIsNotPresentOnMap(data, dataRowID); }
+		else if (actionName.equals("verifyRefGasCaptureResultIsPresentOnMap")) { return this.verifyRefGasCaptureResultIsPresentOnMap(data, dataRowID); }
+		else if (actionName.equals("verifyRefGasCaptureResultIsNotPresentOnMap")) { return this.verifyRefGasCaptureResultIsNotPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("waitForConnectionToComplete")) { return this.waitForConnectionToComplete(data, dataRowID); }		
 		return false;
 	}

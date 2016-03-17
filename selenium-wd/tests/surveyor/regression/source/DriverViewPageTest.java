@@ -700,8 +700,10 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			loginPageAction.login(EMPTY, 2);   /* Customer Supervisor */
 			testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 			// To get a new instance of Driver view page, initialize the driver view page.
-			driverViewPageAction.initializePageObject(TestContext.INSTANCE.getDriver(), 
-					TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());		
+			DriverViewPage driverViewPage = new DriverViewPage(TestContext.INSTANCE.getDriver(), 
+					TestContext.INSTANCE.getTestSetup(),
+					TestContext.INSTANCE.getBaseUrl());
+			driverViewPageAction.initializePageObject(TestContext.INSTANCE.getDriver(), driverViewPage);
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnGisButton(EMPTY,NOTSET);
 			assertTrue(driverViewPageAction.verifyGisSwitchIsOn("BoundariesDistrict",NOTSET));
@@ -750,8 +752,10 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			BrowserCommands.goBack();
 			
 			// To get a new instance of Driver view page, initialize the driver view page.
-			driverViewPageAction.initializePageObject(TestContext.INSTANCE.getDriver(), 
-					TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());		
+			DriverViewPage driverViewPage = new DriverViewPage(TestContext.INSTANCE.getDriver(), 
+					TestContext.INSTANCE.getTestSetup(),
+					TestContext.INSTANCE.getBaseUrl());
+			driverViewPageAction.initializePageObject(TestContext.INSTANCE.getDriver(), driverViewPage);	
 			
 			assertTrue(driverViewPageAction.verifyPageLoaded(EMPTY,NOTSET));
 			
@@ -1085,8 +1089,10 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 
 			// To get a new instance of Driver view page, initialize the driver view page.
-			driverViewPageAction.initializePageObject(TestContext.INSTANCE.getDriver(), 
-					TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());		
+			DriverViewPage driverViewPage = new DriverViewPage(TestContext.INSTANCE.getDriver(), 
+					TestContext.INSTANCE.getTestSetup(),
+					TestContext.INSTANCE.getBaseUrl());
+			driverViewPageAction.initializePageObject(TestContext.INSTANCE.getDriver(), driverViewPage);		
 
 			testEnvironmentAction.startAnalyzer(EMPTY, 4);
 			driverViewPageAction.open(EMPTY,NOTSET);
