@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import common.source.Log;
 
@@ -300,6 +301,25 @@ public class Measurement extends BaseEntity {
 		return objMeasurement;
 	}
 
+	public static boolean isRecordExistsInDB(Map<String,String> record){
+		Measurement objMeasurement  = new Measurement();
+		boolean doesExists=false;
+		
+/*		String SQL = "SELECT* FROM dbo.[Measurement] WHERE ABS(EpochTime - " + Double.valueOf(record.get("EPOCH_TIME")) + ") > 0.001 "
+				+ " AND ABS(CH4 - " + Double.valueOf(record.get("CH4")) + ") > 0.001 "
+				+ " AND ABS(WindSpeedLateral - " + Double.valueOf(record.get("WS_WIND_LAT")) + ") > 0.001 "
+				+ " AND ABS(WindSpeedLongitudinal - " + Double.valueOf(record.get("WS_WIND_LON")) + ") > 0.001";
+		*/
+
+		String SQL = "SELECT* FROM dbo.[Measurement] WHERE EpochTime = " + Double.valueOf(record.get("EPOCH_TIME"));
+		
+		System.out.println(">>>>" + SQL);
+		if (objMeasurement.load(SQL).size() > 0){
+			doesExists = true;
+		}
+			
+		return doesExists;
+	}
 	private static Measurement loadFrom(ResultSet resultSet) {
 		Measurement objMeasurement = new Measurement();
 		try {

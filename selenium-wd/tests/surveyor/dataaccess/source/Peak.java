@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import common.source.Log;
 
@@ -34,6 +35,7 @@ public class Peak extends BaseEntity {
 	private Float carBearing;
 	private Float major;
 	private String analyzerId;
+	
 	
 	public Peak() {
 		super();
@@ -229,6 +231,25 @@ public class Peak extends BaseEntity {
 		return objPeak.load(SQL);
 	}
 
+	public static boolean isRecordExistsInDB(Map<String,String> record){
+		Peak objPeak = new Peak();
+		boolean doesExists=false;
+		
+		String SQL = "SELECT* FROM dbo.[Peak] WHERE ABS(CH4 - " + Double.valueOf(record.get("CH4")) + ") > 0.001 "
+				+ " AND ABS(Sigma - " + Double.valueOf(record.get("SIGMA")) + ") > 0.001 AND "
+						+ " ABS(Amplitude - "+Double.valueOf(record.get("AMPLITUDE"))+") > 0.001 AND "
+								+ " ABS(WindSpeedEast - "+Double.valueOf(record.get("WIND_E")) +  ") > 0.001 AND "
+										+ " ABS(WindSpeedNorth - "+Double.valueOf(record.get("WIND_N")) + ") > 0.001 AND "
+										+ " ABS(EpochTime - "+Double.valueOf(record.get("EPOCH_TIME")) + ") > 0.001";
+		
+		System.out.println(">>>>" + SQL);
+		if (objPeak.load(SQL).size() > 0){
+			doesExists = true;
+		}
+			
+		return doesExists;
+	}
+	
 	public Peak getFirst(String  analyzerId, Double startEpochTime, Double endEpochTime, String surveyModeTypeId) {
 		Peak objPeak = null;
 
@@ -246,6 +267,7 @@ public class Peak extends BaseEntity {
 		return objPeak;
 	}
 
+	
 
 	private static Peak loadFrom(ResultSet resultSet) {
 		Peak objPeak = new Peak();

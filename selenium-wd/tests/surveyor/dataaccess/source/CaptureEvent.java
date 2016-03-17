@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
+
 import common.source.Log;
  
 public class CaptureEvent extends BaseEntity {
@@ -250,4 +252,25 @@ public class CaptureEvent extends BaseEntity {
 		
 		return objCaptureEventList;
 	}
+	
+	public static boolean isRecordExistsInDB(Map<String,String> record){
+		CaptureEvent objCaptureEvent  = new CaptureEvent();
+		boolean doesExists=false;
+		
+/*		String SQL = "SELECT FROM dbo.[CaptureEvent] WHERE ABS(EpochTime - " + Double.valueOf(record.get("EPOCH_TIME")) + ") > 0.001 "
+				+ " AND ABS(Delta - " + Double.valueOf(record.get("DELTA")) + ") > 0.001 AND "
+						+ " ABS(Distance - "+Double.valueOf(record.get("DISTANCE"))+") > 0.001 AND "
+								+ " ABS(Uncertainty - "+Double.valueOf(record.get("UNCERTAINTY")) +  ") > 0.001";
+*/
+		String SQL = "SELECT FROM dbo.[CaptureEvent] WHERE EpochTime = " + Double.valueOf(record.get("EPOCH_TIME")) ;
+		
+		System.out.println(">>>>" + SQL);
+		if (objCaptureEvent.load(SQL).size() > 0){
+			doesExists = true;
+		}
+			
+		return doesExists;
+	}
+	
+	
 }

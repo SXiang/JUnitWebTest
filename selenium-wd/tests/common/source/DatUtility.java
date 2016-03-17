@@ -104,7 +104,7 @@ public class DatUtility {
 	public void ReadPeakExport() throws IOException {
 		
 		DatUtility dUtil = new DatUtility();
-		dUtil.convertDATtoCSV(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\datUtility-tests\\PeakExport-FEDS2059-Standard.dat");
+		dUtil.convertDATtoCSV(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\datUtility-tests\\PeakExport.dat");
 		List<String> headings1 = dUtil.getHeadings();
 		for (String heading1:headings1){
 			Log.info("heading1  === "+heading1);}
@@ -122,7 +122,7 @@ public class DatUtility {
 	public void ReadAnalysisExport() throws IOException {
 		
 		DatUtility dUtil = new DatUtility();
-		dUtil.convertDATtoCSV(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\datUtility-tests\\AnalysisExport-FEDS2059-Standard.dat");
+		dUtil.convertDATtoCSV(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\datUtility-tests\\AnalysisExport.dat");
 		List<String> headings3 = dUtil.getHeadings();
 		for (String heading3:headings3){
 			Log.info("heading3  === "+heading3);}
@@ -140,7 +140,7 @@ public class DatUtility {
 	public void ReadSurveyExport() throws IOException {
 		
 		DatUtility dUtil = new DatUtility();
-		dUtil.convertDATtoCSV(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\datUtility-tests\\SurveyExport-FEDS2059-Standard.dat");
+		dUtil.convertDATtoCSV(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\datUtility-tests\\SurveyExport.dat");
 		List<String> headings2 = dUtil.getHeadings();
 		for (String heading2:headings2){
 			Log.info("heading2  === "+heading2);}
