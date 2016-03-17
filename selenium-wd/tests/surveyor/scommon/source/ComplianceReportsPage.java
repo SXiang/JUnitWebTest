@@ -6,6 +6,9 @@ package surveyor.scommon.source;
 import static org.junit.Assert.fail;
 import static common.source.BaseHelper.matchSinglePattern;
 import common.source.DateUtility;
+import common.source.FileUtility;
+import common.source.ImagingUtility;
+
 import static surveyor.scommon.source.SurveyorConstants.ACTIONTIMEOUT;
 import static surveyor.scommon.source.SurveyorConstants.CUSBOUNDARY;
 import static surveyor.scommon.source.SurveyorConstants.ENDDATE;
@@ -50,6 +53,7 @@ import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.Reports.EthaneFilter;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -57,9 +61,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -69,6 +78,13 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
+
+import org.apache.xmlbeans.impl.common.IOUtil;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -86,6 +102,9 @@ import common.source.DBConnection;
 import common.source.Log;
 import common.source.TestSetup;
 import common.source.ZipUtility;
+import net.avh4.util.imagecomparison.ImageComparisonResult;
+import net.lightbody.bmp.proxy.util.IOUtils;
+import sun.misc.BASE64Decoder;
 import surveyor.dataaccess.source.BaseMapType;
 import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ReportView;
@@ -98,6 +117,7 @@ import surveyor.dataaccess.source.StoredProcComplianceGetIndications;
 import surveyor.dataaccess.source.StoredProcComplianceGetIsotopics;
 import surveyor.dataaccess.source.StoredProcReferenceGas;
 import common.source.PDFUtility;
+import common.source.ProcessUtility;
 import common.source.RegexUtility;
 
 /**
@@ -107,6 +127,8 @@ import common.source.RegexUtility;
 public class ComplianceReportsPage extends ReportsBasePage {
 	private static final int CUSTOM_BOUNDARY_RADBUTTON_GROUP_IDX = 0;
 	private static final int CUSTOMER_BOUNDARY_RADBUTTON_GROUP_IDX = 1;
+
+	private static final String BASE64_IGNORE = "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";
 
 	public static final String BOUNDARY_SELECTOR_CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
 	public static final String STRURLPath = "/Reports/ComplianceReports";
@@ -265,10 +287,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(id = "report-ethene-biogenic-methane")
 	protected WebElement checkBoxEtheneBiogeniceMethane;
-	
-	@FindBy(how = How.XPATH, using ="//*[@id='datatable']/tbody/tr[1]/td[1]")
-	protected WebElement fstRptTilNm;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[1]")
+	protected WebElement fstRptTilNm;
 
 	public enum CustomerBoundaryType {
 		District, DistrictPlat
@@ -1750,7 +1771,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						}
 					}
 				}
-				
+
 				for (String tagValue : tagList) {
 					if (tagValue != "") {
 
@@ -2532,7 +2553,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				return false;
 		}
 		String surveyTable = RegexUtility.getStringInBetween(actualReportString, "Indication Table", "LISA # Surveyor Date/Time Amplitude(ppm)");
-		System.out.println(surveyTable);		
+
 		InputStream inputStream = new ByteArrayInputStream(surveyTable.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 		String line = null;
@@ -2979,6 +3000,138 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return true;
 	}
 
+	/**
+	 * Method to verify the images in SSRS
+	 * 
+	 * @param actualPath
+	 * @param reportTitle
+	 * @param expectedImage
+	 * @return
+	 * @throws IOException
+	 */
+
+	public boolean verifySSRSImages(String actualPath, String reportTitle, String testCase) throws IOException, InterruptedException {
+		ImagingUtility imageUtil = new ImagingUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String reportNameWithoutExt = "CR-" + reportId.substring(0, 6);
+		reportName = reportNameWithoutExt + ".pdf";
+		if (!convertPdfToHtml(reportName, actualPath)) {
+			return false;
+		}
+		String htmlReportPath = actualPath + reportNameWithoutExt + ".html";
+
+		File f = new File(htmlReportPath);
+
+		Document doc = Jsoup.parse(f, null, "");
+		Elements elements = doc.select("img[src]");
+		int pageCounter = 1;
+		ByteArrayInputStream bis = null;
+		BASE64Decoder decoder = new BASE64Decoder();
+		for (Element element : elements) {
+			byte[] imageByte;			
+			String base64String = element.attr("src").replace("data:image/png;base64,", "");
+			if (!(base64String.equals(BASE64_IGNORE))) {
+				// This part can be moved to a function like createImageFromBase64().
+				// -->
+				imageByte = decoder.decodeBuffer(base64String);
+				bis = new ByteArrayInputStream(imageByte);
+				BufferedImage image = ImageIO.read(bis);
+				String actualImage = testSetup.getDownloadPath() + "\\" + testCase + "Page_" + pageCounter + ".png";
+				ImageIO.write(image, "png", new File(actualImage));
+				// <--
+				// verifyActualImageWithBase(pathToBaseImage)
+				// -->
+				String baseImage = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\ssrs-images").toString() + "\\" + testCase + "\\" + "Page_" + pageCounter + ".png";
+				ImageComparisonResult result=imageUtil.compareImages(actualImage, baseImage);
+				if(result.getFailureMessage()!=null){
+					return false;  // handle cleanup
+				}
+				// <--
+				pageCounter++;
+			}
+
+		}
+		bis.close();
+		
+		// Cleanup files created by this method.
+		
+		// Check if 'generateBaseImages' is TRUE and if TRUE, call 
+		//		boolean isGenerateBaselineSSRSIMages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
+		//		if (isGenerateBaselineSSRSImages) {
+		//		   // for each page image call.
+		//		   generateBaselineSSRSImage(...)
+		//		}
+
+		return true;
+	}
+
+	/*private boolean convertPdfToHtml(String reportName, String actualPath) throws IOException, InterruptedException {
+		ProcessUtility pdf2HtmlProcess=new ProcessUtility();
+		String toolDirectory = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\lib\\pdf2htmlEX-win32-0.13.6").toString();
+		testSetup.setCurrentDirectory(Paths.get(testSetup.getDownloadPath()).toString());
+		System.out.println(System.getProperty("user.dir"));
+		//String cmd[] = { toolDirectory + "\\pdf2htmlEX.exe", "--debug", "5 ", reportName };
+		String cmd =  toolDirectory + "\\pdf2htmlEX.exe"+" "+ "--debug"+" "+ "5 "+ " "+reportName ;
+		System.out.println(cmd);
+		//System.setProperty( "user.dir", Paths.get(testSetup.getDownloadPath()).toString() );
+		
+		//pdf2HtmlProcess.executeProcess(cmd, true, true);
+		Process proc = Runtime.getRuntime().exec(cmd, null, new File(actualPath).getAbsoluteFile());
+
+		// The stdout and stderr InputStreams must be cleared for the process to finish.
+		// See: http://www.javaworld.com/article/2071275/core-java/when-runtime-exec---won-t.html
+		StringWriter writer = new StringWriter();
+		org.apache.commons.io.IOUtils.copy(proc.getErrorStream(), writer);
+		org.apache.commons.io.IOUtils.copy(proc.getInputStream(), writer);
+
+		int exitCode = proc.waitFor();
+		if (exitCode != 0) {
+			// When conversion is successful the exit code is 0.
+			return false;
+		}
+		return true;
+	}*/
+	
+	public boolean convertPdfToHtml(String reportName, String testCase) {
+		try {
+			
+			String libFolder = TestSetup.getExecutionPath(TestSetup.getRootPath())+ File.separator + "lib";
+			String batFile=libFolder+ File.separator +"ConvertPDFToHTML.bat";
+			String workingBatFile=libFolder+ File.separator +testCase+"_ConvertPDFToHTML.bat";
+			
+			Files.copy(Paths.get(batFile), Paths.get(workingBatFile));
+
+			// Update the working copy.
+			FileUtility.updateFile(workingBatFile, "%DOWNLOAD_DIR%", testSetup.getDownloadPath());
+			FileUtility.updateFile(workingBatFile, "%EXE_DIR%", libFolder);
+			FileUtility.updateFile(workingBatFile, "%PDF_FILE%", reportName);
+
+			String command="./"+workingBatFile;
+
+			// Delete the working copy of the defn file.
+			Files.delete(Paths.get(workingBatFile));
+		} catch (IOException e) {
+			Log.error(e.toString());
+		}
+		return true;
+	}
+	
+	/*public static void convertPdfToHtml(String workingBatFile) {
+		// Execute replay script from the contained folder.
+		try {
+			String cmdFolder = getExecutionPath(getRootPath()) + "data" + File.separator + "defn";
+			String replayCmdFullPath = replayCmdFolder + File.separator + REPLAY_DEFN_CURL_FILE;
+			String command = "cd \"" + replayCmdFolder + "\" && " + replayCmdFu	llPath + " " + defnFileName;
+			Log.info("Executing replay script. Command -> " + command);
+			//analyzerProcess = ProcessUtility.executeProcess(command, /* isShellCommand */ //true, /* waitForExit */ true);
+		//} catch (IOException e) {
+			//Log.error(e.toString());
+	//	}
+	//}*/
+
+
+	
 	public boolean verifyCancelButtonFunctionality() {
 		openNewReportPage();
 		this.btnCancel.click();
@@ -3335,12 +3488,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return checkBoxEtheneBiogeniceMethane;
 	}
 
-	
 	public WebElement getFstRptTilNm() {
 		return fstRptTilNm;
 	}
-	
-	
 
 	/**
 	 * Method to verify the Driving Surveys Table in SSRS
@@ -3414,20 +3564,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return result;
 	}
 
-	public boolean verifyIfInDrivingSurvey(String columnName)
-	{
+	public boolean verifyIfInDrivingSurvey(String columnName) {
 		boolean result = false;
 		int count = driver.findElements(By.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div")).size();
-		for (int i=1; i < count +1 ; i++)
-		{
-			String str= driver.findElement(By.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div["+i+"]/label")).getText();
-			if (str != columnName)
-			{
-				result=true;
+		for (int i = 1; i < count + 1; i++) {
+			String str = driver.findElement(By.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div[" + i + "]/label")).getText();
+			if (str != columnName) {
+				result = true;
 			}
 		}
-	return result;
+		return result;
 
 	}
-	
+
 }

@@ -139,13 +139,14 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC517 Test Description: Generate compliance report with all default values/filters selected and download it
 	 * 
 	 * @throws IOException
+	 * @throws InterruptedException 
 	 * 
 	 */
 	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PROVIDER, location = ComplianceReportDataProvider.class)
 	public void ComplianceReportTest_VerifyNonEthaneReport(String index, String strCreatedBy, String password, String cutomer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
-			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws IOException {
-		String rptTitle = null;
+			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws IOException, InterruptedException {
+		/*String rptTitle = null;
 		if (getTestCaseName(index).equals("TC203")) {
 			rptTitle = getTestCaseName(index) + " " + "Report" + testSetup.getRandomNumber() + "#<>$";
 		} else {
@@ -184,8 +185,8 @@ public class ComplianceReportsPageTest extends SurveyorBaseTest {
 				}
 			}
 		} else
-			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
-		//assertTrue(complianceReportsPage.verifyDrivingSurveysTable("C:\\Users\\cnanayakkara\\Downloads", ""));
+			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");*/
+		assertTrue(complianceReportsPage.verifySSRSImages("C:\\Users\\cnanayakkara\\Downloads\\", "TC249 Report634560","TC249"));
 
 	}
 
