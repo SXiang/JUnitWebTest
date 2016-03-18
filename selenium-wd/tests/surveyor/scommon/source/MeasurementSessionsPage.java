@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import common.source.BaseHelper;
 import common.source.BrowserCommands;
@@ -467,9 +469,9 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		return false;
 	}
 
-	public boolean validateDatFiles(String type, String tag, String analyzer, String downloadPath, boolean delete) {
+	public boolean validateDatFiles(String type, String tag, String analyzer, String downloadPath, String mode, boolean delete) {
 		String zipFileNameBase = type;
-
+		System.out.println(zipFileNameBase);
 		String zipFileName = null;
 		String datFileName = null;
 
@@ -483,14 +485,15 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 				try {
 					BaseHelper.deCompressZipFile(zipFileName, downloadPath, true);
-					if (datFileName.contains("PeakExport")){
-						verifyPeakExportFile(downloadPath + File.separator + datFileName);
+
+					if (datFileName.contains(DRIVINGSURVEYSEXPORTSURVEY)){
+						Assert.assertTrue((verifySurveyExportFile(downloadPath + File.separator + datFileName, analyzer)));
 					}
-					else if (datFileName.contains("AnalysisExport")){
-						verifyAnalysisExportFile(downloadPath + File.separator + datFileName);
+					else if (datFileName.contains(DRIVINGSURVEYSEXPORTPEAKS)){
+						Assert.assertTrue((verifyPeakExportFile(downloadPath + File.separator + datFileName, tag, analyzer, mode)));
 					}
-					else if (datFileName.contains("SurveyExport")){
-						verifySurveyExportFile(downloadPath + File.separator + datFileName);
+					else if (datFileName.contains(DRIVINGSURVEYSEXPORTANALYSIS)){
+						Assert.assertTrue((verifyAnalysisExportFile(downloadPath + File.separator + datFileName, tag, analyzer)));
 					}
 				}
 				catch (Exception e) {
@@ -509,96 +512,168 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 					file = new File(downloadPath + File.separator + zipFileName);
 					file.delete();
 				}
-
 				return true;
 			}		
 		}
-
 		return false;
 	}	
 
+	public boolean verifyPeakExportFile (String datFileName, String tag, String analyzer, String mode) {
 
-	public void verifyPeakExportFile (String datFileName) {
-
+		boolean verifyPeak = false;
 		DatUtility dUtil = new DatUtility();
 		try {
 			dUtil.convertDATtoCSV(datFileName);
-			System.out.println("filename >>>  "+datFileName);
 			List<HashMap<String,String>> rows = dUtil.getAllRows();
-			HashMap<String, String> map = new HashMap<String, String>();
+			Map<String, String> map = new HashMap<String, String>();
+
+			List<Peak> listOFDBPeak = Peak.getPeaks(tag, analyzer, mode);
+
 			if (rows.size() > 0){
 				for(int i=0; i<rows.size(); i++){
 					map =rows.get(i);
-					boolean isPeakRecordExists = Peak.isRecordExistsInDB(map);
-					System.out.println(map.get("EPOCH_TIME")+"========="+isPeakRecordExists);
+					checkPeakInDB(listOFDBPeak,map);
+					verifyPeak=true;
 				}
-				System.out.println("outside");
 			}
-
 			else{
-				System.out.println("FILE IS EMPTY");
+				Log.info("FILE IS EMPTY");
 			}
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	public void verifyAnalysisExportFile (String datFileName) {
-
-		DatUtility dUtil = new DatUtility();
-		try {
-			dUtil.convertDATtoCSV(datFileName);
-			System.out.println("filename >>>  "+datFileName);
-			List<HashMap<String,String>> rows = dUtil.getAllRows();
-			HashMap<String, String> map = new HashMap<String, String>();
-			if (rows.size() > 0){
-				for(int i=0; i<rows.size(); i++){
-					map =rows.get(i);
-					boolean isAnalysisRecordExists = CaptureEvent.isRecordExistsInDB(map);
-					System.out.println(map.get("EPOCH_TIME")+"========="+isAnalysisRecordExists);
-				}
-				System.out.println("outside");
-			}
-
-			else{
-				System.out.println("FILE IS EMPTY");
-			}
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		return verifyPeak;
 	}
 
-	public void verifySurveyExportFile (String datFileName) {
+	private boolean checkPeakInDB(List<Peak> listOFDBPeak,Map<String, String> map)
+	{
+		float ch4 = Float.valueOf(map.get("CH4")).floatValue();				
+		float epochTime = Float.valueOf(map.get("EPOCH_TIME")).floatValue();
+		float sigma = Float.valueOf(map.get("SIGMA")).floatValue();
+		float amplitude= Float.valueOf(map.get("AMPLITUDE")).floatValue();
+		float wind_dir_sdev= Float.valueOf(map.get("WIND_DIR_SDEV")).floatValue();
+		float wind_n= Float.valueOf(map.get("WIND_N")).floatValue();
+		float wind_e= Float.valueOf(map.get("WIND_E")).floatValue();
+		
+		for (Peak pk : listOFDBPeak){
+			if(   (Float.compare(pk.getEpochTime(), epochTime)==0)   && (Float.compare(pk.getCH4(), ch4)==0)
+					&& (Float.compare(pk.getSigma(), sigma)==0) && (Float.compare(pk.getAmplitude(), amplitude)==0)
+					&& (Float.compare(pk.getWindDirectionStdDev(), wind_dir_sdev)==0) && (Float.compare(pk.getWindSpeedNorth(), wind_n)==0)
+					&& (Float.compare(pk.getWindSpeedEast(), wind_e)==0) ){
+				return true;
+				
+			}
+		}
+		return false;
+	}
 
+	public boolean verifySurveyExportFile (String datFileName, String analyzer) {
+
+		boolean verifySurvey=false;
 		DatUtility dUtil = new DatUtility();
 		try {
 			dUtil.convertDATtoCSV(datFileName);
-			System.out.println("filename >>>  "+datFileName);
 			List<HashMap<String,String>> rows = dUtil.getAllRows();
-			HashMap<String, String> map = new HashMap<String, String>();
+			Map<String, String> map = new HashMap<String, String>();
+
+			List<Measurement> listOFDBMeasurement= Measurement.getMeasurements(analyzer);
+
 			if (rows.size() > 0){
 				for(int i=0; i<rows.size(); i++){
 					map =rows.get(i);
-					boolean isSurveyRecordExists = Measurement.isRecordExistsInDB(map);
-					System.out.println(map.get("EPOCH_TIME")+"========="+isSurveyRecordExists);
+					checkMeasurementInDB(listOFDBMeasurement,map);
+					verifySurvey=true;
 				}
-				System.out.println("outside");
 			}
-
 			else{
-				System.out.println("FILE IS EMPTY");
+				Log.info("FILE IS EMPTY");
 			}
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return verifySurvey;
+	}
 
+	private boolean checkMeasurementInDB(List<Measurement> listOFDBMeasurement,Map<String, String> map)
+	{
+		float epochTime = Float.valueOf(map.get("EPOCH_TIME")).floatValue();
+		float ch4 = Float.valueOf(map.get("CH4")).floatValue();				
+		float ws_wind_lon= Float.valueOf(map.get("WS_WIND_LON")).floatValue();
+		float ws_wind_lat= Float.valueOf(map.get("WS_WIND_LAT")).floatValue();
+		float gps_abs_long = Float.valueOf(map.get("GPS_ABS_LONG")).floatValue();
+		float gps_fit = Float.valueOf(map.get("GPS_FIT")).floatValue();
+
+		for (Measurement ms : listOFDBMeasurement){
+			if(   (Float.compare(ms.getEpochTime(), epochTime)==0)   && (Float.compare(ms.getCH4(), ch4)==0)
+					&& (Float.compare(ms.getWindSpeedLongitudinal(), ws_wind_lon)==0)
+					&& (Float.compare(ms.getWindSpeedLateral(), ws_wind_lat)==0) && (Float.compare(ms.getGpsLongitude(), gps_abs_long)==0)
+					&& (Float.compare(ms.getGpsFit(), gps_fit)==0)  ){
+				
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean verifyAnalysisExportFile (String datFileName, String tag, String analyzer) {
+
+		boolean verifyAnalysis= false;
+		DatUtility dUtil = new DatUtility();
+		try {
+			dUtil.convertDATtoCSV(datFileName);
+			List<HashMap<String,String>> rows = dUtil.getAllRows();
+			Map<String, String> map = new HashMap<String, String>();
+
+			List<CaptureEvent> listOFDBCaptureEvent = CaptureEvent.getCaptureEvent(tag, analyzer);
+
+			if (rows.size() > 0){
+				for(int i=0; i<rows.size(); i++){
+					map =rows.get(i);
+					checkAnalysisInDB(listOFDBCaptureEvent,map);
+					verifyAnalysis=true;
+				}
+			}
+			else{
+				Log.info("FILE IS EMPTY");
+			}
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return verifyAnalysis;
+	}
+
+	private boolean checkAnalysisInDB(List<CaptureEvent> listOFDBCaptureEvent,Map<String, String> map)
+	{
+		float epochTime = Float.valueOf(map.get("EPOCH_TIME")).floatValue();
+		float distance = Float.valueOf(map.get("DISTANCE")).floatValue();
+		float gps_abs_long= Float.valueOf(map.get("GPS_ABS_LONG")).floatValue();
+		float gps_abs_lat= Float.valueOf(map.get("GPS_ABS_LAT")).floatValue();
+		float concentration= Float.valueOf(map.get("CONC")).floatValue();
+		float delta= Float.valueOf(map.get("DELTA")).floatValue();
+		float uncertainty = Float.valueOf(map.get("UNCERTAINTY")).floatValue();
+		float reply_max = Float.valueOf(map.get("REPLAY_MAX")).floatValue();
+		float reply_rmin = Float.valueOf(map.get("REPLAY_RMIN")).floatValue();				
+		float reply_lmin = Float.valueOf(map.get("REPLAY_LMIN")).floatValue();				
+		float disposition = Float.valueOf(map.get("DISPOSITION")).floatValue();				
+
+		for (CaptureEvent cE : listOFDBCaptureEvent){
+
+			if(   (Float.compare(cE.getEpochTime(), epochTime)==0) && (Float.compare(cE.getDistance(), distance)==0)
+					&& (Float.compare(cE.getGpsLongitude(), gps_abs_long)==0)  && (Float.compare(cE.getGpsLatitude(), gps_abs_lat)==0)
+					&& (Float.compare(cE.getConcentration(), concentration)==0) && (Float.compare(cE.getDelta(), delta)==0)
+					&& (Float.compare(cE.getUncertainty(), uncertainty)==0) && (Float.compare(cE.getReplayMax(), reply_max)==0)
+					&& (Float.compare(cE.getReplayRMin(), reply_rmin)==0) && (Float.compare(cE.getReplayLMin(), reply_lmin)==0)
+					&& (Float.compare(cE.getDisposition(), disposition)==0)   ){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public WebElement getFirstViewSurveyLink() {

@@ -208,7 +208,7 @@ public final class SurveyorConstants {
 	public static final String DRIVINGSURVEYSEXPORTSURVEY = "SurveyExport";
 	public static final String DRIVINGSURVEYSEXPORTPEAKS = "PeakExport";
 	public static final String DRIVINGSURVEYSEXPORTANALYSIS = "AnalysisExport";
-
+	public static final String DRIVINGSURVEYSSTNDMODE = "Standard";
 	public static final String LOGINTITLE = "Login";
 	public static final String HOMETITLE = "Home - Surveyor";
 	public static final String HOMEDHEADER = "Dashboard";

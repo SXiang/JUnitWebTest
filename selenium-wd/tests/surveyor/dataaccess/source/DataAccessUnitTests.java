@@ -84,6 +84,11 @@ public class DataAccessUnitTests {
 		testPeaks_getPeaks_Valid();
 		Log.info("Executing testPeaks_getPeaks_Invalid() ...");
 		testPeaks_getPeaks_Invalid();
+		Log.info("Executing testSurveyModeTypeId_getSurveyModeTypeId_valid() ...");
+		testSurveyModeTypeId_getSurveyModeTypeId_valid();
+		Log.info("Executing testSurveyModeTypeId_getSurveyModeTypeId_Invalid() ...");
+		testSurveyModeTypeId_getSurveyModeTypeId_Invalid();
+
 		Log.info("DONE!");
 
 	}
@@ -317,4 +322,15 @@ public class DataAccessUnitTests {
 		Assert.assertTrue(!iterator.hasNext());
 	}
 
+	private static void testSurveyModeTypeId_getSurveyModeTypeId_valid() {
+		String id = "B310238A-A5AE-4E94-927B-F0F165E24522";
+		SurveyModeType objSurveyModeType = SurveyModeType.getSurveyModeType(id);
+		Assert.assertTrue(objSurveyModeType != null, "Value cannot be NULL.");
+	}
+
+	private static void testSurveyModeTypeId_getSurveyModeTypeId_Invalid() {
+		String id = "Invalid Value";
+		SurveyModeType objSurveyModeType = SurveyModeType.getSurveyModeType(id);
+		Assert.assertTrue(objSurveyModeType != null, "Value cannot be NULL.");
+	}
 }

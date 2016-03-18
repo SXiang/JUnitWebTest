@@ -1,5 +1,9 @@
 package surveyor.dataaccess.source;
 
+import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG2;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICLOC4SURANA;
+import static surveyor.scommon.source.SurveyorConstants.RSUVMODESTD;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,39 +17,39 @@ public class Peak extends BaseEntity {
 	private static final String CACHE_KEY = "PEAK.";
 
 	private Object position;
-	private Float windSpeedEast;
+	private float windSpeedEast;
 	private String surveyModeTypeId;
 	private Float carSpeedEast;
-	private Float cH4;
-	private Float minor;
-	private Float windDirectionStdDev;
-	private Float epochTime;
+	private float cH4;
+	private float minor;
+	private float windDirectionStdDev;
+	private float epochTime;
 	private Object passedAutoThreshold;
-	private Float carSpeedNorth;
-	private Float lisaOpeningAngle;
-	private Float windSpeedNorth;
-	private Float sigma;
-	private Float gpsLatitude;
-	private Float lisaBearing;
-	private Float gpsLongitude;
+	private float carSpeedNorth;
+	private float lisaOpeningAngle;
+	private float windSpeedNorth;
+	private float sigma;
+	private float gpsLatitude;
+	private float lisaBearing;
+	private float gpsLongitude;
 	private String surveyId;
-	private Float distance;
+	private float distance;
 	private Object lisa;
-	private Float amplitude;
-	private Float carBearing;
-	private Float major;
+	private float amplitude;
+	private float carBearing;
+	private float major;
 	private String analyzerId;
-	
-	
+
+
 	public Peak() {
 		super();
 	}
 
-	public Float getCH4() {
+	public float getCH4() {
 		return cH4;
 	}
 
-	public void setCH4(Float cH4) {
+	public void setCH4(float cH4) {
 		this.cH4 = cH4;
 	}
 
@@ -225,31 +229,40 @@ public class Peak extends BaseEntity {
 		this.epochTime = epochTime;
 	}
 
-	public static List <Peak> getPeaks(String  analyzerId, Double startEpochTime, Double endEpochTime, String surveyModeTypeId) {
+	public static List<Peak>  getPeaks(String  analyzerId, Double startEpochTime, Double endEpochTime, String surveyModeTypeId) {
 		Peak objPeak = new Peak();
 		String SQL = "SELECT * FROM dbo.[Peak] WHERE AnalyzerId='" + analyzerId + "' AND EpochTime >= " + startEpochTime + " AND EpochTime <= " + endEpochTime + " AND SurveyModeTypeId= '" + surveyModeTypeId + "'";
 		return objPeak.load(SQL);
 	}
 
-	public static boolean isRecordExistsInDB(Map<String,String> record){
+	@SuppressWarnings("unchecked")
+	public static List<Peak> getPeaks(String tag, String analyzer, String mode) {
 		Peak objPeak = new Peak();
-		boolean doesExists=false;
+		List<Peak> objPeakList = new ArrayList<Peak>();
+
+		Survey objSurvey = Survey.getSurvey(tag);
+		String surveyId = objSurvey.getId();
+		Analyzer objAnalyzer = Analyzer.getAnalyzerBySerialNumber(analyzer);
+		String analyzerId = objAnalyzer.getId().toString();
 		
-		String SQL = "SELECT* FROM dbo.[Peak] WHERE ABS(CH4 - " + Double.valueOf(record.get("CH4")) + ") > 0.001 "
-				+ " AND ABS(Sigma - " + Double.valueOf(record.get("SIGMA")) + ") > 0.001 AND "
-						+ " ABS(Amplitude - "+Double.valueOf(record.get("AMPLITUDE"))+") > 0.001 AND "
-								+ " ABS(WindSpeedEast - "+Double.valueOf(record.get("WIND_E")) +  ") > 0.001 AND "
-										+ " ABS(WindSpeedNorth - "+Double.valueOf(record.get("WIND_N")) + ") > 0.001 AND "
-										+ " ABS(EpochTime - "+Double.valueOf(record.get("EPOCH_TIME")) + ") > 0.001";
+		SurveyModeType objSurveyModeType = SurveyModeType.getSurveyModeTypeByDescription(mode);
+		String surveyModeTypeId = objSurveyModeType.getId();
 		
-		System.out.println(">>>>" + SQL);
-		if (objPeak.load(SQL).size() > 0){
-			doesExists = true;
+		// Get from cache if present. Else fetch from Database.
+		if (DBCache.INSTANCE.containsKey(CACHE_KEY + analyzerId + "_" + surveyId+ "_" + surveyModeTypeId)) {
+			objPeakList = (List<Peak>)DBCache.INSTANCE.get(CACHE_KEY + analyzerId + "_" + surveyId +  "_" + surveyModeTypeId);
+		} 
+		else {
+			String SQL = "SELECT * FROM dbo.[Peak] WHERE AnalyzerId='" + analyzerId + "' AND SurveyId = '" + surveyId + "' AND SurveyModeTypeId= '" + surveyModeTypeId + "'";
+			objPeakList = objPeak.load(SQL);
+			if (objPeakList!=null && objPeakList.size()>0)
+			{
+				DBCache.INSTANCE.set(CACHE_KEY + analyzerId + "_" + surveyId + "_" + surveyModeTypeId, objPeakList);
+			}
 		}
-			
-		return doesExists;
+		return objPeakList;
 	}
-	
+
 	public Peak getFirst(String  analyzerId, Double startEpochTime, Double endEpochTime, String surveyModeTypeId) {
 		Peak objPeak = null;
 
@@ -267,7 +280,7 @@ public class Peak extends BaseEntity {
 		return objPeak;
 	}
 
-	
+
 
 	private static Peak loadFrom(ResultSet resultSet) {
 		Peak objPeak = new Peak();
@@ -307,7 +320,7 @@ public class Peak extends BaseEntity {
 		return load(SQL);
 	}
 
-	public ArrayList<Peak> load(String SQL) {
+	public  ArrayList<Peak> load(String SQL) {
 		ArrayList<Peak> objPeakList = new ArrayList<Peak>();
 
 		try {

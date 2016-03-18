@@ -12,35 +12,35 @@ import common.source.Log;
 public class Measurement extends BaseEntity {
 	private static final String CACHE_KEY = "MEASUREMENT.";
 
-	private Float windSpeedLongitudinal;
+	private float windSpeedLongitudinal;
 	private Integer gpsFit;
 	private Integer peripheralStatus;
 	private Date createDate;
-	private Float windSpeedEast;
+	private float windSpeedEast;
 	private String shape;
-	private Float mobileFlowRate;
-	private Float cH4;
-	private Float windDirectionStdDev;
-	private Float epochTime;
+	private float mobileFlowRate;
+	private float cH4;
+	private float windDirectionStdDev;
+	private float epochTime;
 	private String analyzerId;
 	private Integer instrumentStatus;
-	private Float deltaCH4;
-	private Float carSpeedNorth;
-	private Float carSpeedEast;
-	private Float cavityPressure;
-	private Float warmBoxTemperature;
+	private float deltaCH4;
+	private float carSpeedNorth;
+	private float carSpeedEast;
+	private float cavityPressure;
+	private float warmBoxTemperature;
 	private Integer analyzerMode;
-	private Float windSpeedNorth;
+	private float windSpeedNorth;
 	private Integer analyzerStatus;
-	private Float valveMask;
-	private Float cO2;
-	private Float gpsLongitude;
-	private Float h2OPercent;
-	private Float windSpeedLateral;
-	private Float weatherStationRotation;
+	private float valveMask;
+	private float cO2;
+	private float gpsLongitude;
+	private float h2OPercent;
+	private float windSpeedLateral;
+	private float weatherStationRotation;
 	private Integer species;
-	private Date gpsLatitude;
-	private Float hotBoxTemperature;
+	private float gpsLatitude;
+	private float hotBoxTemperature;
 	private Object chemDetect;
 	public Measurement() {
 		super();
@@ -50,11 +50,11 @@ public class Measurement extends BaseEntity {
 		return analyzerId;
 	}
 
-	public Float getWindSpeedLongitudinal() {
+	public float getWindSpeedLongitudinal() {
 		return windSpeedLongitudinal;
 	}
 
-	public void setWindSpeedLongitudinal(Float windSpeedLongitudinal) {
+	public void setWindSpeedLongitudinal(float windSpeedLongitudinal) {
 		this.windSpeedLongitudinal = windSpeedLongitudinal;
 	}
 
@@ -214,14 +214,6 @@ public class Measurement extends BaseEntity {
 		this.cO2 = cO2;
 	}
 
-/*	public Float getC2H4() {
-		return c2H4;
-	}
-
-	public void setC2H4(Float c2H4) {
-		this.c2H4 = c2H4;
-	}
-*/
 	public Float getGpsLongitude() {
 		return gpsLongitude;
 	}
@@ -230,6 +222,13 @@ public class Measurement extends BaseEntity {
 		this.gpsLongitude = gpsLongitude;
 	}
 
+	public Float getGpsLatitude() {
+		return gpsLongitude;
+	}
+
+	public void setGpsLatitude(Float gpsLatitude) {
+		this.gpsLatitude = gpsLatitude;
+	}
 	public Float getH2OPercent() {
 		return h2OPercent;
 	}
@@ -301,25 +300,6 @@ public class Measurement extends BaseEntity {
 		return objMeasurement;
 	}
 
-	public static boolean isRecordExistsInDB(Map<String,String> record){
-		Measurement objMeasurement  = new Measurement();
-		boolean doesExists=false;
-		
-/*		String SQL = "SELECT* FROM dbo.[Measurement] WHERE ABS(EpochTime - " + Double.valueOf(record.get("EPOCH_TIME")) + ") > 0.001 "
-				+ " AND ABS(CH4 - " + Double.valueOf(record.get("CH4")) + ") > 0.001 "
-				+ " AND ABS(WindSpeedLateral - " + Double.valueOf(record.get("WS_WIND_LAT")) + ") > 0.001 "
-				+ " AND ABS(WindSpeedLongitudinal - " + Double.valueOf(record.get("WS_WIND_LON")) + ") > 0.001";
-		*/
-
-		String SQL = "SELECT* FROM dbo.[Measurement] WHERE EpochTime = " + Double.valueOf(record.get("EPOCH_TIME"));
-		
-		System.out.println(">>>>" + SQL);
-		if (objMeasurement.load(SQL).size() > 0){
-			doesExists = true;
-		}
-			
-		return doesExists;
-	}
 	private static Measurement loadFrom(ResultSet resultSet) {
 		Measurement objMeasurement = new Measurement();
 		try {
@@ -380,4 +360,29 @@ public class Measurement extends BaseEntity {
 
 		return objMeasurementList;
 	}
+
+	@SuppressWarnings("unchecked")
+	public static List<Measurement> getMeasurements(String analyzer) {
+		Measurement objMeasurement = new Measurement();
+		List<Measurement> objMeasurementList = new ArrayList<Measurement>();
+
+		Analyzer objAnalyzer = Analyzer.getAnalyzerBySerialNumber(analyzer);
+		String analyzerId = objAnalyzer.getId().toString();
+
+		// Get from cache if present. Else fetch from Database.
+		if (DBCache.INSTANCE.containsKey(CACHE_KEY + analyzerId)) {
+			objMeasurementList = (List<Measurement>)DBCache.INSTANCE.get(CACHE_KEY + analyzerId);
+		} 
+		else {
+			String SQL = "SELECT * FROM dbo.[Measurement] WHERE AnalyzerId='" + analyzerId  + "'";
+
+			objMeasurementList = objMeasurement.load(SQL);
+			if (objMeasurementList!=null && objMeasurementList.size()>0)
+			{
+				DBCache.INSTANCE.set(CACHE_KEY + analyzerId , objMeasurementList);
+			}
+		}
+		return objMeasurementList;
+	}
+
 }
