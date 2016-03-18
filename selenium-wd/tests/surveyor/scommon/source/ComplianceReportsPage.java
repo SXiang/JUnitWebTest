@@ -9,7 +9,6 @@ import common.source.DateUtility;
 import common.source.FileUtility;
 import common.source.ImagingUtility;
 
-
 import static surveyor.scommon.source.SurveyorConstants.ACTIONTIMEOUT;
 import static surveyor.scommon.source.SurveyorConstants.CUSBOUNDARY;
 import static surveyor.scommon.source.SurveyorConstants.ENDDATE;
@@ -72,6 +71,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -968,8 +968,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	protected void generateBaselinePerfFiles(String testCaseID, String reportId, String startTime, String endTime, Integer processingTimeInMs) throws IOException {
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" 
-				+ File.separator + "report-job-metrics" + File.separator + testCaseID;
+		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" + File.separator + "report-job-metrics" + File.separator + testCaseID;
 		// Create the directory for test case if it does not exist.
 		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
 		Path expectedFilePath = Paths.get(expectedDataFolderPath, String.format("%s.csv", testCaseID));
@@ -979,50 +978,47 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	protected void generateBaselineSSRSImage(String testCaseID, String imageFileFullPath) throws IOException {
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" 
-				+ File.separator + "ssrs-images" + File.separator + testCaseID;
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "ssrs-images" + File.separator + testCaseID;
 		// Create the directory for test case if it does not exist.
 		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
 		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
-		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);		
+		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
 		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
 	}
 
 	protected void generateBaselineViewImage(String testCaseID, String imageFileFullPath) throws IOException {
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" 
-				+ File.separator + "view-images" + File.separator + testCaseID;
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "view-images" + File.separator + testCaseID;
 		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
-		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);		
+		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
 		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
 	}
 
 	protected void generateBaselineShapeAndGeoJsonFiles(String testCaseID, String shapeFileFullPath) throws Exception {
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" 
-				+ File.separator + "shape-files" + File.separator + testCaseID;
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "shape-files" + File.separator + testCaseID;
 		// Create the directory for test case if it does not exist.
 		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
 		String expectedFilename = FileUtility.getFileName(shapeFileFullPath);
 		String expectedFileExt = FileUtility.getFileExtension(shapeFileFullPath);
-		if (expectedFileExt == "dbf" || expectedFileExt == "prj" || expectedFileExt == "shp" || expectedFileExt == "shx") {			
+		if (expectedFileExt == "dbf" || expectedFileExt == "prj" || expectedFileExt == "shp" || expectedFileExt == "shx") {
 			// Delete existing files in directory (if any).
 			FileUtility.deleteFilesInDirectory(Paths.get(expectedDataFolderPath));
-			
+
 			// Copy the file to the test case folder.
 			String expectedFilenameWithoutExt = expectedFilename.replace(".shp", "");
-			Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);		
-			FileUtils.copyFile(new File(shapeFileFullPath), new File(expectedFilePath.toString()));		
-		
+			Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
+			FileUtils.copyFile(new File(shapeFileFullPath), new File(expectedFilePath.toString()));
+
 			// If specified file is .shp get GeoJson string for the shape file and store the .geojson.
 			if (expectedFileExt == "shp") {
 				String geoJsonString = ShapeToGeoJsonConverter.convertToJsonString(shapeFileFullPath);
-				Path expectedGeoJsonFilePath = Paths.get(expectedDataFolderPath, expectedFilenameWithoutExt + ".geojson");		
+				Path expectedGeoJsonFilePath = Paths.get(expectedDataFolderPath, expectedFilenameWithoutExt + ".geojson");
 				FileUtility.createTextFile(expectedGeoJsonFilePath, geoJsonString);
 			}
 		}
 	}
-	
+
 	public boolean checkActionStatusInSeconds(String rptTitle, String strCreatedBy, int seconds) {
 
 		setPagination(PAGINATIONSETTING);
@@ -3087,127 +3083,79 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 
 	public boolean verifySSRSImages(String actualPath, String reportTitle, String testCase) throws IOException, InterruptedException {
-		ImagingUtility imageUtil = new ImagingUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
 		String reportNameWithoutExt = "CR-" + reportId.substring(0, 6);
 		reportName = reportNameWithoutExt + ".pdf";
-		if (!convertPdfToHtml(reportName, actualPath)) {
+		String htmlReportName=reportNameWithoutExt + ".html";
+		String htmlReportPath = actualPath +htmlReportName ;
+		File f = new File(htmlReportPath);
+		if (!convertPdfToHtml(reportName,htmlReportName )) {
 			return false;
 		}
-		String htmlReportPath = actualPath + reportNameWithoutExt + ".html";
-
-		File f = new File(htmlReportPath);
-
 		Document doc = Jsoup.parse(f, null, "");
 		Elements elements = doc.select("img[src]");
 		int pageCounter = 1;
-		ByteArrayInputStream bis = null;
-		BASE64Decoder decoder = new BASE64Decoder();
+
 		for (Element element : elements) {
-			byte[] imageByte;			
 			String base64String = element.attr("src").replace("data:image/png;base64,", "");
 			if (!(base64String.equals(BASE64_IGNORE))) {
-				// This part can be moved to a function like createImageFromBase64().
-				// -->
-				imageByte = decoder.decodeBuffer(base64String);
-				bis = new ByteArrayInputStream(imageByte);
-				BufferedImage image = ImageIO.read(bis);
-				String actualImage = testSetup.getDownloadPath() + "\\" + testCase + "Page_" + pageCounter + ".png";
-				ImageIO.write(image, "png", new File(actualImage));
-				// <--
-				// verifyActualImageWithBase(pathToBaseImage)
-				// -->
-				String baseImage = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\ssrs-images").toString() + "\\" + testCase + "\\" + "Page_" + pageCounter + ".png";
-				ImageComparisonResult result=imageUtil.compareImages(actualImage, baseImage);
-				if(result.getFailureMessage()!=null){
-					return false;  // handle cleanup
+				String pathToActualImage = testSetup.getDownloadPath() + File.separator + testCase + "Page_" + pageCounter + ".png";
+				createImageFromBASE64(base64String, pathToActualImage);
+			String pathToBaseImage = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\ssrs-images").toString() + "\\" + testCase + "\\" + "Page_" + pageCounter + ".png";
+				if (!verifyActualImageWithBase(pathToBaseImage, pathToActualImage)) {
+					Files.delete(Paths.get(pathToActualImage));
+					return false;
 				}
-				// <--
+				Files.delete(Paths.get(pathToActualImage));
 				pageCounter++;
 			}
 
 		}
-		bis.close();
-		
-		// Cleanup files created by this method.
-		
-		// Check if 'generateBaseImages' is TRUE and if TRUE, call 
-		//		boolean isGenerateBaselineSSRSIMages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
-		//		if (isGenerateBaselineSSRSImages) {
-		//		   // for each page image call.
-		//		   generateBaselineSSRSImage(...)
-		//		}
 
 		return true;
 	}
 
-	/*private boolean convertPdfToHtml(String reportName, String actualPath) throws IOException, InterruptedException {
-		ProcessUtility pdf2HtmlProcess=new ProcessUtility();
-		String toolDirectory = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\lib\\pdf2htmlEX-win32-0.13.6").toString();
-		testSetup.setCurrentDirectory(Paths.get(testSetup.getDownloadPath()).toString());
-		System.out.println(System.getProperty("user.dir"));
-		//String cmd[] = { toolDirectory + "\\pdf2htmlEX.exe", "--debug", "5 ", reportName };
-		String cmd =  toolDirectory + "\\pdf2htmlEX.exe"+" "+ "--debug"+" "+ "5 "+ " "+reportName ;
-		System.out.println(cmd);
-		//System.setProperty( "user.dir", Paths.get(testSetup.getDownloadPath()).toString() );
-		
-		//pdf2HtmlProcess.executeProcess(cmd, true, true);
-		Process proc = Runtime.getRuntime().exec(cmd, null, new File(actualPath).getAbsoluteFile());
+	public boolean convertPdfToHtml(String reportName, String htmlFile) throws IOException {
+		String workingBatFile = null;
+		String libFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
+		String batFile = libFolder + File.separator + "ConvertPDFToHTML.bat";
+		workingBatFile = libFolder + File.separator + TestSetup.getUUIDString() + "_ConvertPDFToHTML.bat";
+		Files.copy(Paths.get(batFile), Paths.get(workingBatFile));
+		Hashtable<String, String> parameters = new Hashtable<String, String>();
+		parameters.put("%DOWNLOAD_DIR%", testSetup.getDownloadPath());
+		parameters.put("%HTML_FILE%", htmlFile);
+		parameters.put("%EXE_DIR%", libFolder);
+		parameters.put("%PDF_FILE%", reportName);
+		// Update the working copy.
+		FileUtility.updateFile(workingBatFile, parameters);
+		String command = "cd \"" + libFolder + "\" && " + workingBatFile;
+		Log.info("Executing replay script. Command -> " + command);
+		Process pdfToHtmlProcess = ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
+		// Delete the working copy of the defn file.
+		Files.delete(Paths.get(workingBatFile));
+		return true;
+	}
 
-		// The stdout and stderr InputStreams must be cleared for the process to finish.
-		// See: http://www.javaworld.com/article/2071275/core-java/when-runtime-exec---won-t.html
-		StringWriter writer = new StringWriter();
-		org.apache.commons.io.IOUtils.copy(proc.getErrorStream(), writer);
-		org.apache.commons.io.IOUtils.copy(proc.getInputStream(), writer);
+	public boolean createImageFromBASE64(String base64String, String actualImage) throws IOException {
+		BASE64Decoder decoder = new BASE64Decoder();
+		byte[] imageByte;
+		imageByte = decoder.decodeBuffer(base64String);
+		ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+		BufferedImage image = ImageIO.read(bis);
+		ImageIO.write(image, "png", new File(actualImage));
+		return true;
+	}
 
-		int exitCode = proc.waitFor();
-		if (exitCode != 0) {
-			// When conversion is successful the exit code is 0.
+	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage) {
+		ImagingUtility imageUtil = new ImagingUtility();
+		ImageComparisonResult result = imageUtil.compareImages(pathToActualImage, pathToBaseImage);
+		if (result.getFailureMessage() != null) {
 			return false;
 		}
 		return true;
-	}*/
-	
-	public boolean convertPdfToHtml(String reportName, String testCase) {
-		try {
-			
-			String libFolder = TestSetup.getExecutionPath(TestSetup.getRootPath())+ File.separator + "lib";
-			String batFile=libFolder+ File.separator +"ConvertPDFToHTML.bat";
-			String workingBatFile=libFolder+ File.separator +testCase+"_ConvertPDFToHTML.bat";
-			
-			Files.copy(Paths.get(batFile), Paths.get(workingBatFile));
-
-			// Update the working copy.
-			FileUtility.updateFile(workingBatFile, "%DOWNLOAD_DIR%", testSetup.getDownloadPath());
-			FileUtility.updateFile(workingBatFile, "%EXE_DIR%", libFolder);
-			FileUtility.updateFile(workingBatFile, "%PDF_FILE%", reportName);
-
-			String command="./"+workingBatFile;
-
-			// Delete the working copy of the defn file.
-			Files.delete(Paths.get(workingBatFile));
-		} catch (IOException e) {
-			Log.error(e.toString());
-		}
-		return true;
 	}
-	
-	/*public static void convertPdfToHtml(String workingBatFile) {
-		// Execute replay script from the contained folder.
-		try {
-			String cmdFolder = getExecutionPath(getRootPath()) + "data" + File.separator + "defn";
-			String replayCmdFullPath = replayCmdFolder + File.separator + REPLAY_DEFN_CURL_FILE;
-			String command = "cd \"" + replayCmdFolder + "\" && " + replayCmdFu	llPath + " " + defnFileName;
-			Log.info("Executing replay script. Command -> " + command);
-			//analyzerProcess = ProcessUtility.executeProcess(command, /* isShellCommand */ //true, /* waitForExit */ true);
-		//} catch (IOException e) {
-			//Log.error(e.toString());
-	//	}
-	//}*/
 
-
-	
 	public boolean verifyCancelButtonFunctionality() {
 		openNewReportPage();
 		this.btnCancel.click();

@@ -137,30 +137,21 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC517 Test Description: Generate compliance report with all default values/filters selected and download it
-<<<<<<< HEAD
 	 * 
 	 * @throws IOException
-	 * @throws InterruptedException 
-=======
-	 * @throws Exception 
->>>>>>> master
+	 * @throws InterruptedException
+	 * @throws Exception
 	 * 
 	 */
 	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PROVIDER, location = ComplianceReportDataProvider.class)
 	public void ComplianceReportTest_VerifyNonEthaneReport(String index, String strCreatedBy, String password, String cutomer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
-
-			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws IOException, InterruptedException {
-		/*String rptTitle = null;
-		if (getTestCaseName(index).equals("TC203")) {
-			rptTitle = getTestCaseName(index) + " " + "Report" + testSetup.getRandomNumber() + "#<>$";
-=======
 			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws Exception {
 		String rptTitle = null;
 		String testCaseName = getTestCaseName(index);
 		if (testCaseName.equals("TC203")) {
 			rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber() + "#<>$";
->>>>>>> master
+
 		} else {
 			rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
 		}
@@ -178,6 +169,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, strCreatedBy));
 			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rptTitle));
+			assertTrue(complianceReportsPage.verifySSRSImages(testSetup.getDownloadPath(),rptTitle,testCaseName ));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
 					assertTrue(complianceReportsPage.verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle));
@@ -197,12 +189,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 				}
 			}
 		} else
-<<<<<<< HEAD
-			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");*/
-		assertTrue(complianceReportsPage.verifySSRSImages("C:\\Users\\cnanayakkara\\Downloads\\", "TC249 Report634560","TC249"));
 
-			
-
+			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
+		
 
 	}
 
@@ -238,7 +227,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC153 Test Description: Copy and modify report from previously run reports
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@Test
@@ -517,7 +507,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC170 Test Description: Duplicate report
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@Test
@@ -595,7 +586,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC174 Test Description: Generate report for same surveys but in different modes
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@Test
@@ -683,15 +675,15 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC180 Test Description: Generate Manual report from existing reports having surveys of standard or Rapid Response types using copy feature
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@Test
 	public void TC180_ComplianceReportTest_VerifyCopyStandardReportAsManual() throws Exception {
 		String testCaseID = "TC180";
 		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
-		System.out.format("\nRunning " + testCaseID
-				+ ": Generate Manual report from existing reports having surveys of standard or Rapid Response types using copy feature , %s\n", rptTitle);
+		System.out.format("\nRunning " + testCaseID + ": Generate Manual report from existing reports having surveys of standard or Rapid Response types using copy feature , %s\n", rptTitle);
 
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
@@ -768,15 +760,15 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC181 Test Description: Generate standard or rapid response report from existing reports having survey of Manual type using copy feature
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@Test
 	public void TC181_ComplianceReportTest_VerifyCopyManualReportAsRapidResponse() throws Exception {
 		String testCaseID = "TC181";
 		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
-		System.out.format("\nRunning " + testCaseID
-				+ ": Generate  standard or rapid response report from existing reports having survey of Manual type using copy feature , %s\n", rptTitle);
+		System.out.format("\nRunning " + testCaseID + ": Generate  standard or rapid response report from existing reports having survey of Manual type using copy feature , %s\n", rptTitle);
 
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
@@ -850,15 +842,15 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC182 Test Description: Generate standard report from existing reports having survey of Rapid Response type using copy feature
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@Test
 	public void TC182_ComplianceReportTest_VerifyCopyRapidResponseReportAsStandard() throws Exception {
 		String testCaseID = "TC182";
 		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
-		System.out.format("\nRunning " + testCaseID
-				+ ": Generate standard report from existing reports having survey of Rapid Response type using copy feature, %s\n", rptTitle);
+		System.out.format("\nRunning " + testCaseID + ": Generate standard report from existing reports having survey of Rapid Response type using copy feature, %s\n", rptTitle);
 
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
@@ -1192,7 +1184,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC212 Test Description: Resubmit compliance report from previously generated reports
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@Test
@@ -1416,7 +1409,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC297 Test Description: Software version on UI and reports PDF should match
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@Test
