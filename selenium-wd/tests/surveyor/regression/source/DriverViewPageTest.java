@@ -13,12 +13,8 @@ import java.util.Calendar;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.BrowserCommands;
@@ -28,7 +24,6 @@ import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.LoginPageActions;
-import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.BaseMapViewPage.DisplaySwitchType;
 import surveyor.scommon.source.BaseMapViewPage.GisSwitchType;
@@ -39,112 +34,31 @@ import surveyor.scommon.source.DriverViewPage.SurveyTime;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.DriverViewPage.Wind;
 import surveyor.scommon.source.HomePage;
-import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageUsersPage;
-import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /*
- * **** IMPORTANT ****:
- *  As a convention for detecting Simulator based tests we are using this naming convention for Simulator tests.
- *  Any tests named TC*_SimulatorTest_* will be detected as Simulator based test and will trigger
- *  installation of Simulator pre-requisites before running the test.
+ * **** NOTES ****:
+ *  1. Action based tests that work on MapView (Survey, Observer, Driver) can derive from BaseMapViewTest.
+ *  2. If any of the tests do NOT use TestEnvironment actions for starting Analyzer and simulator then 
+ *  they should follow this convention to start simulator:
+ *    Mark the test as TC*_SimulatorTest_* and it will be detected as Simulator based test and will trigger
+ *    installation of Simulator pre-requisites before running the test.
  * 
  */
 @RunWith(SurveyorTestRunner.class)
-public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
+public class DriverViewPageTest extends BaseMapViewTest {
 
-	private static final String SURVEY_INFO_SURVEYOR1_ANALYZER1 = "Surveyor: SimAuto-Surveyor1 - SimAuto-Analyzer1";
-	private static final String SURVEY_INFO_SURVEYOR2_ANALYZER2 = "Surveyor: SimAuto-Surveyor2 - SimAuto-Analyzer2";
-	private static final String SURVEY_INFO_SURVEY_STATUS_ACTIVE = "Survey Active";
-	private static final String SURVEY_INFO_SURVEY_STATUS_INACTIVE = "Survey Inactive";
-	private static final String SURVEY_INFO_SURVEYOR_PREFIX = "Surveyor: ";
-	private static final String SURVEY_INFO_REMAINING_PREFIX = "Remaining: ";
-	private static final String SURVEY_INFO_ELAPSED_PREFIX = "Elapsed: ";
-	private static final String SURVEY_INFO_TAG_PREFIX = "Tag: ";
-	private static final String SURVEY_INFO_MODE_PREFIX = "Mode: ";
-	private static final String SURVEY_INFO_MODE_STANDARD = "Mode: Standard";
-	private static final String SURVEY_INFO_TIME_PREFIX = "Time: ";
-	private static final String SURVEY_INFO_DRIVER_PREFIX = "Driver: ";
-	private static final String SURVEY_INFO_ELAPSED_TIME_00 = "Elapsed: 00:";
-	private static final String SURVEY_INFO_REMAINING_TIME_07 = "Remaining: 07:";
-	private static final String SURVEY_INFO_ZOOM_LEVEL_19 = "Zoom Level: 19";
-	private static final String SURVEY_INFO_STABILITY_CLASS_A = "Stability Class: A";
-	private static final String SURVEY_INFO_STABILITY_CLASS_B = "Stability Class: B";
-	private static final String SURVEY_INFO_STABILITY_CLASS_C = "Stability Class: C";
-	private static final String SURVEY_INFO_STABILITY_CLASS_D = "Stability Class: D";
-	private static final String SIM_AUTO_ANALYZER1 = "SimAuto-Analyzer1";
-	private static final String SIM_AUTO_SURVEYOR1 = "SimAuto-Surveyor1";
-	private static final String SURVEYOR_DB3 = "Surveyor.db3";
-	private static final String INSTR_WARMING_DEFN_FILE = "instr_warming.defn";
-	private static final String INSTR_READY_DEFN_FILE = "instr_ready.defn";
-	private static final String REPLAY_DB3_DEFN_FILE = "replay-db3.defn";
-
-	private static final String EMPTY = "";
-	private static final Integer NOTSET = -1;
-	
-	private LoginPageActions loginPageAction;
 	private DriverViewPageActions driverViewPageAction;
-	private TestEnvironmentActions testEnvironmentAction;
 
 	private static DriverViewPage driverViewPage;
 	private static ManageCustomersPage manageCustomersPage = null;
 	private static ManageUsersPage manageUsersPage = null;
-	private static HomePage homePage = null;
-	private static LoginPage loginPage = null;
-
-	private TestSetup testSetup = null;
-	private WebDriver driver = null;
-	private String baseURL = null;
 	
-	// JUnit does NOT give a good way to detect which TestClass is executing.
-	// So we watch for the Test method under execution and install simulator pre-reqs
-	// if the test under execution is a Simulator test.
-	// NOTE that all simulator tests MUST follow this naming pattern: TC*_SimulatorTest_* 
-	@Rule
-	public TestWatcher watcher = new TestWatcher() {
-		@Override
-		public void starting(Description description) {
-			SurveyorBaseTest.reportTestStarting(description);
-			TestSetup.simulatorTestStarting(description);
-		}
-
-		@Override
-		public void finished(Description description) {
-			SurveyorBaseTest.reportTestFinished(description.getClassName());
-			TestSetup.simulatorTestFinishing(description);
-		}
-
-		@Override
-		protected void failed(Throwable e, Description description) {
-			SurveyorBaseTest.reportTestFailed(e);
-		}
-
-		 @Override
-		 protected void succeeded(Description description) {
-			 SurveyorBaseTest.reportTestSucceeded();
-		}
-	};
-
 	@Before
 	public void beforeTestMethod() {
 		try {
-			testSetup = new TestSetup();
-			driver = testSetup.getDriver();
-			baseURL = testSetup.getBaseUrl();
-
-			Log.info("debuggug null - driver:***:" +driver);
-			driver.manage().deleteAllCookies();
-			
-			TestContext.INSTANCE.setTestSetup(testSetup);
-
-			loginPage = new LoginPage(driver, baseURL, testSetup);
-			PageFactory.initElements(driver,  loginPage);
-			
-			homePage = new HomePage(driver, baseURL, testSetup);
-			PageFactory.initElements(driver,  homePage);
-
 			driverViewPage = new DriverViewPage(driver, testSetup, baseURL);
 			PageFactory.initElements(driver, driverViewPage);
 
@@ -155,9 +69,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 			manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
 			PageFactory.initElements(driver,  manageUsersPage);
 			
-			loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 			driverViewPageAction = new DriverViewPageActions(driver, baseURL,testSetup);
-			testEnvironmentAction = new TestEnvironmentActions();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -167,12 +79,7 @@ public class DriverViewPageTest /*extends SurveyorBaseTest*/ {
 	@After
     public void afterTestMethod() {
 		try {
-			homePage.open();
-			
-			if (!driver.getTitle().equalsIgnoreCase("Login"))
-				homePage.logout();
-			
-			driver.quit();		
+			afterTest();		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
