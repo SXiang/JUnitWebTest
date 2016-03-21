@@ -258,6 +258,7 @@ public class Peak extends BaseEntity {
 			if (objPeakList!=null && objPeakList.size()>0)
 			{
 				DBCache.INSTANCE.set(CACHE_KEY + analyzerId + "_" + surveyId + "_" + surveyModeTypeId, objPeakList);
+				
 			}
 		}
 		return objPeakList;
@@ -338,4 +339,26 @@ public class Peak extends BaseEntity {
 
 		return objPeakList;
 	}
+	
+	public boolean equalsTo(Map<String, String> map) {
+		float ch4 = Float.valueOf(map.get("CH4"));				
+		float epochTime = Float.valueOf(map.get("EPOCH_TIME"));
+		float sigma = Float.valueOf(map.get("SIGMA"));
+		float amplitude= Float.valueOf(map.get("AMPLITUDE"));
+		float wind_dir_sdev= Float.valueOf(map.get("WIND_DIR_SDEV"));
+		float wind_n= Float.valueOf(map.get("WIND_N"));
+		float wind_e= Float.valueOf(map.get("WIND_E"));
+
+		
+		if(   (Float.compare(this.getEpochTime(), epochTime)==0)   && (Float.compare(this.getCH4(), ch4)==0)
+				&& (Float.compare(this.getSigma(), sigma)==0) && (Float.compare(this.getAmplitude(), amplitude)==0)
+				&& (Float.compare(this.getWindDirectionStdDev(), wind_dir_sdev)==0) && (Float.compare(this.getWindSpeedNorth(), wind_n)==0)
+				&& (Float.compare(this.getWindSpeedEast(), wind_e)==0) ){
+			return true;
+
+		}
+
+	return false;
+	}
+
 }

@@ -541,29 +541,17 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.error(e.toString());
+
 		}
 		return verifyPeak;
 	}
 
 	private boolean checkPeakInDB(List<Peak> listOFDBPeak,Map<String, String> map)
 	{
-		float ch4 = Float.valueOf(map.get("CH4")).floatValue();				
-		float epochTime = Float.valueOf(map.get("EPOCH_TIME")).floatValue();
-		float sigma = Float.valueOf(map.get("SIGMA")).floatValue();
-		float amplitude= Float.valueOf(map.get("AMPLITUDE")).floatValue();
-		float wind_dir_sdev= Float.valueOf(map.get("WIND_DIR_SDEV")).floatValue();
-		float wind_n= Float.valueOf(map.get("WIND_N")).floatValue();
-		float wind_e= Float.valueOf(map.get("WIND_E")).floatValue();
-		
 		for (Peak pk : listOFDBPeak){
-			if(   (Float.compare(pk.getEpochTime(), epochTime)==0)   && (Float.compare(pk.getCH4(), ch4)==0)
-					&& (Float.compare(pk.getSigma(), sigma)==0) && (Float.compare(pk.getAmplitude(), amplitude)==0)
-					&& (Float.compare(pk.getWindDirectionStdDev(), wind_dir_sdev)==0) && (Float.compare(pk.getWindSpeedNorth(), wind_n)==0)
-					&& (Float.compare(pk.getWindSpeedEast(), wind_e)==0) ){
+			if (pk.equalsTo(map)) {
 				return true;
-				
 			}
 		}
 		return false;
@@ -592,31 +580,19 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 		return verifySurvey;
 	}
 
 	private boolean checkMeasurementInDB(List<Measurement> listOFDBMeasurement,Map<String, String> map)
 	{
-		float epochTime = Float.valueOf(map.get("EPOCH_TIME")).floatValue();
-		float ch4 = Float.valueOf(map.get("CH4")).floatValue();				
-		float ws_wind_lon= Float.valueOf(map.get("WS_WIND_LON")).floatValue();
-		float ws_wind_lat= Float.valueOf(map.get("WS_WIND_LAT")).floatValue();
-		float gps_abs_long = Float.valueOf(map.get("GPS_ABS_LONG")).floatValue();
-		float gps_fit = Float.valueOf(map.get("GPS_FIT")).floatValue();
-
 		for (Measurement ms : listOFDBMeasurement){
-			if(   (Float.compare(ms.getEpochTime(), epochTime)==0)   && (Float.compare(ms.getCH4(), ch4)==0)
-					&& (Float.compare(ms.getWindSpeedLongitudinal(), ws_wind_lon)==0)
-					&& (Float.compare(ms.getWindSpeedLateral(), ws_wind_lat)==0) && (Float.compare(ms.getGpsLongitude(), gps_abs_long)==0)
-					&& (Float.compare(ms.getGpsFit(), gps_fit)==0)  ){
-				
+			if (ms.equalsTo(map)) {
 				return true;
 			}
 		}
-		return false;
+		return false;	
 	}
 
 	public boolean verifyAnalysisExportFile (String datFileName, String tag, String analyzer) {
@@ -642,34 +618,15 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 		return verifyAnalysis;
 	}
 
 	private boolean checkAnalysisInDB(List<CaptureEvent> listOFDBCaptureEvent,Map<String, String> map)
 	{
-		float epochTime = Float.valueOf(map.get("EPOCH_TIME")).floatValue();
-		float distance = Float.valueOf(map.get("DISTANCE")).floatValue();
-		float gps_abs_long= Float.valueOf(map.get("GPS_ABS_LONG")).floatValue();
-		float gps_abs_lat= Float.valueOf(map.get("GPS_ABS_LAT")).floatValue();
-		float concentration= Float.valueOf(map.get("CONC")).floatValue();
-		float delta= Float.valueOf(map.get("DELTA")).floatValue();
-		float uncertainty = Float.valueOf(map.get("UNCERTAINTY")).floatValue();
-		float reply_max = Float.valueOf(map.get("REPLAY_MAX")).floatValue();
-		float reply_rmin = Float.valueOf(map.get("REPLAY_RMIN")).floatValue();				
-		float reply_lmin = Float.valueOf(map.get("REPLAY_LMIN")).floatValue();				
-		float disposition = Float.valueOf(map.get("DISPOSITION")).floatValue();				
-
 		for (CaptureEvent cE : listOFDBCaptureEvent){
-
-			if(   (Float.compare(cE.getEpochTime(), epochTime)==0) && (Float.compare(cE.getDistance(), distance)==0)
-					&& (Float.compare(cE.getGpsLongitude(), gps_abs_long)==0)  && (Float.compare(cE.getGpsLatitude(), gps_abs_lat)==0)
-					&& (Float.compare(cE.getConcentration(), concentration)==0) && (Float.compare(cE.getDelta(), delta)==0)
-					&& (Float.compare(cE.getUncertainty(), uncertainty)==0) && (Float.compare(cE.getReplayMax(), reply_max)==0)
-					&& (Float.compare(cE.getReplayRMin(), reply_rmin)==0) && (Float.compare(cE.getReplayLMin(), reply_lmin)==0)
-					&& (Float.compare(cE.getDisposition(), disposition)==0)   ){
+			if (cE.equalsTo(map)) {
 				return true;
 			}
 		}

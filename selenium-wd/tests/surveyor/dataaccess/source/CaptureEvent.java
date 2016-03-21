@@ -288,4 +288,29 @@ public class CaptureEvent extends BaseEntity {
 		return objCaptureEventList;
 	}
 
+	public boolean equalsTo(Map<String, String> map) {
+		float epochTime = Float.valueOf(map.get("EPOCH_TIME"));
+		float distance = Float.valueOf(map.get("DISTANCE"));
+		float gps_abs_long= Float.valueOf(map.get("GPS_ABS_LONG"));
+		float gps_abs_lat= Float.valueOf(map.get("GPS_ABS_LAT"));
+		float concentration= Float.valueOf(map.get("CONC"));
+		float delta= Float.valueOf(map.get("DELTA"));
+		float uncertainty = Float.valueOf(map.get("UNCERTAINTY"));
+		float reply_max = Float.valueOf(map.get("REPLAY_MAX"));
+		float reply_rmin = Float.valueOf(map.get("REPLAY_RMIN"));				
+		float reply_lmin = Float.valueOf(map.get("REPLAY_LMIN"));				
+		float disposition = Float.valueOf(map.get("DISPOSITION"));
+		
+		if(   (Float.compare(this.getEpochTime(), epochTime)==0) && (Float.compare(this.getDistance(), distance)==0)
+				&& (Float.compare(this.getGpsLongitude(), gps_abs_long)==0)  && (Float.compare(this.getGpsLatitude(), gps_abs_lat)==0)
+				&& (Float.compare(this.getConcentration(), concentration)==0) && (Float.compare(this.getDelta(), delta)==0)
+				&& (Float.compare(this.getUncertainty(), uncertainty)==0) && (Float.compare(this.getReplayMax(), reply_max)==0)
+				&& (Float.compare(this.getReplayRMin(), reply_rmin)==0) && (Float.compare(this.getReplayLMin(), reply_lmin)==0)
+				&& (Float.compare(this.getDisposition(), disposition)==0)   ){
+			return true;
+		}
+
+		return false;
+	}
+
 }

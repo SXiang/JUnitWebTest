@@ -384,5 +384,25 @@ public class Measurement extends BaseEntity {
 		}
 		return objMeasurementList;
 	}
+	
+	public boolean equalsTo(Map<String, String> map) {
+		float epochTime = Float.valueOf(map.get("EPOCH_TIME"));
+		float ch4 = Float.valueOf(map.get("CH4"));				
+		float ws_wind_lon= Float.valueOf(map.get("WS_WIND_LON"));
+		float ws_wind_lat= Float.valueOf(map.get("WS_WIND_LAT"));
+		float gps_abs_long = Float.valueOf(map.get("GPS_ABS_LONG"));
+		float gps_fit = Float.valueOf(map.get("GPS_FIT"));
+		
+		if(   (Float.compare(this.getEpochTime(), epochTime)==0)   && (Float.compare(this.getCH4(), ch4)==0)
+				&& (Float.compare(this.getWindSpeedLongitudinal(), ws_wind_lon)==0)
+				&& (Float.compare(this.getWindSpeedLateral(), ws_wind_lat)==0) && (Float.compare(this.getGpsLongitude(), gps_abs_long)==0)
+				&& (Float.compare(this.getGpsFit(), gps_fit)==0)  ){
+
+			return true;
+		}
+	return false;
+	}
+
+
 
 }
