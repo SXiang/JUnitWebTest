@@ -111,7 +111,8 @@ public class DatUtility {
 			for(int i=0; i<rows1.size(); i++){
 				map1 =rows1.get(i);
 				for(Map.Entry<String,String> entry:map1.entrySet()){
-					Assert.assertTrue(entry.getKey()+" : "+entry.getValue(), true);
+					Assert.assertTrue((entry.getKey() != null) && (entry.getKey() != ""));
+					Assert.assertTrue((entry.getValue() != null) && (entry.getValue() != ""));
 				}
 			}
 		}
@@ -128,8 +129,10 @@ public class DatUtility {
 			for(int i=0; i<rows3.size(); i++){
 				map3 =rows3.get(i);
 				for(Map.Entry<String,String> entry:map3.entrySet()){
-					Assert.assertTrue(entry.getKey()+" : "+entry.getValue(), true);}
-			} 
+					Assert.assertTrue((entry.getKey() != null) && (entry.getKey() != ""));
+					Assert.assertTrue((entry.getValue() != null) && (entry.getValue() != ""));
+				} 
+			}
 		}
 	}
 
@@ -144,7 +147,9 @@ public class DatUtility {
 			for(int i=0; i<rows2.size(); i++){
 				map2 =rows2.get(i);
 				for(Map.Entry<String,String> entry:map2.entrySet()){
-					Assert.assertTrue(entry.getKey()+" : "+entry.getValue(), true);}
+					Assert.assertTrue((entry.getKey() != null) && (entry.getKey() != ""));
+					Assert.assertTrue((entry.getValue() != null) && (entry.getValue() != ""));
+				}
 			}
 		}
 	}
