@@ -227,7 +227,9 @@ public final class SurveyorConstants {
 	public static final String CUSDRVSTDTAG = "stnd";
 	public static final String CUSDRVRRTAG = "rr";
 	public static final String CUSDRVOPTAG = "op";
-	public static final String CUSDRVETHTAG= "ethane";  //change it to ethane survey
+	public static final String CUSDRVETHSTDTAG= "ethane-standard";
+	public static final String CUSDRVETHRRTAG= "ethane-rr";
+	public static final String CUSDRVETHMNTAG= "ethane-manual";
 	public static final String PICADMNSTDTAG2 = "stnd-pic";
 	public static final String PICADMNRRTAG2 = "rr-pic";
 	public static final String PICADMNOPTAG2 = "op-pic";
