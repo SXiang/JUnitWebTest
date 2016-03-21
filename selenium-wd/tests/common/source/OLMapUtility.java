@@ -97,10 +97,12 @@ public class OLMapUtility {
 			+ "if(features){for(var i=0;i<features.length;i++){if(features[i]&&features[i].getGeometry){geometry=features[i].getGeometry();"
 			+ "if(geometry&&geometry.getCoordinates){boundariesCoord.push(geometry.getCoordinates());}}}}}};}catch(err){};return boundariesCoord;};";
 	
-	private static final String IS_ASSETS_PRESENT_JS_FUNCTION = "function isAssetsPresent(){var found=false;try{layer=assetLayer;"
-			+ "if(layer&&layer.getVisible&&layer.getVisible()&&layer.getStyle){style=layer.getStyle();if(style&&style.getStroke){stroke=style.getStroke();"
-			+ "if(stroke&&stroke.getColor&&stroke.getWidth){scolor=stroke.getColor();swidth=stroke.getWidth();"
-			+ "if((scolor==assetColor)&&(swidth==assetMainLineWidth)){found=true;}}}}}catch(err){found=false;};return found;};";
+	private static final String IS_ASSETS_PRESENT_JS_FUNCTION = "function isAssetsPresent(){var found=false;"
+			+ "try{if(showAssets){if(surveyormap.getView().getResolution()>assetLayerMaxResolution){found=false;}else{layer=assetLayer;"
+			+ "if(layer&&layer.getVisible&&layer.getVisible()&&layer.getStyle){style=layer.getStyle();"
+			+ "if(style&&style.getStroke){stroke=style.getStroke();if(stroke&&stroke.getColor&&stroke.getWidth){"
+			+ "scolor=stroke.getColor();swidth=stroke.getWidth();if((scolor==assetColor)&&(swidth==assetMainLineWidth)){"
+			+ "found=true;}}}}}}}catch(err){found=false;};return found;};";
 	
 	private static final String GET_ASSETS_GEOMETRY_COORDINATES_FUNCTION = "function getAssetsCoordinates(){var assetsCoord=new Array();"
 			+ "try{if(assetLayer&&assetLayer.getSource){sources=assetLayer.getSource();if(sources.getFeatures){features=sources.getFeatures();"
