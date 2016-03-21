@@ -5,6 +5,7 @@ import common.source.Log;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
@@ -83,7 +84,21 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	private void stopSurveyAndAnalyzer() {
 		stopSurveyAndAnalyzer(driverViewPageAction);
 	}
-	
+
+	private void stopSurvey() {
+		stopSurvey(driverViewPageAction);
+	}
+
+	private void loginAsDriver(int userRowID) throws Exception {
+		loginPageAction2.open(EMPTY, NOTSET);
+		loginPageAction2.login(EMPTY, userRowID);   /* Picarro Admin */
+	}
+ 
+	private void loginAsObserver(int userRowID) throws Exception {
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, userRowID);   /* Picarro Admin */
+	}
+
 	/**
 	 * Test Case ID: TC344_ObserverViewShouldNotModeButton
 	 * Script: -  	
@@ -97,27 +112,23 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void TC344_ObserverViewShouldNotModeButton() throws Exception {
 		Log.info("\nRunning TC344_ObserverViewShouldNotModeButton ...");
 		
-		loginPageAction2.open(EMPTY, NOTSET);
-		loginPageAction2.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		// ## Start a Standard Driving Survey. Run for few seconds
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND);
 
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
 		// Goto home page and click on first Online Surveyor link.
-		//homePageAction.open(EMPTY, NOTSET);
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
 
 		// ## Verifications
-		// TODO: Implement action.
-		//observerViewPageAction.verifyModeButtonIsNotShown();
+		observerViewPageAction.verifyModeButtonIsNotVisible(EMPTY, NOTSET);
 		
 		stopSurveyAndAnalyzer();
 	}
- 
+
 	/**
 	 * Test Case ID: TC345_ObserverShouldAbleSeeStatusUpdateWhenVehicleWarmingUp
 	 * Script: -  	
@@ -138,13 +149,14 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void TC345_ObserverShouldAbleSeeStatusUpdateWhenVehicleWarmingUp() throws Exception {
 		Log.info("\nRunning TC345_ObserverShouldAbleSeeStatusUpdateWhenVehicleWarmingUp ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		// Start Analyzer & simulate Instrument Warming
 		startReplay(ANALYZER1_INSTRUMENT_WARMING_ROW_ID); 	
 		// TODO: Implement check to verify Analyzer warming message is shown. 
 		//assertTrue(observerViewPageAction.verifyAnalyzerWarmingMessageIsShown(EMPTY, NOTSET));
+		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
@@ -204,10 +216,11 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void TC346_ViewOperatorSurveyObserverViewWhenEverythingLoaded() throws Exception {
 		Log.info("\nRunning TC346_ViewOperatorSurveyObserverViewWhenEverythingLoaded ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_OPERATOR1_ROW_ID, ONE_SECOND);
+		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
@@ -243,10 +256,11 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void TC347_ViewOperatorSurveySatelliteViewWhenGISDataLoaded() throws Exception {
 		Log.info("\nRunning TC347_ViewOperatorSurveySatelliteViewWhenGISDataLoaded ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_OPERATOR1_ROW_ID, ONE_SECOND);
+		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
@@ -285,10 +299,11 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void TC348_ViewOperatorSurveyWhenAllDisplayGISOptionsAreTurnedOFF() throws Exception {
 		Log.info("\nRunning TC348_ViewOperatorSurveyWhenAllDisplayGISOptionsAreTurnedOFF ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_OPERATOR1_ROW_ID, ONE_SECOND);
+		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
@@ -340,10 +355,11 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void TC349_ViewStandardSurveyWhenAllBoundariesPipeTypesAreLoaded() throws Exception {
 		Log.info("\nRunning TC349_ViewStandardSurveyWhenAllBoundariesPipeTypesAreLoaded ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND);
+		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
@@ -382,10 +398,11 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void TC350_ViewStandardSurveySatelliteViewWhenAllMapBoundariesPipeTypeAreLoaded() throws Exception {
 		Log.info("\nRunning TC350_ViewStandardSurveySatelliteViewWhenAllMapBoundariesPipeTypeAreLoaded ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND);
+		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
@@ -424,10 +441,11 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void TC351_ViewStandardSurveyWhenAllDisplayOptionsGISAreTurnedOFF() throws Exception {
 		Log.info("\nRunning TC351_ViewStandardSurveyWhenAllDisplayOptionsGISAreTurnedOFF ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND);
+		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
@@ -479,10 +497,11 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void TC352_ChangesDoneByObserverObserveViewAreNotReflectedDriverView() throws Exception {
 		Log.info("\nRunning TC352_ChangesDoneByObserverObserveViewAreNotReflectedDriverView ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND);
+		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
@@ -520,10 +539,11 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void TC356_ViewOperatorSurveyFOVIndicationsLisasWhenBoundariesLoaded() throws Exception {
 		Log.info("\nRunning TC356_ViewOperatorSurveyFOVIndicationsLisasWhenBoundariesLoaded ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND);
+		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
@@ -591,10 +611,11 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void TC357_ViewFOVIndicationsLisasDataStandardSurveyWhenBoundariesLoaded() throws Exception {
 		Log.info("\nRunning TC357_ViewFOVIndicationsLisasDataStandardSurveyWhenBoundariesLoaded ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND);
+		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.turnOnWindRose(EMPTY, NOTSET);
@@ -647,19 +668,35 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	 * - Observer user should only see recent survey data (eg. Survey 2) 
 	 * - User should not see first survey (eg. Survey 1)
 	 */
-	@Test
-	// TODO: Fill out
+	@Ignore
+	// TODO: Correct implementation.
 	public void TC1037_ObserverView_OnceUserStartsNewSurveyOldSurveyShouldNotDisplayedObserverView() throws Exception {
 		Log.info("\nRunning TC1037_ObserverView_OnceUserStartsNewSurveyOldSurveyShouldNotDisplayedObserverView ...");
 		
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
+
+		// Start 1st survey.
+		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_OPERATOR1_ROW_ID, ONE_SECOND * 15);
+		driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
+		driverViewPageAction.clickOnFirstIndicationShownOnMap(EMPTY, NOTSET);
+		driverViewPageAction.enterFieldNotes(SAMPLE_FIELD_NOTES1, NOTSET);
+		stopSurvey();
+
+		// Start 2st survey with a different tag.
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND);
-		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
+
+		// Verify 1st survey field note is NOT shown.
+		// Verify 2nd survey indication is shown. 
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
-		driverViewPageAction.startDrivingSurvey(EMPTY, SURVEY_STANDARD1_ROW_ID);
+		observerViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET);
+		observerViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET);
+		observerViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET);
+		observerViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET);
 		
 		stopSurveyAndAnalyzer();
 	}
@@ -678,11 +715,14 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void TC1262_ObserverView_ReturningFromCurtainViewShouldRestoreUserSelectedMapViewCombination() throws Exception {
 		Log.info("\nRunning TC1262_ObserverView_ReturningFromCurtainViewShouldRestoreUserSelectedMapViewCombination ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND);
-		
+
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
+
+		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageAction.clickOnMapButton(EMPTY, NOTSET);
 		observerViewPageAction.turnOnMapView(EMPTY, NOTSET);
 		observerViewPageAction.showCurtainView(EMPTY, NOTSET);
@@ -701,36 +741,52 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	 * Results: - 
 	 *	- Time and timezone text (PDT/CDT) should be changed
 	 */
-	@Test
+	@Ignore
 	// TODO: Time zone setting (make action driven)
 	public void TC1273_ObserverViewTimeShouldChangePerTimezoneSelected() throws Exception {
 		Log.info("\nRunning TC1273_ObserverViewTimeShouldChangePerTimezoneSelected ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND);
 		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
+
 		observerViewPageAction.open(EMPTY, NOTSET);
 		
 		stopSurveyAndAnalyzer();
 	}
- 
+
 	/**
 	 * Test Case ID: TC1302_ObserverConnectingDialogShouldPopUpWhenConnectingCarNotServer
 	 * Script: -  	
+	 * - With the analyzer warmed up, log into the tablet
+	 * - Click on the Mode -> Start Survey button
+	 * - Fill out the necessary details on the survey conditions pop-up window and click Start Survey
+	 * - On a laptop that is not connected to the car's wifi, go to Observer view for this Surveyor vehicle
+	 * - Unplug the ethernet cable from the router
+	 * - Plug the ethernet cable back into the router
+	 * - Repeat twice more
 	 * Results: - 
-	 *	- - Click on the Mode -& Start Survey button
+	 * - Approximately five seconds after the ethernet cable is unplugged, the Driver View screen should darken and show the message, "Connecting"
+	 * - Approximately one minute after the cable is unplugged, the Observer View screen should darken and show the message, "Connecting"
+	 * - Several seconds after the ethernet cable is plugged back in, the screens on both Driver View and Observer View should return to normal brightness and the Connecting message should disappear. 
+	 * - Click on the Mode -& Start Survey button
 	 */
-	@Test
+	@Ignore
 	// TODO: Time dependent Connecting... test case.
 	public void TC1302_ObserverConnectingDialogShouldPopUpWhenConnectingCarNotServer() throws Exception {
 		Log.info("\nRunning TC1302_ObserverConnectingDialogShouldPopUpWhenConnectingCarNotServer ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
-		driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
-		driverViewPageAction.startDrivingSurvey(EMPTY, SURVEY_STANDARD1_ROW_ID);
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
+		
+		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND);
+
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
+
+		observerViewPageAction.open(EMPTY, NOTSET);
+		
+		stopSurveyAndAnalyzer();
 	}
  
 	/**
@@ -748,21 +804,28 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	 *	2) The second time the Curtain button is clicked, the blue wall will appear along the route 
 	 *     from the beginning of the survey, not just the route from the point where the page was refreshed
 	 */
-	@Test
+	@Ignore
 	// TODO: Curtain view. 
 	public void TC1375_ObserverView_CurtainView_ChangeInvocationOfOLCesium() throws Exception {
 		Log.info("\nRunning TC1375_ObserverView_CurtainView_ChangeInvocationOfOLCesium ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
+		
+		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND);
+
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
+		
+		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageAction.showCurtainView(EMPTY, NOTSET);
 		observerViewPageAction.clickOnCurtainReturnButton(EMPTY, NOTSET);
-		observerViewPageAction.open(EMPTY, NOTSET);
 		observerViewPageAction.refreshPage(EMPTY, NOTSET);
 		observerViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 		testEnvironmentAction.idleForSeconds(String.valueOf(60), NOTSET);
 		observerViewPageAction.showCurtainView(EMPTY, NOTSET);
+		
+		// TODO: Verifications for curtain view currently not present.
 	}
  
 	/**
@@ -778,14 +841,14 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	 *	- User will be returned to Observer View page
 	 */
 	@Test
-	// TODO: Breadcrumb color detection method.
 	public void TC1411_ObserverView_AssessmentSurvey_CurtainViewDisplayedUserAbleFollowVehicle() throws Exception {
 		Log.info("\nRunning TC1411_ObserverView_AssessmentSurvey_CurtainViewDisplayedUserAbleFollowVehicle ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
-		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND);
+		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_ASSESSMENT1_ROW_ID, ONE_SECOND);
+		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
@@ -794,10 +857,12 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
 		assertTrue(observerViewPageAction.verifyObserverViewPageIsOpened(EMPTY, NOTSET));
 		observerViewPageAction.turnOffPosition(EMPTY, NOTSET);
+		observerViewPageAction.showCurtainView(EMPTY, NOTSET);
 		observerViewPageAction.clickOnCurtainReturnButton(EMPTY, NOTSET);
 		assertTrue(observerViewPageAction.verifyObserverViewPageIsOpened(EMPTY, NOTSET));
 		assertTrue(observerViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
+		// TODO: Car icon check & breadcrumb color detection is TODO
+		//assertTrue(observerViewPageAction.verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
 		
 		stopSurveyAndAnalyzer();
 	}
@@ -813,15 +878,16 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	 * Results: - 
 	 *	- - Click Return
 	 */
-	@Test
+	@Ignore
 	// TODO: Need a method to verify that the map image changes on Direction and Zoom clicks.
 	public void TC1412_ObserverView_AssessmentModeSurvey_UserAllowedMoveUpDownLeftRightZoomInZoomOutCurtainView() throws Exception {
 		Log.info("\nRunning TC1412_ObserverView_AssessmentModeSurvey_UserAllowedMoveUpDownLeftRightZoomInZoomOutCurtainView ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_ASSESSMENT1_ROW_ID, ONE_SECOND);
+		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
@@ -858,10 +924,11 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void TC1413_ObserverView_AssessmentModeSurvey_ReturningFromCurtainViewShouldRestoreUserSelectedMapViewCombination() throws Exception {
 		Log.info("\nRunning TC1413_ObserverView_AssessmentModeSurvey_ReturningFromCurtainViewShouldRestoreUserSelectedMapViewCombination ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_ASSESSMENT1_ROW_ID, ONE_SECOND);
+		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
@@ -892,10 +959,11 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void TC1453_ObserverView_CheckAssessmentSurveyDataPresentAfterObserverRefreshesBrowser_Satellite() throws Exception {
 		Log.info("\nRunning TC1453_ObserverView_CheckAssessmentSurveyDataPresentAfterObserverRefreshesBrowser_Satellite ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_ASSESSMENT1_ROW_ID, ONE_SECOND);
+		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
@@ -944,10 +1012,11 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void TC1454_ObserverView_CheckAssessmentSurveyDataPresentAfterObserverRefreshesBrowser_Map() throws Exception {
 		Log.info("\nRunning TC1454_ObserverView_CheckAssessmentSurveyDataPresentAfterObserverRefreshesBrowser_Map ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_ASSESSMENT1_ROW_ID, ONE_SECOND);
+		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
@@ -996,10 +1065,11 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void TC1457_ViewAssessmentSurveyObserverViewWhenEverythingLoaded() throws Exception {
 		Log.info("\nRunning TC1457_ViewAssessmentSurveyObserverViewWhenEverythingLoaded ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_ASSESSMENT1_ROW_ID, ONE_SECOND);
+		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
@@ -1036,10 +1106,11 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void TC1458_ViewAssessmentSurveySatelliteViewWhenGISDataLoaded() throws Exception {
 		Log.info("\nRunning TC1458_ViewAssessmentSurveySatelliteViewWhenGISDataLoaded ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_ASSESSMENT1_ROW_ID, ONE_SECOND);
+		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
@@ -1080,10 +1151,11 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void TC1459_ViewAssessmentModeSurveyWhenAllDisplayGISOptionsAreTurnedOFF() throws Exception {
 		Log.info("\nRunning TC1459_ViewAssessmentModeSurveyWhenAllDisplayGISOptionsAreTurnedOFF ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_ASSESSMENT1_ROW_ID, ONE_SECOND);
+		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
@@ -1146,10 +1218,11 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void TC1460_ViewAssessmentModeSurveyObserverMapViewWhenFovIndicationWindRoseConcentrationChartON() throws Exception {
 		Log.info("\nRunning TC1460_ViewAssessmentModeSurveyObserverMapViewWhenFovIndicationWindRoseConcentrationChartON ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_ASSESSMENT1_ROW_ID, ONE_SECOND);
+		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
@@ -1205,10 +1278,11 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void TC1461_ViewAssessmentModeSurveyObserverMapViewWhenAllDisplayOptionsAreONOtherPlasticProtectedSteelCastIronAssetsONBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC1461_ViewAssessmentModeSurveyObserverMapViewWhenAllDisplayOptionsAreONOtherPlasticProtectedSteelCastIronAssetsONBoundariesOFF ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_ASSESSMENT1_ROW_ID, ONE_SECOND);
+		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
@@ -1267,10 +1341,11 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void TC1462_ViewAssessmentModeSurveyObserverMapViewWhenFOVONAssetsBoundariesOFFSatelliteView() throws Exception {
 		Log.info("\nRunning TC1462_ViewAssessmentModeSurveyObserverMapViewWhenFOVONAssetsBoundariesOFFSatelliteView ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		
 		startDrivingSurvey(ANALYZER1_REPLAY_ROW_ID, SURVEY_ASSESSMENT1_ROW_ID, ONE_SECOND);
+		
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);

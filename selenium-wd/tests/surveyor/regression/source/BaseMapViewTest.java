@@ -16,7 +16,6 @@ import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
-import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.SurveyorBaseTest;
@@ -27,9 +26,11 @@ public class BaseMapViewTest {
 	protected static final int ANALYZER1_INSTRUMENT_WARMING_ROW_ID = 2;
 	protected static final int ONE_SECOND = 5;
 	protected static final int SURVEY_STANDARD1_ROW_ID = 3;
-	protected static final int SURVEY_OPERATOR1_ROW_ID = 3;
+	protected static final int SURVEY_OPERATOR1_ROW_ID = 5;
+	protected static final int SURVEY_MANUAL1_ROW_ID = 31;
 	protected static final int SURVEY_ASSESSMENT1_ROW_ID = 30;
 	protected static final int USER_ROW_ID_PICARRO_ADMIN = 6;
+	protected static final int USER_ROW_ID_PICARRO_DRIVER = 3;
 	protected static final String SAMPLE_FIELD_NOTES1 = "Test Notes";
 	protected static final String SURVEY_INFO_SURVEYOR1_ANALYZER1 = "Surveyor: SimAuto-Surveyor1 - SimAuto-Analyzer1";
 	protected static final String SURVEY_INFO_SURVEYOR2_ANALYZER2 = "Surveyor: SimAuto-Surveyor2 - SimAuto-Analyzer2";
@@ -138,6 +139,7 @@ public class BaseMapViewTest {
 		driver.manage().deleteAllCookies();
 		TestContext.INSTANCE.setTestSetup(testSetup);
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
+		homePageAction = new HomePageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
 		
 		loginPage = new LoginPage(driver, baseURL, testSetup);
@@ -158,6 +160,7 @@ public class BaseMapViewTest {
 		driver2.manage().deleteAllCookies();
 		TestContext.INSTANCE.setTestSetup(testSetup2);
 		loginPageAction2 = new LoginPageActions(driver2, baseURL2, testSetup2);
+		homePageAction2 = new HomePageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
 
 		loginPage2 = new LoginPage(driver2, baseURL2, testSetup2);
@@ -204,11 +207,15 @@ public class BaseMapViewTest {
 		driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
 		testEnvironmentAction.startReplay(EMPTY, analyzerRowId);
 	}
- 
-	protected void stopSurveyAndAnalyzer(DriverViewPageActions driverViewPageAction) {
+
+	protected void stopSurvey(DriverViewPageActions driverViewPageAction) {
 		// Stop Survey
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);	
+	}
+	
+	protected void stopSurveyAndAnalyzer(DriverViewPageActions driverViewPageAction) {
+		stopSurvey(driverViewPageAction);	
 		// Stop Analyzer
 		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 	}

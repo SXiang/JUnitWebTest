@@ -18,6 +18,7 @@ public class DriverViewDataReader extends BaseDataReader {
 	public static final int Excel_TestData_Report_Col_Wind = 4;
 	public static final int Excel_TestData_Report_Col_CloudCover = 5;
 	public static final int Excel_TestData_Report_Col_SurveyType = 6;
+	public static final int Excel_TestData_Report_Col_MinAmplitude = 7;
  
 	public class DriverViewDataRow {
 		public String rowID;
@@ -27,8 +28,10 @@ public class DriverViewDataReader extends BaseDataReader {
 		public String wind;
 		public String cloudCover;
 		public String surveyType;
+		public String minAmplitude;
  
-		public DriverViewDataRow(String rowID, String surveyTag, String surveyTime, String solarRadiation, String wind, String cloudCover, String surveyType) {
+		public DriverViewDataRow(String rowID, String surveyTag, String surveyTime, String solarRadiation, 
+				String wind, String cloudCover, String surveyType, String minAmplitude) {
 			this.rowID = rowID;
 			this.surveyTag = surveyTag;
 			this.surveyTime = surveyTime;
@@ -36,6 +39,7 @@ public class DriverViewDataReader extends BaseDataReader {
 			this.wind = wind;
 			this.cloudCover = cloudCover;
 			this.surveyType = surveyType;
+			this.minAmplitude = minAmplitude;
 		}
 	}	
  
@@ -57,9 +61,11 @@ public class DriverViewDataReader extends BaseDataReader {
 		String wind = excelUtility.getCellData(dataRowID, Excel_TestData_Report_Col_Wind, TESTDATA_SHEET_NAME);
 		String cloudCover = excelUtility.getCellData(dataRowID, Excel_TestData_Report_Col_CloudCover, TESTDATA_SHEET_NAME);
 		String surveyType = excelUtility.getCellData(dataRowID, Excel_TestData_Report_Col_SurveyType, TESTDATA_SHEET_NAME);
+		String minAmplitude = excelUtility.getCellData(dataRowID, Excel_TestData_Report_Col_MinAmplitude, TESTDATA_SHEET_NAME);
 		
-		Log.info(String.format("Found data row: rowID=[%s], surveyTag=[%s], surveyTime=[%s], solarRadiation=[%s], wind=[%s], cloudCover=[%s], surveyType=[%s]", rowID, surveyTag, surveyTime, solarRadiation, wind, cloudCover, surveyType));
+		Log.info(String.format("Found data row: rowID=[%s], surveyTag=[%s], surveyTime=[%s], solarRadiation=[%s], wind=[%s], cloudCover=[%s]"
+				+ ", surveyType=[%s], minAmplitude=[%s]", rowID, surveyTag, surveyTime, solarRadiation, wind, cloudCover, surveyType, minAmplitude));
 		
-		return new DriverViewDataRow(rowID, surveyTag, surveyTime, solarRadiation, wind, cloudCover, surveyType);
+		return new DriverViewDataRow(rowID, surveyTag, surveyTime, solarRadiation, wind, cloudCover, surveyType, minAmplitude);
 	}
 }

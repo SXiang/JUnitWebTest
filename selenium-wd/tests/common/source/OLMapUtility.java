@@ -17,6 +17,8 @@ public class OLMapUtility {
 	private static final String CROSSHAIR_WHITE_PNG = "crosshair-white.png";
 	private static final String CROSSHAIR_PNG = "crosshair.png";
 	private static final String CROSSHAIR_GRAY_PNG = "crosshair-gray.png";
+	
+	private static final double DEFAULT_MAP_RESOLUTION = 0.29858214173896974F;
 
 	public enum IconColor {
 		Red,
@@ -166,6 +168,8 @@ public class OLMapUtility {
 			+ "if(lastConstellation){lastConstellation.nodes.forEach(function(d){if(d.text){if(nodeCnt==0){text=d.text;}else{text+=','+d.text;};nodeCnt++;}});};"
 			+ "return text;};";
 	
+	private static final String GET_MAP_RESOLUTION_JS_FUNCTION = "function getMapResolution(){return surveyormap.getView().getResolution();};";
+	
 	private static final String IS_MAP_VIEW_SHOWN = "return (mapLayer.getSource() == sourceBingRoads);";
 	private static final String IS_SATELLITE_VIEW_SHOWN = "return (mapLayer.getSource() == sourceBingArialWithStreets);";
 	
@@ -203,11 +207,40 @@ public class OLMapUtility {
 
 	private static final String GET_INDICATION_NODE_PIXEL_FUNCTION_CALL = "return getIndicationNodePixels(%s,%s,%s);";
 	private static final String GET_FIRST_INDICATION_NODE_PIXEL_FUNCTION_CALL = "return getFirstIndicationNodePixels();";
+	
+	private static final String GET_MAP_RESOLUTION_JS_FUNCTION_CALL = "return getMapResolution();";
 
 	private WebDriver driver;
 
 	public OLMapUtility(WebDriver driver) {
 		this.driver = driver;
+	}
+	
+	/**
+	 * Verifies that the map resolution is correct for the specified zoom level.
+	 * @param zoomLevel - zoom level. 
+	 *   to get default map resolution use level=0
+	 *   for Zoom-In specify +ve value (for eg. 1,2,3). In this case resolution mutliplier is 0.5x, 0.25x, 0.125x, etc.
+	 *   for Zoom-Out specify -ve value (for eg. -1,-2,-3). In this case resolution mutliplier is 2x, 4x, 8x, etc.   
+	 */ 
+	public boolean isMapResolutionCorrect(int zoomLevel) {
+		double precision = 0.00000001D;
+		double currentMapResolution = getMapResolution();
+		double expectedMapResolution = DEFAULT_MAP_RESOLUTION;
+		double exponent = (-1) * zoomLevel;
+		if (zoomLevel != 0) {
+			expectedMapResolution = Math.pow(2, exponent) * DEFAULT_MAP_RESOLUTION;
+		}
+		return (Math.abs(expectedMapResolution - currentMapResolution) < precision);
+	}
+	
+	/**
+	 * Get the current map resolution.
+	 */ 
+	private double getMapResolution() {
+		String functionCall = GET_MAP_RESOLUTION_JS_FUNCTION + GET_MAP_RESOLUTION_JS_FUNCTION; 
+		Log.info("Calling javascript function -> " + functionCall);
+		return (double)((JavascriptExecutor)this.driver).executeScript(functionCall);
 	}
 	
 	/*

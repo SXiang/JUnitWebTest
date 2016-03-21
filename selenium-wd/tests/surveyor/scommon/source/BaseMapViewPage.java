@@ -179,6 +179,10 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@CacheLookup
 	private WebElement curtainZoomOutButton;
 
+	@FindBy(id = "bottom_button_mode")
+	@CacheLookup
+	protected WebElement modeButton;
+
 	@FindBy(id = "bottom_button_display")
 	@CacheLookup
 	private WebElement displayButton;
@@ -319,6 +323,10 @@ public class BaseMapViewPage extends SurveyorBasePage {
 
 	public WebElement getDivBlockedUI() {
 		return this.divBlockedUI;
+	}
+	
+	public boolean isModeButtonVisible() {
+		return !this.modeButton.getAttribute("class").contains("ng-hide");
 	}
 
 	public boolean isDisplaySwitch8HourHistoryButtonVisible() {
