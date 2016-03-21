@@ -3066,8 +3066,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 
-	public boolean verifyViewsImages(String actualPath, String reportTitle, String expectedImage) throws IOException {
-
+	public boolean verifyViewsImages(String actualPath, String viewTitle, String testCase) throws IOException {
+		PDFUtility pdfUtility = new PDFUtility();
+		String viewFile=actualPath+"\\"+viewTitle+".pdf";
+		System.out.println(pdfUtility.extractPDFImages(viewFile, testCase));
 		return true;
 	}
 
