@@ -1315,7 +1315,7 @@ public class SurveyViewPageTest {
 	}
 	
 	/**
-	 * Test Case ID: TC1025_SurveyView_ViewManualSurveyMapViewWhenFovIndicationOnGISOn
+	 * Test Case ID: TC1684_SurveyView_IndicationsHistoricalSurveyViewIndicationsBubbleColorCode
 	 * Script: -  	
 	 *	- - Verify a historical survey from Driving Survey page
 	 * Results: - 
@@ -1357,4 +1357,49 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(ETHANE_SAMPLE_FIELD_NOTES, NOTSET));
 	}
+	
+	/**
+	 * Test Case ID: TC1694_SurveyView_VerifyNotesAddedForPeaksInSurvey
+	 * Script: -  	
+	 *	- - Verify a historical survey from Driving Survey page
+	 * Results: - 
+	 *	- Not Natural Gas- Green
+	 *	- Natural Gas - Red
+	 *	- Possible Natural Gas- Yellow
+	 *	- Vehicle Exhaust - Purple
+	 */
+	@Test
+	public void TC1694_SurveyView_VerifyNotesAddedForPeaksInSurvey () throws Exception {
+		Log.info("\nRunning TC1694_SurveyView_VerifyNotesAddedForPeaksInSurvey  ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_ETHANE_SURVEY_STANDARD_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		// wait for elements to paint on the map.
+		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnFirst3300IndicationShownOnMap("NaturalGas", NOTSET);
+		// TODO: Click at Pixel currently not working as Expected.
+		//surveyViewPageAction.waitForPeakInfoPopupToOpen(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_ETHANE_SURVEY_STANDARD_TAG, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_ETHANE_SURVEY_STANDARD_TYPE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_ETHANE_SURVEY_STANDARD_USERNAME, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(ETHANE_SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(ETHANE_SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_D, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(ETHANE_SAMPLE_FIELD_NOTES, NOTSET));
+	}
+
 }
