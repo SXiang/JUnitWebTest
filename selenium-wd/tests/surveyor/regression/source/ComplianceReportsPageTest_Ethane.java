@@ -183,9 +183,9 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		complianceReportsPage.waitForPageLoad();
 
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
-		
+
 		complianceReportsPage.clickOnCopyReport(rptTitle, testSetup.getLoginUser());
-		
+
 		if (complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed())
 			assertTrue(complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed());
 		else
@@ -446,7 +446,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		listBoundary.add(ETHRNELON);
 		listBoundary.add(ETHRSWLAT);
 		listBoundary.add(ETHRSWLON);
-		
+
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();
 
@@ -520,7 +520,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		listBoundary.add(ETHRNELON);
 		listBoundary.add(ETHRSWLAT);
 		listBoundary.add(ETHRSWLON);
-		
+
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();
 
@@ -562,9 +562,9 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		complianceReportsPage.waitForPageLoad();
 
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
-		
+
 		complianceReportsPage.clickOnCopyReport(rptTitle, testSetup.getLoginUser());
-		
+
 		complianceReportsPage.verifyIfInDrivingSurvey(KEYINDCLR);
 
 	}
@@ -581,7 +581,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		String rptTitle = "TC1727 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1727: Compliance Report Generation : COPY generated report with custom selected Indication color should show default color only for Indication- customized Indication color" + rptTitle);
 
-		
+
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
 
@@ -619,7 +619,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		listBoundary.add(ETHRNELON);
 		listBoundary.add(ETHRSWLAT);
 		listBoundary.add(ETHRSWLON);
-		
+
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();
 
@@ -661,16 +661,14 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		complianceReportsPage.waitForPageLoad();
 
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
-		
+
 		complianceReportsPage.findReportbySearch(rptTitle, testSetup.getLoginUser());
 
 		complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
 		complianceReportsPage.waitForPageLoad();
-		complianceReportsPage.wait(15000);
 
-		complianceReportsPage.waitForPageToLoad();
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
-		
+
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
