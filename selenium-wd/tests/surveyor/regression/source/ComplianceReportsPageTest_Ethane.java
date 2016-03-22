@@ -5,7 +5,8 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static surveyor.scommon.source.SurveyorConstants.CUSDRVETHTAG;
+import static surveyor.scommon.source.SurveyorConstants.CUSDRVETHSTDTAG;
+import static surveyor.scommon.source.SurveyorConstants.CUSDRVETHRRTAG;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.ETHRNELAT;
 import static surveyor.scommon.source.SurveyorConstants.ETHRNELON;
@@ -57,6 +58,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -174,16 +176,16 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		viewList.add(viewMap1);
 
 		List<String> tagList = new ArrayList<String>();
-		tagList.add(PICADMNSTDTAG);
+		tagList.add(CUSDRVETHSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
-		
+
 		complianceReportsPage.clickOnCopyReport(rptTitle, testSetup.getLoginUser());
-		
+
 		if (complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed())
 			assertTrue(complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed());
 		else
@@ -234,13 +236,13 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.Standard, CUSDRVSTDTAG));
 
 		driver.navigate().refresh();
-		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.Standard, CUSDRVETHTAG));
+		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.Standard, CUSDRVETHSTDTAG));
 
 		driver.navigate().refresh();
 		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVSTDTAG));
 
 		driver.navigate().refresh();
-		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVETHTAG));
+		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVETHRRTAG));
 	}
 
 	/**
@@ -444,7 +446,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		listBoundary.add(ETHRNELON);
 		listBoundary.add(ETHRSWLAT);
 		listBoundary.add(ETHRSWLON);
-		
+
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();
 
@@ -472,14 +474,14 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		viewMap1.put(KEYINDICATIONS, "1");
 		viewMap1.put(KEYISOTOPICCAPTURE, "1");
 		viewMap1.put(KEYANNOTATION, "1");
-		viewMap1.put(KEYGAPS, "1");
+		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 		viewList.add(viewMap1);
 
 		List<String> tagList = new ArrayList<String>();
-		tagList.add(PICADMNSTDTAG);
+		tagList.add(CUSDRVETHSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
@@ -488,7 +490,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
-			assertTrue(complianceReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
+			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
 
 		} else
@@ -518,7 +520,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		listBoundary.add(ETHRNELON);
 		listBoundary.add(ETHRSWLAT);
 		listBoundary.add(ETHRSWLON);
-		
+
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();
 
@@ -546,23 +548,23 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		viewMap1.put(KEYINDICATIONS, "1");
 		viewMap1.put(KEYISOTOPICCAPTURE, "1");
 		viewMap1.put(KEYANNOTATION, "1");
-		viewMap1.put(KEYGAPS, "1");
+		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 		viewList.add(viewMap1);
 
 		List<String> tagList = new ArrayList<String>();
-		tagList.add(PICADMNSTDTAG);
+		tagList.add(CUSDRVETHSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
-		
+
 		complianceReportsPage.clickOnCopyReport(rptTitle, testSetup.getLoginUser());
-		
+
 		complianceReportsPage.verifyIfInDrivingSurvey(KEYINDCLR);
 
 	}
@@ -574,10 +576,11 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 * @throws IOException
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC1727_Ethane_Verify_Indication_Table_Color_Copy_Customized_Colored_Report() throws IOException, InterruptedException{
 		String rptTitle = "TC1727 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1727: Compliance Report Generation : COPY generated report with custom selected Indication color should show default color only for Indication- customized Indication color" + rptTitle);
+
 
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
@@ -616,7 +619,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		listBoundary.add(ETHRNELON);
 		listBoundary.add(ETHRSWLAT);
 		listBoundary.add(ETHRSWLON);
-		
+
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();
 
@@ -644,28 +647,31 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		viewMap1.put(KEYINDICATIONS, "1");
 		viewMap1.put(KEYISOTOPICCAPTURE, "1");
 		viewMap1.put(KEYANNOTATION, "1");
-		viewMap1.put(KEYGAPS, "1");
+		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 		viewList.add(viewMap1);
 
 		List<String> tagList = new ArrayList<String>();
-		tagList.add(PICADMNSTDTAG);
+		tagList.add(CUSDRVETHSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
-		
+
 		complianceReportsPage.findReportbySearch(rptTitle, testSetup.getLoginUser());
 
 		complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
 		complianceReportsPage.waitForPageLoad();
 
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
+
+
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
-			assertTrue(complianceReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
+			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
 
 		} else

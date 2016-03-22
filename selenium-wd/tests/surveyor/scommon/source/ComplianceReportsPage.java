@@ -3452,6 +3452,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (strReportMode != null && changeMode) {
 			selectReportMode(strReportMode);
 
+			if (surveyModeFilter !=null && changeMode){
+				selectSurveyModeForSurvey(surveyModeFilter);
+			}
 			this.waitForSurveySearchButtonToLoad();
 			this.getBtnSurveySearch().click();
 			this.waitForSurveyTabletoLoad();

@@ -1,6 +1,8 @@
 package surveyor.dataprovider;
 
-import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
+import static surveyor.scommon.source.SurveyorConstants.CUSDRVETHSTDTAG;
+import static surveyor.scommon.source.SurveyorConstants.CUSDRVETHRRTAG;
+import static surveyor.scommon.source.SurveyorConstants.CUSDRVETHMNTAG;
 import static surveyor.scommon.source.SurveyorConstants.ETHREXCLUSIONRADIUS;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPHEIGHT;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPWIDTH;
@@ -90,15 +92,15 @@ public class ComplianceReportEthaneDataProvider extends SurveyorTestRunner {
 	public static Object[][] dataProviderEthaneComplianceReport() {
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
-		viewList.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "1", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		tablesList.add(createOptionalTable("1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1"));
 		List<String> tagList1 = new ArrayList<String>();
-		tagList1.add(SQACUSDRTAG);
+		tagList1.add(CUSDRVETHSTDTAG);
 		List<String> tagList2 = new ArrayList<String>();
-		tagList2.add(SQACUSRRTAG);
+		tagList2.add(CUSDRVETHRRTAG);
 		List<String> tagList3 = new ArrayList<String>();
-		tagList3.add(SQACUSMNTAG);
+		tagList3.add(CUSDRVETHMNTAG);
 
 
 
