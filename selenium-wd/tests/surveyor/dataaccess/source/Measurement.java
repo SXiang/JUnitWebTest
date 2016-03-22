@@ -303,33 +303,33 @@ public class Measurement extends BaseEntity {
 	private static Measurement loadFrom(ResultSet resultSet) {
 		Measurement objMeasurement = new Measurement();
 		try {
-			objMeasurement.setWindSpeedLongitudinal(resultSet.getFloat("WindSpeedLongitudinal"));
-			objMeasurement.setGpsFit(resultSet.getInt("GpsFit"));
-			objMeasurement.setPeripheralStatus(resultSet.getInt("PeripheralStatus"));
+			objMeasurement.setWindSpeedLongitudinal(getFloatColumnValue(resultSet, "WindSpeedLongitudinal"));
+			objMeasurement.setWindSpeedLongitudinal(getFloatColumnValue(resultSet,"GpsFit"));
+			objMeasurement.setWindSpeedLongitudinal(getFloatColumnValue(resultSet,"PeripheralStatus"));
 			objMeasurement.setCreateDate(resultSet.getDate("CreateDate"));
-			objMeasurement.setWindSpeedEast(resultSet.getFloat("WindSpeedEast"));
-			objMeasurement.setShape(resultSet.getString("Shape"));
+			objMeasurement.setWindSpeedLongitudinal(getFloatColumnValue(resultSet,"WindSpeedEast"));
+			objMeasurement.setWindSpeedLongitudinal(getFloatColumnValue(resultSet,"Shape"));
 			objMeasurement.setMobileFlowRate(resultSet.getFloat("MobileFlowRate"));
-			objMeasurement.setCH4(resultSet.getFloat("CH4"));
-			objMeasurement.setWindDirectionStdDev(resultSet.getFloat("WindDirectionStdDev"));
+			objMeasurement.setWindSpeedLongitudinal(getFloatColumnValue(resultSet,"CH4"));
+			objMeasurement.setWindSpeedLongitudinal(getFloatColumnValue(resultSet,"WindDirectionStdDev"));
 			objMeasurement.setEpochTime(resultSet.getFloat("EpochTime"));
-			objMeasurement.setDeltaCH4(resultSet.getFloat("DeltaCH4"));
-			objMeasurement.setCarSpeedNorth(resultSet.getFloat("CarSpeedNorth"));
-			objMeasurement.setCarSpeedEast(resultSet.getFloat("CarSpeedEast"));
+			objMeasurement.setWindSpeedLongitudinal(getFloatColumnValue(resultSet,"DeltaCH4"));
+			objMeasurement.setWindSpeedLongitudinal(getFloatColumnValue(resultSet,"CarSpeedNorth"));
+			objMeasurement.setWindSpeedLongitudinal(getFloatColumnValue(resultSet,"CarSpeedEast"));
 			objMeasurement.setCavityPressure(resultSet.getFloat("CavityPressure"));
 			objMeasurement.setWarmBoxTemperature(resultSet.getFloat("WarmBoxTemperature"));
 			objMeasurement.setAnalyzerMode(resultSet.getInt("AnalyzerMode"));
-			objMeasurement.setWindSpeedNorth(resultSet.getFloat("WindSpeedNorth"));
-			objMeasurement.setAnalyzerStatus(resultSet.getInt("AnalyzerStatus"));
+			objMeasurement.setWindSpeedLongitudinal(getFloatColumnValue(resultSet,"WindSpeedNorth"));
+			objMeasurement.setWindSpeedLongitudinal(getFloatColumnValue(resultSet,"AnalyzerStatus"));
 			objMeasurement.setValveMask(resultSet.getFloat("ValveMask"));
-			objMeasurement.setCO2(resultSet.getFloat("CO2"));
-			objMeasurement.setGpsLongitude(resultSet.getFloat("GpsLongitude"));
-			objMeasurement.setH2OPercent(resultSet.getFloat("H2OPercent"));
-			objMeasurement.setWindSpeedLateral(resultSet.getFloat("WindSpeedLateral"));
-			objMeasurement.setWeatherStationRotation(resultSet.getFloat("WeatherStationRotation"));
-			objMeasurement.setSpecies(resultSet.getInt("Species"));
+			objMeasurement.setWindSpeedLongitudinal(getFloatColumnValue(resultSet,"CO2"));
+			objMeasurement.setWindSpeedLongitudinal(getFloatColumnValue(resultSet,"GpsLongitude"));
+			objMeasurement.setWindSpeedLongitudinal(getFloatColumnValue(resultSet,"H2OPercent"));
+			objMeasurement.setWindSpeedLongitudinal(getFloatColumnValue(resultSet,"WindSpeedLateral"));
+			objMeasurement.setWindSpeedLongitudinal(getFloatColumnValue(resultSet,"WeatherStationRotation"));
+			objMeasurement.setWindSpeedLongitudinal(getFloatColumnValue(resultSet,"Species"));
 			objMeasurement.setHotBoxTemperature(resultSet.getFloat("HotBoxTemperature"));
-			objMeasurement.setChemDetect(resultSet.getObject("ChemDetect"));
+			objMeasurement.setWindSpeedLongitudinal(getFloatColumnValue(resultSet,"ChemDetect"));
 		} catch (SQLException e) {
 			Log.error(e.toString());
 		}

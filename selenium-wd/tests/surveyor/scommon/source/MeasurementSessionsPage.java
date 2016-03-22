@@ -489,13 +489,13 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 					if (datFileName.contains(DRIVINGSURVEYSEXPORTSURVEY)){
 						Assert.assertTrue((verifySurveyExportFile(downloadPath + File.separator + datFileName, analyzer)));
 					}
-					else if (datFileName.contains(DRIVINGSURVEYSEXPORTPEAKS)){
+/*					else if (datFileName.contains(DRIVINGSURVEYSEXPORTPEAKS)){
 						Assert.assertTrue((verifyPeakExportFile(downloadPath + File.separator + datFileName, tag, analyzer, mode)));
 					}
 					else if (datFileName.contains(DRIVINGSURVEYSEXPORTANALYSIS)){
 						Assert.assertTrue((verifyAnalysisExportFile(downloadPath + File.separator + datFileName, tag, analyzer)));
 					}
-				}
+*/				}
 				catch (Exception e) {
 					Log.error(e.toString());
 					return false;
@@ -527,22 +527,32 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			List<HashMap<String,String>> rows = dUtil.getAllRows();
 			Map<String, String> map = new HashMap<String, String>();
 
-			List<Peak> listOFDBPeak = Peak.getPeaks(tag, analyzer, mode);
+			List<Peak> listOfDBPeak = Peak.getPeaks(tag, analyzer, mode);
 
-			if (rows.size() > 0){
-				for(int i=0; i<rows.size(); i++){
-					map =rows.get(i);
-					checkPeakInDB(listOFDBPeak,map);
-					verifyPeak=true;
+			if (rows.size() > 0 && listOfDBPeak.size() > 0){
+				if (rows.size()==listOfDBPeak.size()){
+
+					for(int i=0; i<rows.size(); i++){
+						map =rows.get(i);
+						verifyPeak=checkPeakInDB(listOfDBPeak,map);
+						if(!verifyPeak){
+							Log.info("One of the row does not exist in database table.");
+							return false;
+						}
+					}
+				}
+				else{
+					verifyPeak= false;
+					Log.info("The number of rows in downloaded file and rows of database table does not match.");
 				}
 			}
-			else{
-				Log.info("FILE IS EMPTY");
+			else if (rows.size()==0 && listOfDBPeak.size()==0){
+				verifyPeak=true;
+				Log.info("The File and database table both do not have anything.");
 			}
 
 		} catch (IOException e) {
 			Log.error(e.toString());
-
 		}
 		return verifyPeak;
 	}
@@ -565,18 +575,29 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			dUtil.convertDATtoCSV(datFileName);
 			List<HashMap<String,String>> rows = dUtil.getAllRows();
 			Map<String, String> map = new HashMap<String, String>();
+			
+			List<Measurement> listOfDBMeasurement= Measurement.getMeasurements(analyzer);
+			
+			if (rows.size() > 0 && listOfDBMeasurement.size() > 0){
+				if (rows.size()==listOfDBMeasurement.size()){
 
-			List<Measurement> listOFDBMeasurement= Measurement.getMeasurements(analyzer);
-
-			if (rows.size() > 0){
-				for(int i=0; i<rows.size(); i++){
-					map =rows.get(i);
-					checkMeasurementInDB(listOFDBMeasurement,map);
-					verifySurvey=true;
+					for(int i=0; i<rows.size(); i++){
+						map =rows.get(i);
+						verifySurvey=checkMeasurementInDB(listOfDBMeasurement,map);
+						if(!verifySurvey){
+							Log.info("One of the row does not exist in database table.");
+							return false;
+						}
+					}
+				}
+				else{
+					verifySurvey= false;
+					Log.info("The number of rows in downloaded file and rows of database table does not match.");
 				}
 			}
-			else{
-				Log.info("FILE IS EMPTY");
+			else if (rows.size()==0 && listOfDBMeasurement.size()==0){
+				verifySurvey=true;
+				Log.info("The File and database table both do not have anything.");
 			}
 
 		} catch (IOException e) {
@@ -604,17 +625,28 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			List<HashMap<String,String>> rows = dUtil.getAllRows();
 			Map<String, String> map = new HashMap<String, String>();
 
-			List<CaptureEvent> listOFDBCaptureEvent = CaptureEvent.getCaptureEvent(tag, analyzer);
+			List<CaptureEvent> listOfDBCaptureEvent = CaptureEvent.getCaptureEvent(tag, analyzer);
 
-			if (rows.size() > 0){
-				for(int i=0; i<rows.size(); i++){
-					map =rows.get(i);
-					checkAnalysisInDB(listOFDBCaptureEvent,map);
-					verifyAnalysis=true;
+			if (rows.size() > 0 && listOfDBCaptureEvent.size() > 0){
+				if (rows.size()==listOfDBCaptureEvent.size()){
+
+					for(int i=0; i<rows.size(); i++){
+						map =rows.get(i);
+						verifyAnalysis=checkAnalysisInDB(listOfDBCaptureEvent,map);
+						if(!verifyAnalysis){
+							Log.info("One of the row does not exist in database table.");
+							return false;
+						}
+					}
+				}
+				else{
+					verifyAnalysis= false;
+					Log.info("The number of rows in downloaded file and rows of database table does not match.");
 				}
 			}
-			else{
-				Log.info("FILE IS EMPTY");
+			else if (rows.size()==0 && listOfDBCaptureEvent.size()==0){
+				verifyAnalysis=true;
+				Log.info("The File and database table both do not have anything.");
 			}
 
 		} catch (IOException e) {
