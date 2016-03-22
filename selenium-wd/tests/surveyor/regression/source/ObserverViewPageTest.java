@@ -2,6 +2,8 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.*;
 import common.source.Log;
+import common.source.TestSetup;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -37,6 +39,8 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
+		TestSetup.stopChromeProcesses();
+
 		// Initialize needed at Class level for automation reports.
 		initializePageActions();
 	}
@@ -68,6 +72,8 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		try {
 			afterTest();
 			afterTest2();
+			
+			TestSetup.stopChromeProcesses();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -508,7 +514,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		observerViewPageAction.turnOffAllAssets(EMPTY, NOTSET);
 		observerViewPageAction.turnOffAllBoundaries(EMPTY, NOTSET);
 
-		// TODO: Switch tab check needs to be implemented.
 		driverViewPageAction.verifyAssetIsShownOnMap(EMPTY, NOTSET);
 		driverViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET);
 		
