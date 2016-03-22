@@ -54,8 +54,8 @@ public final class SurveyorConstants {
 	public static final String CUSUSERROLEDR = Resources.getResource(ResourceKeys.Constant_Driver);
 	public static final String PICUSERROLESUP = "Picarro Support";
 
-	public static final String PICDFADMIN = "Administrator";
-	public static final String PICADMINPSWD = "FastLane!911";
+	public static final String PICDFADMIN = "AutomationAdmin";
+	public static final String PICADMINPSWD = "sqa#Picarro$0";
 	public static final String SQACUSUAUSER = "sqacusua";
 	public static final String SQACUSSUUSER = "sqacussu";
 	public static final String SQACUSDRUSER = "sqacusdr";
