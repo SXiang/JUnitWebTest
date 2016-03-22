@@ -153,6 +153,13 @@ public class ResourceKeys {
 	public static final String Survey_DeltaOutOfRange = "Survey_DeltaOutOfRange"; 
 	public static final String Survey_NotNaturalGas = "Survey_NotNaturalGas"; 
 	public static final String Survey_NaturalGas = "Survey_NaturalGas";
+
+	// Peak info popup constants.
+	public static final String Survey_Disposition = "Survey_Disposition";
+	public static final String Survey_ClassificationConfidence = "Survey_ClassificationConfidence";
+	public static final String Survey_CH4 = "Survey_CH4";
+	public static final String Survey_EthaneRatio = "Survey_EthaneRatio";
+	public static final String Survey_amplitude = "Survey_amplitude";
 	
 	public static final String SystemHistoryReports_PageTitle = "SystemHistoryReports_PageTitle";
 	public static final String SystemHistoryReports_ReportTitle = "SysHistoryReportSSRS_SystemHistoryReport";

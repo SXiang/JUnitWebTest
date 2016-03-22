@@ -141,6 +141,32 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return true;
 	}
 
+	/**
+	 * Executes clickOnFirst3300IndicationShownOnMap action.
+	 * @param data - specifies type of the indication (For eg.'NaturalGas','NotNaturalGas','PossibleNaturalGas','VehicleExhaust').
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */	
+	public boolean clickOnFirst3300IndicationShownOnMap(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".clickOnFirstIndicationShownOnMap", data, dataRowID);
+		String mapCanvasXPath = "//*[@id='map']/div/canvas";
+		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
+		boolean retVal = mapUtility.clickFirst3300IndicationOnMap(mapCanvasXPath, data);
+		return retVal;
+	}
+
+	public boolean waitForPeakInfoPopupToOpen(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".waitForPeakInfoPopupToOpen", data, dataRowID);
+		getPageObject().waitForPeakInfoPopupToOpen();
+		return true;
+	}
+
+	public boolean waitForPeakInfoPopupToClose(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".waitForPeakInfoPopupToClose", data, dataRowID);
+		getPageObject().waitForPeakInfoPopupToClose();
+		return true;
+	}
+
 	public boolean hideCurtainView(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".hideCurtainView", data, dataRowID);
 		getPageObject().hideCurtainMenu();
