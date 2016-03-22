@@ -10,8 +10,6 @@ public class ResourceKeys {
 	public static final String ComplianceReport_PercentCoverageReportArea = "ComplianceReport_PercentCoverageReportArea";
 	public static final String ComplianceReports_AddNew = "ComplianceReports_AddNew";
 	public static final String ComplianceReports_PageTitle = "ComplianceReports_PageTitle";
-	public static final String EqReports_PageTitle = "EQReports_PageTitle";
-	public static final String EqReport_PageTitle = "EQReport_PageTitle";
 	public static final String ComplianceReportSSRS_AdditionalSurveys = "ComplianceReportSSRS_AdditionalSurveys";
 	public static final String ComplianceReportSSRS_Amplitude = "ComplianceReportSSRS_Amplitude(ppm)";
 	public static final String ComplianceReportSSRS_Analysis = "ComplianceReportSSRS_Analysis";
@@ -184,4 +182,17 @@ public class ResourceKeys {
 	public static final String Validation_EnterValueLessThanOrEqual = "Validation_EnterValueLessThanOrEqual";
 	public static final String Validation_EnterValueGreaterThanOrEqual = "Validation_EnterValueGreaterThanOrEqual";
 	public static final String Dialog_LineSelected = "Dialog_LineSelected";
+	
+	// Constants for EQ
+	public static final String ComplianceReport_EQLinesMessage = "ComplianceReport_EQLinesMessage";
+	public static final String Dialog_EQModeActive = "Dialog_EQModeActive";
+	public static final String Dialog_StartEQSurvey = "Dialog_StartEQSurvey";
+	public static final String EqReport_PageTitle = "EqReport_PageTitle";
+	public static final String EqReports_AddNew = "EqReports_AddNew";
+	public static final String EqReports_EQTablePDF = "EqReports_EQTablePDF";
+	public static final String EqReports_PageTitle = "EqReports_PageTitle";
+	public static final String EQReportSSRS_NoEQrecordsarepresent = "EQReportSSRS_NoEQrecordsarepresent";
+	public static final String Layout_Nav_Reports_EQ = "Layout_Nav_Reports_EQ";
+	public static final String Reports_EQViewer = "Reports_EQViewer";
+
 }

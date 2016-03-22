@@ -910,6 +910,40 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		return getDriverViewPage().isWBTempButtonRed();
 	}
 
+	/* Verify EQ methods */
+	/**
+	 * Executes verifyEQModeDialogMessageEquals action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyEQModeDialogMessageEquals(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyEQModeDialogMessageEquals", data, dataRowID);
+		return getDriverViewPage().verifyEQModeDialogMessageEquals(data);
+	}
+ 
+	/**
+	 * Executes verifyEQModeDialogIsShown action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyEQModeDialogIsShown(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyEQModeDialogIsShown", data, dataRowID);
+		return getDriverViewPage().isEQModeDialogShown();
+	}
+ 
+	/**
+	 * Executes verifyEQModeDialogIsNotShown action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyEQModeDialogIsNotShown(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyEQModeDialogIsNotShown", data, dataRowID);
+		return getDriverViewPage().isEQModeDialogHidden();
+	}
+	
 	/* Verify OLMap elements */
 	public boolean verifyLISAIsShownOnMap(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyLISAIsShownOnMap", data, dataRowID);
@@ -1702,6 +1736,9 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyDisplaySwitchIsOff")) { return this.verifyDisplaySwitchIsOff(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchIsOn")) { return this.verifyDisplaySwitchIsOn(data, dataRowID); }
 		else if (actionName.equals("verifyDriverViewPageIsOpened")) { return this.verifyDriverViewPageIsOpened(data, dataRowID); }
+		else if (actionName.equals("verifyEQModeDialogMessageEquals")) { return this.verifyEQModeDialogMessageEquals(data, dataRowID); }
+		else if (actionName.equals("verifyEQModeDialogIsShown")) { return this.verifyEQModeDialogIsShown(data, dataRowID); }
+		else if (actionName.equals("verifyEQModeDialogIsNotShown")) { return this.verifyEQModeDialogIsNotShown(data, dataRowID); }
 		else if (actionName.equals("verifyFieldNotesIsNotShownOnMap")) { return this.verifyFieldNotesIsNotShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyFieldNotesIsShownOnMap")) { return this.verifyFieldNotesIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyFlowButtonIsGreen")) { return this.verifyFlowButtonIsGreen(data, dataRowID); }
