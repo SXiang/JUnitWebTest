@@ -153,7 +153,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws Exception {
 		String rptTitle = null;
 		String testCaseName = getTestCaseName(index);
-		if (testCaseName.equals("TC203")) {
+		/*if (testCaseName.equals("TC203")) {
 			rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber() + "#<>$";
 
 		} else {
@@ -169,7 +169,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
-		/*if ((complianceReportsPage.checkActionStatus(rptTitle, strCreatedBy, testCaseName))) {
+		if ((complianceReportsPage.checkActionStatus(rptTitle, strCreatedBy, testCaseName))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, strCreatedBy));
 			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rptTitle));
@@ -195,7 +195,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		} else
 
 			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");*/
-		assertTrue(complianceReportsPage.verifyViewsImages("C:\\Users\\cnanayakkara\\Downloads\\CR-BA3C44", "TC1321Report55320_First View", "TC1321"));
+		assertTrue(complianceReportsPage.verifyViewsImages("C:\\Users\\cnanayakkara\\Downloads\\CR-BA3C44", "TC1321Report55320_First View", "TC1321",""));
 
 	}
 
