@@ -5,9 +5,11 @@ import common.source.DateUtility;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
@@ -26,7 +28,6 @@ import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
-
 import surveyor.scommon.actions.SurveyViewPageActions;
 import surveyor.scommon.source.SurveyViewPage;
 
@@ -1325,7 +1326,7 @@ public class SurveyViewPageTest {
 	 *	- Possible Natural Gas- Yellow
 	 *	- Vehicle Exhaust - Purple
 	 */
-	@Test
+	@Ignore
 	public void TC1684_SurveyView_IndicationsHistoricalSurveyViewIndicationsBubbleColorCode() throws Exception {
 		Log.info("\nRunning TC1684_SurveyView_IndicationsHistoricalSurveyViewIndicationsBubbleColorCode ...");
 
@@ -1369,7 +1370,7 @@ public class SurveyViewPageTest {
 	 *	- Possible Natural Gas- Yellow
 	 *	- Vehicle Exhaust - Purple
 	 */
-	@Test
+	@Ignore
 	public void TC1694_SurveyView_VerifyNotesAddedForPeaksInSurvey () throws Exception {
 		Log.info("\nRunning TC1694_SurveyView_VerifyNotesAddedForPeaksInSurvey  ...");
 
@@ -1392,7 +1393,7 @@ public class SurveyViewPageTest {
 	 *	- Possible Natural Gas- Yellow
 	 *	- Vehicle Exhaust - Purple
 	 */
-	@Test
+	@Ignore
 	public void TC1692_SurveyView_VerifyPeakbubble () throws Exception {
 		Log.info("\nRunning TC1692_SurveyView_VerifyPeakbubble  ...");
 
