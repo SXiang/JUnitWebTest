@@ -131,7 +131,7 @@ import common.source.TestContext;
 public class ComplianceReportsPage extends ReportsBasePage {
 	private static final int CUSTOM_BOUNDARY_RADBUTTON_GROUP_IDX = 0;
 	private static final int CUSTOMER_BOUNDARY_RADBUTTON_GROUP_IDX = 1;
-	
+
 	/*
 	 * Base 64 String for the image appearing as <Pdf>. This string is part of all the reports and should not be considered for comparison
 	 */
@@ -3069,33 +3069,35 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public boolean verifyViewsImages(String actualPath, String sourceViewTitle, String testCase, String destViewTitle) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
-		String destViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator +destViewTitle + ".jpg";
-		String sourceViewFile=actualPath+File.separator+sourceViewTitle+".pdf";
-		String imageExtractFolder=(pdfUtility.extractPDFImages(sourceViewFile, testCase));
-		System.out.println(imageExtractFolder);
+		String baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + destViewTitle + ".png";
+		String sourceViewFile = actualPath + File.separator + sourceViewTitle + ".pdf";
+		String imageExtractFolder = (pdfUtility.extractPDFImages(sourceViewFile, testCase));
 		File folder = new File(imageExtractFolder);
 		File[] listOfFiles = folder.listFiles();
 		for (File file : listOfFiles) {
-		    if (file.isFile()) {
-		    	BufferedImage image = ImageIO.read(file);
-		    	int width = image.getWidth();
-		    	System.out.println(width);
-		    	int height = image.getHeight();
-		    	System.out.println(height);
-		    	Rectangle rect=new Rectangle(0,0,width,height-300);
-		    	cropImage(image,rect);
-		    	System.out.println(testSetup.getSystemTempDirectory()+testCase+".jpg");
-				File outputfile = new File(testSetup.getSystemTempDirectory()+testCase+".jpg");
-				ImageIO.write(image, "jpg", outputfile);
-		    }
-		}		
+			if (file.isFile()) {
+				BufferedImage image = ImageIO.read(file);
+				int width = image.getWidth();
+				int height = image.getHeight();
+				Rectangle rect = new Rectangle(0, 0, width, height - 40);
+				image = cropImage(image, rect);
+				String actualViewPath = testSetup.getSystemTempDirectory() + testCase + ".png";
+				File outputfile = new File(testSetup.getSystemTempDirectory() + testCase + ".png");
+				ImageIO.write(image, "png", outputfile);
+				if (!verifyActualImageWithBase(baseViewFile, actualViewPath)) {
+					Files.delete(Paths.get(actualViewPath));
+					return false;
+				}
+				Files.delete(Paths.get(actualViewPath));
+			}
+		}
 		return true;
 	}
 
-	 private BufferedImage cropImage(BufferedImage src, Rectangle rect) {
-	      BufferedImage dest = src.getSubimage(rect.x, rect.y, rect.width, rect.height);
-	      return dest; 
-	   }
+	private BufferedImage cropImage(BufferedImage src, Rectangle rect) {
+		BufferedImage dest = src.getSubimage(rect.x, rect.y, rect.width, rect.height);
+		return dest;
+	}
 
 	/**
 	 * Method to verify the images in SSRS
