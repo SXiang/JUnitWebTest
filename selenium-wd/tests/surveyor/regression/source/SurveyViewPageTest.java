@@ -173,7 +173,8 @@ public class SurveyViewPageTest {
 			if (!driver.getTitle().equalsIgnoreCase("Login"))
 				homePage.logout();
 
-			driver.quit();		
+			driver.quit();	
+			TestSetup.stopChromeProcesses();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1315,7 +1316,7 @@ public class SurveyViewPageTest {
 	}
 
 	/**
-	 * Test Case ID: TC1684_SurveyView_IndicationsHistoricalSurveyViewIndicationsBubbleColorCode
+	 * Test Case ID: TC1025_SurveyView_ViewManualSurveyMapViewWhenFovIndicationOnGISOn
 	 * Script: -  	
 	 *	- - Verify a historical survey from Driving Survey page
 	 * Results: - 
@@ -1329,7 +1330,7 @@ public class SurveyViewPageTest {
 		Log.info("\nRunning TC1684_SurveyView_IndicationsHistoricalSurveyViewIndicationsBubbleColorCode ...");
 
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 10);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_ETHANE_SURVEY_STANDARD_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		// wait for elements to paint on the map.
@@ -1372,14 +1373,14 @@ public class SurveyViewPageTest {
 	public void TC1694_SurveyView_VerifyNotesAddedForPeaksInSurvey () throws Exception {
 		Log.info("\nRunning TC1694_SurveyView_VerifyNotesAddedForPeaksInSurvey  ...");
 
+
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 10);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_ETHANE_SURVEY_STANDARD_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		// wait for elements to paint on the map.
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(ETHANE_SAMPLE_FIELD_NOTES, NOTSET));
-	}
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(ETHANE_SAMPLE_FIELD_NOTES, NOTSET));	}
 
 	/**
 	 * Test Case ID: TC1692_SurveyView_VerifyPeakbubble
@@ -1396,7 +1397,7 @@ public class SurveyViewPageTest {
 		Log.info("\nRunning TC1692_SurveyView_VerifyPeakbubble  ...");
 
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 10);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_ETHANE_SURVEY_STANDARD_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		// wait for elements to paint on the map.
