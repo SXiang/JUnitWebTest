@@ -3177,7 +3177,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage) {
 		ImagingUtility imageUtil = new ImagingUtility();
 		ImageComparisonResult result = imageUtil.compareImages(pathToActualImage, pathToBaseImage);
-		if (result.getFailureMessage() != null) {
+		if ((result.getFailureMessage() != null) && (result.isEqual() == true)) {
 			return false;
 		}
 		return true;
