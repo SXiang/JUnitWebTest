@@ -59,7 +59,7 @@ public class SurveyViewPageTest {
 	private static final String TEST_SURVEY_MANUAL1_TAG = "man-pic";
 	private static final String TEST_SURVEY_MANUAL1_TYPE = "Manual";
 	private static final String TEST_SURVEY_MANUAL1_USERNAME = "Administrator";
-	
+
 	// Ethane specific constants.
 	private static final String ETHANE_SAMPLE_FIELD_NOTES = "3.6 big leak location";
 	private static final String ETHANE_SURVEY_INFO_SURVEYOR = "Surveyor: Green-Escape";
@@ -68,7 +68,7 @@ public class SurveyViewPageTest {
 	private static final String TEST_ETHANE_SURVEY_STANDARD_TAG = "ethane night sf b1";
 	private static final String TEST_ETHANE_SURVEY_STANDARD_TYPE = "Standard";
 	private static final String TEST_ETHANE_SURVEY_STANDARD_USERNAME = "picscdr@picarro.com";
-	
+
 	// Use this Manual survey for verifying Field notes are present.
 	private static final String TEST_SURVEY_MANUAL2_ID = "2278D26F-8D69-B070-56FD-39D4B552F8F2";
 	private static final String TEST_SURVEY_MANUAL2_TAG = "man-pic";
@@ -77,7 +77,7 @@ public class SurveyViewPageTest {
 
 	private static final String EMPTY = "";
 	private static final Integer NOTSET = -1;
-	
+
 	private static HomePageActions homePageAction;
 	private static LoginPageActions loginPageAction;
 	private static DriverViewPageActions driverViewPageAction;
@@ -91,7 +91,7 @@ public class SurveyViewPageTest {
 	private static TestSetup testSetup = null;
 	private static WebDriver driver = null;
 	private static String baseURL = null;
-	
+
 	// JUnit does NOT give a good way to detect which TestClass is executing.
 	// So we watch for the Test method under execution and install simulator pre-reqs
 	// if the test under execution is a Simulator test.
@@ -115,9 +115,9 @@ public class SurveyViewPageTest {
 			SurveyorBaseTest.reportTestFailed(e);
 		}
 
-		 @Override
-		 protected void succeeded(Description description) {
-			 SurveyorBaseTest.reportTestSucceeded();
+		@Override
+		protected void succeeded(Description description) {
+			SurveyorBaseTest.reportTestSucceeded();
 		}
 	};
 
@@ -135,7 +135,7 @@ public class SurveyViewPageTest {
 		testEnvironmentAction = new TestEnvironmentActions();
 		driverViewPageAction = new DriverViewPageActions(driver, baseURL, testSetup);
 	}
-	
+
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
@@ -145,7 +145,7 @@ public class SurveyViewPageTest {
 	public void beforeTestMethod() {
 		try {
 			initializePageActions();
-			
+
 			// Additional page actions.
 			homePageAction = new HomePageActions(driver, baseURL,testSetup);
 			surveyViewPageAction = new SurveyViewPageActions(driver, baseURL,testSetup);
@@ -153,7 +153,7 @@ public class SurveyViewPageTest {
 			// Initialize page objects.
 			loginPage = new LoginPage(driver, baseURL, testSetup);
 			PageFactory.initElements(driver,  loginPage);
-			
+
 			homePage = new HomePage(driver, baseURL, testSetup);
 			PageFactory.initElements(driver,  homePage);
 
@@ -164,21 +164,21 @@ public class SurveyViewPageTest {
 			e.printStackTrace();
 		}		
 	}
-	
+
 	@After
-    public void afterTestMethod() {
+	public void afterTestMethod() {
 		try {
 			homePage.open();
-			
+
 			if (!driver.getTitle().equalsIgnoreCase("Login"))
 				homePage.logout();
-			
+
 			driver.quit();		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Test Case ID: TC1000_SurveyView_ViewIndicationsRapidResponseSurveySatelliteViewWhenNoGISLoaded
 	 * Script: -  	
@@ -196,7 +196,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1000_SurveyView_ViewIndicationsRapidResponseSurveySatelliteViewWhenNoGISLoaded() throws Exception {
 		Log.info("\nRunning TC1000_SurveyView_ViewIndicationsRapidResponseSurveySatelliteViewWhenNoGISLoaded ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
@@ -217,7 +217,7 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1001_SurveyView_ViewRapidResponseSurveyMapViewWhenLISAFieldNotesAreOnGISOff
 	 * Script: -  	
@@ -237,7 +237,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1001_SurveyView_ViewRapidResponseSurveyMapViewWhenLISAFieldNotesAreOnGISOff() throws Exception {
 		Log.info("\nRunning TC1001_SurveyView_ViewRapidResponseSurveyMapViewWhenLISAFieldNotesAreOnGISOff ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
@@ -265,7 +265,7 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1002_SurveyView_ViewRapidResponseSurveySatelliteViewWhenLISAFieldNotesAreOnGISOff
 	 * Script: -  	
@@ -285,7 +285,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1002_SurveyView_ViewRapidResponseSurveySatelliteViewWhenLISAFieldNotesAreOnGISOff() throws Exception {
 		Log.info("\nRunning TC1002_SurveyView_ViewRapidResponseSurveySatelliteViewWhenLISAFieldNotesAreOnGISOff ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
@@ -313,7 +313,7 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1003_SurveyView_ViewRapidResponseSurveyMapViewWhenFovIndicationOnGISOn
 	 * Script: -  	
@@ -333,7 +333,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1003_SurveyView_ViewRapidResponseSurveyMapViewWhenFovIndicationOnGISOn() throws Exception {
 		Log.info("\nRunning TC1003_SurveyView_ViewRapidResponseSurveyMapViewWhenFovIndicationOnGISOn ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
@@ -363,7 +363,7 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1004_SurveyView_ViewRapidResponseSurveySatelliteViewWhenFovIndicationOnGISOn
 	 * Script: -  	
@@ -383,7 +383,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1004_SurveyView_ViewRapidResponseSurveySatelliteViewWhenFovIndicationOnGISOn() throws Exception {
 		Log.info("\nRunning TC1004_SurveyView_ViewRapidResponseSurveySatelliteViewWhenFovIndicationOnGISOn ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
@@ -413,7 +413,7 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1005_SurveyView_ViewRapidResponseSurveyMapViewWhenAllDisplayOptionsAreOn
 	 * Script: -  	
@@ -432,7 +432,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1005_SurveyView_ViewRapidResponseSurveyMapViewWhenAllDisplayOptionsAreOn() throws Exception {
 		Log.info("\nRunning TC1005_SurveyView_ViewRapidResponseSurveyMapViewWhenAllDisplayOptionsAreOn ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
@@ -454,7 +454,7 @@ public class SurveyViewPageTest {
 		// TODO: Specific asset check is to be implemented.
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1006_SurveyView_ViewRapidResponseSurveySatelliteViewWhenAllDisplayOptionsAreONOtherPlasticCopperAssetsONBoundariesOFF
 	 * Script: -  	
@@ -473,7 +473,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1006_SurveyView_ViewRapidResponseSurveySatelliteViewWhenAllDisplayOptionsAreONOtherPlasticCopperAssetsONBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC1006_SurveyView_ViewRapidResponseSurveySatelliteViewWhenAllDisplayOptionsAreONOtherPlasticCopperAssetsONBoundariesOFF ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
@@ -496,7 +496,7 @@ public class SurveyViewPageTest {
 		// TODO: Plastic and Copper assets check to be implemented.
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1007_SurveyView_ViewRapidResponseSurveyMapViewWhenLISAONAssetsBoundariesOFF
 	 * Script: -  	
@@ -514,7 +514,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1007_SurveyView_ViewRapidResponseSurveyMapViewWhenLISAONAssetsBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC1007_SurveyView_ViewRapidResponseSurveyMapViewWhenLISAONAssetsBoundariesOFF ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
@@ -535,7 +535,7 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1008_SurveyView_ViewRapidResponseSurveySatelliteViewWhenLISAONAssetsBoundariesOFF
 	 * Script: -  	
@@ -553,7 +553,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1008_SurveyView_ViewRapidResponseSurveySatelliteViewWhenLISAONAssetsBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC1008_SurveyView_ViewRapidResponseSurveySatelliteViewWhenLISAONAssetsBoundariesOFF ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
@@ -574,7 +574,7 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1009_SurveyView_ViewRapidResponseSurveyMapViewWhenFOVONAssetsBoundariesOFF
 	 * Script: -  	
@@ -592,7 +592,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1009_SurveyView_ViewRapidResponseSurveyMapViewWhenFOVONAssetsBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC1009_SurveyView_ViewRapViewRapidResponseidResponseSurveyMapViewWhenFOVONAssetsBoundariesOFF ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
@@ -613,7 +613,7 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1010_SurveyView_ViewRapidResponseSurveySatelliteViewWhenFOVONAssetsBoundariesOFF
 	 * Script: -  	
@@ -631,7 +631,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1010_SurveyView_ViewRapidResponseSurveySatelliteViewWhenFOVONAssetsBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC1010_SurveyView_ViewRapidResponseSurveySatelliteViewWhenFOVONAssetsBoundariesOFF ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
@@ -652,7 +652,7 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1011_SurveyView_ViewRapidResponseSurveyMapViewWhenFieldNotesONAssetsBoundariesOFF
 	 * Script: -  	
@@ -670,7 +670,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1011_SurveyView_ViewRapidResponseSurveyMapViewWhenFieldNotesONAssetsBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC1011_SurveyView_ViewRapidResponseSurveyMapViewWhenFieldNotesONAssetsBoundariesOFF ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
@@ -691,7 +691,7 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1012_SurveyView_ViewRapidResponseSurveySatellliteViewWhenFieldNotesONAssetsBoundariesOFF
 	 * Script: -  	
@@ -709,7 +709,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1012_SurveyView_ViewRapidResponseSurveySatellliteViewWhenFieldNotesONAssetsBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC1012_SurveyView_ViewRapidResponseSurveySatellliteViewWhenFieldNotesONAssetsBoundariesOFF ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
@@ -730,7 +730,7 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1013_SurveyView_ViewRapidResponseSurveyMapViewWhenIsotopicAnalysisONAssetsBoundariesOFF
 	 * Script: -  	
@@ -748,7 +748,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1013_SurveyView_ViewRapidResponseSurveyMapViewWhenIsotopicAnalysisONAssetsBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC1013_SurveyView_ViewRapidResponseSurveyMapViewWhenIsotopicAnalysisONAssetsBoundariesOFF ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
@@ -772,7 +772,7 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1014_SurveyView_ViewRapidResponseSurveySatelliteViewWhenIsotopicAnalysisONAssetsBoundariesOFF
 	 * Script: -  	
@@ -790,7 +790,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1014_SurveyView_ViewRapidResponseSurveySatelliteViewWhenIsotopicAnalysisONAssetsBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC1014_SurveyView_ViewRapidResponseSurveySatelliteViewWhenIsotopicAnalysisONAssetsBoundariesOFF ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
@@ -814,7 +814,7 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1016_SurveyView_ViewManualSurveySatelliteViewWhenGISDisplayOptionsAreOFF
 	 * Script: -  	
@@ -831,7 +831,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1016_SurveyView_ViewManualSurveySatelliteViewWhenGISDisplayOptionsAreOFF() throws Exception {
 		Log.info("\nRunning TC1016_SurveyView_ViewManualSurveySatelliteViewWhenGISDisplayOptionsAreOFF ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
@@ -859,7 +859,7 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1017_SurveyView_ViewIndicationsDataManualSurveySatelliteViewWhenGISDataLoaded
 	 * Script: -  	
@@ -875,7 +875,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1017_SurveyView_ViewIndicationsDataManualSurveySatelliteViewWhenGISDataLoaded() throws Exception {
 		Log.info("\nRunning TC1017_SurveyView_ViewIndicationsDataManualSurveySatelliteViewWhenGISDataLoaded ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
@@ -896,7 +896,7 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1018_SurveyView_ViewFOVDataManualSurveySatellliteViewWhenGISDataLoaded
 	 * Script: -  	
@@ -912,7 +912,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1018_SurveyView_ViewFOVDataManualSurveySatellliteViewWhenGISDataLoaded() throws Exception {
 		Log.info("\nRunning TC1018_SurveyView_ViewFOVDataManualSurveySatellliteViewWhenGISDataLoaded ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
@@ -933,7 +933,7 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1019_SurveyView_ViewFOVIndicationsLisasDataManualSurveySatelliteViewWhenAssetsAreLoaded
 	 * Script: -  	
@@ -951,7 +951,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1019_SurveyView_ViewFOVIndicationsLisasDataManualSurveySatelliteViewWhenAssetsAreLoaded() throws Exception {
 		Log.info("\nRunning TC1019_SurveyView_ViewFOVIndicationsLisasDataManualSurveySatelliteViewWhenAssetsAreLoaded ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
@@ -996,7 +996,7 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES, NOTSET));
 
 	}
- 
+
 	/**
 	 * Test Case ID: TC1020_SurveyView_ViewFOVIndicationsLisasDataManualSurveySatelliteViewWhenBoundariesLoadedIntoGIS
 	 * Script: -  	
@@ -1014,7 +1014,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1020_SurveyView_ViewFOVIndicationsLisasDataManualSurveySatelliteViewWhenBoundariesLoadedIntoGIS() throws Exception {
 		Log.info("\nRunning TC1020_SurveyView_ViewFOVIndicationsLisasDataManualSurveySatelliteViewWhenBoundariesLoadedIntoGIS ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
@@ -1058,7 +1058,7 @@ public class SurveyViewPageTest {
 		surveyViewPageAction.turnOnAllBoundaries(EMPTY, NOTSET);
 		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1021_SurveyView_ViewIndicationsLisasDataManualSurveySatelliteViewWhenGISDataLoaded
 	 * Script: -  	
@@ -1075,7 +1075,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1021_SurveyView_ViewIndicationsLisasDataManualSurveySatelliteViewWhenGISDataLoaded() throws Exception {
 		Log.info("\nRunning TC1021_SurveyView_ViewIndicationsLisasDataManualSurveySatelliteViewWhenGISDataLoaded ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
@@ -1097,7 +1097,7 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1022_SurveyView_ViewIndicationsManualSurveySatelliteViewWhenNoGISLoaded
 	 * Script: -  	
@@ -1116,7 +1116,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1022_SurveyView_ViewIndicationsManualSurveySatelliteViewWhenNoGISLoaded() throws Exception {
 		Log.info("\nRunning TC1022_SurveyView_ViewIndicationsManualSurveySatelliteViewWhenNoGISLoaded ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
@@ -1136,10 +1136,10 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		
+
 		// TODO: Indications displayed in survey view are same as that present in driver/observer view needs to be verified.
 	}
- 
+
 	/**
 	 * Test Case ID: TC1023_SurveyView_ViewManualSurveyMapViewWhenLISAFieldNotesAreOnGISOff
 	 * Script: -  	
@@ -1159,7 +1159,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1023_SurveyView_ViewManualSurveyMapViewWhenLISAFieldNotesAreOnGISOff() throws Exception {
 		Log.info("\nRunning TC1023_SurveyView_ViewManualSurveyMapViewWhenLISAFieldNotesAreOnGISOff ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
@@ -1201,7 +1201,7 @@ public class SurveyViewPageTest {
 		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
 		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1024_SurveyView_ViewManualSurveySatelliteViewWhenLISAFieldNotesAreOnGISOff
 	 * Script: -  	
@@ -1221,7 +1221,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1024_SurveyView_ViewManualSurveySatelliteViewWhenLISAFieldNotesAreOnGISOff() throws Exception {
 		Log.info("\nRunning TC1024_SurveyView_ViewManualSurveySatelliteViewWhenLISAFieldNotesAreOnGISOff ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
@@ -1263,7 +1263,7 @@ public class SurveyViewPageTest {
 		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
 		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1025_SurveyView_ViewManualSurveyMapViewWhenFovIndicationOnGISOn
 	 * Script: -  	
@@ -1283,7 +1283,7 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1025_SurveyView_ViewManualSurveyMapViewWhenFovIndicationOnGISOn() throws Exception {
 		Log.info("\nRunning TC1025_SurveyView_ViewManualSurveyMapViewWhenFovIndicationOnGISOn ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
@@ -1313,7 +1313,7 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES, NOTSET));
 	}
-	
+
 	/**
 	 * Test Case ID: TC1684_SurveyView_IndicationsHistoricalSurveyViewIndicationsBubbleColorCode
 	 * Script: -  	
@@ -1327,53 +1327,9 @@ public class SurveyViewPageTest {
 	@Test
 	public void TC1684_SurveyView_IndicationsHistoricalSurveyViewIndicationsBubbleColorCode() throws Exception {
 		Log.info("\nRunning TC1684_SurveyView_IndicationsHistoricalSurveyViewIndicationsBubbleColorCode ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_ETHANE_SURVEY_STANDARD_ID, NOTSET);
-		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		// wait for elements to paint on the map.
-		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
-		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnFirst3300IndicationShownOnMap("NaturalGas", NOTSET);
-		// TODO: Click at Pixel currently not working as Expected.
-		//surveyViewPageAction.waitForPeakInfoPopupToOpen(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_ETHANE_SURVEY_STANDARD_TAG, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_ETHANE_SURVEY_STANDARD_TYPE, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_ETHANE_SURVEY_STANDARD_USERNAME, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(ETHANE_SURVEY_INFO_ANALYZER, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(ETHANE_SURVEY_INFO_SURVEYOR, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_D, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(ETHANE_SAMPLE_FIELD_NOTES, NOTSET));
-	}
-	
-	/**
-	 * Test Case ID: TC1694_SurveyView_VerifyNotesAddedForPeaksInSurvey
-	 * Script: -  	
-	 *	- - Verify a historical survey from Driving Survey page
-	 * Results: - 
-	 *	- Not Natural Gas- Green
-	 *	- Natural Gas - Red
-	 *	- Possible Natural Gas- Yellow
-	 *	- Vehicle Exhaust - Purple
-	 */
-	@Test
-	public void TC1694_SurveyView_VerifyNotesAddedForPeaksInSurvey () throws Exception {
-		Log.info("\nRunning TC1694_SurveyView_VerifyNotesAddedForPeaksInSurvey  ...");
-		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, 10);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_ETHANE_SURVEY_STANDARD_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		// wait for elements to paint on the map.
@@ -1402,4 +1358,51 @@ public class SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(ETHANE_SAMPLE_FIELD_NOTES, NOTSET));
 	}
 
+	/**
+	 * Test Case ID: TC1694_SurveyView_VerifyNotesAddedForPeaksInSurvey
+	 * Script: -  	
+	 *	- - Verify a historical survey from Driving Survey page
+	 * Results: - 
+	 *	- Not Natural Gas- Green
+	 *	- Natural Gas - Red
+	 *	- Possible Natural Gas- Yellow
+	 *	- Vehicle Exhaust - Purple
+	 */
+	@Test
+	public void TC1694_SurveyView_VerifyNotesAddedForPeaksInSurvey () throws Exception {
+		Log.info("\nRunning TC1694_SurveyView_VerifyNotesAddedForPeaksInSurvey  ...");
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 10);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_ETHANE_SURVEY_STANDARD_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		// wait for elements to paint on the map.
+		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(ETHANE_SAMPLE_FIELD_NOTES, NOTSET));
+	}
+
+	/**
+	 * Test Case ID: TC1692_SurveyView_VerifyPeakbubble
+	 * Script: -  	
+	 *	- - Verify a historical survey from Driving Survey page
+	 * Results: - 
+	 *	- Not Natural Gas- Green
+	 *	- Natural Gas - Red
+	 *	- Possible Natural Gas- Yellow
+	 *	- Vehicle Exhaust - Purple
+	 */
+	@Test
+	public void TC1692_SurveyView_VerifyPeakbubble () throws Exception {
+		Log.info("\nRunning TC1692_SurveyView_VerifyPeakbubble  ...");
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 10);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_ETHANE_SURVEY_STANDARD_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		// wait for elements to paint on the map.
+		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
+		surveyViewPageAction.clickOnFirst3300IndicationShownOnMap("NaturalGas", NOTSET);
+		// TODO: Click at Pixel currently not working as Expected.
+		//surveyViewPageAction.waitForPeakInfoPopupToOpen(EMPTY, NOTSET);
+	}
 }
