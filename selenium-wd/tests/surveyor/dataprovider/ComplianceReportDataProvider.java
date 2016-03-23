@@ -242,7 +242,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		tagList19.add(SQACUSDRTAG);
 		
 		List<Map<String, String>> viewList20 = new ArrayList<Map<String, String>>();
-		viewList20.add(createViewsMapTable("First View", "1", "0", "0", "1", "1", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList20.add(createViewsMapTable("First View", "1", "0", "0", "1", "1", "0", "0", "1", "0", Resources.getResource(ResourceKeys.Constant_Map)));
 		List<Map<String, String>> tablesList20 = new ArrayList<Map<String, String>>();
 		tablesList20.add(createOptionalTable("1", "1", "0", "0", "1", "1", "0", "0", "0", "0", "0", "0"));
 		List<String> tagList20 = new ArrayList<String>();
@@ -267,9 +267,9 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		tagList22.add(CUSDRVSTDTAG); 
 		
 		List<Map<String, String>> viewList23 = new ArrayList<Map<String, String>>();
-		viewList23.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList23.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList23 = new ArrayList<Map<String, String>>();
-		tablesList23.add(createOptionalTable("1", "0", "0", "0", "1", "1", "1", "1", "1", "1", "1", "1"));
+		tablesList23.add(createOptionalTable("1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"));
 		List<String> tagList23 = new ArrayList<String>();
 		tagList23.add(CUSDRVSTDTAG); 
 
