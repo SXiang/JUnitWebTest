@@ -239,7 +239,15 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	@FindBy(id = "survey_start_warning_message")
 	@CacheLookup
 	protected WebElement spanSurveyFailedToStartMessage;
+	
+	@FindBy(id = "eq_mode_warning")
+	@CacheLookup
+	protected WebElement eqModeDialog;
 
+	@FindBy(id = "eq_warning_message")
+	@CacheLookup
+	protected WebElement eqModeDialogMessage;
+	
 	/**
 	 * @param driver
 	 * @param baseURL
@@ -809,59 +817,37 @@ public class DriverViewPage extends BaseDrivingViewPage {
 
 		this.setTagSurveyTextField(tag);
 		
-		Log.info("Selecting surveyTime..");
-		switch (surveyTime) {
-		case Day:
-			this.clickDayButton();
-			Log.info("Survey Time: Day selected.");
-			// Solar Radiation is valid only during Day time.
-			switch (solarRadiation) {
-			case Moderate:
-				this.clickModerateButton();
-				break;
-			case Overcast:
-				this.clickOvercastButton();
-				break;
-			case Strong:
-				this.clickRadiationStrongButton();
-				break;
-			default:
-				break;
-			}
-			break;
-		case Night:
-			this.clickNightButton();
-			Log.info("Survey Time: Night selected.");
-			// Cloud Cover option is valid only during Night time.
-			switch (cloudCover) {
-			case LessThan50:
-				this.clickCloudCoverLessThan50Button();
-				break;
-			case MoreThan50:
-				this.clickCloudCoverMoreThan50Button();
-				break;
-			default:
-				break;
-			}
-			break;
-		default:
-			break;
-		}
-		Log.info("Selecting wind..");
-		switch (wind) {
-		case Calm:
-			this.clickCalmButton();
-			break;
-		case Light:
-			this.clickLightButton();
-			break;
-		case Strong:
-			this.clickWindStrongButton();
-			break;
-		default:
-			break;
-		}
+		selectSurveyTimeAndRadiationInSurveyDialog(surveyTime, solarRadiation, cloudCover);
+		selectWindInSurveyDialog(wind);
+		selectSurveyTypeInSurveyDialog(surveyType);
+
+		this.clickStartSurvey();
+		this.waitForPageToLoad();
+
+		return this;
+	}
+
+	/**
+	 * Starts a survey with the specified values.
+	 *
+	 * @return the DriverViewPage class instance.
+	 */
+	public DriverViewPage startEQDrivingSurvey(String tag, SurveyTime surveyTime, SolarRadiation solarRadiation,
+			Wind wind, CloudCover cloudCover) {
+		openStartEQSurveyModalDialog();
+
+		this.setTagSurveyTextField(tag);
 		
+		selectSurveyTimeAndRadiationInSurveyDialog(surveyTime, solarRadiation, cloudCover);
+		selectWindInSurveyDialog(wind);
+
+		this.clickStartSurvey();
+		this.waitForPageToLoad();
+
+		return this;
+	}
+
+	private void selectSurveyTypeInSurveyDialog(SurveyType surveyType) {
 		// Until SurveyType is selected the StartSurvey button should NOT be displayed.
 		// NOTE: This check will NOT always work correctly as this button might be showing when multiple tests are run one after the other. 
 		//assertTrue(this.getStartSurveyButtonFromStartSurveyDialog().isDisplayed() == false);
@@ -870,10 +856,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		switch (surveyType) {
 		case Manual:
 			this.clickManualButton();
-			// Set MinAmp if specified.
-			if (minAmplitude != DEFAULT_MIN_AMPLITUDE) {
-				this.setMinAmpTextField(String.valueOf(minAmplitude));
-			}
 			break;
 		case Operator:
 			this.clickOperatorButton();
@@ -890,11 +872,72 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		default:
 			break;
 		}
+	}
 
-		this.clickStartSurvey();
-		this.waitForPageToLoad();
+	private void selectWindInSurveyDialog(Wind wind) {
+		Log.info("Selecting wind..");
+		switch (wind) {
+		case Calm:
+			this.clickCalmButton();
+			break;
+		case Light:
+			this.clickLightButton();
+			break;
+		case Strong:
+			this.clickWindStrongButton();
+			break;
+		default:
+			break;
+		}
+	}
 
-		return this;
+	private void selectSurveyTimeAndRadiationInSurveyDialog(SurveyTime surveyTime, SolarRadiation solarRadiation, CloudCover cloudCover) {
+		Log.info("Selecting surveyTime..");
+		switch (surveyTime) {
+		case Day:
+			selectDayInSurveyDialog(solarRadiation);
+			break;
+		case Night:
+			selectNightInSurveyDialog(cloudCover);
+			break;
+		default:
+			break;
+		}
+	}
+
+	private void selectNightInSurveyDialog(CloudCover cloudCover) {
+		this.clickNightButton();
+		Log.info("Survey Time: Night selected.");
+		// Cloud Cover option is valid only during Night time.
+		switch (cloudCover) {
+		case LessThan50:
+			this.clickCloudCoverLessThan50Button();
+			break;
+		case MoreThan50:
+			this.clickCloudCoverMoreThan50Button();
+			break;
+		default:
+			break;
+		}
+	}
+
+	private void selectDayInSurveyDialog(SolarRadiation solarRadiation) {
+		this.clickDayButton();
+		Log.info("Survey Time: Day selected.");
+		// Solar Radiation is valid only during Day time.
+		switch (solarRadiation) {
+		case Moderate:
+			this.clickModerateButton();
+			break;
+		case Overcast:
+			this.clickOvercastButton();
+			break;
+		case Strong:
+			this.clickRadiationStrongButton();
+			break;
+		default:
+			break;
+		}
 	}
 
 	public void openStartSurveyModalDialog() {
@@ -904,10 +947,52 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		this.waitForPageToLoad();
 	}
 
+	public void openStartEQSurveyModalDialog() {
+		Log.info("Opening the StartSurvey modal dialog..");
+		this.clickStartEQSurveyButton();
+		Log.info("Opened the StartSurvey modal dialog..");
+		this.waitForPageToLoad();
+	}
+
 	public DriverViewPage stopDrivingSurvey() {
 		this.getStopDrivingSurveyButton().click();
 		this.waitForUIUnBlock();
 		return this;
+	}
+
+	/**
+	 * Clicks on the Start EQ Survey button.
+	 */
+	private void clickStartEQSurveyButton() {
+		this.startEQSurveyButton.click();
+	}
+
+	/**
+	 * Verifies whether the EQ Mode dialog is shown.
+	 */
+	public boolean isEQModeDialogShown() {
+		return this.eqModeDialog.getAttribute("class").equals("cssFade");
+	}
+
+	/**
+	 * Verifies the EQ Mode dialog is NOT shown.
+	 */
+	public boolean isEQModeDialogHidden() {
+		return this.eqModeDialog.getAttribute("class").equals("cssFade ng-hide");
+	}
+	
+	/**
+	 * Returns the message is EQ mode dialog.
+	 */
+	public String getEQModeDialogMessage() {
+		return this.eqModeDialogMessage.getText();
+	}
+
+	/**
+	 * Verifies the message shown in EQ mode dialog.
+	 */
+	public boolean verifyEQModeDialogMessageEquals(String message) {
+		return this.eqModeDialogMessage.getText().equals(message);
 	}
 
 	/**

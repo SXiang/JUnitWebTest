@@ -2,6 +2,7 @@ package surveyor.dataaccess.source;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class BaseEntity {
@@ -27,5 +28,14 @@ public class BaseEntity {
 	}
 	public void setResultSet(ResultSet resultSet) {
 		this.resultSet = resultSet;
+	}
+	
+	public static float getFloatColumnValue(ResultSet resultSet, String columnName) throws SQLException
+	{
+		float columnValue = resultSet.getFloat(columnName);
+		if (resultSet.wasNull()){
+			return Float.MIN_VALUE;
+		}
+		return columnValue;
 	}
 }

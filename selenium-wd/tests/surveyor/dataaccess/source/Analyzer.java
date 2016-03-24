@@ -54,6 +54,11 @@ public class Analyzer extends BaseEntity {
 		return objAnalyzer;
 	}
 
+	public static Analyzer getAnalyzerBySerialNumber(String serialNum) {
+		Analyzer objAnalyzer = new Analyzer().getBySerialNumber(serialNum);
+		return objAnalyzer;
+	}
+
 	public Analyzer get(String id) {
 		Analyzer objAnalyzer = null;
 
@@ -66,6 +71,23 @@ public class Analyzer extends BaseEntity {
 			if (objAnalyzerList != null && objAnalyzerList.size() > 0) {
 				objAnalyzer = objAnalyzerList.get(0);
 				DBCache.INSTANCE.set(CACHE_KEY + id, objAnalyzer);
+			}
+		}
+		return objAnalyzer;
+	}
+
+	public Analyzer getBySerialNumber(String serialNum) {
+		Analyzer objAnalyzer = null;
+
+		// Get from cache if present. Else fetch from Database.
+		if (DBCache.INSTANCE.containsKey(CACHE_KEY + serialNum)) {
+			objAnalyzer = (Analyzer) DBCache.INSTANCE.get(CACHE_KEY + serialNum);
+		} else {
+			String SQL = "SELECT * FROM dbo.[Analyzer] WHERE SerialNumber='" + serialNum + "'";
+			ArrayList<Analyzer> objAnalyzerList = load(SQL);
+			if (objAnalyzerList != null && objAnalyzerList.size() > 0) {
+				objAnalyzer = objAnalyzerList.get(0);
+				DBCache.INSTANCE.set(CACHE_KEY + serialNum, objAnalyzer);
 			}
 		}
 		return objAnalyzer;

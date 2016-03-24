@@ -72,6 +72,23 @@ public class DataAccessUnitTests {
 		testGetMapTypeId_Valid();
 		Log.info("Executing testStoredProcComplianceGetGaps_getReportGaps_Valid().....");
 		testStoredProcComplianceGetGaps_getReportGaps_Valid();
+		Log.info("Executing testCaptureEvent_GetCaptureEventBySurveyId_Valid() ...");
+		testCaptureEvent_GetCaptureEventBySurveyId_Valid();
+		Log.info("Executing testCaptureEvent_GetCaptureEventBySurveyId_Invalid() ...");
+		testCaptureEvent_GetCaptureEventBySurveyId_Invalid();
+		Log.info("Executing testMeasurements_getMeasurements_Valid() ...");
+		testMeasurements_getMeasurements_Valid();
+		Log.info("Executing testMeasurements_getMeasurements_Invalid() ...");
+		testMeasurements_getMeasurements_Invalid();
+		Log.info("Executing testPeaks_getPeaks_Valid() ...");
+		testPeaks_getPeaks_Valid();
+		Log.info("Executing testPeaks_getPeaks_Invalid() ...");
+		testPeaks_getPeaks_Invalid();
+		Log.info("Executing testSurveyModeTypeId_getSurveyModeTypeId_valid() ...");
+		testSurveyModeTypeId_getSurveyModeTypeId_valid();
+		Log.info("Executing testSurveyModeTypeId_getSurveyModeTypeId_Invalid() ...");
+		testSurveyModeTypeId_getSurveyModeTypeId_Invalid();
+
 		Log.info("DONE!");
 
 	}
@@ -247,4 +264,73 @@ public class DataAccessUnitTests {
 		}
 	}
 
+	private static void testCaptureEvent_GetCaptureEventBySurveyId_Valid() {
+		String validSurveyId = "A9ED5E79-AA26-91DD-593D-39CEEF0C320F";
+		CaptureEvent objCaptureEvent = CaptureEvent.getCaptureEvent(validSurveyId);
+		Assert.assertTrue(objCaptureEvent != null, "Value cannot be NULL.");
+	}
+ 
+	private static void testCaptureEvent_GetCaptureEventBySurveyId_Invalid() {
+		String surveyInvalidId = "D12F21F5-3FA4-C9EB-C6D6-00007CC7AB16";
+		CaptureEvent objCaptureEvent = CaptureEvent.getCaptureEvent(surveyInvalidId);
+		Assert.assertTrue(objCaptureEvent == null, "Value should be NULL.");
+	}
+	
+	private static void testMeasurements_getMeasurements_Valid() {
+		String analyzerId = "00000015-DB64-FDE7-7E67-39C8AC533D49";
+		Double startEpochTime = 1417806315D;
+		Double endEpochTime = 1417806360D;
+		List<Measurement> measurements = Measurement.getMeasurements(analyzerId, startEpochTime, endEpochTime);
+		Iterator<Measurement> iterator = measurements.iterator();
+		Assert.assertTrue(iterator.hasNext());
+		while (iterator.hasNext()) {
+			Measurement objMeasurement = iterator.next();
+			Assert.assertTrue(objMeasurement != null, "Value cannot be NULL.");
+		}
+	}
+	
+	private static void testMeasurements_getMeasurements_Invalid() {
+		String analyzerInvalidId = "D12F21F5-3FA4-C9EB-C6D6-00007CC7AB16";
+		Double startEpochTime = 0.00000D;
+		Double endEpochTime = 0.00000D;
+		List<Measurement> measurements = Measurement.getMeasurements(analyzerInvalidId, startEpochTime, endEpochTime);
+		Iterator<Measurement> iterator = measurements.iterator();
+		Assert.assertTrue(!iterator.hasNext());
+	}
+
+	private static void testPeaks_getPeaks_Valid() {
+		String analyzerId = "00000015-DB64-FDE7-7E67-39C8AC533D49";
+		Double startEpochTime = 1435339420.59089D;
+		Double endEpochTime = 1435339788.07878D;
+		String surveyModeTypeId = "4901E67A-4C00-4436-ADC0-9CFB277BB311";
+		List<Peak> peaks = Peak.getPeaks(analyzerId, startEpochTime, endEpochTime, surveyModeTypeId);
+		Iterator<Peak> iterator = peaks.iterator();
+		Assert.assertTrue(iterator.hasNext());
+		while (iterator.hasNext()) {
+			Peak objPeak = iterator.next();
+			Assert.assertTrue(objPeak != null, "Value cannot be NULL.");
+		}
+	}
+
+	private static void testPeaks_getPeaks_Invalid() {
+		String analyzerInvalidId = "D12F21F5-3FA4-C9EB-C6D6-00007CC7AB16";
+		Double startEpochTime = 0.00000D;
+		Double endEpochTime = 0.00000D;
+		String surveyModeTypeInvalidId = "D12F21F5-3FA4-C9EB-C6D6-00007CC7AB16";
+		List<Peak> peaks = Peak.getPeaks(analyzerInvalidId, startEpochTime, endEpochTime, surveyModeTypeInvalidId);
+		Iterator<Peak> iterator = peaks.iterator();
+		Assert.assertTrue(!iterator.hasNext());
+	}
+
+	private static void testSurveyModeTypeId_getSurveyModeTypeId_valid() {
+		String id = "B310238A-A5AE-4E94-927B-F0F165E24522";
+		SurveyModeType objSurveyModeType = SurveyModeType.getSurveyModeType(id);
+		Assert.assertTrue(objSurveyModeType != null, "Value cannot be NULL.");
+	}
+
+	private static void testSurveyModeTypeId_getSurveyModeTypeId_Invalid() {
+		String id = "Invalid Value";
+		SurveyModeType objSurveyModeType = SurveyModeType.getSurveyModeType(id);
+		Assert.assertTrue(objSurveyModeType != null, "Value cannot be NULL.");
+	}
 }

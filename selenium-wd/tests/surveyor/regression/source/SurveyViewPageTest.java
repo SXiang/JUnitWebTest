@@ -8,6 +8,7 @@ import common.source.TestSetup;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
@@ -57,6 +58,15 @@ public class SurveyViewPageTest extends BaseMapViewTest {
 	private static final String TEST_SURVEY_MANUAL1_TYPE = "Manual";
 	private static final String TEST_SURVEY_MANUAL1_USERNAME = "Administrator";
 	
+	// Ethane specific constants.
+	private static final String ETHANE_SAMPLE_FIELD_NOTES = "3.6 big leak location";
+	private static final String ETHANE_SURVEY_INFO_SURVEYOR = "Surveyor: Green-Escape";
+	private static final String ETHANE_SURVEY_INFO_ANALYZER = "Analyzer: FEDS2059";
+	private static final String TEST_ETHANE_SURVEY_STANDARD_ID = "183fcb51-e968-bb81-0c98-39d666857ae7";
+	private static final String TEST_ETHANE_SURVEY_STANDARD_TAG = "ethane night sf b1";
+	private static final String TEST_ETHANE_SURVEY_STANDARD_TYPE = "Standard";
+	private static final String TEST_ETHANE_SURVEY_STANDARD_USERNAME = "picscdr@picarro.com";
+
 	// Use this Manual survey for verifying Field notes are present.
 	private static final String TEST_SURVEY_MANUAL2_ID = "2278D26F-8D69-B070-56FD-39D4B552F8F2";
 	private static final String EMPTY = "";
@@ -1239,5 +1249,53 @@ public class SurveyViewPageTest extends BaseMapViewTest {
 		assertTrue(surveyViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
+	}
+	
+	/**
+	 * Test Case ID: TC1694_SurveyView_VerifyNotesAddedForPeaksInSurvey
+	 * Script: -  	
+	 *	- - Verify a historical survey from Driving Survey page
+	 * Results: - 
+	 *	- Not Natural Gas- Green
+	 *	- Natural Gas - Red
+	 *	- Possible Natural Gas- Yellow
+	 *	- Vehicle Exhaust - Purple
+	 */
+	@Ignore
+	public void TC1694_SurveyView_VerifyNotesAddedForPeaksInSurvey () throws Exception {
+		Log.info("\nRunning TC1694_SurveyView_VerifyNotesAddedForPeaksInSurvey  ...");
+
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_ETHANE_SURVEY_STANDARD_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		// wait for elements to paint on the map.
+		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(ETHANE_SAMPLE_FIELD_NOTES, NOTSET));	}
+
+	/**
+	 * Test Case ID: TC1692_SurveyView_VerifyPeakbubble
+	 * Script: -  	
+	 *	- - Verify a historical survey from Driving Survey page
+	 * Results: - 
+	 *	- Not Natural Gas- Green
+	 *	- Natural Gas - Red
+	 *	- Possible Natural Gas- Yellow
+	 *	- Vehicle Exhaust - Purple
+	 */
+	@Ignore
+	public void TC1692_SurveyView_VerifyPeakbubble () throws Exception {
+		Log.info("\nRunning TC1692_SurveyView_VerifyPeakbubble  ...");
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_ETHANE_SURVEY_STANDARD_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		// wait for elements to paint on the map.
+		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
+		surveyViewPageAction.clickOnFirst3300IndicationShownOnMap("NaturalGas", NOTSET);
+		// TODO: Click at Pixel currently not working as Expected.
+		//surveyViewPageAction.waitForPeakInfoPopupToOpen(EMPTY, NOTSET);
 	}
 }
