@@ -90,6 +90,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean clickOnDisplayButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnDisplayButton", data, dataRowID);
 		getPageObject().clickDisplayButton();
+		TestContext.INSTANCE.stayIdle(2);
 		return true;
 	}
 
@@ -384,8 +385,11 @@ public class BaseMapViewPageActions extends BasePageActions {
 	/* Display Switch (Enable/Disable) methods */
 
 	public boolean turnOnAllDisplayOptions(String data, Integer dataRowID) {
+		String runtimeType = getRuntimeType();
 		logAction(getRuntimeType() + ".turnOnAllDisplayOptions", data, dataRowID);
-		turnOnEightHourHistory(data, dataRowID);
+		if (!runtimeType.equals("ObserverViewPageActions")) {
+			turnOnEightHourHistory(data, dataRowID);
+		}
 		turnOnConcentrationChart(data, dataRowID);
 		turnOnFOVs(data, dataRowID);
 		turnOnIndications(data, dataRowID);
@@ -436,8 +440,11 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return true;
 	}
 	public boolean turnOffAllDisplayOptions(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".turnOffAllDisplayOptions", data, dataRowID);
-		turnOffEightHourHistory(data, dataRowID);
+		String runtimeType = getRuntimeType();
+		logAction(runtimeType + ".turnOffAllDisplayOptions", data, dataRowID);
+		if (!runtimeType.equals("ObserverViewPageActions")) {
+			turnOffEightHourHistory(data, dataRowID);
+		}
 		turnOffConcentrationChart(data, dataRowID);
 		turnOffFOVs(data, dataRowID);
 		turnOffIndications(data, dataRowID);

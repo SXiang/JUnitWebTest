@@ -12,6 +12,7 @@ import java.util.Calendar;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,6 +57,11 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	private static ManageCustomersPage manageCustomersPage = null;
 	private static ManageUsersPage manageUsersPage = null;
 	
+	@BeforeClass
+	public static void beforeTestClass() throws Exception {
+		disposeProcesses();
+	}
+
 	@Before
 	public void beforeTestMethod() {
 		try {
@@ -80,6 +86,8 @@ public class DriverViewPageTest extends BaseMapViewTest {
     public void afterTestMethod() {
 		try {
 			afterTest();		
+			
+			disposeProcesses();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -72,7 +72,7 @@ public class SurveyViewPageTest extends BaseMapViewTest {
 	
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
-		TestSetup.stopChromeProcesses();
+		disposeProcesses();
 		
 		// Initialization needed at class level for automation reports.
 		initializePageActions();
@@ -100,7 +100,7 @@ public class SurveyViewPageTest extends BaseMapViewTest {
 		try {
 			afterTest();
 			
-			TestSetup.stopChromeProcesses();
+			disposeProcesses();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
