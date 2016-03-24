@@ -247,6 +247,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		Wind wind = Wind.Calm;
 		CloudCover cloudCover = CloudCover.LessThan50;
 		SurveyType type = SurveyType.Standard;
+		Float minAmplitude = -1.0F;
 		if (!ActionArguments.isEmpty(commaSeperatedValues)){
 			List<String> listValues = RegexUtility.split(commaSeperatedValues, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
 			surveyTag = ActionArguments.evaluateArgForFunction(listValues.get(0));
@@ -255,6 +256,9 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 			wind = getWind(listValues.get(3));
 			cloudCover = getCloudCover(listValues.get(4));
 			type = getSurveyType(listValues.get(5));
+			if (listValues.get(6) != "") {
+				minAmplitude = Float.valueOf(listValues.get(6));
+			}
 			
 		} else {
 			ActionArguments.verifyGreaterThanZero(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_START_DRIVING_SURVEY, ARG_DATA_ROW_ID, dataRowID);
@@ -265,13 +269,16 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 			wind = getWind(dataRow.wind);
 			cloudCover = getCloudCover(dataRow.wind);
 			type = getSurveyType(dataRow.surveyType);
+			if (!ActionArguments.isEmpty(dataRow.minAmplitude)) {
+				minAmplitude = Float.valueOf(dataRow.minAmplitude);
+			}
 			
 			// store the working datarow.
 			workingDataRow = dataRow;
 			workingDataRow.surveyTag = surveyTag;	// update the tag to value evaluated by function.
 		}
 		try {
-			getDriverViewPage().startDrivingSurvey(surveyTag, time, radiation, wind, cloudCover, type);
+			getDriverViewPage().startDrivingSurvey(surveyTag, time, radiation, wind, cloudCover, type, minAmplitude);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			return false;
@@ -1847,6 +1854,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyGisBoundaryBigBoundaryButtonIsNotVisible")) { return this.verifyGisBoundaryBigBoundaryButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyGisBoundarySmallBoundaryButtonIsNotVisible")) { return this.verifyGisBoundarySmallBoundaryButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyGisUseAllBoundariesButtonIsNotVisible")) { return this.verifyGisUseAllBoundariesButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyMapShownForZoomLevelIsCorrect")) { return this.verifyMapShownForZoomLevelIsCorrect(data, dataRowID); }
 		else if (actionName.equals("verifyStartSurveyButtonIsNotVisible")) { return this.verifyStartSurveyButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyStartEQSurveyButtonIsNotVisible")) { return this.verifyStartEQSurveyButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifySystemShutdownButtonIsNotVisible")) { return this.verifySystemShutdownButtonIsNotVisible(data, dataRowID); }

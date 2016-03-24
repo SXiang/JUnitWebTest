@@ -15,6 +15,8 @@ import surveyor.scommon.actions.data.DriverViewDataReader.DriverViewDataRow;
 import surveyor.scommon.source.BaseMapViewPage;
 
 public class BaseMapViewPageActions extends BasePageActions {
+	private static final int DEFAULT_ZOOM_LEVEL = 19;
+	private static final String FN_VERIFY_MAP_ZOOM_LEVEL_IS_CORRECT = "verifyMapShownForZoomLevelIsCorrect";
 	private static final String FN_VERIFY_FIELD_NOTES_IS_SHOWN_ON_MAP = "verifyFieldNotesIsShownOnMap";
 	private static final String FN_VERIFY_FIELD_NOTES_IS_NOT_SHOWN_ON_MAP = "verifyFieldNotesIsNotShownOnMap";
 	private static final String FN_VERIFY_ISOTOPIC_CAPTURE_RESULT_IS_PRESENT_ON_MAP = "verifyIsotopicCaptureResultIsPresentOnMap";
@@ -88,6 +90,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean clickOnDisplayButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnDisplayButton", data, dataRowID);
 		getPageObject().clickDisplayButton();
+		TestContext.INSTANCE.stayIdle(2);
 		return true;
 	}
 
@@ -408,8 +411,11 @@ public class BaseMapViewPageActions extends BasePageActions {
 	/* Display Switch (Enable/Disable) methods */
 
 	public boolean turnOnAllDisplayOptions(String data, Integer dataRowID) {
+		String runtimeType = getRuntimeType();
 		logAction(getRuntimeType() + ".turnOnAllDisplayOptions", data, dataRowID);
-		turnOnEightHourHistory(data, dataRowID);
+		if (!runtimeType.equals("ObserverViewPageActions")) {
+			turnOnEightHourHistory(data, dataRowID);
+		}
 		turnOnConcentrationChart(data, dataRowID);
 		turnOnFOVs(data, dataRowID);
 		turnOnIndications(data, dataRowID);
@@ -460,8 +466,11 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return true;
 	}
 	public boolean turnOffAllDisplayOptions(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".turnOffAllDisplayOptions", data, dataRowID);
-		turnOffEightHourHistory(data, dataRowID);
+		String runtimeType = getRuntimeType();
+		logAction(runtimeType + ".turnOffAllDisplayOptions", data, dataRowID);
+		if (!runtimeType.equals("ObserverViewPageActions")) {
+			turnOffEightHourHistory(data, dataRowID);
+		}
 		turnOffConcentrationChart(data, dataRowID);
 		turnOffFOVs(data, dataRowID);
 		turnOffIndications(data, dataRowID);
@@ -1170,6 +1179,23 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return !mapUtility.isRefGasCaptureResultPresent(data);
 	}
 
+	/**
+	 * Executes verifyMapShownForZoomLevelIsCorrect action.
+	 * @param data - specifies the zoom level on the map.
+	 * 	 default zoom level is 19. 
+	 *   for zoom out specify values like 18,17,16, etc
+	 *   for zoom in specify values like 20,21,22, etc
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyMapShownForZoomLevelIsCorrect(String data, Integer dataRowID) throws Exception {
+		logAction(getRuntimeType() + ".verifyMapShownForZoomLevelIsCorrect", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty(CLS_BASEMAP_VIEW_PAGE_ACTIONS + FN_VERIFY_MAP_ZOOM_LEVEL_IS_CORRECT, ARG_DATA, data);
+		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
+		int zoomLevel = Integer.valueOf(data) - DEFAULT_ZOOM_LEVEL;
+		return mapUtility.isMapResolutionCorrect(zoomLevel);
+	}
+	
 	/**
 	 * Executes verifyGisUseAllBoundariesButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.

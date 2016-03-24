@@ -17,6 +17,8 @@ public class OLMapUtility {
 	private static final String CROSSHAIR_WHITE_PNG = "crosshair-white.png";
 	private static final String CROSSHAIR_PNG = "crosshair.png";
 	private static final String CROSSHAIR_GRAY_PNG = "crosshair-gray.png";
+	
+	private static final double DEFAULT_MAP_RESOLUTION = 0.29858214173896974F;
 
 	public enum IconColor {
 		Red,
@@ -114,8 +116,8 @@ public class OLMapUtility {
 			+ "if(geometry&&geometry.getCoordinates){boundariesCoord.push(geometry.getCoordinates());}}}}}};}catch(err){};return boundariesCoord;};";
 	
 	private static final String IS_ASSETS_PRESENT_JS_FUNCTION = "function isAssetsPresent(){var found=false;"
-			+ "try{if(showAssets){if(surveyormap.getView().getResolution()>assetLayerMaxResolution){found=false;}else{layer=assetLayer;"
-			+ "if(layer&&layer.getVisible&&layer.getVisible()&&layer.getStyle){style=layer.getStyle();"
+			+ "try{if(showAssets){if(surveyormap.getView().getResolution()>assetLayerMaxResolution){found=false;}else{"
+			+ "layer=assetLayer;if(layer&&layer.getVisible&&layer.getVisible()&&layer.getStyle){style=layer.getStyle();"
 			+ "if(style&&style.getStroke){stroke=style.getStroke();if(stroke&&stroke.getColor&&stroke.getWidth){"
 			+ "scolor=stroke.getColor();swidth=stroke.getWidth();if((scolor==assetColor)&&(swidth==assetMainLineWidth)){"
 			+ "found=true;}}}}}}}catch(err){found=false;};return found;};";
@@ -197,6 +199,8 @@ public class OLMapUtility {
 			+ "if(lastConstellation){lastConstellation.nodes.forEach(function(d){if(d.text){if(nodeCnt==0){text=d.text;}else{text+=','+d.text;};nodeCnt++;}});};"
 			+ "return text;};";
 	
+	private static final String GET_MAP_RESOLUTION_JS_FUNCTION = "function getMapResolution(){return surveyormap.getView().getResolution();};";
+
 	private static final String GET_3300_INDICATION_NODES_COUNT_JS_FUNCTION = "function get3300IndicationNodesCount(gasType) { "
 			+ "var nodesCnt = 0; var isIndicationsSwitchOn = showIndications; if (lastConstellation && isIndicationsSwitchOn) { "
 			+ "lastConstellation.nodes.forEach(function (d) { if (!d.fixed) { if (((gasType == 'NaturalGas') && (d.Disposition == 1)) || "
@@ -254,12 +258,41 @@ public class OLMapUtility {
 
 	private static final String GET_INDICATION_NODE_PIXEL_FUNCTION_CALL = "return getIndicationNodePixels(%s,%s,%s);";
 	private static final String GET_FIRST_INDICATION_NODE_PIXEL_FUNCTION_CALL = "return getFirstIndicationNodePixels();";
+	
+	private static final String GET_MAP_RESOLUTION_JS_FUNCTION_CALL = "return getMapResolution();";
 	private static final String GET_FIRST_3300_VISIBLE_INDICATION_NODE_PIXEL_FUNCTION_CALL = "return getFirstVisible3300IndicationNodePixels('%s');";
 
 	private WebDriver driver;
 
 	public OLMapUtility(WebDriver driver) {
 		this.driver = driver;
+	}
+	
+	/**
+	 * Verifies that the map resolution is correct for the specified zoom level.
+	 * @param zoomLevel - zoom level. 
+	 *   to get default map resolution use level=0
+	 *   for Zoom-In specify +ve value (for eg. 1,2,3). In this case resolution mutliplier is 0.5x, 0.25x, 0.125x, etc.
+	 *   for Zoom-Out specify -ve value (for eg. -1,-2,-3). In this case resolution mutliplier is 2x, 4x, 8x, etc.   
+	 */ 
+	public boolean isMapResolutionCorrect(int zoomLevel) {
+		double precision = 0.00000001D;
+		double currentMapResolution = getMapResolution();
+		double expectedMapResolution = DEFAULT_MAP_RESOLUTION;
+		double exponent = (-1) * zoomLevel;
+		if (zoomLevel != 0) {
+			expectedMapResolution = Math.pow(2, exponent) * DEFAULT_MAP_RESOLUTION;
+		}
+		return (Math.abs(expectedMapResolution - currentMapResolution) < precision);
+	}
+	
+	/**
+	 * Get the current map resolution.
+	 */ 
+	private double getMapResolution() {
+		String functionCall = GET_MAP_RESOLUTION_JS_FUNCTION + GET_MAP_RESOLUTION_JS_FUNCTION; 
+		Log.info("Calling javascript function -> " + functionCall);
+		return (double)((JavascriptExecutor)this.driver).executeScript(functionCall);
 	}
 	
 	/*

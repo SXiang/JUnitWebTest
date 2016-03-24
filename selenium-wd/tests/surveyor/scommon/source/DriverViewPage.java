@@ -18,6 +18,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.WebElement;
 
 public class DriverViewPage extends BaseDrivingViewPage {
+	private static final float DEFAULT_MIN_AMPLITUDE = -1.0F;
+
 	public static final String STRURLPath = "/Live/Driver?address=https%3A%2F%2Flocalhost&port=5600&serialNumber="
 			+ TestSetup.TEST_ANALYZER_SERIAL_NUMBER;
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.Constant_Live);
@@ -46,10 +48,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	private Map<String, String> data;
 	private int timeout = 15;
 
-	@FindBy(id = "bottom_button_mode")
-	@CacheLookup
-	private WebElement modeButton;
-	
 	@FindBy(id = "mode_start_survey_element")
 	private WebElement startSurveyButtonDivElement;
 
@@ -797,7 +795,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		
 		return this.getTagSurveyTextField();
 	}
-	
+
 	/**
 	 * Starts a survey with the specified values.
 	 *
@@ -805,6 +803,16 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 */
 	public DriverViewPage startDrivingSurvey(String tag, SurveyTime surveyTime, SolarRadiation solarRadiation,
 			Wind wind, CloudCover cloudCover, SurveyType surveyType) {
+		return startDrivingSurvey(tag, surveyTime, solarRadiation, wind, cloudCover, surveyType, DEFAULT_MIN_AMPLITUDE);
+	}
+	
+	/**
+	 * Starts a survey with the specified values.
+	 *
+	 * @return the DriverViewPage class instance.
+	 */
+	public DriverViewPage startDrivingSurvey(String tag, SurveyTime surveyTime, SolarRadiation solarRadiation,
+			Wind wind, CloudCover cloudCover, SurveyType surveyType, float minAmplitude) {
 		openStartSurveyModalDialog();
 
 		this.setTagSurveyTextField(tag);
