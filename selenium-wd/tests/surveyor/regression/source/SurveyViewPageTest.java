@@ -72,13 +72,9 @@ public class SurveyViewPageTest extends BaseMapViewTest {
 	private static final String EMPTY = "";
 	private static final Integer NOTSET = -1;
 	
-	private static LoginPageActions loginPageAction;
 	private static DriverViewPageActions driverViewPageAction;
 	private static SurveyViewPageActions surveyViewPageAction;
 	private static SurveyViewPage surveyViewPage;
-	private static TestSetup testSetup = null;
-	private static WebDriver driver = null;
-	private static String baseURL = null;
 	
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
