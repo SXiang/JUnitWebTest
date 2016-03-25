@@ -11,6 +11,7 @@ DECLARE @surveyorUnitID uniqueidentifier
 DECLARE @referenceGasBottleId uniqueidentifier
 
 DECLARE @customerId uniqueidentifier
+DECLARE @locationID uniqueidentifier
 
  -- Customer:
 
