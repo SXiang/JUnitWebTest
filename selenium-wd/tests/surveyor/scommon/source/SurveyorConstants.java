@@ -55,6 +55,7 @@ public final class SurveyorConstants {
 	public static final String PICUSERROLESUP = "Picarro Support";
 
 	public static final String PICDFADMIN = "AutomationAdmin";
+	public static final String USERPASSWORDHASH ="oeHwHqmv621dZ1MRE2BSdw==";
 	public static final String PICADMINPSWD = "sqa#Picarro$0";
 	public static final String SQACUSUAUSER = "sqacusua";
 	public static final String SQACUSSUUSER = "sqacussu";
@@ -73,6 +74,10 @@ public final class SurveyorConstants {
 	public static final String SQAPICSU = "sqapicsu@picarro.com";
 	public static final String SQAPICSU1 = "sqapicsu1@picarro.com";
 	public static final String SQAPICDR = "sqapicdr@picarro.com";
+	public static final String SQAPGEUA = "sqapgeua@email.com";
+	public static final String SQAPGESU = "sqapgesu@email.com";
+	public static final String SQAPGEDR = "sqapgedr1@email.com";
+	
 
 	public static final String SQAPICLOCSUR = "sqapiclocsur";
 	public static final String SQAPICLOC0SUR = "sqapicloc0sur";

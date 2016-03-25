@@ -5,6 +5,17 @@ import org.junit.runners.model.InitializationError;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import surveyor.scommon.source.SurveyorTestRunner;
+import static surveyor.scommon.source.SurveyorConstants.USERPASSWORDHASH;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSDR;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICAD;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICSUP;
+import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
+import static surveyor.scommon.source.SurveyorConstants.SQAPGEUA;
+import static surveyor.scommon.source.SurveyorConstants.SQAPGESU;
+import static surveyor.scommon.source.SurveyorConstants.SQAPGEDR;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
+
 
 public class UserDataProvider extends SurveyorTestRunner {
 	public static final String USER_ROLE_INFO_PROVIDER = "dataProviderUserRoleInfo";
@@ -29,15 +40,15 @@ public class UserDataProvider extends SurveyorTestRunner {
     public static Object[][] dataProviderUserRoleInfo() {
         // @formatter:off"
         return new String[][] {		// Username, Password(ENCRYPTED), Role, CustomerName, CustomerLocation
-        	{ "sqacusua@email.com","oeHwHqmv621dZ1MRE2BSdw==","Customer Utility Admin","sqacus","sqacusloc" },
-        	{ "sqacussu@email.com","oeHwHqmv621dZ1MRE2BSdw==","Customer Supervisor","sqacus","sqaTestloc" },
-        	{ "sqacusdr1@email.com","oeHwHqmv621dZ1MRE2BSdw==","Customer Driver","sqacus","sqacusloc" },
-        	{ "sqapicad@picarro.com","oeHwHqmv621dZ1MRE2BSdw==","Picarro Admin","Picarro","Santa Clara" },
-        	{ "sqapicsup@picarro.com","oeHwHqmv621dZ1MRE2BSdw==","Picarro Support","Picarro","Santa Clara" },
-        	{ "Administrator","6NZYEwkq24lm9xBekD04sg==","Picarro Admin","Picarro","Santa Clara" },
-        	{ "sqapgeua@email.com","oeHwHqmv621dZ1MRE2BSdw==","PGE Customer Utility Admin","PG&E","pge_SC" },
-        	{ "sqapgesu@email.com","oeHwHqmv621dZ1MRE2BSdw==","PGE Customer Supervisor","PG&E","pge_SC" },
-        	{ "sqapgedr1@email.com","oeHwHqmv621dZ1MRE2BSdw==","PGE Customer Driver","PG&E","pge_SC" }
+        	{ SQACUSUA,USERPASSWORDHASH,"Customer Utility Admin","sqacus","sqacusloc" },
+        	{ SQACUSSU,USERPASSWORDHASH,"Customer Supervisor","sqacus","sqaTestloc" },
+        	{ SQACUSDR,USERPASSWORDHASH,"Customer Driver","sqacus","sqacusloc" },
+        	{ SQAPICAD,USERPASSWORDHASH,"Picarro Admin","Picarro","Santa Clara" },
+        	{ SQAPICSUP,USERPASSWORDHASH,"Picarro Support","Picarro","Santa Clara" },
+        	{ PICDFADMIN,USERPASSWORDHASH,"Picarro Admin","Picarro","Santa Clara" },
+        	{ SQAPGEUA,USERPASSWORDHASH,"PGE Customer Utility Admin","PG&E","pge_SC" },
+        	{SQAPGESU,USERPASSWORDHASH,"PGE Customer Supervisor","PG&E","pge_SC" },
+        	{ SQAPGEDR,USERPASSWORDHASH,"PGE Customer Driver","PG&E","pge_SC" }
             };
         // @formatter:on
     }
@@ -46,8 +57,8 @@ public class UserDataProvider extends SurveyorTestRunner {
     public static Object[][] dataProviderPicarroUserRoleInfo() {
         // @formatter:off"
         return new String[][] {		// Username, Password(ENCRYPTED), Role, CustomerName, CustomerLocation
-        	{ "sqapicad@picarro.com","oeHwHqmv621dZ1MRE2BSdw==","Picarro Admin","Picarro","Santa Clara" },
-        	{ "sqapicsup@picarro.com","oeHwHqmv621dZ1MRE2BSdw==","Picarro Support","Picarro","Santa Clara" }
+        	{ SQAPICAD,USERPASSWORDHASH,"Picarro Admin","Picarro","Santa Clara" },
+        	{ SQAPICSUP,USERPASSWORDHASH,"Picarro Support","Picarro","Santa Clara" }
             };
         // @formatter:on
     }
@@ -56,8 +67,8 @@ public class UserDataProvider extends SurveyorTestRunner {
     public static Object[][] dataProviderPicarroAdminSupportRoleInfo() {
         // @formatter:off"
         return new String[][] {		
-        		{ "sqapicsup@picarro.com","oeHwHqmv621dZ1MRE2BSdw==" },
-                { "Administrator","6NZYEwkq24lm9xBekD04sg==" }
+        		{ SQAPICSUP,USERPASSWORDHASH },
+                { PICDFADMIN,USERPASSWORDHASH }
         	
             };
         // @formatter:on

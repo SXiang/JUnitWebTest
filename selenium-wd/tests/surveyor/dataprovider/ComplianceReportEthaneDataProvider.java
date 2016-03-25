@@ -52,6 +52,7 @@ import static surveyor.scommon.source.SurveyorConstants.TIMEZONEETUA;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMTUA;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
+import static surveyor.scommon.source.SurveyorConstants.USERPASSWORDHASH;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -105,19 +106,19 @@ public class ComplianceReportEthaneDataProvider extends SurveyorTestRunner {
 
 
 		return new Object[][] {				
-				{ "1"/*index*/, SQAPICSUP/*strCreatedBy*/, "oeHwHqmv621dZ1MRE2BSdw=="/*password(encrypted)*/, "Picarro"/*customer*/, TIMEZONEPTUA/*timeZone*/, ETHREXCLUSIONRADIUS/*exclusionRadius*/, null/*surveyorUnit*/, null/*userName*/, null/*startDate*/,
+				{ "1"/*index*/, SQAPICSUP/*strCreatedBy*/, USERPASSWORDHASH/*password(encrypted)*/, "Picarro"/*customer*/, TIMEZONEPTUA/*timeZone*/, ETHREXCLUSIONRADIUS/*exclusionRadius*/, null/*surveyorUnit*/, null/*userName*/, null/*startDate*/,
 					null/*endDate*/, null/*fovOpacity*/, null/*lisaOpacity*/, null/*geoFilter*/, ReportModeFilter.Standard/*reportMode*/, null/*surveyModeFilter*/, EthaneFilter.ExcludeVehicleExhaust/*ethaneFilter*/, createBoundaryList()/*listBoundary*/, tagList1/*tagList*/, tablesList/*tablesList*/, viewList/*viewList*/, null/*viewLayersList*/ },
-				{ "2", SQAPICSUP, "oeHwHqmv621dZ1MRE2BSdw==", "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Standard, null, EthaneFilter.ExcludeBiogenicMethane, createBoundaryList(), tagList1, tablesList, viewList, null},
-				{ "3", SQAPICSUP, "oeHwHqmv621dZ1MRE2BSdw==", "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Standard, null, EthaneFilter.Both, createBoundaryList(), tagList1, tablesList, viewList, null},
-				{ "4", SQAPICSUP, "oeHwHqmv621dZ1MRE2BSdw==", "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Standard, null, EthaneFilter.None, createBoundaryList(), tagList1, tablesList, viewList, null},
-				{ "5", SQAPICSUP, "oeHwHqmv621dZ1MRE2BSdw==", "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Manual, null, EthaneFilter.ExcludeVehicleExhaust, createBoundaryList(), tagList3, tablesList, viewList, null},
-				{ "6", SQAPICSUP, "oeHwHqmv621dZ1MRE2BSdw==", "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Manual, null, EthaneFilter.ExcludeBiogenicMethane, createBoundaryList(), tagList3, tablesList, viewList, null},
-				{ "7", SQAPICSUP, "oeHwHqmv621dZ1MRE2BSdw==", "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Manual, null, EthaneFilter.Both, createBoundaryList(), tagList3, tablesList, viewList, null},
-				{ "8", SQAPICSUP, "oeHwHqmv621dZ1MRE2BSdw==", "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Manual, null, EthaneFilter.None, createBoundaryList(), tagList3, tablesList, viewList, null},
-				{ "9", SQAPICSUP, "oeHwHqmv621dZ1MRE2BSdw==", "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.RapidResponse, null, EthaneFilter.ExcludeVehicleExhaust, createBoundaryList(), tagList2, tablesList, viewList, null},
-				{ "10", SQAPICSUP, "oeHwHqmv621dZ1MRE2BSdw==", "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.RapidResponse, null, EthaneFilter.ExcludeBiogenicMethane, createBoundaryList(), tagList2, tablesList, viewList, null},
-				{ "11", SQAPICSUP, "oeHwHqmv621dZ1MRE2BSdw==", "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.RapidResponse, null, EthaneFilter.Both, createBoundaryList(), tagList2, tablesList, viewList, null},
-				{ "12", SQAPICSUP, "oeHwHqmv621dZ1MRE2BSdw==", "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.RapidResponse, null, EthaneFilter.None, createBoundaryList(), tagList2, tablesList, viewList, null},
+				{ "2", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Standard, null, EthaneFilter.ExcludeBiogenicMethane, createBoundaryList(), tagList1, tablesList, viewList, null},
+				{ "3", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Standard, null, EthaneFilter.Both, createBoundaryList(), tagList1, tablesList, viewList, null},
+				{ "4", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Standard, null, EthaneFilter.None, createBoundaryList(), tagList1, tablesList, viewList, null},
+				{ "5", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Manual, null, EthaneFilter.ExcludeVehicleExhaust, createBoundaryList(), tagList3, tablesList, viewList, null},
+				{ "6", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Manual, null, EthaneFilter.ExcludeBiogenicMethane, createBoundaryList(), tagList3, tablesList, viewList, null},
+				{ "7", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Manual, null, EthaneFilter.Both, createBoundaryList(), tagList3, tablesList, viewList, null},
+				{ "8", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Manual, null, EthaneFilter.None, createBoundaryList(), tagList3, tablesList, viewList, null},
+				{ "9", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.RapidResponse, null, EthaneFilter.ExcludeVehicleExhaust, createBoundaryList(), tagList2, tablesList, viewList, null},
+				{ "10", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.RapidResponse, null, EthaneFilter.ExcludeBiogenicMethane, createBoundaryList(), tagList2, tablesList, viewList, null},
+				{ "11", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.RapidResponse, null, EthaneFilter.Both, createBoundaryList(), tagList2, tablesList, viewList, null},
+				{ "12", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.RapidResponse, null, EthaneFilter.None, createBoundaryList(), tagList2, tablesList, viewList, null},
 																
 		};
 

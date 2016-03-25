@@ -3067,11 +3067,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 
-	public boolean verifyViewsImages(String actualPath, String sourceViewTitle, String testCase, String destViewTitle) throws IOException {
+	public boolean verifyViewsImages(String actualPath, String reportTitle, String testCase, String destViewTitle) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
+		reportName = "CR-" + reportId;
+		setReportName(reportName);
 		String baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + destViewTitle + ".png";
-		String sourceViewFile = actualPath + File.separator + sourceViewTitle + ".pdf";
-		String imageExtractFolder = (pdfUtility.extractPDFImages(sourceViewFile, testCase));
+		String imageExtractFolder =Paths.get(testSetup.getDownloadPath()).toString();
 		File folder = new File(imageExtractFolder);
 		File[] listOfFiles = folder.listFiles();
 		for (File file : listOfFiles) {
