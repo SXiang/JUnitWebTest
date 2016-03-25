@@ -14,6 +14,7 @@ import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.SQAPGEUA;
 import static surveyor.scommon.source.SurveyorConstants.SQAPGESU;
 import static surveyor.scommon.source.SurveyorConstants.SQAPGEDR;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
 
 
 public class UserDataProvider extends SurveyorTestRunner {
@@ -40,7 +41,7 @@ public class UserDataProvider extends SurveyorTestRunner {
         // @formatter:off"
         return new String[][] {		// Username, Password(ENCRYPTED), Role, CustomerName, CustomerLocation
         	{ SQACUSUA,USERPASSWORDHASH,"Customer Utility Admin","sqacus","sqacusloc" },
-        	{ SQACUSUA,USERPASSWORDHASH,"Customer Supervisor","sqacus","sqaTestloc" },
+        	{ SQACUSSU,USERPASSWORDHASH,"Customer Supervisor","sqacus","sqaTestloc" },
         	{ SQACUSDR,USERPASSWORDHASH,"Customer Driver","sqacus","sqacusloc" },
         	{ SQAPICAD,USERPASSWORDHASH,"Picarro Admin","Picarro","Santa Clara" },
         	{ SQAPICSUP,USERPASSWORDHASH,"Picarro Support","Picarro","Santa Clara" },
