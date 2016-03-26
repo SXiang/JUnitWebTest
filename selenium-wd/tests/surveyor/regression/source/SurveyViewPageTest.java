@@ -1,31 +1,18 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
-import common.source.DateUtility;
 import common.source.Log;
-import common.source.TestContext;
-import common.source.TestSetup;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.actions.DriverViewPageActions;
-import surveyor.scommon.actions.LoginPageActions;
-import surveyor.scommon.actions.HomePageActions;
-import surveyor.scommon.actions.TestEnvironmentActions;
-import surveyor.scommon.source.HomePage;
-import surveyor.scommon.source.LoginPage;
-import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 import surveyor.scommon.actions.SurveyViewPageActions;
@@ -43,38 +30,46 @@ import surveyor.scommon.source.SurveyViewPage;
 @RunWith(SurveyorTestRunner.class)
 public class SurveyViewPageTest extends BaseMapViewTest {
 
-	private static final String SAMPLE_SURVEY_FIELD_NOTES1 = "Ref Gas Canceled";
-	private static final String SURVEY_INFO_SURVEYOR = "Surveyor: Software Car";
-	private static final String SURVEY_INFO_ANALYZER = "Analyzer: FDDS2038";
-	private static final String SURVEY_INFO_MODE_PREFIX = "Mode: ";
-	private static final String SURVEY_INFO_DRIVER_PREFIX = "Driver: ";
-	private static final String SURVEY_INFO_STABILITY_CLASS_B = "Stability Class: B";
-	private static final String TEST_SURVEY_RAPID_RESP_ID = "04B2FEDA-EE18-A49E-3208-39D4B50F48FE";
-	private static final String TEST_SURVEY_RAPID_RESP_TAG = "rr-pic";
-	private static final String TEST_SURVEY_RAPID_RESP_TYPE = "Rapid Response";
-	private static final String TEST_SURVEY_RAPID_RESP_USERNAME = "Administrator";
-	private static final String TEST_SURVEY_MANUAL1_ID = "4D7BF7AC-6CC2-9B18-1894-39D4B546927B";
-	private static final String TEST_SURVEY_MANUAL1_TAG = "man-pic";
-	private static final String TEST_SURVEY_MANUAL1_TYPE = "Manual";
-	private static final String TEST_SURVEY_MANUAL1_USERNAME = "Administrator";
+	protected static final String SAMPLE_SURVEY_FIELD_NOTES1 = "Ref Gas Canceled";
+	protected static final String SURVEY_INFO_SURVEYOR = "Surveyor: Software Car";
+	protected static final String SURVEY_INFO_ANALYZER = "Analyzer: FDDS2038";
+	protected static final String SURVEY_INFO_MODE_PREFIX = "Mode: ";
+	protected static final String SURVEY_INFO_DRIVER_PREFIX = "Driver: ";
+	protected static final String SURVEY_INFO_STABILITY_CLASS_B = "Stability Class: B";
+	protected static final String TEST_SURVEY_STANDARD1_ID = "c8782024-cc65-b53a-5317-39d4b4f4731f";
+	protected static final String TEST_SURVEY_STANDARD1_TAG = "stnd-pic";
+	protected static final String TEST_SURVEY_STANDARD1_TYPE = "Standard";
+	protected static final String TEST_SURVEY_STANDARD1_USERNAME = "Administrator";
+	protected static final String TEST_SURVEY_RAPID_RESP_ID = "04B2FEDA-EE18-A49E-3208-39D4B50F48FE";
+	protected static final String TEST_SURVEY_RAPID_RESP_TAG = "rr-pic";
+	protected static final String TEST_SURVEY_RAPID_RESP_TYPE = "Rapid Response";
+	protected static final String TEST_SURVEY_RAPID_RESP_USERNAME = "Administrator";
+	protected static final String TEST_SURVEY_MANUAL1_ID = "4D7BF7AC-6CC2-9B18-1894-39D4B546927B";
+	protected static final String TEST_SURVEY_MANUAL1_TAG = "man-pic";
+	protected static final String TEST_SURVEY_MANUAL1_TYPE = "Manual";
+	protected static final String TEST_SURVEY_MANUAL1_USERNAME = "Administrator";
+	protected static final String TEST_SURVEY_OPERATOR1_ID = "1556ac85-a125-0347-2a02-39d4b529c6bd";
+	protected static final String TEST_SURVEY_OPERATOR1_TAG = "op-pic";
+	protected static final String TEST_SURVEY_OPERATOR1_TYPE = "Operator";
+	protected static final String TEST_SURVEY_OPERATOR1_USERNAME = "Administrator";
 	
 	// Ethane specific constants.
-	private static final String ETHANE_SAMPLE_FIELD_NOTES = "3.6 big leak location";
-	private static final String ETHANE_SURVEY_INFO_SURVEYOR = "Surveyor: Green-Escape";
-	private static final String ETHANE_SURVEY_INFO_ANALYZER = "Analyzer: FEDS2059";
-	private static final String TEST_ETHANE_SURVEY_STANDARD_ID = "183fcb51-e968-bb81-0c98-39d666857ae7";
-	private static final String TEST_ETHANE_SURVEY_STANDARD_TAG = "ethane night sf b1";
-	private static final String TEST_ETHANE_SURVEY_STANDARD_TYPE = "Standard";
-	private static final String TEST_ETHANE_SURVEY_STANDARD_USERNAME = "picscdr@picarro.com";
+	protected static final String ETHANE_SAMPLE_FIELD_NOTES = "3.6 big leak location";
+	protected static final String ETHANE_SURVEY_INFO_SURVEYOR = "Surveyor: Green-Escape";
+	protected static final String ETHANE_SURVEY_INFO_ANALYZER = "Analyzer: FEDS2059";
+	protected static final String TEST_ETHANE_SURVEY_STANDARD_ID = "183fcb51-e968-bb81-0c98-39d666857ae7";
+	protected static final String TEST_ETHANE_SURVEY_STANDARD_TAG = "ethane night sf b1";
+	protected static final String TEST_ETHANE_SURVEY_STANDARD_TYPE = "Standard";
+	protected static final String TEST_ETHANE_SURVEY_STANDARD_USERNAME = "picscdr@picarro.com";
 
 	// Use this Manual survey for verifying Field notes are present.
-	private static final String TEST_SURVEY_MANUAL2_ID = "2278D26F-8D69-B070-56FD-39D4B552F8F2";
-	private static final String EMPTY = "";
-	private static final Integer NOTSET = -1;
+	protected static final String TEST_SURVEY_MANUAL2_ID = "2278D26F-8D69-B070-56FD-39D4B552F8F2";
+	protected static final String EMPTY = "";
+	protected static final Integer NOTSET = -1;
 	
-	private static DriverViewPageActions driverViewPageAction;
-	private static SurveyViewPageActions surveyViewPageAction;
-	private static SurveyViewPage surveyViewPage;
+	protected static DriverViewPageActions driverViewPageAction;
+	protected static SurveyViewPageActions surveyViewPageAction;
+	protected static SurveyViewPage surveyViewPage;
 	
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
@@ -1247,6 +1242,917 @@ public class SurveyViewPageTest extends BaseMapViewTest {
 		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
 	}
 	
+	/**
+	 * Test Case ID: TC1026_SurveyView_ViewManualSurveySatelliteViewWhenFovIndicationONGISON
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey
+	 *	- - Click Display
+	 *	- FOV - ON
+	 *	- Indications - ON
+	 *	- All other options - OFF
+	 *	- - Click GIS
+	 *	- All options ON
+	 *	- - Click on Map and turn Satellite view ON
+	 *	- Survey Information is displayed in satellite view - Tag, Mode, Driver Info, Start time, End Time, Surveyor and analyzer info
+	 *	- -Breadcrumb,Indications and FOV are displayed on map in satellite view along with GIS data
+	 * Results: - 
+	 *	- - Lisa and field notes (if any) are not present on map
+	 */
+	@Ignore
+	public void TC1026_SurveyView_ViewManualSurveySatelliteViewWhenFovIndicationONGISON() throws Exception {
+		Log.info("\nRunning TC1026_SurveyView_ViewManualSurveySatelliteViewWhenFovIndicationONGISON ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_MANUAL1_TAG, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_MANUAL1_TYPE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_MANUAL1_USERNAME, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+	}
+ 
+	/**
+	 * Test Case ID: TC1027_SurveyView_ViewManualSurveyMapViewWhenAllDisplayOptionsAreONCastIronCopperAssetsONBoundariesOFF
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey
+	 *	- - Click Display
+	 *	- All options - ON
+	 *	- - Click GIS
+	 *	- Assets: Cast Iron, Copper - ON
+	 *	- Boundaries: OFF
+	 *	- - Click on Map and turn Map view ON
+	 *	- - Breadcrumb, Indications, LISA, FOV and survey information is displayed on map
+	 * Results: - 
+	 *	- - Boundaries not displayed on map
+	 */
+	@Ignore
+	public void TC1027_SurveyView_ViewManualSurveyMapViewWhenAllDisplayOptionsAreONCastIronCopperAssetsONBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1027_SurveyView_ViewManualSurveyMapViewWhenAllDisplayOptionsAreONCastIronCopperAssetsONBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMaterialTypeCopper(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMaterialTypeCastIron(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_MANUAL1_TAG, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_MANUAL1_TYPE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_MANUAL1_USERNAME, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+	}
+ 
+	/**
+	 * Test Case ID: TC1028_SurveyView_ViewManualSurveySatelliteViewWhenAllDisplayOptionsAreONProtectedSteelPEPlasticAssetsONBoundariesOFF
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey
+	 *	- - Click Display
+	 *	- All options - ON
+	 *	- - Click GIS
+	 *	- Assets: PE Plastic, Protected Steel - ON
+	 *	- Boundaries: OFF
+	 *	- - Click on Map and turn Satellite view ON
+	 *	- - Breadcrumb, Indications, LISA, FOV and survey information is displayed on map in satellite view
+	 * Results: - 
+	 *	- - Boundaries not displayed on map in satellite view
+	 */
+	@Ignore
+	public void TC1028_SurveyView_ViewManualSurveySatelliteViewProtectedSteelPEPlasticAssetsONBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1028_SurveyView_ViewManualSurveySatelliteViewProtectedSteelPEPlasticAssetsONBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMaterialTypePEPlastic(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMaterialTypeProtectedSteel(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_MANUAL1_TAG, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_MANUAL1_TYPE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_MANUAL1_USERNAME, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+	}
+ 
+	/**
+	 * Test Case ID: TC1029_SurveyView_ViewManualSurveyMapViewWhenLISAONAssetsBoundariesOFF
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey
+	 *	- - Click Display
+	 *	- Lisa - ON
+	 *	- All other options - OFF
+	 *	- - Click GIS
+	 *	- All options OFF
+	 *	- - Click on Map and turn Map view ON
+	 *	- - Breadcrumb and Lisa are displayed on map
+	 * Results: - 
+	 *	- - All other survey data, assets and boundaries are not displayed
+	 */
+	@Ignore
+	public void TC1029_SurveyView_ViewManualSurveyMapViewWhenLISAONAssetsBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1029_SurveyView_ViewManualSurveyMapViewWhenLISAONAssetsBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+	}
+ 
+	/**
+	 * Test Case ID: TC1030_SurveyView_ViewManualSurveySatelliteViewWhenLISAONAssetsBoundariesOFF
+	 * Script: -  	
+	 *	- -On Home Page, click on Driving Surveys -& View Survey
+	 *	- - Click Display
+	 *	- Lisa - ON
+	 *	- All other options - OFF
+	 *	- - Click GIS
+	 *	- All options OFF
+	 *	- - Click on Map and turn Satellite view ON
+	 *	- - Breadcrumb and Lisa are displayed on map in satellite view
+	 * Results: - 
+	 *	- - All other survey data, assets and boundaries are not displayed
+	 */
+	@Ignore
+	public void TC1030_SurveyView_ViewManualSurveySatelliteViewWhenLISAONAssetsBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1030_SurveyView_ViewManualSurveySatelliteViewWhenLISAONAssetsBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+	}
+ 
+	/**
+	 * Test Case ID: TC1031_SurveyView_ViewManualSurveyMapViewWhenFOVONAssetsBoundariesOFF
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey
+	 *	- - Click Display
+	 *	- FOV - ON
+	 *	- All other options - OFF
+	 *	- - Click GIS
+	 *	- All options OFF
+	 *	- - Click on Map and turn Map view ON
+	 *	- - Breadcrumb and FOV are displayed on map
+	 * Results: - 
+	 *	- - All other survey data, assets and boundaries are not displayed
+	 */
+	@Ignore
+	public void TC1031_SurveyView_ViewManualSurveyMapViewWhenFOVONAssetsBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1031_SurveyView_ViewManualSurveyMapViewWhenFOVONAssetsBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+	}
+ 
+	/**
+	 * Test Case ID: TC1032_SurveyView_ViewManualSurveySatelliteViewWhenFOVONAssetsBoundariesOFF
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey
+	 *	- - Click Display
+	 *	- FOV - ON
+	 *	- All other options - OFF
+	 *	- - Click GIS
+	 *	- All options OFF
+	 *	- - Click on Map and turn Satellite view ON
+	 *	- - Breadcrumb and FOV are displayed on map in satellite view
+	 * Results: - 
+	 *	- - All other survey data, assets and boundaries are not displayed
+	 */
+	@Ignore
+	public void TC1032_SurveyView_ViewManualSurveySatelliteViewWhenFOVONAssetsBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1032_SurveyView_ViewManualSurveySatelliteViewWhenFOVONAssetsBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+	}
+ 
+	/**
+	 * Test Case ID: TC1033_SurveyView_ViewManualSurveyMapViewWhenFieldNotesONAssetsBoundariesOFF
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey
+	 *	- - Click Display
+	 *	- Field Notes - ON
+	 *	- All other options - OFF
+	 *	- - Click GIS
+	 *	- All options OFF
+	 *	- - Click on Map and turn Map view ON
+	 *	- - Breadcrumb and Field Notes are displayed on map
+	 * Results: - 
+	 *	- - All other survey data, assets and boundaries are not displayed
+	 */
+	@Ignore
+	public void TC1033_SurveyView_ViewManualSurveyMapViewWhenFieldNotesONAssetsBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1033_SurveyView_ViewManualSurveyMapViewWhenFieldNotesONAssetsBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+	}
+ 
+	/**
+	 * Test Case ID: TC1034_SurveyView_ViewManualSurveySatellliteViewWhenFieldNotesONAssetsBoundariesOFF
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey
+	 *	- - Click Display
+	 *	- Field Notes - ON
+	 *	- All other options - OFF
+	 *	- - Click GIS
+	 *	- All options OFF
+	 *	- - Click on Map and turn Satellite view ON
+	 *	- - Breadcrumb and Field Notes are displayed on map in satellite view
+	 * Results: - 
+	 *	- - All other survey data, assets and boundaries are not displayed
+	 */
+	@Ignore
+	public void TC1034_SurveyView_ViewManualSurveySatelliteViewWhenFieldNotesONAssetsBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1034_SurveyView_ViewManualSurveySatelliteViewWhenFieldNotesONAssetsBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+	}
+ 
+	/**
+	 * Test Case ID: TC1035_SurveyView_ViewManualSurveyMapViewWhenIsotopicAnalysisONAssetsBoundariesOFF
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey
+	 *	- - Click Display
+	 *	- Isotopic Analysis - ON
+	 *	- All other options - OFF
+	 *	- - Click GIS
+	 *	- All options OFF
+	 *	- - Click on Map and turn Map view ON
+	 *	- - Breadcrumb and capture results are displayed on map
+	 * Results: - 
+	 *	- - All other survey data, assets and boundaries are not displayed
+	 */
+	@Ignore
+	public void TC1035_SurveyView_ViewManualSurveyMapViewWhenIsotopicAnalysisONAssetsBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1035_SurveyView_ViewManualSurveyMapViewWhenIsotopicAnalysisONAssetsBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnIsotopicAnalysis(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+	}
+ 
+	/**
+	 * Test Case ID: TC1036_SurveyView_ViewManualSurveySatelliteViewWhenIsotopicAnalysisONAssetsBoundariesOFF
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey
+	 *	- - Click Display
+	 *	- Isotopic Analysis - ON
+	 *	- All other options - OFF
+	 *	- - Click GIS
+	 *	- All options OFF
+	 *	- - Click on Map and turn Satellite view ON
+	 *	- - Breadcrumb and capture results are displayed on map in satellite view
+	 * Results: - 
+	 *	- - All other survey data, assets and boundaries are not displayed
+	 */
+	@Ignore
+	public void TC1036_SurveyView_ViewManualSurveySatelliteViewWhenIsotopicAnalysisONAssetsBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1036_SurveyView_ViewManualSurveySatelliteViewWhenIsotopicAnalysisONAssetsBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnIsotopicAnalysis(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+	}
+ 
+	/**
+	 * Test Case ID: TC1263_SurveyView_ReturningFromCurtainViewShouldRestoreUserSelectedMapViewCombination
+	 * Script: -  	
+	 *	- - Select Map view
+	 *	- - Click on Curtain View
+	 *	- - Click on return
+	 * Results: - 
+	 *	- - Map view should be displayed
+	 */
+	@Ignore
+	public void TC1263_SurveyView_ReturningFromCurtainViewShouldRestoreUserSelectedMapViewCombination() throws Exception {
+		Log.info("\nRunning TC1263_SurveyView_ReturningFromCurtainViewShouldRestoreUserSelectedMapViewCombination ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		surveyViewPageAction.showCurtainView(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnCurtainReturnButton(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyMapViewIsShown(EMPTY, NOTSET));
+	}
+ 
+	/**
+	 * Test Case ID: TC1376_SurveyView_CurtainView_ChangeInvocationOfOLCesium
+	 * Script: -  	
+	 *	- 1) From the Driving Surveys page, click on a survey
+	 * Results: - 
+	 *	- 2) Click the Curtain button
+	 */
+	@Ignore
+	public void TC1376_SurveyView_CurtainView_ChangeInvocationOfOLCesium() throws Exception {
+		Log.info("\nRunning TC1376_SurveyView_CurtainView_ChangeInvocationOfOLCesium ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		surveyViewPageAction.showCurtainView(EMPTY, NOTSET);
+	}
+ 
+	/**
+	 * Test Case ID: TC1410_HistoricalSurveyViewAssessmentSurveyMode_RedTrace
+	 * Script: -  	
+	 * Results: - 
+	 *	- - On Home Page, click on Driving surveys link and choose a survey with assessment mode and red trace
+	 */
+	@Test
+	public void TC1410_HistoricalSurveyViewAssessmentSurveyMode_RedTrace() throws Exception {
+		Log.info("\nRunning TC1410_HistoricalSurveyViewAssessmentSurveyMode_RedTrace ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+	}
+ 
+	/**
+	 * Test Case ID: TC1502_SurveyViewAssessmentMode_CurtainViewDisplayedUserCanNavigateIt
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey for assessment mode
+	 *	- - Click on Curtain button
+	 *	- - Click on Return button
+	 *	- - Capture results are not displayed
+	 * Results: - 
+	 *	- - User is returned back to survey view
+	 */
+	@Ignore
+	public void TC1502_SurveyViewAssessmentMode_CurtainViewDisplayedUserCanNavigateIt() throws Exception {
+		Log.info("\nRunning TC1502_SurveyViewAssessmentMode_CurtainViewDisplayedUserCanNavigateIt ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		surveyViewPageAction.showCurtainView(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnCurtainReturnButton(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+	}
+ 
+	/**
+	 * Test Case ID: TC1512_SurveyViewAssessmentMode_CheckSurveyDataPresentAfterUserRefreshesBrowser_Satellite
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey in assessment mode
+	 *	- - Click on Map and turn Satellite View ON
+	 *	- - Refresh the browser after couple of mins
+	 * Results: - 
+	 *	- - Survey details - Tag, Mode, Driver Name, Stability Class, Start Time, End Time, Surveyor Name should be present in satellite view
+	 */
+	@Ignore
+	public void TC1512_SurveyViewAssessmentMode_CheckSurveyDataPresentAfterUserRefreshesBrowser_Satellite() throws Exception {
+		Log.info("\nRunning TC1512_SurveyViewAssessmentMode_CheckSurveyDataPresentAfterUserRefreshesBrowser_Satellite ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		surveyViewPageAction.refreshPage(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+	}
+ 
+	/**
+	 * Test Case ID: TC1513_SurveyViewAssessmentMode_CheckSurveyDataPresentAfterUserRefreshesBrowser_Map
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey in assessment mode
+	 *	- - Click on Map and turn Map View ON
+	 *	- - Refresh the browser after couple of mins
+	 *	- - Click on Map and turn Map View ON
+	 * Results: - 
+	 *	- - Survey details - Tag, Mode, Driver Name, Stability Class, Start Time, End Time, Surveyor Name should be present in map view
+	 */
+	@Ignore
+	public void TC1513_SurveyViewAssessmentMode_CheckSurveyDataPresentAfterUserRefreshesBrowser_Map() throws Exception {
+		Log.info("\nRunning TC1513_SurveyViewAssessmentMode_CheckSurveyDataPresentAfterUserRefreshesBrowser_Map ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		surveyViewPageAction.refreshPage(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+	}
+ 
+	/**
+	 * Test Case ID: TC1514_SurveyViewAssessmentMode_CheckZoomLevelUsingMouseControlsSurveyViewWhenSurveyDataLoaded_Map
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey in assessment mode
+	 *	- - Click on Map and turn Map View ON
+	 *	- - Click on Display
+	 *	- All options ON
+	 *	- - Zoom in using mouse controls
+	 * Results: - 
+	 *	- - Zoom out using mouse controls
+	 */
+	@Ignore
+	public void TC1514_SurveyViewAssessmentMode_CheckZoomLevelUsingMouseControlsSurveyViewWhenSurveyDataLoaded_Map() throws Exception {
+		Log.info("\nRunning TC1514_SurveyViewAssessmentMode_CheckZoomLevelUsingMouseControlsSurveyViewWhenSurveyDataLoaded_Map ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomInButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+	}
+ 
+	/**
+	 * Test Case ID: TC1515_SurveyViewAssessmentMode_CheckZoomLevelUsingMouseControlsSurveyViewWhenSurveyDataLoaded_Satellite
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey in assessment mode
+	 *	- - Click on Map and turn Satellite View ON
+	 *	- - Click on Display
+	 *	- All options ON
+	 *	- - Zoom in using mouse controls
+	 * Results: - 
+	 *	- - Zoom out using mouse controls
+	 */
+	@Ignore
+	public void TC1515_SurveyViewAssessmentMode_CheckZoomLevelUsingMouseControlsSurveyViewWhenSurveyDataLoaded_Satellite() throws Exception {
+		Log.info("\nRunning TC1515_SurveyViewAssessmentMode_CheckZoomLevelUsingMouseControlsSurveyViewWhenSurveyDataLoaded_Satellite ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomInButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+	}
+ 
+	/**
+	 * Test Case ID: TC1516_SurveyView_ViewAssessmentSurveySurveyMapViewWhenFovGISON
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey in assessment mode
+	 *	- - Click Display
+	 *	- FOV - ON
+	 *	- - Click GIS
+	 *	- All options ON
+	 *	- - Click on Map and turn Map view ON
+	 *	- Survey Information is displayed in map view - Tag, Mode, Driver Info, Start time, End Time, Surveyor and analyzer info
+	 * Results: - 
+	 *	- -Breadcrumb,FOV are displayed on map along with GIS data
+	 */
+	@Ignore
+	public void TC1516_SurveyView_ViewAssessmentSurveyMapViewWhenFovGISON() throws Exception {
+		Log.info("\nRunning TC1516_SurveyView_ViewAssessmentSurveyMapViewWhenFovGISON ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+	}
+ 
+	/**
+	 * Test Case ID: TC1517_SurveyView_ViewAssessmentSurveySatelliteViewWhenFovGISON
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey
+	 *	- - Click Display
+	 *	- FOV - ON
+	 *	- - Click GIS
+	 *	- All options ON
+	 *	- - Click on Map and turn Satellite view ON
+	 *	- Survey Information is displayed in satellite view - Tag, Mode, Driver Info, Start time, End Time, Surveyor and analyzer info
+	 * Results: - 
+	 *	- -Breadcrumb and FOV are displayed on map in satellite view along with GIS data
+	 */
+	@Ignore
+	public void TC1517_SurveyView_ViewAssessmentSurveySurveySatelliteViewWhenFovGISON() throws Exception {
+		Log.info("\nRunning TC1517_SurveyView_ViewAssessmentSurveySurveySatelliteViewWhenFovGISON ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+	}
+ 
+	/**
+	 * Test Case ID: TC1518_SurveyView_ViewAssessmentSurveyMapViewWhenAllDisplayOptionsAreONOtherPlasticProtectedSteelCastIronAssetsONBoundariesOFF
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey
+	 *	- - Click Display
+	 *	- All options - ON
+	 *	- - Click GIS
+	 *	- Assets: Other Plastic, Protected steel, Cast iron - ON
+	 *	- Boundaries: OFF
+	 *	- - Click on Map and turn Map view ON
+	 *	- - Breadcrumb, FOV and survey information is displayed on map
+	 * Results: - 
+	 *	- - Boundaries not displayed on map
+	 */
+	@Ignore
+	public void TC1518_SurveyView_ViewAssessmentSurveyMapViewWhenAllDisplayOptionsAreONOtherPlasticProtectedSteelCastIronAssetsONBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1518_SurveyView_ViewAssessmentSurveyMapViewWhenAllDisplayOptionsAreONOtherPlasticProtectedSteelCastIronAssetsONBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMaterialTypeOtherPlastic(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMaterialTypeProtectedSteel(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMaterialTypeCastIron(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_RAPID_RESP_TAG, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_RAPID_RESP_TYPE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_RAPID_RESP_USERNAME, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+	}
+ 
+	/**
+	 * Test Case ID: TC1519_SurveyView_ViewAssessmentSurveySatelliteViewWhenAllDisplayOptionsAreONPEPlasticUn_ProtectedSteelCopperAssetsONBoundariesOFF
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey in assessment mode
+	 *	- - Click Display
+	 *	- All options - ON
+	 *	- - Click GIS
+	 *	- Assets: PE Plastic, Un-Protected Steel, Copper - ON
+	 *	- Boundaries: OFF
+	 *	- - Click on Map and turn Satellite view ON
+	 *	- - Breadcrumb, FOV and survey information is displayed on map in satellite view
+	 * Results: - 
+	 *	- - Boundaries not displayed on map in satellite view
+	 */
+	@Ignore
+	public void TC1519_SurveyView_ViewAssessmentSurveySatelliteViewWhenAllDisplayOptionsAreONPEPlasticUn_ProtectedSteelCopperAssetsONBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1519_SurveyView_ViewAssessmentSurveySatelliteViewWhenAllDisplayOptionsAreONPEPlasticUn_ProtectedSteelCopperAssetsONBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMaterialTypePEPlastic(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMaterialTypeUnprotectedSteel(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMaterialTypeCopper(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_RAPID_RESP_TAG, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_RAPID_RESP_TYPE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_RAPID_RESP_USERNAME, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+	}
+ 
+	/**
+	 * Test Case ID: TC1520_SurveyView_ViewAssessmentSurveyMapViewWhenfovOFFAssetsBoundariesOFF
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey in assessment mode
+	 *	- - Click Display
+	 *	- FOV - OFF
+	 *	- - Click GIS
+	 *	- All options OFF
+	 *	- - Click on Map and turn Map view ON
+	 *	- - Breadcrumb and top survey information is displayed on map
+	 * Results: - 
+	 *	- - All other survey data, assets and boundaries are not displayed
+	 */
+	@Ignore
+	public void TC1520_SurveyView_ViewAssessmentSurveyMapViewWhenfovOFFAssetsBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1520_SurveyView_ViewAssessmentSurveyMapViewWhenfovOFFAssetsBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffFOVs(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_RAPID_RESP_TAG, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_RAPID_RESP_TYPE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_RAPID_RESP_USERNAME, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+	}
+ 
+	/**
+	 * Test Case ID: TC1521_SurveyView_ViewAssessmentSurveyMapViewWhenFOVOFFAssetsBoundariesOFF
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey in assessment mode
+	 *	- - Click Display
+	 *	- FOV- OFF
+	 *	- - Click GIS
+	 *	- All options OFF
+	 *	- - Click on Map and turn Map view ON
+	 *	- - Breadcrumb and survey related data on top is displayed on map
+	 * Results: - 
+	 *	- - All other survey data, assets and boundaries are not displayed
+	 */
+	@Ignore
+	public void TC1521_SurveyView_ViewAssessmentSurveyMapViewWhenFOVOFFAssetsBoundariesOFF() throws Exception {
+		Log.info("\nRunning TC1521_SurveyView_ViewAssessmentSurveyMapViewWhenFOVOFFAssetsBoundariesOFF ...");
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffFOVs(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_RAPID_RESP_TAG, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_RAPID_RESP_TYPE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_RAPID_RESP_USERNAME, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+	}
+ 	
 	/**
 	 * Test Case ID: TC1694_SurveyView_VerifyNotesAddedForPeaksInSurvey
 	 * Script: -  	
