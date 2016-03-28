@@ -61,24 +61,20 @@ public class DateUtility {
 	}
 
 	/**
-	 * Checks if the time displayed in a WebElement is ticking forward.
-	 * This method expects the time displayed in the WebElement to be in one of the 3 formats:
-	 * 	1. Time: 2:00:28 PM PST
-	 *  2. Elapsed: 2:00:28 PM PST
-	 *  3. Remaining: 2:00:28 PM PST 
-	 * @throws InterruptedException 
+	 * Checks if the time displayed in a WebElement is ticking forward. This method expects the time displayed in the WebElement to be in one of the 3 formats: 1. Time: 2:00:28 PM PST 2. Elapsed:
+	 * 2:00:28 PM PST 3. Remaining: 2:00:28 PM PST
+	 * 
+	 * @throws InterruptedException
 	 */
 	public static boolean isTimeTickingForward(WebElement element) throws InterruptedException {
 		return isTimeTickingForwardBackward(element, true);
 	}
 
 	/**
-	 * Checks if the time displayed in a WebElement is ticking backward.
-	 * This method expects the time displayed in the WebElement to be in one of the 3 formats:
-	 * 	1. Time: 2:00:28 PM PST
-	 *  2. Elapsed: 2:00:28 PM PST
-	 *  3. Remaining: 2:00:28 PM PST 
-	 * @throws InterruptedException 
+	 * Checks if the time displayed in a WebElement is ticking backward. This method expects the time displayed in the WebElement to be in one of the 3 formats: 1. Time: 2:00:28 PM PST 2. Elapsed:
+	 * 2:00:28 PM PST 3. Remaining: 2:00:28 PM PST
+	 * 
+	 * @throws InterruptedException
 	 */
 	public static boolean isTimeTickingBackward(WebElement element) throws InterruptedException {
 		return isTimeTickingForwardBackward(element, false);
@@ -89,7 +85,7 @@ public class DateUtility {
 		final String ELAPSED_TIME_PREFIX = "Elapsed: ";
 		final String REMAINING_TIME_PREFIX = "Remaining: ";
 		final int ONE_SECOND_IN_MILLISEC = 1000;
-		
+
 		int iterations = 3;
 		String prevTimeString = "";
 		String currTimeString = "";
@@ -104,7 +100,7 @@ public class DateUtility {
 				throw new IllegalArgumentException("Element time string should be in '00:00:00' or '00:00:00 PST' format.");
 			}
 			currTimeString = timeParts.get(0);
-			
+
 			if (prevTimeString != "") {
 				if (checkForwardTick) {
 					if (!isFirstTimeGreater(currTimeString, prevTimeString)) {
@@ -120,7 +116,7 @@ public class DateUtility {
 			Thread.sleep(ONE_SECOND_IN_MILLISEC);
 
 		} while (iterations-- > 0);
-		
+
 		return true;
 	}
 
@@ -184,10 +180,11 @@ public class DateUtility {
 				return true;
 			}
 		} catch (DateTimeParseException e) {
+			Log.info(e.toString());
 		}
 		return false;
 	}
-	
+
 	/**
 	 * This function takes a Date/Time format in String and compare the format is correct with the given locale format
 	 * 
@@ -205,6 +202,7 @@ public class DateUtility {
 				return true;
 			}
 		} catch (DateTimeParseException e) {
+			Log.info(e.toString());
 		}
 		return false;
 	}
@@ -228,9 +226,33 @@ public class DateUtility {
 			}
 
 		} catch (Exception e) {
+			Log.info(e.toString());
 		}
 
 		return false;
+	}
+
+	/**
+	 * This function takes two strings in Date/Time format and return the duration
+	 * 
+	 * @param inputDateTime1,
+	 *            inputDateTime2 and whether the date check is for the reports
+	 * @return difference in minutes
+	 */
+	public long getDuration(String inputDateTime1, String inputDateTime2, boolean useTimeZone) {
+		Locale locale = Locale.forLanguageTag(getLanguageTag());
+		long diffInMinutes = 0;
+		try {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(getDateFormat(useTimeZone), locale);
+			LocalDateTime startDateTime = LocalDateTime.parse(inputDateTime1, formatter);
+			LocalDateTime endDateTime = LocalDateTime.parse(inputDateTime2, formatter);
+			diffInMinutes = java.time.Duration.between(startDateTime, endDateTime).toMinutes();
+
+		} catch (Exception e) {
+			Log.info(e.toString());
+		}
+
+		return diffInMinutes;
 	}
 
 	/**
@@ -260,8 +282,7 @@ public class DateUtility {
 	}
 
 	/**
-	 * This methods looks at the culture of the user and determines the long date format 
-	 * according to Cultures supported right now: English, French, Chinese
+	 * This methods looks at the culture of the user and determines the long date format according to Cultures supported right now: English, French, Chinese
 	 * 
 	 * @return date format for the user locale
 	 */
@@ -281,7 +302,7 @@ public class DateUtility {
 		return dateFormat;
 
 	}
-	
+
 	/**
 	 * This methods looks at the culture of the user and determines the date format accordingly Cultures supported right now: English, French, Chinese
 	 * 
@@ -295,30 +316,28 @@ public class DateUtility {
 		String dateFormat = null;
 		if (useTimeZone) {
 			if (culture.equals("en-US")) {
-				dateFormat = "MM/dd/yyyy h[h]:mm a zzz";
+				dateFormat = "M[M]/d[d]/yyyy h[h]:mm a zzz";
 			}
 			if (culture.equals("fr")) {
-				dateFormat = "dd/MM/yyyy H[H]:mm zzz";
+				dateFormat = "d[d]/M[M]/yyyy H[H]:mm zzz";
 			}
 			if (culture.equals("zh-Hans")) {
-				dateFormat = "YYYY/MM/dd H[H]:mm zzz";
+				dateFormat = "YYYY/M[M]/d[d] H[H]:mm zzz";
 			}
 		} else {
 			if (culture.equals("en-US")) {
-				dateFormat = "MM/dd/yyyy h[h]:mm a";
+				dateFormat = "M[M]/d[d]/yyyy h[h]:mm a";
 			}
 			if (culture.equals("fr")) {
-				dateFormat = "dd/MM/yyyy H[H]:mm";
+				dateFormat = "d[d]/M[M]/yyyy H[H]:mm";
 			}
 			if (culture.equals("zh-Hans")) {
-				dateFormat = "YYYY/MM/dd H[H]:mm";
+				dateFormat = "YYYY/M[M]/d[d] H[H]:mm";
 			}
 		}
 		return dateFormat;
 
 	}
-
-	
 
 	/**
 	 * This methods looks at the culture of the user and returns the Java specific Locale- language tag
@@ -331,11 +350,9 @@ public class DateUtility {
 		String languageTag = null;
 		if (culture.equals("en-US")) {
 			languageTag = "en-US";
-		}
-		else if (culture.equals("fr")) {
+		} else if (culture.equals("fr")) {
 			languageTag = "fr-FR";
-		}
-		else if (culture.equals("zh-Hans")) {
+		} else if (culture.equals("zh-Hans")) {
 			languageTag = "zh-CN";
 		}
 
@@ -497,6 +514,9 @@ public class DateUtility {
 		Log.info(result = (date.compareDates("2015/01/12 18:40 ", "2015/02/12 18:42 ", false)) ? "FAIL" : "PASS");
 		Log.info(result = (date.compareDates("2015/01/12 18:42 ", "2014/01/12 18:42 ", false)) ? "FAIL" : "PASS");
 
-		
+		TestContext.INSTANCE.setUserCulture("en-US");
+		Log.info(result = (date.getDuration("3/7/2016 1:55 PM PST", "3/7/2016 2:29 PM PST", true)) == 34 ? "PASS" : "FAIL");
+		Log.info(result = (date.getDuration("3/7/2016 3:50 PM PST", "3/7/2016 4:02 PM PST", true)) == 12 ? "PASS" : "FAIL");
+
 	}
 }
