@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -57,7 +58,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC158 Test Description: Generate system history report as Administrator
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC158_SysHisRpt_PicarroAdmin() {
 		String rptTitle = "TC158 Report" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC158 Test Description: Generate system history report as Administrator, %s\n" + rptTitle);
@@ -111,7 +112,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC161 Test Description: Pagination - 10,25,50 and 100 Reports selection on system history report screen
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC161_SysHisRpt_Pagination() {
 		Log.info("\nRunning TC161: Pagination - 10,25,50 and 100 Reports selection on system history report screen");
 
@@ -155,7 +156,6 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, note);
 		assertTrue("Administrator not able to add new history note!", manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS, SQACUSLOC, SQACUSLOCSUR, note));
 
-		manageSurveyorHistoriesPage.logout();
 		systemHistoryReportsPage.login(SQACUSUA, USERPASSWORD);
 		systemHistoryReportsPage.open();
 
@@ -186,16 +186,13 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 
 		else
 			fail("\nTestcase TC178 failed.\n");
-
-		systemHistoryReportsPage.open();
-		systemHistoryReportsPage.logout();
 	}
 
 	/**
 	 * Test Case ID: TC186 Test Description: Click on Cancel button present on system history report screen
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC186_SysHisRpt_CancelBtn() {
 		Log.info("\nRunning TC186: Click on Cancel button present on system history report screen\n");
 
@@ -212,7 +209,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC195 Test Description: Generate system history report for single day
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC195_SysHisRpt_SingleDay() {
 		String rptTitle = "TC195 Report" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC195 Test Description: Generate system history report for single day, %s\n" + rptTitle);
@@ -294,7 +291,6 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, note);
 		assertTrue("Administrator not able to add new history note!", manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS, SQACUSLOC, SQACUSLOCSUR, note));
 
-		manageSurveyorHistoriesPage.logout();
 		systemHistoryReportsPage.login(SQACUSSU, USERPASSWORD);
 		systemHistoryReportsPage.open();
 
@@ -322,8 +318,5 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 			assertTrue(systemHistoryReportsPage.verifyNotesTable(testSetup.getDownloadPath(), rptTitle));
 		} else
 			fail("\nTestcase TC516 failed.\n");
-
-		systemHistoryReportsPage.open();
-		systemHistoryReportsPage.logout();
 	}
 }
