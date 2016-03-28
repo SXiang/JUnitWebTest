@@ -58,7 +58,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC158 Test Description: Generate system history report as Administrator
 	 * 
 	 */
-	@Ignore
+	@Test
 	public void TC158_SysHisRpt_PicarroAdmin() {
 		String rptTitle = "TC158 Report" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC158 Test Description: Generate system history report as Administrator, %s\n" + rptTitle);
@@ -112,7 +112,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC161 Test Description: Pagination - 10,25,50 and 100 Reports selection on system history report screen
 	 * 
 	 */
-	@Ignore
+	@Test
 	public void TC161_SysHisRpt_Pagination() {
 		Log.info("\nRunning TC161: Pagination - 10,25,50 and 100 Reports selection on system history report screen");
 
@@ -192,7 +192,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC186 Test Description: Click on Cancel button present on system history report screen
 	 * 
 	 */
-	@Ignore
+	@Test
 	public void TC186_SysHisRpt_CancelBtn() {
 		Log.info("\nRunning TC186: Click on Cancel button present on system history report screen\n");
 
@@ -209,7 +209,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC195 Test Description: Generate system history report for single day
 	 * 
 	 */
-	@Ignore
+	@Test
 	public void TC195_SysHisRpt_SingleDay() {
 		String rptTitle = "TC195 Report" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC195 Test Description: Generate system history report for single day, %s\n" + rptTitle);
