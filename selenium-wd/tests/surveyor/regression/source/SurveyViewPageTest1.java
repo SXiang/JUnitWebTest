@@ -6,9 +6,9 @@ import org.junit.Test;
 
 import common.source.Log;
 
-public class SurveyViewPageTest4 extends SurveyViewPageTest {
+public class SurveyViewPageTest1 extends SurveyViewPageTest {
 
-	public SurveyViewPageTest4()  {
+	public SurveyViewPageTest1()  {
 		super();
 	}
 

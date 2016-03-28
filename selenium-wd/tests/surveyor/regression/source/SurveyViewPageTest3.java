@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 
 import common.source.Log;
 
-public class SurveyViewPageTest3 extends SurveyViewPageTest {
+public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 
 	public SurveyViewPageTest3() {
 		super();
