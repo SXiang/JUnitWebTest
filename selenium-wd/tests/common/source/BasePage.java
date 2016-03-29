@@ -259,6 +259,10 @@ public class BasePage {
 	protected void sendKeysToTextArea(WebElement textAreaEula, String eula) {
 		// Chromedriver does NOT send keys correctly to TextArea for some controls. 
 		// Use Actions workaround to send keys instead.
+		if(eula == null){
+			return;
+		}
+		textAreaEula.clear();
 		Actions actions = new Actions(driver);
 		actions.moveToElement(textAreaEula);
 		actions.click();
