@@ -21,9 +21,9 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 	 *	- - Display: All ON
 	 *	- - Map View: Map
 	 *	- - GIS: All ON
+	 * Results: - 
 	 *	- - Survey Information is displayed in map view - Tag, Mode, Driver Info, Stability Class,Surveyor and analyzer info,Start Time, End Time
 	 *	- - User should see Breadcrumb, FOV, Indications, LISA, Capture results (if any) and Field Notes (if any) on map
-	 * Results: - 
 	 *	- - All pipes and boundaries data are displayed
 	 */
 	@Test
@@ -78,8 +78,8 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 	 *	- - Display: All OFF
 	 *	- - Map View: Map
 	 *	- - GIS: All OFF
-	 *	- - User should see only Breadcrumb in map view
 	 * Results: - 
+	 *	- - User should see only Breadcrumb in map view
 	 *	- - All other survey data, assets and boundaries are not displayed
 	 */
 	@Test
@@ -112,9 +112,9 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 	 *	- - Display: All ON
 	 *	- - Map View: Satellite
 	 *	- - GIS: All ON
+	 * Results: - 
 	 *	- - Survey Information is displayed in satellite view - Tag, Mode, Driver Info, Stability Class,Surveyor and analyzer info,Start Time, End Time
 	 *	- - User should see Breadcrumb, FOV, Indications, LISA, Capture results (if any) and Field Notes (if any) on map in satellite view
-	 * Results: - 
 	 *	- - All pipes and boundaries data are displayed
 	 */
 	@Test
@@ -238,9 +238,9 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 	 *	- - Map View: Map
 	 *	- - GIS: Assets ON
 	 *	- Boundaries OFF
+	 * Results: - 
 	 *	- - Survey Information is displayed in map view - Tag, Mode, Driver Info, Stability Class,Surveyor and analyzer info,Start Time, End Time
 	 *	- - User should see Breadcrumb, FOV, Indications, LISA, Capture results (if any) and Field Notes (if any) on map
-	 * Results: - 
 	 *	- - All pipes data is displayed. Boundaries are not present
 	 */
 	@Test
@@ -300,9 +300,9 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 	 *	- - Map View: Map
 	 *	- - GIS: Assets OFF
 	 *	- Boundaries ON
+	 * Results: - 
 	 *	- - Survey Information is displayed in map view - Tag, Mode, Driver Info, Stability Class,Surveyor and analyzer info,Start Time, End Time
 	 *	- - User should see Breadcrumb, FOV, Indications, LISA, Capture results (if any) and Field Notes (if any) on map
-	 * Results: - 
 	 *	- - Only boundaries are displayed. Assets are not displayed
 	 */
 	@Test
@@ -399,8 +399,8 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 	 *	- - Click GIS
 	 *	- All options OFF
 	 *	- - Click on Map and turn Map view ON
-	 *	- - Breadcrumb and Indications are displayed on map
 	 * Results: - 
+	 *	- - Breadcrumb and Indications are displayed on map
 	 *	- - All other survey data, assets and boundaries are not displayed
 	 */
 	@Test
@@ -459,8 +459,9 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 	 *	- - Click on Display
 	 *	- All options ON
 	 *	- - Zoom in by 2-3 levels (clicking on + icon present at top left corner near Tag value)
-	 * Results: - 
 	 *	- - Zoom out by 2-3 levels (clicking on - icon present at top left corner near Tag value)
+	 * Results: - 
+	 * --Zoom in and Zoom out should happen 
 	 */
 	@Test
 	public void TC932_SurveyView_CheckZoomControlsSurveyViewWhenSurveyDataLoaded_SatelliteView() throws Exception {
@@ -490,8 +491,9 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 	 *	- - Click on Display
 	 *	- All options ON
 	 *	- - Zoom in by 2-3 levels (clicking on + icon present at top left corner near Tag value)
-	 * Results: - 
 	 *	- - Zoom out by 2-3 levels (clicking on - icon present at top left corner near Tag value)
+	 * Results: - 
+	 * --Zoom in and Zoom out should happen.
 	 */
 	@Test
 	public void TC933_SurveyView_CheckZoomControlsSurveyViewWhenSurveyDataLoaded_MapView() throws Exception {
@@ -521,8 +523,9 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 	 *	- - Click on Display
 	 *	- All options ON
 	 *	- - Zoom in using mouse controls
-	 * Results: - 
 	 *	- - Zoom out using mouse controls
+	 * Results: - 
+	 * -- Zoom in and Zoom out should happen.
 	 */
 	@Test
 	public void TC934_SurveyView_CheckZoomLevelUsingMouseControlsSurveyViewWhenSurveyDataLoaded_Map() throws Exception {
@@ -550,8 +553,9 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 	 *	- - Click on Display
 	 *	- All options ON
 	 *	- - Zoom in using mouse controls
-	 * Results: - 
 	 *	- - Zoom out using mouse controls
+	 * Results: - 
+	 * --Zoom in and zoom out should happen.
 	 */
 	@Test
 	public void TC935_SurveyView_CheckZoomLevelUsingMouseControlsSurveyViewWhenSurveyDataLoaded_Satellite() throws Exception {
@@ -577,8 +581,8 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click on Curtain button
 	 *	- - Click on Return button
-	 *	- - Capture results are not displayed
 	 * Results: - 
+	 *	- - Capture results are not displayed
 	 *	- - User is returned back to survey view
 	 */
 	@Test
@@ -604,8 +608,9 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 	 *	- - Click Right
 	 *	- - Click Zoom In
 	 *	- - Click Zoom Out
-	 * Results: - 
 	 *	- - Click Return
+	 * Results: - 
+	 * --User should be able to use up, right arrow and zoom in, zoom out in Curtain view. 
 	 */
 	@Test
 	public void TC937_SurveyView_UserAllowedMoveUpDownLeftRightZoomInZoomOutCurtainView() throws Exception {
@@ -628,8 +633,8 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 	 * Test Case ID: TC938_SurveyView_NavigateBackForthBetweenSurveyViewHomePage
 	 * Script: -  	
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
-	 *	- - Click on Picarro Icon present at bottom
 	 * Results: - 
+	 *	- - Click on Picarro Icon present at bottom
 	 *	- - User is navigated to Survey view page
 	 */
 	@Test
@@ -715,8 +720,8 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 	 *	- - Display: All OFF
 	 *	- - Map View: Satellite
 	 *	- - GIS: All OFF
-	 *	- - User should see only Breadcrumb on map in satellite view
 	 * Results: - 
+	 *	- - User should see only Breadcrumb on map in satellite view
 	 *	- - All other survey data, assets and boundaries are not displayed
 	 */
 	@Test
@@ -749,9 +754,9 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 	 *	- - Map View: Satellite
 	 *	- - GIS: Assets OFF
 	 *	- Boundaries ON
+	 * Results: - 
 	 *	- - Survey Information is displayed in satellite view - Tag, Mode, Driver Info, Stability Class,Surveyor and analyzer info,Start Time, End Time
 	 *	- - User should see Breadcrumb, FOV, Indications, LISA, Capture results (if any) and Field Notes (if any) on map in satellite view
-	 * Results: - 
 	 *	- - Only boundaries are displayed. Assets are not displayed
 	 */
 	@Test
@@ -797,9 +802,9 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 	 *	- - Map View: Satellite
 	 *	- - GIS: Assets ON
 	 *	- Boundaries OFF
+	 * Results: - 
 	 *	- - Survey Information is displayed in satellite view - Tag, Mode, Driver Info, Stability Class,Surveyor and analyzer info,Start Time, End Time
 	 *	- - User should see Breadcrumb, FOV, Indications, LISA, Capture results (if any) and Field Notes (if any) on map in satellite view
-	 * Results: - 
 	 *	- - All pipes data is displayed. Boundaries are not present
 	 */
 	@Test
