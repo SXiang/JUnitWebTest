@@ -279,7 +279,7 @@
 					<include name="**/MeasurementSessionsPageTest.class" />
 					<include name="**/UserFeedbackPageTest.class" />
 					<include name="**/UserFeedbackAdminPageTest.class" />
-					<include name="**/SurveyViewPageTest.class" />
+					<include name="**/SurveyViewPageTest3.class" />
 					<include name="**/SystemHistoryReportsPageTest.class" />	
 					<include name="**/ReferenceGasReportsPageTest.class" />	
 					<include name="**/ActionsExecutionDriver.class" />	
