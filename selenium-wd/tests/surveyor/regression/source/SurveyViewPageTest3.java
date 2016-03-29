@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.source.SurveyViewPage;
 import static org.junit.Assert.*;
 import common.source.Log;
 
@@ -12,6 +13,43 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 
 	public SurveyViewPageTest3() {
 		super();
+	}
+	/* * Test Case ID: TC428_SurveyView_ViewIndicationsRapidResponseSurveyWhenNoGISLoaded
+	 * Script: -  	
+	 *	- - On Home Page, click on Driving Surveys -& View Survey
+	 *	- - Click Display
+	 *	- Indications - ON
+	 *	- All other options - OFF
+	 *	- - Click GIS
+	 *	- All options OFF
+	 *	- - Click on Map and turn Map view ON
+	 * Results: - 
+	 *	- - Breadcrumb and Indications are displayed on map
+	 *	- - All other survey data, assets and boundaries are not displayed
+	 */
+	@Test
+	public void TC428_SurveyView_ViewIndicationsRapidResponseSurveyWhenNoGISLoaded() throws Exception {
+		Log.info("\nRunning TC428_SurveyView_ViewIndicationsRapidResponseSurveyWhenNoGISLoaded ...");
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
+		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
+		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
 
 	/**
@@ -442,7 +480,7 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
@@ -669,6 +707,15 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
 		surveyViewPageAction.refreshPage(EMPTY, NOTSET);
+		String startTimeTextBeforeRefresh = ((SurveyViewPage)surveyViewPageAction.getPageObject()).getStartTimeLabelText();
+		String endTimeTextBeforeRefresh = ((SurveyViewPage)surveyViewPageAction.getPageObject()).getEndTimeLabelText();
+		testEnvironmentAction.idleForSeconds(String.valueOf(60), NOTSET);
+		surveyViewPageAction.refreshPage(EMPTY, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		String startTimeTextAfterRefresh = ((SurveyViewPage)surveyViewPageAction.getPageObject()).getStartTimeLabelText();
+		String endTimeTextAfterRefresh = ((SurveyViewPage)surveyViewPageAction.getPageObject()).getEndTimeLabelText();
+		assertTrue(startTimeTextAfterRefresh.equals(startTimeTextBeforeRefresh));
+		assertTrue(endTimeTextAfterRefresh.equals(endTimeTextBeforeRefresh));
 		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
@@ -703,6 +750,15 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		String startTimeTextBeforeRefresh = ((SurveyViewPage)surveyViewPageAction.getPageObject()).getStartTimeLabelText();
+		String endTimeTextBeforeRefresh = ((SurveyViewPage)surveyViewPageAction.getPageObject()).getEndTimeLabelText();
+		testEnvironmentAction.idleForSeconds(String.valueOf(60), NOTSET);
+		surveyViewPageAction.refreshPage(EMPTY, NOTSET);
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
+		String startTimeTextAfterRefresh = ((SurveyViewPage)surveyViewPageAction.getPageObject()).getStartTimeLabelText();
+		String endTimeTextAfterRefresh = ((SurveyViewPage)surveyViewPageAction.getPageObject()).getEndTimeLabelText();
+		assertTrue(startTimeTextAfterRefresh.equals(startTimeTextBeforeRefresh));
+		assertTrue(endTimeTextAfterRefresh.equals(endTimeTextBeforeRefresh));
 		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
@@ -730,7 +786,7 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
@@ -765,7 +821,7 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);    /*Picarro Admin*/ 
-		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
@@ -774,9 +830,9 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOffAllAssets (EMPTY, NOTSET);
 		surveyViewPageAction.turnOnAllBoundaries(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_OPERATOR1_TAG, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_OPERATOR1_TYPE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_OPERATOR1_USERNAME, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
@@ -813,7 +869,7 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
@@ -824,10 +880,10 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOffAllBoundaries(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnZoomInButton(EMPTY, NOTSET);
-		
-		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
+
+		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_OPERATOR1_TAG, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_OPERATOR1_TYPE, NOTSET));
+		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_OPERATOR1_USERNAME, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
@@ -890,7 +946,7 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
