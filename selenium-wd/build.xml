@@ -228,7 +228,7 @@
 		</junit>
 	</target>
 
-	<target name="testactionexecutioncases" depends="compileregression" description="Run action execution test cases">
+	<target name="testsimulatorcases" depends="compileregression" description="Run action execution test cases">
 			<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
 				<classpath>
@@ -243,7 +243,8 @@
 					<fileset dir="${build}">
 
 						<include name="**/ActionsExecutionDriver.class" />
-
+						<include name="**/DriverViewPageTest.class" />
+						
 					</fileset>
 				</batchtest>
 			</junit>
