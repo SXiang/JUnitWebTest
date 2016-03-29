@@ -16,6 +16,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * @author zlu
@@ -264,6 +267,11 @@ public class BasePage {
 		actions.click();
 		actions.sendKeys(eula);
 		actions.build().perform();
+	}
+	
+	protected void waitUntilPresenceOfElementLocated(String elementID) {
+		(new WebDriverWait(driver, timeout)).until(
+				ExpectedConditions.presenceOfElementLocated(By.id(elementID)));
 	}
 	
 	public void waitForPageToLoad(){
