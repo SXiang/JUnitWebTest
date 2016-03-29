@@ -3,7 +3,9 @@
  */
 package surveyor.regression.source;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -37,6 +40,7 @@ import surveyor.scommon.source.ManageUsersAdminPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.SurveyorBasePage.UserTimezone;
 import common.source.BaseHelper;
 import common.source.Log;
 
@@ -88,6 +92,220 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		PageFactory.initElements(driver, manageSurveyorAdminPage);
 	}
 
+	/**
+	 * Test Case ID: TC21_CancelLatLongSelector_PicAdmin
+	 * Test Description: Verify Cancel button of Lat/Long map Selector screen while navigating through Add location screen as Picarro Admin 
+	 * Test Script: 
+	 *  - Log in as Picarro Admin
+	 *  - On Home Page, click Picarro Administration -> Manage Locations
+	 *  - Click on 'Add New Location' button
+	 *  - Click on ‘Lat/Long Selector’ button
+	 *  - Click on desired location on map and click Cancel
+	 * Excepted Result:
+	 *  - A map appears with a pin in the default location
+	 *  - The map disappears and the Latitude and Longitude fields remain blank
+	 */
+	@Test
+	public void TC21_CancelLatLongSelector_PicAdmin(){
+		final int xOffset = 98;
+		final int yOffset = 99;
+
+		Log.info("\nRunning - TC21_CancelLatLongSelector_PicAdmin - "+
+				"Test Description: Verify Cancel button of adding Lat/Long on map screen\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+
+		manageLocationsPage.open();
+		manageLocationsPage.clickOnAddNewLocationBtn();
+		manageLocationsPage.clickOnLatLongSelectorBtn();
+		manageLocationsPage.selectOnLatLong(xOffset, yOffset);
+
+		manageLocationsPage.clickOnLatLongCancelBtn();
+
+		assertEquals("The location latitude should be blank after the cancelation in the map screen",
+				"",manageLocationsPage.getLocationLatitudeText());
+
+		assertEquals("The location longgitude should be blank after the cancelation in the map screen",
+				"",manageLocationsPage.getLocationLongitudeText());
+	}
+
+	/**
+	 * Test Case ID: TC22_CancelEditLatLongSelector_PicAdmin
+	 * Test Description: Verify Cancel button of Lat/Long map Selector screen while navigating through Edit location screen as Picarro Admin  
+	 * Test Script: 
+	 *  - Log in as Picarro Admin
+	 *  - On Home Page, click Picarro Administration -> Manage Locations
+	 *  - Click on 'Edit' buttonn
+	 *  - Click on ‘Lat/Long Selector’ button
+	 *  - Click on desired location on map and click Cancel
+	 * Excepted Result:
+	 *  - A map appears with a pin in the default location
+	 *  - The map disappears and the Latitude and Longitude fields remain blank
+	 */
+	@Test
+	public void TC22_CancelEditLatLongSelector_PicAdmin(){
+		final int xOffset = 101;
+		final int yOffset = 111;
+		String customerName = "TestCustomer";
+		String locationName = customerName+"loc";
+
+		Log.info("\nRunning - TC22_CancelEditLatLongSelector_PicAdmin - "+
+				"Test Description: Verify Cancel button of editing Lat/Long on map screen\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+
+		manageLocationsPage.open();
+		manageLocationsPage.performSearch(locationName);
+		manageLocationsPage.findExistingLocationAndClickEdit(customerName, locationName);
+
+		String expectedLat = manageLocationsPage.getLocationLatitudeText();
+		String expectedLong = manageLocationsPage.getLocationLongitudeText();
+
+		manageLocationsPage.clickOnLatLongSelectorBtn();
+		manageLocationsPage.selectOnLatLong(xOffset, yOffset);		
+		manageLocationsPage.clickOnLatLongCancelBtn();		
+
+		String actualLat = manageLocationsPage.getLocationLatitudeText();
+		String actualLong = manageLocationsPage.getLocationLongitudeText();		
+		assertEquals("The location [latitude,longitude] shouldn't be changed after the cancelation of the map editing",
+				expectedLat+","+expectedLong, actualLat+","+actualLong);
+
+		manageLocationsPage.clickOnCancelBtn();
+	}
+
+	/**
+	 * Test Case ID: TC23_ConfirmLatLongSelector_PicAdmin
+	 * Test Description: Confirm that map accurately locates manually entered Latitude and Longitude values
+	 * Test Script: 
+	 *  - Log in as Picarro Admin
+	 *  - On Home Page, click Picarro Administration -> Manage Locations
+	 *  - Click on 'Add New Location' button
+	 *  - Manually enter Latitude and Longitude values
+	 *  - Click on ‘Lat/Long Selector’ button
+	 * Excepted Result:
+	 *  - The map should display the correct point for the given coordinates, not the default location
+	 */
+	@Test
+	public void TC23_ConfirmLatLongSelector_PicAdmin(){
+
+		String latitude = "50.00000";
+		String longitude = "50.00000";
+
+		Log.info("\nRunning - TC23_ConfirmLatLongSelector_PicAdmin - "+
+				"Test Description: Confirm that map accurately locates manually entered Latitude and Longitude values\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+
+		manageLocationsPage.open();
+		manageLocationsPage.clickOnAddNewLocationBtn();
+		manageLocationsPage.inputLatLong(latitude, longitude);		
+		manageLocationsPage.clickOnLatLongSelectorBtn();	
+
+		String actualPoint = manageLocationsPage.getSelectedPoint();		
+		manageLocationsPage.clickOnLatLongCancelBtn();
+
+		assertEquals(latitude+", "+longitude,actualPoint);
+
+	}
+
+	/** TO BE VERIFIED - NOT WORKING AS DESCRIBIED
+	 * Test Case ID: TC24_NotificationLatLongValueMissing_PicAdmin
+	 * Test Description: Notification should appear if Latitude is entered but Longitude is not, or vice versa
+	 * Test Script: 
+	 *  - Log in as Picarro Admin
+	 *  - On Home Page, click Picarro Administration -> Manage Locations
+	 *  - Click on 'Add New Location' button
+	 *  - Enter a Latitude value and leave Longitude blank
+	 *  - Click on ‘Lat/Long Selector’ button
+	 *  - Enter a Longitude value and delete the Latitude value
+	 *  - Click on OK button
+	 * Excepted Result:
+	 *  - A warning should pop up with the message, “Latitude and Longitude fields must be either both populated or both blank”
+	 */
+	@Test
+	public void TC24_NotificationLatLongValueMissing_PicAdmin(){
+
+		String latitude = "50.00000";
+		String longitude = "50.00000";
+		String fieldInlineError = "This field is required.";
+
+		Log.info("\nRunning - TC24_NotificationLatLongValueMissing_PicAdmin - "+
+				"Test Description: Notification should appear if Latitude is entered but Longitude is not, or vice versa\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+
+		manageLocationsPage.open();
+		manageLocationsPage.clickOnAddNewLocationBtn();
+		manageLocationsPage.inputLatLong(latitude, "");		
+		manageLocationsPage.clickOnLatLongSelectorBtn();      
+
+		String actualPoint = manageLocationsPage.getSelectedPoint();		
+		assertNull("No point should be selected while longitude is missing",actualPoint);		
+
+		manageLocationsPage.clickOnLatLongCancelBtn();
+		manageLocationsPage.clickOnOkBtn();
+
+		assertEquals(fieldInlineError, manageLocationsPage.getLocationLongitudeError());
+
+		manageLocationsPage.inputLatLong("", longitude);		
+		manageLocationsPage.clickOnLatLongSelectorBtn();
+
+		actualPoint = manageLocationsPage.getSelectedPoint();		
+		assertNull("No point should be selected while latitude is missing",actualPoint);	
+
+		manageLocationsPage.clickOnLatLongCancelBtn();
+		manageLocationsPage.clickOnOkBtn();
+
+		assertEquals(fieldInlineError, manageLocationsPage.getLocationLatitudeError());
+
+		manageLocationsPage.clickOnCancelBtn();
+
+	}	
+
+
+
+	/**
+	 * Test Case ID: TC1236_CheckTimeZone_CustUA Test Description: 
+	   Check Timezone and User Name drop down menu working on Add and Edit Location Page
+	 * Test Script: - On Home Page, click Picarro Administration -> Manage Locations 
+                    - Click on 'Add New Location' button
+                    - Click on Timezone drop menu present in header and change the timezone
+                    - Click on User_Name (eg. Administrator)
+                    - Click on Log Out link
+	 * Expected Results: - User should be able to change the timezone successfully
+                         - User should see all the drop down menu - Preferences, Change Password, Release Notes, Manual and Log out links are present
+                         - User should be able to logout sucessfully
+	 */
+
+	@Test
+	public void TC1236_CheckTimeZone_PicAdmin(){
+
+		Log.info("\nRunning - TC1236_CheckTimeZone_PicAdmin - " +
+				"Test Description: Check Timezone change\n");
+
+		UserTimezone[] uts = {UserTimezone.CENTRAL,UserTimezone.EASTERN,
+				UserTimezone.MOUNTAIN,UserTimezone.PACIFIC};
+		
+		loginPage.open();
+
+		for(UserTimezone ut:uts){
+			loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			manageLocationsPage.open();
+			manageLocationsPage.clickOnAddNewLocationBtn();
+			
+			assertTrue("Failed to change user timezone - '"+ ut+"'",
+					manageLocationsPage.changeUserTimezone(ut));
+			
+            assertTrue("Dropdown menu itme(s) are missing", 
+            		manageLocationsPage.verifyDropdownMenuItems());
+			loginPage = manageUsersPage.logout();
+		}
+	}
+	
 	/**
 	 * Test Case ID: TC459_EditLocation_CustUA Test Description: Edit existing
 	 * location Test Script: - On Home Page, click Administration -> Manage

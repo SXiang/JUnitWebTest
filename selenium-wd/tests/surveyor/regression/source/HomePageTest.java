@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.Log;
@@ -62,6 +63,32 @@ public class HomePageTest extends SurveyorBaseTest {
 
 		preferencesPage = new PreferencesPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, preferencesPage);
+	}
+
+	/**
+	 * Test Case ID: TC1308: Picarro Admin cannot see Manage Release Notes page
+	 * Script:
+	 *  - Log in as Picarro Admin
+	 *  - Click on Administration
+	 * Results:
+	 *  Manage Release Notes link is not present 
+	 */
+	
+	@Test(expected=NoSuchElementException.class)
+	public void TC1308_ReleaseNotesLinkNotPresent_PicAdminRole(){
+        Log.info("\nTC1308_ReleaseNotesLinkNotPresent_PicAdminRole - "+
+		         "Test Description: Picarro Admin cannot see Manage Release Notes page");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+
+		homePage.open();
+		homePage.waitForPageLoad();
+
+		homePage.getLinkPicarroAdmin().click();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		homePage.getLinkPicAdminManageReleaseNotes().isDisplayed();
 	}
 
 	/**

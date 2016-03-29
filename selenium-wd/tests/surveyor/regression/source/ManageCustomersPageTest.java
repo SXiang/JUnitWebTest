@@ -45,6 +45,121 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	}
 
 	/**
+	 * Test Case ID: TC1243_DisableExistingCustomer_PicAdmin
+	 * Script:
+	 * - On Home Page, click Picarro Administration -> Manage Customers
+     * - Click on 'Edit' button
+     * - Disable the Customer account. Click OK
+     * Results:
+     * Disabled Customer's User will not be allowed to log in the application
+	 */
+	@Test
+	public void TC1243_DisableExistingCustomer_PicAdmin(){
+		String customerName = "TestCustomer";
+		String userName = customerName+REGBASEUSERNAME;
+		
+        Log.info("\nRunning TC1243_DisableExistingCustomer_PicAdmin - "+
+                 "Test Description: Disable Existing Customer can not login");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+
+		manageCustomersPage.open();
+		manageCustomersPage.performSearch(customerName);
+		manageCustomersPage.changeCustomerAccountStatus(customerName, false);
+		loginPage = manageUsersPage.logout();
+
+		// verify disabled customer user cannot login.
+		loginPage.open();
+		assertTrue(loginPage.loginNormalAs(userName, USERPASSWORD) == null);
+				
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+
+		manageCustomersPage.open();
+		manageCustomersPage.performSearch(customerName);
+		manageCustomersPage.changeCustomerAccountStatus(customerName, true);
+		loginPage = manageUsersPage.logout();
+
+		// verify disabled customer user cannot login.
+		loginPage.open();
+		assertNotNull(loginPage.loginNormalAs(userName, USERPASSWORD));
+	}
+	
+	/**
+	 * Test Case ID: TC77_addCustomerBlankRequiredFields_PicAdmin
+	 * Test Description: add customer - blank required fields
+	 * Script:
+	 * - On Home Page, click Picarro Administration -> Manage Customers
+     * - Click on 'Add New Customer' button
+     * - Keep Name and Eula fields blank. Click OK
+     * Results:
+     * Required Fields boxes should be Highlighted in red.
+	 */
+	@Test
+	public void TC77_addCustomerBlankRequiredFields_PicAdmin(){
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getFixedSizeRandomNumber(12) + "TC77";
+		String eula = customerName + ": " + EULASTRING;
+		
+		Log.info("\nRunning TC77_addCustomerBlankRequiredFields_PicAdmin - "+
+		         "Test Description: add customer - blank required fields");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+
+		manageCustomersPage.open();
+		// add customer with an empty Eula
+		manageCustomersPage.addNewCustomer(customerName, "");
+		Log.info("Looking for a red border around the Eula text area - when it's empty");
+		assertTrue("There is no red line around the Eula text area when it's empty!",manageCustomersPage.isEulaRed());
+		
+		// candel add 
+		manageCustomersPage.clickOnAddCancelBtn();
+		
+		// add customer with an empty Name		
+		manageCustomersPage.addNewCustomer("", eula);
+		Log.info("Looking for a red border around the Name input field - when it's empty");
+		assertTrue("There is no red line around the Name input field when it's empty!",manageCustomersPage.isNameRed());
+		
+	}	
+	
+	/**
+	 * Test Case ID: TC78_editCustomerBlankRequiredFields_PicAdmin
+	 * Test Description: edit customer - blank required fields
+	 * Script:
+	 * - On Home Page, click Picarro Administration -> Manage Customers
+     * - Click on Edit link - Delete Eula fields data. Click OK
+     * Results:
+     * Required Fields boxes should be Highlighted in red.
+	 */
+	@Test
+	public void TC78_editCustomerBlankRequiredFields_PicAdmin(){
+		String customerName = "TestCustomer";
+		
+		
+		Log.info("\nRunning TC78_editCustomerBlankRequiredFields_PicAdmin - "+
+		         "Test Description: edit customer - blank required fields");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+
+		manageCustomersPage.open();
+		
+		// edit customer with an empty Eula
+		manageCustomersPage.performSearch(customerName);		
+		manageCustomersPage.findCustomerAndOpenEditPage(customerName);
+		manageCustomersPage.setEULAText("");
+		manageCustomersPage.clickOnEditOkBtn();
+		
+		Log.info("Looking for a red border around the Eula text area - when it's empty");
+		assertTrue("There is no red line around the Eula text area when it's empty!",manageCustomersPage.isEulaRed());
+				
+		// cancel add 
+		manageCustomersPage.clickOnEditCancelBtn();
+				
+	}	
+	
+	/**
 	 * Test Case ID: TC58_AddNewCustomer_PicAdmin
 	 * Script:   	
 	 * - On Home Page, click Picarro Administration -> Manage Customers

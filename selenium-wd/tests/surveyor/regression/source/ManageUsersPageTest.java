@@ -64,6 +64,36 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	}
 
 	/**
+	 * Test Case ID: TC1675: More than 15 characters not allowed in New password and confirm password fields on Change User Password page
+	 * Script:
+	 *  - On Home Page, and click UserName -> Change Password
+     *  - Provide more than 15 characters in New Password and Confirm Password fields and click OK
+     * Results:
+     *  - "Please enter no more than 15 characters." message is displayed to user
+	 */
+	@Test
+	public void TC1675_MaxPasswordLength_PicUser(){
+		String customerName = "TestCustomer";
+		String userName = customerName+REGBASEUSERNAME;
+		String password =USERPASSWORD;
+		String password_16 = password + "abc"; // 16 chars
+		String password_80 = password_16 + password_16 + password_16 + password_16 + password_16;
+		String errorMsg = "Please enter no more than 15 characters.";
+		
+		loginPage.open();
+		loginPage.loginNormalAs(userName, password);
+
+		manageUsersPage.changeUserPassword(password, password_16);
+		assertEquals(manageUsersPage.getNewPasswordError(),errorMsg);
+		assertEquals(manageUsersPage.getConfirmPasswordError(),errorMsg);
+		
+		manageUsersPage.changeUserPassword(password, password_80);
+		assertEquals(manageUsersPage.getNewPasswordError(),errorMsg);
+		assertEquals(manageUsersPage.getConfirmPasswordError(),errorMsg);
+		
+	}	
+
+	/**
 	 * Test Case ID: TC68 Test Description: Picarro Admin - Add New Picarro User
 	 * 
 	 */
