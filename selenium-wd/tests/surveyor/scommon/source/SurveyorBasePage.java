@@ -7,15 +7,19 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+
 import common.source.BasePage;
+import common.source.Log;
 import common.source.RegexUtility;
 import common.source.TestSetup;
 
@@ -31,12 +35,18 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/div[2]/ul/li/a")
 	protected WebElement dropDownUser;
 
-	@FindBy(id = "user-change-password")
+	@FindBy(css = "#wrapper > nav.navbar .dropdown > a.dropdown-toggle")
+	protected WebElement dropDown; // should be good for both Admin and User
+	
+	@FindBy(css = "#wrapper > nav.navbar .dropdown > ul.dropdown-menu > li > a")
+	protected List<WebElement> menuItems;
+	
+	@FindBy(how = How.CSS, using= "li.open #user-change-password")
 	protected WebElement linkChangePwd;
 
-	@FindBy(id = "user-logout")
+	@FindBy(how = How.CSS, using = "li.open #user-logout")
 	protected WebElement linkLogOut;
-
+		
 	@FindBy(how = How.XPATH, using = "//a[@data-target='#picarro-administration-menu']")
 	protected WebElement linkPicarroAdmin;
 	protected String strLinkPicarroAdminXPath = "//*[@id='picarro-administration-menu']/a";
@@ -91,6 +101,25 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td")
 	protected WebElement labelNoMatchingSearch;
 
+	public enum UserTimezone {PACIFIC,MOUNTAIN,CENTRAL,EASTERN};
+	
+	@FindBy(css = "#user-timezone.open > a.dropdown-toggle > #selected-timezone")
+	protected List<WebElement> timezoneCloseDropdown;
+
+	@FindBy(css = "#user-timezone> a.dropdown-toggle > #selected-timezone")
+	protected WebElement timezoneDropdown;
+	
+	@FindBy(xpath = "//*[@id='timezones' and @class='dropdown-menu']//a[contains(text(),'Pacific Standard Time')]")
+	protected WebElement pacificTime;
+	
+	@FindBy(xpath = "//*[@id='timezones' and @class='dropdown-menu']//a[contains(text(),'Mountain Standard Time')]")
+	protected WebElement mountainTime;
+	
+	@FindBy(xpath = "//*[@id='timezones' and @class='dropdown-menu']//a[contains(text(),'Central Standard Time')]")
+	protected WebElement centralTime;
+	
+	@FindBy(xpath = "//*[@id='timezones' and @class='dropdown-menu']//a[contains(text(),'Eastern Standard Time')]")
+	protected WebElement easternTime;
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -101,7 +130,25 @@ public class SurveyorBasePage extends BasePage {
 		super(driver, testSetup, strBaseURL, strPageURL);
 	}
 
+	public boolean verifyDropdownMenuItems(){
+		this.dropDown.click();
+		waitForPageLoad();
+		String[] items = {"Preferences", "Change Password", "Release Notes", "Manual", "Log out"};
+		boolean itemFound = true;
+		for(int i=0;i<this.menuItems.size();i++){
+			WebElement item = menuItems.get(i);
+			String text = item.getText();
+			if(text.trim().equals("")){
+				break;
+			}
+			itemFound &= text.contains(items[i]);
+		}
+		this.dropDown.click();
+		waitForPageLoad();
+		return itemFound;
+	}
 	public LoginPage logout() {
+		waitForPageLoad();
 		this.dropDownUser.click();
 		this.linkLogOut.click();
 
@@ -176,6 +223,53 @@ public class SurveyorBasePage extends BasePage {
 		return (listOfElements.size() == result);
 	}
 
+	public String getUserTimezone(){		
+		String text = "";		
+		try{
+			text = timezoneDropdown.getText().trim();
+		}catch(StaleElementReferenceException e){
+			
+		}	
+		return text;
+	}
+	
+	public boolean changeUserTimezone(UserTimezone ut){
+		if(this.timezoneCloseDropdown.isEmpty()){
+			this.timezoneDropdown.click();
+		}
+		WebElement utItem;
+		String text;
+		switch(ut){
+		   case PACIFIC:
+			   utItem = pacificTime;
+			   text = "Pacific Standard Time";
+			   break;
+		   case MOUNTAIN:
+			   utItem = mountainTime;
+			   text = "Mountain Standard Time";
+			   break;
+		   case CENTRAL:
+			   utItem = centralTime;
+			   text = "Central Standard Time";
+			   break;
+		   case EASTERN:
+			   utItem = easternTime;
+			   text = "Eastern Standard Time";
+			   break;
+		   default:
+			   utItem = pacificTime;
+			   text = "Pacific Standard Time";
+			   break;
+		}
+	
+		utItem.click();	
+		waitForPageLoad();
+		return ( new WebDriverWait(driver, 5)).until(new ExpectedCondition<Boolean>(){
+			public Boolean apply(WebDriver d){
+				return text.equals(getUserTimezone());
+			}
+		});
+	}
 	/*
 	 * Helper method to wait for an Element to be ready on the page.
 	 */
