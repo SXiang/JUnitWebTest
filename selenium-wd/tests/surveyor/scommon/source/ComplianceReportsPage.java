@@ -2234,7 +2234,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	@Override
-	public void fillComplianceSpecific(ReportsCompliance reportsCompliance) {
+	public void fillComplianceSpecific(Reports reports) {
+		ReportsCompliance reportsCompliance=(ReportsCompliance)reports;
 		if (reportsCompliance.getEthaneFilter() != null) {
 			selectEthaneFilter(reportsCompliance.getEthaneFilter());
 		}
