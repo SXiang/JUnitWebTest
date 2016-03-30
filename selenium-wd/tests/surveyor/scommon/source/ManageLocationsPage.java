@@ -61,7 +61,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='point-longitude']")
 	protected WebElement inputLocationLong;
-
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='CustomerId']")
 	protected WebElement dropDownCustomer;
 
@@ -134,6 +134,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "Max")
 	protected WebElement ethMthMaxUnit;
 
+	@FindBy(css = "div.map-header-value > div#info")
+	protected WebElement selectedPoint;
+	
 	private static LatLongSelectionControl latLongSelectionControl = null;
 
 	private String latitude;
@@ -194,24 +197,15 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.inputLocationDesc.sendKeys(locationDesc);
 
 		if (!useLatLongSelector) {		
-			this.inputLocationLat.sendKeys(latitude);
-			this.inputLocationLong.sendKeys(longitude);
+			inputLatLong(latitude, longitude);
 		} else {
 			final int X_OFFSET = 100;
 			final int Y_OFFSET = 100;
-			String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
-
+			
 			this.clickOnLatLongSelectorBtn();
-
-			latLongSelectionControl.waitForModalDialogOpen()
-			.switchMode(ControlMode.MapInteraction)
-			.waitForMapImageLoad()
-			.selectLatLong(CANVAS_X_PATH, X_OFFSET, Y_OFFSET)
-			.switchMode(ControlMode.Default)
-			.clickOkButton()
-			.waitForModalDialogToClose();
-
-
+            this.selectOnLatLong(X_OFFSET, Y_OFFSET);            
+			this.clickOnLatLongOkBtn();
+			
 			String locationLatitudeText = this.getLocationLatitudeText();
 			Log.info("Location Latitude Field value = " + locationLatitudeText);
 			assertTrue(!locationLatitudeText.isEmpty());
@@ -280,6 +274,99 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		}
 	}
 
+	public void inputLatLong(String latitude, String longitude){
+		this.inputLocationLat.clear();
+		this.inputLocationLong.clear();
+		
+		this.inputLocationLat.sendKeys(latitude);
+		this.inputLocationLong.sendKeys(longitude);
+	}
+	
+
+	public void selectOnLatLong(int xOffset, int yOffset){
+		String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
+
+		latLongSelectionControl.waitForModalDialogOpen()
+		.switchMode(ControlMode.MapInteraction)
+		.waitForMapImageLoad()
+		.selectLatLong(CANVAS_X_PATH, xOffset, yOffset)
+		.switchMode(ControlMode.Default);
+		
+	}
+	
+	public void clickOnLatLongCancelBtn(){
+		latLongSelectionControl.clickCancelButton()
+		.waitForModalDialogToClose();
+	}
+
+	public void clickOnLatLongOkBtn(){
+		latLongSelectionControl.clickOkButton()
+		.waitForModalDialogToClose();
+	}
+	
+	public boolean findExistingLocationAndClickEdit(String customerName, String locationName){
+		setPagination(PAGINATIONSETTING_100);
+
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+
+		String customerNameXPath;
+		String locationNameXPath;
+		String actionEditXPath;
+
+		WebElement customerNameCell;
+		WebElement locationNameCell;
+		WebElement actionEditCell;
+
+		List<WebElement> rows = table.findElements(By
+				.xpath("//*[@id='datatable']/tbody/tr"));
+
+		int rowSize = rows.size();
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			customerNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
+					+ "]/td[1]";
+			locationNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
+					+ "]/td[2]";
+
+			customerNameCell = table.findElement(By.xpath(customerNameXPath));
+			locationNameCell = table.findElement(By.xpath(locationNameXPath));
+
+			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName) && (locationNameCell.getText().trim())
+					.equalsIgnoreCase(locationName)) {
+				actionEditXPath = "//*[@id='datatable']/tbody/tr[" + rowNum	+ "]/td[5]";
+				actionEditCell = table.findElement(By.xpath(actionEditXPath));
+				Log.info("Found entry at row=" + rowNum);
+
+				actionEditCell.click();
+				this.waitForEditPageLoad();
+				return true;
+			}
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
+					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+				this.testSetup.slowdownInSeconds(this.testSetup
+						.getSlowdownInSeconds());
+				List<WebElement> newRows = table.findElements(By
+						.xpath("//*[@id='datatable']/tbody/tr"));
+
+				rowSize = newRows.size();
+
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
+
+				rowNum = 0;
+			}
+		}
+       return false;
+	}
 	public boolean findExistingLocation(String customerName, String locationName) {
 		setPagination(PAGINATIONSETTING_100);
 
@@ -483,6 +570,19 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	}	
 
+	public String getSelectedPoint(){
+		latLongSelectionControl.waitForModalDialogOpen()
+		.switchMode(ControlMode.MapInteraction);
+		String pt = this.selectedPoint.getText();
+		if(pt.indexOf("[")>=0){
+		   pt = pt.substring(pt.indexOf("[")+1,pt.indexOf("]"));
+		}else{
+			pt = null;
+		}
+		latLongSelectionControl
+		.switchMode(ControlMode.Default);
+		return pt;
+	}
 	public WebElement getBtnAddNewLocation() {
 		return this.btnAddNewLocation;
 	}
@@ -499,6 +599,13 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		return this.inputLocationLong.getAttribute("value");
 	}
 
+	public String getLocationLatitudeError() {
+		return this.labelLatValueError.getText();
+	}
+
+	public String getLocationLongitudeError() {
+		return this.labelLongValueError.getText();
+	}
 	public void clickOnAddNewLocationBtn() {
 		this.btnAddNewLocation.click();
 	}
@@ -511,6 +618,10 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.btnCancel.click();
 	}
 
+	public void clickOnOkBtn() {
+		this.btnOk.click();
+	}
+	
 	public void clickOnLatLongSelectorBtn() {
 		this.latLongSelectorBtn.click();
 	}
