@@ -28,10 +28,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
-		
-		homePageAction = new HomePageActions(driver, baseURL, testSetup);
-		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-		testEnvironmentAction = new TestEnvironmentActions();
 	}
 
 	/**
