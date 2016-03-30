@@ -53,8 +53,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 	@FindBy(id = "PasswordConfirm-error")
 	private WebElement labelPwdConfirmError;
 	private String labelPwdConfirmErrorXPath = "//*[@id='PasswordConfirm-error']";
-	
-	
+    private String labelPwdNewErrorXPath = "//*[@id='NewPassword-error']";
+    
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a[1]")
 	protected WebElement btnAddNewCustomerUser;
 
@@ -1338,6 +1338,14 @@ public class ManageUsersPage extends SurveyorBasePage {
 		this.inputNewPasswordConfirm.sendKeys(newPassword);
 		btnOk.click();
 		waitForPageToLoad();
+	}
+	
+	public String getNewPasswordError(){		
+		return driver.findElement(By.xpath(labelPwdNewErrorXPath)).getText().trim();		
+	}
+	
+	public String getConfirmPasswordError(){		
+		return driver.findElement(By.xpath(labelPwdConfirmErrorXPath)).getText().trim();		
 	}
 	
 	public boolean searchUser(String userName, String locationName,
