@@ -2,24 +2,53 @@
 
 # Options:
 #   -h, --help         show this help message and exit
-#   -u URL, --url=URL  URL of the 7Zip file to be downloaded.
+#   -z, --7zip  path to the 7Zip file to be downloaded.
+#	-s, --sim path to db3 file
+#	-t, --teamcity        Print Teamcity service messages.
 #
 # Examples:
-#     python check_simulator_disabled.py -u https://p3prodstg.picarro.com/content/Analyzer/Install.7z
-#     python check_simulator_disabled.py -u https://p3prodstg.picarro.com/content/Analyzer/Install.7z -s C:\Security\simulatorDisabledTest\Surveyor.db3
-#     python check_simulator_disabled.py -u https://p3sqa.picarro.com/content/Analyzer/Install.7z     -s C:\Security\simulatorDisabledTest\Surveyor.db3
+#     python check_simulator_disabled.py -z path/to/Install.7z
+#     python check_simulator_disabled.py -z path/to/Install.7z -s C:\Security\simulatorDisabledTest\Surveyor.db3
+#     python check_simulator_disabled.py -z path/to/Install.7z -s C:\Security\simulatorDisabledTest\Surveyor.db3
 # 
-
 
 import sys, subprocess, os, shutil, stat, tempfile, urllib
 from optparse import OptionParser
 
+############################################################
+
+# Build Script Interaction with Teamcity:
+# http://confluence.jetbrains.com/display/TCD8/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-teamcity-info.xml	
+
+# Escapes a string so that it is suitable to be embedded in Teamcity service messagse.
+def tc_escape(str):
+	return str.replace('|', '||').replace("'", "|'").replace("\n", "|n").replace("\r", "|r").replace('[', '|[').replace(']', '|]')
+
+def tc_test_started(dirname):
+	if options.teamcity:
+		print "##teamcity[testStarted name='" + tc_escape(dirname) + "']"
+		
+def tc_suite_started(dirname):
+	if options.teamcity:
+		print "##teamcity[testSuiteStarted  name='" + tc_escape(dirname) + "']"
+
+def tc_suite_finished(dirname):
+	if options.teamcity:
+		print "##teamcity[testSuiteFinished name='" + tc_escape(dirname) + "']"
+
+def tc_test_finished(dirname):
+	if options.teamcity:
+		print "##teamcity[testFinished name='" + tc_escape(dirname) + "']"
+
+def tc_test_failed(dirname, message, details):
+	if options.teamcity:
+		print "##teamcity[testFailed name='" + tc_escape(dirname) + "' message='" + tc_escape(message) + "' details='" + tc_escape(details) + "']"
+
+############################################################
 
 def puts(str):
-	print(str)
-
-
-
+	if not options.teamcity:
+		print(str)
 
 # Returns True if EXE did NOT execute, or False if it was succesful.
 def check_disabled_exe(dirname):
@@ -36,9 +65,12 @@ def check_disabled_exe(dirname):
 		out_message = "\n\n" + ('-'*60) + "\n" + out +"\n" + ('-'*60) + "\n"
 		puts(out_message)
 		puts("\n\nSIMULATION_NOT_DISABLED: "+filename+"\n\n")
+		tc_test_failed(filename, 'Simulator not disabled!', filename)
+		tc_test_finished(filename)
 		return False
 	else:
 		puts("\n\nSIMULATION_DISABLED: "+filename+"\n\n")
+		tc_suite_finished(filename+os.sep)
 		return True
 
 # Decompress and then process a 7Zip file. Returns True if EXE did NOT execute, or False if it was succesful.
@@ -60,34 +92,21 @@ def extract_7zip(path):
 	# shutil.rmtree(tmpdir, False)
 	return ret
 
-# Download 7Zip file, extract it, and attempt to run the EXE in it.
-def process_url(url):
-	print("DOWNLOADING: "+url)
-	filename, response = urllib.urlretrieve(url)
-	print("DOWNLOADED_FILE: "+filename)
-
-	if (response.subtype == 'x-7z-compressed'):
-		return extract_7zip(filename)
-	else:
-
-		print("Download was not a 7Zip file: " + r.type)
-		return False
-
-
 # This is to fix windows cp65001 encoding issue.
 import codecs
 codecs.register(lambda name: codecs.lookup('utf-8') if name == 'cp65001' else None)
 parser = OptionParser()
-parser.add_option("-u", "--url", dest="url", action="append", metavar="URL",  help="URL of the 7Zip file to be downloaded.")
+parser.add_option("-z", "--7zip", dest="zip", action="append", metavar="ZIP",  help="7zip file to be validated")
 parser.add_option("-s", "--sim", dest="simfile", action="store",  type="string", metavar="SIM",  help="Location of the simulation file.", default="Surveyor.db3")
+parser.add_option("-t", "--teamcity",  dest="teamcity",    action="store_true",  help="Print Teamcity service messages.")
 
 (options, args) = parser.parse_args()
 
-if (options.url is None) and (len(args) < 1):
+if (options.zip is None) and (len(args) < 1):
 	parser.print_help()
 
 # Check 7Zip files specified on the command line.
-if options.url:
-	for url in options.url:
-		if not process_url(url):
+if options.zip:
+	for zip in options.zip:
+		if not extract_7zip(zip):
 			exit(1)
