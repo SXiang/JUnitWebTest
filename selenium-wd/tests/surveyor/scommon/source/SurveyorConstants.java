@@ -54,7 +54,9 @@ public final class SurveyorConstants {
 	public static final String CUSUSERROLEDR = Resources.getResource(ResourceKeys.Constant_Driver);
 	public static final String PICUSERROLESUP = "Picarro Support";
 
+	public static final String ADMINISTRATORUSER = "Administrator";    // NOTE: This user is required for cases where the data pushed into environment has been pushed as Administrator User.
 	public static final String PICDFADMIN = "AutomationAdmin";
+	public static final String USERPASSWORDHASH ="oeHwHqmv621dZ1MRE2BSdw==";
 	public static final String PICADMINPSWD = "sqa#Picarro$0";
 	public static final String SQACUSUAUSER = "sqacusua";
 	public static final String SQACUSSUUSER = "sqacussu";
@@ -73,6 +75,10 @@ public final class SurveyorConstants {
 	public static final String SQAPICSU = "sqapicsu@picarro.com";
 	public static final String SQAPICSU1 = "sqapicsu1@picarro.com";
 	public static final String SQAPICDR = "sqapicdr@picarro.com";
+	public static final String SQAPGEUA = "sqapgeua@email.com";
+	public static final String SQAPGESU = "sqapgesu@email.com";
+	public static final String SQAPGEDR = "sqapgedr1@email.com";
+	
 
 	public static final String SQAPICLOCSUR = "sqapiclocsur";
 	public static final String SQAPICLOC0SUR = "sqapicloc0sur";
@@ -284,6 +290,7 @@ public final class SurveyorConstants {
 	public static final String SQACUSSULOC="Santa Clara";
 	public static final String DEFAULTLOC="Default";
 	
+	public static final String REQUIRED_FIELD_VAL_MESSAGE = "This field is required.";	
 }
 
 	

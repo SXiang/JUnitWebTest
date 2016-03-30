@@ -9,6 +9,7 @@ import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSSULOC;
 import static surveyor.scommon.source.SurveyorConstants.ETHRNELAT;
 import static surveyor.scommon.source.SurveyorConstants.ETHRNELON;
+import static surveyor.scommon.source.SurveyorConstants.REQUIRED_FIELD_VAL_MESSAGE;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='point-longitude']")
 	protected WebElement inputLocationLong;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='CustomerId']")
 	protected WebElement dropDownCustomer;
 
@@ -104,7 +105,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(id = "Description-error")
 	private WebElement labelLocDescError;
 	private String labelLocDescErrorXPath = "//label[@id='Description-error']";
-
+	private String labelLocDescErrorID = "Description-error";
+	
 	@FindBy(id = "point-latitude-error")
 	private WebElement labelLatValueError;
 	private String labelLatValueErrorXPath = "//label[@id='point-latitude-error']";
@@ -529,7 +531,11 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				this.btnOK.click();
 
 				if (newLocationName.equalsIgnoreCase("")) {
-					if (driver.getCurrentUrl().equalsIgnoreCase(curURL))
+					// Required field validation message should be shown.
+					this.waitUntilPresenceOfElementLocated(labelLocDescErrorID);
+					this.labelLocDescError = this.driver.findElement(By.id(labelLocDescErrorID));					
+					if (driver.getCurrentUrl().equalsIgnoreCase(curURL) &&
+							this.labelLocDescError.getText().equalsIgnoreCase(REQUIRED_FIELD_VAL_MESSAGE))
 						return false;
 				}
 
