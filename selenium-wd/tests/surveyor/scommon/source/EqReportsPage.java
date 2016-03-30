@@ -31,6 +31,7 @@ import surveyor.dataaccess.source.Resources;
 import surveyor.dataaccess.source.StoredProcComplianceAssessmentGetReportDrivingSurveys;
 import surveyor.dataaccess.source.StoredProcEQAddedSurveys;
 import surveyor.dataaccess.source.StoredProcEQGetEQData;
+import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import common.source.DateUtility;
 import common.source.FileUtility;
 import common.source.Log;
@@ -60,6 +61,10 @@ public class EqReportsPage extends ReportsBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='eq-selected-text']")
 	protected WebElement eqRptArea;
+	
+	private static LatLongSelectionControl latLongSelectionControl = null;
+	
+	private static final String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
 
 	public WebElement getBtnNewEQRpt() {
 		return this.btnNewEQRpt;
@@ -209,6 +214,25 @@ public class EqReportsPage extends ReportsBasePage {
 
 	public void setReportName(String reportTitle) {
 		this.reportName = reportTitle;
+	}
+	
+	@Override
+	public void fillEqSpecific(Reports reports) {
+		
+		getSelectArea().click();
+
+		/*List <Coordinates> listOfCords = new ArrayList <Coordinates>();
+		listOfCords.add(0, new Coordinates(200,200));
+		listOfCords.add(1, new Coordinates(220,300));
+		listOfCords.add(2, new Coordinates(240,400));*/
+
+		latLongSelectionControl.waitForModalDialogOpen()
+								.switchMode(ControlMode.MapInteraction)
+								.waitForMapImageLoad()
+								.selectSegment(CANVAS_X_PATH, reports.getEqCoordinates())
+								.switchMode(ControlMode.Default)
+								.clickOkButton();
+		
 	}
 
 	@Override
