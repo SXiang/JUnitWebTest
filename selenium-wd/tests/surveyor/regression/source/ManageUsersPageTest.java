@@ -48,7 +48,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		DuplicateUser,
 		DisabledUser
 	}
-	
+
 	@BeforeClass
 	public static void setupManageUsersPageTest() {
 		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
@@ -67,19 +67,30 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC1675: More than 15 characters not allowed in New password and confirm password fields on Change User Password page
 	 * Script:
 	 *  - On Home Page, and click UserName -> Change Password
-     *  - Provide more than 15 characters in New Password and Confirm Password fields and click OK
-     * Results:
-     *  - "Please enter no more than 15 characters." message is displayed to user
+	 *  - Provide more than 15 characters in New Password and Confirm Password fields and click OK
+	 * Results:
+	 *  - "Please enter no more than 15 characters." message is displayed to user
 	 */
 	@Test
 	public void TC1675_MaxPasswordLength_PicUser(){
-		String customerName = "TestCustomer";
-		String userName = customerName+REGBASEUSERNAME;
 		String password =USERPASSWORD;
 		String password_16 = password + "abc"; // 16 chars
 		String password_80 = password_16 + password_16 + password_16 + password_16 + password_16;
 		String errorMsg = "Please enter no more than 15 characters.";
 		
+		String userName = PICNAMEPREFIX + "dr" + testSetup.getRandomNumber() + REGBASEPICUSERNAME;
+		String customerName = "Picarro";
+		String location = "Santa Clara";
+		String locationDesc = customerName + " - " + location;
+		
+		// *** Add a new user for this test ***
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		manageUsersPage.open();
+		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, CUSUSERROLEDR, locationDesc, TIMEZONECT);
+		loginPage = manageUsersPage.logout();;
+		
+		// *** Start test ***
 		loginPage.open();
 		loginPage.loginNormalAs(userName, password);
 
@@ -91,8 +102,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		assertEquals(manageUsersPage.getNewPasswordError(),errorMsg);
 		assertEquals(manageUsersPage.getConfirmPasswordError(),errorMsg);
 		
-	}	
-
+	}
+	
 	/**
 	 * Test Case ID: TC68 Test Description: Picarro Admin - Add New Picarro User
 	 * 
@@ -100,13 +111,13 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC68_AddNewPicarroUser() {
 		String userName = "PicarroUser" + testSetup.getRandomNumber()
-				+ "picarroUser01" + REGBASEUSERNAME;
+		+ "picarroUser01" + REGBASEUSERNAME;
 		String customer = "Picarro";
 		String location = "Santa Clara";
 		String locationDesc = customer + " - " + location;
 
 		System.out
-				.println("\nRunning TC68 - Test Description: Picarro Admin - Add New Picarro user");
+		.println("\nRunning TC68 - Test Description: Picarro Admin - Add New Picarro user");
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(),
@@ -133,14 +144,14 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC69_AddNewCustomerUser() {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber()
-				+ "TC69";
+		+ "TC69";
 		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + "customerUser01" + REGBASEUSERNAME;
 		String cityName = "Santa Clara";
 		String locationName = customerName + "loc";
 
 		System.out
-				.println("\nRunning TC69 - Test Description: Picarro Admin - Add New Customer user");
+		.println("\nRunning TC69 - Test Description: Picarro Admin - Add New Customer user");
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(),
@@ -153,7 +164,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageLocationsPage.open();
 		manageLocationsPage.waitForPageLoad();
 		manageLocationsPage
-				.addNewLocation(locationName, customerName, cityName);
+		.addNewLocation(locationName, customerName, cityName);
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
@@ -168,7 +179,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		assertTrue(homePage.checkIfAtHomePage());
 	}
 
-	
+
 	/**
 	 * Test Case ID: TC70_EditUser_PicAdmin
 	 * Script:
@@ -201,7 +212,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
-		
+
 		Log.info(String.format("Adding new user: CustomerName=[%s]; Username=[%s]; Role=[%s]; Location=[%s]", 
 				customerName, userName, CUSUSERROLEUA, locationName)); 
 		manageUsersPage.addNewCustomerUser(customerName, userName,
@@ -210,7 +221,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		Log.info(String.format("Editing user: Username=[%s]; Role=[%s]; Timezone=[%s]; Enabled=[%b]; IsCustomerUser=[%b]", 
 				userName, CUSUSERROLESU, TIMEZONEETUA, true, false)); 
 		manageUsersPage.editUser(userName, CUSUSERROLESU, TIMEZONEETUA, true, false);
-		
+
 		Log.info(String.format("Editing user: Location=[%s]; Username=[%s]; IsCustomerUser=[%b]", 
 				cityName, userName, false)); 
 		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
@@ -220,7 +231,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
 		assertTrue(homePage.checkIfAtHomePage());
 	}
-	
+
 	/**
 	 * Test Case IDs: 
 	 * TC71  Test Description: Reset user password as Picarro Admin.
@@ -234,10 +245,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		if (!isValidRunAsUser(username, FN_TC71_TC473_USER_RESET_PWD)) {
 			return;
 		}					
-		
+
 		String testCaseID = getTestCaseName(ManageUserTestCaseType.ResetPwd, username);		
 		password = CryptoUtility.decrypt(password);
-		
+
 		String usernameNew = SQACUS + testSetup.getRandomNumber() + testCaseID + REGBASEUSERNAME;
 		Log.info(String.format("\nRunning - %s - Reset customer user password as %s \n", 
 				testCaseID, role));
@@ -277,7 +288,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		else
 			fail(String.format("\nTestcase %s - failed to login by the new password.\n", testCaseID));
 	}
-	
+
 	/**
 	 * Test Case ID: 
 	 * TC72 Test Description: Change password as Picarro admin
@@ -360,10 +371,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageLocationsPage.open();
 		manageLocationsPage.waitForPageLoad();
 		manageLocationsPage.addNewLocation(locationNameNew, customerName, cityNameNew);		
-		
+
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
-		
+
 		// Edit role, location and timezone
 		Log.info(String.format("Editing user - Username=%s;Role=%s;Timezone=%s;Location=%s;Enabled=%b;IsCustomerUser=%b",
 				userName, CUSUSERROLESU, TIMEZONEETUA, locationNameNew, true, false));
@@ -411,7 +422,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		Log.info("Found error message:" + output);
 		assertTrue(output.contains(DUPLICATIONERROR));
 	}
-	
+
 	/**
 	 * Test Case IDs: 
 	 * TC94  Test Description: Picarro Admin - Disabled User
@@ -424,7 +435,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 			String customerName, String customerLocation) {
 		String testCaseID = getTestCaseName(ManageUserTestCaseType.DisabledUser, username);		
 		password = CryptoUtility.decrypt(password);
-		
+
 		String usernameNew = SQACUS + testSetup.getRandomNumber() + testCaseID + REGBASEUSERNAME;
 		Log.info(String.format("\nRunning - %s - Test Description: %s - Disabled User\n", testCaseID, role));
 
@@ -461,14 +472,14 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	public void TC95_ReEnableUser_PicAdmin() {
 		String userName = SQACUS + testSetup.getRandomNumber() + "TC95" + REGBASEUSERNAME;
 		String locationDesc = SQACUS + " - " + SQACUSLOC;
-		
+
 		Log.info("\nRunning - TC95_ReEnableUser_PicAdmin - Test Description: Picarro Admin - Re-Enable User\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
 		homePage.waitForPageLoad();
-		
+
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
 
@@ -509,7 +520,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
 		homePage.waitForPageLoad();
-		
+
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
 
@@ -517,7 +528,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		Log.info(String.format("Creating new user - Customer=%s;Username=%s;Role=%s;Location=%s;Enabled=%b",
 				SQACUS, userName50, CUSUSERROLEDR, SQACUSLOC, false));
 		manageUsersPage.addNewCustomerUser(SQACUS, userName50, USERPASSWORD, CUSUSERROLEDR, SQACUSLOC, false);
-		
+
 		Log.info(String.format("Finding user - Location=%s;Username=%s;IsCustomerUser=%b",
 				SQACUSLOC, userName50, false));
 		assertTrue(manageUsersPage.findExistingUser(SQACUSLOC, userName50, false));
@@ -536,7 +547,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 				SQACUSLOC, userName51, false));
 		assertFalse(manageUsersPage.findExistingUser(SQACUSLOC, userName51, false));
 	}
-	
+
 	/**
 	 * Test Case ID: TC115 Test Description: Pagination (Manage Users) Test
 	 * Script: 10,25,50 and 100 records selection on all Administration screens
@@ -553,7 +564,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		int pageSize = 0;
 
 		System.out
-				.println("\nRunning - TC115 - Test Description: Pagination (Manage Users)\n");
+		.println("\nRunning - TC115 - Test Description: Pagination (Manage Users)\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(),
@@ -632,13 +643,13 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC470_AddNewPicarroUser() {
 		String userName = "PicarroUser" + testSetup.getRandomNumber()
-				+ "picarroUser02" + REGBASEUSERNAME;
+		+ "picarroUser02" + REGBASEUSERNAME;
 		String customer = "Picarro";
 		String location = "Santa Clara";
 		String locationDesc = customer + " - " + location;
 
 		System.out
-				.println("\nRunning TC470 - Test Description: Picarro Support - Add New Picarro user");
+		.println("\nRunning TC470 - Test Description: Picarro Support - Add New Picarro user");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
@@ -664,10 +675,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC471_AddNewCustomerUser() {
 		String userName = SQACUS + testSetup.getRandomNumber()
-				+ "customerUser02" + REGBASEUSERNAME;
+		+ "customerUser02" + REGBASEUSERNAME;
 
 		System.out
-				.println("\nRunning TC471 - Test Description: Picarro Support - Add New Customer user");
+		.println("\nRunning TC471 - Test Description: Picarro Support - Add New Customer user");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);

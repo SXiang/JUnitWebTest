@@ -31,15 +31,15 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageUsersPage manageUsersPage;
 	private static ManageLocationsPage manageLocationsPage;
-	
+
 	@BeforeClass
 	public static void setupManageCustomersPageTest() {
 		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageCustomersPage);
-		
+
 		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, manageUsersPage);
-		
+
 		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, manageLocationsPage);
 	}
@@ -48,16 +48,35 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC1243_DisableExistingCustomer_PicAdmin
 	 * Script:
 	 * - On Home Page, click Picarro Administration -> Manage Customers
-     * - Click on 'Edit' button
-     * - Disable the Customer account. Click OK
-     * Results:
-     * Disabled Customer's User will not be allowed to log in the application
+	 * - Click on 'Edit' button
+	 * - Disable the Customer account. Click OK
+	 * Results:
+	 * Disabled Customer's User will not be allowed to log in the application
 	 */
 	@Test
 	public void TC1243_DisableExistingCustomer_PicAdmin(){
-		String customerName = "TestCustomer";
-		String userName = customerName+REGBASEUSERNAME;
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getFixedSizeRandomNumber(12) + "TC1243";
+		String eula = customerName + ": " + EULASTRING;
+		String userName = customerName + REGBASEPICUSERNAME;
+		String location = "Santa Clara";
+		String locationDesc = customerName + " - " + location;	
 		
+		// *** Add a new user/customer for this test ***
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		manageCustomersPage.open();
+		manageCustomersPage.addNewCustomer(customerName, eula);
+		
+		manageLocationsPage.open();
+		manageLocationsPage.addNewLocation(location, customerName, location);
+		
+		manageUsersPage.open();
+		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONECTUA, location);
+		
+		
+		loginPage = manageCustomersPage.logout();;
+		
+		// *** Start test ***
         Log.info("\nRunning TC1243_DisableExistingCustomer_PicAdmin - "+
                  "Test Description: Disable Existing Customer can not login");
 		
@@ -67,6 +86,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		manageCustomersPage.open();
 		manageCustomersPage.performSearch(customerName);
 		manageCustomersPage.changeCustomerAccountStatus(customerName, false);
+		
 		loginPage = manageUsersPage.logout();
 
 		// verify disabled customer user cannot login.
@@ -134,9 +154,19 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC78_editCustomerBlankRequiredFields_PicAdmin(){
-		String customerName = "TestCustomer";
+		String userName = PICNAMEPREFIX + "dr" + testSetup.getRandomNumber() + REGBASEPICUSERNAME;
+		String customerName = "Picarro";
+		String location = "Santa Clara";
+		String locationDesc = customerName + " - " + location;
 		
+		// *** Add a new user for this test ***
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		manageUsersPage.open();
+		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, CUSUSERROLEDR, locationDesc, TIMEZONECT);
+		loginPage = manageUsersPage.logout();;
 		
+		// *** Start test ***
 		Log.info("\nRunning TC78_editCustomerBlankRequiredFields_PicAdmin - "+
 		         "Test Description: edit customer - blank required fields");
 		
@@ -152,13 +182,14 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		manageCustomersPage.clickOnEditOkBtn();
 		
 		Log.info("Looking for a red border around the Eula text area - when it's empty");
-		assertTrue("There is no red line around the Eula text area when it's empty!",manageCustomersPage.isEulaRed());
+		assertTrue("There is no red line around the Eula text area when it's empty!",
+				manageCustomersPage.isEulaRed());
 				
 		// cancel add 
 		manageCustomersPage.clickOnEditCancelBtn();
 				
-	}	
-	
+	}			
+
 	/**
 	 * Test Case ID: TC58_AddNewCustomer_PicAdmin
 	 * Script:   	
@@ -172,9 +203,9 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	public void TC58_AddNewCustomer_PicAdmin() {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC58";
 		String eula = customerName + ": " + EULASTRING;
-		
+
 		Log.info("\nRunning TC58_AddNewCustomer_PicAdmin - Test Description: Adding Customer");
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
 
@@ -183,7 +214,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		Log.info(String.format("Looking for customer - '%s' with enabled status - '%b'", customerName, true));
 		assertTrue(manageCustomersPage.findExistingCustomer(customerName, true));
 	}
-	
+
 	/**
 	 * Test Case ID: TC59_EditCustomer_PicAdmin
 	 * Script:   	 	
@@ -197,25 +228,25 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	public void TC59_EditCustomer_PicAdmin() {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC59";
 		String eula = customerName + ": " + EULASTRING;
-		
+
 		Log.info("\nRunning TC59_EditCustomer_PicAdmin - Test Description: Editing Customer");
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
-		
+
 		manageCustomersPage.open();		
-		
+
 		Log.info("Adding new Customer - " + customerName);
 		manageCustomersPage.addNewCustomer(customerName, eula);		
-		
+
 		Log.info("Modifying Customer account status - " + customerName);
 		manageCustomersPage.changeCustomerAccountStatus(customerName, false);
-	
+
 		Log.info(String.format("Looking for customer - '%s' with enabled status - '%b'", customerName, false));
 		assertTrue(manageCustomersPage.findExistingCustomer(customerName, false));
 	}
-	
-	
+
+
 	/**
 	 * Test Case ID: TC88_DuplicateCustomerNotAllowed_PicAdmin
 	 * Script:   	
@@ -230,22 +261,22 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	public void TC88_DuplicateCustomerNotAllowed_PicAdmin() {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC88";
 		Log.info("\nRunning TC88_DuplicateCustomerNotAllowed_PicAdmin - Test Description: Admin not allowed to create duplicate Customer");
-		
+
 		String eula = customerName + ": " + EULASTRING;
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
-		
+
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);		
-		
+
 		Log.info(String.format("Looking for customer - '%s' with enabled status - '%b'", customerName, true));
 		assertTrue(manageCustomersPage.findExistingCustomer(customerName, true));
-		
+
 		// Verify cannot create duplicate customer.
 		assertFalse(manageCustomersPage.addNewCustomer(customerName, eula));
 	}
-	
+
 	/**
 	 * Test Case ID: TC92_DisabledCustomer_PicAdmin
 	 * Script:
@@ -263,14 +294,14 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		String cityName = "Santa Clara";
 		String locationName = customerName + "loc";
 		Log.info("\nRunning TC93_ReenableCustomer_PicAdmin - Test Description: Re-Enable Customer");
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
 
 		manageCustomersPage.open();
 		// create disabled customer.
 		manageCustomersPage.addNewCustomer(customerName, eula, false);
-		
+
 		Log.info(String.format("Looking for customer - '%s' with enabled status - '%b'", customerName, false));
 		assertTrue(manageCustomersPage.findExistingCustomer(customerName, false));
 
@@ -289,7 +320,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		assertTrue(loginPage.loginNormalAs(userName, USERPASSWORD) == null);
 	}
-	
+
 	/**
 	 * Test Case ID: TC93_ReenableCustomer_PicAdmin
 	 * Script:
@@ -309,17 +340,17 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 		String cityName = "Santa Clara";
 		String locationName = customerName + "loc";
-		
+
 		Log.info("\nRunning TC93_ReenableCustomer_PicAdmin - Test Description: Re-Enable Customer");
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		
+
 		manageCustomersPage.open();
 		// create customer (not enabled).
 		manageCustomersPage.addNewCustomer(customerName, eula, false);
 		manageCustomersPage.changeCustomerAccountStatus(customerName, true);
-		
+
 		Log.info(String.format("Looking for customer - '%s' with enabled status - '%b'", customerName, true));
 		assertTrue(manageCustomersPage.findExistingCustomer(customerName, true));
 
@@ -358,8 +389,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 		String eula100K = DataGenerator.getRandomWords(HUNDRED_K);
 		String eula100KPlusOne = eula100K + "A";
-assertTrue(eula100K.length() == HUNDRED_K);
-		
+		assertTrue(eula100K.length() == HUNDRED_K);
+
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
 
@@ -372,11 +403,11 @@ assertTrue(eula100K.length() == HUNDRED_K);
 		// Add customer with 100K+1 characters in EULA.
 		manageCustomersPage.addNewCustomer(customerName, eula100KPlusOne, true);
 		manageCustomersPage.findCustomerAndOpenEditPage(customerName);
-		
+
 		// Verify ONLY 100K characters got inputted in EULA.
 		assertTrue(manageCustomersPage.getEulaText().length() == HUNDRED_K);
 	}
-		
+
 	/**
 	 * Test Case ID: TC97_CustomerNameMax255Chars_PicAdmin
 	 * Script:
@@ -393,11 +424,11 @@ assertTrue(eula100K.length() == HUNDRED_K);
 		String customerName255 = CUSTOMERNAMEPREFIX + testSetup.getFixedSizePseudoRandomString(245) + "TC97";
 		String customerName256 = CUSTOMERNAMEPREFIX + testSetup.getFixedSizePseudoRandomString(245) + "TC97" + "A";
 		String eula = customerName255 + ": " + EULASTRING;
-		
+
 		Log.info("\nRunning TC97_CustomerNameMax255Chars_PicAdmin - Test Description: More than 255 characters not allowed in Name field");
 
 		assertTrue(customerName255.length() == MAX_CHARS);
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
 
@@ -411,9 +442,9 @@ assertTrue(eula100K.length() == HUNDRED_K);
 		manageCustomersPage.addNewCustomer(customerName256, eula, true);
 		assertTrue(manageCustomersPage.findExistingCustomer(customerName256.substring(0, MAX_CHARS), true));
 		assertFalse(manageCustomersPage.findExistingCustomer(customerName256, true));
-		
+
 	}
-		
+
 	/**
 	 * Test Case ID: MCP000B
 	 * Test Description: Checking Customer Account Status
@@ -423,19 +454,19 @@ assertTrue(eula100K.length() == HUNDRED_K);
 	public void MCP000B() {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "MCP000B";
 		String eula = customerName + ": " + EULASTRING;
-		
+
 		Log.info("\nRunning MCP000B - Test Description: Checking Customer Account Status");
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
-		
+
 		manageCustomersPage.open();
-		
+
 		manageCustomersPage.addNewCustomer(customerName, eula);
-		
+
 		assertTrue(manageCustomersPage.getCustomerStatus(customerName).equalsIgnoreCase(CUSTOMERENABLED));
 	}
-	
+
 	/**
 	 * Test Case ID: MCP000C
 	 * Test Description: Changing Customer Account Status
@@ -445,16 +476,16 @@ assertTrue(eula100K.length() == HUNDRED_K);
 	public void MCP000C() {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "MCP000C";
 		String eula = customerName + ": " + EULASTRING;
-		
+
 		Log.info("\nRunning MCP000C - Test Description: Changing Customer Account Status");
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
-		
+
 		manageCustomersPage.open();
-		
+
 		manageCustomersPage.addNewCustomer(customerName, eula);
-		
+
 		if (manageCustomersPage.changeCustomerAccountStatus(customerName, false))
 			assertTrue(manageCustomersPage.getCustomerStatus(customerName).equalsIgnoreCase(CUSTOMERDISABLED));
 		else

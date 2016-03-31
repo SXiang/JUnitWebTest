@@ -7,6 +7,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static surveyor.scommon.source.SurveyorConstants.BLANKFIELDERROR;
 import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
@@ -14,17 +15,22 @@ import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_25;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_50;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
+import static surveyor.scommon.source.SurveyorConstants.PICNAMEPREFIX;
+import static surveyor.scommon.source.SurveyorConstants.REGBASEPICUSERNAME;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
+import static surveyor.scommon.source.SurveyorConstants.TIMEZONECT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
+import static surveyor.scommon.source.SurveyorConstants.USERROLEADMIN;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -38,8 +44,8 @@ import surveyor.scommon.source.ManageSurveyorAdminPage;
 import surveyor.scommon.source.ManageUsersAdminPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.SurveyorConstants.UserTimezone;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.SurveyorBasePage.UserTimezone;
 import common.source.BaseHelper;
 import common.source.Log;
 
@@ -229,7 +235,6 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 		String latitude = "50.00000";
 		String longitude = "50.00000";
-		String fieldInlineError = "This field is required.";
 
 		Log.info("\nRunning - TC24_NotificationLatLongValueMissing_PicAdmin - "+
 				"Test Description: Notification should appear if Latitude is entered but Longitude is not, or vice versa\n");
@@ -248,7 +253,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		manageLocationsPage.clickOnLatLongCancelBtn();
 		manageLocationsPage.clickOnOkBtn();
 
-		assertEquals(fieldInlineError, manageLocationsPage.getLocationLongitudeError());
+		assertEquals(BLANKFIELDERROR, manageLocationsPage.getLocationLongitudeError());
 
 		manageLocationsPage.inputLatLong("", longitude);		
 		manageLocationsPage.clickOnLatLongSelectorBtn();
@@ -259,7 +264,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		manageLocationsPage.clickOnLatLongCancelBtn();
 		manageLocationsPage.clickOnOkBtn();
 
-		assertEquals(fieldInlineError, manageLocationsPage.getLocationLatitudeError());
+		assertEquals(BLANKFIELDERROR, manageLocationsPage.getLocationLatitudeError());
 
 		manageLocationsPage.clickOnCancelBtn();
 
@@ -268,7 +273,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 
 	/**
-	 * Test Case ID: TC1236_CheckTimeZone_CustUA Test Description: 
+	 * Test Case ID: TC1236_CheckTimeZone_PicAdmin Test Description: 
 	   Check Timezone and User Name drop down menu working on Add and Edit Location Page
 	 * Test Script: - On Home Page, click Picarro Administration -> Manage Locations 
                     - Click on 'Add New Location' button
@@ -282,29 +287,46 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 	@Test
 	public void TC1236_CheckTimeZone_PicAdmin(){
+		String userName = PICNAMEPREFIX + "ad" + testSetup.getRandomNumber() + REGBASEPICUSERNAME;
+		String customer = "Picarro";
+		String location = "Santa Clara";
+		String locationDesc = customer + " - " + location;
+
+
+		// *** Add a new admin user for this test ***
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		manageUsersPage.open();
+		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, USERROLEADMIN, locationDesc, TIMEZONECT);
+		manageUsersAdminPage.logout();
+
+		// *** Start test ***
 
 		Log.info("\nRunning - TC1236_CheckTimeZone_PicAdmin - " +
 				"Test Description: Check Timezone change\n");
 
-		UserTimezone[] uts = {UserTimezone.CENTRAL,UserTimezone.EASTERN,
-				UserTimezone.MOUNTAIN,UserTimezone.PACIFIC};
-		
-		loginPage.open();
+		UserTimezone[] uts = UserTimezone.values();
+		UserTimezone ut = uts[0];
 
-		for(UserTimezone ut:uts){
-			loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
-			manageLocationsPage.open();
-			manageLocationsPage.clickOnAddNewLocationBtn();
-			
-			assertTrue("Failed to change user timezone - '"+ ut+"'",
-					manageLocationsPage.changeUserTimezone(ut));
-			
-            assertTrue("Dropdown menu itme(s) are missing", 
-            		manageLocationsPage.verifyDropdownMenuItems());
-			loginPage = manageUsersPage.logout();
-		}
+		loginPage.open();
+		loginPage.loginNormalAs(userName, USERPASSWORD);
+
+		manageLocationsPage.open();
+		manageLocationsPage.clickOnAddNewLocationBtn();
+
+		assertTrue("Failed to change user timezone - '"+ ut+"'",
+				manageLocationsPage.changeUserTimezone(ut));
+
+		assertTrue("Dropdown menu itme(s) are missing", 
+				manageLocationsPage.verifyDropdownMenuItems());
+		loginPage = manageUsersPage.logout();
+
+		loginPage.loginNormalAs(userName, USERPASSWORD);
+		assertEquals("User timezone has not retained after relogin - '"+ ut+"'",
+				ut.toString(),manageLocationsPage.getUserTimezone());
+		
 	}
-	
+
 	/**
 	 * Test Case ID: TC459_EditLocation_CustUA Test Description: Edit existing
 	 * location Test Script: - On Home Page, click Administration -> Manage
@@ -505,7 +527,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		assertTrue(manageRefGasBottlesAdminPage.getStrPageURL()
 				.equalsIgnoreCase(curURL));
 	}
-	
+
 	/**
 	 * Test Case ID: TC450_ManageLocationsAdminPagination Test Description:
 	 * Pagination (Manage Locations Customer Admin) Test Script: 10,25,50 and
@@ -536,7 +558,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 				Integer.valueOf(PAGINATIONSETTING_25));
 
 		assertTrue(manageLocationsAdminPage.getListSize(locationList));
-		
+
 		manageLocationsAdminPage.open();
 		manageLocationsAdminPage.setPagination(PAGINATIONSETTING_50);
 

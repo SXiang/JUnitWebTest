@@ -74,6 +74,14 @@ public class HomePageTest extends SurveyorBaseTest {
 	 *  Manage Release Notes link is not present 
 	 */
 	
+	/**
+	 * Test Case ID: TC1308: Picarro Admin cannot see Manage Release Notes page
+	 * Script:
+	 *  - Log in as Picarro Admin
+	 *  - Click on Administration
+	 * Results:
+	 *  Manage Release Notes link is not present 
+	 */	
 	@Test(expected=NoSuchElementException.class)
 	public void TC1308_ReleaseNotesLinkNotPresent_PicAdminRole(){
         Log.info("\nTC1308_ReleaseNotesLinkNotPresent_PicAdminRole - "+
@@ -83,7 +91,6 @@ public class HomePageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
 		homePage.open();
-		homePage.waitForPageLoad();
 
 		homePage.getLinkPicarroAdmin().click();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
