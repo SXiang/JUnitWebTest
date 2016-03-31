@@ -291,8 +291,51 @@ public final class SurveyorConstants {
 	public static final String DEFAULTLOC="Default";
 	
 	public static final String REQUIRED_FIELD_VAL_MESSAGE = "This field is required.";	
+	
+	
+	
+	/*
+	 * enum for list of constants
+	 */
+	public static enum LicensedFeatures {
+		GAPGRID, REPORTMETADATA, ASSESSMENT, EQ, 
+		LISABOX, SURVEYFORECASE, REPORTSHAPEFILE
+	}
+	
+	public static enum TopNavMenuItem {
+		PREFERENCES ("Preferences"), 
+		CHANGEPASSWORD ("Change Password"), 
+		RELEASENOTES ("Release Notes"), 
+		MANUAL ("Manual"), 
+		LOGOUT ("Log out");
+
+		private final String text;
+		TopNavMenuItem(String text){
+			this.text = text;
+		}
+
+		public String toString(){
+			return text;
+		}
+	};
+	
+	public static enum UserTimezone {
+		PACIFIC ("Pacific Standard Time"),
+		MOUNTAIN ("Mountain Standard Time"),
+		CENTRAL ("Central Standard Time"),
+		EASTERN ("Eastern Standard Time");
+
+		private final String text;
+		UserTimezone(String text){
+			this.text = text;
+		}
+
+		public String toString(){
+			return text;
+		}
+	};
 }
 
-	
+
 
 
