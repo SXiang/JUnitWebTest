@@ -87,12 +87,12 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageTest {
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, 4);
-		//complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 4);
-		complianceReportsPageAction.clickOnCopyButton(EMPTY, 4);
-		//complianceReportsPageAction.modifyReport(EMPTY, 5);
-		//complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 5);
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.verifyPDFZipFilesArePresent(EMPTY, 5);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 4);
+		complianceReportsPageAction.copyReport(EMPTY, 5);
+		complianceReportsPageAction.verifyReportPageFieldsAreCorrect(EMPTY, 5);
+		complianceReportsPageAction.modifyReport(EMPTY, 5);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 5);
+		complianceReportsPageAction.verifyReportFilesHaveCorrectData(EMPTY, 5);
 	}
  
 	/**

@@ -46,11 +46,43 @@ public class Reports {
 	protected EthaneFilter ethaneFilter;
 
 	public enum SurveyModeFilter {
-		All, Standard, Operator, RapidResponse, Manual
+		All ("All"), 
+		Standard ("All"), 
+		Operator ("All"), 
+		RapidResponse ("All"), 
+		Manual ("All"), 
+		EQ ("All"), 
+		Assessment ("All");
+		
+		private final String name;
+
+		SurveyModeFilter(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
 	}
 
 	public enum ReportModeFilter {
-		Standard, RapidResponse, Manual
+		All ("All"), 
+		Standard ("All"), 
+		Operator ("All"), 
+		RapidResponse ("All"), 
+		Manual ("All"), 
+		EQ ("All"), 
+		Assessment ("All");
+		
+		private final String name;
+
+		ReportModeFilter(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
 	}
 
 	public enum EthaneFilter {

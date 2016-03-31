@@ -15,6 +15,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
+import static surveyor.scommon.source.SurveyorConstants.PICADMNSURVEYOR;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETCASTIRON;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETCOPPER;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
@@ -38,6 +39,7 @@ import common.source.TestSetup;
 import surveyor.scommon.actions.data.ComplianceReportDataReader;
 import surveyor.scommon.actions.data.ComplianceReportDataReader.ComplianceReportsDataRow;
 import surveyor.scommon.actions.data.CustomerDataReader;
+import surveyor.scommon.actions.data.DriverViewDataReader;
 import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
 import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader;
 import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader.ReportOptTabularPDFContentDataRow;
@@ -47,6 +49,7 @@ import surveyor.scommon.actions.data.ReportSurveyDataReader;
 import surveyor.scommon.actions.data.ReportSurveyDataReader.ReportSurveyDataRow;
 import surveyor.scommon.actions.data.ReportViewsDataReader;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
 import surveyor.scommon.source.ComplianceReportsPage.ReportFileType;
 import surveyor.scommon.source.ComplianceReportsPage.ReportViewerThumbnailType;
@@ -56,17 +59,15 @@ import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
 
-public class ComplianceReportsPageActions extends BasePageActions {
+public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	private ComplianceReportsPage complianceReportsPage = null;
 	private ComplianceReportDataReader dataReader = null;
 	public static ReportsCompliance workingReportsComp = null;      // Stores the ReportsCompliance object from createNewReport action
 	public static ComplianceReportsDataRow workingDataRow = null;    // Stores the workingDataRow from createNewReport action
 
 	public ComplianceReportsPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
-		super(driver, strBaseURL);
-		complianceReportsPage = new ComplianceReportsPage(driver, strBaseURL, testSetup);
-		PageFactory.initElements(driver, complianceReportsPage);
-		
+		super(driver, strBaseURL, testSetup);
+		initializePageObject(driver, new ComplianceReportsPage(driver, strBaseURL, testSetup));
 		setDataReader(new ComplianceReportDataReader(this.excelUtility));
 	}
 	
@@ -78,6 +79,12 @@ public class ComplianceReportsPageActions extends BasePageActions {
 		this.complianceReportsPage.addViews(workingReportsComp.getCustomer(), viewList);
 	}
  
+	private ComplianceReportsPage createNewPageObject() {
+		ComplianceReportsPage complianceReportsPage = new ComplianceReportsPage(TestContext.INSTANCE.getDriver(), 
+				TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
+		return complianceReportsPage;
+	}
+
 	private void fillViewLayersInfo(Map<String, String> viewLayerMap,
 			ReportOptViewLayersDataReader reader, Integer dataRowID) throws Exception {
 		String assetCastIron = reader.getDataRow(dataRowID).assetCastIron.equalsIgnoreCase("TRUE") ? "1" : "0";
@@ -577,6 +584,33 @@ public class ComplianceReportsPageActions extends BasePageActions {
 	}
  
 	/**
+	 * Executes copyReport action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean copyReport(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.copyReport", data, dataRowID);
+		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
+		this.complianceReportsPage.copyReport(dataRow.title, TestContext.INSTANCE.getLoggedInUser());
+		this.initializePageObject(TestContext.INSTANCE.getDriver(), this.createNewPageObject());
+		return true;
+	}
+
+	/**
+	 * Executes modifyReport action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean modifyReport(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.modifyReport", data, dataRowID);
+		return this.fillAndCreateNewReport(dataRowID);
+	}
+
+	/**
 	 * Executes createNewReport action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -587,6 +621,10 @@ public class ComplianceReportsPageActions extends BasePageActions {
 		logAction("ComplianceReportsPageActions.createNewReport", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("createNewReport", ARG_DATA_ROW_ID, dataRowID);
 
+		return fillAndCreateNewReport(dataRowID);
+	}
+
+	private boolean fillAndCreateNewReport(Integer dataRowID) throws Exception {
 		workingDataRow = getDataReader().getDataRow(dataRowID);
 		
 		String rptTitle = workingDataRow.title;
@@ -1612,6 +1650,123 @@ public class ComplianceReportsPageActions extends BasePageActions {
 	}
  
 	/**
+	 * Executes verifyReportPageFieldsAreCorrect action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean verifyReportPageFieldsAreCorrect(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.verifyReportPageFieldsAreCorrect", data, dataRowID);
+		ComplianceReportsDataRow dataRow = getDataReader().getDataRow();
+		String customerName = new CustomerDataReader(this.excelUtility).getDataRow(Integer.valueOf(dataRow.customerRowID)).name;
+		List<Integer> surveyRowIDs = ActionArguments.getNumericList(dataRow.reportSurveyRowIDs);
+		Integer reportViewLayerRowID = Integer.valueOf(dataRow.reportOptViewLayerRowID);
+		ReportOptViewLayersDataRow reportOptViewLayersDataRow = new ReportOptViewLayersDataReader(this.excelUtility).getDataRow(reportViewLayerRowID);
+		Integer reportPDFContentRowID = Integer.valueOf(dataRow.reportOptTabularPDFContentRowID);
+		ReportOptTabularPDFContentDataRow reportPDFContentDataRow = new ReportOptTabularPDFContentDataReader(this.excelUtility).getDataRow(reportPDFContentRowID);
+		boolean reportTitleMatches = (dataRow.title == this.complianceReportsPage.getReportTitle());
+		boolean customerMatches = (customerName == this.complianceReportsPage.getCustomerValue());
+		boolean timezoneMatches = (dataRow.timezone == this.complianceReportsPage.getTimezoneValue());
+		boolean exclusionRadiusMatches = (dataRow.exclusionRadius == this.complianceReportsPage.getExclusionRadius());
+		boolean reportModeMatches = (dataRow.reportMode == this.complianceReportsPage.getReportModeFilter().toString());
+		boolean nELatMatches = (dataRow.title == this.complianceReportsPage.getNELatitude());
+		boolean nELongMatches = (dataRow.title == this.complianceReportsPage.getNELongitude());
+		boolean sWLatMatches = (dataRow.title == this.complianceReportsPage.getSWLatitude());
+		boolean sWLongMatches = (dataRow.title == this.complianceReportsPage.getSWLongitude());
+		boolean fovOpacityMatches = (dataRow.title == this.complianceReportsPage.getFOVOpacity());
+		boolean lisaOpacityMatches = (dataRow.title == this.complianceReportsPage.getLISAOpacity());
+		boolean pdfWidthMatches = (dataRow.title == this.complianceReportsPage.getPDFWidth());
+		boolean pdfHeightMatches = (dataRow.title == this.complianceReportsPage.getPDFHeight());
+		boolean verifyReportSurveyValuesMatch = verifyReportSurveyValuesMatch(surveyRowIDs);
+		boolean areAssetBoundariesMatch = areAssetBoundariesMatch(reportOptViewLayersDataRow);
+		boolean areTabularPDFContentSelectionMatch = areTabularPDFContentSelectionMatch(reportPDFContentDataRow);
+		return reportTitleMatches && customerMatches && timezoneMatches && exclusionRadiusMatches && reportModeMatches && 
+				nELatMatches && nELongMatches && sWLatMatches && sWLongMatches && fovOpacityMatches &&
+				lisaOpacityMatches && pdfWidthMatches && pdfHeightMatches && verifyReportSurveyValuesMatch &&
+				areAssetBoundariesMatch && areTabularPDFContentSelectionMatch;
+	}
+
+	private boolean verifyReportSurveyValuesMatch(List<Integer> surveyRowIDs) {
+		// TODO: Needs implementation in Reports page object.
+		return true;
+	}
+
+	private boolean verifyReportViewValuesMatch(List<Integer> surveyRowIDs) {
+		// TODO: Needs implementation in Reports page object.
+		return true;
+	}
+
+	private boolean areTabularPDFContentSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
+		return isPDFGapSelectionMatch(dataRow) && isPDFIndicationSelectionMatch(dataRow) &&
+				isPDFIsotopicAnalysisSelectionMatch(dataRow) && isPDFPercentCoverageAssetsSelectionMatch(dataRow) &&
+				isPDFPercentCoverageForecastSelectionMatch(dataRow) && isPDFPercentCoverageReportAreaSelectionMatch(dataRow);
+	}
+
+	private boolean isPDFGapSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
+		return this.complianceReportsPage.isPDFGapSelected() && (dataRow.gapTable == "TRUE");
+	}
+
+	private boolean isPDFIndicationSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
+		return this.complianceReportsPage.isPDFIndicationSelected() && (dataRow.indicationTable == "TRUE");
+	}
+
+	private boolean isPDFIsotopicAnalysisSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
+		return this.complianceReportsPage.isPDFIsotopicAnalysisSelected() && (dataRow.isotopicAnalysis == "TRUE");
+	}
+
+	private boolean isPDFPercentCoverageAssetsSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
+		return this.complianceReportsPage.isPDFPercentCoverageAssetsSelected() && (dataRow.percentCoverageAssets == "TRUE");
+	}
+
+	private boolean isPDFPercentCoverageForecastSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
+		return this.complianceReportsPage.isPDFPercentCoverageForecastSelected() && (dataRow.percentCoverageForecast == "TRUE");
+	}
+
+	private boolean isPDFPercentCoverageReportAreaSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
+		return this.complianceReportsPage.isPDFPercentCoverageReportAreaSelected() && (dataRow.percentCoverageReportArea == "TRUE");
+	}
+
+	private boolean areAssetBoundariesMatch(ReportOptViewLayersDataRow dataRow) {
+		return (isAssetCopperSelectionMatch(dataRow) && isAssetCastIronSelectionMatch(dataRow) && 
+				isAssetOtherPlasticSelectionMatch(dataRow) && isAssetPEPlasticSelectionMatch(dataRow) && 
+				isAssetProtectedSteelSelectionMatch(dataRow) && isAssetUnprotectedSteelSelectionMatch(dataRow) && 
+				isBoundariesDistrictSelectionMatch(dataRow) && isBoundariesDistrictPlatSelectionMatch(dataRow));
+	}
+	
+	private boolean isAssetCopperSelectionMatch(ReportOptViewLayersDataRow dataRow) {
+		return this.complianceReportsPage.isCopperSelected() && (dataRow.assetCopper == "TRUE");
+	}
+
+	private boolean isAssetCastIronSelectionMatch(ReportOptViewLayersDataRow dataRow) {
+		return this.complianceReportsPage.isCastIronSelected() && (dataRow.assetCastIron == "TRUE");
+	}
+
+	private boolean isAssetOtherPlasticSelectionMatch(ReportOptViewLayersDataRow dataRow) {
+		return this.complianceReportsPage.isOtherPlasticSelected() && (dataRow.assetOtherPlastic == "TRUE");
+	}
+
+	private boolean isAssetPEPlasticSelectionMatch(ReportOptViewLayersDataRow dataRow) {
+		return this.complianceReportsPage.isPEPlasticSelected() && (dataRow.assetPEPlastic == "TRUE");
+	}
+
+	private boolean isAssetProtectedSteelSelectionMatch(ReportOptViewLayersDataRow dataRow) {
+		return this.complianceReportsPage.isProtectedSteelSelected() && (dataRow.assetProtectedSteel == "TRUE");
+	}
+
+	private boolean isAssetUnprotectedSteelSelectionMatch(ReportOptViewLayersDataRow dataRow) {
+		return this.complianceReportsPage.isUnprotectedSteelSelected() && (dataRow.assetUnprotectedSteel == "TRUE");
+	}
+
+	private boolean isBoundariesDistrictSelectionMatch(ReportOptViewLayersDataRow dataRow) {
+		return this.complianceReportsPage.isDistrictSelected() && (dataRow.boundaryDistrict == "TRUE");
+	}
+
+	private boolean isBoundariesDistrictPlatSelectionMatch(ReportOptViewLayersDataRow dataRow) {
+		return this.complianceReportsPage.isDistrictPlatSelected() && (dataRow.boundaryDistrictPlat == "TRUE");
+	}
+
+	/**
 	 * Executes verifyResubmitButtonIsDisplayed action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -2183,7 +2338,21 @@ public class ComplianceReportsPageActions extends BasePageActions {
 		logAction("ComplianceReportsPageActions.waitForMetaZIPDownloadToComplete", data, dataRowID);
 		return true;
 	}
- 
+
+	/**
+	 * Executes waitForReportGenerationToComplete action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean waitForReportGenerationToComplete(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.waitForReportGenerationToComplete", data, dataRowID);
+		this.complianceReportsPage.waitForPageLoad();
+		this.complianceReportsPage.waitForReportGenerationtoComplete(workingDataRow.title, 
+				TestContext.INSTANCE.getLoggedInUser());
+		return true;
+	}
+
 	/**
 	 * Executes waitForShapeZIPDownloadToComplete action.
 	 * @param data - specifies the input data passed to the action.
@@ -2305,6 +2474,19 @@ public class ComplianceReportsPageActions extends BasePageActions {
 		return true;
 	}
  
+	/**
+	 * Executes verifyReportFilesHaveCorrectData action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean verifyReportFilesHaveCorrectData(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.verifyReportFilesHaveCorrectData", data, dataRowID);
+		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
+		return this.complianceReportsPage.checkActionStatus(dataRow.title, TestContext.INSTANCE.getLoggedInUser(), dataRow.tCID);
+	}
+	
 	/**
 	 * Executes verifyViewsAreInCorrectSequence action.
 	 * @param data - specifies the input data passed to the action.
@@ -2452,6 +2634,7 @@ public class ComplianceReportsPageActions extends BasePageActions {
 		else if (actionName.equals("clickOnComplianceViewerView6")) { return this.clickOnComplianceViewerView6(data, dataRowID); }
 		else if (actionName.equals("clickOnComplianceViewerView7")) { return this.clickOnComplianceViewerView7(data, dataRowID); }
 		else if (actionName.equals("clickNoOnChangeReportDialog")) { return this.clickNoOnChangeReportDialog(data, dataRowID); }
+		else if (actionName.equals("copyReport")) { return this.copyReport(data, dataRowID); }
 		else if (actionName.equals("createNewReport")) { return this.createNewReport(data, dataRowID); }
 		else if (actionName.equals("deleteReport")) { return this.deleteReport(data, dataRowID); }
 		else if (actionName.equals("enterCustomBoundaryUsingAreaSelector")) { return this.enterCustomBoundaryUsingAreaSelector(data, dataRowID); }
@@ -2472,6 +2655,7 @@ public class ComplianceReportsPageActions extends BasePageActions {
 		else if (actionName.equals("insertTextById")) { return this.insertTextById(data, dataRowID); }
 		else if (actionName.equals("insertTextByXPath")) { return this.insertTextByXPath(data, dataRowID); }
 		else if (actionName.equals("investigateReport")) { return this.investigateReport(data, dataRowID); }
+		else if (actionName.equals("modifyReport")) { return this.modifyReport(data, dataRowID); }
 		else if (actionName.equals("open")) { return this.open(data, dataRowID); }
 		else if (actionName.equals("openNewReportPage")) { return this.openNewReportPage(data, dataRowID); }
 		else if (actionName.equals("searchForSurveyByKeyword")) { return this.searchForSurveyByKeyword(data, dataRowID); }
@@ -2521,6 +2705,8 @@ public class ComplianceReportsPageActions extends BasePageActions {
 		else if (actionName.equals("verifyPDFZIPThumbnailIsShownInComplianceViewer")) { return this.verifyPDFZIPThumbnailIsShownInComplianceViewer(data, dataRowID); }
 		else if (actionName.equals("verifyPercentCoverageForecastPresentInReport")) { return this.verifyPercentCoverageForecastPresentInReport(data, dataRowID); }
 		else if (actionName.equals("verifyPercentCoverageAssetsAndReportAreaValuesInReport")) { return this.verifyPercentCoverageAssetsAndReportAreaValuesInReport(data, dataRowID); }
+		else if (actionName.equals("verifyReportFilesHaveCorrectData")) { return this.verifyReportFilesHaveCorrectData(data, dataRowID); }
+		else if (actionName.equals("verifyReportPageFieldsAreCorrect")) { return this.verifyReportPageFieldsAreCorrect(data, dataRowID); }
 		else if (actionName.equals("verifyReportPDFMatches")) { return this.verifyReportPDFMatches(data, dataRowID); }
 		else if (actionName.equals("verifyReportThumbnailMatches")) { return this.verifyReportThumbnailMatches(data, dataRowID); }
 		else if (actionName.equals("verifyRequiredFieldsAreShownInRed")) { return this.verifyRequiredFieldsAreShownInRed(data, dataRowID); }
@@ -2562,6 +2748,7 @@ public class ComplianceReportsPageActions extends BasePageActions {
 		else if (actionName.equals("waitForPDFDownloadToComplete")) { return this.waitForPDFDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForPDFZIPDownloadToComplete")) { return this.waitForPDFZIPDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForMetaZIPDownloadToComplete")) { return this.waitForMetaZIPDownloadToComplete(data, dataRowID); }
+		else if (actionName.equals("waitForReportGenerationToComplete")) { return this.waitForReportGenerationToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForShapeZIPDownloadToComplete")) { return this.waitForShapeZIPDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForView1DownloadToComplete")) { return this.waitForView1DownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForView2DownloadToComplete")) { return this.waitForView2DownloadToComplete(data, dataRowID); }

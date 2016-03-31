@@ -3,12 +3,21 @@
  */
 package surveyor.scommon.source;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import org.apache.commons.collections.iterators.EntrySetMapIterator;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.Select;
 
 import common.source.TestSetup;
+import surveyor.scommon.source.Reports.ReportModeFilter;
+import surveyor.scommon.source.Reports.SurveyModeFilter;
 
 /**
  * @author zlu
@@ -238,10 +247,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 	protected WebElement btnReturnToHomePage;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='report-survey-start-dt']")
-	protected WebElement inputStartData;
+	protected WebElement inputStartDate;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='report-survey-end-dt']")
-	protected WebElement inputEndData;
+	protected WebElement inputEndDate;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	protected WebElement btnNewSysHistoryRpt;
@@ -338,6 +347,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='report-compliance']")
 	protected WebElement linkComplianceReportMenu;
 
+    @FindBy(name = "survey-mode-type")
+    private List<WebElement> surveyModeTypeRadiobuttonList;
+    
+    @FindBy(name = "report-survey-mode-type")
+    private List<WebElement> reportSurveyModeTypeRadiobuttonList;
+	
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -348,12 +363,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 		super(driver, testSetup, strBaseURL, strPageURL);
 	}
 
-	public WebElement getInputStartData() {
-		return this.inputStartData;
+	public WebElement getInputStartDate() {
+		return this.inputStartDate;
 	}
 
-	public WebElement getInputEndData() {
-		return this.inputEndData;
+	public WebElement getInputEndDate() {
+		return this.inputEndDate;
 	}
 
 	public WebElement getBtnNewComplianceRpt() {
@@ -388,7 +403,231 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return btnAddSurveys;
 	}
 	
-	/**
+	/***** Report values *****/
+    
+    public String getReportTitle() {
+    	return this.inputTitle.getText();
+    }
+    
+    /**
+     * Returns the selected Timezone value.
+     */
+    public String getTimezoneValue() {
+    	return new Select(cBoxTimezone).getFirstSelectedOption().getText();
+    }    
+    
+    /**
+     * Returns the selected Customer value.
+     */
+    public String getCustomerValue() {
+    	return new Select(dropdownCustomer).getFirstSelectedOption().getText();
+    }    
+
+    public String getExclusionRadius() {
+    	return this.inputExclusionRadius.getText();
+    }
+
+    /**
+     * Get the selected Report Mode.
+     */
+    public ReportModeFilter getReportModeFilter() {
+        for (WebElement radElement : reportSurveyModeTypeRadiobuttonList) {
+        	HashMap<String, ReportModeFilter> reportSurveyModeFilterGuids = SurveyorConstants.ReportSurveyModeFilterGuids;
+        	Set<Entry<String, ReportModeFilter>> entrySet = reportSurveyModeFilterGuids.entrySet();
+        	for (Entry<String, ReportModeFilter> entry : entrySet) {
+				if (entry.getKey().equals(radElement.getAttribute("value")) ) {
+					if (radElement.isSelected()) 
+						return entry.getValue();
+				}
+			}
+        }
+        return ReportModeFilter.All;
+    }
+    
+    /***** Area Selector values *****/
+    
+    public String getNELatitude() {
+    	return this.inputNELat.getText();
+    }
+    
+    public String getNELongitude() {
+    	return this.inputNELong.getText();
+    }
+
+    public String getSWLatitude() {
+    	return this.inputSWLat.getText();
+    }
+    
+    public String getSWLongitude() {
+    	return this.inputSWLong.getText();
+    }
+    
+    /***** Survey Selector values *****/
+
+    public String getSurveySurveyorValue() {
+    	return new Select(cbSurUnit).getFirstSelectedOption().getText();
+    }    
+
+    public String getSurveyUsername() {
+    	return this.userName.getText(); 
+    }
+
+    public String getSurveyTag() {
+    	return this.cbTag.getText();
+    }
+
+    public String getSurveyStartDate() {
+    	return this.inputStartDate.getText();
+    }
+
+    public String getSurveyEndDate() {
+    	return this.inputEndDate.getText();
+    }
+
+    /**
+     * Get the selected Survey Mode.
+     */
+    public SurveyModeFilter getSurveyModeFilter() {
+        for (WebElement radElement : surveyModeTypeRadiobuttonList) {
+        	HashMap<String, SurveyModeFilter> surveyModeFilterGuids = SurveyorConstants.SurveyModeFilterGuids;
+        	Set<Entry<String, SurveyModeFilter>> entrySet = surveyModeFilterGuids.entrySet();
+        	for (Entry<String, SurveyModeFilter> entry : entrySet) {
+				if (entry.getKey().equals(radElement.getAttribute("value")) ) {
+					if (radElement.isSelected()) 
+						return entry.getValue();
+				}
+			}
+        }
+        return SurveyModeFilter.All;
+    }
+    
+    public boolean isSurveyGeoFilterSelected() {
+    	return this.checkGeoFilter.isSelected();
+    }
+
+    /************ Opacity Fine Tuning Values *************/
+    
+    public String getFOVOpacity() {
+    	return this.inputFOVOpacity.getText();
+    }
+
+    public String getLISAOpacity() {
+    	return this.inputLISAOpacity.getText();
+    }
+
+    /************ PDF Output Values *************/
+    
+    public String getPDFWidth() {
+    	return this.inputImgMapWidth.getText();
+    }
+
+    public String getPDFHeight() {
+    	return this.inputImgMapHeight.getText();
+    }
+    
+    /************ PDF Output Values *************/
+    
+    public boolean isViewLisaSelected() {
+    	return inputViewLisa.isSelected();
+    }
+
+    public boolean isViewFOVSelected() {
+    	return inputViewFOV.isSelected();
+    }
+    
+    public boolean isViewBreadcrumbSelected() {
+    	return inputViewBreadCrumb.isSelected();
+    }
+
+    public boolean isViewIndicationSelected() {
+    	return inputViewInd.isSelected();
+    }
+    
+    public boolean isViewIsotopicSelected() {
+    	return inputViewIso.isSelected();
+    }
+    
+    public boolean isViewFieldNotesSelected() {
+    	return inputViewAnno.isSelected();
+    }
+    
+    public boolean isViewGapsSelected() {
+    	return inputViewGaps.isSelected();
+    }
+    
+    public boolean isViewAssetsSelected() {
+    	return inputViewAssets.isSelected();
+    }
+    
+    public boolean isViewBoundariesSelected() {
+    	return inputViewBoundaries.isSelected();
+    }
+
+    /************** Opt View Layers *****************/
+    
+    // Assets
+    
+    public boolean isCopperSelected() {
+    	return checkBoxCopper.isSelected();
+    }
+
+    public boolean isUnprotectedSteelSelected() {
+    	return checkBoxUnProtectedSteel.isSelected();
+    }
+    
+    public boolean isProtectedSteelSelected() {
+    	return checkBoxProtectedSteel.isSelected();
+    }
+    
+    public boolean isCastIronSelected() {
+    	return checkBoxCastIron.isSelected();
+    }
+    
+    public boolean isOtherPlasticSelected() {
+    	return checkBoxOtherPla.isSelected();
+    }
+    
+    public boolean isPEPlasticSelected() {
+    	return checkBoxPEPla.isSelected();
+    }
+    
+    // Boundary
+    
+    public boolean isDistrictPlatSelected() {
+    	return checkBoxDistrictPlat.isSelected();
+    }
+    
+    public boolean isDistrictSelected() {
+    	return checkBoxDistrict.isSelected();
+    }
+    
+    /************** Opt Tabular PDF content *****************/
+    
+    public boolean isPDFIndicationSelected() {
+    	return checkBoxIndTb.isSelected();
+    }
+    
+    public boolean isPDFIsotopicAnalysisSelected() {
+    	return checkBoxIsoAna.isSelected();
+    }
+
+    public boolean isPDFGapSelected() {
+    	return checkBoxIsoAna.isSelected();
+    }
+
+    public boolean isPDFPercentCoverageAssetsSelected() {
+    	return checkBoxPCA.isSelected();
+    }
+    
+    public boolean isPDFPercentCoverageReportAreaSelected() {
+    	return checkBoxPCRA.isSelected();
+    }
+
+    public boolean isPDFPercentCoverageForecastSelected() {
+    	return checkBoxPCF.isSelected();
+    }
+    
+    /**
 	 * @param args
 	 */
 	public static void main(String[] args) {
