@@ -22,6 +22,9 @@ import common.source.BasePage;
 import common.source.Log;
 import common.source.RegexUtility;
 import common.source.TestSetup;
+import surveyor.scommon.source.SurveyorConstants.TopNavMenuItem;
+import surveyor.scommon.source.SurveyorConstants.UserTimezone;
+
 
 /**
  * @author zlu
@@ -36,10 +39,10 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement dropDownUser;
 
 	@FindBy(css = "#wrapper > nav.navbar .dropdown > a.dropdown-toggle")
-	protected WebElement dropDown; // should be good for both Admin and User
+	protected WebElement topDropdownMenu; // should be good for both Admin and User
 	
 	@FindBy(css = "#wrapper > nav.navbar .dropdown > ul.dropdown-menu > li > a")
-	protected List<WebElement> menuItems;
+	protected List<WebElement> topNavMenuItems;
 	
 	@FindBy(how = How.CSS, using= "li.open #user-change-password")
 	protected WebElement linkChangePwd;
@@ -100,8 +103,6 @@ public class SurveyorBasePage extends BasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td")
 	protected WebElement labelNoMatchingSearch;
-
-	public enum UserTimezone {PACIFIC,MOUNTAIN,CENTRAL,EASTERN};
 	
 	@FindBy(css = "#user-timezone.open > a.dropdown-toggle > #selected-timezone")
 	protected List<WebElement> timezoneCloseDropdown;
@@ -130,26 +131,49 @@ public class SurveyorBasePage extends BasePage {
 		super(driver, testSetup, strBaseURL, strPageURL);
 	}
 
+	public boolean closeTopDropdownMenu(){
+		String opened = topDropdownMenu.getAttribute("aria-expanded");
+		if(opened!=null&&opened.equals("true")){
+			topDropdownMenu.click();
+		}		 
+		 return (new WebDriverWait(driver, 3)).until(new ExpectedCondition<Boolean>(){
+			 public Boolean apply(WebDriver d){
+				 String value = topDropdownMenu.getAttribute("aria-expanded");
+				return value==null||value.equals("false");
+			 }
+		 });
+	}
+	
+	public boolean openTopDropdownMenu(){
+		waitForPageToLoad(); // This will be removed after all wait conditions settled while jumping from page to page
+		String opened = topDropdownMenu.getAttribute("aria-expanded");
+		if(opened==null||opened.equals("false")){
+			topDropdownMenu.click();
+		}		 
+		 return (new WebDriverWait(driver, 5)).until(new ExpectedCondition<Boolean>(){
+			 public Boolean apply(WebDriver d){
+				return topDropdownMenu.getAttribute("aria-expanded").equals("true");
+			 }
+		 });		 		
+	}
 	public boolean verifyDropdownMenuItems(){
-		this.dropDown.click();
-		waitForPageLoad();
-		String[] items = {"Preferences", "Change Password", "Release Notes", "Manual", "Log out"};
+		openTopDropdownMenu();
+						
 		boolean itemFound = true;
-		for(int i=0;i<this.menuItems.size();i++){
-			WebElement item = menuItems.get(i);
+		TopNavMenuItem[] items = TopNavMenuItem.values();
+		for(int i=0;i<this.topNavMenuItems.size();i++){
+			WebElement item = topNavMenuItems.get(i);
 			String text = item.getText();
 			if(text.trim().equals("")){
 				break;
 			}
-			itemFound &= text.contains(items[i]);
+			itemFound &= text.contains(items[i].toString());
 		}
-		this.dropDown.click();
-		waitForPageLoad();
+		closeTopDropdownMenu();		
 		return itemFound;
 	}
 	public LoginPage logout() {
-		waitForPageLoad();
-		this.dropDownUser.click();
+		openTopDropdownMenu();
 		this.linkLogOut.click();
 
 		LoginPage loginPage = new LoginPage(this.driver, this.strBaseURL, this.testSetup);
@@ -223,13 +247,26 @@ public class SurveyorBasePage extends BasePage {
 		return (listOfElements.size() == result);
 	}
 
+	
 	public String getUserTimezone(){		
 		String text = "";		
-		try{
-			text = timezoneDropdown.getText().trim();
-		}catch(StaleElementReferenceException e){
-			
-		}	
+		
+		text = ( new WebDriverWait(driver, 5)).until(new ExpectedCondition<String>(){
+			public String apply(WebDriver d){
+				String value = null;
+				try{
+					value = timezoneDropdown.getText().trim();
+				}catch(StaleElementReferenceException e){
+					
+				}finally{
+					if(value!=null&&value.isEmpty()){
+						value = null;
+					}
+				}
+				return value;
+			}
+		});
+		
 		return text;
 	}
 	
@@ -238,35 +275,29 @@ public class SurveyorBasePage extends BasePage {
 			this.timezoneDropdown.click();
 		}
 		WebElement utItem;
-		String text;
 		switch(ut){
 		   case PACIFIC:
 			   utItem = pacificTime;
-			   text = "Pacific Standard Time";
 			   break;
 		   case MOUNTAIN:
 			   utItem = mountainTime;
-			   text = "Mountain Standard Time";
 			   break;
 		   case CENTRAL:
 			   utItem = centralTime;
-			   text = "Central Standard Time";
 			   break;
 		   case EASTERN:
 			   utItem = easternTime;
-			   text = "Eastern Standard Time";
 			   break;
 		   default:
 			   utItem = pacificTime;
-			   text = "Pacific Standard Time";
 			   break;
 		}
 	
 		utItem.click();	
-		waitForPageLoad();
-		return ( new WebDriverWait(driver, 5)).until(new ExpectedCondition<Boolean>(){
+		
+		return ( new WebDriverWait(driver, 3)).until(new ExpectedCondition<Boolean>(){
 			public Boolean apply(WebDriver d){
-				return text.equals(getUserTimezone());
+				return ut.toString().equals(getUserTimezone());
 			}
 		});
 	}
