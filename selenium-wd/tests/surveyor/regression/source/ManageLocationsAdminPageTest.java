@@ -8,6 +8,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.BLANKFIELDERROR;
+import static surveyor.scommon.source.SurveyorConstants.CUSTOMERNAMEPREFIX;
+import static surveyor.scommon.source.SurveyorConstants.EULASTRING;
 import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
@@ -152,9 +154,20 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	public void TC22_CancelEditLatLongSelector_PicAdmin(){
 		final int xOffset = 101;
 		final int yOffset = 111;
-		String customerName = "TestCustomer";
-		String locationName = customerName+"loc";
 
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getFixedSizeRandomNumber(12) + "TC22";
+		String eula = customerName + ": " + EULASTRING;
+		String location = "Santa Clara";
+		
+		// *** Add a new location/customer for this test ***
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		manageCustomersPage.open();
+		manageCustomersPage.addNewCustomer(customerName, eula);
+		
+		manageLocationsPage.open();
+		manageLocationsPage.addNewLocation(location, customerName, location);
+		
 		Log.info("\nRunning - TC22_CancelEditLatLongSelector_PicAdmin - "+
 				"Test Description: Verify Cancel button of editing Lat/Long on map screen\n");
 
@@ -162,8 +175,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageLocationsPage.open();
-		manageLocationsPage.performSearch(locationName);
-		manageLocationsPage.findExistingLocationAndClickEdit(customerName, locationName);
+		manageLocationsPage.performSearch(location);
+		manageLocationsPage.findExistingLocationAndClickEdit(customerName, location);
 
 		String expectedLat = manageLocationsPage.getLocationLatitudeText();
 		String expectedLong = manageLocationsPage.getLocationLongitudeText();
@@ -179,6 +192,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 		manageLocationsPage.clickOnCancelBtn();
 	}
+
 
 	/**
 	 * Test Case ID: TC23_ConfirmLatLongSelector_PicAdmin

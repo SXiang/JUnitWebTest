@@ -569,6 +569,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 	public void clickOnAddNewLocationBtn() {
 		this.btnAddNewLocation.click();
+		this.waitForPageLoad();
 	}
 
 	public void clickOnFirstEditLocationBtn() {
