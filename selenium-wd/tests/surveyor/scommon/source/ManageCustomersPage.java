@@ -34,9 +34,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ManageCustomer_NewCustomer);
 	public static final String STREditPageContentText = Resources.getResource(ResourceKeys.ManageCustomer_EditCustomer);
 	
-	public enum LicensedFeatures {
-		GAPGRID, REPORTMETADATA, ASSESSMENT, EQ, LISABOX, SURVEYFORECASE, REPORTSHAPEFILE
-	}
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	private WebElement btnAddNewCustomer;
 	
@@ -546,6 +544,13 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public void clickOnEditOkBtn(){
 		this.btnOk.click();
 	}
+	
+	@Override
+	public void open(){
+		super.open();
+		waitForPageLoad();
+	}
+	
     @Override
 	public void waitForPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {

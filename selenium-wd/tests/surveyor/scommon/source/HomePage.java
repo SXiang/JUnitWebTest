@@ -210,7 +210,7 @@ public class HomePage extends SurveyorBasePage {
 	@Override
 	public void open() {	
 		driver.get(strPageURL);
-		this.waitForPageToLoad();
+		this.waitForPageLoad();
 	}
 
 	public WebElement getLinkFirstOnlineSurveyor() {
