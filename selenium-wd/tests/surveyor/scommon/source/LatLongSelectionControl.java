@@ -45,7 +45,6 @@ public class LatLongSelectionControl extends BaseControl {
 	private WebElement okButton;
 
 	@FindBy(id = "button-map-dialog-cancel")
-	@CacheLookup
 	private WebElement cancelButton;
 
 	@FindBy(id = "latitude")
