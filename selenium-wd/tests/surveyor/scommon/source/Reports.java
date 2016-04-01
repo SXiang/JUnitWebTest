@@ -84,6 +84,28 @@ public class Reports {
 			return this.name;
 		}
 	}
+	
+	public enum ReportJobType {
+		Map ("Map"), 
+		SSRS ("SSRS"), 
+		DataGeneration ("DataGeneration"), 
+		EQMap ("EQMap"), 
+		EQSSRS ("EQSSRS"), 
+		EQDataGeneration ("EQDataGeneration"), 
+		ShapeFile ("ShapeFile"), 
+		ReportMeta ("ReportMeta"), 
+		PercentCoverageForecast ("PercentCoverageForecast");
+		
+		private final String name;
+
+		ReportJobType(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
+	}
 
 	public enum EthaneFilter {
 		ExcludeVehicleExhaust, ExcludeBiogenicMethane, Both, None

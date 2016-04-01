@@ -4,9 +4,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+
+import common.source.DateUtility;
 import common.source.Log;
  
 public class ReportJob extends BaseEntity {
+	public static final String COLNAME_ID = "Id";
+	public static final String COLNAME_DATE_STARTED = "DateStarted";
+	public static final String COLNAME_REPORT_VIEW_ID = "ReportViewId";
+	public static final String COLNAME_PROCESSING_COMPLETED = "ProcessingCompleted";
+	public static final String COLNAME_REPORT_JOB_STATUS_ID = "ReportJobStatusId";
+	public static final String COLNAME_REPORT_JOB_TYPE_ID = "ReportJobTypeId";
+	public static final String COLNAME_REPORT_ID = "ReportId";
+	public static final String COLNAME_PROCESSING_STARTED = "ProcessingStarted";
+
 	private static final String CACHE_KEY = "REPORTJOB.";
  
 	private Date dateStarted;
@@ -90,7 +101,11 @@ public class ReportJob extends BaseEntity {
 		ReportJob objReportJob = new ReportJob().get(reportId, reportJobId);
 		return objReportJob;
 	}
- 
+
+	public static ArrayList<ReportJob> getReportJobs(String reportId) {
+		return new ReportJob().get(reportId);
+	}
+
 	public ReportJob get(String reportId, String reportJobId) {
 		ReportJob objReportJob = null;
 		
@@ -107,18 +122,23 @@ public class ReportJob extends BaseEntity {
 		}
 		return objReportJob;
 	}
- 
+
+	public ArrayList<ReportJob> get(String reportId) {
+		String SQL = "SELECT * FROM dbo.[ReportJob] WHERE ReportId='" + id + "'";
+		return load(SQL);
+	}
+
 	private static ReportJob loadFrom(ResultSet resultSet) {
 		ReportJob objReportJob = new ReportJob();
 		try {
-			objReportJob.setDateStarted(resultSet.getDate("DateStarted"));
-			objReportJob.setId(resultSet.getObject("Id"));
-			objReportJob.setProcessingStarted(resultSet.getDate("ProcessingStarted"));
-			objReportJob.setReportId(resultSet.getObject("ReportId"));
-			objReportJob.setReportJobTypeId(resultSet.getObject("ReportJobTypeId"));
-			objReportJob.setReportJobStatusId(resultSet.getObject("ReportJobStatusId"));
-			objReportJob.setProcessingCompleted(resultSet.getDate("ProcessingCompleted"));
-			objReportJob.setReportViewId(resultSet.getObject("ReportViewId"));
+			objReportJob.setDateStarted(resultSet.getDate(COLNAME_DATE_STARTED));
+			objReportJob.setId(resultSet.getObject(COLNAME_ID));
+			objReportJob.setProcessingStarted(getDateColumnValue(resultSet,COLNAME_PROCESSING_STARTED));
+			objReportJob.setReportId(resultSet.getObject(COLNAME_REPORT_ID));
+			objReportJob.setReportJobTypeId(resultSet.getObject(COLNAME_REPORT_JOB_TYPE_ID));
+			objReportJob.setReportJobStatusId(resultSet.getObject(COLNAME_REPORT_JOB_STATUS_ID));
+			objReportJob.setProcessingCompleted(getDateColumnValue(resultSet,COLNAME_PROCESSING_COMPLETED));
+			objReportJob.setReportViewId(resultSet.getObject(COLNAME_REPORT_VIEW_ID));
 		} catch (SQLException e) {
 			Log.error(e.toString());
 		}
@@ -151,5 +171,26 @@ public class ReportJob extends BaseEntity {
 		}
 		
 		return objReportJobList;
+	}
+
+	public boolean isColumnNull(String columnName) throws Exception {
+		if (columnName.equals(COLNAME_DATE_STARTED)) {
+			return getDateStarted().equals(DateUtility.DATE_MINVALUE);
+		} else if (columnName.equals(COLNAME_ID)) {
+			return getId() == null || getId().toString().isEmpty();
+		} else if (columnName.equals(COLNAME_PROCESSING_STARTED)) {
+			return getProcessingStarted().equals(DateUtility.DATE_MINVALUE);
+		} else if (columnName.equals(COLNAME_REPORT_ID)) {
+			return getReportId() == null || getReportId().toString().isEmpty();
+		} else if (columnName.equals(COLNAME_REPORT_JOB_TYPE_ID)) {
+			return getReportJobTypeId() == null || getReportJobTypeId().toString().isEmpty();
+		} else if (columnName.equals(COLNAME_REPORT_JOB_STATUS_ID)) {
+			return getReportJobStatusId() == null || getReportJobStatusId().toString().isEmpty();
+		} else if (columnName.equals(COLNAME_PROCESSING_COMPLETED)) {
+			return getProcessingCompleted().equals(DateUtility.DATE_MINVALUE);
+		} else if (columnName.equals(COLNAME_REPORT_VIEW_ID)) {
+			return getReportViewId() == null || getReportViewId().toString().isEmpty();
+		}
+		throw new Exception(String.format("Column name-[%s] not recognized", columnName));
 	}
 }

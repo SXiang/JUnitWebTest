@@ -2,6 +2,7 @@ package surveyor.regression.source;
 
 import common.source.Log;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;

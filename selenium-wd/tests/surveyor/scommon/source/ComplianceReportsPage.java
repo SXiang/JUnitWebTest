@@ -68,6 +68,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -110,6 +111,7 @@ import net.lightbody.bmp.proxy.util.IOUtils;
 import sun.misc.BASE64Decoder;
 import surveyor.dataaccess.source.BaseMapType;
 import surveyor.dataaccess.source.Report;
+import surveyor.dataaccess.source.ReportJob;
 import surveyor.dataaccess.source.ReportView;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -957,70 +959,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 		return false;
-	}
-
-	private void checkAndGenerateBaselineShapeAndGeoJsonFiles(String reportName, String testCaseID) throws Exception {
-		boolean isGenerateBaselineShapeFiles = TestContext.INSTANCE.getTestSetup().isGenerateBaselineShapeFiles();
-		if (isGenerateBaselineShapeFiles) {
-			Path unzipDirectory = Paths.get(testSetup.getDownloadPath(), reportName + " (2)");
-			List<String> filesInDirectory = FileUtility.getFilesInDirectory(unzipDirectory, "*.shp,*.dbf,*.prj,*.shx");
-			for (String filePath : filesInDirectory) {
-				generateBaselineShapeAndGeoJsonFiles(testCaseID, filePath);
-			}
-		}
-	}
-
-	protected void generateBaselinePerfFiles(String testCaseID, String reportId, String startTime, String endTime, Integer processingTimeInMs) throws IOException {
-		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" + File.separator + "report-job-metrics" + File.separator + testCaseID;
-		// Create the directory for test case if it does not exist.
-		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
-		Path expectedFilePath = Paths.get(expectedDataFolderPath, String.format("%s.csv", testCaseID));
-		String reportMetricString = String.format("%s,%s,%s,%d", reportId, startTime, endTime, processingTimeInMs);
-		FileUtility.createOrWriteToExistingTextFile(expectedFilePath, reportMetricString);
-	}
-
-	protected void generateBaselineSSRSImage(String testCaseID, String imageFileFullPath) throws IOException {
-		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "ssrs-images" + File.separator + testCaseID;
-		// Create the directory for test case if it does not exist.
-		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
-		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
-		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
-		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
-	}
-
-	protected void generateBaselineViewImage(String testCaseID, String imageFileFullPath) throws IOException {
-		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "view-images" + File.separator + testCaseID;
-		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
-		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
-		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
-	}
-
-	protected void generateBaselineShapeAndGeoJsonFiles(String testCaseID, String shapeFileFullPath) throws Exception {
-		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "shape-files" + File.separator + testCaseID;
-		// Create the directory for test case if it does not exist.
-		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
-		String expectedFilename = FileUtility.getFileName(shapeFileFullPath);
-		String expectedFileExt = FileUtility.getFileExtension(shapeFileFullPath);
-		if (expectedFileExt == "dbf" || expectedFileExt == "prj" || expectedFileExt == "shp" || expectedFileExt == "shx") {
-			// Delete existing files in directory (if any).
-			FileUtility.deleteFilesInDirectory(Paths.get(expectedDataFolderPath));
-
-			// Copy the file to the test case folder.
-			String expectedFilenameWithoutExt = expectedFilename.replace(".shp", "");
-			Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
-			FileUtils.copyFile(new File(shapeFileFullPath), new File(expectedFilePath.toString()));
-
-			// If specified file is .shp get GeoJson string for the shape file and store the .geojson.
-			if (expectedFileExt == "shp") {
-				String geoJsonString = ShapeToGeoJsonConverter.convertToJsonString(shapeFileFullPath);
-				Path expectedGeoJsonFilePath = Paths.get(expectedDataFolderPath, expectedFilenameWithoutExt + ".geojson");
-				FileUtility.createTextFile(expectedGeoJsonFilePath, geoJsonString);
-			}
-		}
 	}
 
 	public boolean checkActionStatusInSeconds(String rptTitle, String strCreatedBy, int seconds) {
@@ -3643,4 +3581,135 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	}
 
+	/************** Baseline creation and comparison methods ***************/
+	
+	private void checkAndGenerateBaselineShapeAndGeoJsonFiles(String reportName, String testCaseID) throws Exception {
+		boolean isGenerateBaselineShapeFiles = TestContext.INSTANCE.getTestSetup().isGenerateBaselineShapeFiles();
+		if (isGenerateBaselineShapeFiles) {
+			Path unzipDirectory = Paths.get(testSetup.getDownloadPath(), reportName + " (2)");
+			List<String> filesInDirectory = FileUtility.getFilesInDirectory(unzipDirectory, "*.shp,*.dbf,*.prj,*.shx");
+			for (String filePath : filesInDirectory) {
+				generateBaselineShapeAndGeoJsonFiles(testCaseID, filePath);
+			}
+		}
+	}
+
+	protected void generateBaselinePerfFiles(String testCaseID, String reportId, String startTime, String endTime, Integer processingTimeInMs) throws IOException {
+		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
+		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" + File.separator + "report-job-metrics" + File.separator + testCaseID;
+		// Create the directory for test case if it does not exist.
+		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
+		Path expectedFilePath = Paths.get(expectedDataFolderPath, String.format("%s.csv", testCaseID));
+		String reportMetricString = String.format("%s,%s,%s,%d", reportId, startTime, endTime, processingTimeInMs);
+		FileUtility.createOrWriteToExistingTextFile(expectedFilePath, reportMetricString);
+	}
+
+	protected void generateBaselineSSRSImage(String testCaseID, String imageFileFullPath) throws IOException {
+		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "ssrs-images" + File.separator + testCaseID;
+		// Create the directory for test case if it does not exist.
+		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
+		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
+		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
+		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
+	}
+
+	protected void generateBaselineViewImage(String testCaseID, String imageFileFullPath) throws IOException {
+		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "view-images" + File.separator + testCaseID;
+		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
+		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
+		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
+	}
+
+	protected void generateBaselineShapeAndGeoJsonFiles(String testCaseID, String shapeFileFullPath) throws Exception {
+		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "shape-files" + File.separator + testCaseID;
+		// Create the directory for test case if it does not exist.
+		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
+		String expectedFilename = FileUtility.getFileName(shapeFileFullPath);
+		String expectedFileExt = FileUtility.getFileExtension(shapeFileFullPath);
+		if (expectedFileExt == "dbf" || expectedFileExt == "prj" || expectedFileExt == "shp" || expectedFileExt == "shx") {
+			// Delete existing files in directory (if any).
+			FileUtility.deleteFilesInDirectory(Paths.get(expectedDataFolderPath));
+
+			// Copy the file to the test case folder.
+			String expectedFilenameWithoutExt = expectedFilename.replace(".shp", "");
+			Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
+			FileUtils.copyFile(new File(shapeFileFullPath), new File(expectedFilePath.toString()));
+
+			// If specified file is .shp get GeoJson string for the shape file and store the .geojson.
+			if (expectedFileExt == "shp") {
+				String geoJsonString = ShapeToGeoJsonConverter.convertToJsonString(shapeFileFullPath);
+				Path expectedGeoJsonFilePath = Paths.get(expectedDataFolderPath, expectedFilenameWithoutExt + ".geojson");
+				FileUtility.createTextFile(expectedGeoJsonFilePath, geoJsonString);
+			}
+		}
+	}
+
+	/**
+	 * Compares the processing times for each reportJob type with baseline processingTime values and 
+	 * checks actual values are not greater than the baseline values.
+	 * @param testCaseID - Test case ID
+	 * @param reportTitle - Title of the report
+	 * @return - Whether actual report job type processing time values are within the limits of baselines values
+	 * @throws Exception 
+	 */
+	public boolean compareReportJobPerfBaseline(String testCaseID, String reportTitle) throws Exception {
+		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
+		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" + File.separator + "report-job-metrics" + File.separator + testCaseID;
+		Path expectedFilePath = Paths.get(expectedDataFolderPath, String.format("%s.csv", testCaseID));
+		// If no baseline CSV file, throw No Baseline exception.
+		if (!new File(expectedFilePath.toString()).exists()) {
+			throw new Exception(String.format("Baseline CSV file-[%s] NOT found for TestCase-[%s]",
+					expectedFilePath.toString(), testCaseID));
+		}
+		
+		CSVUtility csvUtility = new CSVUtility();
+		List<HashMap<String, String>> csvRows = csvUtility.getAllRows(expectedFilePath.toString());
+		
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		ArrayList<ReportJob> reportJobs = ReportJob.getReportJobs(reportId);
+		for (ReportJob reportJob : reportJobs) {
+			String reportJobTypeId = reportJob.getReportJobTypeId().toString();
+			
+			// If report job processing started or completed times are NULL, throw exception.
+			validateReportJobProcessingTimesForNotNull(reportId, reportJob, reportJobTypeId);
+			
+			Date processingStarted = reportJob.getProcessingStarted();
+			Date processingCompleted = reportJob.getProcessingCompleted();
+			long actualProcessingTimeInMs = processingCompleted.getTime() - processingStarted.getTime();
+			boolean foundInCsv = false;
+			for (HashMap<String, String> csvRow : csvRows) {
+				String expectedReportJobId = csvRow.get("ReportJobTypeId");
+				if (reportJobTypeId.equals(expectedReportJobId)) {
+					foundInCsv = true;
+					Integer expectedProcessingTimeInMs = Integer.valueOf(csvRow.get("ProcessingTimeInMs"));
+					if (actualProcessingTimeInMs > expectedProcessingTimeInMs) {
+						return false;
+					}					
+				} 
+			}
+			
+			// If no report job type in CSV, throw exception.
+			if (!foundInCsv) {
+				throw new Exception(String.format("Entry NOT found in Baseline CSV-[%s], for ReportJobType-[%s], TestCase-[%s]",
+						expectedFilePath.toString(), SurveyorConstants.ReportJobTypeGuids.get(reportJobTypeId).toString(), testCaseID));
+			}
+		}
+		
+		return true;
+	}
+
+	private void validateReportJobProcessingTimesForNotNull(String reportId, ReportJob reportJob, String reportJobTypeId) throws Exception {
+		if (reportJob.isColumnNull(ReportJob.COLNAME_PROCESSING_STARTED)) {
+			throw new Exception(String.format("NULL value encountered for column-[%s], ReportId-[%s], ReportJobTypeId-[%s]",
+					ReportJob.COLNAME_PROCESSING_STARTED, reportId, reportJobTypeId)); 
+		}
+		if (reportJob.isColumnNull(ReportJob.COLNAME_PROCESSING_COMPLETED)) {
+			throw new Exception(String.format("NULL value encountered for column-[%s], ReportId-[%s], ReportJobTypeId-[%s]",
+					ReportJob.COLNAME_PROCESSING_COMPLETED, reportId, reportJobTypeId)); 
+		}
+	}
 }

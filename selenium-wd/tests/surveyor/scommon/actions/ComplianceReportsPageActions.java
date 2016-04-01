@@ -2497,7 +2497,20 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.extractShapeZIP", data, dataRowID);
 		return true;
 	}
- 
+
+	/**
+	 * Executes verifyReportFilesHaveCorrectData action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean verifyReportJobBaselines(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.verifyReportFilesHaveCorrectData", data, dataRowID);
+		return this.getComplianceReportsPage().compareReportJobPerfBaseline(ComplianceReportsPageActions.workingDataRow.tCID, 
+				ComplianceReportsPageActions.workingDataRow.title);
+	}
+	
 	/**
 	 * Executes verifyReportFilesHaveCorrectData action.
 	 * @param data - specifies the input data passed to the action.
@@ -2522,6 +2535,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyViewsAreInCorrectSequence", data, dataRowID);
 		return true;
 	}
+	
+	
  
 	/**
 	 * Executes verifyView1ThumbnailIsCorrect action.
@@ -2731,6 +2746,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifyPercentCoverageForecastPresentInReport")) { return this.verifyPercentCoverageForecastPresentInReport(data, dataRowID); }
 		else if (actionName.equals("verifyPercentCoverageAssetsAndReportAreaValuesInReport")) { return this.verifyPercentCoverageAssetsAndReportAreaValuesInReport(data, dataRowID); }
 		else if (actionName.equals("verifyReportFilesHaveCorrectData")) { return this.verifyReportFilesHaveCorrectData(data, dataRowID); }
+		else if (actionName.equals("verifyReportJobBaselines")) { return this.verifyReportJobBaselines(data, dataRowID); }
 		else if (actionName.equals("verifyReportPageFieldsAreCorrect")) { return this.verifyReportPageFieldsAreCorrect(data, dataRowID); }
 		else if (actionName.equals("verifyReportPDFMatches")) { return this.verifyReportPDFMatches(data, dataRowID); }
 		else if (actionName.equals("verifyReportThumbnailMatches")) { return this.verifyReportThumbnailMatches(data, dataRowID); }

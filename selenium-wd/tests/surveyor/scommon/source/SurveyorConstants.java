@@ -8,6 +8,7 @@ import java.util.HashMap;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
+import surveyor.scommon.source.Reports.ReportJobType;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 
 /**
@@ -24,6 +25,7 @@ public final class SurveyorConstants {
 	
 	public static HashMap<String, SurveyModeFilter> SurveyModeFilterGuids = new HashMap<String, SurveyModeFilter>();
 	public static HashMap<String, ReportModeFilter> ReportSurveyModeFilterGuids = new HashMap<String, ReportModeFilter>();
+	public static HashMap<String, ReportJobType> ReportJobTypeGuids = new HashMap<String, ReportJobType>();
 	
 	public static final String BASECUSTOMERNAME = "Cus";
 	public static final String BASELOCATIONNAME = "Loc";
@@ -315,6 +317,16 @@ public final class SurveyorConstants {
 		ReportSurveyModeFilterGuids.put("4901E67A-4C00-4436-ADC0-9CFB277BB312", ReportModeFilter.Operator);
 		ReportSurveyModeFilterGuids.put("E9DD9F53-E5CB-45B3-9517-9DC8E0276C6D", ReportModeFilter.EQ);
 		ReportSurveyModeFilterGuids.put("B310238A-A5AE-4E94-927B-F0F165E24522", ReportModeFilter.Standard);
+		
+		ReportJobTypeGuids.put("00000000-0000-0000-0001-000000000000", ReportJobType.Map);
+		ReportJobTypeGuids.put("00000000-0000-0000-0002-000000000000", ReportJobType.SSRS);
+		ReportJobTypeGuids.put("00000000-0000-0000-0003-000000000000", ReportJobType.DataGeneration);
+		ReportJobTypeGuids.put("00000000-0000-0000-0004-000000000000", ReportJobType.EQMap);
+		ReportJobTypeGuids.put("00000000-0000-0000-0005-000000000000", ReportJobType.EQSSRS);
+		ReportJobTypeGuids.put("00000000-0000-0000-0006-000000000000", ReportJobType.EQDataGeneration);
+		ReportJobTypeGuids.put("00000000-0000-0000-0007-000000000000", ReportJobType.ShapeFile);
+		ReportJobTypeGuids.put("00000000-0000-0000-0008-000000000000", ReportJobType.ReportMeta);
+		ReportJobTypeGuids.put("00000000-0000-0000-0009-000000000000", ReportJobType.PercentCoverageForecast);
 	}
 }
 

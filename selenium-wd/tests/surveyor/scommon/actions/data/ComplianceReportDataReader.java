@@ -19,20 +19,21 @@ public class ComplianceReportDataReader extends BaseDataReader {
 	public static final int Excel_TestData__Col_Timezone = 4;
 	public static final int Excel_TestData__Col_ExclusionRadius = 5;
 	public static final int Excel_TestData__Col_ReportMode = 6;
-	public static final int Excel_TestData__Col_CustomBoundaryNELat = 7;
-	public static final int Excel_TestData__Col_CustomBoundaryNELong = 8;
-	public static final int Excel_TestData__Col_CustomBoundarySWLat = 9;
-	public static final int Excel_TestData__Col_CustomBoundarySWLong = 10;
-	public static final int Excel_TestData__Col_CustomerBoundaryType = 11;
-	public static final int Excel_TestData__Col_CustomerBoundaryName = 12;
-	public static final int Excel_TestData__Col_OpacityFOV = 13;
-	public static final int Excel_TestData__Col_OpacityLISA = 14;
-	public static final int Excel_TestData__Col_PDFImageOutputWidth = 15;
-	public static final int Excel_TestData__Col_PDFImageOutputHeight = 16;
-	public static final int Excel_TestData__Col_ReportViewRowIDs = 17;
-	public static final int Excel_TestData__Col_ReportOptViewLayerRowID = 18;
-	public static final int Excel_TestData__Col_ReportOptTabularPDFContentRowID = 19;
-	public static final int Excel_TestData__Col_ReportSurveyRowIDs = 20;
+	public static final int Excel_TestData__Col_MinAmplitude = 7;
+	public static final int Excel_TestData__Col_CustomBoundaryNELat = 8;
+	public static final int Excel_TestData__Col_CustomBoundaryNELong = 9;
+	public static final int Excel_TestData__Col_CustomBoundarySWLat = 10;
+	public static final int Excel_TestData__Col_CustomBoundarySWLong = 11;
+	public static final int Excel_TestData__Col_CustomerBoundaryType = 12;
+	public static final int Excel_TestData__Col_CustomerBoundaryName = 13;
+	public static final int Excel_TestData__Col_OpacityFOV = 14;
+	public static final int Excel_TestData__Col_OpacityLISA = 15;
+	public static final int Excel_TestData__Col_PDFImageOutputWidth = 16;
+	public static final int Excel_TestData__Col_PDFImageOutputHeight = 17;
+	public static final int Excel_TestData__Col_ReportViewRowIDs = 18;
+	public static final int Excel_TestData__Col_ReportOptViewLayerRowID = 19;
+	public static final int Excel_TestData__Col_ReportOptTabularPDFContentRowID = 20;
+	public static final int Excel_TestData__Col_ReportSurveyRowIDs = 21;
  
 	public class ComplianceReportsDataRow {
 		public String rowID;
@@ -42,6 +43,7 @@ public class ComplianceReportDataReader extends BaseDataReader {
 		public String timezone;
 		public String exclusionRadius;
 		public String reportMode;
+		public String minAmplitude;
 		public String customBoundaryNELat;
 		public String customBoundaryNELong;
 		public String customBoundarySWLat;
@@ -58,10 +60,10 @@ public class ComplianceReportDataReader extends BaseDataReader {
 		public String reportSurveyRowIDs;
  
 		public ComplianceReportsDataRow(String rowID, String tCID, String title, String customerRowID, String timezone, String exclusionRadius, 
-				String reportMode, String customBoundaryNELat, String customBoundaryNELong, String customBoundarySWLat, String customBoundarySWLong, 
-				String customerBoundaryType, String customerBoundaryName, String opacityFOV, String opacityLISA, String pDFImageOutputWidth, 
-				String pDFImageOutputHeight, String reportViewRowIDs, String reportOptViewLayerRowID, String reportOptTabularPDFContentRowID, 
-				String reportSurveyRowIDs) {
+				String reportMode, String minAmplitude, String customBoundaryNELat, String customBoundaryNELong, String customBoundarySWLat, 
+				String customBoundarySWLong, String customerBoundaryType, String customerBoundaryName, String opacityFOV, String opacityLISA, 
+				String pDFImageOutputWidth, String pDFImageOutputHeight, String reportViewRowIDs, String reportOptViewLayerRowID, 
+				String reportOptTabularPDFContentRowID, String reportSurveyRowIDs) {
 			this.rowID = rowID;
 			this.tCID = tCID;
 			this.title = title;
@@ -69,6 +71,7 @@ public class ComplianceReportDataReader extends BaseDataReader {
 			this.timezone = timezone;
 			this.exclusionRadius = exclusionRadius;
 			this.reportMode = reportMode;
+			this.minAmplitude = minAmplitude;
 			this.customBoundaryNELat = customBoundaryNELat;
 			this.customBoundaryNELong = customBoundaryNELong;
 			this.customBoundarySWLat = customBoundarySWLat;
@@ -105,6 +108,7 @@ public class ComplianceReportDataReader extends BaseDataReader {
 		String timezone = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Timezone, TESTDATA_SHEET_NAME);
 		String exclusionRadius = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_ExclusionRadius, TESTDATA_SHEET_NAME);
 		String reportMode = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ReportMode, TESTDATA_SHEET_NAME);
+		String minAmplitude = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_MinAmplitude, TESTDATA_SHEET_NAME);
 		String customBoundaryNELat = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_CustomBoundaryNELat, TESTDATA_SHEET_NAME);
 		String customBoundaryNELong = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_CustomBoundaryNELong, TESTDATA_SHEET_NAME);
 		String customBoundarySWLat = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_CustomBoundarySWLat, TESTDATA_SHEET_NAME);
@@ -121,14 +125,14 @@ public class ComplianceReportDataReader extends BaseDataReader {
 		String reportSurveyRowIDs = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ReportSurveyRowIDs, TESTDATA_SHEET_NAME);
 		
 		Log.info(String.format("Found data row: rowID=[%s], tCID=[%s], title=[%s], customerRowID=[%s], timezone=[%s], exclusionRadius=[%s], "
-				+ "reportMode=[%s], customBoundaryNELat=[%s], customBoundaryNELong=[%s], customBoundarySWLat=[%s], customBoundarySWLong=[%s], "
+				+ "reportMode=[%s], minAmplitude=[%s], customBoundaryNELat=[%s], customBoundaryNELong=[%s], customBoundarySWLat=[%s], customBoundarySWLong=[%s], "
 				+ "customerBoundaryType=[%s], customerBoundaryName=[%s], opacityFOV=[%s], opacityLISA=[%s], pDFImageOutputWidth=[%s], "
 				+ "pDFImageOutputHeight=[%s], reportViewRowIDs=[%s], reportOptViewLayerRowID=[%s], reportOptTabularPDFContentRowID=[%s], "
-				+ "reportSurveyRowIDs=[%s]", rowID, tCID, title, customerRowID, timezone, exclusionRadius, reportMode, customBoundaryNELat, 
+				+ "reportSurveyRowIDs=[%s]", rowID, tCID, title, customerRowID, timezone, exclusionRadius, reportMode, minAmplitude, customBoundaryNELat, 
 				customBoundaryNELong, customBoundarySWLat, customBoundarySWLong, customerBoundaryType, customerBoundaryName, opacityFOV, opacityLISA, 
 				pDFImageOutputWidth, pDFImageOutputHeight, reportViewRowIDs, reportOptViewLayerRowID, reportOptTabularPDFContentRowID, reportSurveyRowIDs));
 		
-		return new ComplianceReportsDataRow(rowID, tCID, title, customerRowID, timezone, exclusionRadius, reportMode, customBoundaryNELat, 
+		return new ComplianceReportsDataRow(rowID, tCID, title, customerRowID, timezone, exclusionRadius, reportMode, minAmplitude, customBoundaryNELat, 
 				customBoundaryNELong, customBoundarySWLat, customBoundarySWLong, customerBoundaryType, customerBoundaryName, opacityFOV, opacityLISA, 
 				pDFImageOutputWidth, pDFImageOutputHeight, reportViewRowIDs, reportOptViewLayerRowID, reportOptTabularPDFContentRowID, reportSurveyRowIDs);
 	}
