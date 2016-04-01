@@ -91,6 +91,8 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td")
 	protected WebElement labelNoMatchingSearch;
 
+	private static String headerColumnBaseXPath = "//*[@id='datatable']/thead/tr/th[%d]";
+	
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -192,5 +194,12 @@ public class SurveyorBasePage extends BasePage {
 			records = Integer.parseInt(strList.get(3));
 		}
 		return records;
+	}
+	
+	public void clickOnColumnHeader(Integer columnIndex, Integer numTimesToClick) {
+		WebElement headerElement = driver.findElement(By.xpath(String.format(headerColumnBaseXPath, columnIndex)));
+		for (int i = 0; i < numTimesToClick; i++) {
+			headerElement.click();
+		}
 	}
 }
