@@ -28,10 +28,6 @@ public class Reports {
 	protected Boolean geoFilter = false;
 	
 
-	protected List<Coordinates> eqCoordinates;
-
-	
-
 	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, List<String> tagList) {
 		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, null, null, null, null, tagList);
 	}
@@ -54,6 +50,10 @@ public class Reports {
 	
 	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit,String userName,  String startDate, String endDate,  List<String> tagList) {
 		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, userName, startDate, endDate, null, tagList);
+	}
+	
+	public Reports(){
+		
 	}
 	
 	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, String userName, String startDate, String endDate, Boolean geoFilter, List<String> tagList){
@@ -126,12 +126,42 @@ public class Reports {
 		return geoFilter;
 	}
 
-	public List<Coordinates> getEqCoordinates() {
-		return eqCoordinates;
+
+
+	public void setRptTitle(String rptTitle) {
+		this.rptTitle = rptTitle;
 	}
 
-	public void setEqCoordinates(List<Coordinates> eqCoordinates) {
-		this.eqCoordinates = eqCoordinates;
+	public void setStrCreatedBy(String strCreatedBy) {
+		this.strCreatedBy = strCreatedBy;
+	}
+
+	public void setTimeZone(String timeZone) {
+		this.timeZone = timeZone;
+	}
+
+	public void setSurveyorUnit(String surveyorUnit) {
+		this.surveyorUnit = surveyorUnit;
+	}
+
+	public void setTagList(List<String> tagList) {
+		this.tagList = tagList;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public void setGeoFilter(Boolean geoFilter) {
+		this.geoFilter = geoFilter;
 	}
 
 	/**

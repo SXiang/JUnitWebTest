@@ -18,10 +18,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -32,6 +34,8 @@ import surveyor.dataaccess.source.StoredProcComplianceAssessmentGetReportDriving
 import surveyor.dataaccess.source.StoredProcEQAddedSurveys;
 import surveyor.dataaccess.source.StoredProcEQGetEQData;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
+import common.source.BaseHelper;
+import common.source.DBConnection;
 import common.source.DateUtility;
 import common.source.FileUtility;
 import common.source.Log;
@@ -62,9 +66,15 @@ public class EqReportsPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='eq-selected-text']")
 	protected WebElement eqRptArea;
 	
-	private static LatLongSelectionControl latLongSelectionControl = null;
+	@FindBy(how = How.ID, using = "pdf")
+	protected WebElement pdfImg;
+
+	@FindBy(how = How.ID, using = "zip-file_tif")
+	protected WebElement zipImg;
 	
-	private static final String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
+	private  LatLongSelectionControl latLongSelectionControl;
+	
+	private  final String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
 
 	public WebElement getBtnNewEQRpt() {
 		return this.btnNewEQRpt;
@@ -86,6 +96,9 @@ public class EqReportsPage extends ReportsBasePage {
 		super(driver, strBaseURL, testSetup, strBaseURL + EQRPTURLPath);
 
 		Log.info("\nThe EQ Reports Page URL is: %s\n" + this.strPageURL);
+		
+		latLongSelectionControl = new LatLongSelectionControl(driver);
+		PageFactory.initElements(driver, latLongSelectionControl);
 	}
 
 	/**
@@ -211,29 +224,81 @@ public class EqReportsPage extends ReportsBasePage {
 		}
 		return true;
 	}
+	
+	public boolean validatePdfFiles(String reportTitle, String downloadPath) {
+		String reportId;
+		String reportName;
+		DBConnection objDbConn = new DBConnection();
+
+		try {
+			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
+			reportId = reportId.substring(0, 6);
+			reportName = "EQ-" + reportId;
+			setReportName(reportName);
+			BaseHelper.deCompressZipFile(reportName, downloadPath);
+		} catch (Exception e) {
+			Log.error(e.toString());
+			return false;
+		}
+		String pdfFile1 = downloadPath + reportName + ".pdf";
+		String pdfFile2 = downloadPath + reportName+"_EQ-View.pdf";			
+		if (!BaseHelper.validatePdfFile(pdfFile1)&&!BaseHelper.validatePdfFile(pdfFile2))
+			return false;
+		return true;
+	}
 
 	public void setReportName(String reportTitle) {
 		this.reportName = reportTitle;
 	}
 	
 	@Override
-	public void fillEqSpecific(Reports reports) {
-		
+	public void fillEqSpecific(Reports reports) {	
+		ReportsEQ eqReports= (ReportsEQ)reports;
 		getSelectArea().click();
-
-		/*List <Coordinates> listOfCords = new ArrayList <Coordinates>();
-		listOfCords.add(0, new Coordinates(200,200));
-		listOfCords.add(1, new Coordinates(220,300));
-		listOfCords.add(2, new Coordinates(240,400));*/
-
+		for(List<Coordinates> coordinates:eqReports.getListOfCords()){
 		latLongSelectionControl.waitForModalDialogOpen()
 								.switchMode(ControlMode.MapInteraction)
 								.waitForMapImageLoad()
-								.selectSegment(CANVAS_X_PATH, reports.getEqCoordinates())
-								.switchMode(ControlMode.Default)
-								.clickOkButton();
+								.selectSegment(CANVAS_X_PATH, coordinates)
+								.switchMode(ControlMode.Default);
+								
+		}
+		latLongSelectionControl.clickOkButton();
 		
 	}
+	
+	@Override
+	public void eqSpecificFileDownloads(String rptTitle, String testCaseID) {		
+		Report objReport = Report.getReport(rptTitle);
+		String reportId = objReport.getId();
+		reportId = reportId.substring(0, 6);
+		setReportName("EQ-" + reportId);
+		clickOnPDFInReportViewer();
+		waitForPDFFileDownload(getReportName());
+		clickOnZIPInReportViewer();
+		waitForReportTIFFileDownload(getReportName());
+		
+	
+	}
+	
+	public void clickOnZIPInReportViewer() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", zipImg);
+	}
+
+	public void clickOnPDFInReportViewer() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", pdfImg);
+	}
+	
+	public void waitForPDFFileDownload(String reportName) {
+		waitForFileDownload(reportName + ".pdf", testSetup.getDownloadPath());
+	}
+
+	public void waitForReportTIFFileDownload(String reportName) {
+		waitForFileDownload(reportName +"_EQ-View.pdf", testSetup.getDownloadPath());
+	}
+
 
 	@Override
 	public void waitForPageLoad() {

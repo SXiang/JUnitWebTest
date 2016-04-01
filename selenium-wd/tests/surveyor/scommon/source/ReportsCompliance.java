@@ -136,6 +136,10 @@ public class ReportsCompliance extends Reports {
 		this.viewList=viewList;
 		this.viewLayersList=viewLayersList;
 	}
+	
+	public ReportsCompliance(){
+		super();
+	}
 
 	public String getExclusionRadius() {
 		return exclusionRadius;

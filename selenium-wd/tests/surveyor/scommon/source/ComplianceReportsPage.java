@@ -1254,6 +1254,45 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		}
 	}
+	
+	public boolean verifySurveysTableViaSurveyMode(boolean changeMode, ReportModeFilter strReportMode, SurveyModeFilter surveyModeFilter) throws IOException {
+		boolean result = false;
+
+		if (strReportMode != null && changeMode) {
+			selectReportMode(strReportMode);
+
+			if (surveyModeFilter != null && changeMode) {
+				selectSurveyModeForSurvey(surveyModeFilter);
+			}
+			this.waitForSurveySearchButtonToLoad();
+			this.getBtnSurveySearch().click();
+			this.waitForSurveyTabletoLoad();
+
+			WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
+			List<WebElement> Rows = tabledata.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
+			for (int getrowvalue = 1; getrowvalue < Rows.size(); getrowvalue++) {
+				List<WebElement> Columns = Rows.get(getrowvalue).findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[5]"));
+				for (int getcolumnvalue = 0; getcolumnvalue < Columns.size(); getcolumnvalue++) {
+					String cellValue = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[5]")).getText();
+					if (cellValue.contains(" ")) {
+						String str = cellValue.replaceAll("\\s+", "");
+
+						if (surveyModeFilter.name().equalsIgnoreCase(str)) {
+							result = true;
+							break;
+						}
+					}
+					if (surveyModeFilter.name().equalsIgnoreCase(cellValue)) {
+						result = true;
+						break;
+					}
+				}
+
+			}
+		}
+		return result;
+	}
+
 
 	public void selectEthaneFilter(EthaneFilter ethaneFilter) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -2273,7 +2312,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	@Override
-	public void complianceSpecificMultipleSurveys(Reports reportsCompliance) {
+	public void complianceSpecificMultipleSurveys(Reports reports) {
+		ReportsCompliance reportsCompliance=(ReportsCompliance)reports;
 		inputExclusionRadius(reportsCompliance.getExclusionRadius());
 		inputImageMapHeight(reportsCompliance.getImageMapHeight());
 		inputImageMapWidth(reportsCompliance.getImageMapWidth());
@@ -2326,6 +2366,37 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			selectViewLayerBoundaries(true, true);
 		}
 	}
+	
+	@Override
+	protected void handleExtraAddSurveyInfoParameters(Reports reports) {
+		SurveyModeFilter surveyModeFilter = ((ReportsCompliance)reports).surveyModeFilter;
+		if (surveyModeFilter != null) {
+			selectSurveyModeForSurvey(surveyModeFilter);
+		}
+	}
+	
+	public void selectSurveyModeForSurvey(SurveyModeFilter surveyModeFilter) {
+		switch (surveyModeFilter) {
+		case All:
+			this.inputSurModeFilterAll.click();
+			break;
+		case Standard:
+			this.inputSurModeFilterStd.click();
+			break;
+		case Operator:
+			this.inputSurModeFilterOperator.click();
+			break;
+		case RapidResponse:
+			this.inputSurModeFilterRapidResponse.click();
+			break;
+		case Manual:
+			this.inputSurModeFilterManual.click();
+			break;
+		default:
+			break;
+		}
+	}
+
 
 	@Override
 	public void complianceSpecificOtherDetails(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList, String startDate, String endDate, boolean changeMode, String strReportMode) {

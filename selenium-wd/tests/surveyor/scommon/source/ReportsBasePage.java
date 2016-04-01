@@ -475,14 +475,19 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		fillComplianceSpecific(reports);
 		fillEqSpecific(reports);
-		addSurveyInformation(reports.getSurveyorUnit(), reports.getUsername(), reports.getTagList(), reports.getSurveyStartDate(), reports.getSurveyEndDate(), reports.getSurveyModeFilter(), reports.getGeoFilter());
-		complianceSpecificSurveyInfo();
+		addSurveyInformation(reports);
 		this.clickOnOKButton();
 	}
 
-	public void addSurveyInformation(String surveyor, String username, List<String> tagList, String startDate, String endDate, SurveyModeFilter surveyModeFilter, Boolean geoFilterOn) {
+	public void addSurveyInformation(Reports reports) {
 		Log.info("Adding Survey information");
-
+		String surveyor = reports.getSurveyorUnit();
+		String username = reports.getUsername();
+		List<String> tagList = reports.getTagList();
+		String startDate = reports.getSurveyStartDate();
+		String endDate = reports.getSurveyEndDate();
+		Boolean geoFilterOn = reports.getGeoFilter();
+		
 		if (surveyor != null) {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsSU) {
@@ -504,9 +509,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			selectEndDateForSurvey(endDate);
 		}
 
-		if (surveyModeFilter != null) {
-			selectSurveyModeForSurvey(surveyModeFilter);
-		}
+		handleExtraAddSurveyInfoParameters(reports);
 
 		if ((geoFilterOn == null) || (!geoFilterOn)) {
 			this.checkGeoFilter.click();
@@ -528,27 +531,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	}
 
-	public void selectSurveyModeForSurvey(SurveyModeFilter surveyModeFilter) {
-		switch (surveyModeFilter) {
-		case All:
-			this.inputSurModeFilterAll.click();
-			break;
-		case Standard:
-			this.inputSurModeFilterStd.click();
-			break;
-		case Operator:
-			this.inputSurModeFilterOperator.click();
-			break;
-		case RapidResponse:
-			this.inputSurModeFilterRapidResponse.click();
-			break;
-		case Manual:
-			this.inputSurModeFilterManual.click();
-			break;
-		default:
-			break;
-		}
+	/**
+	 * Implementation to be provided by Derived classes.
+	 */
+	protected void handleExtraAddSurveyInfoParameters(Reports reports) {
+		return;
 	}
+
+
 
 	public void selectStartDateForSurvey(String startDate) {
 		try {
@@ -767,43 +757,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return result;
 	}
 
-	public boolean verifySurveysTableViaSurveyMode(boolean changeMode, ReportModeFilter strReportMode, SurveyModeFilter surveyModeFilter) throws IOException {
-		boolean result = false;
-
-		if (strReportMode != null && changeMode) {
-			selectReportMode(strReportMode);
-
-			if (surveyModeFilter != null && changeMode) {
-				selectSurveyModeForSurvey(surveyModeFilter);
-			}
-			this.waitForSurveySearchButtonToLoad();
-			this.getBtnSurveySearch().click();
-			this.waitForSurveyTabletoLoad();
-
-			WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
-			List<WebElement> Rows = tabledata.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
-			for (int getrowvalue = 1; getrowvalue < Rows.size(); getrowvalue++) {
-				List<WebElement> Columns = Rows.get(getrowvalue).findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[5]"));
-				for (int getcolumnvalue = 0; getcolumnvalue < Columns.size(); getcolumnvalue++) {
-					String cellValue = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[5]")).getText();
-					if (cellValue.contains(" ")) {
-						String str = cellValue.replaceAll("\\s+", "");
-
-						if (surveyModeFilter.name().equalsIgnoreCase(str)) {
-							result = true;
-							break;
-						}
-					}
-					if (surveyModeFilter.name().equalsIgnoreCase(cellValue)) {
-						result = true;
-						break;
-					}
-				}
-
-			}
-		}
-		return result;
-	}
 
 	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList, String startDate, String endDate, boolean changeMode, String strReportMode) {
 		openNewReportPage();
@@ -1055,9 +1008,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+		
 			createdByCell = table.findElement(By.xpath(createdByXPath));
-
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+		
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle.trim()) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy.trim())) {
 				long startTime = System.currentTimeMillis();
 				long elapsedTime = 0;
 				boolean bContinue = true;
@@ -1074,6 +1028,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							this.waitForPdfReportIcontoAppear();
 						}
 						complianceSpecificFileDownloads(rptTitle, testCaseID);
+						eqSpecificFileDownloads(rptTitle, testCaseID);
 						return true;
 
 					} catch (org.openqa.selenium.NoSuchElementException e) {
@@ -1810,6 +1765,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void complianceSpecificFileDownloads(String rptTitle, String testCaseID) {
+	}
+	
+	public void eqSpecificFileDownloads(String rptTitle, String testCaseID) {
 	}
 
 	public void waitForPdfReportIcontoAppear() {

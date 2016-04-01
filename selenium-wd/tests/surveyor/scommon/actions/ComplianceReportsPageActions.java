@@ -50,8 +50,8 @@ import surveyor.scommon.source.ComplianceReportsPage.ReportFileType;
 import surveyor.scommon.source.ComplianceReportsPage.ReportViewerThumbnailType;
 import surveyor.scommon.source.LatLongSelectionControl;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
-import surveyor.scommon.source.Reports.SurveyModeFilter;
-import surveyor.scommon.source.Reports.ReportModeFilter;
+import surveyor.scommon.source.ReportsCompliance.SurveyModeFilter;
+import surveyor.scommon.source.ReportsCompliance.ReportModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
 
 public class ComplianceReportsPageActions extends BasePageActions {
@@ -306,13 +306,16 @@ public class ComplianceReportsPageActions extends BasePageActions {
 		List<String> surveyTag= new ArrayList<String>();
 		surveyTag.add(dataRow.surveyTag);
 		
-		this.complianceReportsPage.addSurveyInformation(dataRow.surveySurveyor, 
-				dataRow.surveyUsername, 				
-				surveyTag, 
-				dataRow.surveyStartDate, 
-				dataRow.surveyEndDate, 
-				modeFilter, 
-				Boolean.parseBoolean(dataRow.surveyGeoFilterON));
+		ReportsCompliance reportsCompliance = new ReportsCompliance();
+		reportsCompliance.setSurveyorUnit(dataRow.surveySurveyor);
+		reportsCompliance.setUserName(dataRow.surveyUsername);
+		reportsCompliance.setTagList(surveyTag);
+		reportsCompliance.setStartDate(dataRow.surveyStartDate);
+		reportsCompliance.setEndDate(dataRow.surveyStartDate);
+		reportsCompliance.setSurveyModeFilter(modeFilter);
+		reportsCompliance.setGeoFilter(Boolean.parseBoolean(dataRow.surveyGeoFilterON));
+		
+		this.complianceReportsPage.addSurveyInformation(reportsCompliance);
 		return true;
 	}
  
