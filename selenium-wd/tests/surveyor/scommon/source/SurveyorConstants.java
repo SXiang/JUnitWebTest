@@ -204,11 +204,14 @@ public final class SurveyorConstants {
 
 	public static final String DUPLICATIONERROR = Resources.getResource(ResourceKeys.ManageUser_UserNameAlreadyExists);
 	public static final String PWVALUEERROR = Resources.getResource(ResourceKeys.Validation_EnterSameValueAgain);
-	public static final String EMAILINVALID = Resources.getResource(ResourceKeys.ManageUser_EmailNotValid);
+	public static final String EMAILINVALID = Resources.getResource(ResourceKeys.ManageUser_EmailNotValid);	
 	public static final String BLANKFIELDERROR = Resources.getResource(ResourceKeys.Validation_Required);
 	public static final String PWDSAMEVALUE = Resources.getResource(ResourceKeys.Validation_EnterSameValueAgain);
 	public static final String EMAILTOOLONG = Resources.getResource(ResourceKeys.Validation_EnterNoMoreThan).replace("{0}", "50");
-
+	public static final String NOMATCHINGRECORDS = Resources.getResource("Constant_NoMatchingRecordsFound");
+	
+	public static final String ENTERVALIDEMAIL = "The Email is not valid, please enter valid email address.";
+	
 	public static final String NOMATCHINGSEARCH = Resources.getResource(ResourceKeys.Constant_NoMatchingRecordsFound);
 
 	public static final String DRIVINGSURVEYSEXPORTSURVEY = "SurveyExport";

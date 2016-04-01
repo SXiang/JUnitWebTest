@@ -59,7 +59,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + REGBASEPICUSERNAME;
 		String location = "Santa Clara";
-		String locationDesc = customerName + " - " + location;	
+		String locationDesc = location + " for test";
 		
 		// *** Add a new user/customer for this test ***
 		loginPage.open();
@@ -68,10 +68,10 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		manageCustomersPage.addNewCustomer(customerName, eula);
 		
 		manageLocationsPage.open();
-		manageLocationsPage.addNewLocation(location, customerName, location);
+		manageLocationsPage.addNewLocation(locationDesc, customerName, location);
 		
 		manageUsersPage.open();
-		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONECTUA, location);
+		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONECTUA, locationDesc);
 		
 		
 		loginPage = manageCustomersPage.logout();;

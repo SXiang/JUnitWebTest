@@ -91,6 +91,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		loginPage = manageUsersPage.logout();;
 		
 		// *** Start test ***
+		
+		Log.info("\nRunning - TC1675_MaxPasswordLength_PicUser - "+
+				"Test Description: More than 15 characters not allowed in New password and confirm password fields\n");
+		
 		loginPage.open();
 		loginPage.loginNormalAs(userName, password);
 

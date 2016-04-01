@@ -11,8 +11,6 @@ import static surveyor.scommon.source.SurveyorConstants.ETHRNELAT;
 import static surveyor.scommon.source.SurveyorConstants.ETHRNELON;
 import static surveyor.scommon.source.SurveyorConstants.REQUIRED_FIELD_VAL_MESSAGE;
 
-import java.awt.Point;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -569,7 +567,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 	public void clickOnAddNewLocationBtn() {
 		this.btnAddNewLocation.click();
-		this.waitForPageLoad();
+		this.waitForNewPageLoad();
 	}
 
 	public void clickOnFirstEditLocationBtn() {
