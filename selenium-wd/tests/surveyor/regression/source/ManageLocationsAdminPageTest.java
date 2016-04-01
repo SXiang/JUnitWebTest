@@ -183,15 +183,10 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
+		// NOTE: The check for required field message is done in edit method.
 		manageLocationsAdminPage.open();
 		assertFalse(manageLocationsAdminPage.editPDExistingLocation(SQACUS,
 				locationName, "", RNELAT, RNELON));
-
-		assertFalse(manageLocationsAdminPage.editPDExistingLocation(SQACUS,
-				locationName, locationName, "", RNELON));
-
-		assertFalse(manageLocationsAdminPage.editPDExistingLocation(SQACUS,
-				locationName, locationName, RNELAT, ""));
 	}
 
 	/**

@@ -64,6 +64,7 @@ public final class SurveyorConstants {
 	public static final String CUSUSERROLEDR = Resources.getResource(ResourceKeys.Constant_Driver);
 	public static final String PICUSERROLESUP = "Picarro Support";
 
+	public static final String ADMINISTRATORUSER = "Administrator";    // NOTE: This user is required for cases where the data pushed into environment has been pushed as Administrator User.
 	public static final String PICDFADMIN = "AutomationAdmin";
 	public static final String USERPASSWORDHASH ="oeHwHqmv621dZ1MRE2BSdw==";
 	public static final String PICADMINPSWD = "sqa#Picarro$0";
@@ -298,6 +299,8 @@ public final class SurveyorConstants {
 	
 	public static final String SQACUSSULOC="Santa Clara";
 	public static final String DEFAULTLOC="Default";
+
+	public static final String REQUIRED_FIELD_VAL_MESSAGE = "This field is required.";	
 
 	/**
 	 * Populate map with guids from SurveyModeType.

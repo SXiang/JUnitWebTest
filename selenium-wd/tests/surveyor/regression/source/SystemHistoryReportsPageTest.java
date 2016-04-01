@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -155,7 +156,6 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, note);
 		assertTrue("Administrator not able to add new history note!", manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS, SQACUSLOC, SQACUSLOCSUR, note));
 
-		manageSurveyorHistoriesPage.logout();
 		systemHistoryReportsPage.login(SQACUSUA, USERPASSWORD);
 		systemHistoryReportsPage.open();
 
@@ -186,9 +186,6 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 
 		else
 			fail("\nTestcase TC178 failed.\n");
-
-		systemHistoryReportsPage.open();
-		systemHistoryReportsPage.logout();
 	}
 
 	/**
@@ -294,7 +291,6 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, note);
 		assertTrue("Administrator not able to add new history note!", manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS, SQACUSLOC, SQACUSLOCSUR, note));
 
-		manageSurveyorHistoriesPage.logout();
 		systemHistoryReportsPage.login(SQACUSSU, USERPASSWORD);
 		systemHistoryReportsPage.open();
 
@@ -322,8 +318,5 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 			assertTrue(systemHistoryReportsPage.verifyNotesTable(testSetup.getDownloadPath(), rptTitle));
 		} else
 			fail("\nTestcase TC516 failed.\n");
-
-		systemHistoryReportsPage.open();
-		systemHistoryReportsPage.logout();
 	}
 }
