@@ -122,13 +122,17 @@ public class BasePage {
 		return this.strPageURL;
 	}
 
-	public boolean isElementPresent(String strXPath) {
+	public boolean isElementPresent(By by) {
 		try {
-			this.driver.findElement(By.xpath(strXPath));
+			this.driver.findElement(by);
 			return true;
 		} catch (org.openqa.selenium.NoSuchElementException e) {
 			return false;
 		}
+	}
+	
+	public boolean isElementPresent(String strXPath) {
+		return isElementPresent(By.xpath(strXPath));
 	}
 
 	public void clickOnDashboardLink() {
