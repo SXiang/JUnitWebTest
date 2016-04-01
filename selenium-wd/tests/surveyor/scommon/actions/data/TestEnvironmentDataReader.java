@@ -43,7 +43,7 @@ public class TestEnvironmentDataReader extends BaseDataReader {
 	}
  
 	public TestEnvironmentDataRow getDataRow(Integer dataRowID) throws Exception {
-		String rowID = excelUtility.getCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
+		String rowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
 		String analyzerSerialNumber = excelUtility.getCellData(dataRowID, Excel_TestData__Col_AnalyzerSerialNumber, TESTDATA_SHEET_NAME);
 		String analyzerSharedKey = excelUtility.getCellData(dataRowID, Excel_TestData__Col_AnalyzerSharedKey, TESTDATA_SHEET_NAME);
 		String replayScriptDB3File = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ReplayScriptDB3File, TESTDATA_SHEET_NAME);

@@ -41,10 +41,10 @@ public class LocationDataReader extends BaseDataReader {
 	}
  
 	public LocationDataRow getDataRow(Integer dataRowID) throws Exception {
-		String rowID = excelUtility.getCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
+		String rowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
 		String name = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Name, TESTDATA_SHEET_NAME);
-		String latitude = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Latitude, TESTDATA_SHEET_NAME);
-		String longitude = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Longitude, TESTDATA_SHEET_NAME);
+		String latitude = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_Latitude, TESTDATA_SHEET_NAME);
+		String longitude = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_Longitude, TESTDATA_SHEET_NAME);
 		
 		Log.info(String.format("Found data row: rowID=[%s], name=[%s], latitude=[%s], longitude=[%s]", 
 				rowID, name, latitude, longitude));

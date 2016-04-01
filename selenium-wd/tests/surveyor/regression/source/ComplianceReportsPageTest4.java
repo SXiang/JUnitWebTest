@@ -1,47 +1,18 @@
 package surveyor.regression.source;
 
-import static org.junit.Assert.*;
-import common.source.BrowserCommands;
-import common.source.DateUtility;
 import common.source.Log;
-import common.source.TestContext;
-import common.source.TestSetup;
-import java.util.Calendar;
-import org.junit.After;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.PageFactory;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
-import surveyor.scommon.source.HomePage;
-import surveyor.scommon.source.LoginPage;
-import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
-import static surveyor.scommon.source.SurveyorConstants.*;
-import surveyor.scommon.actions.ComplianceReportsPageActions;
-import surveyor.dataprovider.ComplianceReportDataProvider;
-import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
-import surveyor.scommon.source.Reports.ReportModeFilter;
-import surveyor.scommon.source.Reports.SurveyModeFilter;
-import surveyor.scommon.source.ReportsCompliance;
-
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.ComplianceReportsPage;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest4 extends BaseReportsPageTest {
-
-
 	private static final String EMPTY = "";
 	private static final Integer NOTSET = -1;
 	
@@ -63,6 +34,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageTest {
 	protected static void initializePageActions() {
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		homePageAction = new HomePageActions(driver, baseURL, testSetup);
+		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
 	}
 
@@ -88,8 +60,8 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, 4);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 4);
-		complianceReportsPageAction.copyReport(EMPTY, 5);
-		complianceReportsPageAction.verifyReportPageFieldsAreCorrect(EMPTY, 5);
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, NOTSET);
+		complianceReportsPageAction.verifyReportPageFieldsAreCorrect(EMPTY, 4);
 		complianceReportsPageAction.modifyReport(EMPTY, 5);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 5);
 		complianceReportsPageAction.verifyReportFilesHaveCorrectData(EMPTY, 5);
@@ -113,8 +85,14 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnCopyButton(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, 6);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 6);
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, NOTSET);
+		complianceReportsPageAction.modifyReport(EMPTY, 7);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 7);
+		complianceReportsPageAction.verifyReportFilesHaveCorrectData(EMPTY, 7);
+
+		// TODO: Methods missing for survey filter verifications. Tracked by Task TA862
 	}
  
 	/**
@@ -135,7 +113,13 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnCopyButton(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, 8);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 8);
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, NOTSET);
+		complianceReportsPageAction.modifyReport(EMPTY, 9);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 9);
+		complianceReportsPageAction.verifyReportFilesHaveCorrectData(EMPTY, 9);
+
+		// TODO: Methods missing for survey filter verifications. Tracked by Task TA862
 	}
 }

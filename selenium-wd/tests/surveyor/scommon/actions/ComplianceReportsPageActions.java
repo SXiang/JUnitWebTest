@@ -15,7 +15,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
-import static surveyor.scommon.source.SurveyorConstants.PICADMNSURVEYOR;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETCASTIRON;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETCOPPER;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
@@ -31,15 +30,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.PageFactory;
 
+import common.source.Log;
 import common.source.RegexUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.actions.data.ComplianceReportDataReader;
 import surveyor.scommon.actions.data.ComplianceReportDataReader.ComplianceReportsDataRow;
 import surveyor.scommon.actions.data.CustomerDataReader;
-import surveyor.scommon.actions.data.DriverViewDataReader;
 import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
 import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader;
 import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader.ReportOptTabularPDFContentDataRow;
@@ -49,7 +47,6 @@ import surveyor.scommon.actions.data.ReportSurveyDataReader;
 import surveyor.scommon.actions.data.ReportSurveyDataReader.ReportSurveyDataRow;
 import surveyor.scommon.actions.data.ReportViewsDataReader;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
 import surveyor.scommon.source.ComplianceReportsPage.ReportFileType;
 import surveyor.scommon.source.ComplianceReportsPage.ReportViewerThumbnailType;
@@ -60,7 +57,6 @@ import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
 
 public class ComplianceReportsPageActions extends BaseReportsPageActions {
-	private ComplianceReportsPage complianceReportsPage = null;
 	private ComplianceReportDataReader dataReader = null;
 	public static ReportsCompliance workingReportsComp = null;      // Stores the ReportsCompliance object from createNewReport action
 	public static ComplianceReportsDataRow workingDataRow = null;    // Stores the workingDataRow from createNewReport action
@@ -76,13 +72,13 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		Map<String, String> viewMap = new HashMap<String, String>();
 		fillViewDetails(viewMap, new ReportViewsDataReader(this.excelUtility), dataRowID);
 		viewList.add(viewMap);
-		this.complianceReportsPage.addViews(workingReportsComp.getCustomer(), viewList);
+		this.getComplianceReportsPage().addViews(workingReportsComp.getCustomer(), viewList);
 	}
  
 	private ComplianceReportsPage createNewPageObject() {
-		ComplianceReportsPage complianceReportsPage = new ComplianceReportsPage(TestContext.INSTANCE.getDriver(), 
+		ComplianceReportsPage compReportsPage = new ComplianceReportsPage(TestContext.INSTANCE.getDriver(), 
 				TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
-		return complianceReportsPage;
+		return compReportsPage;
 	}
 
 	private void fillViewLayersInfo(Map<String, String> viewLayerMap,
@@ -184,24 +180,24 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
 		ComplianceReportsDataRow compRptDataRow = getDataReader().getDataRow(dataRowID);
 		String reportTitle = compRptDataRow.title;
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
 		
 		switch(fileType) {
 		case PDF:
-			this.complianceReportsPage.downloadReportPDFFile();
-			this.complianceReportsPage.waitForPDFFileDownload(reportTitle);
+			this.getComplianceReportsPage().downloadReportPDFFile();
+			this.getComplianceReportsPage().waitForPDFFileDownload(reportTitle);
 			break;
 		case ZIP:
-			this.complianceReportsPage.downloadReportZIPFile();
-			this.complianceReportsPage.waitForReportZIPFileDownload(reportTitle);
+			this.getComplianceReportsPage().downloadReportZIPFile();
+			this.getComplianceReportsPage().waitForReportZIPFileDownload(reportTitle);
 			break;
 		case MetaDataZIP:
-			this.complianceReportsPage.downloadMetaDataZipFile();
-			this.complianceReportsPage.waitForMetadataZIPFileDownload(reportTitle);
+			this.getComplianceReportsPage().downloadMetaDataZipFile();
+			this.getComplianceReportsPage().waitForMetadataZIPFileDownload(reportTitle);
 			break;
 		case ShapeZIP:
-			this.complianceReportsPage.downloadShapeZipFile();
-			this.complianceReportsPage.waitForShapeZIPFileDownload(reportTitle);
+			this.getComplianceReportsPage().downloadShapeZipFile();
+			this.getComplianceReportsPage().waitForShapeZIPFileDownload(reportTitle);
 			break;
 		default:
 			break;
@@ -215,7 +211,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		CustomerDataRow custDataRow = custDataReader.getDataRow(custRowID);
 		String customerName = custDataRow.name;
 		String reportTitle = compRptDataRow.title;
-		this.complianceReportsPage.verifyComplianceReportButton(reportTitle, customerName, buttonType);
+		this.getComplianceReportsPage().verifyComplianceReportButton(reportTitle, customerName, buttonType);
 	}
 
 	private void clickComplianceReportButton(Integer dataRowID, ComplianceReportButtonType buttonType) throws Exception {
@@ -225,7 +221,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		CustomerDataRow custDataRow = custDataReader.getDataRow(custRowID);
 		String customerName = custDataRow.name;
 		String reportTitle = compRptDataRow.title;
-		this.complianceReportsPage.clickComplianceReportButton(reportTitle, customerName, buttonType);
+		this.getComplianceReportsPage().clickComplianceReportButton(reportTitle, customerName, buttonType);
 	}
 
 	/* START - Actions on the Page*/
@@ -319,7 +315,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			List<String> surveyTag= new ArrayList<String>();
 			surveyTag.add(surveyDataRow.surveyTag);
 			
-			this.complianceReportsPage.addSurveyInformation(surveyDataRow.surveySurveyor, 
+			this.getComplianceReportsPage().addSurveyInformation(surveyDataRow.surveySurveyor, 
 					surveyDataRow.surveyUsername, 				
 					surveyTag, 
 					surveyDataRow.surveyStartDate, 
@@ -361,7 +357,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean clickOnCancelButton(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.clickOnCancelButton", data, dataRowID);
-		this.complianceReportsPage.clickOnCancelBtn();
+		this.getComplianceReportsPage().clickOnCancelBtn();
 		return true;
 	}
  
@@ -434,7 +430,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean clickOnFirstCopyComplianceButton(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.clickOnFirstCopyComplianceButton", data, dataRowID);
-		this.complianceReportsPage.clickOnFirstCopyComplianceBtn();
+		this.getComplianceReportsPage().clickOnFirstCopyComplianceBtn();
 		return true;
 	}
  
@@ -446,7 +442,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean clickOnFirstInvestigateComplianceButton(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.clickOnFirstInvestigateComplianceButton", data, dataRowID);
-		this.complianceReportsPage.clickOnFirstInvestigateComplianceBtn();
+		this.getComplianceReportsPage().clickOnFirstInvestigateComplianceBtn();
 		return true;
 	}
  
@@ -484,7 +480,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean clickOnLatLongSelectorButton(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.clickOnLatLongSelectorButton", data, dataRowID);
-		this.complianceReportsPage.clickLatLongMapSelectorBtn();
+		this.getComplianceReportsPage().clickLatLongMapSelectorBtn();
 		return true;
 	}
 
@@ -496,7 +492,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean clickOnOKButton(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.clickOnOKButton", data, dataRowID);
-		this.complianceReportsPage.clickOnOKButton();
+		this.getComplianceReportsPage().clickOnOKButton();
 		return true;
 	}
  
@@ -532,7 +528,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean clickOnPDFInReportViewer(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.clickOnPDFInReportViewer", data, dataRowID);
-		this.complianceReportsPage.clickOnPDFInReportViewer();
+		this.getComplianceReportsPage().clickOnPDFInReportViewer();
 		return true;
 	}
  
@@ -544,7 +540,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean clickOnZIPInReportViewer(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.clickOnZIPInReportViewer", data, dataRowID);
-		this.complianceReportsPage.clickOnZIPInReportViewer();
+		this.getComplianceReportsPage().clickOnZIPInReportViewer();
 		return true;
 	}
  
@@ -556,7 +552,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean clickOnMetadataZIPInReportViewer(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.clickOnMetadataZIPInReportViewer", data, dataRowID);
-		this.complianceReportsPage.clickOnMetadataZIPInReportViewer();
+		this.getComplianceReportsPage().clickOnMetadataZIPInReportViewer();
 		return true;
 	}
  
@@ -568,7 +564,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean clickOnShapeZIPInReportViewer(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.clickOnShapeZIPInReportViewer", data, dataRowID);
-		this.complianceReportsPage.clickOnShapeZIPInReportViewer();
+		this.getComplianceReportsPage().clickOnShapeZIPInReportViewer();
 		return true;
 	}
  
@@ -585,15 +581,16 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
  
 	/**
 	 * Executes copyReport action.
-	 * @param data - specifies the input data passed to the action.
+	 * @param data - specifies the title of the report to be copied.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 * @throws Exception 
 	 */
 	public boolean copyReport(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.copyReport", data, dataRowID);
-		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
-		this.complianceReportsPage.copyReport(dataRow.title, TestContext.INSTANCE.getLoggedInUser());
+		ActionArguments.verifyNotNullOrEmpty("copyReport", ARG_DATA, data);
+		this.getComplianceReportsPage().copyReport(data, TestContext.INSTANCE.getLoggedInUser());
+		this.getComplianceReportsPage().waitForCopyReportPagetoLoad();
 		this.initializePageObject(TestContext.INSTANCE.getDriver(), this.createNewPageObject());
 		return true;
 	}
@@ -607,7 +604,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean modifyReport(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.modifyReport", data, dataRowID);
-		return this.fillAndCreateNewReport(dataRowID);
+		return this.fillAndCreateNewReport(dataRowID, false /*openNewReportsPage*/);
 	}
 
 	/**
@@ -621,13 +618,13 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.createNewReport", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("createNewReport", ARG_DATA_ROW_ID, dataRowID);
 
-		return fillAndCreateNewReport(dataRowID);
+		return fillAndCreateNewReport(dataRowID, true /*openNewReportsPage*/);
 	}
 
-	private boolean fillAndCreateNewReport(Integer dataRowID) throws Exception {
+	private boolean fillAndCreateNewReport(Integer dataRowID, boolean openNewReportsPage) throws Exception {
 		workingDataRow = getDataReader().getDataRow(dataRowID);
 		
-		String rptTitle = workingDataRow.title;
+		String rptTitle = workingDataRow.title; 
 		String customer = null; 
 		String customerRowID = workingDataRow.customerRowID;
 		if (customerRowID != "") {
@@ -672,7 +669,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, TestContext.INSTANCE.getLoggedInUser(), customer, timeZone, exclusionRadius,
 				listBoundary, tablesList, surveyorUnit, tagList, viewList, viewLayersList);
-		complianceReportsPage.addNewReport(rpt);
+		getComplianceReportsPage().addNewReport(rpt, openNewReportsPage);
 		
 		workingReportsComp = rpt;		// Store the working report properties.
 		return true;
@@ -695,7 +692,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 
 		String reportTitle = compRptDataRow.title;
 		String createdBy = custDataRow.name;
-		this.complianceReportsPage.deleteReport(reportTitle, createdBy);
+		this.getComplianceReportsPage().deleteReport(reportTitle, createdBy);
 		return true;
 	}
  
@@ -711,7 +708,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.enterCustomBoundaryUsingAreaSelector", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("enterCustomBoundaryUsingAreaSelector", ARG_DATA, data);
 		List<Integer> coordList = verifyLatLongCoordinates(data);		
-		this.complianceReportsPage.openCustomBoundarySelector();		
+		this.getComplianceReportsPage().openCustomBoundarySelector();		
 		selectCoordinatesInLatLongBoundarySelector(coordList);
 		return true;
 	}
@@ -731,7 +728,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		String neLong = custBoundaryList.get(1);
 		String swLat = custBoundaryList.get(2);	
 		String swLong = custBoundaryList.get(3);		
-		this.complianceReportsPage.fillCustomBoundaryTextFields(neLat, neLong, swLat, swLong);
+		this.getComplianceReportsPage().fillCustomBoundaryTextFields(neLat, neLong, swLat, swLong);
 		return true;
 	}
  
@@ -747,7 +744,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.enterCustomerBoundaryUsingAreaSelector", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("enterCustomBoundaryUsingAreaSelector", ARG_DATA, data);
 		List<Integer> coordList = verifyLatLongCoordinates(data);		
-		this.complianceReportsPage.openCustomerBoundarySelector();		
+		this.getComplianceReportsPage().openCustomerBoundarySelector();		
 		selectCoordinatesInLatLongBoundarySelector(coordList);
 		return true;
 	}
@@ -763,7 +760,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.enterExclusionRadius", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("enterExclusionRadius", ARG_DATA_ROW_ID, dataRowID);
 		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
-		this.complianceReportsPage.inputExclusionRadius(dataRow.exclusionRadius);
+		this.getComplianceReportsPage().inputExclusionRadius(dataRow.exclusionRadius);
 		return true;
 	}
  
@@ -778,7 +775,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.enterFOVOpacity", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("enterFOVOpacity", ARG_DATA_ROW_ID, dataRowID);
 		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
-		this.complianceReportsPage.inputFOVOpacity(dataRow.opacityFOV);
+		this.getComplianceReportsPage().inputFOVOpacity(dataRow.opacityFOV);
 		return true;
 	}
  
@@ -793,7 +790,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.enterLISAOpacity", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("enterLISAOpacity", ARG_DATA_ROW_ID, dataRowID);
 		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
-		this.complianceReportsPage.inputLISAOpacity(dataRow.opacityLISA);
+		this.getComplianceReportsPage().inputLISAOpacity(dataRow.opacityLISA);
 		return true;
 	}
  
@@ -807,10 +804,10 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean enterPDFImageHeight(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.enterPDFImageHeight", data, dataRowID);
 		if (!ActionArguments.isEmpty(data)) {
-			this.complianceReportsPage.inputImageMapHeight(data);
+			this.getComplianceReportsPage().inputImageMapHeight(data);
 		} else {
 			ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
-			this.complianceReportsPage.inputImageMapHeight(dataRow.pDFImageOutputHeight);
+			this.getComplianceReportsPage().inputImageMapHeight(dataRow.pDFImageOutputHeight);
 		}
 		return true;
 	}
@@ -825,10 +822,10 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean enterPDFImageWidth(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.enterPDFImageWidth", data, dataRowID);
 		if (!ActionArguments.isEmpty(data)) {
-			this.complianceReportsPage.inputImageMapWidth(data);
+			this.getComplianceReportsPage().inputImageMapWidth(data);
 		} else {
 			ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
-			this.complianceReportsPage.inputImageMapWidth(dataRow.pDFImageOutputWidth);
+			this.getComplianceReportsPage().inputImageMapWidth(dataRow.pDFImageOutputWidth);
 		}
 		return true;
 	}
@@ -843,10 +840,10 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean enterReportTitle(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.enterReportTitle", data, dataRowID);
 		if (!ActionArguments.isEmpty(data)) {
-			this.complianceReportsPage.inputReportTitle(data);
+			this.getComplianceReportsPage().inputReportTitle(data);
 		} else {
 			ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
-			this.complianceReportsPage.inputReportTitle(dataRow.title);
+			this.getComplianceReportsPage().inputReportTitle(dataRow.title);
 		}
 		return true;
 	}
@@ -861,11 +858,11 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean enterSurveySelectorTag(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.enterSurveySelectorTag", data, dataRowID);
 		if (!ActionArguments.isEmpty(data)) {
-			this.complianceReportsPage.inputSurveyTag(data);
+			this.getComplianceReportsPage().inputSurveyTag(data);
 		} else {
 			ReportSurveyDataReader surveyDataReader = new ReportSurveyDataReader(this.excelUtility);
 			ReportSurveyDataRow surveyDataRow = surveyDataReader.getDataRow(dataRowID);
-			this.complianceReportsPage.inputSurveyTag(surveyDataRow.surveyTag);
+			this.getComplianceReportsPage().inputSurveyTag(surveyDataRow.surveyTag);
 		}
 		return true;
 	}
@@ -880,11 +877,11 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean enterSurveySelectorUsername(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.enterSurveySelectorUsername", data, dataRowID);
 		if (!ActionArguments.isEmpty(data)) {
-			this.complianceReportsPage.inputSurveyUsername(data);
+			this.getComplianceReportsPage().inputSurveyUsername(data);
 		} else {
 			ReportSurveyDataReader surveyDataReader = new ReportSurveyDataReader(this.excelUtility);
 			ReportSurveyDataRow surveyDataRow = surveyDataReader.getDataRow(dataRowID);
-			this.complianceReportsPage.inputSurveyUsername(surveyDataRow.surveyUsername);
+			this.getComplianceReportsPage().inputSurveyUsername(surveyDataRow.surveyUsername);
 		}
 		return true;
 	}
@@ -906,7 +903,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 
 		String reportTitle = compRptDataRow.title;
 		String createdBy = custDataRow.name;
-		this.complianceReportsPage.findReport(reportTitle, createdBy);
+		this.getComplianceReportsPage().findReport(reportTitle, createdBy);
 		return true;
 	}
  
@@ -927,7 +924,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 
 		String reportTitle = compRptDataRow.title;
 		String createdBy = custDataRow.name;
-		this.complianceReportsPage.investigateReport(reportTitle, createdBy);		
+		this.getComplianceReportsPage().investigateReport(reportTitle, createdBy);		
 		return true;
 	}
  
@@ -939,8 +936,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean open(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.open", data, dataRowID);
-		complianceReportsPage.open();
-		complianceReportsPage.waitForPageLoad();
+		getComplianceReportsPage().open();
+		getComplianceReportsPage().waitForPageLoad();
 		return true;
 	}
  
@@ -952,7 +949,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean openNewReportPage(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.openNewReportPage", data, dataRowID);
-		complianceReportsPage.openNewComplianceReportPage();
+		getComplianceReportsPage().openNewComplianceReportPage();
 		return true;
 	}
  
@@ -964,7 +961,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean searchForSurveyByKeyword(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.searchForSurveyByKeyword", data, dataRowID);
-		complianceReportsPage.performSearch(data);
+		getComplianceReportsPage().performSearch(data);
 		return true;
 	}
  
@@ -976,7 +973,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean selectIndicationTableCheckbox(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.selectIndicationTableCheckbox", data, dataRowID);
-		this.complianceReportsPage.selectIndicationsTableCheckBox();
+		this.getComplianceReportsPage().selectIndicationsTableCheckBox();
 		return true;
 	}
  
@@ -988,7 +985,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean selectIsotopicTableCheckbox(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.selectIsotopicTableCheckbox", data, dataRowID);
-		this.complianceReportsPage.selectIsotopicAnalysisCheckBox();
+		this.getComplianceReportsPage().selectIsotopicAnalysisCheckBox();
 		return true;
 	}
  
@@ -1003,7 +1000,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.selectPaginationRows", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("selectPaginationRows", ARG_DATA, data);
 		ActionArguments.verifyGreaterThanZero("selectPaginationRows", ARG_DATA, Integer.valueOf(data));
-		this.complianceReportsPage.setPagination(data);
+		this.getComplianceReportsPage().setPagination(data);
 		return true;
 	}
 
@@ -1015,7 +1012,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean selectPercentCoverageForecastCheckBox(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.selectPercentCoverageForecastCheckBox", data, dataRowID);
-		this.complianceReportsPage.selectPercentCoverageForecastCheckBox();
+		this.getComplianceReportsPage().selectPercentCoverageForecastCheckBox();
 		return true;
 	}
  
@@ -1027,7 +1024,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean selectPercentCoverageReportAreaCheckBox(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.selectPercentCoverageReportAreaCheckBox", data, dataRowID);
-		this.complianceReportsPage.selectPercentCoverageReportArea();
+		this.getComplianceReportsPage().selectPercentCoverageReportArea();
 		return true;
 	}
  
@@ -1039,7 +1036,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean selectShowPercentCoverageOfAssetsCheckBox(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.selectShowPercentCoverageOfAssetsCheckBox", data, dataRowID);
-		this.complianceReportsPage.selectPercentCoverageAssetCheckBox();
+		this.getComplianceReportsPage().selectPercentCoverageAssetCheckBox();
 		return true;
 	}
 
@@ -1063,7 +1060,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			customer = custDataRow.name;
 		}
 
-		this.complianceReportsPage.selectCustomer(customer);
+		this.getComplianceReportsPage().selectCustomer(customer);
 		return true;
 	}
  
@@ -1083,8 +1080,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
 			reportMode = dataRow.reportMode;
 		}
-		ReportModeFilter mode = this.complianceReportsPage.getReportMode(reportMode);
-		this.complianceReportsPage.selectReportMode(mode);
+		ReportModeFilter mode = this.getComplianceReportsPage().getReportMode(reportMode);
+		this.getComplianceReportsPage().selectReportMode(mode);
 		return true;
 	}
  
@@ -1098,7 +1095,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean selectSurveySelectorEndDateTime(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.selectSurveySelectorEndDateTime", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("selectSurveySelectorEndDateTime", ARG_DATA, data);
-		this.complianceReportsPage.selectEndDateForSurvey(data);
+		this.getComplianceReportsPage().selectEndDateForSurvey(data);
 		return true;
 	}
  
@@ -1112,7 +1109,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean selectSurveySelectorStartDateTime(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.selectSurveySelectorStartDateTime", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("selectSurveySelectorStartDateTime", ARG_DATA, data);
-		this.complianceReportsPage.selectStartDateForSurvey(data);
+		this.getComplianceReportsPage().selectStartDateForSurvey(data);
 		return true;
 	}
  
@@ -1136,7 +1133,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			modeFilter = SurveyModeFilter.RapidResponse;
 		} 
 		
-		this.complianceReportsPage.selectSurveyModeForSurvey(modeFilter);
+		this.getComplianceReportsPage().selectSurveyModeForSurvey(modeFilter);
 		return true;
 	}
  
@@ -1157,7 +1154,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			ReportSurveyDataRow surveyDataRow = surveyDataReader.getDataRow(dataRowID);
 			surveyorUnit = surveyDataRow.surveySurveyor;
 		}
-		this.complianceReportsPage.selectSurveySurveyor(surveyorUnit);
+		this.getComplianceReportsPage().selectSurveySurveyor(surveyorUnit);
 		return true;
 	}
  
@@ -1183,22 +1180,22 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		Boolean selectPercentCoverageReportArea = Boolean.valueOf(pdfContentDataRow.percentCoverageReportArea);
 		
 		if (selectGap) {
-			this.complianceReportsPage.selectGapCheckBox();
+			this.getComplianceReportsPage().selectGapCheckBox();
 		}
 		if (selectIndicationTable) {
-			this.complianceReportsPage.selectIndicationsTableCheckBox();
+			this.getComplianceReportsPage().selectIndicationsTableCheckBox();
 		}
 		if (selectIsotopicAnalysis) {
-			this.complianceReportsPage.selectIsotopicAnalysisCheckBox();
+			this.getComplianceReportsPage().selectIsotopicAnalysisCheckBox();
 		}
 		if (selectPercentCoverageAssets) {
-			this.complianceReportsPage.selectPercentCoverageAssetCheckBox();
+			this.getComplianceReportsPage().selectPercentCoverageAssetCheckBox();
 		}
 		if (selectPercentCoverageForecast) {
-			this.complianceReportsPage.selectPercentCoverageForecastCheckBox();
+			this.getComplianceReportsPage().selectPercentCoverageForecastCheckBox();
 		}
 		if (selectPercentCoverageReportArea) {
-			this.complianceReportsPage.selectPercentCoverageReportArea();
+			this.getComplianceReportsPage().selectPercentCoverageReportArea();
 		}
 		return true;
 	}
@@ -1219,7 +1216,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
 			timeZone = dataRow.timezone;
 		}
-		this.complianceReportsPage.selectTimeZone(timeZone);
+		this.getComplianceReportsPage().selectTimeZone(timeZone);
 		return true;
 	}
  
@@ -1262,7 +1259,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			selectAssetProtectedSteel = Boolean.valueOf(optViewLayersDataRow.assetProtectedSteel);
 			selectAssetUnprotectedSteel = Boolean.valueOf(optViewLayersDataRow.assetUnprotectedSteel);
 		}
-		this.complianceReportsPage.selectViewLayerAssets(selectAssetCastIron, selectAssetCopper,
+		this.getComplianceReportsPage().selectViewLayerAssets(selectAssetCastIron, selectAssetCopper,
 				selectAssetOtherPlastic, selectAssetPEPlastic, selectAssetProtectedSteel, selectAssetUnprotectedSteel);
 		return true;
 	}
@@ -1294,7 +1291,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			selectBoundaryDistrict = Boolean.valueOf(optViewLayersDataRow.boundaryDistrict);
 			selectBoundaryDistrictPlat = Boolean.valueOf(optViewLayersDataRow.boundaryDistrictPlat);
 		}
-		this.complianceReportsPage.selectViewLayerBoundaries(selectBoundaryDistrict, selectBoundaryDistrictPlat);
+		this.getComplianceReportsPage().selectViewLayerBoundaries(selectBoundaryDistrict, selectBoundaryDistrictPlat);
 		return true;
 	}
  
@@ -1402,8 +1399,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		ActionArguments.verifyGreaterThanZero("verifyInvestigatePDFDownload", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.InvestigatePDF);
 		// TODO wait for file download to complete.
-		//this.complianceReportsPage.waitForPDFFileDownload();
-		this.complianceReportsPage.validateInvestigatePDFFile();
+		//this.getComplianceReportsPage().waitForPDFFileDownload();
+		this.getComplianceReportsPage().validateInvestigatePDFFile();
 		return true;
 	}
  
@@ -1430,7 +1427,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyPDFContainsInputtedInformation", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("", ARG_DATA, data);
 		List<String> listExpectedStrings = RegexUtility.split(data, RegexUtility.COLON_SPLIT_REGEX_PATTERN);
-		this.complianceReportsPage.verifyComplianceReportContainsText(workingDataRow.title, listExpectedStrings);
+		this.getComplianceReportsPage().verifyComplianceReportContainsText(workingDataRow.title, listExpectedStrings);
 		return false;
 	}
 
@@ -1445,9 +1442,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyMetaDataFilesHaveCorrectData", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyMetaDataFilesHaveCorrectData", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
 		downloadReportFileAndWait(dataRowID, ReportFileType.MetaDataZIP);
-		this.complianceReportsPage.verifyMetaDataFiles();
+		this.getComplianceReportsPage().verifyMetaDataFiles();
 		return true;
 	}
 
@@ -1462,9 +1459,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyMetaDataZIPFilesAreCorrect", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyMetaDataZIPFilesAreCorrect", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
 		downloadReportFileAndWait(dataRowID, ReportFileType.MetaDataZIP);
-		this.complianceReportsPage.verifyMetaDataFilesData();
+		this.getComplianceReportsPage().verifyMetaDataFilesData();
 		return true;
 	}
  
@@ -1479,8 +1476,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyMetaDataZIPThumbnailDownloadFromComplianceViewer", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyMetaDataZIPThumbnailDownloadFromComplianceViewer", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.ComplianceZipMeta);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.ComplianceZipMeta);
 		return true;
 	}
  
@@ -1495,8 +1492,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyMetaDataZIPThumbnailIsShownInComplianceViewer", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyMetaDataZIPThumbnailIsShownInComplianceViewer", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceZipMeta);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceZipMeta);
 		return true;
 	}
  
@@ -1511,8 +1508,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyPDFThumbnailDownloadFromComplianceViewer", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyPDFThumbnailDownloadFromComplianceViewer", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.ComplianceTablePDF);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.ComplianceTablePDF);
 		return true;
 	}
  
@@ -1527,8 +1524,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyPDFThumbnailIsShownInComplianceViewer", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyPDFThumbnailIsShownInComplianceViewer", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceTablePDF);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceTablePDF);
 		return true;
 	}
  
@@ -1543,9 +1540,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyPDFZipFilesAreCorrect", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyPDFZipFilesAreCorrect", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
 		downloadReportFileAndWait(dataRowID, ReportFileType.ZIP);
-		this.complianceReportsPage.verifyReportPDFZIPFiles();
+		this.getComplianceReportsPage().verifyReportPDFZIPFiles();
 		return true;
 	}
 
@@ -1572,9 +1569,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		String rptTitle = compRptDataRow.title;
 
 		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
-		if ((complianceReportsPage.checkActionStatus(rptTitle, customerName, null))) {
-			if ((!complianceReportsPage.findReport(rptTitle, customerName)) || 
-					(!complianceReportsPage.validatePdfFiles(workingReportsComp, 
+		if ((getComplianceReportsPage().checkActionStatus(rptTitle, customerName, null))) {
+			if ((!getComplianceReportsPage().findReport(rptTitle, customerName)) || 
+					(!getComplianceReportsPage().validatePdfFiles(workingReportsComp, 
 							TestContext.INSTANCE.getTestSetup().getDownloadPath()))) {
 				return false;
 			}
@@ -1595,8 +1592,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyPDFZIPThumbnailDownloadFromComplianceViewer", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyPDFZIPThumbnailDownloadFromComplianceViewer", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.ComplianceZipPDF);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.ComplianceZipPDF);
 		return true;
 	}
  
@@ -1611,8 +1608,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyPDFZIPThumbnailIsShownInComplianceViewer", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyPDFZIPThumbnailIsShownInComplianceViewer", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceZipPDF);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceZipPDF);
 		return true;
 	}
  
@@ -1658,30 +1655,57 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean verifyReportPageFieldsAreCorrect(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyReportPageFieldsAreCorrect", data, dataRowID);
-		ComplianceReportsDataRow dataRow = getDataReader().getDataRow();
+		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
 		String customerName = new CustomerDataReader(this.excelUtility).getDataRow(Integer.valueOf(dataRow.customerRowID)).name;
 		List<Integer> surveyRowIDs = ActionArguments.getNumericList(dataRow.reportSurveyRowIDs);
 		Integer reportViewLayerRowID = Integer.valueOf(dataRow.reportOptViewLayerRowID);
 		ReportOptViewLayersDataRow reportOptViewLayersDataRow = new ReportOptViewLayersDataReader(this.excelUtility).getDataRow(reportViewLayerRowID);
 		Integer reportPDFContentRowID = Integer.valueOf(dataRow.reportOptTabularPDFContentRowID);
 		ReportOptTabularPDFContentDataRow reportPDFContentDataRow = new ReportOptTabularPDFContentDataReader(this.excelUtility).getDataRow(reportPDFContentRowID);
-		boolean reportTitleMatches = (dataRow.title == this.complianceReportsPage.getReportTitle());
-		boolean customerMatches = (customerName == this.complianceReportsPage.getCustomerValue());
-		boolean timezoneMatches = (dataRow.timezone == this.complianceReportsPage.getTimezoneValue());
-		boolean exclusionRadiusMatches = (dataRow.exclusionRadius == this.complianceReportsPage.getExclusionRadius());
-		boolean reportModeMatches = (dataRow.reportMode == this.complianceReportsPage.getReportModeFilter().toString());
-		boolean nELatMatches = (dataRow.title == this.complianceReportsPage.getNELatitude());
-		boolean nELongMatches = (dataRow.title == this.complianceReportsPage.getNELongitude());
-		boolean sWLatMatches = (dataRow.title == this.complianceReportsPage.getSWLatitude());
-		boolean sWLongMatches = (dataRow.title == this.complianceReportsPage.getSWLongitude());
-		boolean fovOpacityMatches = (dataRow.title == this.complianceReportsPage.getFOVOpacity());
-		boolean lisaOpacityMatches = (dataRow.title == this.complianceReportsPage.getLISAOpacity());
-		boolean pdfWidthMatches = (dataRow.title == this.complianceReportsPage.getPDFWidth());
-		boolean pdfHeightMatches = (dataRow.title == this.complianceReportsPage.getPDFHeight());
+		//boolean reportTitleMatches = (dataRow.title == this.getComplianceReportsPage().getReportTitle());
+
+		String actualCustomerValue = this.getComplianceReportsPage().getCustomerValue();
+		String actualTimezoneValue = this.getComplianceReportsPage().getTimezoneValue();
+		String actualExclusionRadius = this.getComplianceReportsPage().getExclusionRadius();
+		String actualReportModeFilter = this.getComplianceReportsPage().getReportModeFilter().toString();
+		String actualNELatitude = this.getComplianceReportsPage().getNELatitude();
+		String actualNELongitude = this.getComplianceReportsPage().getNELongitude();
+		String actualSWLatitude = this.getComplianceReportsPage().getSWLatitude();
+		String actualSWLongitude = this.getComplianceReportsPage().getSWLongitude();
+		String actualFOVOpacity = this.getComplianceReportsPage().getFOVOpacity();
+		String actualLISAOpacity = this.getComplianceReportsPage().getLISAOpacity();
+		String actualPDFWidth = this.getComplianceReportsPage().getPDFWidth();
+		String actualPDFHeight = this.getComplianceReportsPage().getPDFHeight();
+
+		Log.info(String.format("Matching customer. Expected=[%s], Actual=[%s]", customerName, actualCustomerValue));
+		Log.info(String.format("Matching timezone. Expected=[%s], Actual=[%s]", dataRow.timezone, actualTimezoneValue));
+		Log.info(String.format("Matching exclusionRadius. Expected=[%s], Actual=[%s]", dataRow.exclusionRadius, actualExclusionRadius));
+		Log.info(String.format("Matching reportMode. Expected=[%s], Actual=[%s]", dataRow.reportMode, actualReportModeFilter));
+		Log.info(String.format("Matching customBoundaryNELat. Expected=[%s], Actual=[%s]", dataRow.customBoundaryNELat, actualNELatitude));
+		Log.info(String.format("Matching customBoundaryNELong. Expected=[%s], Actual=[%s]", dataRow.customBoundaryNELong, actualNELongitude));
+		Log.info(String.format("Matching customBoundarySWLat. Expected=[%s], Actual=[%s]", dataRow.customBoundarySWLat, actualSWLatitude));
+		Log.info(String.format("Matching customBoundarySWLong. Expected=[%s], Actual=[%s]", dataRow.customBoundarySWLong, actualSWLongitude));
+		Log.info(String.format("Matching opacityFOV. Expected=[%s], Actual=[%s]", dataRow.opacityFOV, actualFOVOpacity));
+		Log.info(String.format("Matching opacityLISA. Expected=[%s], Actual=[%s]", dataRow.opacityLISA, actualLISAOpacity));
+		Log.info(String.format("Matching pDFImageOutputWidth. Expected=[%s], Actual=[%s]", dataRow.pDFImageOutputWidth, actualPDFWidth));
+		Log.info(String.format("Matching pDFImageOutputHeight. Expected=[%s], Actual=[%s]", dataRow.pDFImageOutputHeight, actualPDFHeight));
+		
+		boolean customerMatches = (customerName.equals(actualCustomerValue));
+		boolean timezoneMatches = (dataRow.timezone.equals(actualTimezoneValue));
+		boolean exclusionRadiusMatches = (dataRow.exclusionRadius.equals(actualExclusionRadius));
+		boolean reportModeMatches = (dataRow.reportMode.equals(actualReportModeFilter));
+		boolean nELatMatches = (dataRow.customBoundaryNELat.equals(actualNELatitude));
+		boolean nELongMatches = (dataRow.customBoundaryNELong.equals(actualNELongitude));
+		boolean sWLatMatches = (dataRow.customBoundarySWLat.equals(actualSWLatitude));
+		boolean sWLongMatches = (dataRow.customBoundarySWLong.equals(actualSWLongitude));
+		boolean fovOpacityMatches = (dataRow.opacityFOV.equals(actualFOVOpacity));
+		boolean lisaOpacityMatches = (dataRow.opacityLISA.equals(actualLISAOpacity));
+		boolean pdfWidthMatches = (dataRow.pDFImageOutputWidth.equals(actualPDFWidth));
+		boolean pdfHeightMatches = (dataRow.pDFImageOutputHeight.equals(actualPDFHeight));
 		boolean verifyReportSurveyValuesMatch = verifyReportSurveyValuesMatch(surveyRowIDs);
 		boolean areAssetBoundariesMatch = areAssetBoundariesMatch(reportOptViewLayersDataRow);
 		boolean areTabularPDFContentSelectionMatch = areTabularPDFContentSelectionMatch(reportPDFContentDataRow);
-		return reportTitleMatches && customerMatches && timezoneMatches && exclusionRadiusMatches && reportModeMatches && 
+		return /*reportTitleMatches &&*/ customerMatches && timezoneMatches && exclusionRadiusMatches && reportModeMatches && 
 				nELatMatches && nELongMatches && sWLatMatches && sWLongMatches && fovOpacityMatches &&
 				lisaOpacityMatches && pdfWidthMatches && pdfHeightMatches && verifyReportSurveyValuesMatch &&
 				areAssetBoundariesMatch && areTabularPDFContentSelectionMatch;
@@ -1704,27 +1728,27 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
 
 	private boolean isPDFGapSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
-		return this.complianceReportsPage.isPDFGapSelected() && (dataRow.gapTable == "TRUE");
+		return this.getComplianceReportsPage().isPDFGapSelected() && (dataRow.gapTable == "TRUE");
 	}
 
 	private boolean isPDFIndicationSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
-		return this.complianceReportsPage.isPDFIndicationSelected() && (dataRow.indicationTable == "TRUE");
+		return this.getComplianceReportsPage().isPDFIndicationSelected() && (dataRow.indicationTable == "TRUE");
 	}
 
 	private boolean isPDFIsotopicAnalysisSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
-		return this.complianceReportsPage.isPDFIsotopicAnalysisSelected() && (dataRow.isotopicAnalysis == "TRUE");
+		return this.getComplianceReportsPage().isPDFIsotopicAnalysisSelected() && (dataRow.isotopicAnalysis == "TRUE");
 	}
 
 	private boolean isPDFPercentCoverageAssetsSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
-		return this.complianceReportsPage.isPDFPercentCoverageAssetsSelected() && (dataRow.percentCoverageAssets == "TRUE");
+		return this.getComplianceReportsPage().isPDFPercentCoverageAssetsSelected() && (dataRow.percentCoverageAssets == "TRUE");
 	}
 
 	private boolean isPDFPercentCoverageForecastSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
-		return this.complianceReportsPage.isPDFPercentCoverageForecastSelected() && (dataRow.percentCoverageForecast == "TRUE");
+		return this.getComplianceReportsPage().isPDFPercentCoverageForecastSelected() && (dataRow.percentCoverageForecast == "TRUE");
 	}
 
 	private boolean isPDFPercentCoverageReportAreaSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
-		return this.complianceReportsPage.isPDFPercentCoverageReportAreaSelected() && (dataRow.percentCoverageReportArea == "TRUE");
+		return this.getComplianceReportsPage().isPDFPercentCoverageReportAreaSelected() && (dataRow.percentCoverageReportArea == "TRUE");
 	}
 
 	private boolean areAssetBoundariesMatch(ReportOptViewLayersDataRow dataRow) {
@@ -1735,35 +1759,35 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
 	
 	private boolean isAssetCopperSelectionMatch(ReportOptViewLayersDataRow dataRow) {
-		return this.complianceReportsPage.isCopperSelected() && (dataRow.assetCopper == "TRUE");
+		return this.getComplianceReportsPage().isCopperSelected() && (dataRow.assetCopper == "TRUE");
 	}
 
 	private boolean isAssetCastIronSelectionMatch(ReportOptViewLayersDataRow dataRow) {
-		return this.complianceReportsPage.isCastIronSelected() && (dataRow.assetCastIron == "TRUE");
+		return this.getComplianceReportsPage().isCastIronSelected() && (dataRow.assetCastIron == "TRUE");
 	}
 
 	private boolean isAssetOtherPlasticSelectionMatch(ReportOptViewLayersDataRow dataRow) {
-		return this.complianceReportsPage.isOtherPlasticSelected() && (dataRow.assetOtherPlastic == "TRUE");
+		return this.getComplianceReportsPage().isOtherPlasticSelected() && (dataRow.assetOtherPlastic == "TRUE");
 	}
 
 	private boolean isAssetPEPlasticSelectionMatch(ReportOptViewLayersDataRow dataRow) {
-		return this.complianceReportsPage.isPEPlasticSelected() && (dataRow.assetPEPlastic == "TRUE");
+		return this.getComplianceReportsPage().isPEPlasticSelected() && (dataRow.assetPEPlastic == "TRUE");
 	}
 
 	private boolean isAssetProtectedSteelSelectionMatch(ReportOptViewLayersDataRow dataRow) {
-		return this.complianceReportsPage.isProtectedSteelSelected() && (dataRow.assetProtectedSteel == "TRUE");
+		return this.getComplianceReportsPage().isProtectedSteelSelected() && (dataRow.assetProtectedSteel == "TRUE");
 	}
 
 	private boolean isAssetUnprotectedSteelSelectionMatch(ReportOptViewLayersDataRow dataRow) {
-		return this.complianceReportsPage.isUnprotectedSteelSelected() && (dataRow.assetUnprotectedSteel == "TRUE");
+		return this.getComplianceReportsPage().isUnprotectedSteelSelected() && (dataRow.assetUnprotectedSteel == "TRUE");
 	}
 
 	private boolean isBoundariesDistrictSelectionMatch(ReportOptViewLayersDataRow dataRow) {
-		return this.complianceReportsPage.isDistrictSelected() && (dataRow.boundaryDistrict == "TRUE");
+		return this.getComplianceReportsPage().isDistrictSelected() && (dataRow.boundaryDistrict == "TRUE");
 	}
 
 	private boolean isBoundariesDistrictPlatSelectionMatch(ReportOptViewLayersDataRow dataRow) {
-		return this.complianceReportsPage.isDistrictPlatSelected() && (dataRow.boundaryDistrictPlat == "TRUE");
+		return this.getComplianceReportsPage().isDistrictPlatSelected() && (dataRow.boundaryDistrictPlat == "TRUE");
 	}
 
 	/**
@@ -1842,7 +1866,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyShapeFilesHaveCorrectData(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyShapeFilesHaveCorrectData", data, dataRowID);
 		downloadReportFileAndWait(dataRowID, ReportFileType.ShapeZIP);
-		this.complianceReportsPage.verifyShapeFilesData();
+		this.getComplianceReportsPage().verifyShapeFilesData();
 		return true;
 	}
 
@@ -1857,9 +1881,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyShapeZIPFilesAreCorrect", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyShapeZIPFilesAreCorrect", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
 		downloadReportFileAndWait(dataRowID, ReportFileType.ShapeZIP);
-		this.complianceReportsPage.verifyShapeFiles();
+		this.getComplianceReportsPage().verifyShapeFiles();
 		return true;
 	}
  
@@ -1874,8 +1898,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyShapeZIPThumbnailDownloadFromComplianceViewer", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyShapeZIPThumbnailDownloadFromComplianceViewer", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.ComplianceZipShape);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.ComplianceZipShape);
 		return true;
 	}
  
@@ -1889,8 +1913,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyShapeZIPThumbnailIsShownInComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyShapeZIPThumbnailIsShownInComplianceViewer", data, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceZipShape);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceZipShape);
 		return true;
 	}
 
@@ -1919,8 +1943,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyView1ThumbnailDownloadFromComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyView1ThumbnailDownloadFromComplianceViewer", data, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.FirstView);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.FirstView);
 		return true;
 	}
  
@@ -1934,8 +1958,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyView1ThumbnailIsShownInComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyView1ThumbnailIsShownInComplianceViewer", data, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyThumbnailInReportViewer(ReportViewerThumbnailType.FirstView);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.FirstView);
 		return true;
 	}
  
@@ -1949,8 +1973,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyView2ThumbnailDownloadFromComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyView2ThumbnailDownloadFromComplianceViewer", data, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.SecondView);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.SecondView);
 		return true;
 	}
  
@@ -1964,8 +1988,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyView2ThumbnailIsShownInComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyView2ThumbnailIsShownInComplianceViewer", data, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyThumbnailInReportViewer(ReportViewerThumbnailType.SecondView);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.SecondView);
 		return true;
 	}
  
@@ -1979,8 +2003,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyView3ThumbnailDownloadFromComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyView3ThumbnailDownloadFromComplianceViewer", data, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.ThirdView);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.ThirdView);
 		return true;
 	}
  
@@ -1994,8 +2018,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyView3ThumbnailIsShownInComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyView3ThumbnailIsShownInComplianceViewer", data, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyThumbnailInReportViewer(ReportViewerThumbnailType.ThirdView);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.ThirdView);
 		return true;
 	}
  
@@ -2009,8 +2033,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyView4ThumbnailDownloadFromComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyView4ThumbnailDownloadFromComplianceViewer", data, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.FourthView);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.FourthView);
 		return true;
 	}
  
@@ -2024,8 +2048,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyView4ThumbnailIsShownInComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyView4ThumbnailIsShownInComplianceViewer", data, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyThumbnailInReportViewer(ReportViewerThumbnailType.FourthView);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.FourthView);
 		return true;
 	}
  
@@ -2039,8 +2063,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyView5ThumbnailDownloadFromComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyView5ThumbnailDownloadFromComplianceViewer", data, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.FifthView);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.FifthView);
 		return true;
 	}
  
@@ -2054,8 +2078,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyView5ThumbnailIsShownInComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyView5ThumbnailIsShownInComplianceViewer", data, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyThumbnailInReportViewer(ReportViewerThumbnailType.FifthView);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.FifthView);
 		return true;
 	}
  
@@ -2069,8 +2093,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyView6ThumbnailDownloadFromComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyView6ThumbnailDownloadFromComplianceViewer", data, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.SixthView);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.SixthView);
 		return true;
 	}
  
@@ -2084,8 +2108,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyView6ThumbnailIsShownInComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyView6ThumbnailIsShownInComplianceViewer", data, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyThumbnailInReportViewer(ReportViewerThumbnailType.SixthView);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.SixthView);
 		return true;
 	}
  
@@ -2099,8 +2123,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyView7ThumbnailDownloadFromComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyView7ThumbnailDownloadFromComplianceViewer", data, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.SeventhView);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.SeventhView);
 		return true;
 	}
  
@@ -2114,8 +2138,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyView7ThumbnailIsShownInComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyView7ThumbnailIsShownInComplianceViewer", data, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.complianceReportsPage.waitForReportViewerPopupToShow();
-		this.complianceReportsPage.verifyThumbnailInReportViewer(ReportViewerThumbnailType.SeventhView);
+		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.SeventhView);
 		return true;
 	}
 
@@ -2347,8 +2371,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean waitForReportGenerationToComplete(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.waitForReportGenerationToComplete", data, dataRowID);
-		this.complianceReportsPage.waitForPageLoad();
-		this.complianceReportsPage.waitForReportGenerationtoComplete(workingDataRow.title, 
+		this.getComplianceReportsPage().waitForPageLoad();
+		this.getComplianceReportsPage().waitForReportGenerationtoComplete(workingDataRow.title, 
 				TestContext.INSTANCE.getLoggedInUser());
 		return true;
 	}
@@ -2484,7 +2508,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyReportFilesHaveCorrectData(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyReportFilesHaveCorrectData", data, dataRowID);
 		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
-		return this.complianceReportsPage.checkActionStatus(dataRow.title, TestContext.INSTANCE.getLoggedInUser(), dataRow.tCID);
+		return this.getComplianceReportsPage().checkActionStatus(ComplianceReportsPageActions.workingDataRow.title, 
+				TestContext.INSTANCE.getLoggedInUser(), dataRow.tCID);
 	}
 	
 	/**
@@ -2769,5 +2794,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 
 	public void setDataReader(ComplianceReportDataReader dataReader) {
 		this.dataReader = dataReader;
+	}
+
+	public ComplianceReportsPage getComplianceReportsPage() {
+		return (ComplianceReportsPage)this.pageObject;
 	}
 }

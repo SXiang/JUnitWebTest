@@ -57,15 +57,15 @@ public class ReportSurveyDataReader extends BaseDataReader {
 	}
  
 	public ReportSurveyDataRow getDataRow(Integer dataRowID) throws Exception {
-		String rowID = excelUtility.getCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
+		String rowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
 		String surveySurveyor = excelUtility.getCellData(dataRowID, Excel_TestData__Col_SurveySurveyor, TESTDATA_SHEET_NAME);
 		String surveyUsername = excelUtility.getCellData(dataRowID, Excel_TestData__Col_SurveyUsername, TESTDATA_SHEET_NAME);
 		String surveyTag = excelUtility.getCellData(dataRowID, Excel_TestData__Col_SurveyTag, TESTDATA_SHEET_NAME);
 		String surveyStartDate = excelUtility.getCellData(dataRowID, Excel_TestData__Col_SurveyStartDate, TESTDATA_SHEET_NAME);
 		String surveyEndDate = excelUtility.getCellData(dataRowID, Excel_TestData__Col_SurveyEndDate, TESTDATA_SHEET_NAME);
 		String surveyModeFilter = excelUtility.getCellData(dataRowID, Excel_TestData__Col_SurveyModeFilter, TESTDATA_SHEET_NAME);
-		String surveyGeoFilterON = excelUtility.getCellData(dataRowID, Excel_TestData__Col_SurveyGeoFilterON, TESTDATA_SHEET_NAME);
-		String numberofSurveystoInclude = excelUtility.getCellData(dataRowID, Excel_TestData__Col_NumberofSurveystoInclude, TESTDATA_SHEET_NAME);
+		String surveyGeoFilterON = excelUtility.getBooleanCellData(dataRowID, Excel_TestData__Col_SurveyGeoFilterON, TESTDATA_SHEET_NAME);
+		String numberofSurveystoInclude = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_NumberofSurveystoInclude, TESTDATA_SHEET_NAME);
 		
 		Log.info(String.format("Found data row: rowID=[%s], surveySurveyor=[%s], surveyUsername=[%s], surveyTag=[%s], surveyStartDate=[%s], "
 				+ "surveyEndDate=[%s], surveyModeFilter=[%s], surveyGeoFilterON=[%s], numberofSurveystoInclude=[%s]", 
@@ -74,4 +74,5 @@ public class ReportSurveyDataReader extends BaseDataReader {
 		
 		return new ReportSurveyDataRow(rowID, surveySurveyor, surveyUsername, surveyTag, surveyStartDate, surveyEndDate, surveyModeFilter, 
 				surveyGeoFilterON, numberofSurveystoInclude);
-	}}
+	}
+}

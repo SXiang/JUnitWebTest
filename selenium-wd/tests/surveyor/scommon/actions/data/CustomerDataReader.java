@@ -44,7 +44,7 @@ public class CustomerDataReader extends BaseDataReader {
 	}
  
 	public CustomerDataRow getDataRow(Integer dataRowID) throws Exception {
-		String rowID = excelUtility.getCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
+		String rowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
 		String name = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Name, TESTDATA_SHEET_NAME);
 		String enabled = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Enabled, TESTDATA_SHEET_NAME);
 		String eULA = excelUtility.getCellData(dataRowID, Excel_TestData__Col_EULA, TESTDATA_SHEET_NAME);

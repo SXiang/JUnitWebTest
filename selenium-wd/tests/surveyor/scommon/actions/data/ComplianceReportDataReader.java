@@ -97,17 +97,18 @@ public class ComplianceReportDataReader extends BaseDataReader {
 	}
  
 	public ComplianceReportsDataRow getDataRow(Integer dataRowID) throws Exception {
-		String rowID = excelUtility.getCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
+		String rowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
 		String tCID = excelUtility.getCellData(dataRowID, Excel_TestData__Col_TCID, TESTDATA_SHEET_NAME);
 		String title = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Title, TESTDATA_SHEET_NAME);
-		String customerRowID = excelUtility.getCellData(dataRowID, Excel_TestData__Col_CustomerRowID, TESTDATA_SHEET_NAME);
+		title = ActionArguments.evaluateArgForFunction(title);
+		String customerRowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_CustomerRowID, TESTDATA_SHEET_NAME);
 		String timezone = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Timezone, TESTDATA_SHEET_NAME);
-		String exclusionRadius = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ExclusionRadius, TESTDATA_SHEET_NAME);
+		String exclusionRadius = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_ExclusionRadius, TESTDATA_SHEET_NAME);
 		String reportMode = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ReportMode, TESTDATA_SHEET_NAME);
-		String customBoundaryNELat = excelUtility.getCellData(dataRowID, Excel_TestData__Col_CustomBoundaryNELat, TESTDATA_SHEET_NAME);
-		String customBoundaryNELong = excelUtility.getCellData(dataRowID, Excel_TestData__Col_CustomBoundaryNELong, TESTDATA_SHEET_NAME);
-		String customBoundarySWLat = excelUtility.getCellData(dataRowID, Excel_TestData__Col_CustomBoundarySWLat, TESTDATA_SHEET_NAME);
-		String customBoundarySWLong = excelUtility.getCellData(dataRowID, Excel_TestData__Col_CustomBoundarySWLong, TESTDATA_SHEET_NAME);
+		String customBoundaryNELat = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_CustomBoundaryNELat, TESTDATA_SHEET_NAME);
+		String customBoundaryNELong = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_CustomBoundaryNELong, TESTDATA_SHEET_NAME);
+		String customBoundarySWLat = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_CustomBoundarySWLat, TESTDATA_SHEET_NAME);
+		String customBoundarySWLong = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_CustomBoundarySWLong, TESTDATA_SHEET_NAME);
 		String customerBoundaryType = excelUtility.getCellData(dataRowID, Excel_TestData__Col_CustomerBoundaryType, TESTDATA_SHEET_NAME);
 		String customerBoundaryName = excelUtility.getCellData(dataRowID, Excel_TestData__Col_CustomerBoundaryName, TESTDATA_SHEET_NAME);
 		String opacityFOV = excelUtility.getCellData(dataRowID, Excel_TestData__Col_OpacityFOV, TESTDATA_SHEET_NAME);
@@ -119,7 +120,7 @@ public class ComplianceReportDataReader extends BaseDataReader {
 		String reportOptTabularPDFContentRowID = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ReportOptTabularPDFContentRowID, TESTDATA_SHEET_NAME);
 		String reportSurveyRowIDs = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ReportSurveyRowIDs, TESTDATA_SHEET_NAME);
 		
-		System.out.println(String.format("Found data row: rowID=[%s], tCID=[%s], title=[%s], customerRowID=[%s], timezone=[%s], exclusionRadius=[%s], "
+		Log.info(String.format("Found data row: rowID=[%s], tCID=[%s], title=[%s], customerRowID=[%s], timezone=[%s], exclusionRadius=[%s], "
 				+ "reportMode=[%s], customBoundaryNELat=[%s], customBoundaryNELong=[%s], customBoundarySWLat=[%s], customBoundarySWLong=[%s], "
 				+ "customerBoundaryType=[%s], customerBoundaryName=[%s], opacityFOV=[%s], opacityLISA=[%s], pDFImageOutputWidth=[%s], "
 				+ "pDFImageOutputHeight=[%s], reportViewRowIDs=[%s], reportOptViewLayerRowID=[%s], reportOptTabularPDFContentRowID=[%s], "

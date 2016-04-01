@@ -97,6 +97,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import common.source.BaseHelper;
 import common.source.CSVUtility;
@@ -336,10 +337,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return false;
 	}
 
-	// more generic interface and implementation, more details will be added
-	// into the reports objects
 	public void addNewReport(Reports reportsCompliance) {
-		openNewReportPage();
+		addNewReport(reportsCompliance, true /*openNewReportsPage*/); 
+	}
+	
+	public void addNewReport(Reports reportsCompliance, boolean openNewReportsPage) {
+		if (openNewReportsPage) {
+			openNewReportPage();
+		}
 		inputReportTitle(reportsCompliance.getRptTitle());
 
 		if (reportsCompliance.getCustomer() != null && reportsCompliance.getCustomer() != "Picarro") {
@@ -385,7 +390,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			selectPercentCoverageReportArea();
 		}
 
-		handleOptionalViewLayersSection(tablesList);
+		List<Map<String, String>> viewLayersList = reportsCompliance.getViewLayersList();
+		handleOptionalViewLayersSection(viewLayersList);
 
 		this.clickOnOKButton();
 	}
@@ -1811,8 +1817,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
-
+			
+			Log.info(String.format("Found report - Title=[%s], Created by=[%s]", rptTitleCell.getText(), createdByCell.getText()));
+			
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				Log.info(String.format("Found Match. Title=[%s], Created by=[%s]", rptTitleCell.getText(), createdByCell.getText()));
 				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
 				copyImg = table.findElement(By.xpath(copyImgXPath));
 				copyImg.click();
@@ -3330,7 +3339,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return d.getPageSource().contains(STRCopyPageTitle);
-
 			}
 		});
 	}

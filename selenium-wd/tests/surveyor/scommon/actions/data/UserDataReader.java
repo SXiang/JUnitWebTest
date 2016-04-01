@@ -73,18 +73,18 @@ public class UserDataReader extends BaseDataReader {
 	}
  
 	public UserDataRow getDataRow(Integer dataRowID) throws Exception {
-		String rowID = excelUtility.getCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
+		String rowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
 		String username = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Username, TESTDATA_SHEET_NAME);
 		String password = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Password, TESTDATA_SHEET_NAME);
-		String enabled = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Enabled, TESTDATA_SHEET_NAME);
+		String enabled = excelUtility.getBooleanCellData(dataRowID, Excel_TestData__Col_Enabled, TESTDATA_SHEET_NAME);
 		String role = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Role, TESTDATA_SHEET_NAME);
 		String firstName = excelUtility.getCellData(dataRowID, Excel_TestData__Col_FirstName, TESTDATA_SHEET_NAME);
 		String lastName = excelUtility.getCellData(dataRowID, Excel_TestData__Col_LastName, TESTDATA_SHEET_NAME);
 		String cellNumber = excelUtility.getCellData(dataRowID, Excel_TestData__Col_CellNumber, TESTDATA_SHEET_NAME);
 		String timezone = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Timezone, TESTDATA_SHEET_NAME);
 		String language = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Language, TESTDATA_SHEET_NAME);
-		String locationRowID = excelUtility.getCellData(dataRowID, Excel_TestData__Col_LocationRowID, TESTDATA_SHEET_NAME);
-		String customerRowID = excelUtility.getCellData(dataRowID, Excel_TestData__Col_CustomerRowID, TESTDATA_SHEET_NAME);
+		String locationRowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_LocationRowID, TESTDATA_SHEET_NAME);
+		String customerRowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_CustomerRowID, TESTDATA_SHEET_NAME);
 		
 		Log.info(String.format("Found data row: rowID=[%s], username=[%s], password=[%s], enabled=[%s], role=[%s], "
 				+ "firstName=[%s], lastName=[%s], cellNumber=[%s], timezone=[%s], language=[%s], locationRowID=[%s], "
