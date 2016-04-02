@@ -257,7 +257,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 * - User is navigated to Manage Customers page and new customer entry is present in the table
 	 * 
 	 */
-	@Ignore    // Ignoring. Validation message NOT showing correctly in Product. Check if SEED script update is needed.
+	   // Ignoring. Validation message NOT showing correctly in Product. Check if SEED script update is needed.
 	public void TC88_DuplicateCustomerNotAllowed_PicAdmin() {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC88";
 		Log.info("\nRunning TC88_DuplicateCustomerNotAllowed_PicAdmin - Test Description: Admin not allowed to create duplicate Customer");

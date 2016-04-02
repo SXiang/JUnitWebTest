@@ -77,6 +77,15 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonOk']")
 	protected WebElement btnOk;
 
+
+	@FindBy(css = ".validation-summary-errors > .panel-heading")
+	protected WebElement summaryErrors;
+	protected By summaryErrorsBy = By.cssSelector(".validation-summary-errors > .panel-heading");
+	
+	@FindBy(css = ".validation-summary-errors > .panel-body li")
+	protected List<WebElement> pannelErrors;
+	
+	// Following 2 declarations might be replaced by those 2 above this 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
 	protected WebElement panelDuplicationError;
 	protected String panelDuplicationErrorXPath = "//*[@id='page-wrapper']/div/div[2]/div[1]";
@@ -84,6 +93,7 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[2]/ul/li")
 	protected WebElement liDuplicateMsg;
 
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-manage-users']/a")
 	protected WebElement linkAdminManageUsers;
 

@@ -76,7 +76,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String password =USERPASSWORD;
 		String password_16 = password + "abc"; // 16 chars
 		String password_80 = password_16 + password_16 + password_16 + password_16 + password_16;
-		String errorMsg = "Please enter no more than 15 characters.";
+		String errorMsg = PASSWORDTOOLONG;
 		
 		String userName = PICNAMEPREFIX + "dr" + testSetup.getRandomNumber() + REGBASEPICUSERNAME;
 		String customerName = "Picarro";
@@ -730,4 +730,162 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		}
 		return testCase;
 	}
+	
+
+	/**
+	 * Test Case ID: TC480
+     * Test Description: Add User - Password and Confirm Password values different
+	 * Script:
+	 *  - Log into the site and click Administration -> Users
+	 *  - Click on 'Add New Picarro (or Customer) User' button
+	 *  - Provide different values for Password and Confirm Password fields
+     * Results:
+     *  - "Please enter the same value again." message should be displayed
+	 */
+	@Test
+	public void TC480_ConfirmPasswordDifferent_PicSupport(){
+		String errorMsg = PWDSAMEVALUE;		
+		String email = PICNAMEPREFIX + "dr" + testSetup.getRandomNumber() + REGBASEPICUSERNAME;		
+		String customerName = "Picarro";
+		String location = SQACUSSULOC;
+		String locationDesc = customerName + " - " + location;
+		
+		loginPage.open();
+		loginPage.loginNormalAs( SQAPICSUP,USERPASSWORD);
+		manageUsersPage.open();
+		
+		// Picarro user
+		manageUsersPage.addNewPicarroUser(email, USERPASSWORD,USERPASSWORD+" ", CUSUSERROLEDR, locationDesc, TIMEZONECT);		
+		assertEquals(manageUsersPage.getConfirmPasswordError(),errorMsg);
+
+		manageUsersPage.clickOnCancelAddBtn();
+		
+		// Customer User
+		customerName = SQACUS;
+		location = SQACUSLOC;
+		locationDesc = customerName + " - " + location;
+		
+		manageUsersPage.addNewCustomerUser(customerName, email, "_"+USERPASSWORD,USERPASSWORD, CUSUSERROLEDR, location,true);
+		assertEquals(manageUsersPage.getConfirmPasswordError(),errorMsg);
+		
+		manageUsersPage.clickOnCancelAddBtn();		
+	}
+	
+	/**
+	 * Test Case ID: TC481
+     * Test Description: Add user - invalid email address values
+	 * Script:
+	 *  - Log into the site and click Administration -> Users
+	 *  - Click on 'Add New Picarro (or Customer) User' button
+	 *  - Provide invalid email address (e.g. rpitter@b, rpitter, rpitter@b. , rpitter@b.c). Click OK
+     * Results:
+     *  - "Please enter valid email address" message should be displayed
+	 */
+	@Test
+	public void TC481_InvalidEmailAddress_PicSupport(){
+		String errorMsg = ENTERVALIDEMAIL;		
+		String emailU = PICNAMEPREFIX + "dr" + testSetup.getRandomNumber() + "@invalid.u";
+		String emailC = PICNAMEPREFIX + "dr" + testSetup.getRandomNumber() + "";
+		
+		String customerName = "Picarro";
+		String location = SQACUSSULOC;
+		String locationDesc = customerName + " - " + location;
+		
+		
+		Log.info("\nRunning - TC481_InvalidEmailAddress_PicSupport - "+
+				"Test Description: Add user - invalid email address values\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs( SQAPICSUP,USERPASSWORD);
+		manageUsersPage.open();
+		
+		// Picarro user
+		manageUsersPage.addNewPicarroUser(emailU, USERPASSWORD, CUSUSERROLEDR, locationDesc, TIMEZONECT);		
+		assertEquals(manageUsersPage.getInvalidEmailError(),errorMsg);
+
+		manageUsersPage.clickOnCancelAddBtn();
+		
+		// Customer User
+		customerName = SQACUS;
+		location = SQACUSLOC;
+		locationDesc = customerName + " - " + location;
+		
+		manageUsersPage.addNewCustomerUser(customerName, emailC, USERPASSWORD, CUSUSERROLEDR, locationDesc);
+		assertEquals(manageUsersPage.getInvalidEmailError(),errorMsg);
+		
+		manageUsersPage.clickOnCancelAddBtn();		
+	}	
+
+	/**
+	 * Test Case ID: TC482
+     * Test Description: Add user - blank required fields
+	 * Script:
+	 *  -  Log into the site and click Administration -> Users
+     *  - Click on 'Add New Picarro (or Customer) User' button
+     *  - Keep Email Address, pwd and confirm pwd fields blank. Click OK
+     * Result:
+     *  - "This field is required." message should be displayed"
+     */
+	@Test
+	public void TC482_AddUserBlankFields_PicSupport(){
+		String errorMsg = BLANKFIELDERROR;		
+		String email = "";
+		String password = "";
+		
+		String customerName = "Picarro";
+		String location = SQACUSSULOC;
+		String locationDesc = customerName + " - " + location;
+		
+		Log.info("\nRunning - TC482_AddUserBlankFields_PicSupport - "+
+				"Test Description: Add user - blank required fields\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs( SQAPICSUP,USERPASSWORD);
+		manageUsersPage.open();
+		
+		// Add Picarro User
+		manageUsersPage.addNewPicarroUser(email, password, CUSUSERROLEDR, locationDesc, TIMEZONECT);		
+		assertEquals(manageUsersPage.getInvalidEmailError(),errorMsg);
+		assertEquals(manageUsersPage.getPasswordError(),errorMsg);
+		assertEquals(manageUsersPage.getConfirmPasswordError(),errorMsg);
+		
+		manageUsersPage.clickOnCancelAddBtn();
+		
+		// Add Customer User
+		customerName = SQACUS;
+		location = SQACUSLOC;
+		locationDesc = customerName + " - " + location;
+		
+		manageUsersPage.addNewCustomerUser(customerName, email, password, CUSUSERROLEDR, locationDesc);
+		assertEquals(manageUsersPage.getInvalidEmailError(),errorMsg);
+		assertEquals(manageUsersPage.getPasswordError(),errorMsg);
+		assertEquals(manageUsersPage.getConfirmPasswordError(),errorMsg);
+		
+		manageUsersPage.clickOnCancelAddBtn();		
+	}	
+	
+	/**
+	 * Test Case ID: TC488
+     * Test Description: Search invalid user record
+	 * Script:
+	 *  -  Log into the site and Provide invalid user name in search box present on Users screen
+     * Result:
+     *  - "Message should be displayed : 'No matching records found'
+     */
+	@Test
+	public void TC488_NoMatchingUsersFound_PicSupport(){
+		String errorMsg = NOMATCHINGRECORDS;		
+		String invalidKey = "whichUserIsNotValidHowever";
+
+		Log.info("\nRunning - TC488_NoMatchingUsersFound_PicSupport - "+
+				"Test Description: Add user - blank required fields\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs( SQAPICSUP,USERPASSWORD);
+		manageUsersPage.open();
+
+		manageUsersPage.performSearch(invalidKey);
+		assertEquals(manageUsersPage.getLabelNoMatchingSearch(),errorMsg);
+	}		
+	
 }

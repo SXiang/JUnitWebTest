@@ -187,9 +187,15 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		addNewLocation(locationDesc, customer, newLocationName, true /*UseLatLongSelector*/, ethMthMin, ethMthMax );
 	}
 
-	private void addNewLocation(String locationDesc, String customer,
+	public void addNewLocation(String locationDesc, String customer,
 			String newLocationName, boolean useLatLongSelector, String ethMthMin, String ethMthMax) {
 
+	    addNewLocation(locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin,ethMthMax,true);
+	}
+	
+	public void addNewLocation(String locationDesc, String customer,
+			String newLocationName, boolean useLatLongSelector, String ethMthMin, String ethMthMax, boolean cancelIfError) {
+		
 		if (newLocationName.equalsIgnoreCase("Santa Clara")) {
 			latitude = "37.3971035425739";
 			longitude = "-121.98343231897";
@@ -269,12 +275,27 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 		this.btnOK.click();
 		this.waitForPageToLoad();
-
-		if (isElementPresent(this.panelDuplicationErrorXPath)) {
-			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
-				this.btnCancel.click();
+        
+		if(cancelIfError 
+				&& this.correctPossibleError(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
+			this.btnCancel.click();
 		}
+	}
+	
+	public boolean correctPossibleError(String errorMsg){
+		boolean found = false;
+		if (isElementPresent(this.summaryErrorsBy)) {			
+			if (this.summaryErrors.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
+				for(WebElement element:this.pannelErrors){
+					if(element.getText().contains(errorMsg)){
+						found = true;
+						break;
+					}
+				}
+			}
+		}
+		
+		return found;
 	}
 
 	public void inputLatLong(String latitude, String longitude){
@@ -306,9 +327,11 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 	
 	public boolean findExistingLocationAndClickEdit(String customerName, String locationName){
-		return editExistingLocation(customerName, locationName, null,null,null,null,null, true);
+		return editExistingLocation(customerName, locationName, null,null,null,null,null, true, true);
 	}
-
+	public boolean editExistingLocation(String customerName, String locationName, String newLocationName, boolean cancelIfError){
+		return editExistingLocation(customerName, locationName, newLocationName,null,null,null,null, false, cancelIfError);
+	}
 	public boolean findExistingLocation(String customerName, String locationName) {
 		setPagination(PAGINATIONSETTING_100);
 
@@ -385,12 +408,12 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			String longValue, String newEthMthMin, String newEthMthMax){
 		
 		return editExistingLocation(customerName, locationName, newLocationName, latValue,
-				longValue, newEthMthMin, newEthMthMax, false);
+				longValue, newEthMthMin, newEthMthMax, false,true);
 	}
 	
 	public boolean editExistingLocation(String customerName,
 			String locationName, String newLocationName, String latValue,
-			String longValue, String newEthMthMin, String newEthMthMax , boolean openEditorOnly)
+			String longValue, String newEthMthMin, String newEthMthMax , boolean openEditorOnly, boolean cancelIfError)
 	{
 		setPagination(PAGINATIONSETTING_100);
 
@@ -474,13 +497,12 @@ public class ManageLocationsPage extends SurveyorBasePage {
 					}
 				}
 
-				this.inputLocationDesc.clear();
-				this.inputLocationDesc.sendKeys(newLocationName);
-
 				String curURL = driver.getCurrentUrl();
 
 				this.btnOK.click();
-
+                if(!cancelIfError){
+                	return true;
+                }
 				if (newLocationName.equalsIgnoreCase("")) {
 					// Required field validation message should be shown.
 					this.waitUntilPresenceOfElementLocated(labelLocDescErrorID);
@@ -564,6 +586,10 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	public String getLocationLongitudeError() {
 		return this.labelLongValueError.getText();
+	}
+	
+	public String getLocationDescriptionError(){
+		return this.labelLocDescError.getText();
 	}
 	public void clickOnAddNewLocationBtn() {
 		this.btnAddNewLocation.click();
