@@ -297,8 +297,8 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 				{ "18", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, null, null, createBoundaryList(), tagList18, tablesList18, viewList18, null },
 				{ "19", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, null, null, createBoundaryList(), tagList19, tablesList19, viewList19, null },
 				{ "20", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEMTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList20, tablesList20, viewList20, null }, //include dates
-				{ "21", SQACUSSU, USERPASSWORDHASH, "sqacus", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList21, tablesList21, viewList21, null } ,
-				{"22", SQACUSSU, USERPASSWORDHASH, "sqacus", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList22, tablesList22, viewList22, null },
+				{ "21", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList21, tablesList21, viewList21, null } ,
+				{"22", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList22, tablesList22, viewList22, null },
 				{"23", SQACUSSU, USERPASSWORDHASH, "sqacus", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList23, tablesList23, viewList23, null }
 
 		};

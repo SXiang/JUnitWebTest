@@ -177,9 +177,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String ComplianceReportSSRS_IndicationTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_IndicationTable);
 	public static final String ComplianceReportSSRS_GapTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_GapTable);
 
-	@FindBy(how = How.ID, using = "pdf")
-	protected WebElement pdfImg;
-
 	@FindBy(how = How.ID, using = "zip-file_pdf")
 	protected WebElement zipImg;
 
@@ -419,7 +416,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (viewList.get(i).get(KEYASSETS).equalsIgnoreCase("1")) {
 				colNum = 10;
 				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
-				driver.findElement(By.xpath(strBaseXPath)).click();
+				WebElement assetCheckbox=driver.findElement(By.xpath(strBaseXPath));
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", assetCheckbox);
 			}
 
 			if (viewList.get(i).get(KEYBOUNDARIES).equalsIgnoreCase("1")) {
@@ -491,44 +490,48 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	@Override
-	public void complianceSpecificFileDownloads(String rptTitle, String testCaseID) {
-		String srcPdfImg = this.pdfImg.getAttribute("src");
-		String srcZipImg = this.zipImg.getAttribute("src");
-		String srcZipMeta = this.zipMeta.getAttribute("src");
-		String srcShapeImg = this.zipShape.getAttribute("src");
+	public boolean handleFileDownloads(String rptTitle, String testCaseID) {
 		Report objReport = Report.getReport(rptTitle);
 		String reportId = objReport.getId();
 		reportId = reportId.substring(0, 6);
-		setReportName("CR-" + reportId);
+		String reportName="CR-" + reportId;
 		clickOnPDFInReportViewer();
-		waitForPDFFileDownload(getReportName());
+		waitForPDFFileDownload(reportName);
+		Log.info("SSRS zip file got downloaded");
 		clickOnZIPInReportViewer();
-		waitForReportZIPFileDownload(getReportName());
+		waitForReportZIPFileDownload(reportName);
 		if (zipMeta.isDisplayed()) {
 			clickOnMetadataZIPInReportViewer();
-			waitForMetadataZIPFileDownload(getReportName());
+			waitForMetadataZIPFileDownload(reportName);
+			Log.info("Meta data zip file got downloaded");
+
 			try {
-				BaseHelper.deCompressZipFile(getReportName() + " (1)", testSetup.getDownloadPath());
+				BaseHelper.deCompressZipFile(reportName + " (1)", testSetup.getDownloadPath());
 			} catch (Exception e) {
 				Log.error(e.toString());
+				return false;
 			}
 			if (zipShape.isDisplayed()) {
 				clickOnShapeZIPInReportViewer();
-				waitForShapeZIPFileDownload(getReportName());
+				waitForShapeZIPFileDownload(reportName);
+				Log.info("Shape files zip file got downloaded");
 				if (testCaseID != null) {
 					try {
-						checkAndGenerateBaselineShapeAndGeoJsonFiles(getReportName(), testCaseID);
+						checkAndGenerateBaselineShapeAndGeoJsonFiles(reportName, testCaseID);
 					} catch (Exception e) {
 						Log.error(e.toString());
+						return false;
 					}
 				}
 			}
 		}
 		if (zipShape.isDisplayed()) {
 			clickOnShapeZIPInReportViewer();
-			waitForShapeZIPFileDownload(getReportName());
-		}
+			waitForShapeZIPFileDownload(reportName);
+			Log.info("Shape files zip file got downloaded");
 
+		}
+		return true;
 	}
 
 	private void checkAndGenerateBaselineShapeAndGeoJsonFiles(String reportName, String testCaseID) throws Exception {
@@ -1113,8 +1116,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		for (String windowHandle : handles) {
 			if (!windowHandle.equals(parentWindow)) {
 				driver.switchTo().window(windowHandle);
-				// driver.manage().window().maximize();
-
 				this.inputCustomNELat.clear();
 				testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 				this.inputCustomNELat.sendKeys(listBoundary.get(2));
@@ -2111,6 +2112,48 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		ImageIO.write(image, "png", new File(actualImage));
 		return true;
 	}
+	
+	/**
+	 * Method to verify the Views Images
+	 * 
+	 * @param actualPath
+	 * @param reportTitle
+	 * @param expectedImage
+	 * @return
+	 * @throws IOException
+	 */
+
+	public boolean verifyViewsImages(String actualPath, String reportTitle, String testCase, String destViewTitle) throws IOException {
+		PDFUtility pdfUtility = new PDFUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
+		String reportName = "CR-" + reportId;
+		setReportName(reportName);
+		String baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + destViewTitle + ".png";
+		String imageExtractFolder=pdfUtility.extractPDFImages(actualReport, testCase);
+		File folder = new File(imageExtractFolder);
+		File[] listOfFiles = folder.listFiles();
+		for (File file : listOfFiles) {
+			if (file.isFile()) {
+				BufferedImage image = ImageIO.read(file);
+				int width = image.getWidth();
+				int height = image.getHeight();
+				Rectangle rect = new Rectangle(0, 0, width, height - 40);
+				image = cropImage(image, rect);
+				String actualViewPath = testSetup.getSystemTempDirectory() + testCase + ".png";
+				File outputfile = new File(testSetup.getSystemTempDirectory() + testCase + ".png");
+				ImageIO.write(image, "png", outputfile);
+				if (!verifyActualImageWithBase(baseViewFile, actualViewPath)) {
+					Files.delete(Paths.get(actualViewPath));
+					return false;
+				}
+				Files.delete(Paths.get(actualViewPath));
+			}
+		}
+		return true;
+	}
+
 
 	public void verifyShapeFilesData() {
 		try {
@@ -2376,21 +2419,22 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 	
 	public void selectSurveyModeForSurvey(SurveyModeFilter surveyModeFilter) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		switch (surveyModeFilter) {
 		case All:
-			this.inputSurModeFilterAll.click();
+			js.executeScript("arguments[0].click();", this.inputSurModeFilterAll);
 			break;
 		case Standard:
-			this.inputSurModeFilterStd.click();
+			js.executeScript("arguments[0].click();", this.inputSurModeFilterStd);
 			break;
 		case Operator:
-			this.inputSurModeFilterOperator.click();
+			js.executeScript("arguments[0].click();", this.inputSurModeFilterOperator);
 			break;
 		case RapidResponse:
-			this.inputSurModeFilterRapidResponse.click();
+			js.executeScript("arguments[0].click();", this.inputSurModeFilterRapidResponse);
 			break;
 		case Manual:
-			this.inputSurModeFilterManual.click();
+			js.executeScript("arguments[0].click();", this.inputSurModeFilterManual);
 			break;
 		default:
 			break;
@@ -2447,16 +2491,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return STRNewPageContentText;
 	}
 
-	@Override
-	public void waitForPdfReportIcontoAppear() {
-		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return pdfImg.isDisplayed();
-
-			}
-		});
-	}
-
+	
 	@Override
 	public String getStrCopyPageText() {
 		return STRCopyPageTitle;

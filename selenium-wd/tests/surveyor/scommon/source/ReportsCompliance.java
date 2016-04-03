@@ -3,8 +3,19 @@
  */
 package surveyor.scommon.source;
 
+import static surveyor.scommon.source.SurveyorConstants.IMGMAPHEIGHT;
+import static surveyor.scommon.source.SurveyorConstants.IMGMAPWIDTH;
+import static surveyor.scommon.source.SurveyorConstants.RNELAT;
+import static surveyor.scommon.source.SurveyorConstants.RNELON;
+import static surveyor.scommon.source.SurveyorConstants.RSWLAT;
+import static surveyor.scommon.source.SurveyorConstants.RSWLON;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
+import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPTUA;
+
 import java.util.List;
 import java.util.Map;
+
+import surveyor.scommon.source.ReportsCompliance.SurveyModeFilter;
 
 /**
  * @author zlu
@@ -45,12 +56,17 @@ public class ReportsCompliance extends Reports {
 		ExcludeVehicleExhaust, ExcludeBiogenicMethane, Both, None
 	}
 
-
 	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, 
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit,tagList);
 		this.exclusionRadius = exclusionRadius;
-		this.listBoundary = listBoundary;
+		this.imageMapHeight=listBoundary.get(0);
+		this.imageMapWidth=listBoundary.get(1);
+		this.NELat = listBoundary.get(2);
+		this.NELong =listBoundary.get(3);
+		this.SWLat = listBoundary.get(4);
+		this.SWLong = listBoundary.get(5);
+		this.listBoundary=listBoundary;
 		this.tablesList = tablesList;
 		this.viewLayersList=viewList;
 	}
@@ -59,6 +75,12 @@ public class ReportsCompliance extends Reports {
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList);
 		this.exclusionRadius=exclusionRadius;
+		this.imageMapHeight=listBoundary.get(0);
+		this.imageMapWidth=listBoundary.get(1);
+		this.NELat = listBoundary.get(2);
+		this.NELong =listBoundary.get(3);
+		this.SWLat = listBoundary.get(4);
+		this.SWLong = listBoundary.get(5);
 		this.listBoundary=listBoundary;
 		this.tablesList=tablesList;
 		this.tagList=tagList;
@@ -70,6 +92,12 @@ public class ReportsCompliance extends Reports {
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList, startDate, endDate);
 		this.exclusionRadius=exclusionRadius;
+		this.imageMapHeight=listBoundary.get(0);
+		this.imageMapWidth=listBoundary.get(1);
+		this.NELat = listBoundary.get(2);
+		this.NELong =listBoundary.get(3);
+		this.SWLat = listBoundary.get(4);
+		this.SWLong = listBoundary.get(5);
 		this.listBoundary = listBoundary;
 		this.tablesList = tablesList;
 		this.viewList= viewList;
@@ -80,6 +108,12 @@ public class ReportsCompliance extends Reports {
 			String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode, ReportModeFilter reportMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList, startDate, endDate);
 		this.exclusionRadius=exclusionRadius;
+		this.imageMapHeight=listBoundary.get(0);
+		this.imageMapWidth=listBoundary.get(1);
+		this.NELat = listBoundary.get(2);
+		this.NELong =listBoundary.get(3);
+		this.SWLat = listBoundary.get(4);
+		this.SWLong = listBoundary.get(5);
 		this.listBoundary=listBoundary;
 		this.tablesList=tablesList;
 		this.viewList=viewList;
@@ -92,6 +126,12 @@ public class ReportsCompliance extends Reports {
 			List<Map<String, String>> viewList, SurveyModeFilter surveyMode, Boolean geoFilter) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList, startDate, endDate, geoFilter);
 		this.exclusionRadius=exclusionRadius;
+		this.imageMapHeight=listBoundary.get(0);
+		this.imageMapWidth=listBoundary.get(1);
+		this.NELat = listBoundary.get(2);
+		this.NELong =listBoundary.get(3);
+		this.SWLat = listBoundary.get(4);
+		this.SWLong = listBoundary.get(5);
 		this.listBoundary=listBoundary;
 		this.tablesList=tablesList;
 		this.viewList=viewList;
@@ -103,6 +143,12 @@ public class ReportsCompliance extends Reports {
 			SurveyModeFilter surveyMode, String userName, Boolean geoFilterOn, ReportModeFilter reportMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit,  startDate,endDate, userName, geoFilterOn,tagList);
 		this.exclusionRadius=exclusionRadius;
+		this.imageMapHeight=listBoundary.get(0);
+		this.imageMapWidth=listBoundary.get(1);
+		this.NELat = listBoundary.get(2);
+		this.NELong =listBoundary.get(3);
+		this.SWLat = listBoundary.get(4);
+		this.SWLong = listBoundary.get(5);
 		this.listBoundary=listBoundary;
 		this.tablesList=tablesList;
 		this.viewList=viewList;
@@ -114,6 +160,12 @@ public class ReportsCompliance extends Reports {
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList, ReportModeFilter reportMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList);
 		this.exclusionRadius=exclusionRadius;
+		this.imageMapHeight=listBoundary.get(0);
+		this.imageMapWidth=listBoundary.get(1);
+		this.NELat = listBoundary.get(2);
+		this.NELong =listBoundary.get(3);
+		this.SWLat = listBoundary.get(4);
+		this.SWLong = listBoundary.get(5);
 		this.listBoundary=listBoundary;
 		this.tablesList=tablesList;
 		this.viewList=viewList;
@@ -126,6 +178,12 @@ public class ReportsCompliance extends Reports {
 			List<Map<String, String>> viewLayersList) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, userName, startDate, endDate,geoFilter, tagList);
 		this.exclusionRadius=exclusionRadius;
+		this.imageMapHeight=listBoundary.get(0);
+		this.imageMapWidth=listBoundary.get(1);
+		this.NELat = listBoundary.get(2);
+		this.NELong =listBoundary.get(3);
+		this.SWLat = listBoundary.get(4);
+		this.SWLong = listBoundary.get(5);
 		this.fovOpacity=fovOpacity;
 		this.lisaOpacity=lisaOpacity;
 		this.reportModeFilter=reportMode;
@@ -142,7 +200,7 @@ public class ReportsCompliance extends Reports {
 	}
 
 	public String getExclusionRadius() {
-		return exclusionRadius;
+		return this.exclusionRadius;
 	}
 
 	public void setExclusionRadius(String exclusionRadius) {
@@ -150,7 +208,7 @@ public class ReportsCompliance extends Reports {
 	}
 
 	public List<String> getListBoundary() {
-		return listBoundary;
+		return this.listBoundary;
 	}
 
 	public void setListBoundary(List<String> listBoundary) {
@@ -158,7 +216,7 @@ public class ReportsCompliance extends Reports {
 	}
 
 	public String getImageMapHeight() {
-		return imageMapHeight;
+		return this.imageMapHeight;
 	}
 
 	public void setImageMapHeight(String imageMapHeight) {
@@ -166,7 +224,7 @@ public class ReportsCompliance extends Reports {
 	}
 
 	public String getImageMapWidth() {
-		return imageMapWidth;
+		return this.imageMapWidth;
 	}
 
 	public void setImageMapWidth(String imageMapWidth) {
@@ -174,39 +232,39 @@ public class ReportsCompliance extends Reports {
 	}
 
 	public String getNELat() {
-		return NELat;
+		return this.NELat;
 	}
 
 	public void setNELat(String nELat) {
-		NELat = nELat;
+		this.NELat = nELat;
 	}
 
 	public String getNELong() {
-		return NELong;
+		return this.NELong;
 	}
 
 	public void setNELong(String nELong) {
-		NELong = nELong;
+		this.NELong = nELong;
 	}
 
 	public String getSWLat() {
-		return SWLat;
+		return this.SWLat;
 	}
 
 	public void setSWLat(String sWLat) {
-		SWLat = sWLat;
+		this.SWLat = sWLat;
 	}
 
 	public String getSWLong() {
-		return SWLong;
+		return this.SWLong;
 	}
 
 	public void setSWLong(String sWLong) {
-		SWLong = sWLong;
+		this.SWLong = sWLong;
 	}
 
 	public String getFovOpactiy() {
-		return fovOpacity;
+		return this.fovOpacity;
 	}
 
 	public void setFovOpactiy(String fovOpactiy) {
@@ -214,7 +272,7 @@ public class ReportsCompliance extends Reports {
 	}
 
 	public String getLisaOpacity() {
-		return lisaOpacity;
+		return this.lisaOpacity;
 	}
 
 	public void setLisaOpacity(String lisaOpacity) {
@@ -222,7 +280,7 @@ public class ReportsCompliance extends Reports {
 	}
 
 	public String getCustomerBoundary() {
-		return customerBoundary;
+		return this.customerBoundary;
 	}
 
 	public void setCustomerBoundary(String customerBoundary) {
@@ -230,7 +288,7 @@ public class ReportsCompliance extends Reports {
 	}
 
 	public List<Map<String, String>> getViewList() {
-		return viewList;
+		return this.viewList;
 	}
 
 	public void setViewList(List<Map<String, String>> viewList) {
@@ -238,7 +296,7 @@ public class ReportsCompliance extends Reports {
 	}
 
 	public List<Map<String, String>> getTablesList() {
-		return tablesList;
+		return this.tablesList;
 	}
 
 	public void setTablesList(List<Map<String, String>> tablesList) {
@@ -246,7 +304,7 @@ public class ReportsCompliance extends Reports {
 	}
 
 	public List<Map<String, String>> getViewLayersList() {
-		return viewLayersList;
+		return this.viewLayersList;
 	}
 
 	public void setViewLayersList(List<Map<String, String>> viewLayersList) {
@@ -254,7 +312,7 @@ public class ReportsCompliance extends Reports {
 	}
 
 	public SurveyModeFilter getSurveyModeFilter() {
-		return surveyModeFilter;
+		return this.surveyModeFilter;
 	}
 
 	public void setSurveyModeFilter(SurveyModeFilter surveyModeFilter) {
@@ -262,7 +320,7 @@ public class ReportsCompliance extends Reports {
 	}
 
 	public ReportModeFilter getReportModeFilter() {
-		return reportModeFilter;
+		return this.reportModeFilter;
 	}
 
 	public void setReportModeFilter(ReportModeFilter reportModeFilter) {
@@ -270,7 +328,7 @@ public class ReportsCompliance extends Reports {
 	}
 
 	public EthaneFilter getEthaneFilter() {
-		return ethaneFilter;
+		return this.ethaneFilter;
 	}
 
 	public void setEthaneFilter(EthaneFilter ethaneFilter) {

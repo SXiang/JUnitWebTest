@@ -2,6 +2,8 @@ package surveyor.scommon.source;
 
 import static common.source.BaseHelper.matchSinglePattern;
 
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -17,6 +19,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.imageio.ImageIO;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -51,6 +55,7 @@ public class EqReportsPage extends ReportsBasePage {
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.EqReport_PageTitle);
 	public static final String EQReportSSRS_EmissionsQuantificationReport = Resources.getResource(ResourceKeys.EQReportSSRS_EmissionsQuantificationReport);
 	public static final String EQReportSSRS_EmissionsQuantificationData = Resources.getResource(ResourceKeys.EQReportSSRS_EmissionsQuantificationData);
+	public static final String EQReportSSRS_NoEQrecordsarepresent = Resources.getResource(ResourceKeys.EQReportSSRS_NoEQrecordsarepresent);	
 
 	private String reportName;
 
@@ -66,9 +71,7 @@ public class EqReportsPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='eq-selected-text']")
 	protected WebElement eqRptArea;
 	
-	@FindBy(how = How.ID, using = "pdf")
-	protected WebElement pdfImg;
-
+	
 	@FindBy(how = How.ID, using = "zip-file_tif")
 	protected WebElement zipImg;
 	
@@ -178,11 +181,11 @@ public class EqReportsPage extends ReportsBasePage {
 		reportName = "EQ-" + reportId;
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
-		String emissionsTable = RegexUtility.getStringInBetween(actualReportString, "/ Leak", "St").trim();
-		ArrayList<StoredProcEQGetEQData> storedProcSurveyList = StoredProcEQGetEQData.getEQData(reportId);
-		if (emissionsTable == null && storedProcSurveyList == null) {
+		if (actualReportString.contains(EQReportSSRS_NoEQrecordsarepresent) && StoredProcEQGetEQData.getEQData(reportId).size() == 0) {
 			return true;
 		}
+		String emissionsTable = RegexUtility.getStringInBetween(actualReportString, "/ Leak", "St").trim();
+		ArrayList<StoredProcEQGetEQData> storedProcSurveyList = StoredProcEQGetEQData.getEQData(reportId);
 		InputStream inputStream = new ByteArrayInputStream(emissionsTable.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 		String line = null;
@@ -225,31 +228,60 @@ public class EqReportsPage extends ReportsBasePage {
 		return true;
 	}
 	
-	public boolean validatePdfFiles(String reportTitle, String downloadPath) {
-		String reportId;
-		String reportName;
-		DBConnection objDbConn = new DBConnection();
+	/**
+	 * Method to verify the Views Images
+	 * 
+	 * @param actualPath
+	 * @param reportTitle
+	 * @param expectedImage
+	 * @return
+	 * @throws IOException
+	 */
 
-		try {
-			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
-			reportId = reportId.substring(0, 6);
-			reportName = "EQ-" + reportId;
-			setReportName(reportName);
-			BaseHelper.deCompressZipFile(reportName, downloadPath);
-		} catch (Exception e) {
-			Log.error(e.toString());
-			return false;
+	public boolean verifyViewsImages(String actualPath, String reportTitle, String testCase, String destViewTitle ) throws IOException {
+		PDFUtility pdfUtility = new PDFUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = actualPath + "EQ-" + reportId.substring(0, 6) + "_EQ-View.pdf";
+		String reportName = "EQ-" + reportId;
+		setReportName(reportName);
+		String imageExtractFolder=pdfUtility.extractPDFImages(actualReport, testCase);
+		String baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + destViewTitle + ".png";
+		File folder = new File(imageExtractFolder);
+		File[] listOfFiles = folder.listFiles();
+		for (File file : listOfFiles) {
+			if (file.isFile()) {
+				BufferedImage image = ImageIO.read(file);
+				int width = image.getWidth();
+				int height = image.getHeight();
+				Rectangle rect = new Rectangle(0, 0, width, height - 40);
+				image = cropImage(image, rect);
+				String actualViewPath = testSetup.getSystemTempDirectory() + testCase + ".png";
+				File outputfile = new File(testSetup.getSystemTempDirectory() + testCase + ".png");
+				ImageIO.write(image, "png", outputfile);
+				if (!verifyActualImageWithBase(baseViewFile, actualViewPath)) {
+					Files.delete(Paths.get(actualViewPath));
+					return false;
+				}
+				Files.delete(Paths.get(actualViewPath));
+			}
 		}
+		return true;
+	}
+
+	
+	public boolean validatePdfFiles(String reportTitle, String downloadPath) {
+		DBConnection objDbConn = new DBConnection();
+		String reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
+		reportId = reportId.substring(0, 6);
+		reportName = "EQ-" + reportId;
 		String pdfFile1 = downloadPath + reportName + ".pdf";
-		String pdfFile2 = downloadPath + reportName+"_EQ-View.pdf";			
-		if (!BaseHelper.validatePdfFile(pdfFile1)&&!BaseHelper.validatePdfFile(pdfFile2))
+		String pdfFile2 = downloadPath + reportName + "_EQ-View.pdf";
+		if (!BaseHelper.validatePdfFile(pdfFile1) && !BaseHelper.validatePdfFile(pdfFile2))
 			return false;
 		return true;
 	}
 
-	public void setReportName(String reportTitle) {
-		this.reportName = reportTitle;
-	}
 	
 	@Override
 	public void fillEqSpecific(Reports reports) {	
@@ -268,19 +300,20 @@ public class EqReportsPage extends ReportsBasePage {
 	}
 	
 	@Override
-	public void eqSpecificFileDownloads(String rptTitle, String testCaseID) {		
+	public boolean handleFileDownloads(String rptTitle, String testCaseID) {	
 		Report objReport = Report.getReport(rptTitle);
 		String reportId = objReport.getId();
 		reportId = reportId.substring(0, 6);
-		setReportName("EQ-" + reportId);
+		String reportName="EQ-" + reportId;
 		clickOnPDFInReportViewer();
-		waitForPDFFileDownload(getReportName());
+		waitForPDFFileDownload(reportName);
+		Log.info("PDF file got downloaded");
 		clickOnZIPInReportViewer();
-		waitForReportTIFFileDownload(getReportName());
-		
-	
+		waitForReportTIFFileDownload(reportName);
+		Log.info("View file got downloaded");
+		return true;
 	}
-	
+
 	public void clickOnZIPInReportViewer() {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click();", zipImg);
