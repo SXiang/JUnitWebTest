@@ -406,6 +406,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li")
 	protected WebElement msgEmptySurvey;
+	
+	@FindBy(how = How.ID, using = "pdf")
+	protected WebElement pdfImg;
+
 
 	public static final String STRPaginationMsg = "Showing 1 to ";
 
@@ -512,8 +516,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 		handleExtraAddSurveyInfoParameters(reports);
 
 		if ((geoFilterOn == null) || (!geoFilterOn)) {
-			this.checkGeoFilter.click();
-
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("arguments[0].click();", this.checkGeoFilter);
 		}
 
 		for (String tagValue : tagList) {
@@ -709,11 +713,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 		});
 	}
 
-	private boolean checkFileExists(String fileName, String downloadPath) {
+	public boolean checkFileExists(String fileName, String downloadPath) {
 		File dir = new File(downloadPath);
 		File[] dir_contents = dir.listFiles();
 		for (int i = 0; i < dir_contents.length; i++) {
-			if (dir_contents[i].getName().equals(fileName)) {
+			if (dir_contents[i].getName().trim().equals(fileName.trim())) {
+				Log.info("File found in the download dirctory");
 				return true;
 			}
 		}
@@ -1027,9 +1032,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 							this.btnReportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						}
-						complianceSpecificFileDownloads(rptTitle, testCaseID);
-						eqSpecificFileDownloads(rptTitle, testCaseID);
-						return true;
+						if(handleFileDownloads(rptTitle, testCaseID)){
+							Log.info("Handle File Download");
+							return true;
+						}
 
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
@@ -1609,48 +1615,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return false;
 	}
 
-	/**
-	 * Method to verify the Views Images
-	 * 
-	 * @param actualPath
-	 * @param reportTitle
-	 * @param expectedImage
-	 * @return
-	 * @throws IOException
-	 */
-
-	public boolean verifyViewsImages(String actualPath, String reportTitle, String testCase, String destViewTitle) throws IOException {
-		PDFUtility pdfUtility = new PDFUtility();
-		Report reportObj = Report.getReport(reportTitle);
-		String reportId = reportObj.getId();
-		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
-		String reportName = "CR-" + reportId;
-		setReportName(reportName);
-		String baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + destViewTitle + ".png";
-		String imageExtractFolder = Paths.get(testSetup.getDownloadPath()).toString();
-		File folder = new File(imageExtractFolder);
-		File[] listOfFiles = folder.listFiles();
-		for (File file : listOfFiles) {
-			if (file.isFile()) {
-				BufferedImage image = ImageIO.read(file);
-				int width = image.getWidth();
-				int height = image.getHeight();
-				Rectangle rect = new Rectangle(0, 0, width, height - 40);
-				image = cropImage(image, rect);
-				String actualViewPath = testSetup.getSystemTempDirectory() + testCase + ".png";
-				File outputfile = new File(testSetup.getSystemTempDirectory() + testCase + ".png");
-				ImageIO.write(image, "png", outputfile);
-				if (!verifyActualImageWithBase(baseViewFile, actualViewPath)) {
-					Files.delete(Paths.get(actualViewPath));
-					return false;
-				}
-				Files.delete(Paths.get(actualViewPath));
-			}
-		}
-		return true;
-	}
-
-	private BufferedImage cropImage(BufferedImage src, Rectangle rect) {
+	
+	public BufferedImage cropImage(BufferedImage src, Rectangle rect) {
 		BufferedImage dest = src.getSubimage(rect.x, rect.y, rect.width, rect.height);
 		return dest;
 	}
@@ -1764,13 +1730,17 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return dataTableEmpty;
 	}
 
-	public void complianceSpecificFileDownloads(String rptTitle, String testCaseID) {
-	}
-	
-	public void eqSpecificFileDownloads(String rptTitle, String testCaseID) {
+	public boolean handleFileDownloads(String rptTitle, String testCaseID) {
+		return true;
 	}
 
 	public void waitForPdfReportIcontoAppear() {
+		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return pdfImg.isDisplayed();
+
+			}
+		});
 	}
 
 	public WebElement getBtnDeleteConfirm() {
