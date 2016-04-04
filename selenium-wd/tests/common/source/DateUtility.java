@@ -21,6 +21,8 @@ import org.testng.Assert;
 
 public class DateUtility {
 
+	public static Date DATE_MINVALUE = new Date(0);
+	
 	/**
 	 * Compares the first time string with second time string and returns if the first time string is greater than the second.
 	 * 

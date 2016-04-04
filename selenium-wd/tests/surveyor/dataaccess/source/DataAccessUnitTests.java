@@ -284,9 +284,9 @@ public class DataAccessUnitTests {
 	}
 
 	private static void testMeasurements_getMeasurements_Valid() {
-		String analyzerId = "00000015-DB64-FDE7-7E67-39C8AC533D49";
-		Double startEpochTime = 1417806315D;
-		Double endEpochTime = 1417806360D;
+		String analyzerId = "59839947-9569-952D-16D6-39D4011442FA";
+		Double startEpochTime = 1458849090.199D;
+		Double endEpochTime = 1458849090.339D;
 		List<Measurement> measurements = Measurement.getMeasurements(analyzerId, startEpochTime, endEpochTime);
 		Iterator<Measurement> iterator = measurements.iterator();
 		Assert.assertTrue(iterator.hasNext());
@@ -338,7 +338,7 @@ public class DataAccessUnitTests {
 	private static void testSurveyModeTypeId_getSurveyModeTypeId_Invalid() {
 		String id = "Invalid Value";
 		SurveyModeType objSurveyModeType = SurveyModeType.getSurveyModeType(id);
-		Assert.assertTrue(objSurveyModeType != null, "Value cannot be NULL.");
+		Assert.assertTrue(objSurveyModeType == null, "Value must be NULL.");
 	}
 
 	private static void testEQ_getDrivingSurvey_Valid() {

@@ -228,6 +228,28 @@
 		</junit>
 	</target>
 
+	<target name="testsimulatorcases" depends="compileregression" description="Run action execution test cases">
+			<junit printsummary="yes" haltonerror="no" haltonfailure="no"
+					showoutput="yes">
+				<classpath>
+					<pathelement path="${build}" />
+					<fileset dir="${basedir}/lib">
+						<include name="**/*.jar" />
+					</fileset>
+				</classpath>
+
+				<batchtest fork="yes" todir="${reports}/regression/xml">
+					<formatter type="xml" />
+					<fileset dir="${build}">
+
+						<include name="**/ActionsExecutionDriver.class" />
+						<include name="**/DriverViewPageTest.class" />
+						
+					</fileset>
+				</batchtest>
+			</junit>
+		</target>
+	
 	<target name="testregression" depends="compileregression" description="Run regression test suite">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
@@ -258,7 +280,7 @@
 					<include name="**/MeasurementSessionsPageTest.class" />
 					<include name="**/UserFeedbackPageTest.class" />
 					<include name="**/UserFeedbackAdminPageTest.class" />
-					<include name="**/SurveyViewPageTest.class" />
+					<include name="**/SurveyViewPageTest3.class" />
 					<include name="**/SystemHistoryReportsPageTest.class" />	
 					<include name="**/ReferenceGasReportsPageTest.class" />		
 				</fileset>
