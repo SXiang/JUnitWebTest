@@ -247,6 +247,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		Wind wind = Wind.Calm;
 		CloudCover cloudCover = CloudCover.LessThan50;
 		SurveyType type = SurveyType.Standard;
+		Float minAmplitude = -1.0F;
 		if (!ActionArguments.isEmpty(commaSeperatedValues)){
 			List<String> listValues = RegexUtility.split(commaSeperatedValues, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
 			surveyTag = ActionArguments.evaluateArgForFunction(listValues.get(0));
@@ -255,6 +256,9 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 			wind = getWind(listValues.get(3));
 			cloudCover = getCloudCover(listValues.get(4));
 			type = getSurveyType(listValues.get(5));
+			if (listValues.get(6) != "") {
+				minAmplitude = Float.valueOf(listValues.get(6));
+			}
 			
 		} else {
 			ActionArguments.verifyGreaterThanZero(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_START_DRIVING_SURVEY, ARG_DATA_ROW_ID, dataRowID);
@@ -265,13 +269,16 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 			wind = getWind(dataRow.wind);
 			cloudCover = getCloudCover(dataRow.wind);
 			type = getSurveyType(dataRow.surveyType);
+			if (!ActionArguments.isEmpty(dataRow.minAmplitude)) {
+				minAmplitude = Float.valueOf(dataRow.minAmplitude);
+			}
 			
 			// store the working datarow.
 			workingDataRow = dataRow;
 			workingDataRow.surveyTag = surveyTag;	// update the tag to value evaluated by function.
 		}
 		try {
-			getDriverViewPage().startDrivingSurvey(surveyTag, time, radiation, wind, cloudCover, type);
+			getDriverViewPage().startDrivingSurvey(surveyTag, time, radiation, wind, cloudCover, type, minAmplitude);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			return false;
@@ -910,6 +917,40 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		return getDriverViewPage().isWBTempButtonRed();
 	}
 
+	/* Verify EQ methods */
+	/**
+	 * Executes verifyEQModeDialogMessageEquals action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyEQModeDialogMessageEquals(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyEQModeDialogMessageEquals", data, dataRowID);
+		return getDriverViewPage().verifyEQModeDialogMessageEquals(data);
+	}
+ 
+	/**
+	 * Executes verifyEQModeDialogIsShown action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyEQModeDialogIsShown(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyEQModeDialogIsShown", data, dataRowID);
+		return getDriverViewPage().isEQModeDialogShown();
+	}
+ 
+	/**
+	 * Executes verifyEQModeDialogIsNotShown action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyEQModeDialogIsNotShown(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyEQModeDialogIsNotShown", data, dataRowID);
+		return getDriverViewPage().isEQModeDialogHidden();
+	}
+	
 	/* Verify OLMap elements */
 	public boolean verifyLISAIsShownOnMap(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyLISAIsShownOnMap", data, dataRowID);
@@ -1702,6 +1743,9 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyDisplaySwitchIsOff")) { return this.verifyDisplaySwitchIsOff(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchIsOn")) { return this.verifyDisplaySwitchIsOn(data, dataRowID); }
 		else if (actionName.equals("verifyDriverViewPageIsOpened")) { return this.verifyDriverViewPageIsOpened(data, dataRowID); }
+		else if (actionName.equals("verifyEQModeDialogMessageEquals")) { return this.verifyEQModeDialogMessageEquals(data, dataRowID); }
+		else if (actionName.equals("verifyEQModeDialogIsShown")) { return this.verifyEQModeDialogIsShown(data, dataRowID); }
+		else if (actionName.equals("verifyEQModeDialogIsNotShown")) { return this.verifyEQModeDialogIsNotShown(data, dataRowID); }
 		else if (actionName.equals("verifyFieldNotesIsNotShownOnMap")) { return this.verifyFieldNotesIsNotShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyFieldNotesIsShownOnMap")) { return this.verifyFieldNotesIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyFlowButtonIsGreen")) { return this.verifyFlowButtonIsGreen(data, dataRowID); }
@@ -1810,6 +1854,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyGisBoundaryBigBoundaryButtonIsNotVisible")) { return this.verifyGisBoundaryBigBoundaryButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyGisBoundarySmallBoundaryButtonIsNotVisible")) { return this.verifyGisBoundarySmallBoundaryButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyGisUseAllBoundariesButtonIsNotVisible")) { return this.verifyGisUseAllBoundariesButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyMapShownForZoomLevelIsCorrect")) { return this.verifyMapShownForZoomLevelIsCorrect(data, dataRowID); }
 		else if (actionName.equals("verifyStartSurveyButtonIsNotVisible")) { return this.verifyStartSurveyButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyStartEQSurveyButtonIsNotVisible")) { return this.verifyStartEQSurveyButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifySystemShutdownButtonIsNotVisible")) { return this.verifySystemShutdownButtonIsNotVisible(data, dataRowID); }

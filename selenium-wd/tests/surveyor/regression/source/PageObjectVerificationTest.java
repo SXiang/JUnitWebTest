@@ -157,6 +157,50 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: <None>
+	 * NOTE: This is a test method to test EQ methods in driver view.
+	 */
+	@Test
+	public void ReferenceOnly_SimulatorTest_TestEQMethods() {
+		Log.info("Running ReferenceOnly_SimulatorTest_TestEQMethods");
+
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+
+		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
+
+		driverViewPage.open();
+		driverViewPage.waitForPageLoad();
+		driverViewPage.waitForConnectionComplete();
+
+		Log.info("Clicking on MODE button");
+		driverViewPage.clickModeButton();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		assertTrue(driverViewPage.isStartEQSurveyButtonEnabled());
+		assertTrue(driverViewPage.isStartEQSurveyButtonVisible());
+
+		// Start EQ Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm
+		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
+		driverViewPage.startEQDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50);
+
+		// Let the survey run for a few seconds.
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		assertTrue(driverViewPage.isEQModeDialogShown());
+		assertTrue(driverViewPage.verifyEQModeDialogMessageEquals(Resources.getResource(ResourceKeys.Dialog_EQModeActive)));
+		
+		Log.info("Clicking on MODE button");
+		driverViewPage.clickModeButton();
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		assertTrue(!driverViewPage.isStartEQSurveyButtonVisible());
+		assertTrue(driverViewPage.isStopDrivingSurveyButtonVisible());
+
+		TestSetup.stopAnalyzer();
+	}
+
+	/**
+	 * Test Case ID: <None>
 	 * NOTE: This is a test method to test buttons visibility on driver view.
 	 */
 	@Test

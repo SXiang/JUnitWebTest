@@ -54,8 +54,10 @@ public final class SurveyorConstants {
 	public static final String CUSUSERROLEDR = Resources.getResource(ResourceKeys.Constant_Driver);
 	public static final String PICUSERROLESUP = "Picarro Support";
 
-	public static final String PICDFADMIN = "Administrator";
-	public static final String PICADMINPSWD = "FastLane!911";
+	public static final String ADMINISTRATORUSER = "Administrator";    // NOTE: This user is required for cases where the data pushed into environment has been pushed as Administrator User.
+	public static final String PICDFADMIN = "AutomationAdmin";
+	public static final String USERPASSWORDHASH ="oeHwHqmv621dZ1MRE2BSdw==";
+	public static final String PICADMINPSWD = "sqa#Picarro$0";
 	public static final String SQACUSUAUSER = "sqacusua";
 	public static final String SQACUSSUUSER = "sqacussu";
 	public static final String SQACUSDRUSER = "sqacusdr";
@@ -73,6 +75,10 @@ public final class SurveyorConstants {
 	public static final String SQAPICSU = "sqapicsu@picarro.com";
 	public static final String SQAPICSU1 = "sqapicsu1@picarro.com";
 	public static final String SQAPICDR = "sqapicdr@picarro.com";
+	public static final String SQAPGEUA = "sqapgeua@email.com";
+	public static final String SQAPGESU = "sqapgesu@email.com";
+	public static final String SQAPGEDR = "sqapgedr1@email.com";
+	
 
 	public static final String SQAPICLOCSUR = "sqapiclocsur";
 	public static final String SQAPICLOC0SUR = "sqapicloc0sur";
@@ -208,7 +214,7 @@ public final class SurveyorConstants {
 	public static final String DRIVINGSURVEYSEXPORTSURVEY = "SurveyExport";
 	public static final String DRIVINGSURVEYSEXPORTPEAKS = "PeakExport";
 	public static final String DRIVINGSURVEYSEXPORTANALYSIS = "AnalysisExport";
-
+	public static final String DRIVINGSURVEYSSTNDMODE = "Standard";
 	public static final String LOGINTITLE = "Login";
 	public static final String HOMETITLE = "Home - Surveyor";
 	public static final String HOMEDHEADER = "Dashboard";
@@ -227,7 +233,9 @@ public final class SurveyorConstants {
 	public static final String CUSDRVSTDTAG = "stnd";
 	public static final String CUSDRVRRTAG = "rr";
 	public static final String CUSDRVOPTAG = "op";
-	public static final String CUSDRVETHTAG= "ethane";  //change it to ethane survey
+	public static final String CUSDRVETHSTDTAG= "ethane-standard";
+	public static final String CUSDRVETHRRTAG= "ethane-rr";
+	public static final String CUSDRVETHMNTAG= "ethane-manual";
 	public static final String PICADMNSTDTAG2 = "stnd-pic";
 	public static final String PICADMNRRTAG2 = "rr-pic";
 	public static final String PICADMNOPTAG2 = "op-pic";
@@ -282,6 +290,7 @@ public final class SurveyorConstants {
 	public static final String SQACUSSULOC="Santa Clara";
 	public static final String DEFAULTLOC="Default";
 	
+	public static final String REQUIRED_FIELD_VAL_MESSAGE = "This field is required.";	
 }
 
 	

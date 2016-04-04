@@ -48,6 +48,28 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 	}
  
 	/**
+	 * Executes verifyModeButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyModeButtonIsVisible(String data, Integer dataRowID) {
+		logAction("ObserverViewPageActions.verifyModeButtonIsVisible", data, dataRowID);
+		return getObserverViewPage().isModeButtonVisible();
+	}
+
+	/**
+	 * Executes verifyModeButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyModeButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction("ObserverViewPageActions.verifyModeButtonIsNotVisible", data, dataRowID);
+		return !getObserverViewPage().isModeButtonVisible();
+	}
+
+	/**
 	 * Executes verifyObserverViewPageIsOpened action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -181,6 +203,8 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyLISAIsShownOnMap")) { return this.verifyLISAIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyMapSwitchOn")) { return this.verifyMapSwitchOn(data, dataRowID); }
 		else if (actionName.equals("verifyMapSwitchOff")) { return this.verifyMapSwitchOff(data, dataRowID); }
+		else if (actionName.equals("verifyModeButtonIsVisible")) { return this.verifyModeButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyModeButtonIsNotVisible")) { return this.verifyModeButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyMapViewIsShown")) { return this.verifyMapViewIsShown(data, dataRowID); }
 		else if (actionName.equals("verifyPageLoaded")) { return this.verifyPageLoaded(data, dataRowID); }
 		else if (actionName.equals("verifyPositionButtonIsGreen")) { return this.verifyPositionButtonIsGreen(data, dataRowID); }
@@ -253,6 +277,7 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyGisUseAllBoundariesButtonIsNotVisible")) { return this.verifyGisUseAllBoundariesButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyIsotopicCaptureResultIsPresentOnMap")) { return this.verifyIsotopicCaptureResultIsPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyIsotopicCaptureResultIsNotPresentOnMap")) { return this.verifyIsotopicCaptureResultIsNotPresentOnMap(data, dataRowID); }
+		else if (actionName.equals("verifyMapShownForZoomLevelIsCorrect")) { return this.verifyMapShownForZoomLevelIsCorrect(data, dataRowID); }
 		else if (actionName.equals("verifyRefGasCaptureResultIsPresentOnMap")) { return this.verifyRefGasCaptureResultIsPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyRefGasCaptureResultIsNotPresentOnMap")) { return this.verifyRefGasCaptureResultIsNotPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("waitForConnectionToComplete")) { return this.waitForConnectionToComplete(data, dataRowID); }		

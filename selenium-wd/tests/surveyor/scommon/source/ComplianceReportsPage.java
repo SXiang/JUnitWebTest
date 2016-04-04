@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 import static common.source.BaseHelper.matchSinglePattern;
 import common.source.DateUtility;
 import common.source.FileUtility;
+import common.source.ImagingUtility;
 
 import static surveyor.scommon.source.SurveyorConstants.ACTIONTIMEOUT;
 import static surveyor.scommon.source.SurveyorConstants.CUSBOUNDARY;
@@ -52,6 +53,8 @@ import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.Reports.EthaneFilter;
 
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -59,21 +62,30 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.imageio.ImageIO;
 
+import org.apache.xmlbeans.impl.common.IOUtil;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -92,6 +104,9 @@ import common.source.DBConnection;
 import common.source.Log;
 import common.source.TestSetup;
 import common.source.ZipUtility;
+import net.avh4.util.imagecomparison.ImageComparisonResult;
+import net.lightbody.bmp.proxy.util.IOUtils;
+import sun.misc.BASE64Decoder;
 import surveyor.dataaccess.source.BaseMapType;
 import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ReportView;
@@ -104,6 +119,7 @@ import surveyor.dataaccess.source.StoredProcComplianceGetIndications;
 import surveyor.dataaccess.source.StoredProcComplianceGetIsotopics;
 import surveyor.dataaccess.source.StoredProcReferenceGas;
 import common.source.PDFUtility;
+import common.source.ProcessUtility;
 import common.source.RegexUtility;
 import common.source.ShapeToGeoJsonConverter;
 import common.source.TestContext;
@@ -115,6 +131,11 @@ import common.source.TestContext;
 public class ComplianceReportsPage extends ReportsBasePage {
 	private static final int CUSTOM_BOUNDARY_RADBUTTON_GROUP_IDX = 0;
 	private static final int CUSTOMER_BOUNDARY_RADBUTTON_GROUP_IDX = 1;
+
+	/*
+	 * Base 64 String for the image appearing as <Pdf>. This string is part of all the reports and should not be considered for comparison
+	 */
+	private static final String BASE64_IGNORE = "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";
 
 	public static final String BOUNDARY_SELECTOR_CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
 	public static final String STRURLPath = "/Reports/ComplianceReports";
@@ -265,18 +286,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(id = "report-ethene-vehicle-exhaust")
 	protected WebElement checkBoxVehicleExhaust;
 
-	@FindBy(how = How.XPATH, using ="//*[@id='datatableViews']/thead/tr/th[7]/div")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/thead/tr/th[7]/div")
 	protected WebElement viewsAnalysesColumn;
 
-	@FindBy(how = How.XPATH, using ="//*[@id='page-wrapper']/div/div[3]/div/div[11]/div/div/div/div[2]/div/label")
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[3]/div/div[11]/div/div/div/div[2]/div/label")
 	protected WebElement tubularAnalysisOption;
 
 	@FindBy(id = "report-ethene-biogenic-methane")
 	protected WebElement checkBoxEtheneBiogeniceMethane;
-	
-	@FindBy(how = How.XPATH, using ="//*[@id='datatable']/tbody/tr[1]/td[1]")
-	protected WebElement fstRptTilNm;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[1]")
+	protected WebElement fstRptTilNm;
 
 	public enum CustomerBoundaryType {
 		District, DistrictPlat
@@ -877,20 +897,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						String reportId = objReport.getId();
 						reportId = reportId.substring(0, 6);
 						reportName = "CR-" + reportId;
-
-						if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip") && srcZipMeta.contains("zip") && srcShapeImg.contains("zip")) {
-							clickOnPDFInReportViewer();
-							waitForPDFFileDownload(reportName);
-							clickOnZIPInReportViewer();
-							waitForReportZIPFileDownload(reportName);
-							if (zipMeta.isDisplayed()) {
-								clickOnMetadataZIPInReportViewer();
-								waitForMetadataZIPFileDownload(reportName);
-								try {
-									BaseHelper.deCompressZipFile(reportName + " (1)", testSetup.getDownloadPath());
-								} catch (Exception e) {
-									Log.error(e.toString());
-								}
+						clickOnPDFInReportViewer();
+						waitForPDFFileDownload(reportName);
+						clickOnZIPInReportViewer();
+						waitForReportZIPFileDownload(reportName);
+						if (zipMeta.isDisplayed()) {
+							clickOnMetadataZIPInReportViewer();
+							waitForMetadataZIPFileDownload(reportName);
+							try {
+								BaseHelper.deCompressZipFile(reportName + " (1)", testSetup.getDownloadPath());
+							} catch (Exception e) {
+								Log.error(e.toString());
 							}
 							if (zipShape.isDisplayed()) {
 								clickOnShapeZIPInReportViewer();
@@ -899,17 +916,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 									checkAndGenerateBaselineShapeAndGeoJsonFiles(reportName, testCaseID);
 								}
 							}
-							return true;
 						}
+						if (zipShape.isDisplayed()) {
+							clickOnShapeZIPInReportViewer();
+							waitForShapeZIPFileDownload(reportName);
+						}
+						return true;
 
-						if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip")) {
-							clickOnPDFInReportViewer();
-							waitForPDFFileDownload(reportName);
-							clickOnZIPInReportViewer();
-							waitForReportZIPFileDownload(reportName);
-							return true;
-						} else
-							return false;
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
 						if (elapsedTime >= (ACTIONTIMEOUT + 800 * 1000)) {
@@ -953,8 +966,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	protected void generateBaselinePerfFiles(String testCaseID, String reportId, String startTime, String endTime, Integer processingTimeInMs) throws IOException {
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" 
-				+ File.separator + "report-job-metrics" + File.separator + testCaseID;
+		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" + File.separator + "report-job-metrics" + File.separator + testCaseID;
 		// Create the directory for test case if it does not exist.
 		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
 		Path expectedFilePath = Paths.get(expectedDataFolderPath, String.format("%s.csv", testCaseID));
@@ -964,50 +976,47 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	protected void generateBaselineSSRSImage(String testCaseID, String imageFileFullPath) throws IOException {
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" 
-				+ File.separator + "ssrs-images" + File.separator + testCaseID;
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "ssrs-images" + File.separator + testCaseID;
 		// Create the directory for test case if it does not exist.
 		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
 		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
-		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);		
+		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
 		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
 	}
 
 	protected void generateBaselineViewImage(String testCaseID, String imageFileFullPath) throws IOException {
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" 
-				+ File.separator + "view-images" + File.separator + testCaseID;
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "view-images" + File.separator + testCaseID;
 		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
-		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);		
+		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
 		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
 	}
 
 	protected void generateBaselineShapeAndGeoJsonFiles(String testCaseID, String shapeFileFullPath) throws Exception {
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" 
-				+ File.separator + "shape-files" + File.separator + testCaseID;
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "shape-files" + File.separator + testCaseID;
 		// Create the directory for test case if it does not exist.
 		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
 		String expectedFilename = FileUtility.getFileName(shapeFileFullPath);
 		String expectedFileExt = FileUtility.getFileExtension(shapeFileFullPath);
-		if (expectedFileExt == "dbf" || expectedFileExt == "prj" || expectedFileExt == "shp" || expectedFileExt == "shx") {			
+		if (expectedFileExt == "dbf" || expectedFileExt == "prj" || expectedFileExt == "shp" || expectedFileExt == "shx") {
 			// Delete existing files in directory (if any).
 			FileUtility.deleteFilesInDirectory(Paths.get(expectedDataFolderPath));
-			
+
 			// Copy the file to the test case folder.
 			String expectedFilenameWithoutExt = expectedFilename.replace(".shp", "");
-			Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);		
-			FileUtils.copyFile(new File(shapeFileFullPath), new File(expectedFilePath.toString()));		
-		
+			Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
+			FileUtils.copyFile(new File(shapeFileFullPath), new File(expectedFilePath.toString()));
+
 			// If specified file is .shp get GeoJson string for the shape file and store the .geojson.
 			if (expectedFileExt == "shp") {
 				String geoJsonString = ShapeToGeoJsonConverter.convertToJsonString(shapeFileFullPath);
-				Path expectedGeoJsonFilePath = Paths.get(expectedDataFolderPath, expectedFilenameWithoutExt + ".geojson");		
+				Path expectedGeoJsonFilePath = Paths.get(expectedDataFolderPath, expectedFilenameWithoutExt + ".geojson");
 				FileUtility.createTextFile(expectedGeoJsonFilePath, geoJsonString);
 			}
 		}
 	}
-	
+
 	public boolean checkActionStatusInSeconds(String rptTitle, String strCreatedBy, int seconds) {
 
 		setPagination(PAGINATIONSETTING);
@@ -1573,7 +1582,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	}
 
-	// error
 	public boolean resubmitReport(String rptTitle, String strCreatedBy) {
 		setPagination(PAGINATIONSETTING);
 
@@ -1775,7 +1783,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return false;
 	}
 
-	public boolean copyReportAndModifyDetails(String rptTitle, String strCreatedBy, String rptTitleNew, String surUnit, List<String> tagList, boolean changeMode, ReportModeFilter strReportMode) {
+	public boolean copyReport(String rptTitle, String strCreatedBy) {
 		setPagination(PAGINATIONSETTING);
 		this.waitForCopyReportPagetoLoad();
 		String reportTitleXPath;
@@ -1808,45 +1816,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
 				copyImg = table.findElement(By.xpath(copyImgXPath));
 				copyImg.click();
-				this.inputTitle.clear();
-				this.inputTitle.sendKeys(rptTitleNew);
-
-				if (strReportMode != null && changeMode) {
-					selectReportMode(strReportMode);
-					this.waitForCopyReportPagetoLoad();
-					this.inputTitle.clear();
-					this.inputTitle.sendKeys(rptTitleNew);
-				} else {
-					this.waitForDeleteSurveyButtonToLoad();
-					this.btnDeleteSurvey.click();
-				}
-				if (surUnit != "") {
-					List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
-					for (WebElement option : optionsSU) {
-						if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
-							option.click();
-						}
-					}
-				}
-
-				for (String tagValue : tagList) {
-					if (tagValue != "") {
-
-						inputSurveyTag(tagValue);
-						this.waitForSurveySearchButtonToLoad();
-						this.btnSurveySearch.click();
-						this.waitForSurveyTabletoLoad();
-						this.checkboxSurFirst.click();
-						this.waitForAddSurveyButtonToLoad();
-						this.btnAddSurveys.click();
-
-					}
-				}
-
-				this.inputViewInd.click();
-				this.inputViewIso.click();
-				this.inputViewAnno.click();
-				this.clickOnOKButton();
 
 				return true;
 			}
@@ -1867,6 +1836,61 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 		return false;
+	}
+
+	public boolean modifyReportDetails(String rptTitleNew, String surUnit, List<String> tagList, boolean changeMode, ReportModeFilter strReportMode) {
+		this.waitForCopyReportPagetoLoad();
+
+		this.inputTitle.clear();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].value='" + rptTitleNew + "';", inputTitle);
+
+		if (strReportMode != null && changeMode) {
+			selectReportMode(strReportMode);
+			this.waitForCopyReportPagetoLoad();
+			this.inputTitle.clear();
+			js.executeScript("arguments[0].value='" + rptTitleNew + "';", inputTitle);
+		} else {
+			this.waitForCopyReportPagetoLoad();
+			js.executeScript("window.scrollBy(0,250)", "");
+			this.waitForDeleteSurveyButtonToLoad();
+			js.executeScript("arguments[0].click();", this.btnDeleteSurvey);
+		}
+		if (surUnit != "") {
+			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
+			for (WebElement option : optionsSU) {
+				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+		}
+
+		for (String tagValue : tagList) {
+			if (tagValue != "") {
+
+				inputSurveyTag(tagValue);
+				this.waitForSurveySearchButtonToLoad();
+				this.btnSurveySearch.click();
+				this.waitForSurveyTabletoLoad();
+				this.checkboxSurFirst.click();
+				this.waitForAddSurveyButtonToLoad();
+				this.btnAddSurveys.click();
+			}
+		}
+
+		if (tagList.isEmpty()) {
+			this.btnSurveySearch.click();
+			this.waitForSurveyTabletoLoad();
+			this.checkboxSurFirst.click();
+			this.waitForAddSurveyButtonToLoad();
+			this.btnAddSurveys.click();
+		}
+
+		this.inputViewInd.click();
+		this.inputViewIso.click();
+		this.inputViewAnno.click();
+		this.clickOnOKButton();
+		return true;
 	}
 
 	public boolean checkBlankReportErrorTextPresent() {
@@ -2400,7 +2424,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	}
 
-
 	/**
 	 * Method to verify the Show Coverage Table in SSRS
 	 * 
@@ -2602,6 +2625,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				return false;
 		}
 		String surveyTable = RegexUtility.getStringInBetween(actualReportString, "Indication Table", "LISA # Surveyor Date/Time Amplitude(ppm)");
+
 		InputStream inputStream = new ByteArrayInputStream(surveyTable.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 		String line = null;
@@ -2611,9 +2635,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			StringBuilder lineBuilder = new StringBuilder();
 			while ((line = bufferReader.readLine()) != null) {
 				if (line.length() > 3) {
-					lineBuilder.append(line).append(" ");
+					lineBuilder.append(line);
 					countLines++;
-					if (countLines % 4 == 0) {
+					if (countLines == 4 || countLines == 6) {
+						lineBuilder.append(" ");
+					}
+
+					if (countLines % 8 == 0) {
 						lineList.add(lineBuilder.toString());
 						lineBuilder = new StringBuilder();
 					}
@@ -3039,8 +3067,123 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 
-	public boolean verifyViewsImages(String actualPath, String reportTitle, String expectedImage) throws IOException {
+	public boolean verifyViewsImages(String actualPath, String reportTitle, String testCase, String destViewTitle) throws IOException {
+		PDFUtility pdfUtility = new PDFUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
+		reportName = "CR-" + reportId;
+		setReportName(reportName);
+		String baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + destViewTitle + ".png";
+		String imageExtractFolder =Paths.get(testSetup.getDownloadPath()).toString();
+		File folder = new File(imageExtractFolder);
+		File[] listOfFiles = folder.listFiles();
+		for (File file : listOfFiles) {
+			if (file.isFile()) {
+				BufferedImage image = ImageIO.read(file);
+				int width = image.getWidth();
+				int height = image.getHeight();
+				Rectangle rect = new Rectangle(0, 0, width, height - 40);
+				image = cropImage(image, rect);
+				String actualViewPath = testSetup.getSystemTempDirectory() + testCase + ".png";
+				File outputfile = new File(testSetup.getSystemTempDirectory() + testCase + ".png");
+				ImageIO.write(image, "png", outputfile);
+				if (!verifyActualImageWithBase(baseViewFile, actualViewPath)) {
+					Files.delete(Paths.get(actualViewPath));
+					return false;
+				}
+				Files.delete(Paths.get(actualViewPath));
+			}
+		}
+		return true;
+	}
 
+	private BufferedImage cropImage(BufferedImage src, Rectangle rect) {
+		BufferedImage dest = src.getSubimage(rect.x, rect.y, rect.width, rect.height);
+		return dest;
+	}
+
+	/**
+	 * Method to verify the images in SSRS
+	 * 
+	 * @param actualPath
+	 * @param reportTitle
+	 * @param expectedImage
+	 * @return
+	 * @throws IOException
+	 */
+
+	public boolean verifySSRSImages(String actualPath, String reportTitle, String testCase) throws IOException, InterruptedException {
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String reportNameWithoutExt = "CR-" + reportId.substring(0, 6);
+		reportName = reportNameWithoutExt + ".pdf";
+		String htmlReportName = reportNameWithoutExt + ".html";
+		String htmlReportPath = actualPath + htmlReportName;
+		File f = new File(htmlReportPath);
+		if (!convertPdfToHtml(reportName, htmlReportName)) {
+			return false;
+		}
+		Document doc = Jsoup.parse(f, null, "");
+		Elements elements = doc.select("img[src]");
+		int pageCounter = 1;
+
+		for (Element element : elements) {
+			String base64String = element.attr("src").replace("data:image/png;base64,", "");
+			if (!(base64String.equals(BASE64_IGNORE))) {
+				String pathToActualImage = testSetup.getDownloadPath() + File.separator + testCase + "Page_" + pageCounter + ".png";
+				createImageFromBASE64(base64String, pathToActualImage);
+				String pathToBaseImage = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\ssrs-images").toString() + "\\" + testCase + "\\" + "Page_" + pageCounter + ".png";
+				if (!verifyActualImageWithBase(pathToBaseImage, pathToActualImage)) {
+					Files.delete(Paths.get(pathToActualImage));
+					return false;
+				}
+				Files.delete(Paths.get(pathToActualImage));
+				pageCounter++;
+			}
+
+		}
+
+		return true;
+	}
+
+	public boolean convertPdfToHtml(String reportName, String htmlFile) throws IOException {
+		String workingBatFile = null;
+		String libFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
+		String batFile = libFolder + File.separator + "ConvertPDFToHTML.bat";
+		workingBatFile = libFolder + File.separator + TestSetup.getUUIDString() + "_ConvertPDFToHTML.bat";
+		Files.copy(Paths.get(batFile), Paths.get(workingBatFile));
+		Hashtable<String, String> parameters = new Hashtable<String, String>();
+		parameters.put("%DOWNLOAD_DIR%", testSetup.getDownloadPath());
+		parameters.put("%HTML_FILE%", htmlFile);
+		parameters.put("%EXE_DIR%", libFolder);
+		parameters.put("%PDF_FILE%", reportName);
+		// Update the working copy.
+		FileUtility.updateFile(workingBatFile, parameters);
+		String command = "cd \"" + libFolder + "\" && " + workingBatFile;
+		Log.info("Executing replay script. Command -> " + command);
+		Process pdfToHtmlProcess = ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
+		// Delete the working copy of the defn file.
+		Files.delete(Paths.get(workingBatFile));
+		return true;
+	}
+
+	public boolean createImageFromBASE64(String base64String, String actualImage) throws IOException {
+		BASE64Decoder decoder = new BASE64Decoder();
+		byte[] imageByte;
+		imageByte = decoder.decodeBuffer(base64String);
+		ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+		BufferedImage image = ImageIO.read(bis);
+		ImageIO.write(image, "png", new File(actualImage));
+		return true;
+	}
+
+	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage) {
+		ImagingUtility imageUtil = new ImagingUtility();
+		ImageComparisonResult result = imageUtil.compareImages(pathToActualImage, pathToBaseImage);
+		if ((result.getFailureMessage() != null) && (result.isEqual() == true)) {
+			return false;
+		}
 		return true;
 	}
 
@@ -3103,8 +3246,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		WebElement resubmitPopupSection = this.driver.findElement(By.id("resubmitReportModal"));
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return resubmitPopupSection.getAttribute("style").contains("display:block") 
-						|| resubmitPopupSection.getAttribute("style").contains("display: block");
+				return resubmitPopupSection.getAttribute("style").contains("display:block") || resubmitPopupSection.getAttribute("style").contains("display: block");
 			}
 		});
 	}
@@ -3113,8 +3255,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		WebElement resubmitPopupSection = this.driver.findElement(By.id("resubmitReportModal"));
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return resubmitPopupSection.getAttribute("style").contains("display:none") 
-						|| resubmitPopupSection.getAttribute("style").contains("display: none");
+				return resubmitPopupSection.getAttribute("style").contains("display:none") || resubmitPopupSection.getAttribute("style").contains("display: none");
 			}
 		});
 	}
@@ -3170,7 +3311,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void waitForSurveyTabletoLoad() {
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return surveysTable.isDisplayed();
 			}
@@ -3203,7 +3344,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void waitForPdfReportIcontoAppear() {
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return pdfImg.isDisplayed();
 
@@ -3220,7 +3361,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void waitForDeleteSurveyButtonToLoad() {
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return btnDeleteSurvey.isDisplayed();
 			}
@@ -3401,12 +3542,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public WebElement getCheckBoxEtheneBiogeniceMethane() {
 		return checkBoxEtheneBiogeniceMethane;
 	}
-	
+
 	public WebElement getFstRptTilNm() {
 		return fstRptTilNm;
 	}
-	
-	
+
 	/**
 	 * Method to verify the Driving Surveys Table in SSRS
 	 * 
@@ -3429,44 +3569,43 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 			WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
 			List<WebElement> Rows = tabledata.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
-			for (int getrowvalue=1; getrowvalue < Rows.size(); getrowvalue++)
-			{ 
+			for (int getrowvalue = 1; getrowvalue < Rows.size(); getrowvalue++) {
 				List<WebElement> Columns = Rows.get(getrowvalue).findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[6]"));
-				for (int getcolumnvalue =1;getcolumnvalue<Columns.size(); getcolumnvalue++ )
-				{
-					String cellValue=driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr["+getrowvalue+"]/td[6]")).getText(); 
+				for (int getcolumnvalue = 1; getcolumnvalue < Columns.size(); getcolumnvalue++) {
+					String cellValue = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[6]")).getText();
 					if (cellValue.contains(tag)) {
 						result = true;
 						break;
 					}
-					result=false ;
+					result = false;
 				}
 			}
 		}
 		return result;
 	}
 
-	public boolean verifySurveysTableViaSurveyMode(boolean changeMode, ReportModeFilter strReportMode, SurveyModeFilter surveyModeFilter ) throws IOException {
+	public boolean verifySurveysTableViaSurveyMode(boolean changeMode, ReportModeFilter strReportMode, SurveyModeFilter surveyModeFilter) throws IOException {
 		boolean result = false;
 
 		if (strReportMode != null && changeMode) {
 			selectReportMode(strReportMode);
 
+			if (surveyModeFilter !=null && changeMode){
+				selectSurveyModeForSurvey(surveyModeFilter);
+			}
 			this.waitForSurveySearchButtonToLoad();
 			this.getBtnSurveySearch().click();
 			this.waitForSurveyTabletoLoad();
 
 			WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
 			List<WebElement> Rows = tabledata.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
-			for (int getrowvalue=1; getrowvalue < Rows.size(); getrowvalue++)
-			{ 
+			for (int getrowvalue = 1; getrowvalue < Rows.size(); getrowvalue++) {
 				List<WebElement> Columns = Rows.get(getrowvalue).findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[5]"));
-				for (int getcolumnvalue =0;getcolumnvalue<Columns.size(); getcolumnvalue++ )
-				{
-					String cellValue=driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr["+getrowvalue+"]/td[5]")).getText(); 
-					if (cellValue.contains(" ")){
-						String str=cellValue.replaceAll("\\s+", "");
-		
+				for (int getcolumnvalue = 0; getcolumnvalue < Columns.size(); getcolumnvalue++) {
+					String cellValue = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[5]")).getText();
+					if (cellValue.contains(" ")) {
+						String str = cellValue.replaceAll("\\s+", "");
+
 						if (surveyModeFilter.name().equalsIgnoreCase(str)) {
 							result = true;
 							break;
@@ -3483,20 +3622,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return result;
 	}
 
-	public boolean verifyIfInDrivingSurvey(String columnName)
-	{
+	public boolean verifyIfInDrivingSurvey(String columnName) {
 		boolean result = false;
 		int count = driver.findElements(By.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div")).size();
-		for (int i=1; i < count +1 ; i++)
-		{
-			String str= driver.findElement(By.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div["+i+"]/label")).getText();
-			if (str != columnName)
-			{
-				result=true;
+		for (int i = 1; i < count + 1; i++) {
+			String str = driver.findElement(By.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div[" + i + "]/label")).getText();
+			if (str != columnName) {
+				result = true;
 			}
 		}
-	return result;
+		return result;
 
 	}
-	
+
 }

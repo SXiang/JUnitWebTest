@@ -17,6 +17,8 @@ public class OLMapUtility {
 	private static final String CROSSHAIR_WHITE_PNG = "crosshair-white.png";
 	private static final String CROSSHAIR_PNG = "crosshair.png";
 	private static final String CROSSHAIR_GRAY_PNG = "crosshair-gray.png";
+	
+	private static final double DEFAULT_MAP_RESOLUTION = 0.29858214173896974F;
 
 	public enum IconColor {
 		Red,
@@ -31,15 +33,26 @@ public class OLMapUtility {
 		Gray
 	}
 
-	private static final String GET_FIRST_INDICATION_NODE_PIXEL_FUNCTION_JS = "function getFirstIndicationNodePixels() { "
-			+ "var pixelX = -1; var pixelY = -1; if (lastConstellation) { lastConstellation.nodes.forEach(function (node) { "
-			+ "if (node.type == 'indication') { var mapExtent = surveyormap.getView().calculateExtent(surveyormap.getSize()); "
-			+ "var mapOrigin = surveyormap.getPixelFromCoordinate([mapExtent[0], mapExtent[3]]); "
-			+ "var delta = getOriginDelta(lastExtent, mapOrigin); "
-			+ "pixelX = (node.x - (delta[0] * ol.has.DEVICE_PIXEL_RATIO)) / (ol.has.DEVICE_PIXEL_RATIO); "
-			+ "pixelY = (node.y - (delta[1] * ol.has.DEVICE_PIXEL_RATIO)) / (ol.has.DEVICE_PIXEL_RATIO); "
-			+ "return [pixelX, pixelY]; } }); }; return [pixelX, pixelY]; };";
+	private static final String GET_FIRST_INDICATION_NODE_PIXEL_FUNCTION_JS = "function getFirstIndicationNodePixels(){"
+			+ "var pixelX=-1;var pixelY=-1;if(lastConstellation){for(var i=0;i<lastConstellation.nodes.length;i++){"
+			+ "node=lastConstellation.nodes[i];if(node.type=='indication'){"
+			+ "var mapExtent=surveyormap.getView().calculateExtent(surveyormap.getSize());"
+			+ "var mapOrigin=surveyormap.getPixelFromCoordinate([mapExtent[0],mapExtent[3]]);"
+			+ "var delta=getOriginDelta(lastExtent,mapOrigin);pixelX=(node.x-(delta[0]*ol.has.DEVICE_PIXEL_RATIO))/(ol.has.DEVICE_PIXEL_RATIO);"
+			+ "pixelY=(node.y-(delta[1]*ol.has.DEVICE_PIXEL_RATIO))/(ol.has.DEVICE_PIXEL_RATIO);return[pixelX,pixelY];}}};"
+			+ "return[pixelX,pixelY];};";
 
+	private static final String GET_FIRST_3300_VISIBLE_INDICATION_NODE_PIXEL_FUNCTION_JS = "function getFirstVisible3300IndicationNodePixels(gasType){"
+			+ "var pixelX=-1;var pixelY=-1;var isIndicationsSwitchOn=showIndications;if(lastConstellation&&isIndicationsSwitchOn){"
+			+ "for(var i=0;i<lastConstellation.nodes.length;i++){node=lastConstellation.nodes[i];if(node&&node.type=='indication'){"
+			+ "if(((gasType=='NaturalGas')&&(node.Disposition==1))||((gasType=='NotNaturalGas')&&(node.Disposition==2))||"
+			+ "((gasType=='PossibleNaturalGas')&&(node.Disposition==3))||((gasType=='VehicleExhaust')&&(node.Disposition==4))){"
+			+ "var mapExtent=surveyormap.getView().calculateExtent(surveyormap.getSize());"
+			+ "var mapOrigin=surveyormap.getPixelFromCoordinate([mapExtent[0],mapExtent[3]]);"
+			+ "var delta=getOriginDelta(lastExtent,mapOrigin);pixelX=(node.x-(delta[0]*ol.has.DEVICE_PIXEL_RATIO))/(ol.has.DEVICE_PIXEL_RATIO);"
+			+ "pixelY=(node.y-(delta[1]*ol.has.DEVICE_PIXEL_RATIO))/(ol.has.DEVICE_PIXEL_RATIO);"
+			+ "if((pixelX>0.0)&&(pixelY>80.0)){return[pixelX,pixelY];}}}}};return[pixelX,pixelY];};";
+	
 	private static final String GET_INDICATION_NODE_PIXEL_FUNCTION_JS = "function getIndicationNodePixels(epoch,lat,lon){"
 			+ "var pixelX=-1;var pixelY=-1;if(lastConstellation){lastConstellation.nodes.forEach(function(node){if(node.type=='indication'){"
 			+ "if((node.epochTime==epoch)&&(node.lat==lat)&&(node.lon==lon)){"
@@ -58,6 +71,11 @@ public class OLMapUtility {
 			+ "var freshConstellation=JSON.parse(JSON.stringify(d3constellation));freshConstellation.nodes.forEach(function(d){"
 			+ "if(d.type=='annotation'){if(!d.fixed){if(d.text==note){noteFound=true;}}}});return noteFound&&showAnnotations;};";
 
+	private static final String IS_PEAK_INFO_POPUP_SHOWN_FUNCTION = "function isPeakInfoPopupShown(){"
+			+ "var shown=false;try{if(surveyormap){overlays=surveyormap.getOverlays();for(var i=0;i<overlays.getLength();i++){"
+			+ "overlay=overlays.item(i);if(overlay){element=overlay.getElement();if(element){if(element.id=='peakinfo_modal'){"
+			+ "return!(overlay.getPosition()==undefined);}}}}}}catch(err){shown=false;};return shown;};";
+	
 	private static final String IS_ISOTOPIC_CAPTURE_RESULT_PRESENT_FUNCTION = "function isIsotopicCaptureResultPresent(result){"
 			+ "var resultFound=false;var freshConstellation=JSON.parse(JSON.stringify(d3constellation));"
 			+ "freshConstellation.nodes.forEach(function(d){if(d.type=='capture'&&!d.isRefGas){if(!d.fixed){"
@@ -97,10 +115,12 @@ public class OLMapUtility {
 			+ "if(features){for(var i=0;i<features.length;i++){if(features[i]&&features[i].getGeometry){geometry=features[i].getGeometry();"
 			+ "if(geometry&&geometry.getCoordinates){boundariesCoord.push(geometry.getCoordinates());}}}}}};}catch(err){};return boundariesCoord;};";
 	
-	private static final String IS_ASSETS_PRESENT_JS_FUNCTION = "function isAssetsPresent(){var found=false;try{layer=assetLayer;"
-			+ "if(layer&&layer.getVisible&&layer.getVisible()&&layer.getStyle){style=layer.getStyle();if(style&&style.getStroke){stroke=style.getStroke();"
-			+ "if(stroke&&stroke.getColor&&stroke.getWidth){scolor=stroke.getColor();swidth=stroke.getWidth();"
-			+ "if((scolor==assetColor)&&(swidth==assetMainLineWidth)){found=true;}}}}}catch(err){found=false;};return found;};";
+	private static final String IS_ASSETS_PRESENT_JS_FUNCTION = "function isAssetsPresent(){var found=false;"
+			+ "try{if(showAssets){if(surveyormap.getView().getResolution()>assetLayerMaxResolution){found=false;}else{"
+			+ "layer=assetLayer;if(layer&&layer.getVisible&&layer.getVisible()&&layer.getStyle){style=layer.getStyle();"
+			+ "if(style&&style.getStroke){stroke=style.getStroke();if(stroke&&stroke.getColor&&stroke.getWidth){"
+			+ "scolor=stroke.getColor();swidth=stroke.getWidth();if((scolor==assetColor)&&(swidth==assetMainLineWidth)){"
+			+ "found=true;}}}}}}}catch(err){found=false;};return found;};";
 	
 	private static final String GET_ASSETS_GEOMETRY_COORDINATES_FUNCTION = "function getAssetsCoordinates(){var assetsCoord=new Array();"
 			+ "try{if(assetLayer&&assetLayer.getSource){sources=assetLayer.getSource();if(sources.getFeatures){features=sources.getFeatures();"
@@ -154,6 +174,21 @@ public class OLMapUtility {
 			+ "if(!d.lat||!d.lon){isNodesShownOnMap=false;}}});return isIndicationsSwitchOn&&isLinksShownOnMap&&isNodesShownOnMap&&"
 			+ "(indLinksCount>0)&&(indNodesCount>0);};";
 	
+	private static final String IS_3300_INDICATIONS_PRESENT_JS_FUNCTION = "function is3300IndicationsShownOnMap(){"
+			+ "var isIndicationsSwitchOn=showIndications;var indLinksCount=getIndicationLinksCount();var indNodesCount=getIndicationNodesCount();"
+			+ "var ind_ctx=$('canvas.ol-unselectable')[0].getContext('2d');var lnkCnt=lastConstellation.links.length;var isLinksShownOnMap=false;"
+			+ "lastConstellation.links.forEach(function(d){if(d.source.type=='indication'){x1=d.source.x;y1=d.source.y;x2=d.target.x;y2=d.target.y;"
+			+ "cpoint=getCenterPoint(x1,y1,x2,y2);pixel=getPixelFromLatLong(d.source.lat,d.source.lon);"
+			+ "point1ImgData=ind_ctx.getImageData(pixel[0],pixel[1],1,1);pixel=getPixelFromLatLong(d.target.lat,d.target.lon);"
+			+ "point2ImgData=ind_ctx.getImageData(pixel[0],pixel[1],1,1);p=getPixelAfterTransform(d,cpoint.x,cpoint.y);"
+			+ "point3ImgData=ind_ctx.getImageData(pixel[0],pixel[1],1,1);isLinksShownOnMap=(point1ImgData!=null)&&(point2ImgData!=null)&&(point3ImgData!=null);"
+			+ "if(!isLinksShownOnMap){return false;}}});var isNodesShownOnMap=false;var imgData;lastConstellation.nodes.forEach(function(d){"
+			+ "if(d.type=='indication'){if(d.fixed){pixel=getPixelFromLatLong(d.lat,d.lon);imgData=ind_ctx.getImageData(pixel[0],pixel[1],1,1);"
+			+ "rgbaArray=getRGBAValues(indicationAnchorFillColor);isNodesShownOnMap=(rgbaArray!=null);}else{var isValidNodeDisposition=false;"
+			+ "if(d.Disposition==1||d.Disposition==2||d.Disposition==3||d.Disposition==4){isValidNodeDisposition=true;} "
+			+ "isNodesShownOnMap=isValidNodeDisposition;} if(!isNodesShownOnMap){return false;}}});"
+			+ "return isIndicationsSwitchOn&&isLinksShownOnMap&&isNodesShownOnMap&&(indLinksCount>0)&&(indNodesCount>0);};";
+	
 	private static final String GET_INDICATION_LINK_COUNT_JS_FUNCTION = "function getIndicationLinksCount(){var linksCnt=0;if(lastConstellation){"
 			+ "lastConstellation.links.forEach(function(d){linksCnt++;});};return linksCnt;};";
 
@@ -164,11 +199,28 @@ public class OLMapUtility {
 			+ "if(lastConstellation){lastConstellation.nodes.forEach(function(d){if(d.text){if(nodeCnt==0){text=d.text;}else{text+=','+d.text;};nodeCnt++;}});};"
 			+ "return text;};";
 	
+	private static final String GET_MAP_RESOLUTION_JS_FUNCTION = "function getMapResolution(){return surveyormap.getView().getResolution();};";
+
+	private static final String GET_3300_INDICATION_NODES_COUNT_JS_FUNCTION = "function get3300IndicationNodesCount(gasType) { "
+			+ "var nodesCnt = 0; var isIndicationsSwitchOn = showIndications; if (lastConstellation && isIndicationsSwitchOn) { "
+			+ "lastConstellation.nodes.forEach(function (d) { if (!d.fixed) { if (((gasType == 'NaturalGas') && (d.Disposition == 1)) || "
+			+ "((gasType == 'NotNaturalGas') && (d.Disposition == 2)) || ((gasType == 'PossibleNaturalGas') && (d.Disposition == 3)) || "
+			+ "((gasType == 'VehicleExhaust') && (d.Disposition == 4))) { nodesCnt++; } } }); }; return nodesCnt; };";
+	
+	private static final String GET_3300_INDICATION_NODES_TEXT_JS_FUNCTION = "function get3300IndicationNodesText(gasType) { "
+			+ "var text = ''; var nodeCnt = 0; var isIndicationsSwitchOn = showIndications; if (lastConstellation && isIndicationsSwitchOn) { "
+			+ "lastConstellation.nodes.forEach(function (d) { if (d.text) { if (((gasType == 'NaturalGas') && (d.Disposition == 1)) || "
+			+ "((gasType == 'NotNaturalGas') && (d.Disposition == 2)) || ((gasType == 'PossibleNaturalGas') && (d.Disposition == 3)) || "
+			+ "((gasType == 'VehicleExhaust') && (d.Disposition == 4))) { if (nodeCnt == 0) { text = d.text; } else { text += ',' + d.text; }; "
+			+ "nodeCnt++; } } }); }; return text; };";
+	
 	private static final String IS_MAP_VIEW_SHOWN = "return (mapLayer.getSource() == sourceBingRoads);";
 	private static final String IS_SATELLITE_VIEW_SHOWN = "return (mapLayer.getSource() == sourceBingArialWithStreets);";
 	
 	private static final String IS_FIELD_NOTES_DIALOG_SHOWN_JS_FUNCTION_CALL = "return isFieldNotesDialogShown();";
 	private static final String IS_FIELD_NOTE_SHOWN_JS_FUNCTION_CALL = "return isFieldNoteShownOnMap('%s');";
+
+	private static final String IS_PEAK_INFO_POPUP_SHOWN_JS_FUNCTION_CALL = "return isPeakInfoPopupShown();";
 
 	private static final String IS_ISOTOPIC_CAPTURE_RESULT_PRESENT_FUNCTION_CALL = "return isIsotopicCaptureResultPresent('%s');";
 	private static final String IS_REFGAS_CAPTURE_RESULT_PRESENT_FUNCTION_CALL = "return isReferenceGasCaptureResultPresent('%s');";
@@ -192,20 +244,55 @@ public class OLMapUtility {
 	private static final String GET_CONCENTRATION_CHART_IMAGE_DATA_FUNCTION_CALL = "return getConcentrationChartImageData();";
 	
 	private static final String IS_INDICATIONS_PRESENT_JS_FUNCTION_CALL = "return isIndicationsShownOnMap();";
+	private static final String IS_3300_INDICATIONS_PRESENT_JS_FUNCTION_CALL = "return is3300IndicationsShownOnMap();";
+	
 	private static final String GET_INDICATION_LINK_COUNT_JS_FUNCTION_CALL = "return getIndicationLinksCount();";
 	private static final String GET_INDICATION_NODES_COUNT_JS_FUNCTION_CALL = "return getIndicationNodesCount();";
 	private static final String GET_INDICATION_NODES_TEXT_JS_FUNCTION_CALL = "return getIndicationNodesText();";
-	
+
+	private static final String GET_3300_INDICATION_NODES_COUNT_JS_FUNCTION_CALL = "return get3300IndicationNodesCount('%s');";
+	private static final String GET_3300_INDICATION_NODES_TEXT_JS_FUNCTION_CALL = "return get3300IndicationNodesText('%s');";
+
 	private static final String IS_FOV_PRESENT_JS_FUNCTION_CALL = "return isFOVPresent();";
 	private static final String GET_FOV_GEOMETRY_COORDINATES_FUNCTION_CALL = "return getFOVCoordinates();";
 
 	private static final String GET_INDICATION_NODE_PIXEL_FUNCTION_CALL = "return getIndicationNodePixels(%s,%s,%s);";
 	private static final String GET_FIRST_INDICATION_NODE_PIXEL_FUNCTION_CALL = "return getFirstIndicationNodePixels();";
+	
+	private static final String GET_MAP_RESOLUTION_JS_FUNCTION_CALL = "return getMapResolution();";
+	private static final String GET_FIRST_3300_VISIBLE_INDICATION_NODE_PIXEL_FUNCTION_CALL = "return getFirstVisible3300IndicationNodePixels('%s');";
 
 	private WebDriver driver;
 
 	public OLMapUtility(WebDriver driver) {
 		this.driver = driver;
+	}
+	
+	/**
+	 * Verifies that the map resolution is correct for the specified zoom level.
+	 * @param zoomLevel - zoom level. 
+	 *   to get default map resolution use level=0
+	 *   for Zoom-In specify +ve value (for eg. 1,2,3). In this case resolution mutliplier is 0.5x, 0.25x, 0.125x, etc.
+	 *   for Zoom-Out specify -ve value (for eg. -1,-2,-3). In this case resolution mutliplier is 2x, 4x, 8x, etc.   
+	 */ 
+	public boolean isMapResolutionCorrect(int zoomLevel) {
+		double precision = 0.00000001D;
+		double currentMapResolution = getMapResolution();
+		double expectedMapResolution = DEFAULT_MAP_RESOLUTION;
+		double exponent = (-1) * zoomLevel;
+		if (zoomLevel != 0) {
+			expectedMapResolution = Math.pow(2, exponent) * DEFAULT_MAP_RESOLUTION;
+		}
+		return (Math.abs(expectedMapResolution - currentMapResolution) < precision);
+	}
+	
+	/**
+	 * Get the current map resolution.
+	 */ 
+	private double getMapResolution() {
+		String functionCall = GET_MAP_RESOLUTION_JS_FUNCTION + GET_MAP_RESOLUTION_JS_FUNCTION; 
+		Log.info("Calling javascript function -> " + functionCall);
+		return (double)((JavascriptExecutor)this.driver).executeScript(functionCall);
 	}
 	
 	/*
@@ -244,7 +331,7 @@ public class OLMapUtility {
 	 * Returns true if Indications is shown on the map, false otherwise.
 	 * 
 	 */
-	public boolean isIndicationsShownOnMap() {
+	public boolean is3300IndicationsShownOnMap() {
 		Object indicationsPresent = ((JavascriptExecutor)this.driver).executeScript(GET_INDICATION_LINK_COUNT_JS_FUNCTION +
 				GET_INDICATION_NODES_COUNT_JS_FUNCTION + IS_INDICATIONS_PRESENT_JS_FUNCTION + IS_INDICATIONS_PRESENT_JS_FUNCTION_CALL);
 		if (indicationsPresent.toString().equalsIgnoreCase("true")) {
@@ -253,6 +340,20 @@ public class OLMapUtility {
 		return false;
 	}
 
+	/*
+	 * Checks if Indications is shown on the Map. 
+	 * Returns true if Indications is shown on the map, false otherwise.
+	 * 
+	 */
+	public boolean isIndicationsShownOnMap() {
+		Object indicationsPresent = ((JavascriptExecutor)this.driver).executeScript(GET_INDICATION_LINK_COUNT_JS_FUNCTION +
+				GET_INDICATION_NODES_COUNT_JS_FUNCTION + IS_INDICATIONS_PRESENT_JS_FUNCTION + IS_INDICATIONS_PRESENT_JS_FUNCTION_CALL);
+		if (indicationsPresent.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
+	}
+	
 	/*
 	 * Returns number of Indication links shown on the Map. 
 	 * 
@@ -283,6 +384,26 @@ public class OLMapUtility {
 		return indicationsNodesText.toString();
 	}
 
+	/*
+	 * Returns number of Indication nodes shown on the Map for the specified gasType. 
+	 * 
+	 */
+	public Integer get3300IndicationsNodesCount(String gasType) {
+		Object indicationsNodesCount = ((JavascriptExecutor)this.driver).executeScript(GET_3300_INDICATION_NODES_COUNT_JS_FUNCTION + 
+				String.format(GET_3300_INDICATION_NODES_COUNT_JS_FUNCTION_CALL, gasType));
+		return Integer.valueOf(indicationsNodesCount.toString());
+	}
+	
+	/*
+	 * Returns a comma-seperated values of nodes texts shown on the Map for the specified gasType. 
+	 * 
+	 */
+	public String get3300IndicationsNodesText(String gasType) {
+		Object indicationsNodesText = ((JavascriptExecutor)this.driver).executeScript(GET_3300_INDICATION_NODES_TEXT_JS_FUNCTION + 
+				String.format(GET_3300_INDICATION_NODES_TEXT_JS_FUNCTION_CALL, gasType));
+		return indicationsNodesText.toString();
+	}
+	
 	/*
 	 * Checks if concentration chart is shown on the Map. 
 	 * Returns true if concentration chart is shown on the map, false otherwise.
@@ -519,6 +640,19 @@ public class OLMapUtility {
 	}
 
 	/*
+	 * Checks whether peak info popup is shown on the map. 
+	 * Returns true if peak info popup is shown on the map, false otherwise. 
+	 */
+	public boolean isPeakInfoPopupShown() {
+		String jsScript = IS_PEAK_INFO_POPUP_SHOWN_FUNCTION + IS_PEAK_INFO_POPUP_SHOWN_JS_FUNCTION_CALL;
+		Object peakInfoPopupShown = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (peakInfoPopupShown.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
+	}
+
+	/*
 	 * Checks whether specified Isotopic Capture result is shown on the map. 
 	 * Returns true if specified Isotopic Capture result is shown on the map, false otherwise. 
 	 */
@@ -602,7 +736,24 @@ public class OLMapUtility {
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean clickFirstIndicationOnMap(String canvasXPath) {
-		String functionCall = GET_FIRST_INDICATION_NODE_PIXEL_FUNCTION_JS + GET_FIRST_INDICATION_NODE_PIXEL_FUNCTION_CALL; 
+		return clickFirst3300IndicationOnMap(canvasXPath, null);
+	}
+
+	/*
+	 * Clicks on the first indication in the lastConstellation nodes List on the Map for the matching gasType. 
+	 * If no 'gasType' is specified we revert to old way of determining the indication node pixel.
+	 * Returns true if indication was found and clicked, false otherwise.
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public boolean clickFirst3300IndicationOnMap(String canvasXPath, String gasType) {
+		String functionCall = GET_FIRST_3300_VISIBLE_INDICATION_NODE_PIXEL_FUNCTION_JS + 
+				String.format(GET_FIRST_3300_VISIBLE_INDICATION_NODE_PIXEL_FUNCTION_CALL, gasType); 
+		if (gasType == null) {
+			// If no GasType specified, revert to older indication node determination and clicking code.
+			functionCall = GET_FIRST_INDICATION_NODE_PIXEL_FUNCTION_JS + GET_FIRST_INDICATION_NODE_PIXEL_FUNCTION_CALL;
+		}
+
 		Log.info("Calling javascript function -> " + functionCall);
 		List<Object> indNodePixel = (List<Object>)((JavascriptExecutor)this.driver).executeScript(functionCall);
 		

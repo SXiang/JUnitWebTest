@@ -86,7 +86,7 @@ public class StoredProcComplianceAssessmentGetReportDrivingSurveys extends BaseE
 	}
 
 	public boolean isEquals(StoredProcComplianceAssessmentGetReportDrivingSurveys obj) {
-		
+
 		if (!((this.getAnalyzerId().trim()).equals(obj.getAnalyzerId().trim()))) {
 			return false;
 		}

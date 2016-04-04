@@ -1,5 +1,7 @@
 package surveyor.scommon.source;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -10,8 +12,11 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import common.source.RegexUtility;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 
 public class BaseMapViewPage extends SurveyorBasePage {
 
@@ -179,6 +184,10 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@CacheLookup
 	private WebElement curtainZoomOutButton;
 
+	@FindBy(id = "bottom_button_mode")
+	@CacheLookup
+	protected WebElement modeButton;
+
 	@FindBy(id = "bottom_button_display")
 	@CacheLookup
 	private WebElement displayButton;
@@ -210,6 +219,19 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(id = "blocked_ui")
 	@CacheLookup
 	private WebElement divBlockedUI;
+	
+	@FindBy(id = "btn_close_annotation")
+	@CacheLookup
+	private WebElement fieldNotesDialogCloseButton;
+	
+	// Peak info popup values are updated on each peakInfo click. Seek these elements newly when get*() method is called.
+	private WebElement peakInfoEpoch;
+	private WebElement peakInfoLatitude;
+	private WebElement peakInfoLongitude;
+	private WebElement peakInfoText;
+	private WebElement peakInfoCoordinate;
+	private WebElement peakInfoOverlayText;
+	private WebElement peakInfoPopupDiv;
 
 	public BaseMapViewPage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
 		super(driver, testSetup, strBaseURL, strPageURL);
@@ -225,6 +247,10 @@ public class BaseMapViewPage extends SurveyorBasePage {
 
 	public enum GisSwitchType {
 		MaterialTypeCopper, MaterialTypeUnprotectedSteel, MaterialTypeProtectedSteel, MaterialTypeCastIron, MaterialTypeOtherPlastic, MaterialTypePEPlastic, UseAllPipes, BoundariesDistrictPlat, BoundariesDistrict, UseAllBoundaries
+	}
+
+	public void clickFieldNotesDialogCloseButton() {
+		this.fieldNotesDialogCloseButton.click();
 	}
 
 	public BaseMapViewPage clickZoomInButton() {
@@ -319,6 +345,50 @@ public class BaseMapViewPage extends SurveyorBasePage {
 
 	public WebElement getDivBlockedUI() {
 		return this.divBlockedUI;
+	}
+	
+	public boolean isModeButtonVisible() {
+		return !this.modeButton.getAttribute("class").contains("ng-hide");
+	}
+
+	public WebElement getPeakInfoPopupTextElement() {
+		// element value changes dynamically on peakInfo click. Seek new each time.
+		peakInfoOverlayText = this.driver.findElement(By.id("peak_info"));
+		return peakInfoOverlayText;
+	}
+
+	public WebElement getPeakInfoCoordinateElement() {
+		// element value changes dynamically on peakInfo click. Seek new each time.
+		peakInfoCoordinate = this.driver.findElement(By.id("annotation-coordinate"));
+		return peakInfoCoordinate;
+	}
+
+	public WebElement getPeakInfoTextElement() {
+		// element value changes dynamically on peakInfo click. Seek new each time.
+		peakInfoText = this.driver.findElement(By.id("annotation-text"));
+		return peakInfoText;
+	}
+
+	public WebElement getPeakInfoLongitudeElement() {
+		// element value changes dynamically on peakInfo click. Seek new each time.
+		peakInfoLongitude = this.driver.findElement(By.id("annotation-longitude"));
+		return peakInfoLongitude;
+	}
+
+	public WebElement getPeakInfoLatitudeElement() {
+		// element value changes dynamically on peakInfo click. Seek new each time.
+		peakInfoLatitude = this.driver.findElement(By.id("annotation-latitude"));
+		return peakInfoLatitude;
+	}
+
+	public WebElement getPeakInfoEpochElement() {
+		// element value changes dynamically on peakInfo click. Seek new each time.
+		peakInfoEpoch = this.driver.findElement(By.id("annotation-epoch"));
+		return peakInfoEpoch;
+	}
+
+	public WebElement getFieldNotesDialogCloseButton() {
+		return fieldNotesDialogCloseButton;
 	}
 
 	public boolean isDisplaySwitch8HourHistoryButtonVisible() {
@@ -881,7 +951,88 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			throw new IllegalArgumentException("Display switch type unknown and not currently handled.");
 		}
 	}
+
+	/**
+	 * Verifies that the Disposition value in peak info popup equals the specified value.
+	 * @param value - value to compare with.
+	 * @return
+	 */
+	public boolean verifyPeakInfoPopupDispositionEquals(String value) {
+		return verifyPeakInfoPopupKeyValue(value, Resources.getResource(ResourceKeys.Survey_Disposition));
+	}
+
+	/**
+	 * Verifies that the Classification Confidence value in peak info popup equals the specified value.
+	 * @param value - value to compare with.
+	 * @return
+	 */
+	public boolean verifyPeakInfoPopupClassificationConfidenceEquals(String value) {
+		return verifyPeakInfoPopupKeyValue(value, Resources.getResource(ResourceKeys.Survey_ClassificationConfidence));
+	}
+
+	/**
+	 * Verifies that the Methane Concentration value in peak info popup equals the specified value.
+	 * @param value - value to compare with.
+	 * @return
+	 */
+	public boolean verifyPeakInfoPopupMethaneConcEquals(String value) {
+		return verifyPeakInfoPopupKeyValue(value, Resources.getResource(ResourceKeys.Survey_CH4));
+	}
+
+	/**
+	 * Verifies that the Ethane Ratio value in peak info popup equals the specified value.
+	 * @param value - value to compare with.
+	 * @return
+	 */
+	public boolean verifyPeakInfoPopupEthaneRatioEquals(String value) {
+		return verifyPeakInfoPopupKeyValue(value, Resources.getResource(ResourceKeys.Survey_EthaneRatio));
+	}
+
+	/**
+	 * Verifies that the Amplitude value in peak info popup equals the specified value.
+	 * @param value - value to compare with.
+	 * @return
+	 */
+	public boolean verifyPeakInfoPopupAmplitudeEquals(String value) {
+		return verifyPeakInfoPopupKeyValue(value, Resources.getResource(ResourceKeys.Survey_amplitude));
+	}
+
+	private boolean verifyPeakInfoPopupKeyValue(String value, String keyLabel) {
+		String popupText = getPeakInfoPopupTextElement().getText();
+		List<String> lines = RegexUtility.split(popupText, RegexUtility.NEWLINE_SPLIT_REGEX_PATTERN);
+		String keyValue = "";
+		for (String line : lines) {
+			if (line.startsWith(keyLabel)) {
+				keyValue = line.replace(keyLabel, "").trim();
+			}
+		}
+		return keyValue.equals(value);
+	}
 	
+	/**
+	 * Wait for peak info popup to be shown.
+	 */
+	public void waitForPeakInfoPopupToOpen() {
+		peakInfoPopupDiv = driver.findElement(By.id("peakinfo_modal"));
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return peakInfoPopupDiv.getAttribute("class").equalsIgnoreCase("balloon");
+			}
+		});
+	}
+
+	/**
+	 * Wait for peak info popup to be hidden.
+	 */
+	public void waitForPeakInfoPopupToClose() {
+		peakInfoPopupDiv = driver.findElement(By.id("peakinfo_modal"));
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return peakInfoPopupDiv.getAttribute("class").equalsIgnoreCase("ng-hide");
+			}
+		});
+	}
+
 	/**
 	 * Verifies that the page UI is no longer blocked.
 	 */

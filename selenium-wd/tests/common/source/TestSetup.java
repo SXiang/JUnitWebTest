@@ -78,7 +78,7 @@ public class TestSetup {
 	public static final String REPLAY_DEFN_CURL_FILE = "replay-defn-curl.bat";
 	public static final String STOP_REPLAY_CURL_FILE = "replay-stop.bat";
 	public static final String ANALYZER_EXE_PATH = "C:\\PicarroAnalyzer\\Picarro.Surveyor.Analyzer.exe";
-	public static final String TEST_ANALYZER_SERIAL_NUMBER = "SimAuto-Analyzer1";
+	public static final String TEST_ANALYZER_SERIAL_NUMBER = "SimAuto-Analyzer3";
 
 	private static Process analyzerProcess;
 	private DesiredCapabilities capabilities = null;
@@ -237,7 +237,7 @@ public class TestSetup {
 		options.addArguments("start-maximized");
 		options.addArguments(Arrays.asList("--incognito", "test-type"));
 		options.addArguments("chrome.switches", "--disable-extensions");
-		options.setExperimentalOptions("prefs", prefs);
+		options.setExperimentalOption("prefs", prefs);
 		this.capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 		if (proxy != null) {
 			this.capabilities.setCapability(CapabilityType.PROXY, proxy);
@@ -260,7 +260,7 @@ public class TestSetup {
 		options.addArguments("start-maximized");
 		options.addArguments(Arrays.asList("--incognito", "test-type"));
 		options.addArguments("chrome.switches", "--disable-extensions");
-		options.setExperimentalOptions("prefs", prefs);
+		options.setExperimentalOption("prefs", prefs);
 		this.capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 		if (proxy != null) {
 			this.capabilities.setCapability(CapabilityType.PROXY, proxy);
@@ -380,7 +380,7 @@ public class TestSetup {
 		/* For CI and Eclipse run setup */
 		String executionPath = rootPath + File.separator + "selenium-wd" + File.separator;
 		/* For build.xml run locally */
-		// String executionPath = rootPath+ File.separator;
+		//String executionPath = rootPath+ File.separator;
 		return executionPath;
 	}
 
@@ -777,8 +777,8 @@ public class TestSetup {
 	}
 
 	public static void stopAnalyzer() {
-		ProcessUtility.killProcess("Picarro.Surveyor.Analyzer.exe", /* killChildProcesses */ true);
 		ProcessUtility.killProcess("supervisor.exe", /* killChildProcesses */ true);
+		ProcessUtility.killProcess("Picarro.Surveyor.Analyzer.exe", /* killChildProcesses */ true);
 	}
 
 	private static void stopAnalyzerIfRunning() throws UnknownHostException {
