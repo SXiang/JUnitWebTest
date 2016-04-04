@@ -14,6 +14,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.time.Duration;
 
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -246,7 +247,7 @@ public class DateUtility {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(getDateFormat(useTimeZone), locale);
 			LocalDateTime startDateTime = LocalDateTime.parse(inputDateTime1, formatter);
 			LocalDateTime endDateTime = LocalDateTime.parse(inputDateTime2, formatter);
-			diffInMinutes = java.time.Duration.between(startDateTime, endDateTime).toMinutes();
+			diffInMinutes = Duration.between(startDateTime, endDateTime).toMinutes();
 
 		} catch (Exception e) {
 			Log.info(e.toString());
