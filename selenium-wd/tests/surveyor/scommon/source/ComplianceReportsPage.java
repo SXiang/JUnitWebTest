@@ -392,8 +392,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			selectPercentCoverageReportArea();
 		}
 
-		List<Map<String, String>> viewLayersList = reportsCompliance.getViewLayersList();
-		handleOptionalViewLayersSection(viewLayersList);
+		handleOptionalViewLayersSection(tablesList);
 
 		this.clickOnOKButton();
 	}
