@@ -60,6 +60,9 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		String userName = customerName + REGBASEPICUSERNAME;
 		String location = "Santa Clara";
 		String locationDesc = location + " for test";
+
+		 Log.info("\nRunning TC1243_DisableExistingCustomer_PicAdmin - "+
+                 "Test Description: Disable Existing Customer can not login");
 		
 		// *** Add a new user/customer for this test ***
 		loginPage.open();
@@ -77,9 +80,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		loginPage = manageCustomersPage.logout();;
 		
 		// *** Start test ***
-        Log.info("\nRunning TC1243_DisableExistingCustomer_PicAdmin - "+
-                 "Test Description: Disable Existing Customer can not login");
-		
+       
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
 
@@ -158,6 +159,9 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		String customerName = "Picarro";
 		String location = "Santa Clara";
 		String locationDesc = customerName + " - " + location;
+
+		Log.info("\nRunning TC78_editCustomerBlankRequiredFields_PicAdmin - "+
+		         "Test Description: edit customer - blank required fields");
 		
 		// *** Add a new user for this test ***
 		loginPage.open();
@@ -167,8 +171,6 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		loginPage = manageUsersPage.logout();;
 		
 		// *** Start test ***
-		Log.info("\nRunning TC78_editCustomerBlankRequiredFields_PicAdmin - "+
-		         "Test Description: edit customer - blank required fields");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		

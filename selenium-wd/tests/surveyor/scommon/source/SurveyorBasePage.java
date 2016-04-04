@@ -83,7 +83,7 @@ public class SurveyorBasePage extends BasePage {
 	protected By summaryErrorsBy = By.cssSelector(".validation-summary-errors > .panel-heading");
 	
 	@FindBy(css = ".validation-summary-errors > .panel-body li")
-	protected List<WebElement> pannelErrors;
+	protected List<WebElement> panelErrors;
 	
 	// Following 2 declarations might be replaced by those 2 above this 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")

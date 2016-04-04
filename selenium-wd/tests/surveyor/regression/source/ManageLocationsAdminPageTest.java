@@ -159,6 +159,9 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		String eula = customerName + ": " + EULASTRING;
 		String location = "Santa Clara";
 		
+		Log.info("\nRunning - TC22_CancelEditLatLongSelector_PicAdmin - "+
+				"Test Description: Verify Cancel button of editing Lat/Long on map screen\n");		
+		
 		// *** Add a new location/customer for this test ***
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -167,9 +170,6 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(location, customerName, location);
-		
-		Log.info("\nRunning - TC22_CancelEditLatLongSelector_PicAdmin - "+
-				"Test Description: Verify Cancel button of editing Lat/Long on map screen\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
@@ -192,7 +192,6 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 		manageLocationsPage.clickOnCancelBtn();
 	}
-
 
 	/**
 	 * Test Case ID: TC23_ConfirmLatLongSelector_PicAdmin
@@ -306,6 +305,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		String location = "Santa Clara";
 		String locationDesc = customer + " - " + location;
 
+		Log.info("\nRunning - TC1236_CheckTimeZone_PicAdmin - " +
+				"Test Description: Check Timezone change\n");
 
 		// *** Add a new admin user for this test ***
 		loginPage.open();
@@ -315,9 +316,6 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		manageUsersAdminPage.logout();
 
 		// *** Start test ***
-
-		Log.info("\nRunning - TC1236_CheckTimeZone_PicAdmin - " +
-				"Test Description: Check Timezone change\n");
 
 		UserTimezone[] uts = UserTimezone.values();
 		UserTimezone ut = uts[0];
@@ -338,7 +336,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(userName, USERPASSWORD);
 		assertEquals("User timezone has not retained after relogin - '"+ ut+"'",
 				ut.toString(),manageLocationsPage.getUserTimezone());
-		
+
+
 	}
 
 	/**

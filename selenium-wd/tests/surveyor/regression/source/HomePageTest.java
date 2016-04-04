@@ -84,6 +84,7 @@ public class HomePageTest extends SurveyorBaseTest {
 	 */	
 	@Test(expected=NoSuchElementException.class)
 	public void TC1308_ReleaseNotesLinkNotPresent_PicAdminRole(){
+		
         Log.info("\nTC1308_ReleaseNotesLinkNotPresent_PicAdminRole - "+
 		         "Test Description: Picarro Admin cannot see Manage Release Notes page");
 		

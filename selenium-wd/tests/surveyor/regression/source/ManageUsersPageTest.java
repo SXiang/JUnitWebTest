@@ -37,13 +37,12 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  */
 @RunWith(SurveyorTestRunner.class)
 public class ManageUsersPageTest extends SurveyorBaseTest {
-	private static final String FN_TC71_TC473_USER_RESET_PWD = "TC71_TC473_User_ResetPwd";
-	private static final String SQAPICAD_AND_SQAPICSUP = "sqapicad@picarro.com,sqapicsup@picarro.com";
+	private static final String FN_TC71_TC473_USER_RESET_PWD = "TC71_TC473_User_ResetPwd";	
 	private static ManageUsersPage manageUsersPage;
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageLocationsPage manageLocationsPage;
 
-	private enum ManageUserTestCaseType {
+	public enum ManageUserTestCaseType {
 		ResetPwd,
 		DuplicateUser,
 		DisabledUser
@@ -749,6 +748,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String customerName = "Picarro";
 		String location = SQACUSSULOC;
 		String locationDesc = customerName + " - " + location;
+
+		
+		Log.info("\nRunning - TC480_ConfirmPasswordDifferent_PicSupport - "+
+				"Test Description:  Add User - Password and Confirm Password values different\n");
 		
 		loginPage.open();
 		loginPage.loginNormalAs( SQAPICSUP,USERPASSWORD);

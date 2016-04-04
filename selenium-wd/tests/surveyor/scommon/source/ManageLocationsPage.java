@@ -286,8 +286,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		boolean found = false;
 		if (isElementPresent(this.summaryErrorsBy)) {			
 			if (this.summaryErrors.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
-				for(WebElement element:this.pannelErrors){
-					if(element.getText().contains(errorMsg)){
+				for(WebElement element:this.panelErrors){
+					if(element.getText().equals(errorMsg)){
 						found = true;
 						break;
 					}
@@ -329,8 +329,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public boolean findExistingLocationAndClickEdit(String customerName, String locationName){
 		return editExistingLocation(customerName, locationName, null,null,null,null,null, true, true);
 	}
-	public boolean editExistingLocation(String customerName, String locationName, String newLocationName, boolean cancelIfError){
-		return editExistingLocation(customerName, locationName, newLocationName,null,null,null,null, false, cancelIfError);
+	public boolean editExistingLocation(String customerName, String locationName, String newLocationName, boolean cancelErrorCheckinglIfError){
+		return editExistingLocation(customerName, locationName, newLocationName,null,null,null,null, false, cancelErrorCheckinglIfError);
 	}
 	public boolean findExistingLocation(String customerName, String locationName) {
 		setPagination(PAGINATIONSETTING_100);
@@ -554,7 +554,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		latLongSelectionControl.waitForModalDialogOpen()
 		.switchMode(ControlMode.MapInteraction);
 		
-		String pt = (new WebDriverWait(driver,10)).until(new ExpectedCondition<String>(){
+		String pt = null;
+		try{ // Debugging 
+		    pt = (new WebDriverWait(driver,9)).until(new ExpectedCondition<String>(){
 			public String apply(WebDriver d){
 				String text = null;
 				try{
@@ -570,6 +572,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				return text;
 			}
 		});
+		}catch(Exception e){
+			Log.warn(e.toString() + "Selected point is "+pt+"?");
+		}
 		
 		latLongSelectionControl
 		.switchMode(ControlMode.Default);
