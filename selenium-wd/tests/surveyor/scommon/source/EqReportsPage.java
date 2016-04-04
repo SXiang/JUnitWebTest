@@ -55,7 +55,7 @@ public class EqReportsPage extends ReportsBasePage {
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.EqReport_PageTitle);
 	public static final String EQReportSSRS_EmissionsQuantificationReport = Resources.getResource(ResourceKeys.EQReportSSRS_EmissionsQuantificationReport);
 	public static final String EQReportSSRS_EmissionsQuantificationData = Resources.getResource(ResourceKeys.EQReportSSRS_EmissionsQuantificationData);
-	public static final String EQReportSSRS_NoEQrecordsarepresent = Resources.getResource(ResourceKeys.EQReportSSRS_NoEQrecordsarepresent);	
+	public static final String EQReportSSRS_NoEQrecordsarepresent = Resources.getResource(ResourceKeys.EQReportSSRS_NoEQrecordsarepresent);
 
 	private String reportName;
 
@@ -70,14 +70,13 @@ public class EqReportsPage extends ReportsBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='eq-selected-text']")
 	protected WebElement eqRptArea;
-	
-	
+
 	@FindBy(how = How.ID, using = "zip-file_tif")
 	protected WebElement zipImg;
-	
-	private  LatLongSelectionControl latLongSelectionControl;
-	
-	private  final String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
+
+	private LatLongSelectionControl latLongSelectionControl;
+
+	private final String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
 
 	public WebElement getBtnNewEQRpt() {
 		return this.btnNewEQRpt;
@@ -99,7 +98,7 @@ public class EqReportsPage extends ReportsBasePage {
 		super(driver, strBaseURL, testSetup, strBaseURL + EQRPTURLPath);
 
 		Log.info("\nThe EQ Reports Page URL is: %s\n" + this.strPageURL);
-		
+
 		latLongSelectionControl = new LatLongSelectionControl(driver);
 		PageFactory.initElements(driver, latLongSelectionControl);
 	}
@@ -227,7 +226,7 @@ public class EqReportsPage extends ReportsBasePage {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Method to verify the Views Images
 	 * 
@@ -273,7 +272,7 @@ public class EqReportsPage extends ReportsBasePage {
 		}
 		return true;
 	}
-	
+
 	public boolean validatePdfFiles(String reportTitle, String downloadPath) {
 		DBConnection objDbConn = new DBConnection();
 		String reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
@@ -286,29 +285,24 @@ public class EqReportsPage extends ReportsBasePage {
 		return true;
 	}
 
-	
 	@Override
-	public void fillReportSpecific(Reports reports) {	
-		ReportsEQ eqReports= (ReportsEQ)reports;
+	public void fillReportSpecific(Reports reports) {
+		ReportsEQ eqReports = (ReportsEQ) reports;
 		getSelectArea().click();
-		for(List<Coordinates> coordinates:eqReports.getListOfCords()){
-		latLongSelectionControl.waitForModalDialogOpen()
-								.switchMode(ControlMode.MapInteraction)
-								.waitForMapImageLoad()
-								.selectSegment(CANVAS_X_PATH, coordinates)
-								.switchMode(ControlMode.Default);
-								
+		for (List<Coordinates> coordinates : eqReports.getListOfCords()) {
+			latLongSelectionControl.waitForModalDialogOpen().switchMode(ControlMode.MapInteraction).waitForMapImageLoad().selectSegment(CANVAS_X_PATH, coordinates).switchMode(ControlMode.Default);
+
 		}
 		latLongSelectionControl.clickOkButton();
-		
+
 	}
-	
+
 	@Override
-	public boolean handleFileDownloads(String rptTitle, String testCaseID) {	
+	public boolean handleFileDownloads(String rptTitle, String testCaseID) {
 		Report objReport = Report.getReport(rptTitle);
 		String reportId = objReport.getId();
 		reportId = reportId.substring(0, 6);
-		String reportName="EQ-" + reportId;
+		String reportName = "EQ-" + reportId;
 		clickOnPDFInReportViewer();
 		waitForPDFFileDownload(reportName);
 		Log.info("PDF file got downloaded");
@@ -316,6 +310,10 @@ public class EqReportsPage extends ReportsBasePage {
 		waitForReportTIFFileDownload(reportName);
 		Log.info("View file got downloaded");
 		return true;
+	}
+	
+	@Override
+	protected void handleExtraAddSurveyInfoParameters(Reports reports) {		
 	}
 
 	public void clickOnZIPInReportViewer() {
@@ -327,15 +325,14 @@ public class EqReportsPage extends ReportsBasePage {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click();", pdfImg);
 	}
-	
+
 	public void waitForPDFFileDownload(String reportName) {
 		waitForFileDownload(reportName + ".pdf", testSetup.getDownloadPath());
 	}
 
 	public void waitForReportTIFFileDownload(String reportName) {
-		waitForFileDownload(reportName +"_EQ-View.pdf", testSetup.getDownloadPath());
+		waitForFileDownload(reportName + "_EQ-View.pdf", testSetup.getDownloadPath());
 	}
-
 
 	@Override
 	public void waitForPageLoad() {

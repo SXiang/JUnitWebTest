@@ -123,8 +123,8 @@ import surveyor.dataprovider.ComplianceReportDataProvider;
 @RunWith(SurveyorTestRunner.class)
 public class EQReportsPageTest extends BaseReportsPageTest {
 	private static EqReportsPage eqReportsPage = null;
-	private static LatLongSelectionControl latLongSelectionControl=null;
-	
+	private static LatLongSelectionControl latLongSelectionControl = null;
+
 	@BeforeClass
 	public static void setupComplianceReportsPageTest() {
 		initializePageObjects();
@@ -147,22 +147,22 @@ public class EQReportsPageTest extends BaseReportsPageTest {
 	public void ComplianceReportTest_VerifyNonEthaneReport() throws Exception {
 		eqReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		eqReportsPage.open();
-		String testCaseName="EQUnitTest";
-		
+		String testCaseName = "EQUnitTest";
+
 		List<List<Coordinates>> coordList = new ArrayList<List<Coordinates>>();
-		List <Coordinates> listOfCords = new ArrayList <Coordinates>();
-		List <Coordinates> listOfCords1 = new ArrayList <Coordinates>();
-		listOfCords.add(0, new Coordinates(200,200));
-		listOfCords.add(1, new Coordinates(220,300));
-		listOfCords.add(2, new Coordinates(240,400));
-		listOfCords1.add(0, new Coordinates(100,200));
-		listOfCords1.add(1, new Coordinates(120,300));
-		listOfCords1.add(2, new Coordinates(140,400));
+		List<Coordinates> listOfCords = new ArrayList<Coordinates>();
+		List<Coordinates> listOfCords1 = new ArrayList<Coordinates>();
+		listOfCords.add(0, new Coordinates(200, 200));
+		listOfCords.add(1, new Coordinates(220, 300));
+		listOfCords.add(2, new Coordinates(240, 400));
+		listOfCords1.add(0, new Coordinates(100, 200));
+		listOfCords1.add(1, new Coordinates(120, 300));
+		listOfCords1.add(2, new Coordinates(140, 400));
 		coordList.add(listOfCords);
 		coordList.add(listOfCords1);
-		
+
 		String rptTitle = "Report" + testSetup.getRandomNumber();
-	
+
 		List<String> tagList = new ArrayList<String>();
 		tagList.add("EQGPSoffset");
 
@@ -177,8 +177,6 @@ public class EQReportsPageTest extends BaseReportsPageTest {
 		assertTrue(eqReportsPage.verifyEmissionQuantificationDataTable(rptTitle, testSetup.getDownloadPath()));
 		assertTrue(eqReportsPage.verifyViewsImages(testSetup.getDownloadPath(), rptTitle, testCaseName, testCaseName));
 
-
 	}
-
 
 }

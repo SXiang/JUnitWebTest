@@ -286,10 +286,11 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 	/**
 	 * Test Case ID: TC198 Test Description: Verify "Already Added" message is displayed if user tries to add the same survey again using copy functionality
+	 * @throws Exception 
 	 * 
 	 */
 	@Test
-	public void TC198_ComplianceReportTest_VerifyAlreadyAddedMessageforCopy() {
+	public void TC198_ComplianceReportTest_VerifyAlreadyAddedMessageforCopy() throws Exception {
 		System.out.format("\nRunning TC198: Verify 'Already Added' message is displayed if user tries to add the same survey again using copy functionality\n");
 
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());

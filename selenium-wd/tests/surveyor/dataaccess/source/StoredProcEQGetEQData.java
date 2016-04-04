@@ -151,13 +151,13 @@ public class StoredProcEQGetEQData extends BaseEntity {
 		try {
 			objReport.setName(resultSet.getString("Name"));
 			objReport.setEmissionRank(resultSet.getString("EmissionRank"));
-			objReport.setEmissionRate(resultSet.getDouble("EmissionRate"));
+			objReport.setEmissionRate(getDoubleColumnValue(resultSet, "EmissionRate"));
 			objReport.setConfideneceGroup(resultSet.getString("ConfidenceGroup"));
-			objReport.setLength(resultSet.getInt("Length"));
-			objReport.setEmissionFactor(resultSet.getDouble("EmissionsFactor"));
+			objReport.setLength(getIntColumnValue(resultSet, "Length"));
+			objReport.setEmissionFactor(getDoubleColumnValue(resultSet, "EmissionsFactor"));
 			objReport.setNumLeaks(resultSet.getInt("NumLeaks"));
-			objReport.setLeaksPerFt(resultSet.getDouble("LeaksPerFt"));
-			objReport.setRatePerLeak(resultSet.getDouble("RatePerLeak"));
+			objReport.setLeaksPerFt(getDoubleColumnValue(resultSet, "LeaksPerFt"));
+			objReport.setRatePerLeak(getDoubleColumnValue(resultSet, "RatePerLeak"));
 
 		} catch (SQLException e) {
 			Log.error("Class Report | " + e.toString());

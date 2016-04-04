@@ -416,7 +416,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (viewList.get(i).get(KEYASSETS).equalsIgnoreCase("1")) {
 				colNum = 10;
 				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
-				WebElement assetCheckbox=driver.findElement(By.xpath(strBaseXPath));
+				WebElement assetCheckbox = driver.findElement(By.xpath(strBaseXPath));
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				js.executeScript("arguments[0].click();", assetCheckbox);
 			}
@@ -494,7 +494,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Report objReport = Report.getReport(rptTitle);
 		String reportId = objReport.getId();
 		reportId = reportId.substring(0, 6);
-		String reportName="CR-" + reportId;
+		String reportName = "CR-" + reportId;
 		clickOnPDFInReportViewer();
 		waitForPDFFileDownload(reportName);
 		Log.info("SSRS zip file got downloaded");
@@ -1255,7 +1255,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		}
 	}
-	
+
 	public boolean verifySurveysTableViaSurveyMode(boolean changeMode, ReportModeFilter strReportMode, SurveyModeFilter surveyModeFilter) throws IOException {
 		boolean result = false;
 
@@ -1293,7 +1293,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		return result;
 	}
-
 
 	public void selectEthaneFilter(EthaneFilter ethaneFilter) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -2112,7 +2111,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		ImageIO.write(image, "png", new File(actualImage));
 		return true;
 	}
-	
+
 	/**
 	 * Method to verify the Views Images
 	 * 
@@ -2131,7 +2130,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String reportName = "CR-" + reportId;
 		setReportName(reportName);
 		String baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + destViewTitle + ".png";
-		String imageExtractFolder=pdfUtility.extractPDFImages(actualReport, testCase);
+		String imageExtractFolder = pdfUtility.extractPDFImages(actualReport, testCase);
 		File folder = new File(imageExtractFolder);
 		File[] listOfFiles = folder.listFiles();
 		for (File file : listOfFiles) {
@@ -2153,7 +2152,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		return true;
 	}
-
 
 	public void verifyShapeFilesData() {
 		try {
@@ -2317,7 +2315,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@Override
 	public void fillReportSpecific(Reports reports) {
-		ReportsCompliance reportsCompliance=(ReportsCompliance)reports;
+		ReportsCompliance reportsCompliance = (ReportsCompliance) reports;
 		if (reportsCompliance.getEthaneFilter() != null) {
 			selectEthaneFilter(reportsCompliance.getEthaneFilter());
 		}
@@ -2356,7 +2354,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@Override
 	public void addMultipleSurveys(Reports reports) {
-		ReportsCompliance reportsCompliance=(ReportsCompliance)reports;
+		ReportsCompliance reportsCompliance = (ReportsCompliance) reports;
 		inputExclusionRadius(reportsCompliance.getExclusionRadius());
 		inputImageMapHeight(reportsCompliance.getImageMapHeight());
 		inputImageMapWidth(reportsCompliance.getImageMapWidth());
@@ -2409,15 +2407,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			selectViewLayerBoundaries(true, true);
 		}
 	}
-	
+
 	@Override
 	protected void handleExtraAddSurveyInfoParameters(Reports reports) {
-		SurveyModeFilter surveyModeFilter = ((ReportsCompliance)reports).surveyModeFilter;
+		SurveyModeFilter surveyModeFilter = ((ReportsCompliance) reports).surveyModeFilter;
 		if (surveyModeFilter != null) {
 			selectSurveyModeForSurvey(surveyModeFilter);
 		}
 	}
-	
+
 	public void selectSurveyModeForSurvey(SurveyModeFilter surveyModeFilter) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		switch (surveyModeFilter) {
@@ -2440,7 +2438,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			break;
 		}
 	}
-
 
 	@Override
 	public void addOtherDetails(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList, String startDate, String endDate, boolean changeMode, String strReportMode) {
@@ -2491,7 +2488,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return STRNewPageContentText;
 	}
 
-	
 	@Override
 	public String getStrCopyPageText() {
 		return STRCopyPageTitle;
