@@ -286,29 +286,29 @@ public class Peak extends BaseEntity {
 	private static Peak loadFrom(ResultSet resultSet) {
 		Peak objPeak = new Peak();
 		try {
-			objPeak.setCH4(resultSet.getFloat("CH4"));
-			objPeak.setSigma(resultSet.getFloat("Sigma"));
+			objPeak.setCH4(getFloatColumnValue(resultSet,"CH4"));
+			objPeak.setSigma(getFloatColumnValue(resultSet,"Sigma"));
 			objPeak.setSurveyId(resultSet.getString("SurveyId"));
 			objPeak.setAnalyzerId(resultSet.getString("AnalyzerId"));
 			objPeak.setSurveyModeTypeId(resultSet.getString("SurveyModeTypeId"));
-			objPeak.setCarBearing(resultSet.getFloat("CarBearing"));
-			objPeak.setWindSpeedNorth(resultSet.getFloat("WindSpeedNorth"));
-			objPeak.setGpsLatitude(resultSet.getFloat("GpsLatitude"));
-			objPeak.setDistance(resultSet.getFloat("Distance"));
-			objPeak.setCarSpeedEast(resultSet.getFloat("CarSpeedEast"));
+			objPeak.setCarBearing(getFloatColumnValue(resultSet,"CarBearing"));
+			objPeak.setWindSpeedNorth(getFloatColumnValue(resultSet,"WindSpeedNorth"));
+			objPeak.setGpsLatitude(getFloatColumnValue(resultSet,"GpsLatitude"));
+			objPeak.setDistance(getFloatColumnValue(resultSet,"Distance"));
+			objPeak.setCarSpeedEast(getFloatColumnValue(resultSet,"CarSpeedEast"));
 			objPeak.setPassedAutoThreshold(resultSet.getObject("PassedAutoThreshold"));
-			objPeak.setWindDirectionStdDev(resultSet.getFloat("WindDirectionStdDev"));
-			objPeak.setGpsLongitude(resultSet.getFloat("GpsLongitude"));
-			objPeak.setWindSpeedEast(resultSet.getFloat("WindSpeedEast"));
-			objPeak.setCarSpeedNorth(resultSet.getFloat("CarSpeedNorth"));
+			objPeak.setWindDirectionStdDev(getFloatColumnValue(resultSet,"WindDirectionStdDev"));
+			objPeak.setGpsLongitude(getFloatColumnValue(resultSet,"GpsLongitude"));
+			objPeak.setWindSpeedEast(getFloatColumnValue(resultSet,"WindSpeedEast"));
+			objPeak.setCarSpeedNorth(getFloatColumnValue(resultSet,"CarSpeedNorth"));
 			objPeak.setPosition(resultSet.getObject("Position"));
-			objPeak.setLisaOpeningAngle(resultSet.getFloat("LisaOpeningAngle"));
-			objPeak.setMajor(resultSet.getFloat("Major"));
+			objPeak.setLisaOpeningAngle(getFloatColumnValue(resultSet,"LisaOpeningAngle"));
+			objPeak.setMajor(getFloatColumnValue(resultSet,"Major"));
 			objPeak.setLisa(resultSet.getObject("Lisa"));
-			objPeak.setMinor(resultSet.getFloat("Minor"));
-			objPeak.setLisaBearing(resultSet.getFloat("LisaBearing"));
-			objPeak.setAmplitude(resultSet.getFloat("Amplitude"));
-			objPeak.setEpochTime(resultSet.getFloat("EpochTime"));
+			objPeak.setMinor(getFloatColumnValue(resultSet,"Minor"));
+			objPeak.setLisaBearing(getFloatColumnValue(resultSet,"LisaBearing"));
+			objPeak.setAmplitude(getFloatColumnValue(resultSet,"Amplitude"));
+			objPeak.setEpochTime(getFloatColumnValue(resultSet,"EpochTime"));
 		} catch (SQLException e) {
 			Log.error(e.toString());
 		}
