@@ -209,23 +209,23 @@ public class CaptureEvent extends BaseEntity {
 	private static CaptureEvent loadFrom(ResultSet resultSet) {
 		CaptureEvent objCaptureEvent = new CaptureEvent();
 		try {
-			objCaptureEvent.setUncertainty(resultSet.getFloat("Uncertainty"));
+			objCaptureEvent.setUncertainty(getFloatColumnValue(resultSet,"Uncertainty"));
 			objCaptureEvent.setShape(resultSet.getObject("Shape"));
 			objCaptureEvent.setReferenceGas(resultSet.getBoolean("ReferenceGas"));
-			objCaptureEvent.setReplayMax(resultSet.getFloat("ReplayMax"));
+			objCaptureEvent.setReplayMax(getFloatColumnValue(resultSet,"ReplayMax"));
 			objCaptureEvent.setAnalyzerId(resultSet.getString("AnalyzerId"));
-			objCaptureEvent.setReplayRMin(resultSet.getFloat("ReplayRMin"));
-			objCaptureEvent.setDelta(resultSet.getFloat("Delta"));
-			objCaptureEvent.setDateTime(resultSet.getDate("DateTime"));
+			objCaptureEvent.setReplayRMin(getFloatColumnValue(resultSet,"ReplayRMin"));
+			objCaptureEvent.setDelta(getFloatColumnValue(resultSet,"Delta"));
+			objCaptureEvent.setDateTime(getDateColumnValue(resultSet,"DateTime"));
 			objCaptureEvent.setId(resultSet.getString("Id"));
-			objCaptureEvent.setReplayLMin(resultSet.getFloat("ReplayLMin"));
-			objCaptureEvent.setGpsLongitude(resultSet.getFloat("GpsLongitude"));
+			objCaptureEvent.setReplayLMin(getFloatColumnValue(resultSet,"ReplayLMin"));
+			objCaptureEvent.setGpsLongitude(getFloatColumnValue(resultSet,"GpsLongitude"));
 			objCaptureEvent.setSurveyId(resultSet.getString("SurveyId"));
-			objCaptureEvent.setConcentration(resultSet.getFloat("Concentration"));
-			objCaptureEvent.setDistance(resultSet.getFloat("Distance"));
-			objCaptureEvent.setGpsLatitude(resultSet.getFloat("GpsLatitude"));
-			objCaptureEvent.setDisposition(resultSet.getInt("Disposition"));
-			objCaptureEvent.setEpochTime(resultSet.getFloat("EpochTime"));
+			objCaptureEvent.setConcentration(getFloatColumnValue(resultSet,"Concentration"));
+			objCaptureEvent.setDistance(getFloatColumnValue(resultSet,"Distance"));
+			objCaptureEvent.setGpsLatitude(getFloatColumnValue(resultSet,"GpsLatitude"));
+			objCaptureEvent.setDisposition(getIntColumnValue(resultSet,"Disposition"));
+			objCaptureEvent.setEpochTime(getFloatColumnValue(resultSet,"EpochTime"));
 		} catch (SQLException e) {
 			Log.error(e.toString());
 		}
