@@ -311,7 +311,7 @@ public class ComplianceReportsPageActions extends BasePageActions {
 		reportsCompliance.setUserName(dataRow.surveyUsername);
 		reportsCompliance.setTagList(surveyTag);
 		reportsCompliance.setStartDate(dataRow.surveyStartDate);
-		reportsCompliance.setEndDate(dataRow.surveyStartDate);
+		reportsCompliance.setEndDate(dataRow.surveyEndDate);
 		reportsCompliance.setSurveyModeFilter(modeFilter);
 		reportsCompliance.setGeoFilter(Boolean.parseBoolean(dataRow.surveyGeoFilterON));
 		

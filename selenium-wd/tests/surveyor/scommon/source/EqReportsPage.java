@@ -238,37 +238,41 @@ public class EqReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 
-	public boolean verifyViewsImages(String actualPath, String reportTitle, String testCase, String destViewTitle ) throws IOException {
+	public boolean verifyViewsImages(String actualPath, String reportTitle, String testCase, String destViewTitle) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
 		String actualReport = actualPath + "EQ-" + reportId.substring(0, 6) + "_EQ-View.pdf";
 		String reportName = "EQ-" + reportId;
 		setReportName(reportName);
-		String imageExtractFolder=pdfUtility.extractPDFImages(actualReport, testCase);
+		String imageExtractFolder = pdfUtility.extractPDFImages(actualReport, testCase);
 		String baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + destViewTitle + ".png";
 		File folder = new File(imageExtractFolder);
 		File[] listOfFiles = folder.listFiles();
+		String actualViewPath = testSetup.getSystemTempDirectory() + testCase + ".png";
 		for (File file : listOfFiles) {
-			if (file.isFile()) {
-				BufferedImage image = ImageIO.read(file);
-				int width = image.getWidth();
-				int height = image.getHeight();
-				Rectangle rect = new Rectangle(0, 0, width, height - 40);
-				image = cropImage(image, rect);
-				String actualViewPath = testSetup.getSystemTempDirectory() + testCase + ".png";
-				File outputfile = new File(testSetup.getSystemTempDirectory() + testCase + ".png");
-				ImageIO.write(image, "png", outputfile);
-				if (!verifyActualImageWithBase(baseViewFile, actualViewPath)) {
-					Files.delete(Paths.get(actualViewPath));
-					return false;
+			try {
+				if (file.isFile()) {
+					BufferedImage image = ImageIO.read(file);
+					int width = image.getWidth();
+					int height = image.getHeight();
+					Rectangle rect = new Rectangle(0, 0, width, height - 40);
+					image = cropImage(image, rect);
+					File outputfile = new File(testSetup.getSystemTempDirectory() + testCase + ".png");
+					ImageIO.write(image, "png", outputfile);
+					if (!verifyActualImageWithBase(baseViewFile, actualViewPath)) {
+						Files.delete(Paths.get(actualViewPath));
+						return false;
+					}
 				}
+
+			} finally {
 				Files.delete(Paths.get(actualViewPath));
 			}
+
 		}
 		return true;
 	}
-
 	
 	public boolean validatePdfFiles(String reportTitle, String downloadPath) {
 		DBConnection objDbConn = new DBConnection();
@@ -277,14 +281,14 @@ public class EqReportsPage extends ReportsBasePage {
 		reportName = "EQ-" + reportId;
 		String pdfFile1 = downloadPath + reportName + ".pdf";
 		String pdfFile2 = downloadPath + reportName + "_EQ-View.pdf";
-		if (!BaseHelper.validatePdfFile(pdfFile1) && !BaseHelper.validatePdfFile(pdfFile2))
+		if (!BaseHelper.validatePdfFile(pdfFile1) || !BaseHelper.validatePdfFile(pdfFile2))
 			return false;
 		return true;
 	}
 
 	
 	@Override
-	public void fillEqSpecific(Reports reports) {	
+	public void fillReportSpecific(Reports reports) {	
 		ReportsEQ eqReports= (ReportsEQ)reports;
 		getSelectArea().click();
 		for(List<Coordinates> coordinates:eqReports.getListOfCords()){

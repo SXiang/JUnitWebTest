@@ -406,10 +406,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li")
 	protected WebElement msgEmptySurvey;
-	
+
 	@FindBy(how = How.ID, using = "pdf")
 	protected WebElement pdfImg;
-
 
 	public static final String STRPaginationMsg = "Showing 1 to ";
 
@@ -465,7 +464,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return btnAddSurveys;
 	}
 
-	public void addNewReport(Reports reports) {
+	public void addNewReport(Reports reports) throws Exception {
 		openNewReportPage();
 		inputReportTitle(reports.getRptTitle());
 
@@ -476,14 +475,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 				inputReportTitle(reports.getRptTitle());
 			}
 		}
-
-		fillComplianceSpecific(reports);
-		fillEqSpecific(reports);
+		fillReportSpecific(reports);
 		addSurveyInformation(reports);
 		this.clickOnOKButton();
 	}
 
-	public void addSurveyInformation(Reports reports) {
+	public void addSurveyInformation(Reports reports) throws Exception {
 		Log.info("Adding Survey information");
 		String surveyor = reports.getSurveyorUnit();
 		String username = reports.getUsername();
@@ -491,7 +488,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		String startDate = reports.getSurveyStartDate();
 		String endDate = reports.getSurveyEndDate();
 		Boolean geoFilterOn = reports.getGeoFilter();
-		
+
 		if (surveyor != null) {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsSU) {
@@ -538,11 +535,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	/**
 	 * Implementation to be provided by Derived classes.
 	 */
-	protected void handleExtraAddSurveyInfoParameters(Reports reports) {
-		return;
+	protected void handleExtraAddSurveyInfoParameters(Reports reports) throws Exception {
+		throw new Exception("Not implemented");
 	}
-
-
 
 	public void selectStartDateForSurvey(String startDate) {
 		try {
@@ -579,7 +574,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void waitForNewPageLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return d.getPageSource().contains(getNewPageString());
+				boolean result=false;
+				try {
+					result= d.getPageSource().contains(getNewPageString());
+				} catch (Exception e) {
+					Log.error(e.toString());
+				}
+				return result;
 			}
 		});
 	}
@@ -614,7 +615,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				try {
 					return handleFileDownloads(rowNum);
-				} catch (org.openqa.selenium.NoSuchElementException e) {
+				} catch (Exception e) {
+					Log.error(e.toString());
 					return false;
 				}
 			}
@@ -638,8 +640,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return false;
 	}
 
-	protected boolean handleFileDownloads(int rowNum) {
-		return true;
+	protected boolean handleFileDownloads(int rowNum) throws Exception {
+		throw new Exception("Not implemented");
 	}
 
 	public void inputReportTitle(String rptTitle) {
@@ -731,9 +733,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 * @param actualPath
 	 * @param reportTitle
 	 * @return
-	 * @throws IOException
+	 * @throws Exception
 	 */
-	public boolean verifySurveysTableViaTag(boolean changeMode, ReportModeFilter strReportMode, String tag) throws IOException {
+	public boolean verifySurveysTableViaTag(boolean changeMode, ReportModeFilter strReportMode, String tag) throws Exception {
 		boolean result = false;
 
 		if (strReportMode != null && changeMode) {
@@ -762,8 +764,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return result;
 	}
 
-
-	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList, String startDate, String endDate, boolean changeMode, String strReportMode) {
+	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList, String startDate, String endDate, boolean changeMode, String strReportMode) throws Exception {
 		openNewReportPage();
 
 		if (customer != null && customer != "Picarro") {
@@ -780,7 +781,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		selectTimeZone(timeZone);
 
-		complianceSpecificOtherDetails(exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong, SWLat, SWLong, surUnit, tagList, startDate, endDate, changeMode, strReportMode);
+		addOtherDetails(exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong, SWLat, SWLong, surUnit, tagList, startDate, endDate, changeMode, strReportMode);
 
 		if (surUnit != "") {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
@@ -805,7 +806,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		}
 
-		complianceSpecificViewDetails(customer, boundary);
+		addViewDetails(customer, boundary);
 
 		this.clickOnOKButton();
 	}
@@ -839,23 +840,24 @@ public class ReportsBasePage extends SurveyorBasePage {
 		});
 	}
 
-	public String getUrlString() {
-		return null;
+	public String getUrlString() throws Exception {
+		throw new Exception("Not implemented");
 	}
 
-	public String getStrCopyPageText() {
-		return null;
+	public String getStrCopyPageText() throws Exception {
+		throw new Exception("Not implemented");
 	}
 
-	public String getNewPageString() {
-		return null;
+	public String getNewPageString() throws Exception {
+		throw new Exception("Not implemented");
 	}
 
-	public void fillComplianceSpecific(Reports reportsCompliance) {
+	public void fillReportSpecific(Reports reportsCompliance) throws Exception {
+		throw new Exception("Not implemented");
 	}
 
-	public void selectReportMode(ReportModeFilter mode) {
-
+	public void selectReportMode(ReportModeFilter mode) throws Exception {
+		throw new Exception("Not implemented");
 	}
 
 	public void addNewReportWithMultipleSurveysIncluded(Reports reportsCompliance) {
@@ -921,19 +923,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void selectSurveyCheckBox(WebElement checkboxSurFirst) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click();", checkboxSurFirst);
+	}	
+	
+	public void addViewDetails(String customer, String boundary) throws Exception {
+		throw new Exception("Not implemented");
 	}
 
-	public void complianceSpecificMultipleSurveys(Reports reportsCompliance) {
-	}
-
-	public void complianceSpecificViewDetails(String customer, String boundary) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void complianceSpecificOtherDetails(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList, String startDate, String endDate, boolean changeMode, String strReportMode) {
-		// TODO Auto-generated method stub
-
+	public void addOtherDetails(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList, String startDate, String endDate, boolean changeMode, String strReportMode) throws Exception {
+		throw new Exception("Not implemented");
 	}
 
 	/**
@@ -966,7 +963,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 
 		selectTimeZone(timeZone);
-		complianceSpecificAddNewReport(exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong, SWLat, SWLong);
+		reportSpecificAddNewReport(exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong, SWLat, SWLong);
 
 		if (surUnit != "") {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
@@ -1013,9 +1010,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
-		
+
 			createdByCell = table.findElement(By.xpath(createdByXPath));
-		
+
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle.trim()) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy.trim())) {
 				long startTime = System.currentTimeMillis();
 				long elapsedTime = 0;
@@ -1032,10 +1029,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							this.btnReportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						}
-						if(handleFileDownloads(rptTitle, testCaseID)){
-							Log.info("Handle File Download");
-							return true;
-						}
+						return handleFileDownloads(rptTitle, testCaseID);							
 
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
@@ -1067,7 +1061,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return false;
 	}
 
-	public void complianceSpecificAddNewReport(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong) {
+	public void reportSpecificAddNewReport(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong) {
 
 	}
 
@@ -1302,7 +1296,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return false;
 	}
 
-	public boolean deleteReport(String rptTitle, String strCreatedBy) {
+	public boolean deleteReport(String rptTitle, String strCreatedBy) throws Exception {
 		setPagination(PAGINATIONSETTING);
 
 		this.waitForPageLoad();
@@ -1492,7 +1486,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 
-	public boolean modifyReportDetails(String rptTitleNew, String surUnit, List<String> tagList, boolean changeMode, ReportModeFilter strReportMode) {
+	public boolean modifyReportDetails(String rptTitleNew, String surUnit, List<String> tagList, boolean changeMode, ReportModeFilter strReportMode) throws Exception {
 		this.waitForCopyReportPagetoLoad();
 
 		this.inputTitle.clear();
@@ -1559,11 +1553,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return false;
 	}
 
-	public boolean verifySurveyNotAdded(String reportTitle, String customer, String NELat, String NELong, String SWLat, String SWLong, List<Map<String, String>> views) {
+	public boolean verifySurveyNotAdded(String reportTitle, String customer, String NELat, String NELong, String SWLat, String SWLong, List<Map<String, String>> views) throws Exception {
 		openNewReportPage();
 		inputReportTitle(reportTitle);
-		addComplianceSpecificSurveys(customer, NELat, NELong, SWLat, SWLong, views);
-
+		addReportSpecificSurveys(customer, NELat, NELong, SWLat, SWLong, views);
 		this.clickOnOKButton();
 		if (this.msgEmptySurvey.getText().equalsIgnoreCase(getSurveyMissingMessage())) {
 			return true;
@@ -1572,7 +1565,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return false;
 	}
 
-	public boolean verifySurveyAlreadyAdded(String customer, String surveyTag) {
+	public boolean verifySurveyAlreadyAdded(String customer, String surveyTag) throws Exception {
 		this.waitForCopyReportPagetoLoad();
 		this.waitForDeleteSurveyButtonToLoad();
 		if (customer != null && customer != "Picarro") {
@@ -1615,7 +1608,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return false;
 	}
 
-	
 	public BufferedImage cropImage(BufferedImage src, Rectangle rect) {
 		BufferedImage dest = src.getSubimage(rect.x, rect.y, rect.width, rect.height);
 		return dest;
@@ -1630,8 +1622,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return true;
 	}
 
-	public String getSTRSurveyIncludedMsg() {
-		return null;
+	public String getSTRSurveyIncludedMsg() throws Exception {
+		throw new Exception("Not implemented");
 	}
 
 	public void openNewComplianceReportPage() {
@@ -1661,14 +1653,16 @@ public class ReportsBasePage extends SurveyorBasePage {
 		this.btnFirstCopyCompliance.click();
 	}
 
-	public void fillEqSpecific(Reports reports) {
-
-	}
-
 	public void waitForCopyReportPagetoLoad() {
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return d.getPageSource().contains(getStrCopyPageText());
+				boolean result=false;
+				try {
+					result= d.getPageSource().contains(getStrCopyPageText());
+				} catch (Exception e) {
+					Log.error(e.toString());					
+				}
+				return result;
 
 			}
 		});
@@ -1677,7 +1671,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void waitForDeletePopupLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return getBtnDeleteConfirm().isDisplayed();
+				boolean isDisplayed = false;
+				try {
+					isDisplayed = getBtnDeleteConfirm().isDisplayed();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return isDisplayed;
 			}
 		});
 	}
@@ -1743,30 +1743,35 @@ public class ReportsBasePage extends SurveyorBasePage {
 		});
 	}
 
-	public WebElement getBtnDeleteConfirm() {
-		return null;
+	public WebElement getBtnDeleteConfirm() throws Exception {
+		throw new Exception("Not implemented");
 	}
 
-	public String getBtnDeleteConfirmXpath() {
-		return null;
+	public String getBtnDeleteConfirmXpath() throws Exception {
+		throw new Exception("Not implemented");
 	}
 
-	public void modifyComplianceViews() {
-
-	}
-
-	public void complianceChangeMode(String rptTitleNew, boolean changeMode, ReportModeFilter strReportMode) {
+	public void modifyComplianceViews() throws Exception {
+		throw new Exception("Not implemented");
 
 	}
 
-	public void addComplianceSpecificSurveys(String customer, String NELat, String NELong, String SWLat, String SWLong, List<Map<String, String>> views) {
+	public void complianceChangeMode(String rptTitleNew, boolean changeMode, ReportModeFilter strReportMode) throws Exception {
+		throw new Exception("Not implemented");
 
 	}
 
-	public String getSurveyMissingMessage() {
-		// TODO Auto-generated method stub
-		return null;
+	public void addReportSpecificSurveys(String customer, String NELat, String NELong, String SWLat, String SWLong, List<Map<String, String>> views) throws Exception {
+		throw new Exception("Not implemented");
 	}
 
+	public String getSurveyMissingMessage() throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	public void addMultipleSurveys(Reports reports) throws Exception {
+		throw new Exception("Not implemented");
+		
+	}
 
 }

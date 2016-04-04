@@ -299,7 +299,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	@Override
-	public void complianceSpecificAddNewReport(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong) {
+	public void reportSpecificAddNewReport(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong) {
 		inputExclusionRadius(exclusionRadius);
 
 		this.inputNELat.sendKeys(NELat);
@@ -345,11 +345,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.addNewReport(reportTitle, customer, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, REPORTMODES1);
 	}
 
-	public void addNewPDReport(String reportTitle, String surveyor, List<String> tag, boolean changeMode, String reportMode) {
+	public void addNewPDReport(String reportTitle, String surveyor, List<String> tag, boolean changeMode, String reportMode) throws Exception {
 		this.addNewReport(reportTitle, null, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, changeMode, reportMode);
 	}
 
-	public void addNewPDReport(String reportTitle, String customer, String surveyor, List<String> tag, boolean changeMode, String reportMode) {
+	public void addNewPDReport(String reportTitle, String customer, String surveyor, List<String> tag, boolean changeMode, String reportMode) throws Exception {
 		this.addNewReport(reportTitle, customer, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, changeMode, reportMode);
 	}
 
@@ -2316,7 +2316,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	@Override
-	public void fillComplianceSpecific(Reports reports) {
+	public void fillReportSpecific(Reports reports) {
 		ReportsCompliance reportsCompliance=(ReportsCompliance)reports;
 		if (reportsCompliance.getEthaneFilter() != null) {
 			selectEthaneFilter(reportsCompliance.getEthaneFilter());
@@ -2355,7 +2355,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	@Override
-	public void complianceSpecificMultipleSurveys(Reports reports) {
+	public void addMultipleSurveys(Reports reports) {
 		ReportsCompliance reportsCompliance=(ReportsCompliance)reports;
 		inputExclusionRadius(reportsCompliance.getExclusionRadius());
 		inputImageMapHeight(reportsCompliance.getImageMapHeight());
@@ -2383,7 +2383,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	@Override
-	public void complianceSpecificViewDetails(String customer, String boundary) {
+	public void addViewDetails(String customer, String boundary) {
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();
 
@@ -2443,7 +2443,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 
 	@Override
-	public void complianceSpecificOtherDetails(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList, String startDate, String endDate, boolean changeMode, String strReportMode) {
+	public void addOtherDetails(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList, String startDate, String endDate, boolean changeMode, String strReportMode) {
 		if (this.isElementPresent(btnChangeModeXPath)) {
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("arguments[0].click();", btnChangeMode);
@@ -2476,7 +2476,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	@Override
-	public void addComplianceSpecificSurveys(String customer, String NELat, String NELong, String SWLat, String SWLong, List<Map<String, String>> views) {
+	public void addReportSpecificSurveys(String customer, String NELat, String NELong, String SWLat, String SWLong, List<Map<String, String>> views) {
 		fillCustomBoundaryTextFields(NELat, NELong, SWLat, SWLong);
 		addViews(customer, views);
 	}
