@@ -574,9 +574,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void waitForNewPageLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				boolean result=false;
+				boolean result = false;
 				try {
-					result= d.getPageSource().contains(getNewPageString());
+					result = d.getPageSource().contains(getNewPageString());
 				} catch (Exception e) {
 					Log.error(e.toString());
 				}
@@ -923,8 +923,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void selectSurveyCheckBox(WebElement checkboxSurFirst) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click();", checkboxSurFirst);
-	}	
-	
+	}
+
 	public void addViewDetails(String customer, String boundary) throws Exception {
 		throw new Exception("Not implemented");
 	}
@@ -1029,7 +1029,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							this.btnReportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						}
-						return handleFileDownloads(rptTitle, testCaseID);							
+						return handleFileDownloads(rptTitle, testCaseID);
 
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
@@ -1656,11 +1656,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void waitForCopyReportPagetoLoad() {
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				boolean result=false;
+				boolean result = false;
 				try {
-					result= d.getPageSource().contains(getStrCopyPageText());
+					result = d.getPageSource().contains(getStrCopyPageText());
 				} catch (Exception e) {
-					Log.error(e.toString());					
+					Log.error(e.toString());
 				}
 				return result;
 
@@ -1753,12 +1753,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void modifyComplianceViews() throws Exception {
 		throw new Exception("Not implemented");
-
 	}
 
 	public void complianceChangeMode(String rptTitleNew, boolean changeMode, ReportModeFilter strReportMode) throws Exception {
 		throw new Exception("Not implemented");
-
 	}
 
 	public void addReportSpecificSurveys(String customer, String NELat, String NELong, String SWLat, String SWLong, List<Map<String, String>> views) throws Exception {
@@ -1771,7 +1769,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void addMultipleSurveys(Reports reports) throws Exception {
 		throw new Exception("Not implemented");
-		
+
 	}
 
 }
