@@ -553,12 +553,24 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		
 		latLongSelectionControl.waitForModalDialogOpen()
 		.switchMode(ControlMode.MapInteraction);
-		String pt = this.selectedPoint.getText();
-		if(pt.indexOf("[")>=0){
-		   pt = pt.substring(pt.indexOf("[")+1,pt.indexOf("]"));
-		}else{
-			pt = null;
-		}
+		
+		String pt = (new WebDriverWait(driver,10)).until(new ExpectedCondition<String>(){
+			public String apply(WebDriver d){
+				String text = null;
+				try{
+					text = selectedPoint.getText();
+					if(text.indexOf("[")>=0){
+						text = text.substring(text.indexOf("[")+1,text.indexOf("]"));
+						}else{
+							text = null;
+						}
+				}catch(Exception e){
+					text = null;
+				}
+				return text;
+			}
+		});
+		
 		latLongSelectionControl
 		.switchMode(ControlMode.Default);
 		return pt;

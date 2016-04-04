@@ -30,6 +30,8 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageSurveyorHistories_PageTitle);
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ManageSurveyorHistory_PageTitle);
 
+	private static final int DATETIME_COL_IDX = 5;
+
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	protected WebElement btnAddNewHistoryEntry;
 
@@ -175,6 +177,9 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 		setPagination(PAGINATIONSETTING_100);
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		
+		// Click on datetime column.
+		this.clickOnColumnHeader(DATETIME_COL_IDX, 2 /*number of times to click*/);
 
 		String customerNameXPath;
 		String locationNameXPath;

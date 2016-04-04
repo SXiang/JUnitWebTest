@@ -58,7 +58,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC158 Test Description: Generate system history report as Administrator
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC158_SysHisRpt_PicarroAdmin() {
 		String rptTitle = "TC158 Report" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC158 Test Description: Generate system history report as Administrator, %s\n" + rptTitle);
@@ -268,7 +268,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC516 Test Description: Generate system history report as Customer Supervisor
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC516_SysHisRpt_CustSupervisor() {
 		String rptTitle = "TC516 Report" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC516 Test Description: Generate system history report as Customer Supervisor, %s\n" + rptTitle);
