@@ -940,7 +940,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		// add class testing code here
 	}
 
-	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, String tag, String startDate, String endDate, String surModeFilter) {
+	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, String tag, String startDate, String endDate, String surModeFilter) throws Exception {
 		openNewReportPage();
 		this.inputTitle.clear();
 		this.inputTitle.sendKeys(title);
@@ -1061,8 +1061,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return false;
 	}
 
-	public void reportSpecificAddNewReport(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong) {
-
+	public void reportSpecificAddNewReport(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong) throws Exception {
+		throw new Exception("Not implemented");
 	}
 
 	public boolean waitForReportGenerationtoComplete(String rptTitle, String strCreatedBy) {
@@ -1730,8 +1730,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return dataTableEmpty;
 	}
 
-	public boolean handleFileDownloads(String rptTitle, String testCaseID) {
-		return true;
+	public boolean handleFileDownloads(String rptTitle, String testCaseID)  throws Exception {
+		throw new Exception("Not implemented");
 	}
 
 	public void waitForPdfReportIcontoAppear() {

@@ -329,19 +329,19 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.checkBoxPCRA.click();
 	}
 
-	public void addNewPDReport(String reportTitle) {
+	public void addNewPDReport(String reportTitle) throws Exception {
 		this.addNewReport(reportTitle, null, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, SURVEYORUNIT, TAG, STARTDATE, ENDDATE, REPORTMODES1);
 	}
 
-	public void addNewPDReport(String reportTitle, String customer) {
+	public void addNewPDReport(String reportTitle, String customer) throws Exception {
 		this.addNewReport(reportTitle, customer, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, SURVEYORUNIT, TAG, STARTDATE, ENDDATE, REPORTMODES1);
 	}
 
-	public void addNewPDReport(String reportTitle, String surveyor, String tag) {
+	public void addNewPDReport(String reportTitle, String surveyor, String tag) throws Exception {
 		this.addNewReport(reportTitle, null, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, REPORTMODES1);
 	}
 
-	public void addNewPDReport(String reportTitle, String customer, String surveyor, String tag) {
+	public void addNewPDReport(String reportTitle, String customer, String surveyor, String tag) throws Exception {
 		this.addNewReport(reportTitle, customer, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, REPORTMODES1);
 	}
 
