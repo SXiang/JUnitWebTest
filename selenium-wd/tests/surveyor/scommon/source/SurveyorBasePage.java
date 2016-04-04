@@ -121,6 +121,9 @@ public class SurveyorBasePage extends BasePage {
 	
 	@FindBy(xpath = "//*[@id='timezones' and @class='dropdown-menu']//a[contains(text(),'Eastern Standard Time')]")
 	protected WebElement easternTime;
+	
+	private static String headerColumnBaseXPath = "//*[@id='datatable']/thead/tr/th[%d]";
+	
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -317,5 +320,12 @@ public class SurveyorBasePage extends BasePage {
 			records = Integer.parseInt(strList.get(3));
 		}
 		return records;
+	}
+	
+	public void clickOnColumnHeader(Integer columnIndex, Integer numTimesToClick) {
+		WebElement headerElement = driver.findElement(By.xpath(String.format(headerColumnBaseXPath, columnIndex)));
+		for (int i = 0; i < numTimesToClick; i++) {
+			headerElement.click();
+		}
 	}
 }
