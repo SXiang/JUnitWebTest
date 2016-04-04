@@ -57,6 +57,20 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[3]/a")
 	private WebElement btnEditCustomer;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='LicencedFeatureId-Report Metadata']")
+	private WebElement rptMetaDataCheckBox;
+	
+	public WebElement getRptMetaDataCheckBox() {
+		return rptMetaDataCheckBox;
+	}
+
+	@FindBy(how = How.XPATH, using = "//*[@id='LicencedFeatureId-Report ShapeFile']")
+	private WebElement rptShapeFileCheckBox;
+	
+	public WebElement getrptShapeFileCheckBox() {
+		return rptShapeFileCheckBox;
+	}
+
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -108,7 +122,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		sendKeysToTextArea(this.textAreaEula, eula);
 	}
 
-	private void enabledDisableCustomer(boolean enableCustomer) {
+	public void enabledDisableCustomer(boolean enableCustomer) {
 		if (enableCustomer) {
 			if (!inputAccountEnabled.isSelected())
 				inputAccountEnabled.click();
