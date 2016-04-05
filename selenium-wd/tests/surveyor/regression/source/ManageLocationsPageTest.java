@@ -60,7 +60,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
 	public void TC16_TC18_AddLocationUsingLatLongSelector_PicAdminSupport(String user, String pswd ) {
 		String tcID ;
-		if(user.equalsIgnoreCase("AutomationAdmin")){
+		if(user.equalsIgnoreCase("administrator")){
 			tcID ="TC16";
 		}else {
 			tcID ="TC18";
@@ -103,7 +103,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
 	public void TC17_TC19_EditLocationAddedUsingLatLongSelector_PicAdmin_PicSupport(String user, String pwd) {
 		String tcID;
-		if (user.equalsIgnoreCase("AutomationAdmin")) {
+		if (user.equalsIgnoreCase("administrator")) {
 			tcID = "TC17";
 		} else {
 			tcID = "TC19";
@@ -140,7 +140,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
 	public void TC60_TC489_AddLocation_PicAdmin_PicSupport(String user, String pwd) {
 		String tcID;
-		if (user.equalsIgnoreCase("AutomationAdmin")) {
+		if (user.equalsIgnoreCase("administrator")) {
 			tcID = "TC60";
 		} else {
 			tcID = "TC489";
@@ -175,7 +175,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	@UseDataProvider(value = UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location = UserDataProvider.class)
 	public void TC61_TC490_EditLocation_PicAdmin(String user, String pwd) {
 		String tcID;
-		if (user.equalsIgnoreCase("AutomationAdmin")) {
+		if (user.equalsIgnoreCase("administrator")) {
 			tcID = "TC61";
 		} else {
 			tcID = "TC490";
@@ -190,6 +190,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 				+ testSetup.getFixedSizeRandomNumber(8) + tcID;
 		String cityName = "Santa Clara";
 
+		Log.info(user);
+		Log.info(password);
 		Log.info("\nRunning " + tcID
 				+ "_EditLocation - Test Description: Editing Location");
 		
@@ -255,7 +257,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		String cityName = "Santa Clara";
 
 		String tcID;
-		if (user.equalsIgnoreCase("AutomationAdmin")) {
+		if (user.equalsIgnoreCase("administrator")) {
 			tcID = "TC100";
 		} else {
 			tcID = "TC495";

@@ -28,7 +28,6 @@ import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
-
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
@@ -68,19 +67,27 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * 
 	 */
 	@Test
-	public void TC68_AddNewPicarroUser() {
+	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
+	public void TC68_TC470_AddNewPicarroUser(String user, String pwd) {
+		String tcID ;
+		if(user.equalsIgnoreCase("administrator")){
+			tcID ="TC68";
+		}else {
+			tcID ="TC470";
+		}
+		String password = CryptoUtility.decrypt(pwd);
 		String userName = "PicarroUser" + testSetup.getRandomNumber()
-				+ "picarroUser01" + REGBASEUSERNAME;
+				+ tcID + REGBASEUSERNAME;
 		String customer = "Picarro";
 		String location = "Santa Clara";
 		String locationDesc = customer + " - " + location;
 
-		System.out
-				.println("\nRunning TC68 - Test Description: Picarro Admin - Add New Picarro user");
+		Log.info(user);
+		Log.info(password);
+		Log.info("\nRunning " + tcID + " - Test Description: Picarro Admin - Add New Picarro user");
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(),
-				testSetup.getLoginPwd());
+		loginPage.loginNormalAs(user, password);
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
@@ -96,25 +103,31 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC69 Test Description: Picarro Admin - Add New Customer
+	 * Test Case ID: TC69_TC471 Test Description: Picarro Admin - Add New Customer
 	 * User
 	 * 
 	 */
 	@Test
-	public void TC69_AddNewCustomerUser() {
+	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
+	public void TC69_TC471_AddNewCustomerUser(String user, String pwd) {
+		String tcID ;
+		if(user.equalsIgnoreCase("administrator")){
+			tcID ="TC69";
+		}else {
+			tcID ="TC471";
+		}
+		String password = CryptoUtility.decrypt(pwd);
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber()
-				+ "TC69";
+				+ tcID;
 		String eula = customerName + ": " + EULASTRING;
-		String userName = customerName + "customerUser01" + REGBASEUSERNAME;
+		String userName = customerName + "User" + tcID + REGBASEUSERNAME;
 		String cityName = "Santa Clara";
 		String locationName = customerName + "loc";
 
-		System.out
-				.println("\nRunning TC69 - Test Description: Picarro Admin - Add New Customer user");
+		Log.info("\nRunning "+ tcID +" - Test Description: Picarro Admin - Add New Customer user");
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(),
-				testSetup.getLoginPwd());
+		loginPage.loginNormalAs(user, password);
 
 		manageCustomersPage.open();
 		manageCustomersPage.waitForPageLoad();
@@ -140,7 +153,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 	
 	/**
-	 * Test Case ID: TC70_EditUser_PicAdmin
+	 * Test Case ID: TC70_TC472_EditUser_PicAdmin_PicSupport
 	 * Script:
 	 * - On Home Page, click Picarro Administration -> Manage Users
 	 * - Click on Edit link
@@ -149,17 +162,27 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * - User details are modified successfully
 	 */
 	@Test
-	public void TC70_EditUser_PicAdmin() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC70";
+	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
+	public void TC70_TC472_EditUser_PicAdminSupport(String user, String pwd) {
+		String tcID ;
+		if(user.equalsIgnoreCase("administrator")){
+			tcID ="TC70";
+		}else {
+			tcID ="TC472";
+		}
+		String password = CryptoUtility.decrypt(pwd);
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + tcID;
 		String eula = customerName + ": " + EULASTRING;
-		String userName = customerName + "customerUser01" + REGBASEUSERNAME;
+		String userName = customerName + "User" + tcID + REGBASEUSERNAME;
 		String cityName = "Santa Clara";
 		String locationName = customerName + "loc";
 
-		System.out.println("\nRunning TC70 - Test Description: Picarro Admin - edit user");
+		Log.info(user);
+		Log.info(password);
+		Log.info("\nRunning "+ tcID +" - Test Description: Picarro Admin - edit user");
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPage.loginNormalAs(user, password);
 
 		manageCustomersPage.open();
 		manageCustomersPage.waitForPageLoad();
@@ -285,7 +308,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC87_EditUserChangeRoleLocationTimezone_PicAdmin
+	 * Test Case ID: TC87_TC483_TC484_TC485_EditUserChangeRoleLocationTimezone_PicAdminSupport
 	 * Script:
 	 * - On Home Page, and click Picarro Administration -> Manage Users
 	 * - Click on Edit link and change the role, timzone and location of existing user
@@ -295,20 +318,28 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * - Admin can change location of the user
 	 */
 	@Test
-	public void TC87_EditUserChangeRoleLocationTimezone_PicAdmin() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC87";
+	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
+	public void TC87_TC483_TC484_TC485_EditUserChangeRoleLocationTimezone_PicAdminSupport(String user, String pwd) {
+		String tcID ;
+		if(user.equalsIgnoreCase("administrator")){
+			tcID ="TC87";
+		}else {
+			tcID ="TC483_TC484_TC485";
+		}
+		String password = CryptoUtility.decrypt(pwd);
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + tcID;
 		String eula = customerName + ": " + EULASTRING;
-		String userName = customerName + "customerUser01" + REGBASEUSERNAME;
+		String userName = customerName + "User" + tcID + REGBASEUSERNAME;
 		String cityName = "Santa Clara";
 		String cityNameNew = "Santa Clara2";
 		String locationName = customerName + "loc";
 		String locationNameNew = customerName + "locNew";
 		String locationNameNewDesc = customerName + " - " + locationNameNew;
 
-		System.out.println("\nRunning TC87 - Test Description: Picarro Admin - edit user - change role, location and timezone of existing user");
+		Log.info("\nRunning TC87_TC483_TC484_TC485 - Test Description: Picarro Admin Support - edit user - change role, location and timezone of existing user");
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPage.loginNormalAs(user, password);
 
 		manageCustomersPage.open();
 		manageCustomersPage.waitForPageLoad();
@@ -418,7 +449,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC95_ReEnableUser_PicAdmin
+	 * Test Case ID: TC95_TC478_ReEnableUser_PicAdminSupport
 	 * Script:
 	 * Pre-requisite: Create Disabled user
 	 * - On Home Page, and click Picarro Administration -> Manage Users
@@ -428,14 +459,22 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * - User should be able to log in the application
 	 */
 	@Test
-	public void TC95_ReEnableUser_PicAdmin() {
-		String userName = SQACUS + testSetup.getRandomNumber() + "TC95" + REGBASEUSERNAME;
+	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
+	public void TC95_TC478_ReEnableUser_PicAdminSupport(String user, String pwd) {
+		String tcID ;
+		if(user.equalsIgnoreCase("administrator")){
+			tcID ="TC95";
+		}else {
+			tcID ="TC478";
+		}
+		String password = CryptoUtility.decrypt(pwd);
+		String userName = SQACUS + testSetup.getRandomNumber() + tcID + REGBASEUSERNAME;
 		String locationDesc = SQACUS + " - " + SQACUSLOC;
 		
-		Log.info("\nRunning - TC95_ReEnableUser_PicAdmin - Test Description: Picarro Admin - Re-Enable User\n");
+		Log.info("\nRunning - "+ tcID +"_ReEnableUser_PicAdminSupport - Test Description: Picarro Admin - Re-Enable User\n");
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPage.loginNormalAs(user, password);
 
 		homePage.waitForPageLoad();
 		
@@ -458,7 +497,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC98_UserEmailMax50Chars_PicAdmin
+	 * Test Case ID: TC98_TC486_UserEmailMax50Chars_PicAdminSupport
 	 * Script:
 	 * - On Home Page, and click Picarro Administration -> Manage Users
 	 * - Click on 'Add New User' button
@@ -468,15 +507,23 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * - "Please enter no more than 50 characters." message is displayed
 	 */
 	@Test
-	public void TC98_UserEmailMax50Chars_PicAdmin() {
+	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
+	public void TC98_TC486_UserEmailMax50Chars_PicAdminSupport(String user, String pwd) {
 		final int MAX_SIZE = 50;
-		String userName50 = SQACUS + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-20) + "TC98" + REGBASEUSERNAME;
-		String userName51 = SQACUS + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-20) + "TC98" + REGBASEUSERNAME + "A";
-		Log.info("\nRunning - TC98_UserEmailMax50Chars_PicAdmin - Test Description: Picarro Admin - "
+		String tcID ;
+		if(user.equalsIgnoreCase("administrator")){
+			tcID ="TC98";
+		}else {
+			tcID ="TC486";
+		}
+		String password = CryptoUtility.decrypt(pwd);
+		String userName50 = SQACUS + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-20) + tcID + REGBASEUSERNAME;
+		String userName51 = SQACUS + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-20) + tcID + REGBASEUSERNAME + "A";
+		Log.info("\nRunning - " + tcID + "_UserEmailMax50Chars_PicAdmin - Test Description: Picarro Admin - "
 				+ "More than 50 characters not allowed in email address field\n");
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPage.loginNormalAs(user, password);
 
 		homePage.waitForPageLoad();
 		
@@ -593,66 +640,138 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		assertTrue(userNameList.size() == userNum);
 	}
-
+	
 	/**
-	 * Test Case ID: TC470 Test Description: Picarro Support - Add New Picarro
-	 * User
-	 * 
+	 * Test Case IDs: 
+	 * TC475 Test Description: Picarro Support - Disable Customer User
 	 */
 	@Test
-	public void TC470_AddNewPicarroUser() {
-		String userName = "PicarroUser" + testSetup.getRandomNumber()
-				+ "picarroUser02" + REGBASEUSERNAME;
-		String customer = "Picarro";
-		String location = "Santa Clara";
-		String locationDesc = customer + " - " + location;
-
-		System.out
-				.println("\nRunning TC470 - Test Description: Picarro Support - Add New Picarro user");
+	public void TC475_DisableCustomerUser() {
+		String usernameNew = SQACUS + testSetup.getRandomNumber() + "TC475" + REGBASEUSERNAME;
+		Log.info(String.format("\nRunning - TC475 - Test Description: Picarro Support - Disabled Customer User\n"));
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 
+		homePage.waitForPageLoad();
+
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
-		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD,
-				CUSUSERROLESU, locationDesc, TIMEZONECT);
+		manageUsersPage.addNewCustomerUser(SQACUS, usernameNew, USERPASSWORD, CUSUSERROLEDR, SQACUSLOC, false);
 
-		assertTrue(manageUsersPage.findExistingUser(location, userName, false));
-		loginPage = manageUsersPage.logout();
+		Log.info(String.format("Looking for user: Location-[%s]; Username-[%s]", SQACUSLOC, usernameNew));
+		assertTrue(manageUsersPage.findExistingUser(SQACUSLOC, usernameNew, false));
+		assertTrue(manageUsersPage.getUserStatus(usernameNew, false)
+				.equalsIgnoreCase(Resources.getResource(ResourceKeys.Constant_Disabled)));
+		manageUsersPage.logout();
 
 		loginPage.open();
-		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
-		assertTrue(homePage.checkIfAtHomePage());
+		assertTrue(loginPage.loginNormalAs(usernameNew, USERPASSWORD) == null);
 	}
-
+	
 	/**
-	 * Test Case ID: TC471 Test Description: Picarro Support - Add New Customer
-	 * User
-	 * 
+	 * Test Case IDs: 
+	 * TC476 Test Description: Picarro Support - Disable Existing Picarro User
 	 */
 	@Test
-	public void TC471_AddNewCustomerUser() {
-		String userName = SQACUS + testSetup.getRandomNumber()
-				+ "customerUser02" + REGBASEUSERNAME;
-
-		System.out
-				.println("\nRunning TC471 - Test Description: Picarro Support - Add New Customer user");
+	public void TC476_DisableExistingPicarroUser() {
+		String userName = "PicarroUser" + testSetup.getRandomNumber()
+				+ "TC476" + REGBASEUSERNAME;
+		String location = "Default";
+		
+		Log.info(userName);
+		Log.info(String.format("\nRunning - TC476 - Test Description: Picarro Support - Disabled Existing Picarro User\n"));
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 
+		homePage.waitForPageLoad();
+
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
-		manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD,
-				CUSUSERROLEUA, SQACUSLOC);
-
-		assertTrue(manageUsersPage.findExistingUser(SQACUSLOC, userName, false));
-		loginPage = manageUsersPage.logout();
+		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, false);
+		manageUsersPage.waitForPageLoad();
+		
+		assertTrue(manageUsersPage.findExistingUser(location, userName, false));
+		assertTrue(manageUsersPage.getUserStatus(userName, false)
+				.equalsIgnoreCase(Resources.getResource(ResourceKeys.Constant_Disabled)));
+		manageUsersPage.logout();
 
 		loginPage.open();
-		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
-		assertTrue(homePage.checkIfAtHomePage());
+		assertTrue(loginPage.loginNormalAs(userName, USERPASSWORD) == null);
+	}
+	
+	/**
+	 * Test Case IDs: 
+	 * TC477 Test Description: Picarro Support - Disable Existing Customer User
+	 */
+	@Test
+	public void TC477_DisableExistingCustomerUser() {
+		String usernameNew = SQACUS + testSetup.getRandomNumber() + "TC477" + REGBASEUSERNAME;
+		Log.info(String.format("\nRunning - TC477 - Test Description: Picarro Support - Disabled Existing Customer User\n"));
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+
+		homePage.waitForPageLoad();
+
+		manageUsersPage.open();
+		manageUsersPage.waitForPageLoad();
+		manageUsersPage.addNewCustomerUser(SQACUS, usernameNew, USERPASSWORD, CUSUSERROLEDR, SQACUSLOC, false);
+
+		Log.info(String.format("Looking for user: Location-[%s]; Username-[%s]", SQACUSLOC, usernameNew));
+		assertTrue(manageUsersPage.findExistingUser(SQACUSLOC, usernameNew, false));
+		assertTrue(manageUsersPage.getUserStatus(usernameNew, false)
+				.equalsIgnoreCase(Resources.getResource(ResourceKeys.Constant_Disabled)));
+		manageUsersPage.logout();
+
+		loginPage.open();
+		assertTrue(loginPage.loginNormalAs(usernameNew, USERPASSWORD) == null);
+	}
+	
+	/**
+	 * Test Case ID: TC116_TC487 Test Description: Search valid user record
+	 */
+	@Test
+	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
+	public void TC116_TC487_SearchValidUser(String user, String pwd) {
+		String tcID ;
+		if(user.equalsIgnoreCase("administrator")){
+			tcID ="TC116";
+		}else {
+			tcID ="TC487";
+		}
+		String password = CryptoUtility.decrypt(pwd);
+		Log.info("\nRunning - " + tcID + " - Test Description: Search valid user record\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(user, password);
+		
+		manageUsersPage.open();
+		assertTrue(manageUsersPage.searchUser(SQACUSUA, SQACUSLOC,
+				CUSUSERROLEUA, USERENABLED));
+	}
+	
+	/**
+	 * Test Case ID: TC117 Test Description: Search invalid user record
+	 */
+	@Test
+	public void TC117_SearchInvalidUser() {
+		String userName = SQACUS + testSetup.getRandomNumber() + "custadm117"
+				+ REGBASEUSERNAME;
+		Log.info("\nRunning - TC117 - Test Description: Search invalid user record\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+
+		manageUsersPage.open();
+		manageUsersPage.waitForPageToLoad();
+		manageUsersPage.getInputSearch().sendKeys(userName + userName);
+		manageUsersPage.waitForPageToLoad();
+
+		assertTrue(manageUsersPage.getLabelNoMatchingSearch().equalsIgnoreCase(
+				NOMATCHINGSEARCH));
 	}
 
 	/**

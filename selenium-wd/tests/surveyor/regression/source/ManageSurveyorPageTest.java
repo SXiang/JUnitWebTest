@@ -17,7 +17,6 @@ import surveyor.scommon.source.ManageSurveyorAdminPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
-
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
@@ -124,5 +123,83 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 				customerName, locationName, surveyorNameNew)); 
 		assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorNameNew));
 	}
+	
+	/**
+	 * Test Case ID: TC120 Test Description: Picarro admin not allowed to
+	 * create duplicate Surveyor
+	 */
+	@Test
+	public void TC120_DuplicateSurveyorCreationNotAllowed() {
+		Log.info("\nRunning - TC120 - Picarro admin not allowed to create duplicate surveyor\n");
+
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC120";
+		String eula = customerName + ": " + EULASTRING;
+		String locationName = customerName + "Loc";
+		String surveyorName = locationName + "Sur";
+		String cityName ="Santa Clara";
 		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		
+		manageCustomersPage.open();
+		manageCustomersPage.addNewCustomer(customerName, eula);
+		
+		manageLocationsPage.open();
+		manageLocationsPage.addNewLocation(locationName, customerName,cityName);
+		
+		manageSurveyorPage.open();
+		
+		Log.info(String.format("Adding new Surveyor: Name-[%s]; Location-[%s]; Customer-[%s]", 
+				surveyorName, locationName, customerName)); 
+		manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName);
+		
+		Log.info(String.format("Find existing Surveyor: Customer-[%s]; Location-[%s]; Surveyor Name-[%s]", 
+				customerName, locationName, surveyorName)); 
+		assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorName));
+
+		manageSurveyorPage.open();
+		assertFalse(manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName));
+	}
+
+	/**
+	 * Test Case ID: TC121 Test Description: Admin not allowed to edit Surveyor
+	 * Unit having details same as existing surveyor unit
+	 */
+	@Test
+	public void TC121_DuplicateEditSurveyor_PicAdmin() {
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC121";
+		String eula = customerName + ": " + EULASTRING;
+		String locationName = customerName + "Loc";
+		String surveyorName = locationName + "Sur";
+		String surveyorNameNew = surveyorName + "New";
+		String cityName ="Santa Clara";
+		
+		Log.info("\nRunning TC121_EditSurveyor_PicAdmin...");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		
+		manageCustomersPage.open();
+		manageCustomersPage.addNewCustomer(customerName, eula);
+		
+		manageLocationsPage.open();
+		manageLocationsPage.addNewLocation(locationName, customerName,cityName);
+		
+		manageSurveyorPage.open();
+		
+		Log.info(String.format("Adding new Surveyor: Name-[%s]; Location-[%s]; Customer-[%s]", 
+				surveyorName, locationName, customerName)); 
+		manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName);
+		
+		Log.info(String.format("Editing Surveyor: Location-[%s]; Current Surveyor Name-[%s]; New Surveyor Name-[%s]", 
+				locationName, surveyorName, surveyorNameNew)); 
+		manageSurveyorAdminPage.editExistingSurveyor(locationName, surveyorName, surveyorNameNew, false);
+
+		Log.info(String.format("Find existing Surveyor: Customer-[%s]; Location-[%s]; New Surveyor Name-[%s]", 
+				customerName, locationName, surveyorNameNew)); 
+		assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorNameNew));
+		
+		manageSurveyorPage.open();
+		assertFalse(manageSurveyorPage.editExistingSurveyor(locationName, surveyorName, surveyorNameNew, surveyorName));
+	}	
 }
