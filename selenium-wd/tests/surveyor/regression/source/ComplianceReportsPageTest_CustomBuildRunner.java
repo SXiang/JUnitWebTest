@@ -23,14 +23,12 @@ import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEET;
-import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPHEIGHT;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPWIDTH;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.RSWLAT;
 import static surveyor.scommon.source.SurveyorConstants.RSWLON;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNRRTAG;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
@@ -56,10 +54,10 @@ import org.openqa.selenium.support.PageFactory;
 
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.ReportsCompliance.ReportModeFilter;
+import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
-import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /**

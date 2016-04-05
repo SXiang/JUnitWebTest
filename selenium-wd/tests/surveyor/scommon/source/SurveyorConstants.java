@@ -3,8 +3,13 @@
  */
 package surveyor.scommon.source;
 
+import java.util.HashMap;
+
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.source.Reports.SurveyModeFilter;
+import surveyor.scommon.source.Reports.ReportJobType;
+import surveyor.scommon.source.Reports.ReportModeFilter;
 
 /**
  * @author zlu
@@ -14,9 +19,14 @@ public final class SurveyorConstants {
 	/**
 	 * 
 	 */
-	private SurveyorConstants() {
+	private SurveyorConstants() {		
+		populateGuidMaps();
 	}
-
+	
+	public static HashMap<String, SurveyModeFilter> SurveyModeFilterGuids = new HashMap<String, SurveyModeFilter>();
+	public static HashMap<String, ReportModeFilter> ReportSurveyModeFilterGuids = new HashMap<String, ReportModeFilter>();
+	public static HashMap<String, ReportJobType> ReportJobTypeGuids = new HashMap<String, ReportJobType>();
+	
 	public static final String BASECUSTOMERNAME = "Cus";
 	public static final String BASELOCATIONNAME = "Loc";
 	public static final String BASESURVEYORNAME = "Sur";
@@ -289,8 +299,38 @@ public final class SurveyorConstants {
 	
 	public static final String SQACUSSULOC="Santa Clara";
 	public static final String DEFAULTLOC="Default";
-	
+
 	public static final String REQUIRED_FIELD_VAL_MESSAGE = "This field is required.";	
+
+	/**
+	 * Populate map with guids from SurveyModeType.
+	 * NOTE: These guids need to be in sync with Ids used in [SurveyModeType] table.
+	 */
+	private void populateGuidMaps() {
+		SurveyModeFilterGuids.put("0514B92A-39AE-4111-AF16-4495440EC319", SurveyModeFilter.Assessment);
+		SurveyModeFilterGuids.put("4901E67A-4C00-4436-ADC0-9CFB277BB310", SurveyModeFilter.RapidResponse);
+		SurveyModeFilterGuids.put("4901E67A-4C00-4436-ADC0-9CFB277BB311", SurveyModeFilter.Manual);
+		SurveyModeFilterGuids.put("4901E67A-4C00-4436-ADC0-9CFB277BB312", SurveyModeFilter.Operator);
+		SurveyModeFilterGuids.put("E9DD9F53-E5CB-45B3-9517-9DC8E0276C6D", SurveyModeFilter.EQ);
+		SurveyModeFilterGuids.put("B310238A-A5AE-4E94-927B-F0F165E24522", SurveyModeFilter.Standard);
+
+		ReportSurveyModeFilterGuids.put("0514B92A-39AE-4111-AF16-4495440EC319", ReportModeFilter.Assessment);
+		ReportSurveyModeFilterGuids.put("4901E67A-4C00-4436-ADC0-9CFB277BB310", ReportModeFilter.RapidResponse);
+		ReportSurveyModeFilterGuids.put("4901E67A-4C00-4436-ADC0-9CFB277BB311", ReportModeFilter.Manual);
+		ReportSurveyModeFilterGuids.put("4901E67A-4C00-4436-ADC0-9CFB277BB312", ReportModeFilter.Operator);
+		ReportSurveyModeFilterGuids.put("E9DD9F53-E5CB-45B3-9517-9DC8E0276C6D", ReportModeFilter.EQ);
+		ReportSurveyModeFilterGuids.put("B310238A-A5AE-4E94-927B-F0F165E24522", ReportModeFilter.Standard);
+		
+		ReportJobTypeGuids.put("00000000-0000-0000-0001-000000000000", ReportJobType.Map);
+		ReportJobTypeGuids.put("00000000-0000-0000-0002-000000000000", ReportJobType.SSRS);
+		ReportJobTypeGuids.put("00000000-0000-0000-0003-000000000000", ReportJobType.DataGeneration);
+		ReportJobTypeGuids.put("00000000-0000-0000-0004-000000000000", ReportJobType.EQMap);
+		ReportJobTypeGuids.put("00000000-0000-0000-0005-000000000000", ReportJobType.EQSSRS);
+		ReportJobTypeGuids.put("00000000-0000-0000-0006-000000000000", ReportJobType.EQDataGeneration);
+		ReportJobTypeGuids.put("00000000-0000-0000-0007-000000000000", ReportJobType.ShapeFile);
+		ReportJobTypeGuids.put("00000000-0000-0000-0008-000000000000", ReportJobType.ReportMeta);
+		ReportJobTypeGuids.put("00000000-0000-0000-0009-000000000000", ReportJobType.PercentCoverageForecast);
+	}
 }
 
 	

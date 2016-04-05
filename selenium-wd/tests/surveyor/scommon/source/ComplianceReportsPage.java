@@ -49,8 +49,8 @@ import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICT;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
-import surveyor.scommon.source.ReportsCompliance.ReportModeFilter;
-import surveyor.scommon.source.ReportsCompliance.SurveyModeFilter;
+import surveyor.scommon.source.Reports.ReportModeFilter;
+import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 
 import java.awt.Rectangle;

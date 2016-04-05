@@ -27,14 +27,19 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -44,19 +49,25 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BaseHelper;
+import common.source.CSVUtility;
+import common.source.FileUtility;
 import common.source.ImagingUtility;
 import common.source.Log;
 import common.source.PDFUtility;
+import common.source.ShapeToGeoJsonConverter;
+import common.source.TestContext;
 import common.source.TestSetup;
 import net.avh4.util.imagecomparison.ImageComparisonResult;
 import surveyor.dataaccess.source.Report;
+import surveyor.dataaccess.source.ReportJob;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-import surveyor.scommon.source.ReportsCompliance.ReportModeFilter;
-import surveyor.scommon.source.ReportsCompliance.SurveyModeFilter;
+import surveyor.scommon.source.Reports.ReportModeFilter;
+import surveyor.scommon.source.Reports.SurveyModeFilter;
 
 /**
  * @author zlu
@@ -286,10 +297,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 	protected WebElement btnReturnToHomePage;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='report-survey-start-dt']")
-	protected WebElement inputStartData;
+	protected WebElement inputStartDate;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='report-survey-end-dt']")
-	protected WebElement inputEndData;
+	protected WebElement inputEndDate;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	protected WebElement btnNewSysHistoryRpt;
@@ -414,6 +425,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	private String reportName;
 
+    @FindBy(name = "survey-mode-type")
+    private List<WebElement> surveyModeTypeRadiobuttonList;
+    
+    @FindBy(name = "report-survey-mode-type")
+    private List<WebElement> reportSurveyModeTypeRadiobuttonList;
+
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -424,12 +441,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 		super(driver, testSetup, strBaseURL, strPageURL);
 	}
 
-	public WebElement getInputStartData() {
-		return this.inputStartData;
+	public WebElement getInputStartDate() {
+		return this.inputStartDate;
 	}
 
-	public WebElement getInputEndData() {
-		return this.inputEndData;
+	public WebElement getInputEndDate() {
+		return this.inputEndDate;
 	}
 
 	public WebElement getBtnNewComplianceRpt() {
@@ -464,8 +481,238 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return btnAddSurveys;
 	}
 
-	public void addNewReport(Reports reports) throws Exception {
-		openNewReportPage();
+	/***** Report values *****/
+    
+    public String getReportTitle() {
+    	return this.inputTitle.getText();
+    }
+    
+    /**
+     * Returns the selected Timezone value.
+     */
+    public String getTimezoneValue() {
+    	return new Select(cBoxTimezone).getFirstSelectedOption().getText();
+    }    
+    
+    /**
+     * Returns the selected Customer value.
+     */
+    public String getCustomerValue() {
+    	return new Select(dropdownCustomer).getFirstSelectedOption().getText();
+    }    
+
+    public String getExclusionRadius() {
+    	return this.inputExclusionRadius.getText();
+    }
+
+    /**
+     * Get the selected Report Mode.
+     */
+    public ReportModeFilter getReportModeFilter() {
+        for (WebElement radElement : reportSurveyModeTypeRadiobuttonList) {
+        	HashMap<String, ReportModeFilter> reportSurveyModeFilterGuids = SurveyorConstants.ReportSurveyModeFilterGuids;
+        	Set<Entry<String, ReportModeFilter>> entrySet = reportSurveyModeFilterGuids.entrySet();
+        	for (Entry<String, ReportModeFilter> entry : entrySet) {
+				if (entry.getKey().equals(radElement.getAttribute("value")) ) {
+					if (radElement.isSelected()) 
+						return entry.getValue();
+				}
+			}
+        }
+        return ReportModeFilter.All;
+    }
+    
+    /***** Area Selector values *****/
+    
+    public String getNELatitude() {
+    	return this.inputNELat.getText();
+    }
+    
+    public String getNELongitude() {
+    	return this.inputNELong.getText();
+    }
+
+    public String getSWLatitude() {
+    	return this.inputSWLat.getText();
+    }
+    
+    public String getSWLongitude() {
+    	return this.inputSWLong.getText();
+    }
+    
+    /***** Survey Selector values *****/
+
+    public String getSurveySurveyorValue() {
+    	return new Select(cbSurUnit).getFirstSelectedOption().getText();
+    }    
+
+    public String getSurveyUsername() {
+    	return this.userName.getText(); 
+    }
+
+    public String getSurveyTag() {
+    	return this.cbTag.getText();
+    }
+
+    public String getSurveyStartDate() {
+    	return this.inputStartDate.getText();
+    }
+
+    public String getSurveyEndDate() {
+    	return this.inputEndDate.getText();
+    }
+
+    /**
+     * Get the selected Survey Mode.
+     */
+    public SurveyModeFilter getSurveyModeFilter() {
+        for (WebElement radElement : surveyModeTypeRadiobuttonList) {
+        	HashMap<String, SurveyModeFilter> surveyModeFilterGuids = SurveyorConstants.SurveyModeFilterGuids;
+        	Set<Entry<String, SurveyModeFilter>> entrySet = surveyModeFilterGuids.entrySet();
+        	for (Entry<String, SurveyModeFilter> entry : entrySet) {
+				if (entry.getKey().equals(radElement.getAttribute("value")) ) {
+					if (radElement.isSelected()) 
+						return entry.getValue();
+				}
+			}
+        }
+        return SurveyModeFilter.All;
+    }
+    
+    public boolean isSurveyGeoFilterSelected() {
+    	return this.checkGeoFilter.isSelected();
+    }
+
+    /************ Opacity Fine Tuning Values *************/
+    
+    public String getFOVOpacity() {
+    	return this.inputFOVOpacity.getText();
+    }
+
+    public String getLISAOpacity() {
+    	return this.inputLISAOpacity.getText();
+    }
+
+    /************ PDF Output Values *************/
+    
+    public String getPDFWidth() {
+    	return this.inputImgMapWidth.getText();
+    }
+
+    public String getPDFHeight() {
+    	return this.inputImgMapHeight.getText();
+    }
+    
+    /************ PDF Output Values *************/
+    
+    public boolean isViewLisaSelected() {
+    	return inputViewLisa.isSelected();
+    }
+
+    public boolean isViewFOVSelected() {
+    	return inputViewFOV.isSelected();
+    }
+    
+    public boolean isViewBreadcrumbSelected() {
+    	return inputViewBreadCrumb.isSelected();
+    }
+
+    public boolean isViewIndicationSelected() {
+    	return inputViewInd.isSelected();
+    }
+    
+    public boolean isViewIsotopicSelected() {
+    	return inputViewIso.isSelected();
+    }
+    
+    public boolean isViewFieldNotesSelected() {
+    	return inputViewAnno.isSelected();
+    }
+    
+    public boolean isViewGapsSelected() {
+    	return inputViewGaps.isSelected();
+    }
+    
+    public boolean isViewAssetsSelected() {
+    	return inputViewAssets.isSelected();
+    }
+    
+    public boolean isViewBoundariesSelected() {
+    	return inputViewBoundaries.isSelected();
+    }
+
+    /************** Opt View Layers *****************/
+    
+    // Assets
+    
+    public boolean isCopperSelected() {
+    	return checkBoxCopper.isSelected();
+    }
+
+    public boolean isUnprotectedSteelSelected() {
+    	return checkBoxUnProtectedSteel.isSelected();
+    }
+    
+    public boolean isProtectedSteelSelected() {
+    	return checkBoxProtectedSteel.isSelected();
+    }
+    
+    public boolean isCastIronSelected() {
+    	return checkBoxCastIron.isSelected();
+    }
+    
+    public boolean isOtherPlasticSelected() {
+    	return checkBoxOtherPla.isSelected();
+    }
+    
+    public boolean isPEPlasticSelected() {
+    	return checkBoxPEPla.isSelected();
+    }
+    
+    // Boundary
+    
+    public boolean isDistrictPlatSelected() {
+    	return checkBoxDistrictPlat.isSelected();
+    }
+    
+    public boolean isDistrictSelected() {
+    	return checkBoxDistrict.isSelected();
+    }
+    
+    /************** Opt Tabular PDF content *****************/
+    
+    public boolean isPDFIndicationSelected() {
+    	return checkBoxIndTb.isSelected();
+    }
+    
+    public boolean isPDFIsotopicAnalysisSelected() {
+    	return checkBoxIsoAna.isSelected();
+    }
+
+    public boolean isPDFGapSelected() {
+    	return checkBoxIsoAna.isSelected();
+    }
+
+    public boolean isPDFPercentCoverageAssetsSelected() {
+    	return checkBoxPCA.isSelected();
+    }
+    
+    public boolean isPDFPercentCoverageReportAreaSelected() {
+    	return checkBoxPCRA.isSelected();
+    }
+
+    public boolean isPDFPercentCoverageForecastSelected() {
+    	return checkBoxPCF.isSelected();
+    }
+    
+    public void addNewReport(Reports reports) throws Exception {
+    	addNewReport(reports, true /**/);
+    }
+ 
+    public void addNewReport(Reports reports, boolean openNewReportsPage) throws Exception {
+    	if (openNewReportsPage) {
+    		openNewReportPage();
+    	}
 		inputReportTitle(reports.getRptTitle());
 
 		if (reports.getCustomer() != null && reports.getCustomer() != "Picarro") {
@@ -612,7 +859,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
 
+			Log.info(String.format("Found report - Title=[%s], Created by=[%s]", rptTitleCell.getText(), createdByCell.getText())); 
+			
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				Log.info(String.format("Found Match. Title=[%s], Created by=[%s]", rptTitleCell.getText(), createdByCell.getText()));
 				try {
 					return handleFileDownloads(rowNum);
 				} catch (Exception e) {
@@ -1772,4 +2022,135 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	}
 
+	/************** Baseline creation and comparison methods ***************/
+	
+	private void checkAndGenerateBaselineShapeAndGeoJsonFiles(String reportName, String testCaseID) throws Exception {
+		boolean isGenerateBaselineShapeFiles = TestContext.INSTANCE.getTestSetup().isGenerateBaselineShapeFiles();
+		if (isGenerateBaselineShapeFiles) {
+			Path unzipDirectory = Paths.get(testSetup.getDownloadPath(), reportName + " (2)");
+			List<String> filesInDirectory = FileUtility.getFilesInDirectory(unzipDirectory, "*.shp,*.dbf,*.prj,*.shx");
+			for (String filePath : filesInDirectory) {
+				generateBaselineShapeAndGeoJsonFiles(testCaseID, filePath);
+			}
+		}
+	}
+
+	protected void generateBaselinePerfFiles(String testCaseID, String reportId, String startTime, String endTime, Integer processingTimeInMs) throws IOException {
+		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
+		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" + File.separator + "report-job-metrics" + File.separator + testCaseID;
+		// Create the directory for test case if it does not exist.
+		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
+		Path expectedFilePath = Paths.get(expectedDataFolderPath, String.format("%s.csv", testCaseID));
+		String reportMetricString = String.format("%s,%s,%s,%d", reportId, startTime, endTime, processingTimeInMs);
+		FileUtility.createOrWriteToExistingTextFile(expectedFilePath, reportMetricString);
+	}
+
+	protected void generateBaselineSSRSImage(String testCaseID, String imageFileFullPath) throws IOException {
+		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "ssrs-images" + File.separator + testCaseID;
+		// Create the directory for test case if it does not exist.
+		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
+		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
+		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
+		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
+	}
+
+	protected void generateBaselineViewImage(String testCaseID, String imageFileFullPath) throws IOException {
+		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "view-images" + File.separator + testCaseID;
+		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
+		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
+		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
+	}
+
+	protected void generateBaselineShapeAndGeoJsonFiles(String testCaseID, String shapeFileFullPath) throws Exception {
+		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "shape-files" + File.separator + testCaseID;
+		// Create the directory for test case if it does not exist.
+		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
+		String expectedFilename = FileUtility.getFileName(shapeFileFullPath);
+		String expectedFileExt = FileUtility.getFileExtension(shapeFileFullPath);
+		if (expectedFileExt == "dbf" || expectedFileExt == "prj" || expectedFileExt == "shp" || expectedFileExt == "shx") {
+			// Delete existing files in directory (if any).
+			FileUtility.deleteFilesInDirectory(Paths.get(expectedDataFolderPath));
+
+			// Copy the file to the test case folder.
+			String expectedFilenameWithoutExt = expectedFilename.replace(".shp", "");
+			Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
+			FileUtils.copyFile(new File(shapeFileFullPath), new File(expectedFilePath.toString()));
+
+			// If specified file is .shp get GeoJson string for the shape file and store the .geojson.
+			if (expectedFileExt == "shp") {
+				String geoJsonString = ShapeToGeoJsonConverter.convertToJsonString(shapeFileFullPath);
+				Path expectedGeoJsonFilePath = Paths.get(expectedDataFolderPath, expectedFilenameWithoutExt + ".geojson");
+				FileUtility.createTextFile(expectedGeoJsonFilePath, geoJsonString);
+			}
+		}
+	}
+
+	/**
+	 * Compares the processing times for each reportJob type with baseline processingTime values and 
+	 * checks actual values are not greater than the baseline values.
+	 * @param testCaseID - Test case ID
+	 * @param reportTitle - Title of the report
+	 * @return - Whether actual report job type processing time values are within the limits of baselines values
+	 * @throws Exception 
+	 */
+	public boolean compareReportJobPerfBaseline(String testCaseID, String reportTitle) throws Exception {
+		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
+		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" + File.separator + "report-job-metrics" + File.separator + testCaseID;
+		Path expectedFilePath = Paths.get(expectedDataFolderPath, String.format("%s.csv", testCaseID));
+		// If no baseline CSV file, throw No Baseline exception.
+		if (!new File(expectedFilePath.toString()).exists()) {
+			throw new Exception(String.format("Baseline CSV file-[%s] NOT found for TestCase-[%s]",
+					expectedFilePath.toString(), testCaseID));
+		}
+		
+		CSVUtility csvUtility = new CSVUtility();
+		List<HashMap<String, String>> csvRows = csvUtility.getAllRows(expectedFilePath.toString());
+		
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		ArrayList<ReportJob> reportJobs = ReportJob.getReportJobs(reportId);
+		for (ReportJob reportJob : reportJobs) {
+			String reportJobTypeId = reportJob.getReportJobTypeId().toString();
+			
+			// If report job processing started or completed times are NULL, throw exception.
+			validateReportJobProcessingTimesForNotNull(reportId, reportJob, reportJobTypeId);
+			
+			Date processingStarted = reportJob.getProcessingStarted();
+			Date processingCompleted = reportJob.getProcessingCompleted();
+			long actualProcessingTimeInMs = processingCompleted.getTime() - processingStarted.getTime();
+			boolean foundInCsv = false;
+			for (HashMap<String, String> csvRow : csvRows) {
+				String expectedReportJobId = csvRow.get("ReportJobTypeId");
+				if (reportJobTypeId.equals(expectedReportJobId)) {
+					foundInCsv = true;
+					Integer expectedProcessingTimeInMs = Integer.valueOf(csvRow.get("ProcessingTimeInMs"));
+					if (actualProcessingTimeInMs > expectedProcessingTimeInMs) {
+						return false;
+					}					
+				} 
+			}
+			
+			// If no report job type in CSV, throw exception.
+			if (!foundInCsv) {
+				throw new Exception(String.format("Entry NOT found in Baseline CSV-[%s], for ReportJobType-[%s], TestCase-[%s]",
+						expectedFilePath.toString(), SurveyorConstants.ReportJobTypeGuids.get(reportJobTypeId).toString(), testCaseID));
+			}
+		}
+		
+		return true;
+	}
+
+	private void validateReportJobProcessingTimesForNotNull(String reportId, ReportJob reportJob, String reportJobTypeId) throws Exception {
+		if (reportJob.isColumnNull(ReportJob.COLNAME_PROCESSING_STARTED)) {
+			throw new Exception(String.format("NULL value encountered for column-[%s], ReportId-[%s], ReportJobTypeId-[%s]",
+					ReportJob.COLNAME_PROCESSING_STARTED, reportId, reportJobTypeId)); 
+		}
+		if (reportJob.isColumnNull(ReportJob.COLNAME_PROCESSING_COMPLETED)) {
+			throw new Exception(String.format("NULL value encountered for column-[%s], ReportId-[%s], ReportJobTypeId-[%s]",
+					ReportJob.COLNAME_PROCESSING_COMPLETED, reportId, reportJobTypeId)); 
+		}
+	}
 }

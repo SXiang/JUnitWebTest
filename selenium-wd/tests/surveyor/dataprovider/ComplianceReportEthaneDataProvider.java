@@ -29,29 +29,12 @@ import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
-import static surveyor.scommon.source.SurveyorConstants.PICADMNMANTAG;
 import static surveyor.scommon.source.SurveyorConstants.ETHRNELAT;
 import static surveyor.scommon.source.SurveyorConstants.ETHRNELON;
-import static surveyor.scommon.source.SurveyorConstants.RSURENDDATE;
-import static surveyor.scommon.source.SurveyorConstants.RSURSTARTDATE;
 import static surveyor.scommon.source.SurveyorConstants.ETHRSWLAT;
 import static surveyor.scommon.source.SurveyorConstants.ETHRSWLON;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSDRTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSRRTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSMNTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPTUA;
-import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import static surveyor.scommon.source.SurveyorConstants.SQAPICSUP;
-import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
-import static surveyor.scommon.source.SurveyorConstants.PICADMNSURVEYOR;
-import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONECTUA;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONEET;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONEETUA;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMTUA;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORDHASH;
 
 import java.util.ArrayList;
@@ -66,11 +49,9 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.ReportsCompliance.EthaneFilter;
-import surveyor.scommon.source.ReportsCompliance.ReportModeFilter;
-import surveyor.scommon.source.ReportsCompliance.SurveyModeFilter;
+import surveyor.scommon.source.Reports.ReportModeFilter;
 
 public class ComplianceReportEthaneDataProvider extends SurveyorTestRunner {
 	public static final String COMPLIANCE_ETHANE_REPORT_PROVIDER = "dataProviderEthaneComplianceReport";

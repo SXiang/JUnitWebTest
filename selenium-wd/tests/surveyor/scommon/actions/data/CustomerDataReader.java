@@ -11,19 +11,25 @@ public class CustomerDataReader extends BaseDataReader {
 
 	private static final String TESTDATA_SHEET_NAME = "Customers";
 	 
-	public static final int Excel_TestData_Report_Col_RowID = 0;
-	public static final int Excel_TestData_Report_Col_Name = 1;
-	public static final int Excel_TestData_Report_Col_Enabled = 2;
- 
+	public static final int Excel_TestData__Col_RowID = 0;
+	public static final int Excel_TestData__Col_Name = 1;
+	public static final int Excel_TestData__Col_Enabled = 2;
+	public static final int Excel_TestData__Col_EULA = 3;
+	public static final int Excel_TestData__Col_LicensedFeaturesRowIDs = 4;
+	
 	public class CustomerDataRow {
 		public String rowID;
 		public String name;
 		public String enabled;
- 
-		public CustomerDataRow(String rowID, String name, String enabled) {
+		public String eULA;
+		public String licensedFeaturesRowIDs;
+		
+		public CustomerDataRow(String rowID, String name, String enabled, String eULA, String licensedFeaturesRowIDs) {
 			this.rowID = rowID;
 			this.name = name;
 			this.enabled = enabled;
+			this.eULA = eULA;
+			this.licensedFeaturesRowIDs = licensedFeaturesRowIDs;
 		}
 	}	
  
@@ -38,12 +44,15 @@ public class CustomerDataReader extends BaseDataReader {
 	}
  
 	public CustomerDataRow getDataRow(Integer dataRowID) throws Exception {
-		String rowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData_Report_Col_RowID, TESTDATA_SHEET_NAME);
-		String name = excelUtility.getCellData(dataRowID, Excel_TestData_Report_Col_Name, TESTDATA_SHEET_NAME);
-		String enabled = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_Enabled, TESTDATA_SHEET_NAME);
+		String rowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
+		String name = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Name, TESTDATA_SHEET_NAME);
+		String enabled = excelUtility.getBooleanCellData(dataRowID, Excel_TestData__Col_Enabled, TESTDATA_SHEET_NAME);
+		String eULA = excelUtility.getCellData(dataRowID, Excel_TestData__Col_EULA, TESTDATA_SHEET_NAME);
+		String licensedFeaturesRowIDs = excelUtility.getCellData(dataRowID, Excel_TestData__Col_LicensedFeaturesRowIDs, TESTDATA_SHEET_NAME);
 		
-		Log.info(String.format("Found data row: rowID=[%s], name=[%s], enabled=[%s]", rowID, name, enabled));
+		Log.info(String.format("Found data row: rowID=[%s], name=[%s], enabled=[%s], eULA=[%s], licensedFeaturesRowIDs=[%s]", 
+				rowID, name, enabled, eULA, licensedFeaturesRowIDs));
 		
-		return new CustomerDataRow(rowID, name, enabled);
+		return new CustomerDataRow(rowID, name, enabled, eULA, licensedFeaturesRowIDs);
 	}
 }

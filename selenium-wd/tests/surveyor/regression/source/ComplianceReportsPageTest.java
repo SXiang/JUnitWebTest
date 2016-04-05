@@ -4,9 +4,7 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static surveyor.scommon.source.SurveyorConstants.CUSNAMEBASE;
 import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
@@ -24,53 +22,25 @@ import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
-import static surveyor.scommon.source.SurveyorConstants.SQACUS;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC1SUR;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC2SUR;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSSUUSER;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSSUTAG;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSUATAG;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICADMANUALTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICADRRTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICADSTNDTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICADTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSDRTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICSUP;
-
-import static surveyor.scommon.source.SurveyorConstants.SQAPICDRTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICLOC3SUR;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICSUTAG;
-
-import static surveyor.scommon.source.SurveyorConstants.SQACRPTTAG;
-import static surveyor.scommon.source.SurveyorConstants.SURVEYORUNIT;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONECT;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEET;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPHEIGHT;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPWIDTH;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
-import static surveyor.scommon.source.SurveyorConstants.EXCLUSIONRADIUS;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.RSWLAT;
 import static surveyor.scommon.source.SurveyorConstants.RSWLON;
-import static surveyor.scommon.source.SurveyorConstants.REPORTMODES;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.RSURSTARTDATE;
 import static surveyor.scommon.source.SurveyorConstants.RSURENDDATE;
-import static surveyor.scommon.source.SurveyorConstants.RSUVMODESTD;
-import static surveyor.scommon.source.SurveyorConstants.RSUVMODEOP;
-import static surveyor.scommon.source.SurveyorConstants.RSUVMODERR;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSURVEYOR;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNMANTAG;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNRRTAG;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
-import static surveyor.scommon.source.SurveyorConstants.PICADMNOPTAG;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETCASTIRON;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETCOPPER;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
@@ -79,26 +49,21 @@ import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICT;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONEETUA;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONECTUA;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPTUA;
 import static surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.CryptoUtility;
@@ -106,14 +71,13 @@ import common.source.Log;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.ComplianceReportDataProvider;
+import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
-import surveyor.scommon.source.ReportsCompliance.ReportModeFilter;
-import surveyor.scommon.source.ReportsCompliance.SurveyModeFilter;
+import surveyor.scommon.source.Reports.ReportModeFilter;
+import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
-import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.dataprovider.ComplianceReportDataProvider;
 
 /**
  * 
@@ -183,7 +147,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 					assertTrue(complianceReportsPage.verifyLayersTable(testSetup.getDownloadPath(), rptTitle, tablesList.get(0)));
 				}
 				assertTrue(complianceReportsPage.verifyViewsTable(testSetup.getDownloadPath(), rptTitle, viewList));
-				//Commenting out since some of the tests fails these assertions - will be enabled once ProdStage testing is complete
 				assertTrue(complianceReportsPage.verifyDrivingSurveysTable(testSetup.getDownloadPath(), rptTitle));
 
 				if (tablesList.get(0).get(KEYISOANA).equals("1")) {
@@ -194,9 +157,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 				}
 			}
 		} else
-
 			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
-
 	}
 
 	private static String getTestCaseName(String key) {
@@ -227,86 +188,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		testCaseMap.put("21", "TC739");
 		testCaseMap.put("22", "TC926");
 		testCaseMap.put("23", "TC1321");
-	}
-
-	/**
-	 * Test Case ID: TC153 Test Description: Copy and modify report from previously run reports
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@Test
-	public void TC153__ComplianceReportTest_VerifyCopyandModifyReportPreviouslyRun() throws Exception {
-		String testCaseID = "TC153";
-		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
-		Log.info("Running " + testCaseID + ": Copy and modify report from previously run reports " + rptTitle);
-
-		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		complianceReportsPage.open();
-
-		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add(IMGMAPHEIGHT);
-		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add(RNELAT);
-		listBoundary.add(RNELON);
-		listBoundary.add(RSWLAT);
-		listBoundary.add(RSWLON);
-
-		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
-		Map<String, String> tableMap = new HashMap<String, String>();
-
-		tableMap.put(KEYINDTB, "0");
-		tableMap.put(KEYISOANA, "0");
-		tableMap.put(KEYPCA, "0");
-		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYASSETCASTIRON, "1");
-		tableMap.put(KEYASSETCOPPER, "1");
-		tableMap.put(KEYASSETOTHERPLASTIC, "1");
-		tableMap.put(KEYASSETPEPLASTIC, "1");
-		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
-		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "0");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
-		tablesList.add(tableMap);
-
-		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
-		Map<String, String> viewMap1 = new HashMap<String, String>();
-
-		viewMap1.put(KEYVIEWNAME, "First View");
-		viewMap1.put(KEYLISA, "0");
-		viewMap1.put(KEYFOV, "0");
-		viewMap1.put(KEYBREADCRUMB, "0");
-		viewMap1.put(KEYINDICATIONS, "1");
-		viewMap1.put(KEYISOTOPICCAPTURE, "0");
-		viewMap1.put(KEYANNOTATION, "0");
-		viewMap1.put(KEYGAPS, "0");
-		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "0");
-		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
-		viewList.add(viewMap1);
-
-		List<String> tagList = new ArrayList<String>();
-		tagList.add(PICADMNSTDTAG);
-
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
-		complianceReportsPage.addNewReport(rpt);
-		complianceReportsPage.waitForPageLoad();
-
-		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
-
-		List<String> tagListCopy = new ArrayList<String>();
-		tagList.add(PICADMNSTDTAG);
-		complianceReportsPage.copyReport(rptTitle, testSetup.getLoginUser());
-		initializePageObjects();
-		complianceReportsPage.modifyReportDetails(rptTitle + "COPY", PICADMNSURVEYOR, tagListCopy, false, null);
-
-		if ((complianceReportsPage.checkActionStatus(rptTitle + "COPY", PICDFADMIN, testCaseID)))
-			assertTrue(complianceReportsPage.findReport(rptTitle + "COPY", PICDFADMIN));
-		else
-			fail("\nTestcase TC153 failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 
 	/**
@@ -682,93 +563,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	}
 
 	/**
-	 * Test Case ID: TC180 Test Description: Generate Manual report from existing reports having surveys of standard or Rapid Response types using copy feature
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@Test
-	public void TC180_ComplianceReportTest_VerifyCopyStandardReportAsManual() throws Exception {
-		String testCaseID = "TC180";
-		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
-		Log.info("Running " + testCaseID + ": Generate Manual report from existing reports having surveys of standard or Rapid Response types using copy feature, " + rptTitle);
-
-		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		complianceReportsPage.open();
-
-		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add(IMGMAPHEIGHT);
-		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add(RNELAT);
-		listBoundary.add(RNELON);
-		listBoundary.add(RSWLAT);
-		listBoundary.add(RSWLON);
-
-		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
-		Map<String, String> viewMap1 = new HashMap<String, String>();
-
-		viewMap1.put(KEYVIEWNAME, "First View");
-		viewMap1.put(KEYLISA, "1");
-		viewMap1.put(KEYFOV, "1");
-		viewMap1.put(KEYBREADCRUMB, "1");
-		viewMap1.put(KEYINDICATIONS, "1");
-		viewMap1.put(KEYISOTOPICCAPTURE, "1");
-		viewMap1.put(KEYANNOTATION, "1");
-		viewMap1.put(KEYGAPS, "1");
-		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "0");
-		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
-
-		viewList.add(viewMap1);
-
-		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
-		Map<String, String> tableMap = new HashMap<String, String>();
-
-		tableMap.put(KEYINDTB, "1");
-		tableMap.put(KEYISOANA, "1");
-		tableMap.put(KEYPCA, "0");
-		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYASSETCASTIRON, "1");
-		tableMap.put(KEYASSETCOPPER, "1");
-		tableMap.put(KEYASSETOTHERPLASTIC, "1");
-		tableMap.put(KEYASSETPEPLASTIC, "1");
-		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
-		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "0");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
-		tablesList.add(tableMap);
-
-		List<String> tagList = new ArrayList<String>();
-		tagList.add(PICADMNSTDTAG);
-
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
-		complianceReportsPage.addNewReport(rpt);
-		complianceReportsPage.waitForPageLoad();
-
-		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
-
-		String newRptTitle = rptTitle + "COPY";
-
-		List<String> tagListCopy = new ArrayList<String>();
-		tagListCopy.add(PICADMNMANTAG);
-		complianceReportsPage.copyReport(rptTitle, testSetup.getLoginUser());
-		initializePageObjects();
-		complianceReportsPage.modifyReportDetails(newRptTitle, "", tagListCopy, true, ReportModeFilter.Manual);
-		complianceReportsPage.waitForPageLoad();
-
-		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
-
-		if ((complianceReportsPage.checkActionStatus(newRptTitle, testSetup.getLoginUser(), testCaseID))) {
-			assertTrue(complianceReportsPage.findReport(newRptTitle, testSetup.getLoginUser()));
-
-		} else
-			fail("\nTestcase TC180 failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
-	}
-
-	/**
 	 * Test Case ID: TC181 Test Description: Generate standard or rapid response report from existing reports having survey of Manual type using copy feature
 	 * 
 	 * @throws Exception
@@ -846,89 +640,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 			assertTrue(complianceReportsPage.findReport(newRptTitle, PICDFADMIN));
 		else
 			fail("\nTestcase TC181 failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
-	}
-
-	/**
-	 * Test Case ID: TC182 Test Description: Generate standard report from existing reports having survey of Rapid Response type using copy feature
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@Test
-	public void TC182_ComplianceReportTest_VerifyCopyRapidResponseReportAsStandard() throws Exception {
-		String testCaseID = "TC182";
-		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
-		Log.info("Running " + testCaseID + ": Generate standard report from existing reports having survey of Rapid Response type using copy feature, " + rptTitle);
-
-		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		complianceReportsPage.open();
-
-		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add(IMGMAPHEIGHT);
-		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add(RNELAT);
-		listBoundary.add(RNELON);
-		listBoundary.add(RSWLAT);
-		listBoundary.add(RSWLON);
-
-		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
-		Map<String, String> viewMap1 = new HashMap<String, String>();
-
-		viewMap1.put(KEYVIEWNAME, "First View");
-		viewMap1.put(KEYLISA, "1");
-		viewMap1.put(KEYFOV, "1");
-		viewMap1.put(KEYBREADCRUMB, "1");
-		viewMap1.put(KEYINDICATIONS, "1");
-		viewMap1.put(KEYISOTOPICCAPTURE, "1");
-		viewMap1.put(KEYANNOTATION, "1");
-		viewMap1.put(KEYGAPS, "1");
-		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "0");
-		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
-
-		viewList.add(viewMap1);
-
-		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
-		Map<String, String> tableMap = new HashMap<String, String>();
-
-		tableMap.put(KEYINDTB, "1");
-		tableMap.put(KEYISOANA, "1");
-		tableMap.put(KEYPCA, "0");
-		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYASSETCASTIRON, "1");
-		tableMap.put(KEYASSETCOPPER, "1");
-		tableMap.put(KEYASSETOTHERPLASTIC, "1");
-		tableMap.put(KEYASSETPEPLASTIC, "1");
-		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
-		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "0");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
-		tablesList.add(tableMap);
-
-		List<String> tagList = new ArrayList<String>();
-		tagList.add(PICADMNRRTAG);
-
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.RapidResponse, ReportModeFilter.RapidResponse);
-		complianceReportsPage.addNewReport(rpt);
-		complianceReportsPage.waitForPageLoad();
-
-		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
-
-		String newRptTitle = rptTitle + "COPY";
-		List<String> surTag = new ArrayList<String>();
-		surTag.add(PICADMNSTDTAG);
-		complianceReportsPage.copyReport(rptTitle, PICDFADMIN);
-		initializePageObjects();
-		complianceReportsPage.modifyReportDetails(newRptTitle, "", surTag, true, ReportModeFilter.Standard);
-		complianceReportsPage.waitForPageLoad();
-
-		if ((complianceReportsPage.checkActionStatus(newRptTitle, PICDFADMIN, testCaseID)))
-			assertTrue(complianceReportsPage.findReport(newRptTitle, PICDFADMIN));
-		else
-			fail("\nTestcase TC182 failed.\n");
 
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
