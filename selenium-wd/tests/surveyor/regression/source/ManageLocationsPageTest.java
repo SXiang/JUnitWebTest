@@ -63,7 +63,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
 	public void TC16_TC18_AddLocationUsingLatLongSelector_PicAdminSupport(String user, String pswd ) {
 		String tcID ;
-		if(user.equalsIgnoreCase("administrator")){
+		if(user.equalsIgnoreCase(PICDFADMIN)){
 			tcID ="TC16";
 		}else {
 			tcID ="TC18";
