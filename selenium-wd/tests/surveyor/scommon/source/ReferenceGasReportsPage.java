@@ -156,7 +156,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String reportTitleXPath;
 		String createdByXPath;

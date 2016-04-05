@@ -12,6 +12,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -178,13 +179,6 @@ public class SurveyorBasePage extends BasePage {
 		return (listOfElements.size() == result);
 	}
 
-	/*
-	 * Helper method to wait for an Element to be ready on the page.
-	 */
-	public void WaitForElementReady(String elementID) {
-		(new WebDriverWait(this.driver, this.timeout)).until(ExpectedConditions.presenceOfElementLocated(By.id(elementID)));
-	}
-
 	public Integer getRecordsShownOnPage(WebDriver driver) {
 		WebElement pageInfoLabel = driver.findElement(By.id("datatable_info"));
 		String numTextString = pageInfoLabel.getText().trim();
@@ -201,5 +195,20 @@ public class SurveyorBasePage extends BasePage {
 		for (int i = 0; i < numTimesToClick; i++) {
 			headerElement.click();
 		}
+	}
+
+	/*
+	 * Helper method to wait for an Element to be ready on the page.
+	 */
+	public void WaitForElementReady(String elementID) {
+		(new WebDriverWait(this.driver, this.timeout)).until(ExpectedConditions.presenceOfElementLocated(By.id(elementID)));
+	}
+	
+	public void waitForTableDataToLoad() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return (getRecordsShownOnPage(d) > 0);
+			}
+		});
 	}
 }
