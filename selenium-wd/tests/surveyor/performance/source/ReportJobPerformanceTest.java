@@ -42,7 +42,7 @@ public class ReportJobPerformanceTest extends BasePerformanceTest {
 	}
 
 	/**
-	 * Test Case ID: PerfTest_LightLoad_TestCase3
+	 * Test Case ID: TC1841_PerfTest_LightLoad_TestCase3
 	 * Script: -  	
 	 *	- - Login as <USER>
 	 *	- - Create New Compliance Report
@@ -52,8 +52,8 @@ public class ReportJobPerformanceTest extends BasePerformanceTest {
 	 *	- - Verify report job processing time values confirm to the baseline values.
 	 */
 	@Test
-	public void PerfTest_LightLoad_TestCase3() throws Exception {
-		Log.info("\nRunning PerfTest_LightLoad_TestCase3 ...");
+	public void TC1841_PerfTest_LightLoad_TestCase3() throws Exception {
+		Log.info("\nRunning TC1841_PerfTest_LightLoad_TestCase3 ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* [TODO: Use Correct User] */
@@ -64,7 +64,7 @@ public class ReportJobPerformanceTest extends BasePerformanceTest {
 	}
 	
 	/**
-	 * Test Case ID: PerfTest_MediumLoad_TestCase6
+	 * Test Case ID: TC1842_PerfTest_MediumLoad_TestCase6
 	 * Script: -  	
 	 *	- - Login as <USER>
 	 *	- - Create New Compliance Report
@@ -74,8 +74,8 @@ public class ReportJobPerformanceTest extends BasePerformanceTest {
 	 *	- - Verify report job processing time values confirm to the baseline values.
 	 */
 	@Test
-	public void PerfTest_MediumLoad_TestCase6() throws Exception {
-		Log.info("\nRunning PerfTest_MediumLoad_TestCase6 ...");
+	public void TC1842_PerfTest_MediumLoad_TestCase6() throws Exception {
+		Log.info("\nRunning TC1842_PerfTest_MediumLoad_TestCase6 ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* [TODO: Use Correct User] */
@@ -86,7 +86,7 @@ public class ReportJobPerformanceTest extends BasePerformanceTest {
 	}
 	
 	/**
-	 * Test Case ID: PerfTest_HighLoadNormalPlat_TestCase8
+	 * Test Case ID: TC1843_PerfTest_HighLoadNormalPlat_TestCase8
 	 * Script: -  	
 	 *	- - Login as <USER>
 	 *	- - Create New Compliance Report
@@ -96,8 +96,8 @@ public class ReportJobPerformanceTest extends BasePerformanceTest {
 	 *	- - Verify report job processing time values confirm to the baseline values.
 	 */
 	@Test
-	public void PerfTest_HighLoadNormalPlat_TestCase8() throws Exception {
-		Log.info("\nRunning PerfTest_HighLoadNormalPlat_TestCase8 ...");
+	public void TC1843_PerfTest_HighLoadNormalPlat_TestCase8() throws Exception {
+		Log.info("\nRunning TC1843_PerfTest_HighLoadNormalPlat_TestCase8 ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* [TODO: Use Correct User] */
@@ -108,7 +108,7 @@ public class ReportJobPerformanceTest extends BasePerformanceTest {
 	}
 	
 	/**
-	 * Test Case ID: PerfTest_UltraHighLoad_TestCase10
+	 * Test Case ID: TC1844_PerfTest_UltraHighLoad_TestCase10
 	 * Script: -  	
 	 *	- - Login as <USER>
 	 *	- - Create New Compliance Report
@@ -118,8 +118,8 @@ public class ReportJobPerformanceTest extends BasePerformanceTest {
 	 *	- - Verify report job processing time values confirm to the baseline values.
 	 */
 	@Test
-	public void PerfTest_UltraHighLoad_TestCase10() throws Exception {
-		Log.info("\nRunning PerfTest_UltraHighLoad_TestCase10 ...");
+	public void TC1844_PerfTest_UltraHighLoad_TestCase10() throws Exception {
+		Log.info("\nRunning TC1844_PerfTest_UltraHighLoad_TestCase10 ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* [TODO: Use Correct User] */
