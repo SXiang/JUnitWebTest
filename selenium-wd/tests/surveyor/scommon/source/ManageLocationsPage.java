@@ -550,13 +550,16 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}	
 
 	public String getSelectedPoint(){
+		return getSelectedPoint(10);
+	}
+	public String getSelectedPoint(int timeout){
 		
 		latLongSelectionControl.waitForModalDialogOpen()
 		.switchMode(ControlMode.MapInteraction);
 		
 		String pt = null;
-		try{ // Debugging 
-		    pt = (new WebDriverWait(driver,9)).until(new ExpectedCondition<String>(){
+		try{
+		    pt = (new WebDriverWait(driver,timeout)).until(new ExpectedCondition<String>(){
 			public String apply(WebDriver d){
 				String text = null;
 				try{
@@ -573,6 +576,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			}
 		});
 		}catch(Exception e){
+			pt = null;
 			Log.warn(e.toString() + "Selected point is "+pt+"?");
 		}
 		
