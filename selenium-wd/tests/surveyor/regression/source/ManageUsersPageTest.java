@@ -42,7 +42,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageLocationsPage manageLocationsPage;
 
-	public enum ManageUserTestCaseType {
+	private enum ManageUserTestCaseType {
 		ResetPwd,
 		DuplicateUser,
 		DisabledUser

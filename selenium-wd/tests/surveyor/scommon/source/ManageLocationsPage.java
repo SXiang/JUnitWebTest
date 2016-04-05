@@ -137,7 +137,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "Max")
 	protected WebElement ethMthMaxUnit;
 
-	@FindBy(css = "div.map-header-value > div#info")
+	@FindBy(id = "info")
 	protected WebElement selectedPoint;
 	
 	private static LatLongSelectionControl latLongSelectionControl = null;
