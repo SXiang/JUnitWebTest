@@ -296,7 +296,10 @@ public final class SurveyorConstants {
 	
 	public static final String REQUIRED_FIELD_VAL_MESSAGE = "This field is required.";	
 	
-	
+	/*
+	 * Timeout constants
+	 */
+	public static final int SECONDS_10 = 10;
 	
 	/*
 	 * enum for list of constants

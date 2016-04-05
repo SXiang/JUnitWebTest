@@ -10,6 +10,7 @@ import static surveyor.scommon.source.SurveyorConstants.SQACUSSULOC;
 import static surveyor.scommon.source.SurveyorConstants.ETHRNELAT;
 import static surveyor.scommon.source.SurveyorConstants.ETHRNELON;
 import static surveyor.scommon.source.SurveyorConstants.REQUIRED_FIELD_VAL_MESSAGE;
+import static surveyor.scommon.source.SurveyorConstants.SECONDS_10;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -550,7 +551,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}	
 
 	public String getSelectedPoint(){
-		return getSelectedPoint(10);
+		return getSelectedPoint(SECONDS_10);
 	}
 	public String getSelectedPoint(int timeout){
 		
