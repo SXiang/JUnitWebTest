@@ -82,7 +82,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEETUA;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONECTUA;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPTUA;
-import static surveyor.scommon.source.Reports.EthaneFilter;
+import static surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -108,8 +108,8 @@ import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
-import surveyor.scommon.source.Reports.ReportModeFilter;
-import surveyor.scommon.source.Reports.SurveyModeFilter;
+import surveyor.scommon.source.ReportsCompliance.ReportModeFilter;
+import surveyor.scommon.source.ReportsCompliance.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
@@ -184,14 +184,14 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 				}
 				assertTrue(complianceReportsPage.verifyViewsTable(testSetup.getDownloadPath(), rptTitle, viewList));
 				//Commenting out since some of the tests fails these assertions - will be enabled once ProdStage testing is complete
-				/*assertTrue(complianceReportsPage.verifyDrivingSurveysTable(testSetup.getDownloadPath(), rptTitle));
+				assertTrue(complianceReportsPage.verifyDrivingSurveysTable(testSetup.getDownloadPath(), rptTitle));
 
 				if (tablesList.get(0).get(KEYISOANA).equals("1")) {
 					assertTrue(complianceReportsPage.verifyIsotopicAnalysisTable(testSetup.getDownloadPath(), rptTitle));
 				}
 				if (tablesList.get(0).get(KEYINDTB).equals("1")) {
 					assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
-				}*/
+				}
 			}
 		} else
 
@@ -354,10 +354,11 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC163 Test Description: Screen should not refresh while searching an in-progress report, as it completes
+	 * @throws Exception 
 	 * 
 	 */
 	@Test
-	public void TC163_ComplianceReportTest_VerifyScreendoesntRefreshwhileSearchingInprogressReport() {
+	public void TC163_ComplianceReportTest_VerifyScreendoesntRefreshwhileSearchingInprogressReport() throws Exception {
 		String rptTitle = "TC163 Report" + testSetup.getRandomNumber();
 
 		Log.info("Running TC163: Screen should not refresh while searching an in-progress report, as it completes " + rptTitle);
@@ -442,10 +443,11 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC166 Test Description: Picarro Administrator can delete the specified report
+	 * @throws Exception 
 	 * 
 	 */
 	@Test
-	public void TC166_ComplianceReportTest_AdminCanDeleteReport() {
+	public void TC166_ComplianceReportTest_AdminCanDeleteReport() throws Exception {
 		String rptTitle = "TC166 Report" + testSetup.getRandomNumber();
 		Log.info("Running TC166: User can delete the specified report " + rptTitle);
 
@@ -934,10 +936,11 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC184 Test Description: Very small or big report area selection not allowed
+	 * @throws Exception 
 	 * 
 	 */
 	@Test
-	public void TC184_ComplianceReportTest_VerifyAreaErrorMessage() {
+	public void TC184_ComplianceReportTest_VerifyAreaErrorMessage() throws Exception {
 		Log.info("\nRunning TC184_: Very small or big report area selection not allowed\n");
 		String rptTitle = "TC184_Report" + testSetup.getRandomNumber();
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -1015,10 +1018,11 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC197 Test Description: Verify "Add Survey" message is displayed when no Survey added
+	 * @throws Exception 
 	 * 
 	 */
 	@Test
-	public void TC197_ComplianceReportTest_VerifyAddSurveyErrorMessages() {
+	public void TC197_ComplianceReportTest_VerifyAddSurveyErrorMessages() throws Exception {
 		Log.info("\nRunning TC197: Verify 'Add Survey' message is displayed when no Survey added\n");
 		String rptTitle = "TC197 Report" + testSetup.getRandomNumber();
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
@@ -1046,10 +1050,11 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC167 Test Description: Customer Admin can delete the specified report
+	 * @throws Exception 
 	 * 
 	 */
 	@Test
-	public void TC167_ComplianceReportTest_CusAdminCanDeleteReport() {
+	public void TC167_ComplianceReportTest_CusAdminCanDeleteReport() throws Exception {
 		String rptTitle = "TC167 Report" + testSetup.getRandomNumber();
 		Log.info("Running TC167: User can delete the specified report, " + rptTitle);
 
@@ -1120,10 +1125,11 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC168 Test Description: Customer Supervisor can delete the specified report
+	 * @throws Exception 
 	 * 
 	 */
 	@Test
-	public void TC168_ComplianceReportTest_CusSupervisorCanDeleteReport() {
+	public void TC168_ComplianceReportTest_CusSupervisorCanDeleteReport() throws Exception {
 		String rptTitle = "TC168 Report" + testSetup.getRandomNumber();
 		Log.info("Running TC168: User can delete the specified report, " + rptTitle);
 
@@ -1280,10 +1286,11 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC797 Test Description: Search compliance reports based on report name
+	 * @throws Exception 
 	 * 
 	 */
 	@Test
-	public void TC797_ComplianceReportTest_SearchReportByReportName() {
+	public void TC797_ComplianceReportTest_SearchReportByReportName() throws Exception {
 		String rptTitle = "TC797 Report" + testSetup.getRandomNumber();
 		Log.info("Running TC797: Search compliance reports based on report name, " + rptTitle);
 
@@ -1353,10 +1360,11 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	/**
 	 * Test Case ID: TC1275 Test Description: User friendly message should be displayed if user has include assets and boundaries in views but not selected any asset and boundaries layers in optional
 	 * view layers section
+	 * @throws Exception 
 	 * 
 	 */
 	@Test
-	public void TC1275_ComplianceReportTest_VerifyAreaErrorMessage() {
+	public void TC1275_ComplianceReportTest_VerifyAreaErrorMessage() throws Exception {
 		Log.info("\nRunning TC1275_: User friendly message should be displayed if user has include assets and boundaries in views but not selected any asset and boundaries layers in optional view layers section\n");
 		String rptTitle = "TC1275_Report" + testSetup.getRandomNumber();
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
