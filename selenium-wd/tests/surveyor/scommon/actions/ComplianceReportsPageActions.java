@@ -314,17 +314,19 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			
 			List<String> surveyTag= new ArrayList<String>();
 			surveyTag.add(surveyDataRow.surveyTag);
-			
-			this.getComplianceReportsPage().addSurveyInformation(surveyDataRow.surveySurveyor, 
-					surveyDataRow.surveyUsername, 				
-					surveyTag, 
-					surveyDataRow.surveyStartDate, 
-					surveyDataRow.surveyEndDate, 
-					modeFilter, 
-					Boolean.parseBoolean(surveyDataRow.surveyGeoFilterON));
+
+			ReportsCompliance reportsCompliance = new ReportsCompliance();
+			reportsCompliance.setSurveyorUnit(surveyDataRow.surveySurveyor);
+			reportsCompliance.setUserName(surveyDataRow.surveyUsername);
+			reportsCompliance.setTagList(surveyTag);
+			reportsCompliance.setStartDate(surveyDataRow.surveyStartDate);
+			reportsCompliance.setEndDate(surveyDataRow.surveyEndDate);
+			reportsCompliance.setSurveyModeFilter(modeFilter);
+			reportsCompliance.setGeoFilter(Boolean.parseBoolean(surveyDataRow.surveyGeoFilterON));
+
+			this.getComplianceReportsPage().addSurveyInformation(reportsCompliance);
 		}
-		
-		return true;
+		return true;		
 	}
  
 	/**

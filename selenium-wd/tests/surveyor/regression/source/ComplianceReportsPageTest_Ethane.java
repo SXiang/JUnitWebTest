@@ -37,10 +37,8 @@ import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
-import static surveyor.scommon.source.SurveyorConstants.KEYRSBSAMPLRPT;
 import static surveyor.scommon.source.SurveyorConstants.KEYCPSAMPLRPT;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
-import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.RSWLAT;
@@ -49,8 +47,6 @@ import static surveyor.scommon.source.SurveyorConstants.SQAPICSUP;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
-import static surveyor.scommon.source.SurveyorConstants.ETHREXCLUSIONRADIUS;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,11 +69,10 @@ import surveyor.dataprovider.ComplianceReportEthaneDataProvider;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
-import surveyor.scommon.source.Reports.EthaneFilter;
+import surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
-import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /**
@@ -122,12 +117,13 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC1637 Test Description: Ethane: Compliance Report UI: Verify Ethane Filter is available in Copy Report Page
+	 * @throws Exception 
 	 * 
 	 * @throws IOException
 	 * 
 	 */
 	@Test
-	public void TC1637_Ethane_Copy_Report_VerifyCheckBoxes() {
+	public void TC1637_Ethane_Copy_Report_VerifyCheckBoxes() throws Exception {
 		String rptTitle = "TC1637 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1637: Ethane: Compliance Report UI: Verify Ethane Filter is available in Copy Report Page, " + rptTitle);
 
@@ -220,13 +216,11 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC1636 Test Description: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane Standard mode surveys are displayed
-	 * @throws InterruptedException 
-	 * 
-	 * @throws IOException
+	 * @throws Exception 
 	 * 
 	 */
 	@Test
-	public void TC1636_Ethane_Verify_NONEthane_Survey() throws IOException, InterruptedException{
+	public void TC1636_Ethane_Verify_NONEthane_Survey() throws Exception{
 		String rptTitle = "TC1636 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1636: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane Standard mode surveys are displayed" + rptTitle);
 
@@ -501,13 +495,11 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID:TC1719 Test Description: Compliance Report Generation : COPY generated report should show default color only for Indication
-	 * @throws InterruptedException 
-	 * 
-	 * @throws IOException
+	 * @throws Exception 
 	 * 
 	 */
 	@Test
-	public void TC1719_Ethane_Copy_Report_Verify_Indication_Table_Color() throws IOException, InterruptedException{
+	public void TC1719_Ethane_Copy_Report_Verify_Indication_Table_Color() throws Exception{
 		String rptTitle = "TC1719 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1719: Compliance Report Generation : COPY generated report should show default color only for Indication" + rptTitle);
 

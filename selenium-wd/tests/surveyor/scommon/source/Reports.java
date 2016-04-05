@@ -6,7 +6,6 @@ package surveyor.scommon.source;
 import java.util.List;
 import java.util.Map;
 
-import surveyor.scommon.source.Reports.ReportModeFilter;
 
 /**
  * @author zlu
@@ -17,42 +16,22 @@ public class Reports {
 	protected String strCreatedBy;
 	private String customer;
 	protected String timeZone;
-	protected String exclusionRadius;
-
-	protected List<String> listBoundary;
-	protected String imageMapHeight;
-	protected String imageMapWidth;
-	protected String NELat;
-	protected String NELong;
-	protected String SWLat;
-	protected String SWLong;
-
 	protected String surveyorUnit;
 	protected List<String> tagList;
 	protected String startDate;
 	protected String endDate;
 	protected String userName;
-	protected String fovOpactiy;
-	protected String lisaOpacity;
-	protected String customerBoundary;
-
-	protected List<Map<String, String>> viewList;
-	protected List<Map<String, String>> tablesList;
-	protected List<Map<String, String>> viewLayersList;
-
-	protected Boolean geoFilter=false;
-	protected SurveyModeFilter surveyModeFilter;
-	protected ReportModeFilter reportModeFilter;
-	protected EthaneFilter ethaneFilter;
-
+	
+	protected Boolean geoFilter = false;
+	
 	public enum SurveyModeFilter {
 		All ("All"), 
-		Standard ("All"), 
-		Operator ("All"), 
-		RapidResponse ("All"), 
-		Manual ("All"), 
-		EQ ("All"), 
-		Assessment ("All");
+		Standard ("Standard"), 
+		Operator ("Operator"), 
+		RapidResponse ("RapidResponse"), 
+		Manual ("Manual"),
+		EQ ("EQ"),
+		Assessment ("Assessment");
 		
 		private final String name;
 
@@ -67,12 +46,12 @@ public class Reports {
 
 	public enum ReportModeFilter {
 		All ("All"), 
-		Standard ("All"), 
-		Operator ("All"), 
-		RapidResponse ("All"), 
-		Manual ("All"), 
-		EQ ("All"), 
-		Assessment ("All");
+		Standard ("Standard"), 
+		Operator ("Operator"), 
+		RapidResponse ("RapidResponse"), 
+		Manual ("Manual"),
+		EQ ("EQ"),
+		Assessment ("Assessment");
 		
 		private final String name;
 
@@ -105,64 +84,42 @@ public class Reports {
 		public String toString() {
 			return this.name;
 		}
-	}
-
-	public enum EthaneFilter {
-		ExcludeVehicleExhaust, ExcludeBiogenicMethane, Both, None
-	}
-
+ 	}
 	
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList) {
-		this(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit, null, null, null, null, null, null, null, null, null, listBoundary, tagList, tablesList, viewList, null);
+	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, List<String> tagList) {
+		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, null, null, null, null, tagList);
+	}
+	
+	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, List<String> tagList, String startDate, String endDate) {
+		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, null, startDate, endDate, null, tagList);
 	}
 
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) {
-		this(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit, null, null, null, null, null, null, null, null, null, listBoundary, tagList, tablesList, viewList, viewLayersList);
+	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, String userName, String startDate, String endDate, boolean geoFilter) {
+		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, userName, startDate, endDate, geoFilter, null);
 	}
-
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode) {
-		this(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit, null, startDate, endDate, null, null, null, null, surveyMode, null, listBoundary, tagList, tablesList, viewList, null);
+	
+	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, String startDate, String endDate, boolean geoFilter) {
+		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, null, startDate, endDate, geoFilter, null);
 	}
-
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode, ReportModeFilter reportMode) {
-		this(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit, null, startDate, endDate, null, null, null, reportMode, surveyMode, null, listBoundary, tagList, tablesList, viewList, null);
+	
+	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, List<String> tagList, String startDate, String endDate, boolean geoFilter) {
+		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, null, startDate, endDate, geoFilter, tagList);
 	}
-
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode, boolean geoFilter) {
-		this(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit, null, startDate, endDate, null, null, geoFilter, null, surveyMode, null, listBoundary, tagList, tablesList, viewList, null);
+	
+	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit,String userName,  String startDate, String endDate,  List<String> tagList) {
+		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, userName, startDate, endDate, null, tagList);
 	}
-
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode, String userName, boolean geoFilterOn, ReportModeFilter reportMode) {
-		this(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, null, null, geoFilterOn, reportMode, surveyMode, null, listBoundary, tagList, tablesList, viewList, null);
+	
+	public Reports(){
+		
 	}
-
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList, ReportModeFilter reportMode) {
-		this(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit, null, null, null, null, null, null, reportMode, null, null, listBoundary, tagList, tablesList, viewList, null);
-	}
-
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, 
-			String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, 
-			Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, 
-			List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList, List<Map<String, String>> viewList,
-			List<Map<String, String>> viewLayersList) {
+	
+	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, String userName, String startDate, String endDate, Boolean geoFilter, List<String> tagList){
 		this.rptTitle = rptTitle;
 		this.strCreatedBy = strCreatedBy;
 		this.setCustomer(customer);
 		this.timeZone = timeZone;
-		this.exclusionRadius = exclusionRadius;
-
-		this.reportModeFilter = reportMode;
-		this.ethaneFilter = ethaneFilter;
-		this.surveyModeFilter = surveyModeFilter;
 		this.geoFilter = geoFilter;
-		
-		this.listBoundary = listBoundary;
-		this.imageMapHeight = listBoundary.get(0);
-		this.imageMapWidth = listBoundary.get(1);
-		this.NELat = listBoundary.get(2);
-		this.NELong = listBoundary.get(3);
-		this.SWLat = listBoundary.get(4);
-		this.SWLong = listBoundary.get(5);
 
 		this.surveyorUnit = surveyorUnit;
 		this.userName = userName;
@@ -170,12 +127,7 @@ public class Reports {
 
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.surveyModeFilter = surveyModeFilter;
-
-		this.viewList = viewList;
-		this.tablesList = tablesList;
-		this.viewLayersList = viewLayersList;
-
+	
 	}
 
 	public String getRptTitle() {
@@ -190,37 +142,7 @@ public class Reports {
 		return this.timeZone;
 	}
 
-	public String getExclusionRadius() {
-		return this.exclusionRadius;
-	}
-
-	public List<String> getListBoundary() {
-		return this.listBoundary;
-	}
-
-	public String getImageMapHeight() {
-		return this.imageMapHeight;
-	}
-
-	public String getImageMapWidth() {
-		return this.imageMapWidth;
-	}
-
-	public String getNELat() {
-		return this.NELat;
-	}
-
-	public String getNELong() {
-		return this.NELong;
-	}
-
-	public String getSWLat() {
-		return this.SWLat;
-	}
-
-	public String getSWLong() {
-		return this.SWLong;
-	}
+	
 
 	public String getSurveyorUnit() {
 		return this.surveyorUnit;
@@ -234,33 +156,12 @@ public class Reports {
 		return this.endDate;
 	}
 
-	public SurveyModeFilter getSurveyModeFilter() {
-		return this.surveyModeFilter;
-	}
-
-
-	public List<Map<String, String>> getViewList() {
-		return this.viewList;
-	}
-
-	public List<Map<String, String>> getTablesList() {
-		return this.tablesList;
-	}
-
 	public List<String> getTagList() {
 		return this.tagList;
 	}
 
-	public List<Map<String, String>> getViewLayersList() {
-		return this.viewLayersList;
-	}
-
 	public void setCustomer(String customer) {
 		this.customer = customer;
-	}
-
-	public EthaneFilter getEthaneFilter() {
-		return this.ethaneFilter;
 	}
 
 	public String getStrCreatedBy() {
@@ -279,24 +180,46 @@ public class Reports {
 		return this.endDate;
 	}
 
-	public ReportModeFilter getReportModeFilter() {
-		return this.reportModeFilter;
-	}
-
-	public String getFovOpactiy() {
-		return fovOpactiy;
-	}
-
-	public String getLisaOpacity() {
-		return lisaOpacity;
-	}
-
-	public String getCustomerBoundary() {
-		return customerBoundary;
-	}
-
 	public Boolean getGeoFilter() {
 		return geoFilter;
+	}
+
+
+
+	public void setRptTitle(String rptTitle) {
+		this.rptTitle = rptTitle;
+	}
+
+	public void setStrCreatedBy(String strCreatedBy) {
+		this.strCreatedBy = strCreatedBy;
+	}
+
+	public void setTimeZone(String timeZone) {
+		this.timeZone = timeZone;
+	}
+
+	public void setSurveyorUnit(String surveyorUnit) {
+		this.surveyorUnit = surveyorUnit;
+	}
+
+	public void setTagList(List<String> tagList) {
+		this.tagList = tagList;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public void setGeoFilter(Boolean geoFilter) {
+		this.geoFilter = geoFilter;
 	}
 
 	/**

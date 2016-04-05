@@ -88,7 +88,14 @@ public class DataAccessUnitTests {
 		testSurveyModeTypeId_getSurveyModeTypeId_valid();
 		Log.info("Executing testSurveyModeTypeId_getSurveyModeTypeId_Invalid() ...");
 		testSurveyModeTypeId_getSurveyModeTypeId_Invalid();
-
+		Log.info("Executing testEQ_getDrivingSurvey_Valid() ...");
+		testEQ_getDrivingSurvey_Valid();
+		Log.info("Executing testEQ_getDrivingSurvey_Invalid() ...");
+		testEQ_getDrivingSurvey_Invalid();
+		Log.info("Executing testEQ_getEQData_Valid() ...");
+		testEQ_getEQData_Valid();
+		Log.info("Executing testEQ_getEQData_Invalid() ...");
+		testEQ_getEQData_Invalid();
 		Log.info("DONE!");
 
 	}
@@ -269,17 +276,17 @@ public class DataAccessUnitTests {
 		CaptureEvent objCaptureEvent = CaptureEvent.getCaptureEvent(validSurveyId);
 		Assert.assertTrue(objCaptureEvent != null, "Value cannot be NULL.");
 	}
- 
+
 	private static void testCaptureEvent_GetCaptureEventBySurveyId_Invalid() {
 		String surveyInvalidId = "D12F21F5-3FA4-C9EB-C6D6-00007CC7AB16";
 		CaptureEvent objCaptureEvent = CaptureEvent.getCaptureEvent(surveyInvalidId);
 		Assert.assertTrue(objCaptureEvent == null, "Value should be NULL.");
 	}
-	
+
 	private static void testMeasurements_getMeasurements_Valid() {
-		String analyzerId = "00000015-DB64-FDE7-7E67-39C8AC533D49";
-		Double startEpochTime = 1417806315D;
-		Double endEpochTime = 1417806360D;
+		String analyzerId = "59839947-9569-952D-16D6-39D4011442FA";
+		Double startEpochTime = 1458849090.199D;
+		Double endEpochTime = 1458849090.339D;
 		List<Measurement> measurements = Measurement.getMeasurements(analyzerId, startEpochTime, endEpochTime);
 		Iterator<Measurement> iterator = measurements.iterator();
 		Assert.assertTrue(iterator.hasNext());
@@ -288,7 +295,7 @@ public class DataAccessUnitTests {
 			Assert.assertTrue(objMeasurement != null, "Value cannot be NULL.");
 		}
 	}
-	
+
 	private static void testMeasurements_getMeasurements_Invalid() {
 		String analyzerInvalidId = "D12F21F5-3FA4-C9EB-C6D6-00007CC7AB16";
 		Double startEpochTime = 0.00000D;
@@ -331,6 +338,38 @@ public class DataAccessUnitTests {
 	private static void testSurveyModeTypeId_getSurveyModeTypeId_Invalid() {
 		String id = "Invalid Value";
 		SurveyModeType objSurveyModeType = SurveyModeType.getSurveyModeType(id);
-		Assert.assertTrue(objSurveyModeType != null, "Value cannot be NULL.");
+		Assert.assertTrue(objSurveyModeType == null, "Value must be NULL.");
+	}
+
+	private static void testEQ_getDrivingSurvey_Valid() {
+		ArrayList<StoredProcEQAddedSurveys> list = StoredProcEQAddedSurveys.getReportDrivingSurveys("A3F800A2-B16B-9633-B8BA-39D6B19867B1");
+		Iterator<StoredProcEQAddedSurveys> iterator = list.iterator();
+		Assert.assertTrue(iterator.hasNext());
+		while (iterator.hasNext()) {
+			StoredProcEQAddedSurveys obj = iterator.next();
+			Assert.assertTrue(obj != null, "Value cannot be NULL.");
+		}
+	}
+
+	private static void testEQ_getDrivingSurvey_Invalid() {
+		ArrayList<StoredProcEQAddedSurveys> list = StoredProcEQAddedSurveys.getReportDrivingSurveys("A3F800A2-B16B-9633-B8BA-39D6B19867B");
+		Iterator<StoredProcEQAddedSurveys> iterator = list.iterator();
+		Assert.assertTrue(!iterator.hasNext());
+	}
+
+	private static void testEQ_getEQData_Valid() {
+		ArrayList<StoredProcEQGetEQData> list = StoredProcEQGetEQData.getEQData("A3F800A2-B16B-9633-B8BA-39D6B19867B1");
+		Iterator<StoredProcEQGetEQData> iterator = list.iterator();
+		Assert.assertTrue(iterator.hasNext());
+		while (iterator.hasNext()) {
+			StoredProcEQGetEQData obj = iterator.next();
+			Assert.assertTrue(obj != null, "Value cannot be NULL.");
+		}
+	}
+
+	private static void testEQ_getEQData_Invalid() {
+		ArrayList<StoredProcEQGetEQData> list = StoredProcEQGetEQData.getEQData("A3F800A2-B16B-9633-B8BA-39D6B19867B");
+		Iterator<StoredProcEQGetEQData> iterator = list.iterator();
+		Assert.assertTrue(!iterator.hasNext());
 	}
 }

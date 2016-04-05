@@ -3,19 +3,69 @@
  */
 package surveyor.scommon.source;
 
+import static org.junit.Assert.fail;
+import static surveyor.scommon.source.SurveyorConstants.ACTIONTIMEOUT;
+import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
+import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
+import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
+import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
+import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
+import static surveyor.scommon.source.SurveyorConstants.KEYGAPS;
+import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
+import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
+import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
+import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
+import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
+import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
+
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.commons.collections.iterators.EntrySetMapIterator;
+import javax.imageio.ImageIO;
+
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import common.source.BaseHelper;
+import common.source.CSVUtility;
+import common.source.FileUtility;
+import common.source.ImagingUtility;
+import common.source.Log;
+import common.source.PDFUtility;
+import common.source.ShapeToGeoJsonConverter;
+import common.source.TestContext;
 import common.source.TestSetup;
+import net.avh4.util.imagecomparison.ImageComparisonResult;
+import surveyor.dataaccess.source.Report;
+import surveyor.dataaccess.source.ReportJob;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 
@@ -347,12 +397,40 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='report-compliance']")
 	protected WebElement linkComplianceReportMenu;
 
+	@FindBy(id = "datatableSurveys")
+	protected WebElement surveysTable;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable_filter']/label/input")
+	protected WebElement textBoxReportSearch;
+
+	@FindBy(how = How.XPATH, using = "//div[@id='surveyContent-0']//button[@class='btn btnDeleteSurvey btn-sm btn-danger']")
+	protected WebElement btnDeleteSurvey;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[1]")
+	protected WebElement tdCReportTitle;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[3]")
+	protected WebElement tdCReportCreatedBy;
+
+	@FindBy(how = How.XPATH, using = "//*[@class='dataTables_empty']")
+	protected WebElement dataTableEmpty;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li")
+	protected WebElement msgEmptySurvey;
+
+	@FindBy(how = How.ID, using = "pdf")
+	protected WebElement pdfImg;
+
+	public static final String STRPaginationMsg = "Showing 1 to ";
+
+	private String reportName;
+
     @FindBy(name = "survey-mode-type")
     private List<WebElement> surveyModeTypeRadiobuttonList;
     
     @FindBy(name = "report-survey-mode-type")
     private List<WebElement> reportSurveyModeTypeRadiobuttonList;
-	
+
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -387,22 +465,22 @@ public class ReportsBasePage extends SurveyorBasePage {
 		this.latLongMapSelectorBtn.click();
 	}
 
-	public WebElement getCbTag(){
+	public WebElement getCbTag() {
 		return cbTag;
 	}
-	
-	public WebElement getBtnSurveySearch(){
+
+	public WebElement getBtnSurveySearch() {
 		return btnSurveySearch;
 	}
-	
-	public WebElement getCheckboxSurFirst(){
+
+	public WebElement getCheckboxSurFirst() {
 		return checkboxSurFirst;
 	}
-	
-	public WebElement getBtnAddSurveys(){
+
+	public WebElement getBtnAddSurveys() {
 		return btnAddSurveys;
 	}
-	
+
 	/***** Report values *****/
     
     public String getReportTitle() {
@@ -627,10 +705,1455 @@ public class ReportsBasePage extends SurveyorBasePage {
     	return checkBoxPCF.isSelected();
     }
     
-    /**
+    public void addNewReport(Reports reports) throws Exception {
+    	addNewReport(reports, true /**/);
+    }
+ 
+    public void addNewReport(Reports reports, boolean openNewReportsPage) throws Exception {
+    	if (openNewReportsPage) {
+    		openNewReportPage();
+    	}
+		inputReportTitle(reports.getRptTitle());
+
+		if (reports.getCustomer() != null && reports.getCustomer() != "Picarro") {
+			selectCustomer(reports.getCustomer());
+			Boolean confirmed = confirmInChangeCustomerDialog();
+			if (confirmed) {
+				inputReportTitle(reports.getRptTitle());
+			}
+		}
+		fillReportSpecific(reports);
+		addSurveyInformation(reports);
+		this.clickOnOKButton();
+	}
+
+	public void addSurveyInformation(Reports reports) throws Exception {
+		Log.info("Adding Survey information");
+		String surveyor = reports.getSurveyorUnit();
+		String username = reports.getUsername();
+		List<String> tagList = reports.getTagList();
+		String startDate = reports.getSurveyStartDate();
+		String endDate = reports.getSurveyEndDate();
+		Boolean geoFilterOn = reports.getGeoFilter();
+
+		if (surveyor != null) {
+			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
+			for (WebElement option : optionsSU) {
+				if (surveyor.equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+		}
+
+		if (username != null) {
+			this.userName.sendKeys(username);
+		}
+
+		if ((startDate != null) && (startDate != "")) {
+			selectStartDateForSurvey(startDate);
+		}
+
+		if ((endDate != null) && (endDate != "")) {
+			selectEndDateForSurvey(endDate);
+		}
+
+		handleExtraAddSurveyInfoParameters(reports);
+
+		if ((geoFilterOn == null) || (!geoFilterOn)) {
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("arguments[0].click();", this.checkGeoFilter);
+		}
+
+		for (String tagValue : tagList) {
+			if (tagValue != "") {
+				inputSurveyTag(tagValue);
+				this.btnSurveySearch.click();
+				this.waitForSurveyTabletoLoad();
+				this.waitForSurveySelectorCheckBoxToLoad();
+				this.waitForSurveySelectorCheckBoxToBeEnabled();
+				this.checkboxSurFirst.click();
+				this.waitForAddSurveyButtonToLoad();
+				this.btnAddSurveys.click();
+			}
+		}
+
+	}
+
+	/**
+	 * Implementation to be provided by Derived classes.
+	 */
+	protected void handleExtraAddSurveyInfoParameters(Reports reports) throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	public void selectStartDateForSurvey(String startDate) {
+		try {
+			DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver, testSetup, strBaseURL, strBaseURL + getUrlString());
+			PageFactory.initElements(driver, dateSetting);
+			if (startDate.startsWith("0")) {
+				startDate = startDate.replaceFirst("0*", "");
+			}
+			dateSetting.setDay("start", 7, startDate, false);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void selectEndDateForSurvey(String endDate) {
+		try {
+			DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver, testSetup, strBaseURL, strBaseURL + getUrlString());
+			PageFactory.initElements(driver, dateSetting);
+			if (endDate.startsWith("0")) {
+				endDate = endDate.replaceFirst("0*", "");
+			}
+			dateSetting.setDay("end", 0, endDate, false);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void openNewReportPage() {
+		this.btnNewComplianceRpt.click();
+		this.waitForNewPageLoad();
+	}
+
+	public void waitForNewPageLoad() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				boolean result = false;
+				try {
+					result = d.getPageSource().contains(getNewPageString());
+				} catch (Exception e) {
+					Log.error(e.toString());
+				}
+				return result;
+			}
+		});
+	}
+
+	public boolean checkActionStatusInSeconds(String rptTitle, String strCreatedBy, int seconds) {
+
+		setPagination(PAGINATIONSETTING);
+		this.waitForPageLoad();
+
+		String reportTitleXPath;
+		String createdByXPath;
+		WebElement rptTitleCell;
+		WebElement createdByCell;
+
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+
+		int rowSize = rows.size();
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
+
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+
+			Log.info(String.format("Found report - Title=[%s], Created by=[%s]", rptTitleCell.getText(), createdByCell.getText())); 
+			
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				Log.info(String.format("Found Match. Title=[%s], Created by=[%s]", rptTitleCell.getText(), createdByCell.getText()));
+				try {
+					return handleFileDownloads(rowNum);
+				} catch (Exception e) {
+					Log.error(e.toString());
+					return false;
+				}
+			}
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+
+				this.waitForPageLoad();
+
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+				rowNum = 0;
+			}
+		}
+
+		return false;
+	}
+
+	protected boolean handleFileDownloads(int rowNum) throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	public void inputReportTitle(String rptTitle) {
+		this.inputTitle.clear();
+		this.inputTitle.sendKeys(rptTitle);
+	}
+
+	public void selectCustomer(String customer) {
+		if (dropdownCustomer.isDisplayed()) {
+			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
+			for (WebElement option : optionsCustomer) {
+				if (customer.equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+
+			confirmInChangeCustomerDialog();
+		}
+	}
+
+	public boolean confirmInChangeCustomerDialog() {
+		if (dropdownCustomer.isDisplayed()) {
+			if (this.isElementPresent(btnChangeCustomerXPath)) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", btnChangeCustomer);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void clickOnOKButton() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", btnOK);
+	}
+
+	public void inputSurveyTag(String tag) {
+		this.cbTag.clear();
+		this.cbTag.sendKeys(tag);
+	}
+
+	public void waitForSurveyTabletoLoad() {
+		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return surveysTable.isDisplayed();
+			}
+		});
+	}
+
+	public void waitForSurveySelectorCheckBoxToLoad() {
+		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return checkboxSurFirst.isDisplayed();
+			}
+		});
+	}
+
+	public void waitForSurveySelectorCheckBoxToBeEnabled() {
+		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return checkboxSurFirst.isEnabled();
+			}
+		});
+	}
+
+	public void waitForAddSurveyButtonToLoad() {
+		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return btnAddSurveys.isDisplayed();
+			}
+		});
+	}
+
+	public boolean checkFileExists(String fileName, String downloadPath) {
+		File dir = new File(downloadPath);
+		File[] dir_contents = dir.listFiles();
+		for (int i = 0; i < dir_contents.length; i++) {
+			if (dir_contents[i].getName().trim().equals(fileName.trim())) {
+				Log.info("File found in the download dirctory");
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Method to verify the Driving Surveys Table in SSRS
+	 * 
+	 * @param actualPath
+	 * @param reportTitle
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean verifySurveysTableViaTag(boolean changeMode, ReportModeFilter strReportMode, String tag) throws Exception {
+		boolean result = false;
+
+		if (strReportMode != null && changeMode) {
+			selectReportMode(strReportMode);
+
+			this.getCbTag().clear();
+			this.getCbTag().sendKeys(tag);
+			this.waitForSurveySearchButtonToLoad();
+			this.getBtnSurveySearch().click();
+			this.waitForSurveyTabletoLoad();
+
+			WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
+			List<WebElement> Rows = tabledata.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
+			for (int getrowvalue = 1; getrowvalue < Rows.size(); getrowvalue++) {
+				List<WebElement> Columns = Rows.get(getrowvalue).findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[6]"));
+				for (int getcolumnvalue = 1; getcolumnvalue < Columns.size(); getcolumnvalue++) {
+					String cellValue = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[6]")).getText();
+					if (cellValue.contains(tag)) {
+						result = true;
+						break;
+					}
+					result = false;
+				}
+			}
+		}
+		return result;
+	}
+
+	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList, String startDate, String endDate, boolean changeMode, String strReportMode) throws Exception {
+		openNewReportPage();
+
+		if (customer != null && customer != "Picarro") {
+			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
+			for (WebElement option : optionsCustomer) {
+				if ((customer).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+		}
+
+		this.inputTitle.clear();
+		this.inputTitle.sendKeys(title);
+
+		selectTimeZone(timeZone);
+
+		addOtherDetails(exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong, SWLat, SWLong, surUnit, tagList, startDate, endDate, changeMode, strReportMode);
+
+		if (surUnit != "") {
+			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
+			for (WebElement option : optionsSU) {
+				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+		}
+
+		for (String tagValue : tagList) {
+			if (tagValue != "") {
+				inputSurveyTag(tagValue);
+				this.btnSurveySearch.click();
+				this.waitForSurveyTabletoLoad();
+				this.waitForSurveySelectorCheckBoxToLoad();
+				this.waitForSurveySelectorCheckBoxToBeEnabled();
+				selectSurveyCheckBox(checkboxSurFirst);
+				this.waitForAddSurveyButtonToLoad();
+				this.btnAddSurveys.click();
+
+			}
+		}
+
+		addViewDetails(customer, boundary);
+
+		this.clickOnOKButton();
+	}
+
+	public boolean verifyIfInDrivingSurvey(String columnName) {
+		boolean result = false;
+		int count = driver.findElements(By.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div")).size();
+		for (int i = 1; i < count + 1; i++) {
+			String str = driver.findElement(By.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div[" + i + "]/label")).getText();
+			if (str != columnName) {
+				result = true;
+			}
+		}
+		return result;
+
+	}
+
+	public void waitForFileDownload(String fileName, String downloadPath) {
+		(new WebDriverWait(driver, timeout + 60)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return checkFileExists(fileName, downloadPath);
+			}
+		});
+	}
+
+	public void waitForSurveySearchButtonToLoad() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return btnSurveySearch.isDisplayed();
+			}
+		});
+	}
+
+	public String getUrlString() throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	public String getStrCopyPageText() throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	public String getNewPageString() throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	public void fillReportSpecific(Reports reportsCompliance) throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	public void selectReportMode(ReportModeFilter mode) throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	public void addNewReportWithMultipleSurveysIncluded(Reports reportsCompliance) {
+		inputReportTitle(reportsCompliance.getRptTitle());
+
+		if (reportsCompliance.getCustomer() != null && reportsCompliance.getCustomer() != "Picarro") {
+			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
+			for (WebElement option : optionsCustomer) {
+				if ((reportsCompliance.getCustomer()).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+
+			if (this.isElementPresent(btnChangeCustomerXPath)) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", btnChangeCustomer);
+
+				inputReportTitle(reportsCompliance.getRptTitle());
+			}
+		}
+
+		selectTimeZone(reportsCompliance.getTimeZone());
+
+		if (reportsCompliance.getSurveyorUnit() != "") {
+			selectSurveySurveyor(reportsCompliance.getSurveyorUnit());
+		}
+
+		for (String tagValue : reportsCompliance.tagList) {
+			if (tagValue != "") {
+				inputSurveyTag(tagValue);
+				this.btnSurveySearch.click();
+				this.waitForSurveyTabletoLoad();
+				this.waitForSurveySelectorCheckBoxToLoad();
+				this.waitForSurveySelectorCheckBoxToBeEnabled();
+				this.checkboxSurFirst.click();
+				this.waitForAddSurveyButtonToLoad();
+				this.btnAddSurveys.click();
+			}
+		}
+
+		this.clickOnOKButton();
+
+	}
+
+	public void selectTimeZone(String timeZone) {
+		List<WebElement> optionsTZ = this.cBoxTimezone.findElements(By.tagName("option"));
+		for (WebElement option : optionsTZ) {
+			if (timeZone.equalsIgnoreCase(option.getText().trim())) {
+				option.click();
+			}
+		}
+	}
+
+	public void selectSurveySurveyor(String surveyorUnit) {
+		List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
+		for (WebElement option : optionsSU) {
+			if (surveyorUnit.equalsIgnoreCase(option.getText().trim())) {
+				option.click();
+			}
+		}
+	}
+
+	public void selectSurveyCheckBox(WebElement checkboxSurFirst) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", checkboxSurFirst);
+	}
+
+	public void addViewDetails(String customer, String boundary) throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	public void addOtherDetails(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList, String startDate, String endDate, boolean changeMode, String strReportMode) throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		// add class testing code here
+	}
+
+	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, String tag, String startDate, String endDate, String surModeFilter) throws Exception {
+		openNewReportPage();
+		this.inputTitle.clear();
+		this.inputTitle.sendKeys(title);
+
+		if (customer != null && customer != "Picarro") {
+			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
+			for (WebElement option : optionsCustomer) {
+				if ((customer).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+
+			if (this.isElementPresent(btnChangeCustomerXPath)) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", btnChangeCustomer);
+
+				this.inputTitle.clear();
+				this.inputTitle.sendKeys(title);
+			}
+		}
+
+		selectTimeZone(timeZone);
+		reportSpecificAddNewReport(exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong, SWLat, SWLong);
+
+		if (surUnit != "") {
+			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
+			for (WebElement option : optionsSU) {
+				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+		}
+
+		if (tag != "") {
+			inputSurveyTag(tag);
+		}
+
+		this.btnSurveySearch.click();
+		this.waitForSurveyTabletoLoad();
+		this.waitForSurveySelectorCheckBoxToLoad();
+		this.waitForSurveySelectorCheckBoxToBeEnabled();
+		this.checkboxSurFirst.click();
+		this.btnAddSurveys.click();
+		this.clickOnOKButton();
+	}
+
+	public boolean checkActionStatus(String rptTitle, String strCreatedBy, String testCaseID) throws Exception {
+		setPagination(PAGINATIONSETTING);
+		this.waitForPageLoad();
+		String reportTitleXPath;
+		String createdByXPath;
+		WebElement rptTitleCell;
+		WebElement createdByCell;
+
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+
+		int rowSize = rows.size();
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle.trim()) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy.trim())) {
+				long startTime = System.currentTimeMillis();
+				long elapsedTime = 0;
+				boolean bContinue = true;
+
+				while (bContinue) {
+					try {
+						if (rowSize == 1) {
+							this.btnReportViewer = table.findElement(By.xpath("//*[@id='datatable']/tbody/tr/td[5]/a[3]"));
+							this.btnReportViewer.click();
+							this.waitForPdfReportIcontoAppear();
+						} else {
+							this.btnReportViewer = table.findElement(By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img"));
+							this.btnReportViewer.click();
+							this.waitForPdfReportIcontoAppear();
+						}
+						return handleFileDownloads(rptTitle, testCaseID);
+
+					} catch (org.openqa.selenium.NoSuchElementException e) {
+						elapsedTime = System.currentTimeMillis() - startTime;
+						if (elapsedTime >= (ACTIONTIMEOUT + 800 * 1000)) {
+							return false;
+						}
+
+						continue;
+					} catch (NullPointerException ne) {
+						Log.info("Null Pointer Exception: " + ne);
+						fail("Report failed to generate!!");
+					}
+				}
+			}
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+				this.waitForPageLoad();
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+				rowNum = 0;
+			}
+		}
+		return false;
+	}
+
+	public void reportSpecificAddNewReport(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong) throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	public boolean waitForReportGenerationtoComplete(String rptTitle, String strCreatedBy) {
+		setPagination(PAGINATIONSETTING);
+
+		String reportTitleXPath;
+		String createdByXPath;
+		WebElement rptTitleCell;
+		WebElement createdByCell;
+
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+
+		int rowSize = rows.size();
+		int loopCount = 0;
+
+		this.waitForPageLoad();
+
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				long startTime = System.currentTimeMillis();
+				long elapsedTime = 0;
+				boolean bContinue = true;
+
+				while (bContinue) {
+					try {
+						if (rowSize == 1) {
+							this.btnReportViewer = table.findElement(By.xpath("//*[@id='datatable']/tbody/tr/td[5]/a[3]"));
+
+						} else {
+							this.btnReportViewer = table.findElement(By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img"));
+
+						}
+
+						return true;
+					} catch (org.openqa.selenium.NoSuchElementException e) {
+						elapsedTime = System.currentTimeMillis() - startTime;
+						if (elapsedTime >= (ACTIONTIMEOUT + 900 * 1000)) {
+							return false;
+						}
+
+						continue;
+					} catch (NullPointerException ne) {
+						Log.info("Null Pointer Exception: " + ne);
+						fail("Report failed to generate!!");
+					}
+				}
+			}
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+
+				this.waitForPageLoad();
+
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+				rowNum = 0;
+			}
+		}
+		return false;
+	}
+
+	public boolean copyReport(String rptTitle, String strCreatedBy) {
+		setPagination(PAGINATIONSETTING);
+		this.waitForCopyReportPagetoLoad();
+		String reportTitleXPath;
+		String createdByXPath;
+		String copyImgXPath;
+
+		WebElement rptTitleCell;
+		WebElement createdByCell;
+		WebElement copyImg;
+
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+
+		int rowSize = rows.size();
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+		this.waitForPageLoad();
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
+				copyImg = table.findElement(By.xpath(copyImgXPath));
+				copyImg.click();
+
+				return true;
+			}
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+				this.nextBtn.click();
+
+				this.waitForPageLoad();
+
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+				rowNum = 0;
+			}
+		}
+		return false;
+	}
+
+	public boolean findReport(String rptTitle, String strCreatedBy) {
+		setPagination(PAGINATIONSETTING);
+
+		String reportTitleXPath;
+		String createdByXPath;
+
+		WebElement rptTitleCell;
+		WebElement createdByCell;
+
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+
+		int rowSize = rows.size();
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				return true;
+			}
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+
+				this.waitForPageLoad();
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+				rowNum = 0;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean findReportbySearch(String rptTitle, String strCreatedBy) {
+		setPagination(PAGINATIONSETTING);
+		this.waitForPageLoad();
+		String reportTitleXPath;
+		String createdByXPath;
+
+		WebElement rptTitleCell;
+		WebElement createdByCell;
+
+		this.getTextBoxReportSerach().sendKeys(rptTitle);
+		this.getTextBoxReportSerach().sendKeys(Keys.ENTER);
+		this.waitForPageLoad();
+
+		if (driver.findElements(By.xpath("//*[@class='dataTables_empty']")).size() == 1) {
+			return false;
+		}
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		int rowSize = rows.size();
+
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			this.waitForPageLoad();
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				return true;
+			}
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+				this.waitForPageLoad();
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+				rowNum = 0;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean deleteReport(String rptTitle, String strCreatedBy) throws Exception {
+		setPagination(PAGINATIONSETTING);
+
+		this.waitForPageLoad();
+
+		String reportTitleXPath;
+		String createdByXPath;
+		String deleteImgXPath;
+
+		WebElement rptTitleCell;
+		WebElement createdByCell;
+		WebElement deleteImg;
+
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+
+		int rowSize = rows.size();
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				deleteImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]/img";
+				deleteImg = table.findElement(By.xpath(deleteImgXPath));
+
+				deleteImg.click();
+				waitForDeletePopupLoad();
+
+				if (this.isElementPresent(getBtnDeleteConfirmXpath())) {
+					JavascriptExecutor js = (JavascriptExecutor) driver;
+					js.executeScript("arguments[0].click();", getBtnDeleteConfirm());
+					this.waitForPageLoad();
+
+					if (this.isElementPresent(errorMsgDeleteCompliacneReportXPath)) {
+						this.btnReturnToHomePage.click();
+						return false;
+					} else
+						return true;
+				} else
+					return false;
+			}
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+
+				this.waitForPageLoad();
+
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+				rowNum = 0;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean copyReport(String rptTitle, String strCreatedBy, String rptTitleNew) {
+		setPagination(PAGINATIONSETTING);
+
+		this.waitForPageLoad();
+
+		String reportTitleXPath;
+		String createdByXPath;
+		String copyImgXPath;
+
+		WebElement rptTitleCell;
+		WebElement createdByCell;
+		WebElement copyImg;
+
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+
+		int rowSize = rows.size();
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
+				copyImg = table.findElement(By.xpath(copyImgXPath));
+
+				copyImg.click();
+
+				this.waitForCopyReportPagetoLoad();
+				this.waitForInputTitleToEnable();
+				this.waitForDeleteSurveyButtonToLoad();
+				this.inputTitle.clear();
+				this.inputTitle.sendKeys(rptTitleNew);
+				this.waitForOkButtonToEnable();
+				clickOnOKButton();
+
+				return true;
+			}
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+
+				this.waitForPageLoad();
+
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+				rowNum = 0;
+			}
+		}
+
+		return false;
+
+	}
+
+	public void clickOnCopyReport(String rptTitle, String strCreatedBy) {
+		setPagination(PAGINATIONSETTING);
+
+		String reportTitleXPath;
+		String createdByXPath;
+		String copyImgXPath;
+
+		WebElement rptTitleCell;
+		WebElement createdByCell;
+		WebElement copyImg;
+
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+
+		int rowSize = rows.size();
+		int loopCount = 0;
+
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
+				copyImg = table.findElement(By.xpath(copyImgXPath));
+
+				copyImg.click();
+				break;
+			}
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+				this.nextBtn.click();
+
+				this.waitForPageLoad();
+
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
+
+				rowNum = 0;
+			}
+		}
+	}
+
+	public boolean modifyReportDetails(String rptTitleNew, String surUnit, List<String> tagList, boolean changeMode, ReportModeFilter strReportMode) throws Exception {
+		this.waitForCopyReportPagetoLoad();
+
+		this.inputTitle.clear();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].value='" + rptTitleNew + "';", inputTitle);
+
+		complianceChangeMode(rptTitleNew, changeMode, strReportMode);
+		if (surUnit != "") {
+			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
+			for (WebElement option : optionsSU) {
+				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+		}
+
+		for (String tagValue : tagList) {
+			if (tagValue != "") {
+
+				inputSurveyTag(tagValue);
+				this.waitForSurveySearchButtonToLoad();
+				this.btnSurveySearch.click();
+				this.waitForSurveyTabletoLoad();
+				this.checkboxSurFirst.click();
+				this.waitForAddSurveyButtonToLoad();
+				this.btnAddSurveys.click();
+			}
+		}
+
+		if (tagList.isEmpty()) {
+			this.btnSurveySearch.click();
+			this.waitForSurveyTabletoLoad();
+			this.checkboxSurFirst.click();
+			this.waitForAddSurveyButtonToLoad();
+			this.btnAddSurveys.click();
+		}
+
+		modifyComplianceViews();
+
+		this.clickOnOKButton();
+		return true;
+	}
+
+	public boolean searchReport(String reportTitle, String reportCreatedBy) {
+		this.inputSearchReport.sendKeys(reportTitle);
+
+		if (this.tdCReportTitle.getText().contentEquals(reportTitle)) {
+			if (this.tdCReportCreatedBy.getText().contentEquals(reportCreatedBy))
+				return true;
+		}
+		return false;
+	}
+
+	public boolean checkPaginationSetting(String numberOfReports) {
+		setPagination(numberOfReports);
+		this.waitForPageLoad();
+
+		String msgToVerify = STRPaginationMsg + numberOfReports;
+		this.waitForNumberOfRecords(msgToVerify);
+
+		if (msgToVerify.equals(this.paginationMsg.getText().substring(0, 16).trim()))
+			return true;
+
+		return false;
+	}
+
+	public boolean verifySurveyNotAdded(String reportTitle, String customer, String NELat, String NELong, String SWLat, String SWLong, List<Map<String, String>> views) throws Exception {
+		openNewReportPage();
+		inputReportTitle(reportTitle);
+		addReportSpecificSurveys(customer, NELat, NELong, SWLat, SWLong, views);
+		this.clickOnOKButton();
+		if (this.msgEmptySurvey.getText().equalsIgnoreCase(getSurveyMissingMessage())) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean verifySurveyAlreadyAdded(String customer, String surveyTag) throws Exception {
+		this.waitForCopyReportPagetoLoad();
+		this.waitForDeleteSurveyButtonToLoad();
+		if (customer != null && customer != "Picarro") {
+			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
+			for (WebElement option : optionsCustomer) {
+				if ((customer).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
+				}
+			}
+
+			if (this.isElementPresent(btnChangeModeXPath)) {
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", btnChangeMode);
+			}
+		}
+
+		if (surveyTag != "") {
+			inputSurveyTag(surveyTag);
+			this.btnSurveySearch.click();
+			this.waitForSurveyTabletoLoad();
+			this.checkboxSurFirst.click();
+			this.btnAddSurveys.click();
+		}
+
+		if (isElementPresent(strFirstSurveyTag)) {
+			if (surveyTag != "") {
+				inputSurveyTag(surveyTag);
+				this.btnSurveySearch.click();
+				this.waitForSurveyTabletoLoad();
+				this.waitForSurveySelectorCheckBoxToLoad();
+				this.waitForSurveySelectorCheckBoxToBeEnabled();
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", checkboxSurFirst);
+				this.btnAddSurveys.click();
+
+				if (this.btnAddSurveys.getAttribute("value").equalsIgnoreCase(getSTRSurveyIncludedMsg()))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	public BufferedImage cropImage(BufferedImage src, Rectangle rect) {
+		BufferedImage dest = src.getSubimage(rect.x, rect.y, rect.width, rect.height);
+		return dest;
+	}
+
+	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage) {
+		ImagingUtility imageUtil = new ImagingUtility();
+		ImageComparisonResult result = imageUtil.compareImages(pathToActualImage, pathToBaseImage);
+		if ((result.getFailureMessage() != null) && (result.isEqual() == true)) {
+			return false;
+		}
+		return true;
+	}
+
+	public String getSTRSurveyIncludedMsg() throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	public void openNewComplianceReportPage() {
+		openNewReportPage();
+	}
+
+	public boolean verifyCancelButtonFunctionality() {
+		openNewReportPage();
+		this.btnCancel.click();
+		this.waitForPageLoad();
+
+		if (isElementPresent(strBtnNewCompRpt))
+			return true;
+
+		return false;
+	}
+
+	public void clickOnNewComplianceReportBtn() {
+		this.btnNewComplianceRpt.click();
+	}
+
+	public void clickOnCancelBtn() {
+		this.btnCancel.click();
+	}
+
+	public void clickOnFirstCopyComplianceBtn() {
+		this.btnFirstCopyCompliance.click();
+	}
+
+	public void waitForCopyReportPagetoLoad() {
+		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				boolean result = false;
+				try {
+					result = d.getPageSource().contains(getStrCopyPageText());
+				} catch (Exception e) {
+					Log.error(e.toString());
+				}
+				return result;
+
+			}
+		});
+	}
+
+	public void waitForDeletePopupLoad() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				boolean isDisplayed = false;
+				try {
+					isDisplayed = getBtnDeleteConfirm().isDisplayed();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return isDisplayed;
+			}
+		});
+	}
+
+	public void waitForInputTitleToEnable() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return inputTitle.isEnabled();
+			}
+		});
+	}
+
+	public void waitForDeleteSurveyButtonToLoad() {
+		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return btnDeleteSurvey.isDisplayed();
+			}
+		});
+	}
+
+	public void waitForOkButtonToEnable() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return btnOK.isEnabled();
+			}
+		});
+	}
+
+	public void waitForNumberOfRecords(String actualMessage) {
+		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return paginationMsg.getText().substring(0, 16).trim().equals(actualMessage);
+			}
+		});
+	}
+
+	public String getReportName() {
+		return reportName;
+	}
+
+	public void setReportName(String reportTitle) {
+		this.reportName = reportTitle;
+	}
+
+	public WebElement getTextBoxReportSerach() {
+		return textBoxReportSearch;
+	}
+
+	public WebElement getDataTableEmpty() {
+		return dataTableEmpty;
+	}
+
+	public boolean handleFileDownloads(String rptTitle, String testCaseID)  throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	public void waitForPdfReportIcontoAppear() {
+		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return pdfImg.isDisplayed();
+
+			}
+		});
+	}
+
+	public WebElement getBtnDeleteConfirm() throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	public String getBtnDeleteConfirmXpath() throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	public void modifyComplianceViews() throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	public void complianceChangeMode(String rptTitleNew, boolean changeMode, ReportModeFilter strReportMode) throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	public void addReportSpecificSurveys(String customer, String NELat, String NELong, String SWLat, String SWLong, List<Map<String, String>> views) throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	public String getSurveyMissingMessage() throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	public void addMultipleSurveys(Reports reports) throws Exception {
+		throw new Exception("Not implemented");
+
+	}
+
+	/************** Baseline creation and comparison methods ***************/
+	
+	private void checkAndGenerateBaselineShapeAndGeoJsonFiles(String reportName, String testCaseID) throws Exception {
+		boolean isGenerateBaselineShapeFiles = TestContext.INSTANCE.getTestSetup().isGenerateBaselineShapeFiles();
+		if (isGenerateBaselineShapeFiles) {
+			Path unzipDirectory = Paths.get(testSetup.getDownloadPath(), reportName + " (2)");
+			List<String> filesInDirectory = FileUtility.getFilesInDirectory(unzipDirectory, "*.shp,*.dbf,*.prj,*.shx");
+			for (String filePath : filesInDirectory) {
+				generateBaselineShapeAndGeoJsonFiles(testCaseID, filePath);
+			}
+		}
+	}
+
+	protected void generateBaselinePerfFiles(String testCaseID, String reportId, String startTime, String endTime, Integer processingTimeInMs) throws IOException {
+		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
+		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" + File.separator + "report-job-metrics" + File.separator + testCaseID;
+		// Create the directory for test case if it does not exist.
+		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
+		Path expectedFilePath = Paths.get(expectedDataFolderPath, String.format("%s.csv", testCaseID));
+		String reportMetricString = String.format("%s,%s,%s,%d", reportId, startTime, endTime, processingTimeInMs);
+		FileUtility.createOrWriteToExistingTextFile(expectedFilePath, reportMetricString);
+	}
+
+	protected void generateBaselineSSRSImage(String testCaseID, String imageFileFullPath) throws IOException {
+		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "ssrs-images" + File.separator + testCaseID;
+		// Create the directory for test case if it does not exist.
+		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
+		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
+		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
+		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
+	}
+
+	protected void generateBaselineViewImage(String testCaseID, String imageFileFullPath) throws IOException {
+		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "view-images" + File.separator + testCaseID;
+		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
+		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
+		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
+	}
+
+	protected void generateBaselineShapeAndGeoJsonFiles(String testCaseID, String shapeFileFullPath) throws Exception {
+		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "shape-files" + File.separator + testCaseID;
+		// Create the directory for test case if it does not exist.
+		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
+		String expectedFilename = FileUtility.getFileName(shapeFileFullPath);
+		String expectedFileExt = FileUtility.getFileExtension(shapeFileFullPath);
+		if (expectedFileExt == "dbf" || expectedFileExt == "prj" || expectedFileExt == "shp" || expectedFileExt == "shx") {
+			// Delete existing files in directory (if any).
+			FileUtility.deleteFilesInDirectory(Paths.get(expectedDataFolderPath));
+
+			// Copy the file to the test case folder.
+			String expectedFilenameWithoutExt = expectedFilename.replace(".shp", "");
+			Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
+			FileUtils.copyFile(new File(shapeFileFullPath), new File(expectedFilePath.toString()));
+
+			// If specified file is .shp get GeoJson string for the shape file and store the .geojson.
+			if (expectedFileExt == "shp") {
+				String geoJsonString = ShapeToGeoJsonConverter.convertToJsonString(shapeFileFullPath);
+				Path expectedGeoJsonFilePath = Paths.get(expectedDataFolderPath, expectedFilenameWithoutExt + ".geojson");
+				FileUtility.createTextFile(expectedGeoJsonFilePath, geoJsonString);
+			}
+		}
+	}
+
+	/**
+	 * Compares the processing times for each reportJob type with baseline processingTime values and 
+	 * checks actual values are not greater than the baseline values.
+	 * @param testCaseID - Test case ID
+	 * @param reportTitle - Title of the report
+	 * @return - Whether actual report job type processing time values are within the limits of baselines values
+	 * @throws Exception 
+	 */
+	public boolean compareReportJobPerfBaseline(String testCaseID, String reportTitle) throws Exception {
+		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
+		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" + File.separator + "report-job-metrics" + File.separator + testCaseID;
+		Path expectedFilePath = Paths.get(expectedDataFolderPath, String.format("%s.csv", testCaseID));
+		// If no baseline CSV file, throw No Baseline exception.
+		if (!new File(expectedFilePath.toString()).exists()) {
+			throw new Exception(String.format("Baseline CSV file-[%s] NOT found for TestCase-[%s]",
+					expectedFilePath.toString(), testCaseID));
+		}
+		
+		CSVUtility csvUtility = new CSVUtility();
+		List<HashMap<String, String>> csvRows = csvUtility.getAllRows(expectedFilePath.toString());
+		
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		ArrayList<ReportJob> reportJobs = ReportJob.getReportJobs(reportId);
+		for (ReportJob reportJob : reportJobs) {
+			String reportJobTypeId = reportJob.getReportJobTypeId().toString();
+			
+			// If report job processing started or completed times are NULL, throw exception.
+			validateReportJobProcessingTimesForNotNull(reportId, reportJob, reportJobTypeId);
+			
+			Date processingStarted = reportJob.getProcessingStarted();
+			Date processingCompleted = reportJob.getProcessingCompleted();
+			long actualProcessingTimeInMs = processingCompleted.getTime() - processingStarted.getTime();
+			boolean foundInCsv = false;
+			for (HashMap<String, String> csvRow : csvRows) {
+				String expectedReportJobId = csvRow.get("ReportJobTypeId");
+				if (reportJobTypeId.equals(expectedReportJobId)) {
+					foundInCsv = true;
+					Integer expectedProcessingTimeInMs = Integer.valueOf(csvRow.get("ProcessingTimeInMs"));
+					if (actualProcessingTimeInMs > expectedProcessingTimeInMs) {
+						return false;
+					}					
+				} 
+			}
+			
+			// If no report job type in CSV, throw exception.
+			if (!foundInCsv) {
+				throw new Exception(String.format("Entry NOT found in Baseline CSV-[%s], for ReportJobType-[%s], TestCase-[%s]",
+						expectedFilePath.toString(), SurveyorConstants.ReportJobTypeGuids.get(reportJobTypeId).toString(), testCaseID));
+			}
+		}
+		
+		return true;
+	}
+
+	private void validateReportJobProcessingTimesForNotNull(String reportId, ReportJob reportJob, String reportJobTypeId) throws Exception {
+		// WORKAROUND: To test the remaining code flow.
+		if (!reportJobTypeId.equals("00000000-0000-0000-0001-000000000000")) {		
+			if (reportJob.isColumnNull(ReportJob.COLNAME_PROCESSING_STARTED)) {
+				throw new Exception(String.format("NULL value encountered for column-[%s], ReportId-[%s], ReportJobTypeId-[%s]",
+						ReportJob.COLNAME_PROCESSING_STARTED, reportId, reportJobTypeId)); 
+			}
+			if (reportJob.isColumnNull(ReportJob.COLNAME_PROCESSING_COMPLETED)) {
+				throw new Exception(String.format("NULL value encountered for column-[%s], ReportId-[%s], ReportJobTypeId-[%s]",
+						ReportJob.COLNAME_PROCESSING_COMPLETED, reportId, reportJobTypeId)); 
+			}
+		}
 	}
 }
