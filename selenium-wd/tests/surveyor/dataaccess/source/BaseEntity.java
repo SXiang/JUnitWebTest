@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import common.source.DateUtility;
@@ -53,10 +54,14 @@ public class BaseEntity {
 
 	public static Date getDateColumnValue(ResultSet resultSet, String columnName) throws SQLException
 	{
-		Object columnValue = resultSet.getDate(columnName);
+		Object columnValue = resultSet.getTimestamp(columnName);
 		if (resultSet.wasNull()){
 			return DateUtility.DATE_MINVALUE;
-		} 
+		} else {
+			// convert to timestamp and get time to preserve the time component of the date.
+			Timestamp timestamp = (Timestamp)columnValue;
+			columnValue = new Date(timestamp.getTime());
+		}
 		return (Date)columnValue;
 	}
 

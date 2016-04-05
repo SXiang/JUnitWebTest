@@ -70,6 +70,7 @@ import common.source.Log;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.ComplianceReportEthaneDataProvider;
+import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
 import surveyor.scommon.source.Reports.EthaneFilter;

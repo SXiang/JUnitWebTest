@@ -10,6 +10,7 @@ import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
+import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 
 @RunWith(SurveyorTestRunner.class)

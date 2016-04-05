@@ -645,17 +645,24 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			viewList.add(viewMap);
 		}
 
-		List<Map<String, String>> viewLayersList = new ArrayList<Map<String, String>>();
-		List<Integer> reportOptVwLayersRowIDs = ActionArguments.getNumericList(workingDataRow.reportOptViewLayerRowID);
-		Map<String, String> viewLayerMap = new HashMap<String, String>();
-		fillViewLayersInfo(viewLayerMap, new ReportOptViewLayersDataReader(this.excelUtility), reportOptVwLayersRowIDs.get(0));
-		viewLayersList.add(viewLayerMap);
-		
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		List<Integer> reportOptTabPDFRowIDs = ActionArguments.getNumericList(workingDataRow.reportOptTabularPDFContentRowID);
 		Map<String, String> tableMap = new HashMap<String, String>();
 		fillReportTableInfo(tableMap, new ReportOptTabularPDFContentDataReader(this.excelUtility), reportOptTabPDFRowIDs.get(0));
 		tablesList.add(tableMap);
+
+		List<Map<String, String>> viewLayersList = new ArrayList<Map<String, String>>();
+		List<Integer> reportOptVwLayersRowIDs = ActionArguments.getNumericList(workingDataRow.reportOptViewLayerRowID);
+		Map<String, String> viewLayerMap = new HashMap<String, String>();
+		
+		/* NOTE: ViewLayer values should be set in viewLayerMap. Currently due to a bug in ComplianceReports page (TA884)
+		 * we need to set the values in tableList instead. Fix this once TA884 is fixed.
+		fillViewLayersInfo(viewLayerMap, new ReportOptViewLayersDataReader(this.excelUtility), reportOptVwLayersRowIDs.get(0));
+		viewLayersList.add(viewLayerMap);
+		*/
+
+		fillViewLayersInfo(tableMap, new ReportOptViewLayersDataReader(this.excelUtility), reportOptVwLayersRowIDs.get(0));
+		viewLayersList.add(tableMap);
 
 		String surveyorUnit = null;
 		List<String> tagList=new ArrayList<String>();

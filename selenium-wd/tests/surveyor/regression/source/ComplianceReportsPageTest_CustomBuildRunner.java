@@ -56,6 +56,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.ReportsCompliance;

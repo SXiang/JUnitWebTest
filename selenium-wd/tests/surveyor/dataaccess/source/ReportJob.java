@@ -113,7 +113,7 @@ public class ReportJob extends BaseEntity {
 		if (DBCache.INSTANCE.containsKey(CACHE_KEY+id)) {
 			objReportJob = (ReportJob)DBCache.INSTANCE.get(CACHE_KEY+id);
 		} else {
-			String SQL = "SELECT * FROM dbo.[ReportJob] WHERE ReportId='" + id + "' AND ReportJobId='" + id + "'";
+			String SQL = "SELECT * FROM dbo.[ReportJob] WHERE ReportId='" + reportId + "' AND ReportJobId='" + reportJobId + "'";
 			ArrayList<ReportJob> objReportJobList = load(SQL);
 			if (objReportJobList!=null && objReportJobList.size()>0) {
 				objReportJob = objReportJobList.get(0);
@@ -124,7 +124,7 @@ public class ReportJob extends BaseEntity {
 	}
 
 	public ArrayList<ReportJob> get(String reportId) {
-		String SQL = "SELECT * FROM dbo.[ReportJob] WHERE ReportId='" + id + "'";
+		String SQL = "SELECT * FROM dbo.[ReportJob] WHERE ReportId='" + reportId + "'";
 		return load(SQL);
 	}
 

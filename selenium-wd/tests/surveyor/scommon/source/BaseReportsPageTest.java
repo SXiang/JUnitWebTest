@@ -1,4 +1,4 @@
-package surveyor.regression.source;
+package surveyor.scommon.source;
 
 import common.source.TestContext;
 import surveyor.scommon.source.SurveyorBaseTest;
