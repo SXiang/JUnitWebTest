@@ -110,8 +110,8 @@ public class ReportJob extends BaseEntity {
 		ReportJob objReportJob = null;
 		
 		// Get from cache if present. Else fetch from Database.
-		if (DBCache.INSTANCE.containsKey(CACHE_KEY+id)) {
-			objReportJob = (ReportJob)DBCache.INSTANCE.get(CACHE_KEY+id);
+		if (DBCache.INSTANCE.containsKey(CACHE_KEY + "_" + reportId + "_" + reportJobId)) {
+			objReportJob = (ReportJob)DBCache.INSTANCE.get(CACHE_KEY + "_" + reportId + "_" + reportJobId);
 		} else {
 			String SQL = "SELECT * FROM dbo.[ReportJob] WHERE ReportId='" + reportId + "' AND ReportJobId='" + reportJobId + "'";
 			ArrayList<ReportJob> objReportJobList = load(SQL);

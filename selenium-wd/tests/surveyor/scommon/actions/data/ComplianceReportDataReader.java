@@ -115,13 +115,13 @@ public class ComplianceReportDataReader extends BaseDataReader {
 		String customBoundarySWLong = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_CustomBoundarySWLong, TESTDATA_SHEET_NAME);
 		String customerBoundaryType = excelUtility.getCellData(dataRowID, Excel_TestData__Col_CustomerBoundaryType, TESTDATA_SHEET_NAME);
 		String customerBoundaryName = excelUtility.getCellData(dataRowID, Excel_TestData__Col_CustomerBoundaryName, TESTDATA_SHEET_NAME);
-		String opacityFOV = excelUtility.getCellData(dataRowID, Excel_TestData__Col_OpacityFOV, TESTDATA_SHEET_NAME);
-		String opacityLISA = excelUtility.getCellData(dataRowID, Excel_TestData__Col_OpacityLISA, TESTDATA_SHEET_NAME);
-		String pDFImageOutputWidth = excelUtility.getCellData(dataRowID, Excel_TestData__Col_PDFImageOutputWidth, TESTDATA_SHEET_NAME);
-		String pDFImageOutputHeight = excelUtility.getCellData(dataRowID, Excel_TestData__Col_PDFImageOutputHeight, TESTDATA_SHEET_NAME);
+		String opacityFOV = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_OpacityFOV, TESTDATA_SHEET_NAME);
+		String opacityLISA = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_OpacityLISA, TESTDATA_SHEET_NAME);
+		String pDFImageOutputWidth = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_PDFImageOutputWidth, TESTDATA_SHEET_NAME);
+		String pDFImageOutputHeight = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_PDFImageOutputHeight, TESTDATA_SHEET_NAME);
 		String reportViewRowIDs = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ReportViewRowIDs, TESTDATA_SHEET_NAME);
-		String reportOptViewLayerRowID = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ReportOptViewLayerRowID, TESTDATA_SHEET_NAME);
-		String reportOptTabularPDFContentRowID = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ReportOptTabularPDFContentRowID, TESTDATA_SHEET_NAME);
+		String reportOptViewLayerRowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_ReportOptViewLayerRowID, TESTDATA_SHEET_NAME);
+		String reportOptTabularPDFContentRowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_ReportOptTabularPDFContentRowID, TESTDATA_SHEET_NAME);
 		String reportSurveyRowIDs = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ReportSurveyRowIDs, TESTDATA_SHEET_NAME);
 		
 		Log.info(String.format("Found data row: rowID=[%s], tCID=[%s], title=[%s], customerRowID=[%s], timezone=[%s], exclusionRadius=[%s], "

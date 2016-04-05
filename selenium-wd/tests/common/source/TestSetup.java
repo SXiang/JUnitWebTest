@@ -792,8 +792,7 @@ public class TestSetup {
 			harData.writeTo(bufferedWriter);
 			Log.info(String.format("Created HAR data file at: %s", harDataFullPath));
 		} catch (IOException e) {
-			// No exception thrown here. 
-			e.printStackTrace();
+			Log.error(e.toString());
 		} finally {
 			bufferedWriter.close();
 		}

@@ -32,9 +32,13 @@ public class ManageCustomerPageActions extends BasePageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
 	 */
-	public boolean createNewCustomer(String data, Integer dataRowID) {
+	public boolean createNewCustomer(String data, Integer dataRowID) throws Exception {
 		logAction("ManageCustomersPageActions.createNewCustomer", data, dataRowID);
+		workingDataRow = this.dataReader.getDataRow(dataRowID);
+		this.manageCustomersPage.addNewCustomer(workingDataRow.name, workingDataRow.eULA, Boolean.parseBoolean(workingDataRow.enabled));
+		workingCustomer = this.manageCustomersPage;
 		return true;
 	}
  
@@ -46,6 +50,8 @@ public class ManageCustomerPageActions extends BasePageActions {
 	 */
 	public boolean open(String data, Integer dataRowID) {
 		logAction("ManageCustomersPageActions.open", data, dataRowID);
+		this.manageCustomersPage.open();
+		this.manageCustomersPage.waitForPageLoad();
 		return true;
 	}
  
