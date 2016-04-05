@@ -21,7 +21,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.PageFactory;	
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -108,7 +108,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	private WebElement labelLocDescError;
 	private String labelLocDescErrorXPath = "//label[@id='Description-error']";
 	private String labelLocDescErrorID = "Description-error";
-	
+
 	@FindBy(id = "point-latitude-error")
 	private WebElement labelLatValueError;
 	private String labelLatValueErrorXPath = "//label[@id='point-latitude-error']";
@@ -152,8 +152,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	 * @param strBaseURL
 	 * @param strPageURL
 	 */
-	public ManageLocationsPage(WebDriver driver, String baseURL,
-			TestSetup testSetup) {
+	public ManageLocationsPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 
 		latLongSelectionControl = new LatLongSelectionControl(driver);
@@ -162,40 +161,36 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		Log.info("\nThe Manager Locations Page URL is: " + this.strPageURL);
 	}
 
-	public ManageLocationsPage(WebDriver driver, String baseURL,
-			TestSetup testSetup, String urlPath) {
+	public ManageLocationsPage(WebDriver driver, String baseURL, TestSetup testSetup, String urlPath) {
 		super(driver, testSetup, baseURL, baseURL + urlPath);
 	}
 
-
-	public void addNewLocation(String locationDesc, String customer,
-			String newLocationName) {
-		addNewLocation(locationDesc, customer, newLocationName, false /*UseLatLongSelector*/,  null, null);
+	public void addNewLocation(String locationDesc, String customer, String newLocationName) {
+		addNewLocation(locationDesc, customer, newLocationName, false /* UseLatLongSelector */, null, null);
 	}
 
-	public void addNewLocationUsingLatLongSelector(String locationDesc, String customer,
-			String newLocationName) {
-		addNewLocation(locationDesc, customer, newLocationName, true /*UseLatLongSelector*/, null, null);
+	public void addNewLocationUsingLatLongSelector(String locationDesc, String customer, String newLocationName) {
+		addNewLocation(locationDesc, customer, newLocationName, true /* UseLatLongSelector */, null, null);
 	}
 
-	public void addNewLocation(String locationDesc, String customer,
-			String newLocationName, String ethMthMin, String ethMthMax) {
-		addNewLocation(locationDesc, customer, newLocationName, false /*UseLatLongSelector*/,  ethMthMin, ethMthMax);
+	public void addNewLocation(String locationDesc, String customer, String newLocationName, String ethMthMin,
+			String ethMthMax) {
+		addNewLocation(locationDesc, customer, newLocationName, false /* UseLatLongSelector */, ethMthMin, ethMthMax);
 	}
 
-	public void addNewLocationUsingLatLongSelector(String locationDesc, String customer,
-			String newLocationName, String ethMthMin, String ethMthMax) {
-		addNewLocation(locationDesc, customer, newLocationName, true /*UseLatLongSelector*/, ethMthMin, ethMthMax );
+	public void addNewLocationUsingLatLongSelector(String locationDesc, String customer, String newLocationName,
+			String ethMthMin, String ethMthMax) {
+		addNewLocation(locationDesc, customer, newLocationName, true /* UseLatLongSelector */, ethMthMin, ethMthMax);
 	}
 
-	public void addNewLocation(String locationDesc, String customer,
-			String newLocationName, boolean useLatLongSelector, String ethMthMin, String ethMthMax) {
+	private void addNewLocation(String locationDesc, String customer, String newLocationName,
+			boolean useLatLongSelector, String ethMthMin, String ethMthMax) {
 
 	    addNewLocation(locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin,ethMthMax,true);
 	}
 	
 	public void addNewLocation(String locationDesc, String customer,
-			String newLocationName, boolean useLatLongSelector, String ethMthMin, String ethMthMax, boolean cancelIfError) {
+			String newLocationName, boolean useLatLongSelector, String ethMthMin, String ethMthMax, boolean checkForError) {
 		
 		if (newLocationName.equalsIgnoreCase("Santa Clara")) {
 			latitude = "37.3971035425739";
@@ -206,14 +201,14 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 		this.inputLocationDesc.sendKeys(locationDesc);
 
-		if (!useLatLongSelector) {		
+		if (!useLatLongSelector) {
 			inputLatLong(latitude, longitude);
 		} else {
 			final int X_OFFSET = 100;
 			final int Y_OFFSET = 100;
 			
 			this.clickOnLatLongSelectorBtn();
-            this.selectOnLatLong(X_OFFSET, Y_OFFSET);            
+                        this.selectOnLatLong(X_OFFSET, Y_OFFSET);            
 			this.clickOnLatLongOkBtn();
 			
 			String locationLatitudeText = this.getLocationLatitudeText();
@@ -225,8 +220,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			assertTrue(!locationLongitudeText.isEmpty());
 		}
 
-		List<WebElement> options = this.dropDownCustomer.findElements(By
-				.tagName("option"));
+		List<WebElement> options = this.dropDownCustomer.findElements(By.tagName("option"));
 		for (WebElement option : options) {
 			if (customer.equalsIgnoreCase(option.getText().trim()))
 				option.click();
@@ -277,7 +271,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.btnOK.click();
 		this.waitForPageToLoad();
         
-		if(cancelIfError 
+		if(checkForError
 				&& this.correctPossibleError(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
 			this.btnCancel.click();
 		}
@@ -330,8 +324,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public boolean findExistingLocationAndClickEdit(String customerName, String locationName){
 		return editExistingLocation(customerName, locationName, null,null,null,null,null, true, true);
 	}
-	public boolean editExistingLocation(String customerName, String locationName, String newLocationName, boolean cancelErrorCheckinglIfError){
-		return editExistingLocation(customerName, locationName, newLocationName,null,null,null,null, false, cancelErrorCheckinglIfError);
+	public boolean editExistingLocation(String customerName, String locationName, String newLocationName, boolean checkForError){
+		return editExistingLocation(customerName, locationName, newLocationName,null,null,null,null, false, checkForError);
 	}
 	public boolean findExistingLocation(String customerName, String locationName) {
 		setPagination(PAGINATIONSETTING_100);
@@ -344,8 +338,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		WebElement customerNameCell;
 		WebElement locationNameCell;
 
-		List<WebElement> rows = table.findElements(By
-				.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -356,18 +349,14 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			customerNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-					+ "]/td[1]";
-			locationNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-					+ "]/td[2]";
+			customerNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			locationNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
 
 			customerNameCell = table.findElement(By.xpath(customerNameXPath));
 			locationNameCell = table.findElement(By.xpath(locationNameXPath));
 
-			if ((customerNameCell.getText().trim())
-					.equalsIgnoreCase(customerName)
-					&& (locationNameCell.getText().trim())
-					.equalsIgnoreCase(locationName)) {
+			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName)
+					&& (locationNameCell.getText().trim()).equalsIgnoreCase(locationName)) {
 				Log.info("Found entry at row=" + rowNum);
 				return true;
 			}
@@ -375,10 +364,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
-						.xpath("//*[@id='datatable']/tbody/tr"));
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
 
@@ -398,11 +385,15 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		return this.editExistingLocation(customerName, locationName, newLocationName, null, null, null, null);
 	}
 
-	public boolean editPDExistingLocation(String customerName, String locationName, String newLocationName, String latValue, String longValue) {
+	public boolean editPDExistingLocation(String customerName, String locationName, String newLocationName,
+			String latValue, String longValue) {
 		return this.editExistingLocation(customerName, locationName, newLocationName, latValue, longValue, null, null);
 	}
-	public boolean editPDExistingLocation(String customerName, String locationName, String newLocationName, String latValue, String longValue, String newEthMthMin, String newEthMthMax) {
-		return this.editExistingLocation(customerName, locationName, newLocationName, latValue, longValue, newEthMthMin, newEthMthMax);
+
+	public boolean editPDExistingLocation(String customerName, String locationName, String newLocationName,
+			String latValue, String longValue, String newEthMthMin, String newEthMthMax) {
+		return this.editExistingLocation(customerName, locationName, newLocationName, latValue, longValue, newEthMthMin,
+				newEthMthMax);
 	}
 	public boolean editExistingLocation(String customerName,
 			String locationName, String newLocationName, String latValue,
@@ -414,8 +405,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	
 	public boolean editExistingLocation(String customerName,
 			String locationName, String newLocationName, String latValue,
-			String longValue, String newEthMthMin, String newEthMthMax , boolean openEditorOnly, boolean cancelIfError)
-	{
+			String longValue, String newEthMthMin, String newEthMthMax , boolean openEditorOnly, boolean checkForError){
+		
 		setPagination(PAGINATIONSETTING_100);
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -428,8 +419,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		WebElement locationNameCell;
 		WebElement actionEditCell;
 
-		List<WebElement> rows = table.findElements(By
-				.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -440,17 +430,15 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			customerNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-					+ "]/td[1]";
-			locationNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-					+ "]/td[2]";
+			customerNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			locationNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
 
 			customerNameCell = table.findElement(By.xpath(customerNameXPath));
 			locationNameCell = table.findElement(By.xpath(locationNameXPath));
 
-			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName) && (locationNameCell.getText().trim())
-					.equalsIgnoreCase(locationName)) {
-				actionEditXPath = "//*[@id='datatable']/tbody/tr[" + rowNum	+ "]/td[5]";
+			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName)
+					&& (locationNameCell.getText().trim()).equalsIgnoreCase(locationName)) {
+				actionEditXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]";
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
 				Log.info("Found entry at row=" + rowNum);
 
@@ -461,26 +449,26 @@ public class ManageLocationsPage extends SurveyorBasePage {
                 	return true;
                 }
                 
-				if (this.inputLocationDesc!=null){
+				if (this.inputLocationDesc != null) {
 					this.inputLocationDesc.clear();
 					this.inputLocationDesc.sendKeys(newLocationName);
 				}
 
 				if (latValue != null && latValue != "") {
-					if (this.inputLocationLat!=null){
+					if (this.inputLocationLat != null) {
 						this.inputLocationLat.clear();
 						this.inputLocationLat.sendKeys(latValue);
 					}
 				}
 
 				if (longValue != null && longValue != "") {
-					if (this.inputLocationLong!=null){
+					if (this.inputLocationLong != null) {
 						this.inputLocationLong.clear();
 						this.inputLocationLong.sendKeys(longValue);
 					}
 				}
 
-				if (newEthMthMin != null && newEthMthMin !="") {
+				if (newEthMthMin != null && newEthMthMin != "") {
 					List<WebElement> optionsMIN = this.ethMthMinUnit.findElements(By.tagName("option"));
 					for (WebElement option : optionsMIN) {
 						if ((newEthMthMin).equalsIgnoreCase(option.getText().trim())) {
@@ -489,7 +477,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 					}
 				}
 
-				if (newEthMthMax != null && newEthMthMax !="") {
+				if (newEthMthMax != null && newEthMthMax != "") {
 					List<WebElement> optionsMAX = this.ethMthMaxUnit.findElements(By.tagName("option"));
 					for (WebElement option : optionsMAX) {
 						if ((newEthMthMax).equalsIgnoreCase(option.getText().trim())) {
@@ -501,26 +489,22 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				String curURL = driver.getCurrentUrl();
 
 				this.btnOK.click();
-                if(!cancelIfError){
+                if(!checkForError){
                 	return true;
                 }
 				if (newLocationName.equalsIgnoreCase("")) {
 					// Required field validation message should be shown.
 					this.waitUntilPresenceOfElementLocated(labelLocDescErrorID);
-					this.labelLocDescError = this.driver.findElement(By.id(labelLocDescErrorID));					
-					if (driver.getCurrentUrl().equalsIgnoreCase(curURL) &&
-							this.labelLocDescError.getText().equalsIgnoreCase(REQUIRED_FIELD_VAL_MESSAGE))
+					this.labelLocDescError = this.driver.findElement(By.id(labelLocDescErrorID));
+					if (driver.getCurrentUrl().equalsIgnoreCase(curURL)
+							&& this.labelLocDescError.getText().equalsIgnoreCase(REQUIRED_FIELD_VAL_MESSAGE))
 						return false;
 				}
 
 				if (isElementPresent(this.panelDuplicationErrorXPath)) {
-					WebElement panelError = driver.findElement(By
-							.xpath(this.panelDuplicationErrorXPath));
-					if (panelError
-							.getText()
-							.equalsIgnoreCase(
-									Resources
-									.getResource(ResourceKeys.Validation_SummaryTitle))) {
+					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
+					if (panelError.getText()
+							.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
 						return false;
 					}
 				}
@@ -530,10 +514,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
-						.xpath("//*[@id='datatable']/tbody/tr"));
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
 
@@ -548,7 +530,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 		return false;
 
-	}	
+	}
 
 	public String getSelectedPoint(){
 		return getSelectedPoint(SECONDS_10);
@@ -639,7 +621,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 
 	public WebElement getEthMthRtoLbl() {
-		return 	ethMthRtioLbl;
+		return ethMthRtioLbl;
 	}
 
 	public List<String> getLocationList(boolean allPages, int paginationSize) {
@@ -660,20 +642,16 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(pageSizeStr);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			locationXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
-					+ "]/td[2]";
+			locationXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
 			locationCell = table.findElement(By.xpath(locationXPath));
 
 			locationList.add(locationCell.getText().trim());
 
-			if (rowNum == Integer.parseInt(pageSizeStr)
-					&& !this.nextBtn.getAttribute("class").contains("disabled")
+			if (rowNum == Integer.parseInt(pageSizeStr) && !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
 				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
-						.xpath("//*[@id='datatable']/tbody/tr"));
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
 
@@ -702,7 +680,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		return false;
 	}
 
-	public boolean isDuplicateLocMsgPresent(){
+	public boolean isDuplicateLocMsgPresent() {
 		return this.liDuplicateMsg.getText().equals(STRDuplicateLocMsg);
 	}
 

@@ -1,8 +1,17 @@
 package surveyor.scommon.actions;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Paths;
+
+import org.testng.Assert;
+
+import common.source.FileUtility;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
+import net.lightbody.bmp.core.har.Har;
 import surveyor.scommon.actions.data.TestEnvironmentDataReader;
 import surveyor.scommon.actions.data.TestEnvironmentDataReader.TestEnvironmentDataRow;
 
@@ -130,11 +139,39 @@ public class TestEnvironmentActions extends BaseActions {
 		return true;
 	}
 
+	/**
+	 * Executes startNetworkProxy action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean startNetworkProxy(String data, Integer dataRowID) throws Exception {
+		logAction("TestEnvironmentActions.startNetworkProxy", data, dataRowID);
+		TestContext.INSTANCE.getTestSetup().startNetworkProxy(true);
+		return true;
+	}
+
+	/**
+	 * Executes stopNetworkProxy action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean stopNetworkProxy(String data, Integer dataRowID) throws Exception {
+		logAction("TestEnvironmentActions.stopNetworkProxy", data, dataRowID);
+		TestContext.INSTANCE.getTestSetup().stopNetworkProxy();
+		return true;
+	}
+	
 	/* Invoke action using specified ActionName */
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
 		if (actionName.equals("startReplay")) { return this.startReplay(data, dataRowID); }
 		else if (actionName.equals("startAnalyzer")) { return this.startAnalyzer(data, dataRowID); }
 		else if (actionName.equals("stopAnalyzer")) { return this.stopAnalyzer(data, dataRowID); }
+		else if (actionName.equals("startNetworkProxy")) { return this.startNetworkProxy(data, dataRowID); }
+		else if (actionName.equals("stopNetworkProxy")) { return this.stopNetworkProxy(data, dataRowID); }
 		else if (actionName.equals("verifyAnalyzerIsRunning")) { return this.verifyAnalyzerIsRunning(data, dataRowID); }
 		else if (actionName.equals("verifyAnalyzerIsShutdown")) { return this.verifyAnalyzerIsShutdown(data, dataRowID); }
 		else if (actionName.equals("verifyBrowserIsShutdown")) { return this.verifyBrowserIsShutdown(data, dataRowID); }

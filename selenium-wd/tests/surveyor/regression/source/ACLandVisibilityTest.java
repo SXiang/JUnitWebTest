@@ -31,8 +31,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import common.source.Log;
 
 /**
@@ -68,7 +66,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC35_CheckACLVCustomerUser_DriverRole Test Description: Check ACLV for customer user with Driver role
+	 * Test Case ID: TC35_CheckACLVCustomerUser_DriverRole Test Description:
+	 * Check ACLV for customer user with Driver role
 	 * 
 	 */
 	@Test
@@ -78,7 +77,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		String userName = customerName + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
 		String location = customerName + " - " + SQACUSLOC;
 
-		Log.info("\nRunning TC35_CheckACLVCustomerUser_DriverRole - Test Description: Check ACLV for customer user with Driver role");
+		Log.info(
+				"\nRunning TC35_CheckACLVCustomerUser_DriverRole - Test Description: Check ACLV for customer user with Driver role");
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -99,12 +99,14 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC35_CheckACLVCustomerUser_DriverRole_ReleaseNotes Test Description: Release Notes link is working and can download Release Notes
+	 * Test Case ID: TC35_CheckACLVCustomerUser_DriverRole_ReleaseNotes Test
+	 * Description: Release Notes link is working and can download Release Notes
 	 * 
 	 */
 	@Ignore
 	public void TC35_CheckACLVCustomerUser_DriverRole_ReleaseNotes() {
-		Log.info("\nRunning TC35_CheckACLVCustomerUser_DriverRole_ReleaseNotes - Test Description: Release Notes link is working and can download Release Notes");
+		Log.info(
+				"\nRunning TC35_CheckACLVCustomerUser_DriverRole_ReleaseNotes - Test Description: Release Notes link is working and can download Release Notes");
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);
 		homePage.open();
@@ -116,12 +118,14 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC35_CheckACLVCustomerUser_DriverRole_Preferences Test Description: Preferences link is working
+	 * Test Case ID: TC35_CheckACLVCustomerUser_DriverRole_Preferences Test
+	 * Description: Preferences link is working
 	 * 
 	 */
 	@Test
 	public void TC35_CheckACLVCustomerUser_DriverRole_Preferences() {
-		Log.info("\nRunning TC35_CheckACLVCustomerUser_DriverRole_Preferences - Test Description: RPreferences link is working");
+		Log.info(
+				"\nRunning TC35_CheckACLVCustomerUser_DriverRole_Preferences - Test Description: RPreferences link is working");
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);
 
@@ -144,7 +148,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC36_CheckACLVCustomerUser_SupervisorRole Test Description: Check ACLV for customer user with Supervisor role
+	 * Test Case ID: TC36_CheckACLVCustomerUser_SupervisorRole Test Description:
+	 * Check ACLV for customer user with Supervisor role
 	 * 
 	 */
 	@Test
@@ -153,7 +158,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		String userName = SQACUS + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
 		String location = SQACUS + " - " + SQACUSLOC;
 
-		Log.info("\nRunning TC36_CheckACLVCustomerUser_SupervisorRole - Test Description: Check ACLV for customer user with Supervisor role");
+		Log.info(
+				"\nRunning TC36_CheckACLVCustomerUser_SupervisorRole - Test Description: Check ACLV for customer user with Supervisor role");
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -176,8 +182,10 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC36_CheckReportLink_SupervisorRole Test Description: Check Reports link for customer user with Supervisor role
-	 * @throws Exception 
+	 * Test Case ID: TC36_CheckReportLink_SupervisorRole Test Description: Check
+	 * Reports link for customer user with Supervisor role
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 
@@ -233,11 +241,12 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewList.add(viewMap);
-		
-		List<String> tagList=new ArrayList<String>();
+
+		List<String> tagList = new ArrayList<String>();
 		tagList.add(CUSDRVSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEET, "0", listBoundary,
+				tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 
 		complianceReportsPage.addNewReport(rpt);
 
@@ -272,12 +281,14 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC36_CheckUserLink_ReleaseNotes Test Description: Release Notes link is working and can download Release Notes
+	 * Test Case ID: TC36_CheckUserLink_ReleaseNotes Test Description: Release
+	 * Notes link is working and can download Release Notes
 	 * 
 	 */
 	@Ignore
 	public void TC36_CheckUserLink_ReleaseNotes() {
-		Log.info("\nRunning TC36_CheckReportLink_CustomerSupervisorRole - Test Description: Release Notes link is working and can download Release Notes");
+		Log.info(
+				"\nRunning TC36_CheckReportLink_CustomerSupervisorRole - Test Description: Release Notes link is working and can download Release Notes");
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
 
@@ -289,12 +300,14 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC36_CheckUserLink_Preferences Test Description: Preferences link is working
+	 * Test Case ID: TC36_CheckUserLink_Preferences Test Description:
+	 * Preferences link is working
 	 * 
 	 */
 	@Test
 	public void TC36_CheckUserLink_Preferences() {
-		Log.info("\nRunning TC36_CheckReportLink_CustomerSupervisorRole - Test Description: Preferncess link is working");
+		Log.info(
+				"\nRunning TC36_CheckReportLink_CustomerSupervisorRole - Test Description: Preferncess link is working");
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
 		homePage.open();
@@ -316,7 +329,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC37_CheckACLVCustomerUser_UtilityAdminRole Test Description: Check ACLV for customer user with Utility Administrator role
+	 * Test Case ID: TC37_CheckACLVCustomerUser_UtilityAdminRole Test
+	 * Description: Check ACLV for customer user with Utility Administrator role
 	 * 
 	 */
 	@Test
@@ -325,7 +339,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		String userName = SQACUS + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
 		String location = SQACUS + " - " + SQACUSLOC;
 
-		Log.info("\nRunning TC37_CheckACLVCustomerUser_UtilityAdminRole - Test Description: Check ACLV for customer user with Utility Administrator role");
+		Log.info(
+				"\nRunning TC37_CheckACLVCustomerUser_UtilityAdminRole - Test Description: Check ACLV for customer user with Utility Administrator role");
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -346,8 +361,10 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC37_CheckReportLink_UtilityAdminRole Test Description: Check ACLV for customer user with Utility Administrator role
-	 * @throws Exception 
+	 * Test Case ID: TC37_CheckReportLink_UtilityAdminRole Test Description:
+	 * Check ACLV for customer user with Utility Administrator role
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@Test
@@ -403,10 +420,11 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 
 		viewList.add(viewMap);
 
-		List<String> tagList=new ArrayList<String>();
+		List<String> tagList = new ArrayList<String>();
 		tagList.add(CUSDRVSTDTAG);
-		
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSUA, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSUA, "sqacus", TIMEZONEET, "0", listBoundary,
+				tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 
 		complianceReportsPage.addNewReport(rpt);
 
@@ -441,12 +459,14 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC37_CheckUserLink_ReleaseNotes Test Description: Release Notes link is working and can download Release Notes
+	 * Test Case ID: TC37_CheckUserLink_ReleaseNotes Test Description: Release
+	 * Notes link is working and can download Release Notes
 	 * 
 	 */
 	@Ignore
 	public void TC37_CheckUserLink_ReleaseNotes() {
-		Log.info("\nRunning TC37_CheckReportLink_UtilityAdminRole - Test Description: Release Notes link is working and can download Release Notes");
+		Log.info(
+				"\nRunning TC37_CheckReportLink_UtilityAdminRole - Test Description: Release Notes link is working and can download Release Notes");
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		homePage.open();
@@ -458,7 +478,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC37_CheckUserLink_Preferences Test Description: Preferences link is working
+	 * Test Case ID: TC37_CheckUserLink_Preferences Test Description:
+	 * Preferences link is working
 	 * 
 	 */
 	@Test
@@ -489,7 +510,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC38_CheckACLV_PicAdminRole Test Description: Check ACLV for Picarro Administrator role, non-default Administrator account
+	 * Test Case ID: TC38_CheckACLV_PicAdminRole Test Description: Check ACLV
+	 * for Picarro Administrator role, non-default Administrator account
 	 * 
 	 */
 	@Test
@@ -498,18 +520,19 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		String customer = "Picarro";
 		String location = "Santa Clara";
 		String locationDesc = customer + " - " + location;
-		
-		Log.info("\nRunning TC38_CheckACLV_PicAdminRole - Test Description: Check ACLV for Picarro Administrator role, non-default Administrator account\n");
+
+		Log.info(
+				"\nRunning TC38_CheckACLV_PicAdminRole - Test Description: Check ACLV for Picarro Administrator role, non-default Administrator account\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
 		manageUsersPage.open();
-		
-		Log.info(String.format("Adding new Picarro user: Username-[%s];Role-[%s];Location-[%s];Timezone-[%s]", 
-				userName, USERROLEADMIN, locationDesc, TIMEZONECT));		
+
+		Log.info(String.format("Adding new Picarro user: Username-[%s];Role-[%s];Location-[%s];Timezone-[%s]", userName,
+				USERROLEADMIN, locationDesc, TIMEZONECT));
 		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, USERROLEADMIN, locationDesc, TIMEZONECT);
-		
+
 		Log.info(String.format("Finding user: Location-[%s];Username-[%s]", location, userName));
 		if (!manageUsersPage.findExistingUser(location, userName, false))
 			fail("\nTC38: failed to create a non-default Picarro Administrator user.\n");
@@ -524,8 +547,10 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC38_CheckReportLink_PicarroAdminRole Test Description: Check ACLV for customer user with Utility Administrator role
-	 * @throws Exception 
+	 * Test Case ID: TC38_CheckReportLink_PicarroAdminRole Test Description:
+	 * Check ACLV for customer user with Utility Administrator role
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@Test
@@ -580,11 +605,12 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewList.add(viewMap);
-		
-		List<String> tagList=new ArrayList<String>();
+
+		List<String> tagList = new ArrayList<String>();
 		tagList.add(CUSDRVSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, PICDFADMIN, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, PICDFADMIN, "sqacus", TIMEZONEET, "0", listBoundary,
+				tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 
 		complianceReportsPage.addNewReport(rpt);
 
@@ -619,12 +645,14 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC38_CheckUserLink_ReleaseNotes Test Description: Release Notes link is working and can download Release Notes
+	 * Test Case ID: TC38_CheckUserLink_ReleaseNotes Test Description: Release
+	 * Notes link is working and can download Release Notes
 	 * 
 	 */
 	@Ignore
 	public void TC38_CheckUserLink_ReleaseNotes_PicarroAdminRole() {
-		Log.info("\nRunning TC38_CheckReportLink_PicarroAdminRole - Test Description: Release Notes link is working and can download Release Notes");
+		Log.info(
+				"\nRunning TC38_CheckReportLink_PicarroAdminRole - Test Description: Release Notes link is working and can download Release Notes");
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
@@ -639,7 +667,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC38_CheckUserLink_Preferences Test Description: Preferences link is working
+	 * Test Case ID: TC38_CheckUserLink_Preferences Test Description:
+	 * Preferences link is working
 	 * 
 	 */
 	@Test
@@ -676,8 +705,10 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC40_CheckReportLink_PicarroSupportRole Test Description: Check ACLV for Picarro Support role
-	 * @throws Exception 
+	 * Test Case ID: TC40_CheckReportLink_PicarroSupportRole Test Description:
+	 * Check ACLV for Picarro Support role
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@Test
@@ -732,11 +763,12 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewList.add(viewMap);
-		
-		List<String> tagList=new ArrayList<String>();
+
+		List<String> tagList = new ArrayList<String>();
 		tagList.add(CUSDRVSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQAPICSUP, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQAPICSUP, "sqacus", TIMEZONEET, "0", listBoundary,
+				tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 
 		complianceReportsPage.addNewReport(rpt);
 
@@ -771,12 +803,14 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC40_CheckUserLink_ReleaseNotes Test Description: Release Notes link is working and can download Release Notes
+	 * Test Case ID: TC40_CheckUserLink_ReleaseNotes Test Description: Release
+	 * Notes link is working and can download Release Notes
 	 * 
 	 */
 	@Ignore
 	public void TC40_CheckUserLink_ReleaseNotes_PicarroSupportRole() {
-		Log.info("\nRunning TC40_CheckReportLink_PicarroSupportRole - Test Description: Release Notes link is working and can download Release Notes");
+		Log.info(
+				"\nRunning TC40_CheckReportLink_PicarroSupportRole - Test Description: Release Notes link is working and can download Release Notes");
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 
@@ -790,7 +824,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC40_CheckUserLink_Preferences Test Description: Preferences link is working
+	 * Test Case ID: TC40_CheckUserLink_Preferences Test Description:
+	 * Preferences link is working
 	 * 
 	 */
 	@Test
@@ -826,7 +861,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC40_CheckACLV_PicSupportRole Test Description: Check ACLV for Picarro user with Picarro Support role
+	 * Test Case ID: TC40_CheckACLV_PicSupportRole Test Description: Check ACLV
+	 * for Picarro user with Picarro Support role
 	 * 
 	 */
 	@Test
@@ -836,7 +872,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		String location = "Santa Clara";
 		String locationDesc = customer + " - " + location;
 
-		Log.info("\nRunning TC40_CheckACLV_PicSupportRole - Test Description: Check ACLV for Picarro user with Picarro Support role\n");
+		Log.info(
+				"\nRunning TC40_CheckACLV_PicSupportRole - Test Description: Check ACLV for Picarro user with Picarro Support role\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -847,11 +884,11 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		Log.info("Creating Picarro support user with username-" + userName);
 
 		manageUsersPage.open();
-		
-		Log.info(String.format("Adding new Picarro user: Username-[%s];Role-[%s];Location-[%s];Timezone-[%s]", 
-				userName, PICUSERROLESUP, locationDesc, TIMEZONECT));
+
+		Log.info(String.format("Adding new Picarro user: Username-[%s];Role-[%s];Location-[%s];Timezone-[%s]", userName,
+				PICUSERROLESUP, locationDesc, TIMEZONECT));
 		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, PICUSERROLESUP, locationDesc, TIMEZONECT);
-		
+
 		Log.info(String.format("Finding user: Location-[%s];Username-[%s]", location, userName));
 		if (!manageUsersPage.findExistingUser(location, userName, false))
 			fail("\nTC40: failed to create a Picarro user with Picarro Support role.\n");

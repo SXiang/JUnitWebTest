@@ -42,7 +42,7 @@ public class ActionFunctionExecutor {
 					// Ensure user has support correct number of parameters.
 					validateParameterCount(paramGroups, functionName, functionArgs, i);
 
-					Object[] objArr = buildFunctionParameters(paramGroups, i);
+					Object[] objArr = buildFunctionParameters(paramGroups);
 					// Execute the action function.
 					outputValue = methods[i].invoke(actionFunc, objArr);
 				}
@@ -52,10 +52,10 @@ public class ActionFunctionExecutor {
 		return String.valueOf(outputValue);
 	}
 
-	private Object[] buildFunctionParameters(List<String> paramGroups, int i) throws Exception {
+	private Object[] buildFunctionParameters(List<String> paramGroups) throws Exception {
 		Object[] objArr = new Object[paramGroups.size()];
 		for (int j = 0; j < paramGroups.size(); j++) {
-			String param = paramGroups.get(i);
+			String param = paramGroups.get(j);
 			boolean isString = false;
 			boolean isInteger = false;
 			boolean isFloat = false;
@@ -78,9 +78,9 @@ public class ActionFunctionExecutor {
 				else { isInteger = true; }
 			}
 			
-			if (isString) { objArr[i] = param; }
-			else if (isInteger) { objArr[i] = Integer.valueOf(param); }
-			else if (isFloat) { objArr[i] = Float.valueOf(param); }
+			if (isString) { objArr[j] = param; }
+			else if (isInteger) { objArr[j] = Integer.valueOf(param); }
+			else if (isFloat) { objArr[j] = Float.valueOf(param); }
 		}
 		return objArr;
 	}

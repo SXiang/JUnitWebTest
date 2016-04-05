@@ -1,6 +1,7 @@
 package surveyor.scommon.actions.data;
 
 import common.source.ExcelUtility;
+import common.source.Log;
 
 public class TestEnvironmentDataReader extends BaseDataReader {
 	public TestEnvironmentDataReader(ExcelUtility excelUtility) {
@@ -42,13 +43,13 @@ public class TestEnvironmentDataReader extends BaseDataReader {
 	}
  
 	public TestEnvironmentDataRow getDataRow(Integer dataRowID) throws Exception {
-		String rowID = excelUtility.getCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
+		String rowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
 		String analyzerSerialNumber = excelUtility.getCellData(dataRowID, Excel_TestData__Col_AnalyzerSerialNumber, TESTDATA_SHEET_NAME);
 		String analyzerSharedKey = excelUtility.getCellData(dataRowID, Excel_TestData__Col_AnalyzerSharedKey, TESTDATA_SHEET_NAME);
 		String replayScriptDB3File = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ReplayScriptDB3File, TESTDATA_SHEET_NAME);
 		String replayScriptDefnFile = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ReplayScriptDefnFile, TESTDATA_SHEET_NAME);
 		
-		System.out.println(String.format("Found data row: rowID=[%s], analyzerSerialNumber=[%s], analyzerSharedKey=[%s], replayScriptDB3File=[%s], replayScriptDefnFile=[%s]", rowID, analyzerSerialNumber, analyzerSharedKey, replayScriptDB3File, replayScriptDefnFile));
+		Log.info(String.format("Found data row: rowID=[%s], analyzerSerialNumber=[%s], analyzerSharedKey=[%s], replayScriptDB3File=[%s], replayScriptDefnFile=[%s]", rowID, analyzerSerialNumber, analyzerSharedKey, replayScriptDB3File, replayScriptDefnFile));
 		
 		return new TestEnvironmentDataRow(rowID, analyzerSerialNumber, analyzerSharedKey, replayScriptDB3File, replayScriptDefnFile);
 	}

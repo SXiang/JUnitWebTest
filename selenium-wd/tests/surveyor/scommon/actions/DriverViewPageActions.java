@@ -45,6 +45,13 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		setDataReader(new DriverViewDataReader(this.excelUtility));
 	}
 
+	private DriverViewPage createNewPageObject() {
+		DriverViewPage driverViewPage = new DriverViewPage(TestContext.INSTANCE.getDriver(), 
+				TestContext.INSTANCE.getTestSetup(),
+				TestContext.INSTANCE.getBaseUrl());
+		return driverViewPage;
+	}
+
 	public boolean clickOnCurtainArrowDownButton(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.clickOnCurtainArrowDownButton", data, dataRowID);
 		getDriverViewPage().clickCurtainArrowDownButton();		
@@ -364,13 +371,11 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	public boolean refreshPage(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.refreshPage", data, dataRowID);
 		BrowserCommands.refresh();
-		DriverViewPage driverViewPage = new DriverViewPage(TestContext.INSTANCE.getDriver(), 
-				TestContext.INSTANCE.getTestSetup(),
-				TestContext.INSTANCE.getBaseUrl());
+		DriverViewPage driverViewPage = createNewPageObject();
 		initializePageObject(TestContext.INSTANCE.getDriver(), driverViewPage);
 		return true;
 	}
-	
+
 	/* GIS Switch - Enable/Disable methods */
 	
 	public boolean turnOnMapView(String data, Integer dataRowID) {
