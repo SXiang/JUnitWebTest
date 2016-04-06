@@ -61,6 +61,7 @@ import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 
