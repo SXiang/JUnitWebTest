@@ -290,19 +290,19 @@ public class BasePage {
     protected String waitForPresenceOfElementText(By locator){
     	return waitForPresenceOfElementText(locator, UNKNOWN_TEXT);
     }
-	protected String waitForPresenceOfElementText(By locator, String text){
+	protected String waitForPresenceOfElementText(By locator, String expectedText){
 		String actualText = null;
 		try {
 			actualText = (new WebDriverWait(driver,timeout)).until(
 					new ExpectedCondition<String>(){
 						public String apply(WebDriver d){
 							String value = d.findElement(locator).getText().trim();
-							if(text.equals(UNKNOWN_TEXT)&&!value.equals("")){
+							if(expectedText.equals(UNKNOWN_TEXT)&&!value.equals("")){
 								return value;
-							}else if(text.equals(value)){
+							}else if(expectedText.equals(value)){
 								return value;
 							}else{
-								Log.warn("Expecting '"+text +"', found '"+value+"'");
+								Log.warn("Expecting '"+expectedText +"', found '"+value+"'");
 								return null;
 							}
 						}
