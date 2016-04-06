@@ -9,6 +9,7 @@ import common.source.Log;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMERNAMEPREFIX;
+import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLEUA;
 import static surveyor.scommon.source.SurveyorConstants.EULASTRING;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPHEIGHT;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPWIDTH;
@@ -36,11 +37,13 @@ import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
+import static surveyor.scommon.source.SurveyorConstants.REGBASEUSERNAME;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.RSWLAT;
 import static surveyor.scommon.source.SurveyorConstants.RSWLON;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
+import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -52,7 +55,10 @@ import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
+import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.ManageCustomersPage;
+import surveyor.scommon.source.ManageLocationsPage;
+import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.ComplianceReportsPage;
@@ -70,6 +76,8 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	
 	private static ComplianceReportsPage complianceReportsPage;
 	private static ManageCustomersPage manageCustomersPage;
+	private static ManageLocationsPage manageLocationsPage;
+	private static ManageUsersPage manageUsersPage;
 	
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
@@ -84,6 +92,10 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		homePageAction = new HomePageActions(driver, baseURL, testSetup);
 		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageCustomersPage);
+		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver, manageLocationsPage);
+		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver, manageUsersPage);
 		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, complianceReportsPage);
 		testEnvironmentAction = new TestEnvironmentActions();
@@ -101,13 +113,16 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 * Results: - 
 	 *	- - User can download the Shape files and meta data files successfully
 	 */
-	@Test
+	//@Test
 	public void TC720_ShapefileMetaDataReportFeaturePermissionExistingCustomer_NewComplianceReportGeneration() throws Exception {
 		Log.info("\nRunning TC720_ShapefileMetaDataReportFeaturePermissionExistingCustomer_NewComplianceReportGeneration ...");
 		
 		String testCaseID = "TC720";
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + testCaseID;
 		String eula = customerName + ": " + EULASTRING;
+		String userName = customerName + "customerUser01" + REGBASEUSERNAME;
+		String cityName = "Santa Clara";
+		String locationName = customerName + "loc";
 		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
 		
 		loginPageAction.open(EMPTY, NOTSET);
@@ -121,6 +136,21 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		manageCustomersPage.getRptMetaDataCheckBox().click();
 		manageCustomersPage.getRptMetaDataCheckBox().click();
 		manageCustomersPage.getbtnOk().click();
+		
+		manageLocationsPage.open();
+		manageLocationsPage.waitForPageLoad();
+		manageLocationsPage.addNewLocation(locationName, customerName, cityName);
+
+		manageUsersPage.open();
+		manageUsersPage.waitForPageLoad();
+		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEUA, locationName);
+
+		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
+		loginPage = manageUsersPage.logout();
+
+		loginPage.open();
+		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
+		assertTrue(homePage.checkIfAtHomePage());
 		
 		complianceReportsPage.open();
 		List<String> listBoundary = new ArrayList<String>();
@@ -174,27 +204,9 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
-			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rptTitle));
-			if (tablesList != null) {
-				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
-					assertTrue(complianceReportsPage.verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle));
-					assertTrue(complianceReportsPage.verifyCoverageValuesTable(testSetup.getDownloadPath(), rptTitle, tablesList.get(0)));
-				}
-				if (("Picarro").equalsIgnoreCase("Picarro")) {
-					assertTrue(complianceReportsPage.verifyLayersTable(testSetup.getDownloadPath(), rptTitle, tablesList.get(0)));
-				}
-				assertTrue(complianceReportsPage.verifyViewsTable(testSetup.getDownloadPath(), rptTitle, viewList));
-				assertTrue(complianceReportsPage.verifyDrivingSurveysTable(testSetup.getDownloadPath(), rptTitle));
-				if (tablesList.get(0).get(KEYISOANA).equals("1")) {
-					assertTrue(complianceReportsPage.verifyIsotopicAnalysisTable(testSetup.getDownloadPath(), rptTitle));
-				}
-				if (tablesList.get(0).get(KEYINDTB).equals("1")) {
-					assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
-				}
-			}
+
 		} else
 			fail("\nTestcase TC720 failed.\n");
-
 	}
  
 	/**
@@ -213,6 +225,65 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		
+		String testCaseID = "TC824";
+		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		
+		complianceReportsPage.open();
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+		listBoundary.add(RNELAT);
+		listBoundary.add(RNELON);
+		listBoundary.add(RSWLAT);
+		listBoundary.add(RSWLON);
+
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "0");
+		tableMap.put(KEYISOANA, "0");
+		tableMap.put(KEYPCA, "0");
+		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
+		tablesList.add(tableMap);
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "0");
+		viewMap1.put(KEYANNOTATION, "0");
+		viewMap1.put(KEYGAPS, "1");
+		viewMap1.put(KEYASSETS, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
+		viewList.add(viewMap1);
+
+		List<String> tagList = new ArrayList<String>();
+		tagList.add(PICADMNSTDTAG);
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
+			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
+			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
+
+		} else
+			fail("\nTestcase TC824 failed.\n");
 
 	}
 
