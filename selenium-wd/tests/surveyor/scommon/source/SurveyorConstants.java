@@ -312,6 +312,10 @@ public final class SurveyorConstants {
 	public static final int SECONDS_10 = 10;
 	
 	/*
+	 * Other string constants
+	 */
+	public static final String UNKNOWN_TEXT = "UnknownText";
+	/*
 	 * enum for list of constants
 	 */
 	public static enum LicensedFeatures {

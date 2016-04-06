@@ -113,6 +113,7 @@ public class SurveyorBasePage extends BasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td")
 	protected WebElement labelNoMatchingSearch;
+	protected By labelNoMatchingBy = By.xpath("//*[@id='datatable']/tbody/tr/td");
 	
 	@FindBy(css = "#user-timezone.open > a.dropdown-toggle > #selected-timezone")
 	protected List<WebElement> timezoneCloseDropdown;
@@ -233,7 +234,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public String getLabelNoMatchingSearch() {
-		return this.labelNoMatchingSearch.getText().trim();
+		return waitForPresenceOfElementText(labelNoMatchingBy);
 	}
 
 	public WebElement getLinkPicAdminManageUsers() {
