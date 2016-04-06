@@ -1359,13 +1359,13 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 	
 	public String getPasswordError(){		
-		return driver.findElement(By.xpath(labelUserPwdErrorXPath)).getText().trim();		
+		return waitForPresenceOfElementText(By.xpath(labelUserPwdErrorXPath));		
 	}
 	public String getNewPasswordError(){		
-		return driver.findElement(By.xpath(labelPwdNewErrorXPath)).getText().trim();		
+		return waitForPresenceOfElementText(By.xpath(labelPwdNewErrorXPath));		
 	}	
-	public String getConfirmPasswordError(){		
-		return driver.findElement(By.xpath(labelPwdConfirmErrorXPath)).getText().trim();		
+	public String getConfirmPasswordError(){
+		return waitForPresenceOfElementText(By.xpath(labelPwdConfirmErrorXPath));	
 	}
 
 	public String getInvalidEmailError(){		

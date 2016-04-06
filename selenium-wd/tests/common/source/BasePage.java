@@ -9,6 +9,8 @@ import static surveyor.scommon.source.SurveyorConstants.HOMEDHEADER;
 import static surveyor.scommon.source.SurveyorConstants.HOMETITLE;
 import static surveyor.scommon.source.SurveyorConstants.LOGINTITLE;
 import static surveyor.scommon.source.SurveyorConstants.SUBTITLE;
+import static surveyor.scommon.source.SurveyorConstants.SECONDS_10;
+import static surveyor.scommon.source.SurveyorConstants.UNKNOWN_TEXT;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -278,10 +280,38 @@ public class BasePage {
 	}
 	
 	protected void waitUntilPresenceOfElementLocated(String elementID) {
-		(new WebDriverWait(driver, timeout)).until(
-				ExpectedConditions.presenceOfElementLocated(By.id(elementID)));
+		waitUntilPresenceOfElementLocated(By.id(elementID));
 	}
-	
+    protected void waitUntilPresenceOfElementLocated(By locator){
+    	(new WebDriverWait(driver, timeout)).until(
+				ExpectedConditions.presenceOfElementLocated(locator));
+    }
+    
+    protected String waitForPresenceOfElementText(By locator){
+    	return waitForPresenceOfElementText(locator, UNKNOWN_TEXT);
+    }
+	protected String waitForPresenceOfElementText(By locator, String text){
+		String actualText = null;
+		try {
+			actualText = (new WebDriverWait(driver,timeout)).until(
+					new ExpectedCondition<String>(){
+						public String apply(WebDriver d){
+							String value = d.findElement(locator).getText().trim();
+							if(text.equals(UNKNOWN_TEXT)&&!value.equals("")){
+								return value;
+							}else if(text.equals(value)){
+								return value;
+							}else{
+								Log.warn("Expecting '"+text +"', found '"+value+"'");
+								return null;
+							}
+						}
+					});
+		}catch(Exception e){
+			actualText = null;
+		}
+		return actualText;
+	}
 	public void waitForPageToLoad(){
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 	}
