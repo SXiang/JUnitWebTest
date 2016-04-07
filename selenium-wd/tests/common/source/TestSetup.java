@@ -135,6 +135,11 @@ public class TestSetup {
 	private boolean generateBaselineSSRSImages;
 	private boolean generateBaselineViewImages;
 	private boolean generateBaselineShapeFiles;
+	
+	private Integer executionTimesForLightLoadReportJobPerfBaseline;
+	private Integer executionTimesForMediumLoadReportJobPerfBaseline;
+	private Integer executionTimesForHighLoadReportJobPerfBaseline;
+	private Integer executionTimesForUltraHighLoadReportJobPerfBaseline;
 
 	public TestSetup() {
 		initialize();
@@ -525,6 +530,38 @@ public class TestSetup {
 		this.collectReportJobPerfMetric = collectReportJobPerfMetric;
 	}
 
+	public Integer getExecutionTimesForLightLoadReportJobPerfBaseline() {
+		return executionTimesForLightLoadReportJobPerfBaseline;
+	}
+
+	public void setExecutionTimesForLightLoadReportJobPerfBaseline(Integer executionTimesForLightLoadReportJobPerfBaseline) {
+		this.executionTimesForLightLoadReportJobPerfBaseline = executionTimesForLightLoadReportJobPerfBaseline;
+	}
+
+	public Integer getExecutionTimesForMediumLoadReportJobPerfBaseline() {
+		return executionTimesForMediumLoadReportJobPerfBaseline;
+	}
+
+	public void setExecutionTimesForMediumLoadReportJobPerfBaseline(Integer executionTimesForMediumLoadReportJobPerfBaseline) {
+		this.executionTimesForMediumLoadReportJobPerfBaseline = executionTimesForMediumLoadReportJobPerfBaseline;
+	}
+
+	public Integer getExecutionTimesForHighLoadReportJobPerfBaseline() {
+		return executionTimesForHighLoadReportJobPerfBaseline;
+	}
+
+	public void setExecutionTimesForHighLoadReportJobPerfBaseline(Integer executionTimesForHighLoadReportJobPerfBaseline) {
+		this.executionTimesForHighLoadReportJobPerfBaseline = executionTimesForHighLoadReportJobPerfBaseline;
+	}
+
+	public Integer getExecutionTimesForUltraHighLoadReportJobPerfBaseline() {
+		return executionTimesForUltraHighLoadReportJobPerfBaseline;
+	}
+
+	public void setExecutionTimesForUltraHighLoadReportJobPerfBaseline(Integer executionTimesForUltraHighLoadReportJobPerfBaseline) {
+		this.executionTimesForUltraHighLoadReportJobPerfBaseline = executionTimesForUltraHighLoadReportJobPerfBaseline;
+	}
+
 	public void initialize() {
 		try {
 
@@ -570,6 +607,15 @@ public class TestSetup {
 			this.setGenerateBaselineSSRSImages(Boolean.valueOf(this.testProp.getProperty("complianceReport_generateBaselineSSRSImages")));
 			this.setGenerateBaselineViewImages(Boolean.valueOf(this.testProp.getProperty("complianceReport_generateBaselineViewImages")));
 			this.setGenerateBaselineShapeFiles(Boolean.valueOf(this.testProp.getProperty("complianceReport_generateBaselineShapeFiles")));
+			
+			this.setExecutionTimesForLightLoadReportJobPerfBaseline(
+					Integer.valueOf(this.testProp.getProperty("complianceReport_executionTimesForLightLoadBaselineCollection")));
+			this.setExecutionTimesForMediumLoadReportJobPerfBaseline(
+					Integer.valueOf(this.testProp.getProperty("complianceReport_executionTimesForMediumLoadBaselineCollection")));
+			this.setExecutionTimesForHighLoadReportJobPerfBaseline(
+					Integer.valueOf(this.testProp.getProperty("complianceReport_executionTimesForHighLoadBaselineCollection")));
+			this.setExecutionTimesForUltraHighLoadReportJobPerfBaseline(
+					Integer.valueOf(this.testProp.getProperty("complianceReport_executionTimesForUltraHighLoadBaselineCollection")));
 
 			this.language = this.testProp.getProperty("language");
 

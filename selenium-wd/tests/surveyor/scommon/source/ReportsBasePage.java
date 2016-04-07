@@ -58,6 +58,7 @@ import common.source.FileUtility;
 import common.source.ImagingUtility;
 import common.source.Log;
 import common.source.PDFUtility;
+import common.source.RegexUtility;
 import common.source.ShapeToGeoJsonConverter;
 import common.source.TestContext;
 import common.source.TestSetup;
@@ -66,6 +67,7 @@ import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ReportJob;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.source.Reports.ReportJobType;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 
@@ -510,7 +512,7 @@ public class ReportsBasePage extends SurveyorBasePage {
      */
     public ReportModeFilter getReportModeFilter() {
         for (WebElement radElement : reportSurveyModeTypeRadiobuttonList) {
-        	HashMap<String, ReportModeFilter> reportSurveyModeFilterGuids = SurveyorConstants.ReportSurveyModeFilterGuids;
+        	HashMap<String, ReportModeFilter> reportSurveyModeFilterGuids = Reports.ReportSurveyModeFilterGuids;
         	Set<Entry<String, ReportModeFilter>> entrySet = reportSurveyModeFilterGuids.entrySet();
         	for (Entry<String, ReportModeFilter> entry : entrySet) {
 				if (entry.getKey().equals(radElement.getAttribute("value")) ) {
@@ -567,7 +569,7 @@ public class ReportsBasePage extends SurveyorBasePage {
      */
     public SurveyModeFilter getSurveyModeFilter() {
         for (WebElement radElement : surveyModeTypeRadiobuttonList) {
-        	HashMap<String, SurveyModeFilter> surveyModeFilterGuids = SurveyorConstants.SurveyModeFilterGuids;
+        	HashMap<String, SurveyModeFilter> surveyModeFilterGuids = Reports.SurveyModeFilterGuids;
         	Set<Entry<String, SurveyModeFilter>> entrySet = surveyModeFilterGuids.entrySet();
         	for (Entry<String, SurveyModeFilter> entry : entrySet) {
 				if (entry.getKey().equals(radElement.getAttribute("value")) ) {
@@ -2035,14 +2037,60 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 
-	protected void generateBaselinePerfFiles(String testCaseID, String reportId, String startTime, String endTime, Integer processingTimeInMs) throws IOException {
+	public String getUpdatedReportJobCSVFileContent(String fileAbsolutePath, String newLine) throws IOException {
+		StringBuilder fileContent = new StringBuilder();
+		if (!new File(fileAbsolutePath).exists()) {
+			// File does not exists. Add header and newline.
+			String headerLine = "ReportJobTypeId,StartTime,EndTime,ProcessingTimeInMs";
+			fileContent.append(headerLine);
+			fileContent.append(newLine);
+		} else {
+			// File already exists. Keep existing lines and replace oldline with newline.
+			List<String> splitNewLine = RegexUtility.split(newLine, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
+			String newReportJobTypeId = splitNewLine.get(0);
+			
+			boolean reportJobTypeLineExists = false;
+			List<String> existingLines = FileUtility.readFileLinesToList(fileAbsolutePath);
+			for (String line : existingLines) {
+				List<String> split = RegexUtility.split(line, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
+				String reportJobTypeId = split.get(0);
+				if (reportJobTypeId.equals(newReportJobTypeId)) {
+					reportJobTypeLineExists = true;
+					fileContent.append(newLine);
+				} else {
+					fileContent.append(line);
+				}
+				fileContent.append(System.lineSeparator());
+			}
+			if (!reportJobTypeLineExists) {
+				fileContent.append(newLine);
+			}
+		}
+		return fileContent.toString();
+	}	
+
+	protected void generateBaselinePerfReportJobFiles(String testCaseID, String reportJobTypeId, String startTime, String endTime, Integer processingTimeInMs) throws IOException {
+		Log.info(String.format("Generating report job perf baseline for : [TestCase=%s, ReportJobTypeId=%s, StartTime=%s, EndTime=%s, ProcessingTimeInMs=%d]",
+				testCaseID, reportJobTypeId, startTime, endTime, processingTimeInMs));
+		
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
 		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" + File.separator + "report-job-metrics" + File.separator + testCaseID;
 		// Create the directory for test case if it does not exist.
 		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
 		Path expectedFilePath = Paths.get(expectedDataFolderPath, String.format("%s.csv", testCaseID));
-		String reportMetricString = String.format("%s,%s,%s,%d", reportId, startTime, endTime, processingTimeInMs);
-		FileUtility.createOrWriteToExistingTextFile(expectedFilePath, reportMetricString);
+		ReportJobType reportJobType = Reports.ReportJobTypeGuids.get(reportJobTypeId);
+		BaseReportsPageTest.setRollingReportJobProcessingTime(reportJobType, processingTimeInMs);
+		Integer reportJobRollingProcessingTimeAvg = BaseReportsPageTest.getReportJobRollingProcessingTimeAvg(reportJobType);
+		Log.info(String.format("    CURRENT: {reportJobTypeId, startTime, endTime, processingTimeInMs} - {%s,%s,%s,%d}", 
+				reportJobTypeId, startTime, endTime, processingTimeInMs));
+		Log.info(String.format("ROLLING AVG: {reportJobTypeId, startTime, endTime, processingTimeInMs} - {%s,%s,%s,%d}", 
+				reportJobTypeId, startTime, endTime, reportJobRollingProcessingTimeAvg));
+		String reportMetricString = String.format("%s,%s,%s,%d", reportJobTypeId, startTime, endTime, 
+				reportJobRollingProcessingTimeAvg);
+		
+		// Recreate the text in the baseline file replacing only the content for the current report job type.
+		String fileContent = getUpdatedReportJobCSVFileContent(expectedFilePath.toString(), reportMetricString);
+		FileUtility.createTextFile(expectedFilePath, fileContent);
 	}
 
 	protected void generateBaselineSSRSImage(String testCaseID, String imageFileFullPath) throws IOException {
@@ -2100,14 +2148,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
 		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" + File.separator + "report-job-metrics" + File.separator + testCaseID;
 		Path expectedFilePath = Paths.get(expectedDataFolderPath, String.format("%s.csv", testCaseID));
-		// If no baseline CSV file, throw No Baseline exception.
-		if (!new File(expectedFilePath.toString()).exists()) {
-			throw new Exception(String.format("Baseline CSV file-[%s] NOT found for TestCase-[%s]",
-					expectedFilePath.toString(), testCaseID));
+		// If NOT in baseline collection mode and NO baseline CSV file, throw No Baseline exception.
+		if (!TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
+			if (!new File(expectedFilePath.toString()).exists()) {
+				throw new Exception(String.format("Baseline CSV file-[%s] NOT found for TestCase-[%s]",
+						expectedFilePath.toString(), testCaseID));
+			}
 		}
-		
-		CSVUtility csvUtility = new CSVUtility();
-		List<HashMap<String, String>> csvRows = csvUtility.getAllRows(expectedFilePath.toString());
 		
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2120,23 +2167,34 @@ public class ReportsBasePage extends SurveyorBasePage {
 			
 			Date processingStarted = reportJob.getProcessingStarted();
 			Date processingCompleted = reportJob.getProcessingCompleted();
-			long actualProcessingTimeInMs = processingCompleted.getTime() - processingStarted.getTime();
-			boolean foundInCsv = false;
-			for (HashMap<String, String> csvRow : csvRows) {
-				String expectedReportJobId = csvRow.get("ReportJobTypeId");
-				if (reportJobTypeId.equals(expectedReportJobId)) {
-					foundInCsv = true;
-					Integer expectedProcessingTimeInMs = Integer.valueOf(csvRow.get("ProcessingTimeInMs"));
-					if (actualProcessingTimeInMs > expectedProcessingTimeInMs) {
-						return false;
-					}					
-				} 
-			}
-			
-			// If no report job type in CSV, throw exception.
-			if (!foundInCsv) {
-				throw new Exception(String.format("Entry NOT found in Baseline CSV-[%s], for ReportJobType-[%s], TestCase-[%s]",
-						expectedFilePath.toString(), SurveyorConstants.ReportJobTypeGuids.get(reportJobTypeId).toString(), testCaseID));
+			Integer actualProcessingTimeInMs = (int) (processingCompleted.getTime() - processingStarted.getTime());
+
+			if (TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
+				// generating baselines. Skip comparison.
+				generateBaselinePerfReportJobFiles(testCaseID, reportJobTypeId, 
+						String.valueOf(processingStarted.getTime()), String.valueOf(processingCompleted.getTime()), actualProcessingTimeInMs);
+			} else {
+				// compare actual with baseline.
+				CSVUtility csvUtility = new CSVUtility();
+				List<HashMap<String, String>> csvRows = csvUtility.getAllRows(expectedFilePath.toString());
+
+				boolean foundInCsv = false;
+				for (HashMap<String, String> csvRow : csvRows) {
+					String expectedReportJobId = csvRow.get("ReportJobTypeId");
+					if (reportJobTypeId.equals(expectedReportJobId)) {
+						foundInCsv = true;
+						Integer expectedProcessingTimeInMs = Integer.valueOf(csvRow.get("ProcessingTimeInMs"));
+						if (actualProcessingTimeInMs > expectedProcessingTimeInMs) {
+							return false;
+						}					
+					} 
+				}
+				
+				// If no report job type in CSV, throw exception.
+				if (!foundInCsv) {
+					throw new Exception(String.format("Entry NOT found in Baseline CSV-[%s], for ReportJobType-[%s], TestCase-[%s]",
+							expectedFilePath.toString(), Reports.ReportJobTypeGuids.get(reportJobTypeId).toString(), testCaseID));
+				}
 			}
 		}
 		
