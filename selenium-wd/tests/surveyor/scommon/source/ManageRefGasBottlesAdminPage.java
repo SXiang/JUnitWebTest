@@ -35,7 +35,7 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 	public boolean findExistingRefGasBottle(String strLotNumber, String strSurveyor, String location) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		String locationXPath;
 		String strSurveyorXPath;

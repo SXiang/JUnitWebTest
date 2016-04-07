@@ -57,7 +57,7 @@ public class SurveyorSystemsPage extends SurveyorBasePage {
 	public boolean checkSurveyorStatus(String surveyorName, SurveyorStatusType surveyorStatus) {
 		setPagination(PAGINATIONSETTING_100);
 		
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		String surveyorXPath;
 		String statusXPath;

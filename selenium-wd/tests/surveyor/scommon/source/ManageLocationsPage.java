@@ -274,7 +274,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public boolean findExistingLocation(String customerName, String locationName) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String customerNameXPath;
 		String locationNameXPath;
@@ -344,7 +344,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			String latValue, String longValue, String newEthMthMin, String newEthMthMax) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String customerNameXPath;
 		String locationNameXPath;
