@@ -60,7 +60,7 @@ public class ReportsCompliance extends Reports {
 		this.SWLong = listBoundary.get(5);
 		this.listBoundary=listBoundary;
 		this.tablesList = tablesList;
-		this.viewLayersList=viewList;
+		this.viewList=viewList;
 	}
 
 	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, 
