@@ -57,7 +57,7 @@ public class ReportJobPerformanceTest extends BasePerformanceTest {
 	}
 
 	/**
-	 * Test Case ID: Performance_DataProvider_Test
+	 * Test Case ID: ReportJob_PerformanceTest
 	 * Script: -  	
 	 *	- - Login as specified user
 	 *	- - Create New Compliance Report with specified report data
@@ -68,9 +68,9 @@ public class ReportJobPerformanceTest extends BasePerformanceTest {
 	 */
 	@Test
 	@UseDataProvider(value = PerformanceReportJobDataProvider.REPORT_JOB_PERFORMANCE_PROVIDER, location = PerformanceReportJobDataProvider.class)
-	public void Performance_DataProvider_Test(String rallyTestCaseID, Integer userDataRowID, Integer reportDataRowID,
+	public void ReportJob_PerformanceTest(String rallyTestCaseID, Integer userDataRowID, Integer reportDataRowID,
 			Integer executionTimesForBaselines, String category) throws Exception {
-		Log.info(String.format("\nRunning [%s] Performance_DataProvider_Test ...", rallyTestCaseID));
+		Log.info(String.format("\nRunning [%s] ReportJob_PerformanceTest ...", rallyTestCaseID));
 		
 		// Run for specified number of times depending on whether we are generating baselines or not.
 		Integer testExecutionTimes = getTestExecutionTimes(executionTimesForBaselines, ReportJobTestCategory.valueOf(category));
