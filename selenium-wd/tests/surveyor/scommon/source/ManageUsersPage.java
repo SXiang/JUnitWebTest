@@ -53,8 +53,11 @@ public class ManageUsersPage extends SurveyorBasePage {
 	@FindBy(id = "PasswordConfirm-error")
 	private WebElement labelPwdConfirmError;
 	private String labelPwdConfirmErrorXPath = "//*[@id='PasswordConfirm-error']";
-	
-	
+    private String labelPwdNewErrorXPath = "//*[@id='NewPassword-error']";
+
+    @FindBy(id = "User.UserName-error")
+	private WebElement InvalidEmailError;
+    
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a[1]")
 	protected WebElement btnAddNewCustomerUser;
 
@@ -187,6 +190,11 @@ public class ManageUsersPage extends SurveyorBasePage {
 	 */
 	public void addNewPicarroUser(String email, String password, String role,
 			String location, String timeZone) {
+		addNewPicarroUser(email,password,password,role,location,timeZone);
+	}
+	
+	public void addNewPicarroUser(String email, String password, String passwordConfirm, String role,
+			String location, String timeZone) {
 		this.btnAddNewPicarroUser.click();
 		this.waitForNewPageLoad();
 
@@ -196,7 +204,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
 		this.inputPassword.sendKeys(password);
-		this.inputPasswordConfirm.sendKeys(password);
+		this.inputPasswordConfirm.sendKeys(passwordConfirm);
 
 		List<WebElement> roleOptions = this.dropDownRole.findElements(By
 				.tagName("option"));
@@ -227,9 +235,13 @@ public class ManageUsersPage extends SurveyorBasePage {
 			String password, String role, String location) {
 		addNewCustomerUser(customerName, email, password, role, location, true /*enabled*/);
 	}
-	
+
 	public void addNewCustomerUser(String customerName, String email,
 			String password, String role, String location, boolean enabled) {
+		addNewCustomerUser(customerName,email,password,password,role,location,enabled);
+	}
+	public void addNewCustomerUser(String customerName, String email,
+			String password, String passwordConfirm, String role, String location, boolean enabled) {
 		
 		Log.info(String.format("Adding new Customer user. Name=%s, Email=%s, Password=[HIDDEN], Role=%s, Location=%s", customerName, 
 				email, role, location));
@@ -241,7 +253,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
 		this.inputPassword.sendKeys(password);
-		this.inputPasswordConfirm.sendKeys(password);
+		this.inputPasswordConfirm.sendKeys(passwordConfirm);
 
 		List<WebElement> roleOptions = this.dropDownRole.findElements(By.tagName("option"));
 		for (WebElement roleOption : roleOptions) {
@@ -263,7 +275,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		
 		this.waitForPageLoad();
 	}
-
+	
 	public void addNewCustomerUser(String customerName, String email,
 			String password, String role, String timeZone, String location) {
 		Log.info(String.format("Adding new Customer user. CustomerName=%s, Email=%s, Password=[HIDDEN], Role=%s, TimeZone=%s, Location=%s", 
@@ -1308,6 +1320,12 @@ public class ManageUsersPage extends SurveyorBasePage {
 		this.cancelEditBtn.click();
 	}
 	
+	@Override
+	public void open(){
+		super.open();
+		waitForPageLoad();
+	}
+	
     @Override
 	public void waitForPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
@@ -1343,6 +1361,20 @@ public class ManageUsersPage extends SurveyorBasePage {
 		this.inputNewPasswordConfirm.sendKeys(newPassword);
 		btnOk.click();
 		waitForPageToLoad();
+	}
+	
+	public String getPasswordError(){		
+		return waitForPresenceOfElementText(By.xpath(labelUserPwdErrorXPath));		
+	}
+	public String getNewPasswordError(){		
+		return waitForPresenceOfElementText(By.xpath(labelPwdNewErrorXPath));		
+	}	
+	public String getConfirmPasswordError(){
+		return waitForPresenceOfElementText(By.xpath(labelPwdConfirmErrorXPath));	
+	}
+
+	public String getInvalidEmailError(){		
+		return InvalidEmailError.getText().trim();		
 	}
 	
 	public boolean searchUser(String userName, String locationName,

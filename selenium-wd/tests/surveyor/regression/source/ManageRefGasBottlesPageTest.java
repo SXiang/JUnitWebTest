@@ -71,4 +71,33 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 		
 		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber, SQACUSLOCSUR));
 	}	
+	
+    /**
+	 * Test Case ID: TC1251
+     * Test Description: Picarro Support user - Add reference gas bottle - blank required fields
+	 * Script:
+	 *  - Log in as Picarro Support user
+     *  - On Home Page, click Administration -> Manage Reference Gas Bottles -> Add New Reference Gas Bottle
+     *  - Keep required fields blank. Click OK
+     * Results:
+     *  - "The field is required." message should be displayed
+	 */
+    @Test
+	public void TC1251_AddLocationBlankFields_PicSupport(){
+        
+		Log.info("\nRunning TC1251_AddLocationBlankFields_PicSupport - "+
+		         "Test Description: Add reference gas bottle - blank required fields");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+		manageRefGasBottlesPage.open();
+		manageRefGasBottlesPage.addRefGasBottle("", "", null, SQACUS, SQACUSLOC, SQACUSLOCSUR, false);
+		
+		assertEquals(BLANKFIELDERROR, manageRefGasBottlesPage.getLotNumberError());
+		assertEquals(BLANKFIELDERROR, manageRefGasBottlesPage.getIsotopicValueError());
+		
+		manageRefGasBottlesPage.clickOnCancelBtn();
+
+	}	   
+    
 }

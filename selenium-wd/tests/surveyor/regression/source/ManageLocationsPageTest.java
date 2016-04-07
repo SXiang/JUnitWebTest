@@ -32,7 +32,10 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 public class ManageLocationsPageTest extends SurveyorBaseTest {
 	private static ManageLocationsPage manageLocationsPage;
 	private static ManageCustomersPage manageCustomersPage;
-	
+	private enum ManageUserTestCaseType {
+		AddDuplicateLocation,
+		EditDuplicateLocation
+	}
 	@BeforeClass
 	public static void setupManageLocationsPageTest() {
 		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
@@ -60,7 +63,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
 	public void TC16_TC18_AddLocationUsingLatLongSelector_PicAdminSupport(String user, String pswd ) {
 		String tcID ;
-		if(user.equalsIgnoreCase("administrator")){
+		if(user.equalsIgnoreCase(PICDFADMIN)){
 			tcID ="TC16";
 		}else {
 			tcID ="TC18";
@@ -68,9 +71,9 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		String password = CryptoUtility.decrypt(pswd);
 		String locationName = testSetup.getFixedSizeRandomNumber(8) + tcID;
 		String cityName = "Santa Clara";
-		System.out.println("user: "+user);
-		System.out.println("pswd: "+pswd);
-		System.out.println("------------------------");
+		Log.info("user: "+user);
+		Log.info("pswd: "+pswd);
+		Log.info("------------------------");
 		Log.info("\nRunning -"+ tcID+"_AddLocationUsingLatLongSelector_PicAdmin - Test Description: Add new location\n");
 		// Add Location as Picarro admin.
 		loginPage.open();
@@ -235,4 +238,218 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 
 		assertTrue(manageLocationsPage.findExistingLocation(SQACUS, locationName));
 	}
+	
+	
+	/**
+	 * Test Case ID: TC491 - TC118
+	 * Test Description: - TC491 Picarro support user not allowed to create duplicate location
+	 *                     TC118 Picarro admin user not allowed to create duplicate location
+	 * Script:
+	 *  - On Home Page, click Administration -> Manage Locations
+	 *  - Click on 'Add New Location' button
+	 *  - Provide location details same as existing location and click OK
+	 * Results:
+	 *  - Duplicate Location creation not allowed
+	 */
+	@Test
+	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	public void TC491_TC118_DuplicateLocationNotAllowed_PicSupportAdmin(String username, String password, String role, 
+			String customerName, String customerLocation) {
+
+		String testCaseID = getTestCaseName(ManageUserTestCaseType.AddDuplicateLocation, username);		
+		password = CryptoUtility.decrypt(password);
+
+		String locationName = testSetup.getFixedSizeRandomNumber(8) + testCaseID;
+		String cityName = "Santa Clara";
+		String errorMsg = "Location name already exists for customer, please try another name.";
+
+		Log.info("\nRunning - "+testCaseID+"_DuplicateLocationNotAllowed_["+role+"] - "+
+				"Test Description: Picarro user not allowed to create duplicate location\n");
+
+		// *** Adding a location for this test 
+		loginPage.open();
+		loginPage.loginNormalAs(username, password);
+		manageLocationsPage.open();
+		Log.info("Adding location: " + locationName);
+		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, null,null,false);    
+		manageLocationsPage.logout();
+
+		// *** Starting test
+
+		loginPage.loginNormalAs(username, password);
+		manageLocationsPage.open();
+		Log.info("Adding location: " + locationName);
+		manageLocationsPage.performSearch(locationName);
+		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, null,null,false);     
+
+		assertTrue(manageLocationsPage.correctPossibleError(errorMsg));
+
+		manageLocationsPage.clickOnCancelBtn();
+
+	}	
+
+	/**
+	 * Test Case ID: TC492
+	 * Test Description: TC492 - Picarro support user not allowed to edit location details same as existing location details
+	 *                   TC119 - Picarro admin user not allowed to edit location details same as existing location details
+	 * Script:
+	 *  - On Home Page, click Administration -> Manage Locations
+	 *  - Click on 'Edit' button
+	 *  - Provide location details same as existing location and click OK
+	 * Results:
+	 *  - Duplicate Location update not allowed
+	 */
+	@Test
+	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	public void TC492_TC119_DuplicateLocationEditNotAllowed_PicSupport(String username, String password, String role, 
+			String customerName, String customerLocation) {
+
+		String testCaseID = getTestCaseName(ManageUserTestCaseType.EditDuplicateLocation, username);		
+		password = CryptoUtility.decrypt(password);
+
+		String locationName = testSetup.getFixedSizeRandomNumber(8) + testCaseID;
+		String cityName = "Santa Clara";
+		String errorMsg = "Location name already exists for customer, please try another name.";
+
+		Log.info("\nRunning - "+testCaseID+"_DuplicateLocationNotAllowed_["+role+"] - "+
+				"Test Description: Picarro user not allowed to edit duplicate location details same as existing location details\n");
+
+		// *** Adding a location for this test 
+		loginPage.open();
+		loginPage.loginNormalAs(username, password);
+		manageLocationsPage.open();
+		Log.info("Adding location: " + locationName);
+		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, null,null,false);    
+		manageLocationsPage.logout();
+
+		// *** Starting test
+
+		String newLocationName = SQAPICLOC;
+
+		loginPage.loginNormalAs(username, password);
+		manageLocationsPage.open();
+		Log.info("Editing location: " + locationName + " -> " + newLocationName);
+		manageLocationsPage.performSearch(locationName);
+		manageLocationsPage.editExistingLocation(SQACUS, locationName, newLocationName,false);
+
+		assertTrue(manageLocationsPage.correctPossibleError(errorMsg));
+
+		manageLocationsPage.clickOnCancelBtn();
+
+	}	
+    
+    /**
+	 * Test Case ID: TC493
+     * Test Description: Picarro Support - Add location- blank required fields
+	 * Script:
+	 *  - On Home Page, click Administration -> Manage Locations
+     *  - Click on 'Add New Locaiton' button
+     *  - Keep description field blank. Click OK
+     * Results:
+     *  - "The field is required." message should be displayed
+	 */
+    @Test
+	public void TC493_AddLocationBlankFields_PicSupport(){
+		
+		String locationName = testSetup.getRandomNumber() + "TC493";
+		String cityName = "Santa Clara";
+        		
+		Log.info("\nRunning - TC493_AddLocationBlankFields_PicSupport - "+
+				"Test Description: Add location- blank required fields\n");
+	
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+		manageLocationsPage.open();
+		Log.info("Adding location empty description: required field" + locationName);
+		manageLocationsPage.addNewLocation("", SQACUS, cityName, false, null,null,false);  
+		
+		assertEquals(BLANKFIELDERROR, manageLocationsPage.getLocationDescriptionError());
+		
+		manageLocationsPage.clickOnCancelBtn();
+
+	}	    
+    
+    /**
+	 * Test Case ID: TC494
+     * Test Description: Picarro Support - Add location- blank required fields
+	 * Script:
+	 *  - On Home Page, click Administration -> Manage Locations
+     *  - Click on 'Edit' button
+     *  - Delete description field data. Click OK
+     * Results:
+     *  - "The field is required." message should be displayed
+	 */
+    @Test
+	public void TC494_EditLocationBlankFields_PicSupport(){
+		
+		String locationName = testSetup.getRandomNumber() + "TC494";
+		String cityName = "Santa Clara";
+        		
+		Log.info("\nRunning - TC494_EditLocationBlankFields_PicSupport - "+
+				"Test Description:  - Edit location- blank required fields\n");
+	
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+		manageLocationsPage.open();
+		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, null,null,false);  
+		
+		Log.info("Editing location(empty string): " + locationName + " -> ");
+		manageLocationsPage.performSearch(locationName);
+		manageLocationsPage.editPDExistingLocation(SQACUS, locationName, "");
+		
+		assertEquals(BLANKFIELDERROR, manageLocationsPage.getLocationDescriptionError());
+		
+		manageLocationsPage.clickOnCancelBtn();
+
+	}	        
+    
+	/**
+	 * Test Case ID: TC497
+     * Test Description: Search invalid location record
+	 * Script:
+	 *  -   Provide invalid location in search box present on Manage Location screen
+     * Result:
+     *  - "Message should be displayed : 'No matching records found'
+     */
+	@Test
+	public void TC497_NoMatchingLocationFound_PicSupport(){
+		String errorMsg = NOMATCHINGRECORDS;		
+		String invalidKey = "whichLocationIsNotValidHowever";
+
+		Log.info("\nRunning - TC497_NoMatchingLocationFound_PicSupport - "+
+				"Test Description: Search invalid location record\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs( SQAPICSUP,USERPASSWORD);
+		manageLocationsPage.open();
+
+		manageLocationsPage.performSearch(invalidKey);
+		assertEquals(manageLocationsPage.getLabelNoMatchingSearch(),errorMsg);
+	}		
+	
+	/**
+	 * Returns the testCase ID based on the username provided by DataProvider.
+	 */
+	private String getTestCaseName(ManageUserTestCaseType testCaseType, String username) {
+		String testCase = "";		
+		switch (testCaseType) {
+		case AddDuplicateLocation:
+			if (username.equalsIgnoreCase(SQAPICAD)) {
+				testCase = "TC118";
+			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
+				testCase = "TC491";
+			}
+			break;
+		case EditDuplicateLocation:
+			if (username.equalsIgnoreCase(SQAPICAD)) {
+				testCase = "TC119";
+			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
+				testCase = "TC492";
+			}
+			break;
+		}
+		return testCase;
+	}
+
+  
 }

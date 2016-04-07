@@ -91,7 +91,13 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/thead/tr/th[5]")
 	protected WebElement theadIsoValue;
+	
+	@FindBy(how = How.CSS, using = "label#BatchId-error")
+	protected WebElement lotNumberError;
 
+	@FindBy(how = How.CSS, using = "label#IsotopicValue-error")
+	protected WebElement isotopicValueError;
+	
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -122,6 +128,10 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 
 	public void addRefGasBottle(String strLotNumber, String strIsoValue, String ethMthRto,
 			String strCusName, String strLocName, String strSurveyor) {
+		addRefGasBottle(strLotNumber, strIsoValue, ethMthRto, strCusName, strLocName, strSurveyor, true);
+	}
+	public void addRefGasBottle(String strLotNumber, String strIsoValue, String ethMthRto,
+			String strCusName, String strLocName, String strSurveyor, boolean cancelIfError) {
 		this.btnAddNewRefGasBottle.click();
 
 		this.inputLotNumber.clear();
@@ -148,6 +158,9 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		
 		this.btnOK.click();
 
+		if(!cancelIfError){
+			return;
+		}
 		
 		if (isElementPresent(this.panelDupRgbErrorXPath)) {
 			WebElement panelError = driver.findElement(By
@@ -352,6 +365,13 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		this.btnCancel.click();
 	}
 
+	public String getLotNumberError(){
+		return this.lotNumberError.getText().trim();
+	}
+	
+	public String getIsotopicValueError(){
+		return this.isotopicValueError.getText().trim();
+	}
 	@Override
 	public void waitForPageLoad() {
 		(new WebDriverWait(driver, timeout))
