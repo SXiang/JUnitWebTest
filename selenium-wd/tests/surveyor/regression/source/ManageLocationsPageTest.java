@@ -68,9 +68,9 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		String password = CryptoUtility.decrypt(pswd);
 		String locationName = testSetup.getFixedSizeRandomNumber(8) + tcID;
 		String cityName = "Santa Clara";
-		System.out.println("user: "+user);
-		System.out.println("pswd: "+pswd);
-		System.out.println("------------------------");
+		Log.info("user: "+user);
+		Log.info("pswd: "+pswd);
+		Log.info("------------------------");
 		Log.info("\nRunning -"+ tcID+"_AddLocationUsingLatLongSelector_PicAdmin - Test Description: Add new location\n");
 		// Add Location as Picarro admin.
 		loginPage.open();
@@ -293,9 +293,6 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		assertFalse(manageLocationsPage.findExistingLocation(SQACUS,
 				locationName51Chars));
 
-		System.out.println("Loc 50 char:-" + locationName50Chars);
-		System.out.println("New Loc 50 char:-" + newLocationName50Chars);
-		
 		manageLocationsPage.editPDExistingLocation(SQACUS, locationName50Chars,
 				newLocationName50Chars);
 		assertTrue(manageLocationsPage.findExistingLocation(SQACUS,
@@ -303,13 +300,14 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 
 		manageLocationsPage.editPDExistingLocation(SQACUS, newLocationName50Chars,
 				newLocationName51Chars);
-		//manageLocationsPage.open();
 		assertFalse(manageLocationsPage.findExistingLocation(SQACUS,
 				newLocationName51Chars));
 	}
 	
 	/**
 	 * Test Case ID: TC496 Test Description: Search valid location record
+	 * Test Script: - Provide valid location in search box present on Manage Location screen
+	 * Expected Result: Searched location details are displayed
 	 */
 	@Test
 	public void TC496_SearchValidLocation() {
