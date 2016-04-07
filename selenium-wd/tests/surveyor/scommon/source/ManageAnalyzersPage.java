@@ -110,7 +110,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	public boolean findExistingAnalyzer(String customerName, String locationName, String surveyorName, String analyzerName) {
 		setPagination(PAGINATIONSETTING_100);
 		
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		String customerXPath;
 		String locationXPath;
@@ -172,7 +172,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 			String analyzerName, String cuslocsur) {
 		setPagination(PAGINATIONSETTING_100);
 		
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		String customerXPath;
 		String locationXPath;
@@ -262,7 +262,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 			String keyNew, String cuslocsur, String analyzerNew) {
 		setPagination(PAGINATIONSETTING_100);
 		
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		String customerXPath;
 		String locationXPath;

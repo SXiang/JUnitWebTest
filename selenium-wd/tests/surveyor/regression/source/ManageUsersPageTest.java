@@ -205,7 +205,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.editUser(userName, CUSUSERROLESU, TIMEZONEETUA, true, false);
 		
 		Log.info(String.format("Editing user: Location=[%s]; Username=[%s]; IsCustomerUser=[%b]", 
-				cityName, userName, false)); 
+				locationName, userName, false)); 
 		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
 		loginPage = manageUsersPage.logout();
 

@@ -114,7 +114,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String reportTitleXPath;
 		String createdByXPath;
@@ -180,7 +180,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 	public boolean findExistingReport(String rptTitle, String strCreatedBy) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String reportTitleXPath;
 		String createdByXPath;

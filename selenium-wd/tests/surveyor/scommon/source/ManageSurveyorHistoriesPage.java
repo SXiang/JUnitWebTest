@@ -176,7 +176,7 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 			String locationName, String surveyorName, String note) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		// Click on datetime column.
 		this.clickOnColumnHeader(DATETIME_COL_IDX, 2 /*number of times to click*/);

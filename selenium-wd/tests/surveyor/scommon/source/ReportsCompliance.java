@@ -15,7 +15,7 @@ import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPTUA;
 import java.util.List;
 import java.util.Map;
 
-import surveyor.scommon.source.ReportsCompliance.SurveyModeFilter;
+import surveyor.scommon.source.Reports.SurveyModeFilter;
 
 /**
  * @author zlu
@@ -44,14 +44,6 @@ public class ReportsCompliance extends Reports {
 	protected ReportModeFilter reportModeFilter;
 	protected EthaneFilter ethaneFilter;
 	
-	public enum SurveyModeFilter {
-		All, Standard, Operator, RapidResponse, Manual
-	}
-
-	public enum ReportModeFilter {
-		Standard, RapidResponse, Manual
-	}
-
 	public enum EthaneFilter {
 		ExcludeVehicleExhaust, ExcludeBiogenicMethane, Both, None
 	}
@@ -68,7 +60,7 @@ public class ReportsCompliance extends Reports {
 		this.SWLong = listBoundary.get(5);
 		this.listBoundary=listBoundary;
 		this.tablesList = tablesList;
-		this.viewLayersList=viewList;
+		this.viewList=viewList;
 	}
 
 	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, 

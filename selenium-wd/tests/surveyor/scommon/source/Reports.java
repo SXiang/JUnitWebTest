@@ -16,9 +16,6 @@ public class Reports {
 	protected String strCreatedBy;
 	private String customer;
 	protected String timeZone;
-
-	
-
 	protected String surveyorUnit;
 	protected List<String> tagList;
 	protected String startDate;
@@ -27,7 +24,68 @@ public class Reports {
 	
 	protected Boolean geoFilter = false;
 	
+	public enum SurveyModeFilter {
+		All ("All"), 
+		Standard ("Standard"), 
+		Operator ("Operator"), 
+		RapidResponse ("RapidResponse"), 
+		Manual ("Manual"),
+		EQ ("EQ"),
+		Assessment ("Assessment");
+		
+		private final String name;
 
+		SurveyModeFilter(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
+	}
+
+	public enum ReportModeFilter {
+		All ("All"), 
+		Standard ("Standard"), 
+		Operator ("Operator"), 
+		RapidResponse ("RapidResponse"), 
+		Manual ("Manual"),
+		EQ ("EQ"),
+		Assessment ("Assessment");
+		
+		private final String name;
+
+		ReportModeFilter(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
+	}
+	
+	public enum ReportJobType {
+		Map ("Map"), 
+		SSRS ("SSRS"), 
+		DataGeneration ("DataGeneration"), 
+		EQMap ("EQMap"), 
+		EQSSRS ("EQSSRS"), 
+		EQDataGeneration ("EQDataGeneration"), 
+		ShapeFile ("ShapeFile"), 
+		ReportMeta ("ReportMeta"), 
+		PercentCoverageForecast ("PercentCoverageForecast");
+		
+		private final String name;
+
+		ReportJobType(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
+ 	}
+	
 	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, List<String> tagList) {
 		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, null, null, null, null, tagList);
 	}

@@ -362,7 +362,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public boolean findExistingUser(String userName) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String userNameXPath;
 
@@ -415,7 +415,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public boolean findExistingUser(String locationName, String userName, boolean isCustomerUser) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String locationXPath;
 		String userNameXPath;
@@ -446,7 +446,10 @@ public class ManageUsersPage extends SurveyorBasePage {
 			locationCell = table.findElement(By.xpath(locationXPath));
 			userNameCell = table.findElement(By.xpath(userNameXPath));
 			
-			Log.info(String.format("Found User. Location-[%s], Username-[%s]", locationCell.getText().trim(),
+			Log.info(String.format("Location XPath-[%s]", locationXPath));
+			Log.info(String.format("Username XPath-[%s]", userNameXPath));
+			Log.info(String.format("Expected: Location-[%s], Username-[%s]", locationName, userName));
+			Log.info(String.format("Actual: Location-[%s], Username-[%s]", locationCell.getText().trim(),
 					userNameCell.getText().trim()));
 
 			if ((locationCell.getText().trim()).equalsIgnoreCase(locationName)
@@ -458,6 +461,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.info("Clicking on next button");
+				Log.info(String.format("rowNum = %d", rowNum));
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
@@ -482,7 +487,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			String roleName) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String locationXPath;
 		String userNameXPath;
@@ -549,7 +554,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public String getUserRole(String userName) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String userNameXPath;
 		String roleNameXPath;
@@ -607,7 +612,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public String getUserStatus(String userName, boolean isCustomerUser) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String userNameXPath;
 		String userStatusXPath;
@@ -685,7 +690,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			String locationDescNew, boolean accountEnable, boolean isCustomerUser) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String userNameXPath;
 		String actionEditXPath;
@@ -769,7 +774,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public boolean resetUserPassword(String userName, String newPassword, boolean isCustomerUser) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String userNameXPath;
 		String actionResetPWDXPath;
@@ -840,7 +845,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public boolean findExistingUser(String userName, boolean allPages) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String userNameXPath;
 
@@ -940,7 +945,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			String roleName, boolean allPages) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String locationXPath;
 		String userNameXPath;
@@ -1066,7 +1071,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String userNameXPath;
 		WebElement userNameCell;
@@ -1115,7 +1120,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public List<String> getLocationList(boolean allPages) {
 		List<String> locationList = new ArrayList<String>();
 		setPagination(PAGINATIONSETTING_100);
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String locationXPath;
 		WebElement locationCell;
@@ -1163,7 +1168,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public List<String> getRolesList(boolean allPages) {
 		List<String> rolesList = new ArrayList<String>();
 		setPagination(PAGINATIONSETTING_100);
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String rolesXPath;
 		WebElement rolesCell;
@@ -1210,7 +1215,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public List<String> getStatusList(boolean allPages) {
 		List<String> statusList = new ArrayList<String>();
 		setPagination(PAGINATIONSETTING_100);
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String statusXPath;
 		WebElement statusCell;

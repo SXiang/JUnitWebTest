@@ -124,7 +124,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public boolean findExistingCustomer(String customerName, boolean enabledStatus) {
 		setPagination(PAGINATIONSETTING_100);
 		
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		String customerNameXPath;
 		String enabledStatusXPath;
@@ -184,7 +184,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public boolean findCustomerAndOpenEditPage(String customerName) {
 		setPagination(PAGINATIONSETTING_100);
 		
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		String customerNameXPath;
 		String actionXPath;
@@ -240,7 +240,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public boolean editExistingCustomerName(String customerName, String eulaNew, boolean enableCustomer) {
 		setPagination(PAGINATIONSETTING_100);
 		
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		String customerNameXPath;
 		String actionXPath;
@@ -311,7 +311,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public String getCustomerStatus(String customerName) {
 		setPagination(PAGINATIONSETTING_100);
 		
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		String customerNameXPath;
 		String statusXPath;
@@ -367,7 +367,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public boolean changeCustomerAccountStatus (String customerName, boolean bEnabled) {
 		setPagination(PAGINATIONSETTING_100);
 		
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		String customerNameXPath;
 		String actionXPath;

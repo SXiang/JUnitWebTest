@@ -781,6 +781,25 @@ public class TestSetup {
 		ProcessUtility.killProcess("Picarro.Surveyor.Analyzer.exe", /* killChildProcesses */ true);
 	}
 
+	public static String getNetworkProxyHarFileContent() throws Exception {
+		Har harData = TestContext.INSTANCE.getTestSetup().getNetworkProxyHarData();
+		String harDataFile = TestSetup.getUUIDString() + "_HarData.dat";
+		String harDataFullPath = Paths.get(TestSetup.getSystemTempDirectory(), harDataFile).toString();
+		Log.info(String.format("Creating HAR data file at: %s", harDataFullPath));
+		BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(harDataFullPath));
+		try {
+			// HarData file should be created in the system temp directory.
+			harData.writeTo(bufferedWriter);
+			Log.info(String.format("Created HAR data file at: %s", harDataFullPath));
+		} catch (IOException e) {
+			Log.error(e.toString());
+		} finally {
+			bufferedWriter.close();
+		}
+		
+		return FileUtility.readFileContents(harDataFullPath);
+	}
+
 	private static void stopAnalyzerIfRunning() throws UnknownHostException {
 		if (isAnalyzerRunning()) {
 			Log.info("An instance of Analyzer EXE is currently running. Stopping...");
