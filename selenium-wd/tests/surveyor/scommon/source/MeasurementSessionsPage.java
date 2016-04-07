@@ -146,7 +146,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	public List<String> getTagNameList() {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.waitForTableDataToLoad();
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
 		List<String> strListTag = new ArrayList<String>();
 		WebElement col1;
@@ -190,7 +190,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		List<String> tagList = new ArrayList<String>();
 
 		setPagination(PAGINATIONSETTING_100);
-		this.waitForTableDataToLoad();
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
 		String tagXPath;
 		String driverXPath; 
@@ -239,7 +239,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 	public boolean deleteDrivingSurveyByTag(String tagName, boolean deleteAll) {
 		this.setPagination(PAGINATIONSETTING_100);
-		this.waitForTableDataToLoad();
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
 		String tagXPath;
 		String deleteImgXPath;
@@ -305,7 +305,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	public String getStartDT(String tag, String user, String surveyor, String analyzer, boolean allPages) {
 		this.setPagination(PAGINATIONSETTING_100);
 
-		this.waitForTableDataToLoad();
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
 		String tagXPath;
 		String userXPath;
@@ -376,7 +376,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	public boolean actionOnDrivingSurveys(String tag, String user, String surveyor, String analyzer, String startDT, String action, boolean allPages) {
 		this.setPagination(PAGINATIONSETTING_100);
 
-		this.waitForTableDataToLoad();
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
 		String tagXPath;
 		String userXPath;
