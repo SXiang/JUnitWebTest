@@ -17,6 +17,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.CryptoUtility;
 import common.source.Log;
+import surveyor.dataprovider.RunAs;
 import surveyor.dataprovider.UserDataProvider;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
@@ -32,6 +33,15 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 public class ManageLocationsPageTest extends SurveyorBaseTest {
 	private static ManageLocationsPage manageLocationsPage;
 	private static ManageCustomersPage manageCustomersPage;
+	private static final String SQAPICAD_AND_SQAPICSUP = "sqapicad@picarro.com,sqapicsup@picarro.com";
+	
+	private enum ManageLocationTestCaseType {
+		AddLocUsingSelector,
+		EditLocUsingSelector,
+		AddLoc,
+		EditLoc,
+		MaxLocChar
+	}
 	
 	@BeforeClass
 	public static void setupManageLocationsPageTest() {
@@ -57,14 +67,10 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 * - User is navigated to Manage Locations page and new location entry is present in the table	 
 	 */
 	@Test
-	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
+	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC16_TC18_AddLocationUsingLatLongSelector_PicAdminSupport(String user, String pswd ) {
-		String tcID ;
-		if(user.equalsIgnoreCase("administrator")){
-			tcID ="TC16";
-		}else {
-			tcID ="TC18";
-		}
+		String tcID = getTestCaseName(ManageLocationTestCaseType.AddLocUsingSelector, user);
 		String password = CryptoUtility.decrypt(pswd);
 		String locationName = testSetup.getFixedSizeRandomNumber(8) + tcID;
 		String cityName = "Santa Clara";
@@ -100,14 +106,10 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 * - User is navigated to Manage Locations page and Latitude and Longitude have new values 
 	 */
 	@Test
-	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
+	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC17_TC19_EditLocationAddedUsingLatLongSelector_PicAdmin_PicSupport(String user, String pwd) {
-		String tcID;
-		if (user.equalsIgnoreCase("administrator")) {
-			tcID = "TC17";
-		} else {
-			tcID = "TC19";
-		}
+		String tcID = getTestCaseName(ManageLocationTestCaseType.EditLocUsingSelector, user);
 		String password = CryptoUtility.decrypt(pwd);
 		String locationName = testSetup.getFixedSizeRandomNumber(8) + tcID;
 		String locationNameNew = testSetup.getFixedSizeRandomNumber(8) + tcID
@@ -137,14 +139,10 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 * 
 	 */
 	@Test
-	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
+	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC60_TC489_AddLocation_PicAdmin_PicSupport(String user, String pwd) {
-		String tcID;
-		if (user.equalsIgnoreCase("administrator")) {
-			tcID = "TC60";
-		} else {
-			tcID = "TC489";
-		}
+		String tcID = getTestCaseName(ManageLocationTestCaseType.AddLoc, user);
 		String password = CryptoUtility.decrypt(pwd);
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + tcID;
 		String eula = customerName + ": " + EULASTRING;
@@ -172,14 +170,10 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 * 
 	 */
 	@Test
-	@UseDataProvider(value = UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location = UserDataProvider.class)
+	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC61_TC490_EditLocation_PicAdmin(String user, String pwd) {
-		String tcID;
-		if (user.equalsIgnoreCase("administrator")) {
-			tcID = "TC61";
-		} else {
-			tcID = "TC490";
-		}
+		String tcID = getTestCaseName(ManageLocationTestCaseType.EditLoc, user);
 		String password = CryptoUtility.decrypt(pwd);
 		String customerName = CUSTOMERNAMEPREFIX
 				+ testSetup.getFixedSizeRandomNumber(8) + tcID;
@@ -250,18 +244,14 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 * having limit of characters displayed
 	 */
 	@Test
-	@UseDataProvider(value = UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location = UserDataProvider.class)
+	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC100_TC495_EditLoc50CharLimit(String user, String pwd) {
 		String str34chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcd";
 		String str35chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcde";
 		String cityName = "Santa Clara";
 
-		String tcID;
-		if (user.equalsIgnoreCase("administrator")) {
-			tcID = "TC100";
-		} else {
-			tcID = "TC495";
-		}
+		String tcID = getTestCaseName(ManageLocationTestCaseType.MaxLocChar, user);
 		String password = CryptoUtility.decrypt(pwd);
 
 		String locationName50Chars = testSetup.getFixedSizeRandomNumber(11)
@@ -318,5 +308,50 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 
 		manageLocationsPage.open();
 		assertTrue(manageLocationsPage.searchLocation(SQACUS, SQACUSLOC));
+	}
+	
+	/**
+	 * Returns the testCase ID based on the username provided by DataProvider.
+	 */
+	private String getTestCaseName(ManageLocationTestCaseType testCaseType, String username) {
+		String testCase = "";		
+		switch (testCaseType) {
+		case AddLocUsingSelector:
+			if (username.equalsIgnoreCase(SQAPICAD)) {
+				testCase = "TC16";
+			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
+				testCase = "TC18";
+			}
+			break;
+		case EditLocUsingSelector:
+			if (username.equalsIgnoreCase(SQAPICAD)) {
+				testCase = "T17";
+			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
+				testCase = "TC19";
+			}
+			break;
+		case AddLoc:
+			if (username.equalsIgnoreCase(SQAPICAD)) {
+				testCase = "TC60";
+			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
+				testCase = "TC489";
+			}
+			break;
+		case EditLoc:
+			if (username.equalsIgnoreCase(SQAPICAD)) {
+				testCase = "TC61";
+			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
+				testCase = "TC490";
+			}
+			break;
+		case MaxLocChar:
+			if (username.equalsIgnoreCase(SQAPICAD)) {
+				testCase = "TC100";
+			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
+				testCase = "TC495";
+			}
+			break;
+		}
+		return testCase;
 	}
 }

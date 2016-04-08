@@ -45,7 +45,14 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	private enum ManageUserTestCaseType {
 		ResetPwd,
 		DuplicateUser,
-		DisabledUser
+		DisabledUser,
+		SearchValidUser,
+		MaxEmailChars,
+		ReEnableUsers,
+		EditUser,
+		ChangeRoleLocTz,
+		AddCustUser,
+		AddPicUser
 	}
 	
 	@BeforeClass
@@ -67,14 +74,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * 
 	 */
 	@Test
-	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
+	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC68_TC470_AddNewPicarroUser(String user, String pwd) {
-		String tcID ;
-		if(user.equalsIgnoreCase("administrator")){
-			tcID ="TC68";
-		}else {
-			tcID ="TC470";
-		}
+		String tcID = getTestCaseName(ManageUserTestCaseType.AddPicUser, user);
 		String password = CryptoUtility.decrypt(pwd);
 		String userName = "PicarroUser" + testSetup.getRandomNumber()
 				+ tcID + REGBASEUSERNAME;
@@ -108,14 +111,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * 
 	 */
 	@Test
-	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
+	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC69_TC471_AddNewCustomerUser(String user, String pwd) {
-		String tcID ;
-		if(user.equalsIgnoreCase("administrator")){
-			tcID ="TC69";
-		}else {
-			tcID ="TC471";
-		}
+		String tcID = getTestCaseName(ManageUserTestCaseType.AddCustUser, user);
 		String password = CryptoUtility.decrypt(pwd);
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber()
 				+ tcID;
@@ -162,14 +161,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * - User details are modified successfully
 	 */
 	@Test
-	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
+	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC70_TC472_EditUser_PicAdminSupport(String user, String pwd) {
-		String tcID ;
-		if(user.equalsIgnoreCase("administrator")){
-			tcID ="TC70";
-		}else {
-			tcID ="TC472";
-		}
+		String tcID = getTestCaseName(ManageUserTestCaseType.EditUser, user);
 		String password = CryptoUtility.decrypt(pwd);
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + tcID;
 		String eula = customerName + ": " + EULASTRING;
@@ -318,14 +313,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * - Admin can change location of the user
 	 */
 	@Test
-	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
+	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC87_TC483_TC484_TC485_EditUserChangeRoleLocationTimezone_PicAdminSupport(String user, String pwd) {
-		String tcID ;
-		if(user.equalsIgnoreCase("administrator")){
-			tcID ="TC87";
-		}else {
-			tcID ="TC483_TC484_TC485";
-		}
+		String tcID = getTestCaseName(ManageUserTestCaseType.ChangeRoleLocTz, user);
 		String password = CryptoUtility.decrypt(pwd);
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + tcID;
 		String eula = customerName + ": " + EULASTRING;
@@ -459,14 +450,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * - User should be able to log in the application
 	 */
 	@Test
-	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
+	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC95_TC478_ReEnableUser_PicAdminSupport(String user, String pwd) {
-		String tcID ;
-		if(user.equalsIgnoreCase("administrator")){
-			tcID ="TC95";
-		}else {
-			tcID ="TC478";
-		}
+		String tcID = getTestCaseName(ManageUserTestCaseType.ReEnableUsers, user);
 		String password = CryptoUtility.decrypt(pwd);
 		String userName = SQACUS + testSetup.getRandomNumber() + tcID + REGBASEUSERNAME;
 		String locationDesc = SQACUS + " - " + SQACUSLOC;
@@ -507,15 +494,11 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * - "Please enter no more than 50 characters." message is displayed
 	 */
 	@Test
-	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
+	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC98_TC486_UserEmailMax50Chars_PicAdminSupport(String user, String pwd) {
 		final int MAX_SIZE = 50;
-		String tcID ;
-		if(user.equalsIgnoreCase("administrator")){
-			tcID ="TC98";
-		}else {
-			tcID ="TC486";
-		}
+		String tcID = getTestCaseName(ManageUserTestCaseType.MaxEmailChars, user);
 		String password = CryptoUtility.decrypt(pwd);
 		String userName50 = SQACUS + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-20) + tcID + REGBASEUSERNAME;
 		String userName51 = SQACUS + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-20) + tcID + REGBASEUSERNAME + "A";
@@ -733,14 +716,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC116_TC487 Test Description: Search valid user record
 	 */
 	@Test
-	@UseDataProvider(value =UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location=UserDataProvider.class )
+	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC116_TC487_SearchValidUser(String user, String pwd) {
-		String tcID ;
-		if(user.equalsIgnoreCase("administrator")){
-			tcID ="TC116";
-		}else {
-			tcID ="TC487";
-		}
+		String tcID = getTestCaseName(ManageUserTestCaseType.SearchValidUser, user);
 		String password = CryptoUtility.decrypt(pwd);
 		Log.info("\nRunning - " + tcID + " - Test Description: Search valid user record\n");
 
@@ -799,6 +778,55 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 				testCase = "TC94";
 			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
 				testCase = "TC474";
+			}
+			break;
+		case SearchValidUser:
+			if (username.equalsIgnoreCase(SQAPICAD)) {
+				testCase = "TC116";
+			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
+				testCase = "TC487";
+			}
+			break;
+		case MaxEmailChars:
+			if (username.equalsIgnoreCase(SQAPICAD)) {
+				testCase = "TC98";
+			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
+				testCase = "TC486";
+			}
+			break;
+		case ReEnableUsers:
+			if (username.equalsIgnoreCase(SQAPICAD)) {
+				testCase = "TC95";
+			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
+				testCase = "TC478";
+			}
+			break;
+		case EditUser:
+			if (username.equalsIgnoreCase(SQAPICAD)) {
+				testCase = "TC70";
+			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
+				testCase = "TC472";
+			}
+			break;
+		case ChangeRoleLocTz:
+			if (username.equalsIgnoreCase(SQAPICAD)) {
+				testCase = "TC87";
+			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
+				testCase = "TC483_TC484_TC485";
+			}
+			break;
+		case AddCustUser:
+			if (username.equalsIgnoreCase(SQAPICAD)) {
+				testCase = "TC69";
+			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
+				testCase = "TC471";
+			}
+			break;
+		case AddPicUser:
+			if (username.equalsIgnoreCase(SQAPICAD)) {
+				testCase = "TC68";
+			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
+				testCase = "TC470";
 			}
 			break;
 		}
