@@ -329,7 +329,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		assertTrue("Failed to change user timezone - '"+ ut+"'",
 				manageLocationsPage.changeUserTimezone(ut));
 
-		assertTrue("Dropdown menu itme(s) are missing", 
+		assertTrue("Dropdown menu item(s) are missing", 
 				manageLocationsPage.verifyDropdownMenuItems());
 		loginPage = manageUsersPage.logout();
 
