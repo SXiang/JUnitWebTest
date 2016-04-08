@@ -36,6 +36,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	private WebElement btnAddNewCustomer;
+	private String btnAddNewCustomerXPath = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a";
 	
 	@FindBy(id = "name")
 	private WebElement inputCustomerName;
@@ -56,6 +57,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[3]/a")
 	private WebElement btnEditCustomer;
+	private String btnEditCustomerXPath = "//*[@id='datatable']/tbody/tr[1]/td[3]/a"; 
 	
 	/**
 	 * @param driver
@@ -235,7 +237,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		return false;
 	}
 
-	public boolean editExistingCustomerName(String customerName, String eulaNew) {
+	public boolean editExistingCustomerName(String customerName, String eulaNew, boolean enableCustomer) {
 		setPagination(PAGINATIONSETTING_100);
 		
 		this.waitForTableDataToLoad();
@@ -271,6 +273,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				this.waitForEditPageLoad();
 				
 				setEULAText(eulaNew);
+				enabledDisableCustomer(enableCustomer);
 				
 				this.btnOk.click();
 				
@@ -461,5 +464,13 @@ public class ManageCustomersPage extends SurveyorBasePage {
             	return d.getPageSource().contains(STREditPageContentText);
             }
         });
+    }
+    
+    public boolean isAddCustomerBtnPresent(){
+    	return isElementPresent(this.btnAddNewCustomerXPath);
+    }
+    
+    public boolean isEditBtnPresent(){
+    	return isElementPresent(this.btnEditCustomerXPath);
     }
 }

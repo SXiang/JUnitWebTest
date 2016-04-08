@@ -17,7 +17,6 @@ import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
-
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
@@ -199,5 +198,72 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		manageAnalyzersPage.addNewAnalyzer(analyzerName51, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
 		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName51.substring(0, MAX_SIZE)));
 		assertFalse(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName51));
+	}
+	
+	/**
+	 * Test Case ID: TC122_AddAnalyzer_PicAdmin
+	 * Test Description: Admin not allowed to create duplicate Analyzer
+	 * 
+	 */	
+	@Test
+	public void TC122_DuplicateAnalyzer_PicAdmin() {
+		String customerName = "Picarro";
+		String locationName = customerName + "loc";
+		String surveyorName = locationName + testSetup.getRandomNumber() + "sur";
+		String analyzerName = surveyorName + "ana";
+		String cityName="Santa Clara";
+		
+		Log.info("\nRunning TC122_DuplicateAnalyzer_PicAdmin - Test Description: Admin not allowed to create duplicate Analyzer");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		
+		manageLocationsPage.open();
+		manageLocationsPage.addNewLocation(locationName, customerName ,cityName);
+		
+		manageSurveyorPage.open();
+		manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName);
+		
+		manageAnalyzersPage.open();
+		manageAnalyzersPage.addNewAnalyzer(analyzerName, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
+		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName));
+		
+		manageAnalyzersPage.open();
+		assertFalse(manageAnalyzersPage.addNewAnalyzer(analyzerName, ANALYZERSHAREDKEY, surveyorName, customerName, locationName));
+	}
+	
+	/**
+	 * Test Case ID: TC123_EditDupliateAnalyzer_PicAdmin
+	 * Test Description: Admin not allowed to edit Analyzer having details same as existing analyzer detials
+	 * 
+	 */	
+	@Test
+	public void TC123_EditDuplicateAnalyzer_PicAdmin() {
+		String customerName = "Picarro";
+		String locationName = customerName + testSetup.getRandomNumber() + "loc";
+		String surveyorName = locationName + "sur";
+		String analyzerName = surveyorName + "ana";
+		String analyzerNameNew = surveyorName + "anaNew";
+		String cityName ="Santa Clara";
+		
+		Log.info("\nRunning TC123_EditDuplicateAnalyzer_PicAdmin - Test Description: Admin not allowed to edit Analyzer having details same as existing analyzer detials");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		
+		manageLocationsPage.open();
+		manageLocationsPage.addNewLocation(locationName, customerName, cityName);
+		
+		manageSurveyorPage.open();
+		manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName);
+		
+		manageAnalyzersPage.open();
+		manageAnalyzersPage.addNewAnalyzer(analyzerName, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
+		
+		if (manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
+			manageAnalyzersPage.editExistingAnalyzer(customerName, locationName, surveyorName, analyzerName, 
+					ANALYZERSHAREDKEY, customerName + " - " + locationName + " - " + surveyorName, analyzerNameNew);
+		
+		assertFalse(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerNameNew));		
 	}
 }
