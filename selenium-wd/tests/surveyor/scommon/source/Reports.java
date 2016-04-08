@@ -109,6 +109,41 @@ public class Reports {
 		}
  	}
 	
+	public enum ReportStatusType {
+		Pending ("Pending"), 
+		Processing ("Processing"), 
+		Complete ("Complete"), 
+		Failed ("Failed"), 
+		Zipping ("Zipping");
+		
+		private final String name;
+
+		ReportStatusType(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
+ 	}
+
+	public enum ReportJobStatusType {
+		Pending ("Pending"), 
+		Processing ("Processing"), 
+		Complete ("Complete"), 
+		Failed ("Failed");
+		
+		private final String name;
+
+		ReportJobStatusType(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
+ 	}
+
 	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, List<String> tagList) {
 		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, null, null, null, null, tagList);
 	}

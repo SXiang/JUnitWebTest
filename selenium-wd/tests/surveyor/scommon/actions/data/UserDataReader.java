@@ -1,5 +1,6 @@
 package surveyor.scommon.actions.data;
 
+import common.source.CryptoUtility;
 import common.source.ExcelUtility;
 import common.source.Log;
 
@@ -76,6 +77,7 @@ public class UserDataReader extends BaseDataReader {
 		String rowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
 		String username = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Username, TESTDATA_SHEET_NAME);
 		String password = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Password, TESTDATA_SHEET_NAME);
+		password = CryptoUtility.decrypt(password);
 		String enabled = excelUtility.getBooleanCellData(dataRowID, Excel_TestData__Col_Enabled, TESTDATA_SHEET_NAME);
 		String role = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Role, TESTDATA_SHEET_NAME);
 		String firstName = excelUtility.getCellData(dataRowID, Excel_TestData__Col_FirstName, TESTDATA_SHEET_NAME);

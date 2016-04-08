@@ -24,19 +24,19 @@ public class PerformanceReportJobDataProvider extends ReportDataProvider {
 		}
 	}
 	
-	private static final int LIGHT_LOAD3_USER_ROW_ID = 6;  
-	private static final int LIGHT_LOAD3_REPORT_DATA_ROW_ID = 10;
+	private static final int LIGHT_LOAD3_USER_ROW_ID = 10;    			  
+	private static final int LIGHT_LOAD3_REPORT_DATA_ROW_ID = 10;		
 	private static final int LIGHT_LOAD3_EXECUTIONS_FOR_BASELINES = 20;
 
-	private static final int MEDIUM_LOAD3_USER_ROW_ID = 6;
+	private static final int MEDIUM_LOAD3_USER_ROW_ID = 10;
 	private static final int MEDIUM_LOAD3_REPORT_DATA_ROW_ID = 11;
 	private static final int MEDIUM_LOAD3_EXECUTIONS_FOR_BASELINES = 15;
 	
-	private static final int HIGH_LOAD2_USER_ROW_ID = 6;
+	private static final int HIGH_LOAD2_USER_ROW_ID = 10;
 	private static final int HIGH_LOAD2_REPORT_DATA_ROW_ID = 12;
 	private static final int HIGH_LOAD3_EXECUTIONS_FOR_BASELINES = 10;
 
-	private static final int ULTRA_HIGH_LOAD1_USER_ROW_ID = 6;
+	private static final int ULTRA_HIGH_LOAD1_USER_ROW_ID = 10;
 	private static final int ULTRA_HIGH_LOAD1_REPORT_DATA_ROW_ID = 13;
 	private static final int ULTRA_HIGH_LOAD3_EXECUTIONS_FOR_BASELINES = 5;
 

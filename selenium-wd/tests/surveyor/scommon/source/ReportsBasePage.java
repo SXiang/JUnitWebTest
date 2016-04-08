@@ -74,6 +74,7 @@ import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.Reports.ReportJobType;
 import surveyor.scommon.source.Reports.ReportModeFilter;
+import surveyor.scommon.source.Reports.ReportStatusType;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 
 /**
@@ -2231,13 +2232,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		Gson gson = gsonBuilder.create();
 		ReportJobsStat reportJobsStatObj = gson.fromJson(apiResponse, ReportJobsStat.class);
+		validateReportStatus(reportJobsStatObj);
 		List<surveyor.api.source.ReportJob> reportJobs = reportJobsStatObj.ReportJobs;
 		for (surveyor.api.source.ReportJob reportJob : reportJobs) {
 			String reportJobTypeId = Reports.ReportJobTypeReverseGuids.get(ReportJobType.valueOf(reportJob.ReportJobType));
 
-			// If report job processing started or completed times are NULL, throw exception.
-			validateReportJobProcessingTimesForNotNull(reportJob.ReportJobId, reportJob, reportJobTypeId);
-
+			// validate report job.
+			validateReportJobStatus(reportJobsStatObj.ReportTitle, reportJob);
+			validateReportJobProcessingTimesForNotNull(reportJobsStatObj.ReportTitle, reportJob, reportJobTypeId);
+			
 			Integer actualProcessingTimeInMs = (int) (reportJob.getProcessingCompletedTimeInMs() - reportJob.getProcessingStartedTimeInMs());
 
 			if (TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
@@ -2276,17 +2279,31 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return true;
 	}
 
-	private void validateReportJobProcessingTimesForNotNull(String reportId, surveyor.api.source.ReportJob reportJob,
+	private void validateReportStatus(ReportJobsStat reportJobsStatObj) throws Exception {
+		if (!reportJobsStatObj.ReportStatus.equals(ReportStatusType.Complete.toString())) {
+			throw new Exception(String.format("Report status NOT Complete. ReportTitle-[%s], ReportStatus-[%s]",
+					reportJobsStatObj.ReportTitle, reportJobsStatObj.ReportStatus));
+		}
+	}
+
+	private void validateReportJobStatus(String reportTitle, surveyor.api.source.ReportJob reportJob) throws Exception {
+		if (!reportJob.ReportJobStatus.equals(ReportStatusType.Complete.toString())) {
+			throw new Exception(String.format("Report job status NOT Complete. ReportTitle-[%s], ReportJobType-[%s], "
+					+ "ReportJobStatus-[%s]", reportTitle, reportJob.ReportJobType, reportJob.ReportJobStatus));
+		}
+	}
+
+	private void validateReportJobProcessingTimesForNotNull(String reportTitle, surveyor.api.source.ReportJob reportJob,
 			String reportJobTypeId) throws Exception {
 		if (reportJob.ProcessingStarted.isEmpty()) {
 			throw new Exception(
-					String.format("EMPTY value encountered for column-[%s], ReportId-[%s], ReportJobTypeId-[%s]",
-							"ProcessingStarted", reportId, reportJobTypeId));
+					String.format("EMPTY value encountered for column-[%s], ReportTitle-[%s], ReportJobTypeId-[%s]",
+							"ProcessingStarted", reportTitle, reportJobTypeId));
 		}
 		if (reportJob.ProcessingCompleted.isEmpty()) {
 			throw new Exception(
-					String.format("EMPTY value encountered for column-[%s], ReportId-[%s], ReportJobTypeId-[%s]",
-							"ProcessingCompleted", reportId, reportJobTypeId));
+					String.format("EMPTY value encountered for column-[%s], ReportTitle-[%s], ReportJobTypeId-[%s]",
+							"ProcessingCompleted", reportTitle, reportJobTypeId));
 		}
 	}
 }
