@@ -490,4 +490,86 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		else
 			fail("\nTest case MCP000C failed!\n");
 	}	
+	
+	/**
+	 * Test Case ID: TC1243_DisableExistingCustomer_PicAdmin
+	 * Script:
+	 * - On Home Page, click Picarro Administration -> Manage Customers
+	 * - Click on 'Edit' button
+	 * - Disable the Customer account. Click OK	 
+	 * Results: - 
+	 * - Disabled Customer's User will not be allowed to log in the application
+	 */
+	@Test  
+	public void TC1243_DisabledExistingCustomer_PicAdmin() {
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getFixedSizeRandomNumber(12) + "TC1243";
+		String userName = customerName + testSetup.getFixedSizeRandomNumber(12) + REGBASEUSERNAME;
+		String eula = customerName + ": " + EULASTRING;
+		String cityName = "Santa Clara";
+		String locationName = customerName + "loc";
+		Log.info("\nRunning TC1243_DisableExistingCustomer_PicAdmin - Test Description: Disable Existing Customer");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+
+		manageCustomersPage.open();
+		manageCustomersPage.addNewCustomer(customerName, eula, true);
+		
+		Log.info(String.format("Looking for customer - '%s' with enabled status - '%b'", customerName, true));
+		assertTrue(manageCustomersPage.findExistingCustomer(customerName, true));
+
+		manageLocationsPage.open();
+		manageLocationsPage.addNewLocation(locationName, customerName, cityName);
+
+		manageUsersPage.open();
+		manageUsersPage.addNewCustomerUser(customerName, userName,
+				USERPASSWORD, CUSUSERROLEUA, locationName);
+		
+		manageCustomersPage.open();
+		manageCustomersPage.editExistingCustomerName(customerName, eula, false);
+
+		Log.info(String.format("Looking for user: Location-[%s]; Username-[%s]", locationName, userName));
+		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
+		loginPage = manageUsersPage.logout();
+
+		// verify disabled customer user cannot login.
+		loginPage.open();
+		assertTrue(loginPage.loginNormalAs(userName, USERPASSWORD) == null);
+	}
+	
+	/**
+	 * Test Case ID: TC469_ManageCustomer
+	 * Script:   	
+	 * - On Home Page, click on Administration -> Manage Customer 
+	 * Results: - 
+	 * - User can see customers added by picarro admin
+	 * - User cannot add or edit the customer
+	 */
+	@Test
+	public void TC469_ManageCustomer_PicSupport() {
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber()
+				+ "TC469";
+		String eula = customerName + ": " + EULASTRING;
+
+		Log.info("\nRunning TC469_ManageCustomer_PicSupport - Test Description: View Customer");
+
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(),
+				testSetup.getLoginPwd());
+
+		manageCustomersPage.open();
+		manageCustomersPage.addNewCustomer(customerName, eula);
+		Log.info(String.format(
+				"Looking for customer - '%s' with enabled status - '%b'",
+				customerName, true));
+		assertTrue(manageCustomersPage.findExistingCustomer(customerName, true));
+
+		manageCustomersPage.logout();
+
+		loginPage.login(SQAPICSUP, USERPASSWORD);
+		manageCustomersPage.open();
+		assertTrue(manageCustomersPage.findExistingCustomer(customerName, true));
+		assertFalse(manageCustomersPage.isAddCustomerBtnPresent());
+		assertFalse(manageCustomersPage.isEditBtnPresent());
+	}
 }

@@ -156,7 +156,8 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		this.waitForPageLoad();
 	}
 	
-	public void addNewSurveyor(String surveyorDesc, String locationName, String customerName) {
+	public boolean addNewSurveyor(String surveyorDesc, String locationName, String customerName) {
+		boolean result = true;
 		if (this.testSetup.isRunningDebug()) {
 			Log.info(surveyorDesc);
 			Log.info(locationName);
@@ -176,11 +177,14 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		
 		if (isElementPresent(this.panelDupSurErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDupSurErrorXPath));
-			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
+			String errMsg = panelError.getText();
+			if (errMsg.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
+				result = false;
 				this.btnAddCancel.click();
+			}
 		}
 		
-		this.waitForPageLoad();
+		return result;
 	}	
 	
 	public boolean findExistingSurveyor(String customerName, String locationName, String surveyorName) {

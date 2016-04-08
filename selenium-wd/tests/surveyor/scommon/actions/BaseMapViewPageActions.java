@@ -669,7 +669,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyAssetIsNotShownOnMap(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyAssetIsNotShownOnMap", data, dataRowID);
 		return !verifyAssetIsShownOnMap(data, dataRowID);
-	}
+	}	
 	public boolean verifyBoundariesIsNotShownOnMap(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyBoundariesIsNotShownOnMap", data, dataRowID);
 		return !verifyBoundariesIsShownOnMap(data, dataRowID);
@@ -1100,7 +1100,46 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisBoundarySmallBoundaryButtonIsNotVisible", data, dataRowID);
 		return !this.pageObject.isGisBoundarySmallBoundaryButtonVisible();
 	}
- 
+	/**
+	 * Executes verifyStatusIsNotShownOnMap action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyStatusIsNotShownOnMap(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyStatusIsNotShownOnMap", data, dataRowID);
+		return !pageObject.isStatusButtonVisible();
+	}
+	/**
+	 * Executes verifyModeIsNotShownOnMap action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyModeIsNotShownOnMap(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyStatusIsNotShownOnMap", data, dataRowID);
+		return !pageObject.isModeButtonVisible();
+	}
+	/**
+	 * Executes verifyStartSurveyIsNotShownOnMap action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyStartSurveyIsNotShownOnMap(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyStartSurveyIsNotShownOnMap", data, dataRowID);
+		return !pageObject.isStartSurveyButtonVisible();
+	}
+	/**
+	 * Executes verifyModeIsNotShownOnMap action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyStopSurveyIsNotShownOnMap(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyStopSurveyIsNotShownOnMap", data, dataRowID);
+		return !pageObject.isStopSurveyButtonVisible();
+	}
 	/**
 	 * Executes verifyFieldNotesIsShownOnMap action.
 	 * @param data - specifies the input data passed to the action.
@@ -1195,7 +1234,29 @@ public class BaseMapViewPageActions extends BasePageActions {
 		int zoomLevel = Integer.valueOf(data) - DEFAULT_ZOOM_LEVEL;
 		return mapUtility.isMapResolutionCorrect(zoomLevel);
 	}
-	
+
+	/**
+	 * Executes setMapZoomLevel action.
+	 * @param zoomlevel - specifies the zoom level on the map.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean setZoomLevel(int zoomlevel, String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".setZoomLevel", data, dataRowID);
+		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
+		int currentZoomlevel = mapUtility.getMapZoomLevel();
+		int numClicks = Math.abs(currentZoomlevel-zoomlevel);
+		
+		for(int i=0;i<numClicks;i++){
+		  if(currentZoomlevel > zoomlevel){
+			  getPageObject().clickZoomOutButton();
+		  }else if(currentZoomlevel < zoomlevel){
+			  getPageObject().clickZoomInButton();
+		  }else{
+			  return true;
+		  }
+		}
+		return mapUtility.getMapZoomLevel()==zoomlevel;
+	}
 	/**
 	 * Executes verifyGisUseAllBoundariesButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.

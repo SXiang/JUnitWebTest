@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.RegexUtility;
@@ -189,8 +191,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	protected WebElement modeButton;
 
 	@FindBy(id = "bottom_button_display")
-	@CacheLookup
-	private WebElement displayButton;
+	protected WebElement displayButton;
 
 	@FindBy(id = "bottom_button_map")
 	@CacheLookup
@@ -203,6 +204,9 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(id = "bottom_button_curtain_view")
 	@CacheLookup
 	private WebElement curtainButton;
+
+	@FindBy(id = "bottom_button_status")
+	private WebElement statusButton;
 	
 	@FindBy(id = "bottom_logo")
 	@CacheLookup
@@ -215,9 +219,16 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='map']/div/div[2]/div[2]/button[2]")
 	@CacheLookup
 	protected WebElement zoomOutButton;
-
+	
+	//TODO - on debugging -- Steven
+	@FindBy(id = "shutting_down")
+	protected WebElement stopSurveyButton;
+	
+	@FindBy(id = "start_survey_mode")
+	protected WebElement startSurveyButton;
+    // ------------------------------
+	
 	@FindBy(id = "blocked_ui")
-	@CacheLookup
 	private WebElement divBlockedUI;
 	
 	@FindBy(id = "btn_close_annotation")
@@ -324,7 +335,13 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	}
 
 	public BaseMapViewPage clickDisplayButton() {
-		this.displayButton.click();
+		try{ // Fell free to change this 
+			 //If you have a better idea to wait, such as a clickable condition for the element.
+		     this.displayButton.click();
+		}catch(Exception e){
+			testSetup.slowdownInSeconds(5);
+			this.displayButton.click();
+		}
 		return this;
 	}
 
@@ -350,7 +367,15 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	public boolean isModeButtonVisible() {
 		return !this.modeButton.getAttribute("class").contains("ng-hide");
 	}
-
+	public boolean isStatusButtonVisible() {
+		return !this.statusButton.getAttribute("class").contains("ng-hide");
+	}
+	public boolean isStartSurveyButtonVisible() {
+		return !this.startSurveyButton.getAttribute("class").contains("ng-hide");
+	}
+	public boolean isStopSurveyButtonVisible() {
+		return !this.stopSurveyButton.getAttribute("class").contains("ng-hide");
+	}
 	public WebElement getPeakInfoPopupTextElement() {
 		// element value changes dynamically on peakInfo click. Seek new each time.
 		peakInfoOverlayText = this.driver.findElement(By.id("peak_info"));
