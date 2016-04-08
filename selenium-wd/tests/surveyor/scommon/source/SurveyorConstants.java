@@ -219,12 +219,8 @@ public final class SurveyorConstants {
 	public static final String PWDSAMEVALUE = Resources.getResource(ResourceKeys.Validation_EnterSameValueAgain);
 	public static final String EMAILTOOLONG = Resources.getResource(ResourceKeys.Validation_EnterNoMoreThan).replace("{0}", "50");
 	public static final String PASSWORDTOOLONG = Resources.getResource(ResourceKeys.Validation_EnterNoMoreThan).replace("{0}", "15");
-	public static final String NOMATCHINGRECORDS = Resources.getResource("Constant_NoMatchingRecordsFound");
-	
-	public static final String ENTERVALIDEMAIL = "The Email is not valid, please enter valid email address.";
-	
+	public static final String NOMATCHINGRECORDS = Resources.getResource("Constant_NoMatchingRecordsFound");		
 	public static final String NOMATCHINGSEARCH = Resources.getResource(ResourceKeys.Constant_NoMatchingRecordsFound);
-
 	public static final String DRIVINGSURVEYSEXPORTSURVEY = "SurveyExport";
 	public static final String DRIVINGSURVEYSEXPORTPEAKS = "PeakExport";
 	public static final String DRIVINGSURVEYSEXPORTANALYSIS = "AnalysisExport";
