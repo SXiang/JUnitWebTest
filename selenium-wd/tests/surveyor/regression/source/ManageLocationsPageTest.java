@@ -250,6 +250,9 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 *  - Provide location details same as existing location and click OK
 	 * Results:
 	 *  - Duplicate Location creation not allowed
+	 *  
+	 *  Defect TC1841 on Rally - {@link https://rally1.rallydev.com/#/53512905526d/detail/defect/53793371641}
+	 *  Defect Description: L10N: Error message 'Location name already exists...' is not in Resources table
 	 */
 	@Test
 	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
