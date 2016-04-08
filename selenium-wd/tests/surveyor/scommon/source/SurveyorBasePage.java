@@ -265,7 +265,7 @@ public class SurveyorBasePage extends BasePage {
 	public String getUserTimezone(){		
 		String text = "";		
 		
-		text = ( new WebDriverWait(driver, 5)).until(new ExpectedCondition<String>(){
+		text = ( new WebDriverWait(driver, timeout)).until(new ExpectedCondition<String>(){
 			public String apply(WebDriver d){
 				String value = null;
 				try{
@@ -309,7 +309,7 @@ public class SurveyorBasePage extends BasePage {
 	
 		utItem.click();	
 		
-		return ( new WebDriverWait(driver, 3)).until(new ExpectedCondition<Boolean>(){
+		return ( new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>(){
 			public Boolean apply(WebDriver d){
 				return ut.toString().equals(getUserTimezone());
 			}

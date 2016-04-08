@@ -133,7 +133,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		assertEquals("The location latitude should be blank after the cancelation in the map screen",
 				"",manageLocationsPage.getLocationLatitudeText());
 
-		assertEquals("The location longgitude should be blank after the cancelation in the map screen",
+		assertEquals("The location longitude should be blank after the cancelation in the map screen",
 				"",manageLocationsPage.getLocationLongitudeText());
 	}
 
@@ -143,7 +143,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	 * Test Script: 
 	 *  - Log in as Picarro Admin
 	 *  - On Home Page, click Picarro Administration -> Manage Locations
-	 *  - Click on 'Edit' buttonn
+	 *  - Click on 'Edit' button
 	 *  - Click on ‘Lat/Long Selector’ button
 	 *  - Click on desired location on map and click Cancel
 	 * Excepted Result:
@@ -229,7 +229,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 	}
 
-	/** TO BE VERIFIED - NOT WORKING AS DESCRIBIED
+	/** TO BE VERIFIED - NOT WORKING AS DESCRIBIED - description needs to be updated later
 	 * Test Case ID: TC24_NotificationLatLongValueMissing_PicAdmin
 	 * Test Description: Notification should appear if Latitude is entered but Longitude is not, or vice versa
 	 * Test Script: 

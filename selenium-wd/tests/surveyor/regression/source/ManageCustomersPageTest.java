@@ -155,20 +155,17 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC78_editCustomerBlankRequiredFields_PicAdmin(){
-		String userName = PICNAMEPREFIX + "dr" + testSetup.getRandomNumber() + REGBASEPICUSERNAME;
-		String customerName = "Picarro";
-		String location = "Santa Clara";
-		String locationDesc = customerName + " - " + location;
-
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC78";
+		String eula = customerName + ": " + EULASTRING;
 		Log.info("\nRunning TC78_editCustomerBlankRequiredFields_PicAdmin - "+
 		         "Test Description: edit customer - blank required fields");
 		
-		// *** Add a new user for this test ***
+		// *** Add a new customer for this test ***
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		manageUsersPage.open();
-		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, CUSUSERROLEDR, locationDesc, TIMEZONECT);
-		loginPage = manageUsersPage.logout();;
+		manageCustomersPage.open();
+		manageCustomersPage.addNewCustomer(customerName, eula);	
+		loginPage = manageUsersPage.logout();
 		
 		// *** Start test ***
 		
@@ -259,7 +256,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 * - User is navigated to Manage Customers page and new customer entry is present in the table
 	 * 
 	 */
-	   // Ignoring. Validation message NOT showing correctly in Product. Check if SEED script update is needed.
+	@Ignore   // Ignoring. Validation message NOT showing correctly in Product. Check if SEED script update is needed.
 	public void TC88_DuplicateCustomerNotAllowed_PicAdmin() {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC88";
 		Log.info("\nRunning TC88_DuplicateCustomerNotAllowed_PicAdmin - Test Description: Admin not allowed to create duplicate Customer");
