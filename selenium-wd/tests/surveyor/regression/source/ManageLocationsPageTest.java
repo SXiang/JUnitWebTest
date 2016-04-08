@@ -282,7 +282,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		manageLocationsPage.performSearch(locationName);
 		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, null,null,false);     
 
-		assertTrue(manageLocationsPage.correctPossibleError(errorMsg));
+		assertTrue(manageLocationsPage.verifyErrorMessage(errorMsg));
 
 		manageLocationsPage.clickOnCancelBtn();
 
@@ -332,7 +332,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		manageLocationsPage.performSearch(locationName);
 		manageLocationsPage.editExistingLocation(SQACUS, locationName, newLocationName,false);
 
-		assertTrue(manageLocationsPage.correctPossibleError(errorMsg));
+		assertTrue(manageLocationsPage.verifyErrorMessage(errorMsg));
 
 		manageLocationsPage.clickOnCancelBtn();
 
@@ -343,7 +343,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
      * Test Description: Picarro Support - Add location- blank required fields
 	 * Script:
 	 *  - On Home Page, click Administration -> Manage Locations
-     *  - Click on 'Add New Locaiton' button
+     *  - Click on 'Add New Location' button
      *  - Keep description field blank. Click OK
      * Results:
      *  - "The field is required." message should be displayed

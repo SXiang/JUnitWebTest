@@ -57,25 +57,25 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[3]/a")
 	private WebElement btnEditCustomer;
 	
-	@FindBy(how = How.CSS, using = "input[id='LicencedFeatureId-GAP Grid 1.0']")
+	@FindBy(id = "LicencedFeatureId-GAP Grid 1.0")
 	private WebElement inputGAPGrid;
 	
-	@FindBy(how = How.CSS, using = "input[id='LicencedFeatureId-Report Metadata']")
+	@FindBy(id = "LicencedFeatureId-Report Metadata")
 	private WebElement inputReportMetadata;
 	
-	@FindBy(how = How.CSS, using = "input[id='LicencedFeatureId-Assessment']")
+	@FindBy(id = "LicencedFeatureId-Assessment")
 	private WebElement inputAssessment;
 	
-	@FindBy(how = How.CSS, using = "input[id='LicencedFeatureId-EQ']")
+	@FindBy(id = "LicencedFeatureId-EQ")
 	private WebElement inputEQ;
 	
-	@FindBy(how = How.CSS, using = "input[id='LicencedFeatureId-LISA Box 1.0']")
+	@FindBy(id = "LicencedFeatureId-LISA Box 1.0")
 	private WebElement inputLISABox;
 	
-	@FindBy(how = How.CSS, using = "input[id='LicencedFeatureId-Survey Protocol Forecase']")
+	@FindBy(id = "LicencedFeatureId-Survey Protocol Forecase")
 	private WebElement inputSurveyForecase;
 	
-	@FindBy(how = How.CSS, using = "input[id='LicencedFeatureId-Report ShapeFile']")
+	@FindBy(id = "LicencedFeatureId-Report ShapeFile")
 	private WebElement inputReportShapeFile;
 	
 	/**

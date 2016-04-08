@@ -272,12 +272,12 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.waitForPageToLoad();
         
 		if(checkForError
-				&& this.correctPossibleError(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
+				&& this.verifyErrorMessage(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
 			this.btnCancel.click();
 		}
 	}
 	
-	public boolean correctPossibleError(String errorMsg){
+	public boolean verifyErrorMessage(String errorMsg){
 		boolean found = false;
 		if (isElementPresent(this.summaryErrorsBy)) {			
 			if (this.summaryErrors.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
