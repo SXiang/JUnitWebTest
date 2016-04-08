@@ -55,5 +55,6 @@
 	<classpathentry kind="lib" path="selenium-wd/lib/httpmime-4.5.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/selenium-server-standalone-2.42.2.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/gson-2.6.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

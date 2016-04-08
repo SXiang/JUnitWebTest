@@ -747,7 +747,8 @@ public class TestSetup {
 			String replayCmdFullPath = replayCmdFolder + File.separator + REPLAY_DEFN_CURL_FILE;
 			String command = "cd \"" + replayCmdFolder + "\" && " + replayCmdFullPath + " " + defnFileName;
 			Log.info("Executing replay script. Command -> " + command);
-			analyzerProcess = ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
+			ProcessOutputInfo processOutputInfo = ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
+			analyzerProcess = processOutputInfo.getProcess();
 		} catch (IOException e) {
 			Log.error(e.toString());
 		}
@@ -791,8 +792,8 @@ public class TestSetup {
 		stopAnalyzerIfRunning();
 
 		// Start the Analyzer process.
-		analyzerProcess = ProcessUtility.executeProcess(ANALYZER_EXE_PATH, /* isShellCommand */ false,
-				/* waitForExit */ false);
+		ProcessOutputInfo processOutputInfo = ProcessUtility.executeProcess(ANALYZER_EXE_PATH, /* isShellCommand */ false, /* waitForExit */ false);
+		analyzerProcess = processOutputInfo.getProcess();
 		if (analyzerProcess.isAlive()) {
 			Log.info("Analyzer EXE started Successfully!");
 		} else {

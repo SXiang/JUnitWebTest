@@ -2096,7 +2096,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		FileUtility.updateFile(workingBatFile, parameters);
 		String command = "cd \"" + libFolder + "\" && " + workingBatFile;
 		Log.info("Executing replay script. Command -> " + command);
-		Process pdfToHtmlProcess = ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
+		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 		// Delete the working copy of the defn file.
 		Files.delete(Paths.get(workingBatFile));
 		return true;

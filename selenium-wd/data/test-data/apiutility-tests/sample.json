@@ -1,0 +1,44 @@
+{
+"ReportTitle": "cc17066cba3d4f77b654",
+"Id": "7f94a86f-f255-0330-abe6-39d7035967d7",
+"ReportStatus": "Complete",
+"ProcessingStarted": "/Date(1460040146887)/",
+"ProcessingCompleted": "/Date(1460040257573)/",
+"ReportJobs": [
+{
+"ReportJobId": "47e22e8e-1b88-f65e-8104-39d703596806",
+"ReportJobType": "SSRS",
+"ReportJobStatus": "Complete",
+"ProcessingStarted": "/Date(1460040154073)/",
+"ProcessingCompleted": "/Date(1460040155980)/"
+},
+{
+"ReportJobId": "dd12eb33-406b-b22a-c967-39d703596806",
+"ReportJobType": "Map",
+"ReportJobStatus": "Complete",
+"ProcessingStarted": "/Date(-62135596800000)/",
+"ProcessingCompleted": "/Date(-62135596800000)/"
+},
+{
+"ReportJobId": "b1aedcd5-f084-2ae7-243f-39d703596816",
+"ReportJobType": "ReportMeta",
+"ReportJobStatus": "Complete",
+"ProcessingStarted": "/Date(1460040156870)/",
+"ProcessingCompleted": "/Date(1460040157807)/"
+},
+{
+"ReportJobId": "b0311dcf-2f34-eef5-cf82-39d703596816",
+"ReportJobType": "ShapeFile",
+"ReportJobStatus": "Complete",
+"ProcessingStarted": "/Date(1460040159403)/",
+"ProcessingCompleted": "/Date(1460040161683)/"
+},
+{
+"ReportJobId": "5300a496-172d-6444-9803-39d703596826",
+"ReportJobType": "DataGeneration",
+"ReportJobStatus": "Complete",
+"ProcessingStarted": "/Date(1460040146887)/",
+"ProcessingCompleted": "/Date(1460040149923)/"
+}
+]
+}

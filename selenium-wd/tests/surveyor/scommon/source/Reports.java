@@ -33,6 +33,7 @@ public class Reports {
 	public static HashMap<String, SurveyModeFilter> SurveyModeFilterGuids;
 	public static HashMap<String, ReportModeFilter> ReportSurveyModeFilterGuids;
 	public static HashMap<String, ReportJobType> ReportJobTypeGuids;
+	public static HashMap<ReportJobType, String> ReportJobTypeReverseGuids;
 	
 	protected String rptTitle;
 	protected String strCreatedBy;
@@ -252,6 +253,7 @@ public class Reports {
 		SurveyModeFilterGuids = new HashMap<String, SurveyModeFilter>(); 
 		ReportSurveyModeFilterGuids = new HashMap<String, ReportModeFilter>(); 
 		ReportJobTypeGuids = new HashMap<String, ReportJobType>(); 
+		ReportJobTypeReverseGuids = new HashMap<ReportJobType, String>();
 		
 		SurveyModeFilterGuids.put("0514B92A-39AE-4111-AF16-4495440EC319", SurveyModeFilter.Assessment);
 		SurveyModeFilterGuids.put("4901E67A-4C00-4436-ADC0-9CFB277BB310", SurveyModeFilter.RapidResponse);
@@ -276,6 +278,16 @@ public class Reports {
 		ReportJobTypeGuids.put("00000000-0000-0000-0007-000000000000", ReportJobType.ShapeFile);
 		ReportJobTypeGuids.put("00000000-0000-0000-0008-000000000000", ReportJobType.ReportMeta);
 		ReportJobTypeGuids.put("00000000-0000-0000-0009-000000000000", ReportJobType.PercentCoverageForecast);
+
+		ReportJobTypeReverseGuids.put(ReportJobType.Map, "00000000-0000-0000-0001-000000000000");
+		ReportJobTypeReverseGuids.put(ReportJobType.SSRS, "00000000-0000-0000-0002-000000000000");
+		ReportJobTypeReverseGuids.put(ReportJobType.DataGeneration, "00000000-0000-0000-0003-000000000000");
+		ReportJobTypeReverseGuids.put(ReportJobType.EQMap, "00000000-0000-0000-0004-000000000000");
+		ReportJobTypeReverseGuids.put(ReportJobType.EQSSRS, "00000000-0000-0000-0005-000000000000");
+		ReportJobTypeReverseGuids.put(ReportJobType.EQDataGeneration, "00000000-0000-0000-0006-000000000000");
+		ReportJobTypeReverseGuids.put(ReportJobType.ShapeFile, "00000000-0000-0000-0007-000000000000");
+		ReportJobTypeReverseGuids.put(ReportJobType.ReportMeta, "00000000-0000-0000-0008-000000000000");
+		ReportJobTypeReverseGuids.put(ReportJobType.PercentCoverageForecast, "00000000-0000-0000-0009-000000000000");
 	}
 	
 	public static void main(String[] args) {

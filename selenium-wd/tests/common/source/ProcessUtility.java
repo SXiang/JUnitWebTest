@@ -9,8 +9,11 @@ import java.io.OutputStreamWriter;
 import org.testng.Assert;
 
 public class ProcessUtility {
-	public static Process executeProcess(String command, boolean isShellCommand, boolean waitForExit) throws IOException {
+	
+	public static ProcessOutputInfo executeProcess(String command, boolean isShellCommand, boolean waitForExit) throws IOException {
 		Process process = null;
+		String output = "";
+		String error = "";
 		try {
 			String execCommand = command;
 			
@@ -19,7 +22,7 @@ public class ProcessUtility {
 			}
 			
 			process = Runtime.getRuntime().exec(execCommand);
-			Thread.sleep(1000); // TEST
+			Thread.sleep(1000); 
 			
 			if (isShellCommand) {
 				// Flush the output stream.
@@ -28,9 +31,9 @@ public class ProcessUtility {
 			
 			if (waitForExit) {
 				// Flush input stream.
-				processInputStream(process.getInputStream());
+				output = processInputStream(process.getInputStream());
 				// Flush error stream.
-				processInputStream(process.getErrorStream());
+				error = processInputStream(process.getErrorStream());
 
 				int exit = process.waitFor();
 				Log.info("Process Exit Code: " + exit);
@@ -46,17 +49,19 @@ public class ProcessUtility {
 		}
 		
 		if (!waitForExit)
-			return process;
+			return new ProcessOutputInfo(process, output, error);
 		
-		return null;
+		return new ProcessOutputInfo(null, output, error);
 	}
 
-	private static void processInputStream(InputStream inputStream) throws IOException {
+	private static String processInputStream(InputStream inputStream) throws IOException {
 		InputStreamReader streamReader = new InputStreamReader(inputStream);
 		BufferedReader bufferedReader = new BufferedReader(streamReader);
+		StringBuilder builder = new StringBuilder();
 		String lineText;
 		try {
 			while ((lineText = bufferedReader.readLine()) != null) {
+				builder.append(lineText);
 				Log.info(lineText);
 			}
 		} catch (IOException e) {
@@ -64,6 +69,7 @@ public class ProcessUtility {
 		} finally {
 			bufferedReader.close();
 		}
+		return builder.toString();
 	}
 
 	public static void killProcess(String processName, boolean killChildProcesses) {
