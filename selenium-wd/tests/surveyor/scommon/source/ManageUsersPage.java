@@ -153,7 +153,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		super(driver, testSetup, baseURL, baseURL + urlPath);
 	}
 
-	public void addNewPicarroUser(String email, String password, String role) {
+	public void addNewPicarroUser(String email, String password, boolean enabled) {
 		this.btnAddNewPicarroUser.click();
 		this.waitForNewPageLoad();
 		
@@ -161,13 +161,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 		this.inputEmail.sendKeys(email);
 		this.inputPassword.sendKeys(password);
 		this.inputPasswordConfirm.sendKeys(password);
-
-		List<WebElement> roleOptions = this.dropDownRole.findElements(By
-				.tagName("option"));
-		for (WebElement roleOption : roleOptions) {
-			if (roleOption.getText().trim().equalsIgnoreCase(role))
-				roleOption.click();
-		}
+		
+		enableDisableUser(enabled);
 
 		this.btnOk.click();
 
