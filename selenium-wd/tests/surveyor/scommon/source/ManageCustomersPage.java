@@ -59,23 +59,111 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	private WebElement btnEditCustomer;
 	private String btnEditCustomerXPath = "//*[@id='datatable']/tbody/tr[1]/td[3]/a"; 
 	
+	@FindBy(id = "LicencedFeatureId-GAP Grid 1.0")
+	private WebElement inputGAPGrid;
+	
+	@FindBy(id = "LicencedFeatureId-Report Metadata")
+	private WebElement inputReportMetadata;
+	
+	@FindBy(id = "LicencedFeatureId-Assessment")
+	private WebElement inputAssessment;
+	
+	@FindBy(id = "LicencedFeatureId-EQ")
+	private WebElement inputEQ;
+	
+	@FindBy(id = "LicencedFeatureId-LISA Box 1.0")
+	private WebElement inputLISABox;
+	
+	@FindBy(id = "LicencedFeatureId-Survey Protocol Forecase")
+	private WebElement inputSurveyForecase;
+	
+	@FindBy(id = "LicencedFeatureId-Report ShapeFile")
+	private WebElement inputReportShapeFile;
+	
 	/**
 	 * @param driver
 	 * @param testSetup
 	 * @param strBaseURL
 	 * @param strPageURL
 	 */
+	
 	public ManageCustomersPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 		
 		Log.info("\nThe Manager Customers Page URL is: " + this.strPageURL);
 	}
 	
+
+	public boolean selectLicensedFeatures(LicensedFeatures... lfs){
+		if(lfs != null){
+		  for(LicensedFeatures lf:lfs){
+			  selectLicensedFeature(lf);
+		  }		
+		}
+		return true;
+	}
+	
+	public boolean selectLicensedFeature(LicensedFeatures lf) {
+		return selectLicensedFeature(lf, true);
+	}
+	
+	public boolean selectLicensedFeature(LicensedFeatures lf, boolean enableFeature){
+		WebElement inputBox = getInputBoxOfLicensedFeature(lf);
+		if (enableFeature) {
+			if (!inputBox.isSelected())
+				inputBox.click();
+		}
+		else {
+			if (inputBox.isSelected())
+				inputBox.click();
+		}
+		return enableFeature;
+	}
+	
+	private WebElement getInputBoxOfLicensedFeature(LicensedFeatures lf){
+		WebElement inputBox;
+		switch(lf){
+		case ASSESSMENT: 
+			inputBox = inputAssessment;
+		    break;
+		case GAPGRID: 
+			inputBox = inputGAPGrid;
+            break;
+		case REPORTMETADATA: 
+			inputBox = inputReportMetadata;
+            break;
+		case EQ: 
+			inputBox = inputEQ;
+            break;
+		case LISABOX: 
+			inputBox = inputLISABox;
+            break;
+		case SURVEYFORECASE: 
+			inputBox = inputSurveyForecase;
+            break;
+		case REPORTSHAPEFILE: 
+			inputBox = inputReportShapeFile;
+            break;
+		default: 
+			inputBox = inputGAPGrid;
+            break;       
+		}
+		return inputBox;
+	}
+	
 	public boolean addNewCustomer(String customerName, String eula) {
 		return addNewCustomer(customerName, eula, true /*enableCustomer*/);
 	}
 	
+	public boolean addNewCustomer(String customerName, String eula, LicensedFeatures... lfs) {
+		return addNewCustomer(customerName, eula, true /*enableCustomer*/, lfs);
+	}
+	
 	public boolean addNewCustomer(String customerName, String eula, boolean enableCustomer) {
+		return addNewCustomer(customerName, eula, enableCustomer, null /* licensed features */);
+	}
+	
+	public boolean addNewCustomer(String customerName, String eula, boolean enableCustomer, LicensedFeatures[] lfs ) {
 		this.btnAddNewCustomer.click();
 		this.waitForNewPageLoad();
 		
@@ -91,7 +179,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		
 		setEULAText(eula);
 		enabledDisableCustomer(enableCustomer);
-		
+		selectLicensedFeatures(lfs);
 		this.btnOk.click();
 		
 		if (isElementPresent(this.panelDuplicationErrorXPath)){
@@ -106,10 +194,10 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		return true;
 	}
 	
-	private void setEULAText(String eula) {
+	public void setEULAText(String eula) {
 		sendKeysToTextArea(this.textAreaEula, eula);
 	}
-
+    
 	private void enabledDisableCustomer(boolean enableCustomer) {
 		if (enableCustomer) {
 			if (!inputAccountEnabled.isSelected())
@@ -119,6 +207,18 @@ public class ManageCustomersPage extends SurveyorBasePage {
 			if (inputAccountEnabled.isSelected())
 				inputAccountEnabled.click();
 		}
+	}
+
+	public boolean isEulaRed(){
+		String eulaStyle = this.textAreaEula.getAttribute("style");
+		String eulaRed = "border: 1px solid red;";
+		return eulaRed.equals(eulaStyle.trim());
+	}
+
+	public boolean isNameRed(){
+		String nameStyle = this.inputCustomerName.getAttribute("style");
+		String nameRed = "border: 1px solid red;";
+		return nameRed.equals(nameStyle.trim());
 	}
 	
 	public boolean findExistingCustomer(String customerName, boolean enabledStatus) {
@@ -439,6 +539,16 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 	public void clickOnEditCancelBtn(){
 		this.cancelEditBtn.click();
+	}
+	
+	public void clickOnEditOkBtn(){
+		this.btnOk.click();
+	}
+	
+	@Override
+	public void open(){
+		super.open();
+		waitForPageLoad();
 	}
 	
     @Override

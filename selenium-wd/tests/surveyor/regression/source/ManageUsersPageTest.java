@@ -70,6 +70,51 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	}
 
 	/**
+	 * Test Case ID: TC1675: More than 15 characters not allowed in New password and confirm password fields on Change User Password page
+	 * Script:
+	 *  - On Home Page, and click UserName -> Change Password
+	 *  - Provide more than 15 characters in New Password and Confirm Password fields and click OK
+	 * Results:
+	 *  - "Please enter no more than 15 characters." message is displayed to user
+	 */
+	@Test
+	public void TC1675_MaxPasswordLength_PicUser(){
+		String password =USERPASSWORD;
+		String password_16 = password + "abc"; // 16 chars
+		String password_80 = password_16 + password_16 + password_16 + password_16 + password_16;
+		String errorMsg = PASSWORDTOOLONG;
+		
+		String userName = PICNAMEPREFIX + "dr" + testSetup.getRandomNumber() + REGBASEPICUSERNAME;
+		String customerName = "Picarro";
+		String location = "Santa Clara";
+		String locationDesc = customerName + " - " + location;
+		
+		// *** Add a new user for this test ***
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		manageUsersPage.open();
+		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, CUSUSERROLEDR, locationDesc, TIMEZONECT);
+		loginPage = manageUsersPage.logout();;
+		
+		// *** Start test ***
+		
+		Log.info("\nRunning - TC1675_MaxPasswordLength_PicUser - "+
+				"Test Description: More than 15 characters not allowed in New password and confirm password fields\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(userName, password);
+
+		manageUsersPage.changeUserPassword(password, password_16);
+		assertEquals(manageUsersPage.getNewPasswordError(),errorMsg);
+		assertEquals(manageUsersPage.getConfirmPasswordError(),errorMsg);
+		
+		manageUsersPage.changeUserPassword(password, password_80);
+		assertEquals(manageUsersPage.getNewPasswordError(),errorMsg);
+		assertEquals(manageUsersPage.getConfirmPasswordError(),errorMsg);
+		
+	}
+	
+	/**
 	 * Test Case ID: TC68 Test Description: Picarro Admin - Add New Picarro User
 	 * 
 	 */
@@ -198,7 +243,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		Log.info(String.format("Editing user: Username=[%s]; Role=[%s]; Timezone=[%s]; Enabled=[%b]; IsCustomerUser=[%b]", 
 				userName, CUSUSERROLESU, TIMEZONEETUA, true, false)); 
 		manageUsersPage.editUser(userName, CUSUSERROLESU, TIMEZONEETUA, true, false);
-		
+
 		Log.info(String.format("Editing user: Location=[%s]; Username=[%s]; IsCustomerUser=[%b]", 
 				locationName, userName, false)); 
 		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
@@ -208,7 +253,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
 		assertTrue(homePage.checkIfAtHomePage());
 	}
-	
+
 	/**
 	 * Test Case IDs: 
 	 * TC71  Test Description: Reset user password as Picarro Admin.
@@ -222,10 +267,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		if (!isValidRunAsUser(username, FN_TC71_TC473_USER_RESET_PWD)) {
 			return;
 		}					
-		
+
 		String testCaseID = getTestCaseName(ManageUserTestCaseType.ResetPwd, username);		
 		password = CryptoUtility.decrypt(password);
-		
+
 		String usernameNew = SQACUS + testSetup.getRandomNumber() + testCaseID + REGBASEUSERNAME;
 		Log.info(String.format("\nRunning - %s - Reset customer user password as %s \n", 
 				testCaseID, role));
@@ -265,7 +310,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		else
 			fail(String.format("\nTestcase %s - failed to login by the new password.\n", testCaseID));
 	}
-	
+
 	/**
 	 * Test Case ID: 
 	 * TC72 Test Description: Change password as Picarro admin
@@ -352,10 +397,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageLocationsPage.open();
 		manageLocationsPage.waitForPageLoad();
 		manageLocationsPage.addNewLocation(locationNameNew, customerName, cityNameNew);		
-		
+
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
-		
+
 		// Edit role, location and timezone
 		Log.info(String.format("Editing user - Username=%s;Role=%s;Timezone=%s;Location=%s;Enabled=%b;IsCustomerUser=%b",
 				userName, CUSUSERROLESU, TIMEZONEETUA, locationNameNew, true, false));
@@ -403,7 +448,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		Log.info("Found error message:" + output);
 		assertTrue(output.contains(DUPLICATIONERROR));
 	}
-	
+
 	/**
 	 * Test Case IDs: 
 	 * TC94  Test Description: Picarro Admin - Disabled User
@@ -416,7 +461,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 			String customerName, String customerLocation) {
 		String testCaseID = getTestCaseName(ManageUserTestCaseType.DisabledUser, username);		
 		password = CryptoUtility.decrypt(password);
-		
+
 		String usernameNew = SQACUS + testSetup.getRandomNumber() + testCaseID + REGBASEUSERNAME;
 		Log.info(String.format("\nRunning - %s - Test Description: %s - Disabled User\n", testCaseID, role));
 
@@ -457,14 +502,14 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String password = CryptoUtility.decrypt(pwd);
 		String userName = SQACUS + testSetup.getRandomNumber() + tcID + REGBASEUSERNAME;
 		String locationDesc = SQACUS + " - " + SQACUSLOC;
-		
+
 		Log.info("\nRunning - "+ tcID +"_ReEnableUser_PicAdminSupport - Test Description: Picarro Admin - Re-Enable User\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(user, password);
 
 		homePage.waitForPageLoad();
-		
+
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
 
@@ -509,7 +554,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(user, password);
 
 		homePage.waitForPageLoad();
-		
+
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
 
@@ -517,7 +562,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		Log.info(String.format("Creating new user - Customer=%s;Username=%s;Role=%s;Location=%s;Enabled=%b",
 				SQACUS, userName50, CUSUSERROLEDR, SQACUSLOC, false));
 		manageUsersPage.addNewCustomerUser(SQACUS, userName50, USERPASSWORD, CUSUSERROLEDR, SQACUSLOC, false);
-		
+
 		Log.info(String.format("Finding user - Location=%s;Username=%s;IsCustomerUser=%b",
 				SQACUSLOC, userName50, false));
 		assertTrue(manageUsersPage.findExistingUser(SQACUSLOC, userName50, false));
@@ -536,7 +581,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 				SQACUSLOC, userName51, false));
 		assertFalse(manageUsersPage.findExistingUser(SQACUSLOC, userName51, false));
 	}
-	
+
 	/**
 	 * Test Case ID: TC115 Test Description: Pagination (Manage Users) Test
 	 * Script: 10,25,50 and 100 records selection on all Administration screens
@@ -832,4 +877,166 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		}
 		return testCase;
 	}
+	
+
+	/**
+	 * Test Case ID: TC480
+     * Test Description: Add User - Password and Confirm Password values different
+	 * Script:
+	 *  - Log into the site and click Administration -> Users
+	 *  - Click on 'Add New Picarro (or Customer) User' button
+	 *  - Provide different values for Password and Confirm Password fields
+     * Results:
+     *  - "Please enter the same value again." message should be displayed
+	 */
+	@Test
+	public void TC480_ConfirmPasswordDifferent_PicSupport(){
+		String errorMsg = PWDSAMEVALUE;		
+		String email = PICNAMEPREFIX + "dr" + testSetup.getRandomNumber() + REGBASEPICUSERNAME;		
+		String customerName = "Picarro";
+		String location = SQACUSSULOC;
+		String locationDesc = customerName + " - " + location;
+
+		
+		Log.info("\nRunning - TC480_ConfirmPasswordDifferent_PicSupport - "+
+				"Test Description:  Add User - Password and Confirm Password values different\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs( SQAPICSUP,USERPASSWORD);
+		manageUsersPage.open();
+		
+		// Picarro user
+		manageUsersPage.addNewPicarroUser(email, USERPASSWORD,USERPASSWORD+" ", CUSUSERROLEDR, locationDesc, TIMEZONECT);		
+		assertEquals(manageUsersPage.getConfirmPasswordError(),errorMsg);
+
+		manageUsersPage.clickOnCancelAddBtn();
+		
+		// Customer User
+		customerName = SQACUS;
+		location = SQACUSLOC;
+		locationDesc = customerName + " - " + location;
+		
+		manageUsersPage.addNewCustomerUser(customerName, email, "_"+USERPASSWORD,USERPASSWORD, CUSUSERROLEDR, location,true);
+		assertEquals(manageUsersPage.getConfirmPasswordError(),errorMsg);
+		
+		manageUsersPage.clickOnCancelAddBtn();		
+	}
+	
+	/**
+	 * Test Case ID: TC481
+     * Test Description: Add user - invalid email address values
+	 * Script:
+	 *  - Log into the site and click Administration -> Users
+	 *  - Click on 'Add New Picarro (or Customer) User' button
+	 *  - Provide invalid email address (e.g. rpitter@b, rpitter, rpitter@b. , rpitter@b.c). Click OK
+     * Results:
+     *  - "Please enter valid email address" message should be displayed
+	 */
+	@Test
+	public void TC481_InvalidEmailAddress_PicSupport(){
+		String errorMsg = EMAILINVALID;		
+		String emailU = PICNAMEPREFIX + "dr" + testSetup.getRandomNumber() + "@invalid.u";
+		String emailC = PICNAMEPREFIX + "dr" + testSetup.getRandomNumber() + "";
+		
+		String customerName = "Picarro";
+		String location = SQACUSSULOC;
+		String locationDesc = customerName + " - " + location;
+		
+		
+		Log.info("\nRunning - TC481_InvalidEmailAddress_PicSupport - "+
+				"Test Description: Add user - invalid email address values\n");
+		
+		loginPage.open();
+		loginPage.loginNormalAs( SQAPICSUP,USERPASSWORD);
+		manageUsersPage.open();
+		
+		// Picarro user
+		manageUsersPage.addNewPicarroUser(emailU, USERPASSWORD, CUSUSERROLEDR, locationDesc, TIMEZONECT);		
+		assertEquals(manageUsersPage.getInvalidEmailError(),errorMsg);
+
+		manageUsersPage.clickOnCancelAddBtn();
+		
+		// Customer User
+		customerName = SQACUS;
+		location = SQACUSLOC;
+		locationDesc = customerName + " - " + location;
+		
+		manageUsersPage.addNewCustomerUser(customerName, emailC, USERPASSWORD, CUSUSERROLEDR, locationDesc);
+		assertEquals(manageUsersPage.getInvalidEmailError(),errorMsg);
+		
+		manageUsersPage.clickOnCancelAddBtn();		
+	}	
+
+	/**
+	 * Test Case ID: TC482
+     * Test Description: Add user - blank required fields
+	 * Script:
+	 *  -  Log into the site and click Administration -> Users
+     *  - Click on 'Add New Picarro (or Customer) User' button
+     *  - Keep Email Address, pwd and confirm pwd fields blank. Click OK
+     * Result:
+     *  - "This field is required." message should be displayed"
+     */
+	@Test
+	public void TC482_AddUserBlankFields_PicSupport(){
+		String errorMsg = BLANKFIELDERROR;		
+		String email = "";
+		String password = "";
+		
+		String customerName = "Picarro";
+		String location = SQACUSSULOC;
+		String locationDesc = customerName + " - " + location;
+		
+		Log.info("\nRunning - TC482_AddUserBlankFields_PicSupport - "+
+				"Test Description: Add user - blank required fields\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs( SQAPICSUP,USERPASSWORD);
+		manageUsersPage.open();
+		
+		// Add Picarro User
+		manageUsersPage.addNewPicarroUser(email, password, CUSUSERROLEDR, locationDesc, TIMEZONECT);		
+		assertEquals(manageUsersPage.getInvalidEmailError(),errorMsg);
+		assertEquals(manageUsersPage.getPasswordError(),errorMsg);
+		assertEquals(manageUsersPage.getConfirmPasswordError(),errorMsg);
+		
+		manageUsersPage.clickOnCancelAddBtn();
+		
+		// Add Customer User
+		customerName = SQACUS;
+		location = SQACUSLOC;
+		locationDesc = customerName + " - " + location;
+		
+		manageUsersPage.addNewCustomerUser(customerName, email, password, CUSUSERROLEDR, locationDesc);
+		assertEquals(manageUsersPage.getInvalidEmailError(),errorMsg);
+		assertEquals(manageUsersPage.getPasswordError(),errorMsg);
+		assertEquals(manageUsersPage.getConfirmPasswordError(),errorMsg);
+		
+		manageUsersPage.clickOnCancelAddBtn();		
+	}	
+	
+	/**
+	 * Test Case ID: TC488
+     * Test Description: Search invalid user record
+	 * Script:
+	 *  -  Log into the site and Provide invalid user name in search box present on Users screen
+     * Result:
+     *  - "Message should be displayed : 'No matching records found'
+     */
+	@Test
+	public void TC488_NoMatchingUsersFound_PicSupport(){
+		String errorMsg = NOMATCHINGRECORDS;		
+		String invalidKey = "whichUserIsNotValidHowever";
+
+		Log.info("\nRunning - TC488_NoMatchingUsersFound_PicSupport - "+
+				"Test Description: Add user - blank required fields\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs( SQAPICSUP,USERPASSWORD);
+		manageUsersPage.open();
+
+		manageUsersPage.performSearch(invalidKey);
+		assertEquals(manageUsersPage.getLabelNoMatchingSearch(),errorMsg);
+	}		
+	
 }

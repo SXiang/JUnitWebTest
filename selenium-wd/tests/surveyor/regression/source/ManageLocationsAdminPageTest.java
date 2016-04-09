@@ -3,8 +3,13 @@
  */
 package surveyor.regression.source;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static surveyor.scommon.source.SurveyorConstants.BLANKFIELDERROR;
+import static surveyor.scommon.source.SurveyorConstants.CUSTOMERNAMEPREFIX;
+import static surveyor.scommon.source.SurveyorConstants.EULASTRING;
 import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
@@ -12,17 +17,22 @@ import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_25;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_50;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
+import static surveyor.scommon.source.SurveyorConstants.PICNAMEPREFIX;
+import static surveyor.scommon.source.SurveyorConstants.REGBASEPICUSERNAME;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
+import static surveyor.scommon.source.SurveyorConstants.TIMEZONECT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
+import static surveyor.scommon.source.SurveyorConstants.USERROLEADMIN;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -36,6 +46,7 @@ import surveyor.scommon.source.ManageSurveyorAdminPage;
 import surveyor.scommon.source.ManageUsersAdminPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.SurveyorConstants.UserTimezone;
 import surveyor.scommon.source.SurveyorTestRunner;
 import common.source.BaseHelper;
 import common.source.Log;
@@ -86,6 +97,247 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		manageSurveyorAdminPage = new ManageSurveyorAdminPage(driver, baseURL,
 				testSetup);
 		PageFactory.initElements(driver, manageSurveyorAdminPage);
+	}
+
+	/**
+	 * Test Case ID: TC21_CancelLatLongSelector_PicAdmin
+	 * Test Description: Verify Cancel button of Lat/Long map Selector screen while navigating through Add location screen as Picarro Admin 
+	 * Test Script: 
+	 *  - Log in as Picarro Admin
+	 *  - On Home Page, click Picarro Administration -> Manage Locations
+	 *  - Click on 'Add New Location' button
+	 *  - Click on ‘Lat/Long Selector’ button
+	 *  - Click on desired location on map and click Cancel
+	 * Excepted Result:
+	 *  - A map appears with a pin in the default location
+	 *  - The map disappears and the Latitude and Longitude fields remain blank
+	 */
+	@Test
+	public void TC21_CancelLatLongSelector_PicAdmin(){
+		final int xOffset = 98;
+		final int yOffset = 99;
+
+		Log.info("\nRunning - TC21_CancelLatLongSelector_PicAdmin - "+
+				"Test Description: Verify Cancel button of adding Lat/Long on map screen\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+
+		manageLocationsPage.open();
+		manageLocationsPage.clickOnAddNewLocationBtn();
+		manageLocationsPage.clickOnLatLongSelectorBtn();
+		manageLocationsPage.selectOnLatLong(xOffset, yOffset);
+
+		manageLocationsPage.clickOnLatLongCancelBtn();
+
+		assertEquals("The location latitude should be blank after the cancelation in the map screen",
+				"",manageLocationsPage.getLocationLatitudeText());
+
+		assertEquals("The location longitude should be blank after the cancelation in the map screen",
+				"",manageLocationsPage.getLocationLongitudeText());
+	}
+
+	/**
+	 * Test Case ID: TC22_CancelEditLatLongSelector_PicAdmin
+	 * Test Description: Verify Cancel button of Lat/Long map Selector screen while navigating through Edit location screen as Picarro Admin  
+	 * Test Script: 
+	 *  - Log in as Picarro Admin
+	 *  - On Home Page, click Picarro Administration -> Manage Locations
+	 *  - Click on 'Edit' button
+	 *  - Click on ‘Lat/Long Selector’ button
+	 *  - Click on desired location on map and click Cancel
+	 * Excepted Result:
+	 *  - A map appears with a pin in the default location
+	 *  - The map disappears and the Latitude and Longitude fields remain blank
+	 */
+	@Test
+	public void TC22_CancelEditLatLongSelector_PicAdmin(){
+		final int xOffset = 101;
+		final int yOffset = 111;
+
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getFixedSizeRandomNumber(12) + "TC22";
+		String eula = customerName + ": " + EULASTRING;
+		String location = "Santa Clara";
+		
+		Log.info("\nRunning - TC22_CancelEditLatLongSelector_PicAdmin - "+
+				"Test Description: Verify Cancel button of editing Lat/Long on map screen\n");		
+		
+		// *** Add a new location/customer for this test ***
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		manageCustomersPage.open();
+		manageCustomersPage.addNewCustomer(customerName, eula);
+		
+		manageLocationsPage.open();
+		manageLocationsPage.addNewLocation(location, customerName, location);
+
+		loginPage.open();
+		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+
+		manageLocationsPage.open();
+		manageLocationsPage.performSearch(location);
+		manageLocationsPage.findExistingLocationAndClickEdit(customerName, location);
+
+		String expectedLat = manageLocationsPage.getLocationLatitudeText();
+		String expectedLong = manageLocationsPage.getLocationLongitudeText();
+
+		manageLocationsPage.clickOnLatLongSelectorBtn();
+		manageLocationsPage.selectOnLatLong(xOffset, yOffset);		
+		manageLocationsPage.clickOnLatLongCancelBtn();		
+
+		String actualLat = manageLocationsPage.getLocationLatitudeText();
+		String actualLong = manageLocationsPage.getLocationLongitudeText();		
+		assertEquals("The location [latitude,longitude] shouldn't be changed after the cancelation of the map editing",
+				expectedLat+","+expectedLong, actualLat+","+actualLong);
+
+		manageLocationsPage.clickOnCancelBtn();
+	}
+
+	/**
+	 * Test Case ID: TC23_ConfirmLatLongSelector_PicAdmin
+	 * Test Description: Confirm that map accurately locates manually entered Latitude and Longitude values
+	 * Test Script: 
+	 *  - Log in as Picarro Admin
+	 *  - On Home Page, click Picarro Administration -> Manage Locations
+	 *  - Click on 'Add New Location' button
+	 *  - Manually enter Latitude and Longitude values
+	 *  - Click on ‘Lat/Long Selector’ button
+	 * Excepted Result:
+	 *  - The map should display the correct point for the given coordinates, not the default location
+	 */
+	@Test
+	public void TC23_ConfirmLatLongSelector_PicAdmin(){
+
+		String latitude = "50.00000";
+		String longitude = "50.00000";
+
+		Log.info("\nRunning - TC23_ConfirmLatLongSelector_PicAdmin - "+
+				"Test Description: Confirm that map accurately locates manually entered Latitude and Longitude values\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+
+		manageLocationsPage.open();
+		manageLocationsPage.clickOnAddNewLocationBtn();
+		manageLocationsPage.inputLatLong(latitude, longitude);		
+		manageLocationsPage.clickOnLatLongSelectorBtn();	
+
+		String actualPoint = manageLocationsPage.getSelectedPoint();		
+		manageLocationsPage.clickOnLatLongCancelBtn();
+
+		assertEquals(latitude+", "+longitude,actualPoint);
+
+	}
+
+	/** TO BE VERIFIED - NOT WORKING AS DESCRIBIED - description needs to be updated later
+	 * Test Case ID: TC24_NotificationLatLongValueMissing_PicAdmin
+	 * Test Description: Notification should appear if Latitude is entered but Longitude is not, or vice versa
+	 * Test Script: 
+	 *  - Log in as Picarro Admin
+	 *  - On Home Page, click Picarro Administration -> Manage Locations
+	 *  - Click on 'Add New Location' button
+	 *  - Enter a Latitude value and leave Longitude blank
+	 *  - Click on ‘Lat/Long Selector’ button
+	 *  - Enter a Longitude value and delete the Latitude value
+	 *  - Click on OK button
+	 * Excepted Result:
+	 *  - A warning should pop up with the message, “Latitude and Longitude fields must be either both populated or both blank”
+	 */
+	@Test
+	public void TC24_NotificationLatLongValueMissing_PicAdmin(){
+
+		String latitude = "50.00000";
+		String longitude = "50.00000";
+
+		Log.info("\nRunning - TC24_NotificationLatLongValueMissing_PicAdmin - "+
+				"Test Description: Notification should appear if Latitude is entered but Longitude is not, or vice versa\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+
+		manageLocationsPage.open();
+		manageLocationsPage.clickOnAddNewLocationBtn();
+		manageLocationsPage.inputLatLong(latitude, "");		
+		manageLocationsPage.clickOnLatLongSelectorBtn();      
+
+		String actualPoint = manageLocationsPage.getSelectedPoint();		
+		assertNull("No point should be selected while longitude is missing",actualPoint);		
+
+		manageLocationsPage.clickOnLatLongCancelBtn();
+		manageLocationsPage.clickOnOkBtn();
+
+		assertEquals(BLANKFIELDERROR, manageLocationsPage.getLocationLongitudeError());
+
+		manageLocationsPage.inputLatLong("", longitude);		
+		manageLocationsPage.clickOnLatLongSelectorBtn();
+
+		actualPoint = manageLocationsPage.getSelectedPoint();		
+		assertNull("No point should be selected while latitude is missing",actualPoint);	
+
+		manageLocationsPage.clickOnLatLongCancelBtn();
+		manageLocationsPage.clickOnOkBtn();
+
+		assertEquals(BLANKFIELDERROR, manageLocationsPage.getLocationLatitudeError());
+
+		manageLocationsPage.clickOnCancelBtn();
+
+	}	
+
+
+
+	/**
+	 * Test Case ID: TC1236_CheckTimeZone_PicAdmin Test Description: 
+	   Check Timezone and User Name drop down menu working on Add and Edit Location Page
+	 * Test Script: - On Home Page, click Picarro Administration -> Manage Locations 
+                    - Click on 'Add New Location' button
+                    - Click on Timezone drop menu present in header and change the timezone
+                    - Click on User_Name (eg. Administrator)
+                    - Click on Log Out link
+	 * Expected Results: - User should be able to change the timezone successfully
+                         - User should see all the drop down menu - Preferences, Change Password, Release Notes, Manual and Log out links are present
+                         - User should be able to logout sucessfully
+	 */
+
+	@Test
+	public void TC1236_CheckTimeZone_PicAdmin(){
+		String userName = PICNAMEPREFIX + "ad" + testSetup.getRandomNumber() + REGBASEPICUSERNAME;
+		String customer = "Picarro";
+		String location = "Santa Clara";
+		String locationDesc = customer + " - " + location;
+
+		Log.info("\nRunning - TC1236_CheckTimeZone_PicAdmin - " +
+				"Test Description: Check Timezone change\n");
+
+		// *** Add a new admin user for this test ***
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		manageUsersPage.open();
+		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, USERROLEADMIN, locationDesc, TIMEZONECT);
+		manageUsersAdminPage.logout();
+
+		// *** Start test ***
+
+		UserTimezone[] uts = UserTimezone.values();
+		UserTimezone ut = uts[0];
+
+		loginPage.open();
+		loginPage.loginNormalAs(userName, USERPASSWORD);
+
+		manageLocationsPage.open();
+		manageLocationsPage.clickOnAddNewLocationBtn();
+
+		assertTrue("Failed to change user timezone - '"+ ut+"'",
+				manageLocationsPage.changeUserTimezone(ut));
+
+		assertTrue("Dropdown menu item(s) are missing", 
+				manageLocationsPage.verifyDropdownMenuItems());
+		loginPage = manageUsersPage.logout();
+
+		loginPage.loginNormalAs(userName, USERPASSWORD);
+		assertEquals("User timezone has not retained after relogin - '"+ ut+"'",
+				ut.toString(),manageLocationsPage.getUserTimezone());
+
+
 	}
 
 	/**
@@ -288,7 +540,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		assertTrue(manageRefGasBottlesAdminPage.getStrPageURL()
 				.equalsIgnoreCase(curURL));
 	}
-	
+
 	/**
 	 * Test Case ID: TC450_ManageLocationsAdminPagination Test Description:
 	 * Pagination (Manage Locations Customer Admin) Test Script: 10,25,50 and
@@ -319,7 +571,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 				Integer.valueOf(PAGINATIONSETTING_25));
 
 		assertTrue(manageLocationsAdminPage.getListSize(locationList));
-		
+
 		manageLocationsAdminPage.open();
 		manageLocationsAdminPage.setPagination(PAGINATIONSETTING_50);
 
@@ -399,3 +651,4 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		assertTrue(BaseHelper.isStringListSortedDes(list));
 	}
 }
+
