@@ -9,6 +9,8 @@ import static surveyor.scommon.source.SurveyorConstants.HOMEDHEADER;
 import static surveyor.scommon.source.SurveyorConstants.HOMETITLE;
 import static surveyor.scommon.source.SurveyorConstants.LOGINTITLE;
 import static surveyor.scommon.source.SurveyorConstants.SUBTITLE;
+import static surveyor.scommon.source.SurveyorConstants.SECONDS_10;
+import static surveyor.scommon.source.SurveyorConstants.UNKNOWN_TEXT;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -122,13 +124,17 @@ public class BasePage {
 		return this.strPageURL;
 	}
 
-	public boolean isElementPresent(String strXPath) {
+	public boolean isElementPresent(By by) {
 		try {
-			this.driver.findElement(By.xpath(strXPath));
+			this.driver.findElement(by);
 			return true;
 		} catch (org.openqa.selenium.NoSuchElementException e) {
 			return false;
 		}
+	}
+	
+	public boolean isElementPresent(String strXPath) {
+		return isElementPresent(By.xpath(strXPath));
 	}
 
 	public void clickOnDashboardLink() {
@@ -262,6 +268,10 @@ public class BasePage {
 	protected void sendKeysToTextArea(WebElement textAreaEula, String eula) {
 		// Chromedriver does NOT send keys correctly to TextArea for some controls. 
 		// Use Actions workaround to send keys instead.
+		if(eula == null){
+			return;
+		}
+		textAreaEula.clear();
 		Actions actions = new Actions(driver);
 		actions.moveToElement(textAreaEula);
 		actions.click();
@@ -270,10 +280,38 @@ public class BasePage {
 	}
 	
 	protected void waitUntilPresenceOfElementLocated(String elementID) {
-		(new WebDriverWait(driver, timeout)).until(
-				ExpectedConditions.presenceOfElementLocated(By.id(elementID)));
+		waitUntilPresenceOfElementLocated(By.id(elementID));
 	}
-	
+    protected void waitUntilPresenceOfElementLocated(By locator){
+    	(new WebDriverWait(driver, timeout)).until(
+				ExpectedConditions.presenceOfElementLocated(locator));
+    }
+    
+    protected String waitForPresenceOfElementText(By locator){
+    	return waitForPresenceOfElementText(locator, UNKNOWN_TEXT);
+    }
+	protected String waitForPresenceOfElementText(By locator, String expectedText){
+		String actualText = null;
+		try {
+			actualText = (new WebDriverWait(driver,timeout)).until(
+					new ExpectedCondition<String>(){
+						public String apply(WebDriver d){
+							String value = d.findElement(locator).getText().trim();
+							if(expectedText.equals(UNKNOWN_TEXT)&&!value.equals("")){
+								return value;
+							}else if(expectedText.equals(value)){
+								return value;
+							}else{
+								Log.warn("Expecting '"+expectedText +"', found '"+value+"'");
+								return null;
+							}
+						}
+					});
+		}catch(Exception e){
+			actualText = null;
+		}
+		return actualText;
+	}
 	public void waitForPageToLoad(){
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 	}
@@ -284,4 +322,5 @@ public class BasePage {
 	public void waitForPageLoad() {
 		waitForPageToLoad();
 	}
+
 }

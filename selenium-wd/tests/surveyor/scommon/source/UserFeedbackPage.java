@@ -110,7 +110,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 	public boolean checkUserFeedback(String user, String strFeedback) {
 		setPagination(PAGINATIONSETTING_100);
 		
-		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		String strUserXPath;
 		String strNoteXPath;
@@ -161,7 +161,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 	public String getUserFeedbackNote(String customer, String user) {
 		setPagination(PAGINATIONSETTING_100);
 		
-		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		String customerXPath;
 		String strUserXPath;
@@ -220,7 +220,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 		
 		setPagination(PAGINATIONSETTING_100);
 		
-		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		String customerXPath;
 		String strUserXPath;

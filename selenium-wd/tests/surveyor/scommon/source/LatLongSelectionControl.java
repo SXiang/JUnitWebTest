@@ -33,39 +33,31 @@ public class LatLongSelectionControl extends BaseControl {
 
 	private static final String GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION_CALL = "return getBoundarySelectorCanvasImageData();";
 
-	@FindBy(id = "boundary-feature-class")
-	@CacheLookup
+	@FindBy(id = "boundary-feature-class")	
 	private WebElement filterByTypeDropDown;
-
-	@FindBy(id = "boundary-search-text")
-	@CacheLookup
+	
+	@FindBy(id = "boundary-search-text")	
 	private WebElement selectByNameTextField;    
 
 	@FindBy(id = "button-map-dialog-ok")
 	private WebElement okButton;
 
 	@FindBy(id = "button-map-dialog-cancel")
-	@CacheLookup
 	private WebElement cancelButton;
 
-	@FindBy(id = "latitude")
-	@CacheLookup
+	@FindBy(id = "latitude")	
 	private WebElement latitude;
 
-	@FindBy(id = "longitude")
-	@CacheLookup
+	@FindBy(id = "longitude")	
 	private WebElement longitude;
 
-	@FindBy(id = "zoom-level")
-	@CacheLookup
+	@FindBy(id = "zoom-level")	
 	private WebElement zoomLevel;
 
-	@FindBy(id = "info")
-	@CacheLookup
+	@FindBy(id = "info")	
 	private WebElement selectionInfo;
 
-	@FindBy(id = "myModal")
-	@CacheLookup
+	@FindBy(id = "myModal")	
 	private WebElement mapModalDialog;
 
 	public LatLongSelectionControl(WebDriver driver) {

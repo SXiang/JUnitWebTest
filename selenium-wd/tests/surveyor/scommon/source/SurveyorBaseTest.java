@@ -47,6 +47,7 @@ public class SurveyorBaseTest {
 	public static HomePage homePage;
 	
 	private static ExtentTest test = null; 
+	protected static final String SQAPICAD_AND_SQAPICSUP = "sqapicad@picarro.com,sqapicsup@picarro.com";
 	
 	// JUnit does NOT give a good way to detect which TestClass is executing.
 	// So we watch for the Test method under execution and install simulator pre-reqs

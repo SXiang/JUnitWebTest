@@ -202,6 +202,8 @@ public final class SurveyorConstants {
 	public static final String BLANKFIELDERROR = Resources.getResource(ResourceKeys.Validation_Required);
 	public static final String PWDSAMEVALUE = Resources.getResource(ResourceKeys.Validation_EnterSameValueAgain);
 	public static final String EMAILTOOLONG = Resources.getResource(ResourceKeys.Validation_EnterNoMoreThan).replace("{0}", "50");
+	public static final String PASSWORDTOOLONG = Resources.getResource(ResourceKeys.Validation_EnterNoMoreThan).replace("{0}", "15");
+	public static final String NOMATCHINGRECORDS = Resources.getResource("Constant_NoMatchingRecordsFound");	
 
 	public static final String NOMATCHINGSEARCH = Resources.getResource(ResourceKeys.Constant_NoMatchingRecordsFound);
 
@@ -285,4 +287,53 @@ public final class SurveyorConstants {
 	public static final String DEFAULTLOC="Default";
 
 	public static final String REQUIRED_FIELD_VAL_MESSAGE = "This field is required.";	
+
+	/*
+	 * Timeout constants
+	 */
+	public static final int SECONDS_10 = 10;
+	
+	/*
+	 * Other string constants
+	 */
+	public static final String UNKNOWN_TEXT = "UnknownText";
+	/*
+	 * enum for list of constants
+	 */
+	public static enum LicensedFeatures {
+		GAPGRID, REPORTMETADATA, ASSESSMENT, EQ, 
+		LISABOX, SURVEYFORECASE, REPORTSHAPEFILE
+	}
+	
+	public static enum TopNavMenuItem {
+		PREFERENCES ("Preferences"), 
+		CHANGEPASSWORD ("Change Password"), 
+		RELEASENOTES ("Release Notes"), 
+		MANUAL ("Manual"), 
+		LOGOUT ("Log out");
+
+		private final String text;
+		TopNavMenuItem(String text){
+			this.text = text;
+		}
+
+		public String toString(){
+			return text;
+		}
+	};
+	public static enum UserTimezone {
+		PACIFIC ("Pacific Standard Time"),
+		MOUNTAIN ("Mountain Standard Time"),
+		CENTRAL ("Central Standard Time"),
+		EASTERN ("Eastern Standard Time");
+
+		private final String text;
+		UserTimezone(String text){
+			this.text = text;
+		}
+
+		public String toString(){
+			return text;
+		}
+	};
 }

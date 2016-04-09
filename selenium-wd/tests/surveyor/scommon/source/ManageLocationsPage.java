@@ -10,6 +10,8 @@ import static surveyor.scommon.source.SurveyorConstants.SQACUSSULOC;
 import static surveyor.scommon.source.SurveyorConstants.ETHRNELAT;
 import static surveyor.scommon.source.SurveyorConstants.ETHRNELON;
 import static surveyor.scommon.source.SurveyorConstants.REQUIRED_FIELD_VAL_MESSAGE;
+import static surveyor.scommon.source.SurveyorConstants.SECONDS_10;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -136,6 +138,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "Max")
 	protected WebElement ethMthMaxUnit;
 
+	@FindBy(id = "info")
+	protected WebElement selectedPoint;
+	
 	private static LatLongSelectionControl latLongSelectionControl = null;
 
 	private String latitude;
@@ -181,6 +186,12 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	private void addNewLocation(String locationDesc, String customer, String newLocationName,
 			boolean useLatLongSelector, String ethMthMin, String ethMthMax) {
 
+	    addNewLocation(locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin,ethMthMax,true);
+	}
+	
+	public void addNewLocation(String locationDesc, String customer,
+			String newLocationName, boolean useLatLongSelector, String ethMthMin, String ethMthMax, boolean checkForError) {
+		
 		if (newLocationName.equalsIgnoreCase("Santa Clara")) {
 			latitude = "37.3971035425739";
 			longitude = "-121.98343231897";
@@ -191,19 +202,15 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.inputLocationDesc.sendKeys(locationDesc);
 
 		if (!useLatLongSelector) {
-			this.inputLocationLat.sendKeys(latitude);
-			this.inputLocationLong.sendKeys(longitude);
+			inputLatLong(latitude, longitude);
 		} else {
 			final int X_OFFSET = 100;
 			final int Y_OFFSET = 100;
-			String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
-
+			
 			this.clickOnLatLongSelectorBtn();
-
-			latLongSelectionControl.waitForModalDialogOpen().switchMode(ControlMode.MapInteraction)
-					.waitForMapImageLoad().selectLatLong(CANVAS_X_PATH, X_OFFSET, Y_OFFSET)
-					.switchMode(ControlMode.Default).clickOkButton().waitForModalDialogToClose();
-
+                        this.selectOnLatLong(X_OFFSET, Y_OFFSET);            
+			this.clickOnLatLongOkBtn();
+			
 			String locationLatitudeText = this.getLocationLatitudeText();
 			Log.info("Location Latitude Field value = " + locationLatitudeText);
 			assertTrue(!locationLatitudeText.isEmpty());
@@ -263,18 +270,67 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 		this.btnOK.click();
 		this.waitForPageToLoad();
-
-		if (isElementPresent(this.panelDuplicationErrorXPath)) {
-			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
-				this.btnCancel.click();
+        
+		if(checkForError
+				&& this.verifyErrorMessage(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
+			this.btnCancel.click();
 		}
 	}
+	
+	public boolean verifyErrorMessage(String errorMsg){
+		boolean found = false;
+		if (isElementPresent(this.summaryErrorsBy)) {			
+			if (this.summaryErrors.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
+				for(WebElement element:this.panelErrors){
+					if(element.getText().equals(errorMsg)){
+						found = true;
+						break;
+					}
+				}
+			}
+		}
+		
+		return found;
+	}
 
+	public void inputLatLong(String latitude, String longitude){
+		this.inputLocationLat.clear();
+		this.inputLocationLong.clear();
+		
+		this.inputLocationLat.sendKeys(latitude);
+		this.inputLocationLong.sendKeys(longitude);
+	}
+	
+
+	public void selectOnLatLong(int xOffset, int yOffset){
+		String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
+		latLongSelectionControl.waitForModalDialogOpen()
+		.switchMode(ControlMode.MapInteraction)
+		.waitForMapImageLoad()
+		.selectLatLong(CANVAS_X_PATH, xOffset, yOffset);
+		latLongSelectionControl.switchMode(ControlMode.Default);		
+	}
+	
+	public void clickOnLatLongCancelBtn(){
+		latLongSelectionControl.clickCancelButton()
+		.waitForModalDialogToClose();
+	}
+
+	public void clickOnLatLongOkBtn(){
+		latLongSelectionControl.clickOkButton()
+		.waitForModalDialogToClose();
+	}
+	
+	public boolean findExistingLocationAndClickEdit(String customerName, String locationName){
+		return editExistingLocation(customerName, locationName, null,null,null,null,null, true, true);
+	}
+	public boolean editExistingLocation(String customerName, String locationName, String newLocationName, boolean checkForError){
+		return editExistingLocation(customerName, locationName, newLocationName,null,null,null,null, false, checkForError);
+	}
 	public boolean findExistingLocation(String customerName, String locationName) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String customerNameXPath;
 		String locationNameXPath;
@@ -339,12 +395,21 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		return this.editExistingLocation(customerName, locationName, newLocationName, latValue, longValue, newEthMthMin,
 				newEthMthMax);
 	}
-
-	public boolean editExistingLocation(String customerName, String locationName, String newLocationName,
-			String latValue, String longValue, String newEthMthMin, String newEthMthMax) {
+	public boolean editExistingLocation(String customerName,
+			String locationName, String newLocationName, String latValue,
+			String longValue, String newEthMthMin, String newEthMthMax){
+		
+		return editExistingLocation(customerName, locationName, newLocationName, latValue,
+				longValue, newEthMthMin, newEthMthMax, false,true);
+	}
+	
+	public boolean editExistingLocation(String customerName,
+			String locationName, String newLocationName, String latValue,
+			String longValue, String newEthMthMin, String newEthMthMax , boolean openEditorOnly, boolean checkForError){
+		
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String customerNameXPath;
 		String locationNameXPath;
@@ -379,7 +444,11 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 				actionEditCell.click();
 				this.waitForEditPageLoad();
-
+				
+                if(openEditorOnly){
+                	return true;
+                }
+                
 				if (this.inputLocationDesc != null) {
 					this.inputLocationDesc.clear();
 					this.inputLocationDesc.sendKeys(newLocationName);
@@ -420,7 +489,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				String curURL = driver.getCurrentUrl();
 
 				this.btnOK.click();
-
+                if(!checkForError){
+                	return true;
+                }
 				if (newLocationName.equalsIgnoreCase("")) {
 					// Required field validation message should be shown.
 					this.waitUntilPresenceOfElementLocated(labelLocDescErrorID);
@@ -461,6 +532,42 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	}
 
+	public String getSelectedPoint(){
+		return getSelectedPoint(SECONDS_10);
+	}
+	public String getSelectedPoint(int timeout){
+		
+		latLongSelectionControl.waitForModalDialogOpen()
+		.switchMode(ControlMode.MapInteraction);
+		
+		String pt = null;
+		try{
+		    pt = (new WebDriverWait(driver,timeout)).until(new ExpectedCondition<String>(){
+			public String apply(WebDriver d){
+				String text = null;
+				try{
+					text = selectedPoint.getText();
+					if(text.indexOf("[")>=0){
+						text = text.substring(text.indexOf("[")+1,text.indexOf("]"));
+						}else{
+							text = null;
+						}
+				}catch(Exception e){
+					text = null;
+				}
+				return text;
+			}
+		});
+		}catch(Exception e){
+			pt = null;
+			Log.warn(e.toString() + "Selected point is "+pt+"?");
+		}
+		
+		latLongSelectionControl
+		.switchMode(ControlMode.Default);
+		return pt;
+	}
+	
 	public WebElement getBtnAddNewLocation() {
 		return this.btnAddNewLocation;
 	}
@@ -477,8 +584,20 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		return this.inputLocationLong.getAttribute("value");
 	}
 
+	public String getLocationLatitudeError() {
+		return this.labelLatValueError.getText();
+	}
+
+	public String getLocationLongitudeError() {
+		return this.labelLongValueError.getText();
+	}
+	
+	public String getLocationDescriptionError(){
+		return this.labelLocDescError.getText();
+	}
 	public void clickOnAddNewLocationBtn() {
 		this.btnAddNewLocation.click();
+		this.waitForNewPageLoad();
 	}
 
 	public void clickOnFirstEditLocationBtn() {
@@ -489,6 +608,10 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.btnCancel.click();
 	}
 
+	public void clickOnOkBtn() {
+		this.btnOk.click();
+	}
+	
 	public void clickOnLatLongSelectorBtn() {
 		this.latLongSelectorBtn.click();
 	}
@@ -561,6 +684,12 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		return this.liDuplicateMsg.getText().equals(STRDuplicateLocMsg);
 	}
 
+	@Override
+	public void open(){
+		super.open();
+		waitForPageLoad();
+	}
+	
 	@Override
 	public void waitForPageLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {

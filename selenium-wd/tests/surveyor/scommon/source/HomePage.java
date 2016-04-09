@@ -155,6 +155,9 @@ public class HomePage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-user-feedback']/a")
 	protected WebElement linkPicAdminViewUserFeedback;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-release-notes']/a")
+	protected WebElement linkPicAdminManageReleaseNotes;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-customers']/a")
 	protected WebElement linkPicAdminManageCus;
@@ -207,7 +210,7 @@ public class HomePage extends SurveyorBasePage {
 	@Override
 	public void open() {	
 		driver.get(strPageURL);
-		this.waitForPageToLoad();
+		this.waitForPageLoad();
 	}
 
 	public WebElement getLinkFirstOnlineSurveyor() {
@@ -221,7 +224,10 @@ public class HomePage extends SurveyorBasePage {
 	public WebElement getLinkPicAdminViewUserFeedback() {
 		return this.linkPicAdminViewUserFeedback;
 	}
-
+	public WebElement getLinkPicAdminManageReleaseNotes() {
+		return this.linkPicAdminManageReleaseNotes;
+	}
+	
 	public WebElement getLinkPicAdminManageCus() {
 		return this.linkPicAdminManageCus;
 	}

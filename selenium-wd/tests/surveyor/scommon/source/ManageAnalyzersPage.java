@@ -79,7 +79,8 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		this.btnOk.click();		
 	}	
 	
-	public void addNewAnalyzer(String serialNumber, String sharedKey, String surveyor, String customerName, String locationName) {
+	public boolean addNewAnalyzer(String serialNumber, String sharedKey, String surveyor, String customerName, String locationName) {
+		boolean result = true;
 		this.btnAddNewAnalyzer.click();
 		this.waitForNewPageLoad();
 		
@@ -97,15 +98,19 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		
 		if (isElementPresent(this.panelDuplicationErrorXPath)) {
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
+			String errMsg = panelError.getText();
+			if (errMsg.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
+				result = false;
 				this.btnCancel.click();
-		}		
+			}
+		}
+		return result;
 	}
 	
 	public boolean findExistingAnalyzer(String customerName, String locationName, String surveyorName, String analyzerName) {
 		setPagination(PAGINATIONSETTING_100);
 		
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		String customerXPath;
 		String locationXPath;
@@ -167,7 +172,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 			String analyzerName, String cuslocsur) {
 		setPagination(PAGINATIONSETTING_100);
 		
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		String customerXPath;
 		String locationXPath;
@@ -254,10 +259,10 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	}	
 	
 	public boolean editExistingAnalyzer(String customerName, String locationName, String surveyorName, String analyzerName, 
-			String keyNew, String cuslocsur) {
+			String keyNew, String cuslocsur, String analyzerNew) {
 		setPagination(PAGINATIONSETTING_100);
 		
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		String customerXPath;
 		String locationXPath;
@@ -302,6 +307,10 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				Log.info("Found entry at row=" + rowNum);
 				actionCell.click();
 				this.waitForEditPageLoad();
+				
+				if (!analyzerNew.isEmpty()) {
+					this.inputSerialNumber.sendKeys(analyzerNew);
+				}
 				
 				if (!keyNew.isEmpty()) {
 					this.inputSharedKey.clear();

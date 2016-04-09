@@ -36,6 +36,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	private WebElement btnAddNewCustomer;
+	private String btnAddNewCustomerXPath = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a";
 	
 	@FindBy(id = "name")
 	private WebElement inputCustomerName;
@@ -56,6 +57,28 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[3]/a")
 	private WebElement btnEditCustomer;
+	private String btnEditCustomerXPath = "//*[@id='datatable']/tbody/tr[1]/td[3]/a"; 
+	
+	@FindBy(id = "LicencedFeatureId-GAP Grid 1.0")
+	private WebElement inputGAPGrid;
+	
+	@FindBy(id = "LicencedFeatureId-Report Metadata")
+	private WebElement inputReportMetadata;
+	
+	@FindBy(id = "LicencedFeatureId-Assessment")
+	private WebElement inputAssessment;
+	
+	@FindBy(id = "LicencedFeatureId-EQ")
+	private WebElement inputEQ;
+	
+	@FindBy(id = "LicencedFeatureId-LISA Box 1.0")
+	private WebElement inputLISABox;
+	
+	@FindBy(id = "LicencedFeatureId-Survey Protocol Forecase")
+	private WebElement inputSurveyForecase;
+	
+	@FindBy(id = "LicencedFeatureId-Report ShapeFile")
+	private WebElement inputReportShapeFile;
 	
 	/**
 	 * @param driver
@@ -63,17 +86,84 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	 * @param strBaseURL
 	 * @param strPageURL
 	 */
+	
 	public ManageCustomersPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 		
 		Log.info("\nThe Manager Customers Page URL is: " + this.strPageURL);
 	}
 	
+
+	public boolean selectLicensedFeatures(LicensedFeatures... lfs){
+		if(lfs != null){
+		  for(LicensedFeatures lf:lfs){
+			  selectLicensedFeature(lf);
+		  }		
+		}
+		return true;
+	}
+	
+	public boolean selectLicensedFeature(LicensedFeatures lf) {
+		return selectLicensedFeature(lf, true);
+	}
+	
+	public boolean selectLicensedFeature(LicensedFeatures lf, boolean enableFeature){
+		WebElement inputBox = getInputBoxOfLicensedFeature(lf);
+		if (enableFeature) {
+			if (!inputBox.isSelected())
+				inputBox.click();
+		}
+		else {
+			if (inputBox.isSelected())
+				inputBox.click();
+		}
+		return enableFeature;
+	}
+	
+	private WebElement getInputBoxOfLicensedFeature(LicensedFeatures lf){
+		WebElement inputBox;
+		switch(lf){
+		case ASSESSMENT: 
+			inputBox = inputAssessment;
+		    break;
+		case GAPGRID: 
+			inputBox = inputGAPGrid;
+            break;
+		case REPORTMETADATA: 
+			inputBox = inputReportMetadata;
+            break;
+		case EQ: 
+			inputBox = inputEQ;
+            break;
+		case LISABOX: 
+			inputBox = inputLISABox;
+            break;
+		case SURVEYFORECASE: 
+			inputBox = inputSurveyForecase;
+            break;
+		case REPORTSHAPEFILE: 
+			inputBox = inputReportShapeFile;
+            break;
+		default: 
+			inputBox = inputGAPGrid;
+            break;       
+		}
+		return inputBox;
+	}
+	
 	public boolean addNewCustomer(String customerName, String eula) {
 		return addNewCustomer(customerName, eula, true /*enableCustomer*/);
 	}
 	
+	public boolean addNewCustomer(String customerName, String eula, LicensedFeatures... lfs) {
+		return addNewCustomer(customerName, eula, true /*enableCustomer*/, lfs);
+	}
+	
 	public boolean addNewCustomer(String customerName, String eula, boolean enableCustomer) {
+		return addNewCustomer(customerName, eula, enableCustomer, null /* licensed features */);
+	}
+	
+	public boolean addNewCustomer(String customerName, String eula, boolean enableCustomer, LicensedFeatures[] lfs ) {
 		this.btnAddNewCustomer.click();
 		this.waitForNewPageLoad();
 		
@@ -89,7 +179,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		
 		setEULAText(eula);
 		enabledDisableCustomer(enableCustomer);
-		
+		selectLicensedFeatures(lfs);
 		this.btnOk.click();
 		
 		if (isElementPresent(this.panelDuplicationErrorXPath)){
@@ -104,10 +194,10 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		return true;
 	}
 	
-	private void setEULAText(String eula) {
+	public void setEULAText(String eula) {
 		sendKeysToTextArea(this.textAreaEula, eula);
 	}
-
+    
 	private void enabledDisableCustomer(boolean enableCustomer) {
 		if (enableCustomer) {
 			if (!inputAccountEnabled.isSelected())
@@ -118,11 +208,23 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				inputAccountEnabled.click();
 		}
 	}
+
+	public boolean isEulaRed(){
+		String eulaStyle = this.textAreaEula.getAttribute("style");
+		String eulaRed = "border: 1px solid red;";
+		return eulaRed.equals(eulaStyle.trim());
+	}
+
+	public boolean isNameRed(){
+		String nameStyle = this.inputCustomerName.getAttribute("style");
+		String nameRed = "border: 1px solid red;";
+		return nameRed.equals(nameStyle.trim());
+	}
 	
 	public boolean findExistingCustomer(String customerName, boolean enabledStatus) {
 		setPagination(PAGINATIONSETTING_100);
 		
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		String customerNameXPath;
 		String enabledStatusXPath;
@@ -182,7 +284,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public boolean findCustomerAndOpenEditPage(String customerName) {
 		setPagination(PAGINATIONSETTING_100);
 		
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		String customerNameXPath;
 		String actionXPath;
@@ -235,10 +337,10 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		return false;
 	}
 
-	public boolean editExistingCustomerName(String customerName, String eulaNew) {
+	public boolean editExistingCustomerName(String customerName, String eulaNew, boolean enableCustomer) {
 		setPagination(PAGINATIONSETTING_100);
 		
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		String customerNameXPath;
 		String actionXPath;
@@ -271,6 +373,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				this.waitForEditPageLoad();
 				
 				setEULAText(eulaNew);
+				enabledDisableCustomer(enableCustomer);
 				
 				this.btnOk.click();
 				
@@ -308,7 +411,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public String getCustomerStatus(String customerName) {
 		setPagination(PAGINATIONSETTING_100);
 		
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		String customerNameXPath;
 		String statusXPath;
@@ -364,7 +467,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public boolean changeCustomerAccountStatus (String customerName, boolean bEnabled) {
 		setPagination(PAGINATIONSETTING_100);
 		
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 		
 		String customerNameXPath;
 		String actionXPath;
@@ -438,6 +541,16 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		this.cancelEditBtn.click();
 	}
 	
+	public void clickOnEditOkBtn(){
+		this.btnOk.click();
+	}
+	
+	@Override
+	public void open(){
+		super.open();
+		waitForPageLoad();
+	}
+	
     @Override
 	public void waitForPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
@@ -461,5 +574,13 @@ public class ManageCustomersPage extends SurveyorBasePage {
             	return d.getPageSource().contains(STREditPageContentText);
             }
         });
+    }
+    
+    public boolean isAddCustomerBtnPresent(){
+    	return isElementPresent(this.btnAddNewCustomerXPath);
+    }
+    
+    public boolean isEditBtnPresent(){
+    	return isElementPresent(this.btnEditCustomerXPath);
     }
 }

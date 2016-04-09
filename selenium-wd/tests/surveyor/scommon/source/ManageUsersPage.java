@@ -53,8 +53,11 @@ public class ManageUsersPage extends SurveyorBasePage {
 	@FindBy(id = "PasswordConfirm-error")
 	private WebElement labelPwdConfirmError;
 	private String labelPwdConfirmErrorXPath = "//*[@id='PasswordConfirm-error']";
-	
-	
+    private String labelPwdNewErrorXPath = "//*[@id='NewPassword-error']";
+
+    @FindBy(id = "User.UserName-error")
+	private WebElement InvalidEmailError;
+    
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a[1]")
 	protected WebElement btnAddNewCustomerUser;
 
@@ -150,7 +153,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		super(driver, testSetup, baseURL, baseURL + urlPath);
 	}
 
-	public void addNewPicarroUser(String email, String password, String role) {
+	public void addNewPicarroUser(String email, String password, boolean enabled) {
 		this.btnAddNewPicarroUser.click();
 		this.waitForNewPageLoad();
 		
@@ -158,13 +161,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 		this.inputEmail.sendKeys(email);
 		this.inputPassword.sendKeys(password);
 		this.inputPasswordConfirm.sendKeys(password);
-
-		List<WebElement> roleOptions = this.dropDownRole.findElements(By
-				.tagName("option"));
-		for (WebElement roleOption : roleOptions) {
-			if (roleOption.getText().trim().equalsIgnoreCase(role))
-				roleOption.click();
-		}
+		
+		enableDisableUser(enabled);
 
 		this.btnOk.click();
 
@@ -187,6 +185,11 @@ public class ManageUsersPage extends SurveyorBasePage {
 	 */
 	public void addNewPicarroUser(String email, String password, String role,
 			String location, String timeZone) {
+		addNewPicarroUser(email,password,password,role,location,timeZone);
+	}
+	
+	public void addNewPicarroUser(String email, String password, String passwordConfirm, String role,
+			String location, String timeZone) {
 		this.btnAddNewPicarroUser.click();
 		this.waitForNewPageLoad();
 
@@ -196,7 +199,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
 		this.inputPassword.sendKeys(password);
-		this.inputPasswordConfirm.sendKeys(password);
+		this.inputPasswordConfirm.sendKeys(passwordConfirm);
 
 		List<WebElement> roleOptions = this.dropDownRole.findElements(By
 				.tagName("option"));
@@ -227,9 +230,13 @@ public class ManageUsersPage extends SurveyorBasePage {
 			String password, String role, String location) {
 		addNewCustomerUser(customerName, email, password, role, location, true /*enabled*/);
 	}
-	
+
 	public void addNewCustomerUser(String customerName, String email,
 			String password, String role, String location, boolean enabled) {
+		addNewCustomerUser(customerName,email,password,password,role,location,enabled);
+	}
+	public void addNewCustomerUser(String customerName, String email,
+			String password, String passwordConfirm, String role, String location, boolean enabled) {
 		
 		Log.info(String.format("Adding new Customer user. Name=%s, Email=%s, Password=[HIDDEN], Role=%s, Location=%s", customerName, 
 				email, role, location));
@@ -241,7 +248,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
 		this.inputPassword.sendKeys(password);
-		this.inputPasswordConfirm.sendKeys(password);
+		this.inputPasswordConfirm.sendKeys(passwordConfirm);
 
 		List<WebElement> roleOptions = this.dropDownRole.findElements(By.tagName("option"));
 		for (WebElement roleOption : roleOptions) {
@@ -263,7 +270,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		
 		this.waitForPageLoad();
 	}
-
+	
 	public void addNewCustomerUser(String customerName, String email,
 			String password, String role, String timeZone, String location) {
 		Log.info(String.format("Adding new Customer user. CustomerName=%s, Email=%s, Password=[HIDDEN], Role=%s, TimeZone=%s, Location=%s", 
@@ -367,7 +374,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public boolean findExistingUser(String userName) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String userNameXPath;
 
@@ -420,7 +427,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public boolean findExistingUser(String locationName, String userName, boolean isCustomerUser) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String locationXPath;
 		String userNameXPath;
@@ -451,7 +458,10 @@ public class ManageUsersPage extends SurveyorBasePage {
 			locationCell = table.findElement(By.xpath(locationXPath));
 			userNameCell = table.findElement(By.xpath(userNameXPath));
 			
-			Log.info(String.format("Found User. Location-[%s], Username-[%s]", locationCell.getText().trim(),
+			Log.info(String.format("Location XPath-[%s]", locationXPath));
+			Log.info(String.format("Username XPath-[%s]", userNameXPath));
+			Log.info(String.format("Expected: Location-[%s], Username-[%s]", locationName, userName));
+			Log.info(String.format("Actual: Location-[%s], Username-[%s]", locationCell.getText().trim(),
 					userNameCell.getText().trim()));
 
 			if ((locationCell.getText().trim()).equalsIgnoreCase(locationName)
@@ -463,6 +473,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.info("Clicking on next button");
+				Log.info(String.format("rowNum = %d", rowNum));
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
@@ -487,7 +499,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			String roleName) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String locationXPath;
 		String userNameXPath;
@@ -554,7 +566,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public String getUserRole(String userName) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String userNameXPath;
 		String roleNameXPath;
@@ -612,7 +624,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public String getUserStatus(String userName, boolean isCustomerUser) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String userNameXPath;
 		String userStatusXPath;
@@ -690,7 +702,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			String locationDescNew, boolean accountEnable, boolean isCustomerUser) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String userNameXPath;
 		String actionEditXPath;
@@ -774,7 +786,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public boolean resetUserPassword(String userName, String newPassword, boolean isCustomerUser) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String userNameXPath;
 		String actionResetPWDXPath;
@@ -845,7 +857,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public boolean findExistingUser(String userName, boolean allPages) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String userNameXPath;
 
@@ -945,7 +957,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			String roleName, boolean allPages) {
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String locationXPath;
 		String userNameXPath;
@@ -1071,7 +1083,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 		setPagination(PAGINATIONSETTING_100);
 
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String userNameXPath;
 		WebElement userNameCell;
@@ -1120,7 +1132,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public List<String> getLocationList(boolean allPages) {
 		List<String> locationList = new ArrayList<String>();
 		setPagination(PAGINATIONSETTING_100);
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String locationXPath;
 		WebElement locationCell;
@@ -1168,7 +1180,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public List<String> getRolesList(boolean allPages) {
 		List<String> rolesList = new ArrayList<String>();
 		setPagination(PAGINATIONSETTING_100);
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String rolesXPath;
 		WebElement rolesCell;
@@ -1215,7 +1227,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public List<String> getStatusList(boolean allPages) {
 		List<String> statusList = new ArrayList<String>();
 		setPagination(PAGINATIONSETTING_100);
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForTableDataToLoad();
 
 		String statusXPath;
 		WebElement statusCell;
@@ -1303,6 +1315,12 @@ public class ManageUsersPage extends SurveyorBasePage {
 		this.cancelEditBtn.click();
 	}
 	
+	@Override
+	public void open(){
+		super.open();
+		waitForPageLoad();
+	}
+	
     @Override
 	public void waitForPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
@@ -1338,6 +1356,20 @@ public class ManageUsersPage extends SurveyorBasePage {
 		this.inputNewPasswordConfirm.sendKeys(newPassword);
 		btnOk.click();
 		waitForPageToLoad();
+	}
+	
+	public String getPasswordError(){		
+		return waitForPresenceOfElementText(By.xpath(labelUserPwdErrorXPath));		
+	}
+	public String getNewPasswordError(){		
+		return waitForPresenceOfElementText(By.xpath(labelPwdNewErrorXPath));		
+	}	
+	public String getConfirmPasswordError(){
+		return waitForPresenceOfElementText(By.xpath(labelPwdConfirmErrorXPath));	
+	}
+
+	public String getInvalidEmailError(){		
+		return InvalidEmailError.getText().trim();		
 	}
 	
 	public boolean searchUser(String userName, String locationName,
