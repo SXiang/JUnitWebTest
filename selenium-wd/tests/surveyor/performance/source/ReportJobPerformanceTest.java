@@ -1,5 +1,7 @@
 package surveyor.performance.source;
 
+import java.io.IOException;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -84,6 +86,9 @@ public class ReportJobPerformanceTest extends BasePerformanceTest {
 			complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID);
 			complianceReportsPageAction.verifyReportJobBaselines(EMPTY, reportDataRowID);
 		}
+
+		// Generate the CSV if collecting baselines
+		checkAndGenerateReportJobBaselineCsv();
 	}
 
 	/**
@@ -131,5 +136,11 @@ public class ReportJobPerformanceTest extends BasePerformanceTest {
 			}
 		}
 		return executionTimes;
+	}
+
+	private void checkAndGenerateReportJobBaselineCsv() throws IOException {
+		if (TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
+			generateReportJobBaselineRunExecutionCsv(complianceReportsPageAction.workingDataRow.tCID);
+		}
 	}
 }

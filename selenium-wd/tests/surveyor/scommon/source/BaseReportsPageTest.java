@@ -49,4 +49,8 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 		numberUtility.addRollingNumber(reportJobProcessingTime);
 		reportJobProcessingTimeNumberMap.put(reportJobType, numberUtility);
 	}
+
+	protected static HashMap<ReportJobType, NumberUtility> getReportJobProcessingTimeNumberMap() {
+		return reportJobProcessingTimeNumberMap;
+	}
 }

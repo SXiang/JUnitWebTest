@@ -2295,15 +2295,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	private void validateReportJobProcessingTimesForNotNull(String reportTitle, surveyor.api.source.ReportJob reportJob,
 			String reportJobTypeId) throws Exception {
-		if (reportJob.ProcessingStarted.isEmpty()) {
+		if (reportJob.getProcessingStartedTimeInMs() < 0) {
 			throw new Exception(
-					String.format("EMPTY value encountered for column-[%s], ReportTitle-[%s], ReportJobTypeId-[%s]",
-							"ProcessingStarted", reportTitle, reportJobTypeId));
+					String.format("Incorrect value-[%s] encountered for column-[%s], ReportTitle-[%s], ReportJobTypeId-[%s]",
+							reportJob.getProcessingStartedTimeInMs(), "ProcessingStarted", reportTitle, reportJobTypeId));
 		}
-		if (reportJob.ProcessingCompleted.isEmpty()) {
+		if (reportJob.getProcessingCompletedTimeInMs() < 0) {
 			throw new Exception(
-					String.format("EMPTY value encountered for column-[%s], ReportTitle-[%s], ReportJobTypeId-[%s]",
-							"ProcessingCompleted", reportTitle, reportJobTypeId));
+					String.format("Incorrect value-[%s] encountered for column-[%s], ReportTitle-[%s], ReportJobTypeId-[%s]",
+							reportJob.getProcessingCompletedTimeInMs(), "ProcessingCompleted", reportTitle, reportJobTypeId));
 		}
 	}
 }
