@@ -70,7 +70,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 * - User is navigated to Manage Locations page and new location entry is present in the table	 
 	 */
 	@Test
-	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@UseDataProvider(value = "dataProviderPicarroAdminSupportRoleInfo", location = UserDataProvider.class)
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC16_TC18_AddLocationUsingLatLongSelector_PicAdminSupport(String user, String pswd ) {
 		String tcID = getTestCaseName(ManageLocationTestCaseType.AddLocUsingSelector, user);
@@ -109,7 +109,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 * - User is navigated to Manage Locations page and Latitude and Longitude have new values 
 	 */
 	@Test
-	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@UseDataProvider(value = "dataProviderPicarroAdminSupportRoleInfo", location = UserDataProvider.class)
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC17_TC19_EditLocationAddedUsingLatLongSelector_PicAdmin_PicSupport(String user, String pwd) {
 		String tcID = getTestCaseName(ManageLocationTestCaseType.EditLocUsingSelector, user);
@@ -142,7 +142,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 * 
 	 */
 	@Test
-	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@UseDataProvider(value = "dataProviderPicarroAdminSupportRoleInfo", location = UserDataProvider.class)
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC60_TC489_AddLocation_PicAdmin_PicSupport(String user, String pwd) {
 		String tcID = getTestCaseName(ManageLocationTestCaseType.AddLoc, user);
@@ -173,7 +173,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 * 
 	 */
 	@Test
-	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@UseDataProvider(value = "dataProviderPicarroAdminSupportRoleInfo", location = UserDataProvider.class)
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC61_TC490_EditLocation_PicAdmin(String user, String pwd) {
 		String tcID = getTestCaseName(ManageLocationTestCaseType.EditLoc, user);
@@ -247,7 +247,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 * having limit of characters displayed
 	 */
 	@Test
-	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@UseDataProvider(value = "dataProviderPicarroAdminSupportRoleInfo", location = UserDataProvider.class)
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC100_TC495_EditLoc50CharLimit(String user, String pwd) {
 		String str34chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcd";

@@ -119,7 +119,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * 
 	 */
 	@Test
-	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@UseDataProvider(value = "dataProviderPicarroAdminSupportRoleInfo", location = UserDataProvider.class)
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC68_TC470_AddNewPicarroUser(String user, String pwd) {
 		String tcID = getTestCaseName(ManageUserTestCaseType.AddPicUser, user);
@@ -156,7 +156,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * 
 	 */
 	@Test
-	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@UseDataProvider(value = "dataProviderPicarroAdminSupportRoleInfo", location = UserDataProvider.class)
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC69_TC471_AddNewCustomerUser(String user, String pwd) {
 		String tcID = getTestCaseName(ManageUserTestCaseType.AddCustUser, user);
@@ -206,7 +206,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * - User details are modified successfully
 	 */
 	@Test
-	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@UseDataProvider(value = "dataProviderPicarroAdminSupportRoleInfo", location = UserDataProvider.class)
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC70_TC472_EditUser_PicAdminSupport(String user, String pwd) {
 		String tcID = getTestCaseName(ManageUserTestCaseType.EditUser, user);
@@ -358,7 +358,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * - Admin can change location of the user
 	 */
 	@Test
-	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@UseDataProvider(value = "dataProviderPicarroAdminSupportRoleInfo", location = UserDataProvider.class)
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC87_TC483_TC484_TC485_EditUserChangeRoleLocationTimezone_PicAdminSupport(String user, String pwd) {
 		String tcID = getTestCaseName(ManageUserTestCaseType.ChangeRoleLocTz, user);
@@ -761,7 +761,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC116_TC487 Test Description: Search valid user record
 	 */
 	@Test
-	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@UseDataProvider(value = "dataProviderPicarroAdminSupportRoleInfo", location = UserDataProvider.class)
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC116_TC487_SearchValidUser(String user, String pwd) {
 		String tcID = getTestCaseName(ManageUserTestCaseType.SearchValidUser, user);
