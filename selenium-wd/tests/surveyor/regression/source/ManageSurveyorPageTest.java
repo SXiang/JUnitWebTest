@@ -10,13 +10,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
+import com.google.sitebricks.rendering.resource.Assets;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.CryptoUtility;
 import common.source.Log;
 import surveyor.dataprovider.RunAs;
 import surveyor.dataprovider.UserDataProvider;
-import surveyor.regression.source.ManageLocationsPageTest.ManageLocationTestCaseType;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageSurveyorAdminPage;
@@ -212,58 +212,146 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC101_MaxSurDescCharLimit
 	 * Test Description: More than 400 characters not allowed in Surveyor Description field
+	 * Expected Result: User cannot enter more than 400 characters
 	 * 
 	 * @param user
 	 * @param pwd
 	 */
 	@Test
-	public void TC101_MaxSurDescCharLimit(String user, String pwd) {
-		final int MAX_CHARS = 255;
-		String customerName255 = CUSTOMERNAMEPREFIX + testSetup.getFixedSizePseudoRandomString(245) + "TC97";
-		String customerName256 = CUSTOMERNAMEPREFIX + testSetup.getFixedSizePseudoRandomString(245) + "TC97" + "A";
+	public void TC101_MaxSurDescCharLimit() {
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getFixedSizeRandomNumber(13) + "TC101";
+		String eula = customerName + ": " + EULASTRING;
+		String locationName = customerName + "Loc";
+		String surveyorName400Chars = locationName + "Sur" + testSetup.getFixedSizeRandomNumber(370);
+		String surveyorName401Chars = locationName + "SurA" + testSetup.getFixedSizeRandomNumber(370);
+		String cityName ="Santa Clara";
 		
-		String cityName = "Santa Clara";
-
-		String tcID = getTestCaseName(ManageLocationTestCaseType.MaxLocChar, user);
-		String password = CryptoUtility.decrypt(pwd);
-
-		String locationName50Chars = testSetup.getFixedSizeRandomNumber(11)
-				+ tcID + str34chars;
-		String locationName51Chars = testSetup.getFixedSizeRandomNumber(11)
-				+ tcID + str35chars;
-		String newLocationName50Chars = "New"
-				+ testSetup.getFixedSizeRandomNumber(8) + tcID + str34chars;
-		String newLocationName51Chars = "New"
-				+ testSetup.getFixedSizeRandomNumber(8) + tcID + str35chars;
-
-		Log.info("\nRunning - "
-				+ tcID
-				+ "_EditLoc50CharLimit - Test Description: More than 50 characters not allowed in Location Description field\n");
-
+		Log.info("\nRunning TC101_MaxSurveyorDescLimit...");
+		
 		loginPage.open();
-		loginPage.loginNormalAs(user, password);
-
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		
+		manageCustomersPage.open();
+		manageCustomersPage.addNewCustomer(customerName, eula);
+		
 		manageLocationsPage.open();
-
-		manageLocationsPage.addNewLocation(locationName50Chars, SQACUS,
-				cityName);
-		manageLocationsPage.addNewLocation(locationName51Chars, SQACUS,
-				cityName);
-
-		assertTrue(manageLocationsPage.findExistingLocation(SQACUS,
-				locationName50Chars));
+		manageLocationsPage.addNewLocation(locationName, customerName,cityName);
+		
+		manageSurveyorPage.open();
+		
+		Log.info(String.format("Adding new Surveyor: Name-[%s]; Location-[%s]; Customer-[%s]", 
+				surveyorName400Chars, locationName, customerName)); 
+		manageSurveyorPage.addNewSurveyor(surveyorName400Chars, locationName, customerName);
+		Log.info(String.format("Adding new Surveyor: Name-[%s]; Location-[%s]; Customer-[%s]", 
+				surveyorName401Chars, locationName, customerName)); 
+		manageSurveyorPage.addNewSurveyor(surveyorName401Chars, locationName, customerName);
+		
+		Log.info(String.format("Find existing Surveyor: Customer-[%s]; Location-[%s]; Surveyor Name-[%s]", 
+				customerName, locationName, surveyorName400Chars)); 
+		assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorName400Chars));
+		Log.info(String.format("Find existing Surveyor: Customer-[%s]; Location-[%s]; Surveyor Name-[%s]", 
+				customerName, locationName, surveyorName401Chars)); 
+		manageSurveyorPage.open();
+		assertFalse(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorName401Chars));
+		
+		Log.info(String.format("Editing Surveyor: Location-[%s]; Current Surveyor Name-[%s]; New Surveyor Name-[%s]", 
+				locationName, surveyorName400Chars, surveyorName401Chars)); 
+		manageSurveyorAdminPage.editExistingSurveyor(locationName, surveyorName400Chars, surveyorName401Chars, false);
+		assertFalse(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorName401Chars));
+	}
+	
+	/**
+	 * Test Case ID: TC127_AddMultipleSurveyor_PicAdmin 
+	 * Test Description: Customer (e.g. PGE) can have multiple Surveyor Unit Test Script: - On
+	 * Home Page, click Picarro Administration -> Manage Surveyors - Click on
+	 * 'Add New Surveyor' button - Provide required surveyor unit details and
+	 * click OK - Add second surveyor unit 
+	 * Expected Result: - Surveyor units are added successfully
+	 */
+	@Test
+	public void TC127_AddMultipleSurveyor_PicAdmin() {
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC127";
+		String eula = customerName + ": " + EULASTRING;
+		String locationName = customerName + "Loc";
+		String surveyorName1 = locationName + "Sur1";
+		String surveyorName2 = locationName + "Sur2";
+		String cityName ="Santa Clara";
+		
+		Log.info("\nRunning TC127_AddMultipleSurveyor_PicAdmin...");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		
+		manageCustomersPage.open();
+		manageCustomersPage.addNewCustomer(customerName, eula);
+		
 		manageLocationsPage.open();
-		assertFalse(manageLocationsPage.findExistingLocation(SQACUS,
-				locationName51Chars));
-
-		manageLocationsPage.editPDExistingLocation(SQACUS, locationName50Chars,
-				newLocationName50Chars);
-		assertTrue(manageLocationsPage.findExistingLocation(SQACUS,
-				newLocationName50Chars));
-
-		manageLocationsPage.editPDExistingLocation(SQACUS, newLocationName50Chars,
-				newLocationName51Chars);
-		assertFalse(manageLocationsPage.findExistingLocation(SQACUS,
-				newLocationName51Chars));
+		manageLocationsPage.addNewLocation(locationName, customerName,cityName);
+		
+		manageSurveyorPage.open();
+		
+		Log.info(String.format("Adding new Surveyor: Name-[%s]; Location-[%s]; Customer-[%s]", 
+				surveyorName1, locationName, customerName)); 
+		manageSurveyorPage.addNewSurveyor(surveyorName1, locationName, customerName);
+		
+		Log.info(String.format("Adding new Surveyor: Name-[%s]; Location-[%s]; Customer-[%s]", 
+				surveyorName2, locationName, customerName));
+		manageSurveyorPage.addNewSurveyor(surveyorName2, locationName, customerName);
+		
+		Log.info(String.format("Find existing Surveyor: Customer-[%s]; Location-[%s]; Surveyor Name-[%s]", 
+				customerName, locationName, surveyorName1)); 
+		assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorName1));
+		
+		Log.info(String.format("Find existing Surveyor: Customer-[%s]; Location-[%s]; Surveyor Name-[%s]", 
+				customerName, locationName, surveyorName2)); 
+		assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorName2));
+	}
+	
+	/**
+	 * Test Case ID: TC498_ManageSurveyors_PicSup Test Description: Manage
+	 * Surveyors Test Script: - On Home Page, click on Administration -> Manage
+	 * Surveyors Expected Result: - User can see list of all surveyors - User
+	 * cannot add, but can edit the surveyor unit
+	 */
+	@Test
+	public void TC498_ManageSurveyors_PicSup() {
+		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC498";
+		String eula = customerName + ": " + EULASTRING;
+		String locationName = customerName + "Loc";
+		String surveyorName = locationName + "Sur";
+		String surveyorNewName = locationName + "SurNew";
+		String cityName ="Santa Clara";
+		
+		Log.info("\nRunning TC498_ManageSurveyors_PicSup...");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		
+		manageCustomersPage.open();
+		manageCustomersPage.addNewCustomer(customerName, eula);
+		
+		manageLocationsPage.open();
+		manageLocationsPage.addNewLocation(locationName, customerName,cityName);
+		
+		manageSurveyorPage.open();
+		
+		Log.info(String.format("Adding new Surveyor: Name-[%s]; Location-[%s]; Customer-[%s]", 
+				surveyorName, locationName, customerName)); 
+		manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName);
+		assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorName));
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+		manageSurveyorPage.open();
+		assertFalse(manageSurveyorPage.isAddNewSurveyorBtnPresent());
+		
+		Log.info(String.format("Find existing Surveyor: Customer-[%s]; Location-[%s]; Surveyor Name-[%s]", 
+				customerName, locationName, surveyorName)); 
+		assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorName));
+		
+		Log.info(String.format("Editing Surveyor: Location-[%s]; Current Surveyor Name-[%s]; New Surveyor Name-[%s]", 
+				locationName, surveyorName, surveyorNewName)); 
+		manageSurveyorAdminPage.editExistingSurveyor(locationName, surveyorName, surveyorNewName, false);
+		assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorNewName));
 	}
 }
