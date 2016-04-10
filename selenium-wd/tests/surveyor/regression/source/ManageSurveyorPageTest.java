@@ -10,7 +10,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
+import common.source.CryptoUtility;
 import common.source.Log;
+import surveyor.dataprovider.RunAs;
+import surveyor.dataprovider.UserDataProvider;
+import surveyor.regression.source.ManageLocationsPageTest.ManageLocationTestCaseType;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageSurveyorAdminPage;
@@ -202,4 +208,62 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		manageSurveyorPage.open();
 		assertFalse(manageSurveyorPage.editExistingSurveyor(locationName, surveyorName, surveyorNameNew, surveyorName));
 	}	
+	
+	/**
+	 * Test Case ID: TC101_MaxSurDescCharLimit
+	 * Test Description: More than 400 characters not allowed in Surveyor Description field
+	 * 
+	 * @param user
+	 * @param pwd
+	 */
+	@Test
+	public void TC101_MaxSurDescCharLimit(String user, String pwd) {
+		final int MAX_CHARS = 255;
+		String customerName255 = CUSTOMERNAMEPREFIX + testSetup.getFixedSizePseudoRandomString(245) + "TC97";
+		String customerName256 = CUSTOMERNAMEPREFIX + testSetup.getFixedSizePseudoRandomString(245) + "TC97" + "A";
+		
+		String cityName = "Santa Clara";
+
+		String tcID = getTestCaseName(ManageLocationTestCaseType.MaxLocChar, user);
+		String password = CryptoUtility.decrypt(pwd);
+
+		String locationName50Chars = testSetup.getFixedSizeRandomNumber(11)
+				+ tcID + str34chars;
+		String locationName51Chars = testSetup.getFixedSizeRandomNumber(11)
+				+ tcID + str35chars;
+		String newLocationName50Chars = "New"
+				+ testSetup.getFixedSizeRandomNumber(8) + tcID + str34chars;
+		String newLocationName51Chars = "New"
+				+ testSetup.getFixedSizeRandomNumber(8) + tcID + str35chars;
+
+		Log.info("\nRunning - "
+				+ tcID
+				+ "_EditLoc50CharLimit - Test Description: More than 50 characters not allowed in Location Description field\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(user, password);
+
+		manageLocationsPage.open();
+
+		manageLocationsPage.addNewLocation(locationName50Chars, SQACUS,
+				cityName);
+		manageLocationsPage.addNewLocation(locationName51Chars, SQACUS,
+				cityName);
+
+		assertTrue(manageLocationsPage.findExistingLocation(SQACUS,
+				locationName50Chars));
+		manageLocationsPage.open();
+		assertFalse(manageLocationsPage.findExistingLocation(SQACUS,
+				locationName51Chars));
+
+		manageLocationsPage.editPDExistingLocation(SQACUS, locationName50Chars,
+				newLocationName50Chars);
+		assertTrue(manageLocationsPage.findExistingLocation(SQACUS,
+				newLocationName50Chars));
+
+		manageLocationsPage.editPDExistingLocation(SQACUS, newLocationName50Chars,
+				newLocationName51Chars);
+		assertFalse(manageLocationsPage.findExistingLocation(SQACUS,
+				newLocationName51Chars));
+	}
 }
