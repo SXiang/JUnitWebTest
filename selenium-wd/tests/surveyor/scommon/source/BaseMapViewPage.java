@@ -187,7 +187,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	private WebElement curtainZoomOutButton;
 
 	@FindBy(id = "bottom_button_mode")
-	@CacheLookup
 	protected WebElement modeButton;
 
 	@FindBy(id = "bottom_button_display")
@@ -220,14 +219,15 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@CacheLookup
 	protected WebElement zoomOutButton;
 	
-	//TODO - on debugging -- Steven
 	@FindBy(id = "shutting_down")
-	protected WebElement stopSurveyButton;
+	protected WebElement ShutdownAnalyzerButton;
 	
-	@FindBy(id = "start_survey_mode")
+	@FindBy(id = "start_survey_modal")
 	protected WebElement startSurveyButton;
-    // ------------------------------
 	
+	@FindBy(id = "stop_survey_modal")
+	protected WebElement stopSurveyButton;
+		
 	@FindBy(id = "blocked_ui")
 	private WebElement divBlockedUI;
 	
@@ -335,13 +335,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	}
 
 	public BaseMapViewPage clickDisplayButton() {
-		try{ // Fell free to change this 
-			 //If you have a better idea to wait, such as a clickable condition for the element.
-		     this.displayButton.click();
-		}catch(Exception e){
-			testSetup.slowdownInSeconds(5);
-			this.displayButton.click();
-		}
+		this.displayButton.click();
 		return this;
 	}
 
@@ -374,7 +368,14 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		return !this.startSurveyButton.getAttribute("class").contains("ng-hide");
 	}
 	public boolean isStopSurveyButtonVisible() {
-		return !this.stopSurveyButton.getAttribute("class").contains("ng-hide");
+		try{
+		   return !this.stopSurveyButton.getAttribute("class").contains("ng-hide");
+		}catch(Exception e){
+			return false;
+		}
+	}
+	public boolean isShutdownAnalyzerButtonVisible() {
+		return !this.ShutdownAnalyzerButton.getAttribute("class").contains("ng-hide");
 	}
 	public WebElement getPeakInfoPopupTextElement() {
 		// element value changes dynamically on peakInfo click. Seek new each time.

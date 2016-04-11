@@ -2,6 +2,8 @@ package surveyor.scommon.actions;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.OLMapUtility;
 import common.source.BrowserCommands;
@@ -15,7 +17,7 @@ import surveyor.scommon.actions.data.DriverViewDataReader.DriverViewDataRow;
 import surveyor.scommon.source.BaseMapViewPage;
 
 public class BaseMapViewPageActions extends BasePageActions {
-	private static final int DEFAULT_ZOOM_LEVEL = 19;
+	private static final int DEFAULT_ZOOM_LEVEL = 19;	
 	private static final String FN_VERIFY_MAP_ZOOM_LEVEL_IS_CORRECT = "verifyMapShownForZoomLevelIsCorrect";
 	private static final String FN_VERIFY_FIELD_NOTES_IS_SHOWN_ON_MAP = "verifyFieldNotesIsShownOnMap";
 	private static final String FN_VERIFY_FIELD_NOTES_IS_NOT_SHOWN_ON_MAP = "verifyFieldNotesIsNotShownOnMap";
@@ -33,7 +35,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	private static final String FN_VERIFY_SURVEY_INFO_TAG_LABEL_EQUALS = "verifySurveyInfoTagLabelEquals";
 	
 	private static final String CLS_BASEMAP_VIEW_PAGE_ACTIONS = "BaseMapViewPageActions::";
-	
+	private static final int TIMEOUT_LOAD_LAYER = 10;
 	protected BaseMapViewPage pageObject = null;
 
 	public BaseMapViewPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
@@ -613,10 +615,21 @@ public class BaseMapViewPageActions extends BasePageActions {
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		return mapUtility.isFOVShownOnMap();
 	}
+	
 	public boolean verifyAssetIsShownOnMap(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyAssetIsShownOnMap", data, dataRowID);
-		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
-		return mapUtility.isAssetShownOnMap();
+		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());	
+		boolean isAssetShown = false;
+		try {		
+			isAssetShown =	(new WebDriverWait(getDriver(),TIMEOUT_LOAD_LAYER)).until(new ExpectedCondition<Boolean>(){
+			public Boolean apply(WebDriver d){
+				return mapUtility.isAssetShownOnMap();
+			}
+		 });
+		}catch(Exception e){
+			isAssetShown = false;
+		}
+		return isAssetShown;
 	}
 	public boolean verifyBoundariesIsShownOnMap(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyBoundariesIsShownOnMap", data, dataRowID);
@@ -666,7 +679,8 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyFOVIsNotShownOnMap", data, dataRowID);
 		return !verifyFOVIsShownOnMap(data, dataRowID);
 	}
-	public boolean verifyAssetIsNotShownOnMap(String data, Integer dataRowID) {
+	
+	public boolean verifyAssetIsNotShownOnMap(String data, Integer dataRowID){
 		logAction(getRuntimeType() + ".verifyAssetIsNotShownOnMap", data, dataRowID);
 		return !verifyAssetIsShownOnMap(data, dataRowID);
 	}	
@@ -1131,7 +1145,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return !pageObject.isStartSurveyButtonVisible();
 	}
 	/**
-	 * Executes verifyModeIsNotShownOnMap action.
+	 * Executes verifyStopSurveyIsNotShownOnMap action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
@@ -1139,6 +1153,17 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyStopSurveyIsNotShownOnMap(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyStopSurveyIsNotShownOnMap", data, dataRowID);
 		return !pageObject.isStopSurveyButtonVisible();
+	}
+	
+	/**
+	 * Executes verifyShutdownAnalyzerIsNotShownOnMap action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyShutdownAnalyzerIsNotShownOnMap(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyStopSurveyIsNotShownOnMap", data, dataRowID);
+		return !pageObject.isShutdownAnalyzerButtonVisible();
 	}
 	/**
 	 * Executes verifyFieldNotesIsShownOnMap action.
@@ -1235,28 +1260,8 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return mapUtility.isMapResolutionCorrect(zoomLevel);
 	}
 
-	/**
-	 * Executes setMapZoomLevel action.
-	 * @param zoomlevel - specifies the zoom level on the map.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean setZoomLevel(int zoomlevel, String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".setZoomLevel", data, dataRowID);
-		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
-		int currentZoomlevel = mapUtility.getMapZoomLevel();
-		int numClicks = Math.abs(currentZoomlevel-zoomlevel);
-		
-		for(int i=0;i<numClicks;i++){
-		  if(currentZoomlevel > zoomlevel){
-			  getPageObject().clickZoomOutButton();
-		  }else if(currentZoomlevel < zoomlevel){
-			  getPageObject().clickZoomInButton();
-		  }else{
-			  return true;
-		  }
-		}
-		return mapUtility.getMapZoomLevel()==zoomlevel;
-	}
+
+	
 	/**
 	 * Executes verifyGisUseAllBoundariesButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.

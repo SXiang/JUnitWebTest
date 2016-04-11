@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.Log;
+import common.source.OLMapUtility;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -25,6 +26,7 @@ public class SurveyViewPage extends BaseMapViewPage {
 	private static final String SURVEY_INFO_DRIVER_LABEL_XPATH = "//*[@id='header_info_historical']/div[3]";
 	private static final String SURVEY_INFO_MODE_LABEL_XPATH = "//*[@id='header_info_historical']/div[2]";
 	private static final String SURVEY_INFO_TAG_LABEL_XPATH = "//*[@id='header_info_historical']/div[1]";
+	private static final int ASSETS_ZOOM_LEVEL_LOWER_BOUND = 17;
 	public static final String STRURLPath = "/Live/Survey/";
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.Constant_Survey);
 	public static final String STRPageContentText = "Map View";
@@ -135,6 +137,7 @@ public class SurveyViewPage extends BaseMapViewPage {
     
     // Survey ID used for opening the specified survey page.
     private String surveyId;    
+    private By blockedUINotShown = By.cssSelector("#blocked_ui.ng-hide");
 
 	/**
 	 * @param driver
@@ -418,7 +421,8 @@ public class SurveyViewPage extends BaseMapViewPage {
     public SurveyViewPage verifyPageLoaded() {
         (new WebDriverWait(driver, timeout * 2)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
-                return d.getPageSource().contains(STRPageContentText);
+                return d.getPageSource().contains(STRPageContentText)
+                		 && isElementPresent(blockedUINotShown);
             }
         });
         return this;
@@ -437,16 +441,12 @@ public class SurveyViewPage extends BaseMapViewPage {
         });
         return this;
     }
-    
+ 
     /**
 	 * Verify that the page loaded completely.
 	 */
 	public void waitForPageLoad() {
-		(new WebDriverWait(driver, timeout * 2)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return d.getPageSource().contains(STRPageContentText);
-			}
-		});
+		this.verifyPageLoaded();
 	}
 
 	public String getSurveyId() {
@@ -455,5 +455,47 @@ public class SurveyViewPage extends BaseMapViewPage {
 
 	public void setSurveyId(String surveyId) {
 		this.surveyId = surveyId;
+	}
+	
+	/**
+	 * Executes setMapZoomLevel action.
+	 * @param zoomlevel - specifies the zoom level on the map.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean setZoomLevel(int zoomlevel) {
+		OLMapUtility mapUtility = new OLMapUtility(driver);
+		int currentZoomlevel = mapUtility.getMapZoomLevel();
+		int numClicks = Math.abs(currentZoomlevel-zoomlevel);
+		
+		for(int i=0;i<numClicks;i++){
+		  if(currentZoomlevel > zoomlevel){
+			  clickZoomOutButton();
+		  }else if(currentZoomlevel < zoomlevel){
+			  clickZoomInButton();
+		  }else{
+			  return true;
+		  }
+		}
+		return mapUtility.getMapZoomLevel()==zoomlevel;
+	}
+	
+	/**
+	 * Executes setMapZoomLevelForAssets action.
+	 * @param ASSETS_ZOOM_LEVEL_LOWER_BOUND - lower bound of zoom level to see assets on the map.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean setZoomLevelForAssets() {
+		OLMapUtility mapUtility = new OLMapUtility(driver);
+		int currentZoomlevel = mapUtility.getMapZoomLevel();
+		if(currentZoomlevel >= ASSETS_ZOOM_LEVEL_LOWER_BOUND){
+			return true;
+		}
+		int numClicks = Math.abs(currentZoomlevel-ASSETS_ZOOM_LEVEL_LOWER_BOUND);
+		
+		for(int i=0;i<numClicks;i++){
+			  clickZoomInButton();
+		}
+		int newZoomlevel = mapUtility.getMapZoomLevel();
+		return newZoomlevel==ASSETS_ZOOM_LEVEL_LOWER_BOUND;		
 	}
 }
