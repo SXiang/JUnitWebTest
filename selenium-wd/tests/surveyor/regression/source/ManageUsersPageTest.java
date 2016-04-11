@@ -161,26 +161,14 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	public void TC69_TC471_AddNewCustomerUser(String user, String pwd) {
 		String tcID = getTestCaseName(ManageUserTestCaseType.AddCustUser, user);
 		String password = CryptoUtility.decrypt(pwd);
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber()
-				+ tcID;
-		String eula = customerName + ": " + EULASTRING;
-		String userName = customerName + "User" + tcID + REGBASEUSERNAME;
-		String cityName = "Santa Clara";
-		String locationName = customerName + "loc";
+		String customerName = SQACUS;
+		String userName = customerName + tcID + testSetup.getFixedSizePseudoRandomString(11) + REGBASEUSERNAME;
+		String locationName = SQACUSLOC;
 
 		Log.info("\nRunning "+ tcID +" - Test Description: Picarro Admin - Add New Customer user");
 
 		loginPage.open();
 		loginPage.loginNormalAs(user, password);
-
-		manageCustomersPage.open();
-		manageCustomersPage.waitForPageLoad();
-		manageCustomersPage.addNewCustomer(customerName, eula);
-
-		manageLocationsPage.open();
-		manageLocationsPage.waitForPageLoad();
-		manageLocationsPage
-				.addNewLocation(locationName, customerName, cityName);
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
@@ -211,11 +199,9 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	public void TC70_TC472_EditUser_PicAdminSupport(String user, String pwd) {
 		String tcID = getTestCaseName(ManageUserTestCaseType.EditUser, user);
 		String password = CryptoUtility.decrypt(pwd);
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + tcID;
-		String eula = customerName + ": " + EULASTRING;
-		String userName = customerName + "User" + tcID + REGBASEUSERNAME;
-		String cityName = "Santa Clara";
-		String locationName = customerName + "loc";
+		String customerName = SQACUS;
+		String userName = customerName + tcID + testSetup.getFixedSizePseudoRandomString(11) + REGBASEUSERNAME;
+		String locationName = SQACUSLOC;
 
 		Log.info(user);
 		Log.info(password);
@@ -223,14 +209,6 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		loginPage.open();
 		loginPage.loginNormalAs(user, password);
-
-		manageCustomersPage.open();
-		manageCustomersPage.waitForPageLoad();
-		manageCustomersPage.addNewCustomer(customerName, eula);
-
-		manageLocationsPage.open();
-		manageLocationsPage.waitForPageLoad();
-		manageLocationsPage.addNewLocation(locationName, customerName, cityName);
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
@@ -363,23 +341,18 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	public void TC87_TC483_TC484_TC485_EditUserChangeRoleLocationTimezone_PicAdminSupport(String user, String pwd) {
 		String tcID = getTestCaseName(ManageUserTestCaseType.ChangeRoleLocTz, user);
 		String password = CryptoUtility.decrypt(pwd);
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + tcID;
-		String eula = customerName + ": " + EULASTRING;
+		String customerName = SQACUS;
 		String userName = customerName + "User" + tcID + REGBASEUSERNAME;
 		String cityName = "Santa Clara";
 		String cityNameNew = "Santa Clara2";
-		String locationName = customerName + "loc";
-		String locationNameNew = customerName + "locNew";
+		String locationName = customerName + testSetup.getFixedSizePseudoRandomString(10) + "loc";
+		String locationNameNew = locationName + "New";
 		String locationNameNewDesc = customerName + " - " + locationNameNew;
 
 		Log.info("\nRunning TC87_TC483_TC484_TC485 - Test Description: Picarro Admin Support - edit user - change role, location and timezone of existing user");
 
 		loginPage.open();
 		loginPage.loginNormalAs(user, password);
-
-		manageCustomersPage.open();
-		manageCustomersPage.waitForPageLoad();
-		manageCustomersPage.addNewCustomer(customerName, eula);
 
 		manageLocationsPage.open();
 		manageLocationsPage.waitForPageLoad();
@@ -495,7 +468,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * - User should be able to log in the application
 	 */
 	@Test
-	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@UseDataProvider(value = "dataProviderPicarroAdminSupportRoleInfo", location = UserDataProvider.class)
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC95_TC478_ReEnableUser_PicAdminSupport(String user, String pwd) {
 		String tcID = getTestCaseName(ManageUserTestCaseType.ReEnableUsers, user);
@@ -539,14 +512,14 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	 * - "Please enter no more than 50 characters." message is displayed
 	 */
 	@Test
-	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@UseDataProvider(value = "dataProviderPicarroAdminSupportRoleInfo", location = UserDataProvider.class)
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC98_TC486_UserEmailMax50Chars_PicAdminSupport(String user, String pwd) {
 		final int MAX_SIZE = 50;
 		String tcID = getTestCaseName(ManageUserTestCaseType.MaxEmailChars, user);
 		String password = CryptoUtility.decrypt(pwd);
-		String userName50 = SQACUS + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-20) + tcID + REGBASEUSERNAME;
-		String userName51 = SQACUS + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-20) + tcID + REGBASEUSERNAME + "A";
+		String userName50 = SQACUS + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-16) + REGBASEUSERNAME;
+		String userName51 = SQACUS + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-16) + REGBASEUSERNAME + "A";
 		Log.info("\nRunning - " + tcID + "_UserEmailMax50Chars_PicAdmin - Test Description: Picarro Admin - "
 				+ "More than 50 characters not allowed in email address field\n");
 

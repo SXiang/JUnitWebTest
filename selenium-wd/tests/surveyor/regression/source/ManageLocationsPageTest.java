@@ -147,20 +147,16 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	public void TC60_TC489_AddLocation_PicAdmin_PicSupport(String user, String pwd) {
 		String tcID = getTestCaseName(ManageLocationTestCaseType.AddLoc, user);
 		String password = CryptoUtility.decrypt(pwd);
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + tcID;
+		String customerName = SQACUS;
 		String eula = customerName + ": " + EULASTRING;
 		String locationName = customerName + "Loc";
-		String cityName="Santa Clara";
-	
+		String cityName="Santa Clara";	
 		
 		Log.info("\nRunning TC60_TC489_AddLocation_PicAdmin_PicSupport - Test Description: Adding Location");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(user, password);		
 	
-		manageCustomersPage.open();
-		manageCustomersPage.addNewCustomer(customerName, eula);
-		
 		manageLocationsPage.open();			
 		manageLocationsPage.addNewLocation(locationName,  customerName, cityName );
 		
@@ -178,8 +174,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	public void TC61_TC490_EditLocation_PicAdmin(String user, String pwd) {
 		String tcID = getTestCaseName(ManageLocationTestCaseType.EditLoc, user);
 		String password = CryptoUtility.decrypt(pwd);
-		String customerName = CUSTOMERNAMEPREFIX
-				+ testSetup.getFixedSizeRandomNumber(8) + tcID;
+		String customerName = SQACUS;
 		String eula = customerName + ": " + EULASTRING;
 		String locationName = customerName + "Loc"
 				+ testSetup.getFixedSizeRandomNumber(8) + tcID;
@@ -195,9 +190,6 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(user, password);
 
-		manageCustomersPage.open();
-		manageCustomersPage.addNewCustomer(customerName, eula);
-		
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName,  customerName, cityName);
 		
@@ -275,8 +267,12 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 
 		manageLocationsPage.open();
 
+		Log.info(String.format("Adding new location - [Name=%s], [Customer=%s], [City=%s]", locationName50Chars, SQACUS,
+				cityName));
 		manageLocationsPage.addNewLocation(locationName50Chars, SQACUS,
 				cityName);
+		Log.info(String.format("Adding new location - [Name=%s], [Customer=%s], [City=%s]", locationName51Chars, SQACUS,
+				cityName));
 		manageLocationsPage.addNewLocation(locationName51Chars, SQACUS,
 				cityName);
 

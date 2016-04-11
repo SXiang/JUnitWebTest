@@ -68,7 +68,7 @@ public class UserDataProvider extends SurveyorTestRunner {
         // @formatter:off"
         return new String[][] {		
         		{ SQAPICSUP,USERPASSWORDHASH },
-                { PICDFADMIN,USERPASSWORDHASH }
+                { SQAPICAD,USERPASSWORDHASH }
         	
             };
         // @formatter:on
