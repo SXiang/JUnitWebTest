@@ -384,5 +384,3 @@ public final class SurveyorConstants {
 }
 
 
-
-
