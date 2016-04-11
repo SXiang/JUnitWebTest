@@ -186,6 +186,7 @@ public final class SurveyorConstants {
 	public static final String KEYBREADCRUMB = "Bread Crumb";
 	public static final String KEYINDICATIONS = "Indications";
 	public static final String KEYISOTOPICCAPTURE = "Isotopic Capture";
+	public static final String KEYFIELDNOTES="Field Notes";
 	public static final String KEYANNOTATION = "Annotation";
 	public static final String KEYGAPS = "Gaps";
 	public static final String KEYASSETS = "Assets";
@@ -205,6 +206,7 @@ public final class SurveyorConstants {
 	
 	public static final String KEYINDTB = "Indications Table";
 	public static final String KEYISOANA = "Isotopic Analysis";
+	public static final String KEYGAPTB = "Gap Table";
 	public static final String KEYPCA = "Percent Coverage Assets";
 	public static final String KEYPCRA = "Percent Coverage Report Area";
 
