@@ -271,28 +271,34 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.btnOK.click();
 		this.waitForPageToLoad();
         
-		if(checkForError
-				&& this.verifyErrorMessage(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
+		if(checkForError && verifyErrorMessage(null, true /*checkOnlyErrorSummary*/)){
 			this.btnCancel.click();
 		}
 	}
 	
 	public boolean verifyErrorMessage(String errorMsg){
+		return verifyErrorMessage(errorMsg, false /*checkOnlyErrorSummary*/);
+	}
+	
+	private boolean verifyErrorMessage(String errorMsg, boolean checkOnlyErrorSummary){
 		boolean found = false;
 		if (isElementPresent(this.summaryErrorsBy)) {			
 			if (this.summaryErrors.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
-				for(WebElement element:this.panelErrors){
-					if(element.getText().equals(errorMsg)){
-						found = true;
-						break;
+				if (checkOnlyErrorSummary) { 
+					found = true;
+				} else {
+					for(WebElement element:this.panelErrors){
+						if(element.getText().equals(errorMsg)){
+							found = true;
+							break;
+						}
 					}
 				}
 			}
 		}
-		
 		return found;
 	}
-
+	
 	public void inputLatLong(String latitude, String longitude){
 		this.inputLocationLat.clear();
 		this.inputLocationLong.clear();
@@ -355,6 +361,10 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			customerNameCell = table.findElement(By.xpath(customerNameXPath));
 			locationNameCell = table.findElement(By.xpath(locationNameXPath));
 
+			Log.info(String.format("Looking for row - [Customer=%s], [Location=%s]", customerName, locationName));
+			Log.info(String.format("Found row - [Customer=%s], [Location=%s]", customerNameCell.getText().trim(), 
+					locationNameCell.getText().trim()));
+			
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName)
 					&& (locationNameCell.getText().trim()).equalsIgnoreCase(locationName)) {
 				Log.info("Found entry at row=" + rowNum);

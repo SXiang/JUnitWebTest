@@ -70,7 +70,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 * - User is navigated to Manage Locations page and new location entry is present in the table	 
 	 */
 	@Test
-	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@UseDataProvider(value = "dataProviderPicarroAdminSupportRoleInfo", location = UserDataProvider.class)
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC16_TC18_AddLocationUsingLatLongSelector_PicAdminSupport(String user, String pswd ) {
 		String tcID = getTestCaseName(ManageLocationTestCaseType.AddLocUsingSelector, user);
@@ -109,7 +109,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 * - User is navigated to Manage Locations page and Latitude and Longitude have new values 
 	 */
 	@Test
-	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@UseDataProvider(value = "dataProviderPicarroAdminSupportRoleInfo", location = UserDataProvider.class)
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC17_TC19_EditLocationAddedUsingLatLongSelector_PicAdmin_PicSupport(String user, String pwd) {
 		String tcID = getTestCaseName(ManageLocationTestCaseType.EditLocUsingSelector, user);
@@ -142,25 +142,21 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 * 
 	 */
 	@Test
-	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@UseDataProvider(value = "dataProviderPicarroAdminSupportRoleInfo", location = UserDataProvider.class)
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC60_TC489_AddLocation_PicAdmin_PicSupport(String user, String pwd) {
 		String tcID = getTestCaseName(ManageLocationTestCaseType.AddLoc, user);
 		String password = CryptoUtility.decrypt(pwd);
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + tcID;
+		String customerName = SQACUS;
 		String eula = customerName + ": " + EULASTRING;
 		String locationName = customerName + "Loc";
-		String cityName="Santa Clara";
-	
+		String cityName="Santa Clara";	
 		
 		Log.info("\nRunning TC60_TC489_AddLocation_PicAdmin_PicSupport - Test Description: Adding Location");
 		
 		loginPage.open();
 		loginPage.loginNormalAs(user, password);		
 	
-		manageCustomersPage.open();
-		manageCustomersPage.addNewCustomer(customerName, eula);
-		
 		manageLocationsPage.open();			
 		manageLocationsPage.addNewLocation(locationName,  customerName, cityName );
 		
@@ -173,13 +169,12 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 * 
 	 */
 	@Test
-	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@UseDataProvider(value = "dataProviderPicarroAdminSupportRoleInfo", location = UserDataProvider.class)
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC61_TC490_EditLocation_PicAdmin(String user, String pwd) {
 		String tcID = getTestCaseName(ManageLocationTestCaseType.EditLoc, user);
 		String password = CryptoUtility.decrypt(pwd);
-		String customerName = CUSTOMERNAMEPREFIX
-				+ testSetup.getFixedSizeRandomNumber(8) + tcID;
+		String customerName = SQACUS;
 		String eula = customerName + ": " + EULASTRING;
 		String locationName = customerName + "Loc"
 				+ testSetup.getFixedSizeRandomNumber(8) + tcID;
@@ -195,9 +190,6 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(user, password);
 
-		manageCustomersPage.open();
-		manageCustomersPage.addNewCustomer(customerName, eula);
-		
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName,  customerName, cityName);
 		
@@ -247,7 +239,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 * having limit of characters displayed
 	 */
 	@Test
-	@UseDataProvider(value = "dataProviderPicarroUserRoleInfo", location = UserDataProvider.class)
+	@UseDataProvider(value = "dataProviderPicarroAdminSupportRoleInfo", location = UserDataProvider.class)
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC100_TC495_EditLoc50CharLimit(String user, String pwd) {
 		String str34chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcd";
@@ -275,8 +267,12 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 
 		manageLocationsPage.open();
 
+		Log.info(String.format("Adding new location - [Name=%s], [Customer=%s], [City=%s]", locationName50Chars, SQACUS,
+				cityName));
 		manageLocationsPage.addNewLocation(locationName50Chars, SQACUS,
 				cityName);
+		Log.info(String.format("Adding new location - [Name=%s], [Customer=%s], [City=%s]", locationName51Chars, SQACUS,
+				cityName));
 		manageLocationsPage.addNewLocation(locationName51Chars, SQACUS,
 				cityName);
 
