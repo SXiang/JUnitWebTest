@@ -596,26 +596,45 @@ public class TestSetup {
 
 			this.chromeDriverPath = getExecutionPath(rootPath) + "lib" + File.separator + "chromedriver.exe";
 			this.implicitlyWaitTimeOutInSeconds = this.testProp.getProperty("implicitlyWaitTimeOutInSeconds");
-			this.implicitlyWaitSpecialTimeOutInSeconds = this.testProp
-					.getProperty("implicitlyWaitSpecialTimeOutInSeconds");
+			this.implicitlyWaitSpecialTimeOutInSeconds = this.testProp.getProperty("implicitlyWaitSpecialTimeOutInSeconds");
 			this.implicitlyWaitSpecialTimeOutInMS = this.testProp.getProperty("implicitlyWaitSpecialTimeOutInMS");
 
 			this.runEnvironment = this.testProp.getProperty("runEnvironment");
 			this.testRunCategory = this.testProp.getProperty("testRunCategory");
 			
-			this.setCollectReportJobPerfMetric(Boolean.valueOf(this.testProp.getProperty("complianceReport_collectReportJobPerfMetric")));
-			this.setGenerateBaselineSSRSImages(Boolean.valueOf(this.testProp.getProperty("complianceReport_generateBaselineSSRSImages")));
-			this.setGenerateBaselineViewImages(Boolean.valueOf(this.testProp.getProperty("complianceReport_generateBaselineViewImages")));
-			this.setGenerateBaselineShapeFiles(Boolean.valueOf(this.testProp.getProperty("complianceReport_generateBaselineShapeFiles")));
+			String collectReportJobPerfMetric = this.testProp.getProperty("complianceReport_collectReportJobPerfMetric");
+			if (collectReportJobPerfMetric != null && collectReportJobPerfMetric != "") {
+				this.setCollectReportJobPerfMetric(Boolean.valueOf(collectReportJobPerfMetric));
+			}
+			String generateBaselineSSRSImages = this.testProp.getProperty("complianceReport_generateBaselineSSRSImages");
+			if (generateBaselineSSRSImages != null && generateBaselineSSRSImages != "") {
+				this.setGenerateBaselineSSRSImages(Boolean.valueOf(generateBaselineSSRSImages));
+			}
+			String generateBaselineViewImages = this.testProp.getProperty("complianceReport_generateBaselineViewImages");
+			if (generateBaselineViewImages != null && generateBaselineViewImages != "") {
+				this.setGenerateBaselineViewImages(Boolean.valueOf(generateBaselineViewImages));
+			}
+			String generateBaselineShapeFiles = this.testProp.getProperty("complianceReport_generateBaselineShapeFiles");
+			if (generateBaselineShapeFiles != null && generateBaselineShapeFiles != "") {
+				this.setGenerateBaselineShapeFiles(Boolean.valueOf(generateBaselineShapeFiles));
+			}
 			
-			this.setExecutionTimesForLightLoadReportJobPerfBaseline(
-					Integer.valueOf(this.testProp.getProperty("complianceReport_executionTimesForLightLoadBaselineCollection")));
-			this.setExecutionTimesForMediumLoadReportJobPerfBaseline(
-					Integer.valueOf(this.testProp.getProperty("complianceReport_executionTimesForMediumLoadBaselineCollection")));
-			this.setExecutionTimesForHighLoadReportJobPerfBaseline(
-					Integer.valueOf(this.testProp.getProperty("complianceReport_executionTimesForHighLoadBaselineCollection")));
-			this.setExecutionTimesForUltraHighLoadReportJobPerfBaseline(
-					Integer.valueOf(this.testProp.getProperty("complianceReport_executionTimesForUltraHighLoadBaselineCollection")));
+			String executionTimesForLightLoadBaselineCollection = this.testProp.getProperty("complianceReport_executionTimesForLightLoadBaselineCollection");
+			if (executionTimesForLightLoadBaselineCollection != null && executionTimesForLightLoadBaselineCollection != "") {
+				this.setExecutionTimesForLightLoadReportJobPerfBaseline(Integer.valueOf(executionTimesForLightLoadBaselineCollection));
+			}
+			String executionTimesForMediumLoadBaselineCollection = this.testProp.getProperty("complianceReport_executionTimesForMediumLoadBaselineCollection");
+			if (executionTimesForMediumLoadBaselineCollection != null && executionTimesForMediumLoadBaselineCollection != "") {
+				this.setExecutionTimesForMediumLoadReportJobPerfBaseline(Integer.valueOf(executionTimesForMediumLoadBaselineCollection));
+			}
+			String executionTimesForHighLoadBaselineCollection = this.testProp.getProperty("complianceReport_executionTimesForHighLoadBaselineCollection");
+			if (executionTimesForHighLoadBaselineCollection != null && executionTimesForHighLoadBaselineCollection != "") {
+				this.setExecutionTimesForHighLoadReportJobPerfBaseline(Integer.valueOf(executionTimesForHighLoadBaselineCollection));
+			}
+			String executionTimesForUltraHighLoadBaselineCollection = this.testProp.getProperty("complianceReport_executionTimesForUltraHighLoadBaselineCollection");
+			if (executionTimesForUltraHighLoadBaselineCollection != null && executionTimesForUltraHighLoadBaselineCollection != "") {
+				this.setExecutionTimesForUltraHighLoadReportJobPerfBaseline(Integer.valueOf(executionTimesForUltraHighLoadBaselineCollection));
+			}
 
 			this.language = this.testProp.getProperty("language");
 

@@ -12,6 +12,7 @@ import org.junit.After;
 import common.source.FileUtility;
 import common.source.Log;
 import common.source.NumberUtility;
+import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.Reports.ReportJobType;
@@ -23,7 +24,9 @@ public class BasePerformanceTest extends BaseReportsPageTest {
 
 	@After
 	public void afterTestMethod() {
-		logReportJobBaselineMetrics();
+		if (TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
+			logReportJobBaselineMetrics();
+		}
 	}
 
 	protected void generateReportJobBaselineRunExecutionCsv(String testCaseID) throws IOException {
