@@ -137,7 +137,6 @@ public class SurveyViewPage extends BaseMapViewPage {
     
     // Survey ID used for opening the specified survey page.
     private String surveyId;    
-    private By blockedUINotShown = By.cssSelector("#blocked_ui.ng-hide");
 
 	/**
 	 * @param driver
@@ -421,8 +420,7 @@ public class SurveyViewPage extends BaseMapViewPage {
     public SurveyViewPage verifyPageLoaded() {
         (new WebDriverWait(driver, timeout * 2)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
-                return d.getPageSource().contains(STRPageContentText)
-                		 && isElementPresent(blockedUINotShown);
+                return d.getPageSource().contains(STRPageContentText);                		 
             }
         });
         return this;

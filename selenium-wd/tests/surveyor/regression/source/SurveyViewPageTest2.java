@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 import common.source.Log;
 
-public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTest1 {
+public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 
 	public SurveyViewPageTest2() {
 		super();
@@ -30,6 +30,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		assertTrue(surveyViewPageAction.verifyModeIsNotShownOnMap(EMPTY, NOTSET));
 	}
 	/**
@@ -49,6 +50,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);		
 		assertTrue(surveyViewPageAction.verifyStatusIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
@@ -74,6 +76,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
@@ -125,6 +128,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
@@ -165,6 +169,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
@@ -215,6 +220,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
@@ -265,6 +271,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
@@ -305,6 +312,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
@@ -352,6 +360,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
@@ -395,6 +404,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);		
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
@@ -448,6 +458,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
@@ -501,6 +512,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
@@ -553,6 +565,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
@@ -601,6 +614,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
@@ -633,6 +647,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
 				
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);		
@@ -676,6 +691,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
@@ -717,6 +733,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);		
@@ -760,6 +777,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
 
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
@@ -802,6 +820,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);		
 		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
@@ -852,6 +871,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);		
 		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
@@ -892,6 +912,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);		
 		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
@@ -941,6 +962,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);		
 		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
@@ -984,6 +1006,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);		
 		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
@@ -1027,6 +1050,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);		
 		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
@@ -1080,6 +1104,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);		
 		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
@@ -1136,6 +1161,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest {//SurveyViewPageTes
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		surveyViewPageAction.open(TEST_SURVEY_RAPID_RESP_ID, NOTSET);
 		
+		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);	
