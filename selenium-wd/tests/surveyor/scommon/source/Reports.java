@@ -199,9 +199,7 @@ public class Reports {
 	public String getTimeZone() {
 		return this.timeZone;
 	}
-
 	
-
 	public String getSurveyorUnit() {
 		return this.surveyorUnit;
 	}

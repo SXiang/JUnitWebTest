@@ -172,6 +172,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='report-boundry-layers-Big Boundary']")
 	protected WebElement checkBoxDistrict;
+	
+	@FindBy(id = "report-boundry-layers-Leak Survey Area")
+	protected WebElement checkBoxLeakSurveyArea;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='report-boundry-layers-Level 1']")
 	protected WebElement checkBoxLevel1;
@@ -1219,6 +1222,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 		// add class testing code here
 	}
 
+//	addNewReport(title, customer, timeZone, exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong,
+//	SWLat, SWLong, surUnit, tag);
+//}
+//
+
+	
 	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary,
 			String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong,
 			String surUnit, String tag, String startDate, String endDate, String surModeFilter) throws Exception {

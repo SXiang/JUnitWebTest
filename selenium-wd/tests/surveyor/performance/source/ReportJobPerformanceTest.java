@@ -13,7 +13,6 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
 import common.source.TestContext;
-import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.dataprovider.PerformanceReportJobDataProvider;
 import surveyor.dataprovider.PerformanceReportJobDataProvider.ReportJobTestCategory;
 import surveyor.scommon.actions.ComplianceReportsPageActions;

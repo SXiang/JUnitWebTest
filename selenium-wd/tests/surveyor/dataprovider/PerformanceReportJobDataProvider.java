@@ -24,7 +24,7 @@ public class PerformanceReportJobDataProvider extends ReportDataProvider {
 		}
 	}
 	
-	private static final int LIGHT_LOAD3_USER_ROW_ID = 10;		  
+	private static final int LIGHT_LOAD3_USER_ROW_ID = 10;
 	private static final int LIGHT_LOAD3_REPORT_DATA_ROW_ID = 10;
 	private static final int LIGHT_LOAD3_EXECUTIONS_FOR_BASELINES = 20;
 
