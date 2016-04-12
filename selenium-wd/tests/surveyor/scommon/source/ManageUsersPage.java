@@ -124,13 +124,13 @@ public class ManageUsersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[1]")
     protected WebElement tdUserNameValue;
     
-    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[3]")
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]")
     protected WebElement tdLocationValue;
     
-    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]")
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[5]")
     protected WebElement tdRoleValue;
     
-    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[5]")
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[6]")
     protected WebElement tdStatusValue;
     
 	// add more web elements here later
@@ -1375,7 +1375,15 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public boolean searchUser(String userName, String locationName,
 			String role, String status) {
 		this.getInputSearch().sendKeys(userName);
+		this.waitForPageToLoad();
 		try {
+			Log.info(String.format("Looking for user - [Username=%s],[Location=%s],"
+					+ "[Role=%s],[Status=%s]", userName, locationName, role, status));
+			Log.info(String.format("Found user - [Username=%s],[Location=%s],"
+					+ "[Role=%s],[Status=%s]", this.tdUserNameValue.getText(), 
+					this.tdLocationValue.getText(), this.tdRoleValue.getText(), 
+					this.tdStatusValue.getText()));
+			
 			if (this.tdUserNameValue.getText().contentEquals(userName)) {
 				if (this.tdLocationValue.getText().contentEquals(locationName)) {
 					if (this.tdRoleValue.getText().contentEquals(role)) {
