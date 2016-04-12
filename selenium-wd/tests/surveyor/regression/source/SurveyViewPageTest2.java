@@ -2,7 +2,6 @@
 package surveyor.regression.source;
 
 import org.junit.Test;
-
 import static org.junit.Assert.*;
 
 import common.source.Log;
@@ -31,7 +30,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
 		
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifyModeIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(surveyViewPageAction.verifyModeIsNotShownOnMap(EMPTY, NOTSET));		
 	}
 	/**
 	 * Test Case ID: TC394_UserShouldNotAbleViewStatusInformationSurveyView

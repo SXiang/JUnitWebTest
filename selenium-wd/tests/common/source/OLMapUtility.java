@@ -266,8 +266,7 @@ public class OLMapUtility {
 	private static final String GET_MAP_ZOOMLEVEL_JS_FUNCTION_CALL = "return getMapZoomLevel();";
 
 	private WebDriver driver;
-    private static OLMapUtility mapUtility = null;
-    
+	
 	public OLMapUtility(WebDriver driver) {
 		this.driver = driver;
 	}

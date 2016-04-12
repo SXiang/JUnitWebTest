@@ -4,9 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import common.source.OLMapUtility;
-import common.source.BrowserCommands;
 import common.source.TestContext;
 import common.source.OLMapUtility.IconColor;
 import common.source.TestSetup;
@@ -17,7 +15,7 @@ import surveyor.scommon.actions.data.DriverViewDataReader.DriverViewDataRow;
 import surveyor.scommon.source.BaseMapViewPage;
 
 public class BaseMapViewPageActions extends BasePageActions {
-	private static final int DEFAULT_ZOOM_LEVEL = 19;	
+	private static final int DEFAULT_ZOOM_LEVEL = 19;
 	private static final String FN_VERIFY_MAP_ZOOM_LEVEL_IS_CORRECT = "verifyMapShownForZoomLevelIsCorrect";
 	private static final String FN_VERIFY_FIELD_NOTES_IS_SHOWN_ON_MAP = "verifyFieldNotesIsShownOnMap";
 	private static final String FN_VERIFY_FIELD_NOTES_IS_NOT_SHOWN_ON_MAP = "verifyFieldNotesIsNotShownOnMap";
@@ -620,7 +618,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyAssetIsShownOnMap", data, dataRowID);
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());	
 		boolean isAssetShown = false;
-		try {		
+		try {
 			isAssetShown =	(new WebDriverWait(getDriver(),TIMEOUT_LOAD_LAYER)).until(new ExpectedCondition<Boolean>(){
 			public Boolean apply(WebDriver d){
 				return mapUtility.isAssetShownOnMap();
@@ -683,7 +681,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyAssetIsNotShownOnMap(String data, Integer dataRowID){
 		logAction(getRuntimeType() + ".verifyAssetIsNotShownOnMap", data, dataRowID);
 		return !verifyAssetIsShownOnMap(data, dataRowID);
-	}	
+	}
 	public boolean verifyBoundariesIsNotShownOnMap(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyBoundariesIsNotShownOnMap", data, dataRowID);
 		return !verifyBoundariesIsShownOnMap(data, dataRowID);
@@ -1114,6 +1112,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisBoundarySmallBoundaryButtonIsNotVisible", data, dataRowID);
 		return !this.pageObject.isGisBoundarySmallBoundaryButtonVisible();
 	}
+ 
 	/**
 	 * Executes verifyStatusIsNotShownOnMap action.
 	 * @param data - specifies the input data passed to the action.
@@ -1124,6 +1123,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyStatusIsNotShownOnMap", data, dataRowID);
 		return !pageObject.isStatusButtonVisible();
 	}
+
 	/**
 	 * Executes verifyModeIsNotShownOnMap action.
 	 * @param data - specifies the input data passed to the action.
@@ -1259,8 +1259,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 		int zoomLevel = Integer.valueOf(data) - DEFAULT_ZOOM_LEVEL;
 		return mapUtility.isMapResolutionCorrect(zoomLevel);
 	}
-
-
 	
 	/**
 	 * Executes verifyGisUseAllBoundariesButtonIsNotVisible action.
