@@ -50,6 +50,8 @@ import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.dataaccess.source.ResourceKeys;
@@ -135,80 +137,80 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		manageCustomersPage.addNewCustomer(customerName, eula, false);		
 		assertTrue(manageCustomersPage.findExistingCustomer(customerName, false));
 		assertTrue(manageCustomersPage.findCustomerAndOpenEditPage(customerName));
-		manageCustomersPage.enabledDisableCustomer(true);
+		/*manageCustomersPage.enabledDisableCustomer(true);
 		manageCustomersPage.getRptMetaDataCheckBox().click();
 		manageCustomersPage.getRptMetaDataCheckBox().click();
-		manageCustomersPage.getbtnOk().click();
+		 */manageCustomersPage.getbtnOk().click();
 
-		manageLocationsPage.open();
-		manageLocationsPage.waitForPageLoad();
-		manageLocationsPage.addNewLocation(locationName, customerName, cityName);
+		 manageLocationsPage.open();
+		 manageLocationsPage.waitForPageLoad();
+		 manageLocationsPage.addNewLocation(locationName, customerName, cityName);
 
-		manageUsersPage.open();
-		manageUsersPage.waitForPageLoad();
-		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEUA, locationName);
+		 manageUsersPage.open();
+		 manageUsersPage.waitForPageLoad();
+		 manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEUA, locationName);
 
-		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
-		loginPage = manageUsersPage.logout();
+		 assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
+		 loginPage = manageUsersPage.logout();
 
-		loginPage.open();
-		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
-		assertTrue(homePage.checkIfAtHomePage());
+		 loginPage.open();
+		 HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
+		 assertTrue(homePage.checkIfAtHomePage());
 
-		complianceReportsPage.open();
-		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add(IMGMAPHEIGHT);
-		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add(RNELAT);
-		listBoundary.add(RNELON);
-		listBoundary.add(RSWLAT);
-		listBoundary.add(RSWLON);
+		 complianceReportsPage.open();
+		 List<String> listBoundary = new ArrayList<String>();
+		 listBoundary.add(IMGMAPHEIGHT);
+		 listBoundary.add(IMGMAPWIDTH);
+		 listBoundary.add(RNELAT);
+		 listBoundary.add(RNELON);
+		 listBoundary.add(RSWLAT);
+		 listBoundary.add(RSWLON);
 
-		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
-		Map<String, String> tableMap = new HashMap<String, String>();
+		 List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		 Map<String, String> tableMap = new HashMap<String, String>();
 
-		tableMap.put(KEYINDTB, "0");
-		tableMap.put(KEYISOANA, "0");
-		tableMap.put(KEYPCA, "0");
-		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYASSETCASTIRON, "1");
-		tableMap.put(KEYASSETCOPPER, "1");
-		tableMap.put(KEYASSETOTHERPLASTIC, "1");
-		tableMap.put(KEYASSETPEPLASTIC, "1");
-		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
-		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "0");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
-		tablesList.add(tableMap);
+		 tableMap.put(KEYINDTB, "0");
+		 tableMap.put(KEYISOANA, "0");
+		 tableMap.put(KEYPCA, "0");
+		 tableMap.put(KEYPCRA, "0");
+		 tableMap.put(KEYASSETCASTIRON, "1");
+		 tableMap.put(KEYASSETCOPPER, "1");
+		 tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		 tableMap.put(KEYASSETPEPLASTIC, "1");
+		 tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		 tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		 tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		 tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
+		 tablesList.add(tableMap);
 
-		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
-		Map<String, String> viewMap1 = new HashMap<String, String>();
+		 List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		 Map<String, String> viewMap1 = new HashMap<String, String>();
 
-		viewMap1.put(KEYVIEWNAME, "First View");
-		viewMap1.put(KEYLISA, "1");
-		viewMap1.put(KEYFOV, "1");
-		viewMap1.put(KEYBREADCRUMB, "1");
-		viewMap1.put(KEYINDICATIONS, "1");
-		viewMap1.put(KEYISOTOPICCAPTURE, "0");
-		viewMap1.put(KEYANNOTATION, "0");
-		viewMap1.put(KEYGAPS, "1");
-		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "0");
-		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
-		viewList.add(viewMap1);
+		 viewMap1.put(KEYVIEWNAME, "First View");
+		 viewMap1.put(KEYLISA, "1");
+		 viewMap1.put(KEYFOV, "1");
+		 viewMap1.put(KEYBREADCRUMB, "1");
+		 viewMap1.put(KEYINDICATIONS, "1");
+		 viewMap1.put(KEYISOTOPICCAPTURE, "0");
+		 viewMap1.put(KEYANNOTATION, "0");
+		 viewMap1.put(KEYGAPS, "1");
+		 viewMap1.put(KEYASSETS, "1");
+		 viewMap1.put(KEYBOUNDARIES, "0");
+		 viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
+		 viewList.add(viewMap1);
 
-		List<String> tagList = new ArrayList<String>();
-		tagList.add(PICADMNSTDTAG);
+		 List<String> tagList = new ArrayList<String>();
+		 tagList.add(PICADMNSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
-		complianceReportsPage.addNewReport(rpt);
-		complianceReportsPage.waitForPageLoad();
+		 ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		 complianceReportsPage.addNewReport(rpt);
+		 complianceReportsPage.waitForPageLoad();
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
-			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
-		} else
-			fail("\nTestcase TC720 failed.\n");
+		 if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
+			 assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
+			 assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
+		 } else
+			 fail("\nTestcase TC720 failed.\n");
 	}
 
 	/**
@@ -778,24 +780,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 
 	}
 
-	//need to remove
-/*	*//**
-	 * Test Case ID: TC1297_SoftwareVersionUIReportsPDFShouldMatch
-	 * Script: -  	
-	 *	- - Generate compliance, investigation, ref gas, system history reports
-	 * Results: - 
-	 *	- - Software version present at bottom of the page should be same as team city version
-	 *//*
-	@Test
-	public void TC1297_SoftwareVersionUIReportsPDFShouldMatch() throws Exception {
-		Log.info("\nRunning TC1297_SoftwareVersionUIReportsPDFShouldMatch ...");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);    Picarro Admin 
-
-	}
-
-*/	
 	/**
 	 * Test Case ID: c_CheckFileNameOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectively
 	 * Script: -  	
@@ -871,7 +855,11 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
-			assertTrue(complianceReportsPage.verifyReportSurveyMetaDataFile(testSetup.getDownloadPath(), rptTitle));
+			if (tablesList != null) {
+				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
+					assertTrue(complianceReportsPage.verifyReportSurveyMetaDataFile(testSetup.getDownloadPath(), rptTitle));
+				}
+			}
 		}
 		else
 			fail("\nTestcase TC1299 failed.\n");
@@ -896,6 +884,60 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 
+		String testCaseID = "TC1038";
+		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+
+		complianceReportsPage.open();
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+		listBoundary.add("37.410444553141716");
+		listBoundary.add("-121.95666793157869");
+		listBoundary.add("37.39367146608184");
+		listBoundary.add("-122.00717929174715");
+
+
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "0");
+		tableMap.put(KEYISOANA, "0");
+		tableMap.put(KEYGAPTB, "0");
+		tableMap.put(KEYPCA, "0");
+		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "1");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "1");
+		tablesList.add(tableMap);
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap = new HashMap<String, String>();
+
+		viewMap.put(KEYVIEWNAME, "First View");
+		viewMap.put(KEYLISA, "1");
+		viewMap.put(KEYFOV, "1");
+		viewMap.put(KEYBREADCRUMB, "1");
+		viewMap.put(KEYINDICATIONS, "1");
+		viewMap.put(KEYISOTOPICCAPTURE, "0");
+		viewMap.put(KEYANNOTATION, "0");
+		viewMap.put(KEYGAPS, "0");
+		viewMap.put(KEYASSETS, "0");
+		viewMap.put(KEYBOUNDARIES, "0");
+		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
+		viewList.add(viewMap);
+
+		List<String> tagList = new ArrayList<String>();
+		tagList.add(PICADMNSTDTAG);
+
+		ReportsCompliance rpt1 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		complianceReportsPage.addNewReport(rpt1);
+		assertTrue(complianceReportsPage.getAssetErrorText().getText().equals("Selected Asset Layer(s), Please select at least one view with Assets"));
+		assertTrue(complianceReportsPage.getBoundaryErrorText().getText().equals("Selected Boundary Layer(s), Please select at least one view with Boundaries"));
 	}
 
 	/**
@@ -910,7 +952,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 *	- - Report generated successfully
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)- Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	//@Test--need customer boundary
 	public void TC1301_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecast() throws Exception {
 		Log.info("\nRunning TC1301_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecast ...");
 
@@ -936,6 +978,87 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 
+		String testCaseID = "TC1303";
+		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+
+		complianceReportsPage.open();
+
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+		listBoundary.add("37.4206");
+		listBoundary.add("-121.9725");
+		listBoundary.add("37.4157");
+		listBoundary.add("-121.9839");
+
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "0");
+		tableMap.put(KEYISOANA, "0");
+		tableMap.put(KEYGAPTB, "0");
+		tableMap.put(KEYPCA, "0");
+		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "0");
+		tableMap.put(KEYASSETCOPPER, "0");
+		tableMap.put(KEYASSETOTHERPLASTIC, "0");
+		tableMap.put(KEYASSETPEPLASTIC, "0");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "0");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "0");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
+		tablesList.add(tableMap);
+
+		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYFIELDNOTES, "1");
+		viewMap1.put(KEYGAPS, "1");
+		viewMap1.put(KEYASSETS, "0");
+		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
+		viewList1.add(viewMap1);
+
+		List<Map<String, String>> viewList2 = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap2 = new HashMap<String, String>();
+
+		viewMap2.put(KEYVIEWNAME, "First View");
+		viewMap2.put(KEYLISA, "0");
+		viewMap2.put(KEYFOV, "0");
+		viewMap2.put(KEYBREADCRUMB, "0");
+		viewMap2.put(KEYINDICATIONS, "0");
+		viewMap2.put(KEYISOTOPICCAPTURE, "0");
+		viewMap2.put(KEYANNOTATION, "0");
+		viewMap2.put(KEYFIELDNOTES, "0");
+		viewMap2.put(KEYGAPS, "0");
+		viewMap2.put(KEYASSETS, "1");
+		viewMap2.put(KEYBOUNDARIES, "1");
+		viewMap2.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
+		viewList2.add(viewMap2);
+
+		List<String> tagList = new ArrayList<String>();
+		tagList.add(PICADMNSTDTAG);
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
+		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
+		complianceReportsPage.getInputSearch().sendKeys(rptTitle);
+		complianceReportsPage.waitForPageLoad();
+		complianceReportsPage.clickOnCopyReport(rptTitle, testSetup.getLoginUser());
+		complianceReportsPage.waitForCopyReportPagetoLoad();
+		Thread.sleep(2000);;
+		complianceReportsPage.addViews(testSetup.getLoginUser(), viewList2);
+		complianceReportsPage.clickOnOKButton();
+		assertTrue(complianceReportsPage.getAssetErrorText().getText().equals("View(s) with Assets, Please select at least one Asset Layer"));
+		assertTrue(complianceReportsPage.getBoundaryErrorText().getText().equals("View(s) with Boundaries, Please select at least one Boundary Layer"));
 	}
 
 	/**
@@ -954,6 +1077,88 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 
+		String testCaseID = "TC1304";
+		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+
+		complianceReportsPage.open();
+
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+		listBoundary.add("37.4206");
+		listBoundary.add("-121.9725");
+		listBoundary.add("37.4157");
+		listBoundary.add("-121.9839");
+
+		List<Map<String, String>> tablesList1 = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap1 = new HashMap<String, String>();
+
+		tableMap1.put(KEYINDTB, "0");
+		tableMap1.put(KEYISOANA, "0");
+		tableMap1.put(KEYGAPTB, "0");
+		tableMap1.put(KEYPCA, "0");
+		tableMap1.put(KEYPCRA, "0");
+		tableMap1.put(KEYASSETCASTIRON, "0");
+		tableMap1.put(KEYASSETCOPPER, "0");
+		tableMap1.put(KEYASSETOTHERPLASTIC, "0");
+		tableMap1.put(KEYASSETPEPLASTIC, "0");
+		tableMap1.put(KEYASSETPROTECTEDSTEEL, "0");
+		tableMap1.put(KEYASSETUNPROTECTEDSTEEL, "0");
+		tableMap1.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap1.put(KEYBOUNDARYDISTRICTPLAT, "0");
+		tablesList1.add(tableMap1);
+
+		List<Map<String, String>> tablesList2 = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap2 = new HashMap<String, String>();
+
+		tableMap2.put(KEYINDTB, "0");
+		tableMap2.put(KEYISOANA, "0");
+		tableMap2.put(KEYGAPTB, "0");
+		tableMap2.put(KEYPCA, "0");
+		tableMap2.put(KEYPCRA, "0");
+		tableMap2.put(KEYASSETCASTIRON, "1");
+		tableMap2.put(KEYASSETCOPPER, "1");
+		tableMap2.put(KEYASSETOTHERPLASTIC, "0");
+		tableMap2.put(KEYASSETPEPLASTIC, "0");
+		tableMap2.put(KEYASSETPROTECTEDSTEEL, "0");
+		tableMap2.put(KEYASSETUNPROTECTEDSTEEL, "0");
+		tableMap2.put(KEYBOUNDARYDISTRICT, "1");
+		tableMap2.put(KEYBOUNDARYDISTRICTPLAT, "0");
+		tablesList2.add(tableMap2);
+
+		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYFIELDNOTES, "1");
+		viewMap1.put(KEYGAPS, "1");
+		viewMap1.put(KEYASSETS, "0");
+		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
+		viewList1.add(viewMap1);
+
+		List<String> tagList = new ArrayList<String>();
+		tagList.add(PICADMNSTDTAG);
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList1, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
+		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
+		complianceReportsPage.getInputSearch().sendKeys(rptTitle);
+		complianceReportsPage.waitForPageLoad();
+		complianceReportsPage.clickOnCopyReport(rptTitle, testSetup.getLoginUser());
+		complianceReportsPage.waitForCopyReportPagetoLoad();
+		Thread.sleep(2000);
+		complianceReportsPage.handleOptionalViewLayersSection(tablesList2);
+		complianceReportsPage.clickOnOKButton();
+		assertTrue(complianceReportsPage.getAssetErrorText().getText().equals("Selected Asset Layer(s), Please select at least one view with Assets"));
+		assertTrue(complianceReportsPage.getBoundaryErrorText().getText().equals("Selected Boundary Layer(s), Please select at least one view with Boundaries"));
 	}
 
 	/**
@@ -967,8 +1172,22 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		Log.info("\nRunning TC1305_CheckPercentCoverageForecastCheckBoxPresentNewCopyComplianceReportScreensPicarroUser ...");
 
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, 1);   /* Picarro Customer*/
 
+		complianceReportsPage.open();
+
+		complianceReportsPage.getNewComplianceReportBtn().click();
+		complianceReportsPage.getPercentCoverReportArea().isDisplayed();
+		complianceReportsPage.clickOnCancelBtn();
+		
+		String copyImgXPath = "//*[@id='datatable']/tbody/tr[1]/td[5]/a[2]/img";
+		WebElement copyImg = driver.findElement(By.xpath(copyImgXPath));
+
+		copyImg.click();
+		complianceReportsPage.waitForCopyReportPagetoLoad();
+		Thread.sleep(2000);;
+		complianceReportsPage.getPercentCoverReportArea().isDisplayed();
+		
 	}
 
 	/**
@@ -982,8 +1201,21 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		Log.info("\nRunning TC1306_CheckPercentCoverageForecastCheckBoxPresentNewCopyComplianceReportScreensOfCustomerUserHavingAssets ...");
 
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, 6);   /* Picarro Admin*/
 
+		complianceReportsPage.open();
+
+		complianceReportsPage.getNewComplianceReportBtn().click();
+		complianceReportsPage.getPercentCoverReportArea().isDisplayed();
+		complianceReportsPage.clickOnCancelBtn();
+		
+		String copyImgXPath = "//*[@id='datatable']/tbody/tr[1]/td[5]/a[2]/img";
+		WebElement copyImg = driver.findElement(By.xpath(copyImgXPath));
+
+		copyImg.click();
+		complianceReportsPage.waitForCopyReportPagetoLoad();
+		Thread.sleep(2000);;
+		complianceReportsPage.getPercentCoverReportArea().isDisplayed();
 	}
 
 	/**

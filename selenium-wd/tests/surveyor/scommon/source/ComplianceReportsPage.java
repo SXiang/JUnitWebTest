@@ -271,6 +271,20 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[1]")
 	protected WebElement fstRptTilNm;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
+	protected WebElement newComplianceReportBtn;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='report-show-percent-coverage-report-area']")
+	protected WebElement percentCoverReportArea;
+
+	public WebElement getNewComplianceReportBtn() {
+		return this.newComplianceReportBtn;
+	}
+
+	public WebElement getPercentCoverReportArea() {
+		return this.percentCoverReportArea;
+	}
+
 	public enum CustomerBoundaryType {
 		District, DistrictPlat
 	}
@@ -778,7 +792,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return mode;
 	}
 
-	private void handleOptionalViewLayersSection(List<Map<String, String>> viewLayersList) {
+	public void handleOptionalViewLayersSection(List<Map<String, String>> viewLayersList) {
 		if (viewLayersList != null) {
 			boolean selectAssetCastIron = viewLayersList.get(0).get(KEYASSETCASTIRON).equalsIgnoreCase("1");
 			boolean selectAssetCopper = viewLayersList.get(0).get(KEYASSETCOPPER).equalsIgnoreCase("1");
