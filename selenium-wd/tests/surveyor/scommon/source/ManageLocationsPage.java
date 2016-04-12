@@ -271,29 +271,27 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.btnOK.click();
 		this.waitForPageToLoad();
         
-		if(checkForError && checkIfAnyValidationErrors()){
+		if(checkForError && verifyErrorMessage(null, true /*checkOnlyErrorSummary*/)){
 			this.btnCancel.click();
 		}
 	}
 	
-	public boolean checkIfAnyValidationErrors(){
-		String errorMsg = Resources.getResource(ResourceKeys.Validation_SummaryTitle);
-		if (isElementPresent(this.panelDuplicationErrorXPath)) {
- 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-			if (panelError.getText().equalsIgnoreCase(errorMsg))
- 				return true;
- 		}
-		return false;
-	}
-
 	public boolean verifyErrorMessage(String errorMsg){
+		return verifyErrorMessage(errorMsg, false /*checkOnlyErrorSummary*/);
+	}
+	
+	private boolean verifyErrorMessage(String errorMsg, boolean checkOnlyErrorSummary){
 		boolean found = false;
 		if (isElementPresent(this.summaryErrorsBy)) {			
 			if (this.summaryErrors.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
-				for(WebElement element:this.panelErrors){
-					if(element.getText().equals(errorMsg)){
-						found = true;
-						break;
+				if (checkOnlyErrorSummary) { 
+					found = true;
+				} else {
+					for(WebElement element:this.panelErrors){
+						if(element.getText().equals(errorMsg)){
+							found = true;
+							break;
+						}
 					}
 				}
 			}
