@@ -225,7 +225,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(id = "start_survey_modal")
 	protected WebElement startSurveyButton;
 	
-	@FindBy(id = "stop_survey_modal")
+	@FindBy(xpath = "//*[@id='button_close_survey_modal']/..")
 	protected WebElement stopSurveyButton;
 		
 	@FindBy(id = "blocked_ui")

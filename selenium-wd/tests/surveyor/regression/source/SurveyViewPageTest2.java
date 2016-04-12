@@ -20,7 +20,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 	 *  - On Home Page, click on Driving Surveys -& View Survey 	
 	 * Results: 
 	 *	- User should be able to see entire survey at once
-     *  - Mode, Start Recording, Stop Recording and shutdown analyzer buttons are not present
+     *  - Mode button is not present
 	 */
 	@Test
 	public void TC393_UserNotAllowedStartStopSurveySurveyView() throws Exception {
