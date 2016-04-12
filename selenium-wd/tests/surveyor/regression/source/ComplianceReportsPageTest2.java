@@ -48,6 +48,7 @@ import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -118,7 +119,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 * Results: - 
 	 *	- - User can download the Shape files and meta data files successfully
 	 */
-	//@Test---needs special customer in the system.--need to decide the approach 
+	@Ignore
 	public void TC720_ShapefileMetaDataReportFeaturePermissionExistingCustomer_NewComplianceReportGeneration() throws Exception {
 		Log.info("\nRunning TC720_ShapefileMetaDataReportFeaturePermissionExistingCustomer_NewComplianceReportGeneration ...");
 
@@ -454,7 +455,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 *	- - The Gap numbers in the SSRS report should correspond to their location on the grid
 	 *	- - The grid cells should be approximately 200 feet square
 	 */
-	@Test //--verify image not working
+	@Test
 	public void TC1041_StandardSurvey_GapBoxesUniqueNumbersPrescribedFormat() throws Exception {
 		Log.info("\nRunning TC1041_StandardSurvey_GapBoxesUniqueNumbersPrescribedFormat ...");
 
@@ -534,7 +535,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 * Results: - 
 	 *	- - SSRS Gap table should not show Gaps which are completely covered by FoV and LISA- Views will have the Gaps
 	 */
-	//@Test  --need new api for add report with latlongselector
+	@Ignore
 	public void TC1090_GenerateComplianceReportWhenGapTableGapsInViewsSectionSelected() throws Exception {
 		Log.info("\nRunning TC1090_GenerateComplianceReportWhenGapTableGapsInViewsSectionSelected ...");
 
@@ -592,7 +593,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		tagList.add(PICADMNSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
-		complianceReportsPage.addNewReport(rpt);
+		//complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
@@ -609,7 +610,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 * Results: - 
 	 *	- - SSRS Gap table should not show Gaps which are completely covered by FoV and LISA- Views will not show Gaps
 	 */
-	//@Test---needed new api for add report with latlongselector
+	@Ignore
 	public void TC1091_GenerateComplianceReportWhenGapTableSelectedButGapsPresentViewsSectionNotSelected() throws Exception {
 		Log.info("\nRunning TC1091_GenerateComplianceReportWhenGapTableSelectedButGapsPresentViewsSectionNotSelected ...");
 
@@ -624,7 +625,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 * Results: - 
 	 *	- - SSRS will not show Gaps Table (not even the header)
 	 */
-	//@Test--need api for add report with latlongselector
+	@Ignore
 	public void TC1092_GenerateComplianceReportWhenGapsPresentViewsSectionSelectedButGapTableNotSelected() throws Exception {
 		Log.info("\nRunning TC1092_GenerateComplianceReportWhenGapsPresentViewsSectionSelectedButGapTableNotSelected ...");
 
@@ -641,7 +642,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 * Results: - 
 	 *	- - View2 will not have gaps information
 	 */
-	//@Test--need latlongslector
+	@Ignore
 	public void TC1237_GenerateComplianceReportWhenGapTableGapsInOneOfViewsSelected() throws Exception {
 		Log.info("\nRunning TC1237_GenerateComplianceReportWhenGapTableGapsInOneOfViewsSelected ...");
 
@@ -663,7 +664,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 *	- - Field Notes present in Isotopic Analysis and Indications table should be present in both views as well
 	 *	- - Reference gas capture result and note should not be displayed
 	 */
-	//@Test--need latlongselector
+	@Ignore
 	public void TC1257_GenerateComplianceReportSurveyHavingMultipleFieldNotesIndications() throws Exception {
 		Log.info("\nRunning TC1257_GenerateComplianceReportSurveyHavingMultipleFieldNotesIndications ...");
 
@@ -771,7 +772,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 * Results: - 
 	 *	- - Report is generated succesfully
 	 */
-	//@Test --needed new api for customer boundary for add new report
+	@Ignore
 	public void TC1268_ValidationMessageShouldDisplayedUserCustomerBoundaryAreaSelectionWhenGapsAreSelectedWhileGeneratingReport() throws Exception {
 		Log.info("\nRunning TC1268_ValidationMessageShouldDisplayedUserCustomerBoundaryAreaSelectionWhenGapsAreSelectedWhileGeneratingReport ...");
 
@@ -952,7 +953,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 *	- - Report generated successfully
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)- Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	//@Test--need customer boundary
+	@Ignore
 	public void TC1301_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecast() throws Exception {
 		Log.info("\nRunning TC1301_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecast ...");
 
