@@ -389,7 +389,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(username, password);
 		manageLocationsPage.open();
 		Log.info("Adding location: " + locationName);
-		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, null,null,false);    
+		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, "1","2",false);    
 		manageLocationsPage.logout();
 
 		// *** Starting test
@@ -398,7 +398,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		manageLocationsPage.open();
 		Log.info("Adding location: " + locationName);
 		manageLocationsPage.performSearch(locationName);
-		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, null,null,false);     
+		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, "1","2",false);     
 
 		assertTrue(manageLocationsPage.verifyErrorMessage(errorMsg));
 
@@ -509,7 +509,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 		manageLocationsPage.open();
-		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, null,null,false);  
+		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, "1","2",false);  
 		
 		Log.info("Editing location(empty string): " + locationName + " -> ");
 		manageLocationsPage.performSearch(locationName);

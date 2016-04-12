@@ -78,22 +78,24 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC1738_MinMAxValueEthMthClmn_RefGasBottles() {
-		String strLotNumber = "TC138_Ethane"+ testSetup.getFixedSizeRandomNumber(5);
+		String strLotNumber1 = "TC138_Ethane_1"+ testSetup.getFixedSizeRandomNumber(5);
+		String strLotNumber2 = "TC138_Ethane_2"+ testSetup.getFixedSizeRandomNumber(5);
 
 		Log.info("\nRunning TC1738 - Test Description: Ethane- Verify min/max value (%) from drop down/up to Ethane To Methane Ratio column to ReferenceGasBottle Page");
 
 		manageRefGasBottlesPage.login(SQAPICSUP, USERPASSWORD);
 
 		manageRefGasBottlesPage.open();
-		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", "0", SQAETHCUST, SQAETHLOC, SQAETHSUR);
+		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber1, "-32", "1", SQAETHCUST, SQAETHLOC, SQAETHSUR);
 		manageRefGasBottlesPage.waitForNewPageLoad();
 
-		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber, SQAETHSUR));
-		
-		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", "100", SQAETHCUST, SQAETHLOC, SQAETHSUR);
+		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber1, SQAETHSUR));
+
+		manageRefGasBottlesPage.waitForNewPageLoad();
+		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber2, "-32.17", "99", SQAETHCUST, SQAETHLOC, SQAETHSUR);
 		manageRefGasBottlesPage.waitForNewPageLoad();
 
-		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber, SQAETHSUR));
+		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber2, SQAETHSUR));
 
 	}
 
