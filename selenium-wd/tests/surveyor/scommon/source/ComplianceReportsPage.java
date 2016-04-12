@@ -1321,8 +1321,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			String value = entry.getValue();	// Value is Asset/Boundary{Prefix} followed by name of Asset/Boundary
 			if (value.startsWith(ReportsCompliance.ASSET_PREFIX)) {
 				// Asset key.
-				String xPath = String.format("//*[@id='report-asset-layers-%s']", key);
-				List<WebElement> assetElements = driver.findElements(By.xpath(xPath));
+				String elementId = String.format("report-asset-layers-%s", key);
+				List<WebElement> assetElements = driver.findElements(By.id(elementId));
 				if (assetElements.size() > 0) {
 					JavascriptExecutor js = (JavascriptExecutor) driver;
 					js.executeScript("arguments[0].click();", assetElements.get(0));
@@ -1337,8 +1337,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (value.startsWith(ReportsCompliance.BOUNDARY_PREFIX)) {
 				// Boundary key.
 				value = value.replace(ReportsCompliance.BOUNDARY_PREFIX, "");
-				String xPath = String.format("//*[@id='report-boundry-layers-%s']", value);
-				List<WebElement> boundaryElements = driver.findElements(By.xpath(xPath));
+				String elementId = String.format("report-boundry-layers-%s", value);
+				List<WebElement> boundaryElements = driver.findElements(By.id(elementId));
 				if (boundaryElements.size() > 0) {
 					JavascriptExecutor js = (JavascriptExecutor) driver;
 					js.executeScript("arguments[0].click();", boundaryElements.get(0));
