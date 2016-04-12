@@ -118,7 +118,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		String rptTitle = null;
 		String testCaseName = getTestCaseName(index);
 		if (testCaseName.equals("TC203")) {
-			rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber() + "#<>$";
+			rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber() + "#%$";
 
 		} else {
 			rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
