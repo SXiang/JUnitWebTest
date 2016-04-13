@@ -5,8 +5,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import common.source.Log;
-import surveyor.dataaccess.source.ResourceKeys;
-import surveyor.dataaccess.source.Resources;
+import static surveyor.scommon.source.SurveyorConstants.ISOTOPIC_CAPTURE_CANCELLED;
+import static surveyor.scommon.source.SurveyorConstants.ISOTOPIC_CAPTURE_NOT_NATURAL_GAS;
 
 public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 
@@ -95,7 +95,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 		
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(Resources.getResource(ResourceKeys.Survey_IsotopicCanceled), NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
@@ -148,7 +148,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 		
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(Resources.getResource(ResourceKeys.Survey_IsotopicCanceled), NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(FIELD_NOTE_ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
@@ -190,7 +190,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
 		
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(Resources.getResource(ResourceKeys.Survey_IsotopicCanceled), NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_OPERATOR1_TAG, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_OPERATOR1_TYPE, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_OPERATOR1_USERNAME, NOTSET));
@@ -251,7 +251,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(Resources.getResource(ResourceKeys.Survey_NotNaturalGas), NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
@@ -303,7 +303,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 		
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(Resources.getResource(ResourceKeys.Survey_NotNaturalGas), NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));		
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(FIELD_NOTE_ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
@@ -354,7 +354,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 		
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(Resources.getResource(ResourceKeys.Survey_NotNaturalGas), NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
@@ -448,7 +448,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 		
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(Resources.getResource(ResourceKeys.Survey_IsotopicCanceled), NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
@@ -503,7 +503,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 	
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(Resources.getResource(ResourceKeys.Survey_NotNaturalGas), NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
@@ -558,7 +558,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(Resources.getResource(ResourceKeys.Survey_IsotopicCanceled), NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
@@ -612,7 +612,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(Resources.getResource(ResourceKeys.Survey_NotNaturalGas), NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
@@ -686,7 +686,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
 		
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(Resources.getResource(ResourceKeys.Survey_NotNaturalGas), NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));		
 		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
@@ -731,7 +731,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
 		
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(Resources.getResource(ResourceKeys.Survey_NotNaturalGas), NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));		
 		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));		
@@ -774,7 +774,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
 		
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(Resources.getResource(ResourceKeys.Survey_IsotopicCanceled), NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));		
 		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
@@ -819,7 +819,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
 		
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(Resources.getResource(ResourceKeys.Survey_IsotopicCanceled), NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));		
 		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));		
@@ -871,7 +871,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 
-        assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(Resources.getResource(ResourceKeys.Survey_IsotopicCanceled), NOTSET));
+        assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
@@ -922,7 +922,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 		
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(Resources.getResource(ResourceKeys.Survey_IsotopicCanceled), NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
@@ -974,7 +974,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 		
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(Resources.getResource(ResourceKeys.Survey_IsotopicCanceled), NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
@@ -1018,7 +1018,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
 		
-        assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(Resources.getResource(ResourceKeys.Survey_IsotopicCanceled), NOTSET));
+        assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));		
 		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
@@ -1063,7 +1063,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
 		
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(Resources.getResource(ResourceKeys.Survey_IsotopicCanceled), NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));		
 		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));		
@@ -1117,7 +1117,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 		
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(Resources.getResource(ResourceKeys.Survey_IsotopicCanceled), NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
@@ -1172,7 +1172,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 		
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(Resources.getResource(ResourceKeys.Survey_IsotopicCanceled), NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
@@ -1219,7 +1219,7 @@ public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
 		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
 		
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(Resources.getResource(ResourceKeys.Survey_IsotopicCanceled), NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));		
 		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
