@@ -200,7 +200,6 @@
 				<formatter type="xml" />
 				<fileset dir="${build}">
 
-					<include name="**/ComplianceReportsPageTest_Ethane.class" />
 					<include name="**/ManageLocationsPageTest_Ethane.class" />
 					<include name="**/ManageRefGasBottlesPageTests_Ethane.class" />
 
