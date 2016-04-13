@@ -10,11 +10,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
+import common.source.CryptoUtility;
 import common.source.Log;
+import surveyor.dataprovider.RunAs;
+import surveyor.dataprovider.UserDataProvider;
 import surveyor.scommon.source.ManageRefGasBottlesPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
-
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
@@ -24,6 +28,11 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 @RunWith(SurveyorTestRunner.class)
 public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 	private static ManageRefGasBottlesPage manageRefGasBottlesPage;
+	private static final String SQAPICAD_AND_SQAPICSUP = "sqapicad@picarro.com,sqapicsup@picarro.com";
+	
+	private enum ManageRefGasBottleTestCaseType {
+		MaxCharsLimit
+	}
 	
 	@BeforeClass
 	public static void setupManageRefGasBottlesPageTest() {
@@ -100,4 +109,87 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 
 	}	   
     
+    /**
+	 * Test Case ID: TC465_AddRefGasBottleLotNumber50CharLimit_PicarroAdminSupport
+	 * Test Description:  	More than 50 characters not allowed in Lot Number field present on Add Reference Gas Bottle screens
+	 * Test Script: - On Home Page, click Administration -> Manage Reference Gas Bottles -> Add New Reference Gas Bottle
+	 * Expected Results: User cannot enter more than 50 characters
+	 * Current implementation:   
+	 * Current Issue:
+     * Future Improvement:
+	 */	
+	@Test
+	@UseDataProvider(value = "dataProviderPicarroAdminSupportRoleInfo", location = UserDataProvider.class)
+	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
+	public void TC137_TC1253_AddRefGasBottleLotNumber50CharLimit_PicarroAdminSupport(String user, String pwd) {
+		String str34chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcd";
+		String str35chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcde";
+		String isoValue = "-32";
+		String tcID = getTestCaseName(ManageRefGasBottleTestCaseType.MaxCharsLimit, user);
+		String lotNum50Chars = testSetup.getFixedSizeRandomNumber(16) + str34chars;
+		String lotNum51Chars = testSetup.getFixedSizeRandomNumber(16) + str35chars;
+		String password = CryptoUtility.decrypt(pwd);
+		
+		Log.info("\nRunning "
+				+ tcID
+				+ "_AddRefGasBottleLotNumber50CharLimit_PicarroAdminSupport - Test Description: More than 50 characters not allowed "
+				+ "in Lot Number field present on Add Reference Gas Bottle screens");
+
+		loginPage.open();
+		loginPage.loginNormalAs(user, password);
+		
+		manageRefGasBottlesPage.open();
+		manageRefGasBottlesPage.addNewRefGasBottle(lotNum50Chars, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR, true);
+		manageRefGasBottlesPage.addNewRefGasBottle(lotNum51Chars, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR, true);
+		
+		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(lotNum50Chars, SQACUSLOCSUR));
+		manageRefGasBottlesPage.open();
+		assertFalse(manageRefGasBottlesPage.findExistingRefGasBottle(lotNum51Chars, SQACUSLOCSUR));
+	}
+	
+	/**
+	 * Test Case ID: TC500_ManageRefGasBottle_PicSup 
+	 * Test Description: - On Home Page, click on Administration -> Manage Reference gas bottle 
+	 * Expected Result: - User can see list of all reference gas bottles 
+	 * - User can see Add New Reference Gas Bottle button
+	 * 
+	 */
+	@Test
+	public void TC500_ManageRefGasBottle_PicSup() {
+		String strLotNumber1 = testSetup.getFixedSizeRandomNumber(5) + "_PicAdmin_TC500";
+		String strLotNumber2 = testSetup.getFixedSizeRandomNumber(5) + "_PicSup_TC500";
+		
+		Log.info("\nRunning TC500_ManageRefGasBottle_PicSup");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		
+		manageRefGasBottlesPage.open();
+		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber1, "-32", SQACUS, SQACUSLOC, SQACUSLOCSUR);
+		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber1, SQACUSLOCSUR));
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+		manageRefGasBottlesPage.open();
+		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber1, SQACUSLOCSUR));
+		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber2, "-32", SQACUS, SQACUSLOC, SQACUSLOCSUR);
+		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber2, SQACUSLOCSUR));
+	}
+	
+	/**
+	 * Returns the testCase ID based on the username provided by DataProvider.
+	 */
+	private String getTestCaseName(ManageRefGasBottleTestCaseType testCaseType, String username) {
+		String testCase = "";		
+		switch (testCaseType) {
+		case MaxCharsLimit:
+			if (username.equalsIgnoreCase(SQAPICAD)) {
+				testCase = "TC137";
+			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
+				testCase = "TC1253";
+			}
+			break;
+		}
+		return testCase;
+	}
 }
