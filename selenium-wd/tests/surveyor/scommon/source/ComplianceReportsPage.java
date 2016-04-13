@@ -1690,7 +1690,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String reportName = "CR-" + reportId;
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
-		System.out.println(actualReportString);
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(ReportSSRS_SelectedDrivingSurveys);
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);

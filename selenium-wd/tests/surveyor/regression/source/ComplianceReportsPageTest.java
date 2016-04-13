@@ -157,9 +157,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 				}
 			}
 		} else
-			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
-		
-		//assertTrue(complianceReportsPage.verifyIndicationTable("C:\\Users\\cnanayakkara\\Downloads\\", "TC203 Report938051#%$"));
+			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");		
 	}
 
 	private static String getTestCaseName(String key) {
