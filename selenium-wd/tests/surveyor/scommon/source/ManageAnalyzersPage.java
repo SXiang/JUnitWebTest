@@ -50,7 +50,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	private WebElement btnCancel;
 	
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[7]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[7]/a[1]")
 	protected WebElement btnEditAnalyzer;
 	
 	/**
