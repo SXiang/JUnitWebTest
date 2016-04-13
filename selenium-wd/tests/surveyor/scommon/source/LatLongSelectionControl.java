@@ -226,11 +226,12 @@ public class LatLongSelectionControl extends BaseControl {
 	 */
 	public LatLongSelectionControl waitForAutoCompleteListToOpen() {
 		Log.info("Waiting for auto-complete list to open.");
-		WebDriverWait wait = new WebDriverWait(driver, timeout);
-		WebElement autoCompleteList = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("ui-id-1")));
+		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(By.id("ui-id-1")));
 		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return !autoCompleteList.getAttribute("style").contains("display:none") && !autoCompleteList.getAttribute("style").contains("display: none");
+				WebElement autoCompleteList = d.findElement(By.id("ui-id-1"));
+				return !autoCompleteList.getAttribute("style").contains("display:none") && 
+						!autoCompleteList.getAttribute("style").contains("display: none");
 			}
 		});
 		return this;
@@ -243,11 +244,11 @@ public class LatLongSelectionControl extends BaseControl {
 	 */
 	public LatLongSelectionControl waitForAutoCompleteListToClose() {
 		Log.info("Waiting for auto-complete list to close.");
-		WebDriverWait wait = new WebDriverWait(driver, timeout);
-		WebElement autoCompleteList = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("ui-id-1")));
 		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return autoCompleteList.getAttribute("style").contains("display:none") || autoCompleteList.getAttribute("style").contains("display: none");
+				WebElement autoCompleteList = d.findElement(By.id("ui-id-1"));
+				return !autoCompleteList.getAttribute("style").contains("display:block") && 
+						!autoCompleteList.getAttribute("style").contains("display: block");
 			}
 		});
 		return this;
