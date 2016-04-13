@@ -212,12 +212,10 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@CacheLookup
 	private WebElement picarroLogoButton;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='map']/div/div[2]/div[2]/button[1]")
-	@CacheLookup
+	@FindBy(css = "#map.map button[title='Zoom in']")
 	protected WebElement zoomInButton;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='map']/div/div[2]/div[2]/button[2]")
-	@CacheLookup
+	@FindBy(css = "#map.map button[title='Zoom out']")
 	protected WebElement zoomOutButton;
 	
 	@FindBy(id = "shutting_down")
@@ -1091,7 +1089,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
      * @return the SurveyViewPage class instance.
      */
     public BaseMapViewPage verifyPageLoaded() {
-        (new WebDriverWait(driver, timeout * 2)).until(new ExpectedCondition<Boolean>() {
+        (new WebDriverWait(driver, timeout * 4)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getPageSource().contains(STRPageContentText);                		 
             }

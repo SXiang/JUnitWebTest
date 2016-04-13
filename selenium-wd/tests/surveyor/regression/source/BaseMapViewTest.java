@@ -69,10 +69,10 @@ public class BaseMapViewTest {
 	protected static final String INSTR_READY_DEFN_FILE = "instr_ready.defn";
 	protected static final String REPLAY_DB3_DEFN_FILE = "replay-db3.defn";
 
-	protected static final String ISOTOPIC_CAPTURE_NATURAL_GAS = "Natural Gas";
-	protected static final String ISOTOPIC_CAPTURE_NOT_NATURAL_GAS = "Not Natural Gas";
+	protected static final String FIELD_NOTE_ISOTOPIC_CAPTURE_NATURAL_GAS = "Natural Gas";
+	protected static final String FIELD_NOTE_ISOTOPIC_CAPTURE_NOT_NATURAL_GAS = "Not Natural Gas";
 	protected static final String ISOTOPIC_CANCELLED = "Isotopic Canceled";
-	protected static final String ISOTOPIC_CAPTURE_CANCELLED = "Iso Cap Canceled";
+	protected static final String FIELD_NOTE_ISOTOPIC_CAPTURE_CANCELLED = "Iso Cap Canceled";
 	protected static final String EMPTY = "";
 	protected static final Integer NOTSET = -1;
 	protected static final String COLOR_RED = "Red";

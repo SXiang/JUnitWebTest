@@ -1667,7 +1667,7 @@ public class SurveyViewPageTest extends BaseMapViewTest {
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(FIELD_NOTE_ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CANCELLED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
@@ -1708,7 +1708,7 @@ public class SurveyViewPageTest extends BaseMapViewTest {
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(FIELD_NOTE_ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CANCELLED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
@@ -1800,7 +1800,7 @@ public class SurveyViewPageTest extends BaseMapViewTest {
 		surveyViewPageAction.open(TEST_SURVEY_ASSESSMENT1_ID, NOTSET);
 		surveyViewPageAction.showCurtainView(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnCurtainReturnButton(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsNotPresentOnMap(FIELD_NOTE_ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 	}
  
