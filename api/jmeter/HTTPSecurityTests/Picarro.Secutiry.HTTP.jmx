@@ -1,0 +1,2740 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="2.8" jmeter="2.13 r1665067">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Picarro.Secutiry.HTTP" enabled="true">
+      <stringProp name="TestPlan.comments">Controller HTTP Call Security Testing</stringProp>
+      <boolProp name="TestPlan.functional_mode">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Picarro Driver" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1459897786000</longProp>
+        <longProp name="ThreadGroup.end_time">1459897786000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">p3sqaauto.picarro.com</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
+        </ConfigTestElement>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicDriverLoginGET" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="Username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">sqapicdr@picarro.com</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Username</stringProp>
+              </elementProp>
+              <elementProp name="Password" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Password</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Account/Login</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathExtractor guiclass="XPathExtractorGui" testclass="XPathExtractor" testname="RequestVerificationTokenExtractor" enabled="true">
+            <stringProp name="XPathExtractor.default"></stringProp>
+            <stringProp name="XPathExtractor.refname">RequestVerificationToken</stringProp>
+            <stringProp name="XPathExtractor.xpathQuery">//*[@action=&apos;/Account/Login&apos;]/input/@value</stringProp>
+            <boolProp name="XPathExtractor.validate">false</boolProp>
+            <boolProp name="XPathExtractor.tolerant">true</boolProp>
+            <boolProp name="XPathExtractor.namespace">false</boolProp>
+            <stringProp name="Sample.scope">all</stringProp>
+            <stringProp name="Scope.variable">RequestVerificationToken</stringProp>
+          </XPathExtractor>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicDriverLoginPOST" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="__RequestVerificationToken" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">${RequestVerificationToken}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">__RequestVerificationToken</stringProp>
+              </elementProp>
+              <elementProp name="Username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">sqapicdr@picarro.com</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Username</stringProp>
+              </elementProp>
+              <elementProp name="Password" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Password</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Account/Login?ReturnUrl=%2FHome</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <boolProp name="XPath.negate">true</boolProp>
+            <stringProp name="XPath.xpath">//*[@id=&quot;picarro-administration-menu&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">true</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicDriverComplianceReportPOST" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{  &#xd;
+   &quot;ReportTitle&quot;:&quot;test&quot;,&#xd;
+   &quot;TimeZoneId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+   &quot;SelectedCustomerId&quot;:&quot;b1252204-04fb-4a67-82d4-3f4666fd855c&quot;,&#xd;
+   &quot;MapHeight&quot;:&quot;11&quot;,&#xd;
+   &quot;MapWidth&quot;:&quot;8.5&quot;,&#xd;
+   &quot;ReportModel&quot;:{  &#xd;
+      &quot;SurveyModeTypeId&quot;:&quot;b310238a-a5ae-4e94-927b-f0f165e24522&quot;,&#xd;
+      &quot;MinimumAmplitude&quot;:&quot;&quot;,&#xd;
+      &quot;ExclusionRadius&quot;:&quot;0&quot;,&#xd;
+      &quot;ShowIndications&quot;:true,&#xd;
+      &quot;ShowIsotopicAnalysis&quot;:false,&#xd;
+      &quot;ShowGaps&quot;:false,&#xd;
+      &quot;ShowPercentCoverageAssets&quot;:false,&#xd;
+      &quot;ShowPercentCoverageReportArea&quot;:false,&#xd;
+      &quot;ShowPercentCoverageForecast&quot;:false,&#xd;
+      &quot;FovOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;LisaOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;ReportAreaModel&quot;:{  &#xd;
+         &quot;ReportAreaModeTypeDesc&quot;:&quot;Custom Boundary&quot;,&#xd;
+         &quot;StartLat&quot;:&quot;37.41922165375503&quot;,&#xd;
+         &quot;StartLong&quot;:&quot;-121.96578744222937&quot;,&#xd;
+         &quot;EndLat&quot;:&quot;37.40517779908774&quot;,&#xd;
+         &quot;EndLong&quot;:&quot;-122.01230767538367&quot;,&#xd;
+         &quot;BoundaryId&quot;:null&#xd;
+      },&#xd;
+      &quot;ReportViewModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;ViewName&quot;:&quot;View 1&quot;,&#xd;
+            &quot;ShowLisa&quot;:true,&#xd;
+            &quot;ShowFov&quot;:true,&#xd;
+            &quot;ShowVehiclePath&quot;:false,&#xd;
+            &quot;ShowIndications&quot;:false,&#xd;
+            &quot;ShowIsotopicCaptures&quot;:false,&#xd;
+            &quot;ShowAnnotations&quot;:false,&#xd;
+            &quot;ShowGaps&quot;:false,&#xd;
+            &quot;ShowAssets&quot;:false,&#xd;
+            &quot;ShowBoundaries&quot;:false,&#xd;
+            &quot;BaseMapId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;ViewNameOrder&quot;:1&#xd;
+         }&#xd;
+      ],&#xd;
+      &quot;ReportBoundaryLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportAssetLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportDrivingSurveyModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;SurveyId&quot;:&quot;6c4450dc-a1c3-c2c5-6291-39ceee0b0f57&quot;,&#xd;
+            &quot;PeakColor&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;LisaColor&quot;:&quot;00000000-0000-0000-0007-000000000000&quot;,&#xd;
+            &quot;IsotopicColor&quot;:&quot;00000000-0000-0000-0006-000000000000&quot;,&#xd;
+            &quot;FovColor&quot;:&quot;00000000-0000-0000-0002-000000000000&quot;,&#xd;
+            &quot;FovOpacity&quot;:&quot;0.4&quot;,&#xd;
+            &quot;LisaOpacity&quot;:&quot;0.5&quot;&#xd;
+         }&#xd;
+      ]&#xd;
+   }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Reports/ComplianceReport</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">6</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicDriverAssessment_POST" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{  &#xd;
+   &quot;ReportTitle&quot;:&quot;test&quot;,&#xd;
+   &quot;TimeZoneId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+   &quot;SelectedCustomerId&quot;:&quot;b1252204-04fb-4a67-82d4-3f4666fd855c&quot;,&#xd;
+   &quot;MapHeight&quot;:&quot;11&quot;,&#xd;
+   &quot;MapWidth&quot;:&quot;8.5&quot;,&#xd;
+   &quot;ReportModel&quot;:{  &#xd;
+      &quot;SurveyModeTypeId&quot;:&quot;b310238a-a5ae-4e94-927b-f0f165e24522&quot;,&#xd;
+      &quot;MinimumAmplitude&quot;:&quot;&quot;,&#xd;
+      &quot;ExclusionRadius&quot;:&quot;0&quot;,&#xd;
+      &quot;ShowIndications&quot;:true,&#xd;
+      &quot;ShowIsotopicAnalysis&quot;:false,&#xd;
+      &quot;ShowGaps&quot;:false,&#xd;
+      &quot;ShowPercentCoverageAssets&quot;:false,&#xd;
+      &quot;ShowPercentCoverageReportArea&quot;:false,&#xd;
+      &quot;ShowPercentCoverageForecast&quot;:false,&#xd;
+      &quot;FovOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;LisaOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;ReportAreaModel&quot;:{  &#xd;
+         &quot;ReportAreaModeTypeDesc&quot;:&quot;Custom Boundary&quot;,&#xd;
+         &quot;StartLat&quot;:&quot;37.41922165375503&quot;,&#xd;
+         &quot;StartLong&quot;:&quot;-121.96578744222937&quot;,&#xd;
+         &quot;EndLat&quot;:&quot;37.40517779908774&quot;,&#xd;
+         &quot;EndLong&quot;:&quot;-122.01230767538367&quot;,&#xd;
+         &quot;BoundaryId&quot;:null&#xd;
+      },&#xd;
+      &quot;ReportViewModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;ViewName&quot;:&quot;View 1&quot;,&#xd;
+            &quot;ShowLisa&quot;:true,&#xd;
+            &quot;ShowFov&quot;:true,&#xd;
+            &quot;ShowVehiclePath&quot;:false,&#xd;
+            &quot;ShowIndications&quot;:false,&#xd;
+            &quot;ShowIsotopicCaptures&quot;:false,&#xd;
+            &quot;ShowAnnotations&quot;:false,&#xd;
+            &quot;ShowGaps&quot;:false,&#xd;
+            &quot;ShowAssets&quot;:false,&#xd;
+            &quot;ShowBoundaries&quot;:false,&#xd;
+            &quot;BaseMapId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;ViewNameOrder&quot;:1&#xd;
+         }&#xd;
+      ],&#xd;
+      &quot;ReportBoundaryLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportAssetLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportDrivingSurveyModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;SurveyId&quot;:&quot;6c4450dc-a1c3-c2c5-6291-39ceee0b0f57&quot;,&#xd;
+            &quot;PeakColor&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;LisaColor&quot;:&quot;00000000-0000-0000-0007-000000000000&quot;,&#xd;
+            &quot;IsotopicColor&quot;:&quot;00000000-0000-0000-0006-000000000000&quot;,&#xd;
+            &quot;FovColor&quot;:&quot;00000000-0000-0000-0002-000000000000&quot;,&#xd;
+            &quot;FovOpacity&quot;:&quot;0.4&quot;,&#xd;
+            &quot;LisaOpacity&quot;:&quot;0.5&quot;&#xd;
+         }&#xd;
+      ]&#xd;
+   }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Reports/AssessmentReport</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">6</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicDriverAssignReportPeak_POST" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{  &#xd;
+   &quot;ReportId&quot;:&quot;597f96fd-c03c-69e4-db06-39d7195d4fc7&quot;,&#xd;
+   &quot;AssigneeId&quot;:&quot;de734ddf-363e-49fc-8dbc-39c8c221c558&quot;,&#xd;
+   &quot;ReportPeaks&quot;:[  &#xd;
+      {  &#xd;
+         &quot;Id&quot;:&quot;f4f2cc0f-c40f-f3ec-f8a7-39d7195d597c&quot;&#xd;
+      }&#xd;
+   ]&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">Reports/AssignReportPeak?mode=table</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">6</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While EOF paramList.csv" enabled="true">
+          <stringProp name="WhileController.condition">${endpoint}</stringProp>
+        </WhileController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicDriverHTTPGETS" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+            <stringProp name="HTTPSampler.path">/${controller}/${endpoint}</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+              <stringProp name="filename">paramList.csv</stringProp>
+              <stringProp name="fileEncoding"></stringProp>
+              <stringProp name="variableNames">controller,endpoint,driverAuthorized,supAuthorized,adminAuthorized,cusdriverAuthorized,cussupAuthorized,cusadminAuthorized</stringProp>
+              <stringProp name="delimiter">,</stringProp>
+              <boolProp name="quotedData">true</boolProp>
+              <boolProp name="recycle">false</boolProp>
+              <boolProp name="stopThread">true</boolProp>
+              <stringProp name="shareMode">shareMode.thread</stringProp>
+            </CSVDataSet>
+            <hashTree/>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">String body= new String(ResponseData);
+if((vars.get(&quot;driverAuthorized&quot;).equals(&quot;NO&quot;) )&amp;&amp;(!body.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;)) ){
+	Failure=true;
+}
+else{
+	Failure=false;
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
+          <collectionProp name="CookieManager.cookies"/>
+          <boolProp name="CookieManager.clearEachIteration">false</boolProp>
+        </CookieManager>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Customer Driver" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1459897786000</longProp>
+        <longProp name="ThreadGroup.end_time">1459897786000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">p3sqaauto.picarro.com</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
+        </ConfigTestElement>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Customer DriverLoginGET" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="Username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">sqacusdr1@email.com</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Username</stringProp>
+              </elementProp>
+              <elementProp name="Password" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Password</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Account/Login</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathExtractor guiclass="XPathExtractorGui" testclass="XPathExtractor" testname="RequestVerificationTokenExtractor" enabled="true">
+            <stringProp name="XPathExtractor.default"></stringProp>
+            <stringProp name="XPathExtractor.refname">RequestVerificationToken</stringProp>
+            <stringProp name="XPathExtractor.xpathQuery">//*[@action=&apos;/Account/Login&apos;]/input/@value</stringProp>
+            <boolProp name="XPathExtractor.validate">false</boolProp>
+            <boolProp name="XPathExtractor.tolerant">true</boolProp>
+            <boolProp name="XPathExtractor.namespace">false</boolProp>
+            <stringProp name="Sample.scope">all</stringProp>
+            <stringProp name="Scope.variable">RequestVerificationToken</stringProp>
+          </XPathExtractor>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Customer DriverLoginPOST" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="__RequestVerificationToken" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">${RequestVerificationToken}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">__RequestVerificationToken</stringProp>
+              </elementProp>
+              <elementProp name="Username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">sqacusdr1@email.com</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Username</stringProp>
+              </elementProp>
+              <elementProp name="Password" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Password</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Account/Login?ReturnUrl=%2FHome</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <boolProp name="XPath.negate">true</boolProp>
+            <stringProp name="XPath.xpath">//*[@id=&quot;picarro-administration-menu&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">true</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Customer DriverComplianceReportPOST" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{  &#xd;
+   &quot;ReportTitle&quot;:&quot;test&quot;,&#xd;
+   &quot;TimeZoneId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+   &quot;SelectedCustomerId&quot;:&quot;b1252204-04fb-4a67-82d4-3f4666fd855c&quot;,&#xd;
+   &quot;MapHeight&quot;:&quot;11&quot;,&#xd;
+   &quot;MapWidth&quot;:&quot;8.5&quot;,&#xd;
+   &quot;ReportModel&quot;:{  &#xd;
+      &quot;SurveyModeTypeId&quot;:&quot;b310238a-a5ae-4e94-927b-f0f165e24522&quot;,&#xd;
+      &quot;MinimumAmplitude&quot;:&quot;&quot;,&#xd;
+      &quot;ExclusionRadius&quot;:&quot;0&quot;,&#xd;
+      &quot;ShowIndications&quot;:true,&#xd;
+      &quot;ShowIsotopicAnalysis&quot;:false,&#xd;
+      &quot;ShowGaps&quot;:false,&#xd;
+      &quot;ShowPercentCoverageAssets&quot;:false,&#xd;
+      &quot;ShowPercentCoverageReportArea&quot;:false,&#xd;
+      &quot;ShowPercentCoverageForecast&quot;:false,&#xd;
+      &quot;FovOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;LisaOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;ReportAreaModel&quot;:{  &#xd;
+         &quot;ReportAreaModeTypeDesc&quot;:&quot;Custom Boundary&quot;,&#xd;
+         &quot;StartLat&quot;:&quot;37.41922165375503&quot;,&#xd;
+         &quot;StartLong&quot;:&quot;-121.96578744222937&quot;,&#xd;
+         &quot;EndLat&quot;:&quot;37.40517779908774&quot;,&#xd;
+         &quot;EndLong&quot;:&quot;-122.01230767538367&quot;,&#xd;
+         &quot;BoundaryId&quot;:null&#xd;
+      },&#xd;
+      &quot;ReportViewModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;ViewName&quot;:&quot;View 1&quot;,&#xd;
+            &quot;ShowLisa&quot;:true,&#xd;
+            &quot;ShowFov&quot;:true,&#xd;
+            &quot;ShowVehiclePath&quot;:false,&#xd;
+            &quot;ShowIndications&quot;:false,&#xd;
+            &quot;ShowIsotopicCaptures&quot;:false,&#xd;
+            &quot;ShowAnnotations&quot;:false,&#xd;
+            &quot;ShowGaps&quot;:false,&#xd;
+            &quot;ShowAssets&quot;:false,&#xd;
+            &quot;ShowBoundaries&quot;:false,&#xd;
+            &quot;BaseMapId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;ViewNameOrder&quot;:1&#xd;
+         }&#xd;
+      ],&#xd;
+      &quot;ReportBoundaryLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportAssetLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportDrivingSurveyModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;SurveyId&quot;:&quot;6c4450dc-a1c3-c2c5-6291-39ceee0b0f57&quot;,&#xd;
+            &quot;PeakColor&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;LisaColor&quot;:&quot;00000000-0000-0000-0007-000000000000&quot;,&#xd;
+            &quot;IsotopicColor&quot;:&quot;00000000-0000-0000-0006-000000000000&quot;,&#xd;
+            &quot;FovColor&quot;:&quot;00000000-0000-0000-0002-000000000000&quot;,&#xd;
+            &quot;FovOpacity&quot;:&quot;0.4&quot;,&#xd;
+            &quot;LisaOpacity&quot;:&quot;0.5&quot;&#xd;
+         }&#xd;
+      ]&#xd;
+   }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Reports/ComplianceReport</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">6</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Customer DriverAssessment_POST" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{  &#xd;
+   &quot;ReportTitle&quot;:&quot;test&quot;,&#xd;
+   &quot;TimeZoneId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+   &quot;SelectedCustomerId&quot;:&quot;b1252204-04fb-4a67-82d4-3f4666fd855c&quot;,&#xd;
+   &quot;MapHeight&quot;:&quot;11&quot;,&#xd;
+   &quot;MapWidth&quot;:&quot;8.5&quot;,&#xd;
+   &quot;ReportModel&quot;:{  &#xd;
+      &quot;SurveyModeTypeId&quot;:&quot;b310238a-a5ae-4e94-927b-f0f165e24522&quot;,&#xd;
+      &quot;MinimumAmplitude&quot;:&quot;&quot;,&#xd;
+      &quot;ExclusionRadius&quot;:&quot;0&quot;,&#xd;
+      &quot;ShowIndications&quot;:true,&#xd;
+      &quot;ShowIsotopicAnalysis&quot;:false,&#xd;
+      &quot;ShowGaps&quot;:false,&#xd;
+      &quot;ShowPercentCoverageAssets&quot;:false,&#xd;
+      &quot;ShowPercentCoverageReportArea&quot;:false,&#xd;
+      &quot;ShowPercentCoverageForecast&quot;:false,&#xd;
+      &quot;FovOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;LisaOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;ReportAreaModel&quot;:{  &#xd;
+         &quot;ReportAreaModeTypeDesc&quot;:&quot;Custom Boundary&quot;,&#xd;
+         &quot;StartLat&quot;:&quot;37.41922165375503&quot;,&#xd;
+         &quot;StartLong&quot;:&quot;-121.96578744222937&quot;,&#xd;
+         &quot;EndLat&quot;:&quot;37.40517779908774&quot;,&#xd;
+         &quot;EndLong&quot;:&quot;-122.01230767538367&quot;,&#xd;
+         &quot;BoundaryId&quot;:null&#xd;
+      },&#xd;
+      &quot;ReportViewModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;ViewName&quot;:&quot;View 1&quot;,&#xd;
+            &quot;ShowLisa&quot;:true,&#xd;
+            &quot;ShowFov&quot;:true,&#xd;
+            &quot;ShowVehiclePath&quot;:false,&#xd;
+            &quot;ShowIndications&quot;:false,&#xd;
+            &quot;ShowIsotopicCaptures&quot;:false,&#xd;
+            &quot;ShowAnnotations&quot;:false,&#xd;
+            &quot;ShowGaps&quot;:false,&#xd;
+            &quot;ShowAssets&quot;:false,&#xd;
+            &quot;ShowBoundaries&quot;:false,&#xd;
+            &quot;BaseMapId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;ViewNameOrder&quot;:1&#xd;
+         }&#xd;
+      ],&#xd;
+      &quot;ReportBoundaryLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportAssetLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportDrivingSurveyModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;SurveyId&quot;:&quot;6c4450dc-a1c3-c2c5-6291-39ceee0b0f57&quot;,&#xd;
+            &quot;PeakColor&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;LisaColor&quot;:&quot;00000000-0000-0000-0007-000000000000&quot;,&#xd;
+            &quot;IsotopicColor&quot;:&quot;00000000-0000-0000-0006-000000000000&quot;,&#xd;
+            &quot;FovColor&quot;:&quot;00000000-0000-0000-0002-000000000000&quot;,&#xd;
+            &quot;FovOpacity&quot;:&quot;0.4&quot;,&#xd;
+            &quot;LisaOpacity&quot;:&quot;0.5&quot;&#xd;
+         }&#xd;
+      ]&#xd;
+   }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Reports/AssessmentReport</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">6</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Customer DriverAssignReportPeak_POST" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{  &#xd;
+   &quot;ReportId&quot;:&quot;597f96fd-c03c-69e4-db06-39d7195d4fc7&quot;,&#xd;
+   &quot;AssigneeId&quot;:&quot;de734ddf-363e-49fc-8dbc-39c8c221c558&quot;,&#xd;
+   &quot;ReportPeaks&quot;:[  &#xd;
+      {  &#xd;
+         &quot;Id&quot;:&quot;f4f2cc0f-c40f-f3ec-f8a7-39d7195d597c&quot;&#xd;
+      }&#xd;
+   ]&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">Reports/AssignReportPeak?mode=table</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">6</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While EOF paramList.csv" enabled="true">
+          <stringProp name="WhileController.condition">${endpoint}</stringProp>
+        </WhileController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Customer DriverHTTPGETS" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+            <stringProp name="HTTPSampler.path">/${controller}/${endpoint}</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+              <stringProp name="filename">paramList.csv</stringProp>
+              <stringProp name="fileEncoding"></stringProp>
+              <stringProp name="variableNames">controller,endpoint,driverAuthorized,supAuthorized,adminAuthorized,cusdriverAuthorized,cussupAuthorized,cusadminAuthorized</stringProp>
+              <stringProp name="delimiter">,</stringProp>
+              <boolProp name="quotedData">true</boolProp>
+              <boolProp name="recycle">false</boolProp>
+              <boolProp name="stopThread">true</boolProp>
+              <stringProp name="shareMode">shareMode.thread</stringProp>
+            </CSVDataSet>
+            <hashTree/>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">String body= new String(ResponseData);
+if((vars.get(&quot;cusdriverAuthorized&quot;).equals(&quot;NO&quot;) )&amp;&amp;(!body.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;)) ){
+	Failure=true;
+}
+else{
+	Failure=false;
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
+          <collectionProp name="CookieManager.cookies"/>
+          <boolProp name="CookieManager.clearEachIteration">false</boolProp>
+        </CookieManager>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Picarro Admin" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1459897786000</longProp>
+        <longProp name="ThreadGroup.end_time">1459897786000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">p3sqaauto.picarro.com</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
+        </ConfigTestElement>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicarroAdminLoginGET" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="Username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">AutomationAdmin</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Username</stringProp>
+              </elementProp>
+              <elementProp name="Password" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Password</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Account/Login</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathExtractor guiclass="XPathExtractorGui" testclass="XPathExtractor" testname="RequestVerificationTokenExtractor" enabled="true">
+            <stringProp name="XPathExtractor.default"></stringProp>
+            <stringProp name="XPathExtractor.refname">RequestVerificationToken</stringProp>
+            <stringProp name="XPathExtractor.xpathQuery">//*[@action=&apos;/Account/Login&apos;]/input/@value</stringProp>
+            <boolProp name="XPathExtractor.validate">false</boolProp>
+            <boolProp name="XPathExtractor.tolerant">true</boolProp>
+            <boolProp name="XPathExtractor.namespace">false</boolProp>
+            <stringProp name="Sample.scope">all</stringProp>
+            <stringProp name="Scope.variable">RequestVerificationToken</stringProp>
+          </XPathExtractor>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicarroAdminLoginPOST" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="__RequestVerificationToken" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">${RequestVerificationToken}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">__RequestVerificationToken</stringProp>
+              </elementProp>
+              <elementProp name="Username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">AutomationAdmin</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Username</stringProp>
+              </elementProp>
+              <elementProp name="Password" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Password</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Account/Login?ReturnUrl=%2FHome</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">//*[@id=&quot;picarro-administration-menu&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">true</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicarroAdminComplianceReportPOST" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{  &#xd;
+   &quot;ReportTitle&quot;:&quot;test&quot;,&#xd;
+   &quot;TimeZoneId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+   &quot;SelectedCustomerId&quot;:&quot;b1252204-04fb-4a67-82d4-3f4666fd855c&quot;,&#xd;
+   &quot;MapHeight&quot;:&quot;11&quot;,&#xd;
+   &quot;MapWidth&quot;:&quot;8.5&quot;,&#xd;
+   &quot;ReportModel&quot;:{  &#xd;
+      &quot;SurveyModeTypeId&quot;:&quot;b310238a-a5ae-4e94-927b-f0f165e24522&quot;,&#xd;
+      &quot;MinimumAmplitude&quot;:&quot;&quot;,&#xd;
+      &quot;ExclusionRadius&quot;:&quot;0&quot;,&#xd;
+      &quot;ShowIndications&quot;:true,&#xd;
+      &quot;ShowIsotopicAnalysis&quot;:false,&#xd;
+      &quot;ShowGaps&quot;:false,&#xd;
+      &quot;ShowPercentCoverageAssets&quot;:false,&#xd;
+      &quot;ShowPercentCoverageReportArea&quot;:false,&#xd;
+      &quot;ShowPercentCoverageForecast&quot;:false,&#xd;
+      &quot;FovOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;LisaOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;ReportAreaModel&quot;:{  &#xd;
+         &quot;ReportAreaModeTypeDesc&quot;:&quot;Custom Boundary&quot;,&#xd;
+         &quot;StartLat&quot;:&quot;37.41922165375503&quot;,&#xd;
+         &quot;StartLong&quot;:&quot;-121.96578744222937&quot;,&#xd;
+         &quot;EndLat&quot;:&quot;37.40517779908774&quot;,&#xd;
+         &quot;EndLong&quot;:&quot;-122.01230767538367&quot;,&#xd;
+         &quot;BoundaryId&quot;:null&#xd;
+      },&#xd;
+      &quot;ReportViewModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;ViewName&quot;:&quot;View 1&quot;,&#xd;
+            &quot;ShowLisa&quot;:true,&#xd;
+            &quot;ShowFov&quot;:true,&#xd;
+            &quot;ShowVehiclePath&quot;:false,&#xd;
+            &quot;ShowIndications&quot;:false,&#xd;
+            &quot;ShowIsotopicCaptures&quot;:false,&#xd;
+            &quot;ShowAnnotations&quot;:false,&#xd;
+            &quot;ShowGaps&quot;:false,&#xd;
+            &quot;ShowAssets&quot;:false,&#xd;
+            &quot;ShowBoundaries&quot;:false,&#xd;
+            &quot;BaseMapId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;ViewNameOrder&quot;:1&#xd;
+         }&#xd;
+      ],&#xd;
+      &quot;ReportBoundaryLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportAssetLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportDrivingSurveyModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;SurveyId&quot;:&quot;6c4450dc-a1c3-c2c5-6291-39ceee0b0f57&quot;,&#xd;
+            &quot;PeakColor&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;LisaColor&quot;:&quot;00000000-0000-0000-0007-000000000000&quot;,&#xd;
+            &quot;IsotopicColor&quot;:&quot;00000000-0000-0000-0006-000000000000&quot;,&#xd;
+            &quot;FovColor&quot;:&quot;00000000-0000-0000-0002-000000000000&quot;,&#xd;
+            &quot;FovOpacity&quot;:&quot;0.4&quot;,&#xd;
+            &quot;LisaOpacity&quot;:&quot;0.5&quot;&#xd;
+         }&#xd;
+      ]&#xd;
+   }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Reports/ComplianceReport</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicarroAdminAssessment_POST" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{  &#xd;
+   &quot;ReportTitle&quot;:&quot;test&quot;,&#xd;
+   &quot;TimeZoneId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+   &quot;SelectedCustomerId&quot;:&quot;b1252204-04fb-4a67-82d4-3f4666fd855c&quot;,&#xd;
+   &quot;MapHeight&quot;:&quot;11&quot;,&#xd;
+   &quot;MapWidth&quot;:&quot;8.5&quot;,&#xd;
+   &quot;ReportModel&quot;:{  &#xd;
+      &quot;SurveyModeTypeId&quot;:&quot;b310238a-a5ae-4e94-927b-f0f165e24522&quot;,&#xd;
+      &quot;MinimumAmplitude&quot;:&quot;&quot;,&#xd;
+      &quot;ExclusionRadius&quot;:&quot;0&quot;,&#xd;
+      &quot;ShowIndications&quot;:true,&#xd;
+      &quot;ShowIsotopicAnalysis&quot;:false,&#xd;
+      &quot;ShowGaps&quot;:false,&#xd;
+      &quot;ShowPercentCoverageAssets&quot;:false,&#xd;
+      &quot;ShowPercentCoverageReportArea&quot;:false,&#xd;
+      &quot;ShowPercentCoverageForecast&quot;:false,&#xd;
+      &quot;FovOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;LisaOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;ReportAreaModel&quot;:{  &#xd;
+         &quot;ReportAreaModeTypeDesc&quot;:&quot;Custom Boundary&quot;,&#xd;
+         &quot;StartLat&quot;:&quot;37.41922165375503&quot;,&#xd;
+         &quot;StartLong&quot;:&quot;-121.96578744222937&quot;,&#xd;
+         &quot;EndLat&quot;:&quot;37.40517779908774&quot;,&#xd;
+         &quot;EndLong&quot;:&quot;-122.01230767538367&quot;,&#xd;
+         &quot;BoundaryId&quot;:null&#xd;
+      },&#xd;
+      &quot;ReportViewModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;ViewName&quot;:&quot;View 1&quot;,&#xd;
+            &quot;ShowLisa&quot;:true,&#xd;
+            &quot;ShowFov&quot;:true,&#xd;
+            &quot;ShowVehiclePath&quot;:false,&#xd;
+            &quot;ShowIndications&quot;:false,&#xd;
+            &quot;ShowIsotopicCaptures&quot;:false,&#xd;
+            &quot;ShowAnnotations&quot;:false,&#xd;
+            &quot;ShowGaps&quot;:false,&#xd;
+            &quot;ShowAssets&quot;:false,&#xd;
+            &quot;ShowBoundaries&quot;:false,&#xd;
+            &quot;BaseMapId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;ViewNameOrder&quot;:1&#xd;
+         }&#xd;
+      ],&#xd;
+      &quot;ReportBoundaryLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportAssetLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportDrivingSurveyModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;SurveyId&quot;:&quot;6c4450dc-a1c3-c2c5-6291-39ceee0b0f57&quot;,&#xd;
+            &quot;PeakColor&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;LisaColor&quot;:&quot;00000000-0000-0000-0007-000000000000&quot;,&#xd;
+            &quot;IsotopicColor&quot;:&quot;00000000-0000-0000-0006-000000000000&quot;,&#xd;
+            &quot;FovColor&quot;:&quot;00000000-0000-0000-0002-000000000000&quot;,&#xd;
+            &quot;FovOpacity&quot;:&quot;0.4&quot;,&#xd;
+            &quot;LisaOpacity&quot;:&quot;0.5&quot;&#xd;
+         }&#xd;
+      ]&#xd;
+   }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Reports/AssessmentReport</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicarroAdminAssignReportPeak_POST" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;ReportId&quot;: &quot;e8a3d007-1a9d-57e0-1b3f-39d71f4de954&quot;,&#xd;
+  &quot;AssigneeId&quot;: &quot;de734ddf-363e-49fc-8dbc-39c8c221c570&quot;,&#xd;
+  &quot;ReportPeaks&quot;: [&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;c76beecb-28bc-f399-1a50-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;c2d5ed9d-fae6-585c-e70d-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;ec51c949-a6de-723c-902c-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;a88361af-598f-be96-97f5-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;a67188a6-ab7b-9097-042d-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;67208606-1c78-6097-137f-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;085be9c0-cbda-cfbb-e80a-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;c93acda4-d550-6f73-0e3d-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;c6c7680c-20a8-e2d0-76a5-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;ae2c16ef-f6f5-21d9-849e-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;9a3ddde4-a726-9982-422a-39d71f5f7064&quot;&#xd;
+    }&#xd;
+  ]&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">Reports/AssignReportPeak?mode=table</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While EOF paramList.csv" enabled="true">
+          <stringProp name="WhileController.condition">${endpoint}</stringProp>
+        </WhileController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicarroAdminHTTPGETS" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+            <stringProp name="HTTPSampler.path">/${controller}/${endpoint}</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+              <stringProp name="filename">paramList.csv</stringProp>
+              <stringProp name="fileEncoding"></stringProp>
+              <stringProp name="variableNames">controller,endpoint,driverAuthorized,supAuthorized,adminAuthorized,cusdriverAuthorized,cussupAuthorized,cusadminAuthorized</stringProp>
+              <stringProp name="delimiter">,</stringProp>
+              <boolProp name="quotedData">true</boolProp>
+              <boolProp name="recycle">false</boolProp>
+              <boolProp name="stopThread">true</boolProp>
+              <stringProp name="shareMode">shareMode.thread</stringProp>
+            </CSVDataSet>
+            <hashTree/>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">String body= new String(ResponseData);
+if((vars.get(&quot;adminAuthorized&quot;).equals(&quot;NO&quot;) )&amp;&amp;(!body.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;)) ){
+	Failure=true;
+}
+else{
+	Failure=false;
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
+          <collectionProp name="CookieManager.cookies"/>
+          <boolProp name="CookieManager.clearEachIteration">false</boolProp>
+        </CookieManager>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Utility Admin" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1459897786000</longProp>
+        <longProp name="ThreadGroup.end_time">1459897786000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">p3sqaauto.picarro.com</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
+        </ConfigTestElement>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="UtilityAdminLoginGET" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="Username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">sqacusua@email.com</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Username</stringProp>
+              </elementProp>
+              <elementProp name="Password" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Password</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Account/Login</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathExtractor guiclass="XPathExtractorGui" testclass="XPathExtractor" testname="RequestVerificationTokenExtractor" enabled="true">
+            <stringProp name="XPathExtractor.default"></stringProp>
+            <stringProp name="XPathExtractor.refname">RequestVerificationToken</stringProp>
+            <stringProp name="XPathExtractor.xpathQuery">//*[@action=&apos;/Account/Login&apos;]/input/@value</stringProp>
+            <boolProp name="XPathExtractor.validate">false</boolProp>
+            <boolProp name="XPathExtractor.tolerant">true</boolProp>
+            <boolProp name="XPathExtractor.namespace">false</boolProp>
+            <stringProp name="Sample.scope">all</stringProp>
+            <stringProp name="Scope.variable">RequestVerificationToken</stringProp>
+          </XPathExtractor>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="UtilityAdminLoginPOST" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="__RequestVerificationToken" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">${RequestVerificationToken}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">__RequestVerificationToken</stringProp>
+              </elementProp>
+              <elementProp name="Username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">sqacusua@email.com</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Username</stringProp>
+              </elementProp>
+              <elementProp name="Password" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Password</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Account/Login?ReturnUrl=%2FHome</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <boolProp name="XPath.negate">true</boolProp>
+            <stringProp name="XPath.xpath">//*[@id=&quot;picarro-administration-menu&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">true</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="UtilityAdminComplianceReportPOST" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{  &#xd;
+   &quot;ReportTitle&quot;:&quot;test&quot;,&#xd;
+   &quot;TimeZoneId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+   &quot;SelectedCustomerId&quot;:&quot;b1252204-04fb-4a67-82d4-3f4666fd855c&quot;,&#xd;
+   &quot;MapHeight&quot;:&quot;11&quot;,&#xd;
+   &quot;MapWidth&quot;:&quot;8.5&quot;,&#xd;
+   &quot;ReportModel&quot;:{  &#xd;
+      &quot;SurveyModeTypeId&quot;:&quot;b310238a-a5ae-4e94-927b-f0f165e24522&quot;,&#xd;
+      &quot;MinimumAmplitude&quot;:&quot;&quot;,&#xd;
+      &quot;ExclusionRadius&quot;:&quot;0&quot;,&#xd;
+      &quot;ShowIndications&quot;:true,&#xd;
+      &quot;ShowIsotopicAnalysis&quot;:false,&#xd;
+      &quot;ShowGaps&quot;:false,&#xd;
+      &quot;ShowPercentCoverageAssets&quot;:false,&#xd;
+      &quot;ShowPercentCoverageReportArea&quot;:false,&#xd;
+      &quot;ShowPercentCoverageForecast&quot;:false,&#xd;
+      &quot;FovOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;LisaOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;ReportAreaModel&quot;:{  &#xd;
+         &quot;ReportAreaModeTypeDesc&quot;:&quot;Custom Boundary&quot;,&#xd;
+         &quot;StartLat&quot;:&quot;37.41922165375503&quot;,&#xd;
+         &quot;StartLong&quot;:&quot;-121.96578744222937&quot;,&#xd;
+         &quot;EndLat&quot;:&quot;37.40517779908774&quot;,&#xd;
+         &quot;EndLong&quot;:&quot;-122.01230767538367&quot;,&#xd;
+         &quot;BoundaryId&quot;:null&#xd;
+      },&#xd;
+      &quot;ReportViewModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;ViewName&quot;:&quot;View 1&quot;,&#xd;
+            &quot;ShowLisa&quot;:true,&#xd;
+            &quot;ShowFov&quot;:true,&#xd;
+            &quot;ShowVehiclePath&quot;:false,&#xd;
+            &quot;ShowIndications&quot;:false,&#xd;
+            &quot;ShowIsotopicCaptures&quot;:false,&#xd;
+            &quot;ShowAnnotations&quot;:false,&#xd;
+            &quot;ShowGaps&quot;:false,&#xd;
+            &quot;ShowAssets&quot;:false,&#xd;
+            &quot;ShowBoundaries&quot;:false,&#xd;
+            &quot;BaseMapId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;ViewNameOrder&quot;:1&#xd;
+         }&#xd;
+      ],&#xd;
+      &quot;ReportBoundaryLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportAssetLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportDrivingSurveyModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;SurveyId&quot;:&quot;6c4450dc-a1c3-c2c5-6291-39ceee0b0f57&quot;,&#xd;
+            &quot;PeakColor&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;LisaColor&quot;:&quot;00000000-0000-0000-0007-000000000000&quot;,&#xd;
+            &quot;IsotopicColor&quot;:&quot;00000000-0000-0000-0006-000000000000&quot;,&#xd;
+            &quot;FovColor&quot;:&quot;00000000-0000-0000-0002-000000000000&quot;,&#xd;
+            &quot;FovOpacity&quot;:&quot;0.4&quot;,&#xd;
+            &quot;LisaOpacity&quot;:&quot;0.5&quot;&#xd;
+         }&#xd;
+      ]&#xd;
+   }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Reports/ComplianceReport</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="UtilityAdminAssessment_POST" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{  &#xd;
+   &quot;ReportTitle&quot;:&quot;test&quot;,&#xd;
+   &quot;TimeZoneId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+   &quot;SelectedCustomerId&quot;:&quot;b1252204-04fb-4a67-82d4-3f4666fd855c&quot;,&#xd;
+   &quot;MapHeight&quot;:&quot;11&quot;,&#xd;
+   &quot;MapWidth&quot;:&quot;8.5&quot;,&#xd;
+   &quot;ReportModel&quot;:{  &#xd;
+      &quot;SurveyModeTypeId&quot;:&quot;b310238a-a5ae-4e94-927b-f0f165e24522&quot;,&#xd;
+      &quot;MinimumAmplitude&quot;:&quot;&quot;,&#xd;
+      &quot;ExclusionRadius&quot;:&quot;0&quot;,&#xd;
+      &quot;ShowIndications&quot;:true,&#xd;
+      &quot;ShowIsotopicAnalysis&quot;:false,&#xd;
+      &quot;ShowGaps&quot;:false,&#xd;
+      &quot;ShowPercentCoverageAssets&quot;:false,&#xd;
+      &quot;ShowPercentCoverageReportArea&quot;:false,&#xd;
+      &quot;ShowPercentCoverageForecast&quot;:false,&#xd;
+      &quot;FovOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;LisaOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;ReportAreaModel&quot;:{  &#xd;
+         &quot;ReportAreaModeTypeDesc&quot;:&quot;Custom Boundary&quot;,&#xd;
+         &quot;StartLat&quot;:&quot;37.41922165375503&quot;,&#xd;
+         &quot;StartLong&quot;:&quot;-121.96578744222937&quot;,&#xd;
+         &quot;EndLat&quot;:&quot;37.40517779908774&quot;,&#xd;
+         &quot;EndLong&quot;:&quot;-122.01230767538367&quot;,&#xd;
+         &quot;BoundaryId&quot;:null&#xd;
+      },&#xd;
+      &quot;ReportViewModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;ViewName&quot;:&quot;View 1&quot;,&#xd;
+            &quot;ShowLisa&quot;:true,&#xd;
+            &quot;ShowFov&quot;:true,&#xd;
+            &quot;ShowVehiclePath&quot;:false,&#xd;
+            &quot;ShowIndications&quot;:false,&#xd;
+            &quot;ShowIsotopicCaptures&quot;:false,&#xd;
+            &quot;ShowAnnotations&quot;:false,&#xd;
+            &quot;ShowGaps&quot;:false,&#xd;
+            &quot;ShowAssets&quot;:false,&#xd;
+            &quot;ShowBoundaries&quot;:false,&#xd;
+            &quot;BaseMapId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;ViewNameOrder&quot;:1&#xd;
+         }&#xd;
+      ],&#xd;
+      &quot;ReportBoundaryLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportAssetLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportDrivingSurveyModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;SurveyId&quot;:&quot;6c4450dc-a1c3-c2c5-6291-39ceee0b0f57&quot;,&#xd;
+            &quot;PeakColor&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;LisaColor&quot;:&quot;00000000-0000-0000-0007-000000000000&quot;,&#xd;
+            &quot;IsotopicColor&quot;:&quot;00000000-0000-0000-0006-000000000000&quot;,&#xd;
+            &quot;FovColor&quot;:&quot;00000000-0000-0000-0002-000000000000&quot;,&#xd;
+            &quot;FovOpacity&quot;:&quot;0.4&quot;,&#xd;
+            &quot;LisaOpacity&quot;:&quot;0.5&quot;&#xd;
+         }&#xd;
+      ]&#xd;
+   }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Reports/AssessmentReport</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="UtilityAdminAssignReportPeak_POST" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;ReportId&quot;: &quot;e8a3d007-1a9d-57e0-1b3f-39d71f4de954&quot;,&#xd;
+  &quot;AssigneeId&quot;: &quot;de734ddf-363e-49fc-8dbc-39c8c221c570&quot;,&#xd;
+  &quot;ReportPeaks&quot;: [&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;c76beecb-28bc-f399-1a50-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;c2d5ed9d-fae6-585c-e70d-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;ec51c949-a6de-723c-902c-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;a88361af-598f-be96-97f5-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;a67188a6-ab7b-9097-042d-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;67208606-1c78-6097-137f-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;085be9c0-cbda-cfbb-e80a-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;c93acda4-d550-6f73-0e3d-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;c6c7680c-20a8-e2d0-76a5-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;ae2c16ef-f6f5-21d9-849e-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;9a3ddde4-a726-9982-422a-39d71f5f7064&quot;&#xd;
+    }&#xd;
+  ]&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">Reports/AssignReportPeak?mode=table</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While EOF paramList.csv" enabled="true">
+          <stringProp name="WhileController.condition">${endpoint}</stringProp>
+        </WhileController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="UtilityAdminHTTPGETS" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+            <stringProp name="HTTPSampler.path">/${controller}/${endpoint}</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+              <stringProp name="filename">paramList.csv</stringProp>
+              <stringProp name="fileEncoding"></stringProp>
+              <stringProp name="variableNames">controller,endpoint,driverAuthorized,supAuthorized,adminAuthorized,cusdriverAuthorized,cussupAuthorized,cusadminAuthorized</stringProp>
+              <stringProp name="delimiter">,</stringProp>
+              <boolProp name="quotedData">true</boolProp>
+              <boolProp name="recycle">false</boolProp>
+              <boolProp name="stopThread">true</boolProp>
+              <stringProp name="shareMode">shareMode.thread</stringProp>
+            </CSVDataSet>
+            <hashTree/>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">String body= new String(ResponseData);
+if((vars.get(&quot;cusadminAuthorized&quot;).equals(&quot;NO&quot;) )&amp;&amp;(!body.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;)) ){
+	Failure=true;
+}
+else{
+	Failure=false;
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
+          <collectionProp name="CookieManager.cookies"/>
+          <boolProp name="CookieManager.clearEachIteration">false</boolProp>
+        </CookieManager>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Picarro Support" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1459897786000</longProp>
+        <longProp name="ThreadGroup.end_time">1459897786000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">p3sqaauto.picarro.com</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
+        </ConfigTestElement>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicarroSupportLoginGET" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="Username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">sqapicsup@picarro.com</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Username</stringProp>
+              </elementProp>
+              <elementProp name="Password" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Password</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Account/Login</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathExtractor guiclass="XPathExtractorGui" testclass="XPathExtractor" testname="RequestVerificationTokenExtractor" enabled="true">
+            <stringProp name="XPathExtractor.default"></stringProp>
+            <stringProp name="XPathExtractor.refname">RequestVerificationToken</stringProp>
+            <stringProp name="XPathExtractor.xpathQuery">//*[@action=&apos;/Account/Login&apos;]/input/@value</stringProp>
+            <boolProp name="XPathExtractor.validate">false</boolProp>
+            <boolProp name="XPathExtractor.tolerant">true</boolProp>
+            <boolProp name="XPathExtractor.namespace">false</boolProp>
+            <stringProp name="Sample.scope">all</stringProp>
+            <stringProp name="Scope.variable">RequestVerificationToken</stringProp>
+          </XPathExtractor>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicarroSupportLoginPOST" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="__RequestVerificationToken" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">${RequestVerificationToken}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">__RequestVerificationToken</stringProp>
+              </elementProp>
+              <elementProp name="Username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">sqapicsup@picarro.com</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Username</stringProp>
+              </elementProp>
+              <elementProp name="Password" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Password</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Account/Login?ReturnUrl=%2FHome</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">//*[@id=&quot;picarro-administration-menu&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">true</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicarroSupportComplianceReportPOST" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{  &#xd;
+   &quot;ReportTitle&quot;:&quot;test&quot;,&#xd;
+   &quot;TimeZoneId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+   &quot;SelectedCustomerId&quot;:&quot;b1252204-04fb-4a67-82d4-3f4666fd855c&quot;,&#xd;
+   &quot;MapHeight&quot;:&quot;11&quot;,&#xd;
+   &quot;MapWidth&quot;:&quot;8.5&quot;,&#xd;
+   &quot;ReportModel&quot;:{  &#xd;
+      &quot;SurveyModeTypeId&quot;:&quot;b310238a-a5ae-4e94-927b-f0f165e24522&quot;,&#xd;
+      &quot;MinimumAmplitude&quot;:&quot;&quot;,&#xd;
+      &quot;ExclusionRadius&quot;:&quot;0&quot;,&#xd;
+      &quot;ShowIndications&quot;:true,&#xd;
+      &quot;ShowIsotopicAnalysis&quot;:false,&#xd;
+      &quot;ShowGaps&quot;:false,&#xd;
+      &quot;ShowPercentCoverageAssets&quot;:false,&#xd;
+      &quot;ShowPercentCoverageReportArea&quot;:false,&#xd;
+      &quot;ShowPercentCoverageForecast&quot;:false,&#xd;
+      &quot;FovOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;LisaOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;ReportAreaModel&quot;:{  &#xd;
+         &quot;ReportAreaModeTypeDesc&quot;:&quot;Custom Boundary&quot;,&#xd;
+         &quot;StartLat&quot;:&quot;37.41922165375503&quot;,&#xd;
+         &quot;StartLong&quot;:&quot;-121.96578744222937&quot;,&#xd;
+         &quot;EndLat&quot;:&quot;37.40517779908774&quot;,&#xd;
+         &quot;EndLong&quot;:&quot;-122.01230767538367&quot;,&#xd;
+         &quot;BoundaryId&quot;:null&#xd;
+      },&#xd;
+      &quot;ReportViewModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;ViewName&quot;:&quot;View 1&quot;,&#xd;
+            &quot;ShowLisa&quot;:true,&#xd;
+            &quot;ShowFov&quot;:true,&#xd;
+            &quot;ShowVehiclePath&quot;:false,&#xd;
+            &quot;ShowIndications&quot;:false,&#xd;
+            &quot;ShowIsotopicCaptures&quot;:false,&#xd;
+            &quot;ShowAnnotations&quot;:false,&#xd;
+            &quot;ShowGaps&quot;:false,&#xd;
+            &quot;ShowAssets&quot;:false,&#xd;
+            &quot;ShowBoundaries&quot;:false,&#xd;
+            &quot;BaseMapId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;ViewNameOrder&quot;:1&#xd;
+         }&#xd;
+      ],&#xd;
+      &quot;ReportBoundaryLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportAssetLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportDrivingSurveyModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;SurveyId&quot;:&quot;6c4450dc-a1c3-c2c5-6291-39ceee0b0f57&quot;,&#xd;
+            &quot;PeakColor&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;LisaColor&quot;:&quot;00000000-0000-0000-0007-000000000000&quot;,&#xd;
+            &quot;IsotopicColor&quot;:&quot;00000000-0000-0000-0006-000000000000&quot;,&#xd;
+            &quot;FovColor&quot;:&quot;00000000-0000-0000-0002-000000000000&quot;,&#xd;
+            &quot;FovOpacity&quot;:&quot;0.4&quot;,&#xd;
+            &quot;LisaOpacity&quot;:&quot;0.5&quot;&#xd;
+         }&#xd;
+      ]&#xd;
+   }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Reports/ComplianceReport</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicarroSupportAssessment_POST" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{  &#xd;
+   &quot;ReportTitle&quot;:&quot;test&quot;,&#xd;
+   &quot;TimeZoneId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+   &quot;SelectedCustomerId&quot;:&quot;b1252204-04fb-4a67-82d4-3f4666fd855c&quot;,&#xd;
+   &quot;MapHeight&quot;:&quot;11&quot;,&#xd;
+   &quot;MapWidth&quot;:&quot;8.5&quot;,&#xd;
+   &quot;ReportModel&quot;:{  &#xd;
+      &quot;SurveyModeTypeId&quot;:&quot;b310238a-a5ae-4e94-927b-f0f165e24522&quot;,&#xd;
+      &quot;MinimumAmplitude&quot;:&quot;&quot;,&#xd;
+      &quot;ExclusionRadius&quot;:&quot;0&quot;,&#xd;
+      &quot;ShowIndications&quot;:true,&#xd;
+      &quot;ShowIsotopicAnalysis&quot;:false,&#xd;
+      &quot;ShowGaps&quot;:false,&#xd;
+      &quot;ShowPercentCoverageAssets&quot;:false,&#xd;
+      &quot;ShowPercentCoverageReportArea&quot;:false,&#xd;
+      &quot;ShowPercentCoverageForecast&quot;:false,&#xd;
+      &quot;FovOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;LisaOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;ReportAreaModel&quot;:{  &#xd;
+         &quot;ReportAreaModeTypeDesc&quot;:&quot;Custom Boundary&quot;,&#xd;
+         &quot;StartLat&quot;:&quot;37.41922165375503&quot;,&#xd;
+         &quot;StartLong&quot;:&quot;-121.96578744222937&quot;,&#xd;
+         &quot;EndLat&quot;:&quot;37.40517779908774&quot;,&#xd;
+         &quot;EndLong&quot;:&quot;-122.01230767538367&quot;,&#xd;
+         &quot;BoundaryId&quot;:null&#xd;
+      },&#xd;
+      &quot;ReportViewModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;ViewName&quot;:&quot;View 1&quot;,&#xd;
+            &quot;ShowLisa&quot;:true,&#xd;
+            &quot;ShowFov&quot;:true,&#xd;
+            &quot;ShowVehiclePath&quot;:false,&#xd;
+            &quot;ShowIndications&quot;:false,&#xd;
+            &quot;ShowIsotopicCaptures&quot;:false,&#xd;
+            &quot;ShowAnnotations&quot;:false,&#xd;
+            &quot;ShowGaps&quot;:false,&#xd;
+            &quot;ShowAssets&quot;:false,&#xd;
+            &quot;ShowBoundaries&quot;:false,&#xd;
+            &quot;BaseMapId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;ViewNameOrder&quot;:1&#xd;
+         }&#xd;
+      ],&#xd;
+      &quot;ReportBoundaryLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportAssetLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportDrivingSurveyModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;SurveyId&quot;:&quot;6c4450dc-a1c3-c2c5-6291-39ceee0b0f57&quot;,&#xd;
+            &quot;PeakColor&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;LisaColor&quot;:&quot;00000000-0000-0000-0007-000000000000&quot;,&#xd;
+            &quot;IsotopicColor&quot;:&quot;00000000-0000-0000-0006-000000000000&quot;,&#xd;
+            &quot;FovColor&quot;:&quot;00000000-0000-0000-0002-000000000000&quot;,&#xd;
+            &quot;FovOpacity&quot;:&quot;0.4&quot;,&#xd;
+            &quot;LisaOpacity&quot;:&quot;0.5&quot;&#xd;
+         }&#xd;
+      ]&#xd;
+   }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Reports/AssessmentReport</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicarroSupportAssignReportPeak_POST" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;ReportId&quot;: &quot;e8a3d007-1a9d-57e0-1b3f-39d71f4de954&quot;,&#xd;
+  &quot;AssigneeId&quot;: &quot;de734ddf-363e-49fc-8dbc-39c8c221c570&quot;,&#xd;
+  &quot;ReportPeaks&quot;: [&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;c76beecb-28bc-f399-1a50-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;c2d5ed9d-fae6-585c-e70d-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;ec51c949-a6de-723c-902c-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;a88361af-598f-be96-97f5-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;a67188a6-ab7b-9097-042d-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;67208606-1c78-6097-137f-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;085be9c0-cbda-cfbb-e80a-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;c93acda4-d550-6f73-0e3d-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;c6c7680c-20a8-e2d0-76a5-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;ae2c16ef-f6f5-21d9-849e-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;9a3ddde4-a726-9982-422a-39d71f5f7064&quot;&#xd;
+    }&#xd;
+  ]&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">Reports/AssignReportPeak?mode=table</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While EOF paramList.csv" enabled="true">
+          <stringProp name="WhileController.condition">${endpoint}</stringProp>
+        </WhileController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicarroSupportHTTPGETS" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+            <stringProp name="HTTPSampler.path">/${controller}/${endpoint}</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+              <stringProp name="filename">paramList.csv</stringProp>
+              <stringProp name="fileEncoding"></stringProp>
+              <stringProp name="variableNames">controller,endpoint,driverAuthorized,supAuthorized,adminAuthorized,cusdriverAuthorized,cussupAuthorized,cusadminAuthorized</stringProp>
+              <stringProp name="delimiter">,</stringProp>
+              <boolProp name="quotedData">true</boolProp>
+              <boolProp name="recycle">false</boolProp>
+              <boolProp name="stopThread">true</boolProp>
+              <stringProp name="shareMode">shareMode.thread</stringProp>
+            </CSVDataSet>
+            <hashTree/>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">String body= new String(ResponseData);
+if((vars.get(&quot;supAuthorized&quot;).equals(&quot;NO&quot;) )&amp;&amp;(!body.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;)) ){
+	Failure=true;
+}
+else{
+	Failure=false;
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
+          <collectionProp name="CookieManager.cookies"/>
+          <boolProp name="CookieManager.clearEachIteration">false</boolProp>
+        </CookieManager>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Customer Supervisor" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1459897786000</longProp>
+        <longProp name="ThreadGroup.end_time">1459897786000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">p3sqaauto.picarro.com</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
+        </ConfigTestElement>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CustomerSupervisorLoginGET" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="Username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">sqacussu@email.com</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Username</stringProp>
+              </elementProp>
+              <elementProp name="Password" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Password</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Account/Login</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathExtractor guiclass="XPathExtractorGui" testclass="XPathExtractor" testname="RequestVerificationTokenExtractor" enabled="true">
+            <stringProp name="XPathExtractor.default"></stringProp>
+            <stringProp name="XPathExtractor.refname">RequestVerificationToken</stringProp>
+            <stringProp name="XPathExtractor.xpathQuery">//*[@action=&apos;/Account/Login&apos;]/input/@value</stringProp>
+            <boolProp name="XPathExtractor.validate">false</boolProp>
+            <boolProp name="XPathExtractor.tolerant">true</boolProp>
+            <boolProp name="XPathExtractor.namespace">false</boolProp>
+            <stringProp name="Sample.scope">all</stringProp>
+            <stringProp name="Scope.variable">RequestVerificationToken</stringProp>
+          </XPathExtractor>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CustomerSupervisorLoginPOST" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="__RequestVerificationToken" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">${RequestVerificationToken}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">__RequestVerificationToken</stringProp>
+              </elementProp>
+              <elementProp name="Username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">sqacussu@email.com</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Username</stringProp>
+              </elementProp>
+              <elementProp name="Password" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Password</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Account/Login?ReturnUrl=%2FHome</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <boolProp name="XPath.negate">true</boolProp>
+            <stringProp name="XPath.xpath">//*[@id=&quot;picarro-administration-menu&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">true</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CustomerSupervisorComplianceReportPOST" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{  &#xd;
+   &quot;ReportTitle&quot;:&quot;test&quot;,&#xd;
+   &quot;TimeZoneId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+   &quot;SelectedCustomerId&quot;:&quot;b1252204-04fb-4a67-82d4-3f4666fd855c&quot;,&#xd;
+   &quot;MapHeight&quot;:&quot;11&quot;,&#xd;
+   &quot;MapWidth&quot;:&quot;8.5&quot;,&#xd;
+   &quot;ReportModel&quot;:{  &#xd;
+      &quot;SurveyModeTypeId&quot;:&quot;b310238a-a5ae-4e94-927b-f0f165e24522&quot;,&#xd;
+      &quot;MinimumAmplitude&quot;:&quot;&quot;,&#xd;
+      &quot;ExclusionRadius&quot;:&quot;0&quot;,&#xd;
+      &quot;ShowIndications&quot;:true,&#xd;
+      &quot;ShowIsotopicAnalysis&quot;:false,&#xd;
+      &quot;ShowGaps&quot;:false,&#xd;
+      &quot;ShowPercentCoverageAssets&quot;:false,&#xd;
+      &quot;ShowPercentCoverageReportArea&quot;:false,&#xd;
+      &quot;ShowPercentCoverageForecast&quot;:false,&#xd;
+      &quot;FovOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;LisaOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;ReportAreaModel&quot;:{  &#xd;
+         &quot;ReportAreaModeTypeDesc&quot;:&quot;Custom Boundary&quot;,&#xd;
+         &quot;StartLat&quot;:&quot;37.41922165375503&quot;,&#xd;
+         &quot;StartLong&quot;:&quot;-121.96578744222937&quot;,&#xd;
+         &quot;EndLat&quot;:&quot;37.40517779908774&quot;,&#xd;
+         &quot;EndLong&quot;:&quot;-122.01230767538367&quot;,&#xd;
+         &quot;BoundaryId&quot;:null&#xd;
+      },&#xd;
+      &quot;ReportViewModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;ViewName&quot;:&quot;View 1&quot;,&#xd;
+            &quot;ShowLisa&quot;:true,&#xd;
+            &quot;ShowFov&quot;:true,&#xd;
+            &quot;ShowVehiclePath&quot;:false,&#xd;
+            &quot;ShowIndications&quot;:false,&#xd;
+            &quot;ShowIsotopicCaptures&quot;:false,&#xd;
+            &quot;ShowAnnotations&quot;:false,&#xd;
+            &quot;ShowGaps&quot;:false,&#xd;
+            &quot;ShowAssets&quot;:false,&#xd;
+            &quot;ShowBoundaries&quot;:false,&#xd;
+            &quot;BaseMapId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;ViewNameOrder&quot;:1&#xd;
+         }&#xd;
+      ],&#xd;
+      &quot;ReportBoundaryLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportAssetLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportDrivingSurveyModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;SurveyId&quot;:&quot;6c4450dc-a1c3-c2c5-6291-39ceee0b0f57&quot;,&#xd;
+            &quot;PeakColor&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;LisaColor&quot;:&quot;00000000-0000-0000-0007-000000000000&quot;,&#xd;
+            &quot;IsotopicColor&quot;:&quot;00000000-0000-0000-0006-000000000000&quot;,&#xd;
+            &quot;FovColor&quot;:&quot;00000000-0000-0000-0002-000000000000&quot;,&#xd;
+            &quot;FovOpacity&quot;:&quot;0.4&quot;,&#xd;
+            &quot;LisaOpacity&quot;:&quot;0.5&quot;&#xd;
+         }&#xd;
+      ]&#xd;
+   }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Reports/ComplianceReport</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CustomerSupervisorAssessment_POST" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{  &#xd;
+   &quot;ReportTitle&quot;:&quot;test&quot;,&#xd;
+   &quot;TimeZoneId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+   &quot;SelectedCustomerId&quot;:&quot;b1252204-04fb-4a67-82d4-3f4666fd855c&quot;,&#xd;
+   &quot;MapHeight&quot;:&quot;11&quot;,&#xd;
+   &quot;MapWidth&quot;:&quot;8.5&quot;,&#xd;
+   &quot;ReportModel&quot;:{  &#xd;
+      &quot;SurveyModeTypeId&quot;:&quot;b310238a-a5ae-4e94-927b-f0f165e24522&quot;,&#xd;
+      &quot;MinimumAmplitude&quot;:&quot;&quot;,&#xd;
+      &quot;ExclusionRadius&quot;:&quot;0&quot;,&#xd;
+      &quot;ShowIndications&quot;:true,&#xd;
+      &quot;ShowIsotopicAnalysis&quot;:false,&#xd;
+      &quot;ShowGaps&quot;:false,&#xd;
+      &quot;ShowPercentCoverageAssets&quot;:false,&#xd;
+      &quot;ShowPercentCoverageReportArea&quot;:false,&#xd;
+      &quot;ShowPercentCoverageForecast&quot;:false,&#xd;
+      &quot;FovOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;LisaOpacity&quot;:&quot;0.5&quot;,&#xd;
+      &quot;ReportAreaModel&quot;:{  &#xd;
+         &quot;ReportAreaModeTypeDesc&quot;:&quot;Custom Boundary&quot;,&#xd;
+         &quot;StartLat&quot;:&quot;37.41922165375503&quot;,&#xd;
+         &quot;StartLong&quot;:&quot;-121.96578744222937&quot;,&#xd;
+         &quot;EndLat&quot;:&quot;37.40517779908774&quot;,&#xd;
+         &quot;EndLong&quot;:&quot;-122.01230767538367&quot;,&#xd;
+         &quot;BoundaryId&quot;:null&#xd;
+      },&#xd;
+      &quot;ReportViewModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;ViewName&quot;:&quot;View 1&quot;,&#xd;
+            &quot;ShowLisa&quot;:true,&#xd;
+            &quot;ShowFov&quot;:true,&#xd;
+            &quot;ShowVehiclePath&quot;:false,&#xd;
+            &quot;ShowIndications&quot;:false,&#xd;
+            &quot;ShowIsotopicCaptures&quot;:false,&#xd;
+            &quot;ShowAnnotations&quot;:false,&#xd;
+            &quot;ShowGaps&quot;:false,&#xd;
+            &quot;ShowAssets&quot;:false,&#xd;
+            &quot;ShowBoundaries&quot;:false,&#xd;
+            &quot;BaseMapId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;ViewNameOrder&quot;:1&#xd;
+         }&#xd;
+      ],&#xd;
+      &quot;ReportBoundaryLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportAssetLayerModels&quot;:[  &#xd;
+&#xd;
+      ],&#xd;
+      &quot;ReportDrivingSurveyModels&quot;:[  &#xd;
+         {  &#xd;
+            &quot;SurveyId&quot;:&quot;6c4450dc-a1c3-c2c5-6291-39ceee0b0f57&quot;,&#xd;
+            &quot;PeakColor&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
+            &quot;LisaColor&quot;:&quot;00000000-0000-0000-0007-000000000000&quot;,&#xd;
+            &quot;IsotopicColor&quot;:&quot;00000000-0000-0000-0006-000000000000&quot;,&#xd;
+            &quot;FovColor&quot;:&quot;00000000-0000-0000-0002-000000000000&quot;,&#xd;
+            &quot;FovOpacity&quot;:&quot;0.4&quot;,&#xd;
+            &quot;LisaOpacity&quot;:&quot;0.5&quot;&#xd;
+         }&#xd;
+      ]&#xd;
+   }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Reports/AssessmentReport</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CustomerSupervisorAssignReportPeak_POST" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;ReportId&quot;: &quot;e8a3d007-1a9d-57e0-1b3f-39d71f4de954&quot;,&#xd;
+  &quot;AssigneeId&quot;: &quot;de734ddf-363e-49fc-8dbc-39c8c221c570&quot;,&#xd;
+  &quot;ReportPeaks&quot;: [&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;c76beecb-28bc-f399-1a50-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;c2d5ed9d-fae6-585c-e70d-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;ec51c949-a6de-723c-902c-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;a88361af-598f-be96-97f5-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;a67188a6-ab7b-9097-042d-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;67208606-1c78-6097-137f-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;085be9c0-cbda-cfbb-e80a-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;c93acda4-d550-6f73-0e3d-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;c6c7680c-20a8-e2d0-76a5-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;ae2c16ef-f6f5-21d9-849e-39d71f5f7064&quot;&#xd;
+    },&#xd;
+    {&#xd;
+      &quot;Id&quot;: &quot;9a3ddde4-a726-9982-422a-39d71f5f7064&quot;&#xd;
+    }&#xd;
+  ]&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">Reports/AssignReportPeak?mode=table</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While EOF paramList.csv" enabled="true">
+          <stringProp name="WhileController.condition">${endpoint}</stringProp>
+        </WhileController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CustomerSupervisorHTTPGETS" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+            <stringProp name="HTTPSampler.path">/${controller}/${endpoint}</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+              <stringProp name="filename">paramList.csv</stringProp>
+              <stringProp name="fileEncoding"></stringProp>
+              <stringProp name="variableNames">controller,endpoint,driverAuthorized,supAuthorized,adminAuthorized,cusdriverAuthorized,cussupAuthorized,cusadminAuthorized</stringProp>
+              <stringProp name="delimiter">,</stringProp>
+              <boolProp name="quotedData">true</boolProp>
+              <boolProp name="recycle">false</boolProp>
+              <boolProp name="stopThread">true</boolProp>
+              <stringProp name="shareMode">shareMode.thread</stringProp>
+            </CSVDataSet>
+            <hashTree/>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">String body= new String(ResponseData);
+if((vars.get(&quot;cussupAuthorized&quot;).equals(&quot;NO&quot;) )&amp;&amp;(!body.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;)) ){
+	Failure=true;
+}
+else{
+	Failure=false;
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
+          <collectionProp name="CookieManager.cookies"/>
+          <boolProp name="CookieManager.clearEachIteration">false</boolProp>
+        </CookieManager>
+        <hashTree/>
+      </hashTree>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>false</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <threadCounts>true</threadCounts>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ResultCollector guiclass="AssertionVisualizer" testclass="ResultCollector" testname="Assertion Results" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>false</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <threadCounts>true</threadCounts>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
