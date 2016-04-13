@@ -2254,7 +2254,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		WebElement dvAreaModeCustomer = this.divCustomerBoundarySection;
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return !dvAreaModeCustomer.getAttribute("style").contains("display:none");
+				return !dvAreaModeCustomer.getAttribute("style").contains("display:none") && 
+						!dvAreaModeCustomer.getAttribute("style").contains("display: none");
 			}
 		});
 	}
