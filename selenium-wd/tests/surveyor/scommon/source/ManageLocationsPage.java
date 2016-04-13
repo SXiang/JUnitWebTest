@@ -166,11 +166,11 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 
 	public void addNewLocation(String locationDesc, String customer, String newLocationName) {
-		addNewLocation(locationDesc, customer, newLocationName, false /* UseLatLongSelector */, null, null);
+		addNewLocation(locationDesc, customer, newLocationName, false /* UseLatLongSelector */, "1", "2");
 	}
 
 	public void addNewLocationUsingLatLongSelector(String locationDesc, String customer, String newLocationName) {
-		addNewLocation(locationDesc, customer, newLocationName, true /* UseLatLongSelector */, null, null);
+		addNewLocation(locationDesc, customer, newLocationName, true /* UseLatLongSelector */, "1", "2");
 	}
 
 	public void addNewLocation(String locationDesc, String customer, String newLocationName, String ethMthMin,

@@ -11,37 +11,22 @@ public class ReportOptViewLayersDataReader extends BaseDataReader {
 
 	private static final String TESTDATA_SHEET_NAME = "Report Opt View Layers";
 	 
-	public static final int Excel_TestData_Report_Col_RowID = 0;
-	public static final int Excel_TestData_Report_Col_AssetCopper = 1;
-	public static final int Excel_TestData_Report_Col_AssetUnprotectedSteel = 2;
-	public static final int Excel_TestData_Report_Col_AssetProtectedSteel = 3;
-	public static final int Excel_TestData_Report_Col_AssetCastIron = 4;
-	public static final int Excel_TestData_Report_Col_AssetOtherPlastic = 5;
-	public static final int Excel_TestData_Report_Col_AssetPEPlastic = 6;
-	public static final int Excel_TestData_Report_Col_BoundaryDistrictPlat = 7;
-	public static final int Excel_TestData_Report_Col_BoundaryDistrict = 8;
+	public static final int Excel_TestData__Col_RowID = 0;
+	public static final int Excel_TestData__Col_AssetRowIDs = 1;
+	public static final int Excel_TestData__Col_BoundariesRowIDs = 2;
+	public static final int Excel_TestData__Col_Notes = 3;
  
 	public class ReportOptViewLayersDataRow {
 		public String rowID;
-		public String assetCopper;
-		public String assetUnprotectedSteel;
-		public String assetProtectedSteel;
-		public String assetCastIron;
-		public String assetOtherPlastic;
-		public String assetPEPlastic;
-		public String boundaryDistrictPlat;
-		public String boundaryDistrict;
+		public String assetRowIDs;
+		public String boundariesRowIDs;
+		public String notes;
  
-		public ReportOptViewLayersDataRow(String rowID, String assetCopper, String assetUnprotectedSteel, String assetProtectedSteel, String assetCastIron, String assetOtherPlastic, String assetPEPlastic, String boundaryDistrictPlat, String boundaryDistrict) {
+		public ReportOptViewLayersDataRow(String rowID, String assetRowIDs, String boundariesRowIDs, String notes) {
 			this.rowID = rowID;
-			this.assetCopper = assetCopper;
-			this.assetUnprotectedSteel = assetUnprotectedSteel;
-			this.assetProtectedSteel = assetProtectedSteel;
-			this.assetCastIron = assetCastIron;
-			this.assetOtherPlastic = assetOtherPlastic;
-			this.assetPEPlastic = assetPEPlastic;
-			this.boundaryDistrictPlat = boundaryDistrictPlat;
-			this.boundaryDistrict = boundaryDistrict;
+			this.assetRowIDs = assetRowIDs;
+			this.boundariesRowIDs = boundariesRowIDs;
+			this.notes = notes;
 		}
 	}	
  
@@ -56,18 +41,14 @@ public class ReportOptViewLayersDataReader extends BaseDataReader {
 	}
  
 	public ReportOptViewLayersDataRow getDataRow(Integer dataRowID) throws Exception {
-		String rowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData_Report_Col_RowID, TESTDATA_SHEET_NAME);
-		String assetCopper = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_AssetCopper, TESTDATA_SHEET_NAME);
-		String assetUnprotectedSteel = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_AssetUnprotectedSteel, TESTDATA_SHEET_NAME);
-		String assetProtectedSteel = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_AssetProtectedSteel, TESTDATA_SHEET_NAME);
-		String assetCastIron = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_AssetCastIron, TESTDATA_SHEET_NAME);
-		String assetOtherPlastic = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_AssetOtherPlastic, TESTDATA_SHEET_NAME);
-		String assetPEPlastic = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_AssetPEPlastic, TESTDATA_SHEET_NAME);
-		String boundaryDistrictPlat = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_BoundaryDistrictPlat, TESTDATA_SHEET_NAME);
-		String boundaryDistrict = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_BoundaryDistrict, TESTDATA_SHEET_NAME);
+		String rowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
+		String assetRowIDs = excelUtility.getCellData(dataRowID, Excel_TestData__Col_AssetRowIDs, TESTDATA_SHEET_NAME);
+		String boundariesRowIDs = excelUtility.getCellData(dataRowID, Excel_TestData__Col_BoundariesRowIDs, TESTDATA_SHEET_NAME);
+		String notes = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Notes, TESTDATA_SHEET_NAME);
 		
-		Log.info(String.format("Found data row: rowID=[%s], assetCopper=[%s], assetUnprotectedSteel=[%s], assetProtectedSteel=[%s], assetCastIron=[%s], assetOtherPlastic=[%s], assetPEPlastic=[%s], boundaryDistrictPlat=[%s], boundaryDistrict=[%s]", rowID, assetCopper, assetUnprotectedSteel, assetProtectedSteel, assetCastIron, assetOtherPlastic, assetPEPlastic, boundaryDistrictPlat, boundaryDistrict));
+		Log.info(String.format("Found data row: rowID=[%s], assetRowIDs=[%s], boundariesRowIDs=[%s], notes=[%s]", 
+				rowID, assetRowIDs, boundariesRowIDs, notes));
 		
-		return new ReportOptViewLayersDataRow(rowID, assetCopper, assetUnprotectedSteel, assetProtectedSteel, assetCastIron, assetOtherPlastic, assetPEPlastic, boundaryDistrictPlat, boundaryDistrict);
+		return new ReportOptViewLayersDataRow(rowID, assetRowIDs, boundariesRowIDs, notes);
 	}
 }

@@ -46,8 +46,9 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='SurveyorUnitId']")
 	private WebElement dropDownSurveyor;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='analyzer-form']/fieldset/div[4]/div[2]/a")
+	@FindBy(how = How.XPATH, using = "//*[@class='button-cancel btn btn-danger']")
 	private WebElement btnCancel;
+	
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[6]/a")
 	protected WebElement btnEditAnalyzer;
@@ -212,7 +213,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 					(surveyorCell.getText().trim()).equalsIgnoreCase(surveyorName) && 
 					analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
 				Log.info("Found entry at row=" + rowNum);
-				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[6]";								
+				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[7]/a[1]";								
 				actionCell = table.findElement(By.xpath(actionXPath));
 				Log.info("Found entry at row=" + rowNum);
 				actionCell.click();
@@ -302,7 +303,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 					(surveyorCell.getText().trim()).equalsIgnoreCase(surveyorName) && 
 					analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
 				
-				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[6]/a[1]";
+				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[7]/a[1]";
 				actionCell = table.findElement(By.xpath(actionXPath));
 				Log.info("Found entry at row=" + rowNum);
 				actionCell.click();

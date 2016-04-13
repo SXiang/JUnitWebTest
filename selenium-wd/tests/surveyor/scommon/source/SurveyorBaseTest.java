@@ -158,10 +158,10 @@ public class SurveyorBaseTest {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		homePage.open();
-		
-		if (!driver.getTitle().equalsIgnoreCase("Login"))
+		if (!driver.getTitle().equalsIgnoreCase("Login")) {
+			homePage.open();
 			homePage.logout();
+		}
 		
 		driver.quit();		
 	}

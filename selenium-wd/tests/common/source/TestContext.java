@@ -73,6 +73,14 @@ public enum TestContext {
 		this.loggedInUserName = loggedInUserName;
 	}
 
+	public String getLoggedInUserPassword() {
+		String loggedInUserPassword = null;
+		if (testSetup != null) {
+			loggedInUserPassword = testSetup.getLoginPwd();
+		}		
+		return loggedInUserPassword;
+	}
+
 	public String getUserCulture() {
 		return userCulture;
 	}

@@ -3,13 +3,9 @@
  */
 package surveyor.scommon.source;
 
-import static org.junit.Assert.fail;
 import static common.source.BaseHelper.matchSinglePattern;
 import common.source.DateUtility;
 import common.source.FileUtility;
-import common.source.ImagingUtility;
-
-import static surveyor.scommon.source.SurveyorConstants.ACTIONTIMEOUT;
 import static surveyor.scommon.source.SurveyorConstants.CUSBOUNDARY;
 import static surveyor.scommon.source.SurveyorConstants.ENDDATE;
 import static surveyor.scommon.source.SurveyorConstants.REXCLUSIONRADIUS;
@@ -49,6 +45,8 @@ import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICT;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
+
+import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance.EthaneFilter;
@@ -62,26 +60,24 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 
-import org.apache.xmlbeans.impl.common.IOUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -89,7 +85,6 @@ import org.jsoup.select.Elements;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -103,9 +98,6 @@ import common.source.CSVUtility;
 import common.source.DBConnection;
 import common.source.Log;
 import common.source.TestSetup;
-import common.source.ZipUtility;
-import net.avh4.util.imagecomparison.ImageComparisonResult;
-import net.lightbody.bmp.proxy.util.IOUtils;
 import sun.misc.BASE64Decoder;
 import surveyor.dataaccess.source.BaseMapType;
 import surveyor.dataaccess.source.Report;
@@ -117,7 +109,6 @@ import surveyor.dataaccess.source.StoredProcComplianceGetCoverage;
 import surveyor.dataaccess.source.StoredProcComplianceGetGaps;
 import surveyor.dataaccess.source.StoredProcComplianceGetIndications;
 import surveyor.dataaccess.source.StoredProcComplianceGetIsotopics;
-import surveyor.dataaccess.source.StoredProcReferenceGas;
 import common.source.PDFUtility;
 import common.source.ProcessUtility;
 import common.source.RegexUtility;
@@ -271,6 +262,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[1]")
 	protected WebElement fstRptTilNm;
 
+	private static LatLongSelectionControl latLongSelectionControl = null;
+	
 	public enum CustomerBoundaryType {
 		District, DistrictPlat
 	}
@@ -296,6 +289,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		super(driver, strBaseURL, testSetup, strBaseURL + STRURLPath);
 
 		Log.info("\nThe Compliance Reports Page URL is: %s\n" + this.strPageURL);
+		
+		latLongSelectionControl = new LatLongSelectionControl(driver);
+		PageFactory.initElements(driver, latLongSelectionControl);
 	}
 
 	@Override
@@ -793,6 +789,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			selectViewLayerBoundaries(selectBoundaryDistrict, selectBoundaryDistrictPlat);
 		}
 
+	}
+
+	private void handleOptionalDynamicViewLayersSection(List<Map<String, String>> viewLayersList) {
+		if (viewLayersList != null) {
+			selectViewLayerAssets(viewLayersList.get(0));
+			selectViewLayerBoundaries(viewLayersList.get(0));
+		}
 	}
 
 	public boolean investigateReport(String rptTitle, String strCreatedBy) {
@@ -1310,9 +1313,42 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		default:
 			break;
 		}
-
 	}
 
+	public void selectViewLayerAssets(Map<String, String> viewLayerMap) {
+		for (Entry<String, String> entry : viewLayerMap.entrySet()) {
+			String key = entry.getKey();		// Key is Asset/Boundary Id
+			String value = entry.getValue();	// Value is Asset/Boundary{Prefix} followed by name of Asset/Boundary
+			if (value.startsWith(ReportsCompliance.ASSET_PREFIX)) {
+				// Asset key.
+				String elementId = String.format("report-asset-layers-%s", key);
+				List<WebElement> assetElements = driver.findElements(By.id(elementId));
+				if (assetElements.size() > 0) {
+					JavascriptExecutor js = (JavascriptExecutor) driver;
+					js.executeScript("arguments[0].click();", assetElements.get(0));
+				}
+			}
+		}
+	}
+	
+	public void selectViewLayerBoundaries(Map<String, String> viewLayerMap) {
+		for (Entry<String, String> entry : viewLayerMap.entrySet()) {
+			String value = entry.getValue();	// Value is Asset/Boundary{Prefix} followed by name of Asset/Boundary
+			if (value.startsWith(ReportsCompliance.BOUNDARY_PREFIX)) {
+				// Boundary key.
+				value = value.replace(ReportsCompliance.BOUNDARY_PREFIX, "");
+				String elementId = String.format("report-boundry-layers-%s", value);
+				List<WebElement> boundaryElements = driver.findElements(By.id(elementId));
+				if (boundaryElements.size() > 0) {
+					JavascriptExecutor js = (JavascriptExecutor) driver;
+					js.executeScript("arguments[0].click();", boundaryElements.get(0));
+				}
+			}
+		}
+	}
+	
+	// NOTE: This method should be deprecated. This method will ONLY work correctly in DEV environment.
+	// Use selectViewLayerAssets(HashMap<String, String> viewLayerAssets) instead to make it work in all environments.
 	public void selectViewLayerAssets(Boolean selectAssetCastIron, Boolean selectAssetCopper, Boolean selectAssetOtherPlastic, Boolean selectAssetPEPlastic, Boolean selectAssetProtectedSteel, Boolean selectAssetUnprotectedSteel) {
 		if (selectAssetCastIron) {
 			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-96caf1f5-d5c5-461d-9ce3-d210c20a1bb0']")).size() > 0) {
@@ -1352,6 +1388,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 
+	// NOTE: This method should be deprecated. This method will ONLY work correctly in DEV environment.
+	// Use selectViewLayerBoundaries(HashMap<String, String> viewLayerBoundaries) instead to make it work in all environments.
 	public void selectViewLayerBoundaries(boolean selectBoundaryDistrict, boolean selectBoundaryDistrictPlat) {
 		if (selectBoundaryDistrict) {
 			if (driver.findElements(By.xpath("//*[@id='report-boundry-layers-Small Boundary']")).size() > 0) {
@@ -1634,7 +1672,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 
 		return true;
-
 	}
 
 	/**
@@ -1725,13 +1762,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					return false;
 				}
 			}
-
 		} finally {
 			bufferReader.close();
 		}
 
 		return true;
-
 	}
 
 	public void verifyMetaDataFiles() {
@@ -2096,7 +2131,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		FileUtility.updateFile(workingBatFile, parameters);
 		String command = "cd \"" + libFolder + "\" && " + workingBatFile;
 		Log.info("Executing replay script. Command -> " + command);
-		Process pdfToHtmlProcess = ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
+		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 		// Delete the working copy of the defn file.
 		Files.delete(Paths.get(workingBatFile));
 		return true;
@@ -2328,7 +2363,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			inputExclusionRadius(reportsCompliance.getExclusionRadius());
 		}
 
-		fillCustomBoundaryTextFields(reportsCompliance.getNELat(), reportsCompliance.getNELong(), reportsCompliance.getSWLat(), reportsCompliance.getSWLong());
+		if (isCustomBoundarySpecified(reportsCompliance)) {
+			if (useCustomBoundaryLatLongSelector(reportsCompliance)) {
+				fillCustomBoundaryUsingLatLongSelector(reportsCompliance);
+			} else {
+				fillCustomBoundaryTextFields(reportsCompliance.getNELat(), reportsCompliance.getNELong(), reportsCompliance.getSWLat(), reportsCompliance.getSWLong());
+			}
+		} else {
+			fillCustomerBoundary(reportsCompliance);
+		}
 
 		inputImageMapHeight(reportsCompliance.getImageMapHeight());
 		inputImageMapWidth(reportsCompliance.getImageMapWidth());
@@ -2348,8 +2391,58 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (tablesList.get(0).get(KEYPCRA).equalsIgnoreCase("1")) {
 			selectPercentCoverageReportArea();
 		}
+		
+		List<Map<String, String>> viewLayersList = reportsCompliance.getViewLayersList();
+		
+		// NOTE: Currently tableList has the values for Optional View Layer instead of 'viewLayersList'. Tracked by TA884.
+		// In PageActions we populate 'viewLayersList' correctly. This if/else is to handle these 2 cases.
+		// Once TA884 is fixed we can eliminate the 'handleOptionalViewLayersSection' method.
+		if (viewLayersList != null) {
+			if (viewLayersList.size() > 0) {
+				handleOptionalDynamicViewLayersSection(viewLayersList);
+			}
+		} else {
+			handleOptionalViewLayersSection(tablesList);
+		}
+	}
 
-		handleOptionalViewLayersSection(tablesList);
+	private void fillCustomerBoundary(ReportsCompliance reportsCompliance) {
+		openCustomerBoundarySelector();
+		latLongSelectionControl.waitForModalDialogOpen()
+			.switchMode(ControlMode.MapInteraction)
+			.waitForMapImageLoad()
+			.selectCustomerBoundaryType(reportsCompliance.getCustomerBoundaryFilterType().toString())
+			.setCustomerBoundaryName(reportsCompliance.getCustomerBoundaryName())
+			.switchMode(ControlMode.Default)
+			.clickOkButton();
+	}
+
+	private boolean useCustomBoundaryLatLongSelector(ReportsCompliance reportsCompliance) {
+		return reportsCompliance.getLatLongXOffset() > 0 && reportsCompliance.getLatLongYOffset() > 0 &&
+				reportsCompliance.getLatLongRectWidth() > 0 && reportsCompliance.getLatLongRectHeight() > 0;
+	}
+
+	private boolean isCustomBoundarySpecified(ReportsCompliance reportsCompliance) {
+		boolean useSelector = false;
+		if (reportsCompliance != null) {
+			boolean textFieldsSpecified = reportsCompliance.getNELat() != "" && reportsCompliance.getNELong() != "" &&
+					reportsCompliance.getSWLat() != "" && reportsCompliance.getSWLong() != "";
+			boolean latLongFieldsSpecified = useCustomBoundaryLatLongSelector(reportsCompliance);
+			useSelector = textFieldsSpecified || latLongFieldsSpecified;
+		}		
+		return useSelector;
+	}
+
+	private void fillCustomBoundaryUsingLatLongSelector(ReportsCompliance reportsCompliance) {
+		openCustomBoundarySelector();
+		latLongSelectionControl.waitForModalDialogOpen()
+			.switchMode(ControlMode.MapInteraction)
+			.waitForMapImageLoad()
+			.drawSelectorRectangle(ReportsCompliance.CANVAS_X_PATH, 
+					reportsCompliance.getLatLongXOffset(), reportsCompliance.getLatLongYOffset(), 
+					reportsCompliance.getLatLongRectWidth(), reportsCompliance.getLatLongRectHeight())
+			.switchMode(ControlMode.Default)
+			.clickOkButton();
 	}
 
 	@Override
@@ -2512,5 +2605,4 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public String getSurveyMissingMessage() {
 		return ComplianceReport_SurveyMissingMessage;
 	}
-
 }
