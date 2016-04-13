@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -59,7 +60,7 @@ public class LatLongSelectionControl extends BaseControl {
 
 	@FindBy(id = "myModal")	
 	private WebElement mapModalDialog;
-
+	
 	public LatLongSelectionControl(WebDriver driver) {
 		super(driver);
 	}
@@ -191,8 +192,11 @@ public class LatLongSelectionControl extends BaseControl {
 	 *
 	 * @return the LatLongSelectionControl class instance.
 	 */
-	public LatLongSelectionControl setTitleTextField(String name) {
+	public LatLongSelectionControl setCustomerBoundaryName(String name) {
 		selectByNameTextField.sendKeys(name);
+		this.waitForAutoCompleteListToOpen();
+		this.clickOnAutoCompleteListEntry(1);   // click on first entry in autocomplete list.
+		this.waitForAutoCompleteListToClose();
 		return this;
 	}
 
@@ -201,8 +205,51 @@ public class LatLongSelectionControl extends BaseControl {
 	 *
 	 * @return the LatLongSelectionControl class instance.
 	 */
-	public LatLongSelectionControl setFilterByTypeDropDownListField(String filterByTypeValue) {
+	public LatLongSelectionControl selectCustomerBoundaryType(String filterByTypeValue) {
 		new Select(filterByTypeDropDown).selectByVisibleText(filterByTypeValue);
+		return this;
+	}
+	
+	/**
+	 * Clicks on the specified entry in the autocomplete list box.
+	 * @param entryIdx - 1-based index in the list.
+	 */
+	public void clickOnAutoCompleteListEntry(Integer entryIdx) {
+		WebElement element = this.driver.findElement(By.xpath(String.format("//ul[@id='ui-id-1']/li[%d]", entryIdx)));
+		element.click();
+	}
+	
+	/**
+	 * Waits for the autocomplete list box to be opened.
+	 *
+	 * @return the LatLongSelectionControl class instance.
+	 */
+	public LatLongSelectionControl waitForAutoCompleteListToOpen() {
+		Log.info("Waiting for auto-complete list to open.");
+		WebDriverWait wait = new WebDriverWait(driver, timeout);
+		WebElement autoCompleteList = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("ui-id-1")));
+		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return !autoCompleteList.getAttribute("style").contains("display:none") && !autoCompleteList.getAttribute("style").contains("display: none");
+			}
+		});
+		return this;
+	}
+
+	/**
+	 * Waits for the autocomplete list box to be closed.
+	 *
+	 * @return the LatLongSelectionControl class instance.
+	 */
+	public LatLongSelectionControl waitForAutoCompleteListToClose() {
+		Log.info("Waiting for auto-complete list to close.");
+		WebDriverWait wait = new WebDriverWait(driver, timeout);
+		WebElement autoCompleteList = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("ui-id-1")));
+		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return autoCompleteList.getAttribute("style").contains("display:none") || autoCompleteList.getAttribute("style").contains("display: none");
+			}
+		});
 		return this;
 	}
 

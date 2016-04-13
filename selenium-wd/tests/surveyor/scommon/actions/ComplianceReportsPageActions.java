@@ -15,15 +15,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETCASTIRON;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETCOPPER;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETPEPLASTIC;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
-import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICT;
-import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +32,10 @@ import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
 import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader;
 import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader.ReportOptTabularPDFContentDataRow;
+import surveyor.scommon.actions.data.ReportOptViewLayersAssetsDataReader;
+import surveyor.scommon.actions.data.ReportOptViewLayersAssetsDataReader.ReportOptViewLayersAssetsDataRow;
+import surveyor.scommon.actions.data.ReportOptViewLayersBoundaryDataReader;
+import surveyor.scommon.actions.data.ReportOptViewLayersBoundaryDataReader.ReportOptViewLayersBoundaryDataRow;
 import surveyor.scommon.actions.data.ReportOptViewLayersDataReader;
 import surveyor.scommon.actions.data.ReportOptViewLayersDataReader.ReportOptViewLayersDataRow;
 import surveyor.scommon.actions.data.ReportSurveyDataReader;
@@ -83,22 +78,32 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 
 	private void fillViewLayersInfo(Map<String, String> viewLayerMap,
 			ReportOptViewLayersDataReader reader, Integer dataRowID) throws Exception {
-		String assetCastIron = reader.getDataRow(dataRowID).assetCastIron.equalsIgnoreCase("TRUE") ? "1" : "0";
-		String assetCopper = reader.getDataRow(dataRowID).assetCopper.equalsIgnoreCase("TRUE") ? "1" : "0";
-		String assetOtherPlastic = reader.getDataRow(dataRowID).assetOtherPlastic.equalsIgnoreCase("TRUE") ? "1" : "0";
-		String assetPEPlastic = reader.getDataRow(dataRowID).assetPEPlastic.equalsIgnoreCase("TRUE") ? "1" : "0";
-		String assetProtectedSteel = reader.getDataRow(dataRowID).assetProtectedSteel.equalsIgnoreCase("TRUE") ? "1" : "0";
-		String assetUnprotectedSteel = reader.getDataRow(dataRowID).assetUnprotectedSteel.equalsIgnoreCase("TRUE") ? "1" : "0";
-		String boundaryDistrict = reader.getDataRow(dataRowID).boundaryDistrict.equalsIgnoreCase("TRUE") ? "1" : "0";
-		String boundaryDistrictPlat = reader.getDataRow(dataRowID).boundaryDistrictPlat.equalsIgnoreCase("TRUE") ? "1" : "0";
-		if (assetCastIron != "") viewLayerMap.put(KEYASSETCASTIRON, assetCastIron);
-		if (assetCopper != "") viewLayerMap.put(KEYASSETCOPPER, assetCopper);
-		if (assetOtherPlastic != "") viewLayerMap.put(KEYASSETOTHERPLASTIC, assetOtherPlastic);
-		if (assetPEPlastic != "") viewLayerMap.put(KEYASSETPEPLASTIC, assetPEPlastic);
-		if (assetProtectedSteel != "") viewLayerMap.put(KEYASSETPROTECTEDSTEEL, assetProtectedSteel);
-		if (assetUnprotectedSteel != "") viewLayerMap.put(KEYASSETUNPROTECTEDSTEEL, assetUnprotectedSteel);
-		if (boundaryDistrict != "") viewLayerMap.put(KEYBOUNDARYDISTRICT, boundaryDistrict);
-		if (boundaryDistrictPlat != "") viewLayerMap.put(KEYBOUNDARYDISTRICTPLAT, boundaryDistrictPlat);
+		String argValue = reader.getDataRow(dataRowID).assetRowIDs;
+		if (!ActionArguments.isEmpty(argValue)) {
+			List<Integer> assetRowIDs = ActionArguments.getNumericList(argValue);
+			for (Integer rowID : assetRowIDs) {
+				ReportOptViewLayersAssetsDataReader viewLayersAssetsDataReader = getViewLayersAssetsDataReader();
+				ReportOptViewLayersAssetsDataRow dataRow = viewLayersAssetsDataReader.getDataRow(rowID);
+				viewLayerMap.put(dataRow.assetID, ReportsCompliance.ASSET_PREFIX + dataRow.assetName);
+			}
+		}
+		argValue = reader.getDataRow(dataRowID).boundariesRowIDs;
+		if (!ActionArguments.isEmpty(argValue)) {
+			List<Integer> boundariesRowIDs = ActionArguments.getNumericList(argValue);
+			for (Integer rowID : boundariesRowIDs) {
+				ReportOptViewLayersBoundaryDataReader viewLayersBoundaryDataReader = getViewLayersBoundaryDataReader();
+				ReportOptViewLayersBoundaryDataRow dataRow = viewLayersBoundaryDataReader.getDataRow(rowID);
+				viewLayerMap.put(dataRow.boundaryID, ReportsCompliance.BOUNDARY_PREFIX + dataRow.boundaryName);
+			}
+		}
+	}
+
+	private ReportOptViewLayersAssetsDataReader getViewLayersAssetsDataReader() {
+		return new ReportOptViewLayersAssetsDataReader(this.excelUtility);
+	}
+
+	private ReportOptViewLayersBoundaryDataReader getViewLayersBoundaryDataReader() {
+		return new ReportOptViewLayersBoundaryDataReader(this.excelUtility);
 	}
 
 	private void fillCustomBoundary(List<String> listBoundary, ComplianceReportDataReader reader,
@@ -654,17 +659,15 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewLayersList = new ArrayList<Map<String, String>>();
-		List<Integer> reportOptVwLayersRowIDs = ActionArguments.getNumericList(workingDataRow.reportOptViewLayerRowID);
-		Map<String, String> viewLayerMap = new HashMap<String, String>();
+		List<Integer> reportOptVwLayersRowIDs = ActionArguments.getNumericList(workingDataRow.reportOptViewLayerRowID);		
 		
 		/* NOTE: ViewLayer values should be set in viewLayerMap. Currently due to a bug in ComplianceReports page (TA884)
-		 * we need to set the values in tableList instead. Fix this once TA884 is fixed.
+		 * we need to set the values in tableList instead. Fix this once TA884 is fixed. */
+		Map<String, String> viewLayerMap = new HashMap<String, String>();
 		fillViewLayersInfo(viewLayerMap, new ReportOptViewLayersDataReader(this.excelUtility), reportOptVwLayersRowIDs.get(0));
-		viewLayersList.add(viewLayerMap);
-		*/
-
-		fillViewLayersInfo(tableMap, new ReportOptViewLayersDataReader(this.excelUtility), reportOptVwLayersRowIDs.get(0));
-		viewLayersList.add(tableMap);
+		if (viewLayerMap.size() > 0) {
+			viewLayersList.add(viewLayerMap);
+		} 
 
 		String surveyorUnit = null;
 		List<String> tagList=new ArrayList<String>();
@@ -1238,38 +1241,20 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean selectViewLayersAsset(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.selectViewLayersAsset", data, dataRowID);
-		Boolean selectAssetCastIron = false;
-		Boolean selectAssetCopper = false;
-		Boolean selectAssetOtherPlastic = false;
-		Boolean selectAssetPEPlastic = false;
-		Boolean selectAssetProtectedSteel = false;
-		Boolean selectAssetUnprotectedSteel = false;
-		if (!ActionArguments.isEmpty(data)) {
-			// If 'data' is passed in it should be in this format:
-			//	AssetCastIron=[0|1],AssetCopper=[0|1],AssetOtherPlastic=[0|1],AssetPEPlastic=[0|1],AssetProtectedSteel=[0|1],AssetUnprotectedSteel=[0|1]
-			//	for eg. 1,1,1,1,0,1
-			List<String> viewLayerList = RegexUtility.split(data, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
-			selectAssetCastIron = Boolean.valueOf(viewLayerList.get(0));
-			selectAssetCopper = Boolean.valueOf(viewLayerList.get(1));
-			selectAssetOtherPlastic = Boolean.valueOf(viewLayerList.get(2));
-			selectAssetPEPlastic = Boolean.valueOf(viewLayerList.get(3));
-			selectAssetProtectedSteel = Boolean.valueOf(viewLayerList.get(4));
-			selectAssetUnprotectedSteel = Boolean.valueOf(viewLayerList.get(5));
-		} else {		
-			ActionArguments.verifyGreaterThanZero("selectViewLayersAsset", ARG_DATA_ROW_ID, dataRowID);
-			ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
-			Integer rptViewLayerRowID = Integer.valueOf(dataRow.reportOptViewLayerRowID);
-			ReportOptViewLayersDataReader optViewLayersDataReader = new ReportOptViewLayersDataReader(this.excelUtility);
-			ReportOptViewLayersDataRow optViewLayersDataRow = optViewLayersDataReader.getDataRow(rptViewLayerRowID);
-			selectAssetCastIron = Boolean.valueOf(optViewLayersDataRow.assetCastIron);
-			selectAssetCopper = Boolean.valueOf(optViewLayersDataRow.assetCopper);
-			selectAssetOtherPlastic = Boolean.valueOf(optViewLayersDataRow.assetOtherPlastic);
-			selectAssetPEPlastic = Boolean.valueOf(optViewLayersDataRow.assetPEPlastic);
-			selectAssetProtectedSteel = Boolean.valueOf(optViewLayersDataRow.assetProtectedSteel);
-			selectAssetUnprotectedSteel = Boolean.valueOf(optViewLayersDataRow.assetUnprotectedSteel);
+		ActionArguments.verifyGreaterThanZero("selectViewLayersAsset", ARG_DATA_ROW_ID, dataRowID);
+		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
+		Integer rptViewLayerRowID = Integer.valueOf(dataRow.reportOptViewLayerRowID);
+		ReportOptViewLayersDataReader optViewLayersDataReader = new ReportOptViewLayersDataReader(this.excelUtility);
+		ReportOptViewLayersDataRow optViewLayersDataRow = optViewLayersDataReader.getDataRow(rptViewLayerRowID);
+		HashMap<String, String> viewLayerMap = new HashMap<String, String>();
+		List<Integer> assetRowIDs = ActionArguments.getNumericList(optViewLayersDataRow.assetRowIDs);
+		for (Integer rowID : assetRowIDs) {
+			ReportOptViewLayersAssetsDataReader viewLayersAssetsDataReader = getViewLayersAssetsDataReader();
+			ReportOptViewLayersAssetsDataRow assetsDataRow = viewLayersAssetsDataReader.getDataRow(rowID);
+			viewLayerMap.put(assetsDataRow.assetID, ReportsCompliance.ASSET_PREFIX + assetsDataRow.assetName);
 		}
-		this.getComplianceReportsPage().selectViewLayerAssets(selectAssetCastIron, selectAssetCopper,
-				selectAssetOtherPlastic, selectAssetPEPlastic, selectAssetProtectedSteel, selectAssetUnprotectedSteel);
+
+		this.getComplianceReportsPage().selectViewLayerAssets(viewLayerMap);
 		return true;
 	}
  
@@ -1282,25 +1267,20 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean selectViewLayersBoundary(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.selectViewLayersBoundary", data, dataRowID);
-		Boolean selectBoundaryDistrict = false;
-		Boolean selectBoundaryDistrictPlat = false;
-		if (!ActionArguments.isEmpty(data)) {
-			// If 'data' is passed in it should be in this format:
-			//	BoundaryDistrict=[0|1],BoundaryDistrictPlat=[0|1]
-			//	for eg. 0,1
-			List<String> viewLayerList = RegexUtility.split(data, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
-			selectBoundaryDistrict = Boolean.valueOf(viewLayerList.get(0));
-			selectBoundaryDistrictPlat = Boolean.valueOf(viewLayerList.get(1));
-		} else {		
-			ActionArguments.verifyGreaterThanZero("selectViewLayersBoundary", ARG_DATA_ROW_ID, dataRowID);
-			ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
-			Integer rptViewLayerRowID = Integer.valueOf(dataRow.reportOptViewLayerRowID);
-			ReportOptViewLayersDataReader optViewLayersDataReader = new ReportOptViewLayersDataReader(this.excelUtility);
-			ReportOptViewLayersDataRow optViewLayersDataRow = optViewLayersDataReader.getDataRow(rptViewLayerRowID);
-			selectBoundaryDistrict = Boolean.valueOf(optViewLayersDataRow.boundaryDistrict);
-			selectBoundaryDistrictPlat = Boolean.valueOf(optViewLayersDataRow.boundaryDistrictPlat);
+		ActionArguments.verifyGreaterThanZero("selectViewLayersAsset", ARG_DATA_ROW_ID, dataRowID);
+		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
+		Integer rptViewLayerRowID = Integer.valueOf(dataRow.reportOptViewLayerRowID);
+		ReportOptViewLayersDataReader optViewLayersDataReader = new ReportOptViewLayersDataReader(this.excelUtility);
+		ReportOptViewLayersDataRow optViewLayersDataRow = optViewLayersDataReader.getDataRow(rptViewLayerRowID);
+		HashMap<String, String> viewLayerMap = new HashMap<String, String>();
+		List<Integer> boundariesRowIDs = ActionArguments.getNumericList(optViewLayersDataRow.boundariesRowIDs);
+		for (Integer rowID : boundariesRowIDs) {
+			ReportOptViewLayersBoundaryDataReader viewLayersBoundaryDataReader = getViewLayersBoundaryDataReader();
+			ReportOptViewLayersBoundaryDataRow boundariesDataRow = viewLayersBoundaryDataReader.getDataRow(rowID);
+			viewLayerMap.put(boundariesDataRow.boundaryID, ReportsCompliance.BOUNDARY_PREFIX + boundariesDataRow.boundaryName);
 		}
-		this.getComplianceReportsPage().selectViewLayerBoundaries(selectBoundaryDistrict, selectBoundaryDistrictPlat);
+
+		this.getComplianceReportsPage().selectViewLayerBoundaries(viewLayerMap);
 		return true;
 	}
  
@@ -1760,45 +1740,11 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return this.getComplianceReportsPage().isPDFPercentCoverageReportAreaSelected() && (dataRow.percentCoverageReportArea == "TRUE");
 	}
 
+	// TODO: Check assets and boundaries provided to the dataRow.
 	private boolean areAssetBoundariesMatch(ReportOptViewLayersDataRow dataRow) {
-		return (isAssetCopperSelectionMatch(dataRow) && isAssetCastIronSelectionMatch(dataRow) && 
-				isAssetOtherPlasticSelectionMatch(dataRow) && isAssetPEPlasticSelectionMatch(dataRow) && 
-				isAssetProtectedSteelSelectionMatch(dataRow) && isAssetUnprotectedSteelSelectionMatch(dataRow) && 
-				isBoundariesDistrictSelectionMatch(dataRow) && isBoundariesDistrictPlatSelectionMatch(dataRow));
+		return false;
 	}
 	
-	private boolean isAssetCopperSelectionMatch(ReportOptViewLayersDataRow dataRow) {
-		return this.getComplianceReportsPage().isCopperSelected() && (dataRow.assetCopper == "TRUE");
-	}
-
-	private boolean isAssetCastIronSelectionMatch(ReportOptViewLayersDataRow dataRow) {
-		return this.getComplianceReportsPage().isCastIronSelected() && (dataRow.assetCastIron == "TRUE");
-	}
-
-	private boolean isAssetOtherPlasticSelectionMatch(ReportOptViewLayersDataRow dataRow) {
-		return this.getComplianceReportsPage().isOtherPlasticSelected() && (dataRow.assetOtherPlastic == "TRUE");
-	}
-
-	private boolean isAssetPEPlasticSelectionMatch(ReportOptViewLayersDataRow dataRow) {
-		return this.getComplianceReportsPage().isPEPlasticSelected() && (dataRow.assetPEPlastic == "TRUE");
-	}
-
-	private boolean isAssetProtectedSteelSelectionMatch(ReportOptViewLayersDataRow dataRow) {
-		return this.getComplianceReportsPage().isProtectedSteelSelected() && (dataRow.assetProtectedSteel == "TRUE");
-	}
-
-	private boolean isAssetUnprotectedSteelSelectionMatch(ReportOptViewLayersDataRow dataRow) {
-		return this.getComplianceReportsPage().isUnprotectedSteelSelected() && (dataRow.assetUnprotectedSteel == "TRUE");
-	}
-
-	private boolean isBoundariesDistrictSelectionMatch(ReportOptViewLayersDataRow dataRow) {
-		return this.getComplianceReportsPage().isDistrictSelected() && (dataRow.boundaryDistrict == "TRUE");
-	}
-
-	private boolean isBoundariesDistrictPlatSelectionMatch(ReportOptViewLayersDataRow dataRow) {
-		return this.getComplianceReportsPage().isDistrictPlatSelected() && (dataRow.boundaryDistrictPlat == "TRUE");
-	}
-
 	/**
 	 * Executes verifyResubmitButtonIsDisplayed action.
 	 * @param data - specifies the input data passed to the action.

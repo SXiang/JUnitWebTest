@@ -3,25 +3,18 @@
  */
 package surveyor.scommon.source;
 
-import static surveyor.scommon.source.SurveyorConstants.IMGMAPHEIGHT;
-import static surveyor.scommon.source.SurveyorConstants.IMGMAPWIDTH;
-import static surveyor.scommon.source.SurveyorConstants.RNELAT;
-import static surveyor.scommon.source.SurveyorConstants.RNELON;
-import static surveyor.scommon.source.SurveyorConstants.RSWLAT;
-import static surveyor.scommon.source.SurveyorConstants.RSWLON;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPTUA;
-
 import java.util.List;
 import java.util.Map;
-
-import surveyor.scommon.source.Reports.SurveyModeFilter;
 
 /**
  * @author zlu
  *
  */
 public class ReportsCompliance extends Reports {
+
+	public static final String ASSET_PREFIX = "Asset_";
+	public static final String BOUNDARY_PREFIX = "Boundary_";
+	public static final String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
 
 	protected String exclusionRadius;
 	protected List<String> listBoundary;
@@ -33,19 +26,43 @@ public class ReportsCompliance extends Reports {
 	protected String SWLong;
 	protected String fovOpacity;
 	protected String lisaOpacity;
-	protected String customerBoundary;
 
 	protected List<Map<String, String>> viewList;
 	protected List<Map<String, String>> tablesList;
 	protected List<Map<String, String>> viewLayersList;
-
 	
 	protected SurveyModeFilter surveyModeFilter;
 	protected ReportModeFilter reportModeFilter;
 	protected EthaneFilter ethaneFilter;
 	
+	private int latLongXOffset;
+	private int latLongYOffset;
+	private int latLongRectHeight;
+	private int latLongRectWidth;
+	
+	private String customerBoundaryName; 
+	private CustomerBoundaryFilterType customerBoundaryFilterType;
+	
 	public enum EthaneFilter {
 		ExcludeVehicleExhaust, ExcludeBiogenicMethane, Both, None
+	}
+	
+	public enum CustomerBoundaryFilterType {
+		District ("District"),
+		DistrictPlat ("District Plat"),
+		BigBoundary ("Big Boundary"), 
+		SmallBoundary ("Small Boundary"),
+		LeakSurveyArea ("Leak Survey Area");
+		
+		private final String name;
+
+		CustomerBoundaryFilterType(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
 	}
 
 	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, 
@@ -271,14 +288,6 @@ public class ReportsCompliance extends Reports {
 		this.lisaOpacity = lisaOpacity;
 	}
 
-	public String getCustomerBoundary() {
-		return this.customerBoundary;
-	}
-
-	public void setCustomerBoundary(String customerBoundary) {
-		this.customerBoundary = customerBoundary;
-	}
-
 	public List<Map<String, String>> getViewList() {
 		return this.viewList;
 	}
@@ -327,6 +336,42 @@ public class ReportsCompliance extends Reports {
 		this.ethaneFilter = ethaneFilter;
 	}
 
+	public CustomerBoundaryFilterType getCustomerBoundaryFilterType() {
+		return customerBoundaryFilterType;
+	}
+
+	public String getCustomerBoundaryName() {
+		return customerBoundaryName;
+	}
+
+	public void setCustomerBoundaryInfo(CustomerBoundaryFilterType customerBoundaryFilterType, String customerBoundaryName) {
+		this.customerBoundaryFilterType = customerBoundaryFilterType;
+		this.customerBoundaryName = customerBoundaryName;
+	}
+
+	public int getLatLongXOffset() {
+		return latLongXOffset;
+	}
+
+	public int getLatLongYOffset() {
+		return latLongYOffset;
+	}
+
+	public int getLatLongRectHeight() {
+		return latLongRectHeight;
+	}
+
+	public int getLatLongRectWidth() {
+		return latLongRectWidth;
+	}
+
+	public void setCustomBoundaryInfo(int latLongXOffset, int latLongYOffset, int latLongRectHeight, int latLongRectWidth) {
+		this.latLongXOffset = latLongXOffset;
+		this.latLongYOffset = latLongYOffset;
+		this.latLongRectHeight = latLongRectHeight;
+		this.latLongRectWidth = latLongRectWidth;
+	}
+	
 	/**
 	 * @param args
 	 */
