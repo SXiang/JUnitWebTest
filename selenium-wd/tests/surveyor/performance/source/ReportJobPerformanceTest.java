@@ -1,17 +1,28 @@
 package surveyor.performance.source;
 
+import java.io.IOException;
+
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
 import common.source.Log;
+import common.source.TestContext;
+import surveyor.dataprovider.PerformanceReportJobDataProvider;
+import surveyor.dataprovider.PerformanceReportJobDataProvider.ReportJobTestCategory;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.SurveyorTestRunner;
 
+@RunWith(SurveyorTestRunner.class)
 public class ReportJobPerformanceTest extends BasePerformanceTest {
 	private static final String EMPTY = "";
 	private static final Integer NOTSET = -1;
@@ -20,7 +31,7 @@ public class ReportJobPerformanceTest extends BasePerformanceTest {
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static TestEnvironmentActions testEnvironmentAction;
-
+	
 	private static ComplianceReportsPage complianceReportsPage;
 	
 	@BeforeClass
@@ -28,6 +39,11 @@ public class ReportJobPerformanceTest extends BasePerformanceTest {
 		initializePageActions();
 	}
 
+	@Before
+	public void beforeTestMethod() {
+		initializeProperties();
+	}
+		
 	/**
 	 * Initializes the page action objects.
 	 */
@@ -42,93 +58,38 @@ public class ReportJobPerformanceTest extends BasePerformanceTest {
 	}
 
 	/**
-	 * Test Case ID: TC1841_PerfTest_LightLoad_TestCase3
+	 * Test Case ID: ReportJob_PerformanceTest
 	 * Script: -  	
-	 *	- - Login as <USER>
-	 *	- - Create New Compliance Report
+	 *	- - Login as specified user
+	 *	- - Create New Compliance Report with specified report data
 	 *  - - Wait for Report to be generated
 	 *  - - Query DB to find processing time for each report job
 	 * Results: - 
 	 *	- - Verify report job processing time values confirm to the baseline values.
 	 */
 	@Test
-	public void TC1841_PerfTest_LightLoad_TestCase3() throws Exception {
-		Log.info("\nRunning TC1841_PerfTest_LightLoad_TestCase3 ...");
+	@UseDataProvider(value = PerformanceReportJobDataProvider.REPORT_JOB_PERFORMANCE_PROVIDER, location = PerformanceReportJobDataProvider.class)
+	public void ReportJob_PerformanceTest(String rallyTestCaseID, Integer userDataRowID, Integer reportDataRowID,
+			Integer executionTimesForBaselines, String category) throws Exception {
+		Log.info(String.format("\nRunning [%s] ReportJob_PerformanceTest ...", rallyTestCaseID));
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* [TODO: Use Correct User] */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, 10);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 10);
-		complianceReportsPageAction.verifyReportJobBaselines(EMPTY, 10);
+		// Run for specified number of times depending on whether we are generating baselines or not.
+		Integer testExecutionTimes = getTestExecutionTimes(executionTimesForBaselines, ReportJobTestCategory.valueOf(category));
+		for (int i=0; i<testExecutionTimes; i++) {
+			initializePageActions();
+			
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(EMPTY, userDataRowID);   
+			complianceReportsPageAction.open(EMPTY, NOTSET);
+			complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID);
+			complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID);
+			complianceReportsPageAction.verifyReportJobBaselines(EMPTY, reportDataRowID);
+		}
+
+		// Generate the CSV if collecting baselines
+		checkAndGenerateReportJobBaselineCsv();
 	}
-	
-	/**
-	 * Test Case ID: TC1842_PerfTest_MediumLoad_TestCase6
-	 * Script: -  	
-	 *	- - Login as <USER>
-	 *	- - Create New Compliance Report
-	 *  - - Wait for Report to be generated
-	 *  - - Query DB to find processing time for each report job
-	 * Results: - 
-	 *	- - Verify report job processing time values confirm to the baseline values.
-	 */
-	@Test
-	public void TC1842_PerfTest_MediumLoad_TestCase6() throws Exception {
-		Log.info("\nRunning TC1842_PerfTest_MediumLoad_TestCase6 ...");
-		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* [TODO: Use Correct User] */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, 11);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 11);
-		complianceReportsPageAction.verifyReportJobBaselines(EMPTY, 11);
-	}
-	
-	/**
-	 * Test Case ID: TC1843_PerfTest_HighLoadNormalPlat_TestCase8
-	 * Script: -  	
-	 *	- - Login as <USER>
-	 *	- - Create New Compliance Report
-	 *  - - Wait for Report to be generated
-	 *  - - Query DB to find processing time for each report job
-	 * Results: - 
-	 *	- - Verify report job processing time values confirm to the baseline values.
-	 */
-	@Test
-	public void TC1843_PerfTest_HighLoadNormalPlat_TestCase8() throws Exception {
-		Log.info("\nRunning TC1843_PerfTest_HighLoadNormalPlat_TestCase8 ...");
-		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* [TODO: Use Correct User] */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, 12);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 12);
-		complianceReportsPageAction.verifyReportJobBaselines(EMPTY, 12);
-	}
-	
-	/**
-	 * Test Case ID: TC1844_PerfTest_UltraHighLoad_TestCase10
-	 * Script: -  	
-	 *	- - Login as <USER>
-	 *	- - Create New Compliance Report
-	 *  - - Wait for Report to be generated
-	 *  - - Query DB to find processing time for each report job
-	 * Results: - 
-	 *	- - Verify report job processing time values confirm to the baseline values.
-	 */
-	@Test
-	public void TC1844_PerfTest_UltraHighLoad_TestCase10() throws Exception {
-		Log.info("\nRunning TC1844_PerfTest_UltraHighLoad_TestCase10 ...");
-		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* [TODO: Use Correct User] */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, 13);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 13);
-		complianceReportsPageAction.verifyReportJobBaselines(EMPTY, 13);
-	}
-	
+
 	/**
 	 * This is a unit test to test compareReportJobPerfBaseline() method.
 	 * The input data to the test has to be an existing report in the environment you run the unit test against.
@@ -143,5 +104,42 @@ public class ReportJobPerformanceTest extends BasePerformanceTest {
 		String testCaseID = "PerfTest3";
 		String reportTitle = "9a231d51baa34934986b";
 		complianceReportsPage.compareReportJobPerfBaseline(testCaseID, reportTitle);
+	}
+
+	protected Integer getTestExecutionTimes(Integer executionTimesForBaselines, ReportJobTestCategory category) {
+		Integer executionTimes = executionTimesForBaselines;
+		// If not collecting baseline metrics run ONLY once.
+		if (!TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
+			executionTimes = 1;
+		} else {
+			Integer executionTimesFromProperties = 0;
+			switch (category) {
+			case High:				
+				executionTimesFromProperties = TestContext.INSTANCE.getTestSetup().getExecutionTimesForHighLoadReportJobPerfBaseline();
+				break;
+			case Light:
+				executionTimesFromProperties = TestContext.INSTANCE.getTestSetup().getExecutionTimesForLightLoadReportJobPerfBaseline();
+				break;
+			case Medium:
+				executionTimesFromProperties = TestContext.INSTANCE.getTestSetup().getExecutionTimesForMediumLoadReportJobPerfBaseline();
+				break;
+			case UltraHigh:
+				executionTimesFromProperties = TestContext.INSTANCE.getTestSetup().getExecutionTimesForUltraHighLoadReportJobPerfBaseline();
+				break;
+			default:
+				break;
+			}
+			// If value is set in test properties, give higher precedence to it.
+			if (executionTimesFromProperties > 0) {
+				executionTimes = executionTimesFromProperties;
+			}
+		}
+		return executionTimes;
+	}
+
+	private void checkAndGenerateReportJobBaselineCsv() throws IOException {
+		if (TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
+			generateReportJobBaselineRunExecutionCsv(complianceReportsPageAction.workingDataRow.tCID);
+		}
 	}
 }

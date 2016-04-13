@@ -2,9 +2,9 @@ package surveyor.scommon.actions;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
-
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import common.source.OLMapUtility;
-import common.source.BrowserCommands;
 import common.source.TestContext;
 import common.source.OLMapUtility.IconColor;
 import common.source.TestSetup;
@@ -33,7 +33,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	private static final String FN_VERIFY_SURVEY_INFO_TAG_LABEL_EQUALS = "verifySurveyInfoTagLabelEquals";
 	
 	private static final String CLS_BASEMAP_VIEW_PAGE_ACTIONS = "BaseMapViewPageActions::";
-	
+	private static final int TIMEOUT_LOAD_LAYER = 10;
 	protected BaseMapViewPage pageObject = null;
 
 	public BaseMapViewPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
@@ -613,10 +613,21 @@ public class BaseMapViewPageActions extends BasePageActions {
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		return mapUtility.isFOVShownOnMap();
 	}
+	
 	public boolean verifyAssetIsShownOnMap(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyAssetIsShownOnMap", data, dataRowID);
-		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
-		return mapUtility.isAssetShownOnMap();
+		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());	
+		boolean isAssetShown = false;
+		try {
+			isAssetShown =	(new WebDriverWait(getDriver(),TIMEOUT_LOAD_LAYER)).until(new ExpectedCondition<Boolean>(){
+			public Boolean apply(WebDriver d){
+				return mapUtility.isAssetShownOnMap();
+			}
+		 });
+		}catch(Exception e){
+			isAssetShown = false;
+		}
+		return isAssetShown;
 	}
 	public boolean verifyBoundariesIsShownOnMap(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyBoundariesIsShownOnMap", data, dataRowID);
@@ -666,7 +677,8 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyFOVIsNotShownOnMap", data, dataRowID);
 		return !verifyFOVIsShownOnMap(data, dataRowID);
 	}
-	public boolean verifyAssetIsNotShownOnMap(String data, Integer dataRowID) {
+	
+	public boolean verifyAssetIsNotShownOnMap(String data, Integer dataRowID){
 		logAction(getRuntimeType() + ".verifyAssetIsNotShownOnMap", data, dataRowID);
 		return !verifyAssetIsShownOnMap(data, dataRowID);
 	}
@@ -1101,6 +1113,58 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return !this.pageObject.isGisBoundarySmallBoundaryButtonVisible();
 	}
  
+	/**
+	 * Executes verifyStatusButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyStatusButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyStatusIsNotShownOnMap", data, dataRowID);
+		return !pageObject.isStatusButtonVisible();
+	}
+
+	/**
+	 * Executes verifyModeButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyModeButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyStatusIsNotShownOnMap", data, dataRowID);
+		return !pageObject.isModeButtonVisible();
+	}
+	/**
+	 * Executes verifyStartSurveyIsNotShownOnMap action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyStartSurveyIsNotShownOnMap(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyStartSurveyIsNotShownOnMap", data, dataRowID);
+		return !pageObject.isStartSurveyButtonVisible();
+	}
+	/**
+	 * Executes verifyStopSurveyIsNotShownOnMap action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyStopSurveyIsNotShownOnMap(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyStopSurveyIsNotShownOnMap", data, dataRowID);
+		return !pageObject.isStopSurveyButtonVisible();
+	}
+	
+	/**
+	 * Executes verifyShutdownAnalyzerIsNotShownOnMap action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyShutdownAnalyzerIsNotShownOnMap(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyStopSurveyIsNotShownOnMap", data, dataRowID);
+		return !pageObject.isShutdownAnalyzerButtonVisible();
+	}
 	/**
 	 * Executes verifyFieldNotesIsShownOnMap action.
 	 * @param data - specifies the input data passed to the action.

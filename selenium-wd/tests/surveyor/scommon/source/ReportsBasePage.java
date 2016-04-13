@@ -52,21 +52,29 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import common.source.ApiUtility;
 import common.source.BaseHelper;
 import common.source.CSVUtility;
 import common.source.FileUtility;
 import common.source.ImagingUtility;
 import common.source.Log;
 import common.source.PDFUtility;
+import common.source.RegexUtility;
 import common.source.ShapeToGeoJsonConverter;
 import common.source.TestContext;
 import common.source.TestSetup;
 import net.avh4.util.imagecomparison.ImageComparisonResult;
+import surveyor.api.source.ReportJobsStat;
 import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ReportJob;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.source.Reports.ReportJobType;
 import surveyor.scommon.source.Reports.ReportModeFilter;
+import surveyor.scommon.source.Reports.ReportStatusType;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 
 /**
@@ -164,6 +172,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='report-boundry-layers-Big Boundary']")
 	protected WebElement checkBoxDistrict;
+	
+	@FindBy(id = "report-boundry-layers-Leak Survey Area")
+	protected WebElement checkBoxLeakSurveyArea;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='report-boundry-layers-Level 1']")
 	protected WebElement checkBoxLevel1;
@@ -246,7 +257,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[11]/input")
 	protected WebElement inputViewBoundaries;
 
-	// @FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[11]/input")
+	// @FindBy(how = How.XPATH, using =
+	// "//*[@id='datatableViews']/tbody/tr/td[11]/input")
 	// protected WebElement inputViewBaseMap;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[12]/select")
@@ -425,11 +437,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	private String reportName;
 
-    @FindBy(name = "survey-mode-type")
-    private List<WebElement> surveyModeTypeRadiobuttonList;
-    
-    @FindBy(name = "report-survey-mode-type")
-    private List<WebElement> reportSurveyModeTypeRadiobuttonList;
+	@FindBy(name = "survey-mode-type")
+	private List<WebElement> surveyModeTypeRadiobuttonList;
+
+	@FindBy(name = "report-survey-mode-type")
+	private List<WebElement> reportSurveyModeTypeRadiobuttonList;
 
 	/**
 	 * @param driver
@@ -482,237 +494,237 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	/***** Report values *****/
-    
-    public String getReportTitle() {
-    	return this.inputTitle.getText();
-    }
-    
-    /**
-     * Returns the selected Timezone value.
-     */
-    public String getTimezoneValue() {
-    	return new Select(cBoxTimezone).getFirstSelectedOption().getText();
-    }    
-    
-    /**
-     * Returns the selected Customer value.
-     */
-    public String getCustomerValue() {
-    	return new Select(dropdownCustomer).getFirstSelectedOption().getText();
-    }    
 
-    public String getExclusionRadius() {
-    	return this.inputExclusionRadius.getText();
-    }
+	public String getReportTitle() {
+		return this.inputTitle.getText();
+	}
 
-    /**
-     * Get the selected Report Mode.
-     */
-    public ReportModeFilter getReportModeFilter() {
-        for (WebElement radElement : reportSurveyModeTypeRadiobuttonList) {
-        	HashMap<String, ReportModeFilter> reportSurveyModeFilterGuids = SurveyorConstants.ReportSurveyModeFilterGuids;
-        	Set<Entry<String, ReportModeFilter>> entrySet = reportSurveyModeFilterGuids.entrySet();
-        	for (Entry<String, ReportModeFilter> entry : entrySet) {
-				if (entry.getKey().equals(radElement.getAttribute("value")) ) {
-					if (radElement.isSelected()) 
+	/**
+	 * Returns the selected Timezone value.
+	 */
+	public String getTimezoneValue() {
+		return new Select(cBoxTimezone).getFirstSelectedOption().getText();
+	}
+
+	/**
+	 * Returns the selected Customer value.
+	 */
+	public String getCustomerValue() {
+		return new Select(dropdownCustomer).getFirstSelectedOption().getText();
+	}
+
+	public String getExclusionRadius() {
+		return this.inputExclusionRadius.getText();
+	}
+
+	/**
+	 * Get the selected Report Mode.
+	 */
+	public ReportModeFilter getReportModeFilter() {
+		for (WebElement radElement : reportSurveyModeTypeRadiobuttonList) {
+			HashMap<String, ReportModeFilter> reportSurveyModeFilterGuids = Reports.ReportSurveyModeFilterGuids;
+			Set<Entry<String, ReportModeFilter>> entrySet = reportSurveyModeFilterGuids.entrySet();
+			for (Entry<String, ReportModeFilter> entry : entrySet) {
+				if (entry.getKey().equals(radElement.getAttribute("value"))) {
+					if (radElement.isSelected())
 						return entry.getValue();
 				}
 			}
-        }
-        return ReportModeFilter.All;
-    }
-    
-    /***** Area Selector values *****/
-    
-    public String getNELatitude() {
-    	return this.inputNELat.getText();
-    }
-    
-    public String getNELongitude() {
-    	return this.inputNELong.getText();
-    }
+		}
+		return ReportModeFilter.All;
+	}
 
-    public String getSWLatitude() {
-    	return this.inputSWLat.getText();
-    }
-    
-    public String getSWLongitude() {
-    	return this.inputSWLong.getText();
-    }
-    
-    /***** Survey Selector values *****/
+	/***** Area Selector values *****/
 
-    public String getSurveySurveyorValue() {
-    	return new Select(cbSurUnit).getFirstSelectedOption().getText();
-    }    
+	public String getNELatitude() {
+		return this.inputNELat.getText();
+	}
 
-    public String getSurveyUsername() {
-    	return this.userName.getText(); 
-    }
+	public String getNELongitude() {
+		return this.inputNELong.getText();
+	}
 
-    public String getSurveyTag() {
-    	return this.cbTag.getText();
-    }
+	public String getSWLatitude() {
+		return this.inputSWLat.getText();
+	}
 
-    public String getSurveyStartDate() {
-    	return this.inputStartDate.getText();
-    }
+	public String getSWLongitude() {
+		return this.inputSWLong.getText();
+	}
 
-    public String getSurveyEndDate() {
-    	return this.inputEndDate.getText();
-    }
+	/***** Survey Selector values *****/
 
-    /**
-     * Get the selected Survey Mode.
-     */
-    public SurveyModeFilter getSurveyModeFilter() {
-        for (WebElement radElement : surveyModeTypeRadiobuttonList) {
-        	HashMap<String, SurveyModeFilter> surveyModeFilterGuids = SurveyorConstants.SurveyModeFilterGuids;
-        	Set<Entry<String, SurveyModeFilter>> entrySet = surveyModeFilterGuids.entrySet();
-        	for (Entry<String, SurveyModeFilter> entry : entrySet) {
-				if (entry.getKey().equals(radElement.getAttribute("value")) ) {
-					if (radElement.isSelected()) 
+	public String getSurveySurveyorValue() {
+		return new Select(cbSurUnit).getFirstSelectedOption().getText();
+	}
+
+	public String getSurveyUsername() {
+		return this.userName.getText();
+	}
+
+	public String getSurveyTag() {
+		return this.cbTag.getText();
+	}
+
+	public String getSurveyStartDate() {
+		return this.inputStartDate.getText();
+	}
+
+	public String getSurveyEndDate() {
+		return this.inputEndDate.getText();
+	}
+
+	/**
+	 * Get the selected Survey Mode.
+	 */
+	public SurveyModeFilter getSurveyModeFilter() {
+		for (WebElement radElement : surveyModeTypeRadiobuttonList) {
+			HashMap<String, SurveyModeFilter> surveyModeFilterGuids = Reports.SurveyModeFilterGuids;
+			Set<Entry<String, SurveyModeFilter>> entrySet = surveyModeFilterGuids.entrySet();
+			for (Entry<String, SurveyModeFilter> entry : entrySet) {
+				if (entry.getKey().equals(radElement.getAttribute("value"))) {
+					if (radElement.isSelected())
 						return entry.getValue();
 				}
 			}
-        }
-        return SurveyModeFilter.All;
-    }
-    
-    public boolean isSurveyGeoFilterSelected() {
-    	return this.checkGeoFilter.isSelected();
-    }
+		}
+		return SurveyModeFilter.All;
+	}
 
-    /************ Opacity Fine Tuning Values *************/
-    
-    public String getFOVOpacity() {
-    	return this.inputFOVOpacity.getText();
-    }
+	public boolean isSurveyGeoFilterSelected() {
+		return this.checkGeoFilter.isSelected();
+	}
 
-    public String getLISAOpacity() {
-    	return this.inputLISAOpacity.getText();
-    }
+	/************ Opacity Fine Tuning Values *************/
 
-    /************ PDF Output Values *************/
-    
-    public String getPDFWidth() {
-    	return this.inputImgMapWidth.getText();
-    }
+	public String getFOVOpacity() {
+		return this.inputFOVOpacity.getText();
+	}
 
-    public String getPDFHeight() {
-    	return this.inputImgMapHeight.getText();
-    }
-    
-    /************ PDF Output Values *************/
-    
-    public boolean isViewLisaSelected() {
-    	return inputViewLisa.isSelected();
-    }
+	public String getLISAOpacity() {
+		return this.inputLISAOpacity.getText();
+	}
 
-    public boolean isViewFOVSelected() {
-    	return inputViewFOV.isSelected();
-    }
-    
-    public boolean isViewBreadcrumbSelected() {
-    	return inputViewBreadCrumb.isSelected();
-    }
+	/************ PDF Output Values *************/
 
-    public boolean isViewIndicationSelected() {
-    	return inputViewInd.isSelected();
-    }
-    
-    public boolean isViewIsotopicSelected() {
-    	return inputViewIso.isSelected();
-    }
-    
-    public boolean isViewFieldNotesSelected() {
-    	return inputViewAnno.isSelected();
-    }
-    
-    public boolean isViewGapsSelected() {
-    	return inputViewGaps.isSelected();
-    }
-    
-    public boolean isViewAssetsSelected() {
-    	return inputViewAssets.isSelected();
-    }
-    
-    public boolean isViewBoundariesSelected() {
-    	return inputViewBoundaries.isSelected();
-    }
+	public String getPDFWidth() {
+		return this.inputImgMapWidth.getText();
+	}
 
-    /************** Opt View Layers *****************/
-    
-    // Assets
-    
-    public boolean isCopperSelected() {
-    	return checkBoxCopper.isSelected();
-    }
+	public String getPDFHeight() {
+		return this.inputImgMapHeight.getText();
+	}
 
-    public boolean isUnprotectedSteelSelected() {
-    	return checkBoxUnProtectedSteel.isSelected();
-    }
-    
-    public boolean isProtectedSteelSelected() {
-    	return checkBoxProtectedSteel.isSelected();
-    }
-    
-    public boolean isCastIronSelected() {
-    	return checkBoxCastIron.isSelected();
-    }
-    
-    public boolean isOtherPlasticSelected() {
-    	return checkBoxOtherPla.isSelected();
-    }
-    
-    public boolean isPEPlasticSelected() {
-    	return checkBoxPEPla.isSelected();
-    }
-    
-    // Boundary
-    
-    public boolean isDistrictPlatSelected() {
-    	return checkBoxDistrictPlat.isSelected();
-    }
-    
-    public boolean isDistrictSelected() {
-    	return checkBoxDistrict.isSelected();
-    }
-    
-    /************** Opt Tabular PDF content *****************/
-    
-    public boolean isPDFIndicationSelected() {
-    	return checkBoxIndTb.isSelected();
-    }
-    
-    public boolean isPDFIsotopicAnalysisSelected() {
-    	return checkBoxIsoAna.isSelected();
-    }
+	/************ PDF Output Values *************/
 
-    public boolean isPDFGapSelected() {
-    	return checkBoxIsoAna.isSelected();
-    }
+	public boolean isViewLisaSelected() {
+		return inputViewLisa.isSelected();
+	}
 
-    public boolean isPDFPercentCoverageAssetsSelected() {
-    	return checkBoxPCA.isSelected();
-    }
-    
-    public boolean isPDFPercentCoverageReportAreaSelected() {
-    	return checkBoxPCRA.isSelected();
-    }
+	public boolean isViewFOVSelected() {
+		return inputViewFOV.isSelected();
+	}
 
-    public boolean isPDFPercentCoverageForecastSelected() {
-    	return checkBoxPCF.isSelected();
-    }
-    
-    public void addNewReport(Reports reports) throws Exception {
-    	addNewReport(reports, true /**/);
-    }
- 
-    public void addNewReport(Reports reports, boolean openNewReportsPage) throws Exception {
-    	if (openNewReportsPage) {
-    		openNewReportPage();
-    	}
+	public boolean isViewBreadcrumbSelected() {
+		return inputViewBreadCrumb.isSelected();
+	}
+
+	public boolean isViewIndicationSelected() {
+		return inputViewInd.isSelected();
+	}
+
+	public boolean isViewIsotopicSelected() {
+		return inputViewIso.isSelected();
+	}
+
+	public boolean isViewFieldNotesSelected() {
+		return inputViewAnno.isSelected();
+	}
+
+	public boolean isViewGapsSelected() {
+		return inputViewGaps.isSelected();
+	}
+
+	public boolean isViewAssetsSelected() {
+		return inputViewAssets.isSelected();
+	}
+
+	public boolean isViewBoundariesSelected() {
+		return inputViewBoundaries.isSelected();
+	}
+
+	/************** Opt View Layers *****************/
+
+	// Assets
+
+	public boolean isCopperSelected() {
+		return checkBoxCopper.isSelected();
+	}
+
+	public boolean isUnprotectedSteelSelected() {
+		return checkBoxUnProtectedSteel.isSelected();
+	}
+
+	public boolean isProtectedSteelSelected() {
+		return checkBoxProtectedSteel.isSelected();
+	}
+
+	public boolean isCastIronSelected() {
+		return checkBoxCastIron.isSelected();
+	}
+
+	public boolean isOtherPlasticSelected() {
+		return checkBoxOtherPla.isSelected();
+	}
+
+	public boolean isPEPlasticSelected() {
+		return checkBoxPEPla.isSelected();
+	}
+
+	// Boundary
+
+	public boolean isDistrictPlatSelected() {
+		return checkBoxDistrictPlat.isSelected();
+	}
+
+	public boolean isDistrictSelected() {
+		return checkBoxDistrict.isSelected();
+	}
+
+	/************** Opt Tabular PDF content *****************/
+
+	public boolean isPDFIndicationSelected() {
+		return checkBoxIndTb.isSelected();
+	}
+
+	public boolean isPDFIsotopicAnalysisSelected() {
+		return checkBoxIsoAna.isSelected();
+	}
+
+	public boolean isPDFGapSelected() {
+		return checkBoxIsoAna.isSelected();
+	}
+
+	public boolean isPDFPercentCoverageAssetsSelected() {
+		return checkBoxPCA.isSelected();
+	}
+
+	public boolean isPDFPercentCoverageReportAreaSelected() {
+		return checkBoxPCRA.isSelected();
+	}
+
+	public boolean isPDFPercentCoverageForecastSelected() {
+		return checkBoxPCF.isSelected();
+	}
+
+	public void addNewReport(Reports reports) throws Exception {
+		addNewReport(reports, true /**/);
+	}
+
+	public void addNewReport(Reports reports, boolean openNewReportsPage) throws Exception {
+		if (openNewReportsPage) {
+			openNewReportPage();
+		}
 		inputReportTitle(reports.getRptTitle());
 
 		if (reports.getCustomer() != null && reports.getCustomer() != "Picarro") {
@@ -788,7 +800,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void selectStartDateForSurvey(String startDate) {
 		try {
-			DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver, testSetup, strBaseURL, strBaseURL + getUrlString());
+			DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver, testSetup, strBaseURL,
+					strBaseURL + getUrlString());
 			PageFactory.initElements(driver, dateSetting);
 			if (startDate.startsWith("0")) {
 				startDate = startDate.replaceFirst("0*", "");
@@ -802,7 +815,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void selectEndDateForSurvey(String endDate) {
 		try {
-			DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver, testSetup, strBaseURL, strBaseURL + getUrlString());
+			DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver, testSetup, strBaseURL,
+					strBaseURL + getUrlString());
 			PageFactory.initElements(driver, dateSetting);
 			if (endDate.startsWith("0")) {
 				endDate = endDate.replaceFirst("0*", "");
@@ -859,10 +873,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
 
-			Log.info(String.format("Found report - Title=[%s], Created by=[%s]", rptTitleCell.getText(), createdByCell.getText())); 
-			
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
-				Log.info(String.format("Found Match. Title=[%s], Created by=[%s]", rptTitleCell.getText(), createdByCell.getText()));
+			Log.info(String.format("Found report - Title=[%s], Created by=[%s]", rptTitleCell.getText(),
+					createdByCell.getText()));
+
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
+					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+				Log.info(String.format("Found Match. Title=[%s], Created by=[%s]", rptTitleCell.getText(),
+						createdByCell.getText()));
 				try {
 					return handleFileDownloads(rowNum);
 				} catch (Exception e) {
@@ -871,7 +888,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 				}
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
+					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 
 				this.waitForPageLoad();
@@ -985,7 +1003,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean verifySurveysTableViaTag(boolean changeMode, ReportModeFilter strReportMode, String tag) throws Exception {
+	public boolean verifySurveysTableViaTag(boolean changeMode, ReportModeFilter strReportMode, String tag)
+			throws Exception {
 		boolean result = false;
 
 		if (strReportMode != null && changeMode) {
@@ -1000,9 +1019,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 			WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
 			List<WebElement> Rows = tabledata.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
 			for (int getrowvalue = 1; getrowvalue < Rows.size(); getrowvalue++) {
-				List<WebElement> Columns = Rows.get(getrowvalue).findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[6]"));
+				List<WebElement> Columns = Rows.get(getrowvalue)
+						.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[6]"));
 				for (int getcolumnvalue = 1; getcolumnvalue < Columns.size(); getcolumnvalue++) {
-					String cellValue = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[6]")).getText();
+					String cellValue = driver
+							.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[6]"))
+							.getText();
 					if (cellValue.contains(tag)) {
 						result = true;
 						break;
@@ -1014,7 +1036,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return result;
 	}
 
-	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList, String startDate, String endDate, boolean changeMode, String strReportMode) throws Exception {
+	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary,
+			String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong,
+			String surUnit, List<String> tagList, String startDate, String endDate, boolean changeMode,
+			String strReportMode) throws Exception {
 		openNewReportPage();
 
 		if (customer != null && customer != "Picarro") {
@@ -1031,7 +1056,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		selectTimeZone(timeZone);
 
-		addOtherDetails(exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong, SWLat, SWLong, surUnit, tagList, startDate, endDate, changeMode, strReportMode);
+		addOtherDetails(exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong, SWLat, SWLong, surUnit,
+				tagList, startDate, endDate, changeMode, strReportMode);
 
 		if (surUnit != "") {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
@@ -1063,9 +1089,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public boolean verifyIfInDrivingSurvey(String columnName) {
 		boolean result = false;
-		int count = driver.findElements(By.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div")).size();
+		int count = driver.findElements(By.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div"))
+				.size();
 		for (int i = 1; i < count + 1; i++) {
-			String str = driver.findElement(By.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div[" + i + "]/label")).getText();
+			String str = driver
+					.findElement(By
+							.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div[" + i + "]/label"))
+					.getText();
 			if (str != columnName) {
 				result = true;
 			}
@@ -1179,7 +1209,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 		throw new Exception("Not implemented");
 	}
 
-	public void addOtherDetails(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList, String startDate, String endDate, boolean changeMode, String strReportMode) throws Exception {
+	public void addOtherDetails(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth,
+			String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList,
+			String startDate, String endDate, boolean changeMode, String strReportMode) throws Exception {
 		throw new Exception("Not implemented");
 	}
 
@@ -1190,7 +1222,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 		// add class testing code here
 	}
 
-	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, String tag, String startDate, String endDate, String surModeFilter) throws Exception {
+//	addNewReport(title, customer, timeZone, exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong,
+//	SWLat, SWLong, surUnit, tag);
+//}
+//
+
+	
+	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary,
+			String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong,
+			String surUnit, String tag, String startDate, String endDate, String surModeFilter) throws Exception {
 		openNewReportPage();
 		this.inputTitle.clear();
 		this.inputTitle.sendKeys(title);
@@ -1213,7 +1253,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 
 		selectTimeZone(timeZone);
-		reportSpecificAddNewReport(exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong, SWLat, SWLong);
+		reportSpecificAddNewReport(exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong, SWLat,
+				SWLong);
 
 		if (surUnit != "") {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
@@ -1263,7 +1304,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			createdByCell = table.findElement(By.xpath(createdByXPath));
 
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle.trim()) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy.trim())) {
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle.trim())
+					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy.trim())) {
 				long startTime = System.currentTimeMillis();
 				long elapsedTime = 0;
 				boolean bContinue = true;
@@ -1271,11 +1313,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 				while (bContinue) {
 					try {
 						if (rowSize == 1) {
-							this.btnReportViewer = table.findElement(By.xpath("//*[@id='datatable']/tbody/tr/td[5]/a[3]"));
+							this.btnReportViewer = table
+									.findElement(By.xpath("//*[@id='datatable']/tbody/tr/td[5]/a[3]"));
 							this.btnReportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						} else {
-							this.btnReportViewer = table.findElement(By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img"));
+							this.btnReportViewer = table.findElement(
+									By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img"));
 							this.btnReportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						}
@@ -1295,7 +1339,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 				}
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
+					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.waitForPageLoad();
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
@@ -1311,7 +1356,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return false;
 	}
 
-	public void reportSpecificAddNewReport(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong) throws Exception {
+	public void reportSpecificAddNewReport(String exclusionRadius, String boundary, String imageMapHeight,
+			String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong) throws Exception {
 		throw new Exception("Not implemented");
 	}
 
@@ -1342,7 +1388,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
 
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
+					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				long startTime = System.currentTimeMillis();
 				long elapsedTime = 0;
 				boolean bContinue = true;
@@ -1350,10 +1397,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 				while (bContinue) {
 					try {
 						if (rowSize == 1) {
-							this.btnReportViewer = table.findElement(By.xpath("//*[@id='datatable']/tbody/tr/td[5]/a[3]"));
+							this.btnReportViewer = table
+									.findElement(By.xpath("//*[@id='datatable']/tbody/tr/td[5]/a[3]"));
 
 						} else {
-							this.btnReportViewer = table.findElement(By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img"));
+							this.btnReportViewer = table.findElement(
+									By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img"));
 
 						}
 
@@ -1372,7 +1421,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 				}
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
+					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 
 				this.waitForPageLoad();
@@ -1419,7 +1469,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
 
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
+					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
 				copyImg = table.findElement(By.xpath(copyImgXPath));
 				copyImg.click();
@@ -1471,11 +1522,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
 
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
+					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				return true;
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
+					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 
 				this.waitForPageLoad();
@@ -1525,11 +1578,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
+					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				return true;
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
+					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.waitForPageLoad();
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
@@ -1576,7 +1631,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
 
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
+					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				deleteImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]/img";
 				deleteImg = table.findElement(By.xpath(deleteImgXPath));
 
@@ -1597,7 +1653,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 					return false;
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
+					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 
 				this.waitForPageLoad();
@@ -1646,7 +1703,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
 
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
+					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
 				copyImg = table.findElement(By.xpath(copyImgXPath));
 
@@ -1663,7 +1721,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 				return true;
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
+					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 
 				this.waitForPageLoad();
@@ -1711,7 +1770,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
 			createdByCell = table.findElement(By.xpath(createdByXPath));
 
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
+					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
 				copyImg = table.findElement(By.xpath(copyImgXPath));
 
@@ -1736,7 +1796,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 
-	public boolean modifyReportDetails(String rptTitleNew, String surUnit, List<String> tagList, boolean changeMode, ReportModeFilter strReportMode) throws Exception {
+	public boolean modifyReportDetails(String rptTitleNew, String surUnit, List<String> tagList, boolean changeMode,
+			ReportModeFilter strReportMode) throws Exception {
 		this.waitForCopyReportPagetoLoad();
 
 		this.inputTitle.clear();
@@ -1803,7 +1864,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return false;
 	}
 
-	public boolean verifySurveyNotAdded(String reportTitle, String customer, String NELat, String NELong, String SWLat, String SWLong, List<Map<String, String>> views) throws Exception {
+	public boolean verifySurveyNotAdded(String reportTitle, String customer, String NELat, String NELong, String SWLat,
+			String SWLong, List<Map<String, String>> views) throws Exception {
 		openNewReportPage();
 		inputReportTitle(reportTitle);
 		addReportSpecificSurveys(customer, NELat, NELong, SWLat, SWLong, views);
@@ -1980,7 +2042,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return dataTableEmpty;
 	}
 
-	public boolean handleFileDownloads(String rptTitle, String testCaseID)  throws Exception {
+	public boolean handleFileDownloads(String rptTitle, String testCaseID) throws Exception {
 		throw new Exception("Not implemented");
 	}
 
@@ -2005,11 +2067,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 		throw new Exception("Not implemented");
 	}
 
-	public void complianceChangeMode(String rptTitleNew, boolean changeMode, ReportModeFilter strReportMode) throws Exception {
+	public void complianceChangeMode(String rptTitleNew, boolean changeMode, ReportModeFilter strReportMode)
+			throws Exception {
 		throw new Exception("Not implemented");
 	}
 
-	public void addReportSpecificSurveys(String customer, String NELat, String NELong, String SWLat, String SWLong, List<Map<String, String>> views) throws Exception {
+	public void addReportSpecificSurveys(String customer, String NELat, String NELong, String SWLat, String SWLong,
+			List<Map<String, String>> views) throws Exception {
 		throw new Exception("Not implemented");
 	}
 
@@ -2023,7 +2087,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	/************** Baseline creation and comparison methods ***************/
-	
+
 	private void checkAndGenerateBaselineShapeAndGeoJsonFiles(String reportName, String testCaseID) throws Exception {
 		boolean isGenerateBaselineShapeFiles = TestContext.INSTANCE.getTestSetup().isGenerateBaselineShapeFiles();
 		if (isGenerateBaselineShapeFiles) {
@@ -2035,19 +2099,72 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 
-	protected void generateBaselinePerfFiles(String testCaseID, String reportId, String startTime, String endTime, Integer processingTimeInMs) throws IOException {
+	public String getUpdatedReportJobCSVFileContent(String fileAbsolutePath, String newLine) throws IOException {
+		StringBuilder fileContent = new StringBuilder();
+		if (!new File(fileAbsolutePath).exists()) {
+			// File does not exists. Add header and newline.
+			String headerLine = "ReportJobTypeId,StartTime,EndTime,ProcessingTimeInMs";
+			fileContent.append(headerLine);
+			fileContent.append(newLine);
+		} else {
+			// File already exists. Keep existing lines and replace oldline with
+			// newline.
+			List<String> splitNewLine = RegexUtility.split(newLine, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
+			String newReportJobTypeId = splitNewLine.get(0);
+
+			boolean reportJobTypeLineExists = false;
+			List<String> existingLines = FileUtility.readFileLinesToList(fileAbsolutePath);
+			for (String line : existingLines) {
+				List<String> split = RegexUtility.split(line, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
+				String reportJobTypeId = split.get(0);
+				if (reportJobTypeId.equals(newReportJobTypeId)) {
+					reportJobTypeLineExists = true;
+					fileContent.append(newLine);
+				} else {
+					fileContent.append(line);
+				}
+				fileContent.append(System.lineSeparator());
+			}
+			if (!reportJobTypeLineExists) {
+				fileContent.append(newLine);
+			}
+		}
+		return fileContent.toString();
+	}
+
+	protected void generateBaselinePerfReportJobFiles(String testCaseID, String reportJobTypeId, String startTime,
+			String endTime, Integer processingTimeInMs) throws IOException {
+		Log.info(String.format(
+				"Generating report job perf baseline for : [TestCase=%s, ReportJobTypeId=%s, StartTime=%s, EndTime=%s, ProcessingTimeInMs=%d]",
+				testCaseID, reportJobTypeId, startTime, endTime, processingTimeInMs));
+
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" + File.separator + "report-job-metrics" + File.separator + testCaseID;
+		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" + File.separator
+				+ "report-job-metrics" + File.separator + testCaseID;
 		// Create the directory for test case if it does not exist.
 		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
 		Path expectedFilePath = Paths.get(expectedDataFolderPath, String.format("%s.csv", testCaseID));
-		String reportMetricString = String.format("%s,%s,%s,%d", reportId, startTime, endTime, processingTimeInMs);
-		FileUtility.createOrWriteToExistingTextFile(expectedFilePath, reportMetricString);
+		ReportJobType reportJobType = Reports.ReportJobTypeGuids.get(reportJobTypeId);
+		BaseReportsPageTest.setRollingReportJobProcessingTime(reportJobType, processingTimeInMs);
+		Integer reportJobRollingProcessingTimeAvg = BaseReportsPageTest
+				.getReportJobRollingProcessingTimeAvg(reportJobType);
+		Log.info(String.format("    CURRENT: {reportJobTypeId, startTime, endTime, processingTimeInMs} - {%s,%s,%s,%d}",
+				reportJobTypeId, startTime, endTime, processingTimeInMs));
+		Log.info(String.format("ROLLING AVG: {reportJobTypeId, startTime, endTime, processingTimeInMs} - {%s,%s,%s,%d}",
+				reportJobTypeId, startTime, endTime, reportJobRollingProcessingTimeAvg));
+		String reportMetricString = String.format("%s,%s,%s,%d", reportJobTypeId, startTime, endTime,
+				reportJobRollingProcessingTimeAvg);
+
+		// Recreate the text in the baseline file replacing only the content for
+		// the current report job type.
+		String fileContent = getUpdatedReportJobCSVFileContent(expectedFilePath.toString(), reportMetricString);
+		FileUtility.createTextFile(expectedFilePath, fileContent);
 	}
 
 	protected void generateBaselineSSRSImage(String testCaseID, String imageFileFullPath) throws IOException {
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "ssrs-images" + File.separator + testCaseID;
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator
+				+ "ssrs-images" + File.separator + testCaseID;
 		// Create the directory for test case if it does not exist.
 		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
 		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
@@ -2057,7 +2174,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	protected void generateBaselineViewImage(String testCaseID, String imageFileFullPath) throws IOException {
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "view-images" + File.separator + testCaseID;
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator
+				+ "view-images" + File.separator + testCaseID;
 		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
 		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
 		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
@@ -2065,12 +2183,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	protected void generateBaselineShapeAndGeoJsonFiles(String testCaseID, String shapeFileFullPath) throws Exception {
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "shape-files" + File.separator + testCaseID;
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator
+				+ "shape-files" + File.separator + testCaseID;
 		// Create the directory for test case if it does not exist.
 		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
 		String expectedFilename = FileUtility.getFileName(shapeFileFullPath);
 		String expectedFileExt = FileUtility.getFileExtension(shapeFileFullPath);
-		if (expectedFileExt == "dbf" || expectedFileExt == "prj" || expectedFileExt == "shp" || expectedFileExt == "shx") {
+		if (expectedFileExt == "dbf" || expectedFileExt == "prj" || expectedFileExt == "shp"
+				|| expectedFileExt == "shx") {
 			// Delete existing files in directory (if any).
 			FileUtility.deleteFilesInDirectory(Paths.get(expectedDataFolderPath));
 
@@ -2079,78 +2199,120 @@ public class ReportsBasePage extends SurveyorBasePage {
 			Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
 			FileUtils.copyFile(new File(shapeFileFullPath), new File(expectedFilePath.toString()));
 
-			// If specified file is .shp get GeoJson string for the shape file and store the .geojson.
+			// If specified file is .shp get GeoJson string for the shape file
+			// and store the .geojson.
 			if (expectedFileExt == "shp") {
 				String geoJsonString = ShapeToGeoJsonConverter.convertToJsonString(shapeFileFullPath);
-				Path expectedGeoJsonFilePath = Paths.get(expectedDataFolderPath, expectedFilenameWithoutExt + ".geojson");
+				Path expectedGeoJsonFilePath = Paths.get(expectedDataFolderPath,
+						expectedFilenameWithoutExt + ".geojson");
 				FileUtility.createTextFile(expectedGeoJsonFilePath, geoJsonString);
 			}
 		}
 	}
 
 	/**
-	 * Compares the processing times for each reportJob type with baseline processingTime values and 
-	 * checks actual values are not greater than the baseline values.
-	 * @param testCaseID - Test case ID
-	 * @param reportTitle - Title of the report
-	 * @return - Whether actual report job type processing time values are within the limits of baselines values
-	 * @throws Exception 
+	 * Compares the processing times for each reportJob type with baseline
+	 * processingTime values and checks actual values are not greater than the
+	 * baseline values.
+	 * 
+	 * @param testCaseID
+	 *            - Test case ID
+	 * @param reportTitle
+	 *            - Title of the report
+	 * @return - Whether actual report job type processing time values are
+	 *         within the limits of baselines values
+	 * @throws Exception
 	 */
 	public boolean compareReportJobPerfBaseline(String testCaseID, String reportTitle) throws Exception {
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" + File.separator + "report-job-metrics" + File.separator + testCaseID;
+		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" + File.separator
+				+ "report-job-metrics" + File.separator + testCaseID;
 		Path expectedFilePath = Paths.get(expectedDataFolderPath, String.format("%s.csv", testCaseID));
-		// If no baseline CSV file, throw No Baseline exception.
-		if (!new File(expectedFilePath.toString()).exists()) {
-			throw new Exception(String.format("Baseline CSV file-[%s] NOT found for TestCase-[%s]",
-					expectedFilePath.toString(), testCaseID));
-		}
-		
-		CSVUtility csvUtility = new CSVUtility();
-		List<HashMap<String, String>> csvRows = csvUtility.getAllRows(expectedFilePath.toString());
-		
-		Report reportObj = Report.getReport(reportTitle);
-		String reportId = reportObj.getId();
-		ArrayList<ReportJob> reportJobs = ReportJob.getReportJobs(reportId);
-		for (ReportJob reportJob : reportJobs) {
-			String reportJobTypeId = reportJob.getReportJobTypeId().toString();
-			
-			// If report job processing started or completed times are NULL, throw exception.
-			validateReportJobProcessingTimesForNotNull(reportId, reportJob, reportJobTypeId);
-			
-			Date processingStarted = reportJob.getProcessingStarted();
-			Date processingCompleted = reportJob.getProcessingCompleted();
-			long actualProcessingTimeInMs = processingCompleted.getTime() - processingStarted.getTime();
-			boolean foundInCsv = false;
-			for (HashMap<String, String> csvRow : csvRows) {
-				String expectedReportJobId = csvRow.get("ReportJobTypeId");
-				if (reportJobTypeId.equals(expectedReportJobId)) {
-					foundInCsv = true;
-					Integer expectedProcessingTimeInMs = Integer.valueOf(csvRow.get("ProcessingTimeInMs"));
-					if (actualProcessingTimeInMs > expectedProcessingTimeInMs) {
-						return false;
-					}					
-				} 
-			}
-			
-			// If no report job type in CSV, throw exception.
-			if (!foundInCsv) {
-				throw new Exception(String.format("Entry NOT found in Baseline CSV-[%s], for ReportJobType-[%s], TestCase-[%s]",
-						expectedFilePath.toString(), SurveyorConstants.ReportJobTypeGuids.get(reportJobTypeId).toString(), testCaseID));
+		// If NOT in baseline collection mode and NO baseline CSV file, throw No
+		// Baseline exception.
+		if (!TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
+			if (!new File(expectedFilePath.toString()).exists()) {
+				throw new Exception(String.format("Baseline CSV file-[%s] NOT found for TestCase-[%s]",
+						expectedFilePath.toString(), testCaseID));
 			}
 		}
 		
+		String apiResponse = ApiUtility.getApiResponse(String.format(ApiUtility.REPORTS_GET_REPORT_STAT_API_RELATIVE_URL, reportTitle));
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		Gson gson = gsonBuilder.create();
+		ReportJobsStat reportJobsStatObj = gson.fromJson(apiResponse, ReportJobsStat.class);
+		validateReportStatus(reportJobsStatObj);
+		List<surveyor.api.source.ReportJob> reportJobs = reportJobsStatObj.ReportJobs;
+		for (surveyor.api.source.ReportJob reportJob : reportJobs) {
+			String reportJobTypeId = Reports.ReportJobTypeReverseGuids.get(ReportJobType.valueOf(reportJob.ReportJobType));
+
+			// validate report job.
+			validateReportJobStatus(reportJobsStatObj.ReportTitle, reportJob);
+			validateReportJobProcessingTimesForNotNull(reportJobsStatObj.ReportTitle, reportJob, reportJobTypeId);
+			
+			Integer actualProcessingTimeInMs = (int) (reportJob.getProcessingCompletedTimeInMs() - reportJob.getProcessingStartedTimeInMs());
+
+			if (TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
+				// generating baselines. Skip comparison.
+				generateBaselinePerfReportJobFiles(testCaseID, reportJobTypeId,
+						String.valueOf(reportJob.getProcessingStartedTimeInMs()), 
+						String.valueOf(reportJob.getProcessingCompletedTimeInMs()),
+						actualProcessingTimeInMs);
+			} else {
+				// compare actual with baseline.
+				CSVUtility csvUtility = new CSVUtility();
+				List<HashMap<String, String>> csvRows = csvUtility.getAllRows(expectedFilePath.toString());
+
+				boolean foundInCsv = false;
+				for (HashMap<String, String> csvRow : csvRows) {
+					String expectedReportJobId = csvRow.get("ReportJobTypeId");
+					if (reportJobTypeId.equals(expectedReportJobId)) {
+						foundInCsv = true;
+						Integer expectedProcessingTimeInMs = Integer.valueOf(csvRow.get("ProcessingTimeInMs"));
+						if (actualProcessingTimeInMs > expectedProcessingTimeInMs) {
+							return false;
+						}
+					}
+				}
+
+				// If no report job type in CSV, throw exception.
+				if (!foundInCsv) {
+					throw new Exception(
+							String.format("Entry NOT found in Baseline CSV-[%s], for ReportJobType-[%s], TestCase-[%s]",
+									expectedFilePath.toString(),
+									Reports.ReportJobTypeGuids.get(reportJobTypeId).toString(), testCaseID));
+				}
+			}
+		}
+
 		return true;
 	}
 
-	private void validateReportJobProcessingTimesForNotNull(String reportId, ReportJob reportJob, String reportJobTypeId) throws Exception {
-		if (reportJob.isColumnNull(ReportJob.COLNAME_PROCESSING_STARTED)) {
-			throw new Exception(String.format("NULL value encountered for column-[%s], ReportId-[%s], ReportJobTypeId-[%s]",
-					ReportJob.COLNAME_PROCESSING_STARTED, reportId, reportJobTypeId)); 
+	private void validateReportStatus(ReportJobsStat reportJobsStatObj) throws Exception {
+		if (!reportJobsStatObj.ReportStatus.equals(ReportStatusType.Complete.toString())) {
+			throw new Exception(String.format("Report status NOT Complete. ReportTitle-[%s], ReportStatus-[%s]",
+					reportJobsStatObj.ReportTitle, reportJobsStatObj.ReportStatus));
 		}
-		if (reportJob.isColumnNull(ReportJob.COLNAME_PROCESSING_COMPLETED)) {
-			throw new Exception(String.format("NULL value encountered for column-[%s], ReportId-[%s], ReportJobTypeId-[%s]",
-					ReportJob.COLNAME_PROCESSING_COMPLETED, reportId, reportJobTypeId)); 
+	}
+
+	private void validateReportJobStatus(String reportTitle, surveyor.api.source.ReportJob reportJob) throws Exception {
+		if (!reportJob.ReportJobStatus.equals(ReportStatusType.Complete.toString())) {
+			throw new Exception(String.format("Report job status NOT Complete. ReportTitle-[%s], ReportJobType-[%s], "
+					+ "ReportJobStatus-[%s]", reportTitle, reportJob.ReportJobType, reportJob.ReportJobStatus));
+		}
+	}
+
+	private void validateReportJobProcessingTimesForNotNull(String reportTitle, surveyor.api.source.ReportJob reportJob,
+			String reportJobTypeId) throws Exception {
+		if (reportJob.getProcessingStartedTimeInMs() < 0) {
+			throw new Exception(
+					String.format("Incorrect value-[%s] encountered for column-[%s], ReportTitle-[%s], ReportJobTypeId-[%s]",
+							reportJob.getProcessingStartedTimeInMs(), "ProcessingStarted", reportTitle, reportJobTypeId));
+		}
+		if (reportJob.getProcessingCompletedTimeInMs() < 0) {
+			throw new Exception(
+					String.format("Incorrect value-[%s] encountered for column-[%s], ReportTitle-[%s], ReportJobTypeId-[%s]",
+							reportJob.getProcessingCompletedTimeInMs(), "ProcessingCompleted", reportTitle, reportJobTypeId));
 		}
 	}
 }

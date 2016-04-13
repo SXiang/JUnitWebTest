@@ -59,7 +59,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	@FindBy(id = "buttonOk")
 	private WebElement btnOK;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='ref-gas-bottle-form']/fieldset/div[4]/div[2]/a")
+	@FindBy(how = How.XPATH, using = "//*[@class='button-cancel btn btn-danger']")
 	private WebElement btnCancel;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr")
@@ -118,7 +118,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 
 	public void addNewRefGasBottle(String strLotNumber, String strIsoValue,
 			String strCusName, String strLocName, String strSurveyor) {
-		this.addRefGasBottle(strLotNumber, strIsoValue, null, strCusName, strLocName, strSurveyor);
+		this.addRefGasBottle(strLotNumber, strIsoValue, "1", strCusName, strLocName, strSurveyor);
 	}
 
 	public void addNewRefGasBottle(String strLotNumber, String strIsoValue, String ethMthRto,

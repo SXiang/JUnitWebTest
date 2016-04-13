@@ -22,6 +22,7 @@ import surveyor.scommon.source.Coordinates;
 import surveyor.scommon.source.LatLongSelectionControl;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.ManageLocationsPage;
+import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.SurveyorBaseTest;
@@ -110,15 +111,18 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		complianceReportsPage.waitForPageLoad();
 
 		complianceReportsPage.clickOnNewComplianceReportBtn();
+		complianceReportsPage.waitForNewPageLoad();
 		complianceReportsPage.openCustomerBoundarySelector();
 
+		String boundaryName = "Level 2-AA";
 		latLongSelectionControl.waitForModalDialogOpen()
-		.switchMode(ControlMode.MapInteraction)
-		.waitForMapImageLoad()
-		.drawSelectorRectangle(CANVAS_X_PATH, X_OFFSET, Y_OFFSET, RECT_WIDTH, RECT_HEIGHT)
-		.switchMode(ControlMode.Default)
-		.clickOkButton()
-		.waitForModalDialogToClose();
+			.switchMode(ControlMode.MapInteraction)
+			.waitForMapImageLoad()
+			.selectCustomerBoundaryType(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary.toString())
+			.setCustomerBoundaryName(boundaryName)
+			.switchMode(ControlMode.Default)
+			.clickOkButton()
+			.waitForModalDialogToClose();
 	}
 
 	/**
