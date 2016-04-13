@@ -1568,7 +1568,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (!value)
 				return false;
 		}
-
+		
 		if (!storedProcObj.isCoverageValuesEquals(coverageReportObj)) {
 			return false;
 		}
@@ -1690,6 +1690,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String reportName = "CR-" + reportId;
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
+		System.out.println(actualReportString);
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(ReportSSRS_SelectedDrivingSurveys);
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
@@ -1697,8 +1698,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (!value)
 				return false;
 		}
-		String surveyTable = RegexUtility.getStringInBetween(actualReportString, "Indication Table", "LISA # Surveyor Date/Time Amplitude(ppm)");
-
+		String surveyTable = RegexUtility.getStringInBetween(actualReportString, "Indication Table", "LISA");
 		InputStream inputStream = new ByteArrayInputStream(surveyTable.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 		String line = null;
@@ -1999,7 +1999,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			ArrayList<String> reportIndicationsList = new ArrayList<String>();
 			while ((line = bufferReader.readLine()) != null) {
 				if (line.trim().matches("^\\? \\d+ .*")) {
-					reportIndicationsList.add(line.replaceAll("\\?", "").trim());
+					reportIndicationsList.add(line.replaceAll("\\?", "").trim().replaceAll("\\s+", "").replace("+/-0%", ""));
 				}
 			}
 			ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications.getReportIndications(reportId);
@@ -2008,7 +2008,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			while (lineIterator.hasNext()) {
 				StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
 				String objAsString = objStoredProc.toString();
-				storedProcConvStringList.add(objAsString.trim());
+				storedProcConvStringList.add(objAsString.trim().replaceAll("\\s+", ""));
 			}
 
 			if (!reportIndicationsList.equals(storedProcConvStringList)) {

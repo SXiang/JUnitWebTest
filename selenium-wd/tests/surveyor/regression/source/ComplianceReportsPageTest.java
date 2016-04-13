@@ -117,7 +117,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws Exception {
 		String rptTitle = null;
 		String testCaseName = getTestCaseName(index);
-		if (testCaseName.equals("TC203")) {
+	if (testCaseName.equals("TC203")) {
 			rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber() + "#%$";
 
 		} else {
@@ -158,6 +158,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 			}
 		} else
 			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
+		
+		//assertTrue(complianceReportsPage.verifyIndicationTable("C:\\Users\\cnanayakkara\\Downloads\\", "TC203 Report938051#%$"));
 	}
 
 	private static String getTestCaseName(String key) {
