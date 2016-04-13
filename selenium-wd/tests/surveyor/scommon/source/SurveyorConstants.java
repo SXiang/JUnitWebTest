@@ -3,30 +3,14 @@
  */
 package surveyor.scommon.source;
 
-import java.util.HashMap;
-
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-import surveyor.scommon.source.Reports.SurveyModeFilter;
-import surveyor.scommon.source.Reports.ReportJobType;
-import surveyor.scommon.source.Reports.ReportModeFilter;
 
 /**
  * @author zlu
  *
  */
 public final class SurveyorConstants {
-	/**
-	 * 
-	 */
-	private SurveyorConstants() {		
-		populateGuidMaps();
-	}
-	
-	public static HashMap<String, SurveyModeFilter> SurveyModeFilterGuids = new HashMap<String, SurveyModeFilter>();
-	public static HashMap<String, ReportModeFilter> ReportSurveyModeFilterGuids = new HashMap<String, ReportModeFilter>();
-	public static HashMap<String, ReportJobType> ReportJobTypeGuids = new HashMap<String, ReportJobType>();
-	
 	public static final String BASECUSTOMERNAME = "Cus";
 	public static final String BASELOCATIONNAME = "Loc";
 	public static final String BASESURVEYORNAME = "Sur";
@@ -104,8 +88,8 @@ public final class SurveyorConstants {
 	public static final String SQACUSLOC3SUR = "sqacusloc3sur";
 
 	public static final String SQAETHCUST= "PG&E";
-	public static final String SQAETHSUR="Black Dodge-P3300";
-	public static final String SQAETHLOC= "PGE-Santa Clara";
+	public static final String SQAETHSUR="Ethane Car";
+	public static final String SQAETHLOC= "PG&E - Menlo Park";
 	
 	public static final String SQAPICLOCSURANA = "sqapiclocsurana";
 	public static final String SQAPICLOC0SURANA = "sqapicloc0surana";
@@ -187,7 +171,6 @@ public final class SurveyorConstants {
 	public static final String KEYINDICATIONS = "Indications";
 	public static final String KEYISOTOPICCAPTURE = "Isotopic Capture";
 	public static final String KEYANNOTATION = "Annotation";
-	public static final String KEYFIELDNOTES = "Field Notes";
 	public static final String KEYGAPS = "Gaps";
 	public static final String KEYASSETS = "Assets";
 	public static final String KEYBOUNDARIES = "Boundaries";
@@ -205,7 +188,6 @@ public final class SurveyorConstants {
 	public static final String KEYINDCLR = "Indication Color";
 	
 	public static final String KEYINDTB = "Indications Table";
-	public static final String KEYGAPTB= "Gaps Table";
 	public static final String KEYISOANA = "Isotopic Analysis";
 	public static final String KEYPCA = "Percent Coverage Assets";
 	public static final String KEYPCRA = "Percent Coverage Report Area";
@@ -216,13 +198,15 @@ public final class SurveyorConstants {
 
 	public static final String DUPLICATIONERROR = Resources.getResource(ResourceKeys.ManageUser_UserNameAlreadyExists);
 	public static final String PWVALUEERROR = Resources.getResource(ResourceKeys.Validation_EnterSameValueAgain);
-	public static final String EMAILINVALID = Resources.getResource(ResourceKeys.ManageUser_EmailNotValid);	
+	public static final String EMAILINVALID = Resources.getResource(ResourceKeys.ManageUser_EmailNotValid);
 	public static final String BLANKFIELDERROR = Resources.getResource(ResourceKeys.Validation_Required);
 	public static final String PWDSAMEVALUE = Resources.getResource(ResourceKeys.Validation_EnterSameValueAgain);
 	public static final String EMAILTOOLONG = Resources.getResource(ResourceKeys.Validation_EnterNoMoreThan).replace("{0}", "50");
 	public static final String PASSWORDTOOLONG = Resources.getResource(ResourceKeys.Validation_EnterNoMoreThan).replace("{0}", "15");
-	public static final String NOMATCHINGRECORDS = Resources.getResource("Constant_NoMatchingRecordsFound");		
+	public static final String NOMATCHINGRECORDS = Resources.getResource("Constant_NoMatchingRecordsFound");	
+
 	public static final String NOMATCHINGSEARCH = Resources.getResource(ResourceKeys.Constant_NoMatchingRecordsFound);
+
 	public static final String DRIVINGSURVEYSEXPORTSURVEY = "SurveyExport";
 	public static final String DRIVINGSURVEYSEXPORTPEAKS = "PeakExport";
 	public static final String DRIVINGSURVEYSEXPORTANALYSIS = "AnalysisExport";
@@ -234,6 +218,12 @@ public final class SurveyorConstants {
 	public static final String DRIVINGSURVEYTITLE = "Measurement Sessions - Surveyor";
 	public static final String DRIVINGSURVEYHEADER = "Driving Surveys";
 
+	/*
+	 * Survey View constants
+	 */
+	
+	public static final String ISOTOPIC_CAPTURE_NOT_NATURAL_GAS = Resources.getResource(ResourceKeys.Survey_NotNaturalGas);
+	public static final String ISOTOPIC_CAPTURE_CANCELLED= Resources.getResource(ResourceKeys.Survey_IsotopicCanceled);
 	
 	/*
 	 * Driving survey tag for Compliance Reports
@@ -303,7 +293,7 @@ public final class SurveyorConstants {
 	public static final String DEFAULTLOC="Default";
 
 	public static final String REQUIRED_FIELD_VAL_MESSAGE = "This field is required.";	
-	
+
 	/*
 	 * Timeout constants
 	 */
@@ -337,37 +327,6 @@ public final class SurveyorConstants {
 			return text;
 		}
 	};
-
-	/**
-	 * Populate map with guids from SurveyModeType.
-	 * NOTE: These guids need to be in sync with Ids used in [SurveyModeType] table.
-	 */
-	private void populateGuidMaps() {
-		SurveyModeFilterGuids.put("0514B92A-39AE-4111-AF16-4495440EC319", SurveyModeFilter.Assessment);
-		SurveyModeFilterGuids.put("4901E67A-4C00-4436-ADC0-9CFB277BB310", SurveyModeFilter.RapidResponse);
-		SurveyModeFilterGuids.put("4901E67A-4C00-4436-ADC0-9CFB277BB311", SurveyModeFilter.Manual);
-		SurveyModeFilterGuids.put("4901E67A-4C00-4436-ADC0-9CFB277BB312", SurveyModeFilter.Operator);
-		SurveyModeFilterGuids.put("E9DD9F53-E5CB-45B3-9517-9DC8E0276C6D", SurveyModeFilter.EQ);
-		SurveyModeFilterGuids.put("B310238A-A5AE-4E94-927B-F0F165E24522", SurveyModeFilter.Standard);
-
-		ReportSurveyModeFilterGuids.put("0514B92A-39AE-4111-AF16-4495440EC319", ReportModeFilter.Assessment);
-		ReportSurveyModeFilterGuids.put("4901E67A-4C00-4436-ADC0-9CFB277BB310", ReportModeFilter.RapidResponse);
-		ReportSurveyModeFilterGuids.put("4901E67A-4C00-4436-ADC0-9CFB277BB311", ReportModeFilter.Manual);
-		ReportSurveyModeFilterGuids.put("4901E67A-4C00-4436-ADC0-9CFB277BB312", ReportModeFilter.Operator);
-		ReportSurveyModeFilterGuids.put("E9DD9F53-E5CB-45B3-9517-9DC8E0276C6D", ReportModeFilter.EQ);
-		ReportSurveyModeFilterGuids.put("B310238A-A5AE-4E94-927B-F0F165E24522", ReportModeFilter.Standard);
-		
-		ReportJobTypeGuids.put("00000000-0000-0000-0001-000000000000", ReportJobType.Map);
-		ReportJobTypeGuids.put("00000000-0000-0000-0002-000000000000", ReportJobType.SSRS);
-		ReportJobTypeGuids.put("00000000-0000-0000-0003-000000000000", ReportJobType.DataGeneration);
-		ReportJobTypeGuids.put("00000000-0000-0000-0004-000000000000", ReportJobType.EQMap);
-		ReportJobTypeGuids.put("00000000-0000-0000-0005-000000000000", ReportJobType.EQSSRS);
-		ReportJobTypeGuids.put("00000000-0000-0000-0006-000000000000", ReportJobType.EQDataGeneration);
-		ReportJobTypeGuids.put("00000000-0000-0000-0007-000000000000", ReportJobType.ShapeFile);
-		ReportJobTypeGuids.put("00000000-0000-0000-0008-000000000000", ReportJobType.ReportMeta);
-		ReportJobTypeGuids.put("00000000-0000-0000-0009-000000000000", ReportJobType.PercentCoverageForecast);
-	}
-	
 	public static enum UserTimezone {
 		PACIFIC ("Pacific Standard Time"),
 		MOUNTAIN ("Mountain Standard Time"),
@@ -384,5 +343,4 @@ public final class SurveyorConstants {
 		}
 	};
 }
-
 

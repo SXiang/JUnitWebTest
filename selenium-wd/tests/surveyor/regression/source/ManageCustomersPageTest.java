@@ -500,7 +500,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 * Results: - 
 	 * - Disabled Customer's User will not be allowed to log in the application
 	 */
-	@Test  
+	@Ignore  
 	public void TC1243_DisabledExistingCustomer_PicAdmin() {
 		String customerName = CUSTOMERNAMEPREFIX + testSetup.getFixedSizeRandomNumber(12) + "TC1243";
 		String userName = customerName + testSetup.getFixedSizeRandomNumber(12) + REGBASEUSERNAME;
@@ -567,6 +567,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		manageCustomersPage.logout();
 
 		loginPage.login(SQAPICSUP, USERPASSWORD);
+		homePage.waitForPageLoad();
+		
 		manageCustomersPage.open();
 		assertTrue(manageCustomersPage.findExistingCustomer(customerName, true));
 		assertFalse(manageCustomersPage.isAddCustomerBtnPresent());

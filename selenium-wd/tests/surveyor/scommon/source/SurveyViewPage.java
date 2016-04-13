@@ -26,7 +26,6 @@ public class SurveyViewPage extends BaseMapViewPage {
 	private static final String SURVEY_INFO_TAG_LABEL_XPATH = "//*[@id='header_info_historical']/div[1]";
 	public static final String STRURLPath = "/Live/Survey/";
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.Constant_Survey);
-	public static final String STRPageContentText = "Map View";
 	
     @FindBy(id = "survey_wind_calm")
     @CacheLookup
@@ -132,8 +131,6 @@ public class SurveyViewPage extends BaseMapViewPage {
     @FindBy(how = How.XPATH, using = SURVEY_INFO_END_TIME_LABEL_XPATH)
 	private WebElement labelEndTime;
     
-    // Survey ID used for opening the specified survey page.
-    private String surveyId;    
 
 	/**
 	 * @param driver
@@ -410,20 +407,6 @@ public class SurveyViewPage extends BaseMapViewPage {
     }
 
     /**
-     * Verify that the page loaded completely.
-     *
-     * @return the SurveyViewPage class instance.
-     */
-    public SurveyViewPage verifyPageLoaded() {
-        (new WebDriverWait(driver, timeout * 2)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                return d.getPageSource().contains(STRPageContentText);
-            }
-        });
-        return this;
-    }
-
-    /**
      * Verify that current page URL matches the expected URL.
      *
      * @return the SurveyViewPage class instance.
@@ -436,23 +419,4 @@ public class SurveyViewPage extends BaseMapViewPage {
         });
         return this;
     }
-    
-    /**
-	 * Verify that the page loaded completely.
-	 */
-	public void waitForPageLoad() {
-		(new WebDriverWait(driver, timeout * 2)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return d.getPageSource().contains(STRPageContentText);
-			}
-		});
-	}
-
-	public String getSurveyId() {
-		return surveyId;
-	}
-
-	public void setSurveyId(String surveyId) {
-		this.surveyId = surveyId;
-	}
 }

@@ -5,7 +5,6 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.BLANKFIELDERROR;
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMERNAMEPREFIX;
@@ -229,7 +228,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 	}
 
-	/** TO BE VERIFIED - NOT WORKING AS DESCRIBIED - description needs to be updated later
+	/**
 	 * Test Case ID: TC24_NotificationLatLongValueMissing_PicAdmin
 	 * Test Description: Notification should appear if Latitude is entered but Longitude is not, or vice versa
 	 * Test Script: 
@@ -237,11 +236,12 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	 *  - On Home Page, click Picarro Administration -> Manage Locations
 	 *  - Click on 'Add New Location' button
 	 *  - Enter a Latitude value and leave Longitude blank
-	 *  - Click on ‘Lat/Long Selector’ button
+	 *  - Click on OK button
 	 *  - Enter a Longitude value and delete the Latitude value
 	 *  - Click on OK button
 	 * Excepted Result:
-	 *  - A warning should pop up with the message, “Latitude and Longitude fields must be either both populated or both blank”
+	 *  - A message will appear under the Longitude field, "This field is required"
+     *  - A message will appear under the Latitude field, "This field is required"
 	 */
 	@Test
 	public void TC24_NotificationLatLongValueMissing_PicAdmin(){
@@ -258,23 +258,11 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		manageLocationsPage.open();
 		manageLocationsPage.clickOnAddNewLocationBtn();
 		manageLocationsPage.inputLatLong(latitude, "");		
-		manageLocationsPage.clickOnLatLongSelectorBtn();      
-
-		String actualPoint = manageLocationsPage.getSelectedPoint();		
-		assertNull("No point should be selected while longitude is missing",actualPoint);		
-
-		manageLocationsPage.clickOnLatLongCancelBtn();
 		manageLocationsPage.clickOnOkBtn();
 
 		assertEquals(BLANKFIELDERROR, manageLocationsPage.getLocationLongitudeError());
 
 		manageLocationsPage.inputLatLong("", longitude);		
-		manageLocationsPage.clickOnLatLongSelectorBtn();
-
-		actualPoint = manageLocationsPage.getSelectedPoint();		
-		assertNull("No point should be selected while latitude is missing",actualPoint);	
-
-		manageLocationsPage.clickOnLatLongCancelBtn();
 		manageLocationsPage.clickOnOkBtn();
 
 		assertEquals(BLANKFIELDERROR, manageLocationsPage.getLocationLatitudeError());

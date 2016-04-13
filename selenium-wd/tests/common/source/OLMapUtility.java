@@ -200,6 +200,7 @@ public class OLMapUtility {
 			+ "return text;};";
 	
 	private static final String GET_MAP_RESOLUTION_JS_FUNCTION = "function getMapResolution(){return surveyormap.getView().getResolution();};";
+	private static final String GET_MAP_ZOOMLEVEL_JS_FUNCTION = "function getMapZoomLevel(){return surveyormap.getView().getZoom();};";
 
 	private static final String GET_3300_INDICATION_NODES_COUNT_JS_FUNCTION = "function get3300IndicationNodesCount(gasType) { "
 			+ "var nodesCnt = 0; var isIndicationsSwitchOn = showIndications; if (lastConstellation && isIndicationsSwitchOn) { "
@@ -262,8 +263,10 @@ public class OLMapUtility {
 	private static final String GET_MAP_RESOLUTION_JS_FUNCTION_CALL = "return getMapResolution();";
 	private static final String GET_FIRST_3300_VISIBLE_INDICATION_NODE_PIXEL_FUNCTION_CALL = "return getFirstVisible3300IndicationNodePixels('%s');";
 
-	private WebDriver driver;
+	private static final String GET_MAP_ZOOMLEVEL_JS_FUNCTION_CALL = "return getMapZoomLevel();";
 
+	private WebDriver driver;
+	
 	public OLMapUtility(WebDriver driver) {
 		this.driver = driver;
 	}
@@ -290,9 +293,18 @@ public class OLMapUtility {
 	 * Get the current map resolution.
 	 */ 
 	private double getMapResolution() {
-		String functionCall = GET_MAP_RESOLUTION_JS_FUNCTION + GET_MAP_RESOLUTION_JS_FUNCTION; 
+		String functionCall = GET_MAP_RESOLUTION_JS_FUNCTION + GET_MAP_RESOLUTION_JS_FUNCTION_CALL;
 		Log.info("Calling javascript function -> " + functionCall);
 		return (double)((JavascriptExecutor)this.driver).executeScript(functionCall);
+	}
+
+	/**
+	 * Get the current map zoom level.
+	 */ 
+	public int getMapZoomLevel() {
+		String functionCall = GET_MAP_ZOOMLEVEL_JS_FUNCTION +  GET_MAP_ZOOMLEVEL_JS_FUNCTION_CALL;
+		Log.info("Calling javascript function -> " + functionCall);
+		return (int)(long)(((JavascriptExecutor)driver).executeScript(functionCall));
 	}
 	
 	/*
