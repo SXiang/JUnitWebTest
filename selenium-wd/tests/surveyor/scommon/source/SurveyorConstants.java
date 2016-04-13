@@ -218,6 +218,12 @@ public final class SurveyorConstants {
 	public static final String DRIVINGSURVEYTITLE = "Measurement Sessions - Surveyor";
 	public static final String DRIVINGSURVEYHEADER = "Driving Surveys";
 
+	/*
+	 * Survey View constants
+	 */
+	
+	public static final String ISOTOPIC_CAPTURE_NOT_NATURAL_GAS = Resources.getResource(ResourceKeys.Survey_NotNaturalGas);
+	public static final String ISOTOPIC_CAPTURE_CANCELLED= Resources.getResource(ResourceKeys.Survey_IsotopicCanceled);
 	
 	/*
 	 * Driving survey tag for Compliance Reports

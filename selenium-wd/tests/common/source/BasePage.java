@@ -9,7 +9,6 @@ import static surveyor.scommon.source.SurveyorConstants.HOMEDHEADER;
 import static surveyor.scommon.source.SurveyorConstants.HOMETITLE;
 import static surveyor.scommon.source.SurveyorConstants.LOGINTITLE;
 import static surveyor.scommon.source.SurveyorConstants.SUBTITLE;
-import static surveyor.scommon.source.SurveyorConstants.SECONDS_10;
 import static surveyor.scommon.source.SurveyorConstants.UNKNOWN_TEXT;
 
 import org.openqa.selenium.By;

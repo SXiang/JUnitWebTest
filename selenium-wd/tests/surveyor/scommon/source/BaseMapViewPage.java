@@ -12,6 +12,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import common.source.OLMapUtility;
 import common.source.RegexUtility;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
@@ -21,6 +22,8 @@ import surveyor.dataaccess.source.Resources;
 public class BaseMapViewPage extends SurveyorBasePage {
 
 	private static final String VIRTUALEARTH_NET_BRANDING_LOGO = "https://dev.virtualearth.net/Branding/logo_powered_by.png";
+	public static final String STRPageContentText = "Map View";
+	private static final int ASSETS_ZOOM_LEVEL_LOWER_BOUND = 17;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[1]")
 	private WebElement displaySwitch8HourHistoryDivElement;
@@ -185,12 +188,10 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	private WebElement curtainZoomOutButton;
 
 	@FindBy(id = "bottom_button_mode")
-	@CacheLookup
 	protected WebElement modeButton;
 
 	@FindBy(id = "bottom_button_display")
-	@CacheLookup
-	private WebElement displayButton;
+	protected WebElement displayButton;
 
 	@FindBy(id = "bottom_button_map")
 	@CacheLookup
@@ -203,21 +204,30 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(id = "bottom_button_curtain_view")
 	@CacheLookup
 	private WebElement curtainButton;
+
+	@FindBy(id = "bottom_button_status")
+	private WebElement statusButton;
 	
 	@FindBy(id = "bottom_logo")
 	@CacheLookup
 	private WebElement picarroLogoButton;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='map']/div/div[2]/div[2]/button[1]")
-	@CacheLookup
+	@FindBy(css = "#map.map button[title='Zoom in']")
 	protected WebElement zoomInButton;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='map']/div/div[2]/div[2]/button[2]")
-	@CacheLookup
+	@FindBy(css = "#map.map button[title='Zoom out']")
 	protected WebElement zoomOutButton;
+	
+	@FindBy(id = "shutting_down")
+	protected WebElement ShutdownAnalyzerButton;
+	
+	@FindBy(id = "start_survey_modal")
+	protected WebElement startSurveyButton;
+	
+	@FindBy(xpath = "//*[@id='button_close_survey_modal']/..")
+	protected WebElement stopSurveyButton;
 
 	@FindBy(id = "blocked_ui")
-	@CacheLookup
 	private WebElement divBlockedUI;
 	
 	@FindBy(id = "btn_close_annotation")
@@ -233,6 +243,9 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	private WebElement peakInfoOverlayText;
 	private WebElement peakInfoPopupDiv;
 
+    // Survey ID used for opening the specified survey page.
+    private String surveyId;
+    
 	public BaseMapViewPage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
 		super(driver, testSetup, strBaseURL, strPageURL);
 	}
@@ -350,7 +363,18 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	public boolean isModeButtonVisible() {
 		return !this.modeButton.getAttribute("class").contains("ng-hide");
 	}
-
+	public boolean isStatusButtonVisible() {
+		return !this.statusButton.getAttribute("class").contains("ng-hide");
+	}
+	public boolean isStartSurveyButtonVisible() {
+		return !this.startSurveyButton.getAttribute("class").contains("ng-hide");
+	}
+	public boolean isStopSurveyButtonVisible() {
+		   return !this.stopSurveyButton.getAttribute("class").contains("ng-hide");
+	}
+	public boolean isShutdownAnalyzerButtonVisible() {
+		return !this.ShutdownAnalyzerButton.getAttribute("class").contains("ng-hide");
+	}
 	public WebElement getPeakInfoPopupTextElement() {
 		// element value changes dynamically on peakInfo click. Seek new each time.
 		peakInfoOverlayText = this.driver.findElement(By.id("peak_info"));
@@ -1042,5 +1066,75 @@ public class BaseMapViewPage extends SurveyorBasePage {
 				return divBlockedUI.getAttribute("class").equalsIgnoreCase("ng-hide");
 			}
 		});
+	}
+	
+    /**
+	 * Verify that the page loaded completely.
+	 */
+	public void waitForPageLoad() {
+		this.verifyPageLoaded();
+	}
+
+	public String getSurveyId() {
+		return surveyId;
+	}
+
+	public void setSurveyId(String surveyId) {
+		this.surveyId = surveyId;
+	}
+	
+    /**
+     * Verify that the page loaded completely.
+     *
+     * @return the SurveyViewPage class instance.
+     */
+    public BaseMapViewPage verifyPageLoaded() {
+        (new WebDriverWait(driver, timeout * 4)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRPageContentText);                		 
+            }
+        });
+        return this;
+    }
+
+	/**
+	 * Executes setMapZoomLevel action.
+	 * @param zoomlevel - specifies the zoom level on the map.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean setZoomLevel(int zoomlevel) {
+		OLMapUtility mapUtility = new OLMapUtility(driver);
+		int currentZoomlevel = mapUtility.getMapZoomLevel();
+		int numClicks = Math.abs(currentZoomlevel-zoomlevel);
+		
+		for(int i=0;i<numClicks;i++){
+		  if(currentZoomlevel > zoomlevel){
+			  clickZoomOutButton();
+		  }else if(currentZoomlevel < zoomlevel){
+			  clickZoomInButton();
+		  }else{
+			  return true;
+		  }
+		}
+		return mapUtility.getMapZoomLevel()==zoomlevel;
+	}
+	
+	/**
+	 * Executes setMapZoomLevelForAssets action.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean setZoomLevelForAssets() {
+		OLMapUtility mapUtility = new OLMapUtility(driver);
+		int currentZoomlevel = mapUtility.getMapZoomLevel();
+		if(currentZoomlevel >= ASSETS_ZOOM_LEVEL_LOWER_BOUND){
+			return true;
+		}
+		int numClicks = Math.abs(currentZoomlevel-ASSETS_ZOOM_LEVEL_LOWER_BOUND);
+		
+		for(int i=0;i<numClicks;i++){
+			  clickZoomInButton();
+		}
+		int newZoomlevel = mapUtility.getMapZoomLevel();
+		return newZoomlevel==ASSETS_ZOOM_LEVEL_LOWER_BOUND;		
 	}
 }
