@@ -118,7 +118,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 
 	public void addNewRefGasBottle(String strLotNumber, String strIsoValue,
 			String strCusName, String strLocName, String strSurveyor) {
-		this.addRefGasBottle(strLotNumber, strIsoValue, null, strCusName, strLocName, strSurveyor);
+		this.addRefGasBottle(strLotNumber, strIsoValue, "1", strCusName, strLocName, strSurveyor);
 	}
 
 	public void addNewRefGasBottle(String strLotNumber, String strIsoValue, String ethMthRto,
