@@ -42,6 +42,8 @@ import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.REGBASEUSERNAME;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
+import static surveyor.scommon.source.SurveyorConstants.RSURENDDATE;
+import static surveyor.scommon.source.SurveyorConstants.RSURSTARTDATE;
 import static surveyor.scommon.source.SurveyorConstants.RSWLAT;
 import static surveyor.scommon.source.SurveyorConstants.RSWLON;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
@@ -68,6 +70,7 @@ import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 
 @RunWith(SurveyorTestRunner.class)
@@ -110,14 +113,17 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	/**
 	 * Test Case ID: TC720_ShapefileMetaDataReportFeaturePermissionExistingCustomer_NewComplianceReportGeneration
 	 * Script: -  	
-	 *	- - On Manage Customers page, select a customer that does not have Report Shapefile and Report Meta Data permission enabled and click the Edit button- Confirm that the Account Enabled box is checked and check the Report Shape File and Report Meta data button
-	 *	- - Login as Customer User
-	 *	- - On the Compliance Reports page, generate the report and select LISAs, FOV, Breadcrumb, Gaps and/or Assets
-	 *	- - Click on Compliance Viewer button
-	 *	- - Click on the Shape file and meta file export button
-	 *	- - Compliance Viewer dialog has Shape (ZIP) and Meta data (ZIP) export buttons
+	 *	-- Log in as Picarro Admin
+	 *	-- On Manage Customers page, select a customer that does not have Report Shapefile and Report Meta Data permission enabled and click the "Edit" button 
+	*	-- Confirm that the "Account Enabled" box is checked and check the Report Shape File and Report Meta data button 
+	*	-- Click OK 
+	*	-- Login as Customer User
+	*	-- On the Compliance Reports page, generate the report and select LISAs, FOV, Breadcrumb, Gaps and/or Assets 
+	*	-- Click on Compliance Viewer button
+	*	-- Click on the Shape file and meta file export button
 	 * Results: - 
-	 *	- - User can download the Shape files and meta data files successfully
+	 *	- -Compliance Viewer dialog has Shape (ZIP) and Meta data (ZIP) export buttons
+	 *  - -User can download the Shape files and meta data files successfully
 	 */
 	@Ignore
 	public void TC720_ShapefileMetaDataReportFeaturePermissionExistingCustomer_NewComplianceReportGeneration() throws Exception {
@@ -222,6 +228,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 *	- - Click on Compliance Table PDF
 	 *	- - Click on Compliance ZIP (PDF)
 	 * Results: - 
+	 *  - - SSRS PDF should have File_Name at the top of the 1st page 
 	 *	- - Lisa_Number present in Indications table should be sequential
 	 */
 	@Test
@@ -303,7 +310,8 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 *	- - On the Compliance Reports page, click the New Compliance Report button
 	 *	- - Message displayed to user: Please make sure your selected boundary is less than 1.5 sqkms when Gaps are selected
 	 * Results: - 
-	 *	- - Report is generated succesfully
+	 *  - - - Message displayed to user: "Please make sure your selected boundary is less than 1.5 sqkms when Gaps are selected"
+	 *	- - Report is generated successfully
 	 */
 	@Test
 	public void TC1038_ValidationMessageShouldDisplayedUserAreaSelectionWhenGapsAreSelectedWhileGeneratingReport() throws Exception {
@@ -446,11 +454,14 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC1041_StandardSurvey_GapBoxesUniqueNumbersPrescribedFormat
-	 * Script: -  	
+	 * Script: -  
+	 *  - - Log in as Picarro Admin	
 	 *	- - On the Compliance Reports page, click the New Compliance Report button
 	 *	- - In the Views section, select Gaps but do not select LISAs, and click OK
 	 *	- - When the report has finished generating, click on the thumbnail preview button and download the Compliance ZIP (PDF)
+	 *  - -  On the View PDF, zoom in to the maximum level
 	 * Results: - 
+	 *  - -  The SSRS report should list all Gap boxes, listed and numbered with regard to their location according to the coordinates on the grid (A1, B1, C5, etc) 
 	 *	- - The report view should show the map overlaid with a grid, with columns marked A to Z and rows marked 1 to n
 	 *	- - The Gap numbers in the SSRS report should correspond to their location on the grid
 	 *	- - The grid cells should be approximately 200 feet square
@@ -676,11 +687,13 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 * Test Case ID: TC1267_GenerateComplianceReportCustomerWhoDoesNotAssetLoaded
 	 * Script: -  	
 	 *	- - On Home Page, click Reports -& Compliance -& 'New Compliance Report' button 
+	 *  - - Timezone : PST, Survey Mode: Standard
+	 *  - - Provide lat long values 
 	 *	- - Add View: Select Indications, Field Notes , FOV, Breadcrumb, Lisa, indication Base Map Value : Map
 	 *	- - Click on OK and click Download icon
-	 *	- - In Views section, Assets and Boundaries check box is not present
-	 *	- - In Optional Views Layers, Assets and Boundaries types are not displayed
 	 * Results: - 
+	 *  - - In Views section, Assets and Boundaries check box is not present
+	 *	- - In Optional Views Layers, Assets and Boundaries types are not displayed
 	 *	- - Report generated successfully having specified timezone and asset data for specified tag id and date range surveys
 	 *	- - User is allowed to download the report
 	 *	- - Export image should show the map for the specified Lat-Long boundary
@@ -760,17 +773,30 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		}
 		else
 			fail("\nTestcase TC1267 failed.\n");
-
-
 	}
 
 	/**
 	 * Test Case ID: TC1268_ValidationMessageShouldDisplayedUserCustomerBoundaryAreaSelectionWhenGapsAreSelectedWhileGeneratingReport
 	 * Script: -  	
-	 *	- - On the Compliance Reports page, click the New Compliance Report button
-	 *	- - Message displayed to user: Please make sure your selected boundary is less than 1.5 sqkms when Gaps are selected
+	 *	- - Log in as Picarro Admin
+	 *  - - On the Compliance Reports page, click the New Compliance Report button
+	 *  - - Fill out the required fields
+	 *  - - Select Customer boundary area larger then 1.5 sqkms
+	 *  - - (eg. Picarro Customer - District)
+	 *  - - Select Gaps in Views
+	 *  - - Click on OK
+	 *  - -  Un select Gaps from views section 
+	 *  - - Select Gap Table present in Optional Tabular PDF Content section and click OK
+	 *  - - Select Area smaller then 1.5 sqkms
+	 *  - - (eg. Picarro Customer - DistrictPlat 
+	 *  - - P&E Customer - DistrictPlat)
+	 *  - - Select Gaps in Views
+	 *  - - Click on OK
+	 *  - - Un select Gaps from views section 
+	 *  - - Select Gap Table present in Optional Tabular PDF Content section and click OK
 	 * Results: - 
-	 *	- - Report is generated succesfully
+	 *	- - Message displayed to user: Please make sure your selected boundary is less than 1.5 sqkms when Gaps are selected
+	 *  - - Report is generated successfully
 	 */
 	@Ignore
 	public void TC1268_ValidationMessageShouldDisplayedUserCustomerBoundaryAreaSelectionWhenGapsAreSelectedWhileGeneratingReport() throws Exception {
@@ -782,14 +808,16 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	}
 
 	/**
-	 * Test Case ID: c_CheckFileNameOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectively
+	 * Test Case ID: TC1299_CheckFileNameOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectively
 	 * Script: -  	
+	 * 	- -  Log in to application as picarro admin   
 	 *	- - Generate Compliance report (Include surveys having indications, isotopic capture, field notes etc)
 	 *	- - Click on Compliance Viewer
 	 *	- - Click on Compliance PDF (Meta)
 	 *	- - Click on Compliance PDF (Shape)
-	 *	- Eg. ReportName: CR-DC3080
 	 * Results: - 
+	 *  - - Shape file or csv file present in Shape or Meta ZIP folder should have ReportName as suffix
+	 *	- - Eg. ReportName: CR-DC3080
 	 *	- - User can open the files successfully without any error
 	 */
 	@Test
@@ -864,9 +892,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		}
 		else
 			fail("\nTestcase TC1299 failed.\n");
-
-
-
 	}
 
 	/**
@@ -874,7 +899,10 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 * Script: -  	
 	 *	- - On Home Page, click Reports -& Compliance -& 'New Compliance Report' button
 	 *	- - Add View with base map value: map and select Lisa, Indication, etc but don't select asset and boundaries check box
+	 *  - - Select any assets or boundaries layers in optional View Layers section
+	 *  - - Click on OK
 	 * Results: - 
+	 *  - User friendly message should be displayed to user:
 	 *	- Selected Asset Layer(s), Please select at least one view with Assets
 	 *	- Selected Boundary Layer(s), Please select at least one view with Boundaries
 	 */
@@ -967,6 +995,8 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 * Script: -  	
 	 *	- - On Home Page, click Reports -& Compliance -& 'Copy Compliance Report' button
 	 *	- - Add View with base map value: map and select asset and boundaries
+	 *  - - Do not select any assets or boundaries layers
+	 *  - - Click on OK
 	 * Results: - 
 	 *	- - User friendly message should be displayed to user:
 	 *	- View(s) with Assets, Please select at least one Asset Layer
@@ -1069,7 +1099,9 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 *	- - Add View with base map value: map and select Lisa, Indication, etc but don't select asset and boundaries check box
 	 *	- Selected Asset Layer(s), Please select at least one view with Assets
 	 * Results: - 
-	 *	- Selected Boundary Layer(s), Please select at least one view with Boundaries
+	 * - - User friendly message should be displayed to user:
+	 * - - Selected Asset Layer(s), Please select at least one view with Assets
+	 * - - Selected Boundary Layer(s), Please select at least one view with Boundaries
 	 */
 	@Test
 	public void TC1304_UserFriendlyMessageShouldDisplayedIfUserIncludeAssetsBoundariesLayersOptionalViewLayersSection() throws Exception {
@@ -1164,16 +1196,18 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC1305_CheckPercentCoverageForecastCheckBoxPresentNewCopyComplianceReportScreensPicarroUser
-	 * Script: -  	
+	 * Script: -  
+	 * - - Log in to application as Picarro user and navigate to New Compliance Report page
+	 * - - Click on Cancel and navigate to Copy compliance screen	
 	 * Results: - 
-	 *	- - Click on Cancel and navigate to Copy compliance screen
+	 *	- - Percent Coverage Forecast check box is present on UI
 	 */
 	@Test
 	public void TC1305_CheckPercentCoverageForecastCheckBoxPresentNewCopyComplianceReportScreensPicarroUser() throws Exception {
 		Log.info("\nRunning TC1305_CheckPercentCoverageForecastCheckBoxPresentNewCopyComplianceReportScreensPicarroUser ...");
 
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 1);   /* Picarro Customer*/
+		loginPageAction.login(EMPTY, 5);   /* Picarro Customer*/
 
 		complianceReportsPage.open();
 
@@ -1193,9 +1227,11 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC1306_CheckPercentCoverageForecastCheckBoxPresentNewCopyComplianceReportScreensOfCustomerUserHavingAssets
-	 * Script: -  	
+	 * Script: -  
+	 * - - Log in to application as Customer admin user and navigate to New Compliance Report page
+	 * - - Click on Cancel and navigate to Copy compliance screen	
 	 * Results: - 
-	 *	- - Click on Cancel and navigate to Copy compliance screen
+	 *	- - Percent Coverage Forecast check box is present on UI
 	 */
 	@Test
 	public void TC1306_CheckPercentCoverageForecastCheckBoxPresentNewCopyComplianceReportScreensOfCustomerUserHavingAssets() throws Exception {
@@ -1222,47 +1258,146 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	/**
 	 * Test Case ID: TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets
 	 * Script: -  	
+	 *  - - Log in to application as Customer admin user and navigate to New Compliance Report page
+	 *  - - Click on Cancel and navigate to Copy compliance screen
 	 * Results: - 
-	 *	- - Click on Cancel and navigate to Copy compliance screen
+	 *	- - Percent Coverage Forecast check box is not present on UI
 	 */
 	@Test
 	public void TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets() throws Exception {
 		Log.info("\nRunning TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets ...");
 
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, 1);   /* Picarro Customer*/
+
+		complianceReportsPage.open();
+
+		complianceReportsPage.getNewComplianceReportBtn().click();
+		complianceReportsPage.getPercentCoverReportArea().isDisplayed();
+		complianceReportsPage.clickOnCancelBtn();
+		
+		String copyImgXPath = "//*[@id='datatable']/tbody/tr[1]/td[5]/a[2]/img";
+		WebElement copyImg = driver.findElement(By.xpath(copyImgXPath));
+
+		copyImg.click();
+		complianceReportsPage.waitForCopyReportPagetoLoad();
+		Thread.sleep(2000);;
+		complianceReportsPage.getPercentCoverReportArea().isDisplayed();
 
 	}
 
 	/**
 	 * Test Case ID: TC1310_CheckFileNamesOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectivelyWhenUserReprocessExistingOldReports
 	 * Script: -  	
+	 *	- - Log in to application as picarro admin
 	 *	- - Reprocess the existing reports
 	 *	- - Click on Compliance Viewer
-	 *	- - Click on Compliance PDF (Meta)
-	 *	- - Click on Compliance PDF (Shape)
-	 *	- Eg. ReportName: CR-DC3080
+	 *	- - Click on "Compliance PDF (Meta)"
+	 *	- - Click on "Compliance PDF (Shape)"
+	 *	- - Try to open multiple reports Meta Data files simultaneously
 	 * Results: - 
+	 *  - - Shape file or csv file present in Shape or Meta ZIP folder should have ReportName as suffix
+	 *  - - Eg. ReportName: CR-DC3080
+	 *  - - CR-DC3080_ReportLisa.csv
 	 *	- - User can open the files successfully without any error
 	 */
-	@Test
+	//@Test--DE1874
 	public void TC1310_CheckFileNamesOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectivelyWhenUserReprocessExistingOldReports() throws Exception {
 		Log.info("\nRunning TC1310_CheckFileNamesOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectivelyWhenUserReprocessExistingOldReports ...");
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 
+		String testCaseID = "TC1310";
+		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+
+		complianceReportsPage.open();
+
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+		listBoundary.add("37.4206");
+		listBoundary.add("-121.9725");
+		listBoundary.add("37.4157");
+		listBoundary.add("-121.9839");
+
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "0");
+		tableMap.put(KEYISOANA, "0");
+		tableMap.put(KEYGAPTB, "0");
+		tableMap.put(KEYPCA, "0");
+		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "0");
+		tableMap.put(KEYASSETCOPPER, "0");
+		tableMap.put(KEYASSETOTHERPLASTIC, "0");
+		tableMap.put(KEYASSETPEPLASTIC, "0");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "0");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "0");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
+		tablesList.add(tableMap);
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap = new HashMap<String, String>();
+
+		viewMap.put(KEYVIEWNAME, "First View");
+		viewMap.put(KEYLISA, "1");
+		viewMap.put(KEYFOV, "1");
+		viewMap.put(KEYBREADCRUMB, "1");
+		viewMap.put(KEYINDICATIONS, "1");
+		viewMap.put(KEYISOTOPICCAPTURE, "1");
+		viewMap.put(KEYANNOTATION, "1");
+		viewMap.put(KEYFIELDNOTES, "1");
+		viewMap.put(KEYGAPS, "1");
+		viewMap.put(KEYASSETS, "0");
+		viewMap.put(KEYBOUNDARIES, "0");
+		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
+		viewList.add(viewMap);
+
+		List<String> tagList = new ArrayList<String>();
+		tagList.add(PICADMNSTDTAG);
+
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
+
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
+
+		complianceReportsPage.findReportbySearch(rptTitle, testSetup.getLoginUser());
+
+		complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
+		complianceReportsPage.waitForPageLoad();
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
+			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
+			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
+			if (tablesList != null) {
+				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
+					assertTrue(complianceReportsPage.verifyReportSurveyMetaDataFile(testSetup.getDownloadPath(), rptTitle));
+				}
+			}
+		}
+		else
+			fail("\nTestcase TC1310 failed.\n");
 	}
 
 	/**
 	 * Test Case ID: TC1311_CheckFileNameOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectivelyUsingCopyFunctionality
 	 * Script: -  	
+	 *  - - Log in to application as picarro admin
 	 *	- - Generate Compliance report (Include surveys having indications, isotopic capture, field notes etc) using Copy functionality
 	 *	- - Click on Compliance Viewer
 	 *	- - Click on Compliance PDF (Meta)
 	 *	- - Click on Compliance PDF (Shape)
-	 *	- Eg. ReportName: CR-DC3080
+	 *	- - Try to open multiple reports Meta Data files simultaneously
 	 * Results: - 
+	 *	- - Shape file or csv file present in Shape or Meta ZIP folder should have ReportName as suffix
+	 *	- - Eg. ReportName: CR-DC3080
+	 *	- - CR-DC3080_ReportLisa.csv
 	 *	- - User can open the files successfully without any error
 	 */
 	@Test
@@ -1272,6 +1407,78 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 
+		String testCaseID = "TC1311";
+		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+
+		complianceReportsPage.open();
+
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+		listBoundary.add(RNELAT);
+		listBoundary.add(RNELON);
+		listBoundary.add(RSWLAT);
+		listBoundary.add(RSWLON);
+
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "0");
+		tableMap.put(KEYISOANA, "0");
+		tableMap.put(KEYPCA, "0");
+		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
+		tablesList.add(tableMap);
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "0");
+		viewMap1.put(KEYANNOTATION, "0");
+		viewMap1.put(KEYGAPS, "0");
+		viewMap1.put(KEYASSETS, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
+
+		viewList.add(viewMap1);
+
+		List<String> tagList = new ArrayList<String>();
+		tagList.add(PICADMNSTDTAG);
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, RSURSTARTDATE, RSURENDDATE, viewList, SurveyModeFilter.Standard);
+		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
+
+		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
+
+		String newReportTitle = rptTitle + "COPY";
+		complianceReportsPage.copyReport(rptTitle, testSetup.getLoginUser(), newReportTitle);
+		complianceReportsPage.waitForPageLoad();
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
+			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
+			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
+			if (tablesList != null) {
+				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
+					assertTrue(complianceReportsPage.verifyReportSurveyMetaDataFile(testSetup.getDownloadPath(), rptTitle));
+				}
+			}
+		}
+		else
+			fail("\nTestcase TC1311 failed.\n");
+
 	}
 
 	/**
@@ -1280,12 +1487,12 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 * Results: - 
 	 *	- - Add 2 surveys with different tag value
 	 */
-	@Test
-	public void TC1313_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelectedNewComplianceReportScreensAlongCustomBoundary() throws Exception {
+	//@Test --latlong selector
+ 	public void TC1313_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelectedNewComplianceReportScreensAlongCustomBoundary() throws Exception {
 		Log.info("\nRunning TC1313_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelectedNewComplianceReportScreensAlongCustomBoundary ...");
 
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, 1);   /* Picarro Admin */
 
 	}
 
@@ -1300,7 +1507,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 *	- - User friendly error messages are displayed:
 	 *	- Selected Percent Coverage Forecast, Please select Customer Boundary
 	 */
-	@Test
+	//@Test--latlong selector
 	public void TC1315_CheckErrorMessagePresentIfPercentCoverageForecastCheckBoxSelectedCopyComplianceReportScreens() throws Exception {
 		Log.info("\nRunning TC1315_CheckErrorMessagePresentIfPercentCoverageForecastCheckBoxSelectedCopyComplianceReportScreens ...");
 
@@ -1323,7 +1530,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 *	- - Percent Coverage value is not dependent of Assets so value should not change
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)- Additional Surveys , Probability to Obtain 70% Coverage
 	 */
-	@Test
+	//@Test customer boundary
 	public void TC1318_GenerateMultipleComplianceReportsDifferentAssetLayerIncludePercentCoverageForecast() throws Exception {
 		Log.info("\nRunning TC1318_GenerateMultipleComplianceReportsDifferentAssetLayerIncludePercentCoverageForecast ...");
 

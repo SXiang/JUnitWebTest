@@ -2379,9 +2379,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			inputExclusionRadius(reportsCompliance.getExclusionRadius());
 		}
 
-
-		
-		fillCustomBoundaryTextFields(reportsCompliance.getNELat(), reportsCompliance.getNELong(), reportsCompliance.getSWLat(), reportsCompliance.getSWLong());
 		if (isCustomBoundarySpecified(reportsCompliance)) {
 			if (useCustomBoundaryLatLongSelector(reportsCompliance)) {
 				fillCustomBoundaryUsingLatLongSelector(reportsCompliance);
