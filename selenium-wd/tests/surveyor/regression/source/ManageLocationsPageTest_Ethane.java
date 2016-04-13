@@ -81,7 +81,7 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 
 		manageLocationsPage.open();
 
-		manageLocationsPage.addNewLocation(locationName, SQACUS, SQACUSSULOC, "2", "2");
+		manageLocationsPage.addNewLocation(locationName, SQACUS, SQACUSSULOC, "1", "2");
 		assertTrue(manageLocationsPage.findExistingLocation(SQACUS, locationName));
 
 		manageLocationsPage.editPDExistingLocation(SQACUS, locationName, locationNewName, ETHRNELAT, ETHRNELAT, "5", "7");
@@ -104,7 +104,7 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 
 		manageLocationsPage.open();
 
-		manageLocationsPage.addNewLocation(locationName, SQACUS, SQACUSSULOC, "2", "2");
+		manageLocationsPage.addNewLocation(locationName, SQACUS, SQACUSSULOC, "1", "2");
 		assertTrue(manageLocationsPage.findExistingLocation(SQACUS, locationName));
 	}
 
