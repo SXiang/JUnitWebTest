@@ -3,27 +3,26 @@
  */
 package surveyor.regression.source;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static surveyor.scommon.source.SurveyorConstants.CUSTOMERNAMEPREFIX;
+import static surveyor.scommon.source.SurveyorConstants.EULASTRING;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICSUP;
+import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
-import com.google.sitebricks.rendering.resource.Assets;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-
-import common.source.CryptoUtility;
-import common.source.Log;
-import surveyor.dataprovider.RunAs;
-import surveyor.dataprovider.UserDataProvider;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageSurveyorAdminPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
-import static surveyor.scommon.source.SurveyorConstants.*;
+
+import common.source.Log;
 
 /**
  * @author zlu
@@ -214,8 +213,6 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 	 * Test Description: More than 400 characters not allowed in Surveyor Description field
 	 * Expected Result: User cannot enter more than 400 characters
 	 * 
-	 * @param user
-	 * @param pwd
 	 */
 	@Test
 	public void TC101_MaxSurDescCharLimit() {

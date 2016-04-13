@@ -28,6 +28,11 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 @RunWith(SurveyorTestRunner.class)
 public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 	private static ManageRefGasBottlesPage manageRefGasBottlesPage;
+	private static final String SQAPICAD_AND_SQAPICSUP = "sqapicad@picarro.com,sqapicsup@picarro.com";
+	
+	private enum ManageRefGasBottleTestCaseType {
+		MaxCharsLimit
+	}
 	
 	@BeforeClass
 	public static void setupManageRefGasBottlesPageTest() {
@@ -117,21 +122,12 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 	@UseDataProvider(value = "dataProviderPicarroAdminSupportRoleInfo", location = UserDataProvider.class)
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC137_TC1253_AddRefGasBottleLotNumber50CharLimit_PicarroAdminSupport(String user, String pwd) {
-		String str33chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abc";
 		String str34chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcd";
 		String str35chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcde";
 		String isoValue = "-32";
-		String tcID, lotNum50Chars, lotNum51Chars;
-		
-		if (user.equalsIgnoreCase("administrator")) {
-			tcID = "TC137";
-			lotNum50Chars = testSetup.getFixedSizeRandomNumber(11) + tcID + str34chars;
-			lotNum51Chars = testSetup.getFixedSizeRandomNumber(11) + tcID + str35chars;
-		} else {
-			tcID = "TC1253";
-			lotNum50Chars = testSetup.getFixedSizeRandomNumber(11) + tcID + str33chars;
-			lotNum51Chars = testSetup.getFixedSizeRandomNumber(11) + tcID + str34chars;
-		}
+		String tcID = getTestCaseName(ManageRefGasBottleTestCaseType.MaxCharsLimit, user);
+		String lotNum50Chars = testSetup.getFixedSizeRandomNumber(16) + str34chars;
+		String lotNum51Chars = testSetup.getFixedSizeRandomNumber(16) + str35chars;
 		String password = CryptoUtility.decrypt(pwd);
 		
 		Log.info("\nRunning "
@@ -178,5 +174,22 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber1, SQACUSLOCSUR));
 		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber2, "-32", SQACUS, SQACUSLOC, SQACUSLOCSUR);
 		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber2, SQACUSLOCSUR));
+	}
+	
+	/**
+	 * Returns the testCase ID based on the username provided by DataProvider.
+	 */
+	private String getTestCaseName(ManageRefGasBottleTestCaseType testCaseType, String username) {
+		String testCase = "";		
+		switch (testCaseType) {
+		case MaxCharsLimit:
+			if (username.equalsIgnoreCase(SQAPICAD)) {
+				testCase = "TC137";
+			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
+				testCase = "TC1253";
+			}
+			break;
+		}
+		return testCase;
 	}
 }
