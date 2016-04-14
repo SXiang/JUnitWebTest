@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -70,7 +71,7 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 	 * @throws IOException
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC1696_Manage_Locations_Edit_Ethane_Methane_Ratio_Column() {
 		String locationName = "TC1696 Ethane "+ testSetup.getRandomNumber();
 		String locationNewName= locationName + "_New";
@@ -94,7 +95,7 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 	 * @throws IOException
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC1697_Manage_Locations_Add_Ethane_Methane_Ratio_Column() {
 		String locationName = "TC1697 Ethane "+ testSetup.getRandomNumber();
 		Log.info("\nRunning - TC1697 - Test Description: Ethane: Verify setting the Ethane/Methane ratio for the first time");
@@ -114,7 +115,7 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 	 * @throws IOException
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC1698_Manage_Locations_Ethane_Methane_Ratio_Column() {
 		Log.info("\nRunning - TC1698 - Test Description: Verify Manage Locations page appears when logged in as Customer Admin");
 
