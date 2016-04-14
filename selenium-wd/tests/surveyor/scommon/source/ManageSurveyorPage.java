@@ -35,6 +35,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	protected WebElement btnAddNewSurveyor;
+	protected String btnAddNewSurveyorXPath = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
 	protected WebElement panelDupSurError;
@@ -521,6 +522,8 @@ public class ManageSurveyorPage extends SurveyorBasePage {
         });
     }
 
-	
+	public boolean isAddNewSurveyorBtnPresent() {
+		return isElementPresent(this.btnAddNewSurveyorXPath);
+	}
 
 }
