@@ -222,6 +222,7 @@ public final class SurveyorConstants {
 	 * Survey View constants
 	 */
 	
+	public static final String ISOTOPIC_CAPTURE_NATURAL_GAS = Resources.getResource(ResourceKeys.Survey_NaturalGas);
 	public static final String ISOTOPIC_CAPTURE_NOT_NATURAL_GAS = Resources.getResource(ResourceKeys.Survey_NotNaturalGas);
 	public static final String ISOTOPIC_CAPTURE_CANCELLED= Resources.getResource(ResourceKeys.Survey_IsotopicCanceled);
 	
