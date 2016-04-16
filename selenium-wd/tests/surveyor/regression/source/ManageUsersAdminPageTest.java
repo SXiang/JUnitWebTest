@@ -401,7 +401,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		
 		manageUsersAdminPage.open();
 		assertTrue(manageUsersAdminPage.searchUser(SQACUSUA, SQACUSLOC,
-				CUSUSERROLEUA, USERENABLED));
+				CUSUSERROLEUA, USERENABLED, true /*searchAsCustomerAdmin*/));
 	}
 
 	/**

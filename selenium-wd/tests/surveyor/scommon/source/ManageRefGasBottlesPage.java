@@ -3,7 +3,7 @@
  */
 package surveyor.scommon.source;
 
-import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -176,13 +176,18 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		this.waitForPageLoad();
 	}
 
-	public boolean addNewRefGasBottle(String strLotNumber, String strIsoValue,  
+	public boolean addNewRefGasBottle(String strLotNumber, String strIsoValue, String ethMthRto,  
 			String strCusName, String strLocName, String strSurveyor,
 			boolean bFlag) {
 		this.btnAddNewRefGasBottle.click();
 		this.inputLotNumber.sendKeys(strLotNumber);
 		this.inputIsoValue.clear();
 		this.inputIsoValue.sendKeys(strIsoValue);
+		
+		if ((ethMthRto != null) && (ethMthRto != "")) { 
+			this.inputEthMthRto.clear();
+			this.inputEthMthRto.sendKeys(ethMthRto);
+		}
 		
 		List<WebElement> options = this.dropdownSurveyor.findElements(By
 				.tagName("option"));
@@ -222,7 +227,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 
 	public boolean findExistingRefGasBottle(String strLotNumber,
 			String strSurveyor) {
-		setPagination(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING_100);
 
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
@@ -236,10 +241,10 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			strSurveyorXPath = strTRXPath + "[" + rowNum + "]/td[3]";
@@ -253,7 +258,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 				return true;
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 
@@ -263,10 +268,10 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 				List<WebElement> newRows = table.findElements(By
 						.xpath(strTRXPath));
 				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 				rowNum = 0;
 			}
@@ -277,7 +282,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 
 	public boolean findExistingRefGasBottle(String strLotNumber,
 			String strSurveyor, String location, String customer) {
-		setPagination(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING_100);
 
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
@@ -294,10 +299,10 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			locationXPath = strTRXPath + "[" + rowNum + "]/td[1]";
@@ -316,7 +321,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 				return true;
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 
@@ -326,10 +331,10 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 				List<WebElement> newRows = table.findElements(By
 						.xpath(strTRXPath));
 				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 				rowNum = 0;
 			}

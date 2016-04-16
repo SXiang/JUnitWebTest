@@ -84,6 +84,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	public void TC464_AddRefGasBottleBlankRequiredFields_CustUA() {
 		String lotNum="";
 		String isoValue = "";
+		String ethaneMethaneRatio = "1";
 		
 		Log.info("\nRunning TC464_AddRefGasBottleBlankRequiredFields_CustUA - Test Description: add reference gas bottle - "
 				+ "blank required fields");
@@ -92,7 +93,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		
 		manageRefGasBottlesAdminPage.open();
-		assertFalse(manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR, false));
+		assertFalse(manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum, isoValue, ethaneMethaneRatio, SQACUS, SQACUSLOC, SQACUSLOCSUR, false));
 		
 		
 	}
@@ -115,6 +116,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		String lotNum51Chars = testSetup.getFixedSizeRandomNumber(11) + "TC465" + str35chars;
 		
 		String isoValue = "-32";
+		String ethMthRto = "1";
 		
 		Log.info("\nRunning TC465_AddRefGasBottleLotNumber50CharLimit_CustUA - Test Description: More than 50 characters not allowed "
 				+ "in Lot Number field present on Add Reference Gas Bottle screens");
@@ -123,8 +125,8 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		
 		manageRefGasBottlesAdminPage.open();
-		manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum50Chars, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR, true);
-		manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum51Chars, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR, true);
+		manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum50Chars, isoValue, ethMthRto, SQACUS, SQACUSLOC, SQACUSLOCSUR, true);
+		manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum51Chars, isoValue, ethMthRto, SQACUS, SQACUSLOC, SQACUSLOCSUR, true);
 		
 		assertTrue(manageRefGasBottlesAdminPage.findExistingRefGasBottle(lotNum50Chars, SQACUSLOCSUR, SQACUSLOC));
 		manageRefGasBottlesAdminPage.open();
