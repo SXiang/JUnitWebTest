@@ -144,10 +144,10 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		manageCustomersPage.addNewCustomer(customerName, eula, false);		
 		assertTrue(manageCustomersPage.findExistingCustomer(customerName, false));
 		assertTrue(manageCustomersPage.findCustomerAndOpenEditPage(customerName));
-		/*manageCustomersPage.enabledDisableCustomer(true);
-		manageCustomersPage.getRptMetaDataCheckBox().click();
-		manageCustomersPage.getRptMetaDataCheckBox().click();
-		 */manageCustomersPage.getbtnOk().click();
+		manageCustomersPage.enabledDisableCustomer(true);
+		manageCustomersPage.getInputReportMetadata().click();
+		manageCustomersPage.getInputReportShapeFile().click();
+		manageCustomersPage.getbtnOk().click();
 
 		 manageLocationsPage.open();
 		 manageLocationsPage.waitForPageLoad();
@@ -297,6 +297,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 			if (tablesList != null) {
 				if (tablesList.get(0).get(KEYINDTB).equals("1")) {
 					assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
+					//Lisa_Number present in Indications table should be sequential--check is left to do
 				}
 			}
 		}else
