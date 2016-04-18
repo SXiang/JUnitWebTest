@@ -340,7 +340,7 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(FIELD_NOTE_ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CANCELLED, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 
 		surveyViewPageAction.getSurveyViewPage().setZoomLevel(19);
@@ -406,7 +406,7 @@ public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
 		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(FIELD_NOTE_ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CANCELLED, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 

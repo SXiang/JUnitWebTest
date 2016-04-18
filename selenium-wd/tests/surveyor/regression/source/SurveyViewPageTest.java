@@ -1685,7 +1685,7 @@ public class SurveyViewPageTest extends BaseMapViewTest {
 		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(FIELD_NOTE_ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CANCELLED, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
@@ -1726,7 +1726,7 @@ public class SurveyViewPageTest extends BaseMapViewTest {
 		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(FIELD_NOTE_ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CANCELLED, NOTSET));
+		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));

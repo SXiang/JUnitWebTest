@@ -125,6 +125,7 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 		String str34chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcd";
 		String str35chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcde";
 		String isoValue = "-32";
+		String ethaneMethaneRatio = "1";
 		String tcID = getTestCaseName(ManageRefGasBottleTestCaseType.MaxCharsLimit, user);
 		String lotNum50Chars = testSetup.getFixedSizeRandomNumber(16) + str34chars;
 		String lotNum51Chars = testSetup.getFixedSizeRandomNumber(16) + str35chars;
@@ -139,8 +140,8 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(user, password);
 		
 		manageRefGasBottlesPage.open();
-		manageRefGasBottlesPage.addNewRefGasBottle(lotNum50Chars, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR, true);
-		manageRefGasBottlesPage.addNewRefGasBottle(lotNum51Chars, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR, true);
+		manageRefGasBottlesPage.addNewRefGasBottle(lotNum50Chars, isoValue, ethaneMethaneRatio, SQACUS, SQACUSLOC, SQACUSLOCSUR, true);
+		manageRefGasBottlesPage.addNewRefGasBottle(lotNum51Chars, isoValue, ethaneMethaneRatio, SQACUS, SQACUSLOC, SQACUSLOCSUR, true);
 		
 		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(lotNum50Chars, SQACUSLOCSUR));
 		manageRefGasBottlesPage.open();
