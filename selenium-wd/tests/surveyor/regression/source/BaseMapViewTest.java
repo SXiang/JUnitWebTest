@@ -71,7 +71,6 @@ public class BaseMapViewTest {
 
 	protected static final String FIELD_NOTE_ISOTOPIC_CAPTURE_NATURAL_GAS = "Natural Gas";
 	protected static final String FIELD_NOTE_ISOTOPIC_CAPTURE_NOT_NATURAL_GAS = "Not Natural Gas";
-	protected static final String ISOTOPIC_CANCELLED = "Isotopic Canceled";
 	protected static final String FIELD_NOTE_ISOTOPIC_CAPTURE_CANCELLED = "Iso Cap Canceled";
 	protected static final String EMPTY = "";
 	protected static final Integer NOTSET = -1;
