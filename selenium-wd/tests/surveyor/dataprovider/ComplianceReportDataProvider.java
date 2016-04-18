@@ -2,7 +2,7 @@ package surveyor.dataprovider;
 
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.EXCLUSIONRADIUS;
-import static surveyor.scommon.source.SurveyorConstants.PICADMNMANTAG;
+import static surveyor.scommon.source.SurveyorConstants.PICADMMANTAG;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSDRTAG;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPTUA;
@@ -121,7 +121,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		List<Map<String, String>> tablesList10 = new ArrayList<Map<String, String>>();
 		tablesList10.add(createOptionalTable("1", "1", "0", "0", "1", "1", "1", "1", "1", "1", "0", "0"));
 		List<String> tagList10 = new ArrayList<String>();
-		tagList10.add(PICADMNMANTAG);
+		tagList10.add(PICADMMANTAG);
 		
 		List<Map<String, String>> viewList11 = new ArrayList<Map<String, String>>();
 		viewList11.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
