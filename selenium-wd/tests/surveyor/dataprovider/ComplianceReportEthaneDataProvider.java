@@ -47,7 +47,7 @@ public class ComplianceReportEthaneDataProvider extends ReportDataProvider {
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		viewList.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "1", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
-		tablesList.add(createOptionalTabularPDFContent("1", "1", "1", "1"));  //, "1", "1", "1", "1", "1", "1", "1", "1"));
+		tablesList.add(createOptionalTabularPDFContent("1", "1", "1", "1"));  
 		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
 		List<Integer> boundaryRowIDs = Arrays.asList(3, 4);				 // Boundary RowIDs from TestCaseData xlsx
 		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
