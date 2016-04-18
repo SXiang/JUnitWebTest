@@ -105,7 +105,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	 *  - Log in as Picarro Admin
 	 *  - On Home Page, click Picarro Administration -> Manage Locations
 	 *  - Click on 'Add New Location' button
-	 *  - Click on ‘Lat/Long Selector’ button
+	 *  - Click on 'Lat/Long Selector' button
 	 *  - Click on desired location on map and click Cancel
 	 * Excepted Result:
 	 *  - A map appears with a pin in the default location
