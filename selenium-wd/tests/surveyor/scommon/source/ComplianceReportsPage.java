@@ -1821,9 +1821,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Iterator<StoredProcComplianceAssessmentGetReportDrivingSurveys> reportIterator = reportList.iterator();
 		while (reportIterator.hasNext()) {
 			if (!reportIterator.next().isInList(listFromStoredProc)) {
-				return false;
+				Log.info("Report survey meta data file verification failed");
+				return false;				
 			}
 		}
+		Log.info("Report survey meta data file verification passed");
 		return true;
 	}
 
