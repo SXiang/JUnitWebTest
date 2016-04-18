@@ -1683,6 +1683,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyDrivingSurveysTable(String actualPath, String reportTitle) throws IOException {
+		Log.info("Verifying Driving Surveys Table");
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -1694,10 +1695,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		expectedReportString.add(ReportSSRS_SelectedDrivingSurveys);
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
-			if (!value)
+			if (!value){
+				Log.info("Driving survey table static text verification failed");
 				return false;
+			}				
 		}
-		String surveyTable = RegexUtility.getStringInBetween(actualReportString, "Indication Table", "LISA");
+		String surveyTable = RegexUtility.getStringInBetween(actualReportString, "Indication Table", "Surveyor Date");
 		InputStream inputStream = new ByteArrayInputStream(surveyTable.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 		String line = null;
@@ -1758,13 +1761,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			Iterator<StoredProcComplianceAssessmentGetReportDrivingSurveys> reportIterator = reportSurveyList.iterator();
 			while (reportIterator.hasNext()) {
 				if (!reportIterator.next().isInList(listFromStoredProc)) {
+					Log.info("Driving survey table data verification failed");
 					return false;
 				}
 			}
 		} finally {
 			bufferReader.close();
 		}
-
+		Log.info("Driving survey table verification passed");
 		return true;
 	}
 

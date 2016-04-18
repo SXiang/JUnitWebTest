@@ -157,7 +157,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 				}
 			}
 		} else
-			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");		
+			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");	
+		//assertTrue(complianceReportsPage.verifyDrivingSurveysTable("C:\\Users\\cnanayakkara\\Downloads\\", "TC517 Report273248"));
+
 	}
 
 	private static String getTestCaseName(String key) {
