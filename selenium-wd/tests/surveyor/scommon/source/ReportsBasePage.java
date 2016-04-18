@@ -1056,7 +1056,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		selectTimeZone(timeZone);
 
-		addOtherDetails(exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong, SWLat, SWLong, surUnit,
+		addOtherDetails(customer, exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong, SWLat, SWLong, surUnit,
 				tagList, startDate, endDate, changeMode, strReportMode);
 
 		if (surUnit != "") {
@@ -1209,7 +1209,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		throw new Exception("Not implemented");
 	}
 
-	public void addOtherDetails(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth,
+	public void addOtherDetails(String customer, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth,
 			String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList,
 			String startDate, String endDate, boolean changeMode, String strReportMode) throws Exception {
 		throw new Exception("Not implemented");
@@ -1253,7 +1253,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 
 		selectTimeZone(timeZone);
-		reportSpecificAddNewReport(exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong, SWLat,
+		reportSpecificAddNewReport(customer, exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong, SWLat,
 				SWLong);
 
 		if (surUnit != "") {
@@ -1356,7 +1356,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return false;
 	}
 
-	public void reportSpecificAddNewReport(String exclusionRadius, String boundary, String imageMapHeight,
+	public void reportSpecificAddNewReport(String customer, String exclusionRadius, String boundary, String imageMapHeight,
 			String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong) throws Exception {
 		throw new Exception("Not implemented");
 	}
