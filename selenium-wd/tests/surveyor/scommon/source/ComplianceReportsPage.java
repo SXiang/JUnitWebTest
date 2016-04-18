@@ -1508,6 +1508,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyShowCoverageTable(String actualPath, String reportTitle) throws IOException {
+		Log.info("Verifying Show Coverage Table");
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -1523,9 +1524,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
-			if (!value)
+			if (!value){
+				Log.info("Show Coverage Table verification failed");
 				return false;
+			}
 		}
+		Log.info("Show Coverage Table verification passed");
 		return true;
 	}
 
@@ -1539,6 +1543,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 
 	public boolean verifyCoverageValuesTable(String actualPath, String reportTitle, Map<String, String> userSelection) throws IOException {
+		Log.info("Verifying Coverage Values Table");
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -1565,14 +1570,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 
 		for (Boolean value : actualFirstPage.values()) {
-			if (!value)
+			if (!value){
+				Log.info("Coverage Values data verification failed");
 				return false;
+			}
 		}
 		
 		if (!storedProcObj.isCoverageValuesEquals(coverageReportObj)) {
+			Log.info("Coverage Values data verification failed");
 			return false;
 		}
-
+		Log.info("Coverage Values data verification passed");
 		return true;
 	}
 
@@ -1586,6 +1594,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyLayersTable(String actualPath, String reportTitle, Map<String, String> userInput) throws IOException {
+		Log.info("Verifying Layers Table");
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -1605,9 +1614,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
-			if (!value)
+			if (!value){
+				Log.info("Layers Table data verification failed");
 				return false;
+			}
 		}
+		Log.info("Layers Table data verification passed");
 		return true;
 
 	}
@@ -1623,6 +1635,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 
 	public boolean verifyViewsTable(String actualPath, String reportTitle, List<Map<String, String>> userInput) throws IOException {
+		Log.info("Verifying Report Views Table");
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -1666,11 +1679,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		List<ReportView> dbObjList = ReportView.getReportView(reportId);
 		for (ReportView viewObj : dbObjList) {
 			if (!viewObj.isViewNameAndMapInList(viewListInReport)) {
+				Log.info("Views Table data verification failed");
 				return false;
 			}
 
 		}
-
+		Log.info("Views Table data verification passed");
 		return true;
 	}
 
@@ -1789,6 +1803,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyReportSurveyMetaDataFile(String actualPath, String reportTitle) throws FileNotFoundException, IOException {
+		Log.info("Verifying Report survey meta data file");
 		CSVUtility csvUtility = new CSVUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
