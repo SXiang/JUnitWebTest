@@ -2124,10 +2124,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				createImageFromBASE64(base64String, pathToActualImage);
 				String pathToBaseImage = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\ssrs-images").toString() + "\\" + testCase + "\\" + "Page_" + pageCounter + ".png";
 				if (!verifyActualImageWithBase(pathToBaseImage, pathToActualImage)) {
-					Files.delete(Paths.get(pathToActualImage));
+					//Files.delete(Paths.get(pathToActualImage));
 					return false;
 				}
-				Files.delete(Paths.get(pathToActualImage));
+				//Files.delete(Paths.get(pathToActualImage));
 				pageCounter++;
 			}
 
