@@ -1480,7 +1480,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 *	- - Percent Coverage value is not dependent of Assets so value should not change
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)- Additional Surveys , Probability to Obtain 70% Coverage
 	 */
-	@Test  //Need to change the user to "customer admin"
+	@Ignore //Need to change the user to "customer admin"
 	public void TC1318_GenerateMultipleComplianceReportsDifferentAssetLayerIncludePercentCoverageForecast() throws Exception {
 		Log.info("\nRunning TC1318_GenerateMultipleComplianceReportsDifferentAssetLayerIncludePercentCoverageForecast ...");
 
@@ -1500,10 +1500,10 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();
 
-		tableMap.put(KEYINDTB, "0");
-		tableMap.put(KEYISOANA, "0");
-		tableMap.put(KEYPCA, "0");
-		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYINDTB, "1");
+		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYPCA, "1");
+		tableMap.put(KEYPCRA, "1");
 		tableMap.put(KEYASSETCASTIRON, "1");
 		tableMap.put(KEYASSETCOPPER, "1");
 		tableMap.put(KEYASSETOTHERPLASTIC, "1");
