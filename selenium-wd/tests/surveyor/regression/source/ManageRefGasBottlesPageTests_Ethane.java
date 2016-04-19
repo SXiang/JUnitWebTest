@@ -85,12 +85,12 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 		manageRefGasBottlesPage.login(SQAPICSUP, USERPASSWORD);
 
 		manageRefGasBottlesPage.open();
-		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", "0", SQAETHCUST, SQAETHLOC, SQAETHSUR);
+		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", "1", SQAETHCUST, SQAETHLOC, SQAETHSUR);
 		manageRefGasBottlesPage.waitForNewPageLoad();
 
 		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber, SQAETHSUR));
 		
-		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", "100", SQAETHCUST, SQAETHLOC, SQAETHSUR);
+		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", "99", SQAETHCUST, SQAETHLOC, SQAETHSUR);
 		manageRefGasBottlesPage.waitForNewPageLoad();
 
 		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber, SQAETHSUR));
