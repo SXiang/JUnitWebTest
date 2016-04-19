@@ -678,16 +678,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	public boolean searchLocation(String customer, String locationName) {
 		this.getInputSearch().sendKeys(locationName);
-		try {
-			if (this.tdLocationValue.getText().contentEquals(locationName)) {
-				if (this.tdCustomerValue.getText().contentEquals(customer))
-					return true;
-			}
-		} catch (NoSuchElementException ne) {
-			Log.info(ne.toString());
-			return false;
-		}
-		return false;
+		return findExistingLocation(customer, locationName);
 	}
 
 	public boolean isDuplicateLocMsgPresent() {
