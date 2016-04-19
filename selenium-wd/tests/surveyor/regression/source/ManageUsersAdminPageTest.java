@@ -54,6 +54,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		homePage.getLinkAdminManageUsers().click();
+		manageUsersAdminPage.waitForNewPageLoad();
 
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC,
 				CUSUSERROLEDR, TIMEZONECTUA);
@@ -85,6 +86,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		homePage.getLinkAdminManageUsers().click();
+		manageUsersAdminPage.waitForNewPageLoad();
 
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC,
 				CUSUSERROLEDR, TIMEZONECTUA);
@@ -156,6 +158,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		homePage.getLinkAdminManageUsers().click();
+		manageUsersAdminPage.waitForNewPageLoad();
 
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC,
 				CUSUSERROLEDR, TIMEZONECTUA, false);
@@ -192,6 +195,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		homePage.getLinkAdminManageUsers().click();
+		manageUsersAdminPage.waitForNewPageLoad();
 
 		manageUsersAdminPage.addTestUser(userName, USERPASSWORD, USERPASSWORD);
 
@@ -219,6 +223,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		homePage.getLinkAdminManageUsers().click();
+		manageUsersAdminPage.waitForNewPageLoad();
 
 		assertTrue(manageUsersAdminPage.addTestUser(userName, USERPASSWORD,
 				USERPASSWORD + "2").contains(PWVALUEERROR));
@@ -241,6 +246,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		homePage.getLinkAdminManageUsers().click();
+		manageUsersAdminPage.waitForNewPageLoad();
 
 		assertTrue(manageUsersAdminPage.addTestUser(userName1, USERPASSWORD,
 				USERPASSWORD).equalsIgnoreCase(EMAILINVALID));
@@ -267,6 +273,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		homePage.getLinkAdminManageUsers().click();
+		manageUsersAdminPage.waitForNewPageLoad();
 
 		assertTrue(manageUsersAdminPage.addTestUser("", USERPASSWORD,
 				USERPASSWORD).contains(BLANKFIELDERROR));
@@ -298,6 +305,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		homePage.getLinkAdminManageUsers().click();
+		manageUsersAdminPage.waitForNewPageLoad();
 
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC,
 				CUSUSERROLEDR, TIMEZONEPTUA);
@@ -330,6 +338,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		homePage.getLinkAdminManageUsers().click();
+		manageUsersAdminPage.waitForNewPageLoad();
 
 		String rtnMsg = manageUsersAdminPage.addTestUser(userName,
 				USERPASSWORD, USERPASSWORD);
@@ -401,7 +410,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		
 		manageUsersAdminPage.open();
 		assertTrue(manageUsersAdminPage.searchUser(SQACUSUA, SQACUSLOC,
-				CUSUSERROLEUA, USERENABLED));
+				CUSUSERROLEUA, USERENABLED, true /*searchAsCustomerAdmin*/));
 	}
 
 	/**

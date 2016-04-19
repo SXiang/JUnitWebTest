@@ -1373,7 +1373,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 	
 	public boolean searchUser(String userName, String locationName,
-			String role, String status) {
+			String role, String status, boolean searchAsCustomerAdmin) {
 		this.getInputSearch().sendKeys(userName);
 		this.waitForPageToLoad();
 		try {
@@ -1383,6 +1383,12 @@ public class ManageUsersPage extends SurveyorBasePage {
 					+ "[Role=%s],[Status=%s]", this.tdUserNameValue.getText(), 
 					this.tdLocationValue.getText(), this.tdRoleValue.getText(), 
 					this.tdStatusValue.getText()));
+			
+			if (searchAsCustomerAdmin) {
+				this.tdLocationValue = driver.findElement(By.xpath("//*[@id='datatable']/tbody/tr[1]/td[3]"));
+				this.tdRoleValue = driver.findElement(By.xpath("//*[@id='datatable']/tbody/tr[1]/td[4]"));
+				this.tdStatusValue = driver.findElement(By.xpath("//*[@id='datatable']/tbody/tr[1]/td[5]"));
+			}
 			
 			if (this.tdUserNameValue.getText().contentEquals(userName)) {
 				if (this.tdLocationValue.getText().contentEquals(locationName)) {
