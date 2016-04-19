@@ -739,7 +739,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void inputImageMapHeight(String imageMapHeight) {
-		this.inputImgMapHeight.clear();
+		//this.inputImgMapHeight.clear();
 		this.inputImgMapHeight.sendKeys(imageMapHeight);
 	}
 
@@ -2441,8 +2441,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	private boolean isCustomBoundarySpecified(ReportsCompliance reportsCompliance) {
 		boolean useSelector = false;
 		if (reportsCompliance != null) {
-			boolean textFieldsSpecified = reportsCompliance.getNELat() != "" && reportsCompliance.getNELong() != "" &&
-					reportsCompliance.getSWLat() != "" && reportsCompliance.getSWLong() != "";
+			boolean textFieldsSpecified = reportsCompliance.getNELat() != null && reportsCompliance.getNELong() != null &&
+					reportsCompliance.getSWLat() != null && reportsCompliance.getSWLong() != null;
 			boolean latLongFieldsSpecified = useCustomBoundaryLatLongSelector(reportsCompliance);
 			useSelector = textFieldsSpecified || latLongFieldsSpecified;
 		}		

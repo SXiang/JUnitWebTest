@@ -48,6 +48,18 @@ import static surveyor.scommon.source.SurveyorConstants.RSWLAT;
 import static surveyor.scommon.source.SurveyorConstants.RSWLON;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
+import static surveyor.scommon.source.SurveyorConstants.X_OFFSET;
+import static surveyor.scommon.source.SurveyorConstants.Y_OFFSET;
+import static surveyor.scommon.source.SurveyorConstants.RECT_WIDTH;
+import static surveyor.scommon.source.SurveyorConstants.RECT_HEIGHT;
+
+
+
+
+
+
+
+
 
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -57,8 +69,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
@@ -538,81 +553,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 			}
 		}else
 			fail("\nTestcase TC1041 failed.\n");
-
-	}
-
-	/**
-	 * Test Case ID: TC1090_GenerateComplianceReportWhenGapTableGapsInViewsSectionSelected
-	 * Script: -  	
-	 * Results: - 
-	 *	- - SSRS Gap table should not show Gaps which are completely covered by FoV and LISA- Views will have the Gaps
-	 */
-	@Ignore
-	public void TC1090_GenerateComplianceReportWhenGapTableGapsInViewsSectionSelected() throws Exception {
-		Log.info("\nRunning TC1090_GenerateComplianceReportWhenGapTableGapsInViewsSectionSelected ...");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-
-		String testCaseID = "TC1090";
-		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
-
-		complianceReportsPage.open();
-
-		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add(IMGMAPHEIGHT);
-		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add("37.4206");
-		listBoundary.add("-121.9725");
-		listBoundary.add("37.4157");
-		listBoundary.add("-121.9839");
-
-		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
-		Map<String, String> tableMap = new HashMap<String, String>();
-
-		tableMap.put(KEYINDTB, "0");
-		tableMap.put(KEYISOANA, "0");
-		tableMap.put(KEYGAPTB, "0");
-		tableMap.put(KEYPCA, "0");
-		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYASSETCASTIRON, "1");
-		tableMap.put(KEYASSETCOPPER, "1");
-		tableMap.put(KEYASSETOTHERPLASTIC, "1");
-		tableMap.put(KEYASSETPEPLASTIC, "1");
-		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
-		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "0");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
-		tablesList.add(tableMap);
-
-		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
-		Map<String, String> viewMap = new HashMap<String, String>();
-
-		viewMap.put(KEYVIEWNAME, "First View");
-		viewMap.put(KEYLISA, "0");
-		viewMap.put(KEYFOV, "0");
-		viewMap.put(KEYBREADCRUMB, "0");
-		viewMap.put(KEYINDICATIONS, "0");
-		viewMap.put(KEYISOTOPICCAPTURE, "0");
-		viewMap.put(KEYANNOTATION, "0");
-		viewMap.put(KEYGAPS, "1");
-		viewMap.put(KEYASSETS, "1");
-		viewMap.put(KEYBOUNDARIES, "0");
-		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
-		viewList.add(viewMap);
-
-		List<String> tagList = new ArrayList<String>();
-		tagList.add(PICADMNSTDTAG);
-
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
-		//complianceReportsPage.addNewReport(rpt);
-		complianceReportsPage.waitForPageLoad();
-		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
-			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
-		}else
-			fail("\nTestcase TC1090 failed.\n");
-
 
 	}
 
@@ -1500,15 +1440,24 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	/**
 	 * Test Case ID: TC1315_CheckErrorMessagePresentIfPercentCoverageForecastCheckBoxSelectedCopyComplianceReportScreens
 	 * Script: -  	
+	 *	- - Log in to application as Customer admin user and navigate to Copy Compliance Report page
+	 *	- - Select Custom boundary and select Lat/Long co-ordinates
+	 *	- - Click OK
+	 *	- - Select Customer boundary and click OK
+	 *	- - Select Custom boundary and provide Lat/Long co-ordinates
 	 *	- - Add 2 or more surveys with different tag values
-	 *	- Selected Percent Coverage Forecast, Please select Customer Boundary
-	 *	- Selected Percent Coverage Forecast, Please select at least two surveys with different tags
+	 *	- - Click OK
+
 	 * Results: - 
-	 *	- - User friendly error messages are displayed:Selected Percent Coverage Forecast, Please select at least two surveys with different tags
 	 *	- - User friendly error messages are displayed:
-	 *	- Selected Percent Coverage Forecast, Please select Customer Boundary
+	 *	- -  "Selected Percent Coverage Forecast, Please select Customer Boundary"
+	 *	- - "Selected Percent Coverage Forecast, Please select at least two surveys with different tags"
+	 *	- - User friendly error messages are displayed: 
+	 *	- - "Selected Percent Coverage Forecast, Please select at least two surveys with different tags"
+	 *	- - User friendly error messages are displayed: 
+	 *	- - "Selected Percent Coverage Forecast, Please select Customer Boundary"
 	 */
-	//@Test--latlong selector
+	@Test
 	public void TC1315_CheckErrorMessagePresentIfPercentCoverageForecastCheckBoxSelectedCopyComplianceReportScreens() throws Exception {
 		Log.info("\nRunning TC1315_CheckErrorMessagePresentIfPercentCoverageForecastCheckBoxSelectedCopyComplianceReportScreens ...");
 
@@ -1531,13 +1480,178 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 *	- - Percent Coverage value is not dependent of Assets so value should not change
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)- Additional Surveys , Probability to Obtain 70% Coverage
 	 */
-	//@Test customer boundary
+	@Test  //Need to change the user to "customer admin"
 	public void TC1318_GenerateMultipleComplianceReportsDifferentAssetLayerIncludePercentCoverageForecast() throws Exception {
 		Log.info("\nRunning TC1318_GenerateMultipleComplianceReportsDifferentAssetLayerIncludePercentCoverageForecast ...");
 
 		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);
+		
+		String testCaseID = "TC1318";
+		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		String boundaryName = "Level 2-AA";
+
+		complianceReportsPage.open();
+
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "0");
+		tableMap.put(KEYISOANA, "0");
+		tableMap.put(KEYPCA, "0");
+		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
+		tablesList.add(tableMap);
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "0");
+		viewMap1.put(KEYANNOTATION, "0");
+		viewMap1.put(KEYGAPS, "0");
+		viewMap1.put(KEYASSETS, "1");
+		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
+
+		viewList.add(viewMap1);
+
+		List<String> tagList = new ArrayList<String>();
+		tagList.add(PICADMNSTDTAG);
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, RSURSTARTDATE, RSURENDDATE, viewList, SurveyModeFilter.Standard);
+		rpt.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, boundaryName);
+		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
+
+		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
+			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
+			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
+			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rptTitle));
+			assertTrue(complianceReportsPage.verifySSRSImages(testSetup.getDownloadPath(), rptTitle, testCaseID));
+			if (tablesList != null) {
+				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
+					assertTrue(complianceReportsPage.verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle));
+					assertTrue(complianceReportsPage.verifyCoverageValuesTable(testSetup.getDownloadPath(), rptTitle, tablesList.get(0)));
+				}
+			}
+		}
+		else
+			fail("\nTestcase TC1318 failed.\n");
+	}
+
+	/**
+	 * Test Case ID: TC1090_GenerateComplianceReportWhenGapTableGapsInViewsSectionSelected
+	 * Script: - 
+	 * - - On Home Page, click Reports -> Compliance -> 'New Compliance Report' button
+	 * - - TimeZone : PST, Report Mode: Standard, Exclusion Radius: 0
+	 * - - Click Custom Boundary
+	 * - - Click Lat/Long Map Selector
+	 * - - Press the Shift key, then right-click and drag to select the desired area on the map and click OK
+	 * - - (Select area smaller then or equal to 1.5 sqkms)
+	 * - - Select one or more surveys
+	 * - - Add View with base map value: map, satellite and none for all the values (make sure to select Gaps in views)
+	 * - - Select Gap table checkbox
+	 * - - Click OK and click Download/Zip Icon 	
+	 * Results: - 
+	 *	- - Report generated successfully
+	 *	- - SSRS will have the Gap table. The Gap Table will have numbers corresponding to the gaps in the Compliance View with a check box next to each number. The numbers will run sequentially from left to right and then top to bottom. The numbers in the table should exactly match the number of gaps in the View
+	 *	- - SSRS Gap table should not show Gaps which are completely covered by FoV and LISA
+	 *	- - Views will have the Gaps
+	 */
+	@Test
+	public void TC1090_GenerateComplianceReportWhenGapTableGapsInViewsSectionSelected() throws Exception {
+		Log.info("\nRunning TC1090_GenerateComplianceReportWhenGapTableGapsInViewsSectionSelected ...");
+	
+		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		loginPageAction.login(EMPTY, 1);
+	
+		String testCaseID = "TC1090";
+		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+
+		complianceReportsPage.open();
+	
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+	
+		tableMap.put(KEYINDTB, "0");
+		tableMap.put(KEYISOANA, "0");
+		tableMap.put(KEYGAPTB, "0");
+		tableMap.put(KEYPCA, "0");
+		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYASSETCASTIRON, "1");
+		tableMap.put(KEYASSETCOPPER, "1");
+		tableMap.put(KEYASSETOTHERPLASTIC, "1");
+		tableMap.put(KEYASSETPEPLASTIC, "1");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
+		tablesList.add(tableMap);
+	
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		viewList.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList.add(createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "1", "1", "0", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList.add(createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "1", "1", "0", "None"));
+		
+		List<String> tagList = new ArrayList<String>();
+		tagList.add(PICADMNSTDTAG);
+	
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+
+		rpt.setCustomBoundaryInfo(X_OFFSET, Y_OFFSET, RECT_HEIGHT, RECT_WIDTH);
+		complianceReportsPage.waitForPageLoad();
+		
+		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
+		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
+			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
+			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
+			if (tablesList != null) {
+				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
+					assertTrue(complianceReportsPage.verifyGapsTable(testSetup.getDownloadPath(), rptTitle));
+					//assertTrue(complianceReportsPage.verifyViewsImages(testSetup.getDownloadPath(), rptTitle, testCaseID, destViewTitle));
+				}
+			}
+		}else
+	fail("\nTestcase TC1090 failed.\n");
+	
+	
+	}
+
+	public static HashMap<String, String> createViewsMapTable(String viewName, String lisa, String fov, String breadcrumb, String indications, String isotopic, String annotation, String gap, String asset, String boundary, String map) {
+		HashMap<String, String> viewMap = new HashMap<String, String>();
+		viewMap.put(KEYVIEWNAME, viewName);
+		viewMap.put(KEYLISA, lisa);
+		viewMap.put(KEYFOV, fov);
+		viewMap.put(KEYBREADCRUMB, breadcrumb);
+		viewMap.put(KEYINDICATIONS, indications);
+		viewMap.put(KEYISOTOPICCAPTURE, isotopic);
+		viewMap.put(KEYANNOTATION, annotation);
+		viewMap.put(KEYGAPS, gap);
+		viewMap.put(KEYASSETS, asset);
+		viewMap.put(KEYBOUNDARIES, boundary);
+		viewMap.put(KEYBASEMAP, map);
+		return viewMap;
 	}
 
 }

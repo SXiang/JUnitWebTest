@@ -224,6 +224,7 @@ public final class SurveyorConstants {
 	 * Survey View constants
 	 */
 	
+	public static final String ISOTOPIC_CAPTURE_NATURAL_GAS = Resources.getResource(ResourceKeys.Survey_NaturalGas);
 	public static final String ISOTOPIC_CAPTURE_NOT_NATURAL_GAS = Resources.getResource(ResourceKeys.Survey_NotNaturalGas);
 	public static final String ISOTOPIC_CAPTURE_CANCELLED= Resources.getResource(ResourceKeys.Survey_IsotopicCanceled);
 	
@@ -265,6 +266,12 @@ public final class SurveyorConstants {
 	public static final String RSWLON = "-121.98390";
 
 	public static final String REXCLUSIONRADIUS = "3";
+	
+	public static final int  X_OFFSET = 100;
+	public static final int Y_OFFSET = 100;
+	public static final int RECT_WIDTH = 100;
+	public static final int RECT_HEIGHT = 100;
+	public static final String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
 
 	/*
 	 * Lat Long for Ethane Reporting
