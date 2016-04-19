@@ -149,39 +149,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(id = "report-show-percent-coverage-report-area")
 	protected WebElement checkBoxPCRA;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='report-asset-layers-ad701312-c470-482a-be45-ef37770e2ce6']")
-	protected WebElement checkBoxOtherPla;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='report-asset-layers-f14735de-6c9b-4423-8533-f243a7fe4e90']")
-	protected WebElement checkBoxPEPla;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='report-asset-layers-44353e68-0694-4f05-85cb-84d753ea278c']")
-	protected WebElement checkBoxProtectedSteel;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='report-asset-layers-f3955e82-dd13-4842-84f7-502bcda6b57a']")
-	protected WebElement checkBoxUnProtectedSteel;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='report-asset-layers-96caf1f5-d5c5-461d-9ce3-d210c20a1bb0']")
-	protected WebElement checkBoxCastIron;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='report-asset-layers-d08fc87f-f979-4131-92a9-3d82f37f4bba']")
-	protected WebElement checkBoxCopper;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='report-boundry-layers-Small Boundary']")
-	protected WebElement checkBoxDistrictPlat;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='report-boundry-layers-Big Boundary']")
-	protected WebElement checkBoxDistrict;
-	
-	@FindBy(id = "report-boundry-layers-Leak Survey Area")
-	protected WebElement checkBoxLeakSurveyArea;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='report-boundry-layers-Level 1']")
-	protected WebElement checkBoxLevel1;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='report-boundry-layers-Level 6']")
-	protected WebElement checkBoxLevel6;
-
 	@FindBy(how = How.ID, using = "report-surveyor-id")
 	protected WebElement cbSurUnit;
 
@@ -257,10 +224,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[11]/input")
 	protected WebElement inputViewBoundaries;
 
-	// @FindBy(how = How.XPATH, using =
-	// "//*[@id='datatableViews']/tbody/tr/td[11]/input")
-	// protected WebElement inputViewBaseMap;
-
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[12]/select")
 	protected WebElement cbMapSatellite;
 
@@ -277,7 +240,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 	protected WebElement actionStatus;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a[3]/img")
-	// *[@id="datatable"]/tbody/tr[4]/td[4]/a[4]/img
 	protected WebElement btnReportViewer;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/span")
@@ -651,44 +613,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public boolean isViewBoundariesSelected() {
 		return inputViewBoundaries.isSelected();
-	}
-
-	/************** Opt View Layers *****************/
-
-	// Assets
-
-	public boolean isCopperSelected() {
-		return checkBoxCopper.isSelected();
-	}
-
-	public boolean isUnprotectedSteelSelected() {
-		return checkBoxUnProtectedSteel.isSelected();
-	}
-
-	public boolean isProtectedSteelSelected() {
-		return checkBoxProtectedSteel.isSelected();
-	}
-
-	public boolean isCastIronSelected() {
-		return checkBoxCastIron.isSelected();
-	}
-
-	public boolean isOtherPlasticSelected() {
-		return checkBoxOtherPla.isSelected();
-	}
-
-	public boolean isPEPlasticSelected() {
-		return checkBoxPEPla.isSelected();
-	}
-
-	// Boundary
-
-	public boolean isDistrictPlatSelected() {
-		return checkBoxDistrictPlat.isSelected();
-	}
-
-	public boolean isDistrictSelected() {
-		return checkBoxDistrict.isSelected();
 	}
 
 	/************** Opt Tabular PDF content *****************/
