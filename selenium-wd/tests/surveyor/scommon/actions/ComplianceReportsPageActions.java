@@ -1487,6 +1487,18 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
  
 	/**
+	 * Executes verifyPaginationAndSortingOnAllColumns action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean verifyPaginationAndSortingOnAllColumns(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.verifyPaginationAndSortingOnAllColumns", data, dataRowID);
+		return true;
+	}
+	
+	/**
 	 * Executes verifyPDFThumbnailDownloadFromComplianceViewer action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -1883,7 +1895,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return false;
 	}
 
-	private boolean verifyIsotopicTableSortedByColumn(String data, Integer dataRowID) {
+	public boolean verifyIsotopicTableSortedByColumn(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.verifyIsotopicTableSortedByColumn", data, dataRowID);
 		return false;
 	}
@@ -2141,7 +2153,29 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyIndicationTableSortedByColumn", data, dataRowID);
 		return true;
 	}
- 
+
+	/**
+	 * Executes verifyLisasTableSortedByColumn action.
+	 * @param data - specifies the column name.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyLisasTableSortedByColumn(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyLisasTableSortedByColumn", data, dataRowID);
+		return true;
+	}
+
+	/**
+	 * Executes verifyGapsTableSortedByColumn action.
+	 * @param data - specifies the column name.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGapsTableSortedByColumn(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyGapsTableSortedByColumn", data, dataRowID);
+		return true;
+	}
+
 	/**
 	 * Executes verifyWarningMessageOnDeleteButtonClickEquals action.
 	 * @param data - specifies the input data passed to the action.
@@ -2581,6 +2615,248 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return true;
 	}
  
+	/**
+	 * Executes verifyAllMetadataFiles action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyAllMetadataFiles(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyAllMetadataFiles", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifyAllSSRSTableInfos action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyAllSSRSTableInfos(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyAllSSRSTableInfos", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifyBoundariesAutoCompleteListContains action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyBoundariesAutoCompleteListContains(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyBoundariesAutoCompleteListContains", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifyGapsTableInfo action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGapsTableInfo(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyGapsTableInfo", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifyIndicationTableInfo action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyIndicationTableInfo(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyIndicationTableInfo", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifyIndicationTableMinAmplitudeValues action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyIndicationTableMinAmplitudeValues(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyIndicationTableMinAmplitudeValues", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifyIsotopicAnalysisTableInfo action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyIsotopicAnalysisTableInfo(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyIsotopicAnalysisTableInfo", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifyIsotopicMetaDataFile action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyIsotopicMetaDataFile(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyIsotopicMetaDataFile", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifyLISASMetaDataFile action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyLISASMetaDataFile(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyLISASMetaDataFile", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifyReportDeletedSuccessfully action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyReportDeletedSuccessfully(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyReportDeletedSuccessfully", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifyReportSurveyMetadataFile action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyReportSurveyMetadataFile(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyReportSurveyMetadataFile", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifyShapeFilesWithBaselines action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyShapeFilesWithBaselines(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyShapeFilesWithBaselines", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifySSRSCoverageTableInfo action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifySSRSCoverageTableInfo(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifySSRSCoverageTableInfo", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifySSRSDrivingSurveyTableInfo action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifySSRSDrivingSurveyTableInfo(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifySSRSDrivingSurveyTableInfo", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifySSRSImagesWithBaselines action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifySSRSImagesWithBaselines(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifySSRSImagesWithBaselines", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifySSRSLayersTableInfo action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifySSRSLayersTableInfo(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifySSRSLayersTableInfo", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifySSRSShowCoverageTableInfo action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifySSRSShowCoverageTableInfo(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifySSRSShowCoverageTableInfo", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifySSRSViewsTableInfo action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifySSRSViewsTableInfo(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifySSRSViewsTableInfo", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifySurveysTableInfo action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifySurveysTableInfo(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifySurveysTableInfo", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifyViewsCreatedAreInCorrectSequence action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyViewsCreatedAreInCorrectSequence(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyViewsCreatedAreInCorrectSequence", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifyViewsImagesWithBaselines action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyViewsImagesWithBaselines(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyViewsImagesWithBaselines", data, dataRowID);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifyViewsWithBaselines action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyViewsWithBaselines(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyViewsWithBaselines", data, dataRowID);
+		return true;
+	} 
+
 	/* END - Actions on the Page*/
 
 	/* Invoke action using specified ActionName */
@@ -2611,10 +2887,10 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("clickOnOKButton")) { return this.clickOnOKButton(data, dataRowID); }
 		else if (actionName.equals("clickOnResubmitButton")) { return this.clickOnResubmitButton(data, dataRowID); }
 		else if (actionName.equals("clickOnSurveySelectorSearchButton")) { return this.clickOnSurveySelectorSearchButton(data, dataRowID); }
-		else if (actionName.equals("clickOnPDFInReportViewer")) { return this.clickOnPDFInReportViewer(data, dataRowID); }
-		else if (actionName.equals("clickOnZIPInReportViewer")) { return this.clickOnZIPInReportViewer(data, dataRowID); }
-		else if (actionName.equals("clickOnMetadataZIPInReportViewer")) { return this.clickOnMetadataZIPInReportViewer(data, dataRowID); }
-		else if (actionName.equals("clickOnShapeZIPInReportViewer")) { return this.clickOnShapeZIPInReportViewer(data, dataRowID); }
+//		else if (actionName.equals("clickOnPDFInReportViewer")) { return this.clickOnPDFInReportViewer(data, dataRowID); }
+//		else if (actionName.equals("clickOnZIPInReportViewer")) { return this.clickOnZIPInReportViewer(data, dataRowID); }
+//		else if (actionName.equals("clickOnMetadataZIPInReportViewer")) { return this.clickOnMetadataZIPInReportViewer(data, dataRowID); }
+//		else if (actionName.equals("clickOnShapeZIPInReportViewer")) { return this.clickOnShapeZIPInReportViewer(data, dataRowID); }
 		else if (actionName.equals("clickOnViewThumbnailInReportViewer")) { return this.clickOnViewThumbnailInReportViewer(data, dataRowID); }
 		else if (actionName.equals("clickOnLatLongSelectorButton")) { return this.clickOnLatLongSelectorButton(data, dataRowID); }
 		else if (actionName.equals("clickOnComplianceViewerPDF")) { return this.clickOnComplianceViewerPDF(data, dataRowID); }
@@ -2680,6 +2956,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifyComplianceViewerViewCountEquals")) { return this.verifyComplianceViewerViewCountEquals(data, dataRowID); }
 		else if (actionName.equals("verifyCopyButtonIsDisplayed")) { return this.verifyCopyButtonIsDisplayed(data, dataRowID); }
 		else if (actionName.equals("verifyDeleteButtonIsDisplayed")) { return this.verifyDeleteButtonIsDisplayed(data, dataRowID); }
+		else if (actionName.equals("verifyGapsTableSortedByColumn")) { return this.verifyGapsTableSortedByColumn(data, dataRowID); }
 		else if (actionName.equals("verifyIndicationTableSortedByColumn")) { return this.verifyIndicationTableSortedByColumn(data, dataRowID); }
 		else if (actionName.equals("verifyInvestigateButtonIsDisplayed")) { return this.verifyInvestigateButtonIsDisplayed(data, dataRowID); }
 		else if (actionName.equals("verifyInvestigatePDFButtonIsDisplayed")) { return this.verifyInvestigatePDFButtonIsDisplayed(data, dataRowID); }
@@ -2687,10 +2964,12 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifyIsotopicTableSortedByColumn")) { return this.verifyIsotopicTableSortedByColumn(data, dataRowID); }
 		else if (actionName.equals("verifyIsotopicValueIsFormattedCorrectly")) { return this.verifyIsotopicValueIsFormattedCorrectly(data, dataRowID); }
 		else if (actionName.equals("verifyLastXDaysSurveysPresentInPDF")) { return this.verifyLastXDaysSurveysPresentInPDF(data, dataRowID); }
+		else if (actionName.equals("verifyLisasTableSortedByColumn")) { return this.verifyLisasTableSortedByColumn(data, dataRowID); }
 		else if (actionName.equals("verifyMetaDataFilesHaveCorrectData")) { return this.verifyMetaDataFilesHaveCorrectData(data, dataRowID); }
 		else if (actionName.equals("verifyMetaDataZIPFilesAreCorrect")) { return this.verifyMetaDataZIPFilesAreCorrect(data, dataRowID); }
 		else if (actionName.equals("verifyMetaDataZIPThumbnailDownloadFromComplianceViewer")) { return this.verifyMetaDataZIPThumbnailDownloadFromComplianceViewer(data, dataRowID); }
 		else if (actionName.equals("verifyMetaDataZIPThumbnailIsShownInComplianceViewer")) { return this.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(data, dataRowID); }
+		else if (actionName.equals("verifyPaginationAndSortingOnAllColumns")) { return this.verifyPaginationAndSortingOnAllColumns(data, dataRowID); }
 		else if (actionName.equals("verifyPDFContainsInputtedInformation")) { return this.verifyPDFContainsInputtedInformation(data, dataRowID); }
 		else if (actionName.equals("verifyPDFThumbnailDownloadFromComplianceViewer")) { return this.verifyPDFThumbnailDownloadFromComplianceViewer(data, dataRowID); }
 		else if (actionName.equals("verifyPDFThumbnailIsShownInComplianceViewer")) { return this.verifyPDFThumbnailIsShownInComplianceViewer(data, dataRowID); }
@@ -2741,6 +3020,28 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifyView6ThumbnailIsCorrect")) { return this.verifyView6ThumbnailIsCorrect(data, dataRowID); }
 		else if (actionName.equals("verifyView7ThumbnailIsCorrect")) { return this.verifyView7ThumbnailIsCorrect(data, dataRowID); }
 		else if (actionName.equals("verifyGapShapeFilesHaveCorrectData")) { return this.verifyGapShapeFilesHaveCorrectData(data, dataRowID); }
+		else if (actionName.equals("verifyAllMetadataFiles")) { return this.verifyAllMetadataFiles(data, dataRowID); }
+		else if (actionName.equals("verifyAllSSRSTableInfos")) { return this.verifyAllSSRSTableInfos(data, dataRowID); }
+		else if (actionName.equals("verifyBoundariesAutoCompleteListContains")) { return this.verifyBoundariesAutoCompleteListContains(data, dataRowID); }
+		else if (actionName.equals("verifyGapsTableInfo")) { return this.verifyGapsTableInfo(data, dataRowID); }
+		else if (actionName.equals("verifyIndicationTableInfo")) { return this.verifyIndicationTableInfo(data, dataRowID); }
+		else if (actionName.equals("verifyIndicationTableMinAmplitudeValues")) { return this.verifyIndicationTableMinAmplitudeValues(data, dataRowID); }
+		else if (actionName.equals("verifyIsotopicAnalysisTableInfo")) { return this.verifyIsotopicAnalysisTableInfo(data, dataRowID); }
+		else if (actionName.equals("verifyIsotopicMetaDataFile")) { return this.verifyIsotopicMetaDataFile(data, dataRowID); }
+		else if (actionName.equals("verifyLISASMetaDataFile")) { return this.verifyLISASMetaDataFile(data, dataRowID); }
+		else if (actionName.equals("verifyReportDeletedSuccessfully")) { return this.verifyReportDeletedSuccessfully(data, dataRowID); }
+		else if (actionName.equals("verifyReportSurveyMetadataFile")) { return this.verifyReportSurveyMetadataFile(data, dataRowID); }
+		else if (actionName.equals("verifyShapeFilesWithBaselines")) { return this.verifyShapeFilesWithBaselines(data, dataRowID); }
+		else if (actionName.equals("verifySSRSCoverageTableInfo")) { return this.verifySSRSCoverageTableInfo(data, dataRowID); }
+		else if (actionName.equals("verifySSRSDrivingSurveyTableInfo")) { return this.verifySSRSDrivingSurveyTableInfo(data, dataRowID); }
+		else if (actionName.equals("verifySSRSImagesWithBaselines")) { return this.verifySSRSImagesWithBaselines(data, dataRowID); }
+		else if (actionName.equals("verifySSRSLayersTableInfo")) { return this.verifySSRSLayersTableInfo(data, dataRowID); }
+		else if (actionName.equals("verifySSRSShowCoverageTableInfo")) { return this.verifySSRSShowCoverageTableInfo(data, dataRowID); }
+		else if (actionName.equals("verifySSRSViewsTableInfo")) { return this.verifySSRSViewsTableInfo(data, dataRowID); }
+		else if (actionName.equals("verifySurveysTableInfo")) { return this.verifySurveysTableInfo(data, dataRowID); }
+		else if (actionName.equals("verifyViewsCreatedAreInCorrectSequence")) { return this.verifyViewsCreatedAreInCorrectSequence(data, dataRowID); }
+		else if (actionName.equals("verifyViewsImagesWithBaselines")) { return this.verifyViewsImagesWithBaselines(data, dataRowID); }
+		else if (actionName.equals("verifyViewsWithBaselines")) { return this.verifyViewsWithBaselines(data, dataRowID); }
 		else if (actionName.equals("waitForPDFDownloadToComplete")) { return this.waitForPDFDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForPDFZIPDownloadToComplete")) { return this.waitForPDFZIPDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForMetaZIPDownloadToComplete")) { return this.waitForMetaZIPDownloadToComplete(data, dataRowID); }

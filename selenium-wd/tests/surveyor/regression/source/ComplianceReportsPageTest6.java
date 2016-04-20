@@ -1,5 +1,8 @@
 package surveyor.regression.source;
 
+import static org.junit.Assert.assertTrue;
+import static surveyor.scommon.source.SurveyorConstants.*;
+
 import common.source.Log;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -61,6 +64,12 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyIndicationTableMinAmplitudeValues(EMPTY, NOTSET));
 	}
 	
 	/**
@@ -85,9 +94,22 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	@Test
 	public void TC235_GenerateComplianceReportByProvidingReportAreaLatLongValuesManually() throws Exception {
 		Log.info("\nRunning TC235_GenerateComplianceReportByProvidingReportAreaLatLongValuesManually ...");
-		
+
+		String TIMEZONE_STRING = null;
+		String ASSET_DATA_STRING = null;
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractPDFZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifySurveysTableInfo(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(TIMEZONE_STRING, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(ASSET_DATA_STRING, NOTSET));
 	}
  
 	/**
@@ -108,6 +130,9 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.enterCustomerBoundaryUsingAreaSelector(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyBoundariesAutoCompleteListContains(EMPTY/*comma seperated list of boundaries*/, NOTSET));
 	}
 	
 	/**
@@ -137,6 +162,18 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractPDFZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesArePresent(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyAllSSRSTableInfos(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyViewsWithBaselines(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyIndicationTableSortedByColumn(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyIsotopicTableSortedByColumn(EMPTY, NOTSET));
 	}
  
 	/**
@@ -159,6 +196,18 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnCopyButton(EMPTY, NOTSET);
+		complianceReportsPageAction.copyReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractPDFZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
 	}
  
 	/**
@@ -179,6 +228,12 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnDeleteButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnConfirmDeleteReport(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyReportDeletedSuccessfully(EMPTY, NOTSET));
 	}
  
 	/**
@@ -204,7 +259,11 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		Log.info("\nRunning TC520_ReportViewThumbnailsCustomerBoundaryMultipleViewsCustomerSupervisorUser ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, 5);   /* Picarro Supervisor */
+
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
 	}
  
 	/**
@@ -237,9 +296,21 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	@Test
 	public void TC521_GenerateComplianceReportBySelectingCustomBoundaryMoreThanOneViewUsingCopyFunctionalityDownloadReport() throws Exception {
 		Log.info("\nRunning TC521_GenerateComplianceReportBySelectingCustomBoundaryMoreThanOneViewUsingCopyFunctionalityDownloadReport ...");
-		
+
+		String TIMEZONE_STRING = null;
+		String ASSET_DATA_STRING = null;
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnCopyButton(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifySurveysTableInfo(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(TIMEZONE_STRING, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(ASSET_DATA_STRING, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyViewsCreatedAreInCorrectSequence(EMPTY, NOTSET));
 	}
  
 	/**
@@ -260,6 +331,9 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.enterCustomerBoundaryUsingAreaSelector(EMPTY, NOTSET);
 	}
  
 	/**
@@ -286,6 +360,64 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, NOTSET));	
+		
+		// Repeat the test, but in the Views section, select only FOV
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, NOTSET));	
+		
+		// Repeat the test, but in the Views section, select only Breadcrumb
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, NOTSET));	
+		
+		// Repeat the test, but in the Views section, select only Gaps
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, NOTSET));	
+		
+		// Repeat the test, but in the Views section, select only Assets
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, NOTSET));	
+		
+		// Repeat the test, but in the Views section, select all five of the features named above
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, NOTSET));	
 	}
  
 	/**
@@ -337,6 +469,34 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
+		
+		// Repeat the test with FOVs, Breadcrumbs, Assets and Gaps (Assets are selected, asset types must also be selected)
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
+		
+		// Repeat the test with different combinations such as FOV and Breadcrumb
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
 	}
  
 	/**
@@ -366,6 +526,24 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
+		
+		// Repeat the test with different customer selection (Shape file export should remain standard)
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
 	}
  
 	/**
@@ -388,6 +566,12 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
 	}
  
 	/**
@@ -411,6 +595,10 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
 	}
  
 	/**
@@ -431,6 +619,18 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerView1(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerView2(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerView3(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForView1DownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForView2DownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForView3DownloadToComplete(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
 	}
  
 	/**
@@ -456,6 +656,19 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerView1(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerView2(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerView3(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForView1DownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForView2DownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForView3DownloadToComplete(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyGapsTableSortedByColumn(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
 	}
  
 	/**
@@ -479,6 +692,22 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerView1(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerView2(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerView3(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForView1DownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForView2DownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForView3DownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractPDFZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyViewsWithBaselines(EMPTY, NOTSET));
 	}
  
 	/**
@@ -505,6 +734,22 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerView1(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerView2(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerView3(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForView1DownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForView2DownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForView3DownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractPDFZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyViewsWithBaselines(EMPTY, NOTSET));
 	}
  
 	/**
@@ -527,6 +772,14 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyLisasTableSortedByColumn(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyGapsTableSortedByColumn(EMPTY, NOTSET));
 	}
  
 	/**
@@ -553,6 +806,22 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+
+		// TODO: Create new customer with assigned permissions and login as new customer user.
+		
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.extractMetaZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesAreCorrect(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyMetaDataFilesHaveCorrectData(EMPTY, NOTSET));
 	}
  
 	/**
@@ -584,6 +853,24 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
+		
+		// Repeat the test with different combinations of features for each view such as FOV and Breadcrumb
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
 	}
  
 	/**
@@ -617,6 +904,14 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY /*hasPipeIntersectingLISA*/, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
 	}
  
 	/**
@@ -650,6 +945,14 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY /*hasPipeIntersectingGap*/, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
 	}
  
 	/**
@@ -674,6 +977,22 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyComplianceViewerButtonIsDisplayed("ShapeZIP", NOTSET));
+		assertTrue(complianceReportsPageAction.verifyComplianceViewerButtonIsDisplayed("MetadataZIP", NOTSET));
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.extractMetaZIP(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesAreCorrect(EMPTY, NOTSET));
 	}
  
 	/**
@@ -695,5 +1014,17 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.selectPaginationRows(PAGINATIONSETTING_25, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyPaginationAndSortingOnAllColumns(EMPTY, NOTSET));
+
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.selectPaginationRows(PAGINATIONSETTING_50, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyPaginationAndSortingOnAllColumns(EMPTY, NOTSET));
+
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.selectPaginationRows(PAGINATIONSETTING_100, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyPaginationAndSortingOnAllColumns(EMPTY, NOTSET));
 	}
 }
