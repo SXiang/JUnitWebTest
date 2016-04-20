@@ -15,17 +15,9 @@ import static surveyor.scommon.source.SurveyorConstants.ETHRSWLON;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPHEIGHT;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPWIDTH;
 import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETCASTIRON;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETCOPPER;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETPEPLASTIC;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
-import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICT;
-import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
 import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
 import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
 import static surveyor.scommon.source.SurveyorConstants.KEYGAPS;
@@ -49,6 +41,7 @@ import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +59,7 @@ import common.source.Log;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.ComplianceReportEthaneDataProvider;
+import surveyor.dataprovider.ReportDataProvider;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
@@ -140,20 +134,15 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();
-
 		tableMap.put(KEYINDTB, "0");
 		tableMap.put(KEYISOANA, "0");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYASSETCASTIRON, "1");
-		tableMap.put(KEYASSETCOPPER, "1");
-		tableMap.put(KEYASSETOTHERPLASTIC, "1");
-		tableMap.put(KEYASSETPEPLASTIC, "1");
-		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
-		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "0");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
+
+		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
+		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
+		viewLayerList.add(ReportDataProvider.createViewLayerAssetsContent(assetRowIDs));
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();
@@ -176,6 +165,8 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		tagList.add(CUSDRVETHSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		rpt.setViewLayersList(viewLayerList);
+		
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -192,7 +183,6 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 			assertTrue(complianceReportsPage.getCheckBoxEtheneBiogeniceMethane().isDisplayed());
 		else
 			fail("\nTestcase TC1637 failed.\n");
-
 	}
 
 	/**
@@ -444,20 +434,16 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();
-
 		tableMap.put(KEYINDTB, "1");
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "1");
 		tableMap.put(KEYPCRA, "1");
-		tableMap.put(KEYASSETCASTIRON, "1");
-		tableMap.put(KEYASSETCOPPER, "1");
-		tableMap.put(KEYASSETOTHERPLASTIC, "1");
-		tableMap.put(KEYASSETPEPLASTIC, "1");
-		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
-		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "1");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "1");
 		tablesList.add(tableMap);
+
+		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
+		List<Integer> boundaryRowIDs = Arrays.asList(3, 4);				 // Boundary RowIDs from TestCaseData xlsx
+		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
+		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();
@@ -479,6 +465,8 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		tagList.add(CUSDRVETHSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		rpt.setViewLayersList(viewLayerList);
+		
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -516,20 +504,16 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();
-
 		tableMap.put(KEYINDTB, "1");
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "1");
 		tableMap.put(KEYPCRA, "1");
-		tableMap.put(KEYASSETCASTIRON, "1");
-		tableMap.put(KEYASSETCOPPER, "1");
-		tableMap.put(KEYASSETOTHERPLASTIC, "1");
-		tableMap.put(KEYASSETPEPLASTIC, "1");
-		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
-		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "1");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "1");
 		tablesList.add(tableMap);
+
+		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
+		List<Integer> boundaryRowIDs = Arrays.asList(3, 4);				 // Boundary RowIDs from TestCaseData xlsx
+		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
+		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();
@@ -551,6 +535,8 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		tagList.add(CUSDRVETHSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		rpt.setViewLayersList(viewLayerList);
+		
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -615,20 +601,16 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();
-
 		tableMap.put(KEYINDTB, "1");
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "1");
 		tableMap.put(KEYPCRA, "1");
-		tableMap.put(KEYASSETCASTIRON, "1");
-		tableMap.put(KEYASSETCOPPER, "1");
-		tableMap.put(KEYASSETOTHERPLASTIC, "1");
-		tableMap.put(KEYASSETPEPLASTIC, "1");
-		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
-		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "1");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "1");
 		tablesList.add(tableMap);
+
+		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
+		List<Integer> boundaryRowIDs = Arrays.asList(3, 4);				 // Boundary RowIDs from TestCaseData xlsx
+		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
+		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();
@@ -650,6 +632,8 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		tagList.add(CUSDRVETHSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		rpt.setViewLayersList(viewLayerList);
+		
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -670,5 +654,4 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		} else
 			fail("\nTestcase TC1729 failed.\n");
 	}
-
 }

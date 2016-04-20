@@ -33,16 +33,8 @@ import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNRRTAG;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNOPTAG;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETCASTIRON;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETCOPPER;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETPEPLASTIC;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
-import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICT;
-import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +46,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.dataprovider.ReportDataProvider;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.Reports.ReportModeFilter;
@@ -152,20 +145,15 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();
-
 		tableMap.put(KEYINDTB, "1");
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYASSETCASTIRON, "1");
-		tableMap.put(KEYASSETCOPPER, "1");
-		tableMap.put(KEYASSETOTHERPLASTIC, "1");
-		tableMap.put(KEYASSETPEPLASTIC, "1");
-		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
-		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "0");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
+
+		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
+		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
+		viewLayerList.add(ReportDataProvider.createViewLayerAssetsContent(assetRowIDs));
 
 		String surUnit = "";
 		String exclusionRadius = "0";
@@ -175,6 +163,8 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		surTag.add(CUSDRVSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, PICDFADMIN, strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList);
+		rpt.setViewLayersList(viewLayerList);
+		
 		complianceReportsPage.addNewReportWithMultipleSurveysIncluded(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -244,20 +234,15 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();
-
 		tableMap.put(KEYINDTB, "1");
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYASSETCASTIRON, "1");
-		tableMap.put(KEYASSETCOPPER, "1");
-		tableMap.put(KEYASSETOTHERPLASTIC, "1");
-		tableMap.put(KEYASSETPEPLASTIC, "1");
-		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
-		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "0");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
+
+		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
+		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
+		viewLayerList.add(ReportDataProvider.createViewLayerAssetsContent(assetRowIDs));
 
 		String surUnit = "";
 		String exclusionRadius = "100";
@@ -267,6 +252,8 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		surTag.add(PICADMNOPTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, PICDFADMIN, strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList);
+		rpt.setViewLayersList(viewLayerList);
+		
 		complianceReportsPage.addNewReportWithMultipleSurveysIncluded(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -352,20 +339,15 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();
-
 		tableMap.put(KEYINDTB, "1");
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "1");
 		tableMap.put(KEYPCRA, "1");
-		tableMap.put(KEYASSETCASTIRON, "1");
-		tableMap.put(KEYASSETCOPPER, "1");
-		tableMap.put(KEYASSETOTHERPLASTIC, "1");
-		tableMap.put(KEYASSETPEPLASTIC, "1");
-		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
-		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "0");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
+
+		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
+		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
+		viewLayerList.add(ReportDataProvider.createViewLayerAssetsContent(assetRowIDs));
 
 		String surUnit = "";
 		String exclusionRadius = "0";
@@ -374,6 +356,8 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		surTag.add(PICADMNSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList, ReportModeFilter.RapidResponse);
+		rpt.setViewLayersList(viewLayerList);
+		
 		complianceReportsPage.addNewReportWithMultipleSurveysIncluded(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -430,20 +414,15 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();
-
 		tableMap.put(KEYINDTB, "1");
 		tableMap.put(KEYISOANA, "1");
 		tableMap.put(KEYPCA, "1");
 		tableMap.put(KEYPCRA, "1");
-		tableMap.put(KEYASSETCASTIRON, "1");
-		tableMap.put(KEYASSETCOPPER, "1");
-		tableMap.put(KEYASSETOTHERPLASTIC, "1");
-		tableMap.put(KEYASSETPEPLASTIC, "1");
-		tableMap.put(KEYASSETPROTECTEDSTEEL, "1");
-		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "1");
-		tableMap.put(KEYBOUNDARYDISTRICT, "0");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
+
+		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
+		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
+		viewLayerList.add(ReportDataProvider.createViewLayerAssetsContent(assetRowIDs));
 
 		String surUnit = "";
 		String exclusionRadius = "0";
@@ -452,6 +431,8 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		surTag.add(PICADMNSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList, ReportModeFilter.RapidResponse);
+		rpt.setViewLayersList(viewLayerList);
+		
 		complianceReportsPage.addNewReportWithMultipleSurveysIncluded(rpt);
 		complianceReportsPage.waitForPageLoad();
 

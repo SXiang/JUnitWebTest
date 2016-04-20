@@ -5,10 +5,9 @@ import java.io.File;
 import common.source.ExcelUtility;
 import common.source.Log;
 import common.source.TestContext;
+import common.source.TestSetup;
 
 public class BaseActions implements IActions {
-	private static final String DATA_FOLDER = "data";
-	private static final String TEST_DATA_XLSX = "TestCaseData.xlsx";
 
 	protected static final String ARG_DATA_ROW_ID = "dataRowID";
 	protected static final String ARG_DATA = "data";
@@ -16,11 +15,11 @@ public class BaseActions implements IActions {
 	protected ExcelUtility excelUtility = null;
 	
 	public BaseActions() {
-		this.setExcelFile(TEST_DATA_XLSX);
+		this.setExcelFile(TestSetup.TEST_DATA_XLSX);
 	}
 	
 	protected void setExcelFile(String excelFileName) {
-		String testDataExcelPath = TestContext.INSTANCE.getExecutionPath() + DATA_FOLDER + File.separator + excelFileName;
+		String testDataExcelPath = TestContext.INSTANCE.getExecutionPath() + TestSetup.DATA_FOLDER + File.separator + excelFileName;
 		try {
 			excelUtility = new ExcelUtility();
 			excelUtility.setExcelFile(testDataExcelPath);

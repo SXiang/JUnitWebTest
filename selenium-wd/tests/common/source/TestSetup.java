@@ -80,6 +80,9 @@ public class TestSetup {
 	public static final String ANALYZER_EXE_PATH = "C:\\PicarroAnalyzer\\Picarro.Surveyor.Analyzer.exe";
 	public static final String TEST_ANALYZER_SERIAL_NUMBER = "SimAuto-Analyzer3";
 
+	public static final String DATA_FOLDER = "data";
+	public static final String TEST_DATA_XLSX = "TestCaseData.xlsx";
+
 	private static Process analyzerProcess;
 	private DesiredCapabilities capabilities = null;
 	private BrowserMobProxy networkProxy;
@@ -500,6 +503,11 @@ public class TestSetup {
 
 	public boolean isGenerateBaselineShapeFiles() {
 		return generateBaselineShapeFiles;
+	}
+
+	public String getTestCaseDataPath() throws IOException {
+		String rootPath = getRootPath();
+		return getExecutionPath(rootPath) + DATA_FOLDER + File.separator + TEST_DATA_XLSX;
 	}
 
 	public void setGenerateBaselineShapeFiles(boolean generateBaselineShapeFiles) {
