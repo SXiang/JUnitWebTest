@@ -2005,12 +2005,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String reportName = "CR-" + reportId;
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
+		System.out.println(actualReportString);
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(ComplianceReportSSRS_IndicationTable);
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
-			if (!value)
+			if (!value){
+				System.out.println("Static text failed");
 				return false;
+			}
 		}
 		InputStream inputStream = new ByteArrayInputStream(actualReportString.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -2020,6 +2023,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			while ((line = bufferReader.readLine()) != null) {
 				if (line.trim().matches("^\\? \\d+ .*")) {
 					reportIndicationsList.add(line.replaceAll("\\?", "").trim().replaceAll("\\s+", "").replace("+/-0%", ""));
+					System.out.println(line.replaceAll("\\?", "").trim().replaceAll("\\s+", "").replace("+/-0%", ""));
 				}
 			}
 			ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications.getReportIndications(reportId);
@@ -2029,9 +2033,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
 				String objAsString = objStoredProc.toString();
 				storedProcConvStringList.add(objAsString.trim().replaceAll("\\s+", ""));
+				System.out.println(objAsString.trim().replaceAll("\\s+", ""));
 			}
 
 			if (!reportIndicationsList.equals(storedProcConvStringList)) {
+				System.out.println("data wrong");
 				return false;
 			}
 		} finally {

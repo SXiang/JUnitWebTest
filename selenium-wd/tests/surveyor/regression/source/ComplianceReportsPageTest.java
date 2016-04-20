@@ -115,7 +115,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PROVIDER, location = ComplianceReportDataProvider.class)
 	public void ComplianceReportTest_VerifyNonEthaneReport(String index, String strCreatedBy, String password, String cutomer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
 			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws Exception {
-		String rptTitle = null;
+		/*String rptTitle = null;
 		String testCaseName = getTestCaseName(index);
 	if (testCaseName.equals("TC203")) {
 			rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber() + "#%$";
@@ -157,8 +157,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 				}
 			}
 		} else
-			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");	
-		//assertTrue(complianceReportsPage.verifyDrivingSurveysTable("C:\\Users\\cnanayakkara\\Downloads\\", "TC517 Report273248"));
+			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");	*/
+		assertTrue(complianceReportsPage.verifyIndicationTable("C:\\Users\\cnanayakkara\\Downloads\\", "TC517 Report810209"));
 
 	}
 
