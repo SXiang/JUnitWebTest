@@ -56,6 +56,18 @@ public class ShapeFileUtility {
 	public void assertEquals(String shapeFilePath1, String shapeFilePath2) throws Exception {
 		shapeFileComparer.assertEquals(shapeFilePath1, shapeFilePath2);
 	}
+	
+	public void assertDirectoryEquals(String shapeFolder1, String shapeFolder2) throws Exception {
+		Log.info(String.format("Calling assertDirectoryEquals() --> shapeFolder1 = [%s], shapeFolder2 = [%s], ", shapeFolder1, shapeFolder2));
+		List<String> shpFilesInDirectory = FileUtility.getFilesInDirectory(Paths.get(shapeFolder1), "*.shp");
+		for (String filePath : shpFilesInDirectory) {
+			String fileName = Paths.get(filePath).getFileName().toString();
+			String shapeFilePath1 = filePath;
+			String shapeFilePath2 = Paths.get(shapeFolder2, fileName).toString();
+			Log.info(String.format("Assert shape files are same. [%s] <==> [%s]", shapeFilePath1, shapeFilePath2));
+			shapeFileComparer.assertEquals(shapeFilePath1, shapeFilePath2);
+		}	
+	}
 
 	public static void main(String[] args) throws IOException, InvalidShapeFileException {
 		Path shpDirectory = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\shapefileutility-tests");

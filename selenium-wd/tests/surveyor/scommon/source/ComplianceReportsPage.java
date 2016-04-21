@@ -110,6 +110,7 @@ import surveyor.dataprovider.ReportDataProvider;
 import common.source.PDFUtility;
 import common.source.ProcessUtility;
 import common.source.RegexUtility;
+import common.source.ShapeFileUtility;
 import common.source.ShapeToGeoJsonConverter;
 import common.source.TestContext;
 
@@ -165,6 +166,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String ComplianceReportSSRS_IsotopicAnalysisTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_IsotopicAnalysisTable);
 	public static final String ComplianceReportSSRS_IndicationTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_IndicationTable);
 	public static final String ComplianceReportSSRS_GapTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_GapTable);
+
+	private static final String DELETE_POPUP_CONFIRM_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[1]";
+	private static final String DELETE_POPUP_CANCEL_BUTTON_XPATH  = "//*[@id='deleteReportModal']/div/div/div[3]/a[2]";
 
 	@FindBy(how = How.ID, using = "zip-file_pdf")
 	protected WebElement zipImg;
@@ -267,7 +271,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public enum ComplianceReportButtonType {
-		Delete, Copy, ReportViewer, Investigate, InvestigatePDF, Resubmit
+		Delete, Copy, ReportViewer, Investigate, InvestigatePDF, Resubmit, Cancel, InProgressCopy
 	}
 
 	public enum ReportViewerThumbnailType {
@@ -275,7 +279,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public enum ReportFileType {
-		PDF, ZIP, MetaDataZIP, ShapeZIP
+		PDF, ZIP, MetaDataZIP, ShapeZIP, View
 	}
 
 	/**
@@ -480,16 +484,28 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.boundarySelectorBtn.click();
 	}
 
+	public void clickOnConfirmInDeleteReportPopup() {
+		WebElement confirmDelete = this.driver.findElement(By.xpath(DELETE_POPUP_CONFIRM_BUTTON_XPATH));
+		confirmDelete.click();
+	}
+
+	public void clickOnCancelInDeleteReportPopup() {
+		WebElement cancelDelete = this.driver.findElement(By.xpath(DELETE_POPUP_CANCEL_BUTTON_XPATH));
+		cancelDelete.click();
+	}
+
 	public boolean clickComplianceReportButton(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType) throws Exception {
-		return checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, buttonType, true);
+		return checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, buttonType, true, true /*By default confirm the action*/);
+	}
+
+	public boolean clickComplianceReportButton(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType,
+			boolean confirmAction) throws Exception {
+		return checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, buttonType, true, confirmAction);
 	}
 
 	@Override
 	public boolean handleFileDownloads(String rptTitle, String testCaseID) {
-		Report objReport = Report.getReport(rptTitle);
-		String reportId = objReport.getId();
-		reportId = reportId.substring(0, 6);
-		String reportName = "CR-" + reportId;
+		String reportName = "CR-" + getReportName(rptTitle);
 		clickOnPDFInReportViewer();
 		waitForPDFFileDownload(reportName);
 		Log.info("SSRS zip file got downloaded");
@@ -527,6 +543,55 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		}
 		return true;
+	}
+
+	public String getReportName(String rptTitle) {
+		Report objReport = Report.getReport(rptTitle);
+		String reportId = objReport.getId();;;
+		reportId = reportId.substring(0, 6);
+		return reportId;
+	}
+
+	public String getReportPDFZipFileName(String rptTitle, boolean includeExtension) {
+		String reportName = "CR-" + getReportName(rptTitle);
+		if (includeExtension) {
+			reportName += ".zip";
+		}
+		return reportName;
+	}
+
+	public String getReportMetaZipFileName(String rptTitle, boolean includeExtension) {
+		String reportName = "CR-" + getReportName(rptTitle);
+		reportName += " (1)";
+		if (includeExtension) {
+			reportName += ".zip";
+		}
+		return reportName;
+	}
+
+	public String getReportShapeZipFileName(String rptTitle, boolean includeExtension) {
+		String reportName = "CR-" + getReportName(rptTitle);
+		reportName += " (2)";
+		if (includeExtension) {
+			reportName += ".zip";
+		}
+		return reportName;
+	}
+
+	public String getReportPDFFileName(String rptTitle, boolean includeExtension) {
+		String reportName = "CR-" + getReportName(rptTitle);
+		if (includeExtension) {
+			reportName += ".pdf";
+		}
+		return reportName;
+	}
+
+	public String getInvestigationPDFFileName(String rptTitle, boolean includeExtension) {
+		String reportName = "IV-" + getReportName(rptTitle);
+		if (includeExtension) {
+			reportName += ".pdf";
+		}
+		return reportName;
 	}
 
 	private void checkAndGenerateBaselineShapeAndGeoJsonFiles(String reportName, String testCaseID) throws Exception {
@@ -620,7 +685,19 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			return false;
 	}
 
-	private boolean checkComplianceReportButtonPresenceAndClick(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType, boolean clickButton) throws Exception {
+	/**
+	 * 
+	 * @param rptTitle
+	 * @param strCreatedBy
+	 * @param buttonType
+	 * @param clickButton
+	 * @param confirmAction - Confirms to complete action. 
+	 * 		  For eg. if Delete button is clicked: Click Confirm button if this is TRUE or click Cancel when this flag is FALSE.
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean checkComplianceReportButtonPresenceAndClick(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType, 
+			boolean clickButton, boolean confirmAction) throws Exception {
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
 		setPagination(PAGINATIONSETTING);
@@ -673,6 +750,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					case Resubmit:
 						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[6]/img";
 						break;
+					case InProgressCopy:  	// NOTE: When report is in-progress, Copy is the 1st button.
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]/img";
+						break;
+					case Cancel:  			// NOTE: When cancel button is visible it is the 2nd button.
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
+						break;
 					default:
 						throw new Exception("ButtonType NOT supported.");
 					}
@@ -687,6 +770,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 								this.waitForResubmitPopupToShow();
 								this.btnProcessResubmit.click();
 								this.waitForResubmitPopupToClose();
+							}
+							if (buttonType == ComplianceReportButtonType.Delete) {
+								
 							}
 						}
 						return true;
@@ -765,6 +851,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		ReportModeFilter mode = ReportModeFilter.Manual;
 		if (reportMode.equalsIgnoreCase("standard")) {
 			mode = ReportModeFilter.Standard;
+		} else if (reportMode.equalsIgnoreCase("assessment")) {
+			mode = ReportModeFilter.Assessment;
+		} else if (reportMode.equalsIgnoreCase("eq")) {
+			mode = ReportModeFilter.EQ;
+		} else if (reportMode.equalsIgnoreCase("operator")) {
+			mode = ReportModeFilter.Operator;
 		} else if (reportMode.equalsIgnoreCase("manual")) {
 			mode = ReportModeFilter.Manual;
 		} else if (reportMode.equalsIgnoreCase("rr")) {
@@ -1168,6 +1260,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			e.printStackTrace();
 		}
 	}
+	
+	public void downloadViewFile(Integer fileIndex) {
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public int getNumberofRecords() {
 		List<WebElement> records = this.numberofRecords;
@@ -1348,7 +1448,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyComplianceReportButton(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType) throws Exception {
-		return checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, buttonType, false);
+		return checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, buttonType, false, false /*confirmAction*/);
 	}
 
 	/**
@@ -1690,22 +1790,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 
 		return true;
-	}
-
-	public void verifyMetaDataFiles() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void verifyMetaDataFilesData() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	public boolean verifyReportSurveyMetaDataFile(String actualPath, String reportTitle) throws FileNotFoundException, IOException {
@@ -2079,15 +2163,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @return
 	 * @throws IOException
 	 */
-
-	public boolean verifyViewsImages(String actualPath, String reportTitle, String testCase, String destViewTitle) throws IOException {
+	public boolean verifyViewsImages(String actualPath, String reportTitle, String testCase, String viewName) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
+		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + "_" + viewName + ".pdf";
 		String reportName = "CR-" + reportId;
 		setReportName(reportName);
-		String baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + destViewTitle + ".png";
+		String baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + viewName + ".png";
 		String imageExtractFolder = pdfUtility.extractPDFImages(actualReport, testCase);
 		File folder = new File(imageExtractFolder);
 		File[] listOfFiles = folder.listFiles();
@@ -2111,6 +2194,27 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return true;
 	}
 
+	public boolean verifyShapeFilesWithBaselines(String actualPath, String reportTitle, String testCaseID) throws Exception {
+		Log.info(String.format("Calling verifyShapeFilesWithBaselines() -> actualPath=[%s], reportTitle=[%s], testCaseID=[%s]",
+				actualPath, reportTitle, testCaseID));
+		String shapeZipFileName = getReportShapeZipFileName(reportTitle, false /*includeExtension*/);
+		BaseHelper.deCompressZipFile(shapeZipFileName, testSetup.getDownloadPath());
+		String actualDataFolderPath = actualPath;
+		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "shape-files" + File.separator + testCaseID;
+		
+		// Verify files in both directories are the same.
+		if (!FileUtility.compareFilesInDirectories(actualDataFolderPath, expectedDataFolderPath)) {
+			return false;
+		}
+		
+		// Assert all shape files in the folders are the same.
+		ShapeFileUtility shapeFileUtility = new ShapeFileUtility();
+		shapeFileUtility.assertDirectoryEquals(actualDataFolderPath, expectedDataFolderPath);
+		
+		return true;
+	}
+
 	public void verifyShapeFilesData() {
 		try {
 			throw new Exception("Not implemented");
@@ -2119,13 +2223,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 
-	public void verifyShapeFiles() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * 1. Verify that the ZIP file has a PDF for report and 1 PDF for each view added in the Report. 2. Verify expected content in the PDF report. 3. Verify there are images present in the view PDFs.
@@ -2166,6 +2263,24 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	private void waitForResubmitPopupToClose() {
 		WebElement resubmitPopupSection = this.driver.findElement(By.id("resubmitReportModal"));
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return resubmitPopupSection.getAttribute("style").contains("display:none") || resubmitPopupSection.getAttribute("style").contains("display: none");
+			}
+		});
+	}
+
+	private void waitForConfirmDeletePopupToShow() {
+		WebElement resubmitPopupSection = this.driver.findElement(By.id("deleteReportModal"));
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return resubmitPopupSection.getAttribute("style").contains("display:block") || resubmitPopupSection.getAttribute("style").contains("display: block");
+			}
+		});
+	}
+
+	private void waitForConfirmDeletePopupToClose() {
+		WebElement resubmitPopupSection = this.driver.findElement(By.id("deleteReportModal"));
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return resubmitPopupSection.getAttribute("style").contains("display:none") || resubmitPopupSection.getAttribute("style").contains("display: none");

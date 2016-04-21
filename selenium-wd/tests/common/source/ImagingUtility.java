@@ -71,7 +71,7 @@ public class ImagingUtility {
 		}
 		return ImageComparison.compare(imgFirst, imgSecond);
 	}
-
+	
 	/**
 	 * Executes the unit tests for the two compareImages() method overloads. 
 	 * @param args

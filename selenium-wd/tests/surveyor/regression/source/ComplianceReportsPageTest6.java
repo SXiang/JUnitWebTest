@@ -106,7 +106,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.extractPDFZIP(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifySurveysTableInfo(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifySurveysTableInfoByTags(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(TIMEZONE_STRING, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(ASSET_DATA_STRING, NOTSET));
@@ -171,7 +171,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.extractPDFZIP(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifyPDFZipFilesArePresent(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyAllSSRSTableInfos(EMPTY, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyViewsWithBaselines(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyIndicationTableSortedByColumn(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyIsotopicTableSortedByColumn(EMPTY, NOTSET));
 	}
@@ -307,7 +307,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnCopyButton(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifySurveysTableInfo(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifySurveysTableInfoByTags(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(TIMEZONE_STRING, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(ASSET_DATA_STRING, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyViewsCreatedAreInCorrectSequence(EMPTY, NOTSET));
@@ -707,7 +707,6 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.extractPDFZIP(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyViewsWithBaselines(EMPTY, NOTSET));
 	}
  
 	/**
@@ -749,7 +748,6 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.extractPDFZIP(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyViewsWithBaselines(EMPTY, NOTSET));
 	}
  
 	/**
