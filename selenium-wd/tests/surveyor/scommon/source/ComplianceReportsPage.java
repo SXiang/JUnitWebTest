@@ -1845,6 +1845,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyIsotopicMetaDataFile(String actualPath, String reportTitle) throws FileNotFoundException, IOException {
+		Log.info("Verifying Report Isotopic meta data file");
 		CSVUtility csvUtility = new CSVUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -1859,9 +1860,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			StoredProcComplianceGetIsotopics reportIsoObj = new StoredProcComplianceGetIsotopics();
 			HashMap<String, String> csvRow = csvIterator.next();
 			if (!csvRow.get("ReportId").trim().toLowerCase().equals(reportId.trim().toLowerCase())) {
+				Log.info("Isotopic meta data file verification failed");
 				return false;
 			}
 			if (!csvRow.get("ReportName").trim().equals(getReportName().trim().substring(0, 9))) {
+				Log.info("Isotopic meta data file verification failed");
 				return false;
 			}
 			reportIsoObj.setDateTime(csvRow.get("AnalysisDateTime").trim());
@@ -1877,14 +1880,16 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		for (StoredProcComplianceGetIsotopics reportListObj : reportList) {
 			if (!reportListObj.isInList(storedPodList)) {
+				Log.info("Isotopic meta data file verification failed");
 				return false;
 			}
 		}
-
+		Log.info("Isotopic meta data file verification passed");
 		return true;
 	}
 
 	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle) throws FileNotFoundException, IOException {
+		Log.info("Verifying LISA Meta data file");
 		CSVUtility csvUtility = new CSVUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -1899,9 +1904,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			StoredProcComplianceGetIndications reportIndObj = new StoredProcComplianceGetIndications();
 			HashMap<String, String> csvRow = csvIterator.next();
 			if (!csvRow.get("ReportId").trim().toLowerCase().equals(reportId.trim().toLowerCase())) {
+				Log.info("LISA Meta data file veryfication failed");
 				return false;
 			}
 			if (!csvRow.get("ReportName").trim().equals(getReportName().trim().substring(0, 9))) {
+				Log.info("LISA Meta data file veryfication failed");
 				return false;
 			}
 			reportIndObj.setPeakNumber(csvRow.get("LisaNumber").trim());
@@ -1918,10 +1925,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		for (StoredProcComplianceGetIndications reportListObj : reportList) {
 			if (!reportListObj.isInList(storedPodList)) {
+				Log.info("LISA Meta data file veryfication failed");
 				return false;
 			}
 		}
-
+		Log.info("LISA Meta data file veryfication passed");
 		return true;
 	}
 
@@ -1942,7 +1950,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyIsotopicAnalysisTable(String actualPath, String reportTitle) throws IOException {
-
+		Log.info("Verifying Isotopic Analysis Table");
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -1954,8 +1962,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		expectedReportString.add(ComplianceReportSSRS_IsotopicAnalysisTable);
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
-			if (!value)
+			if (!value){
+				Log.info("Isotopic Analysis table veryfication failed");
 				return false;
+			}
 		}
 		String isoTable = RegexUtility.getStringInBetween(actualReportString, "Surveyor Date/Time Result", " Layers");
 		if (isoTable != null) {
@@ -1979,12 +1989,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				}
 
 				if (!reportIsotopicList.equals(storedProcConvStringList)) {
+					Log.info("Isotopic Analysis table veryfication failed");
 					return false;
 				}
 			} finally {
 				bufferReader.close();
 			}
 		}
+		Log.info("Isotopic Analysis table veryfication passed");
 		return true;
 
 	}
@@ -1998,6 +2010,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyIndicationTable(String actualPath, String reportTitle) throws IOException {
+		Log.info("Verifying Indication Table");
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2005,14 +2018,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String reportName = "CR-" + reportId;
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
-		System.out.println(actualReportString);
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(ComplianceReportSSRS_IndicationTable);
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value){
-				System.out.println("Static text failed");
-				return false;
+				Log.info("Indication table verification failed");
+				return false;				
 			}
 		}
 		InputStream inputStream = new ByteArrayInputStream(actualReportString.getBytes());
@@ -2022,8 +2034,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			ArrayList<String> reportIndicationsList = new ArrayList<String>();
 			while ((line = bufferReader.readLine()) != null) {
 				if (line.trim().matches("^\\? \\d+ .*")) {
-					reportIndicationsList.add(line.replaceAll("\\?", "").trim().replaceAll("\\s+", "").replace("+/-0%", ""));
-					System.out.println(line.replaceAll("\\?", "").trim().replaceAll("\\s+", "").replace("+/-0%", ""));
+					reportIndicationsList.add(line.replaceAll("\\?", "").trim().replaceAll("\\s+", "").replace("+/-", ""));
 				}
 			}
 			ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications.getReportIndications(reportId);
@@ -2032,18 +2043,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			while (lineIterator.hasNext()) {
 				StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
 				String objAsString = objStoredProc.toString();
-				storedProcConvStringList.add(objAsString.trim().replaceAll("\\s+", ""));
-				System.out.println(objAsString.trim().replaceAll("\\s+", ""));
+				storedProcConvStringList.add(objAsString.replace("0.0", "").replaceAll("\\s+", "").trim());
 			}
 
 			if (!reportIndicationsList.equals(storedProcConvStringList)) {
-				System.out.println("data wrong");
+				Log.info("Indication table verification failed");
 				return false;
 			}
 		} finally {
 			bufferReader.close();
 		}
-
+		Log.info("Indication table verification passed");
 		return true;
 	}
 
@@ -2056,6 +2066,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyGapsTable(String actualPath, String reportTitle) throws IOException {
+		Log.info("Verifying Gaps Table");
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2067,8 +2078,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		expectedReportString.add(ComplianceReportSSRS_GapTable);
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
-			if (!value)
+			if (!value){
+				Log.info("Gaps Table verification failed");
 				return false;
+			}
 		}
 		InputStream inputStream = new ByteArrayInputStream(actualReportString.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -2089,12 +2102,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				storedProcConvStringList.add(objAsString.trim());
 			}
 			if (!reportGapsList.equals(storedProcConvStringList)) {
+				Log.info("Gaps Table verification failed");
 				return false;
 			}
 		} finally {
 			bufferReader.close();
 		}
-
+		Log.info("Gaps Table verification passed");
 		return true;
 	}
 
@@ -2109,6 +2123,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 
 	public boolean verifySSRSImages(String actualPath, String reportTitle, String testCase) throws IOException, InterruptedException {
+		Log.info("Verifying Images in SSRS");
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
 		String reportNameWithoutExt = "CR-" + reportId.substring(0, 6);
@@ -2117,6 +2132,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String htmlReportPath = actualPath + htmlReportName;
 		File f = new File(htmlReportPath);
 		if (!convertPdfToHtml(reportName, htmlReportName)) {
+			Log.info("Image verification failed");
 			return false;
 		}
 		Document doc = Jsoup.parse(f, null, "");
@@ -2130,15 +2146,16 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				createImageFromBASE64(base64String, pathToActualImage);
 				String pathToBaseImage = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\ssrs-images").toString() + "\\" + testCase + "\\" + "Page_" + pageCounter + ".png";
 				if (!verifyActualImageWithBase(pathToBaseImage, pathToActualImage)) {
-					//Files.delete(Paths.get(pathToActualImage));
+					Files.delete(Paths.get(pathToActualImage));
+					Log.info("Image verification failed");
 					return false;
 				}
-				//Files.delete(Paths.get(pathToActualImage));
+				Files.delete(Paths.get(pathToActualImage));
 				pageCounter++;
 			}
 
 		}
-
+		Log.info("Image verification passed");
 		return true;
 	}
 
