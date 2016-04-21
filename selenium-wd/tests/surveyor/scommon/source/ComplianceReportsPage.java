@@ -772,7 +772,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 								this.waitForResubmitPopupToClose();
 							}
 							if (buttonType == ComplianceReportButtonType.Delete) {
-								
+								this.waitForConfirmDeletePopupToShow();
+								if (confirmAction) {
+									this.clickOnConfirmInDeleteReportPopup();
+								} else {
+									this.clickOnCancelInDeleteReportPopup();
+								}
+								this.waitForConfirmDeletePopupToClose();								
 							}
 						}
 						return true;
@@ -2271,19 +2277,19 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	private void waitForConfirmDeletePopupToShow() {
-		WebElement resubmitPopupSection = this.driver.findElement(By.id("deleteReportModal"));
+		WebElement confirmDeletePopupSection = this.driver.findElement(By.id("deleteReportModal"));
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return resubmitPopupSection.getAttribute("style").contains("display:block") || resubmitPopupSection.getAttribute("style").contains("display: block");
+				return confirmDeletePopupSection.getAttribute("style").contains("display:block") || confirmDeletePopupSection.getAttribute("style").contains("display: block");
 			}
 		});
 	}
 
 	private void waitForConfirmDeletePopupToClose() {
-		WebElement resubmitPopupSection = this.driver.findElement(By.id("deleteReportModal"));
+		WebElement confirmDeletePopupSection = this.driver.findElement(By.id("deleteReportModal"));
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return resubmitPopupSection.getAttribute("style").contains("display:none") || resubmitPopupSection.getAttribute("style").contains("display: none");
+				return confirmDeletePopupSection.getAttribute("style").contains("display:none") || confirmDeletePopupSection.getAttribute("style").contains("display: none");
 			}
 		});
 	}
