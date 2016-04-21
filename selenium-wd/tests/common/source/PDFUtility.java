@@ -22,6 +22,16 @@ import org.testng.Assert;
 
 public class PDFUtility {
 	
+	protected static String wordSeparator = "|";
+	protected static String wordSeparatorPattern = "[\\s]*[\\|][\\s]*";
+	protected boolean setWordSeparator = false;
+
+	public PDFUtility(){
+		this(false);
+	}
+	public PDFUtility(boolean setWordSeparator){
+		this.setWordSeparator = setWordSeparator;
+	}
 	/*
 	 * Extracts text from all pages from specified PDF.
 	 * Returns the extracted text.
@@ -50,6 +60,9 @@ public class PDFUtility {
 			pdDocument = pdfParser.getPDDocument();
 			
 			PDFTextStripper pdfTextStripper = new PDFTextStripper();
+			if(setWordSeparator){
+			   pdfTextStripper.setWordSeparator(wordSeparator);
+			}
 			if (startPage > 0) {
 				pdfTextStripper.setStartPage(startPage);
 			}
