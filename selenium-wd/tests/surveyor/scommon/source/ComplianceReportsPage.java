@@ -43,9 +43,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETPEPLASTIC;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
-import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICT;
-import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
-
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
@@ -109,6 +106,7 @@ import surveyor.dataaccess.source.StoredProcComplianceGetCoverage;
 import surveyor.dataaccess.source.StoredProcComplianceGetGaps;
 import surveyor.dataaccess.source.StoredProcComplianceGetIndications;
 import surveyor.dataaccess.source.StoredProcComplianceGetIsotopics;
+import surveyor.dataprovider.ReportDataProvider;
 import common.source.PDFUtility;
 import common.source.ProcessUtility;
 import common.source.RegexUtility;
@@ -295,7 +293,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	@Override
-	public void reportSpecificAddNewReport(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong) {
+	public void reportSpecificAddNewReport(String customer, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, 
+			String NELat, String NELong, String SWLat, String SWLong) throws Exception {
 		inputExclusionRadius(exclusionRadius);
 
 		this.inputNELat.sendKeys(NELat);
@@ -316,8 +315,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		inputImageMapHeight(imageMapHeight);
 		inputImageMapWidth(imageMapWidth);
 
-		selectViewLayerAssets(true, true, true, true, true, true);
-		selectViewLayerBoundaries(true, true);
+		selectViewLayerAssets(ReportDataProvider.getAllViewLayerAssetsForCustomer(customer));
+		selectViewLayerBoundaries(ReportDataProvider.getAllViewLayerBoundariesForCustomer(customer));
 
 		selectIndicationsTableCheckBox();
 		this.checkBoxIsoAna.click();
@@ -772,23 +771,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			mode = ReportModeFilter.RapidResponse;
 		}
 		return mode;
-	}
-
-	private void handleOptionalViewLayersSection(List<Map<String, String>> viewLayersList) {
-		if (viewLayersList != null) {
-			boolean selectAssetCastIron = viewLayersList.get(0).get(KEYASSETCASTIRON).equalsIgnoreCase("1");
-			boolean selectAssetCopper = viewLayersList.get(0).get(KEYASSETCOPPER).equalsIgnoreCase("1");
-			boolean selectAssetOtherPlastic = viewLayersList.get(0).get(KEYASSETOTHERPLASTIC).equalsIgnoreCase("1");
-			boolean selectAssetPEPlastic = viewLayersList.get(0).get(KEYASSETPEPLASTIC).equalsIgnoreCase("1");
-			boolean selectAssetProtectedSteel = viewLayersList.get(0).get(KEYASSETPROTECTEDSTEEL).equalsIgnoreCase("1");
-			boolean selectAssetUnprotectedSteel = viewLayersList.get(0).get(KEYASSETUNPROTECTEDSTEEL).equalsIgnoreCase("1");
-			selectViewLayerAssets(selectAssetCastIron, selectAssetCopper, selectAssetOtherPlastic, selectAssetPEPlastic, selectAssetProtectedSteel, selectAssetUnprotectedSteel);
-
-			boolean selectBoundaryDistrict = viewLayersList.get(0).get(KEYBOUNDARYDISTRICT).equalsIgnoreCase("1");
-			boolean selectBoundaryDistrictPlat = viewLayersList.get(0).get(KEYBOUNDARYDISTRICTPLAT).equalsIgnoreCase("1");
-			selectViewLayerBoundaries(selectBoundaryDistrict, selectBoundaryDistrictPlat);
-		}
-
 	}
 
 	private void handleOptionalDynamicViewLayersSection(List<Map<String, String>> viewLayersList) {
@@ -1347,64 +1329,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 	
-	// NOTE: This method should be deprecated. This method will ONLY work correctly in DEV environment.
-	// Use selectViewLayerAssets(HashMap<String, String> viewLayerAssets) instead to make it work in all environments.
-	public void selectViewLayerAssets(Boolean selectAssetCastIron, Boolean selectAssetCopper, Boolean selectAssetOtherPlastic, Boolean selectAssetPEPlastic, Boolean selectAssetProtectedSteel, Boolean selectAssetUnprotectedSteel) {
-		if (selectAssetCastIron) {
-			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-96caf1f5-d5c5-461d-9ce3-d210c20a1bb0']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxCastIron);
-			}
-		}
-		if (selectAssetCopper) {
-			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-d08fc87f-f979-4131-92a9-3d82f37f4bba']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxCopper);
-			}
-		}
-		if (selectAssetOtherPlastic) {
-			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-ad701312-c470-482a-be45-ef37770e2ce6']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxOtherPla);
-			}
-		}
-		if (selectAssetPEPlastic) {
-			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-f14735de-6c9b-4423-8533-f243a7fe4e90']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxPEPla);
-			}
-		}
-		if (selectAssetProtectedSteel) {
-			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-44353e68-0694-4f05-85cb-84d753ea278c']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxProtectedSteel);
-			}
-		}
-		if (selectAssetUnprotectedSteel) {
-			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-f3955e82-dd13-4842-84f7-502bcda6b57a']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxUnProtectedSteel);
-			}
-		}
-	}
-
-	// NOTE: This method should be deprecated. This method will ONLY work correctly in DEV environment.
-	// Use selectViewLayerBoundaries(HashMap<String, String> viewLayerBoundaries) instead to make it work in all environments.
-	public void selectViewLayerBoundaries(boolean selectBoundaryDistrict, boolean selectBoundaryDistrictPlat) {
-		if (selectBoundaryDistrict) {
-			if (driver.findElements(By.xpath("//*[@id='report-boundry-layers-Small Boundary']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxDistrict);
-			}
-		}
-		if (selectBoundaryDistrictPlat) {
-			if (driver.findElements(By.xpath("//*[@id='report-boundry-layers-Big Boundary']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxDistrictPlat);
-			}
-		}
-	}
-
 	public void selectAnyCustomerBoundary(CustomerBoundaryType type) {
 		// TODO open the Boundary selector and click on any customer boundary.
 		// Could provide a search by boundary name.
@@ -2393,17 +2317,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		
 		List<Map<String, String>> viewLayersList = reportsCompliance.getViewLayersList();
-		
-		// NOTE: Currently tableList has the values for Optional View Layer instead of 'viewLayersList'. Tracked by TA884.
-		// In PageActions we populate 'viewLayersList' correctly. This if/else is to handle these 2 cases.
-		// Once TA884 is fixed we can eliminate the 'handleOptionalViewLayersSection' method.
-		if (viewLayersList != null) {
-			if (viewLayersList.size() > 0) {
-				handleOptionalDynamicViewLayersSection(viewLayersList);
-			}
-		} else {
-			handleOptionalViewLayersSection(tablesList);
-		}
+		if (viewLayersList != null && viewLayersList.size() > 0) {
+			handleOptionalDynamicViewLayersSection(viewLayersList);
+		} 
 	}
 
 	private void fillCustomerBoundary(ReportsCompliance reportsCompliance) {
@@ -2468,13 +2384,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			this.checkBoxPCRA.click();
 		}
 
-		selectViewLayerAssets(true, true, true, true, true, true);
+		selectViewLayerAssets(reportsCompliance.getViewLayersList().get(0));
 
 		addViews(reportsCompliance.getCustomer(), reportsCompliance.getViewList());
 	}
 
 	@Override
-	public void addViewDetails(String customer, String boundary) {
+	public void addViewDetails(String customer, String boundary) throws Exception {
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();
 
@@ -2497,7 +2413,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (boundary != null) {
 			this.inputViewBoundaries.click();
 
-			selectViewLayerBoundaries(true, true);
+			selectViewLayerBoundaries(ReportDataProvider.getAllViewLayerBoundariesForCustomer(customer));
 		}
 	}
 
@@ -2533,7 +2449,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	@Override
-	public void addOtherDetails(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList, String startDate, String endDate, boolean changeMode, String strReportMode) {
+	public void addOtherDetails(String customer, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, 
+			String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList, String startDate, String endDate, 
+			boolean changeMode, String strReportMode) throws Exception {
 		if (this.isElementPresent(btnChangeModeXPath)) {
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("arguments[0].click();", btnChangeMode);
@@ -2562,7 +2480,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.checkBoxPCA.click();
 		this.checkBoxPCRA.click();
 
-		selectViewLayerAssets(true, true, true, true, true, true);
+		selectViewLayerAssets(ReportDataProvider.getAllViewLayerAssetsForCustomer(customer));
 	}
 
 	@Override

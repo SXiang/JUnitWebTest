@@ -4,17 +4,9 @@ package surveyor.dataprovider;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPHEIGHT;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPWIDTH;
 import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETCASTIRON;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETCOPPER;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETPEPLASTIC;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
-import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICT;
-import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
 import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
 import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
 import static surveyor.scommon.source.SurveyorConstants.KEYGAPS;
@@ -31,16 +23,26 @@ import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.RSWLAT;
 import static surveyor.scommon.source.SurveyorConstants.RSWLON;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.InitializationError;
+
+import common.source.ExcelUtility;
+import common.source.TestContext;
+import surveyor.scommon.actions.data.CustomerDataReader;
+import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
+import surveyor.scommon.actions.data.ReportOptViewLayersAssetsDataReader;
+import surveyor.scommon.actions.data.ReportOptViewLayersBoundaryDataReader;
+import surveyor.scommon.actions.data.ReportOptViewLayersAssetsDataReader.ReportOptViewLayersAssetsDataRow;
+import surveyor.scommon.actions.data.ReportOptViewLayersBoundaryDataReader.ReportOptViewLayersBoundaryDataRow;
+import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 public class ReportDataProvider extends SurveyorTestRunner {
-	
 
 	public ReportDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
@@ -79,23 +81,138 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		return listBoundary;
 	}
 
-	public static HashMap<String, String> createOptionalTable(String indication, String isotopic, String pca, String pcra, String iron, String copper, String otherPlastic, String plastic, String protectedSteel, String unprotecetdSteel, String district, String districtPlat) {
+	public static HashMap<String, String> createOptionalTabularPDFContent(String indication, String isotopic, String pca, String pcra) {
 		HashMap<String, String> tableMap = new HashMap<String, String>();
 		tableMap.put(KEYINDTB, indication);
 		tableMap.put(KEYISOANA, isotopic);
 		tableMap.put(KEYPCA, pca);
 		tableMap.put(KEYPCRA, pcra);
-		tableMap.put(KEYASSETCASTIRON, iron);
-		tableMap.put(KEYASSETCOPPER, copper);
-		tableMap.put(KEYASSETOTHERPLASTIC, otherPlastic);
-		tableMap.put(KEYASSETPEPLASTIC, plastic);
-		tableMap.put(KEYASSETPROTECTEDSTEEL, protectedSteel);
-		tableMap.put(KEYASSETUNPROTECTEDSTEEL, unprotecetdSteel);
-		tableMap.put(KEYBOUNDARYDISTRICT, district);
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, districtPlat);
 		return tableMap;
 	}
 
-	
+	public static HashMap<String, String> getAllViewLayerAssetsAndBoundariesForCustomer(String customerName) throws Exception {
+		HashMap<String, String> viewLayerMap = new HashMap<String, String>();
+		ExcelUtility excelUtility = getExcelUtility();
+		int customerRowID = getCustomerRowID(customerName, excelUtility);
+		if (customerRowID != -1) {
+			// If found a matching customer, get all assets and boundaries for this customer.
+			addAllViewLayersAssetsForCustomer(viewLayerMap, excelUtility, customerRowID);	
+			addAllViewLayerBoundariesForCustomer(viewLayerMap, excelUtility, customerRowID);	
+		}
 
+		return viewLayerMap;
+	}
+
+	public static HashMap<String, String> getAllViewLayerAssetsForCustomer(String customerName) throws Exception {
+		HashMap<String, String> viewLayerMap = new HashMap<String, String>();
+		ExcelUtility excelUtility = getExcelUtility();
+		int customerRowID = getCustomerRowID(customerName, excelUtility);
+		if (customerRowID != -1) {
+			// If found a matching customer, get all assets for this customer.
+			addAllViewLayersAssetsForCustomer(viewLayerMap, excelUtility, customerRowID);	
+		}
+
+		return viewLayerMap;
+	}
+
+	public static HashMap<String, String> getAllViewLayerBoundariesForCustomer(String customerName) throws Exception {
+		HashMap<String, String> viewLayerMap = new HashMap<String, String>();
+		ExcelUtility excelUtility = getExcelUtility();
+		int customerRowID = getCustomerRowID(customerName, excelUtility);
+		if (customerRowID != -1) {
+			// If found a matching customer, get all boundaries for this customer.
+			addAllViewLayerBoundariesForCustomer(viewLayerMap, excelUtility, customerRowID);	
+		}
+
+		return viewLayerMap;
+	}
+
+	public static HashMap<String, String> createOptionalViewLayersContent(List<Integer> assetRowIDs, 
+			List<Integer> boundaryRowIDs) throws Exception {
+		HashMap<String, String> viewLayerMap = new HashMap<String, String>();
+		ExcelUtility excelUtility = getExcelUtility();
+		addAssetsToMap(assetRowIDs, viewLayerMap, excelUtility);
+		addBoundariesToMap(boundaryRowIDs, viewLayerMap, excelUtility);
+		return viewLayerMap;
+	}
+
+	public static HashMap<String, String> createViewLayerAssetsContent(List<Integer> assetRowIDs) throws Exception {
+		HashMap<String, String> viewLayerMap = new HashMap<String, String>();
+		ExcelUtility excelUtility = getExcelUtility();
+		addAssetsToMap(assetRowIDs, viewLayerMap, excelUtility);
+		return viewLayerMap;
+	}
+
+	public static HashMap<String, String> createViewLayerBoundariesContent(List<Integer> boundaryRowIDs) throws Exception {
+		HashMap<String, String> viewLayerMap = new HashMap<String, String>();
+		ExcelUtility excelUtility = getExcelUtility();
+		addBoundariesToMap(boundaryRowIDs, viewLayerMap, excelUtility);
+		return viewLayerMap;
+	}
+
+	private static ExcelUtility getExcelUtility() throws Exception, IOException {
+		ExcelUtility excelUtility = new ExcelUtility();
+		excelUtility.setExcelFile(TestContext.INSTANCE.getTestSetup().getTestCaseDataPath());
+		return excelUtility;
+	}
+
+	private static int getCustomerRowID(String customerName, ExcelUtility excelUtility) throws Exception {
+		int customerRowCount = excelUtility.getRowCount(CustomerDataReader.TESTDATA_SHEET_NAME);
+		int customerRowID = -1;
+		CustomerDataReader customerDataReader = new CustomerDataReader(excelUtility);
+		for (int i = 0; i < customerRowCount; i++) {
+			CustomerDataRow customerDataRow = customerDataReader.getDataRow(i);
+			if (customerDataRow.name.equals(customerName)) {
+				customerRowID = Integer.valueOf(customerDataRow.rowID);
+				break;
+			}
+		}
+		return customerRowID;
+	}
+	
+	private static void addAssetsToMap(List<Integer> assetRowIDs, HashMap<String, String> viewLayerMap,
+			ExcelUtility excelUtility) throws Exception {
+		if (assetRowIDs != null && assetRowIDs.size()>0) {
+			for (Integer rowID : assetRowIDs) {
+				ReportOptViewLayersAssetsDataReader viewLayersAssetsDataReader = new ReportOptViewLayersAssetsDataReader(excelUtility);
+				ReportOptViewLayersAssetsDataRow dataRow = viewLayersAssetsDataReader.getDataRow(rowID);
+				viewLayerMap.put(dataRow.assetID, ReportsCompliance.ASSET_PREFIX + dataRow.assetName);
+			}
+		}
+	}
+
+	private static void addBoundariesToMap(List<Integer> boundaryRowIDs, HashMap<String, String> viewLayerMap,
+			ExcelUtility excelUtility) throws Exception {
+		if (boundaryRowIDs != null && boundaryRowIDs.size()>0) {
+			for (Integer rowID : boundaryRowIDs) {
+				ReportOptViewLayersBoundaryDataReader viewLayersBoundaryDataReader = new ReportOptViewLayersBoundaryDataReader(excelUtility);
+				ReportOptViewLayersBoundaryDataRow dataRow = viewLayersBoundaryDataReader.getDataRow(rowID);
+				viewLayerMap.put(dataRow.boundaryID, ReportsCompliance.BOUNDARY_PREFIX + dataRow.boundaryName);
+			}
+		}
+	}
+
+	private static void addAllViewLayersAssetsForCustomer(HashMap<String, String> viewLayerMap, ExcelUtility excelUtility, int customerRowID)
+			throws Exception {
+		int assetsRowCount = excelUtility.getRowCount(ReportOptViewLayersAssetsDataReader.TESTDATA_SHEET_NAME);
+		ReportOptViewLayersAssetsDataReader assetsDataReader = new ReportOptViewLayersAssetsDataReader(excelUtility);
+		for (int i = 0; i < assetsRowCount; i++) {
+			ReportOptViewLayersAssetsDataRow assetsDataRow = assetsDataReader.getDataRow(i);
+			if (Integer.valueOf(assetsDataRow.customerRowID) == customerRowID) {
+				viewLayerMap.put(assetsDataRow.assetID, ReportsCompliance.ASSET_PREFIX + assetsDataRow.assetName);
+			}
+		}
+	}
+
+	private static void addAllViewLayerBoundariesForCustomer(HashMap<String, String> viewLayerMap, ExcelUtility excelUtility, int customerRowID)
+			throws Exception {
+		int boundaryRowCount = excelUtility.getRowCount(ReportOptViewLayersBoundaryDataReader.TESTDATA_SHEET_NAME);
+		ReportOptViewLayersBoundaryDataReader boundaryDataReader = new ReportOptViewLayersBoundaryDataReader(excelUtility);
+		for (int i = 0; i < boundaryRowCount; i++) {
+			ReportOptViewLayersBoundaryDataRow boundaryDataRow = boundaryDataReader.getDataRow(i);
+			if (Integer.valueOf(boundaryDataRow.customerRowID) == customerRowID) {
+				viewLayerMap.put(boundaryDataRow.boundaryID, ReportsCompliance.BOUNDARY_PREFIX + boundaryDataRow.boundaryName);
+			}
+		}
+	}
 }

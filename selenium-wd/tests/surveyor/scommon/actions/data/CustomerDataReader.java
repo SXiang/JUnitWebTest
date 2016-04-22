@@ -9,7 +9,7 @@ public class CustomerDataReader extends BaseDataReader {
 		super(excelUtility);
 	}
 
-	private static final String TESTDATA_SHEET_NAME = "Customers";
+	public static final String TESTDATA_SHEET_NAME = "Customers";
 	 
 	public static final int Excel_TestData__Col_RowID = 0;
 	public static final int Excel_TestData__Col_Name = 1;
