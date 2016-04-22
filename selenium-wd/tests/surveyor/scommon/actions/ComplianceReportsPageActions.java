@@ -55,6 +55,7 @@ import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
+import surveyor.scommon.source.ReportsSurveyInfo;
 
 public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	private ComplianceReportDataReader dataReader = null;
@@ -248,39 +249,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	/* START - Actions on the Page*/
 
 	/**
-	 * Executes addFirstSurveyToReport action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean addFirstSurveyToReport(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.addFirstSurveyToReport", data, dataRowID);
-		return true;
-	}
- 
-	/**
-	 * Executes addFirst2SurveysToReport action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean addFirst2SurveysToReport(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.addFirst2SurveysToReport", data, dataRowID);
-		return true;
-	}
- 
-	/**
-	 * Executes addFirst3SurveysToReport action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean addFirst3SurveysToReport(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.addFirst3SurveysToReport", data, dataRowID);
-		return true;
-	}
-
-	/**
 	 * Executes addDefaultView action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -309,17 +277,19 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
  
 	/**
-	 * Executes addSurveyToReport action.
+	 * Executes addSurveysToReport action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 * @throws Exception 
 	 */
-	public boolean addSurveyToReport(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.addSurveyToReport", data, dataRowID);
-		ActionArguments.verifyGreaterThanZero("addSurveyToReport", ARG_DATA_ROW_ID, dataRowID);
+	public boolean addSurveysToReport(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.addSurveysToReport", data, dataRowID);
+		ActionArguments.verifyGreaterThanZero("addSurveysToReport", ARG_DATA_ROW_ID, dataRowID);
+		ReportsCompliance reportsCompliance = new ReportsCompliance();
 		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
 		List<Integer> reportSurveyRowIDs = ActionArguments.getNumericList(dataRow.reportSurveyRowIDs);
+		List<ReportsSurveyInfo> reportsSurveyInfoList = new ArrayList<ReportsSurveyInfo>();
 		for (Integer rowID : reportSurveyRowIDs) {
 			ReportSurveyDataReader surveyDataReader = new ReportSurveyDataReader(this.excelUtility);
 			ReportSurveyDataRow surveyDataRow = surveyDataReader.getDataRow(rowID);
@@ -339,20 +309,15 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 				modeFilter = SurveyModeFilter.RapidResponse;
 			} 
 			
-			List<String> surveyTag= new ArrayList<String>();
-			surveyTag.add(surveyDataRow.surveyTag);
-
-			ReportsCompliance reportsCompliance = new ReportsCompliance();
-			reportsCompliance.setSurveyorUnit(surveyDataRow.surveySurveyor);
-			reportsCompliance.setUserName(surveyDataRow.surveyUsername);
-			reportsCompliance.setTagList(surveyTag);
-			reportsCompliance.setStartDate(surveyDataRow.surveyStartDate);
-			reportsCompliance.setEndDate(surveyDataRow.surveyEndDate);
-			reportsCompliance.setSurveyModeFilter(modeFilter);
-			reportsCompliance.setGeoFilter(Boolean.parseBoolean(surveyDataRow.surveyGeoFilterON));
-
-			this.getComplianceReportsPage().addSurveyInformation(reportsCompliance);
+			reportsSurveyInfoList.add(new ReportsSurveyInfo(
+					surveyDataRow.surveySurveyor, surveyDataRow.surveyUsername, surveyDataRow.surveyTag, 
+					surveyDataRow.surveyStartDate, surveyDataRow.surveyEndDate, 
+					modeFilter, Boolean.valueOf(surveyDataRow.surveyGeoFilterON), 
+					Integer.valueOf(surveyDataRow.numberofSurveystoInclude), 
+					Boolean.valueOf(surveyDataRow.selectAllSurveys)));			
 		}
+		reportsCompliance.setSurveyInfoList(reportsSurveyInfoList);
+		this.getComplianceReportsPage().addSurveyInformation(reportsCompliance);
 		return true;		
 	}
  
@@ -2934,11 +2899,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	@Override
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
 		if (actionName.equals("addDefaultView")) { return this.addDefaultView(data, dataRowID); }
-		else if (actionName.equals("addFirstSurveyToReport")) { return this.addFirstSurveyToReport(data, dataRowID); }
-		else if (actionName.equals("addFirst2SurveysToReport")) { return this.addFirst2SurveysToReport(data, dataRowID); }
-		else if (actionName.equals("addFirst3SurveysToReport")) { return this.addFirst3SurveysToReport(data, dataRowID); }
 		else if (actionName.equals("addNewView")) { return this.addNewView(data, dataRowID); }
-		else if (actionName.equals("addSurveyToReport")) { return this.addSurveyToReport(data, dataRowID); }
+		else if (actionName.equals("addSurveysToReport")) { return this.addSurveysToReport(data, dataRowID); }
 		else if (actionName.equals("cancelInProgressReport")) { return this.cancelInProgressReport(data, dataRowID); }
 		else if (actionName.equals("checkSurveySelectorGeographicFilter")) { return this.checkSurveySelectorGeographicFilter(data, dataRowID); }
 		else if (actionName.equals("clickById")) { return this.clickById(data, dataRowID); }

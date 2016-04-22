@@ -5,39 +5,20 @@ package surveyor.scommon.source;
 
 import static org.junit.Assert.fail;
 import static surveyor.scommon.source.SurveyorConstants.ACTIONTIMEOUT;
-import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
-import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
-import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
-import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
-import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
-import static surveyor.scommon.source.SurveyorConstants.KEYGAPS;
-import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
-import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
-import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
-import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
-import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
-import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
-import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
-import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
-import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
@@ -56,26 +37,21 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import common.source.ApiUtility;
-import common.source.BaseHelper;
 import common.source.CSVUtility;
 import common.source.FileUtility;
 import common.source.ImagingUtility;
 import common.source.Log;
-import common.source.PDFUtility;
 import common.source.RegexUtility;
 import common.source.ShapeToGeoJsonConverter;
 import common.source.TestContext;
 import common.source.TestSetup;
 import net.avh4.util.imagecomparison.ImageComparisonResult;
 import surveyor.api.source.ReportJobsStat;
-import surveyor.dataaccess.source.Report;
-import surveyor.dataaccess.source.ReportJob;
-import surveyor.dataaccess.source.ResourceKeys;
-import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.Reports.ReportJobType;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.ReportStatusType;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
+import surveyor.scommon.source.ReportsSurveyInfo;
 
 /**
  * @author zlu
@@ -394,6 +370,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.ID, using = "pdf")
 	protected WebElement pdfImg;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys_length']/label/select")
+	protected WebElement surveyTableRows;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody")
+	protected WebElement surveyTable;
 
 	public static final String STRPaginationMsg = "Showing 1 to ";
 
@@ -404,7 +386,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(name = "report-survey-mode-type")
 	private List<WebElement> reportSurveyModeTypeRadiobuttonList;
-
+	
+	@FindBy(id = "datatableSurveys_next")
+	protected WebElement surveyNextButton;
+	
+	private static String surveyTableHeaderColumnBaseXPath = "//*[@id='datatableSurveys']/thead/tr/th[%d]";
+	
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -641,6 +628,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return checkBoxPCF.isSelected();
 	}
 
+	public void setSurveyRowsPagination(String numPages) {
+		List<WebElement> options = this.surveyTableRows.findElements(By.tagName("option"));
+		for (WebElement option : options) {
+			if (numPages.equals(option.getText().trim())) {
+				option.click();
+			}
+		}
+	}
+	
 	public void addNewReport(Reports reports) throws Exception {
 		addNewReport(reports, true /**/);
 	}
@@ -672,6 +668,144 @@ public class ReportsBasePage extends SurveyorBasePage {
 		String endDate = reports.getSurveyEndDate();
 		Boolean geoFilterOn = reports.getGeoFilter();
 
+		selectSurveyInfoSurveyorUnit(surveyor);
+		enterSurveyInfoUsername(username);
+		selectSurveyInfoStartDate(startDate);
+		selectSurveyInfoEndDate(endDate);
+
+		handleExtraAddSurveyInfoParameters(reports);
+
+		selectSurveyInfoGeoFilter(geoFilterOn);
+
+		for (String tagValue : tagList) {
+			if (tagValue != "") {
+				inputSurveyTag(tagValue);
+				clickOnSearchSurveyButton();
+				this.waitForSurveyTabletoLoad();
+				this.waitForSurveySelectorCheckBoxToLoad();
+				this.waitForSurveySelectorCheckBoxToBeEnabled();
+				selectFirstSurveyCheckBox();
+				this.waitForAddSurveyButtonToLoad();
+				clickOnAddSurveysButton();
+			}
+		}
+	}
+
+	public void addMultipleSurveysToReport(Reports reports) throws Exception {
+		Log.info("Adding all Surveys matching information.");
+		
+		List<ReportsSurveyInfo> surveyInfoList = reports.getSurveyInfoList();
+		for (ReportsSurveyInfo reportsSurveyInfo : surveyInfoList) {
+			
+			// Enter the survey fields.
+			selectSurveyInfoSurveyorUnit(reportsSurveyInfo.getSurveyor());
+			enterSurveyInfoUsername(reportsSurveyInfo.getUsername());
+			selectSurveyInfoStartDate(reportsSurveyInfo.getStartDate());
+			selectSurveyInfoEndDate(reportsSurveyInfo.getEndDate());
+			handleExtraAddSurveyInfoParameters(reportsSurveyInfo.getSurveyModeFilter());
+			selectSurveyInfoGeoFilter(reportsSurveyInfo.isGeoFilterOn());
+			inputSurveyTag(reportsSurveyInfo.getTag());
+			
+			// Click on Search survey button.
+			clickOnSearchSurveyButton();
+			
+			// Select the specified number of surveys and add them to report.
+			selectSurveysAndAddToReport(reportsSurveyInfo.isSelectAllSurveys(), reportsSurveyInfo.getNumberOfSurveysToSelect());
+		}
+	}
+	
+	private void selectSurveysAndAddToReport(boolean selectAll, Integer numSurveysToSelect) {
+		if (selectAll || numSurveysToSelect > 0) {		
+			setSurveyRowsPagination(PAGINATIONSETTING_100);
+			
+			Integer selectedSurveysCount = 0;
+			if (selectAll) {
+				numSurveysToSelect = Integer.MAX_VALUE;
+			}
+			
+			this.waitForSurveyTabletoLoad();
+			this.waitForSurveySelectorCheckBoxToLoad();
+			this.waitForSurveySelectorCheckBoxToBeEnabled();
+			
+			String checkBoxXPath;
+			WebElement checkBoxActionCell;
+			
+			List<WebElement> rows = surveyTable.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
+			
+			int rowSize = rows.size();
+			int loopCount = 0;
+			
+			if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
+				loopCount = rowSize;
+			else
+				loopCount = Integer.parseInt(PAGINATIONSETTING_100);
+			
+			// Loop through table elements and check selected number of surveys.
+			for (int rowNum = 1; rowNum <= loopCount && selectedSurveysCount <= numSurveysToSelect; rowNum++) {
+				checkBoxXPath = "//*[@id='datatableSurveys']/tbody/tr["+rowNum+"]/td[5]";
+				checkBoxActionCell = surveyTable.findElement(By.xpath(checkBoxXPath));
+				checkBoxActionCell.click();
+				selectedSurveysCount++;
+	
+				if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.surveyNextButton.getAttribute("class").contains("disabled")) {
+					this.surveyNextButton.click();
+					this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+					List<WebElement> newRows = surveyTable.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
+					
+					rowSize = newRows.size();
+					
+					if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
+						loopCount = rowSize;
+					else
+						loopCount = Integer.parseInt(PAGINATIONSETTING_100);
+					
+					rowNum = 0;
+				}			
+			}
+			
+			// Add the selected surveys 
+			clickOnAddSurveysButton();
+		}
+	}
+
+	private void selectFirstSurveyCheckBox() {
+		this.checkboxSurFirst.click();
+	}
+
+	private void clickOnSearchSurveyButton() {
+		this.btnSurveySearch.click();
+	}
+
+	private void clickOnAddSurveysButton() {
+		this.btnAddSurveys.click();
+	}
+
+	private void selectSurveyInfoGeoFilter(Boolean geoFilterOn) {
+		if ((geoFilterOn == null) || (!geoFilterOn)) {
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("arguments[0].click();", this.checkGeoFilter);
+		}
+	}
+
+	private void selectSurveyInfoEndDate(String endDate) {
+		if ((endDate != null) && (endDate != "")) {
+			selectEndDateForSurvey(endDate);
+		}
+	}
+
+	private void selectSurveyInfoStartDate(String startDate) {
+		if ((startDate != null) && (startDate != "")) {
+			selectStartDateForSurvey(startDate);
+		}
+	}
+
+	private void enterSurveyInfoUsername(String username) {
+		if (username != null) {
+			this.userName.sendKeys(username);
+		}
+	}
+
+	private void selectSurveyInfoSurveyorUnit(String surveyor) {
 		if (surveyor != null) {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsSU) {
@@ -680,45 +814,19 @@ public class ReportsBasePage extends SurveyorBasePage {
 				}
 			}
 		}
-
-		if (username != null) {
-			this.userName.sendKeys(username);
-		}
-
-		if ((startDate != null) && (startDate != "")) {
-			selectStartDateForSurvey(startDate);
-		}
-
-		if ((endDate != null) && (endDate != "")) {
-			selectEndDateForSurvey(endDate);
-		}
-
-		handleExtraAddSurveyInfoParameters(reports);
-
-		if ((geoFilterOn == null) || (!geoFilterOn)) {
-			JavascriptExecutor js = (JavascriptExecutor) driver;
-			js.executeScript("arguments[0].click();", this.checkGeoFilter);
-		}
-
-		for (String tagValue : tagList) {
-			if (tagValue != "") {
-				inputSurveyTag(tagValue);
-				this.btnSurveySearch.click();
-				this.waitForSurveyTabletoLoad();
-				this.waitForSurveySelectorCheckBoxToLoad();
-				this.waitForSurveySelectorCheckBoxToBeEnabled();
-				this.checkboxSurFirst.click();
-				this.waitForAddSurveyButtonToLoad();
-				this.btnAddSurveys.click();
-			}
-		}
-
+	}
+	
+	/**
+	 * Implementation to be provided by Derived classes.
+	 */
+	protected void handleExtraAddSurveyInfoParameters(Reports reports) throws Exception {
+		throw new Exception("Not implemented");
 	}
 
 	/**
 	 * Implementation to be provided by Derived classes.
 	 */
-	protected void handleExtraAddSurveyInfoParameters(Reports reports) throws Exception {
+	protected void handleExtraAddSurveyInfoParameters(SurveyModeFilter surveyModeFilter) throws Exception {
 		throw new Exception("Not implemented");
 	}
 
@@ -995,13 +1103,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 		for (String tagValue : tagList) {
 			if (tagValue != "") {
 				inputSurveyTag(tagValue);
-				this.btnSurveySearch.click();
+				clickOnSearchSurveyButton();
 				this.waitForSurveyTabletoLoad();
 				this.waitForSurveySelectorCheckBoxToLoad();
 				this.waitForSurveySelectorCheckBoxToBeEnabled();
 				selectSurveyCheckBox(checkboxSurFirst);
 				this.waitForAddSurveyButtonToLoad();
-				this.btnAddSurveys.click();
+				clickOnAddSurveysButton();
 
 			}
 		}
@@ -1092,13 +1200,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 		for (String tagValue : reportsCompliance.tagList) {
 			if (tagValue != "") {
 				inputSurveyTag(tagValue);
-				this.btnSurveySearch.click();
+				clickOnSearchSurveyButton();
 				this.waitForSurveyTabletoLoad();
 				this.waitForSurveySelectorCheckBoxToLoad();
 				this.waitForSurveySelectorCheckBoxToBeEnabled();
-				this.checkboxSurFirst.click();
+				selectFirstSurveyCheckBox();
 				this.waitForAddSurveyButtonToLoad();
-				this.btnAddSurveys.click();
+				clickOnAddSurveysButton();
 			}
 		}
 
@@ -1193,12 +1301,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 			inputSurveyTag(tag);
 		}
 
-		this.btnSurveySearch.click();
+		clickOnSearchSurveyButton();
 		this.waitForSurveyTabletoLoad();
 		this.waitForSurveySelectorCheckBoxToLoad();
 		this.waitForSurveySelectorCheckBoxToBeEnabled();
-		this.checkboxSurFirst.click();
-		this.btnAddSurveys.click();
+		selectFirstSurveyCheckBox();
+		clickOnAddSurveysButton();
 		this.clickOnOKButton();
 	}
 
@@ -1743,20 +1851,20 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 				inputSurveyTag(tagValue);
 				this.waitForSurveySearchButtonToLoad();
-				this.btnSurveySearch.click();
+				clickOnSearchSurveyButton();
 				this.waitForSurveyTabletoLoad();
-				this.checkboxSurFirst.click();
+				selectFirstSurveyCheckBox();
 				this.waitForAddSurveyButtonToLoad();
-				this.btnAddSurveys.click();
+				clickOnAddSurveysButton();
 			}
 		}
 
 		if (tagList.isEmpty()) {
-			this.btnSurveySearch.click();
+			clickOnSearchSurveyButton();
 			this.waitForSurveyTabletoLoad();
-			this.checkboxSurFirst.click();
+			selectFirstSurveyCheckBox();
 			this.waitForAddSurveyButtonToLoad();
-			this.btnAddSurveys.click();
+			clickOnAddSurveysButton();
 		}
 
 		modifyComplianceViews();
@@ -1820,22 +1928,22 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		if (surveyTag != "") {
 			inputSurveyTag(surveyTag);
-			this.btnSurveySearch.click();
+			clickOnSearchSurveyButton();
 			this.waitForSurveyTabletoLoad();
-			this.checkboxSurFirst.click();
-			this.btnAddSurveys.click();
+			selectFirstSurveyCheckBox();
+			clickOnAddSurveysButton();
 		}
 
 		if (isElementPresent(strFirstSurveyTag)) {
 			if (surveyTag != "") {
 				inputSurveyTag(surveyTag);
-				this.btnSurveySearch.click();
+				clickOnSearchSurveyButton();
 				this.waitForSurveyTabletoLoad();
 				this.waitForSurveySelectorCheckBoxToLoad();
 				this.waitForSurveySelectorCheckBoxToBeEnabled();
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				js.executeScript("arguments[0].click();", checkboxSurFirst);
-				this.btnAddSurveys.click();
+				clickOnAddSurveysButton();
 
 				if (this.btnAddSurveys.getAttribute("value").equalsIgnoreCase(getSTRSurveyIncludedMsg()))
 					return true;
@@ -1950,6 +2058,26 @@ public class ReportsBasePage extends SurveyorBasePage {
 		});
 	}
 
+	public void clickOnSurveyTableColumnHeader(Integer columnIndex, Integer numTimesToClick) {
+		WebElement headerElement = driver.findElement(By.xpath(String.format(surveyTableHeaderColumnBaseXPath, columnIndex)));
+		for (int i = 0; i < numTimesToClick; i++) {
+			headerElement.click();
+		}
+	}
+	
+	public Integer getRecordsInSurveyTable(WebDriver driver) {
+		WebElement pageInfoLabel = driver.findElement(By.id("datatableSurveys"));
+		return getRecordsShownOnPage(driver, pageInfoLabel);
+	}
+	
+	public void waitForSurveyTableDataToLoad() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return (getRecordsInSurveyTable(d) > 0);
+			}
+		});
+	}
+	
 	public String getReportName() {
 		return reportName;
 	}
@@ -2003,11 +2131,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public String getSurveyMissingMessage() throws Exception {
 		throw new Exception("Not implemented");
-	}
-
-	public void addMultipleSurveys(Reports reports) throws Exception {
-		throw new Exception("Not implemented");
-
 	}
 
 	/************** Baseline creation and comparison methods ***************/

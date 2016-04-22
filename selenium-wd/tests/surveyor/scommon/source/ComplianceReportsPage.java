@@ -2483,34 +2483,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	@Override
-	public void addMultipleSurveys(Reports reports) {
-		ReportsCompliance reportsCompliance = (ReportsCompliance) reports;
-		inputExclusionRadius(reportsCompliance.getExclusionRadius());
-		inputImageMapHeight(reportsCompliance.getImageMapHeight());
-		inputImageMapWidth(reportsCompliance.getImageMapWidth());
-
-		fillCustomBoundaryTextFields(reportsCompliance.getNELat(), reportsCompliance.getNELong(), reportsCompliance.getSWLat(), reportsCompliance.getSWLong());
-
-		List<Map<String, String>> tablesList = reportsCompliance.getTablesList();
-		if (tablesList.get(0).get(KEYINDTB).equalsIgnoreCase("1")) {
-			this.checkBoxIndTb.click();
-		}
-		if (tablesList.get(0).get(KEYISOANA).equalsIgnoreCase("1")) {
-			this.checkBoxIsoAna.click();
-		}
-		if (tablesList.get(0).get(KEYPCA).equalsIgnoreCase("1")) {
-			this.checkBoxPCA.click();
-		}
-		if (tablesList.get(0).get(KEYPCRA).equalsIgnoreCase("1")) {
-			this.checkBoxPCRA.click();
-		}
-
-		selectViewLayerAssets(reportsCompliance.getViewLayersList().get(0));
-
-		addViews(reportsCompliance.getCustomer(), reportsCompliance.getViewList());
-	}
-
-	@Override
 	public void addViewDetails(String customer, String boundary) throws Exception {
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();
@@ -2541,6 +2513,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@Override
 	protected void handleExtraAddSurveyInfoParameters(Reports reports) {
 		SurveyModeFilter surveyModeFilter = ((ReportsCompliance) reports).surveyModeFilter;
+		if (surveyModeFilter != null) {
+			selectSurveyModeForSurvey(surveyModeFilter);
+		}
+	}
+
+	@Override
+	protected void handleExtraAddSurveyInfoParameters(SurveyModeFilter surveyModeFilter) {
 		if (surveyModeFilter != null) {
 			selectSurveyModeForSurvey(surveyModeFilter);
 		}
