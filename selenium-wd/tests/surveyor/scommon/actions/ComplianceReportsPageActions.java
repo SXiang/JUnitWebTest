@@ -24,12 +24,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import common.source.BaseHelper;
 import common.source.Log;
 import common.source.RegexUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
+import surveyor.api.source.ReportJob;
+import surveyor.api.source.ReportJobsStat;
 import surveyor.scommon.actions.data.ComplianceReportDataReader;
 import surveyor.scommon.actions.data.ComplianceReportDataReader.ComplianceReportsDataRow;
 import surveyor.scommon.actions.data.CustomerDataReader;
@@ -53,11 +56,15 @@ import surveyor.scommon.source.ComplianceReportsPage.ReportViewerThumbnailType;
 import surveyor.scommon.source.LatLongSelectionControl;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
+import surveyor.scommon.source.Reports.ReportJobType;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.ReportsSurveyInfo;
 
 public class ComplianceReportsPageActions extends BaseReportsPageActions {
+	private static final String FN_WAIT_FOR_VIEW_DOWNLOAD_TO_COMPLETE_BY_VIEW_INDEX = "waitForViewDownloadToCompleteByViewIndex";
+	private static final String FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX = "clickOnComplianceViewerViewByIndex";
+
 	private ComplianceReportDataReader dataReader = null;
 	public static ReportsCompliance workingReportsComp = null;      // Stores the ReportsCompliance object from createNewReport action
 	public static ComplianceReportsDataRow workingDataRow = null;    // Stores the workingDataRow from createNewReport action
@@ -76,40 +83,78 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		this.getComplianceReportsPage().addViews(workingReportsComp.getCustomer(), viewList);
 	}
  
+	private boolean areTabularPDFContentSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
+		return isPDFGapSelectionMatch(dataRow) && isPDFIndicationSelectionMatch(dataRow) &&
+				isPDFIsotopicAnalysisSelectionMatch(dataRow) && isPDFPercentCoverageAssetsSelectionMatch(dataRow) &&
+				isPDFPercentCoverageForecastSelectionMatch(dataRow) && isPDFPercentCoverageReportAreaSelectionMatch(dataRow);
+	}
+
+	// TODO: Check assets and boundaries provided to the dataRow.
+	private boolean areAssetBoundariesMatch(ReportOptViewLayersDataRow dataRow) {
+		return false;
+	}
+
+	private boolean clickComplianceViewerViewByIndex(String data, Integer dataRowID) throws Exception {
+		ActionArguments.verifyNotNullOrEmpty(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, data);
+		Integer viewIdx = Integer.valueOf(data);
+		ActionArguments.verifyGreaterThanZero(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, viewIdx);
+		
+		// Find the view image to click. Order of the images is the order returned by API. 
+		String viewID = getViewThumbnailImageId(viewIdx);
+		
+		// Click on the view image.
+		if (!viewID.equals("")) {
+			clickById(viewID, dataRowID);
+		}
+		return true;
+	}
+
+	private List<ReportsSurveyInfo> buildReportSurveyInfoList(ComplianceReportsDataRow dataRow) throws Exception {
+		List<Integer> reportSurveyRowIDs = ActionArguments.getNumericList(dataRow.reportSurveyRowIDs);
+		List<ReportsSurveyInfo> reportsSurveyInfoList = new ArrayList<ReportsSurveyInfo>();
+		for (Integer rowID : reportSurveyRowIDs) {
+			ReportSurveyDataReader surveyDataReader = new ReportSurveyDataReader(this.excelUtility);
+			ReportSurveyDataRow surveyDataRow = surveyDataReader.getDataRow(rowID);
+
+			SurveyModeFilter modeFilter = SurveyModeFilter.All;
+			if (surveyDataRow.surveyModeFilter.equalsIgnoreCase("standard")) {
+				modeFilter = SurveyModeFilter.Standard;
+			} else if (surveyDataRow.surveyModeFilter.equalsIgnoreCase("assessment")) {
+				modeFilter = SurveyModeFilter.Assessment;
+			} else if (surveyDataRow.surveyModeFilter.equalsIgnoreCase("eq")) {
+				modeFilter = SurveyModeFilter.EQ;
+			} else if (surveyDataRow.surveyModeFilter.equalsIgnoreCase("manual")) {
+				modeFilter = SurveyModeFilter.Manual;
+			} else if (surveyDataRow.surveyModeFilter.equalsIgnoreCase("operator")) {
+				modeFilter = SurveyModeFilter.Operator;
+			} else if (surveyDataRow.surveyModeFilter.equalsIgnoreCase("rapid response")) {
+				modeFilter = SurveyModeFilter.RapidResponse;
+			} 
+			
+			reportsSurveyInfoList.add(new ReportsSurveyInfo(
+					surveyDataRow.surveySurveyor, surveyDataRow.surveyUsername, surveyDataRow.surveyTag, 
+					surveyDataRow.surveyStartDate, surveyDataRow.surveyEndDate, 
+					modeFilter, Boolean.valueOf(surveyDataRow.surveyGeoFilterON), 
+					Integer.valueOf(surveyDataRow.numberofSurveystoInclude), 
+					Boolean.valueOf(surveyDataRow.selectAllSurveys)));			
+		}
+		return reportsSurveyInfoList;
+	}
+ 
+	private void clickComplianceReportButton(Integer dataRowID, ComplianceReportButtonType buttonType) throws Exception {
+		ComplianceReportsDataRow compRptDataRow = getDataReader().getDataRow(dataRowID);
+		Integer custRowID = Integer.valueOf(compRptDataRow.customerRowID);
+		CustomerDataReader custDataReader = new CustomerDataReader(this.excelUtility);
+		CustomerDataRow custDataRow = custDataReader.getDataRow(custRowID);
+		String customerName = custDataRow.name;
+		String reportTitle = compRptDataRow.title;
+		this.getComplianceReportsPage().clickComplianceReportButton(reportTitle, customerName, buttonType);
+	}
+	
 	private ComplianceReportsPage createNewPageObject() {
 		ComplianceReportsPage compReportsPage = new ComplianceReportsPage(TestContext.INSTANCE.getDriver(), 
 				TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
 		return compReportsPage;
-	}
-
-	private void fillViewLayersInfo(Map<String, String> viewLayerMap,
-			ReportOptViewLayersDataReader reader, Integer dataRowID) throws Exception {
-		String argValue = reader.getDataRow(dataRowID).assetRowIDs;
-		if (!ActionArguments.isEmpty(argValue)) {
-			List<Integer> assetRowIDs = ActionArguments.getNumericList(argValue);
-			for (Integer rowID : assetRowIDs) {
-				ReportOptViewLayersAssetsDataReader viewLayersAssetsDataReader = getViewLayersAssetsDataReader();
-				ReportOptViewLayersAssetsDataRow dataRow = viewLayersAssetsDataReader.getDataRow(rowID);
-				viewLayerMap.put(dataRow.assetID, ReportsCompliance.ASSET_PREFIX + dataRow.assetName);
-			}
-		}
-		argValue = reader.getDataRow(dataRowID).boundariesRowIDs;
-		if (!ActionArguments.isEmpty(argValue)) {
-			List<Integer> boundariesRowIDs = ActionArguments.getNumericList(argValue);
-			for (Integer rowID : boundariesRowIDs) {
-				ReportOptViewLayersBoundaryDataReader viewLayersBoundaryDataReader = getViewLayersBoundaryDataReader();
-				ReportOptViewLayersBoundaryDataRow dataRow = viewLayersBoundaryDataReader.getDataRow(rowID);
-				viewLayerMap.put(dataRow.boundaryID, ReportsCompliance.BOUNDARY_PREFIX + dataRow.boundaryName);
-			}
-		}
-	}
-
-	private ReportOptViewLayersAssetsDataReader getViewLayersAssetsDataReader() {
-		return new ReportOptViewLayersAssetsDataReader(this.excelUtility);
-	}
-
-	private ReportOptViewLayersBoundaryDataReader getViewLayersBoundaryDataReader() {
-		return new ReportOptViewLayersBoundaryDataReader(this.excelUtility);
 	}
 
 	private void fillCustomBoundary(List<String> listBoundary, ComplianceReportDataReader reader,
@@ -166,6 +211,143 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		if (showPercentCoverageReportAreaTable != "") tableMap.put(KEYPCRA, showPercentCoverageReportAreaTable);
 	}
 
+	private void fillViewLayersInfo(Map<String, String> viewLayerMap,
+			ReportOptViewLayersDataReader reader, Integer dataRowID) throws Exception {
+		String argValue = reader.getDataRow(dataRowID).assetRowIDs;
+		if (!ActionArguments.isEmpty(argValue)) {
+			List<Integer> assetRowIDs = ActionArguments.getNumericList(argValue);
+			for (Integer rowID : assetRowIDs) {
+				ReportOptViewLayersAssetsDataReader viewLayersAssetsDataReader = getViewLayersAssetsDataReader();
+				ReportOptViewLayersAssetsDataRow dataRow = viewLayersAssetsDataReader.getDataRow(rowID);
+				viewLayerMap.put(dataRow.assetID, ReportsCompliance.ASSET_PREFIX + dataRow.assetName);
+			}
+		}
+		argValue = reader.getDataRow(dataRowID).boundariesRowIDs;
+		if (!ActionArguments.isEmpty(argValue)) {
+			List<Integer> boundariesRowIDs = ActionArguments.getNumericList(argValue);
+			for (Integer rowID : boundariesRowIDs) {
+				ReportOptViewLayersBoundaryDataReader viewLayersBoundaryDataReader = getViewLayersBoundaryDataReader();
+				ReportOptViewLayersBoundaryDataRow dataRow = viewLayersBoundaryDataReader.getDataRow(rowID);
+				viewLayerMap.put(dataRow.boundaryID, ReportsCompliance.BOUNDARY_PREFIX + dataRow.boundaryName);
+			}
+		}
+	}
+
+	private boolean fillAndCreateNewReport(Integer dataRowID, boolean openNewReportsPage) throws Exception {
+		workingDataRow = getDataReader().getDataRow(dataRowID);
+		
+		String rptTitle = workingDataRow.title; 
+		String customer = null; 
+		String customerRowID = workingDataRow.customerRowID;
+		if (customerRowID != "") {
+			Integer custRowID = Integer.valueOf(customerRowID);
+			customer = (new CustomerDataReader(this.excelUtility)).getDataRow(custRowID).name;
+		}
+		String timeZone = workingDataRow.timezone;
+		String exclusionRadius = workingDataRow.exclusionRadius;
+
+		List<String> listBoundary = new ArrayList<String>();
+		fillCustomBoundary(listBoundary, getDataReader(), dataRowID);
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		List<Integer> reportViewRowIDs = ActionArguments.getNumericList(workingDataRow.reportViewRowIDs);
+		for (Integer rowID : reportViewRowIDs) {
+			Map<String, String> viewMap = new HashMap<String, String>();
+			fillViewDetails(viewMap, new ReportViewsDataReader(this.excelUtility), rowID);
+			viewList.add(viewMap);
+		}
+
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		List<Integer> reportOptTabPDFRowIDs = ActionArguments.getNumericList(workingDataRow.reportOptTabularPDFContentRowID);
+		Map<String, String> tableMap = new HashMap<String, String>();
+		fillReportTableInfo(tableMap, new ReportOptTabularPDFContentDataReader(this.excelUtility), reportOptTabPDFRowIDs.get(0));
+		tablesList.add(tableMap);
+
+		List<Map<String, String>> viewLayersList = new ArrayList<Map<String, String>>();
+		List<Integer> reportOptVwLayersRowIDs = ActionArguments.getNumericList(workingDataRow.reportOptViewLayerRowID);		
+		
+		/* NOTE: ViewLayer values should be set in viewLayerMap. Currently due to a bug in ComplianceReports page (TA884)
+		 * we need to set the values in tableList instead. Fix this once TA884 is fixed. */
+		Map<String, String> viewLayerMap = new HashMap<String, String>();
+		fillViewLayersInfo(viewLayerMap, new ReportOptViewLayersDataReader(this.excelUtility), reportOptVwLayersRowIDs.get(0));
+		if (viewLayerMap.size() > 0) {
+			viewLayersList.add(viewLayerMap);
+		} 
+
+		List<ReportsSurveyInfo> reportsSurveyInfoList = buildReportSurveyInfoList(workingDataRow);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, TestContext.INSTANCE.getLoggedInUser(), customer, timeZone, exclusionRadius,
+				listBoundary, tablesList, null /*surveyorUnit*/, null /*tagList*/, viewList, viewLayersList);
+		rpt.setSurveyInfoList(reportsSurveyInfoList);
+
+		getComplianceReportsPage().addNewReport(rpt, openNewReportsPage);
+		
+		workingReportsComp = rpt;		// Store the working report properties.
+		return true;
+	}
+
+	private ReportOptViewLayersAssetsDataReader getViewLayersAssetsDataReader() {
+		return new ReportOptViewLayersAssetsDataReader(this.excelUtility);
+	}
+
+	private ReportOptViewLayersBoundaryDataReader getViewLayersBoundaryDataReader() {
+		return new ReportOptViewLayersBoundaryDataReader(this.excelUtility);
+	}
+
+	private List<String> getViewNamesList(Integer dataRowID) throws Exception {
+		List<Integer> viewRowIDs = ActionArguments.getNumericList(workingDataRow.reportViewRowIDs);
+		List<String> viewNamesList = new ArrayList<String>();
+		ReportViewsDataReader reportViewsDataReader = new ReportViewsDataReader(this.excelUtility);
+		for (Integer viewRowID : viewRowIDs) {
+			ReportViewsDataRow viewsDataRow = reportViewsDataReader.getDataRow(viewRowID);
+			viewNamesList.add(viewsDataRow.name);
+		}
+		return viewNamesList;
+	}
+
+	private String getViewThumbnailImageId(Integer viewIdx) {
+		ReportJobsStat reportJobStat = this.getComplianceReportsPage().getReportJobStat(workingDataRow.title);
+		String viewID = "";
+		List<ReportJob> reportJobs = reportJobStat.ReportJobs;
+		for (ReportJob reportJob : reportJobs) {
+			viewIdx--;
+			if (reportJob.ReportJobType.equals(ReportJobType.Map) && (viewIdx == 0)) {
+				viewID = reportJob.ReportJobId;
+				break;
+			} 
+		}
+		return viewID;
+	}
+	
+	private boolean isPDFGapSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
+		return this.getComplianceReportsPage().isPDFGapSelected() && (dataRow.gapTable == "TRUE");
+	}
+
+	private boolean isPDFIndicationSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
+		return this.getComplianceReportsPage().isPDFIndicationSelected() && (dataRow.indicationTable == "TRUE");
+	}
+
+	private boolean isPDFIsotopicAnalysisSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
+		return this.getComplianceReportsPage().isPDFIsotopicAnalysisSelected() && (dataRow.isotopicAnalysis == "TRUE");
+	}
+
+	private boolean isPDFPercentCoverageAssetsSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
+		return this.getComplianceReportsPage().isPDFPercentCoverageAssetsSelected() && (dataRow.percentCoverageAssets == "TRUE");
+	}
+
+	private boolean isPDFPercentCoverageForecastSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
+		return this.getComplianceReportsPage().isPDFPercentCoverageForecastSelected() && (dataRow.percentCoverageForecast == "TRUE");
+	}
+
+	private boolean isPDFPercentCoverageReportAreaSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
+		return this.getComplianceReportsPage().isPDFPercentCoverageReportAreaSelected() && (dataRow.percentCoverageReportArea == "TRUE");
+	}
+
+	private void openComplianceViewerDialog(Integer dataRowID) throws Exception {
+		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
+		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
+		this.getComplianceReportsPage().waitForPdfReportIcontoAppear();
+	}
+
 	private List<Integer> verifyLatLongCoordinates(String data) throws Exception {
 		List<Integer> coordList = ActionArguments.getNumericList(data);
 		if (coordList == null || coordList.size() != 4) {
@@ -187,45 +369,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			.waitForModalDialogToClose();
 	}
 
-	/**
-	 * Downloads the specified report file type and waits for download to complete.
-	 * @param dataRowID - RowID for test case data.
-	 * @param fileType - Type of file to download
-	 * @param fileIndex - Index for file to be specified for View images. Ignored for other report file types.
-	 * @throws Exception
-	 */
-	private void downloadReportFileAndWait(Integer dataRowID, ReportFileType fileType, Integer fileIndex) throws Exception {
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		ComplianceReportsDataRow compRptDataRow = getDataReader().getDataRow(dataRowID);
-		String reportTitle = compRptDataRow.title;
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		
-		switch(fileType) {
-		case PDF:
-			this.getComplianceReportsPage().downloadReportPDFFile();
-			this.getComplianceReportsPage().waitForPDFFileDownload(reportTitle);
-			break;
-		case ZIP:
-			this.getComplianceReportsPage().downloadReportZIPFile();
-			this.getComplianceReportsPage().waitForReportZIPFileDownload(reportTitle);
-			break;
-		case MetaDataZIP:
-			this.getComplianceReportsPage().downloadMetaDataZipFile();
-			this.getComplianceReportsPage().waitForMetadataZIPFileDownload(reportTitle);
-			break;
-		case ShapeZIP:
-			this.getComplianceReportsPage().downloadShapeZipFile();
-			this.getComplianceReportsPage().waitForShapeZIPFileDownload(reportTitle);
-			break;
-		case View:
-			this.getComplianceReportsPage().downloadViewFile(fileIndex);
-			this.getComplianceReportsPage().waitForShapeZIPFileDownload(reportTitle);
-			break;
-		default:
-			break;
-		}
-	}
-
 	private void verifyPresenceOfButton(Integer dataRowID, ComplianceReportButtonType buttonType) throws Exception {
 		ComplianceReportsDataRow compRptDataRow = getDataReader().getDataRow(dataRowID);
 		Integer custRowID = Integer.valueOf(compRptDataRow.customerRowID);
@@ -236,16 +379,67 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		this.getComplianceReportsPage().verifyComplianceReportButton(reportTitle, customerName, buttonType);
 	}
 
-	private void clickComplianceReportButton(Integer dataRowID, ComplianceReportButtonType buttonType) throws Exception {
-		ComplianceReportsDataRow compRptDataRow = getDataReader().getDataRow(dataRowID);
-		Integer custRowID = Integer.valueOf(compRptDataRow.customerRowID);
-		CustomerDataReader custDataReader = new CustomerDataReader(this.excelUtility);
-		CustomerDataRow custDataRow = custDataReader.getDataRow(custRowID);
-		String customerName = custDataRow.name;
-		String reportTitle = compRptDataRow.title;
-		this.getComplianceReportsPage().clickComplianceReportButton(reportTitle, customerName, buttonType);
+	private boolean verifyReportSurveyValuesMatch(List<Integer> surveyRowIDs) {
+		// TODO: Needs implementation in Reports page object.
+		return true;
 	}
 
+	private boolean verifyReportViewValuesMatch(List<Integer> surveyRowIDs) {
+		// TODO: Needs implementation in Reports page object.
+		return true;
+	}
+
+	/**
+	 * Downloads the specified report file type and waits for download to complete.
+	 * @param dataRowID - RowID for test case data.
+	 * @param fileType - Type of file to download
+	 * @param fileIndex - Index for file to be specified for View images. Ignored for other report file types.
+	 * 			1-based index. For first view use - 1.		
+	 * @throws Exception
+	 */
+	private void waitForReportFileDownload(Integer dataRowID, ReportFileType fileType, Integer fileIndex) throws Exception {
+		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
+		ComplianceReportsDataRow compRptDataRow = getDataReader().getDataRow(dataRowID);
+		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
+		String reportTitle = compRptDataRow.title;
+		String reportName = "";
+		
+		switch(fileType) {
+		case PDF:
+			reportName = this.getComplianceReportsPage().getReportPDFFileName(reportTitle, false /*includeExtension*/);
+			this.getComplianceReportsPage().waitForPDFFileDownload(reportName);
+			break;
+		case ZIP:
+			reportName = this.getComplianceReportsPage().getReportPDFZipFileName(reportTitle, false /*includeExtension*/);
+			this.getComplianceReportsPage().waitForReportZIPFileDownload(reportName);
+			break;
+		case MetaDataZIP:
+			reportName = this.getComplianceReportsPage().getReportMetaZipFileName(reportTitle, false /*includeExtension*/);
+			this.getComplianceReportsPage().waitForMetadataZIPFileDownload(reportName);
+			break;
+		case ShapeZIP:
+			reportName = this.getComplianceReportsPage().getReportShapeZipFileName(reportTitle, false /*includeExtension*/);
+			this.getComplianceReportsPage().waitForShapeZIPFileDownload(reportName);
+			break;
+		case View:
+			reportName = this.getComplianceReportsPage().getReportName();
+			List<Map<String, String>> viewList = workingReportsComp.getViewList();
+			Map<String, String> map = viewList.get(fileIndex);
+			String viewName = map.get(KEYVIEWNAME);
+			this.getComplianceReportsPage().waitForViewFileDownload(reportName, viewName);
+			break;
+		default:
+			break;
+		}
+	}
+	
+	private void waitForViewDownloadByViewIndex(String data, Integer dataRowID) throws Exception {
+		ActionArguments.verifyNotNullOrEmpty(FN_WAIT_FOR_VIEW_DOWNLOAD_TO_COMPLETE_BY_VIEW_INDEX, ARG_DATA, data);
+		Integer viewIdx = Integer.valueOf(data);
+		ActionArguments.verifyGreaterThanZero(FN_WAIT_FOR_VIEW_DOWNLOAD_TO_COMPLETE_BY_VIEW_INDEX, ARG_DATA, viewIdx);
+		waitForReportFileDownload(dataRowID, ReportFileType.View, viewIdx);
+	}
+ 
 	/* START - Actions on the Page*/
 
 	/**
@@ -288,39 +482,12 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		ActionArguments.verifyGreaterThanZero("addSurveysToReport", ARG_DATA_ROW_ID, dataRowID);
 		ReportsCompliance reportsCompliance = new ReportsCompliance();
 		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
-		List<Integer> reportSurveyRowIDs = ActionArguments.getNumericList(dataRow.reportSurveyRowIDs);
-		List<ReportsSurveyInfo> reportsSurveyInfoList = new ArrayList<ReportsSurveyInfo>();
-		for (Integer rowID : reportSurveyRowIDs) {
-			ReportSurveyDataReader surveyDataReader = new ReportSurveyDataReader(this.excelUtility);
-			ReportSurveyDataRow surveyDataRow = surveyDataReader.getDataRow(rowID);
-
-			SurveyModeFilter modeFilter = SurveyModeFilter.All;
-			if (surveyDataRow.surveyModeFilter.equalsIgnoreCase("standard")) {
-				modeFilter = SurveyModeFilter.Standard;
-			} else if (surveyDataRow.surveyModeFilter.equalsIgnoreCase("assessment")) {
-				modeFilter = SurveyModeFilter.Assessment;
-			} else if (surveyDataRow.surveyModeFilter.equalsIgnoreCase("eq")) {
-				modeFilter = SurveyModeFilter.EQ;
-			} else if (surveyDataRow.surveyModeFilter.equalsIgnoreCase("manual")) {
-				modeFilter = SurveyModeFilter.Manual;
-			} else if (surveyDataRow.surveyModeFilter.equalsIgnoreCase("operator")) {
-				modeFilter = SurveyModeFilter.Operator;
-			} else if (surveyDataRow.surveyModeFilter.equalsIgnoreCase("rapid response")) {
-				modeFilter = SurveyModeFilter.RapidResponse;
-			} 
-			
-			reportsSurveyInfoList.add(new ReportsSurveyInfo(
-					surveyDataRow.surveySurveyor, surveyDataRow.surveyUsername, surveyDataRow.surveyTag, 
-					surveyDataRow.surveyStartDate, surveyDataRow.surveyEndDate, 
-					modeFilter, Boolean.valueOf(surveyDataRow.surveyGeoFilterON), 
-					Integer.valueOf(surveyDataRow.numberofSurveystoInclude), 
-					Boolean.valueOf(surveyDataRow.selectAllSurveys)));			
-		}
+		List<ReportsSurveyInfo> reportsSurveyInfoList = buildReportSurveyInfoList(dataRow);
 		reportsCompliance.setSurveyInfoList(reportsSurveyInfoList);
 		this.getComplianceReportsPage().addSurveyInformation(reportsCompliance);
 		return true;		
 	}
- 
+
 	/**
 	 * Executes cancelInProgressReport action.
 	 * @param data - specifies the input data passed to the action.
@@ -343,6 +510,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean checkSurveySelectorGeographicFilter(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.checkSurveySelectorGeographicFilter", data, dataRowID);
+		this.getComplianceReportsPage().selectSurveyInfoGeoFilter(true);
 		return true;
 	}
  
@@ -516,6 +684,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean clickOnSurveySelectorSearchButton(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.clickOnSurveySelectorSearchButton", data, dataRowID);
+		this.getComplianceReportsPage().clickOnSearchSurveyButton();
 		return true;
 	}
  
@@ -532,6 +701,19 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		this.getComplianceReportsPage().copyReport(data, TestContext.INSTANCE.getLoggedInUser());
 		this.getComplianceReportsPage().waitForCopyReportPagetoLoad();
 		this.initializePageObject(TestContext.INSTANCE.getDriver(), this.createNewPageObject());
+		return true;
+	}
+
+	/**
+	 * Executes openComplianceViewerDialog action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean openComplianceViewerDialog(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.openComplianceViewerDialog", data, dataRowID);
+		openComplianceViewerDialog(dataRowID);
 		return true;
 	}
 
@@ -559,65 +741,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		ActionArguments.verifyGreaterThanZero("createNewReport", ARG_DATA_ROW_ID, dataRowID);
 
 		return fillAndCreateNewReport(dataRowID, true /*openNewReportsPage*/);
-	}
-
-	private boolean fillAndCreateNewReport(Integer dataRowID, boolean openNewReportsPage) throws Exception {
-		workingDataRow = getDataReader().getDataRow(dataRowID);
-		
-		String rptTitle = workingDataRow.title; 
-		String customer = null; 
-		String customerRowID = workingDataRow.customerRowID;
-		if (customerRowID != "") {
-			Integer custRowID = Integer.valueOf(customerRowID);
-			customer = (new CustomerDataReader(this.excelUtility)).getDataRow(custRowID).name;
-		}
-		String timeZone = workingDataRow.timezone;
-		String exclusionRadius = workingDataRow.exclusionRadius;
-
-		List<String> listBoundary = new ArrayList<String>();
-		fillCustomBoundary(listBoundary, getDataReader(), dataRowID);
-
-		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
-		List<Integer> reportViewRowIDs = ActionArguments.getNumericList(workingDataRow.reportViewRowIDs);
-		for (Integer rowID : reportViewRowIDs) {
-			Map<String, String> viewMap = new HashMap<String, String>();
-			fillViewDetails(viewMap, new ReportViewsDataReader(this.excelUtility), rowID);
-			viewList.add(viewMap);
-		}
-
-		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
-		List<Integer> reportOptTabPDFRowIDs = ActionArguments.getNumericList(workingDataRow.reportOptTabularPDFContentRowID);
-		Map<String, String> tableMap = new HashMap<String, String>();
-		fillReportTableInfo(tableMap, new ReportOptTabularPDFContentDataReader(this.excelUtility), reportOptTabPDFRowIDs.get(0));
-		tablesList.add(tableMap);
-
-		List<Map<String, String>> viewLayersList = new ArrayList<Map<String, String>>();
-		List<Integer> reportOptVwLayersRowIDs = ActionArguments.getNumericList(workingDataRow.reportOptViewLayerRowID);		
-		
-		/* NOTE: ViewLayer values should be set in viewLayerMap. Currently due to a bug in ComplianceReports page (TA884)
-		 * we need to set the values in tableList instead. Fix this once TA884 is fixed. */
-		Map<String, String> viewLayerMap = new HashMap<String, String>();
-		fillViewLayersInfo(viewLayerMap, new ReportOptViewLayersDataReader(this.excelUtility), reportOptVwLayersRowIDs.get(0));
-		if (viewLayerMap.size() > 0) {
-			viewLayersList.add(viewLayerMap);
-		} 
-
-		String surveyorUnit = null;
-		List<String> tagList=new ArrayList<String>();
-		List<Integer> reportSurveyRowIDs = ActionArguments.getNumericList(workingDataRow.reportSurveyRowIDs);
-		for (Integer rowID : reportSurveyRowIDs) {
-			ReportSurveyDataReader surveyDataReader = new ReportSurveyDataReader(this.excelUtility);
-			ReportSurveyDataRow surveyDataRow = surveyDataReader.getDataRow(rowID);
-			surveyorUnit = surveyDataRow.surveySurveyor;  // Using the last surveyor until refactoring.
-			tagList.add(surveyDataRow.surveyTag);
-		}
-
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, TestContext.INSTANCE.getLoggedInUser(), customer, timeZone, exclusionRadius,
-				listBoundary, tablesList, surveyorUnit, tagList, viewList, viewLayersList);
-		getComplianceReportsPage().addNewReport(rpt, openNewReportsPage);
-		
-		workingReportsComp = rpt;		// Store the working report properties.
-		return true;
 	}
 
 	/**
@@ -895,6 +1018,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean openNewReportPage(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.openNewReportPage", data, dataRowID);
 		getComplianceReportsPage().openNewComplianceReportPage();
+		getComplianceReportsPage().waitForNewPageLoad();
 		return true;
 	}
  
@@ -1072,6 +1196,12 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		SurveyModeFilter modeFilter = SurveyModeFilter.All;
 		if (data.equals("Standard")) {
 			modeFilter = SurveyModeFilter.Standard;
+		} else if (data.equals("Assessment")) {
+			modeFilter = SurveyModeFilter.Assessment;
+		} else if (data.equals("EQ")) {
+			modeFilter = SurveyModeFilter.EQ;
+		} else if (data.equals("Manual")) {
+			modeFilter = SurveyModeFilter.Manual;
 		} else if (data.equals("Operator")) {
 			modeFilter = SurveyModeFilter.Operator;
 		} else if (data.equals("Rapid Response")) {
@@ -1218,17 +1348,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
  
 	/**
-	 * Executes sortRecordsBy action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean sortRecordsBy(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.sortRecordsBy", data, dataRowID);
-		return true;
-	}
- 
-	/**
 	 * Executes verifyComplianceViewerButtonIsDisplayed action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -1364,8 +1483,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyMetaDataFilesHaveCorrectData", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyMetaDataFilesHaveCorrectData", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		downloadReportFileAndWait(dataRowID, ReportFileType.MetaDataZIP, -1);
+		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
+		waitForReportFileDownload(dataRowID, ReportFileType.MetaDataZIP, -1);
 		this.verifyAllMetadataFiles(data, dataRowID);
 		return true;
 	}
@@ -1381,8 +1500,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyMetaDataZIPFilesAreCorrect", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyMetaDataZIPFilesAreCorrect", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		downloadReportFileAndWait(dataRowID, ReportFileType.MetaDataZIP, -1);
+		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
+		waitForReportFileDownload(dataRowID, ReportFileType.MetaDataZIP, -1);
 
 		// TODO: Check for specific metadata files in the ZIP.
 		return true;
@@ -1399,7 +1518,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyMetaDataZIPThumbnailDownloadFromComplianceViewer", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyMetaDataZIPThumbnailDownloadFromComplianceViewer", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
 		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.ComplianceZipMeta);
 		return true;
 	}
@@ -1415,7 +1534,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyMetaDataZIPThumbnailIsShownInComplianceViewer", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyMetaDataZIPThumbnailIsShownInComplianceViewer", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
 		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceZipMeta);
 		return true;
 	}
@@ -1443,7 +1562,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyPDFThumbnailDownloadFromComplianceViewer", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyPDFThumbnailDownloadFromComplianceViewer", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
 		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.ComplianceTablePDF);
 		return true;
 	}
@@ -1459,7 +1578,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyPDFThumbnailIsShownInComplianceViewer", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyPDFThumbnailIsShownInComplianceViewer", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
 		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceTablePDF);
 		return true;
 	}
@@ -1475,8 +1594,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyPDFZipFilesAreCorrect", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyPDFZipFilesAreCorrect", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		downloadReportFileAndWait(dataRowID, ReportFileType.ZIP, -1);
+		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
+		waitForReportFileDownload(dataRowID, ReportFileType.ZIP, -1);
 		this.getComplianceReportsPage().verifyReportPDFZIPFiles();
 		return true;
 	}
@@ -1527,7 +1646,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyPDFZIPThumbnailDownloadFromComplianceViewer", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyPDFZIPThumbnailDownloadFromComplianceViewer", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
 		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.ComplianceZipPDF);
 		return true;
 	}
@@ -1543,7 +1662,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyPDFZIPThumbnailIsShownInComplianceViewer", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyPDFZIPThumbnailIsShownInComplianceViewer", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
 		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceZipPDF);
 		return true;
 	}
@@ -1646,51 +1765,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 				areAssetBoundariesMatch && areTabularPDFContentSelectionMatch;
 	}
 
-	private boolean verifyReportSurveyValuesMatch(List<Integer> surveyRowIDs) {
-		// TODO: Needs implementation in Reports page object.
-		return true;
-	}
-
-	private boolean verifyReportViewValuesMatch(List<Integer> surveyRowIDs) {
-		// TODO: Needs implementation in Reports page object.
-		return true;
-	}
-
-	private boolean areTabularPDFContentSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
-		return isPDFGapSelectionMatch(dataRow) && isPDFIndicationSelectionMatch(dataRow) &&
-				isPDFIsotopicAnalysisSelectionMatch(dataRow) && isPDFPercentCoverageAssetsSelectionMatch(dataRow) &&
-				isPDFPercentCoverageForecastSelectionMatch(dataRow) && isPDFPercentCoverageReportAreaSelectionMatch(dataRow);
-	}
-
-	private boolean isPDFGapSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
-		return this.getComplianceReportsPage().isPDFGapSelected() && (dataRow.gapTable == "TRUE");
-	}
-
-	private boolean isPDFIndicationSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
-		return this.getComplianceReportsPage().isPDFIndicationSelected() && (dataRow.indicationTable == "TRUE");
-	}
-
-	private boolean isPDFIsotopicAnalysisSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
-		return this.getComplianceReportsPage().isPDFIsotopicAnalysisSelected() && (dataRow.isotopicAnalysis == "TRUE");
-	}
-
-	private boolean isPDFPercentCoverageAssetsSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
-		return this.getComplianceReportsPage().isPDFPercentCoverageAssetsSelected() && (dataRow.percentCoverageAssets == "TRUE");
-	}
-
-	private boolean isPDFPercentCoverageForecastSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
-		return this.getComplianceReportsPage().isPDFPercentCoverageForecastSelected() && (dataRow.percentCoverageForecast == "TRUE");
-	}
-
-	private boolean isPDFPercentCoverageReportAreaSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
-		return this.getComplianceReportsPage().isPDFPercentCoverageReportAreaSelected() && (dataRow.percentCoverageReportArea == "TRUE");
-	}
-
-	// TODO: Check assets and boundaries provided to the dataRow.
-	private boolean areAssetBoundariesMatch(ReportOptViewLayersDataRow dataRow) {
-		return false;
-	}
-	
 	/**
 	 * Executes verifyResubmitButtonIsDisplayed action.
 	 * @param data - specifies the input data passed to the action.
@@ -1769,7 +1843,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean verifyShapeFilesHaveCorrectData(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyShapeFilesHaveCorrectData", data, dataRowID);
-		downloadReportFileAndWait(dataRowID, ReportFileType.ShapeZIP, -1);
+		waitForReportFileDownload(dataRowID, ReportFileType.ShapeZIP, -1);
 		this.getComplianceReportsPage().verifyShapeFilesData();
 		return true;
 	}
@@ -1785,8 +1859,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyShapeZIPFilesAreCorrect", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyShapeZIPFilesAreCorrect", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		downloadReportFileAndWait(dataRowID, ReportFileType.ShapeZIP, -1);
+		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
+		waitForReportFileDownload(dataRowID, ReportFileType.ShapeZIP, -1);
 		this.getComplianceReportsPage().verifyShapeFilesWithBaselines(TestContext.INSTANCE.getTestSetup().getDownloadPath(),
 				workingDataRow.title, workingDataRow.tCID);
 		return true;
@@ -1803,7 +1877,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyShapeZIPThumbnailDownloadFromComplianceViewer", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyShapeZIPThumbnailDownloadFromComplianceViewer", ARG_DATA_ROW_ID, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
 		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.ComplianceZipShape);
 		return true;
 	}
@@ -1818,17 +1892,17 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyShapeZIPThumbnailIsShownInComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyShapeZIPThumbnailIsShownInComplianceViewer", data, dataRowID);
 		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
+		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
 		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceZipShape);
 		return true;
 	}
 
-	private boolean verifyUncertaintyValueIsFormattedCorrectly(String data, Integer dataRowID) {
+	public boolean verifyUncertaintyValueIsFormattedCorrectly(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.verifyUncertaintyValueIsFormattedCorrectly", data, dataRowID);
 		return false;
 	}
 
-	private boolean verifyIsotopicValueIsFormattedCorrectly(String data, Integer dataRowID) {
+	public boolean verifyIsotopicValueIsFormattedCorrectly(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.verifyIsotopicValueIsFormattedCorrectly", data, dataRowID);
 		return false;
 	}
@@ -1839,213 +1913,38 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
 
 	/**
-	 * Executes verifyView1ThumbnailDownloadFromComplianceViewer action.
+	 * Executes verifyViewThumbnailDownloadFromComplianceViewerByViewIndex action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 * @throws Exception 
 	 */
-	public boolean verifyView1ThumbnailDownloadFromComplianceViewer(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.verifyView1ThumbnailDownloadFromComplianceViewer", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.FirstView);
+	public boolean verifyViewThumbnailDownloadFromComplianceViewerByViewIndex(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.verifyViewThumbnailDownloadFromComplianceViewerByViewIndex", data, dataRowID);
+		openComplianceViewerDialog(dataRowID);
+		clickComplianceViewerViewByIndex(data, dataRowID);
+		waitForViewDownloadByViewIndex(data, dataRowID);
 		return true;
 	}
  
 	/**
-	 * Executes verifyView1ThumbnailIsShownInComplianceViewer action.
+	 * Executes verifyViewThumbnailIsShownInComplianceViewerByViewIndex action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 * @throws Exception 
 	 */
-	public boolean verifyView1ThumbnailIsShownInComplianceViewer(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.verifyView1ThumbnailIsShownInComplianceViewer", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.FirstView);
-		return true;
-	}
- 
-	/**
-	 * Executes verifyView2ThumbnailDownloadFromComplianceViewer action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 */
-	public boolean verifyView2ThumbnailDownloadFromComplianceViewer(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.verifyView2ThumbnailDownloadFromComplianceViewer", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.SecondView);
-		return true;
-	}
- 
-	/**
-	 * Executes verifyView2ThumbnailIsShownInComplianceViewer action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 */
-	public boolean verifyView2ThumbnailIsShownInComplianceViewer(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.verifyView2ThumbnailIsShownInComplianceViewer", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.SecondView);
-		return true;
-	}
- 
-	/**
-	 * Executes verifyView3ThumbnailDownloadFromComplianceViewer action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 */
-	public boolean verifyView3ThumbnailDownloadFromComplianceViewer(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.verifyView3ThumbnailDownloadFromComplianceViewer", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.ThirdView);
-		return true;
-	}
- 
-	/**
-	 * Executes verifyView3ThumbnailIsShownInComplianceViewer action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 */
-	public boolean verifyView3ThumbnailIsShownInComplianceViewer(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.verifyView3ThumbnailIsShownInComplianceViewer", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.ThirdView);
-		return true;
-	}
- 
-	/**
-	 * Executes verifyView4ThumbnailDownloadFromComplianceViewer action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 */
-	public boolean verifyView4ThumbnailDownloadFromComplianceViewer(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.verifyView4ThumbnailDownloadFromComplianceViewer", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.FourthView);
-		return true;
-	}
- 
-	/**
-	 * Executes verifyView4ThumbnailIsShownInComplianceViewer action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 */
-	public boolean verifyView4ThumbnailIsShownInComplianceViewer(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.verifyView4ThumbnailIsShownInComplianceViewer", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.FourthView);
-		return true;
-	}
- 
-	/**
-	 * Executes verifyView5ThumbnailDownloadFromComplianceViewer action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 */
-	public boolean verifyView5ThumbnailDownloadFromComplianceViewer(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.verifyView5ThumbnailDownloadFromComplianceViewer", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.FifthView);
-		return true;
-	}
- 
-	/**
-	 * Executes verifyView5ThumbnailIsShownInComplianceViewer action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 */
-	public boolean verifyView5ThumbnailIsShownInComplianceViewer(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.verifyView5ThumbnailIsShownInComplianceViewer", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.FifthView);
-		return true;
-	}
- 
-	/**
-	 * Executes verifyView6ThumbnailDownloadFromComplianceViewer action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 */
-	public boolean verifyView6ThumbnailDownloadFromComplianceViewer(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.verifyView6ThumbnailDownloadFromComplianceViewer", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.SixthView);
-		return true;
-	}
- 
-	/**
-	 * Executes verifyView6ThumbnailIsShownInComplianceViewer action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 */
-	public boolean verifyView6ThumbnailIsShownInComplianceViewer(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.verifyView6ThumbnailIsShownInComplianceViewer", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.SixthView);
-		return true;
-	}
- 
-	/**
-	 * Executes verifyView7ThumbnailDownloadFromComplianceViewer action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 */
-	public boolean verifyView7ThumbnailDownloadFromComplianceViewer(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.verifyView7ThumbnailDownloadFromComplianceViewer", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		this.getComplianceReportsPage().verifyDownloadTriggeredForThumbnail(ReportViewerThumbnailType.SeventhView);
-		return true;
-	}
- 
-	/**
-	 * Executes verifyView7ThumbnailIsShownInComplianceViewer action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 */
-	public boolean verifyView7ThumbnailIsShownInComplianceViewer(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.verifyView7ThumbnailIsShownInComplianceViewer", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.SeventhView);
-		return true;
+	public boolean verifyViewThumbnailIsShownInComplianceViewerByViewIndex(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.verifyViewThumbnailIsShownInComplianceViewerByViewIndex", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, data);
+		Integer viewIdx = Integer.valueOf(data);
+		ActionArguments.verifyGreaterThanZero(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, viewIdx);
+		
+		openComplianceViewerDialog(dataRowID);
+		
+		// Find the view image to click. Order of the images is the order returned by API. 
+		WebElement viewElement = getElementById(getViewThumbnailImageId(viewIdx));
+		return viewElement.isDisplayed();
 	}
 
 	/**
@@ -2135,6 +2034,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean clickOnComplianceViewerPDF(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.clickOnComplianceViewerPDF", data, dataRowID);
+		this.getComplianceReportsPage().clickOnPDFInReportViewer();
 		return true;
 	}
  
@@ -2146,6 +2046,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean clickOnComplianceViewerPDFZIP(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.clickOnComplianceViewerPDFZIP", data, dataRowID);
+		this.getComplianceReportsPage().clickOnZIPInReportViewer();
 		return true;
 	}
  
@@ -2157,6 +2058,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean clickOnComplianceViewerMetaZIP(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.clickOnComplianceViewerMetaZIP", data, dataRowID);
+		this.getComplianceReportsPage().clickOnMetadataZIPInReportViewer();
 		return true;
 	}
  
@@ -2168,86 +2070,22 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean clickOnComplianceViewerShapeZIP(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.clickOnComplianceViewerShapeZIP", data, dataRowID);
+		this.getComplianceReportsPage().clickOnShapeZIPInReportViewer();
 		return true;
 	}
- 
+
 	/**
-	 * Executes clickOnComplianceViewerView1 action.
+	 * Executes clickOnComplianceViewerViewByIndex action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
 	 */
-	public boolean clickOnComplianceViewerView1(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.clickOnComplianceViewerView1", data, dataRowID);
-		return true;
+	public boolean clickOnComplianceViewerViewByIndex(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.clickOnComplianceViewerViewByIndex", data, dataRowID);
+		return clickComplianceViewerViewByIndex(data, dataRowID);
 	}
- 
-	/**
-	 * Executes clickOnComplianceViewerView2 action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean clickOnComplianceViewerView2(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.clickOnComplianceViewerView2", data, dataRowID);
-		return true;
-	}
- 
-	/**
-	 * Executes clickOnComplianceViewerView3 action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean clickOnComplianceViewerView3(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.clickOnComplianceViewerView3", data, dataRowID);
-		return true;
-	}
- 
-	/**
-	 * Executes clickOnComplianceViewerView4 action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean clickOnComplianceViewerView4(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.clickOnComplianceViewerView4", data, dataRowID);
-		return true;
-	}
- 
-	/**
-	 * Executes clickOnComplianceViewerView5 action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean clickOnComplianceViewerView5(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.clickOnComplianceViewerView5", data, dataRowID);
-		return true;
-	}
- 
-	/**
-	 * Executes clickOnComplianceViewerView6 action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean clickOnComplianceViewerView6(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.clickOnComplianceViewerView6", data, dataRowID);
-		return true;
-	}
- 
-	/**
-	 * Executes clickOnComplianceViewerView7 action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean clickOnComplianceViewerView7(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.clickOnComplianceViewerView7", data, dataRowID);
-		return true;
-	}
- 
+
 	/**
 	 * Executes clickNoOnChangeReportDialog action.
 	 * @param data - specifies the input data passed to the action.
@@ -2259,39 +2097,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return true;
 	}
  
-	/**
-	 * Executes waitForPDFDownloadToComplete action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean waitForPDFDownloadToComplete(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.waitForPDFDownloadToComplete", data, dataRowID);
-		return true;
-	}
- 
-	/**
-	 * Executes waitForPDFZIPDownloadToComplete action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean waitForPDFZIPDownloadToComplete(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.waitForPDFZIPDownloadToComplete", data, dataRowID);
-		return true;
-	}
- 
-	/**
-	 * Executes waitForMetaZIPDownloadToComplete action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean waitForMetaZIPDownloadToComplete(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.waitForMetaZIPDownloadToComplete", data, dataRowID);
-		return true;
-	}
-
 	/**
 	 * Executes waitForReportGenerationToComplete action.
 	 * @param data - specifies the input data passed to the action.
@@ -2307,6 +2112,69 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
 
 	/**
+	 * Executes waitForComplianceViewerDialogToOpen action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean waitForComplianceViewerDialogToOpen(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.waitForComplianceViewerDialogToOpen", data, dataRowID);
+		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
+		return true;
+	}
+
+	/**
+	 * Executes waitForComplianceViewerDialogToClose action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean waitForComplianceViewerDialogToClose(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.waitForComplianceViewerDialogToClose", data, dataRowID);
+		this.getComplianceReportsPage().waitForReportViewerDialogToClose();
+		return true;
+	}
+
+	/**
+	 * Executes waitForPDFDownloadToComplete action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean waitForPDFDownloadToComplete(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.waitForPDFDownloadToComplete", data, dataRowID);
+		waitForReportFileDownload(dataRowID, ReportFileType.PDF, -1);
+		return true;
+	}
+ 
+	/**
+	 * Executes waitForPDFZIPDownloadToComplete action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean waitForPDFZIPDownloadToComplete(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.waitForPDFZIPDownloadToComplete", data, dataRowID);
+		waitForReportFileDownload(dataRowID, ReportFileType.ZIP, -1);
+		return true;
+	}
+ 
+	/**
+	 * Executes waitForMetaZIPDownloadToComplete action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean waitForMetaZIPDownloadToComplete(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.waitForMetaZIPDownloadToComplete", data, dataRowID);
+		waitForReportFileDownload(dataRowID, ReportFileType.MetaDataZIP, -1);
+		return true;
+	}
+
+	/**
 	 * Executes waitForShapeZIPDownloadToComplete action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -2315,9 +2183,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean waitForShapeZIPDownloadToComplete(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.waitForShapeZIPDownloadToComplete", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		downloadReportFileAndWait(dataRowID, ReportFileType.ShapeZIP, -1);
+		waitForReportFileDownload(dataRowID, ReportFileType.ShapeZIP, -1);
 		return true;
 	}
  
@@ -2328,101 +2194,33 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @return - returns whether the action was successful or not.
 	 * @throws Exception 
 	 */
-	public boolean waitForView1DownloadToComplete(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.waitForView1DownloadToComplete", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		downloadReportFileAndWait(dataRowID, ReportFileType.View, 1);
+	public boolean waitForViewDownloadToCompleteByViewIndex(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.waitForViewDownloadToCompleteByViewIndex", data, dataRowID);
+		waitForViewDownloadByViewIndex(data, dataRowID);
+		return true;
+	}
+
+	/**
+	 * Executes waitForReportViewerDialogToOpen action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean waitForReportViewerDialogToOpen(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.waitForReportViewerDialogToOpen", data, dataRowID);
+		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
 		return true;
 	}
  
 	/**
-	 * Executes waitForView2DownloadToComplete action.
+	 * Executes waitForReportViewerDialogToClose action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
 	 */
-	public boolean waitForView2DownloadToComplete(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.waitForView2DownloadToComplete", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		downloadReportFileAndWait(dataRowID, ReportFileType.View, 2);
-		return true;
-	}
- 
-	/**
-	 * Executes waitForView3DownloadToComplete action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 */
-	public boolean waitForView3DownloadToComplete(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.waitForView3DownloadToComplete", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		downloadReportFileAndWait(dataRowID, ReportFileType.View, 3);
-		return true;
-	}
- 
-	/**
-	 * Executes waitForView4DownloadToComplete action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 */
-	public boolean waitForView4DownloadToComplete(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.waitForView4DownloadToComplete", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		downloadReportFileAndWait(dataRowID, ReportFileType.View, 4);
-		return true;
-	}
- 
-	/**
-	 * Executes waitForView5DownloadToComplete action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 */
-	public boolean waitForView5DownloadToComplete(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.waitForView5DownloadToComplete", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		downloadReportFileAndWait(dataRowID, ReportFileType.View, 5);
-		return true;
-	}
- 
-	/**
-	 * Executes waitForView6DownloadToComplete action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 */
-	public boolean waitForView6DownloadToComplete(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.waitForView6DownloadToComplete", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		downloadReportFileAndWait(dataRowID, ReportFileType.View, 6);
-		return true;
-	}
- 
-	/**
-	 * Executes waitForView7DownloadToComplete action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 */
-	public boolean waitForView7DownloadToComplete(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.waitForView7DownloadToComplete", data, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerPopupToShow();
-		downloadReportFileAndWait(dataRowID, ReportFileType.View, 7);
+	public boolean waitForReportViewerDialogToClose(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.waitForReportViewerDialogToClose", data, dataRowID);
+		this.getComplianceReportsPage().waitForReportViewerDialogToClose();
 		return true;
 	}
  
@@ -2495,94 +2293,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 				TestContext.INSTANCE.getLoggedInUser(), dataRow.tCID);
 	}
 	
-	/**
-	 * Executes verifyViewsAreInCorrectSequence action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyViewsAreInCorrectSequence(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.verifyViewsAreInCorrectSequence", data, dataRowID);
-		return true;
-	}
- 
-	/**
-	 * Executes verifyView1ThumbnailIsCorrect action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyView1ThumbnailIsCorrect(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.verifyView1ThumbnailIsCorrect", data, dataRowID);
-		return true;
-	}
- 
-	/**
-	 * Executes verifyView2ThumbnailIsCorrect action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyView2ThumbnailIsCorrect(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.verifyView2ThumbnailIsCorrect", data, dataRowID);
-		return true;
-	}
- 
-	/**
-	 * Executes verifyView3ThumbnailIsCorrect action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyView3ThumbnailIsCorrect(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.verifyView3ThumbnailIsCorrect", data, dataRowID);
-		return true;
-	}
- 
-	/**
-	 * Executes verifyView4ThumbnailIsCorrect action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyView4ThumbnailIsCorrect(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.verifyView4ThumbnailIsCorrect", data, dataRowID);
-		return true;
-	}
- 
-	/**
-	 * Executes verifyView5ThumbnailIsCorrect action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyView5ThumbnailIsCorrect(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.verifyView5ThumbnailIsCorrect", data, dataRowID);
-		return true;
-	}
- 
-	/**
-	 * Executes verifyView6ThumbnailIsCorrect action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyView6ThumbnailIsCorrect(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.verifyView6ThumbnailIsCorrect", data, dataRowID);
-		return true;
-	}
- 
-	/**
-	 * Executes verifyView7ThumbnailIsCorrect action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyView7ThumbnailIsCorrect(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.verifyView7ThumbnailIsCorrect", data, dataRowID);
-		return true;
-	}
- 
 	/**
 	 * Executes verifyGapShapeFilesHaveCorrectData action.
 	 * @param data - specifies the input data passed to the action.
@@ -2866,9 +2576,12 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
 	 */
-	public boolean verifyViewsCreatedAreInCorrectSequence(String data, Integer dataRowID) {
+	public boolean verifyViewsCreatedAreInCorrectSequence(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyViewsCreatedAreInCorrectSequence", data, dataRowID);
+		List<String> viewNamesList = getViewNamesList(dataRowID);
+		this.getComplianceReportsPage().verifyViewsInComplianceViewerAreInCorrectSequence(viewNamesList);
 		return true;
 	}
  
@@ -2907,9 +2620,14 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("clickByIdAndWait")) { return this.clickByIdAndWait(data, dataRowID); }
 		else if (actionName.equals("clickByXPath")) { return this.clickByXPath(data, dataRowID); }
 		else if (actionName.equals("clickByXPathAndWait")) { return this.clickByXPathAndWait(data, dataRowID); }
+		else if (actionName.equals("clickNoOnChangeReportDialog")) { return this.clickNoOnChangeReportDialog(data, dataRowID); }
 		else if (actionName.equals("clickOnCancelButton")) { return this.clickOnCancelButton(data, dataRowID); }
 		else if (actionName.equals("clickOnCancelConfirmDeleteReport")) { return this.clickOnCancelConfirmDeleteReport(data, dataRowID); }
 		else if (actionName.equals("clickOnComplianceViewerButton")) { return this.clickOnComplianceViewerButton(data, dataRowID); }
+		else if (actionName.equals("clickOnComplianceViewerMetaZIP")) { return this.clickOnComplianceViewerMetaZIP(data, dataRowID); }
+		else if (actionName.equals("clickOnComplianceViewerPDF")) { return this.clickOnComplianceViewerPDF(data, dataRowID); }
+		else if (actionName.equals("clickOnComplianceViewerPDFZIP")) { return this.clickOnComplianceViewerPDFZIP(data, dataRowID); }
+		else if (actionName.equals("clickOnComplianceViewerShapeZIP")) { return this.clickOnComplianceViewerShapeZIP(data, dataRowID); }
 		else if (actionName.equals("clickOnConfirmDeleteReport")) { return this.clickOnConfirmDeleteReport(data, dataRowID); }
 		else if (actionName.equals("clickOnCopyButton")) { return this.clickOnCopyButton(data, dataRowID); }
 		else if (actionName.equals("clickOnDeleteButton")) { return this.clickOnDeleteButton(data, dataRowID); }
@@ -2917,22 +2635,10 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("clickOnFirstInvestigateComplianceButton")) { return this.clickOnFirstInvestigateComplianceButton(data, dataRowID); }
 		else if (actionName.equals("clickOnInvestigateButton")) { return this.clickOnInvestigateButton(data, dataRowID); }
 		else if (actionName.equals("clickOnInvestigatePDFButton")) { return this.clickOnInvestigatePDFButton(data, dataRowID); }
+		else if (actionName.equals("clickOnLatLongSelectorButton")) { return this.clickOnLatLongSelectorButton(data, dataRowID); }
 		else if (actionName.equals("clickOnOKButton")) { return this.clickOnOKButton(data, dataRowID); }
 		else if (actionName.equals("clickOnResubmitButton")) { return this.clickOnResubmitButton(data, dataRowID); }
 		else if (actionName.equals("clickOnSurveySelectorSearchButton")) { return this.clickOnSurveySelectorSearchButton(data, dataRowID); }
-		else if (actionName.equals("clickOnLatLongSelectorButton")) { return this.clickOnLatLongSelectorButton(data, dataRowID); }
-		else if (actionName.equals("clickOnComplianceViewerPDF")) { return this.clickOnComplianceViewerPDF(data, dataRowID); }
-		else if (actionName.equals("clickOnComplianceViewerPDFZIP")) { return this.clickOnComplianceViewerPDFZIP(data, dataRowID); }
-		else if (actionName.equals("clickOnComplianceViewerMetaZIP")) { return this.clickOnComplianceViewerMetaZIP(data, dataRowID); }
-		else if (actionName.equals("clickOnComplianceViewerShapeZIP")) { return this.clickOnComplianceViewerShapeZIP(data, dataRowID); }
-		else if (actionName.equals("clickOnComplianceViewerView1")) { return this.clickOnComplianceViewerView1(data, dataRowID); }
-		else if (actionName.equals("clickOnComplianceViewerView2")) { return this.clickOnComplianceViewerView2(data, dataRowID); }
-		else if (actionName.equals("clickOnComplianceViewerView3")) { return this.clickOnComplianceViewerView3(data, dataRowID); }
-		else if (actionName.equals("clickOnComplianceViewerView4")) { return this.clickOnComplianceViewerView4(data, dataRowID); }
-		else if (actionName.equals("clickOnComplianceViewerView5")) { return this.clickOnComplianceViewerView5(data, dataRowID); }
-		else if (actionName.equals("clickOnComplianceViewerView6")) { return this.clickOnComplianceViewerView6(data, dataRowID); }
-		else if (actionName.equals("clickOnComplianceViewerView7")) { return this.clickOnComplianceViewerView7(data, dataRowID); }
-		else if (actionName.equals("clickNoOnChangeReportDialog")) { return this.clickNoOnChangeReportDialog(data, dataRowID); }
 		else if (actionName.equals("copyReport")) { return this.copyReport(data, dataRowID); }
 		else if (actionName.equals("createNewReport")) { return this.createNewReport(data, dataRowID); }
 		else if (actionName.equals("deleteReport")) { return this.deleteReport(data, dataRowID); }
@@ -2947,8 +2653,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("enterReportTitle")) { return this.enterReportTitle(data, dataRowID); }
 		else if (actionName.equals("enterSurveySelectorTag")) { return this.enterSurveySelectorTag(data, dataRowID); }
 		else if (actionName.equals("enterSurveySelectorUsername")) { return this.enterSurveySelectorUsername(data, dataRowID); }
-		else if (actionName.equals("extractPDFZIP")) { return this.extractPDFZIP(data, dataRowID); }
 		else if (actionName.equals("extractMetaZIP")) { return this.extractMetaZIP(data, dataRowID); }
+		else if (actionName.equals("extractPDFZIP")) { return this.extractPDFZIP(data, dataRowID); }
 		else if (actionName.equals("extractShapeZIP")) { return this.extractShapeZIP(data, dataRowID); }
 		else if (actionName.equals("findReport")) { return this.findReport(data, dataRowID); }
 		else if (actionName.equals("insertTextById")) { return this.insertTextById(data, dataRowID); }
@@ -2956,6 +2662,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("investigateReport")) { return this.investigateReport(data, dataRowID); }
 		else if (actionName.equals("modifyReport")) { return this.modifyReport(data, dataRowID); }
 		else if (actionName.equals("open")) { return this.open(data, dataRowID); }
+		else if (actionName.equals("openComplianceViewerDialog")) { return this.openComplianceViewerDialog(data, dataRowID); }
 		else if (actionName.equals("openNewReportPage")) { return this.openNewReportPage(data, dataRowID); }
 		else if (actionName.equals("searchForSurveyByKeyword")) { return this.searchForSurveyByKeyword(data, dataRowID); }
 		else if (actionName.equals("selectCustomer")) { return this.selectCustomer(data, dataRowID); }
@@ -2979,19 +2686,29 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("selectViewLayersAsset")) { return this.selectViewLayersAsset(data, dataRowID); }
 		else if (actionName.equals("selectViewLayersBoundary")) { return this.selectViewLayersBoundary(data, dataRowID); }
 		else if (actionName.equals("sortRecordsBy")) { return this.sortRecordsBy(data, dataRowID); }
+		else if (actionName.equals("verifyAllMetadataFiles")) { return this.verifyAllMetadataFiles(data, dataRowID); }
+		else if (actionName.equals("verifyAllSSRSTableInfos")) { return this.verifyAllSSRSTableInfos(data, dataRowID); }
 		else if (actionName.equals("verifyAssetsAreDisplayed")) { return this.verifyAssetsAreDisplayed(data, dataRowID); }
+		else if (actionName.equals("verifyBoundariesAutoCompleteListContains")) { return this.verifyBoundariesAutoCompleteListContains(data, dataRowID); }
 		else if (actionName.equals("verifyComplianceViewerButtonIsDisplayed")) { return this.verifyComplianceViewerButtonIsDisplayed(data, dataRowID); }
 		else if (actionName.equals("verifyComplianceViewerViewCountEquals")) { return this.verifyComplianceViewerViewCountEquals(data, dataRowID); }
 		else if (actionName.equals("verifyCopyButtonIsDisplayed")) { return this.verifyCopyButtonIsDisplayed(data, dataRowID); }
 		else if (actionName.equals("verifyDeleteButtonIsDisplayed")) { return this.verifyDeleteButtonIsDisplayed(data, dataRowID); }
+		else if (actionName.equals("verifyGapShapeFilesHaveCorrectData")) { return this.verifyGapShapeFilesHaveCorrectData(data, dataRowID); }
+		else if (actionName.equals("verifyGapsTableInfo")) { return this.verifyGapsTableInfo(data, dataRowID); }
 		else if (actionName.equals("verifyGapsTableSortedByColumn")) { return this.verifyGapsTableSortedByColumn(data, dataRowID); }
+		else if (actionName.equals("verifyIndicationTableInfo")) { return this.verifyIndicationTableInfo(data, dataRowID); }
+		else if (actionName.equals("verifyIndicationTableMinAmplitudeValues")) { return this.verifyIndicationTableMinAmplitudeValues(data, dataRowID); }
 		else if (actionName.equals("verifyIndicationTableSortedByColumn")) { return this.verifyIndicationTableSortedByColumn(data, dataRowID); }
 		else if (actionName.equals("verifyInvestigateButtonIsDisplayed")) { return this.verifyInvestigateButtonIsDisplayed(data, dataRowID); }
 		else if (actionName.equals("verifyInvestigatePDFButtonIsDisplayed")) { return this.verifyInvestigatePDFButtonIsDisplayed(data, dataRowID); }
 		else if (actionName.equals("verifyInvestigatePDFDownload")) { return this.verifyInvestigatePDFDownload(data, dataRowID); }
+		else if (actionName.equals("verifyIsotopicAnalysisTableInfo")) { return this.verifyIsotopicAnalysisTableInfo(data, dataRowID); }
+		else if (actionName.equals("verifyIsotopicMetaDataFile")) { return this.verifyIsotopicMetaDataFile(data, dataRowID); }
 		else if (actionName.equals("verifyIsotopicTableSortedByColumn")) { return this.verifyIsotopicTableSortedByColumn(data, dataRowID); }
 		else if (actionName.equals("verifyIsotopicValueIsFormattedCorrectly")) { return this.verifyIsotopicValueIsFormattedCorrectly(data, dataRowID); }
 		else if (actionName.equals("verifyLastXDaysSurveysPresentInPDF")) { return this.verifyLastXDaysSurveysPresentInPDF(data, dataRowID); }
+		else if (actionName.equals("verifyLISASMetaDataFile")) { return this.verifyLISASMetaDataFile(data, dataRowID); }
 		else if (actionName.equals("verifyLisasTableSortedByColumn")) { return this.verifyLisasTableSortedByColumn(data, dataRowID); }
 		else if (actionName.equals("verifyMetaDataFilesHaveCorrectData")) { return this.verifyMetaDataFilesHaveCorrectData(data, dataRowID); }
 		else if (actionName.equals("verifyMetaDataZIPFilesAreCorrect")) { return this.verifyMetaDataZIPFilesAreCorrect(data, dataRowID); }
@@ -3005,12 +2722,14 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifyPDFZipFilesArePresent")) { return this.verifyPDFZipFilesArePresent(data, dataRowID); }
 		else if (actionName.equals("verifyPDFZIPThumbnailDownloadFromComplianceViewer")) { return this.verifyPDFZIPThumbnailDownloadFromComplianceViewer(data, dataRowID); }
 		else if (actionName.equals("verifyPDFZIPThumbnailIsShownInComplianceViewer")) { return this.verifyPDFZIPThumbnailIsShownInComplianceViewer(data, dataRowID); }
-		else if (actionName.equals("verifyPercentCoverageForecastPresentInReport")) { return this.verifyPercentCoverageForecastPresentInReport(data, dataRowID); }
 		else if (actionName.equals("verifyPercentCoverageAssetsAndReportAreaValuesInReport")) { return this.verifyPercentCoverageAssetsAndReportAreaValuesInReport(data, dataRowID); }
+		else if (actionName.equals("verifyPercentCoverageForecastPresentInReport")) { return this.verifyPercentCoverageForecastPresentInReport(data, dataRowID); }
+		else if (actionName.equals("verifyReportDeletedSuccessfully")) { return this.verifyReportDeletedSuccessfully(data, dataRowID); }
 		else if (actionName.equals("verifyReportFilesHaveCorrectData")) { return this.verifyReportFilesHaveCorrectData(data, dataRowID); }
 		else if (actionName.equals("verifyReportJobBaselines")) { return this.verifyReportJobBaselines(data, dataRowID); }
 		else if (actionName.equals("verifyReportPageFieldsAreCorrect")) { return this.verifyReportPageFieldsAreCorrect(data, dataRowID); }
 		else if (actionName.equals("verifyReportPDFMatches")) { return this.verifyReportPDFMatches(data, dataRowID); }
+		else if (actionName.equals("verifyReportSurveyMetadataFile")) { return this.verifyReportSurveyMetadataFile(data, dataRowID); }
 		else if (actionName.equals("verifyReportThumbnailMatches")) { return this.verifyReportThumbnailMatches(data, dataRowID); }
 		else if (actionName.equals("verifyRequiredFieldsAreShownInRed")) { return this.verifyRequiredFieldsAreShownInRed(data, dataRowID); }
 		else if (actionName.equals("verifyResubmitButtonIsDisplayed")) { return this.verifyResubmitButtonIsDisplayed(data, dataRowID); }
@@ -3020,46 +2739,10 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifySearchedSurveysMatchSurveyorUnit")) { return this.verifySearchedSurveysMatchSurveyorUnit(data, dataRowID); }
 		else if (actionName.equals("verifySearchedSurveysMatchTag")) { return this.verifySearchedSurveysMatchTag(data, dataRowID); }
 		else if (actionName.equals("verifyShapeFilesHaveCorrectData")) { return this.verifyShapeFilesHaveCorrectData(data, dataRowID); }
+		else if (actionName.equals("verifyShapeFilesWithBaselines")) { return this.verifyShapeFilesWithBaselines(data, dataRowID); }
 		else if (actionName.equals("verifyShapeZIPFilesAreCorrect")) { return this.verifyShapeZIPFilesAreCorrect(data, dataRowID); }
 		else if (actionName.equals("verifyShapeZIPThumbnailDownloadFromComplianceViewer")) { return this.verifyShapeZIPThumbnailDownloadFromComplianceViewer(data, dataRowID); }
 		else if (actionName.equals("verifyShapeZIPThumbnailIsShownInComplianceViewer")) { return this.verifyShapeZIPThumbnailIsShownInComplianceViewer(data, dataRowID); }
-		else if (actionName.equals("verifyUncertaintyValueIsFormattedCorrectly")) { return this.verifyUncertaintyValueIsFormattedCorrectly(data, dataRowID); }
-		else if (actionName.equals("verifyView1ThumbnailDownloadFromComplianceViewer")) { return this.verifyView1ThumbnailDownloadFromComplianceViewer(data, dataRowID); }
-		else if (actionName.equals("verifyView1ThumbnailIsShownInComplianceViewer")) { return this.verifyView1ThumbnailIsShownInComplianceViewer(data, dataRowID); }
-		else if (actionName.equals("verifyView2ThumbnailDownloadFromComplianceViewer")) { return this.verifyView2ThumbnailDownloadFromComplianceViewer(data, dataRowID); }
-		else if (actionName.equals("verifyView2ThumbnailIsShownInComplianceViewer")) { return this.verifyView2ThumbnailIsShownInComplianceViewer(data, dataRowID); }
-		else if (actionName.equals("verifyView3ThumbnailDownloadFromComplianceViewer")) { return this.verifyView3ThumbnailDownloadFromComplianceViewer(data, dataRowID); }
-		else if (actionName.equals("verifyView3ThumbnailIsShownInComplianceViewer")) { return this.verifyView3ThumbnailIsShownInComplianceViewer(data, dataRowID); }
-		else if (actionName.equals("verifyView4ThumbnailDownloadFromComplianceViewer")) { return this.verifyView4ThumbnailDownloadFromComplianceViewer(data, dataRowID); }
-		else if (actionName.equals("verifyView4ThumbnailIsShownInComplianceViewer")) { return this.verifyView4ThumbnailIsShownInComplianceViewer(data, dataRowID); }
-		else if (actionName.equals("verifyView5ThumbnailDownloadFromComplianceViewer")) { return this.verifyView5ThumbnailDownloadFromComplianceViewer(data, dataRowID); }
-		else if (actionName.equals("verifyView5ThumbnailIsShownInComplianceViewer")) { return this.verifyView5ThumbnailIsShownInComplianceViewer(data, dataRowID); }
-		else if (actionName.equals("verifyView6ThumbnailDownloadFromComplianceViewer")) { return this.verifyView6ThumbnailDownloadFromComplianceViewer(data, dataRowID); }
-		else if (actionName.equals("verifyView6ThumbnailIsShownInComplianceViewer")) { return this.verifyView6ThumbnailIsShownInComplianceViewer(data, dataRowID); }
-		else if (actionName.equals("verifyView7ThumbnailDownloadFromComplianceViewer")) { return this.verifyView7ThumbnailDownloadFromComplianceViewer(data, dataRowID); }
-		else if (actionName.equals("verifyView7ThumbnailIsShownInComplianceViewer")) { return this.verifyView7ThumbnailIsShownInComplianceViewer(data, dataRowID); }
-		else if (actionName.equals("verifyWarningMessageOnDeleteButtonClickEquals")) { return this.verifyWarningMessageOnDeleteButtonClickEquals(data, dataRowID); }
-		else if (actionName.equals("verifyViewsAreInCorrectSequence")) { return this.verifyViewsAreInCorrectSequence(data, dataRowID); }
-		else if (actionName.equals("verifyView1ThumbnailIsCorrect")) { return this.verifyView1ThumbnailIsCorrect(data, dataRowID); }
-		else if (actionName.equals("verifyView2ThumbnailIsCorrect")) { return this.verifyView2ThumbnailIsCorrect(data, dataRowID); }
-		else if (actionName.equals("verifyView3ThumbnailIsCorrect")) { return this.verifyView3ThumbnailIsCorrect(data, dataRowID); }
-		else if (actionName.equals("verifyView4ThumbnailIsCorrect")) { return this.verifyView4ThumbnailIsCorrect(data, dataRowID); }
-		else if (actionName.equals("verifyView5ThumbnailIsCorrect")) { return this.verifyView5ThumbnailIsCorrect(data, dataRowID); }
-		else if (actionName.equals("verifyView6ThumbnailIsCorrect")) { return this.verifyView6ThumbnailIsCorrect(data, dataRowID); }
-		else if (actionName.equals("verifyView7ThumbnailIsCorrect")) { return this.verifyView7ThumbnailIsCorrect(data, dataRowID); }
-		else if (actionName.equals("verifyGapShapeFilesHaveCorrectData")) { return this.verifyGapShapeFilesHaveCorrectData(data, dataRowID); }
-		else if (actionName.equals("verifyAllMetadataFiles")) { return this.verifyAllMetadataFiles(data, dataRowID); }
-		else if (actionName.equals("verifyAllSSRSTableInfos")) { return this.verifyAllSSRSTableInfos(data, dataRowID); }
-		else if (actionName.equals("verifyBoundariesAutoCompleteListContains")) { return this.verifyBoundariesAutoCompleteListContains(data, dataRowID); }
-		else if (actionName.equals("verifyGapsTableInfo")) { return this.verifyGapsTableInfo(data, dataRowID); }
-		else if (actionName.equals("verifyIndicationTableInfo")) { return this.verifyIndicationTableInfo(data, dataRowID); }
-		else if (actionName.equals("verifyIndicationTableMinAmplitudeValues")) { return this.verifyIndicationTableMinAmplitudeValues(data, dataRowID); }
-		else if (actionName.equals("verifyIsotopicAnalysisTableInfo")) { return this.verifyIsotopicAnalysisTableInfo(data, dataRowID); }
-		else if (actionName.equals("verifyIsotopicMetaDataFile")) { return this.verifyIsotopicMetaDataFile(data, dataRowID); }
-		else if (actionName.equals("verifyLISASMetaDataFile")) { return this.verifyLISASMetaDataFile(data, dataRowID); }
-		else if (actionName.equals("verifyReportDeletedSuccessfully")) { return this.verifyReportDeletedSuccessfully(data, dataRowID); }
-		else if (actionName.equals("verifyReportSurveyMetadataFile")) { return this.verifyReportSurveyMetadataFile(data, dataRowID); }
-		else if (actionName.equals("verifyShapeFilesWithBaselines")) { return this.verifyShapeFilesWithBaselines(data, dataRowID); }
 		else if (actionName.equals("verifySSRSCoverageTableInfo")) { return this.verifySSRSCoverageTableInfo(data, dataRowID); }
 		else if (actionName.equals("verifySSRSDrivingSurveyTableInfo")) { return this.verifySSRSDrivingSurveyTableInfo(data, dataRowID); }
 		else if (actionName.equals("verifySSRSImagesWithBaselines")) { return this.verifySSRSImagesWithBaselines(data, dataRowID); }
@@ -3067,20 +2750,22 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifySSRSShowCoverageTableInfo")) { return this.verifySSRSShowCoverageTableInfo(data, dataRowID); }
 		else if (actionName.equals("verifySSRSViewsTableInfo")) { return this.verifySSRSViewsTableInfo(data, dataRowID); }
 		else if (actionName.equals("verifySurveysTableInfoByTags")) { return this.verifySurveysTableInfoByTags(data, dataRowID); }
+		else if (actionName.equals("verifyUncertaintyValueIsFormattedCorrectly")) { return this.verifyUncertaintyValueIsFormattedCorrectly(data, dataRowID); }
+		else if (actionName.equals("verifyViewThumbnailDownloadFromComplianceViewerByViewIndex")) { return this.verifyViewThumbnailDownloadFromComplianceViewerByViewIndex(data, dataRowID); }
+		else if (actionName.equals("verifyViewThumbnailIsShownInComplianceViewerByViewIndex")) { return this.verifyViewThumbnailIsShownInComplianceViewerByViewIndex(data, dataRowID); }
 		else if (actionName.equals("verifyViewsCreatedAreInCorrectSequence")) { return this.verifyViewsCreatedAreInCorrectSequence(data, dataRowID); }
 		else if (actionName.equals("verifyViewsImagesWithBaselines")) { return this.verifyViewsImagesWithBaselines(data, dataRowID); }
+		else if (actionName.equals("verifyWarningMessageOnDeleteButtonClickEquals")) { return this.verifyWarningMessageOnDeleteButtonClickEquals(data, dataRowID); }
+		else if (actionName.equals("waitForComplianceViewerDialogToClose")) { return this.waitForComplianceViewerDialogToClose(data, dataRowID); }
+		else if (actionName.equals("waitForComplianceViewerDialogToOpen")) { return this.waitForComplianceViewerDialogToOpen(data, dataRowID); }
+		else if (actionName.equals("waitForMetaZIPDownloadToComplete")) { return this.waitForMetaZIPDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForPDFDownloadToComplete")) { return this.waitForPDFDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForPDFZIPDownloadToComplete")) { return this.waitForPDFZIPDownloadToComplete(data, dataRowID); }
-		else if (actionName.equals("waitForMetaZIPDownloadToComplete")) { return this.waitForMetaZIPDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForReportGenerationToComplete")) { return this.waitForReportGenerationToComplete(data, dataRowID); }
+		else if (actionName.equals("waitForReportViewerDialogToClose")) { return this.waitForReportViewerDialogToClose(data, dataRowID); }
+		else if (actionName.equals("waitForReportViewerDialogToOpen")) { return this.waitForReportViewerDialogToOpen(data, dataRowID); }
 		else if (actionName.equals("waitForShapeZIPDownloadToComplete")) { return this.waitForShapeZIPDownloadToComplete(data, dataRowID); }
-		else if (actionName.equals("waitForView1DownloadToComplete")) { return this.waitForView1DownloadToComplete(data, dataRowID); }
-		else if (actionName.equals("waitForView2DownloadToComplete")) { return this.waitForView2DownloadToComplete(data, dataRowID); }
-		else if (actionName.equals("waitForView3DownloadToComplete")) { return this.waitForView3DownloadToComplete(data, dataRowID); }
-		else if (actionName.equals("waitForView4DownloadToComplete")) { return this.waitForView4DownloadToComplete(data, dataRowID); }
-		else if (actionName.equals("waitForView5DownloadToComplete")) { return this.waitForView5DownloadToComplete(data, dataRowID); }
-		else if (actionName.equals("waitForView6DownloadToComplete")) { return this.waitForView6DownloadToComplete(data, dataRowID); }
-		else if (actionName.equals("waitForView7DownloadToComplete")) { return this.waitForView7DownloadToComplete(data, dataRowID); }
+		else if (actionName.equals("waitForViewDownloadToCompleteByViewIndex")) { return this.waitForViewDownloadToCompleteByViewIndex(data, dataRowID); }
 		return false;
 	}
 

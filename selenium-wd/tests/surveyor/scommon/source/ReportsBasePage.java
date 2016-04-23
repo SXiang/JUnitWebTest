@@ -772,40 +772,40 @@ public class ReportsBasePage extends SurveyorBasePage {
 		this.checkboxSurFirst.click();
 	}
 
-	private void clickOnSearchSurveyButton() {
+	public void clickOnSearchSurveyButton() {
 		this.btnSurveySearch.click();
 	}
 
-	private void clickOnAddSurveysButton() {
+	public void clickOnAddSurveysButton() {
 		this.btnAddSurveys.click();
 	}
 
-	private void selectSurveyInfoGeoFilter(Boolean geoFilterOn) {
+	public void selectSurveyInfoGeoFilter(Boolean geoFilterOn) {
 		if ((geoFilterOn == null) || (!geoFilterOn)) {
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("arguments[0].click();", this.checkGeoFilter);
 		}
 	}
 
-	private void selectSurveyInfoEndDate(String endDate) {
+	public void selectSurveyInfoEndDate(String endDate) {
 		if ((endDate != null) && (endDate != "")) {
 			selectEndDateForSurvey(endDate);
 		}
 	}
 
-	private void selectSurveyInfoStartDate(String startDate) {
+	public void selectSurveyInfoStartDate(String startDate) {
 		if ((startDate != null) && (startDate != "")) {
 			selectStartDateForSurvey(startDate);
 		}
 	}
 
-	private void enterSurveyInfoUsername(String username) {
+	public void enterSurveyInfoUsername(String username) {
 		if (username != null) {
 			this.userName.sendKeys(username);
 		}
 	}
 
-	private void selectSurveyInfoSurveyorUnit(String surveyor) {
+	public void selectSurveyInfoSurveyorUnit(String surveyor) {
 		if (surveyor != null) {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsSU) {
@@ -2106,6 +2106,26 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		});
 	}
+	
+	public void waitForReportViewerDialogToOpen() {
+		WebElement divModalcontent = this.driver.findElement(By.id("divModalcontent"));
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return divModalcontent.getAttribute("style").contains("display:block") || 
+						divModalcontent.getAttribute("style").contains("display: block");
+			}
+		});
+	}
+
+	public void waitForReportViewerDialogToClose() {
+		WebElement divModalcontent = this.driver.findElement(By.id("divModalcontent"));
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return divModalcontent.getAttribute("style").contains("display:none") || 
+						divModalcontent.getAttribute("style").contains("display: none");
+			}
+		});
+	}
 
 	public WebElement getBtnDeleteConfirm() throws Exception {
 		throw new Exception("Not implemented");
@@ -2284,10 +2304,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		}
 		
-		String apiResponse = ApiUtility.getApiResponse(String.format(ApiUtility.REPORTS_GET_REPORT_STAT_API_RELATIVE_URL, reportTitle));
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		Gson gson = gsonBuilder.create();
-		ReportJobsStat reportJobsStatObj = gson.fromJson(apiResponse, ReportJobsStat.class);
+		ReportJobsStat reportJobsStatObj = getReportJobStat(reportTitle);
 		validateReportStatus(reportJobsStatObj);
 		List<surveyor.api.source.ReportJob> reportJobs = reportJobsStatObj.ReportJobs;
 		for (surveyor.api.source.ReportJob reportJob : reportJobs) {
@@ -2333,6 +2350,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 
 		return true;
+	}
+
+	public ReportJobsStat getReportJobStat(String reportTitle) {
+		String apiResponse = ApiUtility.getApiResponse(String.format(ApiUtility.REPORTS_GET_REPORT_STAT_API_RELATIVE_URL, reportTitle));
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		Gson gson = gsonBuilder.create();
+		ReportJobsStat reportJobsStatObj = gson.fromJson(apiResponse, ReportJobsStat.class);
+		return reportJobsStatObj;
 	}
 
 	private void validateReportStatus(ReportJobsStat reportJobsStatObj) throws Exception {

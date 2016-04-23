@@ -14,6 +14,7 @@ import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.ComplianceReportsPage.ReportViewerThumbnailType;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
@@ -66,7 +67,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifyIndicationTableMinAmplitudeValues(EMPTY, NOTSET));
@@ -102,7 +104,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.extractPDFZIP(EMPTY, NOTSET);
@@ -165,7 +167,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.extractPDFZIP(EMPTY, NOTSET);
@@ -203,7 +205,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.clickOnCopyButton(EMPTY, NOTSET);
 		complianceReportsPageAction.copyReport(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.extractPDFZIP(EMPTY, NOTSET);
@@ -363,7 +365,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
@@ -373,7 +375,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
@@ -383,7 +385,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
@@ -393,7 +395,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
@@ -403,7 +405,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
@@ -413,7 +415,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
@@ -472,7 +474,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
@@ -482,7 +484,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
@@ -491,7 +493,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		// Repeat the test with different combinations such as FOV and Breadcrumb
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
@@ -529,7 +531,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
@@ -539,7 +541,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
@@ -569,7 +571,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
 	}
@@ -623,13 +625,13 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerView1(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerView2(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerView3(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForView1DownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForView2DownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForView3DownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("2", NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("3", NOTSET);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", NOTSET);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("2", NOTSET);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("3", NOTSET);
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
 	}
  
@@ -659,13 +661,13 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerView1(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerView2(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerView3(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForView1DownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForView2DownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForView3DownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("2", NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("3", NOTSET);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", NOTSET);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("2", NOTSET);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("3", NOTSET);
 		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyGapsTableSortedByColumn(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
@@ -695,15 +697,15 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerView1(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerView2(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerView3(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("2", NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("3", NOTSET);
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForView1DownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForView2DownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForView3DownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", NOTSET);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("2", NOTSET);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("3", NOTSET);
 		complianceReportsPageAction.extractPDFZIP(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
@@ -736,15 +738,15 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerView1(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerView2(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerView3(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("2", NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("3", NOTSET);
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForView1DownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForView2DownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForView3DownloadToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", NOTSET);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("2", NOTSET);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("3", NOTSET);
 		complianceReportsPageAction.extractPDFZIP(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
@@ -773,7 +775,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifyLisasTableSortedByColumn(EMPTY, NOTSET));
@@ -810,7 +812,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
@@ -854,7 +856,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
@@ -864,7 +866,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
@@ -904,7 +906,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
@@ -945,7 +947,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
@@ -980,9 +982,9 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		loginPageAction.login(EMPTY, 6);
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifyComplianceViewerButtonIsDisplayed("ShapeZIP", NOTSET));
-		assertTrue(complianceReportsPageAction.verifyComplianceViewerButtonIsDisplayed("MetadataZIP", NOTSET));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
+		assertTrue(complianceReportsPageAction.verifyComplianceViewerButtonIsDisplayed(ReportViewerThumbnailType.ComplianceZipShape.toString(), NOTSET));
+		assertTrue(complianceReportsPageAction.verifyComplianceViewerButtonIsDisplayed(ReportViewerThumbnailType.ComplianceZipMeta.toString(), NOTSET));
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);

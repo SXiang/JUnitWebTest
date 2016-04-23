@@ -90,12 +90,18 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import common.source.ApiUtility;
 import common.source.BaseHelper;
 import common.source.CSVUtility;
 import common.source.DBConnection;
 import common.source.Log;
 import common.source.TestSetup;
 import sun.misc.BASE64Decoder;
+import surveyor.api.source.ReportJobsStat;
 import surveyor.dataaccess.source.BaseMapType;
 import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ReportView;
@@ -271,15 +277,68 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public enum ComplianceReportButtonType {
-		Delete, Copy, ReportViewer, Investigate, InvestigatePDF, Resubmit, Cancel, InProgressCopy
+		Delete ("Delete"),
+		Copy ("Copy"),
+		ReportViewer ("ReportViewer"), 
+		Investigate ("Investigate"),
+		InvestigatePDF ("InvestigatePDF"),
+		Resubmit ("Resubmit"), 
+		Cancel ("Cancel"),
+		InProgressCopy ("InProgressCopy");
+		
+		private final String name;
+
+		ComplianceReportButtonType(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
 	}
 
 	public enum ReportViewerThumbnailType {
-		ComplianceTablePDF, ComplianceZipPDF, ComplianceZipShape, ComplianceZipMeta, FirstView, SecondView, ThirdView, FourthView, FifthView, SixthView, SeventhView
+		InvestigationPDF ("InvestigationPDF"),
+		ComplianceTablePDF ("ComplianceTablePDF"),
+		ComplianceZipPDF ("ComplianceZipPDF "),
+		ComplianceZipShape ("ComplianceZipShape "),
+		ComplianceZipMeta ("ComplianceZipMeta "),
+		FirstView ("FirstView "),
+		SecondView ("SecondView "),
+		ThirdView ("ThirdView "),
+		FourthView ("FourthView "),
+		FifthView ("FifthView "),
+		SixthView ("SixthView "),
+		SeventhView("SeventhView");
+
+		private final String name;
+
+		ReportViewerThumbnailType(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
 	}
 
 	public enum ReportFileType {
-		PDF, ZIP, MetaDataZIP, ShapeZIP, View
+		InvestigationPDF ("InvestigationPDF"),
+		PDF ("PDF"),
+		ZIP ("ZIP"),
+		MetaDataZIP ("MetaDataZIP"),
+		ShapeZIP ("ShapeZIP"),
+		View ("View");
+		
+		private final String name;
+
+		ReportFileType(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
 	}
 
 	/**
@@ -1235,46 +1294,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.clickLatLongMapSelectorBtn();
 	}
 
-	public void downloadReportPDFFile() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void downloadReportZIPFile() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void downloadMetaDataZipFile() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void downloadShapeZipFile() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void downloadViewFile(Integer fileIndex) {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public int getNumberofRecords() {
 		List<WebElement> records = this.numberofRecords;
 		return records.size();
@@ -2160,6 +2179,25 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return true;
 	}
 
+	public boolean verifyViewsInComplianceViewerAreInCorrectSequence(List<String> viewNamesList) {
+		List<WebElement> thumbnailImages = driver.findElements(By.xpath("//*[@id='ImageList']/li"));
+		if (viewNamesList != null && viewNamesList.size() > 0) {
+			Integer numViews = viewNamesList.size();
+			if (thumbnailImages != null && thumbnailImages.size() > 0) {
+				Integer numThumbnails = thumbnailImages.size();
+				// Loop from end. The thumbnails in the end are the view images.
+				for (int i = numThumbnails-1; i >= 0 && numViews > 0; i--) {
+					WebElement viewLabel = driver.findElement(By.xpath("//*[@id='ImageList']/li[" + String.valueOf(i) + "]/div/a/p"));
+					// Check the view labels are in order.
+					if (!viewNamesList.get(numViews-1).equals(viewLabel.getText())) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+
 	/**
 	 * Method to verify the Views Images
 	 * 
@@ -2321,6 +2359,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		});
 	}
 
+	public void waitForViewFileDownload(String reportName, String viewName) {
+		waitForFileDownload(reportName + "_" + viewName + ".pdf", testSetup.getDownloadPath());
+	}
+
 	public void waitForMetadataZIPFileDownload(String reportName) {
 		waitForFileDownload(reportName + " (1).zip", testSetup.getDownloadPath());
 	}
@@ -2335,14 +2377,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public void waitForShapeZIPFileDownload(String reportName) {
 		waitForFileDownload(reportName + " (2).zip", testSetup.getDownloadPath());
-	}
-
-	public void waitForReportViewerPopupToShow() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void waitForShapeZipFileDownload() {

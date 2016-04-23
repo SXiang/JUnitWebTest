@@ -134,6 +134,21 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement easternTime;
 	
 	private static String headerColumnBaseXPath = "//*[@id='datatable']/thead/tr/th[%d]";
+
+	public enum TableSortOrder {
+		ASC ("ASC"),
+		DESC ("DESC");
+		
+		private final String name;
+
+		TableSortOrder(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
+	}
 	
 	/**
 	 * @param driver
@@ -330,11 +345,53 @@ public class SurveyorBasePage extends BasePage {
 		}
 		return records;
 	}
+
+	private WebElement getTableHeader(Integer columnIndex) {
+		WebElement headerElement = driver.findElement(By.xpath(String.format(headerColumnBaseXPath, columnIndex)));
+		return headerElement;
+	}
+
+	public TableSortOrder getSortOrderFromString(String sortOrderString) {
+		TableSortOrder tblSortOrder = TableSortOrder.ASC;
+		if (sortOrderString.equals("DESC")) {
+			tblSortOrder = TableSortOrder.DESC;
+		} 
+		return tblSortOrder;
+	}
+	
+	public void sortTableByColumn(Integer columnIndex, TableSortOrder sortOrder) {
+		WebElement headerElement = getTableHeader(columnIndex);
+		TableSortOrder currTblSortOrder = getCurrentColumnSortOrder(headerElement, columnIndex);
+		// If current sort order is same as requested sort order, click twice to refresh data.
+		// If current sort order is different than requested sort order, click once to change sorted order.
+		if (currTblSortOrder.equals(sortOrder)) {
+			multiClickElement(headerElement, 2);
+		} else {
+			multiClickElement(headerElement, 1);
+		}
+		
+	}
+
+	private TableSortOrder getCurrentColumnSortOrder(WebElement headerElement, Integer columnIndex) {
+		String classAttrValue = headerElement.getAttribute("class");
+		// Get the current sorted order of the column.
+		TableSortOrder currTblSortOrder = TableSortOrder.ASC;
+		if (classAttrValue.contains("sorting_desc")) {
+			currTblSortOrder = TableSortOrder.DESC;
+		}
+		return currTblSortOrder;
+	}
 	
 	public void clickOnColumnHeader(Integer columnIndex, Integer numTimesToClick) {
-		WebElement headerElement = driver.findElement(By.xpath(String.format(headerColumnBaseXPath, columnIndex)));
-		for (int i = 0; i < numTimesToClick; i++) {
-			headerElement.click();
+		WebElement headerElement = getTableHeader(columnIndex);
+		multiClickElement(headerElement, numTimesToClick);
+	}
+
+	private void multiClickElement(WebElement element, Integer numTimesToClick) {
+		if (element != null && numTimesToClick > 0) {
+			for (int i = 0; i < numTimesToClick; i++) {
+				element.click();
+			}
 		}
 	}
 
