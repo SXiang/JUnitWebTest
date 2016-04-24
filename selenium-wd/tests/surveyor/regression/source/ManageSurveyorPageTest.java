@@ -348,7 +348,7 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		
 		Log.info(String.format("Editing Surveyor: Location-[%s]; Current Surveyor Name-[%s]; New Surveyor Name-[%s]", 
 				locationName, surveyorName, surveyorNewName)); 
-		manageSurveyorAdminPage.editExistingSurveyor(locationName, surveyorName, surveyorNewName, false);
-		assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorNewName));
+		manageSurveyorAdminPage.addCalibrationRecord(locationName, surveyorName,  false);
+		assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorName));
 	}
 }

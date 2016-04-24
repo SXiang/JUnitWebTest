@@ -189,7 +189,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		manageSurveyorPage.open();
 		manageSurveyorPage.addNewSurveyor(surveyorName400Chars, SQACUSLOC,
 				SQACUS);
-		manageSurveyorPage.logout();
+		manageSurveyorPage.waitForPageLoad();
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
