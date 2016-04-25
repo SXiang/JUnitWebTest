@@ -1714,7 +1714,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				return false;
 			}				
 		}
-		String surveyTable = RegexUtility.getStringInBetween(actualReportString, "Indication Table", "Surveyor Date");
+		String surveyTable;
+		if(RegexUtility.getStringInBetween(actualReportString, "Indication Table", "Surveyor Date")!=null){
+		 surveyTable = RegexUtility.getStringInBetween(actualReportString, "Indication Table", "Surveyor Date");
+		}
+		else{
+		surveyTable = RegexUtility.getStringInBetween(actualReportString, "Selected Driving Surveys", " Layers");
+		}
 		InputStream inputStream = new ByteArrayInputStream(surveyTable.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 		String line = null;
@@ -2034,7 +2040,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			ArrayList<String> reportIndicationsList = new ArrayList<String>();
 			while ((line = bufferReader.readLine()) != null) {
 				if (line.trim().matches("^\\? \\d+ .*")) {
-					reportIndicationsList.add(line.replaceAll("\\?", "").trim().replaceAll("\\s+", "").replace("+/-", ""));
+					reportIndicationsList.add(line.replaceAll("\\?", "").trim().replaceAll("\\s+", "").replace("+/-", "").replace("0.0", "").trim());
 				}
 			}
 			ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications.getReportIndications(reportId);

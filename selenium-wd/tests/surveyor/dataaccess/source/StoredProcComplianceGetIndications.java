@@ -157,9 +157,21 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 			objReport.setSurveyorUnitName(resultSet.getString("SurveyorUnitName"));
 			objReport.setAmplitude(resultSet.getFloat("Amplitude"));
 			objReport.setCh4(resultSet.getFloat("CH4"));
-			objReport.setAggregatedEthenaRatio(resultSet.getFloat("AggregatedEthenaRatio"));
-			objReport.setAggregatedEthaneRatioSdev(resultSet.getFloat("AggregatedEthaneRatioSdev"));
-			objReport.setAggregatedDisposition(resultSet.getString("AggregatedDisposition"));
+			float aggEthaneRatio=resultSet.getFloat("AggregatedEthenaRatio");
+			if(resultSet.wasNull()){
+				aggEthaneRatio=0;
+			}
+			objReport.setAggregatedEthenaRatio(aggEthaneRatio);
+			float aggEthaneRatioSdev=resultSet.getFloat("AggregatedEthaneRatioSdev");
+			if(resultSet.wasNull()){
+				aggEthaneRatio=0;
+			}
+			objReport.setAggregatedEthaneRatioSdev(aggEthaneRatioSdev);
+			String aggDisposition=resultSet.getString("AggregatedDisposition");
+			if(resultSet.wasNull()){
+				aggDisposition="";
+			}
+			objReport.setAggregatedDisposition(aggDisposition);
 			objReport.setAggregatedClassificationConfidence(resultSet.getString("AggregatedClassificationConfidence"));
 			objReport.setText(resultSet.getString("Text"));
 		} catch (SQLException e) {
