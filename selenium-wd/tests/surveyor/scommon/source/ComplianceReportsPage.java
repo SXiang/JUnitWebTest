@@ -1910,11 +1910,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			StoredProcComplianceGetIndications reportIndObj = new StoredProcComplianceGetIndications();
 			HashMap<String, String> csvRow = csvIterator.next();
 			if (!csvRow.get("ReportId").trim().toLowerCase().equals(reportId.trim().toLowerCase())) {
-				Log.info("LISA Meta data file veryfication failed");
+				Log.info("LISA Meta data file verification failed");
 				return false;
 			}
 			if (!csvRow.get("ReportName").trim().equals(getReportName().trim().substring(0, 9))) {
-				Log.info("LISA Meta data file veryfication failed");
+				Log.info("LISA Meta data file verification failed");
 				return false;
 			}
 			reportIndObj.setPeakNumber(csvRow.get("LisaNumber").trim());
@@ -1931,11 +1931,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		for (StoredProcComplianceGetIndications reportListObj : reportList) {
 			if (!reportListObj.isInList(storedPodList)) {
-				Log.info("LISA Meta data file veryfication failed");
+				Log.info("LISA Meta data file verification failed");
 				return false;
 			}
 		}
-		Log.info("LISA Meta data file veryfication passed");
+		Log.info("LISA Meta data file verification passed");
 		return true;
 	}
 
@@ -1969,7 +1969,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value){
-				Log.info("Isotopic Analysis table veryfication failed");
+				Log.info("Isotopic Analysis table verification failed");
 				return false;
 			}
 		}
@@ -1995,14 +1995,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				}
 
 				if (!reportIsotopicList.equals(storedProcConvStringList)) {
-					Log.info("Isotopic Analysis table veryfication failed");
+					Log.info("Isotopic Analysis table verification failed");
 					return false;
 				}
 			} finally {
 				bufferReader.close();
 			}
 		}
-		Log.info("Isotopic Analysis table veryfication passed");
+		Log.info("Isotopic Analysis table verification passed");
 		return true;
 
 	}
