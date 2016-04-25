@@ -233,6 +233,7 @@ public final class SurveyorConstants {
 	public static final String PICADMNRRTAG = "rr";
 	public static final String PICADMNOPTAG = "op";
 	public static final String PICADMNMANTAG = "man";
+	public static final String PICADMMANTAG = "pic";
 	public static final String CUSDRVSTDTAG = "stnd";
 	public static final String CUSDRVRRTAG = "rr";
 	public static final String CUSDRVOPTAG = "op";
