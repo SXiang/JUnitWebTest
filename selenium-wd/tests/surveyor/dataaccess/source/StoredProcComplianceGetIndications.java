@@ -15,7 +15,7 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 	private float ch4;
 	private String text;
 	private String aggregatedEthaneToMethaneRatio;
-	private String aggregatedClassificationConfidence;;
+	private String aggregatedClassificationConfidence;
 
 	public StoredProcComplianceGetIndications() {
 		super();
