@@ -99,7 +99,9 @@ import common.source.BaseHelper;
 import common.source.CSVUtility;
 import common.source.DBConnection;
 import common.source.Log;
+import common.source.NumberUtility;
 import common.source.TestSetup;
+import common.source.WebElementExtender;
 import sun.misc.BASE64Decoder;
 import surveyor.api.source.ReportJobsStat;
 import surveyor.dataaccess.source.BaseMapType;
@@ -1477,6 +1479,30 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	/**
+	 * Verifies that the customer boundary name auto-complete list contains the specified entries.
+	 */
+	public boolean verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains(ReportsCompliance reportsCompliance,  
+			List<String> autocompleteListEntries) {
+		openCustomerBoundarySelector();
+		latLongSelectionControl.waitForModalDialogOpen()
+			.switchMode(ControlMode.MapInteraction)
+			.waitForMapImageLoad()
+			.selectCustomerBoundaryType(reportsCompliance.getCustomerBoundaryFilterType().toString());
+		
+		// Type customer boundary name and verify the autocomplete list. If not all entries shown, return false.
+		if (!latLongSelectionControl.verifyCustomerBoundaryAutoCompleteListContains(reportsCompliance.getCustomerBoundaryName(), 
+				autocompleteListEntries)) {
+			return false;
+		}
+
+		// Click Ok to close the lat long selector.
+		latLongSelectionControl.switchMode(ControlMode.Default)
+			.clickOkButton();
+		
+		return true;
+	}
+
+	/**
 	 * Method to verify the static text
 	 * 
 	 * @param reportTitle
@@ -1943,6 +1969,71 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private String getIsotopicValue(String isotopicUncertaintyValue) {
+		List<String> split = RegexUtility.split(isotopicUncertaintyValue, "+/-");
+		if (split != null && split.size()==2) {
+			return split.get(0);
+		}
+		return "";
+	}
+
+	private String getUncertaintyPercent(String isotopicUncertaintyValue) {
+		List<String> split = RegexUtility.split(isotopicUncertaintyValue, "+/-");
+		if (split != null && split.size()==2) {
+			return split.get(1);
+		}
+		return "";
+	}
+
+	public boolean verifyIsotopicValueIsFormattedCorrectly(String isotopicUncertaintyValue) {
+		String isotopicValue = getIsotopicValue(isotopicUncertaintyValue);
+		
+		// Valid values:
+		//  -100 <= IsotopicValue <= 0 
+		//  (2 or less decimal places)
+		if (isotopicValue.isEmpty()) {
+			return false;
+		}
+		// check values.
+		Float isoValue = Float.valueOf(isotopicValue);
+		if (!NumberUtility.isInRange(isoValue, -100.0F, 0.0F)) {
+			return false;
+		}
+		// check decimal format.
+		Integer decimalCount = NumberUtility.decimalsInNumber(isotopicValue);
+		if (decimalCount > 2) {
+			Log.info(String.format("Isotopic value:[%s] NOT in format {00[.00]}. "
+					+ "Found more than 2 decimal places", isotopicValue));
+			return false;
+		}
+
+		return true;
+	}
+
+	public boolean verifyUncertaintyValueIsFormattedCorrectly(String isotopicUncertaintyValue) {
+		String uncertaintyValue = getUncertaintyPercent(isotopicUncertaintyValue);
+
+		// Value values:
+		// 0.0 <= Uncertainty <= 1.00
+		//  (2 or less decimal places)
+		if (uncertaintyValue.isEmpty()) {
+			return false;
+		}
+		// check values.
+		Float uncertainty = Float.valueOf(uncertaintyValue);
+		if (!NumberUtility.isInRange(uncertainty, 0.0F, 1.0F)) {
+			return false;
+		}
+		// check decimal format.
+		Integer decimalCount = NumberUtility.decimalsInNumber(uncertaintyValue);
+		if (decimalCount > 2) {
+			Log.info(String.format("Uncertainty value:[%s] NOT in format {00[.00]}. "
+					+ "Found more than 2 decimal places", uncertaintyValue));
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -2476,7 +2567,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			handleOptionalDynamicViewLayersSection(viewLayersList);
 		} 
 	}
-
+	
 	private void fillCustomerBoundary(ReportsCompliance reportsCompliance) {
 		openCustomerBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen()

@@ -15,6 +15,8 @@ import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ComplianceReportsPage.ReportViewerThumbnailType;
+import surveyor.scommon.source.ReportsCompliance.IsotopicAnalysisTableColumns;
+import surveyor.scommon.source.ReportsCompliance.LISAIndicationTableColumns;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
@@ -64,14 +66,14 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		Log.info("\nRunning TC231_GenerateReportStandardModeSurveysLocationHavingValuesOtherThanDefaultOne ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, 6);   /* NOTE: Use Customer Admin when assets populated */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, 14);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifyIndicationTableMinAmplitudeValues(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableMinAmplitudeValues(EMPTY, NOTSET));
 	}
 	
 	/**
@@ -103,11 +105,11 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.extractPDFZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, 15);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, 15);
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, 15);
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, 15);
+		complianceReportsPageAction.extractPDFZIP(EMPTY, 15);
 		assertTrue(complianceReportsPageAction.verifySurveysTableInfoByTags(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(TIMEZONE_STRING, NOTSET));
@@ -122,9 +124,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- Select 'Customer Boundary' and click on Boundary Selector button
 	 *	- Search valid boundary using "Select By Boundary Name"
 	 * Results: - 
-	 *	- On Home Page, click Reports -> Compliance -> 'New Compliance Report' button
-	 *	- Select 'Customer Boundary' and click on Boundary Selector button
-	 *	- Search valid boundary using "Select By Boundary Name"
+	 *	- Customer Boundaries are present on map
+	 *	- Boundaries having exact same name or similar to it are searched and displayed to the user in alphabetical list
 	 */
 	@Test
 	public void TC237_SearchValidCustomerBoundaryBoundarySelectorScreen() throws Exception {
@@ -134,7 +135,10 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.enterCustomerBoundaryUsingAreaSelector(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifyBoundariesAutoCompleteListContains(EMPTY/*comma seperated list of boundaries*/, NOTSET));
+		
+		// We type 'Level 2-A' in boundary name and expect the following 2 entries to show up in the auto-complete list.
+		String expectedBoundaries = "Level 2-AA,Level 2-AB";
+		assertTrue(complianceReportsPageAction.verifyBoundariesAutoCompleteListContains(expectedBoundaries/*comma seperated list of boundaries*/, NOTSET));
 	}
 	
 	/**
@@ -143,11 +147,10 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 * Script: -  	
 	 *	- On Home Page, click Reports -> Compliance -> 'New Compliance Report' button
 	 *	- TimeZone : PST, Survey Mode: Standard, Exclusion Radius: 3
-	 *	- Provide lat long values in DMS/Decimal format
-	 *	- Select Indication table, Isotopic Analysis, Field Notes, All Drivers Associated
+	 *	- Provide lat long values in Decimal format
+	 *	- Add Views with base map value: map, satellite and none for all the values
 	 *	- Asset Layer : All. Boundary Layer : All levels
-	 *	- Select all filters
-	 *	- Add View with base map value: map, satellite and none for all the values
+	 *	- Select Indication table, Analysis
 	 *	- Click OK and click Download/Zip Icon
 	 * Results: - 
 	 *	- - Report generated successfully
@@ -155,27 +158,30 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- - SSRS will have the tables and input values information
 	 *	- - Views will have the breadcrumb, FOV, indications, LISA and other information
 	 *	- - LISA number present in indication table in SSRS should match the indication number present in maps
-	 *	- - Indication tables should have values sorted by CH4 values
+	 *	- - Indication tables should have values sorted by amplitude values
 	 *	- - Isotopic analysis tables should have value sorted by date/time
 	 */
 	@Test
 	public void TC509_GenerateComplianceReportUsingCreateNewFunctionality() throws Exception {
 		Log.info("\nRunning TC509_GenerateComplianceReportUsingCreateNewFunctionality ...");
-		
+
+		Integer expectedLisaRows = 10;
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.extractPDFZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.createNewReport(EMPTY, 17);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 17);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, 17);
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, 17);
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, 17);
+		complianceReportsPageAction.extractPDFZIP(EMPTY, 17);
 		assertTrue(complianceReportsPageAction.verifyPDFZipFilesArePresent(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyAllSSRSTableInfos(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyIndicationTableSortedByColumn(EMPTY, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyIsotopicTableSortedByColumn(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableRowCountEquals(String.valueOf(expectedLisaRows), NOTSET));
+		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableSortedDescByColumn(LISAIndicationTableColumns.Amplitude.toString(), NOTSET));
+		assertTrue(complianceReportsPageAction.verifyIsotopicTableSortedAscByColumn(IsotopicAnalysisTableColumns.DateTime.toString(), NOTSET));
 	}
  
 	/**
@@ -198,17 +204,16 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnCopyButton(EMPTY, NOTSET);
-		complianceReportsPageAction.copyReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.extractPDFZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.open(EMPTY, 18);
+		complianceReportsPageAction.createNewReport(EMPTY, 18);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 18);
+		complianceReportsPageAction.clickOnCopyButton(EMPTY, 18);
+		complianceReportsPageAction.copyReport(EMPTY, 19);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 19);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, 19);
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, 19);
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, 19);
+		complianceReportsPageAction.extractPDFZIP(EMPTY, 19);
 		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
 	}
  
@@ -230,11 +235,11 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnDeleteButton(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnConfirmDeleteReport(EMPTY, NOTSET);
+		complianceReportsPageAction.open(EMPTY, 20);
+		complianceReportsPageAction.createNewReport(EMPTY, 20);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 20);
+		complianceReportsPageAction.clickOnDeleteButton(EMPTY, 20);
+		complianceReportsPageAction.clickOnConfirmDeleteReport(EMPTY, 20);
 		assertTrue(complianceReportsPageAction.verifyReportDeletedSuccessfully(EMPTY, NOTSET));
 	}
  
@@ -263,9 +268,15 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 5);   /* Picarro Supervisor */
 
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
+		complianceReportsPageAction.open(EMPTY, 21);
+		complianceReportsPageAction.createNewReport(EMPTY, 21);
+		
+		// Navigate away from compliance reports page and then return back to compliance reports page.
+		homePageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.open(EMPTY, 21);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		
+		// TODO: Thumbnail verifications remaining.
 	}
  
 	/**
@@ -669,7 +680,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("2", NOTSET);
 		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("3", NOTSET);
 		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyGapsTableSortedByColumn(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyGapsTableSortedAscByColumn(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
 	}
  
@@ -778,8 +789,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, NOTSET);
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifyLisasTableSortedByColumn(EMPTY, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyGapsTableSortedByColumn(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableSortedAscByColumn(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyGapsTableSortedAscByColumn(EMPTY, NOTSET));
 	}
  
 	/**

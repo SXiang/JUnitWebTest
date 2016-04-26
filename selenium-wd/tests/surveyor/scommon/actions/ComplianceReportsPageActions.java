@@ -18,6 +18,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,9 +27,13 @@ import java.util.Map;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import common.source.ArrayUtility;
 import common.source.BaseHelper;
 import common.source.Log;
+import common.source.PDFTableUtility;
+import common.source.PDFTableUtility.PDFTable;
 import common.source.RegexUtility;
+import common.source.SortHelper;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.api.source.ReportJob;
@@ -59,6 +64,8 @@ import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.Reports.ReportJobType;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
+import surveyor.scommon.source.ReportsCompliance.IsotopicAnalysisTableColumns;
+import surveyor.scommon.source.ReportsCompliance.LISAIndicationTableColumns;
 import surveyor.scommon.source.ReportsSurveyInfo;
 
 public class ComplianceReportsPageActions extends BaseReportsPageActions {
@@ -249,6 +256,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		List<String> listBoundary = new ArrayList<String>();
 		fillCustomBoundary(listBoundary, getDataReader(), dataRowID);
 
+		// Fill views list.
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		List<Integer> reportViewRowIDs = ActionArguments.getNumericList(workingDataRow.reportViewRowIDs);
 		for (Integer rowID : reportViewRowIDs) {
@@ -257,23 +265,23 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			viewList.add(viewMap);
 		}
 
+		// Fill optional tabular list.
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		List<Integer> reportOptTabPDFRowIDs = ActionArguments.getNumericList(workingDataRow.reportOptTabularPDFContentRowID);
 		Map<String, String> tableMap = new HashMap<String, String>();
 		fillReportTableInfo(tableMap, new ReportOptTabularPDFContentDataReader(this.excelUtility), reportOptTabPDFRowIDs.get(0));
 		tablesList.add(tableMap);
 
+		// Fill optional view layer list.
 		List<Map<String, String>> viewLayersList = new ArrayList<Map<String, String>>();
 		List<Integer> reportOptVwLayersRowIDs = ActionArguments.getNumericList(workingDataRow.reportOptViewLayerRowID);		
-		
-		/* NOTE: ViewLayer values should be set in viewLayerMap. Currently due to a bug in ComplianceReports page (TA884)
-		 * we need to set the values in tableList instead. Fix this once TA884 is fixed. */
 		Map<String, String> viewLayerMap = new HashMap<String, String>();
 		fillViewLayersInfo(viewLayerMap, new ReportOptViewLayersDataReader(this.excelUtility), reportOptVwLayersRowIDs.get(0));
 		if (viewLayerMap.size() > 0) {
 			viewLayersList.add(viewLayerMap);
 		} 
 
+		// Set survey info list.
 		List<ReportsSurveyInfo> reportsSurveyInfoList = buildReportSurveyInfoList(workingDataRow);
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, TestContext.INSTANCE.getLoggedInUser(), customer, timeZone, exclusionRadius,
 				listBoundary, tablesList, null /*surveyorUnit*/, null /*tagList*/, viewList, viewLayersList);
@@ -285,6 +293,13 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return true;
 	}
 
+	private List<String[]> getSSRSPDFTableValues(PDFTable pdfTable) throws IOException {
+		String pdfFilename = this.getComplianceReportsPage().getReportPDFFileName(workingDataRow.title, true /*includeExtension*/);
+		String pdfFilePath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), pdfFilename).toString();
+		PDFTableUtility pdfTableUtility = new PDFTableUtility();
+		return pdfTableUtility.extractPDFTable(pdfFilePath, pdfTable);
+	}
+ 
 	private ReportOptViewLayersAssetsDataReader getViewLayersAssetsDataReader() {
 		return new ReportOptViewLayersAssetsDataReader(this.excelUtility);
 	}
@@ -379,13 +394,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		this.getComplianceReportsPage().verifyComplianceReportButton(reportTitle, customerName, buttonType);
 	}
 
-	private boolean verifyReportSurveyValuesMatch(List<Integer> surveyRowIDs) {
-		// TODO: Needs implementation in Reports page object.
-		return true;
-	}
-
-	private boolean verifyReportViewValuesMatch(List<Integer> surveyRowIDs) {
-		// TODO: Needs implementation in Reports page object.
+	private boolean verifyReportSurveyValuesMatch(List<Integer> surveyRowIDs) throws IOException {
+		
 		return true;
 	}
 
@@ -1897,19 +1907,57 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return true;
 	}
 
-	public boolean verifyUncertaintyValueIsFormattedCorrectly(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.verifyUncertaintyValueIsFormattedCorrectly", data, dataRowID);
-		return false;
+	/**
+	 * Executes verifyIsotopicTableSortedAscByColumn action.
+	 * @param data - column name used for sorting.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean verifyIsotopicTableSortedAscByColumn(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.verifyIsotopicTableSortedAscByColumn", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty("verifyIsotopicTableSortedAscByColumn", ARG_DATA, data);
+		List<String[]> isotopicAnalysisTblList = getSSRSPDFTableValues(PDFTable.ISOTOPICANALYSISTABLE);
+		IsotopicAnalysisTableColumns tableColumn = IsotopicAnalysisTableColumns.valueOf(data);
+		return SortHelper.isSortedASC(isotopicAnalysisTblList.get(tableColumn.getIndex()));
 	}
 
-	public boolean verifyIsotopicValueIsFormattedCorrectly(String data, Integer dataRowID) {
+	/**
+	 * Executes verifyIsotopicValueIsFormattedCorrectly action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean verifyIsotopicValueIsFormattedCorrectly(String data, Integer dataRowID) throws IOException {
 		logAction("ComplianceReportsPageActions.verifyIsotopicValueIsFormattedCorrectly", data, dataRowID);
-		return false;
+		List<String[]> isotopicAnalysisTblList = getSSRSPDFTableValues(PDFTable.ISOTOPICANALYSISTABLE);
+		String[] isotopicUncertaintyValues = isotopicAnalysisTblList.get(IsotopicAnalysisTableColumns.IsotopicValueUncertainty.getIndex());
+		for (String isotopicUncertaintyValue : isotopicUncertaintyValues) {
+			if (!this.getComplianceReportsPage().verifyIsotopicValueIsFormattedCorrectly(isotopicUncertaintyValue)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
-	public boolean verifyIsotopicTableSortedByColumn(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.verifyIsotopicTableSortedByColumn", data, dataRowID);
-		return false;
+	/**
+	 * Executes verifyUncertaintyValueIsFormattedCorrectly action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean verifyUncertaintyValueIsFormattedCorrectly(String data, Integer dataRowID) throws IOException {
+		logAction("ComplianceReportsPageActions.verifyUncertaintyValueIsFormattedCorrectly", data, dataRowID);
+		List<String[]> isotopicAnalysisTblList = getSSRSPDFTableValues(PDFTable.ISOTOPICANALYSISTABLE);
+		String[] isotopicUncertaintyValues = isotopicAnalysisTblList.get(IsotopicAnalysisTableColumns.IsotopicValueUncertainty.getIndex());
+		for (String isotopicUncertaintyValue : isotopicUncertaintyValues) {
+			if (!this.getComplianceReportsPage().verifyUncertaintyValueIsFormattedCorrectly(isotopicUncertaintyValue)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -1979,37 +2027,61 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyAssetsAreDisplayed", data, dataRowID);
 		return true;
 	}
- 
+
 	/**
-	 * Executes verifyIndicationTableSortedByColumn action.
-	 * @param data - specifies the column name.
+	 * Executes verifyLISAsIndicationTableRowCountEquals action.
+	 * @param data - specifies the expected number of rows in the Indication table.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
 	 */
-	public boolean verifyIndicationTableSortedByColumn(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.verifyIndicationTableSortedByColumn", data, dataRowID);
-		return true;
+	public boolean verifyLISAsIndicationTableRowCountEquals(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.verifyLISAsIndicationTableRowCountEquals", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty("verifyLISAsIndicationTableRowCountEquals", ARG_DATA, data);
+		Integer expectedRows = Integer.valueOf(data);
+		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE);
+		Integer actualRows = (lisasIndicationTblList != null) ? lisasIndicationTblList.size() : 0;
+		return (expectedRows == actualRows);
 	}
 
 	/**
-	 * Executes verifyLisasTableSortedByColumn action.
-	 * @param data - specifies the column name.
+	 * Executes verifyLisasTableSortedAscByColumn action.
+	 * @param data - specifies the column name - 'LISAIndicationTableColumns' enum string value.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
 	 */
-	public boolean verifyLisasTableSortedByColumn(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.verifyLisasTableSortedByColumn", data, dataRowID);
-		return true;
+	public boolean verifyLISAsIndicationTableSortedAscByColumn(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.verifyLisasTableSortedAscByColumn", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty("verifyLisasTableSortedAscByColumn", ARG_DATA, data);
+		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE);
+		LISAIndicationTableColumns tableColumn = LISAIndicationTableColumns.valueOf(data);
+		return SortHelper.isSortedASC(lisasIndicationTblList.get(tableColumn.getIndex()));
 	}
 
 	/**
-	 * Executes verifyGapsTableSortedByColumn action.
+	 * Executes verifyLisasTableSortedDescByColumn action.
+	 * @param data - specifies the column name - 'LISAIndicationTableColumns' enum string value.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean verifyLISAsIndicationTableSortedDescByColumn(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.verifyLisasTableSortedDescByColumn", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty("verifyLisasTableSortedDescByColumn", ARG_DATA, data);
+		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE);
+		LISAIndicationTableColumns tableColumn = LISAIndicationTableColumns.valueOf(data);
+		return SortHelper.isSortedASC(lisasIndicationTblList.get(tableColumn.getIndex()));
+	}
+
+	/**
+	 * Executes verifyGapsTableSortedAscByColumn action.
 	 * @param data - specifies the column name.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 */
-	public boolean verifyGapsTableSortedByColumn(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.verifyGapsTableSortedByColumn", data, dataRowID);
+	public boolean verifyGapsTableSortedAscByColumn(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyGapsTableSortedAscByColumn", data, dataRowID);
 		return true;
 	}
 
@@ -2345,10 +2417,13 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
 	 */
-	public boolean verifyBoundariesAutoCompleteListContains(String data, Integer dataRowID) {
+	public boolean verifyBoundariesAutoCompleteListContains(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyBoundariesAutoCompleteListContains", data, dataRowID);
-		return true;
+		ActionArguments.verifyNotNullOrEmpty("verifyBoundariesAutoCompleteListContains", ARG_DATA, data);
+		List<String> boundaryNamesList = RegexUtility.split(data, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
+		return this.getComplianceReportsPage().verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains(workingReportsComp, boundaryNamesList);
 	}
  
 	/**
@@ -2361,30 +2436,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyGapsTableInfo(String data, Integer dataRowID) throws IOException {
 		logAction("ComplianceReportsPageActions.verifyGapsTableInfo", data, dataRowID);
 		this.getComplianceReportsPage().verifyGapsTable(TestContext.INSTANCE.getTestSetup().getDownloadPath(), workingDataRow.title);
-		return true;
-	}
- 
-	/**
-	 * Executes verifyIndicationTableInfo action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws IOException 
-	 */
-	public boolean verifyIndicationTableInfo(String data, Integer dataRowID) throws IOException {
-		logAction("ComplianceReportsPageActions.verifyIndicationTableInfo", data, dataRowID);
-		this.getComplianceReportsPage().verifyIndicationTable(TestContext.INSTANCE.getTestSetup().getDownloadPath(), workingDataRow.title);
-		return true;
-	}
- 
-	/**
-	 * Executes verifyIndicationTableMinAmplitudeValues action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyIndicationTableMinAmplitudeValues(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.verifyIndicationTableMinAmplitudeValues", data, dataRowID);
 		return true;
 	}
  
@@ -2415,6 +2466,34 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return true;
 	}
  
+	/**
+	 * Executes verifyLISAsIndicationTableInfo action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws IOException 
+	 */
+	public boolean verifyLISAsIndicationTableInfo(String data, Integer dataRowID) throws IOException {
+		logAction("ComplianceReportsPageActions.verifyLISAsIndicationTableInfo", data, dataRowID);
+		this.getComplianceReportsPage().verifyIndicationTable(TestContext.INSTANCE.getTestSetup().getDownloadPath(), workingDataRow.title);
+		return true;
+	}
+ 
+	/**
+	 * Executes verifyLISAsIndicationTableMinAmplitudeValues action.
+	 * @param data - specifies the min amplitude value.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean verifyLISAsIndicationTableMinAmplitudeValues(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.verifyLISAsIndicationTableMinAmplitudeValues", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty("verifyLISAsIndicationTableMinAmplitudeValues", ARG_DATA, data);
+		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE);
+		String[] minAmplitudeValues = lisasIndicationTblList.get(LISAIndicationTableColumns.Amplitude.getIndex()-1);
+		return ArrayUtility.areValuesGreater(minAmplitudeValues, Float.valueOf(data));
+	}
+
 	/**
 	 * Executes verifyLISASMetaDataFile action.
 	 * @param data - specifies the input data passed to the action.
@@ -2696,20 +2775,21 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifyDeleteButtonIsDisplayed")) { return this.verifyDeleteButtonIsDisplayed(data, dataRowID); }
 		else if (actionName.equals("verifyGapShapeFilesHaveCorrectData")) { return this.verifyGapShapeFilesHaveCorrectData(data, dataRowID); }
 		else if (actionName.equals("verifyGapsTableInfo")) { return this.verifyGapsTableInfo(data, dataRowID); }
-		else if (actionName.equals("verifyGapsTableSortedByColumn")) { return this.verifyGapsTableSortedByColumn(data, dataRowID); }
-		else if (actionName.equals("verifyIndicationTableInfo")) { return this.verifyIndicationTableInfo(data, dataRowID); }
-		else if (actionName.equals("verifyIndicationTableMinAmplitudeValues")) { return this.verifyIndicationTableMinAmplitudeValues(data, dataRowID); }
-		else if (actionName.equals("verifyIndicationTableSortedByColumn")) { return this.verifyIndicationTableSortedByColumn(data, dataRowID); }
+		else if (actionName.equals("verifyGapsTableSortedAscByColumn")) { return this.verifyGapsTableSortedAscByColumn(data, dataRowID); }
 		else if (actionName.equals("verifyInvestigateButtonIsDisplayed")) { return this.verifyInvestigateButtonIsDisplayed(data, dataRowID); }
 		else if (actionName.equals("verifyInvestigatePDFButtonIsDisplayed")) { return this.verifyInvestigatePDFButtonIsDisplayed(data, dataRowID); }
 		else if (actionName.equals("verifyInvestigatePDFDownload")) { return this.verifyInvestigatePDFDownload(data, dataRowID); }
 		else if (actionName.equals("verifyIsotopicAnalysisTableInfo")) { return this.verifyIsotopicAnalysisTableInfo(data, dataRowID); }
 		else if (actionName.equals("verifyIsotopicMetaDataFile")) { return this.verifyIsotopicMetaDataFile(data, dataRowID); }
-		else if (actionName.equals("verifyIsotopicTableSortedByColumn")) { return this.verifyIsotopicTableSortedByColumn(data, dataRowID); }
+		else if (actionName.equals("verifyIsotopicTableSortedAscByColumn")) { return this.verifyIsotopicTableSortedAscByColumn(data, dataRowID); }
 		else if (actionName.equals("verifyIsotopicValueIsFormattedCorrectly")) { return this.verifyIsotopicValueIsFormattedCorrectly(data, dataRowID); }
 		else if (actionName.equals("verifyLastXDaysSurveysPresentInPDF")) { return this.verifyLastXDaysSurveysPresentInPDF(data, dataRowID); }
 		else if (actionName.equals("verifyLISASMetaDataFile")) { return this.verifyLISASMetaDataFile(data, dataRowID); }
-		else if (actionName.equals("verifyLisasTableSortedByColumn")) { return this.verifyLisasTableSortedByColumn(data, dataRowID); }
+		else if (actionName.equals("verifyLISAsIndicationTableInfo")) { return this.verifyLISAsIndicationTableInfo(data, dataRowID); }
+		else if (actionName.equals("verifyLISAsIndicationTableMinAmplitudeValues")) { return this.verifyLISAsIndicationTableMinAmplitudeValues(data, dataRowID); }
+		else if (actionName.equals("verifyLISAsIndicationTableRowCountEquals")) { return this.verifyLISAsIndicationTableRowCountEquals(data, dataRowID); }		
+		else if (actionName.equals("verifyLISAsIndicationTableSortedAscByColumn")) { return this.verifyLISAsIndicationTableSortedAscByColumn(data, dataRowID); }
+		else if (actionName.equals("verifyLISAsIndicationTableSortedDescByColumn")) { return this.verifyLISAsIndicationTableSortedDescByColumn(data, dataRowID); }
 		else if (actionName.equals("verifyMetaDataFilesHaveCorrectData")) { return this.verifyMetaDataFilesHaveCorrectData(data, dataRowID); }
 		else if (actionName.equals("verifyMetaDataZIPFilesAreCorrect")) { return this.verifyMetaDataZIPFilesAreCorrect(data, dataRowID); }
 		else if (actionName.equals("verifyMetaDataZIPThumbnailDownloadFromComplianceViewer")) { return this.verifyMetaDataZIPThumbnailDownloadFromComplianceViewer(data, dataRowID); }

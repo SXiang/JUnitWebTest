@@ -655,7 +655,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		}
 		fillReportSpecific(reports);
-		addSurveyInformation(reports);
+		if (reports.getSurveyInfoList() != null) {
+			addMultipleSurveysToReport(reports);
+		} else {
+			addSurveyInformation(reports);
+		}
 		this.clickOnOKButton();
 	}
 
@@ -717,15 +721,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 	private void selectSurveysAndAddToReport(boolean selectAll, Integer numSurveysToSelect) {
 		if (selectAll || numSurveysToSelect > 0) {		
 			setSurveyRowsPagination(PAGINATIONSETTING_100);
+			this.waitForSurveyTabletoLoad();
 			
 			Integer selectedSurveysCount = 0;
 			if (selectAll) {
 				numSurveysToSelect = Integer.MAX_VALUE;
 			}
-			
-			this.waitForSurveyTabletoLoad();
-			this.waitForSurveySelectorCheckBoxToLoad();
-			this.waitForSurveySelectorCheckBoxToBeEnabled();
 			
 			String checkBoxXPath;
 			WebElement checkBoxActionCell;
@@ -742,7 +743,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			
 			// Loop through table elements and check selected number of surveys.
 			for (int rowNum = 1; rowNum <= loopCount && selectedSurveysCount <= numSurveysToSelect; rowNum++) {
-				checkBoxXPath = "//*[@id='datatableSurveys']/tbody/tr["+rowNum+"]/td[5]";
+				checkBoxXPath = "//*[@id='datatableSurveys']/tbody/tr["+rowNum+"]/td[7]/input";
 				checkBoxActionCell = surveyTable.findElement(By.xpath(checkBoxXPath));
 				checkBoxActionCell.click();
 				selectedSurveysCount++;
@@ -788,25 +789,25 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void selectSurveyInfoEndDate(String endDate) {
-		if ((endDate != null) && (endDate != "")) {
+		if ((endDate != null) && (!endDate.isEmpty())) {
 			selectEndDateForSurvey(endDate);
 		}
 	}
 
 	public void selectSurveyInfoStartDate(String startDate) {
-		if ((startDate != null) && (startDate != "")) {
+		if ((startDate != null) && (!startDate.isEmpty())) {
 			selectStartDateForSurvey(startDate);
 		}
 	}
 
 	public void enterSurveyInfoUsername(String username) {
-		if (username != null) {
+		if (username != null && (!username.isEmpty())) {
 			this.userName.sendKeys(username);
 		}
 	}
 
 	public void selectSurveyInfoSurveyorUnit(String surveyor) {
-		if (surveyor != null) {
+		if (surveyor != null && (!surveyor.isEmpty())) {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsSU) {
 				if (surveyor.equalsIgnoreCase(option.getText().trim())) {

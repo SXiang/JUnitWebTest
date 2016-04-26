@@ -10,14 +10,18 @@ package common.source;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Hashtable;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.WrapsDriver;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 
 public class WebElementExtender {
@@ -49,6 +53,26 @@ public class WebElementExtender {
 	                element, "");
 	    }
    }
+   
+	public static boolean checkElementsListContains(WebDriver driver, String listElementXPath, List<String> entriesToFind) {
+		Hashtable<String, Boolean> listMap = new Hashtable<String, Boolean>(); 
+		List<WebElement> listElements = driver.findElements(By.xpath(listElementXPath));
+		for (WebElement element : listElements) {
+			String autoText = element.getText();
+			if (!listMap.containsKey(autoText)) {
+				listMap.put(autoText, true);
+			} 
+		}
+		
+		for (String entry : entriesToFind) {
+			if (!listMap.containsKey(entry)) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+
    
    /*
     * Captures Screenshot of the element and saves to a file.
