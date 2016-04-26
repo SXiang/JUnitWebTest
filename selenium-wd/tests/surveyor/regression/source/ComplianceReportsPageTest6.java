@@ -5,12 +5,17 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 
 import common.source.Log;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
+
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.dataprovider.PerformanceReportJobDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
@@ -315,13 +320,23 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnCopyButton(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifySurveysTableInfoByTags(EMPTY, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(TIMEZONE_STRING, NOTSET));
+		complianceReportsPageAction.open(EMPTY, 22);
+		complianceReportsPageAction.createNewReport(EMPTY, 22);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 22);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, 22);
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, 22);
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, 22);
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, 22);
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, 22);
+		complianceReportsPageAction.extractPDFZIP(EMPTY, 22);
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
+		
+		// TODO: Check implementation.
+		assertTrue(complianceReportsPageAction.verifySearchedSurveysMatchTag(EMPTY, NOTSET));
+		// TODO: Check implementation.
+		assertTrue(complianceReportsPageAction.verifySearchedSurveysMatchDateRange(EMPTY, NOTSET));
+		
+		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(ASSET_DATA_STRING, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyViewsCreatedAreInCorrectSequence(EMPTY, NOTSET));
 	}
@@ -338,7 +353,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- Eg. District boundaries are Not Reportable
 	 *	- DistrictPlat boundaries can be selected
 	 */
-	@Test
+	@Ignore
 	public void TC526_VerifyCustomerBoundariesDoNotExceedMaxArea() throws Exception {
 		Log.info("\nRunning TC526_VerifyCustomerBoundariesDoNotExceedMaxArea ...");
 		

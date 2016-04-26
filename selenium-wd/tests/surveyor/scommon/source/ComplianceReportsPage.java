@@ -2364,6 +2364,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 	public void verifyReportPDFZIPFiles() {
 		try {
+			// Some checks to implement.
+			// Zip folder will have the maps for the specified boundary
 			throw new Exception("Not implemented");
 		} catch (Exception e) {
 			e.printStackTrace();

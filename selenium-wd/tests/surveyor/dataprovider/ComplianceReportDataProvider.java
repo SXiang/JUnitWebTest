@@ -27,6 +27,7 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.dataprovider.PerformanceReportJobDataProvider.ReportJobTestCategory;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 
@@ -325,6 +326,13 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 				{ "21", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList21, tablesList21, viewList21, viewLayerList21 } ,
 				{"22", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList22, tablesList22, viewList22, viewLayerList22 },
 				{"23", SQACUSSU, USERPASSWORDHASH, "sqacus", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList23, tablesList23, viewList23, viewLayerList23 }
+		};
+	}
+	
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC231() {
+		return new Object[][] {				
+			{ "TC231" /*TestCaseID*/, 6 /*userDataRowID*/,  14/*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 }
