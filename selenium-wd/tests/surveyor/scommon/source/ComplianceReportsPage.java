@@ -1909,7 +1909,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			
 			//Covert csv ratio+/sdev to db ratio and sdev - it changed for indication
 			String ethaneMethaneRatioUncertainty = csvRow.get("EthaneMethaneRatioUncertainty").trim();
-			reportIndObj.setAggregatedEthaneToMethaneRatio(Float.parseFloat(ethaneMethaneRatioUncertainty));
+			reportIndObj.setAggregatedEthaneToMethaneRatio(ethaneMethaneRatioUncertainty);
 			
 			//covert csv float to db string ">=num%"
 			int aggregatedClassificationconfidenceFloat = (int) (Float.parseFloat(csvRow.get("ConfidenceInDisposition").trim())*100);
