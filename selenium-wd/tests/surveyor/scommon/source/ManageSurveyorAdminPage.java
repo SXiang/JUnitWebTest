@@ -8,6 +8,8 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -23,6 +25,12 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 	public static final String STRURLPath = "/Admin/ManageSurveyors";
 	public static final String STRPageTitle = "Manage ??? Surveyors - Surveyor";
 	
+	@FindBy(how = How.XPATH, using = "//*[@class='btn btn-primary' and text()='Add New Calibration Record']")
+	protected WebElement addCalibrationRecordButton;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/thead/tr/th")
+	protected List<WebElement> tableHeader;
+		
 	/**
 	 * @param driver
 	 * @param baseURL
@@ -87,7 +95,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 		return false;
 	}	
 	
-	public boolean editExistingSurveyor(String locationName, String surveyorName, String surveyorNameNew, boolean isCustomerLogin) {
+	/*public boolean editExistingSurveyor(String locationName, String surveyorName, String surveyorNameNew, boolean isCustomerLogin) {
 		setPagination(PAGE_PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -185,9 +193,10 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 		}
 		
 		return false;
-	}
+	}*/
 	
-	public boolean editExistingSurveyor(String locationName, String surveyorName, String locationNameNew, String surveyorNameNew) {
+	
+	/*public boolean addCalibrationRecord(String locationName, String surveyorName,  boolean isCustomerLogin) {
 		setPagination(PAGE_PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -211,15 +220,124 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 			loopCount = Integer.parseInt(PAGE_PAGINATIONSETTING);
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			locationNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
-			surveyorNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+			if (isCustomerLogin) {
+				locationNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
+				surveyorNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+			} else {
+				locationNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
+				surveyorNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
+			}
+				
+			locationNameCell = table.findElement(By.xpath(locationNameXPath));
+			surveyorNameCell = table.findElement(By.xpath(surveyorNameXPath));
+			
+			Log.info(String.format("Looking for Location-[%s],Surveyor-[%s]. Found Location-[%s],Surveyor-[%s]", 
+					locationName, surveyorName, locationNameCell.getText().trim(), surveyorNameCell.getText().trim()));
+			
+			if ((locationNameCell.getText().trim()).equalsIgnoreCase(locationName) 
+					&& (surveyorNameCell.getText().trim()).equalsIgnoreCase(surveyorName)) {
+				if (isCustomerLogin) {
+					actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]/a";
+				} else {
+					actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]/a";
+				}
+				actionEditCell = table.findElement(By.xpath(actionEditXPath));
+				
+				Log.info("Found entry at rowNum=" + rowNum);
+				
+				actionEditCell.click();
+				this.waitForEditPageLoad();
+				this.addCalibrationRecordButton.click();
+				this.waitForPageLoad();
+				this.btnOK.click();
+				this.waitForEditPageLoad();
+				this.btnOK.click();
+				String curURL = driver.getCurrentUrl();
+				if (surveyorName.equalsIgnoreCase("")) {
+					if (driver.getCurrentUrl().equalsIgnoreCase(curURL))
+						return false;
+				}
+				
+				if (isElementPresent(this.panelDuplicationErrorXPath)) {
+					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
+					if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
+						this.btnEditCancel.click();
+						return false;
+					}
+				}
+
+				return true;
+			}
+				
+			if (rowNum == Integer.parseInt(PAGE_PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				
+				rowSize = newRows.size();
+				
+				if (rowSize < Integer.parseInt(PAGE_PAGINATIONSETTING))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGE_PAGINATIONSETTING);
+				
+				rowNum = 0;
+			}	
+		}
+		
+		return false;
+	}*/
+	
+	
+	public boolean editExistingSurveyor(String customer,String locationName, String surveyorName, String locationNameNew, String surveyorNameNew, boolean addCalibration) {
+		setPagination(PAGE_PAGINATIONSETTING);
+		
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		
+		String locationNameXPath;
+		String surveyorNameXPath;
+		String actionEditXPath;
+		
+		WebElement locationNameCell;
+		WebElement surveyorNameCell;
+		WebElement actionEditCell;
+		
+		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		
+		int rowSize = rows.size();
+		int loopCount = 0;
+		
+		if (rowSize < Integer.parseInt(PAGE_PAGINATIONSETTING))
+			loopCount = rowSize;
+		else
+			loopCount = Integer.parseInt(PAGE_PAGINATIONSETTING);
+		
+		int locationIndex=0;
+		int surveyorIndex=0;
+		int actionIndex=0;
+		
+		for(int index=0;index <tableHeader.size();index++){
+			if(tableHeader.get(index).getText().equalsIgnoreCase("Location")){
+				locationIndex=index+1;
+			}
+			if(tableHeader.get(index).getText().equalsIgnoreCase("Surveyor")){
+				surveyorIndex=index+1;
+			}
+			if(tableHeader.get(index).getText().equalsIgnoreCase("Action")){
+				actionIndex=index+1;
+			}
+		}
+		
+		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+			locationNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td["+locationIndex+"]";
+			surveyorNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td["+surveyorIndex+"]";
 			
 			locationNameCell = table.findElement(By.xpath(locationNameXPath));
 			surveyorNameCell = table.findElement(By.xpath(surveyorNameXPath));
 			
 			if ((locationNameCell.getText().trim()).equalsIgnoreCase(locationName) 
 					&& (surveyorNameCell.getText().trim()).equalsIgnoreCase(surveyorName)) {
-				actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]/a";
+				actionEditXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td["+actionIndex+"]/a";
 				actionEditCell = table.findElement(By.xpath(actionEditXPath));
 				
 				Log.info("Found entry at rowNum=" + rowNum);
@@ -227,8 +345,25 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 				actionEditCell.click();
 				this.waitForEditPageLoad();
 				
+				if(!surveyorName.equals(surveyorNameNew)){
 				this.inputSurveyorDesc.clear();
 				this.inputSurveyorDesc.sendKeys(surveyorNameNew);
+				}
+				
+				if(!locationName.equalsIgnoreCase(locationNameNew)){
+				List<WebElement> options = this.dropDownLocation.findElements(By.tagName("option"));
+				for (WebElement option : options) {
+					if (option.getText().trim().equalsIgnoreCase(customer + " - " + locationName))
+						option.click();
+				}
+				}
+				
+				if(addCalibration){
+					this.addCalibrationRecordButton.click();
+					this.waitForPageLoad();
+					this.btnOK.click();
+					this.waitForEditPageLoad();
+					}
 				
 				boolean bFound = false;
 				List<WebElement> options = this.dropDownLocation.findElements(By.tagName("option"));
@@ -271,7 +406,9 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 		}
 		
 		return false;
-	}	
+	}
+	
+	
 	
 	public WebElement getBtnCancel() {
 		return this.btnEditCancel;
