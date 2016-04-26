@@ -14,8 +14,7 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 	private float amplitude;
 	private float ch4;
 	private String text;
-	private float aggregatedEthaneRatio;
-	private float aggregatedEthaneRatioSdev;
+	private float aggregatedEthaneToMethaneRatio;
 	private String aggregatedClassificationConfidence;;
 
 	public StoredProcComplianceGetIndications() {
@@ -26,8 +25,7 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 		return this.getPeakNumber().concat(" ").concat(this.getSurveyorUnitName()).concat(" ").concat(this.getDateTime())
 				.concat(" ").concat(Float.toString(this.getAmplitude())).concat(" ").concat(Float.toString(this.getCh4()))
 				.concat(" ").concat(this.getText())
-				.concat(" ").concat(Float.toString(this.getAggregatedEthenaRatio()))
-				.concat(" ").concat(Float.toString(this.getAggregatedEthaneRatioSdev()))
+				.concat(" ").concat(Float.toString(this.getAggregatedEthenaToMethaneRatio()))
 				.concat(" ").concat(this.getAggregatedClassificationConfidence());
 	}
 
@@ -80,20 +78,12 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 	}
 
 
-	public float getAggregatedEthenaRatio() {
-		return aggregatedEthaneRatio;
+	public float getAggregatedEthenaToMethaneRatio() {
+		return aggregatedEthaneToMethaneRatio;
 	}
 
-	public void setAggregatedEthaneRatio(float aggregatedEthaneRatio) {
-		this.aggregatedEthaneRatio = aggregatedEthaneRatio;
-	}
-
-	public float getAggregatedEthaneRatioSdev() {
-		return aggregatedEthaneRatioSdev;
-	}
-
-	public void setAggregatedEthaneRatioSdev(float aggregatedEthaneRatioSdev) {
-		this.aggregatedEthaneRatioSdev = aggregatedEthaneRatioSdev;
+	public void setAggregatedEthaneToMethaneRatio(float aggregatedEthaneToMethaneRatio) {
+		this.aggregatedEthaneToMethaneRatio = aggregatedEthaneToMethaneRatio;
 	}
 
 	public String getAggregatedClassificationConfidence() {
@@ -133,10 +123,7 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 		if(!this.getAggregatedClassificationConfidence().equals(obj.getAggregatedClassificationConfidence())){
 			return false;
 		}
-		if(this.getAggregatedEthaneRatioSdev() != obj.getAggregatedEthaneRatioSdev()){
-			return false;
-		}
-		if(this.getAggregatedEthenaRatio() != obj.getAggregatedEthenaRatio()){
+		if(this.getAggregatedEthenaToMethaneRatio() != obj.getAggregatedEthenaToMethaneRatio()){
 			return false;
 		}
 		return true;
@@ -162,8 +149,7 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 			objReport.setCh4(resultSet.getFloat("CH4"));
 			objReport.setText(resultSet.getString("Text"));
 			objReport.setAggregatedClassificationConfidence(resultSet.getString("AggregatedClassificationConfidence").replaceFirst(">=", ""));
-			objReport.setAggregatedEthaneRatioSdev(resultSet.getFloat("AggregatedEthaneRatioSdev"));
-			objReport.setAggregatedEthaneRatio(resultSet.getFloat("AggregatedEthenaRatio"));
+			objReport.setAggregatedEthaneToMethaneRatio(resultSet.getFloat("AggregatedEthenaToMethaneRatio"));
 		} catch (SQLException e) {
 			Log.error("Class Report | " + e.toString());
 		}

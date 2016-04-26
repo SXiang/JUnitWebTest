@@ -167,7 +167,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String ComplianceReportSSRS_IndicationTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_IndicationTable);
 	public static final String ComplianceReportSSRS_GapTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_GapTable);
 
-	public static final String RatioSdevMetaPattern = "\\+[\\-]?/";
+	public static final String RatioSdevMetaPattern = "\\+/\\-";
 	@FindBy(how = How.ID, using = "zip-file_pdf")
 	protected WebElement zipImg;
 
@@ -1907,10 +1907,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			reportIndObj.setCh4((float) cH4);
 			reportIndObj.setText(csvRow.get("FieldNotes").trim());
 			
-			//Covert csv ratio+/sdev to db ratio and sdev 
-			String[] ethaneMethaneRatioUncertainty = csvRow.get("EthaneMethaneRatioUncertainty").trim().split(RatioSdevMetaPattern);
-			reportIndObj.setAggregatedEthaneRatio(Float.parseFloat(ethaneMethaneRatioUncertainty[0].trim()));
-			reportIndObj.setAggregatedEthaneRatioSdev(Float.parseFloat(ethaneMethaneRatioUncertainty[1].trim()));
+			//Covert csv ratio+/sdev to db ratio and sdev - it changed for indication
+			String ethaneMethaneRatioUncertainty = csvRow.get("EthaneMethaneRatioUncertainty").trim();
+			reportIndObj.setAggregatedEthaneToMethaneRatio(Float.parseFloat(ethaneMethaneRatioUncertainty));
 			
 			//covert csv float to db string ">=num%"
 			int aggregatedClassificationconfidenceFloat = (int) (Float.parseFloat(csvRow.get("ConfidenceInDisposition").trim())*100);
