@@ -879,68 +879,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		});
 	}
 
-	public boolean checkActionStatusInSeconds(String rptTitle, String strCreatedBy, int seconds) {
-
-		setPagination(PAGINATIONSETTING);
-		this.waitForPageLoad();
-
-		String reportTitleXPath;
-		String createdByXPath;
-		WebElement rptTitleCell;
-		WebElement createdByCell;
-
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
-
-		int rowSize = rows.size();
-		int loopCount = 0;
-
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
-			loopCount = rowSize;
-		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
-
-		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
-
-			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
-			createdByCell = table.findElement(By.xpath(createdByXPath));
-
-			Log.info(String.format("Found report - Title=[%s], Created by=[%s]", rptTitleCell.getText(),
-					createdByCell.getText()));
-
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
-					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
-				Log.info(String.format("Found Match. Title=[%s], Created by=[%s]", rptTitleCell.getText(),
-						createdByCell.getText()));
-				try {
-					return handleFileDownloads(rowNum);
-				} catch (Exception e) {
-					Log.error(e.toString());
-					return false;
-				}
-			}
-
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
-					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-
-				this.waitForPageLoad();
-
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
-				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
-					loopCount = rowSize;
-				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
-
-				rowNum = 0;
-			}
-		}
-
-		return false;
-	}
-
 	protected boolean handleFileDownloads(int rowNum) throws Exception {
 		throw new Exception("Not implemented");
 	}
@@ -1312,8 +1250,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy, String testCaseID) throws Exception {
-		setPagination(PAGINATIONSETTING);
-		this.waitForPageLoad();
+		setPagination(PAGINATIONSETTING_100);
+		this.waitForTableDataToLoad();
+		this.waitForPageToLoad();
 		String reportTitleXPath;
 		String createdByXPath;
 		WebElement rptTitleCell;
@@ -1324,21 +1263,30 @@ public class ReportsBasePage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
+		
+		// Keep track of the last matching row that we processed.
+		String lastSeenTitleCellText = "";
+		String lastSeenCreatedByCellText = "";
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
-
 			createdByCell = table.findElement(By.xpath(createdByXPath));
+			
+			Log.info(String.format("Found cell : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]", 
+					rptTitleCell.getText().trim(), createdByCell.getText().trim()));
 
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle.trim())
 					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy.trim())) {
+				lastSeenTitleCellText = rptTitleCell.getText().trim();
+				lastSeenCreatedByCellText = createdByCell.getText().trim();
+				
 				long startTime = System.currentTimeMillis();
 				long elapsedTime = 0;
 				boolean bContinue = true;
@@ -1351,6 +1299,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 							this.btnReportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						} else {
+							
+							rowNum = skipNewlyAddedRows(rptTitleCell, createdByCell, 
+									lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum);
+							
 							this.btnReportViewer = table.findElement(
 									By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img"));
 							this.btnReportViewer.click();
@@ -1372,16 +1324,16 @@ public class ReportsBasePage extends SurveyorBasePage {
 				}
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.waitForPageLoad();
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 				rowNum = 0;
 			}
@@ -2359,6 +2311,39 @@ public class ReportsBasePage extends SurveyorBasePage {
 		Gson gson = gsonBuilder.create();
 		ReportJobsStat reportJobsStatObj = gson.fromJson(apiResponse, ReportJobsStat.class);
 		return reportJobsStatObj;
+	}
+	
+	private int skipNewlyAddedRows(WebElement rptTitleCell, WebElement createdByCell, String lastSeenTitleCellText, String lastSeenCreatedByCellText, int rowNum) {
+		// DOM could have changed by the time we do the next check. Re-fetch table.
+		table = driver.findElement(By.xpath("//*[@id='datatable']/tbody"));
+		
+		String reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+		String createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+		
+		rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+		createdByCell = table.findElement(By.xpath(createdByXPath));
+
+		// If new rows get added in the time that we are waiting on report processing to complete,
+		// skip and move forward to the row that we were last processing.
+		while (!(rptTitleCell.getText().trim().equalsIgnoreCase(lastSeenTitleCellText.trim())
+				&& createdByCell.getText().trim().equalsIgnoreCase(lastSeenCreatedByCellText.trim()))) {
+			Log.info(String.format("Found cell (waiting mode) : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]", 
+					rptTitleCell.getText().trim(), createdByCell.getText().trim()));
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100))
+				break;
+
+			rowNum++;
+
+			table = driver.findElement(By.xpath("//*[@id='datatable']/tbody"));
+
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+		}
+		return rowNum;
 	}
 
 	private void validateReportStatus(ReportJobsStat reportJobsStatObj) throws Exception {

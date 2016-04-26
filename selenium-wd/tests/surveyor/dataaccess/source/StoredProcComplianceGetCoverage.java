@@ -86,10 +86,10 @@ public class StoredProcComplianceGetCoverage extends BaseEntity {
 	}
 
 	public boolean isCoverageValuesEquals(StoredProcComplianceGetCoverage obj) {
-		if (!((this.getPercentCoverageAssets().replaceAll("%", "").trim()).equals(obj.getPercentCoverageAssets().trim()))) {
+		if (!((this.getPercentCoverageAssets().replace("%", "").trim()).equals(obj.getPercentCoverageAssets().replace("%", "").trim()))) {
 			return false;
 		}
-		if (!((this.getPercentCoverageReportArea().replaceAll("%", "").trim()).equals(obj.getPercentCoverageReportArea().trim()))) {
+		if (!((this.getPercentCoverageReportArea().replace("%", "").trim()).equals(obj.getPercentCoverageReportArea().replace("%", "").trim()))) {
 			return false;
 		}
 		return true;
