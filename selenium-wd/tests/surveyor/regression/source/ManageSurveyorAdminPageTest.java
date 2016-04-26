@@ -97,8 +97,8 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageSurveyorAdminPage.open();
-		manageSurveyorAdminPage.editExistingSurveyor(locationName,
-				surveyorName, surveyorNameNew, true);
+		manageSurveyorAdminPage.editExistingSurveyor(SQACUS, locationName,
+				surveyorName, surveyorNameNew, locationName, false);
 
 		assertTrue(manageSurveyorAdminPage.findExistingSurveyor(locationName,
 				surveyorNameNew));
@@ -146,8 +146,8 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 
 		// Edit Surveyor and assign to Location2.
 		manageSurveyorAdminPage.open();
-		manageSurveyorAdminPage.editExistingSurveyor(locationName1,
-				surveyorName, locationName2, surveyorName);
+		manageSurveyorAdminPage.editExistingSurveyor(SQACUS,locationName1,
+				surveyorName, locationName2, surveyorName, false);
 
 		// Verify Surveyor is found in Location2.
 		assertTrue(manageSurveyorAdminPage.findExistingSurveyor(locationName2,
@@ -189,7 +189,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		manageSurveyorPage.open();
 		manageSurveyorPage.addNewSurveyor(surveyorName400Chars, SQACUSLOC,
 				SQACUS);
-		manageSurveyorPage.logout();
+		manageSurveyorPage.waitForPageLoad();
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
@@ -199,8 +199,8 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		Log.info("Starting to edit the surveyor...");
 
 		manageSurveyorAdminPage.open();
-		manageSurveyorAdminPage.editExistingSurveyor(SQACUSLOC,
-				surveyorName400Chars, surveyorName401Chars, true);
+		manageSurveyorAdminPage.editExistingSurveyor(SQACUS,SQACUSLOC,
+				surveyorName400Chars, surveyorName401Chars,SQACUSLOC, false);
 
 		String allowedSurveyorName = surveyorName401Chars.substring(0, 400);
 		Log.info("allowedSurveyorName=" + allowedSurveyorName);
@@ -239,8 +239,8 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageSurveyorAdminPage.open();
-		assertFalse(manageSurveyorAdminPage.editExistingSurveyor(SQACUSLOC,
-				surveyorName, "", true));
+		assertFalse(manageSurveyorAdminPage.editExistingSurveyor(SQACUS,SQACUSLOC,
+				surveyorName, "",surveyorName, false));
 	}
 
 	/**

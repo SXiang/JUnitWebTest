@@ -150,7 +150,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 				}
 			}
 		} else
-			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");		
+			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");	
 	}
 
 	private static String getTestCaseName(String key) {
