@@ -5,39 +5,20 @@ package surveyor.scommon.source;
 
 import static org.junit.Assert.fail;
 import static surveyor.scommon.source.SurveyorConstants.ACTIONTIMEOUT;
-import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
-import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
-import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
-import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
-import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
-import static surveyor.scommon.source.SurveyorConstants.KEYGAPS;
-import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
-import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
-import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
-import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
-import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
-import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
-import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
-import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
-import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
@@ -56,22 +37,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import common.source.ApiUtility;
-import common.source.BaseHelper;
 import common.source.CSVUtility;
 import common.source.FileUtility;
 import common.source.ImagingUtility;
 import common.source.Log;
-import common.source.PDFUtility;
 import common.source.RegexUtility;
 import common.source.ShapeToGeoJsonConverter;
 import common.source.TestContext;
 import common.source.TestSetup;
 import net.avh4.util.imagecomparison.ImageComparisonResult;
 import surveyor.api.source.ReportJobsStat;
-import surveyor.dataaccess.source.Report;
-import surveyor.dataaccess.source.ReportJob;
-import surveyor.dataaccess.source.ResourceKeys;
-import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.Reports.ReportJobType;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.ReportStatusType;
@@ -770,68 +745,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		});
 	}
 
-	public boolean checkActionStatusInSeconds(String rptTitle, String strCreatedBy, int seconds) {
-
-		setPagination(PAGINATIONSETTING);
-		this.waitForPageLoad();
-
-		String reportTitleXPath;
-		String createdByXPath;
-		WebElement rptTitleCell;
-		WebElement createdByCell;
-
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
-
-		int rowSize = rows.size();
-		int loopCount = 0;
-
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
-			loopCount = rowSize;
-		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
-
-		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
-
-			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
-			createdByCell = table.findElement(By.xpath(createdByXPath));
-
-			Log.info(String.format("Found report - Title=[%s], Created by=[%s]", rptTitleCell.getText(),
-					createdByCell.getText()));
-
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
-					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
-				Log.info(String.format("Found Match. Title=[%s], Created by=[%s]", rptTitleCell.getText(),
-						createdByCell.getText()));
-				try {
-					return handleFileDownloads(rowNum);
-				} catch (Exception e) {
-					Log.error(e.toString());
-					return false;
-				}
-			}
-
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
-					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-
-				this.waitForPageLoad();
-
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
-				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
-					loopCount = rowSize;
-				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
-
-				rowNum = 0;
-			}
-		}
-
-		return false;
-	}
-
 	protected boolean handleFileDownloads(int rowNum) throws Exception {
 		throw new Exception("Not implemented");
 	}
@@ -1203,8 +1116,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy, String testCaseID) throws Exception {
-		setPagination(PAGINATIONSETTING);
-		this.waitForPageLoad();
+		setPagination(PAGINATIONSETTING_100);
+		this.waitForTableDataToLoad();
+		this.waitForPageToLoad();
 		String reportTitleXPath;
 		String createdByXPath;
 		WebElement rptTitleCell;
@@ -1215,21 +1129,30 @@ public class ReportsBasePage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING);
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
+		
+		// Keep track of the last matching row that we processed.
+		String lastSeenTitleCellText = "";
+		String lastSeenCreatedByCellText = "";
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
 			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
-
 			createdByCell = table.findElement(By.xpath(createdByXPath));
+			
+			Log.info(String.format("Found cell : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]", 
+					rptTitleCell.getText().trim(), createdByCell.getText().trim()));
 
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle.trim())
 					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy.trim())) {
+				lastSeenTitleCellText = rptTitleCell.getText().trim();
+				lastSeenCreatedByCellText = createdByCell.getText().trim();
+				
 				long startTime = System.currentTimeMillis();
 				long elapsedTime = 0;
 				boolean bContinue = true;
@@ -1242,6 +1165,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 							this.btnReportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						} else {
+							
+							rowNum = skipNewlyAddedRows(rptTitleCell, createdByCell, 
+									lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum);
+							
 							this.btnReportViewer = table.findElement(
 									By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img"));
 							this.btnReportViewer.click();
@@ -1263,16 +1190,16 @@ public class ReportsBasePage extends SurveyorBasePage {
 				}
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.waitForPageLoad();
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING);
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 				rowNum = 0;
 			}
@@ -2210,6 +2137,39 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 
 		return true;
+	}
+
+	private int skipNewlyAddedRows(WebElement rptTitleCell, WebElement createdByCell, String lastSeenTitleCellText, String lastSeenCreatedByCellText, int rowNum) {
+		// DOM could have changed by the time we do the next check. Re-fetch table.
+		table = driver.findElement(By.xpath("//*[@id='datatable']/tbody"));
+		
+		String reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+		String createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+		
+		rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+		createdByCell = table.findElement(By.xpath(createdByXPath));
+
+		// If new rows get added in the time that we are waiting on report processing to complete,
+		// skip and move forward to the row that we were last processing.
+		while (!(rptTitleCell.getText().trim().equalsIgnoreCase(lastSeenTitleCellText.trim())
+				&& createdByCell.getText().trim().equalsIgnoreCase(lastSeenCreatedByCellText.trim()))) {
+			Log.info(String.format("Found cell (waiting mode) : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]", 
+					rptTitleCell.getText().trim(), createdByCell.getText().trim()));
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100))
+				break;
+
+			rowNum++;
+
+			table = driver.findElement(By.xpath("//*[@id='datatable']/tbody"));
+
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+
+			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
+			createdByCell = table.findElement(By.xpath(createdByXPath));
+		}
+		return rowNum;
 	}
 
 	private void validateReportStatus(ReportJobsStat reportJobsStatObj) throws Exception {
