@@ -43,9 +43,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETPEPLASTIC;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
-import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICT;
-import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARYDISTRICTPLAT;
-
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
@@ -109,6 +106,7 @@ import surveyor.dataaccess.source.StoredProcComplianceGetCoverage;
 import surveyor.dataaccess.source.StoredProcComplianceGetGaps;
 import surveyor.dataaccess.source.StoredProcComplianceGetIndications;
 import surveyor.dataaccess.source.StoredProcComplianceGetIsotopics;
+import surveyor.dataprovider.ReportDataProvider;
 import common.source.PDFUtility;
 import common.source.ProcessUtility;
 import common.source.RegexUtility;
@@ -311,7 +309,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	@Override
-	public void reportSpecificAddNewReport(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong) {
+	public void reportSpecificAddNewReport(String customer, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, 
+			String NELat, String NELong, String SWLat, String SWLong) throws Exception {
 		inputExclusionRadius(exclusionRadius);
 
 		this.inputNELat.sendKeys(NELat);
@@ -332,8 +331,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		inputImageMapHeight(imageMapHeight);
 		inputImageMapWidth(imageMapWidth);
 
-		selectViewLayerAssets(true, true, true, true, true, true);
-		selectViewLayerBoundaries(true, true);
+		selectViewLayerAssets(ReportDataProvider.getAllViewLayerAssetsForCustomer(customer));
+		selectViewLayerBoundaries(ReportDataProvider.getAllViewLayerBoundariesForCustomer(customer));
 
 		selectIndicationsTableCheckBox();
 		this.checkBoxIsoAna.click();
@@ -788,23 +787,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			mode = ReportModeFilter.RapidResponse;
 		}
 		return mode;
-	}
-
-	public void handleOptionalViewLayersSection(List<Map<String, String>> viewLayersList) {
-		if (viewLayersList != null) {
-			boolean selectAssetCastIron = viewLayersList.get(0).get(KEYASSETCASTIRON).equalsIgnoreCase("1");
-			boolean selectAssetCopper = viewLayersList.get(0).get(KEYASSETCOPPER).equalsIgnoreCase("1");
-			boolean selectAssetOtherPlastic = viewLayersList.get(0).get(KEYASSETOTHERPLASTIC).equalsIgnoreCase("1");
-			boolean selectAssetPEPlastic = viewLayersList.get(0).get(KEYASSETPEPLASTIC).equalsIgnoreCase("1");
-			boolean selectAssetProtectedSteel = viewLayersList.get(0).get(KEYASSETPROTECTEDSTEEL).equalsIgnoreCase("1");
-			boolean selectAssetUnprotectedSteel = viewLayersList.get(0).get(KEYASSETUNPROTECTEDSTEEL).equalsIgnoreCase("1");
-			selectViewLayerAssets(selectAssetCastIron, selectAssetCopper, selectAssetOtherPlastic, selectAssetPEPlastic, selectAssetProtectedSteel, selectAssetUnprotectedSteel);
-
-			boolean selectBoundaryDistrict = viewLayersList.get(0).get(KEYBOUNDARYDISTRICT).equalsIgnoreCase("1");
-			boolean selectBoundaryDistrictPlat = viewLayersList.get(0).get(KEYBOUNDARYDISTRICTPLAT).equalsIgnoreCase("1");
-			selectViewLayerBoundaries(selectBoundaryDistrict, selectBoundaryDistrictPlat);
-		}
-
 	}
 
 	private void handleOptionalDynamicViewLayersSection(List<Map<String, String>> viewLayersList) {
@@ -1363,64 +1345,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 	
-	// NOTE: This method should be deprecated. This method will ONLY work correctly in DEV environment.
-	// Use selectViewLayerAssets(HashMap<String, String> viewLayerAssets) instead to make it work in all environments.
-	public void selectViewLayerAssets(Boolean selectAssetCastIron, Boolean selectAssetCopper, Boolean selectAssetOtherPlastic, Boolean selectAssetPEPlastic, Boolean selectAssetProtectedSteel, Boolean selectAssetUnprotectedSteel) {
-		if (selectAssetCastIron) {
-			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-96caf1f5-d5c5-461d-9ce3-d210c20a1bb0']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxCastIron);
-			}
-		}
-		if (selectAssetCopper) {
-			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-d08fc87f-f979-4131-92a9-3d82f37f4bba']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxCopper);
-			}
-		}
-		if (selectAssetOtherPlastic) {
-			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-ad701312-c470-482a-be45-ef37770e2ce6']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxOtherPla);
-			}
-		}
-		if (selectAssetPEPlastic) {
-			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-f14735de-6c9b-4423-8533-f243a7fe4e90']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxPEPla);
-			}
-		}
-		if (selectAssetProtectedSteel) {
-			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-44353e68-0694-4f05-85cb-84d753ea278c']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxProtectedSteel);
-			}
-		}
-		if (selectAssetUnprotectedSteel) {
-			if (driver.findElements(By.xpath("//*[@id='report-asset-layers-f3955e82-dd13-4842-84f7-502bcda6b57a']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxUnProtectedSteel);
-			}
-		}
-	}
-
-	// NOTE: This method should be deprecated. This method will ONLY work correctly in DEV environment.
-	// Use selectViewLayerBoundaries(HashMap<String, String> viewLayerBoundaries) instead to make it work in all environments.
-	public void selectViewLayerBoundaries(boolean selectBoundaryDistrict, boolean selectBoundaryDistrictPlat) {
-		if (selectBoundaryDistrict) {
-			if (driver.findElements(By.xpath("//*[@id='report-boundry-layers-Small Boundary']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxDistrict);
-			}
-		}
-		if (selectBoundaryDistrictPlat) {
-			if (driver.findElements(By.xpath("//*[@id='report-boundry-layers-Big Boundary']")).size() > 0) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", checkBoxDistrictPlat);
-			}
-		}
-	}
-
 	public void selectAnyCustomerBoundary(CustomerBoundaryType type) {
 		// TODO open the Boundary selector and click on any customer boundary.
 		// Could provide a search by boundary name.
@@ -1524,6 +1448,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyShowCoverageTable(String actualPath, String reportTitle) throws IOException {
+		Log.info("Verifying Show Coverage Table");
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -1539,9 +1464,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
-			if (!value)
+			if (!value){
+				Log.info("Show Coverage Table verification failed");
 				return false;
+			}
 		}
+		Log.info("Show Coverage Table verification passed");
 		return true;
 	}
 
@@ -1555,6 +1483,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 
 	public boolean verifyCoverageValuesTable(String actualPath, String reportTitle, Map<String, String> userSelection) throws IOException {
+		Log.info("Verifying Coverage Values Table");
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -1581,14 +1510,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 
 		for (Boolean value : actualFirstPage.values()) {
-			if (!value)
+			if (!value){
+				Log.info("Coverage Values data verification failed");
 				return false;
+			}
 		}
 		
 		if (!storedProcObj.isCoverageValuesEquals(coverageReportObj)) {
+			Log.info("Coverage Values data verification failed");
 			return false;
 		}
-
+		Log.info("Coverage Values data verification passed");
 		return true;
 	}
 
@@ -1602,6 +1534,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyLayersTable(String actualPath, String reportTitle, Map<String, String> userInput) throws IOException {
+		Log.info("Verifying Layers Table");
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -1621,9 +1554,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
-			if (!value)
+			if (!value){
+				Log.info("Layers Table data verification failed");
 				return false;
+			}
 		}
+		Log.info("Layers Table data verification passed");
 		return true;
 
 	}
@@ -1639,6 +1575,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 
 	public boolean verifyViewsTable(String actualPath, String reportTitle, List<Map<String, String>> userInput) throws IOException {
+		Log.info("Verifying Report Views Table");
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -1682,11 +1619,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		List<ReportView> dbObjList = ReportView.getReportView(reportId);
 		for (ReportView viewObj : dbObjList) {
 			if (!viewObj.isViewNameAndMapInList(viewListInReport)) {
+				Log.info("Views Table data verification failed");
 				return false;
 			}
 
 		}
-
+		Log.info("Views Table data verification passed");
 		return true;
 	}
 
@@ -1699,6 +1637,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyDrivingSurveysTable(String actualPath, String reportTitle) throws IOException {
+		Log.info("Verifying Driving Surveys Table");
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -1710,10 +1649,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		expectedReportString.add(ReportSSRS_SelectedDrivingSurveys);
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
-			if (!value)
+			if (!value){
+				Log.info("Driving survey table static text verification failed");
 				return false;
+			}				
 		}
-		String surveyTable = RegexUtility.getStringInBetween(actualReportString, "Indication Table", "LISA");
+		String surveyTable;
+		if(RegexUtility.getStringInBetween(actualReportString, "Indication Table", "Surveyor Date")!=null){
+		 surveyTable = RegexUtility.getStringInBetween(actualReportString, "Indication Table", "Surveyor Date");
+		}
+		else{
+		surveyTable = RegexUtility.getStringInBetween(actualReportString, "Selected Driving Surveys", " Layers");
+		}
 		InputStream inputStream = new ByteArrayInputStream(surveyTable.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 		String line = null;
@@ -1774,13 +1721,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			Iterator<StoredProcComplianceAssessmentGetReportDrivingSurveys> reportIterator = reportSurveyList.iterator();
 			while (reportIterator.hasNext()) {
 				if (!reportIterator.next().isInList(listFromStoredProc)) {
+					Log.info("Driving survey table data verification failed");
 					return false;
 				}
 			}
 		} finally {
 			bufferReader.close();
 		}
-
+		Log.info("Driving survey table verification passed");
 		return true;
 	}
 
@@ -1801,6 +1749,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyReportSurveyMetaDataFile(String actualPath, String reportTitle) throws FileNotFoundException, IOException {
+		Log.info("Verifying Report survey meta data file");
 		CSVUtility csvUtility = new CSVUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -1833,13 +1782,16 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Iterator<StoredProcComplianceAssessmentGetReportDrivingSurveys> reportIterator = reportList.iterator();
 		while (reportIterator.hasNext()) {
 			if (!reportIterator.next().isInList(listFromStoredProc)) {
-				return false;
+				Log.info("Report survey meta data file verification failed");
+				return false;				
 			}
 		}
+		Log.info("Report survey meta data file verification passed");
 		return true;
 	}
 
 	public boolean verifyIsotopicMetaDataFile(String actualPath, String reportTitle) throws FileNotFoundException, IOException {
+		Log.info("Verifying Report Isotopic meta data file");
 		CSVUtility csvUtility = new CSVUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -1854,9 +1806,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			StoredProcComplianceGetIsotopics reportIsoObj = new StoredProcComplianceGetIsotopics();
 			HashMap<String, String> csvRow = csvIterator.next();
 			if (!csvRow.get("ReportId").trim().toLowerCase().equals(reportId.trim().toLowerCase())) {
+				Log.info("Isotopic meta data file verification failed");
 				return false;
 			}
 			if (!csvRow.get("ReportName").trim().equals(getReportName().trim().substring(0, 9))) {
+				Log.info("Isotopic meta data file verification failed");
 				return false;
 			}
 			reportIsoObj.setDateTime(csvRow.get("AnalysisDateTime").trim());
@@ -1872,14 +1826,16 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		for (StoredProcComplianceGetIsotopics reportListObj : reportList) {
 			if (!reportListObj.isInList(storedPodList)) {
+				Log.info("Isotopic meta data file verification failed");
 				return false;
 			}
 		}
-
+		Log.info("Isotopic meta data file verification passed");
 		return true;
 	}
 
 	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle) throws FileNotFoundException, IOException {
+		Log.info("Verifying LISA Meta data file");
 		CSVUtility csvUtility = new CSVUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -1894,9 +1850,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			StoredProcComplianceGetIndications reportIndObj = new StoredProcComplianceGetIndications();
 			HashMap<String, String> csvRow = csvIterator.next();
 			if (!csvRow.get("ReportId").trim().toLowerCase().equals(reportId.trim().toLowerCase())) {
+				Log.info("LISA Meta data file verification failed");
 				return false;
 			}
 			if (!csvRow.get("ReportName").trim().equals(getReportName().trim().substring(0, 9))) {
+				Log.info("LISA Meta data file verification failed");
 				return false;
 			}
 			reportIndObj.setPeakNumber(csvRow.get("LisaNumber").trim());
@@ -1913,10 +1871,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		for (StoredProcComplianceGetIndications reportListObj : reportList) {
 			if (!reportListObj.isInList(storedPodList)) {
+				Log.info("LISA Meta data file verification failed");
 				return false;
 			}
 		}
-
+		Log.info("LISA Meta data file verification passed");
 		return true;
 	}
 
@@ -1937,7 +1896,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyIsotopicAnalysisTable(String actualPath, String reportTitle) throws IOException {
-
+		Log.info("Verifying Isotopic Analysis Table");
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -1949,8 +1908,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		expectedReportString.add(ComplianceReportSSRS_IsotopicAnalysisTable);
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
-			if (!value)
+			if (!value){
+				Log.info("Isotopic Analysis table verification failed");
 				return false;
+			}
 		}
 		String isoTable = RegexUtility.getStringInBetween(actualReportString, "Surveyor Date/Time Result", " Layers");
 		if (isoTable != null) {
@@ -1974,12 +1935,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				}
 
 				if (!reportIsotopicList.equals(storedProcConvStringList)) {
+					Log.info("Isotopic Analysis table verification failed");
 					return false;
 				}
 			} finally {
 				bufferReader.close();
 			}
 		}
+		Log.info("Isotopic Analysis table verification passed");
 		return true;
 
 	}
@@ -1993,6 +1956,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyIndicationTable(String actualPath, String reportTitle) throws IOException {
+		Log.info("Verifying Indication Table");
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2004,8 +1968,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		expectedReportString.add(ComplianceReportSSRS_IndicationTable);
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
-			if (!value)
-				return false;
+			if (!value){
+				Log.info("Indication table verification failed");
+				return false;				
+			}
 		}
 		InputStream inputStream = new ByteArrayInputStream(actualReportString.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -2014,7 +1980,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			ArrayList<String> reportIndicationsList = new ArrayList<String>();
 			while ((line = bufferReader.readLine()) != null) {
 				if (line.trim().matches("^\\? \\d+ .*")) {
-					reportIndicationsList.add(line.replaceAll("\\?", "").trim().replaceAll("\\s+", "").replace("+/-0%", ""));
+					reportIndicationsList.add(line.replaceAll("\\?", "").trim().replaceAll("\\s+", "").replace("+/-", "").replace("0.0", "").trim());
 				}
 			}
 			ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications.getReportIndications(reportId);
@@ -2023,16 +1989,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			while (lineIterator.hasNext()) {
 				StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
 				String objAsString = objStoredProc.toString();
-				storedProcConvStringList.add(objAsString.trim().replaceAll("\\s+", ""));
+				storedProcConvStringList.add(objAsString.replace("0.0", "").replaceAll("\\s+", "").trim());
 			}
 
 			if (!reportIndicationsList.equals(storedProcConvStringList)) {
+				Log.info("Indication table verification failed");
 				return false;
 			}
 		} finally {
 			bufferReader.close();
 		}
-
+		Log.info("Indication table verification passed");
 		return true;
 	}
 
@@ -2045,6 +2012,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyGapsTable(String actualPath, String reportTitle) throws IOException {
+		Log.info("Verifying Gaps Table");
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2056,8 +2024,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		expectedReportString.add(ComplianceReportSSRS_GapTable);
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
-			if (!value)
+			if (!value){
+				Log.info("Gaps Table verification failed");
 				return false;
+			}
 		}
 		InputStream inputStream = new ByteArrayInputStream(actualReportString.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -2078,12 +2048,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				storedProcConvStringList.add(objAsString.trim());
 			}
 			if (!reportGapsList.equals(storedProcConvStringList)) {
+				Log.info("Gaps Table verification failed");
 				return false;
 			}
 		} finally {
 			bufferReader.close();
 		}
-
+		Log.info("Gaps Table verification passed");
 		return true;
 	}
 
@@ -2098,6 +2069,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 
 	public boolean verifySSRSImages(String actualPath, String reportTitle, String testCase) throws IOException, InterruptedException {
+		Log.info("Verifying Images in SSRS");
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
 		String reportNameWithoutExt = "CR-" + reportId.substring(0, 6);
@@ -2106,6 +2078,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String htmlReportPath = actualPath + htmlReportName;
 		File f = new File(htmlReportPath);
 		if (!convertPdfToHtml(reportName, htmlReportName)) {
+			Log.info("Image verification failed");
 			return false;
 		}
 		Document doc = Jsoup.parse(f, null, "");
@@ -2120,6 +2093,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				String pathToBaseImage = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\ssrs-images").toString() + "\\" + testCase + "\\" + "Page_" + pageCounter + ".png";
 				if (!verifyActualImageWithBase(pathToBaseImage, pathToActualImage)) {
 					Files.delete(Paths.get(pathToActualImage));
+					Log.info("Image verification failed");
 					return false;
 				}
 				Files.delete(Paths.get(pathToActualImage));
@@ -2127,7 +2101,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 
 		}
-
+		Log.info("Image verification passed");
 		return true;
 	}
 
@@ -2409,17 +2383,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		
 		List<Map<String, String>> viewLayersList = reportsCompliance.getViewLayersList();
-		
-		// NOTE: Currently tableList has the values for Optional View Layer instead of 'viewLayersList'. Tracked by TA884.
-		// In PageActions we populate 'viewLayersList' correctly. This if/else is to handle these 2 cases.
-		// Once TA884 is fixed we can eliminate the 'handleOptionalViewLayersSection' method.
-		if (viewLayersList != null) {
-			if (viewLayersList.size() > 0) {
-				handleOptionalDynamicViewLayersSection(viewLayersList);
-			}
-		} else {
-			handleOptionalViewLayersSection(tablesList);
-		}
+		if (viewLayersList != null && viewLayersList.size() > 0) {
+			handleOptionalDynamicViewLayersSection(viewLayersList);
+		} 
 	}
 
 	private void fillCustomerBoundary(ReportsCompliance reportsCompliance) {
@@ -2484,13 +2450,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			this.checkBoxPCRA.click();
 		}
 
-		selectViewLayerAssets(true, true, true, true, true, true);
+		selectViewLayerAssets(reportsCompliance.getViewLayersList().get(0));
 
 		addViews(reportsCompliance.getCustomer(), reportsCompliance.getViewList());
 	}
 
 	@Override
-	public void addViewDetails(String customer, String boundary) {
+	public void addViewDetails(String customer, String boundary) throws Exception {
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();
 
@@ -2513,7 +2479,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (boundary != null) {
 			this.inputViewBoundaries.click();
 
-			selectViewLayerBoundaries(true, true);
+			selectViewLayerBoundaries(ReportDataProvider.getAllViewLayerBoundariesForCustomer(customer));
 		}
 	}
 
@@ -2549,7 +2515,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	@Override
-	public void addOtherDetails(String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList, String startDate, String endDate, boolean changeMode, String strReportMode) {
+	public void addOtherDetails(String customer, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, 
+			String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList, String startDate, String endDate, 
+			boolean changeMode, String strReportMode) throws Exception {
 		if (this.isElementPresent(btnChangeModeXPath)) {
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("arguments[0].click();", btnChangeMode);
@@ -2578,7 +2546,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.checkBoxPCA.click();
 		this.checkBoxPCRA.click();
 
-		selectViewLayerAssets(true, true, true, true, true, true);
+		selectViewLayerAssets(ReportDataProvider.getAllViewLayerAssetsForCustomer(customer));
 	}
 
 	@Override

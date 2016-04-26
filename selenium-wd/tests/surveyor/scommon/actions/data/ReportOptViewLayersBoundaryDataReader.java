@@ -9,7 +9,7 @@ public class ReportOptViewLayersBoundaryDataReader extends BaseDataReader {
 		super(excelUtility);
 	}
 
-	private static final String TESTDATA_SHEET_NAME = "Report Opt View Layers Boundary";
+	public static final String TESTDATA_SHEET_NAME = "Report Opt View Layers Boundary";
 	 
 	public static final int Excel_TestData__Col_RowID = 0;
 	public static final int Excel_TestData__Col_BoundaryID = 1;

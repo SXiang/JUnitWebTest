@@ -9,7 +9,7 @@ public class ReportOptViewLayersAssetsDataReader extends BaseDataReader {
 		super(excelUtility);
 	}
 
-	private static final String TESTDATA_SHEET_NAME = "Report Opt View Layers Assets";
+	public static final String TESTDATA_SHEET_NAME = "Report Opt View Layers Assets";
 	 
 	public static final int Excel_TestData__Col_RowID = 0;
 	public static final int Excel_TestData__Col_AssetID = 1;

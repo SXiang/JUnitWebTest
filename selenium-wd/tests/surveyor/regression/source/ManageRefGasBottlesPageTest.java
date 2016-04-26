@@ -144,6 +144,7 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 		manageRefGasBottlesPage.addNewRefGasBottle(lotNum51Chars, isoValue, ethaneMethaneRatio, SQACUS, SQACUSLOC, SQACUSLOCSUR, true);
 		
 		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(lotNum50Chars, SQACUSLOCSUR));
+
 		manageRefGasBottlesPage.open();
 		assertFalse(manageRefGasBottlesPage.findExistingRefGasBottle(lotNum51Chars, SQACUSLOCSUR));
 	}

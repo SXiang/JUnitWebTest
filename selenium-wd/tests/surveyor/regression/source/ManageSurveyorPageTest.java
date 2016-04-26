@@ -122,7 +122,7 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		
 		Log.info(String.format("Editing Surveyor: Location-[%s]; Current Surveyor Name-[%s]; New Surveyor Name-[%s]", 
 				locationName, surveyorName, surveyorNameNew)); 
-		manageSurveyorAdminPage.editExistingSurveyor(locationName, surveyorName, surveyorNameNew, false);
+		manageSurveyorAdminPage.editExistingSurveyor(customerName,locationName, surveyorName, locationName,surveyorNameNew, false);
 
 		Log.info(String.format("Find existing Surveyor: Customer-[%s]; Location-[%s]; New Surveyor Name-[%s]", 
 				customerName, locationName, surveyorNameNew)); 
@@ -198,7 +198,7 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		
 		Log.info(String.format("Editing Surveyor: Location-[%s]; Current Surveyor Name-[%s]; New Surveyor Name-[%s]", 
 				locationName, surveyorName, surveyorNameNew)); 
-		manageSurveyorAdminPage.editExistingSurveyor(locationName, surveyorName, surveyorNameNew, false);
+		manageSurveyorAdminPage.editExistingSurveyor(customerName, locationName, surveyorName, locationName, surveyorNameNew, false);
 
 		Log.info(String.format("Find existing Surveyor: Customer-[%s]; Location-[%s]; New Surveyor Name-[%s]", 
 				customerName, locationName, surveyorNameNew)); 
@@ -253,7 +253,7 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		
 		Log.info(String.format("Editing Surveyor: Location-[%s]; Current Surveyor Name-[%s]; New Surveyor Name-[%s]", 
 				locationName, surveyorName400Chars, surveyorName401Chars)); 
-		manageSurveyorAdminPage.editExistingSurveyor(locationName, surveyorName400Chars, surveyorName401Chars, false);
+		manageSurveyorAdminPage.editExistingSurveyor(customerName,locationName, surveyorName400Chars, locationName,surveyorName401Chars, false);
 		assertFalse(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorName401Chars));
 	}
 	
@@ -348,7 +348,7 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		
 		Log.info(String.format("Editing Surveyor: Location-[%s]; Current Surveyor Name-[%s]; New Surveyor Name-[%s]", 
 				locationName, surveyorName, surveyorNewName)); 
-		manageSurveyorAdminPage.editExistingSurveyor(locationName, surveyorName, surveyorNewName, false);
-		assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorNewName));
+		manageSurveyorAdminPage.editExistingSurveyor(customerName,locationName, surveyorName, locationName, surveyorName, true);
+		assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorName));
 	}
 }
