@@ -2,10 +2,8 @@ package surveyor.dataaccess.source;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
 
 import common.source.Log;
 
@@ -16,13 +14,21 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 	private float amplitude;
 	private float ch4;
 	private String text;
+	private float aggregatedEthaneRatio;
+	private float aggregatedEthaneRatioSdev;
+	private String aggregatedClassificationConfidence;;
 
 	public StoredProcComplianceGetIndications() {
 		super();
 	}
 
 	public String toString() {
-		return this.getPeakNumber().concat(" ").concat(this.getSurveyorUnitName()).concat(" ").concat(this.getDateTime()).concat(" ").concat(Float.toString(this.getAmplitude())).concat(" ").concat(Float.toString(this.getCh4())).concat(" ").concat(this.getText());
+		return this.getPeakNumber().concat(" ").concat(this.getSurveyorUnitName()).concat(" ").concat(this.getDateTime())
+				.concat(" ").concat(Float.toString(this.getAmplitude())).concat(" ").concat(Float.toString(this.getCh4()))
+				.concat(" ").concat(this.getText())
+				.concat(" ").concat(Float.toString(this.getAggregatedEthenaRatio()))
+				.concat(" ").concat(Float.toString(this.getAggregatedEthaneRatioSdev()))
+				.concat(" ").concat(this.getAggregatedClassificationConfidence());
 	}
 
 	public String getPeakNumber() {
@@ -73,6 +79,31 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 		this.text = text;
 	}
 
+
+	public float getAggregatedEthenaRatio() {
+		return aggregatedEthaneRatio;
+	}
+
+	public void setAggregatedEthaneRatio(float aggregatedEthaneRatio) {
+		this.aggregatedEthaneRatio = aggregatedEthaneRatio;
+	}
+
+	public float getAggregatedEthaneRatioSdev() {
+		return aggregatedEthaneRatioSdev;
+	}
+
+	public void setAggregatedEthaneRatioSdev(float aggregatedEthaneRatioSdev) {
+		this.aggregatedEthaneRatioSdev = aggregatedEthaneRatioSdev;
+	}
+
+	public String getAggregatedClassificationConfidence() {
+		return aggregatedClassificationConfidence;
+	}
+
+	public void setAggregatedClassificationConfidence(String agggregatedClassificationConfidence) {
+		this.aggregatedClassificationConfidence = agggregatedClassificationConfidence;
+	}
+
 	public ArrayList<StoredProcComplianceGetIndications> get(String reportId) {
 		ArrayList<StoredProcComplianceGetIndications> objReportList = load(reportId);
 		return objReportList;
@@ -87,7 +118,7 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 		if (!this.getPeakNumber().trim().equals(obj.getPeakNumber().trim())) {
 			return false;
 		}
-		if (!this.getSurveyorUnitName().trim().equals(obj.getSurveyorUnitName().trim())) {
+		if (!this.getSurveyorUnitName().trim().equalsIgnoreCase(obj.getSurveyorUnitName().trim())) {
 			return false;
 		}
 		if (this.getAmplitude() != (obj.getAmplitude())) {
@@ -99,11 +130,21 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 		if (!this.getText().trim().equals(obj.getText().trim())) {
 			return false;
 		}
+		if(!this.getAggregatedClassificationConfidence().equals(obj.getAggregatedClassificationConfidence())){
+			return false;
+		}
+		if(this.getAggregatedEthaneRatioSdev() != obj.getAggregatedEthaneRatioSdev()){
+			return false;
+		}
+		if(this.getAggregatedEthenaRatio() != obj.getAggregatedEthenaRatio()){
+			return false;
+		}
 		return true;
 	}
 
 	public boolean isInList(ArrayList<StoredProcComplianceGetIndications> list) {
 		for (StoredProcComplianceGetIndications storedProcIndications : list) {
+			Log.debug(this.toString()+"  ---   "+storedProcIndications);	
 			if (this.isEquals(storedProcIndications)) {
 				return true;
 			}
@@ -120,6 +161,9 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 			objReport.setAmplitude(resultSet.getFloat("Amplitude"));
 			objReport.setCh4(resultSet.getFloat("CH4"));
 			objReport.setText(resultSet.getString("Text"));
+			objReport.setAggregatedClassificationConfidence(resultSet.getString("AggregatedClassificationConfidence").replaceFirst(">=", ""));
+			objReport.setAggregatedEthaneRatioSdev(resultSet.getFloat("AggregatedEthaneRatioSdev"));
+			objReport.setAggregatedEthaneRatio(resultSet.getFloat("AggregatedEthenaRatio"));
 		} catch (SQLException e) {
 			Log.error("Class Report | " + e.toString());
 		}

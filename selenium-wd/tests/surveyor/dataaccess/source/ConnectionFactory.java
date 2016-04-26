@@ -13,7 +13,7 @@ public class ConnectionFactory {
 
 	private static final String JDBC_SQLSERVER_CONNECTION_STRING = "jdbc:sqlserver://%s:%s;databaseName=%s;";
 	private static final String MICROSOFT_SQLSERVER_JDBC_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-	
+
 	private static Hashtable<String, Connection> connectionCache = new Hashtable<String, Connection>();
 
 	@Rule
@@ -22,7 +22,7 @@ public class ConnectionFactory {
 		protected void before() throws Throwable {
 			// Connections can be opened on-demand by the tests.
 		};
-		
+
 		@Override
 		protected void after() {
 			if (connectionCache!=null && connectionCache.size() > 0) {
@@ -41,9 +41,8 @@ public class ConnectionFactory {
 			}
 		};
 	};
-	
+
 	public static Connection createConnection() {
-		Connection conn = null;
 
 		String dbIpAddress = TestContext.INSTANCE.getDbIpAddress();
 		String dbPortNo = TestContext.INSTANCE.getDbPortNo();
@@ -51,17 +50,31 @@ public class ConnectionFactory {
 		String dbUser = TestContext.INSTANCE.getDbUser();
 		String dbPassword = TestContext.INSTANCE.getDbPassword();
 		String connectionUrl = String.format(JDBC_SQLSERVER_CONNECTION_STRING, dbIpAddress, dbPortNo, dbName);
+		return createConnection(connectionUrl,dbUser,dbPassword);
+	}
+
+	public static Connection createConnection(String connectionUrl, String dbUser, String dbPassword){
+		Connection conn = null;
 
 		if (connectionCache.containsKey(connectionUrl)) {
 			conn = connectionCache.get(connectionUrl);
-		} else {		
 			try {
-				Class.forName(MICROSOFT_SQLSERVER_JDBC_DRIVER);
-				conn = DriverManager.getConnection(connectionUrl, dbUser, dbPassword);
-				connectionCache.put(connectionUrl, conn);
-			} catch (ClassNotFoundException | SQLException e) {
-				Log.error(e.toString());
+				if(!conn.isClosed()){
+					return conn;
+				}
+			} catch(SQLException e){
+
 			}
+			connectionCache.remove(connectionUrl,conn);	
+		} 
+
+		
+		try {
+			Class.forName(MICROSOFT_SQLSERVER_JDBC_DRIVER);
+			conn = DriverManager.getConnection(connectionUrl, dbUser, dbPassword);
+			connectionCache.put(connectionUrl, conn);
+		} catch (ClassNotFoundException | SQLException e) {
+			Log.error(e.toString());
 		}
 		return conn;
 	}
