@@ -100,8 +100,8 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 		return aggregatedClassificationConfidence;
 	}
 
-	public void setAggregatedClassificationConfidence(String agggregatedClassificationConfidence) {
-		this.aggregatedClassificationConfidence = agggregatedClassificationConfidence;
+	public void setAggregatedClassificationConfidence(String aggregatedClassificationConfidence) {
+		this.aggregatedClassificationConfidence = aggregatedClassificationConfidence;
 	}
 
 	public ArrayList<StoredProcComplianceGetIndications> get(String reportId) {
