@@ -21,6 +21,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYGAPS;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
+import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
@@ -1215,6 +1216,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		js.executeScript("arguments[0].click();", checkBoxPCF);
 	}
 
+	public void selectGapTableCheckBox() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", checkBoxGapTb);
+	}
+
 	public void selectIsotopicAnalysisCheckBox() {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click();", checkBoxIsoAna);
@@ -2374,6 +2380,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		if (tablesList.get(0).get(KEYISOANA).equalsIgnoreCase("1")) {
 			selectIsotopicAnalysisCheckBox();
+		}
+		if (tablesList.get(0).get(KEYGAPTB).equalsIgnoreCase("1")) {
+			selectGapTableCheckBox();
 		}
 		if (tablesList.get(0).get(KEYPCA).equalsIgnoreCase("1")) {
 			selectPercentCoverageAssetCheckBox();

@@ -137,6 +137,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(id = "btn-select-area")
 	protected WebElement latLongMapSelectorBtn;
 
+	@FindBy(id = "report-show-gaps")
+	protected WebElement checkBoxGapTb;
+
 	@FindBy(id = "report-show-indications")
 	protected WebElement checkBoxIndTb;
 
