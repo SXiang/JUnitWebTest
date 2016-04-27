@@ -729,11 +729,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		WebElement pdfImg;
 		WebElement zipImg;
 		pdfImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[3]/img";
-		pdfImg = table.findElement(By.xpath(pdfImgXPath));
+		pdfImg = getTable().findElement(By.xpath(pdfImgXPath));
 		String srcPdfImg = pdfImg.getAttribute("src");
 
 		zipImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[4]/img";
-		zipImg = table.findElement(By.xpath(zipImgXPath));
+		zipImg = getTable().findElement(By.xpath(zipImgXPath));
 		String srcZipImg = zipImg.getAttribute("src");
 
 		if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip")) {
@@ -773,7 +773,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		WebElement createdByCell;
 		WebElement buttonImg;
 
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -787,8 +787,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
-			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
-			createdByCell = table.findElement(By.xpath(createdByXPath));
+			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
+			createdByCell = getTable().findElement(By.xpath(createdByXPath));
 
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				try {
@@ -820,7 +820,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					default:
 						throw new Exception("ButtonType NOT supported.");
 					}
-					buttonImg = table.findElement(By.xpath(buttonXPath));
+					buttonImg = getTable().findElement(By.xpath(buttonXPath));
 					String srcButtonImg = pdfImg.getAttribute("src");
 
 					if (buttonImg.isDisplayed()) {
@@ -855,7 +855,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 					loopCount = rowSize;
@@ -952,7 +952,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		WebElement createdByCell;
 		WebElement investigateImg;
 
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -966,12 +966,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
-			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
-			createdByCell = table.findElement(By.xpath(createdByXPath));
+			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
+			createdByCell = getTable().findElement(By.xpath(createdByXPath));
 
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				investigateImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[4]/img";
-				investigateImg = table.findElement(By.xpath(investigateImgXPath));
+				investigateImg = getTable().findElement(By.xpath(investigateImgXPath));
 
 				investigateImg.click();
 				return true;
@@ -982,7 +982,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 				this.waitForPageLoad();
 
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 					loopCount = rowSize;
@@ -1009,7 +1009,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		WebElement createdByCell;
 		WebElement resubmitImg;
 
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -1023,12 +1023,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
-			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
-			createdByCell = table.findElement(By.xpath(createdByXPath));
+			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
+			createdByCell = getTable().findElement(By.xpath(createdByXPath));
 
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				resubmitImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
-				resubmitImg = table.findElement(By.xpath(resubmitImgXPath));
+				resubmitImg = getTable().findElement(By.xpath(resubmitImgXPath));
 
 				resubmitImg.click();
 
@@ -1046,7 +1046,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 				this.waitForPageLoad();
 
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 					loopCount = rowSize;
@@ -2487,6 +2487,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@Override
 	public void waitForPageLoad() {
+		waitForAJAXCallsToComplete();
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return d.getPageSource().contains(STRPageContentText);

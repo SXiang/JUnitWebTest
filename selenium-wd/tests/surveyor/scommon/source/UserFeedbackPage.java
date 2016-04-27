@@ -117,7 +117,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 		WebElement userCell;
 		WebElement noteCell;
 		
-		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
+		List<WebElement> rows = getTable().findElements(By.xpath(strTRXPath));
 		
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -131,8 +131,8 @@ public class UserFeedbackPage extends SurveyorBasePage {
 			strUserXPath = strTRXPath + "["+rowNum+"]/td[2]";
 			strNoteXPath = strTRXPath + "["+rowNum+"]/td[3]";
 			
-			userCell = table.findElement(By.xpath(strUserXPath));
-			noteCell = table.findElement(By.xpath(strNoteXPath));
+			userCell = getTable().findElement(By.xpath(strUserXPath));
+			noteCell = getTable().findElement(By.xpath(strNoteXPath));
 			
 			if (userCell.getText().equalsIgnoreCase(user) && noteCell.getText().equalsIgnoreCase(strFeedback)) {			
 				Log.info("Found entry at row=" + rowNum);
@@ -144,7 +144,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				
-				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
+				List<WebElement> newRows = getTable().findElements(By.xpath(strTRXPath));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
@@ -171,7 +171,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 		WebElement userCell;
 		WebElement noteCell;
 		
-		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
+		List<WebElement> rows = getTable().findElements(By.xpath(strTRXPath));
 		
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -185,12 +185,12 @@ public class UserFeedbackPage extends SurveyorBasePage {
 			customerXPath = strTRXPath + "["+rowNum+"]/td[1]";
 			strUserXPath = strTRXPath + "["+rowNum+"]/td[2]";
 			
-			customerCell = table.findElement(By.xpath(customerXPath));
-			userCell = table.findElement(By.xpath(strUserXPath));
+			customerCell = getTable().findElement(By.xpath(customerXPath));
+			userCell = getTable().findElement(By.xpath(strUserXPath));
 			
 			if (customerCell.getText().trim().equalsIgnoreCase(customer) && userCell.getText().trim().equalsIgnoreCase(user)) {				
 				strNoteXPath = strTRXPath + "["+rowNum+"]/td[3]";
-				noteCell = table.findElement(By.xpath(strNoteXPath));
+				noteCell = getTable().findElement(By.xpath(strNoteXPath));
 				Log.info("Found entry at row=" + rowNum);
 				return noteCell.getText().trim();
 			}
@@ -200,7 +200,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				
-				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
+				List<WebElement> newRows = getTable().findElements(By.xpath(strTRXPath));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
@@ -230,7 +230,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 		WebElement userCell;
 		WebElement noteCell;
 		
-		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
+		List<WebElement> rows = getTable().findElements(By.xpath(strTRXPath));
 		
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -244,12 +244,12 @@ public class UserFeedbackPage extends SurveyorBasePage {
 			customerXPath = strTRXPath + "["+rowNum+"]/td[1]";
 			strUserXPath = strTRXPath + "["+rowNum+"]/td[2]";
 			
-			customerCell = table.findElement(By.xpath(customerXPath));
-			userCell = table.findElement(By.xpath(strUserXPath));
+			customerCell = getTable().findElement(By.xpath(customerXPath));
+			userCell = getTable().findElement(By.xpath(strUserXPath));
 			
 			if (customerCell.getText().trim().equalsIgnoreCase(customer) && userCell.getText().trim().equalsIgnoreCase(user)) {				
 				strNoteXPath = strTRXPath + "["+rowNum+"]/td[3]";
-				noteCell = table.findElement(By.xpath(strNoteXPath));
+				noteCell = getTable().findElement(By.xpath(strNoteXPath));
 				Log.info("Found entry at row=" + rowNum);
 				list.add(noteCell.getText().trim());
 			}
@@ -259,7 +259,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				
-				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
+				List<WebElement> newRows = getTable().findElements(By.xpath(strTRXPath));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
@@ -301,7 +301,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			noteXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 					+ "]/td[3]";
-			noteCell = table.findElement(By.xpath(noteXPath));
+			noteCell = getTable().findElement(By.xpath(noteXPath));
 
 			noteList.add(noteCell.getText().trim());
 
@@ -311,7 +311,7 @@ public class UserFeedbackPage extends SurveyorBasePage {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
 

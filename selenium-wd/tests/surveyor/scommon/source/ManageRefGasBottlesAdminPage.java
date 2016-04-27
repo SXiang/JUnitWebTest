@@ -45,7 +45,7 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 		WebElement surveyorCell;
 		WebElement lotNumberCell;
 		
-		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
+		List<WebElement> rows = getTable().findElements(By.xpath(strTRXPath));
 		
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -60,9 +60,9 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 			strSurveyorXPath = strTRXPath + "["+rowNum+"]/td[2]";
 			strLotNumberXPath = strTRXPath + "["+rowNum+"]/td[4]";
 			
-			locationCell = table.findElement(By.xpath(locationXPath));
-			surveyorCell = table.findElement(By.xpath(strSurveyorXPath));
-			lotNumberCell = table.findElement(By.xpath(strLotNumberXPath));
+			locationCell = getTable().findElement(By.xpath(locationXPath));
+			surveyorCell = getTable().findElement(By.xpath(strSurveyorXPath));
+			lotNumberCell = getTable().findElement(By.xpath(strLotNumberXPath));
 			
 			if (locationCell.getText().trim().equalsIgnoreCase(location) && surveyorCell.getText().trim().equalsIgnoreCase(strSurveyor) 
 					&& lotNumberCell.getText().trim().equalsIgnoreCase(strLotNumber)) {				
@@ -74,7 +74,7 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				
-				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
+				List<WebElement> newRows = getTable().findElements(By.xpath(strTRXPath));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;

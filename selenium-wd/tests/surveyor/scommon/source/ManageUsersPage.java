@@ -380,7 +380,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 		WebElement userNameCell;
 
-		List<WebElement> rows = table.findElements(By
+		List<WebElement> rows = getTable().findElements(By
 				.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
@@ -395,7 +395,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			userNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 					+ "]/td[1]";
 
-			userNameCell = table.findElement(By.xpath(userNameXPath));
+			userNameCell = getTable().findElement(By.xpath(userNameXPath));
 
 			if ((userNameCell.getText().trim()).equalsIgnoreCase(userName)) {
 				Log.info("Found entry at row=" + rowNum);
@@ -407,7 +407,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -435,7 +435,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		WebElement locationCell;
 		WebElement userNameCell;
 
-		List<WebElement> rows = table.findElements(By
+		List<WebElement> rows = getTable().findElements(By
 				.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
@@ -455,8 +455,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 				locationXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]";
 			}
 
-			locationCell = table.findElement(By.xpath(locationXPath));
-			userNameCell = table.findElement(By.xpath(userNameXPath));
+			locationCell = getTable().findElement(By.xpath(locationXPath));
+			userNameCell = getTable().findElement(By.xpath(userNameXPath));
 			
 			Log.info(String.format("Location XPath-[%s]", locationXPath));
 			Log.info(String.format("Username XPath-[%s]", userNameXPath));
@@ -478,7 +478,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -509,7 +509,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		WebElement userNameCell;
 		WebElement roleNameCell;
 
-		List<WebElement> rows = table.findElements(By
+		List<WebElement> rows = getTable().findElements(By
 				.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
@@ -528,9 +528,9 @@ public class ManageUsersPage extends SurveyorBasePage {
 			roleNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 					+ "]/td[4]";
 
-			locationCell = table.findElement(By.xpath(locationXPath));
-			userNameCell = table.findElement(By.xpath(userNameXPath));
-			roleNameCell = table.findElement(By.xpath(roleNameXPath));
+			locationCell = getTable().findElement(By.xpath(locationXPath));
+			userNameCell = getTable().findElement(By.xpath(userNameXPath));
+			roleNameCell = getTable().findElement(By.xpath(roleNameXPath));
 
 			if ((locationCell.getText().trim()).equalsIgnoreCase(locationName)
 					&& (userNameCell.getText().trim())
@@ -546,7 +546,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -574,7 +574,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		WebElement userNameCell;
 		WebElement roleNameCell;
 
-		List<WebElement> rows = table.findElements(By
+		List<WebElement> rows = getTable().findElements(By
 				.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
@@ -589,12 +589,12 @@ public class ManageUsersPage extends SurveyorBasePage {
 			userNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 					+ "]/td[1]";
 
-			userNameCell = table.findElement(By.xpath(userNameXPath));
+			userNameCell = getTable().findElement(By.xpath(userNameXPath));
 
 			if ((userNameCell.getText().trim()).equalsIgnoreCase(userName)) {
 				roleNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 						+ "]/td[4]";
-				roleNameCell = table.findElement(By.xpath(roleNameXPath));
+				roleNameCell = getTable().findElement(By.xpath(roleNameXPath));
 				Log.info("Found entry at row=" + rowNum);
 				return roleNameCell.getText().trim();
 			}
@@ -604,7 +604,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -632,7 +632,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		WebElement userNameCell;
 		WebElement userStatusCell;
 
-		List<WebElement> rows = table.findElements(By
+		List<WebElement> rows = getTable().findElements(By
 				.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
@@ -646,7 +646,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			userNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 
-			userNameCell = table.findElement(By.xpath(userNameXPath));
+			userNameCell = getTable().findElement(By.xpath(userNameXPath));
 			
 			Log.info(String.format("Looking For: Username-[%s]; Found Username-[%s]", 
 					userName, userNameCell.getText().trim()));
@@ -657,7 +657,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				} else {
 					userStatusXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[6]";
 				}
-				userStatusCell = table.findElement(By.xpath(userStatusXPath));
+				userStatusCell = getTable().findElement(By.xpath(userStatusXPath));
 				Log.info("Found entry at row=" + rowNum);
 				return userStatusCell.getText().trim();
 			}
@@ -667,7 +667,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
 
@@ -710,7 +710,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		WebElement userNameCell;
 		WebElement actionEditCell;
 
-		List<WebElement> rows = table.findElements(By
+		List<WebElement> rows = getTable().findElements(By
 				.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
@@ -723,7 +723,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			userNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			userNameCell = table.findElement(By.xpath(userNameXPath));
+			userNameCell = getTable().findElement(By.xpath(userNameXPath));
 
 			Log.info(String.format("Looking for: Username-[%s], Found: Username-[%s]", 
 					userName, userNameCell.getText().trim()));
@@ -735,7 +735,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 					actionEditXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[7]/a[1]";
 				}
 
-				actionEditCell = table.findElement(By.xpath(actionEditXPath));
+				actionEditCell = getTable().findElement(By.xpath(actionEditXPath));
 				Log.info("Found cell at xpath=" + actionEditXPath);
 				actionEditCell.click();
 				this.waitForEditPageLoad();
@@ -755,7 +755,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				this.btnOk.click();
 				this.waitForPageLoad();
 
-				if (table.isDisplayed())
+				if (getTable().isDisplayed())
 					return true;
 
 				return false;
@@ -766,7 +766,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -794,7 +794,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		WebElement userNameCell;
 		WebElement actionResetPWDCell;
 
-		List<WebElement> rows = table.findElements(By
+		List<WebElement> rows = getTable().findElements(By
 				.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
@@ -807,7 +807,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			userNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			userNameCell = table.findElement(By.xpath(userNameXPath));
+			userNameCell = getTable().findElement(By.xpath(userNameXPath));
 
 			if ((userNameCell.getText().trim()).equalsIgnoreCase(userName)) {
 				if (isCustomerUser) {
@@ -815,7 +815,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				} else {
 					actionResetPWDXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[7]/a[2]";
 				}
-				actionResetPWDCell = table.findElement(By.xpath(actionResetPWDXPath));
+				actionResetPWDCell = getTable().findElement(By.xpath(actionResetPWDXPath));
 				Log.info("Found cell at xpath=" + actionResetPWDCell);
 				actionResetPWDCell.click();
 				waitForPageToLoad();
@@ -826,7 +826,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				btnOk.click();
 
 				waitForPageToLoad();
-				if (table.isDisplayed())
+				if (getTable().isDisplayed())
 					return true;
 
 				return false;
@@ -837,7 +837,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -863,7 +863,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 		WebElement userNameCell;
 
-		List<WebElement> rows = table.findElements(By
+		List<WebElement> rows = getTable().findElements(By
 				.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
@@ -878,7 +878,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			userNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 					+ "]/td[2]";
 
-			userNameCell = table.findElement(By.xpath(userNameXPath));
+			userNameCell = getTable().findElement(By.xpath(userNameXPath));
 
 			if ((userNameCell.getText().trim()).equalsIgnoreCase(userName)) {
 				Log.info("Found entry at row=" + rowNum);
@@ -891,7 +891,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -967,7 +967,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		WebElement userNameCell;
 		WebElement roleNameCell;
 
-		List<WebElement> rows = table.findElements(By
+		List<WebElement> rows = getTable().findElements(By
 				.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
@@ -986,9 +986,9 @@ public class ManageUsersPage extends SurveyorBasePage {
 			roleNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 					+ "]/td[4]";
 
-			locationCell = table.findElement(By.xpath(locationXPath));
-			userNameCell = table.findElement(By.xpath(userNameXPath));
-			roleNameCell = table.findElement(By.xpath(roleNameXPath));
+			locationCell = getTable().findElement(By.xpath(locationXPath));
+			userNameCell = getTable().findElement(By.xpath(userNameXPath));
+			roleNameCell = getTable().findElement(By.xpath(roleNameXPath));
 
 			if ((locationCell.getText().trim()).equalsIgnoreCase(location)
 					&& (userNameCell.getText().trim())
@@ -1005,7 +1005,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -1037,7 +1037,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		String userNameXPath;
 		WebElement userNameCell;
 
-		List<WebElement> rows = table.findElements(By
+		List<WebElement> rows = getTable().findElements(By
 				.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
@@ -1051,7 +1051,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			userNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 					+ "]/td[1]";
-			userNameCell = table.findElement(By.xpath(userNameXPath));
+			userNameCell = getTable().findElement(By.xpath(userNameXPath));
 
 			userList.add(userNameCell.getText().trim());
 
@@ -1061,7 +1061,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -1088,7 +1088,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		String userNameXPath;
 		WebElement userNameCell;
 
-		List<WebElement> rows = table.findElements(By
+		List<WebElement> rows = getTable().findElements(By
 				.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
@@ -1102,7 +1102,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			userNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 					+ "]/td[2]";
-			userNameCell = table.findElement(By.xpath(userNameXPath));
+			userNameCell = getTable().findElement(By.xpath(userNameXPath));
 
 			userList.add(userNameCell.getText().trim());
 
@@ -1112,7 +1112,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -1137,7 +1137,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		String locationXPath;
 		WebElement locationCell;
 
-		List<WebElement> rows = table.findElements(By
+		List<WebElement> rows = getTable().findElements(By
 				.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
@@ -1151,7 +1151,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			locationXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 					+ "]/td[3]";
-			locationCell = table.findElement(By.xpath(locationXPath));
+			locationCell = getTable().findElement(By.xpath(locationXPath));
 
 			locationList.add(locationCell.getText().trim());
 
@@ -1161,7 +1161,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -1185,7 +1185,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		String rolesXPath;
 		WebElement rolesCell;
 
-		List<WebElement> rows = table.findElements(By
+		List<WebElement> rows = getTable().findElements(By
 				.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
@@ -1198,7 +1198,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			rolesXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]";
-			rolesCell = table.findElement(By.xpath(rolesXPath));
+			rolesCell = getTable().findElement(By.xpath(rolesXPath));
 
 			rolesList.add(rolesCell.getText().trim());
 
@@ -1208,7 +1208,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -1232,7 +1232,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		String statusXPath;
 		WebElement statusCell;
 
-		List<WebElement> rows = table.findElements(By
+		List<WebElement> rows = getTable().findElements(By
 				.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
@@ -1245,7 +1245,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			statusXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]";
-			statusCell = table.findElement(By.xpath(statusXPath));
+			statusCell = getTable().findElement(By.xpath(statusXPath));
 
 			statusList.add(statusCell.getText().trim());
 
@@ -1255,7 +1255,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();

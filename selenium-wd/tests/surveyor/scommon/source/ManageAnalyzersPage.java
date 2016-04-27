@@ -123,7 +123,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		WebElement surveyorCell;
 		WebElement analyzerCell;
 		
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 		
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -139,10 +139,10 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 			surveyorXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
 			analyzerXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]";
 
-			customerCell = table.findElement(By.xpath(customerXPath));
-			locationCell = table.findElement(By.xpath(locationXPath));
-			surveyorCell = table.findElement(By.xpath(surveyorXPath));
-			analyzerCell = table.findElement(By.xpath(analyzerXPath));    
+			customerCell = getTable().findElement(By.xpath(customerXPath));
+			locationCell = getTable().findElement(By.xpath(locationXPath));
+			surveyorCell = getTable().findElement(By.xpath(surveyorXPath));
+			analyzerCell = getTable().findElement(By.xpath(analyzerXPath));    
 			
 			if ((customerCell.getText().trim()).equalsIgnoreCase(customerName) && (locationCell.getText().trim()).equalsIgnoreCase(locationName) 
 					&& (surveyorCell.getText().trim()).equalsIgnoreCase(surveyorName) && analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
@@ -153,7 +153,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				
 				rowSize = newRows.size();
 				
@@ -187,7 +187,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		WebElement analyzerCell;
 		WebElement actionCell;
 		
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 		
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -203,10 +203,10 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 			surveyorXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
 			analyzerXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]";
 
-			customerCell = table.findElement(By.xpath(customerXPath));
-			locationCell = table.findElement(By.xpath(locationXPath));
-			surveyorCell = table.findElement(By.xpath(surveyorXPath));
-			analyzerCell = table.findElement(By.xpath(analyzerXPath));    
+			customerCell = getTable().findElement(By.xpath(customerXPath));
+			locationCell = getTable().findElement(By.xpath(locationXPath));
+			surveyorCell = getTable().findElement(By.xpath(surveyorXPath));
+			analyzerCell = getTable().findElement(By.xpath(analyzerXPath));    
 			
 			if ((customerCell.getText().trim()).equalsIgnoreCase(customerName) && 
 					(locationCell.getText().trim()).equalsIgnoreCase(locationName) && 
@@ -214,7 +214,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 					analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
 				Log.info("Found entry at row=" + rowNum);
 				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[7]/a[1]";								
-				actionCell = table.findElement(By.xpath(actionXPath));
+				actionCell = getTable().findElement(By.xpath(actionXPath));
 				Log.info("Found entry at row=" + rowNum);
 				actionCell.click();
 				this.waitForEditPageLoad();
@@ -228,7 +228,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				this.btnOk.click();		
 				this.waitForPageToLoad();
 				
-				if (table.isDisplayed())
+				if (getTable().isDisplayed())
 					return true;
 				
 				if (isElementPresent(this.panelDuplicationErrorXPath)){
@@ -243,7 +243,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				
 				rowSize = newRows.size();
 				
@@ -277,7 +277,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		WebElement analyzerCell;
 		WebElement actionCell;
 		
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 		
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -293,10 +293,10 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 			surveyorXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
 			analyzerXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]";
 
-			customerCell = table.findElement(By.xpath(customerXPath));
-			locationCell = table.findElement(By.xpath(locationXPath));
-			surveyorCell = table.findElement(By.xpath(surveyorXPath));
-			analyzerCell = table.findElement(By.xpath(analyzerXPath));    
+			customerCell = getTable().findElement(By.xpath(customerXPath));
+			locationCell = getTable().findElement(By.xpath(locationXPath));
+			surveyorCell = getTable().findElement(By.xpath(surveyorXPath));
+			analyzerCell = getTable().findElement(By.xpath(analyzerXPath));    
 			
 			if ((customerCell.getText().trim()).equalsIgnoreCase(customerName) && 
 					(locationCell.getText().trim()).equalsIgnoreCase(locationName) && 
@@ -304,7 +304,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 					analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
 				
 				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[7]/a[1]";
-				actionCell = table.findElement(By.xpath(actionXPath));
+				actionCell = getTable().findElement(By.xpath(actionXPath));
 				Log.info("Found entry at row=" + rowNum);
 				actionCell.click();
 				this.waitForEditPageLoad();
@@ -327,7 +327,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				this.btnOk.click();
 				this.waitForPageToLoad();
 				
-				if (table.isDisplayed())
+				if (getTable().isDisplayed())
 					return true;
 				
 				if (isElementPresent(this.panelDuplicationErrorXPath)){
@@ -342,7 +342,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				
 				rowSize = newRows.size();
 				
