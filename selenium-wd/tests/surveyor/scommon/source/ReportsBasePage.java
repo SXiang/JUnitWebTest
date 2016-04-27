@@ -6,7 +6,7 @@ package surveyor.scommon.source;
 import static org.junit.Assert.fail;
 import static surveyor.scommon.source.SurveyorConstants.ACTIONTIMEOUT;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
-import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -720,7 +720,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	
 	private void selectSurveysAndAddToReport(boolean selectAll, Integer numSurveysToSelect) {
 		if (selectAll || numSurveysToSelect > 0) {		
-			setSurveyRowsPagination(PAGINATIONSETTING_100);
+			setSurveyRowsPagination(PAGINATIONSETTING);
 			this.waitForSurveyTabletoLoad();
 			
 			Integer selectedSurveysCount = 0;
@@ -736,10 +736,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 			int rowSize = rows.size();
 			int loopCount = 0;
 			
-			if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
+			if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 				loopCount = rowSize;
 			else
-				loopCount = Integer.parseInt(PAGINATIONSETTING_100);
+				loopCount = Integer.parseInt(PAGINATIONSETTING);
 			
 			// Loop through table elements and check selected number of surveys.
 			for (int rowNum = 1; rowNum <= loopCount && selectedSurveysCount <= numSurveysToSelect; rowNum++) {
@@ -748,17 +748,17 @@ public class ReportsBasePage extends SurveyorBasePage {
 				checkBoxActionCell.click();
 				selectedSurveysCount++;
 	
-				if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.surveyNextButton.getAttribute("class").contains("disabled")) {
+				if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.surveyNextButton.getAttribute("class").contains("disabled")) {
 					this.surveyNextButton.click();
 					this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 					List<WebElement> newRows = surveyTable.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
 					
 					rowSize = newRows.size();
 					
-					if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
+					if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 						loopCount = rowSize;
 					else
-						loopCount = Integer.parseInt(PAGINATIONSETTING_100);
+						loopCount = Integer.parseInt(PAGINATIONSETTING);
 					
 					rowNum = 0;
 				}			
@@ -1250,9 +1250,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy, String testCaseID) throws Exception {
-		setPagination(PAGINATIONSETTING_100);
-		this.waitForTableDataToLoad();
-		this.waitForPageToLoad();
+		setPagination(PAGINATIONSETTING);
+		this.waitForPageLoad();
 		String reportTitleXPath;
 		String createdByXPath;
 		WebElement rptTitleCell;
@@ -1263,10 +1262,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
+		if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
+			loopCount = Integer.parseInt(PAGINATIONSETTING);
 		
 		// Keep track of the last matching row that we processed.
 		String lastSeenTitleCellText = "";
@@ -1324,16 +1323,16 @@ public class ReportsBasePage extends SurveyorBasePage {
 				}
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.waitForPageLoad();
 				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 					loopCount = rowSize;
 				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
+					loopCount = Integer.parseInt(PAGINATIONSETTING);
 
 				rowNum = 0;
 			}
@@ -2330,7 +2329,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			Log.info(String.format("Found cell (waiting mode) : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]", 
 					rptTitleCell.getText().trim(), createdByCell.getText().trim()));
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100))
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING))
 				break;
 
 			rowNum++;
