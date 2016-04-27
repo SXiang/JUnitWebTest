@@ -1,12 +1,18 @@
 package surveyor.scommon.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.TestSetup;
 import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
+import surveyor.scommon.actions.data.CustomerLicensedFeaturesDataReader;
+import surveyor.scommon.actions.data.CustomerLicensedFeaturesDataReader.CustomerLicensedFeaturesDataRow;
 import surveyor.scommon.source.ManageCustomersPage;
+import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 
 public class ManageCustomerPageActions extends BasePageActions {
 
@@ -37,11 +43,34 @@ public class ManageCustomerPageActions extends BasePageActions {
 	public boolean createNewCustomer(String data, Integer dataRowID) throws Exception {
 		logAction("ManageCustomersPageActions.createNewCustomer", data, dataRowID);
 		workingDataRow = this.dataReader.getDataRow(dataRowID);
-		this.manageCustomersPage.addNewCustomer(workingDataRow.name, workingDataRow.eULA, Boolean.parseBoolean(workingDataRow.enabled));
+		String customerName = ActionArguments.evaluateArgForFunction(workingDataRow.name);
+		workingDataRow.name = customerName;
+		if (workingDataRow.licensedFeaturesRowIDs.isEmpty()) {
+			this.manageCustomersPage.addNewCustomer(customerName, workingDataRow.eULA, Boolean.parseBoolean(workingDataRow.enabled));
+		} else {
+			LicensedFeatures[] licensedFeatures = getLicensedFeatures(workingDataRow.licensedFeaturesRowIDs);
+			workingDataRow.setLicensedFeatures(licensedFeatures);
+			this.manageCustomersPage.addNewCustomer(customerName, workingDataRow.eULA, Boolean.parseBoolean(workingDataRow.enabled),
+					licensedFeatures);
+		}
 		workingCustomer = this.manageCustomersPage;
 		return true;
 	}
- 
+
+	/**
+	 * Executes editCustomerSelectLicensedFeatures action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean editCustomerSelectLicensedFeatures(String data, Integer dataRowID) throws Exception {
+		logAction("ManageCustomersPageActions.editCustomerSelectLicensedFeatures", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty("editCustomerSelectLicensedFeatures", ARG_DATA, data);
+		this.manageCustomersPage.editAndSelectLicensedFeatures(workingDataRow.name, getLicensedFeatures(data));
+		return true;
+	}
+
 	/**
 	 * Executes open action.
 	 * @param data - specifies the input data passed to the action.
@@ -54,7 +83,23 @@ public class ManageCustomerPageActions extends BasePageActions {
 		this.manageCustomersPage.waitForPageLoad();
 		return true;
 	}
- 
+	
+	private ManageCustomersPage getManageCustomersPage() {
+		return (ManageCustomersPage)this.getPageObject();
+	}
+
+	private LicensedFeatures[] getLicensedFeatures(String licFeaturesDataRowIDs) throws Exception {
+		List<Integer> licenseRowIDs = ActionArguments.getNumericList(licFeaturesDataRowIDs);
+		List<LicensedFeatures> licensedFeaturesList = new ArrayList<LicensedFeatures>();
+		for (Integer licRowID : licenseRowIDs) {
+			CustomerLicensedFeaturesDataReader licensedFeaturesDataReader = new CustomerLicensedFeaturesDataReader(this.excelUtility);
+			CustomerLicensedFeaturesDataRow featuresDataRow = licensedFeaturesDataReader.getDataRow(licRowID);
+			licensedFeaturesList.add(this.getManageCustomersPage().getLicensedFeature(featuresDataRow.name));
+		}
+		LicensedFeatures[] licensedFeatures = licensedFeaturesList.toArray(new LicensedFeatures[licensedFeaturesList.size()]);
+		return licensedFeatures;
+	}
+
 	/* Invoke action using specified ActionName */
 	@Override
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
@@ -63,6 +108,7 @@ public class ManageCustomerPageActions extends BasePageActions {
 		else if (actionName.equals("clickByXPath")) { return this.clickByXPath(data, dataRowID); }
 		else if (actionName.equals("clickByXPathAndWait")) { return this.clickByXPathAndWait(data, dataRowID); }
 		else if (actionName.equals("createNewCustomer")) { return this.createNewCustomer(data, dataRowID); }
+		else if (actionName.equals("editCustomerSelectLicensedFeatures")) { return this.editCustomerSelectLicensedFeatures(data, dataRowID); }
 		else if (actionName.equals("insertTextById")) { return this.insertTextById(data, dataRowID); }
 		else if (actionName.equals("insertTextByXPath")) { return this.insertTextByXPath(data, dataRowID); }
 		else if (actionName.equals("open")) { return this.open(data, dataRowID); }

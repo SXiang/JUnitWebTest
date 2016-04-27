@@ -408,6 +408,13 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		return false;
 	}
 	
+	public boolean editAndSelectLicensedFeatures(String customerName, LicensedFeatures... lfs) {
+		findCustomerAndOpenEditPage(customerName);
+		selectLicensedFeatures(lfs);
+		clickOnEditOkBtn();
+		return true;
+	}
+
 	public String getCustomerStatus(String customerName) {
 		setPagination(PAGINATIONSETTING_100);
 		
@@ -458,6 +465,26 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		}		
 		
 		return null;
+	}
+	
+	public LicensedFeatures getLicensedFeature(String licFeatureName) {
+		LicensedFeatures licensedFeatures = LicensedFeatures.ASSESSMENT; 
+		if (licFeatureName == "GAP Grid 1.0") {
+			licensedFeatures = LicensedFeatures.GAPGRID;
+		} else if (licFeatureName == "Report Metadata") {
+			licensedFeatures = LicensedFeatures.REPORTMETADATA;
+		} else if (licFeatureName == "Assessment") {
+			licensedFeatures = LicensedFeatures.ASSESSMENT;
+		} else if (licFeatureName == "EQ") {
+			licensedFeatures = LicensedFeatures.EQ;
+		} else if (licFeatureName == "LISA Box 1.0") {
+			licensedFeatures = LicensedFeatures.LISABOX;
+		} else if (licFeatureName == "Survey Protocol Forecast") {
+			licensedFeatures = LicensedFeatures.SURVEYFORECASE;
+		} else if (licFeatureName == "Report ShapeFile") {
+			licensedFeatures = LicensedFeatures.REPORTSHAPEFILE;
+		}
+		return licensedFeatures;
 	}
 	
 	public String getEulaText() {

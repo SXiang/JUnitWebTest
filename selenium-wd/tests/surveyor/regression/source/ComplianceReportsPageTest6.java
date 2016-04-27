@@ -12,10 +12,11 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.dataprovider.PerformanceReportJobDataProvider;
+import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
@@ -31,6 +32,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	
 	private static HomePageActions homePageAction;
 	private static LoginPageActions loginPageAction;
+	private static ManageCustomerPageActions manageCustomerPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static TestEnvironmentActions testEnvironmentAction;
 
@@ -41,6 +43,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		initializePageActions();
 		
 		homePageAction = new HomePageActions(driver, baseURL, testSetup);
+		manageCustomerPageAction = new ManageCustomerPageActions(driver, baseURL, testSetup);
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
 	}
@@ -67,17 +70,19 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- - Report should have indications as per the min amp for Location i.e. indications should be =& min amp
 	 */
 	@Test
-	public void TC231_GenerateReportStandardModeSurveysLocationHavingValuesOtherThanDefaultOne() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC231, location = ComplianceReportDataProvider.class)
+	public void TC231_GenerateReportStandardModeSurveysLocationHavingValuesOtherThanDefaultOne(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC231_GenerateReportStandardModeSurveysLocationHavingValuesOtherThanDefaultOne ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* NOTE: Use Customer Admin when assets populated */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, 14);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, userDataRowID);   /* NOTE: Use Customer Admin when assets populated */
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableMinAmplitudeValues(EMPTY, NOTSET));
 	}
 	
@@ -101,20 +106,22 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- Zip folder will have the report pdf and maps pdf for specified report area
 	 */
 	@Test
-	public void TC235_GenerateComplianceReportByProvidingReportAreaLatLongValuesManually() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC235, location = ComplianceReportDataProvider.class)
+	public void TC235_GenerateComplianceReportByProvidingReportAreaLatLongValuesManually(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC235_GenerateComplianceReportByProvidingReportAreaLatLongValuesManually ...");
 
 		String TIMEZONE_STRING = null;
 		String ASSET_DATA_STRING = null;
 
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, 15);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, 15);
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, 15);
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, 15);
-		complianceReportsPageAction.extractPDFZIP(EMPTY, 15);
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.extractPDFZIP(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifySurveysTableInfoByTags(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(TIMEZONE_STRING, NOTSET));
@@ -133,12 +140,14 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- Boundaries having exact same name or similar to it are searched and displayed to the user in alphabetical list
 	 */
 	@Test
-	public void TC237_SearchValidCustomerBoundaryBoundarySelectorScreen() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC237, location = ComplianceReportDataProvider.class)
+	public void TC237_SearchValidCustomerBoundaryBoundarySelectorScreen(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC237_SearchValidCustomerBoundaryBoundarySelectorScreen ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.enterCustomerBoundaryUsingAreaSelector(EMPTY, NOTSET);
 		
 		// We type 'Level 2-A' in boundary name and expect the following 2 entries to show up in the auto-complete list.
@@ -167,20 +176,22 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- - Isotopic analysis tables should have value sorted by date/time
 	 */
 	@Test
-	public void TC509_GenerateComplianceReportUsingCreateNewFunctionality() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC509, location = ComplianceReportDataProvider.class)
+	public void TC509_GenerateComplianceReportUsingCreateNewFunctionality(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC509_GenerateComplianceReportUsingCreateNewFunctionality ...");
 
 		Integer expectedLisaRows = 10;
 
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, 17);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 17);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, 17);
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, 17);
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, 17);
-		complianceReportsPageAction.extractPDFZIP(EMPTY, 17);
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.extractPDFZIP(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifyPDFZipFilesArePresent(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyAllSSRSTableInfos(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
@@ -204,21 +215,23 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- - Report with specified modification is generated successfully
 	 */
 	@Test
-	public void TC510_GenerateComplianceReportUsingCopyFunctionality() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC510, location = ComplianceReportDataProvider.class)
+	public void TC510_GenerateComplianceReportUsingCopyFunctionality(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC510_GenerateComplianceReportUsingCopyFunctionality ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		complianceReportsPageAction.open(EMPTY, 18);
-		complianceReportsPageAction.createNewReport(EMPTY, 18);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 18);
-		complianceReportsPageAction.clickOnCopyButton(EMPTY, 18);
-		complianceReportsPageAction.copyReport(EMPTY, 19);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 19);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, 19);
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, 19);
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, 19);
-		complianceReportsPageAction.extractPDFZIP(EMPTY, 19);
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnCopyButton(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.copyReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID2);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID2);
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, reportDataRowID2);
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, reportDataRowID2);
+		complianceReportsPageAction.extractPDFZIP(EMPTY, reportDataRowID2);
 		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
 	}
  
@@ -235,16 +248,18 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- - Deleted report is not present on compliance report list screen
 	 */
 	@Test
-	public void TC514_DeleteComplianceReport() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC514, location = ComplianceReportDataProvider.class)
+	public void TC514_DeleteComplianceReport(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC514_DeleteComplianceReport ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		complianceReportsPageAction.open(EMPTY, 20);
-		complianceReportsPageAction.createNewReport(EMPTY, 20);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 20);
-		complianceReportsPageAction.clickOnDeleteButton(EMPTY, 20);
-		complianceReportsPageAction.clickOnConfirmDeleteReport(EMPTY, 20);
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnDeleteButton(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnConfirmDeleteReport(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifyReportDeletedSuccessfully(EMPTY, NOTSET));
 	}
  
@@ -267,18 +282,20 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- The thumbnail should still be present
 	 */
 	@Test
-	public void TC520_ReportViewThumbnailsCustomerBoundaryMultipleViewsCustomerSupervisorUser() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC520, location = ComplianceReportDataProvider.class)
+	public void TC520_ReportViewThumbnailsCustomerBoundaryMultipleViewsCustomerSupervisorUser(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC520_ReportViewThumbnailsCustomerBoundaryMultipleViewsCustomerSupervisorUser ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 5);   /* Picarro Supervisor */
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Supervisor */
 
-		complianceReportsPageAction.open(EMPTY, 21);
-		complianceReportsPageAction.createNewReport(EMPTY, 21);
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
 		
 		// Navigate away from compliance reports page and then return back to compliance reports page.
 		homePageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.open(EMPTY, 21);
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
 		
 		// TODO: Thumbnail verifications remaining.
@@ -312,23 +329,25 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- All views should be in the same sequence as created (View 1, View 2, View 3, etc.)
 	 */
 	@Test
-	public void TC521_GenerateComplianceReportBySelectingCustomBoundaryMoreThanOneViewUsingCopyFunctionalityDownloadReport() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC521, location = ComplianceReportDataProvider.class)
+	public void TC521_GenerateComplianceReportBySelectingCustomBoundaryMoreThanOneViewUsingCopyFunctionalityDownloadReport(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC521_GenerateComplianceReportBySelectingCustomBoundaryMoreThanOneViewUsingCopyFunctionalityDownloadReport ...");
 
 		String TIMEZONE_STRING = null;
 		String ASSET_DATA_STRING = null;
 
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		complianceReportsPageAction.open(EMPTY, 22);
-		complianceReportsPageAction.createNewReport(EMPTY, 22);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 22);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, 22);
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, 22);
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, 22);
-		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, 22);
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, 22);
-		complianceReportsPageAction.extractPDFZIP(EMPTY, 22);
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.extractPDFZIP(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
 		
 		// TODO: Check implementation.
@@ -354,13 +373,15 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- DistrictPlat boundaries can be selected
 	 */
 	@Ignore
-	public void TC526_VerifyCustomerBoundariesDoNotExceedMaxArea() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC526, location = ComplianceReportDataProvider.class)
+	public void TC526_VerifyCustomerBoundariesDoNotExceedMaxArea(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC526_VerifyCustomerBoundariesDoNotExceedMaxArea ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
 
-		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.enterCustomerBoundaryUsingAreaSelector(EMPTY, NOTSET);
 	}
  
@@ -383,69 +404,23 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- Lisa, FoV, Breadcrumb, PipeIntersectingLisa and PipeIntersectingGaps shape files should be available in downloaded ZIP folder
 	 */
 	@Test
-	public void TC678_ShapefileButtonAvailableComplianceReport_PicarroAdmin() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC678, location = ComplianceReportDataProvider.class)
+	public void TC678_ShapefileButtonAvailableComplianceReport_PicarroAdmin(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC678_ShapefileButtonAvailableComplianceReport_PicarroAdmin ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, NOTSET));	
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, reportDataRowID1);
 		
-		// Repeat the test, but in the Views section, select only FOV
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, NOTSET));	
-		
-		// Repeat the test, but in the Views section, select only Breadcrumb
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, NOTSET));	
-		
-		// Repeat the test, but in the Views section, select only Gaps
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, NOTSET));	
-		
-		// Repeat the test, but in the Views section, select only Assets
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, NOTSET));	
-		
-		// Repeat the test, but in the Views section, select all five of the features named above
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, NOTSET));	
+		// STEP: To be enabled post baseline creation: US2265
+		//assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, NOTSET));	
 	}
  
 	/**
@@ -492,39 +467,23 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- There should only be Shapefiles for the selected features (Asset Shape files will appear only if LISAs and/or Gaps are also selected, and as "PipeIntersectingLISA" or "PipeIntersectingGap")
 	 */
 	@Test
-	public void TC680_ShapefileExportReportOneView() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC680, location = ComplianceReportDataProvider.class)
+	public void TC680_ShapefileExportReportOneView(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC680_ShapefileExportReportOneView ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
-		
-		// Repeat the test with FOVs, Breadcrumbs, Assets and Gaps (Assets are selected, asset types must also be selected)
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
-		
-		// Repeat the test with different combinations such as FOV and Breadcrumb
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, reportDataRowID1);
+
+		// STEP: To be enabled post baseline creation: US2265
+		//assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
 	}
  
 	/**
@@ -549,29 +508,23 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- Even if the same feature is included in multiple views, there should only be one Shapefile for that feature
 	 */
 	@Test
-	public void TC681_ShapefileExportReportMultipleViews() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC681, location = ComplianceReportDataProvider.class)
+	public void TC681_ShapefileExportReportMultipleViews(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC681_ShapefileExportReportMultipleViews ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
-		
-		// Repeat the test with different customer selection (Shape file export should remain standard)
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, reportDataRowID1);
+
+		// STEP: To be enabled post baseline creation: US2265
+		//assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
 	}
  
 	/**
@@ -589,17 +542,28 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- - The Shapefile should download
 	 */
 	@Test
-	public void TC689_ShapefileAccessExistingCustomer() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC689, location = ComplianceReportDataProvider.class)
+	public void TC689_ShapefileAccessExistingCustomer(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC689_ShapefileAccessExistingCustomer ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
+		
+		// Add a new user customer with Report ShapeFile first disabled and then enable it.
+		Integer customerRowID = 6;
+		String allCustomerLicenseRowIDs = "1,2,3,4,5,6,7";
+		manageCustomerPageAction.open(EMPTY, NOTSET);
+		manageCustomerPageAction.createNewCustomer(EMPTY, customerRowID);
+		manageCustomerPageAction.editCustomerSelectLicensedFeatures(allCustomerLicenseRowIDs, NOTSET);
+		
+		// Create the report with the specified customer.
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, reportDataRowID1);
 	}
  
 	/**
@@ -618,15 +582,17 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- - The thumbnail preview grid should not include a button for Shapefile export
 	 */
 	@Test
-	public void TC690_RemoveShapefileGenerationOptionFromExistingCustomer() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC690, location = ComplianceReportDataProvider.class)
+	public void TC690_RemoveShapefileGenerationOptionFromExistingCustomer(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC690_RemoveShapefileGenerationOptionFromExistingCustomer ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
 		
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID1);
 	}
  
 	/**
@@ -642,22 +608,24 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- The report view should show all LISA boxes, numbered and corresponding to the SSRS list
 	 */
 	@Test
-	public void TC698_LISABoxesUniqueNumbersPrescribedFormat() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC698, location = ComplianceReportDataProvider.class)
+	public void TC698_LISABoxesUniqueNumbersPrescribedFormat(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC698_LISABoxesUniqueNumbersPrescribedFormat ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
 		
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("2", NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("3", NOTSET);
-		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", NOTSET);
-		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("2", NOTSET);
-		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("3", NOTSET);
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("2", reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("3", reportDataRowID1);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", reportDataRowID1);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("2", reportDataRowID1);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("3", reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
 	}
  
@@ -679,21 +647,23 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- The grid cells should be approximately 200 feet square
 	 */
 	@Test
-	public void TC699_CheckGapNumbersArePresentGapTableMapViewComplianceReport() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC699, location = ComplianceReportDataProvider.class)
+	public void TC699_CheckGapNumbersArePresentGapTableMapViewComplianceReport(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC699_CheckGapNumbersArePresentGapTableMapViewComplianceReport ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("2", NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("3", NOTSET);
-		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", NOTSET);
-		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("2", NOTSET);
-		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("3", NOTSET);
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("2", reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("3", reportDataRowID1);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", reportDataRowID1);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("2", reportDataRowID1);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("3", reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyGapsTableSortedAscByColumn(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
@@ -715,24 +685,26 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	(For eg. Lisa color is Yellow and Gap color is Red. So Lisa box yellow shade should not have red gap as GAPs is area not covered by FOV and LISA)
 	 */
 	@Test
-	public void TC700_GridNumberCoveredCompletelyFOVLISABoxesShouldNotPresentGapTableOfComplianceReport() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC700, location = ComplianceReportDataProvider.class)
+	public void TC700_GridNumberCoveredCompletelyFOVLISABoxesShouldNotPresentGapTableOfComplianceReport(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC700_GridNumberCoveredCompletelyFOVLISABoxesShouldNotPresentGapTableOfComplianceReport ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("2", NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("3", NOTSET);
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", NOTSET);
-		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("2", NOTSET);
-		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("3", NOTSET);
-		complianceReportsPageAction.extractPDFZIP(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("2", reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("3", reportDataRowID1);
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", reportDataRowID1);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("2", reportDataRowID1);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("3", reportDataRowID1);
+		complianceReportsPageAction.extractPDFZIP(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
 	}
@@ -756,24 +728,26 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- Overlapping LISA boxes should not be combined into a single box. Each LISA should have its own LISA box drawn as a distinct box unto itself
 	 */
 	@Test
-	public void TC701_OverlappingLISABoxes() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC701, location = ComplianceReportDataProvider.class)
+	public void TC701_OverlappingLISABoxes(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC701_OverlappingLISABoxes ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("2", NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("3", NOTSET);
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", NOTSET);
-		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("2", NOTSET);
-		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("3", NOTSET);
-		complianceReportsPageAction.extractPDFZIP(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("2", reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("3", reportDataRowID1);
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", reportDataRowID1);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("2", reportDataRowID1);
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("3", reportDataRowID1);
+		complianceReportsPageAction.extractPDFZIP(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
 	}
@@ -793,17 +767,19 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- - Lisa should be sorted by amplitude value and Gap should be present from A to Z and 1 to n
 	 */
 	@Test
-	public void TC706_TabularOutputGapLISABoxes() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC706, location = ComplianceReportDataProvider.class)
+	public void TC706_TabularOutputGapLISABoxes(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC706_TabularOutputGapLISABoxes ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableSortedAscByColumn(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyGapsTableSortedAscByColumn(EMPTY, NOTSET));
 	}
@@ -827,24 +803,26 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- - Meta zip file will be downloaded successfully and it will have meta data files
 	 */
 	@Test
-	public void TC719_ShapeFileMetaDataReportFeaturePermissionNewCustomer() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC719, location = ComplianceReportDataProvider.class)
+	public void TC719_ShapeFileMetaDataReportFeaturePermissionNewCustomer(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC719_ShapeFileMetaDataReportFeaturePermissionNewCustomer ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
 
 		// TODO: Create new customer with assigned permissions and login as new customer user.
 		
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.extractMetaZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.extractMetaZIP(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesAreCorrect(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyMetaDataFilesHaveCorrectData(EMPTY, NOTSET));
@@ -874,28 +852,20 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- Shape file data should be same as report map PDF
 	 */
 	@Test
-	public void TC722_ShapefileExportReportMultipleSurveys() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC722, location = ComplianceReportDataProvider.class)
+	public void TC722_ShapefileExportReportMultipleSurveys(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC722_ShapefileExportReportMultipleSurveys ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
-		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
-		
-		// Repeat the test with different combinations of features for each view such as FOV and Breadcrumb
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
 	}
  
@@ -925,17 +895,19 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	Shape (Spatial column)
 	 */
 	@Test
-	public void TC736_ShapefileExportReportLISA_HighlightedAssets() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC736, location = ComplianceReportDataProvider.class)
+	public void TC736_ShapefileExportReportLISA_HighlightedAssets(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC736_ShapefileExportReportLISA_HighlightedAssets ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY /*hasPipeIntersectingLISA*/, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
 	}
@@ -966,17 +938,19 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	Shape (Spatial column)
 	 */
 	@Test
-	public void TC737_ShapefileExportReportGap_HighlightedAssets() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC737, location = ComplianceReportDataProvider.class)
+	public void TC737_ShapefileExportReportGap_HighlightedAssets(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC737_ShapefileExportReportGap_HighlightedAssets ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY /*hasPipeIntersectingGap*/, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
 	}
@@ -998,25 +972,27 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- - User can download the Shape files and meta data files successfully
 	 */
 	@Test
-	public void TC786_ShapefileMetaDataReportFeaturePermissionExistingCustomer_CopyComplianceReportGeneration() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC786, location = ComplianceReportDataProvider.class)
+	public void TC786_ShapefileMetaDataReportFeaturePermissionExistingCustomer_CopyComplianceReportGeneration(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC786_ShapefileMetaDataReportFeaturePermissionExistingCustomer_CopyComplianceReportGeneration ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, NOTSET);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		loginPageAction.login(EMPTY, userDataRowID);
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifyComplianceViewerButtonIsDisplayed(ReportViewerThumbnailType.ComplianceZipShape.toString(), NOTSET));
 		assertTrue(complianceReportsPageAction.verifyComplianceViewerButtonIsDisplayed(ReportViewerThumbnailType.ComplianceZipMeta.toString(), NOTSET));
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.extractShapeZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, NOTSET);
-		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, NOTSET);
-		complianceReportsPageAction.extractMetaZIP(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.extractShapeZIP(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.extractMetaZIP(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesAreCorrect(EMPTY, NOTSET));
 	}
@@ -1035,22 +1011,24 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 	 *	- - Pagination and sorting should be working on all available pages
 	 */
 	@Test
-	public void TC798_CheckPaginationSortingComplianceReportsPage() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC798, location = ComplianceReportDataProvider.class)
+	public void TC798_CheckPaginationSortingComplianceReportsPage(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC798_CheckPaginationSortingComplianceReportsPage ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
 		
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.selectPaginationRows(PAGINATIONSETTING_25, NOTSET);
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.selectPaginationRows(PAGINATIONSETTING_25, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifyPaginationAndSortingOnAllColumns(EMPTY, NOTSET));
 
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.selectPaginationRows(PAGINATIONSETTING_50, NOTSET);
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.selectPaginationRows(PAGINATIONSETTING_50, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifyPaginationAndSortingOnAllColumns(EMPTY, NOTSET));
 
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.selectPaginationRows(PAGINATIONSETTING_100, NOTSET);
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.selectPaginationRows(PAGINATIONSETTING_100, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifyPaginationAndSortingOnAllColumns(EMPTY, NOTSET));
 	}
 }
