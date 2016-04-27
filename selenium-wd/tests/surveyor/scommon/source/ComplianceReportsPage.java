@@ -1826,7 +1826,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean  verifyEthaneCaptureMetaDataFile(String actualPath, String reportTitle, String reportId) throws FileNotFoundException, IOException {
 		CSVUtility csvUtility = new CSVUtility();
 		String pathToMetaDataUnZip = actualPath + "//CR-" + reportId.substring(0, 6) + " (1)";
-		String pathToCsv = pathToMetaDataUnZip + "//" + "CR-" + reportId.substring(0, 6) + "-ReportEthaneCapture.csv";
+		String pathToCsv = pathToMetaDataUnZip + "//CR-" + reportId.substring(0, 6) + "-ReportEthaneCapture.csv";
 		String reportName = "CR-" + reportId;
 		
 		if(actualPath.endsWith("-ReportEthaneCapture.csv")){

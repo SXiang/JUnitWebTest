@@ -77,8 +77,8 @@ public class StoredProcComplianceGetEthaneCapture extends BaseEntity {
 
 
 	public ArrayList<StoredProcComplianceGetEthaneCapture> get(String reportId) {
-		ArrayList<StoredProcComplianceGetEthaneCapture> objReportList = load(reportId);
-		return objReportList;
+		ArrayList<StoredProcComplianceGetEthaneCapture> ethaneCaptureList = load(reportId);
+		return ethaneCaptureList;
 	}
 
 	public static ArrayList<StoredProcComplianceGetEthaneCapture> getReportEthaneCapture(String reportId) {
@@ -133,8 +133,8 @@ public class StoredProcComplianceGetEthaneCapture extends BaseEntity {
 	}
 
 	public ArrayList<StoredProcComplianceGetEthaneCapture> load(String reportId) {
-		ArrayList<StoredProcComplianceGetEthaneCapture> objReportList = new ArrayList<StoredProcComplianceGetEthaneCapture>();
-		
+		ArrayList<StoredProcComplianceGetEthaneCapture> ethaneCaptureList = new ArrayList<StoredProcComplianceGetEthaneCapture>();
+
 		try {
 			CallableStatement cs = connection.prepareCall("{CALL Compliance_GetEthaneCaptures(?)}");
 			cs.setString(1, reportId);
@@ -143,7 +143,7 @@ public class StoredProcComplianceGetEthaneCapture extends BaseEntity {
 				resultSet = cs.getResultSet();
 				while (resultSet.next()) {
 					StoredProcComplianceGetEthaneCapture objReport = loadFrom(resultSet);
-					objReportList.add(objReport);
+					ethaneCaptureList.add(objReport);
 				}
 				resultSet.close();
 
@@ -154,7 +154,7 @@ public class StoredProcComplianceGetEthaneCapture extends BaseEntity {
 			Log.error(e.toString());
 		}
 
-		return objReportList;
+		return ethaneCaptureList;
 	}
 
 }
