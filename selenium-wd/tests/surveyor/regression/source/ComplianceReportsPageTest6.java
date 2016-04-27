@@ -589,10 +589,19 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Admin */
-		
+
+		// Add a new user customer with Report ShapeFile enabled.
+		Integer customerRowID = 7;
+		manageCustomerPageAction.open(EMPTY, NOTSET);
+		manageCustomerPageAction.createNewCustomer(EMPTY, customerRowID);
+
 		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID1);
+
+		String reportShapeLicensedFeaturesRowID = "7";
+		manageCustomerPageAction.editCustomerUnSelectLicensedFeatures(reportShapeLicensedFeaturesRowID, NOTSET);
+
 	}
  
 	/**

@@ -103,6 +103,15 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		return true;
 	}
 	
+	public boolean unselectLicensedFeatures(LicensedFeatures... lfs){
+		if(lfs != null){
+		  for(LicensedFeatures lf:lfs){
+			  selectLicensedFeature(lf, false);
+		  }		
+		}
+		return true;
+	}
+
 	public boolean selectLicensedFeature(LicensedFeatures lf) {
 		return selectLicensedFeature(lf, true);
 	}
@@ -411,6 +420,13 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public boolean editAndSelectLicensedFeatures(String customerName, LicensedFeatures... lfs) {
 		findCustomerAndOpenEditPage(customerName);
 		selectLicensedFeatures(lfs);
+		clickOnEditOkBtn();
+		return true;
+	}
+
+	public boolean editAndUnSelectLicensedFeatures(String customerName, LicensedFeatures... lfs) {
+		findCustomerAndOpenEditPage(customerName);
+		unselectLicensedFeatures(lfs);
 		clickOnEditOkBtn();
 		return true;
 	}

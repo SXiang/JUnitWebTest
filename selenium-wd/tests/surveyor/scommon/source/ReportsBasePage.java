@@ -1275,16 +1275,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
-			rptTitleCell = getReportTableCell(reportTitleXPath);
-			createdByCell = getReportTableCell(createdByXPath);
-			
+			String rptTitleCellText =  getReportTableCellText(reportTitleXPath);
+			String createdByCellText = getReportTableCellText(createdByXPath);
 			Log.info(String.format("Found cell : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]", 
-					rptTitleCell.getText().trim(), createdByCell.getText().trim()));
+					rptTitleCellText.trim(), createdByCellText.trim()));
 
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle.trim())
-					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy.trim())) {
-				lastSeenTitleCellText = rptTitleCell.getText().trim();
-				lastSeenCreatedByCellText = createdByCell.getText().trim();
+			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle.trim())
+					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy.trim())) {
+				lastSeenTitleCellText = rptTitleCellText.trim();
+				lastSeenCreatedByCellText = createdByCellText.trim();
 				
 				long startTime = System.currentTimeMillis();
 				long elapsedTime = 0;
@@ -1300,8 +1299,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 						} else {
 							
 							int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
-							rowNum = skipNewlyAddedRows(rptTitleCell, createdByCell, 
-									lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum, maxRows);
+							rowNum = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum, maxRows);
 							if (rowNum == maxRows) {
 								break;
 							}
@@ -1350,6 +1348,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return getTable().findElement(By.xpath(elementXPath));
 	}
 
+	private String getReportTableCellText(String elementXPath) {
+		WebElement cellElement = getReportTableCell(elementXPath);
+		return cellElement.getText();
+	}
+
 	public void reportSpecificAddNewReport(String customer, String exclusionRadius, String boundary, String imageMapHeight,
 			String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong) throws Exception {
 		throw new Exception("Not implemented");
@@ -1360,8 +1363,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		String reportTitleXPath;
 		String createdByXPath;
-		WebElement rptTitleCell;
-		WebElement createdByCell;
 
 		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -1383,16 +1384,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
-			rptTitleCell = getReportTableCell(reportTitleXPath);
-			createdByCell = getReportTableCell(createdByXPath);
-
+			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
+			String createdByCellText = getReportTableCellText(createdByXPath);
 			Log.info(String.format("Found cell : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]", 
-					rptTitleCell.getText().trim(), createdByCell.getText().trim()));
+					rptTitleCellText.trim(), createdByCellText.trim()));
 			
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
-					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
-				lastSeenTitleCellText = rptTitleCell.getText().trim();
-				lastSeenCreatedByCellText = createdByCell.getText().trim();
+			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
+					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
+				lastSeenTitleCellText = rptTitleCellText.trim();
+				lastSeenCreatedByCellText = createdByCellText.trim();
 
 				long startTime = System.currentTimeMillis();
 				long elapsedTime = 0;
@@ -1406,8 +1406,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 						} else {
 							int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
-							rowNum = skipNewlyAddedRows(rptTitleCell, createdByCell, 
-									lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum, maxRows);
+							rowNum = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum, maxRows);
 							if (rowNum == maxRows) {
 								break;
 							}
@@ -1476,11 +1475,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
-			rptTitleCell = getReportTableCell(reportTitleXPath);
-			createdByCell = getReportTableCell(createdByXPath);
-
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
-					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
+			String createdByCellText = getReportTableCellText(createdByXPath);
+			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
+					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
 				copyImg = getReportTableCell(copyImgXPath);
 				copyImg.click();
@@ -1529,11 +1527,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
-			rptTitleCell = getReportTableCell(reportTitleXPath);
-			createdByCell = getReportTableCell(createdByXPath);
-
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
-					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
+			String createdByCellText = getReportTableCellText(createdByXPath);
+			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
+					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				return true;
 			}
 
@@ -1586,10 +1583,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 			this.waitForPageLoad();
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
-			rptTitleCell = getReportTableCell(reportTitleXPath);
-			createdByCell = getReportTableCell(createdByXPath);
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
-					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
+			String createdByCellText = getReportTableCellText(createdByXPath);
+			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
+					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				return true;
 			}
 
@@ -1638,11 +1635,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
-			rptTitleCell = getReportTableCell(reportTitleXPath);
-			createdByCell = getReportTableCell(createdByXPath);
-
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
-					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
+			String createdByCellText = getReportTableCellText(createdByXPath);
+			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
+					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				deleteImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]/img";
 				deleteImg = getReportTableCell(deleteImgXPath);
 
@@ -1710,11 +1706,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
-			rptTitleCell = getReportTableCell(reportTitleXPath);
-			createdByCell = getReportTableCell(createdByXPath);
-
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
-					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
+			String createdByCellText = getReportTableCellText(createdByXPath);
+			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
+					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
 				copyImg = getReportTableCell(copyImgXPath);
 
@@ -1777,11 +1772,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
-			rptTitleCell = getReportTableCell(reportTitleXPath);
-			createdByCell = getReportTableCell(createdByXPath);
-
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
-					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
+			String createdByCellText = getReportTableCellText(createdByXPath);
+			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
+					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
 				copyImg = getReportTableCell(copyImgXPath);
 
@@ -2338,15 +2332,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return reportJobsStatObj;
 	}
 	
-	private int skipNewlyAddedRows(WebElement rptTitleCell, WebElement createdByCell, 
-			String lastSeenTitleCellText, String lastSeenCreatedByCellText, int rowNum, int maxRows) {
+	private int skipNewlyAddedRows(String lastSeenTitleCellText, String lastSeenCreatedByCellText, int rowNum, int maxRows) {
 		String reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 		String createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 		
-		rptTitleCell = getReportTableCell(reportTitleXPath);
-		String rptTitleCellText = rptTitleCell.getText();
-		createdByCell = getReportTableCell(createdByXPath);
-		String createByCellText = createdByCell.getText();
+		String rptTitleCellText = getReportTableCellText(reportTitleXPath);
+		String createByCellText = getReportTableCellText(createdByXPath);
 
 		// If new rows get added in the time that we are waiting on report processing to complete,
 		// skip and move forward to the row that we were last processing.
@@ -2359,12 +2350,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 				break;
 
 			rowNum++;
+			
+			Log.info(String.format("Processing row number - %d", rowNum));
 
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
-			rptTitleCell = getReportTableCell(reportTitleXPath);
-			createdByCell = getReportTableCell(createdByXPath);
+			rptTitleCellText = getReportTableCellText(reportTitleXPath);
+			createByCellText = getReportTableCellText(createdByXPath);
 		}
 		return rowNum;
 	}

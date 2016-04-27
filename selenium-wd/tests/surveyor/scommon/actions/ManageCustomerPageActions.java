@@ -59,7 +59,7 @@ public class ManageCustomerPageActions extends BasePageActions {
 
 	/**
 	 * Executes editCustomerSelectLicensedFeatures action.
-	 * @param data - specifies the input data passed to the action.
+	 * @param data - comma seperated list of CustomerLicensedFeaturesRowID to be selected.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 * @throws Exception 
@@ -68,6 +68,20 @@ public class ManageCustomerPageActions extends BasePageActions {
 		logAction("ManageCustomersPageActions.editCustomerSelectLicensedFeatures", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("editCustomerSelectLicensedFeatures", ARG_DATA, data);
 		this.manageCustomersPage.editAndSelectLicensedFeatures(workingDataRow.name, getLicensedFeatures(data));
+		return true;
+	}
+
+	/**
+	 * Executes editCustomerUnSelectLicensedFeatures action.
+	 * @param data - comma seperated list of CustomerLicensedFeaturesRowID to be unselected.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean editCustomerUnSelectLicensedFeatures(String data, Integer dataRowID) throws Exception {
+		logAction("ManageCustomersPageActions.editCustomerUnSelectLicensedFeatures", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty("editCustomerUnSelectLicensedFeatures", ARG_DATA, data);
+		this.manageCustomersPage.editAndUnSelectLicensedFeatures(workingDataRow.name, getLicensedFeatures(data));
 		return true;
 	}
 
@@ -109,6 +123,7 @@ public class ManageCustomerPageActions extends BasePageActions {
 		else if (actionName.equals("clickByXPathAndWait")) { return this.clickByXPathAndWait(data, dataRowID); }
 		else if (actionName.equals("createNewCustomer")) { return this.createNewCustomer(data, dataRowID); }
 		else if (actionName.equals("editCustomerSelectLicensedFeatures")) { return this.editCustomerSelectLicensedFeatures(data, dataRowID); }
+		else if (actionName.equals("editCustomerUnSelectLicensedFeatures")) { return this.editCustomerUnSelectLicensedFeatures(data, dataRowID); }
 		else if (actionName.equals("insertTextById")) { return this.insertTextById(data, dataRowID); }
 		else if (actionName.equals("insertTextByXPath")) { return this.insertTextByXPath(data, dataRowID); }
 		else if (actionName.equals("open")) { return this.open(data, dataRowID); }
