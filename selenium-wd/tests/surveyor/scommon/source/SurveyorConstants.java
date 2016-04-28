@@ -191,6 +191,7 @@ public final class SurveyorConstants {
 	public static final String KEYISOANA = "Isotopic Analysis";
 	public static final String KEYPCA = "Percent Coverage Assets";
 	public static final String KEYPCRA = "Percent Coverage Report Area";
+	public static final String KEYPCF = "Percent Coverage Forecast";
 
 	public static final String SQAPICADRRTAG = "dmcrapidresponse-sqapic-admin";
 	public static final String SQAPICADSTNDTAG = "dmcstandard-sqapic-admin";
@@ -297,6 +298,13 @@ public final class SurveyorConstants {
 	public static final String REQUIRED_FIELD_VAL_MESSAGE = "This field is required.";	
 
 	/*
+	 * Error messages for compliance report
+	 */
+	public static final String CR_CF_AREAINVALID_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_CoverageForecastAreaInvalidMessage);
+	public static final String CR_CF_ASSETSINVALID_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_CoverageForecastAssetsInvalidMessage);
+	public static final String CR_CF_FORECASTBOUNDARYINVALID_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_CoverageForecastBoundaryInvalidMessage);
+	
+	/*
 	 * Timeout constants
 	 */
 	public static final int SECONDS_10 = 10;
@@ -314,7 +322,7 @@ public final class SurveyorConstants {
 		ASSESSMENT ("Assessment"),
 		EQ ("EQ"),
 		LISABOX ("LISA Box 1.0"),
-		SURVEYFORECASE ("Survey Protocol Forecast"),
+		SURVEYFORECAST ("Survey Protocol Forecast"),
 		REPORTSHAPEFILE ("Report ShapeFile");
 		
 		private final String name;
