@@ -774,10 +774,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		this.checkboxSurFirst.click();
 	}
 
-	public void clickOnSearchSurveyButton() {
-		this.btnSurveySearch.click();
-	}
-
 	public void clickOnAddSurveysButton() {
 		this.btnAddSurveys.click();
 	}
@@ -2473,7 +2469,7 @@ public class ReportsBasePage extends SurveyorBasePage {
     /**
      * Click the search button for Survey filter and wait for the survey table to be loaded
      */
-	public void clickOnSurveySearchButton(){		
+	public void clickOnSearchSurveyButton(){		
 		jsClick(this.btnSurveySearch);
 		this.waitForSurveyTabletoLoad();
 	}

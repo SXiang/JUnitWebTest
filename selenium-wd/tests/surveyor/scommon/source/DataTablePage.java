@@ -219,9 +219,7 @@ public class DataTablePage extends BasePage{
 		waitForPageLoad();
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return dataTable.isDisplayed()
-						&&currentButton.isDisplayed()
-						&&tableRow.size()>0;
+				return dataTable.isDisplayed();
 			}
 		});
 	}
