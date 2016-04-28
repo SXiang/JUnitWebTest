@@ -25,6 +25,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
@@ -1675,6 +1676,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			return false;
 		}
 		Log.info("Coverage Values data verification passed");
+		if (!storedProcObj.isCoverageValuesFormated(coverageReportObj)) {
+			return false;
+		}
 		return true;
 	}
 
@@ -2721,6 +2725,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		if (tablesList.get(0).get(KEYPCRA).equalsIgnoreCase("1")) {
 			selectPercentCoverageReportArea();
+		}
+		if (tablesList.get(0).get(KEYPCF).equalsIgnoreCase("1")) {
+			selectPercentCoverageForecastCheckBox();
 		}
 		
 		List<Map<String, String>> viewLayersList = reportsCompliance.getViewLayersList();
