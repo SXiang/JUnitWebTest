@@ -74,7 +74,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	@FindBy(id = "LicencedFeatureId-LISA Box 1.0")
 	private WebElement inputLISABox;
 	
-	@FindBy(id = "LicencedFeatureId-Survey Protocol Forecase")
+	@FindBy(id = "LicencedFeatureId-Survey Protocol Forecast")
 	private WebElement inputSurveyForecase;
 	
 	@FindBy(id = "LicencedFeatureId-Report ShapeFile")
@@ -147,7 +147,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		case LISABOX: 
 			inputBox = inputLISABox;
             break;
-		case SURVEYFORECASE: 
+		case SURVEYFORECAST: 
 			inputBox = inputSurveyForecase;
             break;
 		case REPORTSHAPEFILE: 
@@ -207,17 +207,20 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		sendKeysToTextArea(this.textAreaEula, eula);
 	}
     
-	private void enabledDisableCustomer(boolean enableCustomer) {
+	public void enabledDisableCustomer(boolean enableCustomer) {
 		if (enableCustomer) {
-			if (!inputAccountEnabled.isSelected())
+			if (!isAccountEnabled())
 				inputAccountEnabled.click();
 		}
 		else {
-			if (inputAccountEnabled.isSelected())
+			if (isAccountEnabled())
 				inputAccountEnabled.click();
 		}
 	}
 
+	public boolean isAccountEnabled(){
+		return inputAccountEnabled.isSelected();
+	}
 	public boolean isEulaRed(){
 		String eulaStyle = this.textAreaEula.getAttribute("style");
 		String eulaRed = "border: 1px solid red;";
@@ -496,7 +499,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		} else if (licFeatureName == "LISA Box 1.0") {
 			licensedFeatures = LicensedFeatures.LISABOX;
 		} else if (licFeatureName == "Survey Protocol Forecast") {
-			licensedFeatures = LicensedFeatures.SURVEYFORECASE;
+			licensedFeatures = LicensedFeatures.SURVEYFORECAST;
 		} else if (licFeatureName == "Report ShapeFile") {
 			licensedFeatures = LicensedFeatures.REPORTSHAPEFILE;
 		}
