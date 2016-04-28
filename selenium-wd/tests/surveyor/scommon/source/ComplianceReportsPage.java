@@ -2678,6 +2678,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public WebElement getFstRptTilNm() {
 		return fstRptTilNm;
 	}
+	
+	@Override
+	public WebElement getTable() {
+		refreshPageUntilElementFound(DATA_TABLE_XPATH);
+		this.waitForPageLoad();
+		this.table = driver.findElement(By.xpath(DATA_TABLE_XPATH));
+		return super.getTable();
+	}
 
 	@Override
 	public void fillReportSpecific(Reports reports) {
