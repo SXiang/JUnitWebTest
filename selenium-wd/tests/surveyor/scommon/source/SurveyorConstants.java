@@ -308,9 +308,24 @@ public final class SurveyorConstants {
 	/*
 	 * enum for list of constants
 	 */
-	public static enum LicensedFeatures {
-		GAPGRID, REPORTMETADATA, ASSESSMENT, EQ, 
-		LISABOX, SURVEYFORECASE, REPORTSHAPEFILE
+	public enum LicensedFeatures {
+		GAPGRID ("GAP Grid 1.0"),
+		REPORTMETADATA ("Report Metadata"),
+		ASSESSMENT ("Assessment"),
+		EQ ("EQ"),
+		LISABOX ("LISA Box 1.0"),
+		SURVEYFORECASE ("Survey Protocol Forecast"),
+		REPORTSHAPEFILE ("Report ShapeFile");
+		
+		private final String name;
+
+		LicensedFeatures(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
 	}
 	
 	public static enum TopNavMenuItem {

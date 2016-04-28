@@ -116,7 +116,7 @@ public class ComplianceReportsPageUnitTest extends BaseReportsPageTest {
 	}
 	private void testSurveyFilters(SurveyModeFilter smode){
 		complianceReportsPage.selectSurveyModeForSurvey(smode);
-		complianceReportsPage.clickOnSurveySearchButton();
+		complianceReportsPage.clickOnSearchSurveyButton();
 		Assert.assertTrue(complianceReportsPage.verifySurveySelectorWithFilter(smode));
 	}
 }

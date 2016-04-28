@@ -192,7 +192,6 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName,  customerName, cityName);
-		
 		manageLocationsPage.editPDExistingLocation(customerName, locationName, newLocationName);
 		assertTrue(manageLocationsPage.findExistingLocation(customerName, newLocationName));
 	}

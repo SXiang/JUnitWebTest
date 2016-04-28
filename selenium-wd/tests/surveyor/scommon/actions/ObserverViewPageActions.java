@@ -122,6 +122,7 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("selectRadioButtonByID")) { return this.selectRadioButtonByID(data, dataRowID); }
 		else if (actionName.equals("selectRadioButtonByXPath")) { return this.selectRadioButtonByXPath(data, dataRowID); }
 		else if (actionName.equals("showCurtainView")) { return this.showCurtainView(data, dataRowID); }
+		else if (actionName.equals("sortRecordsBy")) { return this.sortRecordsBy(data, dataRowID); }
 		else if (actionName.equals("turnOffAllAssets")) { return this.turnOffAllAssets(data, dataRowID); }
 		else if (actionName.equals("turnOffAllBoundaries")) { return this.turnOffAllBoundaries(data, dataRowID); }
 		else if (actionName.equals("turnOffAllAssetsAndBoundaries")) { return this.turnOffAllAssetsAndBoundaries(data, dataRowID); }

@@ -124,6 +124,7 @@ public class ManageUsersPageActions extends BasePageActions {
 		else if (actionName.equals("selectDropDownByXPath")) { return this.selectDropDownByXPath(data, dataRowID); }
 		else if (actionName.equals("selectRadioButtonByID")) { return this.selectRadioButtonByID(data, dataRowID); }
 		else if (actionName.equals("selectRadioButtonByXPath")) { return this.selectRadioButtonByXPath(data, dataRowID); }
+		else if (actionName.equals("sortRecordsBy")) { return this.sortRecordsBy(data, dataRowID); }
 		return false;
 	}
 }

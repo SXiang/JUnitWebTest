@@ -26,13 +26,15 @@ public class PDFTableUtility extends PDFUtility{
 				+wordSeparator+"Amplitude(ppm)"+wordSeparator+"Concentration(ppm)"+wordSeparator+"Field Notes"),
 		COMPLIANCEREPORTSUMMARYTABLE ("Map Height & Width:.*",0,"LISA Investigation Complete",false,6),
 		COVERAGEFORECASE(".*Percent Service Coverage with LISAs.*",0,"",false,1),
-		COVERAGEFORECASETO70(".*Probability to Obtain 70% Coverage",0,"",true,4);
-
+		COVERAGEFORECASETO70(".*Probability to Obtain 70% Coverage",0,"",true,4),
+		DRIVINGSURVEYTABLE("Indication Table",0,"LISA",true,-1),
+		ISOTOPICANALYSISTABLE("Surveyor Date/Time Result",0," Layers",true,-1);
+		
 		private final String tableID;	          //1. tableID, indicator of start of a table, required
 		private final int startLine;              //2. num of lines  after 'tableID' - inclusive, optional, default to 0
 		private final String tableEndLinePattern; //3. tableEndLinePattern, indicator of end of a table, optional, default to ""
-		private final boolean hasTableHeader;    //4. With table header or without table header
-		private final int numRows;               //5. num of rows within the table if it's positive, otherwise the size of table is unknown.
+		private final boolean hasTableHeader;     //4. With table header or without table header
+		private final int numRows;                //5. num of rows within the table if it's positive, otherwise the size of table is unknown.
 
 		// Table from the line matching the tableID to the end of file
 		PDFTable(String tableID){
