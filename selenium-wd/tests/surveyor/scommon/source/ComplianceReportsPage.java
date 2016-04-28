@@ -684,6 +684,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 	}
+	
+	private void checkAndGenerateBaselineSSRSImage(String reportName, String testCaseID) throws Exception {
+		boolean isGenerateBaselineSSRSImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
+		if (isGenerateBaselineSSRSImages) {
+			Path unzipDirectory = Paths.get(testSetup.getDownloadPath(), reportName + " (2)");
+			List<String> filesInDirectory = FileUtility.getFilesInDirectory(unzipDirectory, "*.shp,*.dbf,*.prj,*.shx");
+			for (String filePath : filesInDirectory) {
+				generateBaselineSSRSImage(testCaseID, filePath);
+			}
+		}
+	}
 
 	protected void generateBaselinePerfFiles(String testCaseID, String reportId, String startTime, String endTime, Integer processingTimeInMs) throws IOException {
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
@@ -700,14 +711,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "ssrs-images" + File.separator + testCaseID;
 		// Create the directory for test case if it does not exist.
 		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
-		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
-		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
-		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
-	}
-
-	protected void generateBaselineViewImage(String testCaseID, String imageFileFullPath) throws IOException {
-		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "view-images" + File.separator + testCaseID;
 		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
 		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
 		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
