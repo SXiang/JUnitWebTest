@@ -111,6 +111,7 @@ import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataaccess.source.StoredProcComplianceAssessmentGetReportDrivingSurveys;
 import surveyor.dataaccess.source.StoredProcComplianceGetCoverage;
+import surveyor.dataaccess.source.StoredProcComplianceGetEthaneCapture;
 import surveyor.dataaccess.source.StoredProcComplianceGetGaps;
 import surveyor.dataaccess.source.StoredProcComplianceGetIndications;
 import surveyor.dataaccess.source.StoredProcComplianceGetIsotopics;
@@ -177,6 +178,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	private static final String DELETE_POPUP_CONFIRM_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[1]";
 	private static final String DELETE_POPUP_CANCEL_BUTTON_XPATH  = "//*[@id='deleteReportModal']/div/div/div[3]/a[2]";
+
+	public static final String RatioSdevMetaPattern = "\\+/\\-";
 
 	@FindBy(how = How.ID, using = "zip-file_pdf")
 	protected WebElement zipImg;
@@ -1883,6 +1886,22 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return true;
 	}
 
+	public void verifyMetaDataFiles() {
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void verifyMetaDataFilesData() {
+		try {
+			throw new Exception("Not implemented");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public boolean verifyReportSurveyMetaDataFile(String actualPath, String reportTitle) throws FileNotFoundException, IOException {
 		Log.info("Verifying Report survey meta data file");
 		CSVUtility csvUtility = new CSVUtility();
@@ -1940,18 +1959,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		while (csvIterator.hasNext()) {
 			StoredProcComplianceGetIsotopics reportIsoObj = new StoredProcComplianceGetIsotopics();
 			HashMap<String, String> csvRow = csvIterator.next();
-			if (!csvRow.get("ReportId").trim().toLowerCase().equals(reportId.trim().toLowerCase())) {
+			if (!csvRow.get("ReportId").trim().equalsIgnoreCase(reportId.trim())) {
 				Log.info("Isotopic meta data file verification failed");
 				return false;
 			}
-			if (!csvRow.get("ReportName").trim().equals(getReportName().trim().substring(0, 9))) {
+			if (!csvRow.get("ReportName").trim().equalsIgnoreCase(getReportName().trim().substring(0, 9))) {
 				Log.info("Isotopic meta data file verification failed");
 				return false;
 			}
 			reportIsoObj.setDateTime(csvRow.get("AnalysisDateTime").trim());
 			reportIsoObj.setSurveyorUnitName(csvRow.get("Surveyor").trim());
 			reportIsoObj.setDisposition(csvRow.get("Result").trim());
-			String[] deltaUncertainty = csvRow.get("ValueUncertainty").split("\\+\\/");
+			String[] deltaUncertainty = csvRow.get("ValueUncertainty").split(RatioSdevMetaPattern);
 			reportIsoObj.setDelta(Float.parseFloat(deltaUncertainty[0].trim()));
 			reportIsoObj.setUncertainty(Float.parseFloat(deltaUncertainty[1].trim()));
 			reportIsoObj.setText(csvRow.get("FieldNotes").trim());
@@ -1969,14 +1988,68 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return true;
 	}
 
+	public boolean verifyEthaneCaptureMetaDataFile(String actualPath, String reportTitle) throws FileNotFoundException, IOException {
+		return verifyEthaneCaptureMetaDataFile(actualPath, reportTitle,Report.getReport(reportTitle).getId());
+	}
+	public boolean  verifyEthaneCaptureMetaDataFile(String actualPath, String reportTitle, String reportId) throws FileNotFoundException, IOException {
+		CSVUtility csvUtility = new CSVUtility();
+		String pathToMetaDataUnZip = actualPath + "//CR-" + reportId.substring(0, 6) + " (1)";
+		String pathToCsv = pathToMetaDataUnZip + "//CR-" + reportId.substring(0, 6) + "-ReportEthaneCapture.csv";
+		String reportName = "CR-" + reportId;
+		
+		if(actualPath.endsWith("-ReportEthaneCapture.csv")){
+			pathToCsv = actualPath;
+		}
+		setReportName(reportName);
+		List<HashMap<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
+		Iterator<HashMap<String, String>> csvIterator = csvRows.iterator();
+		List<StoredProcComplianceGetEthaneCapture> reportList = new ArrayList<StoredProcComplianceGetEthaneCapture>();
+		while (csvIterator.hasNext()) {
+			StoredProcComplianceGetEthaneCapture ethaneCapture = new StoredProcComplianceGetEthaneCapture();
+			HashMap<String, String> csvRow = csvIterator.next();
+			if (!csvRow.get("ReportId").trim().equalsIgnoreCase(reportId.trim())) {
+				return false;
+			}
+			if (!csvRow.get("ReportName").trim().equalsIgnoreCase(getReportName().trim().substring(0, 9))) {
+				return false;
+			}
+			ethaneCapture.setDateTime(csvRow.get("AnalysisDateTime").trim());
+			ethaneCapture.setSurveyorUnitName(csvRow.get("Surveyor").trim());
+			ethaneCapture.setDisposition(csvRow.get("Result").trim());
+						
+			String[] valueUncertainty = csvRow.get("ValueUncertainty").trim().split(RatioSdevMetaPattern);
+			ethaneCapture.setEthaneRatio(Float.parseFloat(valueUncertainty[0].trim()));
+			ethaneCapture.setEthaneRatioSdev(Float.parseFloat(valueUncertainty[1].trim()));
+			ethaneCapture.setText(csvRow.get("FieldNotes").trim());
+			
+			reportList.add(ethaneCapture);
+			
+		}
+		ArrayList<StoredProcComplianceGetEthaneCapture> listFromStoredProc = StoredProcComplianceGetEthaneCapture.getReportEthaneCapture(reportId);
+		Iterator<StoredProcComplianceGetEthaneCapture> reportIterator = reportList.iterator();
+		while (reportIterator.hasNext()) {
+			StoredProcComplianceGetEthaneCapture testEthaneCapture = reportIterator.next();
+			Log.debug("Ethane capture in meta: "+testEthaneCapture);
+			if (!testEthaneCapture.isInList(listFromStoredProc)) {
+				Log.warn("Ethane capture not found in db? "+testEthaneCapture);
+				return false;
+			}
+		}
+		return true;
+	}
 	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle) throws FileNotFoundException, IOException {
 		Log.info("Verifying LISA Meta data file");
+		return verifyLISASMetaDataFile(actualPath, reportTitle, Report.getReport(reportTitle).getId());
+	}
+	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId) throws FileNotFoundException, IOException {
 		CSVUtility csvUtility = new CSVUtility();
-		Report reportObj = Report.getReport(reportTitle);
-		String reportId = reportObj.getId();
-		String pathToMetaDataUnZip = testSetup.getDownloadPath() + "//CR-" + reportId.substring(0, 6) + " (1)";
+		String pathToMetaDataUnZip = actualPath + "//CR-" + reportId.substring(0, 6) + " (1)";
 		String pathToCsv = pathToMetaDataUnZip + "//" + "CR-" + reportId.substring(0, 6) + "-ReportLISAS.csv";
 		String reportName = "CR-" + reportId;
+		
+		if(actualPath.endsWith("-ReportLISAS.csv")){
+			pathToCsv = actualPath;
+		}
 		setReportName(reportName);
 		List<HashMap<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
 		Iterator<HashMap<String, String>> csvIterator = csvRows.iterator();
@@ -1984,24 +2057,35 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		while (csvIterator.hasNext()) {
 			StoredProcComplianceGetIndications reportIndObj = new StoredProcComplianceGetIndications();
 			HashMap<String, String> csvRow = csvIterator.next();
-			if (!csvRow.get("ReportId").trim().toLowerCase().equals(reportId.trim().toLowerCase())) {
+			if (!csvRow.get("ReportId").trim().equalsIgnoreCase(reportId.trim())) {
 				Log.info("LISA Meta data file verification failed");
 				return false;
 			}
-			if (!csvRow.get("ReportName").trim().equals(getReportName().trim().substring(0, 9))) {
+			if (!csvRow.get("ReportName").trim().equalsIgnoreCase(getReportName().trim().substring(0, 9))) {		
 				Log.info("LISA Meta data file verification failed");
 				return false;
 			}
 			reportIndObj.setPeakNumber(csvRow.get("LisaNumber").trim());
 			reportIndObj.setSurveyorUnitName(csvRow.get("Surveyor").trim());
 			reportIndObj.setDateTime(csvRow.get("LISADateTime").trim());
+			
 			double amp = Math.round(Float.parseFloat((csvRow.get("Amplitude")).trim()) * 100.0) / 100.0;
 			reportIndObj.setAmplitude((float) amp);
 			double cH4 = Math.round(Float.parseFloat((csvRow.get("Concentration")).trim()) * 100.0) / 100.0;
 			reportIndObj.setCh4((float) cH4);
 			reportIndObj.setText(csvRow.get("FieldNotes").trim());
+			
+			//Covert csv ratio+/sdev to db ratio and sdev - it changed for indication
+			String ethaneMethaneRatioUncertainty = csvRow.get("EthaneMethaneRatioUncertainty").trim();
+			reportIndObj.setAggregatedEthaneToMethaneRatio(ethaneMethaneRatioUncertainty);
+			
+			//covert csv float to db string ">=num%"
+			int aggregatedClassificationconfidenceFloat = (int) (Float.parseFloat(csvRow.get("ConfidenceInDisposition").trim())*100);
+			String aggregatedClassificationconfidence = aggregatedClassificationconfidenceFloat+"%";
+			reportIndObj.setAggregatedClassificationConfidence(aggregatedClassificationconfidence);
 			reportList.add(reportIndObj);
 		}
+		
 		ArrayList<StoredProcComplianceGetIndications> storedPodList = StoredProcComplianceGetIndications.getReportIndications(reportId);
 
 		for (StoredProcComplianceGetIndications reportListObj : reportList) {
