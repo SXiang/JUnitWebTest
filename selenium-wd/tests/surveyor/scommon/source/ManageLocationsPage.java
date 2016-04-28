@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -268,7 +269,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			}
 		}
 
-		this.btnOK.click();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", this.btnOK);
+
 		this.waitForPageToLoad();
         
 		if(checkForError && verifyErrorMessage(null, true /*checkOnlyErrorSummary*/)){
@@ -448,7 +451,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName)
 					&& (locationNameCell.getText().trim()).equalsIgnoreCase(locationName)) {
-				actionEditXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]";
+				actionEditXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a";
 				actionEditCell = getTable().findElement(By.xpath(actionEditXPath));
 				Log.info("Found entry at row=" + rowNum);
 
@@ -497,8 +500,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				}
 
 				String curURL = driver.getCurrentUrl();
-
-				this.btnOK.click();
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				js.executeScript("arguments[0].click();", this.btnOK);
+				System.out.println("ok button clicked");
                 if(!checkForError){
                 	return true;
                 }
