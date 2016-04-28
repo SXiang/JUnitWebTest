@@ -204,5 +204,8 @@ public class ResourceKeys {
 	public static final String EQReportSSRS_EmissionsQuantificationReport = "EQReportSSRS_EmissionsQuantificationReport";
 	public static final String EQReportSSRS_EmissionsQuantificationData = "EQReportSSRS_EmissionsQuantificationData";
 
-
+    // Constants for Compliance Report
+    public static final String ComplianceReport_CoverageForecastAreaInvalidMessage = "ComplianceReport_CoverageForecastAreaInvalidMessage";
+	public static final String ComplianceReport_CoverageForecastAssetsInvalidMessage = "ComplianceReport_CoverageForecastAssetsInvalidMessage";
+	public static final String ComplianceReport_CoverageForecastBoundaryInvalidMessage = "ComplianceReport_CoverageForecastBoundaryInvalidMessage";
 }
