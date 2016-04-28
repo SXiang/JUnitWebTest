@@ -118,7 +118,7 @@ public class DataTablePage extends BasePage{
 		int numFound = 0;
 		do{			
 			for(WebElement row:tableRow){
-                if(match==isRowMatches(row, indexedMap)){
+                if(match==rowMatches(row, indexedMap)){
                 	Log.warn("Record found: '"+row.getText()+"'");
                 	numFound++;
                 }
@@ -142,7 +142,7 @@ public class DataTablePage extends BasePage{
 	 * @param filter
 	 * @return true if matches
 	 */
-	public boolean isRowMatches(WebElement row, Map<Integer,List<String>>  filter){
+	public boolean rowMatches(WebElement row, Map<Integer,List<String>>  filter){
 		List<WebElement> field = row.findElements(By.cssSelector("td"));
 		for(Entry<Integer,List<String>>entry:(filter.entrySet())){
 			String value = field.get(entry.getKey()).getText();
