@@ -98,13 +98,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div[3]/div/div/fieldset/div[3]/div[2]/div/label")
 	protected WebElement inputReportModeS1;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[1]/div/div/fieldset/div[3]/div[3]/div/label/input")
+	@FindBy(css = "#page-wrapper  fieldset  div.radio > .report-survey-mode-text > #Standard")
 	protected WebElement inputReportModeStd;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[1]/div/div/fieldset/div[3]/div[4]/div/label/input")
+	@FindBy(css = "#page-wrapper  fieldset  div.radio > .report-survey-mode-text > [id='Rapid Response']")
 	protected WebElement inputReportRapidR;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[1]/div/div/fieldset/div[3]/div[5]/div/label/input")
+	@FindBy(css = "#page-wrapper  fieldset  div.radio > .report-survey-mode-text > #Manual")
 	protected WebElement inputReportModeManual;
 
 	@FindBy(how = How.ID, using = "report-survey-mode-minimum-amplitude")
@@ -1146,12 +1146,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 		// add class testing code here
 	}
 
-//	addNewReport(title, customer, timeZone, exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong,
-//	SWLat, SWLong, surUnit, tag);
-//}
-//
+	//	addNewReport(title, customer, timeZone, exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong,
+	//	SWLat, SWLong, surUnit, tag);
+	//}
+	//
 
-	
+
 	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary,
 			String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong,
 			String surUnit, String tag, String startDate, String endDate, String surModeFilter) throws Exception {
@@ -2160,7 +2160,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 						expectedFilePath.toString(), testCaseID));
 			}
 		}
-		
+
 		String apiResponse = ApiUtility.getApiResponse(String.format(ApiUtility.REPORTS_GET_REPORT_STAT_API_RELATIVE_URL, reportTitle));
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		Gson gson = gsonBuilder.create();
@@ -2173,7 +2173,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			// validate report job.
 			validateReportJobStatus(reportJobsStatObj.ReportTitle, reportJob);
 			validateReportJobProcessingTimesForNotNull(reportJobsStatObj.ReportTitle, reportJob, reportJobTypeId);
-			
+
 			Integer actualProcessingTimeInMs = (int) (reportJob.getProcessingCompletedTimeInMs() - reportJob.getProcessingStartedTimeInMs());
 
 			if (TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
@@ -2239,4 +2239,116 @@ public class ReportsBasePage extends SurveyorBasePage {
 							reportJob.getProcessingCompletedTimeInMs(), "ProcessingCompleted", reportTitle, reportJobTypeId));
 		}
 	}
+
+    /**
+     * Verify availability of survey modes with specific report mode selected
+     * @param rmf - ReportModeFilter
+     * @return true if passed
+     */
+	public boolean verifySurveyModeFilters(ReportModeFilter rmf){
+		boolean filtersFound = true;
+		switch(rmf){
+		case Standard:
+			filtersFound = inputSurModeFilterAll.isDisplayed()
+			&&inputSurModeFilterStd.isDisplayed()
+			&&inputSurModeFilterOperator.isDisplayed()
+			&&!inputSurModeFilterRapidResponse.isDisplayed()
+			&&!inputSurModeFilterManual.isDisplayed();
+			break;
+		case RapidResponse:
+			filtersFound = inputSurModeFilterAll.isDisplayed()
+			&&inputSurModeFilterStd.isDisplayed()
+			&&inputSurModeFilterOperator.isDisplayed()
+			&&inputSurModeFilterRapidResponse.isDisplayed()
+			&&!inputSurModeFilterManual.isDisplayed();
+			break;
+		case Manual:
+			filtersFound = inputSurModeFilterManual.isDisplayed()
+			&&!inputSurModeFilterStd.isDisplayed()
+			&&!inputSurModeFilterOperator.isDisplayed()
+			&&!inputSurModeFilterAll.isDisplayed()
+			&&!inputSurModeFilterRapidResponse.isDisplayed();
+			break;
+		default:
+			filtersFound = inputSurModeFilterAll.isDisplayed()
+			&&inputSurModeFilterStd.isDisplayed()
+			&&inputSurModeFilterOperator.isDisplayed()
+			&&!inputSurModeFilterRapidResponse.isDisplayed()
+			&&!inputSurModeFilterManual.isDisplayed();
+			break;
+		}
+		return filtersFound;
+	}
+
+	/**
+	 * Verify the Type of Surveys in the resulted table are valid for the Survey Mode Filter
+	 * @param smf
+	 * @return true if passed
+	 */
+	public boolean verifySurveySelectorWithFilter(SurveyModeFilter smf){
+		List<String> invalidType = new ArrayList<String>();
+		switch(smf){
+		case All:
+			if(inputReportRapidR.isSelected()){
+				invalidType.add(SurveyModeFilter.Standard.toString());
+				invalidType.add(SurveyModeFilter.Operator.toString());
+				invalidType.add(SurveyModeFilter.RapidResponse.toString());
+			}else{
+				invalidType.add(SurveyModeFilter.Standard.toString());
+				invalidType.add(SurveyModeFilter.Operator.toString());
+			}
+			break;
+		case Standard:
+			invalidType.add(SurveyModeFilter.Standard.toString());
+			break;
+		case RapidResponse:
+			invalidType.add(SurveyModeFilter.RapidResponse.toString());
+			break;
+		case Operator:
+			invalidType.add(SurveyModeFilter.Operator.toString());
+			break;
+		case Manual:
+			invalidType.add(SurveyModeFilter.Manual.toString());
+			break;
+		default:
+			if(inputReportRapidR.isSelected()){
+				invalidType.add(SurveyModeFilter.Standard.toString());
+				invalidType.add(SurveyModeFilter.Operator.toString());
+				invalidType.add(SurveyModeFilter.RapidResponse.toString());
+			}else{
+				invalidType.add(SurveyModeFilter.Standard.toString());
+				invalidType.add(SurveyModeFilter.Operator.toString());
+			}
+		}
+		
+		return !findInvalidSurveyType(invalidType);
+
+	}
+	
+    /**
+     * Click the search button for Survey filter and wait for the survey table to be loaded
+     */
+	public void clickOnSurveySearchButton(){		
+		jsClick(this.btnSurveySearch);
+		this.waitForSurveyTabletoLoad();
+	}
+	
+	/**
+	 * Method to check for invalid surveys in the search result table
+	 * 
+	 * @param invalidTypes
+	 * @return true if invalid type found
+	 */
+	public boolean findInvalidSurveyType(List<String> invalidType){
+		
+		String columnName = "Type";
+		Map<String, List<String>> filter = new HashMap<String,List<String>>();
+		filter.put(columnName, invalidType);
+
+		By tableContextBy = By.id("datatableSurveys_wrapper");						
+		WebElement tableContext = driver.findElement(tableContextBy);
+		DataTablePage dataTable = DataTablePage.getDataTablePage(driver,tableContext, this.testSetup,this.strBaseURL, this.strPageURL);
+		
+        return dataTable.hasRecord(filter,false);
+   }
 }

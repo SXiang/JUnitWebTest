@@ -148,7 +148,7 @@ public class PDFTableUtility extends PDFUtility{
 				line += trimTableRow(pdfLines[i+combinedLine]);
 				numWords = line.split(wordSeparatorPattern).length;
 			}
-			if(equalsOrMatches(line,tableID)){     
+			if(RegexUtility.equalsOrMatches(line,tableID)){     
 				i += combinedLine;
 
 				for(j=i+startLine; j<pdfLines.length ; j++){
@@ -190,20 +190,7 @@ public class PDFTableUtility extends PDFUtility{
 		return pdfTable;
 	}
 
-	public boolean equalsOrMatches(String line, String expectedLine){
-		boolean isEqual = line.equals(expectedLine);
-		boolean isMatch = false;
 
-		if(isEqual){
-			return isEqual;
-		}else{
-			try{
-				isMatch = line.matches(expectedLine);
-			}catch(Exception e){				
-			}
-		}
-		return isMatch;
-	}
 	private String trimTableRow(String line){
 		String nelPattern = "[\\u0085]*";
 		String preSpacePattern = "^"+wordSeparatorPattern;

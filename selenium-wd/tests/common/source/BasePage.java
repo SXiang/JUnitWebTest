@@ -12,6 +12,7 @@ import static surveyor.scommon.source.SurveyorConstants.SUBTITLE;
 import static surveyor.scommon.source.SurveyorConstants.UNKNOWN_TEXT;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -320,6 +321,24 @@ public class BasePage {
 	 */
 	public void waitForPageLoad() {
 		waitForPageToLoad();
+	}
+	
+//	/**
+//	 * Element declared in PageObject is not safe to be checked without exception handling
+//	 * @param element
+//	 * @return true if element is found and is displayed
+//	 */
+//	public boolean isFoundAndDisplayed(WebElement element){
+//		try{
+//			return element.isDisplayed();
+//		}catch(Exception e){
+//			return false;
+//		}
+//	}
+//	
+	public void jsClick(WebElement element){
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", element);
 	}
 
 }
