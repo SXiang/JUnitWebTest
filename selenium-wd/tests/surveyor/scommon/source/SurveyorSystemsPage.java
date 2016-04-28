@@ -77,7 +77,7 @@ public class SurveyorSystemsPage extends SurveyorBasePage {
 		WebElement surveyorNameCell;
 		WebElement statusCell;
 		
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 		
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -92,8 +92,8 @@ public class SurveyorSystemsPage extends SurveyorBasePage {
 			surveyorXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
 			statusXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[4]";
 			
-			surveyorNameCell = table.findElement(By.xpath(surveyorXPath));
-			statusCell = table.findElement(By.xpath(statusXPath));
+			surveyorNameCell = getTable().findElement(By.xpath(surveyorXPath));
+			statusCell = getTable().findElement(By.xpath(statusXPath));
 			
 			if (surveyorNameCell.getText().trim().equalsIgnoreCase(surveyorName) && 
 					statusCell.getText().trim().equalsIgnoreCase(statusString)) {
@@ -104,7 +104,7 @@ public class SurveyorSystemsPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				
 				rowSize = newRows.size();
 				

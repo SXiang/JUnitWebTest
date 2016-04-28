@@ -347,7 +347,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		WebElement customerNameCell;
 		WebElement locationNameCell;
 
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -361,8 +361,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			customerNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			locationNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
 
-			customerNameCell = table.findElement(By.xpath(customerNameXPath));
-			locationNameCell = table.findElement(By.xpath(locationNameXPath));
+			customerNameCell = getTable().findElement(By.xpath(customerNameXPath));
+			locationNameCell = getTable().findElement(By.xpath(locationNameXPath));
 
 			Log.info(String.format("Looking for row - [Customer=%s], [Location=%s]", customerName, locationName));
 			Log.info(String.format("Found row - [Customer=%s], [Location=%s]", customerNameCell.getText().trim(), 
@@ -378,7 +378,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
 
@@ -432,7 +432,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		WebElement locationNameCell;
 		WebElement actionEditCell;
 
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -446,13 +446,13 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			customerNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			locationNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
 
-			customerNameCell = table.findElement(By.xpath(customerNameXPath));
-			locationNameCell = table.findElement(By.xpath(locationNameXPath));
+			customerNameCell = getTable().findElement(By.xpath(customerNameXPath));
+			locationNameCell = getTable().findElement(By.xpath(locationNameXPath));
 
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName)
 					&& (locationNameCell.getText().trim()).equalsIgnoreCase(locationName)) {
 				actionEditXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a";
-				actionEditCell = table.findElement(By.xpath(actionEditXPath));
+				actionEditCell = getTable().findElement(By.xpath(actionEditXPath));
 				Log.info("Found entry at row=" + rowNum);
 
 				actionEditCell.click();
@@ -529,7 +529,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
 
@@ -657,7 +657,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			locationXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
-			locationCell = table.findElement(By.xpath(locationXPath));
+			locationCell = getTable().findElement(By.xpath(locationXPath));
 
 			locationList.add(locationCell.getText().trim());
 
@@ -665,7 +665,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 					&& allPages) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
 

@@ -4,7 +4,6 @@ import org.openqa.selenium.WebDriver;
 import common.source.DateUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
-import surveyor.scommon.actions.data.DriverViewDataReader.DriverViewDataRow;
 import surveyor.scommon.source.BaseDrivingViewPage;
 
 public class BaseDrivingViewPageActions extends BaseMapViewPageActions {

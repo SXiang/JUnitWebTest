@@ -191,7 +191,7 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 		WebElement surveyorNameCell;
 		WebElement historyNoteCell;
 
-		List<WebElement> rows = table.findElements(By
+		List<WebElement> rows = getTable().findElements(By
 				.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
@@ -212,10 +212,10 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 			historyNoteXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 					+ "]/td[4]";
 
-			customerNameCell = table.findElement(By.xpath(customerNameXPath));
-			locationNameCell = table.findElement(By.xpath(locationNameXPath));
-			surveyorNameCell = table.findElement(By.xpath(surveyorNameXPath));
-			historyNoteCell = table.findElement(By.xpath(historyNoteXPath));
+			customerNameCell = getTable().findElement(By.xpath(customerNameXPath));
+			locationNameCell = getTable().findElement(By.xpath(locationNameXPath));
+			surveyorNameCell = getTable().findElement(By.xpath(surveyorNameXPath));
+			historyNoteCell = getTable().findElement(By.xpath(historyNoteXPath));
 
 			if ((customerNameCell.getText().trim())
 					.equalsIgnoreCase(customerName)
@@ -233,7 +233,7 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();

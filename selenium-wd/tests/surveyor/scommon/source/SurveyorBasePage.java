@@ -6,9 +6,11 @@ package surveyor.scommon.source;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -31,6 +33,8 @@ import surveyor.scommon.source.SurveyorConstants.UserTimezone;
  *
  */
 public class SurveyorBasePage extends BasePage {
+
+	private static final String DATA_TABLE_XPATH = "//*[@id='datatable']/tbody";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/a")
 	protected WebElement dropDownAdministrator;
@@ -67,8 +71,8 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_filter']/label/input")
 	protected WebElement inputSearch;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody")
-	protected WebElement table;
+	@FindBy(how = How.XPATH, using = DATA_TABLE_XPATH)
+	private WebElement table;
 	protected String strTRXPath = "//*[@id='datatable']/tbody/tr";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_next']")
@@ -134,6 +138,21 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement easternTime;
 	
 	private static String headerColumnBaseXPath = "//*[@id='datatable']/thead/tr/th[%d]";
+
+	public enum TableSortOrder {
+		ASC ("ASC"),
+		DESC ("DESC");
+		
+		private final String name;
+
+		TableSortOrder(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
+	}
 	
 	/**
 	 * @param driver
@@ -315,9 +334,14 @@ public class SurveyorBasePage extends BasePage {
 			}
 		});
 	}
+
 	public Integer getRecordsShownOnPage(WebDriver driver) {
 		WebElement pageInfoLabel = driver.findElement(By.id("datatable_info"));
-		String numTextString = pageInfoLabel.getText().trim();
+		return getRecordsShownOnPage(driver, pageInfoLabel);
+	}
+	
+	public Integer getRecordsShownOnPage(WebDriver driver, WebElement tableElement) {		
+		String numTextString = tableElement.getText().trim();
 		List<String> strList = RegexUtility.split(numTextString, RegexUtility.SPACE_SPLIT_REGEX_PATTERN);
 		Integer records = 0;
 		if (strList != null && strList.size() > 3) {
@@ -325,12 +349,83 @@ public class SurveyorBasePage extends BasePage {
 		}
 		return records;
 	}
+
+	private WebElement getTableHeader(Integer columnIndex) {
+		WebElement headerElement = driver.findElement(By.xpath(String.format(headerColumnBaseXPath, columnIndex)));
+		return headerElement;
+	}
+
+	public TableSortOrder getSortOrderFromString(String sortOrderString) {
+		TableSortOrder tblSortOrder = TableSortOrder.ASC;
+		if (sortOrderString.equals("DESC")) {
+			tblSortOrder = TableSortOrder.DESC;
+		} 
+		return tblSortOrder;
+	}
+
+	public WebElement getTable() {
+		refreshPageUntilElementFound(DATA_TABLE_XPATH);
+		this.waitForPageLoad();
+		this.table = driver.findElement(By.xpath(DATA_TABLE_XPATH));
+		return this.table;
+	}
+
+	public void setTable(WebElement table) {
+		this.table = table;
+	}
+
+	public void sortTableByColumn(Integer columnIndex, TableSortOrder sortOrder) {
+		WebElement headerElement = getTableHeader(columnIndex);
+		TableSortOrder currTblSortOrder = getCurrentColumnSortOrder(headerElement, columnIndex);
+		// If current sort order is same as requested sort order, click twice to refresh data.
+		// If current sort order is different than requested sort order, click once to change sorted order.
+		if (currTblSortOrder.equals(sortOrder)) {
+			multiClickElement(headerElement, 2);
+		} else {
+			multiClickElement(headerElement, 1);
+		}
+		
+	}
+
+	private TableSortOrder getCurrentColumnSortOrder(WebElement headerElement, Integer columnIndex) {
+		String classAttrValue = headerElement.getAttribute("class");
+		// Get the current sorted order of the column.
+		TableSortOrder currTblSortOrder = TableSortOrder.ASC;
+		if (classAttrValue.contains("sorting_desc")) {
+			currTblSortOrder = TableSortOrder.DESC;
+		}
+		return currTblSortOrder;
+	}
 	
 	public void clickOnColumnHeader(Integer columnIndex, Integer numTimesToClick) {
-		WebElement headerElement = driver.findElement(By.xpath(String.format(headerColumnBaseXPath, columnIndex)));
-		for (int i = 0; i < numTimesToClick; i++) {
-			headerElement.click();
+		WebElement headerElement = getTableHeader(columnIndex);
+		multiClickElement(headerElement, numTimesToClick);
+	}
+
+	private void multiClickElement(WebElement element, Integer numTimesToClick) {
+		if (element != null && numTimesToClick > 0) {
+			for (int i = 0; i < numTimesToClick; i++) {
+				element.click();
+			}
 		}
+	}
+
+	public void refreshPageUntilElementFound(String elementXPath) {
+		waitForAJAXCallsToComplete();
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				Boolean elementDetected = false;
+				WebElement element = null;
+				try {
+					element = d.findElement(By.xpath(elementXPath));
+					String elementText = element.getText();
+					elementDetected = !elementText.isEmpty();
+				} catch (Exception ex) {
+					d.navigate().refresh();
+				}
+				return elementDetected;
+			}
+		});
 	}
 
 	/*
@@ -339,12 +434,40 @@ public class SurveyorBasePage extends BasePage {
 	public void WaitForElementReady(String elementID) {
 		(new WebDriverWait(this.driver, this.timeout)).until(ExpectedConditions.presenceOfElementLocated(By.id(elementID)));
 	}
-	
+
 	public void waitForTableDataToLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return (getRecordsShownOnPage(d) > 0);
 			}
 		});
+	}
+
+	public void waitForAJAXCallsToComplete() {
+		ExpectedCondition<Boolean> jQueryActiveComplete = new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				try {
+					Object jQueryActive = ((JavascriptExecutor)d).executeScript("return jQuery.active");
+					if (jQueryActive.toString().equalsIgnoreCase("0")) {
+						return true;
+					}
+				} catch (WebDriverException e) {
+					Log.info("jQuery NOT available. Skipping wait on jQuery.active");
+					return true;
+				}
+				return false;	
+			}
+		};	
+		ExpectedCondition<Boolean> documentReadyComplete = new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				Object documentReadyState = ((JavascriptExecutor)d).executeScript("return document.readyState");
+				if (documentReadyState.toString().equalsIgnoreCase("complete")) {
+					return true;
+				}
+				return false;
+			}
+		};	
+		(new WebDriverWait(driver, timeout)).until(jQueryActiveComplete);
+		(new WebDriverWait(driver, timeout)).until(documentReadyComplete);
 	}
 }

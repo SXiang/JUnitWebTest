@@ -2,6 +2,7 @@ package surveyor.scommon.actions.data;
 
 import common.source.ExcelUtility;
 import common.source.Log;
+import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 
 public class CustomerDataReader extends BaseDataReader {
 
@@ -23,6 +24,7 @@ public class CustomerDataReader extends BaseDataReader {
 		public String enabled;
 		public String eULA;
 		public String licensedFeaturesRowIDs;
+		private LicensedFeatures[] licensedFeatures;
 		
 		public CustomerDataRow(String rowID, String name, String enabled, String eULA, String licensedFeaturesRowIDs) {
 			this.rowID = rowID;
@@ -30,6 +32,14 @@ public class CustomerDataReader extends BaseDataReader {
 			this.enabled = enabled;
 			this.eULA = eULA;
 			this.licensedFeaturesRowIDs = licensedFeaturesRowIDs;
+		}
+
+		public LicensedFeatures[] getLicensedFeatures() {
+			return licensedFeatures;
+		}
+
+		public void setLicensedFeatures(LicensedFeatures[] licensedFeatures) {
+			this.licensedFeatures = licensedFeatures;
 		}
 	}	
  

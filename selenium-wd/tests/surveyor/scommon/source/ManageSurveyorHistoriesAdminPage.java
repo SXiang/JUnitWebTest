@@ -53,7 +53,7 @@ public class ManageSurveyorHistoriesAdminPage extends
 		WebElement customerCell;
 		WebElement noteCell;
 
-		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
+		List<WebElement> rows = getTable().findElements(By.xpath(strTRXPath));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -69,10 +69,10 @@ public class ManageSurveyorHistoriesAdminPage extends
 			strSurveyorXPath = strTRXPath + "[" + rowNum + "]/td[3]";
 			strNoteXPath = strTRXPath + "[" + rowNum + "]/td[4]";
 
-			customerCell = table.findElement(By.xpath(strCustomerXPath));
-			locationCell = table.findElement(By.xpath(strLocationXPath));
-			surveyorCell = table.findElement(By.xpath(strSurveyorXPath));
-			noteCell = table.findElement(By.xpath(strNoteXPath));
+			customerCell = getTable().findElement(By.xpath(strCustomerXPath));
+			locationCell = getTable().findElement(By.xpath(strLocationXPath));
+			surveyorCell = getTable().findElement(By.xpath(strSurveyorXPath));
+			noteCell = getTable().findElement(By.xpath(strNoteXPath));
 
 			if ((customerCell.getText().trim())
 					.equalsIgnoreCase(strCustomerName)
@@ -91,7 +91,7 @@ public class ManageSurveyorHistoriesAdminPage extends
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
 
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath(strTRXPath));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING))

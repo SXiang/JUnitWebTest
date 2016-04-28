@@ -6,8 +6,10 @@ package common.source;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -40,41 +42,18 @@ public class BaseHelper {
 	public static void deCompressZipFile(String strNameBase, String strDLPath) throws Exception {
 		String zipFile = strDLPath + strNameBase + ".zip";
 		String outputFolder = strDLPath + strNameBase;
-
-		ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile));
-		ZipEntry ze = zis.getNextEntry();
-
-		while (ze != null) {
-			String entryName = ze.getName();
-
-			File f = new File(outputFolder + File.separator + entryName);
-			f.getParentFile().mkdirs();
-			FileOutputStream fos = new FileOutputStream(f);
-			try {
-				int len;
-				byte buffer[] = new byte[1024];
-				while ((len = zis.read(buffer)) > 0) {
-					fos.write(buffer, 0, len);
-				}
-			} finally {
-				fos.close();
-			}
-
-			ze = zis.getNextEntry();
-		}
-
-		zis.closeEntry();
-
-		zis.close();
+		unZip(zipFile, outputFolder);
 	}
 
 	public static void deCompressZipFile(String strName, String strDLPath, boolean fullFileName) throws Exception {
 		String zipFile = strDLPath + strName;
 		String outputFolder = strDLPath;
+		unZip(zipFile, outputFolder);
+	}
 
+	private static void unZip(String zipFile, String outputFolder) throws FileNotFoundException, IOException {
 		ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile));
 		ZipEntry ze = zis.getNextEntry();
-
 		while (ze != null) {
 			String entryName = ze.getName();
 
@@ -92,9 +71,7 @@ public class BaseHelper {
 			}
 			ze = zis.getNextEntry();
 		}
-
 		zis.closeEntry();
-
 		zis.close();
 	}
 

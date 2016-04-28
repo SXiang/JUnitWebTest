@@ -109,17 +109,74 @@ public class FileUtility {
 		// Delete the working file.
 		Files.delete(Paths.get(workingFullPath));
 	}
-	
+
+	/*
+	 * Returns list of files in the specified directory.
+	 */
+	public static List<String> getFilesInDirectory(Path directory, boolean includeFullPath) throws IOException {
+		List<String> files = new ArrayList<String>();
+		DirectoryStream<Path> stream = Files.newDirectoryStream(directory);
+	    for (Path file: stream) {
+	    	if (includeFullPath) {
+	    		files.add(file.toAbsolutePath().toString());
+	    	} else {
+	    		files.add(file.getFileName().toString());
+	    	}
+	    }
+	    return files;
+	}
+
 	/*
 	 * Returns list of files in the specified directory.
 	 */
 	public static List<String> getFilesInDirectory(Path directory) throws IOException {
-		List<String> files = new ArrayList<String>();
-		DirectoryStream<Path> stream = Files.newDirectoryStream(directory);
-	    for (Path file: stream) {
-	    	files.add(file.toAbsolutePath().toString());
-	    }
-	    return files;
+		return getFilesInDirectory(directory, true /*includeFullPath*/);
+	}
+	
+	public static boolean compareFilesInDirectories(String firstFolderPath, String secondFolderPath) throws IOException {
+		Log.info(String.format("Comparing files in Folders - [%s] <==> [%s]...", firstFolderPath, secondFolderPath));
+		
+		// Check that first folder and second folder have the exact same files.
+		List<String> firstDirectoryFiles = FileUtility.getFilesInDirectory(Paths.get(firstFolderPath), false /*includeFullPath*/);
+		List<String> secondDirectoryFiles = FileUtility.getFilesInDirectory(Paths.get(secondFolderPath), false /*includeFullPath*/);
+
+		if ((firstDirectoryFiles == null && secondDirectoryFiles == null) || (firstDirectoryFiles.size() == 0 && secondDirectoryFiles.size() == 0)) {
+			Log.info("Both first and second folder have 0 files. <-- [Return TRUE]");
+			return true;
+		}
+		
+		if ((firstDirectoryFiles == null && secondDirectoryFiles != null) || (firstDirectoryFiles.size() == 0 && secondDirectoryFiles.size() != 0)) {
+			Log.info("First folder has 0 files. Second folder have 1 or more files. <-- [Return FALSE]");
+			return false;
+		}
+
+		if ((firstDirectoryFiles != null && secondDirectoryFiles == null) || (firstDirectoryFiles.size() != 0 && secondDirectoryFiles.size() == 0)) {
+			Log.info("First folder has 1 or more files. Second folder have 0 files. <-- [Return FALSE]");
+			return false;
+		}
+
+		// Check both directories have same number of files.
+		if ((firstDirectoryFiles.size() != secondDirectoryFiles.size())) {
+			Log.info(String.format("First folder has [%d] files. Second folder has [%d] files. <-- [Return FALSE]",
+					firstDirectoryFiles.size(), secondDirectoryFiles.size()));
+			return false;
+		}
+
+		for (String fDirFile : firstDirectoryFiles) {
+			if (!secondDirectoryFiles.contains(fDirFile)) {
+				Log.info(String.format("Second folder does NOT contain file - [%s] from first folder. <-- [Return FALSE]", fDirFile));
+				return false;
+			}
+		}
+
+		for (String sDirFile : secondDirectoryFiles) {
+			if (!firstDirectoryFiles.contains(sDirFile)) {
+				Log.info(String.format("First folder does NOT contain file - [%s] from second folder. <-- [Return FALSE]", sDirFile));
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
