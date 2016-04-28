@@ -2280,42 +2280,42 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 * @return true if passed
 	 */
 	public boolean verifySurveySelectorWithFilter(SurveyModeFilter smf){
-		List<String> invalidType = new ArrayList<String>();
+		List<String> validType = new ArrayList<String>();
 		switch(smf){
 		case All:
 			if(inputReportRapidR.isSelected()){
-				invalidType.add(SurveyModeFilter.Standard.toString());
-				invalidType.add(SurveyModeFilter.Operator.toString());
-				invalidType.add(SurveyModeFilter.RapidResponse.toString());
+				validType.add(SurveyModeFilter.Standard.toString());
+				validType.add(SurveyModeFilter.Operator.toString());
+				validType.add(SurveyModeFilter.RapidResponse.toString());
 			}else{
-				invalidType.add(SurveyModeFilter.Standard.toString());
-				invalidType.add(SurveyModeFilter.Operator.toString());
+				validType.add(SurveyModeFilter.Standard.toString());
+				validType.add(SurveyModeFilter.Operator.toString());
 			}
 			break;
 		case Standard:
-			invalidType.add(SurveyModeFilter.Standard.toString());
+			validType.add(SurveyModeFilter.Standard.toString());
 			break;
 		case RapidResponse:
-			invalidType.add(SurveyModeFilter.RapidResponse.toString());
+			validType.add(SurveyModeFilter.RapidResponse.toString());
 			break;
 		case Operator:
-			invalidType.add(SurveyModeFilter.Operator.toString());
+			validType.add(SurveyModeFilter.Operator.toString());
 			break;
 		case Manual:
-			invalidType.add(SurveyModeFilter.Manual.toString());
+			validType.add(SurveyModeFilter.Manual.toString());
 			break;
 		default:
 			if(inputReportRapidR.isSelected()){
-				invalidType.add(SurveyModeFilter.Standard.toString());
-				invalidType.add(SurveyModeFilter.Operator.toString());
-				invalidType.add(SurveyModeFilter.RapidResponse.toString());
+				validType.add(SurveyModeFilter.Standard.toString());
+				validType.add(SurveyModeFilter.Operator.toString());
+				validType.add(SurveyModeFilter.RapidResponse.toString());
 			}else{
-				invalidType.add(SurveyModeFilter.Standard.toString());
-				invalidType.add(SurveyModeFilter.Operator.toString());
+				validType.add(SurveyModeFilter.Standard.toString());
+				validType.add(SurveyModeFilter.Operator.toString());
 			}
 		}
 		
-		return !findInvalidSurveyType(invalidType);
+		return !findInvalidSurveyType(validType);
 
 	}
 	
