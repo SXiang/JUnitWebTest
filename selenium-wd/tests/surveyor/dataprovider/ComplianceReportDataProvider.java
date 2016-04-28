@@ -543,7 +543,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC798() {
 		return new Object[][] {				
-			{ "TC798" /*TestCaseID*/, 6 /*userDataRowID*/,  49 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+			{ "TC798" /*TestCaseID*/, 6 /*userDataRowID*/,  -1 /*NOT USED - reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 }

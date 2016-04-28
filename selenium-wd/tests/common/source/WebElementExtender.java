@@ -23,6 +23,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 
 public class WebElementExtender {
 
@@ -32,6 +33,25 @@ public class WebElementExtender {
 	       String attrValue = element.getAttribute(attributeName);
 	       return (attrValue != null);
 	   } catch (Exception e) {}
+	   return false;
+   }
+
+   /**
+    * Use this method for elements detected using PageFactory and you want to confirm 
+    * this element is present on the web page.
+    * NOTE: This method might not work as expected if element is detected using driver.FindElement(...)
+    */
+   public static boolean isElementPresentAndDisplayed(WebElement element)
+   {
+	   try {
+	       if (element != null) {
+	    	   if (element.isDisplayed()) {
+	    		   return true;
+	    	   }
+	       }
+	   } catch (NoSuchElementException e) {
+		   return false;
+	   }
 	   return false;
    }
 

@@ -512,6 +512,22 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 	}
+	
+	public boolean isShapeIconDisplayedInViewer() {
+		return WebElementExtender.isElementPresentAndDisplayed(zipShape);
+	}
+
+	public boolean isMetadataIconDisplayedInViewer() {
+		return WebElementExtender.isElementPresentAndDisplayed(zipMeta);
+	}
+
+	public boolean isReportZipIconDisplayedInViewer() {
+		return WebElementExtender.isElementPresentAndDisplayed(zipImg);
+	}
+
+	public boolean isReportPDFIconDisplayedInViewer() {
+		return WebElementExtender.isElementPresentAndDisplayed(pdfImg);
+	}
 
 	public void clickOnShapeZIPInReportViewer() {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -1998,12 +2014,20 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return true;
 	}
 
-	public void verifyThumbnailInReportViewer(ReportViewerThumbnailType compliancezipmeta) {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
+	public boolean verifyThumbnailInReportViewer(ReportViewerThumbnailType compliancezipmeta) {
+		switch (compliancezipmeta) {
+		case ComplianceTablePDF:
+			return this.isShapeIconDisplayedInViewer();
+		case ComplianceZipMeta:
+			return this.isMetadataIconDisplayedInViewer();
+		case ComplianceZipPDF:
+			return this.isReportZipIconDisplayedInViewer();
+		case ComplianceZipShape:
+			return this.isReportPDFIconDisplayedInViewer();
+		default:
+			break;
 		}
+		return false;
 	}
 
 	private String getIsotopicValue(String isotopicUncertaintyValue) {

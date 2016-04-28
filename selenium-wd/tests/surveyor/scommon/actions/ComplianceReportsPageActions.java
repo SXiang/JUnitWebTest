@@ -2075,17 +2075,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
 
 	/**
-	 * Executes verifyGapsTableSortedAscByColumn action.
-	 * @param data - specifies the column name.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyGapsTableSortedAscByColumn(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.verifyGapsTableSortedAscByColumn", data, dataRowID);
-		return true;
-	}
-
-	/**
 	 * Executes verifyWarningMessageOnDeleteButtonClickEquals action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -2775,7 +2764,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifyDeleteButtonIsDisplayed")) { return this.verifyDeleteButtonIsDisplayed(data, dataRowID); }
 		else if (actionName.equals("verifyGapShapeFilesHaveCorrectData")) { return this.verifyGapShapeFilesHaveCorrectData(data, dataRowID); }
 		else if (actionName.equals("verifyGapsTableInfo")) { return this.verifyGapsTableInfo(data, dataRowID); }
-		else if (actionName.equals("verifyGapsTableSortedAscByColumn")) { return this.verifyGapsTableSortedAscByColumn(data, dataRowID); }
 		else if (actionName.equals("verifyInvestigateButtonIsDisplayed")) { return this.verifyInvestigateButtonIsDisplayed(data, dataRowID); }
 		else if (actionName.equals("verifyInvestigatePDFButtonIsDisplayed")) { return this.verifyInvestigatePDFButtonIsDisplayed(data, dataRowID); }
 		else if (actionName.equals("verifyInvestigatePDFDownload")) { return this.verifyInvestigatePDFDownload(data, dataRowID); }
