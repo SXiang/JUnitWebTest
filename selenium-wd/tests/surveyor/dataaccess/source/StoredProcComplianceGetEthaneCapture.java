@@ -118,18 +118,18 @@ public class StoredProcComplianceGetEthaneCapture extends BaseEntity {
 	}
 
 	private StoredProcComplianceGetEthaneCapture loadFrom(ResultSet resultSet) {
-		StoredProcComplianceGetEthaneCapture objReport = new StoredProcComplianceGetEthaneCapture();
+		StoredProcComplianceGetEthaneCapture objEthaneCapture = new StoredProcComplianceGetEthaneCapture();
 		try {
-			objReport.setDateTime(resultSet.getString("Date_Time"));
-			objReport.setSurveyorUnitName(resultSet.getString("SurveyorUnitName"));
-			objReport.setDisposition(resultSet.getString("Disposition"));
-			objReport.setEthaneRatioSdev(resultSet.getFloat("EthaneRatioSdev"));
-			objReport.setEthaneRatio(resultSet.getFloat("EthaneRatio"));
-			objReport.setText(resultSet.getString("Text"));
+			objEthaneCapture.setDateTime(resultSet.getString("Date_Time"));
+			objEthaneCapture.setSurveyorUnitName(resultSet.getString("SurveyorUnitName"));
+			objEthaneCapture.setDisposition(resultSet.getString("Disposition"));
+			objEthaneCapture.setEthaneRatioSdev(resultSet.getFloat("EthaneRatioSdev"));
+			objEthaneCapture.setEthaneRatio(resultSet.getFloat("EthaneRatio"));
+			objEthaneCapture.setText(resultSet.getString("Text"));
 		} catch (SQLException e) {
-			Log.error("Class Report | " + e.toString());
+			Log.error("Class StoredProcComplianceGetEthaneCapture | " + e.toString());
 		}
-		return objReport;
+		return objEthaneCapture;
 	}
 
 	public ArrayList<StoredProcComplianceGetEthaneCapture> load(String reportId) {
