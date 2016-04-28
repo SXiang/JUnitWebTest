@@ -116,6 +116,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 
 		// Add Location2 for the Customer.
 		manageLocationsPage.open();
+		System.out.println(locationName2);
 		manageLocationsPage.addNewLocation(locationName2, SQACUS, cityName);
 
 		// Login as Customer Utility Admin.

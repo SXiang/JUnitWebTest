@@ -17,6 +17,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.CryptoUtility;
 import common.source.Log;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import surveyor.dataprovider.RunAs;
 import surveyor.dataprovider.UserDataProvider;
 import surveyor.scommon.source.ManageCustomersPage;
@@ -192,7 +193,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName,  customerName, cityName);
-		
+		System.out.println("new location "+newLocationName);
 		manageLocationsPage.editPDExistingLocation(customerName, locationName, newLocationName);
 		assertTrue(manageLocationsPage.findExistingLocation(customerName, newLocationName));
 	}
