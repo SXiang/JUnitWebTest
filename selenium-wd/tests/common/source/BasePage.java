@@ -322,20 +322,10 @@ public class BasePage {
 	public void waitForPageLoad() {
 		waitForPageToLoad();
 	}
-	
-//	/**
-//	 * Element declared in PageObject is not safe to be checked without exception handling
-//	 * @param element
-//	 * @return true if element is found and is displayed
-//	 */
-//	public boolean isFoundAndDisplayed(WebElement element){
-//		try{
-//			return element.isDisplayed();
-//		}catch(Exception e){
-//			return false;
-//		}
-//	}
-//	
+	/**
+	 * Javascript Click
+	 * @param element - element to be clicked
+	 */
 	public void jsClick(WebElement element){
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click();", element);
