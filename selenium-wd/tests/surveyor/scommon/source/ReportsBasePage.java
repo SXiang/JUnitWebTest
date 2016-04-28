@@ -152,9 +152,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "buttonSearchSurvey")
 	protected WebElement btnSurveySearch;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td[7]/input")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/input[@type='checkbox']")
 	protected WebElement checkboxSurFirst;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/input[@type='checkbox']")
+	protected List<WebElement> checkboxSurveys;
+	
 	@FindBy(how = How.ID, using = "report-geo-filter")
 	protected WebElement checkGeoFilter;
 
@@ -285,6 +288,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "dvErrorText")
 	protected WebElement divErrorText;
 	protected String strErrorText = "//div[@id='dvErrorText']";
+	
+	@FindBy(css = "#dvErrors #dvErrorText > ul > li")
+	protected List<WebElement> listOfErrors;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_filter']/label/input")
 	protected WebElement inputSearchReport;
@@ -642,6 +648,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void addNewReport(Reports reports, boolean openNewReportsPage) throws Exception {
+		addNewReport(reports, null, openNewReportsPage);
+	}
+	
+	public void addNewReport(Reports reports, List<Integer>tagIndexes, boolean openNewReportsPage ) throws Exception {
 		if (openNewReportsPage) {
 			openNewReportPage();
 		}
@@ -662,8 +672,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 		this.clickOnOKButton();
 	}
-
 	public void addSurveyInformation(Reports reports) throws Exception {
+		addSurveyInformation(reports, null);
+	}
+	public void addSurveyInformation(Reports reports, List<Integer> tagIndexes) throws Exception {
 		Log.info("Adding Survey information");
 		String surveyor = reports.getSurveyorUnit();
 		String username = reports.getUsername();
@@ -817,6 +829,20 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 	
+	public boolean verifyErrorMessages(String... errorMessages){
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>(){
+			public Boolean apply(WebDriver d){
+				return errorMessages==null||errorMessages[0].isEmpty()||listOfErrors.size()>=errorMessages.length;
+			}
+		});
+		
+		for(String err:errorMessages ){
+			if(!listOfErrors.contains(err)){
+				return false;
+			}
+		}
+		return true;
+	}
 	/**
 	 * Implementation to be provided by Derived classes.
 	 */
@@ -1135,7 +1161,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		if (reportsCompliance.getSurveyorUnit() != "") {
 			selectSurveySurveyor(reportsCompliance.getSurveyorUnit());
 		}
-
+	
 		for (String tagValue : reportsCompliance.tagList) {
 			if (tagValue != "") {
 				inputSurveyTag(tagValue);

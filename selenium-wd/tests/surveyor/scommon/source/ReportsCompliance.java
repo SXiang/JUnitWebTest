@@ -3,8 +3,15 @@
  */
 package surveyor.scommon.source;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
+
+import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
  * @author zlu
@@ -501,7 +508,58 @@ public class ReportsCompliance extends Reports {
 		this.latLongRectHeight = latLongRectHeight;
 		this.latLongRectWidth = latLongRectWidth;
 	}
-	
+
+	public ReportsCompliance getSampleComplianceReport(){
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+		listBoundary.add(RNELAT);
+		listBoundary.add(RNELON);
+		listBoundary.add(RSWLAT);
+		listBoundary.add(RSWLON);
+
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "0");
+		tableMap.put(KEYISOANA, "0");
+		tableMap.put(KEYPCA, "0");
+		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYPCF, "0");
+		tableMap.put(KEYASSETCASTIRON, "0");
+		tableMap.put(KEYASSETCOPPER, "0");
+		tableMap.put(KEYASSETOTHERPLASTIC, "0");
+		tableMap.put(KEYASSETPEPLASTIC, "0");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "0");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "0");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
+		tablesList.add(tableMap);
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap = new HashMap<String, String>();
+
+		viewMap.put(KEYVIEWNAME, "Test View");
+		viewMap.put(KEYLISA, "1");
+		viewMap.put(KEYFOV, "0");
+		viewMap.put(KEYBREADCRUMB, "0");
+		viewMap.put(KEYINDICATIONS, "0");
+		viewMap.put(KEYISOTOPICCAPTURE, "0");
+		viewMap.put(KEYANNOTATION, "0");
+		viewMap.put(KEYGAPS, "0");
+		viewMap.put(KEYASSETS, "0");
+		viewMap.put(KEYBOUNDARIES, "0");
+		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
+
+		viewList.add(viewMap);
+
+		List<String> tagList = new ArrayList<String>();
+		tagList.add("");
+		
+		return new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", 
+				tagList, "", "", viewList, SurveyModeFilter.Standard);
+
+	}
 	/**
 	 * @param args
 	 */
