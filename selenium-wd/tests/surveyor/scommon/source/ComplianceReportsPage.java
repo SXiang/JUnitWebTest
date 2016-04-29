@@ -2283,8 +2283,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			ArrayList<String> storedProcConvStringList = new ArrayList<String>();
 			while (lineIterator.hasNext()) {
 				StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
-				String objAsString = objStoredProc.toString();
-				storedProcConvStringList.add(objAsString.replace("0.0", "").replaceAll("\\s+", "").trim());
+				String objAsString = objStoredProc.toString();				
+				storedProcConvStringList.add(objAsString.replace("0.0", "0").replaceAll("\\s+", "").trim());				
 			}
 
 			if (!reportIndicationsList.equals(storedProcConvStringList)) {
