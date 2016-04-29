@@ -339,6 +339,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public boolean findExistingLocation(String customerName, String locationName) {
 		setPagination(PAGINATIONSETTING_100);
 
+		this.waitForAJAXCallsToComplete();
 		this.waitForTableDataToLoad();
 
 		String customerNameXPath;
