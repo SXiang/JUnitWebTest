@@ -20,6 +20,7 @@ import common.source.BasePage;
 import common.source.Log;
 import common.source.RegexUtility;
 import common.source.TestSetup;
+import common.source.WebElementExtender;
 
 public class DataTablePage extends BasePage{
 
@@ -219,7 +220,7 @@ public class DataTablePage extends BasePage{
 		waitForPageLoad();
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return dataTable.isDisplayed();
+				return WebElementExtender.isElementPresentAndDisplayed(dataTable);
 			}
 		});
 	}

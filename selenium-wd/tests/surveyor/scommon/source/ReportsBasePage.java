@@ -46,6 +46,7 @@ import common.source.RegexUtility;
 import common.source.ShapeToGeoJsonConverter;
 import common.source.TestContext;
 import common.source.TestSetup;
+import common.source.WebElementExtender;
 import net.avh4.util.imagecomparison.ImageComparisonResult;
 import surveyor.api.source.ReportJobsStat;
 import surveyor.scommon.source.Reports.ReportJobType;
@@ -2343,32 +2344,32 @@ public class ReportsBasePage extends SurveyorBasePage {
 		boolean filtersFound = true;
 		switch(rmf){
 		case Standard:
-			filtersFound = inputSurModeFilterAll.isDisplayed()
-			&&inputSurModeFilterStd.isDisplayed()
-			&&inputSurModeFilterOperator.isDisplayed()
-			&&!inputSurModeFilterRapidResponse.isDisplayed()
-			&&!inputSurModeFilterManual.isDisplayed();
+			filtersFound = WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterAll)
+			&&WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterStd)
+			&&WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterOperator)
+			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterRapidResponse)
+			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterManual);
 			break;
 		case RapidResponse:
-			filtersFound = inputSurModeFilterAll.isDisplayed()
-			&&inputSurModeFilterStd.isDisplayed()
-			&&inputSurModeFilterOperator.isDisplayed()
-			&&inputSurModeFilterRapidResponse.isDisplayed()
-			&&!inputSurModeFilterManual.isDisplayed();
+			filtersFound = WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterAll)
+			&&WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterStd)
+			&&WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterOperator)
+			&&WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterRapidResponse)
+			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterManual);
 			break;
 		case Manual:
-			filtersFound = inputSurModeFilterManual.isDisplayed()
-			&&!inputSurModeFilterStd.isDisplayed()
-			&&!inputSurModeFilterOperator.isDisplayed()
-			&&!inputSurModeFilterAll.isDisplayed()
-			&&!inputSurModeFilterRapidResponse.isDisplayed();
+			filtersFound = WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterManual)
+			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterStd)
+			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterOperator)
+			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterAll)
+			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterRapidResponse);
 			break;
 		default:
-			filtersFound = inputSurModeFilterAll.isDisplayed()
-			&&inputSurModeFilterStd.isDisplayed()
-			&&inputSurModeFilterOperator.isDisplayed()
-			&&!inputSurModeFilterRapidResponse.isDisplayed()
-			&&!inputSurModeFilterManual.isDisplayed();
+			filtersFound = WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterAll)
+			&&WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterStd)
+			&&WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterOperator)
+			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterRapidResponse)
+			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterManual);
 			break;
 		}
 		return filtersFound;
