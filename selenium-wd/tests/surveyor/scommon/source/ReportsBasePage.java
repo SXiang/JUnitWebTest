@@ -655,6 +655,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		if (openNewReportsPage) {
 			openNewReportPage();
 		}
+		// 1. Title and Customer
 		inputReportTitle(reports.getRptTitle());
 
 		if (reports.getCustomer() != null && reports.getCustomer() != "Picarro") {
@@ -664,12 +665,17 @@ public class ReportsBasePage extends SurveyorBasePage {
 				inputReportTitle(reports.getRptTitle());
 			}
 		}
+		
+		// 2. Other parameters
 		fillReportSpecific(reports);
+		
+		// 3. Add Surveys
 		if (reports.getSurveyInfoList() != null) {
 			addMultipleSurveysToReport(reports);
 		} else {
 			addSurveyInformation(reports);
 		}
+		
 		this.clickOnOKButton();
 	}
 	public void addSurveyInformation(Reports reports) throws Exception {

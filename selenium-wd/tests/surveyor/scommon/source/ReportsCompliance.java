@@ -23,7 +23,10 @@ public class ReportsCompliance extends Reports {
 	public static final String BOUNDARY_PREFIX = "Boundary_";
 	public static final String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
 
+	//Report
 	protected String exclusionRadius;
+	
+	//Custom Boundary
 	protected List<String> listBoundary;
 	protected String imageMapHeight;
 	protected String imageMapWidth;
@@ -31,11 +34,18 @@ public class ReportsCompliance extends Reports {
 	protected String NELong;
 	protected String SWLat;
 	protected String SWLong;
+	
+	//Opacity Fine-Tuning
 	protected String fovOpacity;
 	protected String lisaOpacity;
-
+	//View Size (PDF image output);
+	protected String viewWidth;
+	protected String viewHeight;
+	//Views
 	protected List<Map<String, String>> viewList;
+	//Optional Tablular PDF Content
 	protected List<Map<String, String>> tablesList;
+	//Optional View Layers
 	protected List<Map<String, String>> viewLayersList;
 	
 	protected SurveyModeFilter surveyModeFilter;
@@ -237,14 +247,14 @@ public class ReportsCompliance extends Reports {
 	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, 
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList, startDate, endDate);
-		this.exclusionRadius=exclusionRadius;
+		this.exclusionRadius=exclusionRadius;		
 		this.imageMapHeight=listBoundary.get(0);
 		this.imageMapWidth=listBoundary.get(1);
 		this.NELat = listBoundary.get(2);
 		this.NELong =listBoundary.get(3);
 		this.SWLat = listBoundary.get(4);
 		this.SWLong = listBoundary.get(5);
-		this.listBoundary = listBoundary;
+		this.listBoundary = listBoundary;		
 		this.tablesList = tablesList;
 		this.viewList= viewList;
 		this.surveyModeFilter=surveyMode;
@@ -509,57 +519,39 @@ public class ReportsCompliance extends Reports {
 		this.latLongRectWidth = latLongRectWidth;
 	}
 
-	public ReportsCompliance getSampleComplianceReport(){
-		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add(IMGMAPHEIGHT);
-		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add(RNELAT);
-		listBoundary.add(RNELON);
-		listBoundary.add(RSWLAT);
-		listBoundary.add(RSWLON);
-
-		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
-		Map<String, String> tableMap = new HashMap<String, String>();
-
-		tableMap.put(KEYINDTB, "0");
-		tableMap.put(KEYISOANA, "0");
-		tableMap.put(KEYPCA, "0");
-		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYPCF, "0");
-		tableMap.put(KEYASSETCASTIRON, "0");
-		tableMap.put(KEYASSETCOPPER, "0");
-		tableMap.put(KEYASSETOTHERPLASTIC, "0");
-		tableMap.put(KEYASSETPEPLASTIC, "0");
-		tableMap.put(KEYASSETPROTECTEDSTEEL, "0");
-		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "0");
-		tableMap.put(KEYBOUNDARYDISTRICT, "0");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
-		tablesList.add(tableMap);
-
-		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
-		Map<String, String> viewMap = new HashMap<String, String>();
-
-		viewMap.put(KEYVIEWNAME, "Test View");
-		viewMap.put(KEYLISA, "1");
-		viewMap.put(KEYFOV, "0");
-		viewMap.put(KEYBREADCRUMB, "0");
-		viewMap.put(KEYINDICATIONS, "0");
-		viewMap.put(KEYISOTOPICCAPTURE, "0");
-		viewMap.put(KEYANNOTATION, "0");
-		viewMap.put(KEYGAPS, "0");
-		viewMap.put(KEYASSETS, "0");
-		viewMap.put(KEYBOUNDARIES, "0");
-		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
-
-		viewList.add(viewMap);
-
-		List<String> tagList = new ArrayList<String>();
-		tagList.add("");
-		
-		return new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", 
-				tagList, "", "", viewList, SurveyModeFilter.Standard);
-
+	
+	public String getFovOpacity() {
+		return fovOpacity;
 	}
+
+	public void setFovOpacity(String fovOpacity) {
+		this.fovOpacity = fovOpacity;
+	}
+
+	public String getViewWidth() {
+		return viewWidth;
+	}
+
+	public void setViewWidth(String viewWidth) {
+		this.viewWidth = viewWidth;
+	}
+
+	public String getViewHeight() {
+		return viewHeight;
+	}
+
+	public void setViewHeight(String viewHeight) {
+		this.viewHeight = viewHeight;
+	}
+
+	public void setCustomerBoundaryName(String customerBoundaryName) {
+		this.customerBoundaryName = customerBoundaryName;
+	}
+
+	public void setCustomerBoundaryFilterType(CustomerBoundaryFilterType customerBoundaryFilterType) {
+		this.customerBoundaryFilterType = customerBoundaryFilterType;
+	}
+
 	/**
 	 * @param args
 	 */
