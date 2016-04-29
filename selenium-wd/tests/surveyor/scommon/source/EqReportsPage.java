@@ -336,6 +336,7 @@ public class EqReportsPage extends ReportsBasePage {
 
 	@Override
 	public void waitForPageLoad() {
+		waitForAJAXCallsToComplete();
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return d.getPageSource().contains(STRPageContentText);

@@ -1682,6 +1682,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("selectRadioButtonByID")) { return this.selectRadioButtonByID(data, dataRowID); }
 		else if (actionName.equals("selectRadioButtonByXPath")) { return this.selectRadioButtonByXPath(data, dataRowID); }
 		else if (actionName.equals("showCurtainView")) { return this.showCurtainView(data, dataRowID); }
+		else if (actionName.equals("sortRecordsBy")) { return this.sortRecordsBy(data, dataRowID); }
 		else if (actionName.equals("startDrivingSurvey  ")) { return this.startDrivingSurvey  (data, dataRowID); }
 		else if (actionName.equals("stopDrivingSurvey")) { return this.stopDrivingSurvey(data, dataRowID); }
 		else if (actionName.equals("turnOffAllAssets")) { return this.turnOffAllAssets(data, dataRowID); }

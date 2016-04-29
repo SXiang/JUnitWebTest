@@ -1,7 +1,6 @@
 package surveyor.scommon.actions;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import common.source.OLMapUtility;
@@ -40,56 +39,51 @@ public class BaseMapViewPageActions extends BasePageActions {
 		super(driver, strBaseURL);
 	}
 
-	public void initializePageObject(WebDriver driver, BaseMapViewPage pageObj) {
-		setPageObject(pageObj);
-		PageFactory.initElements(driver, getPageObject());
-	}
-
 	public boolean clickOnCurtainArrowDownButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnCurtainArrowDownButton", data, dataRowID);
-		getPageObject().clickCurtainArrowDownButton();		
+		getBaseMapViewPageObject().clickCurtainArrowDownButton();		
 		return true;
 	}
 
 	public boolean clickOnCurtainArrowLeftButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnCurtainArrowLeftButton", data, dataRowID);
-		getPageObject().clickCurtainArrowLeftButton();
+		getBaseMapViewPageObject().clickCurtainArrowLeftButton();
 		return true;
 	}
 
 	public boolean clickOnCurtainArrowRightButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnCurtainArrowRightButton", data, dataRowID);
-		getPageObject().clickCurtainArrowRightButton();
+		getBaseMapViewPageObject().clickCurtainArrowRightButton();
 		return true;
 	}
 
 	public boolean clickOnCurtainArrowUpButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnCurtainArrowUpButton", data, dataRowID);
-		getPageObject().clickCurtainArrowUpButton();
+		getBaseMapViewPageObject().clickCurtainArrowUpButton();
 		return true;
 	}
 
 	public boolean clickOnCurtainReturnButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnCurtainReturnButton", data, dataRowID);
-		getPageObject().clickCurtainReturnButton();
+		getBaseMapViewPageObject().clickCurtainReturnButton();
 		return true;
 	}
 
 	public boolean clickOnCurtainZoomInButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnCurtainZoomInButton", data, dataRowID);
-		getPageObject().clickCurtainZoomInButton();
+		getBaseMapViewPageObject().clickCurtainZoomInButton();
 		return true;
 	}
 
 	public boolean clickOnCurtainZoomOutButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnCurtainZoomOutButton", data, dataRowID);
-		getPageObject().clickCurtainZoomOutButton();
+		getBaseMapViewPageObject().clickCurtainZoomOutButton();
 		return true;
 	}
 
 	public boolean clickOnDisplayButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnDisplayButton", data, dataRowID);
-		getPageObject().clickDisplayButton();
+		getBaseMapViewPageObject().clickDisplayButton();
 		TestContext.INSTANCE.stayIdle(2);
 		return true;
 	}
@@ -103,20 +97,20 @@ public class BaseMapViewPageActions extends BasePageActions {
 
 	public boolean clickOnGisButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnGisButton", data, dataRowID);
-		getPageObject().clickGisButton();
+		getBaseMapViewPageObject().clickGisButton();
 		return true;
 	}
 
 	public boolean clickOnMapButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnMapButton", data, dataRowID);
-		getPageObject().clickMapButton();
+		getBaseMapViewPageObject().clickMapButton();
 		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
 		return true;
 	}
 
 	public boolean clickOnPicarroLogoButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnPicarroLogoButton", data, dataRowID);
-		this.getPageObject().clickPicarroLogoButton();
+		this.getBaseMapViewPageObject().clickPicarroLogoButton();
 		return true;
 	}
 
@@ -128,7 +122,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	 */
 	public boolean clickOnZoomInButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnZoomInButton", data, dataRowID);
-		getPageObject().clickZoomInButton();
+		getBaseMapViewPageObject().clickZoomInButton();
 		return true;
 	}
  
@@ -140,7 +134,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	 */
 	public boolean clickOnZoomOutButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnZoomOutButton", data, dataRowID);
-		getPageObject().clickZoomOutButton();
+		getBaseMapViewPageObject().clickZoomOutButton();
 		return true;
 	}
 
@@ -160,42 +154,42 @@ public class BaseMapViewPageActions extends BasePageActions {
 
 	public boolean waitForPeakInfoPopupToOpen(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".waitForPeakInfoPopupToOpen", data, dataRowID);
-		getPageObject().waitForPeakInfoPopupToOpen();
+		getBaseMapViewPageObject().waitForPeakInfoPopupToOpen();
 		return true;
 	}
 
 	public boolean waitForPeakInfoPopupToClose(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".waitForPeakInfoPopupToClose", data, dataRowID);
-		getPageObject().waitForPeakInfoPopupToClose();
+		getBaseMapViewPageObject().waitForPeakInfoPopupToClose();
 		return true;
 	}
 
 	public boolean hideCurtainView(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".hideCurtainView", data, dataRowID);
-		getPageObject().hideCurtainMenu();
+		getBaseMapViewPageObject().hideCurtainMenu();
 		return true;
 	}
 
 	public boolean showCurtainView(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".showCurtainView", data, dataRowID);
-		getPageObject().clickCurtainButton();
+		getBaseMapViewPageObject().clickCurtainButton();
 		return true;
 	}
 
 	public boolean open(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".open", data, dataRowID);
-		getPageObject().open();
+		getBaseMapViewPageObject().open();
 		return true;
 	}
 
 	public boolean turnOnMapView(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnMapView", data, dataRowID);
-		getPageObject().toggleMapSwitch(MapSwitchType.Map, true);
+		getBaseMapViewPageObject().toggleMapSwitch(MapSwitchType.Map, true);
 		return true;
 	}
 	public boolean turnOnSatelliteView(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnSatelliteView", data, dataRowID);
-		getPageObject().toggleMapSwitch(MapSwitchType.Satellite, true);
+		getBaseMapViewPageObject().toggleMapSwitch(MapSwitchType.Satellite, true);
 		return true;
 	}
 	
@@ -208,7 +202,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		} else if (data.equalsIgnoreCase("Satellite")) {
 			switchType = MapSwitchType.Satellite;
 		}
-		return getPageObject().isMapSwitchOn(switchType);
+		return getBaseMapViewPageObject().isMapSwitchOn(switchType);
 	}
 	
 	public boolean verifyMapSwitchOff(String data, Integer dataRowID) throws Exception {
@@ -265,102 +259,102 @@ public class BaseMapViewPageActions extends BasePageActions {
 
 	public boolean turnOnBoundariesDistrict(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnBoundariesDistrict", data, dataRowID);
-		getPageObject().toggleGisSwitch(GisSwitchType.BoundariesDistrict, true);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.BoundariesDistrict, true);
 		return true;
 	}
 	public boolean turnOnBoundariesDistrictPlat(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnBoundariesDistrictPlat", data, dataRowID);
-		getPageObject().toggleGisSwitch(GisSwitchType.BoundariesDistrictPlat, true);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.BoundariesDistrictPlat, true);
 		return true;
 	}
 	public boolean turnOnMaterialTypeCopper(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnMaterialTypeCopper", data, dataRowID);
-		getPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeCopper, true);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeCopper, true);
 		return true;
 	}
 	public boolean turnOnMaterialTypeCastIron(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnMaterialTypeCastIron", data, dataRowID);
-		getPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeCastIron, true);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeCastIron, true);
 		return true;
 	}
 	public boolean turnOnMaterialTypeOtherPlastic(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnMaterialTypeOtherPlastic", data, dataRowID);
-		getPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeOtherPlastic, true);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeOtherPlastic, true);
 		return true;
 	}
 	public boolean turnOnMaterialTypePEPlastic(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnMaterialTypePEPlastic", data, dataRowID);
-		getPageObject().toggleGisSwitch(GisSwitchType.MaterialTypePEPlastic, true);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypePEPlastic, true);
 		return true;
 	}
 	public boolean turnOnMaterialTypeProtectedSteel(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnMaterialTypeProtectedSteel", data, dataRowID);
-		getPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeProtectedSteel, true);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeProtectedSteel, true);
 		return true;
 	}
 	public boolean turnOnMaterialTypeUnprotectedSteel(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnMaterialTypeUnprotectedSteel", data, dataRowID);
-		getPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeUnprotectedSteel, true);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeUnprotectedSteel, true);
 		return true;
 	}
 	public boolean turnOnUseAllBoundaries(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnUseAllBoundaries", data, dataRowID);
-		getPageObject().toggleGisSwitch(GisSwitchType.UseAllBoundaries, true);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.UseAllBoundaries, true);
 		return true;
 	}
 	public boolean turnOnUseAllPipes(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnUseAllPipes", data, dataRowID);
-		getPageObject().toggleGisSwitch(GisSwitchType.UseAllPipes, true);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.UseAllPipes, true);
 		return true;
 	}
 	public boolean turnOffBoundariesDistrict(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffBoundariesDistrict", data, dataRowID);
-		getPageObject().toggleGisSwitch(GisSwitchType.BoundariesDistrict, false);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.BoundariesDistrict, false);
 		return true;
 	}
 	public boolean turnOffBoundariesDistrictPlat(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffBoundariesDistrictPlat", data, dataRowID);
-		getPageObject().toggleGisSwitch(GisSwitchType.BoundariesDistrictPlat, false);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.BoundariesDistrictPlat, false);
 		return true;
 	}
 	public boolean turnOffMaterialTypeCopper(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffMaterialTypeCopper", data, dataRowID);
-		getPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeCopper, false);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeCopper, false);
 		return true;
 	}
 	public boolean turnOffMaterialTypeCastIron(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffMaterialTypeCastIron", data, dataRowID);
-		getPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeCastIron, false);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeCastIron, false);
 		return true;
 	}
 	public boolean turnOffMaterialTypeOtherPlastic(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffMaterialTypeOtherPlastic", data, dataRowID);
-		getPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeOtherPlastic, false);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeOtherPlastic, false);
 		return true;
 	}
 	public boolean turnOffMaterialTypePEPlastic(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffMaterialTypePEPlastic", data, dataRowID);
-		getPageObject().toggleGisSwitch(GisSwitchType.MaterialTypePEPlastic, false);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypePEPlastic, false);
 		return true;
 	}
 	public boolean turnOffMaterialTypeProtectedSteel(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffMaterialTypeProtectedSteel", data, dataRowID);
-		getPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeProtectedSteel, false);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeProtectedSteel, false);
 		return true;
 	}
 	public boolean turnOffMaterialTypeUnprotectedSteel(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffMaterialTypeUnprotectedSteel", data, dataRowID);
-		getPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeUnprotectedSteel, false);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeUnprotectedSteel, false);
 		return true;
 	}
 	public boolean turnOffUseAllBoundaries(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffUseAllBoundaries", data, dataRowID);
-		getPageObject().toggleGisSwitch(GisSwitchType.UseAllBoundaries, false);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.UseAllBoundaries, false);
 		return true;
 	}
 	public boolean turnOffUseAllPipes(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffUseAllPipes", data, dataRowID);
-		getPageObject().toggleGisSwitch(GisSwitchType.UseAllPipes, false);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.UseAllPipes, false);
 		return true;
 	}
 	
@@ -427,42 +421,42 @@ public class BaseMapViewPageActions extends BasePageActions {
 	}
 	public boolean turnOnEightHourHistory(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnEightHourHistory", data, dataRowID);
-		getPageObject().toggleDisplaySwitch(DisplaySwitchType.EightHourHistory, true);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.EightHourHistory, true);
 		return true;
 	}
 	public boolean turnOnConcentrationChart(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnConcentrationChart", data, dataRowID);
-		getPageObject().toggleDisplaySwitch(DisplaySwitchType.ConcentrationChart, true);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.ConcentrationChart, true);
 		return true;
 	}
 	public boolean turnOnFOVs(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnFOVs", data, dataRowID);
-		getPageObject().toggleDisplaySwitch(DisplaySwitchType.FOVs, true);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.FOVs, true);
 		return true;
 	}
 	public boolean turnOnIndications(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnIndications", data, dataRowID);
-		getPageObject().toggleDisplaySwitch(DisplaySwitchType.Indications, true);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.Indications, true);
 		return true;
 	}
 	public boolean turnOnIsotopicAnalysis(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnIsotopicAnalysis", data, dataRowID);
-		getPageObject().toggleDisplaySwitch(DisplaySwitchType.IsotopicAnalysis, true);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.IsotopicAnalysis, true);
 		return true;
 	}
 	public boolean turnOnLisas(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnLisas", data, dataRowID);
-		getPageObject().toggleDisplaySwitch(DisplaySwitchType.Lisas, true);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.Lisas, true);
 		return true;
 	}
 	public boolean turnOnNotes(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnNotes", data, dataRowID);
-		getPageObject().toggleDisplaySwitch(DisplaySwitchType.Notes, true);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.Notes, true);
 		return true;
 	}
 	public boolean turnOnWindRose(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnWindRose", data, dataRowID);
-		getPageObject().toggleDisplaySwitch(DisplaySwitchType.WindRose, true);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.WindRose, true);
 		return true;
 	}
 	public boolean turnOffAllDisplayOptions(String data, Integer dataRowID) {
@@ -482,42 +476,42 @@ public class BaseMapViewPageActions extends BasePageActions {
 	}
 	public boolean turnOffEightHourHistory(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffEightHourHistory", data, dataRowID);
-		getPageObject().toggleDisplaySwitch(DisplaySwitchType.EightHourHistory, false);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.EightHourHistory, false);
 		return true;
 	}
 	public boolean turnOffConcentrationChart(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffConcentrationChart", data, dataRowID);
-		getPageObject().toggleDisplaySwitch(DisplaySwitchType.ConcentrationChart, false);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.ConcentrationChart, false);
 		return true;
 	}
 	public boolean turnOffFOVs(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffFOVs", data, dataRowID);
-		getPageObject().toggleDisplaySwitch(DisplaySwitchType.FOVs, false);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.FOVs, false);
 		return true;
 	}
 	public boolean turnOffIndications(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffIndications", data, dataRowID);
-		getPageObject().toggleDisplaySwitch(DisplaySwitchType.Indications, false);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.Indications, false);
 		return true;
 	}
 	public boolean turnOffIsotopicAnalysis(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffIsotopicAnalysis", data, dataRowID);
-		getPageObject().toggleDisplaySwitch(DisplaySwitchType.IsotopicAnalysis, false);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.IsotopicAnalysis, false);
 		return true;
 	}
 	public boolean turnOffLisas(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffLisas", data, dataRowID);
-		getPageObject().toggleDisplaySwitch(DisplaySwitchType.Lisas, false);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.Lisas, false);
 		return true;
 	}
 	public boolean turnOffNotes(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffNotes", data, dataRowID);
-		getPageObject().toggleDisplaySwitch(DisplaySwitchType.Notes, false);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.Notes, false);
 		return true;
 	}
 	public boolean turnOffWindRose(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffWindRose", data, dataRowID);
-		getPageObject().toggleDisplaySwitch(DisplaySwitchType.WindRose, false);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.WindRose, false);
 		return true;
 	}
 	
@@ -544,7 +538,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		} else if (data.equalsIgnoreCase("WindRose")) {
 			switchType = DisplaySwitchType.WindRose;
 		}
-		return getPageObject().isDisplaySwitchOn(switchType);
+		return getBaseMapViewPageObject().isDisplaySwitchOn(switchType);
 	}
 
 	public boolean verifyDisplaySwitchIsOff(String data, Integer dataRowID) throws Exception {
@@ -578,7 +572,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		} else if (data.equalsIgnoreCase("UseAllPipes")) {
 			switchType = GisSwitchType.UseAllPipes;
 		}
-		return getPageObject().isGisSwitchOn(switchType);
+		return getBaseMapViewPageObject().isGisSwitchOn(switchType);
 	}
 
 	public boolean verifyGisSwitchIsOff(String data, Integer dataRowID) throws Exception {
@@ -1271,12 +1265,8 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return !this.pageObject.isGisUseAllBoundariesButtonVisible();
 	}
  
-	public BaseMapViewPage getPageObject() {
-		return pageObject;
-	}
-
-	public void setPageObject(BaseMapViewPage BaseMapViewPage) {
-		this.pageObject = BaseMapViewPage;
+	public BaseMapViewPage getBaseMapViewPageObject() {
+		return (BaseMapViewPage)pageObject;
 	}
 
 	protected String getRuntimeType() {

@@ -1,5 +1,7 @@
 package surveyor.regression.source;
 
+import static org.junit.Assert.assertTrue;
+
 import common.source.Log;
 import org.junit.BeforeClass;
 import org.junit.Ignore;

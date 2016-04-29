@@ -1,5 +1,6 @@
 package surveyor.scommon.source;
 
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 import common.source.Log;
+import common.source.WebElementExtender;
 
 public class LatLongSelectionControl extends BaseControl {
 
@@ -185,6 +187,24 @@ public class LatLongSelectionControl extends BaseControl {
 	public LatLongSelectionControl clickCancelButton() {
 		cancelButton.click();
 		return this;
+	}
+
+	/**
+	 * Verifies that the customer boundary name auto-complete list contains the specified entries.
+	 *
+	 * @return the LatLongSelectionControl class instance.
+	 */
+	public boolean verifyCustomerBoundaryAutoCompleteListContains(String boundaryName, List<String> autocompleteListEntries) {
+		selectByNameTextField.sendKeys(boundaryName);
+		this.waitForAutoCompleteListToOpen();
+
+		if (!WebElementExtender.checkElementsListContains(driver, "//*[@id='ui-id-1']/li", autocompleteListEntries)) {
+			return false;
+		}
+		
+		this.clickOnAutoCompleteListEntry(1);   // click on first entry in autocomplete list.
+		this.waitForAutoCompleteListToClose();
+		return true;
 	}
 
 	/**

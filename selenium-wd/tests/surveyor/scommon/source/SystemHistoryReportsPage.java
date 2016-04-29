@@ -122,7 +122,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 		WebElement rptTitleCell;
 		WebElement createdByCell;
 
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -136,8 +136,8 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
-			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
-			createdByCell = table.findElement(By.xpath(createdByXPath));
+			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
+			createdByCell = getTable().findElement(By.xpath(createdByXPath));
 
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				long startTime = System.currentTimeMillis();
@@ -164,7 +164,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
@@ -188,7 +188,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 		WebElement rptTitleCell;
 		WebElement createdByCell;
 
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -202,8 +202,8 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
-			rptTitleCell = table.findElement(By.xpath(reportTitleXPath));
-			createdByCell = table.findElement(By.xpath(createdByXPath));
+			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
+			createdByCell = getTable().findElement(By.xpath(createdByXPath));
 
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				return true;
@@ -214,7 +214,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
