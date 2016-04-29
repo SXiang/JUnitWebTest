@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,9 +17,16 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.Reports.ReportModeFilter;
+import surveyor.scommon.source.Reports.SurveyModeFilter;
+import surveyor.scommon.source.ReportsCompliance.CustomerBoundaryFilterType;
+import surveyor.scommon.source.ReportsCompliance.EthaneFilter;
+import surveyor.scommon.source.ReportsSurveyInfo;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ManageCustomersPage;
@@ -81,9 +89,9 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 * Results: - 
 	 *	- - Report generated successfully
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
-     *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)   //TODO
+     *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Ignore @Test
+	@Test
 	public void TC1319_GenerateComplianceReportPicarroSupportUserIncludePercentCoverageForecast() throws Exception {
 		Log.info("\nRunning TC1319_GenerateComplianceReportPicarroSupportUserIncludePercentCoverageForecast ..." +
 			 "\nTest Description: Generate Compliance Report as Picarro Support user and include Percent Coverage Forecast");
@@ -95,19 +103,28 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 		complianceReportsPage.login(SQAPICSU, USERPASSWORD);
 		complianceReportsPage.open();
 
-		ReportsCompliance rpt = new ReportsCompliance().getSampleComplianceReport();
+		ReportsCompliance rpt = getSampleComplianceReport();
 		rpt.setRptTitle(rptTitle);
 		
+		//Optional Tabular PDF Content
 		Map<String,String> tableMap = rpt.getTablesList().get(0);
 		tableMap.put(KEYPCA, "1");
 		tableMap.put(KEYPCRA, "1");
-		tableMap.put(KEYPCF, "0");  //TODO: Enable it if surveys are available
+		tableMap.put(KEYPCF, "1");	
 		
-		List<String> tagList = rpt.getTagList();
-		tagList.clear();
-		tagList.add(tag1);
-		tagList.add(tag2);
-		tagList.add(tag3);
+		//Configure Surveys
+		List<ReportsSurveyInfo> surveyInfoList = rpt.getSurveyInfoList();
+		surveyInfoList.clear();
+		ReportsSurveyInfo survey1 = surveyInfoList.get(0);
+		ReportsSurveyInfo survey2 = getReportsSurveyInfoSample(rpt);
+		ReportsSurveyInfo survey3 = getReportsSurveyInfoSample(rpt);
+		survey1.setTag(tag1);
+		surveyInfoList.add(survey1);
+		survey2.setTag(tag2);
+		surveyInfoList.add(survey2);
+		survey3.setTag(tag3);
+		surveyInfoList.add(survey3);
+		
 		
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
@@ -134,7 +151,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *	- - Report generated successfully- Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Ignore @Test
+	@Test
 	public void TC1320_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast2SurveysDifferentTags() throws Exception {
 		Log.info("\nRunning TC1320_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast2SurveysDifferentTags ..." +
 			 "\nTest Description: Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 2 surveys with different tags");
@@ -145,7 +162,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 		complianceReportsPage.login(SQAPGEUA, USERPASSWORD);
 		complianceReportsPage.open();
 
-		ReportsCompliance rpt = new ReportsCompliance().getSampleComplianceReport();
+		ReportsCompliance rpt = getSampleComplianceReport();
 		rpt.setRptTitle(rptTitle);
 		
 		Map<String,String> tableMap = rpt.getTablesList().get(0);
@@ -186,7 +203,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *  - - User friendly error messages are displayed: "Selected Percent Coverage Forecast, Please select at least two surveys with different tags"
 	 *	- - Error message will not be displayed to user when different tag value surveys are included
 	 */
-	@Ignore @Test
+	@Test
 	public void TC1339_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelected() throws Exception {
 		Log.info("\nRunning TC1339_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelected ..." +
 			 "\nTest Description: Check error mesage is displayed if Percent Coverage Forecast check box is selected on New Compliance Report screens and user has included only no or one or multiple survey with same tag");
@@ -201,7 +218,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 		complianceReportsPage.login(SQAPICSU, USERPASSWORD);
 		complianceReportsPage.open();
 
-		ReportsCompliance rpt = new ReportsCompliance().getSampleComplianceReport();
+		ReportsCompliance rpt = getSampleComplianceReport();
 		rpt.setRptTitle(rptTitle);
 		
 		Map<String, String> viewMap = rpt.getViewLayersList().get(0);
@@ -259,7 +276,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *  - - User friendly error messages are displayed: "Selected Percent Coverage Forecast, Please select at least two surveys with different tags"
 	 *	- - Error message will not be displayed to user when different tag value surveys are included
 	 */
-	@Ignore @Test
+	@Test
 	public void TC1340_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelectedOnCopyCR() throws Exception {
 		Log.info("\nRunning TC1340_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelected ..." +
 			 "\nTest Description: Check error mesage is displayed if Percent Coverage Forecast check box is selected on Copy Compliance Report screens and user has included no or only one or multiple survey with same tag");
@@ -289,7 +306,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *	- - Prediction table will not show any records as 4 or more surveys with different tag values are not supported.
 	 *	- - "No Coverage Forecast Available" message is displayed
 	 */
-	@Ignore @Test
+	@Test
 	public void TC1352_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast4OrMoreSurveysDifferentTags() throws Exception {
 		Log.info("\nRunning TC1352_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast4OrMoreSurveysDifferentTags ..." +
 			 "\nTest Description: Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 4 or more surveys with different tags");
@@ -312,7 +329,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *	- - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Ignore @Test
+	@Test
 	public void TC1363_GenerateComplianceReportCustomerAdminUsingCopyFunctionalityIncludePercentCoverageForecast2SurveysDifferentTags() throws Exception {
 		Log.info("\nRunning TC1363_GenerateComplianceReportCustomerAdminUsingCopyFunctionalityIncludePercentCoverageForecast2SurveysDifferentTags ..." +
 			 "\nTest Description: Generate Compliance Report as Customer Admin using Copy functionality, include Percent Coverage Forecast and 2 surveys with different tags");
@@ -336,7 +353,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Ignore @Test
+	@Test
 	public void TC1364_GenerateComplianceReportPicarroSupportUserUsingReprocessFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags() throws Exception {
 		Log.info("\nRunning TC1364_GenerateComplianceReportPicarroSupportUserUsingReprocessFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags ..." +
 			 "\nTest Description: Generate Compliance Report as Picarro Support user using Reprocess functionality, include Percent Coverage Forecast and 3 surveys with different tags");
@@ -360,7 +377,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Ignore @Test
+	@Test
 	public void TC1365_GenerateComplianceReportPicarroAdminUsingCopyFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags() throws Exception {
 		Log.info("\nRunning TC1365_GenerateComplianceReportPicarroAdminUsingCopyFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags ..." +
 			 "\nTest Description: Generate Compliance Report as Picarro Admin using Copy functionality, include Percent Coverage Forecast and 3 surveys with different tags");
@@ -382,7 +399,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Ignore @Test
+	@Test
 	public void TC1366_GenerateComplianceReportPicarroAdminUsingReprocessFunctionalityIncludePercentCoverageForecast2SurveysDifferentTags() throws Exception {
 		Log.info("\nRunning TC1366_GenerateComplianceReportPicarroAdminUsingReprocessFunctionalityIncludePercentCoverageForecast2SurveysDifferentTags ..." +
 			 "\nTest Description: Generate Compliance Report as Picarro Admin using Reprocess functionality, include Percent Coverage Forecast and 2 surveys with different tags");
@@ -406,7 +423,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Ignore @Test
+	@Test
 	public void TC1367_GenerateComplianceReportCustomerSupervisorUserUsingCopyFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags() throws Exception {
 		Log.info("\nRunning TC1367_GenerateComplianceReportCustomerSupervisorUserUsingCopyFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags ..." +
 			 "\nTest Description: Generate Compliance Report as Customer Supervisor user using Copy functionality, include Percent Coverage Forecast and 3 surveys with different tags");
@@ -436,7 +453,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *  - - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Ignore @Test
+	@Test
 	public void TC1370_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecastMultipleSurveys() throws Exception {
 		Log.info("\nRunning TC1370_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecastMultipleSurveys ..." +
 			 "\nTest Description: Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and multiple surveys");
@@ -466,7 +483,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *  - - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Ignore @Test
+	@Test
 	public void TC1371_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecastMultipleSurveys() throws Exception {
 		Log.info("\nRunning TC1371_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecastMultipleSurveys ..." +
 			 "\nTest Description: Generate Compliance Report as Picarro Admin, include Percent Coverage Forecast and multiple surveys");
@@ -496,7 +513,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *	- - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Ignore @Test
+	@Test
 	public void TC1373_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecastAssetsReportArea() throws Exception {
 		Log.info("\nRunning TC1373_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecastAssetsReportArea ..." +
 			 "\nTest Description: Generate Compliance Report as Picarro Admin and include Percent Coverage Forecast, Assets and Report Area");
@@ -525,7 +542,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *	- Verify that there are multiple record present in ReportLISAS.csv. All the information for ReportId, ReportName, Lisa Number, Surveyor, LISA Date/Time, Amplitude, Concentration, Lat/Long co-ordinates, Field Notes is correct and matches with driving survey in the report. Data present in ReportLisa.csv should be same as SSRS PDF indication table
 	 *	- Verify that there is only the record present in ReportGap.csv matches with the information in the driving survey in the report. Data present in ReportGap.csv should be same as SSRS PDF gap table
 	 */
-	@Ignore @Test
+	@Test
 	public void TC1389_MetadataExport_CSVFileMultipleSurvey_MultipleLisasISO() throws Exception {
 		Log.info("\nRunning TC1389_MetadataExport_CSVFileMultipleSurvey_MultipleLisasISO ..." +
 			 "\nTest Description: MetaData Export -CSV file (multiple survey -multiple LISAs and ISO)");
@@ -546,7 +563,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *	- - Report will be in in-progress state and user can see Copy and Cancel Report buttons
 	 *	- - Report is generated successfully
 	 */
-	@Ignore @Test
+	@Test
 	public void TC1394_CopyButtonPresentIn_ProgressComplianceReportCustomerSupervisorUser() throws Exception {
 		Log.info("\nRunning TC1394_CopyButtonPresentIn_ProgressComplianceReportCustomerSupervisorUser ..." +
 			 "\nTest Description: Copy button present for in-progress compliance report as customer supervisor user");
@@ -567,7 +584,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *	- - Report will be in in-progress state and user can see Copy and Cancel Report buttons
 	 *	- - Report is generated successfully
 	 */
-	@Ignore @Test
+	@Test
 	public void TC1395_CopyButtonPresentIn_ProgressComplianceReportCustomerAdminUser() throws Exception {
 		Log.info("\nRunning TC1395_CopyButtonPresentIn_ProgressComplianceReportCustomerAdminUser ..." +
 			 "\nTest Description: Copy button present for in-progress compliance report as customer admin user");
@@ -594,7 +611,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *	- - Thumbnails will be present  for compliance SSRS PDF, ZIP folders and generated view
 	 *	- - The thumbnail should still be present
 	 */
-	@Ignore @Test
+	@Test
 	public void TC12_ReportViewThumbnailsCustomBoundarySingleView() throws Exception {
 		Log.info("\nRunning TC12_ReportViewThumbnailsCustomBoundarySingleView ..." +
 			 "\nTest Description: Generate Compliance Report as Picarro Admin using Custom Boundary with single view of default size to verify thumbnails");
@@ -625,7 +642,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 * - View1 should appear and the thumbnail should accurately reflect the view
 	 * - The thumbnails for Views 2 and 3 should accurately reflect their respective views
 	 */
-	@Ignore @Test
+	@Test
 	public void TC13_ReportViewThumbnailsCustomBoundaryMultipleViews() throws Exception {
 		Log.info("\nRunning TC13_ReportViewThumbnailsCustomBoundaryMultipleViews ..." +
 			 "\nTest Description: Generate Compliance Report as Picarro Supervisor using Custom Boundary with multiple views of default size to verify thumbnails");
@@ -651,7 +668,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *	- - User is navigated back to Compliance Reports page and after the report has been generated, Compliance Viewer button is present in the Action column for that report
 	 *	- - Thumbnails will be present  for compliance SSRS PDF, ZIP folders and generated view
 	 *	- - The thumbnail should still be present	 */
-	@Ignore @Test
+	@Test
 	public void TC14_ReportViewThumbnailsCustomerBoundarySingleView() throws Exception {
 		Log.info("\nRunning TC14_ReportViewThumbnailsCustomerBoundarySingleView ..." +
 			 "\nTest Description: Generate Compliance Report as Customer Admin using Customer Boundary with single view of default size to verify thumbnails");
@@ -681,7 +698,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *	- - View names and option selections on SSRS should match those in UI when creating report
 	 *	- - Export image should show the map for the specified Lat-Long boundary
 	 */
-	@Ignore @Test
+	@Test
 	public void TC149_GenerateComplianceReportUsingSurveyorUnitTagFiltersMoreThanOneViewDownloadReport() throws Exception {
 		Log.info("\nRunning TC149_GenerateComplianceReportUsingSurveyorUnitTagFiltersMoreThanOneViewDownloadReport ..." +
 			 "\nTest Description: Generate compliance report using surveyor unit and tag filters for more than one view and download the report");
@@ -713,7 +730,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *	- - The report View should have all LISAs in the shape of boxes, not fans or circles
 	 *	- - The shapes drawn by the GIS software should match those of the Compliance Report views
 	 */
-	@Ignore @Test
+	@Test
 	public void TC1490_CreateNewCustomerLISABoxOption() throws Exception {
 		Log.info("\nRunning TC1490_CreateNewCustomerLISABoxOption ..." +
 			 "\nTest Description: Create new customer with LISA Box option");
@@ -745,7 +762,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *  - - The report View should have all LISAs in the shape of fans or circles, not boxes
 	 *	- - The shapes drawn by the GIS software should match those of the Compliance Report views
 	 */
-	@Ignore @Test
+	@Test
 	public void TC1491_CreateNewCustomerWithoutLISABoxOption() throws Exception {
 		Log.info("\nRunning TC1491_CreateNewCustomerWithoutLISABoxOption ..." +
 			 "\nTest Description: create new customer without LISA Box option");
@@ -773,7 +790,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *	- - The report View should have all LISAs in the shape of boxes, not fans or circles
 	 *	- - The shapes drawn by the GIS software should match those of the Compliance Report views
 	 */
-	@Ignore @Test
+	@Test
 	public void TC1496_AddLISABoxOptionExistingCustomer() throws Exception {
 		Log.info("\nRunning TC1496_AddLISABoxOptionExistingCustomer ..." +
 			 "\nTest Description: Add LISA Box option to existing customer");
@@ -800,7 +817,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	 *	- - The report View should have all LISAs in the shape of fans or circles, not boxes
 	 *	- - The shapes drawn by the GIS software should match those of the Compliance Report views
 	 */
-	@Ignore @Test
+	@Test
 	public void TC1497_RemoveLISABoxOptionFromExistingCustomer() throws Exception {
 		Log.info("\nRunning TC1497_RemoveLISABoxOptionFromExistingCustomer ..." +
 			 "\nTest Description: Remove LISA Box option from existing customer");
@@ -809,7 +826,128 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 
 	}
+	public ReportsCompliance getSampleComplianceReport(){
+		return getSampleComplianceReport();
+	}
+	 
+	public ReportsCompliance getSampleComplianceReport(String rptTitle){
+		//*** Area Selector ***
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+		listBoundary.add(RNELAT);
+		listBoundary.add(RNELON);
+		listBoundary.add(RSWLAT);
+		listBoundary.add(RSWLON);
+		//TODO customer boundary
 
+		//*** Optional Tabular PDF Content ***
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+
+		tableMap.put(KEYINDTB, "0");
+		tableMap.put(KEYISOANA, "0");
+		tableMap.put(KEYPCA, "0");
+		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYPCF, "0");
+		
+		//***  & Optional View Layers ***
+		List<Map<String, String>> viewLayersList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewLayers = new HashMap<String, String>();
+		tableMap.put(KEYASSETCASTIRON, "0");
+		tableMap.put(KEYASSETCOPPER, "0");
+		tableMap.put(KEYASSETOTHERPLASTIC, "0");
+		tableMap.put(KEYASSETPEPLASTIC, "0");
+		tableMap.put(KEYASSETPROTECTEDSTEEL, "0");
+		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "0");
+		tableMap.put(KEYBOUNDARYDISTRICT, "0");
+		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
+		tablesList.add(tableMap);
+
+		//*** Views ***
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap = new HashMap<String, String>();
+
+		viewMap.put(KEYVIEWNAME, "Test View");
+		viewMap.put(KEYLISA, "1");
+		viewMap.put(KEYFOV, "0");
+		viewMap.put(KEYBREADCRUMB, "0");
+		viewMap.put(KEYINDICATIONS, "0");
+		viewMap.put(KEYISOTOPICCAPTURE, "0");
+		viewMap.put(KEYANNOTATION, "0");
+		viewMap.put(KEYGAPS, "0");
+		viewMap.put(KEYASSETS, "0");
+		viewMap.put(KEYBOUNDARIES, "0");
+		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
+
+		viewList.add(viewMap);
+
+		//*** Survey Selector ***
+		List<String> tagList = new ArrayList<String>();
+		tagList.add("");		
+		
+		//*** Opacity Fine-Tuning & View Size (PDF image output) *** TODO		
+		String viewHeight = "11";
+		String viewWidth = "8.5";
+		String fovOpacity = "0.5";
+		String lisaOpacity = "0.5";
+		
+		//*** Other parameters
+		EthaneFilter ethaneFilter = EthaneFilter.None;
+		ReportModeFilter reportModeFilter = ReportModeFilter.Standard;
+		CustomerBoundaryFilterType customerBoundaryFilterType = CustomerBoundaryFilterType.SmallBoundary;
+		String customerBoundaryName = "Level 2-AB";
+		
+		boolean geoFilter = true;
+
+		ReportsCompliance sampleReport = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEET, "0", listBoundary, 
+				tablesList,
+				"", tagList, 
+				"", "", viewList, 
+				SurveyModeFilter.Standard);
+		
+        sampleReport.setViewLayersList(viewLayersList);
+        sampleReport.setEthaneFilter(ethaneFilter);
+        sampleReport.setViewHeight(viewHeight);
+        sampleReport.setViewWidth(viewWidth);
+        sampleReport.setFovOpacity(fovOpacity);
+        sampleReport.setLisaOpacity(lisaOpacity);
+        sampleReport.setReportModeFilter(reportModeFilter);
+        sampleReport.setCustomerBoundaryFilterType(customerBoundaryFilterType);
+        sampleReport.setCustomerBoundaryName(customerBoundaryName);
+        sampleReport.setGeoFilter(geoFilter);
+
+        //*** Prepare ReportsSurveyInfo
+        List<ReportsSurveyInfo> surveyInfoList = new ArrayList<ReportsSurveyInfo>();
+        
+        ReportsSurveyInfo survey = getReportsSurveyInfoSample(sampleReport);
+        //2. Survey2
+        //3. Survey3
+        //...
+		surveyInfoList.add(survey);
+		
+
+		
+		sampleReport.setSurveyInfoList(surveyInfoList);
+        return sampleReport;
+	}
+	
+	public ReportsSurveyInfo getReportsSurveyInfoSample(ReportsCompliance sampleReport){
+        //1. Survey
+        String surveyor = sampleReport.getSurveyorUnit();
+        String username = sampleReport.getUsername();
+        String tag = sampleReport.getTagList().get(0);
+        String startDate = sampleReport.getStartDate();
+        String endDate = sampleReport.getEndDate();
+        SurveyModeFilter surveyModeFilter = sampleReport.getSurveyModeFilter();
+        Integer numberOfSurveysToSelect = 1;
+        boolean selectAllSurveys = false;
+        boolean isGeoFilterOn = sampleReport.getGeoFilter();
+        
+        ReportsSurveyInfo survey = new ReportsSurveyInfo(surveyor, username, tag, startDate, endDate,
+        		surveyModeFilter, isGeoFilterOn, numberOfSurveysToSelect, selectAllSurveys);
+        return survey;
+	}
 	/**
 	 * Returns the testCase ID based on the username provided by DataProvider.
 	 */

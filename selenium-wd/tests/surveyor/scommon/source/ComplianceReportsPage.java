@@ -2686,6 +2686,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@Override
 	public void fillReportSpecific(Reports reports) {
 		ReportsCompliance reportsCompliance = (ReportsCompliance) reports;
+		
+		// 1. Report general
 		if (reportsCompliance.getEthaneFilter() != null) {
 			selectEthaneFilter(reportsCompliance.getEthaneFilter());
 		}
@@ -2698,6 +2700,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			inputExclusionRadius(reportsCompliance.getExclusionRadius());
 		}
 
+		// 2. Area Selector
 		if (isCustomBoundarySpecified(reportsCompliance)) {
 			if (useCustomBoundaryLatLongSelector(reportsCompliance)) {
 				fillCustomBoundaryUsingLatLongSelector(reportsCompliance);
@@ -2711,8 +2714,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		inputImageMapHeight(reportsCompliance.getImageMapHeight());
 		inputImageMapWidth(reportsCompliance.getImageMapWidth());
 
+		// 3. Views
 		addViews(reportsCompliance.getCustomer(), reportsCompliance.getViewList());
 
+		// 4. Optional Tabular PDF Content
 		List<Map<String, String>> tablesList = reportsCompliance.getTablesList();
 		if (tablesList.get(0).get(KEYINDTB).equalsIgnoreCase("1")) {
 			selectIndicationsTableCheckBox();
@@ -2730,10 +2735,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			selectPercentCoverageForecastCheckBox();
 		}
 		
+		// 5. Optional View layers
 		List<Map<String, String>> viewLayersList = reportsCompliance.getViewLayersList();
 		if (viewLayersList != null && viewLayersList.size() > 0) {
 			handleOptionalDynamicViewLayersSection(viewLayersList);
 		} 
+		
+		//TODO 6. Opacity Fine-Tuning
+		//TODO 7. View Size (PDF image output)
 	}
 	
 	private void fillCustomerBoundary(ReportsCompliance reportsCompliance) {
