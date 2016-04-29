@@ -25,8 +25,9 @@ import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
-import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
@@ -267,6 +268,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='report-show-percent-coverage-report-area']")
 	protected WebElement percentCoverReportArea;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='report-show-percent-coverage-forecast']")
+	protected WebElement percentCoverForecast;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='report-asset-layers-d08fc87f-f979-4131-92a9-3d82f37f4bba']")
+	protected WebElement rptFirstAsset;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='report-boundry-layers-Small Boundary']")
+	protected WebElement rptSmallBoundary;
+	
 	public WebElement getNewComplianceReportBtn() {
 		return this.newComplianceReportBtn;
 	}
@@ -275,6 +285,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return this.percentCoverReportArea;
 	}
 
+	public WebElement getPercentCoverForecast() {
+		return this.percentCoverForecast;
+	}
+
+	public WebElement getRptFirstAsset() {
+		return this.rptFirstAsset;
+	}
+
+	public WebElement getRptSmallBoundary() {
+		return this.rptSmallBoundary;
+	}
 
 	private static LatLongSelectionControl latLongSelectionControl = null;
 	
@@ -2389,6 +2410,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		if (tablesList.get(0).get(KEYPCRA).equalsIgnoreCase("1")) {
 			selectPercentCoverageReportArea();
+		}
+		if (tablesList.get(0).get(KEYPCF).equalsIgnoreCase("1")) {
+			selectPercentCoverageForecastCheckBox();
 		}
 		
 		List<Map<String, String>> viewLayersList = reportsCompliance.getViewLayersList();
