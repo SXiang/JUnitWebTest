@@ -182,8 +182,6 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 				+ testSetup.getFixedSizeRandomNumber(8) + tcID;
 		String cityName = "Santa Clara";
 
-		Log.info(user);
-		Log.info(password);
 		Log.info("\nRunning " + tcID
 				+ "_EditLocation - Test Description: Editing Location");
 		
