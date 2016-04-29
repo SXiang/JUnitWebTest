@@ -28,7 +28,7 @@ public class PDFTableUtility extends PDFUtility{
 		COVERAGEFORECASTTO70(".*Probability to Obtain 70% Coverage",0,"",true,4),
 		DRIVINGSURVEYTABLE("Indication Table",0,"LISA",true,-1),
 		ISOTOPICANALYSISTABLE("Surveyor Date/Time Result",0," Layers",true,-1);
-		
+
 		private final String tableID;	          //1. tableID, indicator of start of a table, required
 		private final int startLine;              //2. num of lines  after 'tableID' - inclusive, optional, default to 0
 		private final String tableEndLinePattern; //3. tableEndLinePattern, indicator of end of a table, optional, default to ""
@@ -242,15 +242,25 @@ public class PDFTableUtility extends PDFUtility{
 	 */
 	public String[] getColumn(String filePath, PDFTable pTable, String columnID) throws IOException{
 		List<String[]> pdfTable = extractPDFTable(filePath,pTable);
+		int colIndex = getColumnIndex(pdfTable, columnID);
+		return getColumn(pdfTable, colIndex);
+	}
+
+	/**
+	 * 
+	 * @param pdfTable
+	 * @param columnID
+	 * @return Index number of the Column (the value in the first row)
+	 */
+	public int getColumnIndex(List<String[]> pdfTable, String columnID){
 		int colIndex = 0;
 		String[] header = pdfTable.get(0);
 		for(int i=0;i<header.length;i++){
 			if(header[i].equals(columnID)){
 				colIndex = i;
-				return getColumn(pdfTable,colIndex);
 			}
 		}
-		return null;
+		return colIndex;
 	}	
 
 	/*
@@ -294,14 +304,24 @@ public class PDFTableUtility extends PDFUtility{
 	 */	
 	public String[] getRow(String filePath, PDFTable pTable, String rowID) throws IOException{
 		List<String[]> pdfTable = extractPDFTable(filePath,pTable);
+		int rowIndex = getRowIndex(pdfTable, rowID);
+		return getRow(pdfTable, rowIndex);
+	}
+
+	/**
+	 * 
+	 * @param pdfTable
+	 * @param rowID
+	 * @return Index of the row with the rowID(the value in the first column)
+	 */
+	public int getRowIndex(List<String[]> pdfTable, String rowID){
 		int rowIndex = 0;
 		for(int i=0;i<pdfTable.size();i++){
 			if(pdfTable.get(i)[0].equals(rowID)){
 				rowIndex = i;
-				return getRow(pdfTable,rowIndex);
 			}
 		}
-		return null;
+		return rowIndex;
 	}	
 
 	/*
@@ -480,6 +500,7 @@ public class PDFTableUtility extends PDFUtility{
 		Point field = new Point(0,colNum);
 		String colName = expectedTable[field.x][field.y];
 
+		List<String[]> pdfTable = extractPDFTable(filePath,pTable);
 		String[] colValue1 = getColumn(filePath, pTable,colName);
 		Log.info("Column '"+colName+"': "+Arrays.toString(colValue1));
 
@@ -500,17 +521,20 @@ public class PDFTableUtility extends PDFUtility{
 		colNum = expectedTable[0].length/2;
 		field = new Point(0,colNum);
 		colName = expectedTable[field.x][field.y];
-		colValue1 = getColumn(filePath, pTable,colName);
+
 		colValue2 = getColumn(filePath, pTable, colNum);
-
-		Assert.assertEquals(colValue1, colValue2);
-
+		if(colNum == getColumnIndex(pdfTable, colName) ){
+			colValue1 = getColumn(filePath, pTable,colName);
+			Assert.assertEquals(colValue1, colValue2);
+		}
+		
 		for(int i=0; i<expectedTable.length;i++){
-			Assert.assertTrue(colValue1[i].equals(expectedTable[i][colNum])||colValue1[i].matches(expectedTable[i][colNum]));
+			Assert.assertTrue(colValue2[i].equals(expectedTable[i][colNum])||colValue2[i].matches(expectedTable[i][colNum]));
 		}
 	}  
 
 	private void testExtractPDFTable_getRow(String filePath, String[][] expectedTable, PDFTable pTable) throws IOException {
+		List<String[]> pdfTable = extractPDFTable(filePath,pTable);
 		// Retrieve a row
 		int rowNum = expectedTable.length/2;
 		String[] rowValue = getRow(filePath, pTable, rowNum);
@@ -525,19 +549,21 @@ public class PDFTableUtility extends PDFUtility{
 			Assert.assertTrue(cell.equals(expectedValue)||cell.matches(expectedValue)); 
 		}
 
-//		// Retrieve a row by rowID
-//		String rowID = expectedTable[rowNum][0];
-//		rowValue = getRow(filePath, pTable, rowID);
-//		for(int i=0; i<expectedTable[rowNum].length;i++){
-//			String cell = "";
-//			try{
-//				cell = rowValue[i].trim();
-//			}catch(Exception e){
-//
-//			}
-//			String expectedValue = expectedTable[rowNum][i];
-//			Assert.assertTrue(cell.equals(expectedValue)||cell.matches(expectedValue)); 
-//		}	
+		// Retrieve a row by rowID
+		String rowID = expectedTable[rowNum][0];
+		if(rowNum == getRowIndex(pdfTable, rowID)){
+			rowValue = getRow(filePath, pTable, rowID);
+			for(int i=0; i<expectedTable[rowNum].length;i++){
+				String cell = "";
+				try{
+					cell = rowValue[i].trim();
+				}catch(Exception e){
+
+				}
+				String expectedValue = expectedTable[rowNum][i];
+				Assert.assertTrue(cell.equals(expectedValue)||cell.matches(expectedValue)); 
+			}	
+		}
 	}
 
 	private void testExtractPDFTable_getCell(String filePath, String[][] expectedTable, PDFTable pTable) throws IOException {
