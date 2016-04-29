@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import common.source.Log;
+import common.source.WebElementExtender;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -71,6 +72,7 @@ import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 
 @RunWith(SurveyorTestRunner.class)
@@ -1375,8 +1377,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		complianceReportsPage.open();
 
 		complianceReportsPage.getNewComplianceReportBtn().click();
-		
-		//assertFalse(complianceReportsPage.getPercentCoverForecast());
+		assertFalse(WebElementExtender.isElementPresentAndDisplayed(complianceReportsPage.getPercentCoverForecast()));
 		complianceReportsPage.clickOnCancelBtn();
 
 		String copyImgXPath = "//*[@id='datatable']/tbody/tr[1]/td[5]/a[2]/img";
@@ -1384,9 +1385,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 
 		copyImg.click();
 		complianceReportsPage.waitForCopyReportPagetoLoad();
-		Thread.sleep(2000);;
-		//assertFalse(complianceReportsPage.getPercentCoverForecast().isDisplayed());
-
+		assertFalse(WebElementExtender.isElementPresentAndDisplayed(complianceReportsPage.getPercentCoverForecast()));
 	}
 
 	/**
@@ -1404,7 +1403,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 *  - - CR-DC3080_ReportLisa.csv
 	 *	- - User can open the files successfully without any error
 	 */
-	@Ignore //--DE1874
+	@Test
 	public void TC1310_CheckFileNamesOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectivelyWhenUserReprocessExistingOldReports() throws Exception {
 		Log.info("\nRunning TC1310_CheckFileNamesOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectivelyWhenUserReprocessExistingOldReports ...");
 
@@ -1447,9 +1446,15 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 
 		complianceReportsPage.findReportbySearch(rptTitle, testSetup.getLoginUser());
 
-		//complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
+
+		try {
+			complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
+			complianceReportsPage.waitForResubmitButton();
+			complianceReportsPage.getBtnResubmitReport().click();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		complianceReportsPage.waitForPageLoad();
-		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
@@ -1696,7 +1701,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		assertTrue(complianceReportsPage.getAssetErrorText().getText().equals("Selected Percent Coverage Forecast, Please select Customer Boundary"));
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
 		complianceReportsPage.clickOnCancelBtn();
-		
 	}
 
 	/**
