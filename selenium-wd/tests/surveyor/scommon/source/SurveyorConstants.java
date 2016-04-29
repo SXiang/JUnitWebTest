@@ -171,7 +171,6 @@ public final class SurveyorConstants {
 	public static final String KEYINDICATIONS = "Indications";
 	public static final String KEYISOTOPICCAPTURE = "Isotopic Capture";
 	public static final String KEYANNOTATION = "Annotation";
-	public static final String KEYFIELDNOTES = "Field Notes";
 	public static final String KEYGAPS = "Gaps";
 	public static final String KEYASSETS = "Assets";
 	public static final String KEYBOUNDARIES = "Boundaries";
@@ -189,11 +188,9 @@ public final class SurveyorConstants {
 	public static final String KEYINDCLR = "Indication Color";
 	
 	public static final String KEYINDTB = "Indications Table";
-	public static final String KEYGAPTB = "Gap Table";
 	public static final String KEYISOANA = "Isotopic Analysis";
 	public static final String KEYPCA = "Percent Coverage Assets";
 	public static final String KEYPCRA = "Percent Coverage Report Area";
-	public static final String KEYPCF = "Percent Coverage Forecast";
 
 	public static final String SQAPICADRRTAG = "dmcrapidresponse-sqapic-admin";
 	public static final String SQAPICADSTNDTAG = "dmcstandard-sqapic-admin";
@@ -269,12 +266,6 @@ public final class SurveyorConstants {
 
 	public static final String REXCLUSIONRADIUS = "3";
 
-	public static final int  X_OFFSET = 150;
-	public static final int Y_OFFSET = 150;
-	public static final int RECT_WIDTH = 100;
-	public static final int RECT_HEIGHT = 100;
-	public static final String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
-
 	/*
 	 * Lat Long for Ethane Reporting
 	 */
@@ -317,9 +308,24 @@ public final class SurveyorConstants {
 	/*
 	 * enum for list of constants
 	 */
-	public static enum LicensedFeatures {
-		GAPGRID, REPORTMETADATA, ASSESSMENT, EQ, 
-		LISABOX, SURVEYFORECASE, REPORTSHAPEFILE
+	public enum LicensedFeatures {
+		GAPGRID ("GAP Grid 1.0"),
+		REPORTMETADATA ("Report Metadata"),
+		ASSESSMENT ("Assessment"),
+		EQ ("EQ"),
+		LISABOX ("LISA Box 1.0"),
+		SURVEYFORECASE ("Survey Protocol Forecast"),
+		REPORTSHAPEFILE ("Report ShapeFile");
+		
+		private final String name;
+
+		LicensedFeatures(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
 	}
 	
 	public static enum TopNavMenuItem {

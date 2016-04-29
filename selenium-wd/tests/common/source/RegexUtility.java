@@ -17,6 +17,7 @@ import org.testng.Assert;
  *
  */
 public class RegexUtility {
+	public static final String DOT_SPLIT_REGEX_PATTERN = "\\.";
 	public static final String NEWLINE_SPLIT_REGEX_PATTERN = "\\r?\\n";
 	public static final String SPACE_SPLIT_REGEX_PATTERN = " ";
 	public static final String COLON_SPLIT_REGEX_PATTERN = ":";
@@ -171,6 +172,10 @@ public class RegexUtility {
 		testGetMatchingGroups_functionNameAndArgument_Success();
 		Log.info("Running test - testGetMatchingGroups_functionNameNoArgument_NoGroupsReturned() ...");
 		testGetMatchingGroups_functionNameNoArgument_NoGroupsReturned();
+		Log.info("Running test - testSplit_SplitByDotMultipleParts_Success() ...");
+		testSplit_SplitByDotMultipleParts_Success();
+		Log.info("Running test - testSplit_SplitByDotEmptyPartsNotReturned_Success() ...");
+		testSplit_SplitByDotEmptyPartsNotReturned_Success();
 		Log.info("Running test - testSplit_SplitByCommaMultipleParts_Success() ...");
 		testSplit_SplitByCommaMultipleParts_Success();
 		Log.info("Running test - testSplit_SplitByColonTwoPartsLastEmpty_Success() ...");
@@ -221,6 +226,18 @@ public class RegexUtility {
 		String functionArgs = "10,10,20,43";
 		List<String> paramGroups = RegexUtility.split(functionArgs, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
 		Assert.assertTrue(paramGroups.size() == 4);
+	}
+
+	private static void testSplit_SplitByDotMultipleParts_Success() {
+		String functionArgs = "10.10.20.43";
+		List<String> paramGroups = RegexUtility.split(functionArgs, RegexUtility.DOT_SPLIT_REGEX_PATTERN);
+		Assert.assertTrue(paramGroups.size() == 4);
+	}
+
+	private static void testSplit_SplitByDotEmptyPartsNotReturned_Success() {
+		String functionArgs = "10..";
+		List<String> paramGroups = RegexUtility.split(functionArgs, RegexUtility.DOT_SPLIT_REGEX_PATTERN);
+		Assert.assertTrue(paramGroups.size() == 1);
 	}
 
 	private static void testSplit_SplitByColonEmptyPartsNotReturned_Success() {

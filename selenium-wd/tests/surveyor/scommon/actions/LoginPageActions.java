@@ -8,7 +8,6 @@ import org.openqa.selenium.support.PageFactory;
 import common.source.RegexUtility;
 import common.source.TestSetup;
 import surveyor.scommon.actions.data.UserDataReader;
-import surveyor.scommon.actions.data.DriverViewDataReader.DriverViewDataRow;
 import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
 import surveyor.scommon.source.LoginPage;
 
@@ -85,6 +84,7 @@ public class LoginPageActions extends BasePageActions {
 		else if (actionName.equals("selectDropDownByXPath")) { return this.selectDropDownByXPath(data, dataRowID); }
 		else if (actionName.equals("selectRadioButtonByID")) { return this.selectRadioButtonByID(data, dataRowID); }
 		else if (actionName.equals("selectRadioButtonByXPath")) { return this.selectRadioButtonByXPath(data, dataRowID); }
+		else if (actionName.equals("sortRecordsBy")) { return this.sortRecordsBy(data, dataRowID); }
 		else if (actionName.equals("verifyAccountDisabled")) { return this.verifyAccountDisabled(data, dataRowID); }
 		else if (actionName.equals("verifyAccountEnabled")) { return this.verifyAccountEnabled(data, dataRowID); }
 		return false;

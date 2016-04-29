@@ -151,7 +151,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		List<String> strListTag = new ArrayList<String>();
 		WebElement col1;
 
-		List<WebElement> rows = this.table.findElements(By.xpath(this.strTRXPath));
+		List<WebElement> rows = this.getTable().findElements(By.xpath(this.strTRXPath));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -162,7 +162,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			col1 = this.table.findElement(By.xpath(this.strTRXPath + "["+rowNum+"]/td[1]"));
+			col1 = this.getTable().findElement(By.xpath(this.strTRXPath + "["+rowNum+"]/td[1]"));
 
 			strListTag.add(col1.getText().trim());
 
@@ -171,7 +171,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
-				List<WebElement> newRows = this.table.findElements(By.xpath(this.strTRXPath));
+				List<WebElement> newRows = this.getTable().findElements(By.xpath(this.strTRXPath));
 				rowSize = newRows.size();
 
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
@@ -198,7 +198,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		WebElement tagCell;
 		WebElement driverCell;
 
-		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
+		List<WebElement> rows = getTable().findElements(By.xpath(strTRXPath));
 		int rowSize = rows.size();
 		int loopCount = 0;
 
@@ -209,10 +209,10 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			tagXPath = strTRXPath + "["+rowNum+"]/td[1]";
-			tagCell = table.findElement(By.xpath(tagXPath));
+			tagCell = getTable().findElement(By.xpath(tagXPath));
 
 			driverXPath = strTRXPath + "["+rowNum+"]/td[2]";
-			driverCell = table.findElement(By.xpath(driverXPath));
+			driverCell = getTable().findElement(By.xpath(driverXPath));
 
 			if (tagCell.getText() != null && driverCell.getText().trim().equalsIgnoreCase(driver)) {
 				tagList.add(tagCell.getText().trim());
@@ -223,7 +223,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
-				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
+				List<WebElement> newRows = getTable().findElements(By.xpath(strTRXPath));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
@@ -249,7 +249,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 		boolean deleted = false;
 
-		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
+		List<WebElement> rows = getTable().findElements(By.xpath(strTRXPath));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -261,11 +261,11 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			tagXPath = strTRXPath + "["+rowNum+"]/td[1]";
-			tagCell = table.findElement(By.xpath(tagXPath));
+			tagCell = getTable().findElement(By.xpath(tagXPath));
 
 			if (tagCell.getText().trim().equalsIgnoreCase(tagName)) {
 				deleteImgXPath = strTRXPath + "["+rowNum+"]/td[10]/a[6]/img";
-				deleteImg = table.findElement(By.xpath(deleteImgXPath));
+				deleteImg = getTable().findElement(By.xpath(deleteImgXPath));
 
 				deleteImg.click();
 
@@ -288,7 +288,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
-				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
+				List<WebElement> newRows = getTable().findElements(By.xpath(strTRXPath));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
@@ -319,7 +319,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		WebElement analyzerCell;
 		WebElement startDTCell;
 
-		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
+		List<WebElement> rows = getTable().findElements(By.xpath(strTRXPath));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -331,19 +331,19 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			tagXPath = strTRXPath + "["+rowNum+"]/td[1]";
-			tagCell = table.findElement(By.xpath(tagXPath));
+			tagCell = getTable().findElement(By.xpath(tagXPath));
 
 			userXPath = strTRXPath + "["+rowNum+"]/td[2]";
-			userCell = table.findElement(By.xpath(userXPath));
+			userCell = getTable().findElement(By.xpath(userXPath));
 
 			surveyorXPath = strTRXPath + "["+rowNum+"]/td[3]";
-			surveyorCell = table.findElement(By.xpath(surveyorXPath));
+			surveyorCell = getTable().findElement(By.xpath(surveyorXPath));
 
 			analyzerXPath = strTRXPath + "["+rowNum+"]/td[4]";
-			analyzerCell = table.findElement(By.xpath(analyzerXPath));			
+			analyzerCell = getTable().findElement(By.xpath(analyzerXPath));			
 
 			startDTXPath = strTRXPath + "["+rowNum+"]/td[5]";
-			startDTCell = table.findElement(By.xpath(startDTXPath));
+			startDTCell = getTable().findElement(By.xpath(startDTXPath));
 
 			Log.info(String.format("Look for StartDate for Tag-[%s];User=[%s];Surveyor-[%s];Analyzer=[%s]", 
 					tag, user, surveyor, analyzer));
@@ -359,7 +359,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
-				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
+				List<WebElement> newRows = getTable().findElements(By.xpath(strTRXPath));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
@@ -392,7 +392,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		WebElement startDTCell;
 		WebElement actionCell;
 
-		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
+		List<WebElement> rows = getTable().findElements(By.xpath(strTRXPath));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -404,19 +404,19 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			tagXPath = strTRXPath + "["+rowNum+"]/td[1]";
-			tagCell = table.findElement(By.xpath(tagXPath));
+			tagCell = getTable().findElement(By.xpath(tagXPath));
 
 			userXPath = strTRXPath + "["+rowNum+"]/td[2]";
-			userCell = table.findElement(By.xpath(userXPath));
+			userCell = getTable().findElement(By.xpath(userXPath));
 
 			surveyorXPath = strTRXPath + "["+rowNum+"]/td[3]";
-			surveyorCell = table.findElement(By.xpath(surveyorXPath));
+			surveyorCell = getTable().findElement(By.xpath(surveyorXPath));
 
 			analyzerXPath = strTRXPath + "["+rowNum+"]/td[4]";
-			analyzerCell = table.findElement(By.xpath(analyzerXPath));			
+			analyzerCell = getTable().findElement(By.xpath(analyzerXPath));			
 
 			startDTXPath = strTRXPath + "["+rowNum+"]/td[5]";
-			startDTCell = table.findElement(By.xpath(startDTXPath));
+			startDTCell = getTable().findElement(By.xpath(startDTXPath));
 
 			Log.info(String.format("Searching for Tag-[%s];User=[%s];Surveyor-[%s];Analyzer=[%s];StartDate-[%s]", 
 					tag, user, surveyor, analyzer, startDT));
@@ -428,15 +428,15 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 				if (action.equalsIgnoreCase(DRIVINGSURVEYSEXPORTSURVEY)) {
 					actionXPath = strTRXPath + "["+rowNum+"]/td[11]/a[2]/img";
-					actionCell = table.findElement(By.xpath(actionXPath));
+					actionCell = getTable().findElement(By.xpath(actionXPath));
 				} 
 				else if (action.equalsIgnoreCase(DRIVINGSURVEYSEXPORTPEAKS)) {
 					actionXPath = strTRXPath + "["+rowNum+"]/td[11]/a[3]/img";
-					actionCell = table.findElement(By.xpath(actionXPath));
+					actionCell = getTable().findElement(By.xpath(actionXPath));
 				} 
 				else if (action.equalsIgnoreCase(DRIVINGSURVEYSEXPORTANALYSIS)) {
 					actionXPath = strTRXPath + "["+rowNum+"]/td[11]/a[4]/img";
-					actionCell = table.findElement(By.xpath(actionXPath));
+					actionCell = getTable().findElement(By.xpath(actionXPath));
 				} 
 				else
 					actionCell = null;				
@@ -455,7 +455,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
-				List<WebElement> newRows = table.findElements(By.xpath(strTRXPath));
+				List<WebElement> newRows = getTable().findElements(By.xpath(strTRXPath));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
@@ -675,6 +675,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 	@Override
 	public void waitForPageLoad() {
+		waitForAJAXCallsToComplete();
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return d.getPageSource().contains(STRPageContentText);

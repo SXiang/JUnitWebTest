@@ -65,6 +65,136 @@ public class ReportsCompliance extends Reports {
 		}
 	}
 
+	public enum DrivingSurveyTableColumns {
+		StartDateTime ("StartDateTime", 1),
+		EndDateTime ("EndDateTime", 2),
+		Duration ("Duration", 3),
+		username ("username", 4),
+		Surveyor ("Surveyor", 5),
+		Analyzer ("Analyzer", 6),
+		Tag ("Tag", 7),
+		FOV ("FOV", 8),
+		LISA ("LISA", 9),
+		Analysis ("Analysis", 10),
+		StabilityClass ("StabilityClass", 11);
+		
+		private final String name;
+		private final Integer colIndex;
+
+		DrivingSurveyTableColumns(String nm) {
+			this(nm, -1);
+		}
+
+		DrivingSurveyTableColumns(String nm, Integer colIdx) {
+			name = nm;
+			colIndex = colIdx;
+		}
+
+		public Integer getIndex() {
+			return colIndex;
+		}
+
+		
+		public String toString() {
+			return this.name;
+		}
+	}
+
+	public enum IsotopicAnalysisTableColumns {
+		Surveyor ("Surveyor", 1),
+		DateTime ("DateTime", 2),
+		Result ("Result", 3),
+		IsotopicValueUncertainty ("IsotopicValueUncertainty", 4),
+		FieldNotes ("FieldNotes", 5);
+		
+		private final String name;
+		private final Integer colIndex;
+
+		IsotopicAnalysisTableColumns(String nm) {
+			this(nm, -1);
+		}
+
+		IsotopicAnalysisTableColumns(String nm, Integer colIdx) {
+			name = nm;
+			colIndex = colIdx;
+		}
+
+		public Integer getIndex() {
+			return colIndex;
+		}
+
+		
+		public String toString() {
+			return this.name;
+		}
+	}
+
+	public enum LISAIndicationTableColumns {
+		LISANum ("LISANum", 1),
+		Surveyor ("Surveyor", 2),
+		DateTime ("DateTime", 3),
+		Amplitude ("Amplitude", 4),
+		Concentration ("Concentration", 5),
+		EthaneMethanRatio ("EthaneMethanRatio", 6),
+		Disposition ("Disposition", 7),
+		PercConfidenceInDisposition ("PercConfidenceInDisposition", 8),
+		FIeldNotes ("FIeldNotes", 9);
+		
+		private final String name;
+		private final Integer colIndex;
+
+		LISAIndicationTableColumns(String nm) {
+			this(nm, -1);
+		}
+
+		LISAIndicationTableColumns(String nm, Integer colIdx) {
+			name = nm;
+			colIndex = colIdx;
+		}
+
+		public Integer getIndex() {
+			return colIndex;
+		}
+
+		public String toString() {
+			return this.name;
+		}
+	}
+
+	public enum ViewTableColumns {
+		ViewName ("ViewName", 1),
+		ShowLISAs ("ShowLISAs", 2),
+		ShowFOV ("ShowFOV", 3),
+		ShowBreadcrumb ("ShowBreadcrumb", 4),
+		ShowIndications ("ShowIndications", 5),
+		ShowAnalysis ("ShowAnalysis", 6),
+		ShowFieldNotes ("ShowFieldNotes", 7),
+		ShowGaps ("ShowGaps", 8),
+		ShowAssets ("ShowAssets", 9),
+		ShowBoundaries ("ShowBoundaries", 10),
+		BaseMap ("BaseMap", 11);
+		
+		private final String name;
+		private final Integer colIndex;
+
+		ViewTableColumns(String nm) {
+			this(nm, -1);
+		}
+
+		ViewTableColumns(String nm, Integer colIdx) {
+			name = nm;
+			colIndex = colIdx;
+		}
+
+		public Integer getIndex() {
+			return colIndex;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
+	}
+
 	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, 
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit,tagList);

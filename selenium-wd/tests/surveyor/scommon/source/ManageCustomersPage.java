@@ -80,14 +80,6 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	@FindBy(id = "LicencedFeatureId-Report ShapeFile")
 	private WebElement inputReportShapeFile;
 	
-	public WebElement getInputReportShapeFile() {
-		return this.inputReportShapeFile;
-	}
-	
-	public WebElement getInputReportMetadata() {
-		return this.inputReportMetadata;
-	}
-	
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -111,6 +103,15 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		return true;
 	}
 	
+	public boolean unselectLicensedFeatures(LicensedFeatures... lfs){
+		if(lfs != null){
+		  for(LicensedFeatures lf:lfs){
+			  selectLicensedFeature(lf, false);
+		  }		
+		}
+		return true;
+	}
+
 	public boolean selectLicensedFeature(LicensedFeatures lf) {
 		return selectLicensedFeature(lf, true);
 	}
@@ -206,7 +207,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		sendKeysToTextArea(this.textAreaEula, eula);
 	}
     
-	public  void enabledDisableCustomer(boolean enableCustomer) {
+	private void enabledDisableCustomer(boolean enableCustomer) {
 		if (enableCustomer) {
 			if (!inputAccountEnabled.isSelected())
 				inputAccountEnabled.click();
@@ -239,7 +240,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		WebElement customerNameCell;
 		WebElement enabledStatusCell;	
 		
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 		
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -251,10 +252,10 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			customerNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
-			customerNameCell = table.findElement(By.xpath(customerNameXPath));
+			customerNameCell = getTable().findElement(By.xpath(customerNameXPath));
 			
 			enabledStatusXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
-			enabledStatusCell = table.findElement(By.xpath(enabledStatusXPath));
+			enabledStatusCell = getTable().findElement(By.xpath(enabledStatusXPath));
 			
 			Log.info(String.format("Customer: %s; Status: %s", customerNameCell.getText(), enabledStatusCell.getText()));			
 			
@@ -273,7 +274,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				
 				rowSize = newRows.size();
 				
@@ -300,7 +301,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		WebElement customerNameCell;
 		WebElement actionCell;
 		
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 		
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -312,13 +313,13 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			customerNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
-			customerNameCell = table.findElement(By.xpath(customerNameXPath));
+			customerNameCell = getTable().findElement(By.xpath(customerNameXPath));
 			
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName)) {				
 				Log.info(String.format("Found existing customer with name - '%s' at row number - %d", 
 						customerName, rowNum));
 				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
-				actionCell = table.findElement(By.xpath(actionXPath));
+				actionCell = getTable().findElement(By.xpath(actionXPath));
 				
 				actionCell.click();
 				this.waitForEditPageLoad();
@@ -329,7 +330,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				
 				rowSize = newRows.size();
 				
@@ -356,7 +357,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		WebElement customerNameCell;
 		WebElement actionCell;
 		
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 		
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -368,14 +369,14 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			customerNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
-			customerNameCell = table.findElement(By.xpath(customerNameXPath));
+			customerNameCell = getTable().findElement(By.xpath(customerNameXPath));
 			
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName)) {				
 				Log.info(String.format("Found existing customer with name - '%s' at row number - %d", 
 						customerName, rowNum));
 				
 				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
-				actionCell = table.findElement(By.xpath(actionXPath));
+				actionCell = getTable().findElement(By.xpath(actionXPath));
 				
 				actionCell.click();
 				this.waitForEditPageLoad();
@@ -385,7 +386,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				
 				this.btnOk.click();
 				
-				if (table.isDisplayed())
+				if (getTable().isDisplayed())
 					return true;
 				
 				if (isElementPresent(this.panelDuplicationErrorXPath)){
@@ -400,7 +401,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				
 				rowSize = newRows.size();
 				
@@ -416,6 +417,20 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		return false;
 	}
 	
+	public boolean editAndSelectLicensedFeatures(String customerName, LicensedFeatures... lfs) {
+		findCustomerAndOpenEditPage(customerName);
+		selectLicensedFeatures(lfs);
+		clickOnEditOkBtn();
+		return true;
+	}
+
+	public boolean editAndUnSelectLicensedFeatures(String customerName, LicensedFeatures... lfs) {
+		findCustomerAndOpenEditPage(customerName);
+		unselectLicensedFeatures(lfs);
+		clickOnEditOkBtn();
+		return true;
+	}
+
 	public String getCustomerStatus(String customerName) {
 		setPagination(PAGINATIONSETTING_100);
 		
@@ -427,7 +442,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		WebElement customerNameCell;
 		WebElement statusCell;
 		
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 		
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -439,12 +454,12 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			customerNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
-			customerNameCell = table.findElement(By.xpath(customerNameXPath));
+			customerNameCell = getTable().findElement(By.xpath(customerNameXPath));
 			
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName)) {
 				statusXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[2]";
 				
-				statusCell = table.findElement(By.xpath(statusXPath));
+				statusCell = getTable().findElement(By.xpath(statusXPath));
 				
 				return statusCell.getText().trim();
 			}
@@ -452,7 +467,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				
 				rowSize = newRows.size();
 				
@@ -466,6 +481,26 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		}		
 		
 		return null;
+	}
+	
+	public LicensedFeatures getLicensedFeature(String licFeatureName) {
+		LicensedFeatures licensedFeatures = LicensedFeatures.ASSESSMENT; 
+		if (licFeatureName == "GAP Grid 1.0") {
+			licensedFeatures = LicensedFeatures.GAPGRID;
+		} else if (licFeatureName == "Report Metadata") {
+			licensedFeatures = LicensedFeatures.REPORTMETADATA;
+		} else if (licFeatureName == "Assessment") {
+			licensedFeatures = LicensedFeatures.ASSESSMENT;
+		} else if (licFeatureName == "EQ") {
+			licensedFeatures = LicensedFeatures.EQ;
+		} else if (licFeatureName == "LISA Box 1.0") {
+			licensedFeatures = LicensedFeatures.LISABOX;
+		} else if (licFeatureName == "Survey Protocol Forecast") {
+			licensedFeatures = LicensedFeatures.SURVEYFORECASE;
+		} else if (licFeatureName == "Report ShapeFile") {
+			licensedFeatures = LicensedFeatures.REPORTSHAPEFILE;
+		}
+		return licensedFeatures;
 	}
 	
 	public String getEulaText() {
@@ -483,7 +518,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		WebElement customerNameCell;
 		WebElement actionCell;
 		
-		List<WebElement> rows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 		
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -495,14 +530,14 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			customerNameXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[1]";
-			customerNameCell = table.findElement(By.xpath(customerNameXPath));
+			customerNameCell = getTable().findElement(By.xpath(customerNameXPath));
 			
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName)) {
 				Log.info(String.format("Found existing customer with name - '%s' at row number - %d", 
 						customerName, rowNum));
 				
 				actionXPath = "//*[@id='datatable']/tbody/tr["+rowNum+"]/td[3]";
-				actionCell = table.findElement(By.xpath(actionXPath));
+				actionCell = getTable().findElement(By.xpath(actionXPath));
 				
 				actionCell.click();
 				this.waitForEditPageLoad();
@@ -517,7 +552,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				
 				rowSize = newRows.size();
 				
@@ -591,4 +626,5 @@ public class ManageCustomersPage extends SurveyorBasePage {
     public boolean isEditBtnPresent(){
     	return isElementPresent(this.btnEditCustomerXPath);
     }
+
 }

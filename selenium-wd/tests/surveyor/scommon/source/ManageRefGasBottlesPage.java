@@ -236,6 +236,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		WebElement surveyorCell;
 		WebElement lotNumberCell;
 
+
 		this.getInputSearch().clear();
 		this.getInputSearch().sendKeys(strLotNumber);
 		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
@@ -252,8 +253,8 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 			strSurveyorXPath = strTRXPath + "[" + rowNum + "]/td[3]";
 			strLotNumberXPath = strTRXPath + "[" + rowNum + "]/td[5]";
 
-			surveyorCell = table.findElement(By.xpath(strSurveyorXPath));
-			lotNumberCell = table.findElement(By.xpath(strLotNumberXPath));
+			surveyorCell = getTable().findElement(By.xpath(strSurveyorXPath));
+			lotNumberCell = getTable().findElement(By.xpath(strLotNumberXPath));
 
 			if (surveyorCell.getText().equalsIgnoreCase(strSurveyor)
 					&& lotNumberCell.getText().equalsIgnoreCase(strLotNumber)) {
@@ -267,7 +268,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
 
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath(strTRXPath));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
@@ -296,7 +297,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		WebElement surveyorCell;
 		WebElement lotNumberCell;
 
-		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
+		List<WebElement> rows = getTable().findElements(By.xpath(strTRXPath));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -311,9 +312,9 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 			strSurveyorXPath = strTRXPath + "[" + rowNum + "]/td[2]";
 			strLotNumberXPath = strTRXPath + "[" + rowNum + "]/td[4]";
 
-			locationCell = table.findElement(By.xpath(locationXPath));
-			surveyorCell = table.findElement(By.xpath(strSurveyorXPath));
-			lotNumberCell = table.findElement(By.xpath(strLotNumberXPath));
+			locationCell = getTable().findElement(By.xpath(locationXPath));
+			surveyorCell = getTable().findElement(By.xpath(strSurveyorXPath));
+			lotNumberCell = getTable().findElement(By.xpath(strLotNumberXPath));
 
 			if (locationCell.getText().trim().equalsIgnoreCase(location)
 					&& surveyorCell.getText().trim()
@@ -330,7 +331,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
 
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath(strTRXPath));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
@@ -419,7 +420,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			lotNumXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]";
-			lotNumCell = table.findElement(By.xpath(lotNumXPath));
+			lotNumCell = getTable().findElement(By.xpath(lotNumXPath));
 
 			lotNumList.add(lotNumCell.getText().trim());
 
@@ -429,7 +430,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -510,7 +511,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			surveyorXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 					+ "]/td[2]";
-			surveyorCell = table.findElement(By.xpath(surveyorXPath));
+			surveyorCell = getTable().findElement(By.xpath(surveyorXPath));
 
 			surveyorList.add(surveyorCell.getText().trim());
 
@@ -520,7 +521,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -557,7 +558,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			analyzerXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 					+ "]/td[3]";
-			analyzerCell = table.findElement(By.xpath(analyzerXPath));
+			analyzerCell = getTable().findElement(By.xpath(analyzerXPath));
 
 			analyzerList.add(analyzerCell.getText().trim());
 
@@ -567,7 +568,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -604,7 +605,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			isoValueXPath = "//*[@id='datatable']/tbody/tr[" + rowNum
 					+ "]/td[5]";
-			isoValueCell = table.findElement(By.xpath(isoValueXPath));
+			isoValueCell = getTable().findElement(By.xpath(isoValueXPath));
 
 			isoValueList.add(isoValueCell.getText().trim());
 
@@ -614,7 +615,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
-				List<WebElement> newRows = table.findElements(By
+				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();

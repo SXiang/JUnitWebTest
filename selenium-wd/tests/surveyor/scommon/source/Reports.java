@@ -39,12 +39,15 @@ public class Reports {
 	protected String strCreatedBy;
 	private String customer;
 	protected String timeZone;
+	
+	private List<ReportsSurveyInfo> surveyInfoList;
+	
+	// TODO: Deprecate these data members. Replaced with List<ReportsSurveyInfo>
 	protected String surveyorUnit;
 	protected List<String> tagList;
 	protected String startDate;
 	protected String endDate;
 	protected String userName;
-	
 	protected Boolean geoFilter = false;
 	
 	public enum SurveyModeFilter {
@@ -254,6 +257,8 @@ public class Reports {
 		this.timeZone = timeZone;
 	}
 
+	// TODO --> Deprecate these. To be replaced by List<ReportsSurveyInfo>
+	
 	public void setSurveyorUnit(String surveyorUnit) {
 		this.surveyorUnit = surveyorUnit;
 	}
@@ -278,6 +283,16 @@ public class Reports {
 		this.geoFilter = geoFilter;
 	}
 
+	// <--
+	
+	public List<ReportsSurveyInfo> getSurveyInfoList() {
+		return surveyInfoList;
+	}
+
+	public void setSurveyInfoList(List<ReportsSurveyInfo> surveyInfoList) {
+		this.surveyInfoList = surveyInfoList;
+	}
+	
 	/**
 	 * Populate map with guids from SurveyModeType.
 	 * NOTE: These guids need to be in sync with Ids used in [SurveyModeType] table.
