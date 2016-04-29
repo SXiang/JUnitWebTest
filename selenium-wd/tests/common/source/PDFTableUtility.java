@@ -25,7 +25,7 @@ public class PDFTableUtility extends PDFUtility{
 		LISAINDICATIONTABLE ("Disposition"+wordSeparator+"% Confidence in Disposition"+wordSeparator+"Field Notes",1,"",false),
 		COMPLIANCEREPORTSUMMARYTABLE ("Map Height & Width:.*",0,"",false,6),
 		COVERAGEFORECAST(".*Percent Service Coverage with LISAs.*",0,"",false,1),
-		COVERAGEFORECASTTO70(".*Probability to Obtain 70% Coverage",0,"",true,4);
+		COVERAGEFORECASTTO70(".*Probability to Obtain 70% Coverage",0,"",true,4),
 		DRIVINGSURVEYTABLE("Indication Table",0,"LISA",true,-1),
 		ISOTOPICANALYSISTABLE("Surveyor Date/Time Result",0," Layers",true,-1);
 		
