@@ -18,6 +18,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +30,9 @@ import org.openqa.selenium.WebElement;
 
 import common.source.ArrayUtility;
 import common.source.BaseHelper;
+import common.source.FileUtility;
 import common.source.Log;
+import common.source.NumberUtility;
 import common.source.PDFTableUtility;
 import common.source.PDFTableUtility.PDFTable;
 import common.source.RegexUtility;
@@ -38,10 +41,14 @@ import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.api.source.ReportJob;
 import surveyor.api.source.ReportJobsStat;
+import surveyor.scommon.actions.data.AnalyzerDataReader;
+import surveyor.scommon.actions.data.AnalyzerDataReader.AnalyzerDataRow;
 import surveyor.scommon.actions.data.ComplianceReportDataReader;
 import surveyor.scommon.actions.data.ComplianceReportDataReader.ComplianceReportsDataRow;
 import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
+import surveyor.scommon.actions.data.LocationDataReader;
+import surveyor.scommon.actions.data.LocationDataReader.LocationDataRow;
 import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader;
 import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader.ReportOptTabularPDFContentDataRow;
 import surveyor.scommon.actions.data.ReportOptViewLayersAssetsDataReader;
@@ -150,12 +157,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
  
 	private void clickComplianceReportButton(Integer dataRowID, ComplianceReportButtonType buttonType) throws Exception {
 		ComplianceReportsDataRow compRptDataRow = getDataReader().getDataRow(dataRowID);
-		Integer custRowID = Integer.valueOf(compRptDataRow.customerRowID);
-		CustomerDataReader custDataReader = new CustomerDataReader(this.excelUtility);
-		CustomerDataRow custDataRow = custDataReader.getDataRow(custRowID);
-		String customerName = custDataRow.name;
 		String reportTitle = compRptDataRow.title;
-		this.getComplianceReportsPage().clickComplianceReportButton(reportTitle, customerName, buttonType);
+		this.getComplianceReportsPage().clickComplianceReportButton(reportTitle, LoginPageActions.workingDataRow.username, buttonType);
 	}
 	
 	private ComplianceReportsPage createNewPageObject() {
@@ -241,6 +244,12 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
 
 	private boolean fillAndCreateNewReport(Integer dataRowID, boolean openNewReportsPage) throws Exception {
+		ReportsCompliance rpt = fillWorkingDataForReports(dataRowID);
+		getComplianceReportsPage().addNewReport(rpt, openNewReportsPage);
+		return true;
+	}
+
+	public ReportsCompliance fillWorkingDataForReports(Integer dataRowID) throws Exception {
 		workingDataRow = getDataReader().getDataRow(dataRowID);
 		
 		String rptTitle = workingDataRow.title; 
@@ -287,10 +296,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 				listBoundary, tablesList, null /*surveyorUnit*/, null /*tagList*/, viewList, viewLayersList);
 		rpt.setSurveyInfoList(reportsSurveyInfoList);
 
-		getComplianceReportsPage().addNewReport(rpt, openNewReportsPage);
-		
 		workingReportsComp = rpt;		// Store the working report properties.
-		return true;
+		return rpt;
 	}
 
 	private List<String[]> getSSRSPDFTableValues(PDFTable pdfTable) throws IOException {
@@ -408,9 +415,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @throws Exception
 	 */
 	private void waitForReportFileDownload(Integer dataRowID, ReportFileType fileType, Integer fileIndex) throws Exception {
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
 		ComplianceReportsDataRow compRptDataRow = getDataReader().getDataRow(dataRowID);
-		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
 		String reportTitle = compRptDataRow.title;
 		String reportName = "";
 		
@@ -1602,12 +1607,25 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean verifyPDFZipFilesAreCorrect(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyPDFZipFilesAreCorrect", data, dataRowID);
-		ActionArguments.verifyGreaterThanZero("verifyPDFZipFilesAreCorrect", ARG_DATA_ROW_ID, dataRowID);
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
-		waitForReportFileDownload(dataRowID, ReportFileType.ZIP, -1);
-		this.getComplianceReportsPage().verifyReportPDFZIPFiles();
-		return true;
+
+		// Verify that there is a file for Report PDF.
+		// and there is one PDF file for each view that was specified in the input.
+		Integer expectedFileCount = 1;
+		List<Integer> viewRowIDs = ActionArguments.getNumericList(workingDataRow.reportViewRowIDs);
+		if (viewRowIDs != null) {
+			expectedFileCount += viewRowIDs.size();
+		}
+		
+		List<String> expectedFileNames = new ArrayList<String>();
+		String reportFileNameWithoutExt = workingDataRow.title.replace(" ", "");
+		expectedFileNames.add(reportFileNameWithoutExt + ".pdf");
+		for (int i=1; i<expectedFileCount; i++) {
+			expectedFileNames.add(String.format("%s_%s View.pdf", reportFileNameWithoutExt, new NumberUtility().getOrdinalNumberString(i)));
+		}
+		
+		String fileName = this.getComplianceReportsPage().getReportPDFZipFileName(workingDataRow.title, false /*includeExtension*/);
+		Path downloadDirectory = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), fileName);
+		return FileUtility.compareFilesInDirectory(downloadDirectory, expectedFileNames);
 	}
 
 	/**
@@ -2039,8 +2057,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyLISAsIndicationTableRowCountEquals", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("verifyLISAsIndicationTableRowCountEquals", ARG_DATA, data);
 		Integer expectedRows = Integer.valueOf(data);
-		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE);
+		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE2);
 		Integer actualRows = (lisasIndicationTblList != null) ? lisasIndicationTblList.size() : 0;
+		Log.info(String.format("Expected Row Count=[%d], Actual Row Count=[%d]", expectedRows, actualRows));
 		return (expectedRows == actualRows);
 	}
 
@@ -2054,9 +2073,10 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyLISAsIndicationTableSortedAscByColumn(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyLisasTableSortedAscByColumn", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("verifyLisasTableSortedAscByColumn", ARG_DATA, data);
-		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE);
+		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE2);
 		LISAIndicationTableColumns tableColumn = LISAIndicationTableColumns.valueOf(data);
-		return SortHelper.isSortedASC(lisasIndicationTblList.get(tableColumn.getIndex()));
+		List<String> tableValuesList = ArrayUtility.getColumnStringList(lisasIndicationTblList, tableColumn.getIndex());
+		return SortHelper.isSortedASC(tableValuesList.toArray(new String[tableValuesList.size()]));
 	}
 
 	/**
@@ -2069,9 +2089,10 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyLISAsIndicationTableSortedDescByColumn(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyLisasTableSortedDescByColumn", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("verifyLisasTableSortedDescByColumn", ARG_DATA, data);
-		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE);
+		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE2);
 		LISAIndicationTableColumns tableColumn = LISAIndicationTableColumns.valueOf(data);
-		return SortHelper.isSortedASC(lisasIndicationTblList.get(tableColumn.getIndex()));
+		List<String> tableValuesList = ArrayUtility.getColumnStringList(lisasIndicationTblList, tableColumn.getIndex());
+		return SortHelper.isSortedDESC(tableValuesList.toArray(new String[tableValuesList.size()]));
 	}
 
 	/**
@@ -2478,9 +2499,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyLISAsIndicationTableMinAmplitudeValues(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyLISAsIndicationTableMinAmplitudeValues", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("verifyLISAsIndicationTableMinAmplitudeValues", ARG_DATA, data);
-		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE);
-		String[] minAmplitudeValues = lisasIndicationTblList.get(LISAIndicationTableColumns.Amplitude.getIndex()-1);
-		return ArrayUtility.areValuesGreater(minAmplitudeValues, Float.valueOf(data));
+		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE2);
+		List<String> minAmplitudeValues = ArrayUtility.getColumnStringList(lisasIndicationTblList, LISAIndicationTableColumns.Amplitude.getIndex()-1);
+		return ArrayUtility.areValuesGreater(minAmplitudeValues.toArray(new String[minAmplitudeValues.size()]), Float.valueOf(data));
 	}
 
 	/**
@@ -2675,6 +2696,36 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
  
 	/**
 	/* END - Actions on the Page*/
+
+	public List<Float> getMinAmplitudesForSurveys(Integer reportDataRowID) throws Exception {
+		List<Float> minAmps = new ArrayList<Float>();
+		ComplianceReportDataReader reportDataReader = new ComplianceReportDataReader(excelUtility);
+		ComplianceReportsDataRow reportsDataRow = reportDataReader.getDataRow(reportDataRowID);
+		List<Integer> surveyRowIDs = ActionArguments.getNumericList(reportsDataRow.reportSurveyRowIDs);
+		for (Integer surveyRowID : surveyRowIDs) {
+			Float minAmp = 0.0F;
+			ReportSurveyDataReader surveyDataReader = new ReportSurveyDataReader(excelUtility);
+			ReportSurveyDataRow surveyDataRow = surveyDataReader.getDataRow(surveyRowID);
+			AnalyzerDataReader analyzerDataReader = new AnalyzerDataReader(excelUtility);
+			AnalyzerDataRow analyzerDataRow = analyzerDataReader.getDataRow(Integer.valueOf(surveyDataRow.analyzerRowID));
+			LocationDataReader locationDataReader = new LocationDataReader(excelUtility);
+			LocationDataRow locationDataRow = locationDataReader.getDataRow(Integer.valueOf(analyzerDataRow.locationRowID));
+			if (surveyDataRow.surveyModeFilter.equals("Standard")) {
+				minAmp = Float.valueOf(locationDataRow.standardMinAmplitude);
+			} else if (surveyDataRow.surveyModeFilter.equals("Operator")) {
+				minAmp = Float.valueOf(locationDataRow.operatorMinAmplitude);
+			} else if (surveyDataRow.surveyModeFilter.equals("Rapid Response")) {
+				minAmp = Float.valueOf(locationDataRow.rapidResponseMinAmplitude);
+			} else if (surveyDataRow.surveyModeFilter.equals("Assessment")) {
+				minAmp = Float.valueOf(locationDataRow.assessmentMinAmplitude);
+			} else if (surveyDataRow.surveyModeFilter.equals("EQ")) {
+				minAmp = Float.valueOf(locationDataRow.eQMinAmplitude);
+			}
+			
+			minAmps.add(minAmp);
+		}
+		return minAmps;
+	}
 
 	/* Invoke action using specified ActionName */
 	@Override

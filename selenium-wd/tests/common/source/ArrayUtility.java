@@ -1,10 +1,26 @@
 package common.source;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ArrayUtility {
 
 	public ArrayUtility() {
 	}
 
+	public static List<String> getColumnStringList(List<String[]> valuesList, Integer columnIdx) {
+		List<String> retList = null;
+		if (valuesList != null) {
+			retList = new ArrayList<String>(valuesList.size());
+			for (String[] arr : valuesList) {
+				if (arr != null || arr.length > columnIdx) {
+					retList.add(arr[columnIdx]);
+				}
+			}
+		}
+		return retList;
+	}
+	
 	/**
 	 * Checks if all the values in the specified String array are greater than the specified minValue.
 	 * @param values - String array to check

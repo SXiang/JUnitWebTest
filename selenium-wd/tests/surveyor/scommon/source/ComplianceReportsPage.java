@@ -778,11 +778,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 	public boolean checkComplianceReportButtonPresenceAndClick(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType, 
 			boolean clickButton, boolean confirmAction) throws Exception {
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-
 		setPagination(PAGINATIONSETTING);
-
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForPageLoad();
 
 		String reportTitleXPath;
 		String createdByXPath;
@@ -802,6 +799,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		else
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
 
+		Log.info(String.format("Looking for rptTitle=[%s], strCreatedBy=[%s]", rptTitle, strCreatedBy));
+		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
@@ -809,6 +808,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
 			createdByCell = getTable().findElement(By.xpath(createdByXPath));
 
+			Log.info(String.format("Found rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]", 
+					rptTitleCell.getText(), createdByCell.getText()));
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				try {
 					switch (buttonType) {
@@ -2883,6 +2884,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@Override
 	public String getNewPageString() {
 		return STRNewPageContentText;
+	}
+
+	@Override
+	public String getStrPageText() {
+		return STRPageContentText;
 	}
 
 	@Override

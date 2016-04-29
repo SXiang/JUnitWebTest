@@ -24,11 +24,15 @@ public class PDFTableUtility extends PDFUtility{
 		LISAINVESTIGATIONTABLE ("Lisa Investigation Table",2),
 		LISAINDICATIONTABLE ("LISA #"+wordSeparator+"Surveyor"+wordSeparator+"Date/Time"
 				+wordSeparator+"Amplitude(ppm)"+wordSeparator+"Concentration(ppm)"+wordSeparator+"Field Notes"),
-		COMPLIANCEREPORTSUMMARYTABLE ("Map Height & Width:.*",0,"LISA Investigation Complete",false,6),
+		LISAINDICATIONTABLE3 ("LISA #"+wordSeparator+"Surveyor"+wordSeparator+"Date/Time"+wordSeparator+"Amplitude(ppm)"
+				+wordSeparator+"Concentration(ppm)"+wordSeparator+"Ethane/Methane Ratio and Uncertainty(%)"
+				+wordSeparator+"Disposition"+wordSeparator+"% Confidence in Disposition"+wordSeparator+"Field Notes"),
+		LISAINDICATIONTABLE2 ("Disposition"+wordSeparator+"% Confidence in Disposition"+wordSeparator+"Field Notes",1),
+		COMPLIANCEREPORTSUMMARYTABLE ("Map Height & Width:.*",0,"",false,6),
 		COVERAGEFORECASE(".*Percent Service Coverage with LISAs.*",0,"",false,1),
 		COVERAGEFORECASETO70(".*Probability to Obtain 70% Coverage",0,"",true,4),
 		DRIVINGSURVEYTABLE("Indication Table",0,"LISA",true,-1),
-		ISOTOPICANALYSISTABLE("Surveyor Date/Time Result",0," Layers",true,-1);
+		ISOTOPICANALYSISTABLE("Surveyor|Date/Time|Result",0," Layers",true,-1);
 		
 		private final String tableID;	          //1. tableID, indicator of start of a table, required
 		private final int startLine;              //2. num of lines  after 'tableID' - inclusive, optional, default to 0
