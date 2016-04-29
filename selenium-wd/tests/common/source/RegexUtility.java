@@ -174,7 +174,7 @@ public class RegexUtility {
 			return false;
 		}else{
 			actualValue = actualValue.trim();
-			expectedValueOrPattern.trim();
+			expectedValueOrPattern = expectedValueOrPattern.trim();
 		}
 		boolean isEqual = actualValue.equals(expectedValueOrPattern);
 		boolean isMatch = false;

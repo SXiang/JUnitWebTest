@@ -2118,16 +2118,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	/************** Baseline creation and comparison methods ***************/
 
-	private void checkAndGenerateBaselineShapeAndGeoJsonFiles(String reportName, String testCaseID) throws Exception {
-		boolean isGenerateBaselineShapeFiles = TestContext.INSTANCE.getTestSetup().isGenerateBaselineShapeFiles();
-		if (isGenerateBaselineShapeFiles) {
-			Path unzipDirectory = Paths.get(testSetup.getDownloadPath(), reportName + " (2)");
-			List<String> filesInDirectory = FileUtility.getFilesInDirectory(unzipDirectory, "*.shp,*.dbf,*.prj,*.shx");
-			for (String filePath : filesInDirectory) {
-				generateBaselineShapeAndGeoJsonFiles(testCaseID, filePath);
-			}
-		}
-	}
+	
 
 	public String getUpdatedReportJobCSVFileContent(String fileAbsolutePath, String newLine) throws IOException {
 		StringBuilder fileContent = new StringBuilder();
@@ -2191,17 +2182,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		FileUtility.createTextFile(expectedFilePath, fileContent);
 	}
 
-	protected void generateBaselineSSRSImage(String testCaseID, String imageFileFullPath) throws IOException {
-		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator
-				+ "ssrs-images" + File.separator + testCaseID;
-		// Create the directory for test case if it does not exist.
-		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
-		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
-		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
-		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
-	}
-
 	protected void generateBaselineViewImage(String testCaseID, String imageFileFullPath) throws IOException {
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
 		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator
@@ -2211,34 +2191,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
 	}
 
-	protected void generateBaselineShapeAndGeoJsonFiles(String testCaseID, String shapeFileFullPath) throws Exception {
-		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator
-				+ "shape-files" + File.separator + testCaseID;
-		// Create the directory for test case if it does not exist.
-		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
-		String expectedFilename = FileUtility.getFileName(shapeFileFullPath);
-		String expectedFileExt = FileUtility.getFileExtension(shapeFileFullPath);
-		if (expectedFileExt == "dbf" || expectedFileExt == "prj" || expectedFileExt == "shp"
-				|| expectedFileExt == "shx") {
-			// Delete existing files in directory (if any).
-			FileUtility.deleteFilesInDirectory(Paths.get(expectedDataFolderPath));
-
-			// Copy the file to the test case folder.
-			String expectedFilenameWithoutExt = expectedFilename.replace(".shp", "");
-			Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
-			FileUtils.copyFile(new File(shapeFileFullPath), new File(expectedFilePath.toString()));
-
-			// If specified file is .shp get GeoJson string for the shape file
-			// and store the .geojson.
-			if (expectedFileExt == "shp") {
-				String geoJsonString = ShapeToGeoJsonConverter.convertToJsonString(shapeFileFullPath);
-				Path expectedGeoJsonFilePath = Paths.get(expectedDataFolderPath,
-						expectedFilenameWithoutExt + ".geojson");
-				FileUtility.createTextFile(expectedGeoJsonFilePath, geoJsonString);
-			}
-		}
-	}
+	
 
 	/**
 	 * Compares the processing times for each reportJob type with baseline
