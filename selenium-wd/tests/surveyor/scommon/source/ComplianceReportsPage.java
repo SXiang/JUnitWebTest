@@ -1583,7 +1583,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
 		setReportName("CR-" + reportId);
 		setReportName(getReportName());
-		String actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
+		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value)

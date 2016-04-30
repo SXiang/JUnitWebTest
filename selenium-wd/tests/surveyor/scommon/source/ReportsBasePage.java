@@ -1346,10 +1346,25 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return false;
 	}
 
-	private WebElement getReportTableCell(String elementXPath) {
-		refreshPageUntilElementFound(elementXPath);
-		this.waitForPageLoad();
+	private WebElement getTableCell(String elementXPath) {
 		return getTable().findElement(By.xpath(elementXPath));
+	}
+	
+	private WebElement getReportTableCell(String elementXPath) {
+		boolean retry = false;
+		WebElement tableCell = null;
+		try {
+			tableCell = getTableCell(elementXPath);
+		} catch (Exception e) {
+			retry = true;
+		}
+		
+		if (retry) {
+			this.waitForPageLoad();
+			refreshPageUntilElementFound(elementXPath);
+		}
+
+		return getTableCell(elementXPath);
 	}
 
 	private String getReportTableCellText(String elementXPath) {

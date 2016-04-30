@@ -62,7 +62,22 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 			complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID);
 		}
 	}
- 
+
+	protected void modifyComplianceReport(ComplianceReportsPageActions complianceReportsPageAction, Integer reportDataRowID) throws Exception {
+		if (getTestRunMode() == ReportTestRunMode.FullTestRun) {
+			complianceReportsPageAction.modifyReport(EMPTY, reportDataRowID);
+		} else if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
+			// If running in unit test mode go back to manage reports page.
+			complianceReportsPageAction.open(EMPTY, NOTSET);
+		}
+	}
+
+	protected void clickConfirmDeleteInComplianceReport(ComplianceReportsPageActions complianceReportsPageAction, Integer reportDataRowID) throws Exception {
+		if (getTestRunMode() == ReportTestRunMode.FullTestRun) {
+			complianceReportsPageAction.clickOnConfirmDeleteReport(EMPTY, reportDataRowID);
+		} 
+	}
+
 	protected void waitForComplianceReportGenerationToComplete(ComplianceReportsPageActions complianceReportsPageAction, Integer reportDataRowID) {
 		if (getTestRunMode() == ReportTestRunMode.FullTestRun) {
 			complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID);

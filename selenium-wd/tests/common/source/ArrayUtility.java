@@ -18,6 +18,7 @@ public class ArrayUtility {
 				}
 			}
 		}
+		Log.info(String.format("Array values for column index=[%d] : %s", columnIdx, LogHelper.listOfStrArrayToString(valuesList)));
 		return retList;
 	}
 	

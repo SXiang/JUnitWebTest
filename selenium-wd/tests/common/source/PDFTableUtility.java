@@ -22,17 +22,18 @@ public class PDFTableUtility extends PDFUtility{
 	// All the pdf tables should be defined in this enum
 	public static enum PDFTable {		
 		LISAINVESTIGATIONTABLE ("Lisa Investigation Table",2),
-		LISAINDICATIONTABLE ("LISA #"+wordSeparator+"Surveyor"+wordSeparator+"Date/Time"
+		LISAINDICATIONTABLE1 ("LISA #"+wordSeparator+"Surveyor"+wordSeparator+"Date/Time"
 				+wordSeparator+"Amplitude(ppm)"+wordSeparator+"Concentration(ppm)"+wordSeparator+"Field Notes"),
 		LISAINDICATIONTABLE3 ("LISA #"+wordSeparator+"Surveyor"+wordSeparator+"Date/Time"+wordSeparator+"Amplitude(ppm)"
 				+wordSeparator+"Concentration(ppm)"+wordSeparator+"Ethane/Methane Ratio and Uncertainty(%)"
 				+wordSeparator+"Disposition"+wordSeparator+"% Confidence in Disposition"+wordSeparator+"Field Notes"),
-		LISAINDICATIONTABLE2 ("Disposition"+wordSeparator+"% Confidence in Disposition"+wordSeparator+"Field Notes",1),
+		//LISAINDICATIONTABLE ("Disposition"+wordSeparator+"% Confidence in Disposition"+wordSeparator+"Field Notes",1),
+		LISAINDICATIONTABLE ("Disposition"+wordSeparator+"% Confidence in Disposition"+wordSeparator+"Field Notes",1,"",false),
 		COMPLIANCEREPORTSUMMARYTABLE ("Map Height & Width:.*",0,"",false,6),
 		COVERAGEFORECASE(".*Percent Service Coverage with LISAs.*",0,"",false,1),
 		COVERAGEFORECASETO70(".*Probability to Obtain 70% Coverage",0,"",true,4),
 		DRIVINGSURVEYTABLE("Indication Table",0,"LISA",true,-1),
-		ISOTOPICANALYSISTABLE("Surveyor|Date/Time|Result",0," Layers",true,-1);
+		ISOTOPICANALYSISTABLE("Surveyor"+wordSeparator+"Date/Time"+wordSeparator+"Result"+wordSeparator+"Isotopic Value/ Uncertainty(Å"+wordSeparator+"Field Notes",1," Layers",true,-1);
 		
 		private final String tableID;	          //1. tableID, indicator of start of a table, required
 		private final int startLine;              //2. num of lines  after 'tableID' - inclusive, optional, default to 0
@@ -473,7 +474,7 @@ public class PDFTableUtility extends PDFUtility{
 			{"50","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST","0.04","2.26",""},
 			{"51","Gray Chevy","02/04/2015 10:22:42 PM PST","0.04","2.22",""},
 		});
-		expectedPDFTableMap.put(fileName,PDFTable.LISAINDICATIONTABLE);	
+		expectedPDFTableMap.put(fileName,PDFTable.LISAINDICATIONTABLE1);	
 
 
 		PDFTableUtility pdfTableUtility = new PDFTableUtility();
@@ -549,7 +550,7 @@ public class PDFTableUtility extends PDFUtility{
 			Assert.assertTrue(colValue1[i].equals(expectedTable[i][colNum])||colValue1[i].matches(expectedTable[i][colNum])); 
 		}
 
-		if(pTable.equals(PDFTable.LISAINDICATIONTABLE)||pTable.equals(PDFTable.LISAINVESTIGATIONTABLE)){
+		if(pTable.equals(PDFTable.LISAINDICATIONTABLE1)||pTable.equals(PDFTable.LISAINVESTIGATIONTABLE)){
 			Assert.assertTrue(SortHelper.isSortedASC(colValue1, 1));
 			Assert.assertTrue(SortHelper.isSortedASC(colValue2, 1));
 		}
