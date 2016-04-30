@@ -1093,6 +1093,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 		throw new Exception("Not implemented");
 	}
 
+	public String getStrPageText() throws Exception {
+		throw new Exception("Not implemented");
+	}
+	
 	public String getStrCopyPageText() throws Exception {
 		throw new Exception("Not implemented");
 	}
@@ -1334,10 +1338,25 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return false;
 	}
 
-	private WebElement getReportTableCell(String elementXPath) {
-		refreshPageUntilElementFound(elementXPath);
-		this.waitForPageLoad();
+	private WebElement getTableCell(String elementXPath) {
 		return getTable().findElement(By.xpath(elementXPath));
+	}
+	
+	private WebElement getReportTableCell(String elementXPath) {
+		boolean retry = false;
+		WebElement tableCell = null;
+		try {
+			tableCell = getTableCell(elementXPath);
+		} catch (Exception e) {
+			retry = true;
+		}
+		
+		if (retry) {
+			this.waitForPageLoad();
+			refreshPageUntilElementFound(elementXPath);
+		}
+
+		return getTableCell(elementXPath);
 	}
 
 	private String getReportTableCellText(String elementXPath) {
@@ -1352,6 +1371,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public boolean waitForReportGenerationtoComplete(String rptTitle, String strCreatedBy) {
 		setPagination(PAGINATIONSETTING_100);
+		this.waitForPageLoad();
 
 		String reportTitleXPath;
 		String createdByXPath;
@@ -1360,8 +1380,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		int rowSize = rows.size();
 		int loopCount = 0;
-
-		this.waitForPageLoad();
 
 		// Keep track of the last matching row that we processed.
 		String lastSeenTitleCellText = "";
@@ -1960,6 +1978,22 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void clickOnFirstCopyComplianceBtn() {
 		this.btnFirstCopyCompliance.click();
 	}
+	
+	@Override
+	public void waitForPageLoad() {
+		waitForAJAXCallsToComplete();
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				boolean result = false;
+				try {
+					result = d.getPageSource().contains(getStrPageText());
+				} catch (Exception e) {
+					Log.error(e.toString());
+				}
+				return result;
+			}
+		});
+	}
 
 	public void waitForCopyReportPagetoLoad() {
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
@@ -2072,7 +2106,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 	
 	public void waitForReportViewerDialogToOpen() {
-		WebElement divModalcontent = this.driver.findElement(By.id("divModalcontent"));
+		WebElement divModalcontent = this.driver.findElement(By.id("reportViewer"));
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return divModalcontent.getAttribute("style").contains("display:block") || 
@@ -2082,7 +2116,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void waitForReportViewerDialogToClose() {
-		WebElement divModalcontent = this.driver.findElement(By.id("divModalcontent"));
+		WebElement divModalcontent = this.driver.findElement(By.id("reportViewer"));
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return divModalcontent.getAttribute("style").contains("display:none") || 

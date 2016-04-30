@@ -24,6 +24,7 @@ import common.source.BasePage;
 import common.source.Log;
 import common.source.RegexUtility;
 import common.source.TestSetup;
+import common.source.WebElementExtender;
 import surveyor.scommon.source.SurveyorConstants.TopNavMenuItem;
 import surveyor.scommon.source.SurveyorConstants.UserTimezone;
 
@@ -415,9 +416,10 @@ public class SurveyorBasePage extends BasePage {
 				WebElement element = null;
 				try {
 					element = d.findElement(By.xpath(elementXPath));
-					String elementText = element.getText();
-					elementDetected = !elementText.isEmpty();
+					elementDetected = WebElementExtender.isElementPresentAndDisplayed(element);
 				} catch (Exception ex) {
+					Log.warn(String.format("Element with xpath=[%s] NOT found", elementXPath));
+					Log.warn(String.format("Refreshing page to find element with xpath=[%s]", elementXPath));
 					d.navigate().refresh();
 				}
 				return elementDetected;

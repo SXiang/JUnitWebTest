@@ -2,6 +2,7 @@ package common.source;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -12,10 +13,51 @@ public class NumberUtility {
 	private Integer currentRollingSum = 0;
 	private Integer rollingNumCount = 0;
 	
+	private HashMap<Integer, String> numberOrdinalMap = new HashMap<Integer, String>();
+	
 	public NumberUtility() {
 		initializeRollingNumbers();
+		buildNumberMaps();
 	}
 	
+	/**
+	 * We are using a simple map for converting numbers from 1-30 to its ordinal representation.
+	 * If in future we need to expand this out to a much larger number some java library
+	 * (for eg. http://site.icu-project.org/download/57#TOC-ICU4J-Download) can be integrated.
+	 */
+	private void buildNumberMaps() {
+		numberOrdinalMap.put(1, "First");
+		numberOrdinalMap.put(2, "Second");
+		numberOrdinalMap.put(3, "Third");
+		numberOrdinalMap.put(4, "Fourth");
+		numberOrdinalMap.put(5, "Fifth");
+		numberOrdinalMap.put(6, "Sixth");
+		numberOrdinalMap.put(7, "Seventh");
+		numberOrdinalMap.put(8, "Eighth");
+		numberOrdinalMap.put(9, "Ninth");
+		numberOrdinalMap.put(10, "Tenth");
+		numberOrdinalMap.put(11, "Eleventh");
+		numberOrdinalMap.put(12, "Twelfth");
+		numberOrdinalMap.put(13, "Thirteenth");
+		numberOrdinalMap.put(14, "Fourteenth");
+		numberOrdinalMap.put(15, "Fifteenth");
+		numberOrdinalMap.put(16, "Sixteenth");
+		numberOrdinalMap.put(17, "Seventeenth");
+		numberOrdinalMap.put(18, "Eighteenth");
+		numberOrdinalMap.put(19, "Nineteenth");
+		numberOrdinalMap.put(20, "Twentieth");
+		numberOrdinalMap.put(21, "TwentyFirst");
+		numberOrdinalMap.put(22, "TwentySecond");
+		numberOrdinalMap.put(23, "TwentyThird");
+		numberOrdinalMap.put(24, "TwentyFourth");
+		numberOrdinalMap.put(25, "TwentyFifth");
+		numberOrdinalMap.put(26, "TwentySixth");
+		numberOrdinalMap.put(27, "TwentySeventh");
+		numberOrdinalMap.put(28, "TwentyEighth");
+		numberOrdinalMap.put(29, "TwentyNinth");
+		numberOrdinalMap.put(30, "Thirtieth");
+	}
+
 	public void initializeRollingNumbers() {
 		setRollingNumbers(new ArrayList<Integer>());
 		currentRollingSum = 0;
@@ -41,6 +83,10 @@ public class NumberUtility {
 
 	public void setRollingNumbers(ArrayList<Integer> rollingNumbers) {
 		this.rollingNumbers = rollingNumbers;
+	}
+	
+	public String getOrdinalNumberString(Integer number) {
+		return numberOrdinalMap.get(number);
 	}
 
 	public static String getNumberStringForCurrentLocale(int num) {

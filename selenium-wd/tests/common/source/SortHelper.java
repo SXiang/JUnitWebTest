@@ -22,11 +22,36 @@ public class SortHelper {
 		boolean isNumber = NumberUtils.isNumber(strArray[beginAt]);
 		for(int i=beginAt+1;i<=endAt; i++){
 			if(isNumber){
-				if(NumberUtils.createInteger(strArray[i-1]).compareTo(NumberUtils.createInteger(strArray[i])) > 0){
+				if(NumberUtils.createFloat(strArray[i-1]).compareTo(NumberUtils.createFloat(strArray[i])) > 0){
 					return false;
 				}
 			}else{
 				if(strArray[i-1].compareTo(strArray[i]) > 0)
+					return false;
+			}
+		}
+		return sorted;
+	}
+
+	public static boolean isSortedDESC(String[] strArray){
+		return isSortedDESC(strArray,0);
+	}
+
+	public static boolean isSortedDESC(String[] strArray,int beginAt){
+		return isSortedDESC(strArray,beginAt,strArray.length-1);
+	}
+
+	public static boolean isSortedDESC(String[] strArray, int beginAt, int endAt){
+		boolean sorted = true;
+		// The actual data type of the elements is determined by the type of the first element specified
+		boolean isNumber = NumberUtils.isNumber(strArray[beginAt]);
+		for(int i=beginAt+1;i<=endAt; i++){
+			if(isNumber){
+				if(NumberUtils.createFloat(strArray[i-1]).compareTo(NumberUtils.createFloat(strArray[i])) < 0){
+					return false;
+				}
+			}else{
+				if(strArray[i-1].compareTo(strArray[i]) < 0)
 					return false;
 			}
 		}
@@ -40,6 +65,8 @@ public class SortHelper {
 	public static void main(String[] args) {
 		testIsSortedASC_Number();
 		testIsSortedASC_String();
+		testIsSortedDESC_Number();
+		testIsSortedDESC_String();
 	}
 
 	private static void testIsSortedASC_Number(){
@@ -60,5 +87,25 @@ public class SortHelper {
 		Assert.assertTrue(isSortedASC(strings,0,0));
 
 		Log.info("Verified isSortedASC for strings "+Arrays.toString(strings));
+	}
+
+	private static void testIsSortedDESC_Number(){
+		String[] numbers = {"TestNumber","5.3","5.29","3.087","2.11","1","10"};		
+
+		Assert.assertTrue(isSortedDESC(numbers,1,5));
+		Assert.assertFalse(isSortedDESC(numbers,1,6));
+		Assert.assertTrue(isSortedDESC(numbers,6,6));
+		Assert.assertFalse(isSortedDESC(numbers,5,6));
+
+		Log.info("Verified isSortedDESC for numbers "+Arrays.toString(numbers));
+	}
+	private static void testIsSortedDESC_String(){	
+		String[] strings = {"TestString","Whatever", "FDBBBB", "DDD", "Cabe","Cab","Ca"};
+
+		Assert.assertTrue(isSortedDESC(strings,1));
+		Assert.assertFalse(isSortedDESC(strings));
+		Assert.assertTrue(isSortedDESC(strings,0,0));
+
+		Log.info("Verified isSortedDESC for strings "+Arrays.toString(strings));
 	}
 }
