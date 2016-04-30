@@ -2191,6 +2191,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		FileUtility.createTextFile(expectedFilePath, fileContent);
 	}
 
+
 	protected void generateBaselineViewImage(String testCaseID, String imageFileFullPath) throws IOException {
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
 		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator
