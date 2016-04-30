@@ -35,7 +35,7 @@ import surveyor.scommon.source.SurveyorConstants.UserTimezone;
  */
 public class SurveyorBasePage extends BasePage {
 
-	private static final String DATA_TABLE_XPATH = "//*[@id='datatable']/tbody";
+	protected static final String DATA_TABLE_XPATH = "//*[@id='datatable']/tbody";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/a")
 	protected WebElement dropDownAdministrator;
@@ -73,7 +73,7 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement inputSearch;
 
 	@FindBy(how = How.XPATH, using = DATA_TABLE_XPATH)
-	private WebElement table;
+	protected WebElement table;
 	protected String strTRXPath = "//*[@id='datatable']/tbody/tr";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_next']")
@@ -365,9 +365,6 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public WebElement getTable() {
-		refreshPageUntilElementFound(DATA_TABLE_XPATH);
-		this.waitForPageLoad();
-		this.table = driver.findElement(By.xpath(DATA_TABLE_XPATH));
 		return this.table;
 	}
 

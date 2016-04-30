@@ -22,8 +22,8 @@ import org.testng.Assert;
 
 public class PDFUtility {
 	
-	protected static String wordSeparator = "|";
-	protected static String wordSeparatorPattern = "[\\s]*[\\|][\\s]*";
+	protected static String wordSeparator = "| ";
+	protected static String wordSeparatorPattern = "[\\|]";
 	protected boolean setWordSeparator = false;
 
 	public PDFUtility(){

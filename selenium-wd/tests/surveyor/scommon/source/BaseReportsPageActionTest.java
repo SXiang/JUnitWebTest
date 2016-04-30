@@ -51,7 +51,6 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 	//==============================================================================================================
 	// Set working data row and reports compliance row.
 	// This method is used for unit testing page actions.
-	// Remove this method after verifications. 
 	//==============================================================================================================
 	protected void setComplianceReportWorkingDataForUnitTest(ComplianceReportsPageActions complianceReportsPageAction, Integer dataRowID) throws Exception {
 		complianceReportsPageAction.fillWorkingDataForReports(getReportRowID(dataRowID));

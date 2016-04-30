@@ -427,6 +427,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public boolean findExistingUser(String locationName, String userName, boolean isCustomerUser) {
 		setPagination(PAGINATIONSETTING_100);
 
+		this.waitForAJAXCallsToComplete();
 		this.waitForTableDataToLoad();
 
 		String locationXPath;
