@@ -64,7 +64,7 @@ public class ResourceKeys {
 	public static final String ComplianceReportSSRS_ViewName = "ComplianceReportSSRS_ViewName";
 	public static final String ComplianceReportSSRS_ViewTable = "ComplianceReportSSRS_ViewTable";
 	public static final String ComplianceReport_SurveyMissingMessage = "ComplianceReport_SurveyMissingMessage";
-	public static final String ComplianceReportSSRS_EthaneAnalysisTable="public static final String ";
+	public static final String ComplianceReportSSRS_EthaneAnalysisTable="ComplianceReportSSRS_EthaneAnalysisTable";
 	public static final String Constant_Assets = "Constant_Assets";
 	public static final String Constant_BaseMap = "Constant_BaseMap";
 	public static final String Constant_Boundaries = "Constant_Boundaries";
