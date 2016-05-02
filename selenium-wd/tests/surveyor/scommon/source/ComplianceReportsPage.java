@@ -21,11 +21,13 @@ import static surveyor.scommon.source.SurveyorConstants.KEYGAPS;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
+import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
-import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
@@ -275,6 +277,41 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[1]")
 	protected WebElement fstRptTilNm;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
+	protected WebElement newComplianceReportBtn;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='report-show-percent-coverage-report-area']")
+	protected WebElement percentCoverReportArea;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='report-show-percent-coverage-forecast']")
+	protected WebElement percentCoverForecast;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='report-asset-layers-d08fc87f-f979-4131-92a9-3d82f37f4bba']")
+	protected WebElement rptFirstAsset;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='report-boundry-layers-Small Boundary']")
+	protected WebElement rptSmallBoundary;
+
+	public WebElement getNewComplianceReportBtn() {
+		return this.newComplianceReportBtn;
+	}
+
+	public WebElement getPercentCoverReportArea() {
+		return this.percentCoverReportArea;
+	}
+
+	public WebElement getPercentCoverForecast() {
+		return this.percentCoverForecast;
+	}
+
+	public WebElement getRptFirstAsset() {
+		return this.rptFirstAsset;
+	}
+
+	public WebElement getRptSmallBoundary() {
+		return this.rptSmallBoundary;
+	}
 
 	private static LatLongSelectionControl latLongSelectionControl = null;
 
@@ -1323,6 +1360,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public void selectPercentCoverageForecastCheckBox() {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click();", checkBoxPCF);
+	}
+
+	public void selectGapTableCheckBox() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", checkBoxGapTb);
 	}
 
 	public void selectIsotopicAnalysisCheckBox() {
@@ -2754,11 +2796,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (tablesList.get(0).get(KEYISOANA).equalsIgnoreCase("1")) {
 			selectIsotopicAnalysisCheckBox();
 		}
+		if (tablesList.get(0).get(KEYGAPTB).equalsIgnoreCase("1")) {
+			selectGapTableCheckBox();
+		}
 		if (tablesList.get(0).get(KEYPCA).equalsIgnoreCase("1")) {
 			selectPercentCoverageAssetCheckBox();
 		}
 		if (tablesList.get(0).get(KEYPCRA).equalsIgnoreCase("1")) {
 			selectPercentCoverageReportArea();
+		}
+
+		if (tablesList.get(0).get(KEYPCF).equalsIgnoreCase("1")) {
+			selectPercentCoverageForecastCheckBox();
 		}
 
 		List<Map<String, String>> viewLayersList = reportsCompliance.getViewLayersList();
@@ -2779,7 +2828,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	private boolean isCustomBoundarySpecified(ReportsCompliance reportsCompliance) {
 		boolean useSelector = false;
 		if (reportsCompliance != null) {
-			boolean textFieldsSpecified = reportsCompliance.getNELat() != "" && reportsCompliance.getNELong() != "" && reportsCompliance.getSWLat() != "" && reportsCompliance.getSWLong() != "";
+
+			boolean textFieldsSpecified = reportsCompliance.getNELat() != null && reportsCompliance.getNELong() != null && reportsCompliance.getSWLat() != null && reportsCompliance.getSWLong() != null;
+
 			boolean latLongFieldsSpecified = useCustomBoundaryLatLongSelector(reportsCompliance);
 			useSelector = textFieldsSpecified || latLongFieldsSpecified;
 		}

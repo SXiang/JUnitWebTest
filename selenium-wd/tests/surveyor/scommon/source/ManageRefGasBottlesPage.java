@@ -236,7 +236,8 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		WebElement surveyorCell;
 		WebElement lotNumberCell;
 
-		List<WebElement> rows = getTable().findElements(By.xpath(strTRXPath));
+
+		List<WebElement> rows = table.findElements(By.xpath(strTRXPath));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
