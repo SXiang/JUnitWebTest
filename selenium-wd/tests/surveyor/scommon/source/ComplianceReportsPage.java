@@ -684,6 +684,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 	}
+	
+	private void checkAndGenerateBaselineSSRSImage(String reportName, String testCaseID) throws Exception {
+		boolean isGenerateBaselineSSRSImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
+		if (isGenerateBaselineSSRSImages) {
+			Path unzipDirectory = Paths.get(testSetup.getDownloadPath(), reportName + " (2)");
+			List<String> filesInDirectory = FileUtility.getFilesInDirectory(unzipDirectory, "*.shp,*.dbf,*.prj,*.shx");
+			for (String filePath : filesInDirectory) {
+				generateBaselineSSRSImage(testCaseID, filePath);
+			}
+		}
+	}
 
 	protected void generateBaselinePerfFiles(String testCaseID, String reportId, String startTime, String endTime, Integer processingTimeInMs) throws IOException {
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
@@ -700,14 +711,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "ssrs-images" + File.separator + testCaseID;
 		// Create the directory for test case if it does not exist.
 		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
-		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
-		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
-		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
-	}
-
-	protected void generateBaselineViewImage(String testCaseID, String imageFileFullPath) throws IOException {
-		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "view-images" + File.separator + testCaseID;
 		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
 		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
 		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
@@ -778,11 +781,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 	public boolean checkComplianceReportButtonPresenceAndClick(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType, 
 			boolean clickButton, boolean confirmAction) throws Exception {
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-
 		setPagination(PAGINATIONSETTING);
-
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForPageLoad();
 
 		String reportTitleXPath;
 		String createdByXPath;
@@ -802,6 +802,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		else
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
 
+		Log.info(String.format("Looking for rptTitle=[%s], strCreatedBy=[%s]", rptTitle, strCreatedBy));
+		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
@@ -809,6 +811,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
 			createdByCell = getTable().findElement(By.xpath(createdByXPath));
 
+			Log.info(String.format("Found rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]", 
+					rptTitleCell.getText(), createdByCell.getText()));
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				try {
 					switch (buttonType) {
@@ -1582,7 +1586,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
 		setReportName("CR-" + reportId);
 		setReportName(getReportName());
-		String actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
+		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value)
@@ -2280,8 +2284,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			ArrayList<String> storedProcConvStringList = new ArrayList<String>();
 			while (lineIterator.hasNext()) {
 				StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
-				String objAsString = objStoredProc.toString();
-				storedProcConvStringList.add(objAsString.replace("0.0", "").replaceAll("\\s+", "").trim());
+				String objAsString = objStoredProc.toString();				
+				storedProcConvStringList.add(objAsString.replace("0.0", "0").replaceAll("\\s+", "").trim());				
 			}
 
 			if (!reportIndicationsList.equals(storedProcConvStringList)) {
@@ -2891,6 +2895,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@Override
 	public String getNewPageString() {
 		return STRNewPageContentText;
+	}
+
+	@Override
+	public String getStrPageText() {
+		return STRPageContentText;
 	}
 
 	@Override

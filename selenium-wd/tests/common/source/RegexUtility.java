@@ -162,7 +162,32 @@ public class RegexUtility {
 		String splits[] = remaining.split("\\n");
 		return splits[1].trim();
 	}
-
+	
+	/**
+	 * Compare strings by equals or matches
+	 * @param line
+	 * @param expectedLine
+	 * @return
+	 */
+	public static boolean equalsOrMatches(String actualValue, String expectedValueOrPattern){
+		if(actualValue==null){
+			return false;
+		}else{
+			actualValue = actualValue.trim();
+			expectedValueOrPattern = expectedValueOrPattern.trim();
+		}
+		boolean isEqual = actualValue.equals(expectedValueOrPattern);
+		boolean isMatch = false;
+		if(isEqual){
+			return isEqual;
+		}else{
+			try{
+				isMatch = actualValue.matches(expectedValueOrPattern);
+			}catch(Exception e){				
+			}
+		}
+		return isMatch;
+	}
 	public static void main(String[] args) {
 		Log.info("Running test - testMatchesPattern_functionNameAndArgument_Success() ...");
 		testMatchesPattern_functionNameAndArgument_Success();

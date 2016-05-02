@@ -22,13 +22,12 @@ public class PDFTableUtility extends PDFUtility{
 	// All the pdf tables should be defined in this enum
 	public static enum PDFTable {		
 		LISAINVESTIGATIONTABLE ("Lisa Investigation Table",2),
-		LISAINDICATIONTABLE ("LISA #"+wordSeparator+"Surveyor"+wordSeparator+"Date/Time"
-				+wordSeparator+"Amplitude(ppm)"+wordSeparator+"Concentration(ppm)"+wordSeparator+"Field Notes"),
-		COMPLIANCEREPORTSUMMARYTABLE ("Map Height & Width:.*",0,"LISA Investigation Complete",false,6),
-		COVERAGEFORECASE(".*Percent Service Coverage with LISAs.*",0,"",false,1),
-		COVERAGEFORECASETO70(".*Probability to Obtain 70% Coverage",0,"",true,4),
+		LISAINDICATIONTABLE ("Disposition"+wordSeparator+"% Confidence in Disposition"+wordSeparator+"Field Notes",1,"",false),
+		COMPLIANCEREPORTSUMMARYTABLE ("Map Height & Width:.*",0,"",false,6),
+		COVERAGEFORECAST(".*Percent Service Coverage with LISAs.*",0,"",false,1),
+		COVERAGEFORECASTTO70(".*Probability to Obtain 70% Coverage",0,"",true,4),
 		DRIVINGSURVEYTABLE("Indication Table",0,"LISA",true,-1),
-		ISOTOPICANALYSISTABLE("Surveyor Date/Time Result",0," Layers",true,-1);
+		ISOTOPICANALYSISTABLE("Surveyor"+wordSeparator+"Date/Time"+wordSeparator+"Result"+wordSeparator+"Isotopic Value/ Uncertainty(Å"+wordSeparator+"Field Notes",1," Layers",true,-1);
 		
 		private final String tableID;	          //1. tableID, indicator of start of a table, required
 		private final int startLine;              //2. num of lines  after 'tableID' - inclusive, optional, default to 0
@@ -150,7 +149,7 @@ public class PDFTableUtility extends PDFUtility{
 				line += trimTableRow(pdfLines[i+combinedLine]);
 				numWords = line.split(wordSeparatorPattern).length;
 			}
-			if(equalsOrMatches(line,tableID)){     
+			if(RegexUtility.equalsOrMatches(line,tableID)){     
 				i += combinedLine;
 
 				for(j=i+startLine; j<pdfLines.length ; j++){
@@ -192,36 +191,14 @@ public class PDFTableUtility extends PDFUtility{
 		return pdfTable;
 	}
 
-	public boolean equalsOrMatches(String line, String expectedLine){
-		boolean isEqual = line.equals(expectedLine);
-		boolean isMatch = false;
-
-		if(isEqual){
-			return isEqual;
-		}else{
-			try{
-				isMatch = line.matches(expectedLine);
-			}catch(Exception e){				
-			}
-		}
-		return isMatch;
-	}
 	private String trimTableRow(String line){
 		String nelPattern = "[\\u0085]*";
-		String preSpacePattern = "^"+wordSeparatorPattern;
-		String postSpacePattern = wordSeparatorPattern+"$";
-
 		line = line.replaceAll(nelPattern, "");
-		String result = line;
-		do{
-			line = result;
-			result = line.replaceFirst(preSpacePattern, "");
-			result = result.replaceFirst(postSpacePattern, "");
-		}while(!result.equals(line));
-		return result.trim();
+		return line;
 	}
+	
 	private String[] getTableRow(String line){
-		line = trimTableRow(line);
+		line = trimTableRow(line);		
 		String[] cells = line.split(wordSeparatorPattern);
 		for(int i=0; i<cells.length; i++){
 			cells[i] = cells[i].trim();
@@ -250,15 +227,25 @@ public class PDFTableUtility extends PDFUtility{
 	 */
 	public String[] getColumn(String filePath, PDFTable pTable, String columnID) throws IOException{
 		List<String[]> pdfTable = extractPDFTable(filePath,pTable);
+		int colIndex = getColumnIndex(pdfTable, columnID);
+		return getColumn(pdfTable, colIndex);
+	}
+
+	/**
+	 * 
+	 * @param pdfTable
+	 * @param columnID
+	 * @return Index number of the Column (the value in the first row)
+	 */
+	public int getColumnIndex(List<String[]> pdfTable, String columnID){
 		int colIndex = 0;
 		String[] header = pdfTable.get(0);
 		for(int i=0;i<header.length;i++){
 			if(header[i].equals(columnID)){
 				colIndex = i;
-				return getColumn(pdfTable,colIndex);
 			}
 		}
-		return null;
+		return colIndex;
 	}	
 
 	/*
@@ -302,14 +289,24 @@ public class PDFTableUtility extends PDFUtility{
 	 */	
 	public String[] getRow(String filePath, PDFTable pTable, String rowID) throws IOException{
 		List<String[]> pdfTable = extractPDFTable(filePath,pTable);
+		int rowIndex = getRowIndex(pdfTable, rowID);
+		return getRow(pdfTable, rowIndex);
+	}
+
+	/**
+	 * 
+	 * @param pdfTable
+	 * @param rowID
+	 * @return Index of the row with the rowID(the value in the first column)
+	 */
+	public int getRowIndex(List<String[]> pdfTable, String rowID){
 		int rowIndex = 0;
 		for(int i=0;i<pdfTable.size();i++){
 			if(pdfTable.get(i)[0].equals(rowID)){
 				rowIndex = i;
-				return getRow(pdfTable,rowIndex);
 			}
 		}
-		return null;
+		return rowIndex;
 	}	
 
 	/*
@@ -377,7 +374,7 @@ public class PDFTableUtility extends PDFUtility{
 	 * Executes the unit tests for this class.
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) {		
 		Path pdfDirectory;
 		List<String> pdfFilesInDirectory = null;		
 
@@ -391,83 +388,37 @@ public class PDFTableUtility extends PDFUtility{
 			{"5","0.34","","","",""},{"6","0.12","","","",""},{"7","0.08","","","",""},{"8","0.08","","","",""}});
 		expectedPDFTableMap.put(fileName, PDFTable.LISAINVESTIGATIONTABLE);
 
-		fileName = "sqatest-shape.pdf";
+		fileName = "TC517Report538321.pdf";
 		expectedTableMap.put(fileName, new String[][]{
-			{"Map Height & Width:","11.00 X 8.50 in"},
-			{"Time Zone:", "Pacific Time (US and Canada)"},
+			{"Map Height & Width:","8.50 X 11.00 in"},
+			{"Time Zone:", "Pacific Standard Time"},
 			{"Exclusion Radius:","0 m"},
 			{"Report Mode:", "Standard"},
-			{"NE Lat & NE Long","37.42043 X -121.93358"},
-			{"SW Lat & SW Long","37.41065 X -121.98598"}});
+			{"NE Lat & NE Long","37.42060 X -121.97250"},
+			{"SW Lat & SW Long","37.41570 X -121.98390"}});
 		expectedPDFTableMap.put(fileName, PDFTable.COMPLIANCEREPORTSUMMARYTABLE);
 
 		fileName = "TestReportPGE-surveynotpartofplat.pdf";
 		expectedTableMap.put(fileName, new String[][]{
 			{"0%Percent Service Coverage with LISAs","0%Percent Service Coverage Without LISAs"}
 		});
-		expectedPDFTableMap.put(fileName, PDFTable.COVERAGEFORECASE);
+		expectedPDFTableMap.put(fileName, PDFTable.COVERAGEFORECAST);
 
 		fileName = "TestReportPGE-nolisa.pdf";
 		expectedTableMap.put(fileName, new String[][]{
 			{"Additional Surveys","Probability to Obtain 70% Coverage"},
 			{"0","0%"},{"1","4%"},{"2","24%"}
 		});		
-		expectedPDFTableMap.put(fileName, PDFTable.COVERAGEFORECASETO70);	
+		expectedPDFTableMap.put(fileName, PDFTable.COVERAGEFORECASTTO70);	
 
-		fileName = "LISAassetexcl0.pdf";
+		fileName = "TC517Report538320.pdf";
 		expectedTableMap.put(fileName, new String[][]{
-			{"LISA #","Surveyor","Date/Time","Amplitude(ppm)","Concentration(ppm)","Field Notes"},
-			{"1","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"2","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"3","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"4","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"5","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"6","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"7","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"8","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"9","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"10","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"11","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"12","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"13","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"14","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"15","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"16","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"17","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"18","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"19","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"20","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"21","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"22","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"23","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"24","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"25","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"26","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"27","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"28","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"29","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"30","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"31","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"32","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"33","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"34","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"35","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"36","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"37","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"38","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"39","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"40","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"41","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"42","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"43","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"44","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"45","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"46","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"47","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"48","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"49","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST",".*",".*",""},
-			{"50","Gray Chevy","02/[0-9]{2}/2015 [\\d]{2}:[\\d]{2}:[\\d]{2} PM PST","0.04","2.26",""},
-			{"51","Gray Chevy","02/04/2015 10:22:42 PM PST","0.04","2.22",""},
+			{"","1","Software Car","12/14/2015 3:26 PM PST","12.3","15.56","0+/-","Possible Natural Gas","0%","1. 15.6/12.30"},
+			{"","2","Software Car","12/14/2015 3:28 PM PST","9.44","9.44","0+/-","Possible Natural Gas","0%","1. 9.4/9.44"},
+			{"","3","Software Car","12/14/2015 3:28 PM PST","8.2","13.67","0+/-","Possible Natural Gas","0%","1. 13.7/8.20"},
+			{"","4","Software Car","12/14/2015 3:28 PM PST","7.97","12.95","0+/-","Possible Natural Gas","0%","1. 13.0/7.97"},
+			{"","5","Software Car","12/14/2015 3:28 PM PST","3.02","6.01","0+/-","Possible Natural Gas","0%","1. 6.0/3.02"},
+			{"","6","Software Car","12/14/2015 3:27 PM PST","0.4","2.77","0+/-","Possible Natural Gas","0%",""}
 		});
 		expectedPDFTableMap.put(fileName,PDFTable.LISAINDICATIONTABLE);	
 
@@ -479,9 +430,9 @@ public class PDFTableUtility extends PDFUtility{
 			pdfFilesInDirectory = FileUtility.getFilesInDirectory(pdfDirectory);
 
 			for (String filePath : pdfFilesInDirectory) {
-				String filename = Paths.get(filePath).getFileName().toString();				
-
+				String filename = Paths.get(filePath).getFileName().toString();				                
 				if (expectedTableMap.containsKey(filename)) {
+					Log.info("\nStart of Test PDF File "+filename+" - Table: "+expectedPDFTableMap.get(filename));
 					//1. test extract contents of a PDF table
 					pdfTableUtility.testExtractPDFTable(Paths.get(filePath).toString(), 
 							expectedTableMap.get(filename),expectedPDFTableMap.get(filename));				
@@ -498,6 +449,7 @@ public class PDFTableUtility extends PDFUtility{
 					pdfTableUtility.testExtractPDFTable_getCell(Paths.get(filePath).toString(), 
 							expectedTableMap.get(filename),expectedPDFTableMap.get(filename));				
 					Log.info("Verified getCell from table '"+expectedPDFTableMap.get(filename)+ "' in file '"+expectedTableMap.get(filename)+"'");
+					Log.info("\nEnd of Test PDF File "+filename+" - Table: "+expectedPDFTableMap.get(filename));
 				}
 
 			}
@@ -529,15 +481,16 @@ public class PDFTableUtility extends PDFUtility{
 
 	private void testExtractPDFTable_getColumn(String filePath, String[][] expectedTable, PDFTable pTable) throws IOException {
 		// Retrieve values of column 0, based on name and index
-		int colNum = 0;
+		int colNum = 1;
 		Point field = new Point(0,colNum);
 		String colName = expectedTable[field.x][field.y];
 
+		List<String[]> pdfTable = extractPDFTable(filePath,pTable);
 		String[] colValue1 = getColumn(filePath, pTable,colName);
-		Log.info("Field "+colName+": "+Arrays.toString(colValue1));
+		Log.info("Column '"+colName+"': "+Arrays.toString(colValue1));
 
 		String[] colValue2 = getColumn(filePath, pTable, colNum);
-		Log.info("Field "+colName+": "+Arrays.toString(colValue2));
+		Log.info("Column '"+colName+"': "+Arrays.toString(colValue2));
 
 		Assert.assertEquals(colValue1, colValue2);
 
@@ -545,50 +498,57 @@ public class PDFTableUtility extends PDFUtility{
 			Assert.assertTrue(colValue1[i].equals(expectedTable[i][colNum])||colValue1[i].matches(expectedTable[i][colNum])); 
 		}
 
-		if(pTable.equals(PDFTable.LISAINDICATIONTABLE)||pTable.equals(PDFTable.LISAINVESTIGATIONTABLE)){
-			Assert.assertTrue(SortHelper.isSortedASC(colValue1, 1));
-			Assert.assertTrue(SortHelper.isSortedASC(colValue2, 1));
+		if(pTable.equals(PDFTable.LISAINDICATIONTABLE)){
+			Assert.assertTrue(SortHelper.isSortedASC(colValue1, 0));
+			Assert.assertTrue(SortHelper.isSortedASC(colValue2, 0));
 		}
 		// Retrieve values of a random column, based on name and index
 		colNum = expectedTable[0].length/2;
 		field = new Point(0,colNum);
 		colName = expectedTable[field.x][field.y];
-		colValue1 = getColumn(filePath, pTable,colName);
+
 		colValue2 = getColumn(filePath, pTable, colNum);
-
-		Assert.assertEquals(colValue1, colValue2);
-
+		if(colNum == getColumnIndex(pdfTable, colName) ){
+			colValue1 = getColumn(filePath, pTable,colName);
+			Assert.assertEquals(colValue1, colValue2);
+		}
+		
 		for(int i=0; i<expectedTable.length;i++){
-			Assert.assertTrue(colValue1[i].equals(expectedTable[i][colNum])||colValue1[i].matches(expectedTable[i][colNum]));
+			Assert.assertTrue(colValue2[i].equals(expectedTable[i][colNum])||colValue2[i].matches(expectedTable[i][colNum]));
 		}
 	}  
 
 	private void testExtractPDFTable_getRow(String filePath, String[][] expectedTable, PDFTable pTable) throws IOException {
+		List<String[]> pdfTable = extractPDFTable(filePath,pTable);
 		// Retrieve a row
 		int rowNum = expectedTable.length/2;
 		String[] rowValue = getRow(filePath, pTable, rowNum);
 		for(int i=0; i<expectedTable[rowNum].length;i++){
 			String cell = "";
 			try{
-				cell = rowValue[i];
+				cell = rowValue[i].trim();
 			}catch(Exception e){
 
 			}
-			Assert.assertTrue(cell.equals(expectedTable[rowNum][i])||cell.matches(expectedTable[rowNum][i])); 
+			String expectedValue = expectedTable[rowNum][i];
+			Assert.assertTrue(cell.equals(expectedValue)||cell.matches(expectedValue)); 
 		}
 
 		// Retrieve a row by rowID
 		String rowID = expectedTable[rowNum][0];
-		rowValue = getRow(filePath, pTable, rowID);
-		for(int i=0; i<expectedTable[rowNum].length;i++){
-			String cell = "";
-			try{
-				cell = rowValue[i];
-			}catch(Exception e){
+		if(rowNum == getRowIndex(pdfTable, rowID)){
+			rowValue = getRow(filePath, pTable, rowID);
+			for(int i=0; i<expectedTable[rowNum].length;i++){
+				String cell = "";
+				try{
+					cell = rowValue[i].trim();
+				}catch(Exception e){
 
-			}
-			Assert.assertTrue(cell.equals(expectedTable[rowNum][i])||cell.matches(expectedTable[rowNum][i])); 
-		}	
+				}
+				String expectedValue = expectedTable[rowNum][i];
+				Assert.assertTrue(cell.equals(expectedValue)||cell.matches(expectedValue)); 
+			}	
+		}
 	}
 
 	private void testExtractPDFTable_getCell(String filePath, String[][] expectedTable, PDFTable pTable) throws IOException {

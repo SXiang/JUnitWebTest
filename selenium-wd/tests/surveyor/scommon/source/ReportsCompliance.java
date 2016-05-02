@@ -66,17 +66,17 @@ public class ReportsCompliance extends Reports {
 	}
 
 	public enum DrivingSurveyTableColumns {
-		StartDateTime ("StartDateTime", 1),
-		EndDateTime ("EndDateTime", 2),
-		Duration ("Duration", 3),
-		username ("username", 4),
-		Surveyor ("Surveyor", 5),
-		Analyzer ("Analyzer", 6),
-		Tag ("Tag", 7),
-		FOV ("FOV", 8),
-		LISA ("LISA", 9),
-		Analysis ("Analysis", 10),
-		StabilityClass ("StabilityClass", 11);
+		StartDateTime ("StartDateTime", 0),
+		EndDateTime ("EndDateTime", 1),
+		Duration ("Duration", 2),
+		username ("username", 3),
+		Surveyor ("Surveyor", 4),
+		Analyzer ("Analyzer", 5),
+		Tag ("Tag", 6),
+		FOV ("FOV", 7),
+		LISA ("LISA", 8),
+		Analysis ("Analysis", 9),
+		StabilityClass ("StabilityClass", 10);
 		
 		private final String name;
 		private final Integer colIndex;
@@ -101,11 +101,11 @@ public class ReportsCompliance extends Reports {
 	}
 
 	public enum IsotopicAnalysisTableColumns {
-		Surveyor ("Surveyor", 1),
-		DateTime ("DateTime", 2),
-		Result ("Result", 3),
-		IsotopicValueUncertainty ("IsotopicValueUncertainty", 4),
-		FieldNotes ("FieldNotes", 5);
+		Surveyor ("Surveyor", 0),
+		DateTime ("DateTime", 1),
+		Result ("Result", 2),
+		IsotopicValueUncertainty ("IsotopicValueUncertainty", 3),
+		FieldNotes ("FieldNotes", 4);
 		
 		private final String name;
 		private final Integer colIndex;
@@ -130,15 +130,15 @@ public class ReportsCompliance extends Reports {
 	}
 
 	public enum LISAIndicationTableColumns {
-		LISANum ("LISANum", 1),
-		Surveyor ("Surveyor", 2),
-		DateTime ("DateTime", 3),
-		Amplitude ("Amplitude", 4),
-		Concentration ("Concentration", 5),
-		EthaneMethanRatio ("EthaneMethanRatio", 6),
-		Disposition ("Disposition", 7),
-		PercConfidenceInDisposition ("PercConfidenceInDisposition", 8),
-		FIeldNotes ("FIeldNotes", 9);
+		LISANum ("LISANum", 0),
+		Surveyor ("Surveyor", 1),
+		DateTime ("DateTime", 2),
+		Amplitude ("Amplitude", 3),
+		Concentration ("Concentration", 4),
+		EthaneMethanRatio ("EthaneMethanRatio", 5),
+		Disposition ("Disposition", 6),
+		PercConfidenceInDisposition ("PercConfidenceInDisposition", 7),
+		FIeldNotes ("FIeldNotes", 8);
 		
 		private final String name;
 		private final Integer colIndex;
@@ -162,17 +162,17 @@ public class ReportsCompliance extends Reports {
 	}
 
 	public enum ViewTableColumns {
-		ViewName ("ViewName", 1),
-		ShowLISAs ("ShowLISAs", 2),
-		ShowFOV ("ShowFOV", 3),
-		ShowBreadcrumb ("ShowBreadcrumb", 4),
-		ShowIndications ("ShowIndications", 5),
-		ShowAnalysis ("ShowAnalysis", 6),
-		ShowFieldNotes ("ShowFieldNotes", 7),
-		ShowGaps ("ShowGaps", 8),
-		ShowAssets ("ShowAssets", 9),
-		ShowBoundaries ("ShowBoundaries", 10),
-		BaseMap ("BaseMap", 11);
+		ViewName ("ViewName", 0),
+		ShowLISAs ("ShowLISAs", 1),
+		ShowFOV ("ShowFOV", 2),
+		ShowBreadcrumb ("ShowBreadcrumb", 3),
+		ShowIndications ("ShowIndications", 4),
+		ShowAnalysis ("ShowAnalysis", 5),
+		ShowFieldNotes ("ShowFieldNotes", 6),
+		ShowGaps ("ShowGaps", 7),
+		ShowAssets ("ShowAssets", 8),
+		ShowBoundaries ("ShowBoundaries", 9),
+		BaseMap ("BaseMap", 10);
 		
 		private final String name;
 		private final Integer colIndex;

@@ -144,6 +144,9 @@ public class TestSetup {
 	private Integer executionTimesForHighLoadReportJobPerfBaseline;
 	private Integer executionTimesForUltraHighLoadReportJobPerfBaseline;
 
+	private boolean logCategorySSRSPdfContentEnabled;
+	private boolean logCategoryComplianceReportActionsEnabled;
+
 	public TestSetup() {
 		initialize();
 	}
@@ -570,6 +573,22 @@ public class TestSetup {
 		this.executionTimesForUltraHighLoadReportJobPerfBaseline = executionTimesForUltraHighLoadReportJobPerfBaseline;
 	}
 
+	public boolean isLogCategorySSRSPdfContentEnabled() {
+		return logCategorySSRSPdfContentEnabled;
+	}
+
+	public void setLogCategorySSRSPdfContentEnabled(boolean logCategorySSRSPdfContentEnabled) {
+		this.logCategorySSRSPdfContentEnabled = logCategorySSRSPdfContentEnabled;
+	}
+
+	public boolean isLogCategoryComplianceReportActionsEnabled() {
+		return logCategoryComplianceReportActionsEnabled;
+	}
+
+	public void setLogCategoryComplianceReportActionsEnabled(boolean logCategoryComplianceReportActionsEnabled) {
+		this.logCategoryComplianceReportActionsEnabled = logCategoryComplianceReportActionsEnabled;
+	}
+
 	public void initialize() {
 		try {
 
@@ -642,6 +661,15 @@ public class TestSetup {
 			String executionTimesForUltraHighLoadBaselineCollection = this.testProp.getProperty("complianceReport_executionTimesForUltraHighLoadBaselineCollection");
 			if (executionTimesForUltraHighLoadBaselineCollection != null && executionTimesForUltraHighLoadBaselineCollection != "") {
 				this.setExecutionTimesForUltraHighLoadReportJobPerfBaseline(Integer.valueOf(executionTimesForUltraHighLoadBaselineCollection));
+			}
+
+			String logCategorySSRSPdfContent = this.testProp.getProperty("logCategory.SSRSPdfContent.Enabled");
+			if (logCategorySSRSPdfContent != null && logCategorySSRSPdfContent != "") {
+				this.setLogCategorySSRSPdfContentEnabled(Boolean.valueOf(logCategorySSRSPdfContent));
+			}
+			String logCategoryComplianceReportActions = this.testProp.getProperty("logCategory.ComplianceReportActions.Enabled");
+			if (logCategoryComplianceReportActions != null && logCategoryComplianceReportActions != "") {
+				this.setLogCategoryComplianceReportActionsEnabled(Boolean.valueOf(logCategoryComplianceReportActions));
 			}
 
 			this.language = this.testProp.getProperty("language");

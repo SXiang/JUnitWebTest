@@ -21,7 +21,8 @@ public class ReportSurveyDataReader extends BaseDataReader {
 	public static final int Excel_TestData__Col_SurveyGeoFilterON = 7;
 	public static final int Excel_TestData__Col_NumberofSurveystoInclude = 8;
 	public static final int Excel_TestData__Col_SelectAllSurveys = 9;
- 
+	public static final int Excel_TestData__Col_AnalyzerRowID = 10;
+	
 	public class ReportSurveyDataRow {
 		public String rowID;
 		public String surveySurveyor;
@@ -33,10 +34,11 @@ public class ReportSurveyDataReader extends BaseDataReader {
 		public String surveyGeoFilterON;
 		public String numberofSurveystoInclude;
 		public String selectAllSurveys;
+		public String analyzerRowID;
  
 		public ReportSurveyDataRow(String rowID, String surveySurveyor, String surveyUsername, String surveyTag, String surveyStartDate, 
-				String surveyEndDate, String surveyModeFilter, String surveyGeoFilterON, String numberofSurveystoInclude,
-				String selectAllSurveys) {
+				String surveyEndDate, String surveyModeFilter, String surveyGeoFilterON, String numberofSurveystoInclude, String selectAllSurveys, 
+				String analyzerRowID) {
 			this.rowID = rowID;
 			this.surveySurveyor = surveySurveyor;
 			this.surveyUsername = surveyUsername;
@@ -47,6 +49,7 @@ public class ReportSurveyDataReader extends BaseDataReader {
 			this.surveyGeoFilterON = surveyGeoFilterON;
 			this.numberofSurveystoInclude = numberofSurveystoInclude;
 			this.selectAllSurveys = selectAllSurveys;
+			this.analyzerRowID = analyzerRowID;
 		}
 	}	
  
@@ -71,14 +74,14 @@ public class ReportSurveyDataReader extends BaseDataReader {
 		String surveyGeoFilterON = excelUtility.getBooleanCellData(dataRowID, Excel_TestData__Col_SurveyGeoFilterON, TESTDATA_SHEET_NAME);
 		String numberofSurveystoInclude = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_NumberofSurveystoInclude, TESTDATA_SHEET_NAME);
 		String selectAllSurveys = excelUtility.getBooleanCellData(dataRowID, Excel_TestData__Col_SelectAllSurveys, TESTDATA_SHEET_NAME);
+		String analyzerRowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_AnalyzerRowID, TESTDATA_SHEET_NAME);
 		
 		Log.info(String.format("Found data row: rowID=[%s], surveySurveyor=[%s], surveyUsername=[%s], surveyTag=[%s], surveyStartDate=[%s], "
-				+ "surveyEndDate=[%s], surveyModeFilter=[%s], surveyGeoFilterON=[%s], numberofSurveystoInclude=[%s], "
-				+ "selectAllSurveys=[%s]", 
-				rowID, surveySurveyor, surveyUsername, surveyTag, surveyStartDate, surveyEndDate, surveyModeFilter, surveyGeoFilterON, 
-				numberofSurveystoInclude, selectAllSurveys, selectAllSurveys));
+				+ "surveyEndDate=[%s], surveyModeFilter=[%s], surveyGeoFilterON=[%s], numberofSurveystoInclude=[%s], selectAllSurveys=[%s], "
+				+ "analyzerRowID=[%s]", rowID, surveySurveyor, surveyUsername, surveyTag, surveyStartDate, surveyEndDate, surveyModeFilter, 
+				surveyGeoFilterON, numberofSurveystoInclude, selectAllSurveys, analyzerRowID));
 		
 		return new ReportSurveyDataRow(rowID, surveySurveyor, surveyUsername, surveyTag, surveyStartDate, surveyEndDate, surveyModeFilter, 
-				surveyGeoFilterON, numberofSurveystoInclude, selectAllSurveys);
+				surveyGeoFilterON, numberofSurveystoInclude, selectAllSurveys, analyzerRowID);
 	}
 }
