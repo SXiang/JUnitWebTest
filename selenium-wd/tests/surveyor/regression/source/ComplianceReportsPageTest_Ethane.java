@@ -167,7 +167,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
-		
+
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -468,7 +468,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
-		
+
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -477,7 +477,12 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
-
+			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rptTitle));
+			if (tablesList != null) {
+				if (tablesList.get(0).get(KEYINDTB).equals("1")) {
+					assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
+				}
+			}
 		} else
 			fail("\nTestcase TC1718 failed.\n");
 
@@ -538,7 +543,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
-		
+
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -546,7 +551,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		complianceReportsPage.getInputSearch().sendKeys(rptTitle);
 		complianceReportsPage.clickOnFirstCopyComplianceBtn();
-		
+
 		complianceReportsPage.verifyIfInDrivingSurvey(KEYINDCLR);
 
 	}
@@ -608,7 +613,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
-		
+
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -617,14 +622,14 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
 			if (tablesList != null) {
-					if (tablesList.get(0).get(KEYISOANA).equals("1")) {
-					assertTrue(complianceReportsPage.verifyIsotopicAnalysisTable(testSetup.getDownloadPath(), rptTitle));
+				if (tablesList.get(0).get(KEYINDTB).equals("1")) {
+					assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
 				}
+
 			}
 		} else
 			fail("\n Testcase1727 failed.\n");	
 	}
-
 
 	/**
 	 * Test Case ID:TC1729 Test Description: Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- Default Indication color
@@ -676,7 +681,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBOUNDARIES, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 		viewList.add(viewMap1);
 
@@ -685,7 +690,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
-		
+
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -705,7 +710,9 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
-
+			if (tablesList.get(0).get(KEYINDTB).equals("1")) {
+				assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
+			}
 		} else
 			fail("\nTestcase TC1729 failed.\n");
 	}
