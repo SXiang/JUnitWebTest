@@ -54,7 +54,7 @@ public class Reports {
 		All ("All"), 
 		Standard ("Standard"), 
 		Operator ("Operator"), 
-		RapidResponse ("RapidResponse"), 
+		RapidResponse ("Rapid Response"), 
 		Manual ("Manual"),
 		EQ ("EQ"),
 		Assessment ("Assessment");
@@ -74,7 +74,7 @@ public class Reports {
 		All ("All"), 
 		Standard ("Standard"), 
 		Operator ("Operator"), 
-		RapidResponse ("RapidResponse"), 
+		RapidResponse ("Rapid Response"), 
 		Manual ("Manual"),
 		EQ ("EQ"),
 		Assessment ("Assessment");

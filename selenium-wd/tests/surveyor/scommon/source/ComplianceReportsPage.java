@@ -21,12 +21,14 @@ import static surveyor.scommon.source.SurveyorConstants.KEYGAPS;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
+import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
-import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
@@ -282,8 +284,44 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[1]")
 	protected WebElement fstRptTilNm;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
+	protected WebElement newComplianceReportBtn;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='report-show-percent-coverage-report-area']")
+	protected WebElement percentCoverReportArea;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='report-show-percent-coverage-forecast']")
+	protected WebElement percentCoverForecast;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='report-asset-layers-d08fc87f-f979-4131-92a9-3d82f37f4bba']")
+	protected WebElement rptFirstAsset;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='report-boundry-layers-Small Boundary']")
+	protected WebElement rptSmallBoundary;
+	
+	public WebElement getNewComplianceReportBtn() {
+		return this.newComplianceReportBtn;
+	}
+
+	public WebElement getPercentCoverReportArea() {
+		return this.percentCoverReportArea;
+	}
+
+	public WebElement getPercentCoverForecast() {
+		return this.percentCoverForecast;
+	}
+
+	public WebElement getRptFirstAsset() {
+		return this.rptFirstAsset;
+	}
+
+	public WebElement getRptSmallBoundary() {
+		return this.rptSmallBoundary;
+	}
+
 	private static LatLongSelectionControl latLongSelectionControl = null;
 	
+
 	public enum CustomerBoundaryType {
 		District, DistrictPlat
 	}
@@ -668,6 +706,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 	}
+	
+	private void checkAndGenerateBaselineSSRSImage(String reportName, String testCaseID) throws Exception {
+		boolean isGenerateBaselineSSRSImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
+		if (isGenerateBaselineSSRSImages) {
+			Path unzipDirectory = Paths.get(testSetup.getDownloadPath(), reportName + " (2)");
+			List<String> filesInDirectory = FileUtility.getFilesInDirectory(unzipDirectory, "*.shp,*.dbf,*.prj,*.shx");
+			for (String filePath : filesInDirectory) {
+				generateBaselineSSRSImage(testCaseID, filePath);
+			}
+		}
+	}
 
 	protected void generateBaselinePerfFiles(String testCaseID, String reportId, String startTime, String endTime, Integer processingTimeInMs) throws IOException {
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
@@ -684,14 +733,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "ssrs-images" + File.separator + testCaseID;
 		// Create the directory for test case if it does not exist.
 		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
-		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
-		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
-		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
-	}
-
-	protected void generateBaselineViewImage(String testCaseID, String imageFileFullPath) throws IOException {
-		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "view-images" + File.separator + testCaseID;
 		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
 		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
 		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
@@ -762,11 +803,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 	public boolean checkComplianceReportButtonPresenceAndClick(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType, 
 			boolean clickButton, boolean confirmAction) throws Exception {
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-
 		setPagination(PAGINATIONSETTING);
-
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		this.waitForPageLoad();
 
 		String reportTitleXPath;
 		String createdByXPath;
@@ -786,6 +824,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		else
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
 
+		Log.info(String.format("Looking for rptTitle=[%s], strCreatedBy=[%s]", rptTitle, strCreatedBy));
+		
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
@@ -793,6 +833,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
 			createdByCell = getTable().findElement(By.xpath(createdByXPath));
 
+			Log.info(String.format("Found rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]", 
+					rptTitleCell.getText(), createdByCell.getText()));
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				try {
 					switch (buttonType) {
@@ -1335,6 +1377,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		js.executeScript("arguments[0].click();", checkBoxPCF);
 	}
 
+	public void selectGapTableCheckBox() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", checkBoxGapTb);
+	}
+
 	public void selectIsotopicAnalysisCheckBox() {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click();", checkBoxIsoAna);
@@ -1572,7 +1619,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
 		setReportName("CR-" + reportId);
 		setReportName(getReportName());
-		String actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
+		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value)
@@ -2329,8 +2376,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			ArrayList<String> storedProcConvStringList = new ArrayList<String>();
 			while (lineIterator.hasNext()) {
 				StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
-				String objAsString = objStoredProc.toString();
-				storedProcConvStringList.add(objAsString.replace("0.0", "").replaceAll("\\s+", "").trim());
+				String objAsString = objStoredProc.toString();				
+				storedProcConvStringList.add(objAsString.replace("0.0", "0").replaceAll("\\s+", "").trim());				
 			}
 
 			if (!reportIndicationsList.equals(storedProcConvStringList)) {
@@ -2727,6 +2774,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public WebElement getFstRptTilNm() {
 		return fstRptTilNm;
 	}
+	
+	@Override
+	public WebElement getTable() {
+		refreshPageUntilElementFound(DATA_TABLE_XPATH);
+		this.waitForPageLoad();
+		this.table = driver.findElement(By.xpath(DATA_TABLE_XPATH));
+		return super.getTable();
+	}
 
 	@Override
 	public void fillReportSpecific(Reports reports) {
@@ -2770,6 +2825,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (tablesList.get(0).get(KEYISOANA).equalsIgnoreCase("1")) {
 			selectIsotopicAnalysisCheckBox();
 		}
+		if (tablesList.get(0).get(KEYGAPTB).equalsIgnoreCase("1")) {
+			selectGapTableCheckBox();
+		}
 		if (tablesList.get(0).get(KEYPCA).equalsIgnoreCase("1")) {
 			selectPercentCoverageAssetCheckBox();
 		}
@@ -2809,9 +2867,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	private boolean isCustomBoundarySpecified(ReportsCompliance reportsCompliance) {
 		boolean useSelector = false;
 		if (reportsCompliance != null) {
-			String text = reportsCompliance.getNELat();
-			boolean textFieldsSpecified = reportsCompliance.getNELat() != "" && reportsCompliance.getNELong() != "" &&
-					reportsCompliance.getSWLat() != "" && reportsCompliance.getSWLong() != "";
+			boolean textFieldsSpecified = reportsCompliance.getNELat() != null && reportsCompliance.getNELong() != null &&
+					reportsCompliance.getSWLat() != null && reportsCompliance.getSWLong() != null;
 			boolean latLongFieldsSpecified = useCustomBoundaryLatLongSelector(reportsCompliance);
 			useSelector = textFieldsSpecified || latLongFieldsSpecified;
 		}		
@@ -2945,6 +3002,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@Override
 	public String getNewPageString() {
 		return STRNewPageContentText;
+	}
+
+	@Override
+	public String getStrPageText() {
+		return STRPageContentText;
 	}
 
 	@Override

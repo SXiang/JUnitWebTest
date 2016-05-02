@@ -127,6 +127,32 @@ public class FileUtility {
 	}
 
 	/*
+	 * Verifies that all the expected files are seen in the specified directory.
+	 */
+	public static boolean compareFilesInDirectory(Path directoryToCheck, List<String> expectedFileNames) throws IOException {
+		Integer expectedFileCount = expectedFileNames.size();
+		List<String> filesInDirectory = FileUtility.getFilesInDirectory(directoryToCheck, false/*includeFullPath*/);
+		if (filesInDirectory == null || filesInDirectory.size() == 0 || filesInDirectory.size()!=expectedFileCount) {
+			return false;
+		}
+		
+		Integer seenFileCount = 0;
+		for (String file : filesInDirectory) {
+			if (expectedFileNames.contains(file)) {
+				seenFileCount++;
+			} else {
+				return false;
+			}
+		}
+		
+		if (seenFileCount != expectedFileCount) {
+			return false;
+		}
+		
+		return true;
+	}
+
+	/*
 	 * Returns list of files in the specified directory.
 	 */
 	public static List<String> getFilesInDirectory(Path directory) throws IOException {

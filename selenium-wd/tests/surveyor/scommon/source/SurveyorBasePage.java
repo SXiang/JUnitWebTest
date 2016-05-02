@@ -24,6 +24,7 @@ import common.source.BasePage;
 import common.source.Log;
 import common.source.RegexUtility;
 import common.source.TestSetup;
+import common.source.WebElementExtender;
 import surveyor.scommon.source.SurveyorConstants.TopNavMenuItem;
 import surveyor.scommon.source.SurveyorConstants.UserTimezone;
 
@@ -34,7 +35,7 @@ import surveyor.scommon.source.SurveyorConstants.UserTimezone;
  */
 public class SurveyorBasePage extends BasePage {
 
-	private static final String DATA_TABLE_XPATH = "//*[@id='datatable']/tbody";
+	protected static final String DATA_TABLE_XPATH = "//*[@id='datatable']/tbody";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/a")
 	protected WebElement dropDownAdministrator;
@@ -72,7 +73,7 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement inputSearch;
 
 	@FindBy(how = How.XPATH, using = DATA_TABLE_XPATH)
-	private WebElement table;
+	protected WebElement table;
 	protected String strTRXPath = "//*[@id='datatable']/tbody/tr";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_next']")
@@ -260,6 +261,10 @@ public class SurveyorBasePage extends BasePage {
 		return linkPicAdminManageUsers;
 	}
 
+	public WebElement getbtnOk() {
+		return btnOk;
+	}
+
 	public WebElement getLinkPicarroAdminXPath() {
 		return linkPicarroAdminXPath;
 	}
@@ -364,9 +369,6 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public WebElement getTable() {
-		refreshPageUntilElementFound(DATA_TABLE_XPATH);
-		this.waitForPageLoad();
-		this.table = driver.findElement(By.xpath(DATA_TABLE_XPATH));
 		return this.table;
 	}
 
@@ -418,9 +420,10 @@ public class SurveyorBasePage extends BasePage {
 				WebElement element = null;
 				try {
 					element = d.findElement(By.xpath(elementXPath));
-					String elementText = element.getText();
-					elementDetected = !elementText.isEmpty();
+					elementDetected = WebElementExtender.isElementPresentAndDisplayed(element);
 				} catch (Exception ex) {
+					Log.warn(String.format("Element with xpath=[%s] NOT found", elementXPath));
+					Log.warn(String.format("Refreshing page to find element with xpath=[%s]", elementXPath));
 					d.navigate().refresh();
 				}
 				return elementDetected;

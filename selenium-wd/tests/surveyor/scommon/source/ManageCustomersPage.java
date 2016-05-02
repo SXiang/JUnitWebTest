@@ -172,6 +172,14 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		return addNewCustomer(customerName, eula, enableCustomer, null /* licensed features */);
 	}
 	
+	public WebElement getInputReportMetadata() {
+		return this.inputReportMetadata;
+	}
+	
+	public WebElement getInputReportShapeFile() {
+		return this.inputReportShapeFile;
+	}
+
 	public boolean addNewCustomer(String customerName, String eula, boolean enableCustomer, LicensedFeatures[] lfs ) {
 		this.btnAddNewCustomer.click();
 		this.waitForNewPageLoad();
@@ -629,4 +637,5 @@ public class ManageCustomersPage extends SurveyorBasePage {
     public boolean isEditBtnPresent(){
     	return isElementPresent(this.btnEditCustomerXPath);
     }
+
 }
