@@ -175,6 +175,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String ComplianceReportSSRS_IsotopicAnalysisTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_IsotopicAnalysisTable);
 	public static final String ComplianceReportSSRS_IndicationTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_IndicationTable);
 	public static final String ComplianceReportSSRS_GapTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_GapTable);
+	public static final String ComplianceReportSSRS_EthaneAnalysisTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_EthaneAnalysisTable);
 
 	private static final String DELETE_POPUP_CONFIRM_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[1]";
 	private static final String DELETE_POPUP_CANCEL_BUTTON_XPATH  = "//*[@id='deleteReportModal']/div/div/div[3]/a[2]";
@@ -1888,6 +1889,48 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		Log.info("Driving survey table verification passed");
 		return true;
+	}
+	
+	/**
+	 * Method to verify the Ethane Capture Table in SSRS
+	 * 
+	 * @param actualPath
+	 * @param reportTitle
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean verifyEthaneCaptureTable(String actualPath, String reportTitle) throws IOException {
+		Log.info("Verifying Ethane Capture Table");
+		PDFUtility pdfUtility = new PDFUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
+		String reportName = "CR-" + reportId;
+		setReportName(reportName);
+		String actualReportString = pdfUtility.extractPDFText(actualReport);
+		List<String> expectedReportString = new ArrayList<String>();
+		expectedReportString.add(ComplianceReportSSRS_EthaneAnalysisTable);
+		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		for (Boolean value : actualFirstPage.values()) {
+			if (!value){
+				Log.info("Ethane Capture table static text verification failed");
+				return false;
+			}				
+		}
+		String surveyTable =RegexUtility.getStringInBetween(actualReportString, "Surveyor Date/Time Result Ethane/Methane Ratio and Uncertainty(%) Field Notes", "Ethane Analysis Table");
+		System.out.println(surveyTable);
+ 
+		/*ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys> listFromStoredProc = StoredProcComplianceAssessmentGetReportDrivingSurveys.getReportDrivingSurveys(reportId);
+		Iterator<StoredProcComplianceAssessmentGetReportDrivingSurveys> reportIterator = reportSurveyList.iterator();
+		while (reportIterator.hasNext()) {
+			if (!reportIterator.next().isInList(listFromStoredProc)) {
+				Log.info("Ethane Capture table data verification failed");
+				return false;
+			}
+		}*/
+	
+	Log.info("Ethane capture table verification passed");
+	return true;
 	}
 
 	public void verifyMetaDataFiles() {
