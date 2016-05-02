@@ -16,6 +16,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
+import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.actions.data.ComplianceReportDataReader;
@@ -34,6 +35,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	private static HomePageActions homePageAction;
 	private static LoginPageActions loginPageAction;
 	private static ManageCustomerPageActions manageCustomerPageAction;
+	private static ManageUsersPageActions manageUsersPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static TestEnvironmentActions testEnvironmentAction;
 
@@ -45,6 +47,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		
 		homePageAction = new HomePageActions(driver, baseURL, testSetup);
 		manageCustomerPageAction = new ManageCustomerPageActions(driver, baseURL, testSetup);
+		manageUsersPageAction = new ManageUsersPageActions(driver, baseURL, testSetup);
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
 	}
@@ -619,6 +622,14 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.createNewCustomer(EMPTY, customerRowID);
 
+		Integer userRowID = 12;
+		manageUsersPageAction.open(EMPTY, NOTSET);
+		manageUsersPageAction.createNewCustomerUser(EMPTY, userRowID);
+
+		String usernameColonPassword = String.format("%s:%s", ManageUsersPageActions.workingDataRow.username, ManageUsersPageActions.workingDataRow.password);
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(usernameColonPassword, NOTSET);   /* login using newly created user */
+		
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));

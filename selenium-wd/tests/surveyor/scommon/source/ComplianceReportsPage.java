@@ -18,12 +18,14 @@ import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
 import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
 import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
 import static surveyor.scommon.source.SurveyorConstants.KEYGAPS;
+import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
@@ -2728,8 +2730,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (tablesList.get(0).get(KEYISOANA).equalsIgnoreCase("1")) {
 			selectIsotopicAnalysisCheckBox();
 		}
+		if (tablesList.get(0).get(KEYGAPTB).equalsIgnoreCase("1")) {
+			selectGapCheckBox();
+		}
 		if (tablesList.get(0).get(KEYPCA).equalsIgnoreCase("1")) {
 			selectPercentCoverageAssetCheckBox();
+		}
+		if (tablesList.get(0).get(KEYPCF).equalsIgnoreCase("1")) {
+			selectPercentCoverageForecastCheckBox();
 		}
 		if (tablesList.get(0).get(KEYPCRA).equalsIgnoreCase("1")) {
 			selectPercentCoverageReportArea();

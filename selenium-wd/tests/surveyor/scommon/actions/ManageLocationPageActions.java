@@ -6,20 +6,17 @@ import org.openqa.selenium.support.PageFactory;
 import common.source.TestSetup;
 import surveyor.scommon.actions.data.LocationDataReader;
 import surveyor.scommon.actions.data.LocationDataReader.LocationDataRow;
+import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 
 public class ManageLocationPageActions extends BasePageActions {
 
-	private ManageLocationsPage manageCustomersPage = null;
 	private LocationDataReader dataReader = null;
-	public static ManageLocationsPage workingCustomer = null;      // Stores the ManageLocationsPage object from createNewLocation action
 	public static LocationDataRow workingDataRow = null;    // Stores the workingDataRow from createNewLocation action
 
 	public ManageLocationPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL);
-		manageCustomersPage = new ManageLocationsPage(driver, strBaseURL, testSetup);
-		PageFactory.initElements(driver, manageCustomersPage);
-		
+		initializePageObject(driver, new ManageLocationsPage(driver, strBaseURL, testSetup));
 		setDataReader(new LocationDataReader(this.excelUtility));
 	}
 	
@@ -35,7 +32,12 @@ public class ManageLocationPageActions extends BasePageActions {
 	 */
 	public boolean open(String data, Integer dataRowID) {
 		logAction("ManageLocationPageActions.open", data, dataRowID);
+		this.getManageLocationsPage().open();
 		return true;
+	}
+
+	private ManageLocationsPage getManageLocationsPage() {
+		return (ManageLocationsPage)this.getPageObject();
 	}
 
 	/* Invoke action using specified ActionName */

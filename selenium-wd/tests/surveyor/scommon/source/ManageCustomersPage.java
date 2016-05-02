@@ -74,7 +74,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	@FindBy(id = "LicencedFeatureId-LISA Box 1.0")
 	private WebElement inputLISABox;
 	
-	@FindBy(id = "LicencedFeatureId-Survey Protocol Forecase")
+	@FindBy(id = "LicencedFeatureId-Survey Protocol Forecast")
 	private WebElement inputSurveyForecase;
 	
 	@FindBy(id = "LicencedFeatureId-Report ShapeFile")
@@ -485,19 +485,19 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	
 	public LicensedFeatures getLicensedFeature(String licFeatureName) {
 		LicensedFeatures licensedFeatures = LicensedFeatures.ASSESSMENT; 
-		if (licFeatureName == "GAP Grid 1.0") {
+		if (licFeatureName.equals("GAP Grid 1.0")) {
 			licensedFeatures = LicensedFeatures.GAPGRID;
-		} else if (licFeatureName == "Report Metadata") {
+		} else if (licFeatureName.equals("Report Metadata")) {
 			licensedFeatures = LicensedFeatures.REPORTMETADATA;
-		} else if (licFeatureName == "Assessment") {
+		} else if (licFeatureName.equals("Assessment")) {
 			licensedFeatures = LicensedFeatures.ASSESSMENT;
-		} else if (licFeatureName == "EQ") {
+		} else if (licFeatureName.equals("EQ")) {
 			licensedFeatures = LicensedFeatures.EQ;
-		} else if (licFeatureName == "LISA Box 1.0") {
+		} else if (licFeatureName.equals("LISA Box 1.0")) {
 			licensedFeatures = LicensedFeatures.LISABOX;
-		} else if (licFeatureName == "Survey Protocol Forecast") {
+		} else if (licFeatureName.equals("Survey Protocol Forecast")) {
 			licensedFeatures = LicensedFeatures.SURVEYFORECASE;
-		} else if (licFeatureName == "Report ShapeFile") {
+		} else if (licFeatureName.equals("Report ShapeFile")) {
 			licensedFeatures = LicensedFeatures.REPORTSHAPEFILE;
 		}
 		return licensedFeatures;
