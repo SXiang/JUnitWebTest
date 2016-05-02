@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,7 @@ import common.source.RegexUtility;
 import common.source.ShapeToGeoJsonConverter;
 import common.source.TestContext;
 import common.source.TestSetup;
+import common.source.WebElementExtender;
 import net.avh4.util.imagecomparison.ImageComparisonResult;
 import surveyor.api.source.ReportJobsStat;
 import surveyor.scommon.source.Reports.ReportJobType;
@@ -74,13 +76,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div[3]/div/div/fieldset/div[3]/div[2]/div/label")
 	protected WebElement inputReportModeS1;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[1]/div/div/fieldset/div[3]/div[3]/div/label/input")
+	@FindBy(css = "#page-wrapper  fieldset  div.radio > .report-survey-mode-text > #Standard")
 	protected WebElement inputReportModeStd;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[1]/div/div/fieldset/div[3]/div[4]/div/label/input")
+	@FindBy(css = "#page-wrapper  fieldset  div.radio > .report-survey-mode-text > [id='Rapid Response']")
 	protected WebElement inputReportRapidR;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div[2]/div/div[1]/div/div/fieldset/div[3]/div[5]/div/label/input")
+	@FindBy(css = "#page-wrapper  fieldset  div.radio > .report-survey-mode-text > #Manual")
 	protected WebElement inputReportModeManual;
 
 	@FindBy(how = How.ID, using = "report-survey-mode-minimum-amplitude")
@@ -773,10 +775,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		this.checkboxSurFirst.click();
 	}
 
-	public void clickOnSearchSurveyButton() {
-		this.btnSurveySearch.click();
-	}
-
 	public void clickOnAddSurveysButton() {
 		this.btnAddSurveys.click();
 	}
@@ -1081,6 +1079,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 		throw new Exception("Not implemented");
 	}
 
+	public String getStrPageText() throws Exception {
+		throw new Exception("Not implemented");
+	}
+	
 	public String getStrCopyPageText() throws Exception {
 		throw new Exception("Not implemented");
 	}
@@ -1177,12 +1179,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 		// add class testing code here
 	}
 
-	// addNewReport(title, customer, timeZone, exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong,
-	// SWLat, SWLong, surUnit, tag);
-	// }
-	//
 
-	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, String tag, String startDate, String endDate, String surModeFilter) throws Exception {
+	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary,
+			String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong,
+			String surUnit, String tag, String startDate, String endDate, String surModeFilter) throws Exception {
 		openNewReportPage();
 		this.inputTitle.clear();
 		this.inputTitle.sendKeys(title);
@@ -1317,10 +1317,25 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return false;
 	}
 
-	private WebElement getReportTableCell(String elementXPath) {
-		refreshPageUntilElementFound(elementXPath);
-		this.waitForPageLoad();
+	private WebElement getTableCell(String elementXPath) {
 		return getTable().findElement(By.xpath(elementXPath));
+	}
+	
+	private WebElement getReportTableCell(String elementXPath) {
+		boolean retry = false;
+		WebElement tableCell = null;
+		try {
+			tableCell = getTableCell(elementXPath);
+		} catch (Exception e) {
+			retry = true;
+		}
+		
+		if (retry) {
+			this.waitForPageLoad();
+			refreshPageUntilElementFound(elementXPath);
+		}
+
+		return getTableCell(elementXPath);
 	}
 
 	private String getReportTableCellText(String elementXPath) {
@@ -1334,6 +1349,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public boolean waitForReportGenerationtoComplete(String rptTitle, String strCreatedBy) {
 		setPagination(PAGINATIONSETTING_100);
+		this.waitForPageLoad();
 
 		String reportTitleXPath;
 		String createdByXPath;
@@ -1342,8 +1358,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		int rowSize = rows.size();
 		int loopCount = 0;
-
-		this.waitForPageLoad();
 
 		// Keep track of the last matching row that we processed.
 		String lastSeenTitleCellText = "";
@@ -1925,6 +1939,22 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void clickOnFirstCopyComplianceBtn() {
 		this.btnFirstCopyCompliance.click();
 	}
+	
+	@Override
+	public void waitForPageLoad() {
+		waitForAJAXCallsToComplete();
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				boolean result = false;
+				try {
+					result = d.getPageSource().contains(getStrPageText());
+				} catch (Exception e) {
+					Log.error(e.toString());
+				}
+				return result;
+			}
+		});
+	}
 
 	public void waitForCopyReportPagetoLoad() {
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
@@ -2037,7 +2067,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void waitForReportViewerDialogToOpen() {
-		WebElement divModalcontent = this.driver.findElement(By.id("divModalcontent"));
+		WebElement divModalcontent = this.driver.findElement(By.id("reportViewer"));
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return divModalcontent.getAttribute("style").contains("display:block") || divModalcontent.getAttribute("style").contains("display: block");
@@ -2046,7 +2076,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void waitForReportViewerDialogToClose() {
-		WebElement divModalcontent = this.driver.findElement(By.id("divModalcontent"));
+		WebElement divModalcontent = this.driver.findElement(By.id("reportViewer"));
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return divModalcontent.getAttribute("style").contains("display:none") || divModalcontent.getAttribute("style").contains("display: none");
@@ -2262,4 +2292,116 @@ public class ReportsBasePage extends SurveyorBasePage {
 			throw new Exception(String.format("Incorrect value-[%s] encountered for column-[%s], ReportTitle-[%s], ReportJobTypeId-[%s]", reportJob.getProcessingCompletedTimeInMs(), "ProcessingCompleted", reportTitle, reportJobTypeId));
 		}
 	}
+
+    /**
+     * Verify availability of survey modes with specific report mode selected
+     * @param rmf - ReportModeFilter
+     * @return true if passed
+     */
+	public boolean verifySurveyModeFilters(ReportModeFilter rmf){
+		boolean filtersFound = true;
+		switch(rmf){
+		case Standard:
+			filtersFound = WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterAll)
+			&&WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterStd)
+			&&WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterOperator)
+			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterRapidResponse)
+			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterManual);
+			break;
+		case RapidResponse:
+			filtersFound = WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterAll)
+			&&WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterStd)
+			&&WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterOperator)
+			&&WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterRapidResponse)
+			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterManual);
+			break;
+		case Manual:
+			filtersFound = WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterManual)
+			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterStd)
+			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterOperator)
+			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterAll)
+			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterRapidResponse);
+			break;
+		default:
+			filtersFound = WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterAll)
+			&&WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterStd)
+			&&WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterOperator)
+			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterRapidResponse)
+			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterManual);
+			break;
+		}
+		return filtersFound;
+	}
+
+	/**
+	 * Verify the Type of Surveys in the resulted table are valid for the Survey Mode Filter
+	 * @param smf
+	 * @return true if passed
+	 */
+	public boolean verifySurveySelectorWithFilter(SurveyModeFilter smf){
+		List<String> validType = new ArrayList<String>();
+		switch(smf){
+		case All:
+			if(inputReportRapidR.isSelected()){
+				validType.add(SurveyModeFilter.Standard.toString());
+				validType.add(SurveyModeFilter.Operator.toString());
+				validType.add(SurveyModeFilter.RapidResponse.toString());
+			}else{
+				validType.add(SurveyModeFilter.Standard.toString());
+				validType.add(SurveyModeFilter.Operator.toString());
+			}
+			break;
+		case Standard:
+			validType.add(SurveyModeFilter.Standard.toString());
+			break;
+		case RapidResponse:
+			validType.add(SurveyModeFilter.RapidResponse.toString());
+			break;
+		case Operator:
+			validType.add(SurveyModeFilter.Operator.toString());
+			break;
+		case Manual:
+			validType.add(SurveyModeFilter.Manual.toString());
+			break;
+		default:
+			if(inputReportRapidR.isSelected()){
+				validType.add(SurveyModeFilter.Standard.toString());
+				validType.add(SurveyModeFilter.Operator.toString());
+				validType.add(SurveyModeFilter.RapidResponse.toString());
+			}else{
+				validType.add(SurveyModeFilter.Standard.toString());
+				validType.add(SurveyModeFilter.Operator.toString());
+			}
+		}
+		
+		return !findInvalidSurveyType(validType);
+
+	}
+	
+    /**
+     * Click the search button for Survey filter and wait for the survey table to be loaded
+     */
+	public void clickOnSearchSurveyButton(){		
+		jsClick(this.btnSurveySearch);
+		this.waitForSurveyTabletoLoad();
+	}
+	
+	/**
+	 * Method to check for invalid surveys in the search result table
+	 * 
+	 * @param invalidTypes
+	 * @return true if invalid type found
+	 */
+	public boolean findInvalidSurveyType(List<String> invalidType){
+		
+		String columnName = "Type";
+		Map<String, List<String>> filter = new HashMap<String,List<String>>();
+		filter.put(columnName, invalidType);
+
+		By tableContextBy = By.id("datatableSurveys_wrapper");						
+		WebElement tableContext = driver.findElement(tableContextBy);
+		DataTablePage dataTable = DataTablePage.getDataTablePage(driver,tableContext, this.testSetup,this.strBaseURL, this.strPageURL);
+		
+        return dataTable.hasRecord(filter,false);
+   }
 }

@@ -130,8 +130,6 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String location = "Santa Clara";
 		String locationDesc = customer + " - " + location;
 
-		Log.info(user);
-		Log.info(password);
 		Log.info("\nRunning " + tcID + " - Test Description: Picarro Admin - Add New Picarro user");
 
 		loginPage.open();
@@ -203,8 +201,6 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String userName = customerName + tcID + testSetup.getFixedSizePseudoRandomString(11) + REGBASEUSERNAME;
 		String locationName = SQACUSLOC;
 
-		Log.info(user);
-		Log.info(password);
 		Log.info("\nRunning "+ tcID +" - Test Description: Picarro Admin - edit user");
 
 		loginPage.open();
