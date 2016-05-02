@@ -6,6 +6,7 @@ package surveyor.scommon.source;
 import static common.source.BaseHelper.matchSinglePattern;
 import common.source.DateUtility;
 import common.source.FileUtility;
+import common.source.NumberUtility;
 import static surveyor.scommon.source.SurveyorConstants.CUSBOUNDARY;
 import static surveyor.scommon.source.SurveyorConstants.ENDDATE;
 import static surveyor.scommon.source.SurveyorConstants.REXCLUSIONRADIUS;
@@ -2487,38 +2488,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public boolean verifyAllViewsImages(String actualPath, String reportTitle, String testCase, int numberOfViews) throws IOException {
 		for(int numberViews=1;numberViews<=numberOfViews;numberViews++){
-			if (!verifyViewsImages(actualPath, reportTitle,testCase,getActualViewName(numberViews))){
+			if (!verifyViewsImages(actualPath, reportTitle,testCase,new NumberUtility().getOrdinalNumberString(numberViews)+" View")){
 				return false;
 			}
 		}
 		return true;	
 	}
 	
-	private String getActualViewName(int counter){
-		String viewName =null;
-		if(counter==1){
-			viewName="First View";
-		}
-		if(counter==2){
-			viewName="Second View";
-		}
-		if(counter==3){
-			viewName="Third View";
-		}
-		if(counter==4){
-			viewName="Fourth View";
-		}
-		if(counter==5){
-			viewName="Fifth View";
-		}
-		if(counter==6){
-			viewName="Sixsth View";
-		}
-		if(counter==7){
-			viewName="Seventh View";
-		}
-		 return viewName;
-	}
+
 
 	/**
 	 * Method to verify the Views Images
@@ -2535,7 +2512,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
 		String actualReport = actualPath + File.separator+"CR-" + reportId.substring(0, 6) +File.separator+reportTitle.replaceAll("\\s+", "")+"_" + viewName + ".pdf";
-		String reportName = "CR-" + reportId;
+		String reportName = "CR-" + reportId;		
 		setReportName(reportName);
 		String imageExtractFolder = pdfUtility.extractPDFImages(actualReport, testCase);
 		File folder = new File(imageExtractFolder);
@@ -2550,7 +2527,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				String actualViewPath = testSetup.getSystemTempDirectory() + file.getName().replace(".pdf", "") + ".png";
 				File outputfile = new File(actualViewPath);
 				ImageIO.write(image, "png", outputfile);
-				String baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + getBaseViewName(file.getName()) + ".png";
+				String baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + "View"+new NumberUtility().getOrdinalNumber(file.getName()) + ".png";
 				if (!verifyActualImageWithBase(baseViewFile, actualViewPath)) {
 					Files.delete(Paths.get(actualViewPath));
 					return false;
@@ -2561,31 +2538,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return true;
 	}
 	
-	private String getBaseViewName(String actualViewName){
-		String baseView=null;
-		if(actualViewName.contains("First View")){
-			baseView= "View1";			
-		}
-		if(actualViewName.contains("Second View")){
-			baseView= "View2";			
-		}
-		if(actualViewName.contains("Third View")){
-			baseView= "View3";			
-		}
-		if(actualViewName.contains("Fourth View")){
-			baseView= "View4";			
-		}
-		if(actualViewName.contains("Fifth View")){
-			baseView= "View5";			
-		}
-		if(actualViewName.contains("Sixth View")){
-			baseView= "View6";			
-		}
-		if(actualViewName.contains("Seventh View")){
-			baseView= "View7";			
-		}
-		return baseView;
-	}
+	
 
 	public boolean verifyShapeFilesWithBaselines(String actualPath, String reportTitle, String testCaseID) throws Exception {
 		Log.info(String.format("Calling verifyShapeFilesWithBaselines() -> actualPath=[%s], reportTitle=[%s], testCaseID=[%s]", actualPath, reportTitle, testCaseID));
