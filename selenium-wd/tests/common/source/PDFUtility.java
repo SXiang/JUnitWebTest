@@ -108,7 +108,6 @@ public class PDFUtility {
 	 */
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public String extractPDFImages(String pdfFilePath, String outputDirectoryPrefix, int startPage, int endPage) throws IOException {
-	
 		FileInputStream inputStream = null;
 		PDDocument pdDocument = null;
 		
