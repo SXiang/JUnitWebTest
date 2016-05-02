@@ -180,6 +180,8 @@
 				<fileset dir="${build}">
 
 					<include name="**/ComplianceReportsPageTest.class" />
+					<include name="**/ComplianceReportsPageTest2.class" />
+					<include name="**/ComplianceReportsPageTest4.class" />
 
 				</fileset>
 			</batchtest>
@@ -222,7 +224,7 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ACLandVisibilityTest.class" />
+									<include name="**/ACLandVisibilityTest.class" />
 					<include name="**/HomePageTest.class" />
 					<include name="**/LoginPageTest.class" />
 					<include name="**/ManageAnalyzersPageTest.class" />
@@ -239,6 +241,7 @@
 					<include name="**/MeasurementSessionsPageTest.class" />
 					<include name="**/UserFeedbackPageTest.class" />
 					<include name="**/UserFeedbackAdminPageTest.class" />
+					<include name="**/SurveyViewPageTest5.class" />
 					<include name="**/SystemHistoryReportsPageTest.class" />	
 					<include name="**/ReferenceGasReportsPageTest.class" />		
 					<include name="**/ComplianceReportsPageTest_Ethane.class" />
