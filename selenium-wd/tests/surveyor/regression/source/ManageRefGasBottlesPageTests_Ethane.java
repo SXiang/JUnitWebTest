@@ -59,17 +59,18 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC1735_AddValueEthMthClmn_RefGasBottles() {
-		String strLotNumber = "TC135_Ethane"+ testSetup.getFixedSizeRandomNumber(5);
+		String strLotNumber = "TC1735_Ethane"+ testSetup.getFixedSizeRandomNumber(5);
 
 		Log.info("\nRunning TC1735 - Test Description: Ethane - Verify that user can add value to Ethane To Methane Ratio column to ReferenceGasBottle Page");
 
 		manageRefGasBottlesPage.login(SQAPICSUP, USERPASSWORD);
 
 		manageRefGasBottlesPage.open();
-		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", "15", SQAETHCUST, SQAETHLOC, SQAETHSUR);
+		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", "15", SQACUS, SQACUSLOC, SQACUSLOCSUR);
 		manageRefGasBottlesPage.waitForNewPageLoad();
 
-		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber, SQAETHSUR));
+		manageRefGasBottlesPage.getInputSearch().sendKeys(strLotNumber);
+		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber, SQACUSLOCSUR));
 	}
 
 	/**
@@ -85,15 +86,15 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 		manageRefGasBottlesPage.login(SQAPICSUP, USERPASSWORD);
 
 		manageRefGasBottlesPage.open();
-		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", "1", SQAETHCUST, SQAETHLOC, SQAETHSUR);
+		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", "1", SQACUS, SQACUSLOC, SQACUSLOCSUR);
 		manageRefGasBottlesPage.waitForNewPageLoad();
 
-		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber, SQAETHSUR));
+		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber, SQACUSLOCSUR));
 		
-		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", "99", SQAETHCUST, SQAETHLOC, SQAETHSUR);
+		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", "99", SQACUS, SQACUSLOC, SQACUSLOCSUR);
 		manageRefGasBottlesPage.waitForNewPageLoad();
 
-		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber, SQAETHSUR));
+		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber, SQACUSLOCSUR));
 
 	}
 

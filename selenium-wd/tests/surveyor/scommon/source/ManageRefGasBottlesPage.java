@@ -447,6 +447,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 			String analyzerName, String lotNum, String isoValue) {
 		this.getInputSearch().sendKeys(lotNum);
 		try {
+			System.out.println("!!!!!!!!" + this.tdLotNumValue.getText() + "!!!!!!!!");
 			if (this.tdLotNumValue.getText().contentEquals(lotNum)) {
 				if (this.tdLocationValue.getText().contentEquals(locationName)) {
 					if (this.tdSurveyorValue.getText().contentEquals(
