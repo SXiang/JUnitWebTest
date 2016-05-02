@@ -110,7 +110,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws Exception {
 		String rptTitle = null;
 		String testCaseName = getTestCaseName(index);
-	if (testCaseName.equals("TC203")) {
+		if (testCaseName.equals("TC203")) {
 			rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber() + "#%$";
 
 		} else {
@@ -121,7 +121,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		complianceReportsPage.login(strCreatedBy, CryptoUtility.decrypt(password));
 		complianceReportsPage.open();
 
-		/*ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
 
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
@@ -141,19 +141,17 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 				}
 				assertTrue(complianceReportsPage.verifyViewsTable(testSetup.getDownloadPath(), rptTitle, viewList));
 				assertTrue(complianceReportsPage.verifyDrivingSurveysTable(testSetup.getDownloadPath(), rptTitle));
-
+				assertTrue(complianceReportsPage.verifyAllViewsImages(testSetup.getDownloadPath(), rptTitle, testCaseName,viewList.size()));
 				if (tablesList.get(0).get(KEYISOANA).equals("1")) {
 					assertTrue(complianceReportsPage.verifyIsotopicAnalysisTable(testSetup.getDownloadPath(), rptTitle));
 				}
 				if (tablesList.get(0).get(KEYINDTB).equals("1")) {
 					assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
 				}
-				
 			}
 		} else
-			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");	*/
-		complianceReportsPage.checkActionStatus("TC297 Report67155", "sqacussu@email.com", "TC297");
-		
+			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
+
 	}
 
 	private static String getTestCaseName(String key) {
@@ -231,7 +229,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC163 Test Description: Screen should not refresh while searching an in-progress report, as it completes
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@Test
@@ -275,8 +274,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
 		tablesList.add(tableMap);
-		
-		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
+
+		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
 		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
 		viewLayerList.add(ReportDataProvider.createViewLayerAssetsContent(assetRowIDs));
 
@@ -285,7 +284,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
-		
+
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -317,7 +316,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC166 Test Description: Picarro Administrator can delete the specified report
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@Test
@@ -344,7 +344,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		tableMap.put(KEYPCRA, "0");
 		tablesList.add(tableMap);
 
-		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
+		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
 		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
 		viewLayerList.add(ReportDataProvider.createViewLayerAssetsContent(assetRowIDs));
 
@@ -369,7 +369,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		tagList.add(PICADMNSTDTAG);
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
-		
+
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -415,7 +415,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		tableMap.put(KEYPCRA, "0");
 		tablesList.add(tableMap);
 
-		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
+		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
 		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
 		viewLayerList.add(ReportDataProvider.createViewLayerAssetsContent(assetRowIDs));
 
@@ -441,7 +441,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, RSURSTARTDATE, RSURENDDATE, viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
-		
+
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -491,7 +491,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		tableMap.put(KEYPCRA, "0");
 		tablesList.add(tableMap);
 
-		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
+		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
 		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
 		viewLayerList.add(ReportDataProvider.createViewLayerAssetsContent(assetRowIDs));
 
@@ -517,7 +517,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, ReportModeFilter.RapidResponse);
 		rpt.setViewLayersList(viewLayerList);
-		
+
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -594,7 +594,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		tableMap.put(KEYPCRA, "0");
 		tablesList.add(tableMap);
 
-		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
+		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
 		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
 		viewLayerList.add(ReportDataProvider.createViewLayerAssetsContent(assetRowIDs));
 
@@ -603,7 +603,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Manual, ReportModeFilter.Manual);
 		rpt.setViewLayersList(viewLayerList);
-		
+
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -628,7 +628,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC184 Test Description: Very small or big report area selection not allowed
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@Test
@@ -671,8 +672,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		tableMap.put(KEYPCRA, "0");
 		tablesList.add(tableMap);
 
-		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
-		List<Integer> boundaryRowIDs = Arrays.asList(3, 4);				 // Boundary RowIDs from TestCaseData xlsx
+		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
+		List<Integer> boundaryRowIDs = Arrays.asList(3, 4); // Boundary RowIDs from TestCaseData xlsx
 		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
@@ -680,7 +681,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		tagList.add(PICADMNSTDTAG);
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, ReportModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
-		
+
 		complianceReportsPage.addNewReport(rpt);
 
 		Assert.assertEquals(complianceReportsPage.getAreaErrorText(), STRReportAreaTooLargeMsg);
@@ -708,7 +709,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC197 Test Description: Verify "Add Survey" message is displayed when no Survey added
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@Test
@@ -740,7 +742,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC167 Test Description: Customer Admin can delete the specified report
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@Test
@@ -806,7 +809,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC168 Test Description: Customer Supervisor can delete the specified report
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@Test
@@ -918,7 +922,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		tableMap.put(KEYPCRA, "0");
 		tablesList.add(tableMap);
 
-		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
+		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
 		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
 		viewLayerList.add(ReportDataProvider.createViewLayerAssetsContent(assetRowIDs));
 
@@ -927,7 +931,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Manual, ReportModeFilter.Manual);
 		rpt.setViewLayersList(viewLayerList);
-		
+
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -955,7 +959,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC797 Test Description: Search compliance reports based on report name
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@Test
@@ -1020,7 +1025,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	/**
 	 * Test Case ID: TC1275 Test Description: User friendly message should be displayed if user has include assets and boundaries in views but not selected any asset and boundaries layers in optional
 	 * view layers section
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@Test

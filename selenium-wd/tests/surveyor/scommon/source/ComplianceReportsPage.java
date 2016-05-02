@@ -102,6 +102,7 @@ import common.source.Log;
 import common.source.NumberUtility;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
+import common.source.ZipUtility;
 import sun.misc.BASE64Decoder;
 import surveyor.api.source.ReportJobsStat;
 import surveyor.dataaccess.source.BaseMapType;
@@ -560,6 +561,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@Override
 	public boolean handleFileDownloads(String rptTitle, String testCaseID) throws Exception {
+		ZipUtility zipUtility = new ZipUtility();
 		String reportName = "CR-" + getReportName(rptTitle);
 		clickOnPDFInReportViewer();
 		waitForPDFFileDownload(reportName);
@@ -567,7 +569,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		clickOnZIPInReportViewer();
 		waitForReportZIPFileDownload(reportName);
 		checkAndGenerateBaselineSSRSImage(reportName, testCaseID);
-		checkAndgenerateBaselineViewImages(reportName, testCaseID);
+		String unzipFolder = testSetup.getDownloadPath() + reportName;
+		zipUtility.unZip(testSetup.getDownloadPath() + reportName + ".zip", unzipFolder);
+		checkAndgenerateBaselineViewImages(unzipFolder, testCaseID);
 		if (zipMeta.isDisplayed()) {
 			clickOnMetadataZIPInReportViewer();
 			waitForMetadataZIPFileDownload(reportName);
@@ -582,6 +586,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				clickOnShapeZIPInReportViewer();
 				waitForShapeZIPFileDownload(reportName);
 				Log.info("Shape files zip file got downloaded");
+				try {
+					BaseHelper.deCompressZipFile(reportName + " (2)", testSetup.getDownloadPath());
+				} catch (Exception e) {
+					Log.error(e.toString());
+					return false;
+				}
 				if (testCaseID != null) {
 					try {
 						checkAndGenerateBaselineShapeAndGeoJsonFiles(reportName, testCaseID);
@@ -684,34 +694,33 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 
-	private void checkAndgenerateBaselineViewImages(String reportName, String testCaseID) throws Exception {
-		System.out.println("inside generate baseline views");
+	private void checkAndgenerateBaselineViewImages(String unzipFolder, String testCaseID) throws Exception {
 		PDFUtility pdfUtility = new PDFUtility();
 		boolean isGenerateBaselineViewImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
 		if (isGenerateBaselineViewImages) {
-			File downLoadedFolder = new File(testSetup.getDownloadPath() + File.separator + reportName);
+			File downLoadedFolder = new File(unzipFolder);
 			File[] listOfViews = downLoadedFolder.listFiles();
-			reportName = reportName + ".pdf";
+			int counter = 1;
 			for (File file : listOfViews) {
 				if (file.isFile()) {
-					if (file.getName().contains("_View")) {
-						System.out.println("Found view file");
-						String actualView = testSetup.getDownloadPath() + file.getName() + ".pdf";
+					if (file.getName().contains("View")) {
+						String actualView = unzipFolder + File.separator + file.getName();
 						String imageExtractFolder = pdfUtility.extractPDFImages(actualView, testCaseID);
 						File folder = new File(imageExtractFolder);
 						File[] listOfFiles = folder.listFiles();
 						for (File extractedImeg : listOfFiles) {
-							int counter=1;
 							if (extractedImeg.isFile()) {
-								BufferedImage image = ImageIO.read(file);
+								BufferedImage image = ImageIO.read(extractedImeg);
 								int width = image.getWidth();
 								int height = image.getHeight();
 								Rectangle rect = new Rectangle(0, 0, width, height - 40);
 								image = cropImage(image, rect);
-								File outputfile = new File(testSetup.getSystemTempDirectory() + testCaseID +"_View"+counter+ ".png");
-								generateBaselineViewImage(testCaseID, outputfile.getAbsolutePath());
+								String outputfile = testSetup.getSystemTempDirectory() + testCaseID + "_View" + counter + ".png";
+								File croppedFile = new File(outputfile);
+								ImageIO.write(image, "png", croppedFile);
+								generateBaselineViewImage(testCaseID, outputfile, counter);
+								counter++;
 							}
-							counter++;
 						}
 					}
 				}
@@ -746,7 +755,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
 		String expectedFilename = FileUtility.getFileName(shapeFileFullPath);
 		String expectedFileExt = FileUtility.getFileExtension(shapeFileFullPath);
-		if (expectedFileExt == "dbf" || expectedFileExt == "prj" || expectedFileExt == "shp" || expectedFileExt == "shx") {
+		if (expectedFileExt.equals("dbf") || expectedFileExt.equals("prj") || expectedFileExt.equals("shp") || expectedFileExt.equals("shx")) {
 			// Delete existing files in directory (if any).
 			FileUtility.deleteFilesInDirectory(Paths.get(expectedDataFolderPath));
 
@@ -756,7 +765,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			FileUtils.copyFile(new File(shapeFileFullPath), new File(expectedFilePath.toString()));
 
 			// If specified file is .shp get GeoJson string for the shape file and store the .geojson.
-			if (expectedFileExt == "shp") {
+			if (expectedFileExt.equals("shp")) {
 				String geoJsonString = ShapeToGeoJsonConverter.convertToJsonString(shapeFileFullPath);
 				Path expectedGeoJsonFilePath = Paths.get(expectedDataFolderPath, expectedFilenameWithoutExt + ".geojson");
 				FileUtility.createTextFile(expectedGeoJsonFilePath, geoJsonString);
@@ -2462,6 +2471,51 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		return true;
 	}
+	
+	/**
+	 * Wrapper to verify the Views Images
+	 * 
+	 * @param actualPath
+	 * @param reportTitle
+	 * @param expectedImage
+	 * @return
+	 * @throws IOException
+	 */
+
+	public boolean verifyAllViewsImages(String actualPath, String reportTitle, String testCase, int numberOfViews) throws IOException {
+		for(int numberViews=1;numberViews<=numberOfViews;numberViews++){
+			if (!verifyViewsImages(actualPath, reportTitle,testCase,getActualViewName(numberViews))){
+				return false;
+			}
+		}
+		return true;	
+	}
+	
+	private String getActualViewName(int counter){
+		String viewName =null;
+		if(counter==1){
+			viewName="First View";
+		}
+		if(counter==2){
+			viewName="Second View";
+		}
+		if(counter==3){
+			viewName="Third View";
+		}
+		if(counter==4){
+			viewName="Fourth View";
+		}
+		if(counter==5){
+			viewName="Fifth View";
+		}
+		if(counter==6){
+			viewName="Sixsth View";
+		}
+		if(counter==7){
+			viewName="Seventh View";
+		}
+		 return viewName;
+	}
 
 	/**
 	 * Method to verify the Views Images
@@ -2477,23 +2531,23 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + "_" + viewName + ".pdf";
+		String actualReport = actualPath + File.separator+"CR-" + reportId.substring(0, 6) +File.separator+reportTitle.replaceAll("\\s+", "")+"_" + viewName + ".pdf";
 		String reportName = "CR-" + reportId;
 		setReportName(reportName);
-		String baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + viewName + ".png";
 		String imageExtractFolder = pdfUtility.extractPDFImages(actualReport, testCase);
 		File folder = new File(imageExtractFolder);
 		File[] listOfFiles = folder.listFiles();
 		for (File file : listOfFiles) {
-			if (file.isFile()) {
+			if (file.isFile() && file.getName().contains("View")) {				
 				BufferedImage image = ImageIO.read(file);
 				int width = image.getWidth();
 				int height = image.getHeight();
 				Rectangle rect = new Rectangle(0, 0, width, height - 40);
 				image = cropImage(image, rect);
-				String actualViewPath = testSetup.getSystemTempDirectory() + testCase + ".png";
-				File outputfile = new File(testSetup.getSystemTempDirectory() + testCase + ".png");
+				String actualViewPath = testSetup.getSystemTempDirectory() + file.getName().replace(".pdf", "") + ".png";
+				File outputfile = new File(actualViewPath);
 				ImageIO.write(image, "png", outputfile);
+				String baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + getBaseViewName(file.getName()) + ".png";
 				if (!verifyActualImageWithBase(baseViewFile, actualViewPath)) {
 					Files.delete(Paths.get(actualViewPath));
 					return false;
@@ -2502,6 +2556,32 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 		return true;
+	}
+	
+	private String getBaseViewName(String actualViewName){
+		String baseView=null;
+		if(actualViewName.contains("First View")){
+			baseView= "View1";			
+		}
+		if(actualViewName.contains("Second View")){
+			baseView= "View2";			
+		}
+		if(actualViewName.contains("Third View")){
+			baseView= "View3";			
+		}
+		if(actualViewName.contains("Fourth View")){
+			baseView= "View4";			
+		}
+		if(actualViewName.contains("Fifth View")){
+			baseView= "View5";			
+		}
+		if(actualViewName.contains("Sixth View")){
+			baseView= "View6";			
+		}
+		if(actualViewName.contains("Seventh View")){
+			baseView= "View7";			
+		}
+		return baseView;
 	}
 
 	public boolean verifyShapeFilesWithBaselines(String actualPath, String reportTitle, String testCaseID) throws Exception {
