@@ -92,7 +92,6 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 
 		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber1, SQAETHSUR));
 
-		manageRefGasBottlesPage.waitForNewPageLoad();
 		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber2, "-32.17", "99", SQAETHCUST, SQAETHLOC, SQAETHSUR);
 		manageRefGasBottlesPage.waitForNewPageLoad();
 

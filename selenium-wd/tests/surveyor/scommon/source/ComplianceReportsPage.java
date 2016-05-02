@@ -935,7 +935,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void inputImageMapHeight(String imageMapHeight) {
-		//this.inputImgMapHeight.clear();
+		this.inputImgMapHeight.clear();
 		this.inputImgMapHeight.sendKeys(imageMapHeight);
 	}
 

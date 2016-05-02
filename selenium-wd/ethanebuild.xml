@@ -239,7 +239,7 @@
 					<include name="**/MeasurementSessionsPageTest.class" />
 					<include name="**/UserFeedbackPageTest.class" />
 					<include name="**/UserFeedbackAdminPageTest.class" />
-					<include name="**/SurveyViewPageTest3.class" />
+					<include name="**/SurveyViewPageTest5.class" />
 					<include name="**/SystemHistoryReportsPageTest.class" />	
 					<include name="**/ReferenceGasReportsPageTest.class" />		
 					<include name="**/ComplianceReportsPageTest_Ethane.class" />
