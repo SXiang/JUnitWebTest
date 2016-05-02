@@ -180,6 +180,8 @@
 				<fileset dir="${build}">
 
 					<include name="**/ComplianceReportsPageTest.class" />
+					<include name="**/ComplianceReportsPageTest2.class" />
+					<include name="**/ComplianceReportsPageTest4.class" />
 
 				</fileset>
 			</batchtest>
