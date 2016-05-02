@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import common.source.Log;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 
@@ -28,19 +29,24 @@ public class ReportsCompliance extends Reports {
 	
 	//Custom Boundary
 	protected List<String> listBoundary;
+	//Custom Boundary
+	protected String NELat = "";
+	protected String NELong = "";
+	protected String SWLat = "";
+	protected String SWLong = "";
+	
+	//Custom Boundary - Lat/Long Map Selector
+	private int latLongXOffset;
+	private int latLongYOffset;
+	private int latLongRectHeight;
+	private int latLongRectWidth;
+	
+	//View Size (PDF image output);
 	protected String imageMapHeight;
 	protected String imageMapWidth;
-	protected String NELat;
-	protected String NELong;
-	protected String SWLat;
-	protected String SWLong;
-	
 	//Opacity Fine-Tuning
 	protected String fovOpacity;
 	protected String lisaOpacity;
-	//View Size (PDF image output);
-	protected String viewWidth;
-	protected String viewHeight;
 	//Views
 	protected List<Map<String, String>> viewList;
 	//Optional Tablular PDF Content
@@ -51,11 +57,6 @@ public class ReportsCompliance extends Reports {
 	protected SurveyModeFilter surveyModeFilter;
 	protected ReportModeFilter reportModeFilter;
 	protected EthaneFilter ethaneFilter;
-	
-	private int latLongXOffset;
-	private int latLongYOffset;
-	private int latLongRectHeight;
-	private int latLongRectWidth;
 	
 	private String customerBoundaryName; 
 	private CustomerBoundaryFilterType customerBoundaryFilterType;
@@ -231,13 +232,7 @@ public class ReportsCompliance extends Reports {
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList);
 		this.exclusionRadius=exclusionRadius;
-		this.imageMapHeight=listBoundary.get(0);
-		this.imageMapWidth=listBoundary.get(1);
-		this.NELat = listBoundary.get(2);
-		this.NELong =listBoundary.get(3);
-		this.SWLat = listBoundary.get(4);
-		this.SWLong = listBoundary.get(5);
-		this.listBoundary=listBoundary;
+		this.setListBoundary(listBoundary);
 		this.tablesList=tablesList;
 		this.tagList=tagList;
 		this.viewList=viewList;
@@ -248,13 +243,7 @@ public class ReportsCompliance extends Reports {
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList, startDate, endDate);
 		this.exclusionRadius=exclusionRadius;		
-		this.imageMapHeight=listBoundary.get(0);
-		this.imageMapWidth=listBoundary.get(1);
-		this.NELat = listBoundary.get(2);
-		this.NELong =listBoundary.get(3);
-		this.SWLat = listBoundary.get(4);
-		this.SWLong = listBoundary.get(5);
-		this.listBoundary = listBoundary;		
+        this.setListBoundary(listBoundary);
 		this.tablesList = tablesList;
 		this.viewList= viewList;
 		this.surveyModeFilter=surveyMode;
@@ -264,13 +253,7 @@ public class ReportsCompliance extends Reports {
 			String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode, ReportModeFilter reportMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList, startDate, endDate);
 		this.exclusionRadius=exclusionRadius;
-		this.imageMapHeight=listBoundary.get(0);
-		this.imageMapWidth=listBoundary.get(1);
-		this.NELat = listBoundary.get(2);
-		this.NELong =listBoundary.get(3);
-		this.SWLat = listBoundary.get(4);
-		this.SWLong = listBoundary.get(5);
-		this.listBoundary=listBoundary;
+		this.setListBoundary(listBoundary);
 		this.tablesList=tablesList;
 		this.viewList=viewList;
 		this.surveyModeFilter=surveyMode;
@@ -282,13 +265,7 @@ public class ReportsCompliance extends Reports {
 			List<Map<String, String>> viewList, SurveyModeFilter surveyMode, Boolean geoFilter) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList, startDate, endDate, geoFilter);
 		this.exclusionRadius=exclusionRadius;
-		this.imageMapHeight=listBoundary.get(0);
-		this.imageMapWidth=listBoundary.get(1);
-		this.NELat = listBoundary.get(2);
-		this.NELong =listBoundary.get(3);
-		this.SWLat = listBoundary.get(4);
-		this.SWLong = listBoundary.get(5);
-		this.listBoundary=listBoundary;
+		this.setListBoundary(listBoundary);
 		this.tablesList=tablesList;
 		this.viewList=viewList;
 		this.surveyModeFilter=surveyMode;
@@ -299,13 +276,7 @@ public class ReportsCompliance extends Reports {
 			SurveyModeFilter surveyMode, String userName, Boolean geoFilterOn, ReportModeFilter reportMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit,  startDate,endDate, userName, geoFilterOn,tagList);
 		this.exclusionRadius=exclusionRadius;
-		this.imageMapHeight=listBoundary.get(0);
-		this.imageMapWidth=listBoundary.get(1);
-		this.NELat = listBoundary.get(2);
-		this.NELong =listBoundary.get(3);
-		this.SWLat = listBoundary.get(4);
-		this.SWLong = listBoundary.get(5);
-		this.listBoundary=listBoundary;
+		this.setListBoundary(listBoundary);
 		this.tablesList=tablesList;
 		this.viewList=viewList;
 		this.surveyModeFilter=surveyMode;
@@ -316,13 +287,7 @@ public class ReportsCompliance extends Reports {
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList, ReportModeFilter reportMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList);
 		this.exclusionRadius=exclusionRadius;
-		this.imageMapHeight=listBoundary.get(0);
-		this.imageMapWidth=listBoundary.get(1);
-		this.NELat = listBoundary.get(2);
-		this.NELong =listBoundary.get(3);
-		this.SWLat = listBoundary.get(4);
-		this.SWLong = listBoundary.get(5);
-		this.listBoundary=listBoundary;
+		this.setListBoundary(listBoundary);
 		this.tablesList=tablesList;
 		this.viewList=viewList;
 		this.reportModeFilter=reportMode;
@@ -334,18 +299,12 @@ public class ReportsCompliance extends Reports {
 			List<Map<String, String>> viewLayersList) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, userName, startDate, endDate,geoFilter, tagList);
 		this.exclusionRadius=exclusionRadius;
-		this.imageMapHeight=listBoundary.get(0);
-		this.imageMapWidth=listBoundary.get(1);
-		this.NELat = listBoundary.get(2);
-		this.NELong =listBoundary.get(3);
-		this.SWLat = listBoundary.get(4);
-		this.SWLong = listBoundary.get(5);
+		this.setListBoundary(listBoundary);		
 		this.fovOpacity=fovOpacity;
 		this.lisaOpacity=lisaOpacity;
 		this.reportModeFilter=reportMode;
 		this.surveyModeFilter=surveyModeFilter;
 		this.ethaneFilter=ethaneFilter;
-		this.listBoundary=listBoundary;
 		this.tablesList=tablesList;
 		this.viewList=viewList;
 		this.viewLayersList=viewLayersList;
@@ -368,6 +327,16 @@ public class ReportsCompliance extends Reports {
 	}
 
 	public void setListBoundary(List<String> listBoundary) {
+		try{
+			this.imageMapHeight = listBoundary.get(0);
+			this.imageMapWidth = listBoundary.get(1);
+			this.NELat = listBoundary.get(2);
+			this.NELong = listBoundary.get(3);
+			this.SWLat = listBoundary.get(4);
+			this.SWLong = listBoundary.get(5);
+		}catch(Exception e){
+			Log.error(e.toString());
+		}
 		this.listBoundary = listBoundary;
 	}
 
@@ -526,22 +495,6 @@ public class ReportsCompliance extends Reports {
 
 	public void setFovOpacity(String fovOpacity) {
 		this.fovOpacity = fovOpacity;
-	}
-
-	public String getViewWidth() {
-		return viewWidth;
-	}
-
-	public void setViewWidth(String viewWidth) {
-		this.viewWidth = viewWidth;
-	}
-
-	public String getViewHeight() {
-		return viewHeight;
-	}
-
-	public void setViewHeight(String viewHeight) {
-		this.viewHeight = viewHeight;
 	}
 
 	public void setCustomerBoundaryName(String customerBoundaryName) {

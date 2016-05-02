@@ -760,7 +760,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				loopCount = Integer.parseInt(PAGINATIONSETTING);
 			
 			// Loop through table elements and check selected number of surveys.
-			for (int rowNum = 1; rowNum <= loopCount && selectedSurveysCount <= numSurveysToSelect; rowNum++) {
+			for (int rowNum = 1; rowNum <= loopCount && selectedSurveysCount < numSurveysToSelect; rowNum++) {
 				checkBoxXPath = "//*[@id='datatableSurveys']/tbody/tr["+rowNum+"]/td[7]/input";
 				checkBoxActionCell = surveyTable.findElement(By.xpath(checkBoxXPath));
 				checkBoxActionCell.click();
@@ -1286,8 +1286,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		this.waitForPageLoad();
 		String reportTitleXPath;
 		String createdByXPath;
-		WebElement rptTitleCell;
-		WebElement createdByCell;
 
 		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 

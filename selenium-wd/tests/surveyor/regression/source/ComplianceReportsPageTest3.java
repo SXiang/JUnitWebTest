@@ -98,13 +98,18 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 		
 		String testCaseName = "TC1319";		
 		String rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
-		String tag1 = "stnd-pic", tag2 = "iso cap", tag3 = "history";
+		String tag1 = "stnd-pic", tag2 = "iso cap", tag3 = "standard";
+		String username = SQAPICSUP;
+		String password = USERPASSWORD;
+		String customer = "Picarro";
 		
-		complianceReportsPage.login(SQAPICSU, USERPASSWORD);
+		complianceReportsPage.login(username, password);
 		complianceReportsPage.open();
 
 		ReportsCompliance rpt = getSampleComplianceReport();
 		rpt.setRptTitle(rptTitle);
+		rpt.setCustomer(customer);
+		rpt.setStrCreatedBy(username);
 		
 		//Optional Tabular PDF Content
 		Map<String,String> tableMap = rpt.getTablesList().get(0);
@@ -114,27 +119,30 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 		
 		//Configure Surveys
 		List<ReportsSurveyInfo> surveyInfoList = rpt.getSurveyInfoList();
-		surveyInfoList.clear();
 		ReportsSurveyInfo survey1 = surveyInfoList.get(0);
 		ReportsSurveyInfo survey2 = getReportsSurveyInfoSample(rpt);
 		ReportsSurveyInfo survey3 = getReportsSurveyInfoSample(rpt);
-		survey1.setTag(tag1);
-		surveyInfoList.add(survey1);
-		survey2.setTag(tag2);
-		surveyInfoList.add(survey2);
-		survey3.setTag(tag3);
-		surveyInfoList.add(survey3);
 		
+		survey1.setTag(tag1);
+		
+		survey2.setTag(tag2);		
+		survey3.setTag(tag3);
+		
+		surveyInfoList.add(survey2);
+		surveyInfoList.add(survey3);
 		
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 		
-		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICSU, testCaseName))) {
-			assertTrue(complianceReportsPage.verifyCoverageValuesTable( testSetup.getDownloadPath(), rptTitle, rpt.getTablesList().get(0)));
+		if ((complianceReportsPage.checkActionStatus(rptTitle, username, testCaseName))) {
+			                   // download CR Table PDF
+			                   // 3 Zips
+			                   // No Investigation PDF, No CSV - Investigation Data
+			assertTrue(complianceReportsPage.verifyShowCoverageTable( testSetup.getDownloadPath(), rptTitle));
+			assertTrue(complianceReportsPage.verifyCoverageForecastValuesTable(testSetup.getDownloadPath(), rptTitle, tableMap));
 		} else {
 			fail("\nTestcase " + testCaseName + " failed.\n");
 		}
-		//TODO: verify coverage in forecast table...		
 	}
 
  
@@ -826,21 +834,51 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 
 	}
+	
+	/**
+	 * Provide a adaptor of ReportsCompliance for tests, you need to do modification based on your test case
+	 * 1. List<Map<String, String>> viewList = rpt.getViewList();
+     *    Map<String, String> viewMap = viewList.get(0);
+	 *
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @return
+	 */
 	public ReportsCompliance getSampleComplianceReport(){
-		return getSampleComplianceReport();
+		return getSampleComplianceReport("");
 	}
 	 
 	public ReportsCompliance getSampleComplianceReport(String rptTitle){
+		//*** Report
+		//*** Other parameters
+		EthaneFilter ethaneFilter = EthaneFilter.None;
+		ReportModeFilter reportModeFilter = ReportModeFilter.Standard;
+		boolean geoFilter = true;
+
 		//*** Area Selector ***
 		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add(IMGMAPHEIGHT);
-		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add(RNELAT);
-		listBoundary.add(RNELON);
-		listBoundary.add(RSWLAT);
-		listBoundary.add(RSWLON);
-		//TODO customer boundary
-
+		listBoundary.add("");//IMGMAPHEIGHT
+		listBoundary.add("");//IMGMAPWIDTH
+		//Custom boundary
+		listBoundary.add("");//RNELAT
+		listBoundary.add("");//RNELON
+		listBoundary.add("");//RSWLAT
+		listBoundary.add("");//RSWLON
+		//Custom boundary - Lat/Long Map Selector
+		int latLongXOffset = 0;
+		int latLongYOffset = 0;
+		int latLongRectHeight = 0;
+		int latLongRectWidth = 0;		
+		
+		//customer boundary
+		CustomerBoundaryFilterType customerBoundaryFilterType = CustomerBoundaryFilterType.SmallBoundary;
+		String customerBoundaryName = "TestPlat-Auto-01";
+		
 		//*** Optional Tabular PDF Content ***
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();
@@ -886,37 +924,33 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add("");		
 		
-		//*** Opacity Fine-Tuning & View Size (PDF image output) *** TODO		
-		String viewHeight = "11";
-		String viewWidth = "8.5";
+		//*** Opacity Fine-Tuning ***
 		String fovOpacity = "0.5";
 		String lisaOpacity = "0.5";
-		
-		//*** Other parameters
-		EthaneFilter ethaneFilter = EthaneFilter.None;
-		ReportModeFilter reportModeFilter = ReportModeFilter.Standard;
-		CustomerBoundaryFilterType customerBoundaryFilterType = CustomerBoundaryFilterType.SmallBoundary;
-		String customerBoundaryName = "Level 2-AB";
-		
-		boolean geoFilter = true;
-
-		ReportsCompliance sampleReport = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEET, "0", listBoundary, 
-				tablesList,
-				"", tagList, 
-				"", "", viewList, 
-				SurveyModeFilter.Standard);
+		String strCreatedBy = PICDFADMIN;
+		String customer = "Picarro";
+		String timeZone = TIMEZONEET;
+		String exclusionRadius = "0";
+		SurveyModeFilter  surveyMode = SurveyModeFilter.Standard;
+		String surveyorUnit = "";
+		String startDate = "";
+		String endDate = "";
+		ReportsCompliance sampleReport = new ReportsCompliance(rptTitle, 
+				strCreatedBy, customer, timeZone, exclusionRadius,
+				listBoundary, tablesList,
+				surveyorUnit, tagList, 
+				startDate, endDate, viewList, 
+				surveyMode);
 		
         sampleReport.setViewLayersList(viewLayersList);
         sampleReport.setEthaneFilter(ethaneFilter);
-        sampleReport.setViewHeight(viewHeight);
-        sampleReport.setViewWidth(viewWidth);
         sampleReport.setFovOpacity(fovOpacity);
         sampleReport.setLisaOpacity(lisaOpacity);
         sampleReport.setReportModeFilter(reportModeFilter);
-        sampleReport.setCustomerBoundaryFilterType(customerBoundaryFilterType);
-        sampleReport.setCustomerBoundaryName(customerBoundaryName);
         sampleReport.setGeoFilter(geoFilter);
-
+        sampleReport.setCustomBoundaryInfo(latLongXOffset, latLongYOffset, latLongRectHeight, latLongRectWidth);
+        sampleReport.setCustomerBoundaryInfo(customerBoundaryFilterType, customerBoundaryName);
+        
         //*** Prepare ReportsSurveyInfo
         List<ReportsSurveyInfo> surveyInfoList = new ArrayList<ReportsSurveyInfo>();
         

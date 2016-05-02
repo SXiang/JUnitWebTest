@@ -101,6 +101,8 @@ import common.source.CSVUtility;
 import common.source.DBConnection;
 import common.source.Log;
 import common.source.NumberUtility;
+import common.source.PDFTableUtility;
+import common.source.PDFTableUtility.PDFTable;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
 import sun.misc.BASE64Decoder;
@@ -112,6 +114,7 @@ import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataaccess.source.StoredProcComplianceAssessmentGetReportDrivingSurveys;
 import surveyor.dataaccess.source.StoredProcComplianceGetCoverage;
+import surveyor.dataaccess.source.StoredProcComplianceGetCoverageForecast;
 import surveyor.dataaccess.source.StoredProcComplianceGetEthaneCapture;
 import surveyor.dataaccess.source.StoredProcComplianceGetGaps;
 import surveyor.dataaccess.source.StoredProcComplianceGetIndications;
@@ -157,6 +160,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String ComplianceReportSSRS_PercentCoverageAssets = Resources.getResource(ResourceKeys.ComplianceReportSSRS_PercentCoverageAssets);
 	public static final String ComplianceReportSSRS_PercentCoverageForecast = Resources.getResource(ResourceKeys.ComplianceReportSSRS_PercentCoverageForecast);
 	public static final String ComplianceReportSSRS_PercentCoverageReportArea = Resources.getResource(ResourceKeys.ComplianceReportSSRS_PercentCoverageReportArea);
+	public static final String ComplianceReportSSRS_PercentServiceCoverageWithLISAs = Resources.getResource(ResourceKeys.ComplianceReportSSRS_PercentServiceCoveragewithLISAs);
+	public static final String ComplianceReportSSRS_PercentServiceCoverageWithoutLISAs = Resources.getResource(ResourceKeys.ComplianceReportSSRS_PercentServiceCoverageWithoutLISAs);
+	public static final String ComplianceReportSSRS_ProbabilitytoObtain70Coverage = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ProbabilitytoObtain70Coverage);
 	public static final String ComplianceReportSSRS_Asset = Resources.getResource(ResourceKeys.ComplianceReportSSRS_Asset);
 	public static final String ComplianceReportSSRS_Boundary = Resources.getResource(ResourceKeys.ComplianceReportSSRS_Boundary);
 	public static final String ComplianceReportSSRS_ViewTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ViewTable);
@@ -419,99 +425,76 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public void addViews(String customer, List<Map<String, String>> viewList) {
 		int rowNum;
-		int colNum;
 		String strBaseXPath;
-
+		String strXPath = "";
 		for (int i = 0; i < viewList.size(); i++) {
 			if (i != 0) {
 				this.btnAddViews.click();
 			}
 
 			rowNum = i + 1;
+			strBaseXPath = "//*[@id='datatableViews']/tbody/tr["+rowNum+"]/td";
+			
 			if (viewList.get(i).get(KEYVIEWNAME) != null) {
-				colNum = 2;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
-				driver.findElement(By.xpath(strBaseXPath)).clear();
-				driver.findElement(By.xpath(strBaseXPath)).sendKeys(viewList.get(i).get(KEYVIEWNAME));
+				strXPath = strBaseXPath + "/input[contains(@class,'view-name')]";
+				driver.findElement(By.xpath(strXPath)).clear();
+				driver.findElement(By.xpath(strXPath)).sendKeys(viewList.get(i).get(KEYVIEWNAME));
 			}
 
 			if (viewList.get(i).get(KEYLISA).equalsIgnoreCase("1")) {
-				colNum = 3;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
-				driver.findElement(By.xpath(strBaseXPath)).click();
+				strXPath = strBaseXPath + "/input[contains(@class,'view-showlisa')]";
+				driver.findElement(By.xpath(strXPath)).click();
 			}
 
 			if (viewList.get(i).get(KEYFOV).equalsIgnoreCase("1")) {
-				colNum = 4;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
-				driver.findElement(By.xpath(strBaseXPath)).click();
+				strXPath = strBaseXPath + "/input[contains(@class,'view-showfov')]";
+				driver.findElement(By.xpath(strXPath)).click();
 			}
 
 			if (viewList.get(i).get(KEYBREADCRUMB).equalsIgnoreCase("1")) {
-				colNum = 5;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
-				driver.findElement(By.xpath(strBaseXPath)).click();
+				strXPath = strBaseXPath + "/input[contains(@class,'view-showbreadcrumb')]";
+				driver.findElement(By.xpath(strXPath)).click();
 			}
 
 			if (viewList.get(i).get(KEYINDICATIONS).equalsIgnoreCase("1")) {
-				colNum = 6;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
-				driver.findElement(By.xpath(strBaseXPath)).click();
+				strXPath = strBaseXPath + "/input[contains(@class,'view-showindication')]";
+				driver.findElement(By.xpath(strXPath)).click();
 			}
 
 			if (viewList.get(i).get(KEYISOTOPICCAPTURE).equalsIgnoreCase("1")) {
-				colNum = 7;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
-				driver.findElement(By.xpath(strBaseXPath)).click();
+				strXPath = strBaseXPath + "/input[contains(@class,'view-showisotopic')]";
+				driver.findElement(By.xpath(strXPath)).click();
 			}
 
 			if (viewList.get(i).get(KEYANNOTATION).equalsIgnoreCase("1")) {
-				colNum = 8;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
-				driver.findElement(By.xpath(strBaseXPath)).click();
+				strXPath = strBaseXPath + "/input[contains(@class,'view-showannotation')]";
+				driver.findElement(By.xpath(strXPath)).click();
 			}
 
 			if (viewList.get(i).get(KEYGAPS).equalsIgnoreCase("1")) {
-				colNum = 9;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
-				driver.findElement(By.xpath(strBaseXPath)).click();
+				strXPath = strBaseXPath + "/input[contains(@class,'view-showgap')]";
+				driver.findElement(By.xpath(strXPath)).click();
 			}
 
 			if (viewList.get(i).get(KEYASSETS).equalsIgnoreCase("1")) {
-				colNum = 10;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
-				WebElement assetCheckbox = driver.findElement(By.xpath(strBaseXPath));
+				strXPath = strBaseXPath + "/input[contains(@class,'view-showasset')]";
+				WebElement assetCheckbox = driver.findElement(By.xpath(strXPath));
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				js.executeScript("arguments[0].click();", assetCheckbox);
 			}
 
 			if (viewList.get(i).get(KEYBOUNDARIES).equalsIgnoreCase("1")) {
-				colNum = 11;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
-				driver.findElement(By.xpath(strBaseXPath)).click();
+				strXPath = strBaseXPath + "/input[contains(@class,'view-showboundry')]";
+				driver.findElement(By.xpath(strXPath)).click();
 			}
 
-			if (customer != null && customer.equalsIgnoreCase("sqacus")) {
-				colNum = 10;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/select";
-				WebElement dropdownBaseMap = driver.findElement(By.xpath(strBaseXPath));
+			strXPath = strBaseXPath + "/select[contains(@class,'view-basemap')]";
+			WebElement dropdownBaseMap = driver.findElement(By.xpath(strXPath));
 
-				List<WebElement> options = dropdownBaseMap.findElements(By.tagName("option"));
-				for (WebElement option : options) {
-					if ((viewList.get(i).get(KEYBASEMAP)).equalsIgnoreCase(option.getText().trim())) {
-						option.click();
-					}
-				}
-			} else {
-				colNum = 12;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/select";
-				WebElement dropdownBaseMap = driver.findElement(By.xpath(strBaseXPath));
-
-				List<WebElement> options = dropdownBaseMap.findElements(By.tagName("option"));
-				for (WebElement option : options) {
-					if ((viewList.get(i).get(KEYBASEMAP)).equalsIgnoreCase(option.getText().trim())) {
-						option.click();
-					}
+			List<WebElement> options = dropdownBaseMap.findElements(By.tagName("option"));
+			for (WebElement option : options) {
+				if ((viewList.get(i).get(KEYBASEMAP)).equalsIgnoreCase(option.getText().trim())) {
+					option.click();
 				}
 			}
 		}
@@ -890,11 +873,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void inputImageMapWidth(String imageMapWidth) {
+		if(imageMapWidth==null||imageMapWidth.equals("")){
+			return;
+		}
 		this.inputImgMapWidth.clear();
 		this.inputImgMapWidth.sendKeys(imageMapWidth);
 	}
 
 	public void inputImageMapHeight(String imageMapHeight) {
+		if(imageMapHeight==null||imageMapHeight.equals("")){
+			return;
+		}
 		this.inputImgMapHeight.clear();
 		this.inputImgMapHeight.sendKeys(imageMapHeight);
 	}
@@ -1627,7 +1616,63 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Log.info("Show Coverage Table verification passed");
 		return true;
 	}
-
+	
+	/**
+	 * Method to verify the show Coverage Forecast Table in SSRS
+	 * @param actualPath
+	 * @param reportTitle
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean verifyCoverageForecastValuesTable(String actualPath, String reportTitle, Map<String, String> userSelection) throws IOException {
+		Log.info("Verifying Coverage Forecast Values Table");
+		PDFTableUtility pdfTableUtility = new PDFTableUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
+		String reportName = "CR-" + reportId;
+		setReportName(reportName);
+		List<String[]> coverageForecast = pdfTableUtility.extractPDFTable(actualReport, PDFTable.COVERAGEFORECASE);
+		List<String[]> coverageForecastTo70 = pdfTableUtility.extractPDFTable(actualReport, PDFTable.COVERAGEFORECASETO70);
+		
+		if(!userSelection.get(KEYPCF).equals("1")){
+			return false;
+		}
+		
+		int startIndex = 0;
+		StoredProcComplianceGetCoverageForecast coverageForecastObj = new StoredProcComplianceGetCoverageForecast();
+		String[] row = coverageForecast.get(startIndex);
+		String precentageWithLisa = row[0].replaceFirst(ComplianceReportSSRS_PercentServiceCoverageWithLISAs,"").trim();
+		String precentageWithoutLisa = row[1].replaceFirst(ComplianceReportSSRS_PercentServiceCoverageWithoutLISAs,"").trim();
+		
+		startIndex = 1;
+		row = coverageForecastTo70.get(startIndex++);
+		String precentageAdditional0 = row[1].replaceFirst(ComplianceReportSSRS_ProbabilitytoObtain70Coverage,"").trim();
+		row = coverageForecastTo70.get(startIndex++);
+		String precentageAdditional1 = row[1].replaceFirst(ComplianceReportSSRS_ProbabilitytoObtain70Coverage,"").trim();
+		row = coverageForecastTo70.get(startIndex);
+		String precentageAdditional2 = row[1].replaceFirst(ComplianceReportSSRS_ProbabilitytoObtain70Coverage,"").trim();
+		
+		coverageForecastObj.setPercentageWithLisa(precentageWithLisa);		
+		coverageForecastObj.setPercentageWithoutLisa(precentageWithoutLisa);
+		coverageForecastObj.setCoverageProbability0(precentageAdditional0);
+		coverageForecastObj.setCoverageProbability1(precentageAdditional1);
+		coverageForecastObj.setCoverageProbability2(precentageAdditional2);
+		
+		StoredProcComplianceGetCoverageForecast storedForecastObj = 
+				StoredProcComplianceGetCoverageForecast.getCoverage(reportId);
+		
+		if (!storedForecastObj.isCoverageValuesEquals(coverageForecastObj)) {
+			Log.info("Coverage Values data verification failed");
+			return false;
+		}
+		Log.info("Coverage Forecast Values data verification passed");
+		if (!storedForecastObj.isCoverageValuesFormated(coverageForecastObj)) {
+			return false;
+		}
+		return true;
+	}
+	
 	/**
 	 * Method to verify the Coverage Values Table in SSRS
 	 * 
@@ -2753,7 +2798,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			.selectCustomerBoundaryType(reportsCompliance.getCustomerBoundaryFilterType().toString())
 			.setCustomerBoundaryName(reportsCompliance.getCustomerBoundaryName())
 			.switchMode(ControlMode.Default)
-			.clickOkButton();
+			.clickOkButton().waitForModalDialogToClose();
 	}
 
 	private boolean useCustomBoundaryLatLongSelector(ReportsCompliance reportsCompliance) {
@@ -2764,6 +2809,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	private boolean isCustomBoundarySpecified(ReportsCompliance reportsCompliance) {
 		boolean useSelector = false;
 		if (reportsCompliance != null) {
+			String text = reportsCompliance.getNELat();
 			boolean textFieldsSpecified = reportsCompliance.getNELat() != "" && reportsCompliance.getNELong() != "" &&
 					reportsCompliance.getSWLat() != "" && reportsCompliance.getSWLong() != "";
 			boolean latLongFieldsSpecified = useCustomBoundaryLatLongSelector(reportsCompliance);
