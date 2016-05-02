@@ -261,6 +261,10 @@ public class SurveyorBasePage extends BasePage {
 		return linkPicAdminManageUsers;
 	}
 
+	public WebElement getbtnOk() {
+		return btnOk;
+	}
+
 	public WebElement getLinkPicarroAdminXPath() {
 		return linkPicarroAdminXPath;
 	}
