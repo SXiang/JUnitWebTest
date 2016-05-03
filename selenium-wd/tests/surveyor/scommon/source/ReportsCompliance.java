@@ -30,10 +30,10 @@ public class ReportsCompliance extends Reports {
 	//Custom Boundary
 	protected List<String> listBoundary;
 	//Custom Boundary
-	protected String NELat = "";
-	protected String NELong = "";
-	protected String SWLat = "";
-	protected String SWLong = "";
+	protected String NELat;
+	protected String NELong;
+	protected String SWLat;
+	protected String SWLong;
 	
 	//Custom Boundary - Lat/Long Map Selector
 	private int latLongXOffset;

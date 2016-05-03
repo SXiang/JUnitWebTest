@@ -15,6 +15,8 @@ import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
+import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -70,10 +72,12 @@ import surveyor.scommon.source.ComplianceReportsPage.ReportFileType;
 import surveyor.scommon.source.ComplianceReportsPage.ReportViewerThumbnailType;
 import surveyor.scommon.source.LatLongSelectionControl;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
+import surveyor.scommon.source.Reports;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.Reports.ReportJobType;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
+import surveyor.scommon.source.ReportsCompliance.CustomerBoundaryFilterType;
 import surveyor.scommon.source.ReportsCompliance.IsotopicAnalysisTableColumns;
 import surveyor.scommon.source.ReportsCompliance.LISAIndicationTableColumns;
 import surveyor.scommon.source.ReportsSurveyInfo;
@@ -113,7 +117,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 
 	private boolean clickComplianceViewerViewByIndex(String data, Integer dataRowID) throws Exception {
 		ActionArguments.verifyNotNullOrEmpty(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, data);
-		Integer viewIdx = Integer.valueOf(data);
+		Integer viewIdx = NumberUtility.getIntegerValueOf(data);
 		ActionArguments.verifyGreaterThanZero(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, viewIdx);
 		
 		// Find the view image to click. Order of the images is the order returned by API. 
@@ -152,15 +156,27 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 					surveyDataRow.surveySurveyor, surveyDataRow.surveyUsername, surveyDataRow.surveyTag, 
 					surveyDataRow.surveyStartDate, surveyDataRow.surveyEndDate, 
 					modeFilter, Boolean.valueOf(surveyDataRow.surveyGeoFilterON), 
-					Integer.valueOf(surveyDataRow.numberofSurveystoInclude), 
+					NumberUtility.getIntegerValueOf(surveyDataRow.numberofSurveystoInclude), 
 					Boolean.valueOf(surveyDataRow.selectAllSurveys)));			
 		}
 		return reportsSurveyInfoList;
 	}
  
-	private void clickComplianceReportButton(Integer dataRowID, ComplianceReportButtonType buttonType) throws Exception {
-		ComplianceReportsDataRow compRptDataRow = getDataReader().getDataRow(dataRowID);
-		String reportTitle = compRptDataRow.title;
+	private void clickComplianceReportButton(Integer dataRowID, ComplianceReportButtonType buttonType) throws Exception {		
+	    clickComplianceReportButton(getReportTitle(dataRowID),buttonType);
+	}
+	
+	private String getReportTitle(Integer dataRowID) throws Exception{
+		String title = workingReportsComp.getRptTitle();
+		if(workingReportsComp!=null&&!BaseHelper.isNullOrEmpty(title)){
+			return title;
+		}else{
+			ComplianceReportsDataRow compRptDataRow = getDataReader().getDataRow(dataRowID);
+			return compRptDataRow.title;
+		}
+	}
+	
+	private void clickComplianceReportButton(String reportTitle, ComplianceReportButtonType buttonType) throws Exception{
 		this.getComplianceReportsPage().clickComplianceReportButton(reportTitle, LoginPageActions.workingDataRow.username, buttonType,
 				false /*confirmAction*/);  // By default use FALSE confirm action.
 	}
@@ -186,7 +202,30 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		listBoundary.add(SWLat);
 		listBoundary.add(SWLong);
 	}
- 
+	private void fillCustomerBoundary(ComplianceReportDataReader reader,
+			Integer dataRowID) throws Exception {
+		String customerBoundaryType = reader.getDataRow(dataRowID).customerBoundaryType;
+		String customerBoundaryName = reader.getDataRow(dataRowID).customerBoundaryName;
+		CustomerBoundaryFilterType customerBoundaryFilterType = CustomerBoundaryFilterType.SmallBoundary;
+		switch(customerBoundaryType){
+		case "Small Boundary":
+			customerBoundaryFilterType = CustomerBoundaryFilterType.SmallBoundary;
+		    break;
+		case "Big Boundary":
+			customerBoundaryFilterType = CustomerBoundaryFilterType.BigBoundary;
+		    break;
+		case "District":
+			customerBoundaryFilterType = CustomerBoundaryFilterType.District;
+		    break;
+		case "DistrictPlat":
+			customerBoundaryFilterType = CustomerBoundaryFilterType.DistrictPlat;
+		    break;
+		case "LeakSurveyArea":
+			customerBoundaryFilterType = CustomerBoundaryFilterType.LeakSurveyArea;
+		    break;	  
+		}
+		workingReportsComp.setCustomerBoundaryInfo(customerBoundaryFilterType, customerBoundaryName);
+	} 
 	private void fillViewDetails(Map<String, String> viewMap, ReportViewsDataReader reader,
 			Integer dataRowID) throws Exception {
 		String viewName = reader.getDataRow(dataRowID).name;
@@ -219,10 +258,14 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		String showIsoAnalysisTable = reader.getDataRow(dataRowID).isotopicAnalysis.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showPercentCovAssetsTable = reader.getDataRow(dataRowID).percentCoverageAssets.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showPercentCoverageReportAreaTable = reader.getDataRow(dataRowID).percentCoverageReportArea.equalsIgnoreCase("TRUE") ? "1" : "0";
+		String showPercentCoverageForecastTable = reader.getDataRow(dataRowID).percentCoverageForecast.equalsIgnoreCase("TRUE") ? "1" : "0";
+		String showGapTable = reader.getDataRow(dataRowID).gapTable.equalsIgnoreCase("TRUE") ? "1" : "0";
 		if (showIndicationsTable != "") tableMap.put(KEYINDTB, showIndicationsTable);
 		if (showIsoAnalysisTable != "") tableMap.put(KEYISOANA, showIsoAnalysisTable);
 		if (showPercentCovAssetsTable != "") tableMap.put(KEYPCA, showPercentCovAssetsTable);
 		if (showPercentCoverageReportAreaTable != "") tableMap.put(KEYPCRA, showPercentCoverageReportAreaTable);
+		tableMap.put(KEYGAPTB, showGapTable);
+		tableMap.put(KEYPCF, showPercentCoverageForecastTable);
 	}
 
 	private void fillViewLayersInfo(Map<String, String> viewLayerMap,
@@ -260,7 +303,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		String customer = null; 
 		String customerRowID = workingDataRow.customerRowID;
 		if (customerRowID != "") {
-			Integer custRowID = Integer.valueOf(customerRowID);
+			Integer custRowID = NumberUtility.getIntegerValueOf(customerRowID);
 			customer = (new CustomerDataReader(this.excelUtility)).getDataRow(custRowID).name;
 		}
 		String timeZone = workingDataRow.timezone;
@@ -299,8 +342,11 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, TestContext.INSTANCE.getLoggedInUser(), customer, timeZone, exclusionRadius,
 				listBoundary, tablesList, null /*surveyorUnit*/, null /*tagList*/, viewList, viewLayersList);
 		rpt.setSurveyInfoList(reportsSurveyInfoList);
-
+        		
 		workingReportsComp = rpt;		// Store the working report properties.
+		
+		// Add customer boundary infomation
+		fillCustomerBoundary(getDataReader(), dataRowID);
 		return rpt;
 	}
 
@@ -389,7 +435,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
 
 	private void openComplianceViewerDialog(Integer dataRowID) throws Exception {
-		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
+		this.clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
 		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
 		this.getComplianceReportsPage().waitForPdfReportIcontoAppear();
 	}
@@ -469,7 +515,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	
 	private void waitForViewDownloadByViewIndex(String data, Integer dataRowID) throws Exception {
 		ActionArguments.verifyNotNullOrEmpty(FN_WAIT_FOR_VIEW_DOWNLOAD_TO_COMPLETE_BY_VIEW_INDEX, ARG_DATA, data);
-		Integer viewIdx = Integer.valueOf(data);
+		Integer viewIdx = NumberUtility.getIntegerValueOf(data);
 		ActionArguments.verifyGreaterThanZero(FN_WAIT_FOR_VIEW_DOWNLOAD_TO_COMPLETE_BY_VIEW_INDEX, ARG_DATA, viewIdx);
 		waitForReportFileDownload(dataRowID, ReportFileType.View, viewIdx);
 	}
@@ -1153,7 +1199,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean selectPaginationRows(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.selectPaginationRows", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("selectPaginationRows", ARG_DATA, data);
-		ActionArguments.verifyGreaterThanZero("selectPaginationRows", ARG_DATA, Integer.valueOf(data));
+		ActionArguments.verifyGreaterThanZero("selectPaginationRows", ARG_DATA, NumberUtility.getIntegerValueOf(data));
 		this.getComplianceReportsPage().setPagination(data);
 		return true;
 	}
@@ -1208,7 +1254,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			customer = data;
 		} else {
 			ComplianceReportsDataRow compRptDataRow = getDataReader().getDataRow(dataRowID);
-			Integer custRowID = Integer.valueOf(compRptDataRow.customerRowID);
+			Integer custRowID = NumberUtility.getIntegerValueOf(compRptDataRow.customerRowID);
 			CustomerDataReader custDataReader = new CustomerDataReader(this.excelUtility);
 			CustomerDataRow custDataRow = custDataReader.getDataRow(custRowID);
 			customer = custDataRow.name;
@@ -1329,7 +1375,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.selectTabularPDFContent", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("selectTabularPDFContent", ARG_DATA_ROW_ID, dataRowID);
 		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
-		Integer pdfContentRowID = Integer.valueOf(dataRow.reportOptTabularPDFContentRowID);
+		Integer pdfContentRowID = NumberUtility.getIntegerValueOf(dataRow.reportOptTabularPDFContentRowID);
 		ReportOptTabularPDFContentDataReader pdfContentDataReader = new ReportOptTabularPDFContentDataReader(this.excelUtility);
 		ReportOptTabularPDFContentDataRow pdfContentDataRow = pdfContentDataReader.getDataRow(pdfContentRowID);
 		Boolean selectGap = Boolean.valueOf(pdfContentDataRow.gapTable);
@@ -1391,7 +1437,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.selectViewLayersAsset", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("selectViewLayersAsset", ARG_DATA_ROW_ID, dataRowID);
 		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
-		Integer rptViewLayerRowID = Integer.valueOf(dataRow.reportOptViewLayerRowID);
+		Integer rptViewLayerRowID = NumberUtility.getIntegerValueOf(dataRow.reportOptViewLayerRowID);
 		ReportOptViewLayersDataReader optViewLayersDataReader = new ReportOptViewLayersDataReader(this.excelUtility);
 		ReportOptViewLayersDataRow optViewLayersDataRow = optViewLayersDataReader.getDataRow(rptViewLayerRowID);
 		HashMap<String, String> viewLayerMap = new HashMap<String, String>();
@@ -1417,7 +1463,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.selectViewLayersBoundary", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("selectViewLayersAsset", ARG_DATA_ROW_ID, dataRowID);
 		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
-		Integer rptViewLayerRowID = Integer.valueOf(dataRow.reportOptViewLayerRowID);
+		Integer rptViewLayerRowID = NumberUtility.getIntegerValueOf(dataRow.reportOptViewLayerRowID);
 		ReportOptViewLayersDataReader optViewLayersDataReader = new ReportOptViewLayersDataReader(this.excelUtility);
 		ReportOptViewLayersDataRow optViewLayersDataRow = optViewLayersDataReader.getDataRow(rptViewLayerRowID);
 		HashMap<String, String> viewLayerMap = new HashMap<String, String>();
@@ -1808,11 +1854,11 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyReportPageFieldsAreCorrect(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyReportPageFieldsAreCorrect", data, dataRowID);
 		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
-		String customerName = new CustomerDataReader(this.excelUtility).getDataRow(Integer.valueOf(dataRow.customerRowID)).name;
+		String customerName = new CustomerDataReader(this.excelUtility).getDataRow(NumberUtility.getIntegerValueOf(dataRow.customerRowID)).name;
 		List<Integer> surveyRowIDs = ActionArguments.getNumericList(dataRow.reportSurveyRowIDs);
-		Integer reportViewLayerRowID = Integer.valueOf(dataRow.reportOptViewLayerRowID);
+		Integer reportViewLayerRowID = NumberUtility.getIntegerValueOf(dataRow.reportOptViewLayerRowID);
 		ReportOptViewLayersDataRow reportOptViewLayersDataRow = new ReportOptViewLayersDataReader(this.excelUtility).getDataRow(reportViewLayerRowID);
-		Integer reportPDFContentRowID = Integer.valueOf(dataRow.reportOptTabularPDFContentRowID);
+		Integer reportPDFContentRowID = NumberUtility.getIntegerValueOf(dataRow.reportOptTabularPDFContentRowID);
 		ReportOptTabularPDFContentDataRow reportPDFContentDataRow = new ReportOptTabularPDFContentDataReader(this.excelUtility).getDataRow(reportPDFContentRowID);
 		//boolean reportTitleMatches = (dataRow.title == this.getComplianceReportsPage().getReportTitle());
 
@@ -2090,7 +2136,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyViewThumbnailIsShownInComplianceViewerByViewIndex(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyViewThumbnailIsShownInComplianceViewerByViewIndex", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, data);
-		Integer viewIdx = Integer.valueOf(data);
+		Integer viewIdx = NumberUtility.getIntegerValueOf(data);
 		ActionArguments.verifyGreaterThanZero(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, viewIdx);
 		
 		openComplianceViewerDialog(dataRowID);
@@ -2146,7 +2192,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyLISAsIndicationTableRowCountEquals(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyLISAsIndicationTableRowCountEquals", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("verifyLISAsIndicationTableRowCountEquals", ARG_DATA, data);
-		Integer expectedRows = Integer.valueOf(data);
+		Integer expectedRows = NumberUtility.getIntegerValueOf(data);
 		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE);
 		Integer actualRows = (lisasIndicationTblList != null) ? lisasIndicationTblList.size() : 0;
 		Log.info(String.format("Expected Row Count=[%d], Actual Row Count=[%d]", expectedRows, actualRows));
@@ -2576,7 +2622,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		ActionArguments.verifyNotNullOrEmpty("verifyLISAsIndicationTableMinAmplitudeValues", ARG_DATA, data);
 		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE);
 		List<String> minAmplitudeValues = ArrayUtility.getColumnStringList(lisasIndicationTblList, LISAIndicationTableColumns.Amplitude.getIndex()-1);
-		return ArrayUtility.areValuesGreater(minAmplitudeValues.toArray(new String[minAmplitudeValues.size()]), Float.valueOf(data));
+		return ArrayUtility.areValuesGreater(minAmplitudeValues.toArray(new String[minAmplitudeValues.size()]), NumberUtility.getFloatValueOf(data));
 	}
 
 	/**
@@ -2649,7 +2695,19 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 				workingReportsComp.getTablesList().get(0));
 		return true;
 	}
- 
+	/**
+	 * Executes verifySSRSCoverageForecastTableInfo action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws IOException 
+	 */
+	public boolean verifySSRSCoverageForecastTableInfo(String data, Integer dataRowID) throws IOException {
+		logAction("ComplianceReportsPageActions.verifySSRSCoverageForecastTableInfo", data, dataRowID);
+		String downloadPath = getDownloadPath(ReportFileType.PDF);
+		this.getComplianceReportsPage().verifyCoverageForecastValuesTable(downloadPath, workingDataRow.title);
+		return true;
+	} 
 	/**
 	 * Executes verifySSRSDrivingSurveyTableInfo action.
 	 * @param data - specifies the input data passed to the action.
@@ -2791,19 +2849,19 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			ReportSurveyDataReader surveyDataReader = new ReportSurveyDataReader(excelUtility);
 			ReportSurveyDataRow surveyDataRow = surveyDataReader.getDataRow(surveyRowID);
 			AnalyzerDataReader analyzerDataReader = new AnalyzerDataReader(excelUtility);
-			AnalyzerDataRow analyzerDataRow = analyzerDataReader.getDataRow(Integer.valueOf(surveyDataRow.analyzerRowID));
+			AnalyzerDataRow analyzerDataRow = analyzerDataReader.getDataRow(NumberUtility.getIntegerValueOf(surveyDataRow.analyzerRowID));
 			LocationDataReader locationDataReader = new LocationDataReader(excelUtility);
-			LocationDataRow locationDataRow = locationDataReader.getDataRow(Integer.valueOf(analyzerDataRow.locationRowID));
+			LocationDataRow locationDataRow = locationDataReader.getDataRow(NumberUtility.getIntegerValueOf(analyzerDataRow.locationRowID));
 			if (surveyDataRow.surveyModeFilter.equals("Standard")) {
-				minAmp = Float.valueOf(locationDataRow.standardMinAmplitude);
+				minAmp = NumberUtility.getFloatValueOf(locationDataRow.standardMinAmplitude);
 			} else if (surveyDataRow.surveyModeFilter.equals("Operator")) {
-				minAmp = Float.valueOf(locationDataRow.operatorMinAmplitude);
+				minAmp = NumberUtility.getFloatValueOf(locationDataRow.operatorMinAmplitude);
 			} else if (surveyDataRow.surveyModeFilter.equals("Rapid Response")) {
-				minAmp = Float.valueOf(locationDataRow.rapidResponseMinAmplitude);
+				minAmp = NumberUtility.getFloatValueOf(locationDataRow.rapidResponseMinAmplitude);
 			} else if (surveyDataRow.surveyModeFilter.equals("Assessment")) {
-				minAmp = Float.valueOf(locationDataRow.assessmentMinAmplitude);
+				minAmp = NumberUtility.getFloatValueOf(locationDataRow.assessmentMinAmplitude);
 			} else if (surveyDataRow.surveyModeFilter.equals("EQ")) {
-				minAmp = Float.valueOf(locationDataRow.eQMinAmplitude);
+				minAmp = NumberUtility.getFloatValueOf(locationDataRow.eQMinAmplitude);
 			}
 			
 			minAmps.add(minAmp);

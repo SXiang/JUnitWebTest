@@ -15,13 +15,21 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
+
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.dataprovider.ComplianceReportDataProvider;
+import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.BaseReportsPageActionTest;
+import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance.CustomerBoundaryFilterType;
@@ -35,7 +43,7 @@ import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.ReportsCompliance;
 
 @RunWith(SurveyorTestRunner.class)
-public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
+public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 
 	private static final String EMPTY = "";
 	private static final Integer NOTSET = -1;
@@ -45,35 +53,62 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 	private static TestEnvironmentActions testEnvironmentAction;
 	
 	private static ComplianceReportsPage complianceReportsPage;
+	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static ManageUsersPage manageUsersPage;
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageLocationsPage manageLocationsPage;
-//	private enum ManageUserTestCaseType {//TODO
-//		,
-//		EditDuplicateLocation
-//	}
+	private static ManageCustomerPageActions manageCustomerPageAction;
+	
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
+		
+		homePageAction = new HomePageActions(driver, baseURL, testSetup);
+		manageCustomerPageAction = new ManageCustomerPageActions(driver, baseURL, testSetup);
+		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
+		testEnvironmentAction = new TestEnvironmentActions();
 	}
 
 	/**
 	 * Initializes the page action objects.
+	 * @throws Exception 
 	 */
-	protected static void initializePageActions() {
+	protected static void initializePageActions() throws Exception {
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		homePageAction = new HomePageActions(driver, baseURL, testSetup);
-		
-		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, complianceReportsPage);
-		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageUsersPage);
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL,testSetup);
-		PageFactory.initElements(driver, manageCustomersPage);
-		manageLocationsPage = new ManageLocationsPage(driver, baseURL,testSetup);
-		PageFactory.initElements(driver, manageLocationsPage);
+		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
+
+		// To run the test locally in UnitTest mode uncomment this line.
+		// setTestRunMode(ReportTestRunMode.UnitTestRun);
+		
+		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
+			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
+		}
+			
 	}
+//	@BeforeClass
+//	public static void beforeTestClass() throws Exception {
+//		initializePageActions();
+//	}
+//
+//	/**
+//	 * Initializes the page action objects.
+//	 */
+//	protected static void initializePageActions() {
+//		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
+//		homePageAction = new HomePageActions(driver, baseURL, testSetup);
+//		
+//		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
+//		PageFactory.initElements(driver, complianceReportsPage);
+//		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
+//		PageFactory.initElements(driver, manageUsersPage);
+//		manageCustomersPage = new ManageCustomersPage(driver, baseURL,testSetup);
+//		PageFactory.initElements(driver, manageCustomersPage);
+//		manageLocationsPage = new ManageLocationsPage(driver, baseURL,testSetup);
+//		PageFactory.initElements(driver, manageLocationsPage);
+//		testEnvironmentAction = new TestEnvironmentActions();
+//	}
 
 // TODO DE1898: https://rally1.rallydev.com/#/53512905526d/detail/defect/54567703274
 	
@@ -92,57 +127,68 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
      *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
 	@Test
-	public void TC1319_GenerateComplianceReportPicarroSupportUserIncludePercentCoverageForecast() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1319, location = ComplianceReportDataProvider.class)
+	public void TC1319_GenerateComplianceReportPicarroSupportUserIncludePercentCoverageForecast(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1319_GenerateComplianceReportPicarroSupportUserIncludePercentCoverageForecast ..." +
 			 "\nTest Description: Generate Compliance Report as Picarro Support user and include Percent Coverage Forecast");
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* NOTE: Use Customer Admin when assets populated */
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		
-		String testCaseName = "TC1319";		
-		String rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
-		String tag1 = "stnd-pic", tag2 = "iso cap", tag3 = "standard";
-		String username = SQAPICSUP;
-		String password = USERPASSWORD;
-		String customer = "Picarro";
-		
-		complianceReportsPage.login(username, password);
-		complianceReportsPage.open();
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 
-		ReportsCompliance rpt = getSampleComplianceReport();
-		rpt.setRptTitle(rptTitle);
-		rpt.setCustomer(customer);
-		rpt.setStrCreatedBy(username);
+		complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
 		
-		//Optional Tabular PDF Content
-		Map<String,String> tableMap = rpt.getTablesList().get(0);
-		tableMap.put(KEYPCA, "1");
-		tableMap.put(KEYPCRA, "1");
-		tableMap.put(KEYPCF, "1");	
-		
-		//Configure Surveys
-		List<ReportsSurveyInfo> surveyInfoList = rpt.getSurveyInfoList();
-		ReportsSurveyInfo survey1 = surveyInfoList.get(0);
-		ReportsSurveyInfo survey2 = getReportsSurveyInfoSample(rpt);
-		ReportsSurveyInfo survey3 = getReportsSurveyInfoSample(rpt);
-		
-		survey1.setTag(tag1);
-		
-		survey2.setTag(tag2);		
-		survey3.setTag(tag3);
-		
-		surveyInfoList.add(survey2);
-		surveyInfoList.add(survey3);
-		
-		complianceReportsPage.addNewReport(rpt);
-		complianceReportsPage.waitForPageLoad();
-		
-		if ((complianceReportsPage.checkActionStatus(rptTitle, username, testCaseName))) {
-			                   // download CR Table PDF
-			                   // 3 Zips
-			                   // No Investigation PDF, No CSV - Investigation Data
-			assertTrue(complianceReportsPage.verifyShowCoverageTable( testSetup.getDownloadPath(), rptTitle));
-			assertTrue(complianceReportsPage.verifyCoverageForecastValuesTable(testSetup.getDownloadPath(), rptTitle, tableMap));
-		} else {
-			fail("\nTestcase " + testCaseName + " failed.\n");
-		}
+//		String testCaseName = "TC1319";		
+//		String rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
+//		String tag1 = "stnd-pic", tag2 = "iso cap", tag3 = "standard";
+//		String username = SQAPICSUP;
+//		String password = USERPASSWORD;
+//		String customer = "Picarro";
+//		
+//		complianceReportsPage.login(username, password);
+//		complianceReportsPage.open();
+//
+//		ReportsCompliance rpt = getSampleComplianceReport();
+//		rpt.setRptTitle(rptTitle);
+//		rpt.setCustomer(customer);
+//		rpt.setStrCreatedBy(username);
+//		
+//		//Optional Tabular PDF Content
+//		Map<String,String> tableMap = rpt.getTablesList().get(0);
+//		tableMap.put(KEYPCA, "1");
+//		tableMap.put(KEYPCRA, "1");
+//		tableMap.put(KEYPCF, "1");	
+//		
+//		//Configure Surveys
+//		List<ReportsSurveyInfo> surveyInfoList = rpt.getSurveyInfoList();
+//		ReportsSurveyInfo survey1 = surveyInfoList.get(0);
+//		ReportsSurveyInfo survey2 = getReportsSurveyInfoSample(rpt);
+//		ReportsSurveyInfo survey3 = getReportsSurveyInfoSample(rpt);
+//		
+//		survey1.setTag(tag1);
+//		
+//		survey2.setTag(tag2);		
+//		survey3.setTag(tag3);
+//		
+//		surveyInfoList.add(survey2);
+//		surveyInfoList.add(survey3);
+//		
+//		complianceReportsPage.addNewReport(rpt);
+//		complianceReportsPage.waitForPageLoad();
+//		
+//		if ((complianceReportsPage.checkActionStatus(rptTitle, username, testCaseName))) {
+//			assertTrue(complianceReportsPage.verifyShowCoverageTable( testSetup.getDownloadPath(), rptTitle));
+//			assertTrue(complianceReportsPage.verifyCoverageForecastValuesTable(testSetup.getDownloadPath(), rptTitle));
+//		} else {
+//			fail("\nTestcase " + testCaseName + " failed.\n");
+//		}
 	}
 
  
@@ -865,10 +911,10 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 		listBoundary.add("");//IMGMAPHEIGHT
 		listBoundary.add("");//IMGMAPWIDTH
 		//Custom boundary
-		listBoundary.add("");//RNELAT
-		listBoundary.add("");//RNELON
-		listBoundary.add("");//RSWLAT
-		listBoundary.add("");//RSWLON
+		//listBoundary.add("");//RNELAT
+		//listBoundary.add("");//RNELON
+		//listBoundary.add("");//RSWLAT
+		//listBoundary.add("");//RSWLON
 		//Custom boundary - Lat/Long Map Selector
 		int latLongXOffset = 0;
 		int latLongYOffset = 0;
@@ -891,7 +937,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 		
 		//***  & Optional View Layers ***
 		List<Map<String, String>> viewLayersList = new ArrayList<Map<String, String>>();
-		Map<String, String> viewLayers = new HashMap<String, String>();
+		new HashMap<String, String>();
 		tableMap.put(KEYASSETCASTIRON, "0");
 		tableMap.put(KEYASSETCOPPER, "0");
 		tableMap.put(KEYASSETOTHERPLASTIC, "0");
@@ -900,6 +946,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
 		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "0");
 		tableMap.put(KEYBOUNDARYDISTRICT, "0");
 		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
+		tableMap.put(KEYGAPTB, "0");
 		tablesList.add(tableMap);
 
 		//*** Views ***

@@ -58,6 +58,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC737 = "dataProviderPageActionsComplianceReports_TC737";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC786 = "dataProviderPageActionsComplianceReports_TC786";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC798 = "dataProviderPageActionsComplianceReports_TC798";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1319 = "dataProviderPageActionsComplianceReports_TC1319";
 
 	public ComplianceReportDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
@@ -544,6 +545,14 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	public static Object[][] dataProviderPageActionsComplianceReports_TC798() {
 		return new Object[][] {				
 			{ "TC798" /*TestCaseID*/, 6 /*userDataRowID*/,  -1 /*NOT USED - reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	
+	// ComplianceReportsPageTest3.java
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1319() {
+		return new Object[][] {				
+			{ "TC1319" /*TestCaseID*/, 5 /*userDataRowID*/,  100 /*NOT USED - reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 }

@@ -1671,7 +1671,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean verifyCoverageForecastValuesTable(String actualPath, String reportTitle, Map<String, String> userSelection) throws IOException {
+	public boolean verifyCoverageForecastValuesTable(String actualPath, String reportTitle) throws IOException {
 		Log.info("Verifying Coverage Forecast Values Table");
 		PDFTableUtility pdfTableUtility = new PDFTableUtility();
 		Report reportObj = Report.getReport(reportTitle);
@@ -1679,12 +1679,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
 		String reportName = "CR-" + reportId;
 		setReportName(reportName);
-		List<String[]> coverageForecast = pdfTableUtility.extractPDFTable(actualReport, PDFTable.COVERAGEFORECASE);
-		List<String[]> coverageForecastTo70 = pdfTableUtility.extractPDFTable(actualReport, PDFTable.COVERAGEFORECASETO70);
-		
-		if(!userSelection.get(KEYPCF).equals("1")){
-			return false;
-		}
+		List<String[]> coverageForecast = pdfTableUtility.extractPDFTable(actualReport, PDFTable.COVERAGEFORECAST);
+		List<String[]> coverageForecastTo70 = pdfTableUtility.extractPDFTable(actualReport, PDFTable.COVERAGEFORECASTTO70);
 		
 		int startIndex = 0;
 		StoredProcComplianceGetCoverageForecast coverageForecastObj = new StoredProcComplianceGetCoverageForecast();
@@ -2867,8 +2863,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	private boolean isCustomBoundarySpecified(ReportsCompliance reportsCompliance) {
 		boolean useSelector = false;
 		if (reportsCompliance != null) {
-			boolean textFieldsSpecified = reportsCompliance.getNELat() != null && reportsCompliance.getNELong() != null &&
-					reportsCompliance.getSWLat() != null && reportsCompliance.getSWLong() != null;
+			boolean textFieldsSpecified = !BaseHelper.isNullOrEmpty(reportsCompliance.getNELat()) 
+					&& !BaseHelper.isNullOrEmpty(reportsCompliance.getNELong()) &&
+					!BaseHelper.isNullOrEmpty(reportsCompliance.getSWLat())
+					&& !BaseHelper.isNullOrEmpty(reportsCompliance.getSWLong());
 			boolean latLongFieldsSpecified = useCustomBoundaryLatLongSelector(reportsCompliance);
 			useSelector = textFieldsSpecified || latLongFieldsSpecified;
 		}		
