@@ -780,10 +780,19 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void selectSurveyInfoGeoFilter(Boolean geoFilterOn) {
-		if ((geoFilterOn == null) || (!geoFilterOn)) {
-			JavascriptExecutor js = (JavascriptExecutor) driver;
-			js.executeScript("arguments[0].click();", this.checkGeoFilter);
+		if (geoFilterOn) {
+			if (!checkGeoFilter.isSelected())
+				clickGeoFilterCheckBox();
 		}
+		else {
+			if (checkGeoFilter.isSelected())
+				clickGeoFilterCheckBox();
+		}
+	}
+
+	private void clickGeoFilterCheckBox() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", this.checkGeoFilter);
 	}
 
 	public void selectSurveyInfoEndDate(String endDate) {

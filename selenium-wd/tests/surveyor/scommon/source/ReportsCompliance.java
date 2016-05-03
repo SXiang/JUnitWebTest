@@ -479,6 +479,22 @@ public class ReportsCompliance extends Reports {
 		this.customerBoundaryName = customerBoundaryName;
 	}
 
+	public static CustomerBoundaryFilterType getCustomerBoundaryType(String custBoundaryType) {
+		CustomerBoundaryFilterType customerBoundaryFilterType = CustomerBoundaryFilterType.District;
+		if (custBoundaryType.equals("District")) {
+			customerBoundaryFilterType = CustomerBoundaryFilterType.District;
+		} else if (custBoundaryType.equals("District Plat")) {
+			customerBoundaryFilterType = CustomerBoundaryFilterType.DistrictPlat;
+		} else if (custBoundaryType.equals("Big Boundary")) {
+			customerBoundaryFilterType = CustomerBoundaryFilterType.BigBoundary;
+		} else if (custBoundaryType.equals("Small Boundary")) {
+			customerBoundaryFilterType = CustomerBoundaryFilterType.SmallBoundary;
+		} else if (custBoundaryType.equals("Leak Survey Area")) {
+			customerBoundaryFilterType = CustomerBoundaryFilterType.LeakSurveyArea;
+		}
+		return customerBoundaryFilterType;
+	}
+	
 	public int getLatLongXOffset() {
 		return latLongXOffset;
 	}
