@@ -1348,7 +1348,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		Boolean selectPercentCoverageReportArea = Boolean.valueOf(pdfContentDataRow.percentCoverageReportArea);
 		
 		if (selectGap) {
-			this.getComplianceReportsPage().selectGapCheckBox();
+			this.getComplianceReportsPage().selectGapTableCheckBox();
 		}
 		if (selectIndicationTable) {
 			this.getComplianceReportsPage().selectIndicationsTableCheckBox();
