@@ -381,10 +381,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.ID, using = "pdf")
 	protected WebElement pdfImg;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys_length']/label/select")
 	protected WebElement surveyTableRows;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody")
 	protected WebElement surveyTable;
 
@@ -397,12 +397,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(name = "report-survey-mode-type")
 	private List<WebElement> reportSurveyModeTypeRadiobuttonList;
-	
+
 	@FindBy(id = "datatableSurveys_next")
 	protected WebElement surveyNextButton;
-	
+
 	private static String surveyTableHeaderColumnBaseXPath = "//*[@id='datatableSurveys']/thead/tr/th[%d]";
-	
+
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -647,7 +647,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		}
 	}
-	
+
 	public void addNewReport(Reports reports) throws Exception {
 		addNewReport(reports, true /**/);
 	}
@@ -720,10 +720,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void addMultipleSurveysToReport(Reports reports) throws Exception {
 		Log.info("Adding all Surveys matching information.");
-		
+
 		List<ReportsSurveyInfo> surveyInfoList = reports.getSurveyInfoList();
 		for (ReportsSurveyInfo reportsSurveyInfo : surveyInfoList) {
-			
+
 			// Enter the survey fields.
 			selectSurveyInfoSurveyorUnit(reportsSurveyInfo.getSurveyor());
 			enterSurveyInfoUsername(reportsSurveyInfo.getUsername());
@@ -732,62 +732,62 @@ public class ReportsBasePage extends SurveyorBasePage {
 			handleExtraAddSurveyInfoParameters(reportsSurveyInfo.getSurveyModeFilter());
 			selectSurveyInfoGeoFilter(reportsSurveyInfo.isGeoFilterOn());
 			inputSurveyTag(reportsSurveyInfo.getTag());
-			
+
 			// Click on Search survey button.
 			clickOnSearchSurveyButton();
-			
+
 			// Select the specified number of surveys and add them to report.
 			selectSurveysAndAddToReport(reportsSurveyInfo.isSelectAllSurveys(), reportsSurveyInfo.getNumberOfSurveysToSelect());
 		}
 	}
-	
+
 	private void selectSurveysAndAddToReport(boolean selectAll, Integer numSurveysToSelect) {
-		if (selectAll || numSurveysToSelect > 0) {		
+		if (selectAll || numSurveysToSelect > 0) {
 			setSurveyRowsPagination(PAGINATIONSETTING);
 			this.waitForSurveyTabletoLoad();
-			
+
 			Integer selectedSurveysCount = 0;
 			if (selectAll) {
 				numSurveysToSelect = Integer.MAX_VALUE;
 			}
-			
+
 			String checkBoxXPath;
 			WebElement checkBoxActionCell;
-			
+
 			List<WebElement> rows = surveyTable.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
-			
+
 			int rowSize = rows.size();
 			int loopCount = 0;
-			
+
 			if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 				loopCount = rowSize;
 			else
 				loopCount = Integer.parseInt(PAGINATIONSETTING);
-			
+
 			// Loop through table elements and check selected number of surveys.
 			for (int rowNum = 1; rowNum <= loopCount && selectedSurveysCount < numSurveysToSelect; rowNum++) {
-				checkBoxXPath = "//*[@id='datatableSurveys']/tbody/tr["+rowNum+"]/td[7]/input";
+				checkBoxXPath = "//*[@id='datatableSurveys']/tbody/tr[" + rowNum + "]/td[7]/input";
 				checkBoxActionCell = surveyTable.findElement(By.xpath(checkBoxXPath));
 				checkBoxActionCell.click();
 				selectedSurveysCount++;
-	
+
 				if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.surveyNextButton.getAttribute("class").contains("disabled")) {
 					this.surveyNextButton.click();
 					this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 					List<WebElement> newRows = surveyTable.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
-					
+
 					rowSize = newRows.size();
-					
+
 					if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 						loopCount = rowSize;
 					else
 						loopCount = Integer.parseInt(PAGINATIONSETTING);
-					
+
 					rowNum = 0;
-				}			
+				}
 			}
-			
-			// Add the selected surveys 
+
+			// Add the selected surveys
 			clickOnAddSurveysButton();
 		}
 	}
@@ -835,7 +835,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		}
 	}
-	
+
 	public boolean verifyErrorMessages(String... errorMessages){
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>(){
 			public Boolean apply(WebDriver d){
@@ -866,8 +866,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void selectStartDateForSurvey(String startDate) {
 		try {
-			DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver, testSetup, strBaseURL,
-					strBaseURL + getUrlString());
+			DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver, testSetup, strBaseURL, strBaseURL + getUrlString());
 			PageFactory.initElements(driver, dateSetting);
 			if (startDate.startsWith("0")) {
 				startDate = startDate.replaceFirst("0*", "");
@@ -881,8 +880,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void selectEndDateForSurvey(String endDate) {
 		try {
-			DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver, testSetup, strBaseURL,
-					strBaseURL + getUrlString());
+			DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver, testSetup, strBaseURL, strBaseURL + getUrlString());
 			PageFactory.initElements(driver, dateSetting);
 			if (endDate.startsWith("0")) {
 				endDate = endDate.replaceFirst("0*", "");
@@ -1007,8 +1005,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean verifySurveysTableViaTag(boolean changeMode, ReportModeFilter strReportMode, String tag)
-			throws Exception {
+	public boolean verifySurveysTableViaTag(boolean changeMode, ReportModeFilter strReportMode, String tag) throws Exception {
 		boolean result = false;
 
 		if (strReportMode != null && changeMode) {
@@ -1023,12 +1020,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 			WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
 			List<WebElement> Rows = tabledata.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
 			for (int getrowvalue = 1; getrowvalue < Rows.size(); getrowvalue++) {
-				List<WebElement> Columns = Rows.get(getrowvalue)
-						.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[6]"));
+				List<WebElement> Columns = Rows.get(getrowvalue).findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[6]"));
 				for (int getcolumnvalue = 1; getcolumnvalue < Columns.size(); getcolumnvalue++) {
-					String cellValue = driver
-							.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[6]"))
-							.getText();
+					String cellValue = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[6]")).getText();
 					if (cellValue.contains(tag)) {
 						result = true;
 						break;
@@ -1040,10 +1034,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return result;
 	}
 
-	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary,
-			String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong,
-			String surUnit, List<String> tagList, String startDate, String endDate, boolean changeMode,
-			String strReportMode) throws Exception {
+	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList, String startDate, String endDate, boolean changeMode, String strReportMode) throws Exception {
 		openNewReportPage();
 
 		if (customer != null && customer != "Picarro") {
@@ -1060,8 +1051,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		selectTimeZone(timeZone);
 
-		addOtherDetails(customer, exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong, SWLat, SWLong, surUnit,
-				tagList, startDate, endDate, changeMode, strReportMode);
+		addOtherDetails(customer, exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong, SWLat, SWLong, surUnit, tagList, startDate, endDate, changeMode, strReportMode);
 
 		if (surUnit != "") {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
@@ -1093,13 +1083,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public boolean verifyIfInDrivingSurvey(String columnName) {
 		boolean result = false;
-		int count = driver.findElements(By.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div"))
-				.size();
+		int count = driver.findElements(By.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div")).size();
 		for (int i = 1; i < count + 1; i++) {
-			String str = driver
-					.findElement(By
-							.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div[" + i + "]/label"))
-					.getText();
+			String str = driver.findElement(By.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div[" + i + "]/label")).getText();
 			if (str != columnName) {
 				result = true;
 			}
@@ -1217,9 +1203,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		throw new Exception("Not implemented");
 	}
 
-	public void addOtherDetails(String customer, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth,
-			String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList,
-			String startDate, String endDate, boolean changeMode, String strReportMode) throws Exception {
+	public void addOtherDetails(String customer, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit, List<String> tagList, String startDate, String endDate, boolean changeMode, String strReportMode) throws Exception {
 		throw new Exception("Not implemented");
 	}
 
@@ -1229,6 +1213,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public static void main(String[] args) {
 		// add class testing code here
 	}
+
 
 	public void addNewReport(String title, String customer, String timeZone, String exclusionRadius, String boundary,
 			String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong,
@@ -1255,8 +1240,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 
 		selectTimeZone(timeZone);
-		reportSpecificAddNewReport(customer, exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong, SWLat,
-				SWLong);
+		reportSpecificAddNewReport(customer, exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong, SWLat, SWLong);
 
 		if (surUnit != "") {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
@@ -1295,7 +1279,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			loopCount = rowSize;
 		else
 			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
-		
+
 		// Keep track of the last matching row that we processed.
 		String lastSeenTitleCellText = "";
 		String lastSeenCreatedByCellText = "";
@@ -1304,16 +1288,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
-			String rptTitleCellText =  getReportTableCellText(reportTitleXPath);
+			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
-			Log.info(String.format("Found cell : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]", 
-					rptTitleCellText.trim(), createdByCellText.trim()));
+			Log.info(String.format("Found cell : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]", rptTitleCellText.trim(), createdByCellText.trim()));
 
-			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle.trim())
-					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy.trim())) {
+			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle.trim()) && createdByCellText.trim().equalsIgnoreCase(strCreatedBy.trim())) {
 				lastSeenTitleCellText = rptTitleCellText.trim();
 				lastSeenCreatedByCellText = createdByCellText.trim();
-				
+
 				long startTime = System.currentTimeMillis();
 				long elapsedTime = 0;
 				boolean bContinue = true;
@@ -1321,20 +1303,18 @@ public class ReportsBasePage extends SurveyorBasePage {
 				while (bContinue) {
 					try {
 						if (rowSize == 1) {
-							this.btnReportViewer = getTable()
-									.findElement(By.xpath("//*[@id='datatable']/tbody/tr/td[5]/a[3]"));
+							this.btnReportViewer = getTable().findElement(By.xpath("//*[@id='datatable']/tbody/tr/td[5]/a[3]"));
 							this.btnReportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						} else {
-							
+
 							int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
 							rowNum = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum, maxRows);
 							if (rowNum == maxRows) {
 								break;
 							}
-							
-							this.btnReportViewer = getTable().findElement(
-									By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img"));
+
+							this.btnReportViewer = getTable().findElement(By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img"));
 							this.btnReportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						}
@@ -1354,8 +1334,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				}
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
-					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.waitForPageLoad();
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
@@ -1397,8 +1376,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return cellElement.getText();
 	}
 
-	public void reportSpecificAddNewReport(String customer, String exclusionRadius, String boundary, String imageMapHeight,
-			String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong) throws Exception {
+	public void reportSpecificAddNewReport(String customer, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong) throws Exception {
 		throw new Exception("Not implemented");
 	}
 
@@ -1429,11 +1407,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
-			Log.info(String.format("Found cell : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]", 
-					rptTitleCellText.trim(), createdByCellText.trim()));
-			
-			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
-					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
+			Log.info(String.format("Found cell : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]", rptTitleCellText.trim(), createdByCellText.trim()));
+
+			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle) && createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				lastSeenTitleCellText = rptTitleCellText.trim();
 				lastSeenCreatedByCellText = createdByCellText.trim();
 
@@ -1444,8 +1420,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				while (bContinue) {
 					try {
 						if (rowSize == 1) {
-							this.btnReportViewer = getTable()
-									.findElement(By.xpath("//*[@id='datatable']/tbody/tr/td[5]/a[3]"));
+							this.btnReportViewer = getTable().findElement(By.xpath("//*[@id='datatable']/tbody/tr/td[5]/a[3]"));
 
 						} else {
 							int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
@@ -1454,8 +1429,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 								break;
 							}
 
-							this.btnReportViewer = getTable().findElement(
-									By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img"));
+							this.btnReportViewer = getTable().findElement(By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img"));
 						}
 
 						return true;
@@ -1473,8 +1447,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				}
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
-					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 
 				this.waitForPageLoad();
@@ -1520,8 +1493,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
-			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
-					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
+			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle) && createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
 				copyImg = getReportTableCell(copyImgXPath);
 				copyImg.click();
@@ -1572,13 +1544,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
-			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
-					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
+			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle) && createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				return true;
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
-					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 
 				this.waitForPageLoad();
@@ -1628,13 +1598,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
-			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
-					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
+			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle) && createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				return true;
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
-					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.waitForPageLoad();
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
@@ -1680,8 +1648,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
-			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
-					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
+			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle) && createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				deleteImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]/img";
 				deleteImg = getReportTableCell(deleteImgXPath);
 
@@ -1702,8 +1669,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					return false;
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
-					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 
 				this.waitForPageLoad();
@@ -1751,8 +1717,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
-			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
-					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
+			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle) && createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
 				copyImg = getReportTableCell(copyImgXPath);
 
@@ -1769,8 +1734,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				return true;
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
-					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 
 				this.waitForPageLoad();
@@ -1817,8 +1781,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
-			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
-					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
+			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle) && createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
 				copyImg = getReportTableCell(copyImgXPath);
 
@@ -1843,8 +1806,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 
-	public boolean modifyReportDetails(String rptTitleNew, String surUnit, List<String> tagList, boolean changeMode,
-			ReportModeFilter strReportMode) throws Exception {
+	public boolean modifyReportDetails(String rptTitleNew, String surUnit, List<String> tagList, boolean changeMode, ReportModeFilter strReportMode) throws Exception {
 		this.waitForCopyReportPagetoLoad();
 
 		this.inputTitle.clear();
@@ -1911,8 +1873,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return false;
 	}
 
-	public boolean verifySurveyNotAdded(String reportTitle, String customer, String NELat, String NELong, String SWLat,
-			String SWLong, List<Map<String, String>> views) throws Exception {
+	public boolean verifySurveyNotAdded(String reportTitle, String customer, String NELat, String NELong, String SWLat, String SWLong, List<Map<String, String>> views) throws Exception {
 		openNewReportPage();
 		inputReportTitle(reportTitle);
 		addReportSpecificSurveys(customer, NELat, NELong, SWLat, SWLong, views);
@@ -2095,12 +2056,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 			headerElement.click();
 		}
 	}
-	
+
 	public Integer getRecordsInSurveyTable(WebDriver driver) {
 		WebElement pageInfoLabel = driver.findElement(By.id("datatableSurveys"));
 		return getRecordsShownOnPage(driver, pageInfoLabel);
 	}
-	
+
 	public void waitForSurveyTableDataToLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -2108,7 +2069,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		});
 	}
-	
+
 	public String getReportName() {
 		return reportName;
 	}
@@ -2137,13 +2098,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		});
 	}
-	
+
 	public void waitForReportViewerDialogToOpen() {
 		WebElement divModalcontent = this.driver.findElement(By.id("reportViewer"));
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return divModalcontent.getAttribute("style").contains("display:block") || 
-						divModalcontent.getAttribute("style").contains("display: block");
+				return divModalcontent.getAttribute("style").contains("display:block") || divModalcontent.getAttribute("style").contains("display: block");
 			}
 		});
 	}
@@ -2152,8 +2112,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		WebElement divModalcontent = this.driver.findElement(By.id("reportViewer"));
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return divModalcontent.getAttribute("style").contains("display:none") || 
-						divModalcontent.getAttribute("style").contains("display: none");
+				return divModalcontent.getAttribute("style").contains("display:none") || divModalcontent.getAttribute("style").contains("display: none");
 			}
 		});
 	}
@@ -2170,13 +2129,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 		throw new Exception("Not implemented");
 	}
 
-	public void complianceChangeMode(String rptTitleNew, boolean changeMode, ReportModeFilter strReportMode)
-			throws Exception {
+	public void complianceChangeMode(String rptTitleNew, boolean changeMode, ReportModeFilter strReportMode) throws Exception {
 		throw new Exception("Not implemented");
 	}
 
-	public void addReportSpecificSurveys(String customer, String NELat, String NELong, String SWLat, String SWLong,
-			List<Map<String, String>> views) throws Exception {
+	public void addReportSpecificSurveys(String customer, String NELat, String NELong, String SWLat, String SWLong, List<Map<String, String>> views) throws Exception {
 		throw new Exception("Not implemented");
 	}
 
@@ -2185,8 +2142,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	/************** Baseline creation and comparison methods ***************/
-
-	
 
 	public String getUpdatedReportJobCSVFileContent(String fileAbsolutePath, String newLine) throws IOException {
 		StringBuilder fileContent = new StringBuilder();
@@ -2221,28 +2176,20 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return fileContent.toString();
 	}
 
-	protected void generateBaselinePerfReportJobFiles(String testCaseID, String reportJobTypeId, String startTime,
-			String endTime, Integer processingTimeInMs) throws IOException {
-		Log.info(String.format(
-				"Generating report job perf baseline for : [TestCase=%s, ReportJobTypeId=%s, StartTime=%s, EndTime=%s, ProcessingTimeInMs=%d]",
-				testCaseID, reportJobTypeId, startTime, endTime, processingTimeInMs));
+	protected void generateBaselinePerfReportJobFiles(String testCaseID, String reportJobTypeId, String startTime, String endTime, Integer processingTimeInMs) throws IOException {
+		Log.info(String.format("Generating report job perf baseline for : [TestCase=%s, ReportJobTypeId=%s, StartTime=%s, EndTime=%s, ProcessingTimeInMs=%d]", testCaseID, reportJobTypeId, startTime, endTime, processingTimeInMs));
 
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" + File.separator
-				+ "report-job-metrics" + File.separator + testCaseID;
+		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" + File.separator + "report-job-metrics" + File.separator + testCaseID;
 		// Create the directory for test case if it does not exist.
 		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
 		Path expectedFilePath = Paths.get(expectedDataFolderPath, String.format("%s.csv", testCaseID));
 		ReportJobType reportJobType = Reports.ReportJobTypeGuids.get(reportJobTypeId);
 		BaseReportsPageTest.setRollingReportJobProcessingTime(reportJobType, processingTimeInMs);
-		Integer reportJobRollingProcessingTimeAvg = BaseReportsPageTest
-				.getReportJobRollingProcessingTimeAvg(reportJobType);
-		Log.info(String.format("    CURRENT: {reportJobTypeId, startTime, endTime, processingTimeInMs} - {%s,%s,%s,%d}",
-				reportJobTypeId, startTime, endTime, processingTimeInMs));
-		Log.info(String.format("ROLLING AVG: {reportJobTypeId, startTime, endTime, processingTimeInMs} - {%s,%s,%s,%d}",
-				reportJobTypeId, startTime, endTime, reportJobRollingProcessingTimeAvg));
-		String reportMetricString = String.format("%s,%s,%s,%d", reportJobTypeId, startTime, endTime,
-				reportJobRollingProcessingTimeAvg);
+		Integer reportJobRollingProcessingTimeAvg = BaseReportsPageTest.getReportJobRollingProcessingTimeAvg(reportJobType);
+		Log.info(String.format("    CURRENT: {reportJobTypeId, startTime, endTime, processingTimeInMs} - {%s,%s,%s,%d}", reportJobTypeId, startTime, endTime, processingTimeInMs));
+		Log.info(String.format("ROLLING AVG: {reportJobTypeId, startTime, endTime, processingTimeInMs} - {%s,%s,%s,%d}", reportJobTypeId, startTime, endTime, reportJobRollingProcessingTimeAvg));
+		String reportMetricString = String.format("%s,%s,%s,%d", reportJobTypeId, startTime, endTime, reportJobRollingProcessingTimeAvg);
 
 		// Recreate the text in the baseline file replacing only the content for
 		// the current report job type.
@@ -2250,41 +2197,33 @@ public class ReportsBasePage extends SurveyorBasePage {
 		FileUtility.createTextFile(expectedFilePath, fileContent);
 	}
 
-	protected void generateBaselineViewImage(String testCaseID, String imageFileFullPath) throws IOException {
+	protected void generateBaselineViewImage(String testCaseID, String imageFileFullPath, int counter) throws IOException {
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator
-				+ "view-images" + File.separator + testCaseID;
-		String expectedFilename = FileUtility.getFileName(imageFileFullPath);
-		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
-		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "views-images" + File.separator + testCaseID;
+		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
+		String expectedFilename = expectedDataFolderPath + File.separator + "View" + counter + ".png";
+		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilename));
 	}
 
-	
-
 	/**
-	 * Compares the processing times for each reportJob type with baseline
-	 * processingTime values and checks actual values are not greater than the
-	 * baseline values.
+	 * Compares the processing times for each reportJob type with baseline processingTime values and checks actual values are not greater than the baseline values.
 	 * 
 	 * @param testCaseID
 	 *            - Test case ID
 	 * @param reportTitle
 	 *            - Title of the report
-	 * @return - Whether actual report job type processing time values are
-	 *         within the limits of baselines values
+	 * @return - Whether actual report job type processing time values are within the limits of baselines values
 	 * @throws Exception
 	 */
 	public boolean compareReportJobPerfBaseline(String testCaseID, String reportTitle) throws Exception {
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
-		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" + File.separator
-				+ "report-job-metrics" + File.separator + testCaseID;
+		String expectedDataFolderPath = rootFolder + File.separator + "perf-metric" + File.separator + "report-job-metrics" + File.separator + testCaseID;
 		Path expectedFilePath = Paths.get(expectedDataFolderPath, String.format("%s.csv", testCaseID));
 		// If NOT in baseline collection mode and NO baseline CSV file, throw No
 		// Baseline exception.
 		if (!TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
 			if (!new File(expectedFilePath.toString()).exists()) {
-				throw new Exception(String.format("Baseline CSV file-[%s] NOT found for TestCase-[%s]",
-						expectedFilePath.toString(), testCaseID));
+				throw new Exception(String.format("Baseline CSV file-[%s] NOT found for TestCase-[%s]", expectedFilePath.toString(), testCaseID));
 			}
 		}
 
@@ -2302,10 +2241,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			if (TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
 				// generating baselines. Skip comparison.
-				generateBaselinePerfReportJobFiles(testCaseID, reportJobTypeId,
-						String.valueOf(reportJob.getProcessingStartedTimeInMs()), 
-						String.valueOf(reportJob.getProcessingCompletedTimeInMs()),
-						actualProcessingTimeInMs);
+				generateBaselinePerfReportJobFiles(testCaseID, reportJobTypeId, String.valueOf(reportJob.getProcessingStartedTimeInMs()), String.valueOf(reportJob.getProcessingCompletedTimeInMs()), actualProcessingTimeInMs);
 			} else {
 				// compare actual with baseline.
 				CSVUtility csvUtility = new CSVUtility();
@@ -2325,10 +2261,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 				// If no report job type in CSV, throw exception.
 				if (!foundInCsv) {
-					throw new Exception(
-							String.format("Entry NOT found in Baseline CSV-[%s], for ReportJobType-[%s], TestCase-[%s]",
-									expectedFilePath.toString(),
-									Reports.ReportJobTypeGuids.get(reportJobTypeId).toString(), testCaseID));
+					throw new Exception(String.format("Entry NOT found in Baseline CSV-[%s], for ReportJobType-[%s], TestCase-[%s]", expectedFilePath.toString(), Reports.ReportJobTypeGuids.get(reportJobTypeId).toString(), testCaseID));
 				}
 			}
 		}
@@ -2343,26 +2276,24 @@ public class ReportsBasePage extends SurveyorBasePage {
 		ReportJobsStat reportJobsStatObj = gson.fromJson(apiResponse, ReportJobsStat.class);
 		return reportJobsStatObj;
 	}
-	
+
 	private int skipNewlyAddedRows(String lastSeenTitleCellText, String lastSeenCreatedByCellText, int rowNum, int maxRows) {
 		String reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 		String createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
-		
+
 		String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 		String createByCellText = getReportTableCellText(createdByXPath);
 
 		// If new rows get added in the time that we are waiting on report processing to complete,
 		// skip and move forward to the row that we were last processing.
-		while (!(rptTitleCellText.trim().equalsIgnoreCase(lastSeenTitleCellText.trim())
-				&& createByCellText.trim().equalsIgnoreCase(lastSeenCreatedByCellText.trim()))) {
-			Log.info(String.format("Found cell (skipping newly added) : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]", 
-					rptTitleCellText.trim(), createByCellText.trim()));
+		while (!(rptTitleCellText.trim().equalsIgnoreCase(lastSeenTitleCellText.trim()) && createByCellText.trim().equalsIgnoreCase(lastSeenCreatedByCellText.trim()))) {
+			Log.info(String.format("Found cell (skipping newly added) : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]", rptTitleCellText.trim(), createByCellText.trim()));
 
 			if (rowNum == maxRows)
 				break;
 
 			rowNum++;
-			
+
 			Log.info(String.format("Processing row number - %d", rowNum));
 
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
@@ -2376,29 +2307,22 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	private void validateReportStatus(ReportJobsStat reportJobsStatObj) throws Exception {
 		if (!reportJobsStatObj.ReportStatus.equals(ReportStatusType.Complete.toString())) {
-			throw new Exception(String.format("Report status NOT Complete. ReportTitle-[%s], ReportStatus-[%s]",
-					reportJobsStatObj.ReportTitle, reportJobsStatObj.ReportStatus));
+			throw new Exception(String.format("Report status NOT Complete. ReportTitle-[%s], ReportStatus-[%s]", reportJobsStatObj.ReportTitle, reportJobsStatObj.ReportStatus));
 		}
 	}
 
 	private void validateReportJobStatus(String reportTitle, surveyor.api.source.ReportJob reportJob) throws Exception {
 		if (!reportJob.ReportJobStatus.equals(ReportStatusType.Complete.toString())) {
-			throw new Exception(String.format("Report job status NOT Complete. ReportTitle-[%s], ReportJobType-[%s], "
-					+ "ReportJobStatus-[%s]", reportTitle, reportJob.ReportJobType, reportJob.ReportJobStatus));
+			throw new Exception(String.format("Report job status NOT Complete. ReportTitle-[%s], ReportJobType-[%s], " + "ReportJobStatus-[%s]", reportTitle, reportJob.ReportJobType, reportJob.ReportJobStatus));
 		}
 	}
 
-	private void validateReportJobProcessingTimesForNotNull(String reportTitle, surveyor.api.source.ReportJob reportJob,
-			String reportJobTypeId) throws Exception {
+	private void validateReportJobProcessingTimesForNotNull(String reportTitle, surveyor.api.source.ReportJob reportJob, String reportJobTypeId) throws Exception {
 		if (reportJob.getProcessingStartedTimeInMs() < 0) {
-			throw new Exception(
-					String.format("Incorrect value-[%s] encountered for column-[%s], ReportTitle-[%s], ReportJobTypeId-[%s]",
-							reportJob.getProcessingStartedTimeInMs(), "ProcessingStarted", reportTitle, reportJobTypeId));
+			throw new Exception(String.format("Incorrect value-[%s] encountered for column-[%s], ReportTitle-[%s], ReportJobTypeId-[%s]", reportJob.getProcessingStartedTimeInMs(), "ProcessingStarted", reportTitle, reportJobTypeId));
 		}
 		if (reportJob.getProcessingCompletedTimeInMs() < 0) {
-			throw new Exception(
-					String.format("Incorrect value-[%s] encountered for column-[%s], ReportTitle-[%s], ReportJobTypeId-[%s]",
-							reportJob.getProcessingCompletedTimeInMs(), "ProcessingCompleted", reportTitle, reportJobTypeId));
+			throw new Exception(String.format("Incorrect value-[%s] encountered for column-[%s], ReportTitle-[%s], ReportJobTypeId-[%s]", reportJob.getProcessingCompletedTimeInMs(), "ProcessingCompleted", reportTitle, reportJobTypeId));
 		}
 	}
 
