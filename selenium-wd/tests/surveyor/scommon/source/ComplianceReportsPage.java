@@ -179,6 +179,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String ComplianceReportSSRS_IsotopicAnalysisTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_IsotopicAnalysisTable);
 	public static final String ComplianceReportSSRS_IndicationTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_IndicationTable);
 	public static final String ComplianceReportSSRS_GapTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_GapTable);
+	public static final String ComplianceReportSSRS_EthaneAnalysisTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_EthaneAnalysisTable);
 
 	private static final String DELETE_POPUP_CONFIRM_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[1]";
 	private static final String DELETE_POPUP_CANCEL_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[2]";
@@ -287,13 +288,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='report-show-percent-coverage-forecast']")
 	protected WebElement percentCoverForecast;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='report-asset-layers-d08fc87f-f979-4131-92a9-3d82f37f4bba']")
 	protected WebElement rptFirstAsset;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='report-boundry-layers-Small Boundary']")
 	protected WebElement rptSmallBoundary;
-	
+
 	public WebElement getNewComplianceReportBtn() {
 		return this.newComplianceReportBtn;
 	}
@@ -847,8 +848,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws Exception
 	 */
 
-	public boolean checkComplianceReportButtonPresenceAndClick(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType, 
-			boolean clickButton, boolean confirmAction) throws Exception {
+	public boolean checkComplianceReportButtonPresenceAndClick(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType, boolean clickButton, boolean confirmAction) throws Exception {
 		setPagination(PAGINATIONSETTING);
 		this.waitForPageLoad();
 
@@ -871,7 +871,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
 
 		Log.info(String.format("Looking for rptTitle=[%s], strCreatedBy=[%s]", rptTitle, strCreatedBy));
-		
+
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
@@ -879,8 +879,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
 			createdByCell = getTable().findElement(By.xpath(createdByXPath));
 
-			Log.info(String.format("Found rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]", 
-					rptTitleCell.getText(), createdByCell.getText()));
+			Log.info(String.format("Found rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]", rptTitleCell.getText(), createdByCell.getText()));
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle) && createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				try {
 					switch (buttonType) {
@@ -1956,6 +1955,65 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return true;
 	}
 
+	/**
+	 * Method to verify the Ethane Capture Table in SSRS
+	 * 
+	 * @param actualPath
+	 * @param reportTitle
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean verifyEthaneCaptureTable(String actualPath, String reportTitle) throws IOException {
+		Log.info("Verifying Ethane Capture Table");
+		PDFUtility pdfUtility = new PDFUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
+		String reportName = "CR-" + reportId;
+		setReportName(reportName);
+		String actualReportString = pdfUtility.extractPDFText(actualReport);
+		List<String> expectedReportString = new ArrayList<String>();
+		expectedReportString.add(ComplianceReportSSRS_EthaneAnalysisTable);
+		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		for (Boolean value : actualFirstPage.values()) {
+			if (!value) {
+				Log.info("Ethane Capture table static text verification failed");
+				return false;
+			}
+		}
+		BufferedReader bufferReader = null;
+		try {
+			String ethaneCaptureTable = RegexUtility.getStringInBetween(actualReportString, "Surveyor Date/Time Result Ethane/Methane Ratio and Uncertainty(%) Field Notes", "Ethane Analysis Table");
+			InputStream inputStream = new ByteArrayInputStream(ethaneCaptureTable.getBytes());
+			bufferReader = new BufferedReader(new InputStreamReader(inputStream));
+			String line = null;
+			ArrayList<String> lineList = new ArrayList<String>();
+			StringBuilder lineBuilder = new StringBuilder();
+			while ((line = bufferReader.readLine()) != null) {
+				lineBuilder.append(line);
+				if (line.contains("+/-")) {
+					lineList.add(lineBuilder.toString().replaceAll("\\s+", "").replace("+/-", ""));
+					lineBuilder = new StringBuilder();
+				}
+			}
+			ArrayList<StoredProcComplianceGetEthaneCapture> ethaneCapturfromSP = StoredProcComplianceGetEthaneCapture.getReportEthaneCapture(reportId);
+			Iterator<StoredProcComplianceGetEthaneCapture> captureEntryIterator = ethaneCapturfromSP.iterator();
+			ArrayList<String> storedProcList = new ArrayList<String>();
+			while (captureEntryIterator.hasNext()) {
+				StoredProcComplianceGetEthaneCapture entry = captureEntryIterator.next();
+				storedProcList.add(entry.toString().replaceAll("\\s+", "").replace("0.0", "0"));
+			}
+			if (!storedProcList.equals(lineList)) {
+				Log.info("Ethane Capture table data verification failed");
+				return false;
+			}
+		} finally {
+			bufferReader.close();
+		}
+		Log.info("Ethane capture table verification passed");
+		return true;
+	}
+
 	public void verifyMetaDataFiles() {
 		try {
 			throw new Exception("Not implemented");
@@ -2825,6 +2883,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (tablesList.get(0).get(KEYPCRA).equalsIgnoreCase("1")) {
 			selectPercentCoverageReportArea();
 		}
+
 		if (tablesList.get(0).get(KEYPCF).equalsIgnoreCase("1")) {
 			selectPercentCoverageForecastCheckBox();
 		}
@@ -2847,8 +2906,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	private boolean isCustomBoundarySpecified(ReportsCompliance reportsCompliance) {
 		boolean useSelector = false;
 		if (reportsCompliance != null) {
-			boolean textFieldsSpecified = reportsCompliance.getNELat() != null && reportsCompliance.getNELong() != null &&
-					reportsCompliance.getSWLat() != null && reportsCompliance.getSWLong() != null;
+
+			boolean textFieldsSpecified = reportsCompliance.getNELat() != null && reportsCompliance.getNELong() != null && reportsCompliance.getSWLat() != null && reportsCompliance.getSWLong() != null;
+
 			boolean latLongFieldsSpecified = useCustomBoundaryLatLongSelector(reportsCompliance);
 			useSelector = textFieldsSpecified || latLongFieldsSpecified;
 		}
