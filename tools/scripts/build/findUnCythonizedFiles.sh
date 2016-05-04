@@ -6,10 +6,10 @@ dir=/tmp/$2/$(date +"%Y%m%d%H%M%S")
 mkdir -p $dir 
 tar -zxf $pythonWorkerZip -C $dir
 cd $dir 
-NonCythonizedFiles=$(find . -type f -name '*.py' -o -name '*.pyc' -o -name '*.pyf' -o -name '*.c' -o -name '*.cpp'|grep -v 'setup.py' |grep -v '__init__.py'|grep -v 'run.*.py'|wc -l)
+NonCythonizedFiles=$(find . -type f -name '*.py' -o -name '*.pyc' -o -name '*.pyf' -o -name '*.c' -o -name '*.cpp'|grep -v 'setup.py' |grep -v '__init__.py'|grep -v 'run.*worker.py'|wc -l)
 if (($NonCythonizedFiles > 0)); then
 	printf "Following files are not Cythonized"
-	find . -type f -name '*.py' -o -name '*.pyc' -o -name '*.pyf' -o -name '*.c' -o -name '*.cpp'|grep -v 'setup.py' |grep -v '__init__.py'|grep -v 'run.*.py'
+	find . -type f -name '*.py' -o -name '*.pyc' -o -name '*.pyf' -o -name '*.c' -o -name '*.cpp'|grep -v 'setup.py' |grep -v '__init__.py'|grep -v 'run.*worker.py'
 	cd /tmp
 	rm -r -f $dir
 	exit 1
