@@ -2876,21 +2876,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (tablesList.get(0).get(KEYISOANA).equalsIgnoreCase("1")) {
 			selectIsotopicAnalysisCheckBox();
 		}
-		if (tablesList.get(0).get(KEYGAPTB).equalsIgnoreCase("1")) {
-			selectGapTableCheckBox();
+		if (tablesList.get(0).get(KEYGAPTB) != null) {
+			if (tablesList.get(0).get(KEYGAPTB).equalsIgnoreCase("1")) {
+				selectGapTableCheckBox();
+			}
 		}
 		if (tablesList.get(0).get(KEYPCA).equalsIgnoreCase("1")) {
 			selectPercentCoverageAssetCheckBox();
 		}
-		if (tablesList.get(0).get(KEYPCF).equalsIgnoreCase("1")) {
-			selectPercentCoverageForecastCheckBox();
-		}
 		if (tablesList.get(0).get(KEYPCRA).equalsIgnoreCase("1")) {
 			selectPercentCoverageReportArea();
 		}
-
-		if (tablesList.get(0).get(KEYPCF).equalsIgnoreCase("1")) {
-			selectPercentCoverageForecastCheckBox();
+		if (tablesList.get(0).get(KEYPCF) != null) {
+			if (tablesList.get(0).get(KEYPCF).equalsIgnoreCase("1")) {
+				selectPercentCoverageForecastCheckBox();
+			}
 		}
 
 		List<Map<String, String>> viewLayersList = reportsCompliance.getViewLayersList();
