@@ -189,7 +189,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	    addNewLocation(locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin,ethMthMax,true);
 	}
-	
+
 	public void addNewLocation(String locationDesc, String customer,
 			String newLocationName, boolean useLatLongSelector, String ethMthMin, String ethMthMax, boolean checkForError) {
 		

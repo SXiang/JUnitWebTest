@@ -184,7 +184,6 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		assertTrue(referenceGasReportsPage.verifyCancelButtonFunctionality());
 
 		referenceGasReportsPage.open();
-		referenceGasReportsPage.logout();
 	}
 
 	/**

@@ -268,6 +268,11 @@ public final class SurveyorConstants {
 
 	public static final String REXCLUSIONRADIUS = "3";
 
+	public static final int  X_OFFSET = 150;
+	public static final int Y_OFFSET = 150;
+	public static final int RECT_WIDTH = 100;
+	public static final int RECT_HEIGHT = 100;
+	
 	/*
 	 * Lat Long for Ethane Reporting
 	 */

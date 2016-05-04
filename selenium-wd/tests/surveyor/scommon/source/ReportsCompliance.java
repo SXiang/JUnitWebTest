@@ -30,36 +30,36 @@ public class ReportsCompliance extends Reports {
 	protected List<Map<String, String>> viewList;
 	protected List<Map<String, String>> tablesList;
 	protected List<Map<String, String>> viewLayersList;
-	
+
 	protected SurveyModeFilter surveyModeFilter;
 	protected ReportModeFilter reportModeFilter;
 	protected EthaneFilter ethaneFilter;
-	
+
 	private int latLongXOffset;
 	private int latLongYOffset;
 	private int latLongRectHeight;
 	private int latLongRectWidth;
-	
+
 	private String customerBoundaryName; 
 	private CustomerBoundaryFilterType customerBoundaryFilterType;
-	
+
 	public enum EthaneFilter {
 		ExcludeVehicleExhaust, ExcludeBiogenicMethane, Both, None
 	}
-	
+
 	public enum CustomerBoundaryFilterType {
 		District ("District"),
 		DistrictPlat ("District Plat"),
 		BigBoundary ("Big Boundary"), 
 		SmallBoundary ("Small Boundary"),
 		LeakSurveyArea ("Leak Survey Area");
-		
+
 		private final String name;
 
 		CustomerBoundaryFilterType(String nm) {
 			name = nm;
 		}
-		
+
 		public String toString() {
 			return this.name;
 		}
@@ -202,10 +202,12 @@ public class ReportsCompliance extends Reports {
 		this.exclusionRadius = exclusionRadius;
 		this.imageMapHeight=listBoundary.get(0);
 		this.imageMapWidth=listBoundary.get(1);
-		this.NELat = listBoundary.get(2);
-		this.NELong =listBoundary.get(3);
-		this.SWLat = listBoundary.get(4);
-		this.SWLong = listBoundary.get(5);
+		if (listBoundary.size() > 2) {
+			this.NELat = listBoundary.get(2);
+			this.NELong =listBoundary.get(3);
+			this.SWLat = listBoundary.get(4);
+			this.SWLong = listBoundary.get(5);
+		}
 		this.listBoundary=listBoundary;
 		this.tablesList = tablesList;
 		this.viewList=viewList;
@@ -217,27 +219,31 @@ public class ReportsCompliance extends Reports {
 		this.exclusionRadius=exclusionRadius;
 		this.imageMapHeight=listBoundary.get(0);
 		this.imageMapWidth=listBoundary.get(1);
-		this.NELat = listBoundary.get(2);
-		this.NELong =listBoundary.get(3);
-		this.SWLat = listBoundary.get(4);
-		this.SWLong = listBoundary.get(5);
+		if (listBoundary.size() > 2) {
+			this.NELat = listBoundary.get(2);
+			this.NELong =listBoundary.get(3);
+			this.SWLat = listBoundary.get(4);
+			this.SWLong = listBoundary.get(5);
+		}
 		this.listBoundary=listBoundary;
 		this.tablesList=tablesList;
 		this.tagList=tagList;
 		this.viewList=viewList;
 		this.viewLayersList=viewLayersList;		
 	}
-	
+
 	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, 
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList, startDate, endDate);
 		this.exclusionRadius=exclusionRadius;
 		this.imageMapHeight=listBoundary.get(0);
 		this.imageMapWidth=listBoundary.get(1);
-		this.NELat = listBoundary.get(2);
-		this.NELong =listBoundary.get(3);
-		this.SWLat = listBoundary.get(4);
-		this.SWLong = listBoundary.get(5);
+		if (listBoundary.size() > 2) {
+			this.NELat = listBoundary.get(2);
+			this.NELong =listBoundary.get(3);
+			this.SWLat = listBoundary.get(4);
+			this.SWLong = listBoundary.get(5);
+		}
 		this.listBoundary = listBoundary;
 		this.tablesList = tablesList;
 		this.viewList= viewList;
@@ -250,10 +256,12 @@ public class ReportsCompliance extends Reports {
 		this.exclusionRadius=exclusionRadius;
 		this.imageMapHeight=listBoundary.get(0);
 		this.imageMapWidth=listBoundary.get(1);
-		this.NELat = listBoundary.get(2);
-		this.NELong =listBoundary.get(3);
-		this.SWLat = listBoundary.get(4);
-		this.SWLong = listBoundary.get(5);
+		if (listBoundary.size() > 2) {
+			this.NELat = listBoundary.get(2);
+			this.NELong =listBoundary.get(3);
+			this.SWLat = listBoundary.get(4);
+			this.SWLong = listBoundary.get(5);
+		}
 		this.listBoundary=listBoundary;
 		this.tablesList=tablesList;
 		this.viewList=viewList;
@@ -268,10 +276,12 @@ public class ReportsCompliance extends Reports {
 		this.exclusionRadius=exclusionRadius;
 		this.imageMapHeight=listBoundary.get(0);
 		this.imageMapWidth=listBoundary.get(1);
-		this.NELat = listBoundary.get(2);
-		this.NELong =listBoundary.get(3);
-		this.SWLat = listBoundary.get(4);
-		this.SWLong = listBoundary.get(5);
+		if (listBoundary.size() > 2) {
+			this.NELat = listBoundary.get(2);
+			this.NELong =listBoundary.get(3);
+			this.SWLat = listBoundary.get(4);
+			this.SWLong = listBoundary.get(5);
+		}
 		this.listBoundary=listBoundary;
 		this.tablesList=tablesList;
 		this.viewList=viewList;
@@ -285,10 +295,12 @@ public class ReportsCompliance extends Reports {
 		this.exclusionRadius=exclusionRadius;
 		this.imageMapHeight=listBoundary.get(0);
 		this.imageMapWidth=listBoundary.get(1);
-		this.NELat = listBoundary.get(2);
-		this.NELong =listBoundary.get(3);
-		this.SWLat = listBoundary.get(4);
-		this.SWLong = listBoundary.get(5);
+		if (listBoundary.size() > 2) {
+			this.NELat = listBoundary.get(2);
+			this.NELong =listBoundary.get(3);
+			this.SWLat = listBoundary.get(4);
+			this.SWLong = listBoundary.get(5);
+		}
 		this.listBoundary=listBoundary;
 		this.tablesList=tablesList;
 		this.viewList=viewList;
@@ -302,10 +314,12 @@ public class ReportsCompliance extends Reports {
 		this.exclusionRadius=exclusionRadius;
 		this.imageMapHeight=listBoundary.get(0);
 		this.imageMapWidth=listBoundary.get(1);
-		this.NELat = listBoundary.get(2);
-		this.NELong =listBoundary.get(3);
-		this.SWLat = listBoundary.get(4);
-		this.SWLong = listBoundary.get(5);
+		if (listBoundary.size() > 2) {
+			this.NELat = listBoundary.get(2);
+			this.NELong =listBoundary.get(3);
+			this.SWLat = listBoundary.get(4);
+			this.SWLong = listBoundary.get(5);
+		}
 		this.listBoundary=listBoundary;
 		this.tablesList=tablesList;
 		this.viewList=viewList;
@@ -320,10 +334,12 @@ public class ReportsCompliance extends Reports {
 		this.exclusionRadius=exclusionRadius;
 		this.imageMapHeight=listBoundary.get(0);
 		this.imageMapWidth=listBoundary.get(1);
-		this.NELat = listBoundary.get(2);
-		this.NELong =listBoundary.get(3);
-		this.SWLat = listBoundary.get(4);
-		this.SWLong = listBoundary.get(5);
+		if (listBoundary.size() > 2) {
+			this.NELat = listBoundary.get(2);
+			this.NELong =listBoundary.get(3);
+			this.SWLat = listBoundary.get(4);
+			this.SWLong = listBoundary.get(5);
+		}
 		this.fovOpacity=fovOpacity;
 		this.lisaOpacity=lisaOpacity;
 		this.reportModeFilter=reportMode;
@@ -334,7 +350,7 @@ public class ReportsCompliance extends Reports {
 		this.viewList=viewList;
 		this.viewLayersList=viewLayersList;
 	}
-	
+
 	public ReportsCompliance(){
 		super();
 	}
@@ -502,7 +518,7 @@ public class ReportsCompliance extends Reports {
 		this.latLongRectHeight = latLongRectHeight;
 		this.latLongRectWidth = latLongRectWidth;
 	}
-	
+
 	/**
 	 * @param args
 	 */

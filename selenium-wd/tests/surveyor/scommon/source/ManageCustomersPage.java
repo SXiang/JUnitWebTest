@@ -207,7 +207,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		sendKeysToTextArea(this.textAreaEula, eula);
 	}
     
-	private void enabledDisableCustomer(boolean enableCustomer) {
+	public void enabledDisableCustomer(boolean enableCustomer) {
 		if (enableCustomer) {
 			if (!inputAccountEnabled.isSelected())
 				inputAccountEnabled.click();
@@ -481,6 +481,14 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		}		
 		
 		return null;
+	}
+	
+	public WebElement getInputReportMetadata() {
+		return this.inputReportMetadata;
+	}
+	
+	public WebElement getInputReportShapeFile() {
+		return this.inputReportShapeFile;
 	}
 	
 	public LicensedFeatures getLicensedFeature(String licFeatureName) {
