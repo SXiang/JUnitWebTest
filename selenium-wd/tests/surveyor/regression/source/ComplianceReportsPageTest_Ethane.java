@@ -26,7 +26,9 @@ import static surveyor.scommon.source.SurveyorConstants.KEYINDCLR;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
+import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
@@ -138,8 +140,10 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		Map<String, String> tableMap = new HashMap<String, String>();
 		tableMap.put(KEYINDTB, "0");
 		tableMap.put(KEYISOANA, "0");
+		tableMap.put(KEYGAPTB, "0");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYPCF, "0");
 		tablesList.add(tableMap);
 
 		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
@@ -440,8 +444,10 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		Map<String, String> tableMap = new HashMap<String, String>();
 		tableMap.put(KEYINDTB, "1");
 		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYGAPTB, "0");
 		tableMap.put(KEYPCA, "1");
 		tableMap.put(KEYPCRA, "1");
+		tableMap.put(KEYPCF, "0");
 		tablesList.add(tableMap);
 
 		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
@@ -515,8 +521,10 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		Map<String, String> tableMap = new HashMap<String, String>();
 		tableMap.put(KEYINDTB, "1");
 		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYGAPTB, "0");
 		tableMap.put(KEYPCA, "1");
 		tableMap.put(KEYPCRA, "1");
+		tableMap.put(KEYPCF, "0");
 		tablesList.add(tableMap);
 
 		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
@@ -585,8 +593,10 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		Map<String, String> tableMap = new HashMap<String, String>();
 		tableMap.put(KEYINDTB, "1");
 		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYGAPTB, "0");
 		tableMap.put(KEYPCA, "1");
 		tableMap.put(KEYPCRA, "1");
+		tableMap.put(KEYPCF, "0");
 		tablesList.add(tableMap);
 
 		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
@@ -626,91 +636,86 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 			if (tablesList != null) {
 				assertTrue(complianceReportsPage.verifyDrivingSurveysTable(testSetup.getDownloadPath(), rptTitle));
 			}
-	} else
-		fail("\n Testcase1726 failed.\n");	
-}
+		} else
+			fail("\n Testcase1726 failed.\n");	
+	}
 
-/**
- * Test Case ID:TC1729 Test Description: Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- Default Indication color
- * @throws InterruptedException 
- * 
- * @throws IOException
- * 
- */
-@Test
-public void TC1729_Ethane_Resubmit_Report_Verify_Indication_Table_Color() throws Exception{
-	String testCaseID = "TC1729";
-	String rptTitle = testCaseID + " Ethane" + testSetup.getRandomNumber();
-	Log.info("\nRunning " + testCaseID
-			+ ": Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- Default Indication color" + rptTitle);
+	/**
+	 * Test Case ID:TC1729 Test Description: Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- Default Indication color
+	 * @throws InterruptedException 
+	 * 
+	 * @throws IOException
+	 * 
+	 */
+	@Test
+	public void TC1729_Ethane_Resubmit_Report_Verify_Indication_Table_Color() throws Exception{
+		String testCaseID = "TC1729";
+		String rptTitle = testCaseID + " Ethane" + testSetup.getRandomNumber();
+		Log.info("\nRunning " + testCaseID
+				+ ": Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- Default Indication color" + rptTitle);
 
-	complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
-	complianceReportsPage.open();
+		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		complianceReportsPage.open();
 
-	List<String> listBoundary = new ArrayList<String>();
-	listBoundary.add(IMGMAPHEIGHT);
-	listBoundary.add(IMGMAPWIDTH);
-	listBoundary.add(ETHRNELAT);
-	listBoundary.add(ETHRNELON);
-	listBoundary.add(ETHRSWLAT);
-	listBoundary.add(ETHRSWLON);
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+		listBoundary.add(ETHRNELAT);
+		listBoundary.add(ETHRNELON);
+		listBoundary.add(ETHRSWLAT);
+		listBoundary.add(ETHRSWLON);
 
-	List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
-	Map<String, String> tableMap = new HashMap<String, String>();
-	tableMap.put(KEYINDTB, "1");
-	tableMap.put(KEYISOANA, "1");
-	tableMap.put(KEYPCA, "1");
-	tableMap.put(KEYPCRA, "1");
-	tablesList.add(tableMap);
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+		tableMap.put(KEYINDTB, "1");
+		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYGAPTB, "0");
+		tableMap.put(KEYPCA, "1");
+		tableMap.put(KEYPCRA, "1");
+		tableMap.put(KEYPCF, "0");
+		tablesList.add(tableMap);
 
-	List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
-	List<Integer> boundaryRowIDs = Arrays.asList(3, 4);				 // Boundary RowIDs from TestCaseData xlsx
-	List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
-	viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
+		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
+		List<Integer> boundaryRowIDs = Arrays.asList(3, 4);				 // Boundary RowIDs from TestCaseData xlsx
+		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
+		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
-	List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
-	Map<String, String> viewMap1 = new HashMap<String, String>();
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
 
-	viewMap1.put(KEYVIEWNAME, "First View");
-	viewMap1.put(KEYLISA, "1");
-	viewMap1.put(KEYFOV, "1");
-	viewMap1.put(KEYBREADCRUMB, "1");
-	viewMap1.put(KEYINDICATIONS, "1");
-	viewMap1.put(KEYISOTOPICCAPTURE, "1");
-	viewMap1.put(KEYANNOTATION, "1");
-	viewMap1.put(KEYGAPS, "0");
-	viewMap1.put(KEYASSETS, "1");
-	viewMap1.put(KEYBOUNDARIES, "1");
-	viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
-	viewList.add(viewMap1);
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYGAPS, "0");
+		viewMap1.put(KEYASSETS, "1");
+		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
+		viewList.add(viewMap1);
 
-	List<String> tagList = new ArrayList<String>();
-	tagList.add(CUSDRVETHSTDTAG);
+		List<String> tagList = new ArrayList<String>();
+		tagList.add(CUSDRVETHSTDTAG);
 
-	ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
-	rpt.setViewLayersList(viewLayerList);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		rpt.setViewLayersList(viewLayerList);
 
-	complianceReportsPage.addNewReport(rpt);
-	complianceReportsPage.waitForPageLoad();
+		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
 
-	complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 
-	complianceReportsPage.findReportbySearch(rptTitle, testSetup.getLoginUser());
+		complianceReportsPage.findReportbySearch(rptTitle, testSetup.getLoginUser());
 
-	try {
 		complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
-		complianceReportsPage.waitForResubmitButton();
-		complianceReportsPage.getBtnResubmitReport().click();
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-	complianceReportsPage.waitForPageLoad();
-	complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 
-	if (tablesList.get(0).get(KEYINDTB).equals("1")) {
-		assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
+		if (tablesList.get(0).get(KEYINDTB).equals("1")) {
+			assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
+		}
+		else
+			fail("\nTestcase TC1729 failed.\n");
 	}
-	else
-		fail("\nTestcase TC1729 failed.\n");
-}
 }

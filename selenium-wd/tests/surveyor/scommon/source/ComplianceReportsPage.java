@@ -895,11 +895,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					case Investigate:
 						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[4]/img";
 						break;
-					case InvestigatePDF:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[5]/img";
-						break;
 					case Resubmit:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[6]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[5]/img";
 						break;
 					case InProgressCopy: // NOTE: When report is in-progress, Copy is the 1st button.
 						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]/img";
@@ -920,7 +917,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 							if (buttonType == ComplianceReportButtonType.Resubmit) {
 								this.waitForResubmitPopupToShow();
 								this.btnProcessResubmit.click();
-								this.waitForResubmitPopupToClose();
+								this.waitForPageLoad();
+								this.waitForAJAXCallsToComplete();
 							}
 							if (buttonType == ComplianceReportButtonType.Delete) {
 								this.waitForConfirmDeletePopupToShow();
