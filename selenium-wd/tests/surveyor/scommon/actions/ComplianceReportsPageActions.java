@@ -161,10 +161,20 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
  
 	private void clickComplianceReportButton(Integer dataRowID, ComplianceReportButtonType buttonType) throws Exception {
-		ComplianceReportsDataRow compRptDataRow = getDataReader().getDataRow(dataRowID);
+		ComplianceReportsDataRow compRptDataRow = getComplianceReportsDataRow(dataRowID);
 		String reportTitle = compRptDataRow.title;
 		this.getComplianceReportsPage().clickComplianceReportButton(reportTitle, LoginPageActions.workingDataRow.username, buttonType,
 				false /*confirmAction*/);  // By default use FALSE confirm action.
+	}
+	
+	private ComplianceReportsDataRow getComplianceReportsDataRow(Integer dataRowID) throws Exception {
+		ComplianceReportsDataRow compRptDataRow = null;
+		if (ComplianceReportsPageActions.workingDataRow != null) {
+			compRptDataRow = ComplianceReportsPageActions.workingDataRow;
+		} else {
+			compRptDataRow = getDataReader().getDataRow(dataRowID);
+		}
+		return compRptDataRow;
 	}
 	
 	private ComplianceReportsPage createNewPageObject() {
@@ -424,7 +434,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
 
 	private void verifyPresenceOfButton(Integer dataRowID, ComplianceReportButtonType buttonType) throws Exception {
-		ComplianceReportsDataRow compRptDataRow = getDataReader().getDataRow(dataRowID);
+		ComplianceReportsDataRow compRptDataRow = getComplianceReportsDataRow(dataRowID);
 		String reportTitle = compRptDataRow.title;
 		this.getComplianceReportsPage().verifyComplianceReportButton(reportTitle, LoginPageActions.workingDataRow.username, buttonType);
 	}
@@ -442,7 +452,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @throws Exception
 	 */
 	private void waitForReportFileDownload(Integer dataRowID, ReportFileType fileType, Integer fileIndex) throws Exception {
-		ComplianceReportsDataRow compRptDataRow = getDataReader().getDataRow(dataRowID);
+		ComplianceReportsDataRow compRptDataRow = getComplianceReportsDataRow(dataRowID);
 		String reportTitle = compRptDataRow.title;
 		String reportName = "";
 		
@@ -589,7 +599,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.addSurveysToReport", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("addSurveysToReport", ARG_DATA_ROW_ID, dataRowID);
 		ReportsCompliance reportsCompliance = new ReportsCompliance();
-		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
+		ComplianceReportsDataRow dataRow = getComplianceReportsDataRow(dataRowID);
 		List<ReportsSurveyInfo> reportsSurveyInfoList = buildReportSurveyInfoList(dataRow);
 		reportsCompliance.setSurveyInfoList(reportsSurveyInfoList);
 		this.getComplianceReportsPage().addSurveyInformation(reportsCompliance);
@@ -860,7 +870,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean deleteReport(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.deleteReport", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("deleteReport", ARG_DATA_ROW_ID, dataRowID);
-		ComplianceReportsDataRow compRptDataRow = getDataReader().getDataRow(dataRowID);
+		ComplianceReportsDataRow compRptDataRow = getComplianceReportsDataRow(dataRowID);
 		String reportTitle = compRptDataRow.title;
 		String createdBy = LoginPageActions.workingDataRow.username;
 		this.getComplianceReportsPage().deleteReport(reportTitle, createdBy);
@@ -930,7 +940,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean enterExclusionRadius(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.enterExclusionRadius", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("enterExclusionRadius", ARG_DATA_ROW_ID, dataRowID);
-		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
+		ComplianceReportsDataRow dataRow = getComplianceReportsDataRow(dataRowID);
 		this.getComplianceReportsPage().inputExclusionRadius(dataRow.exclusionRadius);
 		return true;
 	}
@@ -945,7 +955,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean enterFOVOpacity(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.enterFOVOpacity", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("enterFOVOpacity", ARG_DATA_ROW_ID, dataRowID);
-		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
+		ComplianceReportsDataRow dataRow = getComplianceReportsDataRow(dataRowID);
 		this.getComplianceReportsPage().inputFOVOpacity(dataRow.opacityFOV);
 		return true;
 	}
@@ -960,7 +970,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean enterLISAOpacity(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.enterLISAOpacity", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("enterLISAOpacity", ARG_DATA_ROW_ID, dataRowID);
-		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
+		ComplianceReportsDataRow dataRow = getComplianceReportsDataRow(dataRowID);
 		this.getComplianceReportsPage().inputLISAOpacity(dataRow.opacityLISA);
 		return true;
 	}
@@ -977,7 +987,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		if (!ActionArguments.isEmpty(data)) {
 			this.getComplianceReportsPage().inputImageMapHeight(data);
 		} else {
-			ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
+			ComplianceReportsDataRow dataRow = getComplianceReportsDataRow(dataRowID);
 			this.getComplianceReportsPage().inputImageMapHeight(dataRow.pDFImageOutputHeight);
 		}
 		return true;
@@ -995,7 +1005,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		if (!ActionArguments.isEmpty(data)) {
 			this.getComplianceReportsPage().inputImageMapWidth(data);
 		} else {
-			ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
+			ComplianceReportsDataRow dataRow = getComplianceReportsDataRow(dataRowID);
 			this.getComplianceReportsPage().inputImageMapWidth(dataRow.pDFImageOutputWidth);
 		}
 		return true;
@@ -1013,7 +1023,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		if (!ActionArguments.isEmpty(data)) {
 			this.getComplianceReportsPage().inputReportTitle(data);
 		} else {
-			ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
+			ComplianceReportsDataRow dataRow = getComplianceReportsDataRow(dataRowID);
 			this.getComplianceReportsPage().inputReportTitle(dataRow.title);
 		}
 		return true;
@@ -1067,7 +1077,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean findReport(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.findReport", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("findReport", ARG_DATA_ROW_ID, dataRowID);
-		ComplianceReportsDataRow compRptDataRow = getDataReader().getDataRow(dataRowID);
+		ComplianceReportsDataRow compRptDataRow = getComplianceReportsDataRow(dataRowID);
 		String reportTitle = compRptDataRow.title;
 		String createdBy = LoginPageActions.workingDataRow.username;
 		this.getComplianceReportsPage().findReport(reportTitle, createdBy);
@@ -1084,7 +1094,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean investigateReport(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.investigateReport", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("investigateReport", ARG_DATA_ROW_ID, dataRowID);
-		ComplianceReportsDataRow compRptDataRow = getDataReader().getDataRow(dataRowID);
+		ComplianceReportsDataRow compRptDataRow = getComplianceReportsDataRow(dataRowID);
 		String reportTitle = compRptDataRow.title;
 		String createdBy = LoginPageActions.workingDataRow.username;
 		this.getComplianceReportsPage().investigateReport(reportTitle, createdBy);		
@@ -1217,7 +1227,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		if (!ActionArguments.isEmpty(data)) {
 			customer = data;
 		} else {
-			ComplianceReportsDataRow compRptDataRow = getDataReader().getDataRow(dataRowID);
+			ComplianceReportsDataRow compRptDataRow = getComplianceReportsDataRow(dataRowID);
 			Integer custRowID = Integer.valueOf(compRptDataRow.customerRowID);
 			CustomerDataReader custDataReader = new CustomerDataReader(this.excelUtility);
 			CustomerDataRow custDataRow = custDataReader.getDataRow(custRowID);
@@ -1241,7 +1251,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		if (!ActionArguments.isEmpty(data)) {
 			reportMode = data;
 		} else {
-			ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
+			ComplianceReportsDataRow dataRow = getComplianceReportsDataRow(dataRowID);
 			reportMode = dataRow.reportMode;
 		}
 		ReportModeFilter mode = this.getComplianceReportsPage().getReportMode(reportMode);
@@ -1338,7 +1348,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean selectTabularPDFContent(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.selectTabularPDFContent", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("selectTabularPDFContent", ARG_DATA_ROW_ID, dataRowID);
-		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
+		ComplianceReportsDataRow dataRow = getComplianceReportsDataRow(dataRowID);
 		Integer pdfContentRowID = Integer.valueOf(dataRow.reportOptTabularPDFContentRowID);
 		ReportOptTabularPDFContentDataReader pdfContentDataReader = new ReportOptTabularPDFContentDataReader(this.excelUtility);
 		ReportOptTabularPDFContentDataRow pdfContentDataRow = pdfContentDataReader.getDataRow(pdfContentRowID);
@@ -1383,7 +1393,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		if (!ActionArguments.isEmpty(data)) {
 			timeZone = data;
 		} else {
-			ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
+			ComplianceReportsDataRow dataRow = getComplianceReportsDataRow(dataRowID);
 			timeZone = dataRow.timezone;
 		}
 		this.getComplianceReportsPage().selectTimeZone(timeZone);
@@ -1400,7 +1410,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean selectViewLayersAsset(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.selectViewLayersAsset", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("selectViewLayersAsset", ARG_DATA_ROW_ID, dataRowID);
-		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
+		ComplianceReportsDataRow dataRow = getComplianceReportsDataRow(dataRowID);
 		Integer rptViewLayerRowID = Integer.valueOf(dataRow.reportOptViewLayerRowID);
 		ReportOptViewLayersDataReader optViewLayersDataReader = new ReportOptViewLayersDataReader(this.excelUtility);
 		ReportOptViewLayersDataRow optViewLayersDataRow = optViewLayersDataReader.getDataRow(rptViewLayerRowID);
@@ -1426,7 +1436,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean selectViewLayersBoundary(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.selectViewLayersBoundary", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("selectViewLayersAsset", ARG_DATA_ROW_ID, dataRowID);
-		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
+		ComplianceReportsDataRow dataRow = getComplianceReportsDataRow(dataRowID);
 		Integer rptViewLayerRowID = Integer.valueOf(dataRow.reportOptViewLayerRowID);
 		ReportOptViewLayersDataReader optViewLayersDataReader = new ReportOptViewLayersDataReader(this.excelUtility);
 		ReportOptViewLayersDataRow optViewLayersDataRow = optViewLayersDataReader.getDataRow(rptViewLayerRowID);
@@ -1751,7 +1761,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			throw new Exception("Create new report before verifying report PDF files. Report has not been created.");
 		}
 
-		ComplianceReportsDataRow compRptDataRow = getDataReader().getDataRow(dataRowID);
+		ComplianceReportsDataRow compRptDataRow = getComplianceReportsDataRow(dataRowID);
 		String rptTitle = compRptDataRow.title;
 
 		if ((getComplianceReportsPage().checkActionStatus(rptTitle, LoginPageActions.workingDataRow.username, null))) {
@@ -1844,7 +1854,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean verifyReportPageFieldsAreCorrect(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyReportPageFieldsAreCorrect", data, dataRowID);
-		ComplianceReportsDataRow dataRow = getDataReader().getDataRow(dataRowID);
+		ComplianceReportsDataRow dataRow = getComplianceReportsDataRow(dataRowID);
 		String customerName = new CustomerDataReader(this.excelUtility).getDataRow(Integer.valueOf(dataRow.customerRowID)).name;
 		List<Integer> surveyRowIDs = ActionArguments.getNumericList(dataRow.reportSurveyRowIDs);
 		Integer reportViewLayerRowID = Integer.valueOf(dataRow.reportOptViewLayerRowID);

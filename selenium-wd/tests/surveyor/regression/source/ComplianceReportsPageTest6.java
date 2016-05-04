@@ -91,6 +91,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* NOTE: Use Customer Admin when assets populated */
+		
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
@@ -609,7 +610,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *  - - The thumbnail preview grid should include a button for Shapefile export
 	 *	- - The thumbnail preview grid should not include a button for Shapefile export
 	 */
-	@Test
+	@Ignore    // Survey data upload needs to be handled for New Customer report generation scenarios.
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC690, location = ComplianceReportDataProvider.class)
 	public void TC690_RemoveShapefileGenerationOptionFromExistingCustomer(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -780,7 +781,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *	- There should be a 50 foot buffer between the LISA bubble and the side of the box perpendicular to the line bisecting the LISA
 	 *	- Overlapping LISA boxes should not be combined into a single box. Each LISA should have its own LISA box drawn as a distinct box unto itself
 	 */
-	@Ignore   // TODO: Need surveys that have LISAs close enough to overlap each other.
+	@Ignore   // Need surveys that have LISAs close enough to overlap each other added by Automation seed.
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC701, location = ComplianceReportDataProvider.class)
 	public void TC701_OverlappingLISABoxes(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -857,7 +858,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *	- - Shape zip file will be downloaded successfully and it will have shape files
 	 *	- - Meta zip file will be downloaded successfully and it will have meta data files
 	 */
-	@Test
+	@Ignore    // Survey data upload needs to be handled for New Customer report generation scenarios.
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC719, location = ComplianceReportDataProvider.class)
 	public void TC719_ShapeFileMetaDataReportFeaturePermissionNewCustomer(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -973,7 +974,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *	External ID (Attribute column, unique identifier given by the customer)
 	 *	Shape (Spatial column)
 	 */
-	@Ignore  // TODO: Need survey with Assets running through LISA boxes
+	@Ignore  // Need survey with Assets running through LISA boxes added to seed script.
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC736, location = ComplianceReportDataProvider.class)
 	public void TC736_ShapefileExportReportLISA_HighlightedAssets(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -1018,7 +1019,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *	External ID (Attribute column, unique identifier given by the customer)
 	 *	Shape (Spatial column)
 	 */
-	@Ignore   // TODO: Need survey that includes Gap boxes that have Assets running through them
+	@Ignore   // Need survey that includes Gap boxes that have Assets running through them added to automation seed script.
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC737, location = ComplianceReportDataProvider.class)
 	public void TC737_ShapefileExportReportGap_HighlightedAssets(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -1052,7 +1053,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *	- - Compliance Viewer dialog has Shape (ZIP) and Meta data (ZIP) export buttons
 	 *	- - User can download the Shape files and meta data files successfully
 	 */
-	@Test
+	@Ignore    // Survey data upload needs to be handled for New Customer report generation scenarios.
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC786, location = ComplianceReportDataProvider.class)
 	public void TC786_ShapefileMetaDataReportFeaturePermissionExistingCustomer_CopyComplianceReportGeneration(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
