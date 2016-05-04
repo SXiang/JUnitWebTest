@@ -94,6 +94,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.gson.Gson;
@@ -928,10 +929,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 								this.waitForConfirmDeletePopupToShow();
 								if (confirmAction) {
 									this.clickOnConfirmInDeleteReportPopup();
-								} else {
-									this.clickOnCancelInDeleteReportPopup();
-								}
-								this.waitForConfirmDeletePopupToClose();
+									this.waitForConfirmDeletePopupToClose();
+								} 
 							}
 						}
 						return true;
@@ -2718,19 +2717,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		});
 	}
 
-	private void waitForConfirmDeletePopupToShow() {
-		WebElement confirmDeletePopupSection = this.driver.findElement(By.id("deleteReportModal"));
+	public void waitForConfirmDeletePopupToShow() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
+				(new WebDriverWait(driver, timeout + 15)).until(ExpectedConditions.presenceOfElementLocated(By.id("deleteReportModal")));
+				WebElement confirmDeletePopupSection = d.findElement(By.id("deleteReportModal"));
 				return confirmDeletePopupSection.getAttribute("style").contains("display:block") || confirmDeletePopupSection.getAttribute("style").contains("display: block");
 			}
 		});
 	}
 
-	private void waitForConfirmDeletePopupToClose() {
-		WebElement confirmDeletePopupSection = this.driver.findElement(By.id("deleteReportModal"));
+	public void waitForConfirmDeletePopupToClose() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
+				(new WebDriverWait(driver, timeout + 15)).until(ExpectedConditions.presenceOfElementLocated(By.id("deleteReportModal")));
+				WebElement confirmDeletePopupSection = d.findElement(By.id("deleteReportModal"));
 				return confirmDeletePopupSection.getAttribute("style").contains("display:none") || confirmDeletePopupSection.getAttribute("style").contains("display: none");
 			}
 		});

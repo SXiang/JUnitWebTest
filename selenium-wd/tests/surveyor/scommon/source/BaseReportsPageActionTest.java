@@ -71,12 +71,6 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 		}
 	}
 
-	protected void clickConfirmDeleteInComplianceReport(ComplianceReportsPageActions complianceReportsPageAction, Integer reportDataRowID) throws Exception {
-		if (getTestRunMode() == ReportTestRunMode.FullTestRun) {
-			complianceReportsPageAction.clickOnConfirmDeleteReport(EMPTY, reportDataRowID);
-		} 
-	}
-
 	protected void waitForComplianceReportGenerationToComplete(ComplianceReportsPageActions complianceReportsPageAction, Integer reportDataRowID) {
 		if (getTestRunMode() == ReportTestRunMode.FullTestRun) {
 			complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID);

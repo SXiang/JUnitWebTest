@@ -478,8 +478,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			break;
 		case View:
 			reportName = this.getComplianceReportsPage().getReportPDFFileName(workingDataRow.title, false /*includeExtension*/); 
-			String ordinalNumberString = new NumberUtility().getOrdinalNumberString(fileIndex);
-			String viewName = String.format("%s View", ordinalNumberString);
+			List<Map<String, String>> viewList = workingReportsComp.getViewList();
+			Map<String, String> map = viewList.get(fileIndex-1);
+			String viewName = map.get(KEYVIEWNAME);
 			this.getComplianceReportsPage().waitForViewFileDownload(reportName, viewName);
 			break;
 		default:
@@ -678,6 +679,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean clickOnConfirmDeleteReport(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.clickOnConfirmDeleteReport", data, dataRowID);
 		this.getComplianceReportsPage().clickOnConfirmInDeleteReportPopup();
+		this.getComplianceReportsPage().waitForPageLoad();
+		this.getComplianceReportsPage().waitForAJAXCallsToComplete();
 		return true;
 	}
  
@@ -2421,6 +2424,32 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
 
 	/**
+	 * Executes waitForConfirmDeletePopupToShow action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean waitForConfirmDeletePopupToShow(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.waitForConfirmDeletePopupToShow", data, dataRowID);
+		getComplianceReportsPage().waitForConfirmDeletePopupToShow();
+		return true;
+	}
+
+	/**
+	 * Executes waitForConfirmDeletePopupToClose action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean waitForConfirmDeletePopupToClose(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.waitForConfirmDeletePopupToClose", data, dataRowID);
+		getComplianceReportsPage().waitForConfirmDeletePopupToClose();
+		return true;
+	}
+
+	/**
 	 * Executes extractPDFZIP action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -2648,7 +2677,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean verifyReportDeletedSuccessfully(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.verifyReportDeletedSuccessfully", data, dataRowID);
-		return !this.getComplianceReportsPage().findReport(workingDataRow.title, LoginPageActions.workingDataRow.username);
+		return !this.getComplianceReportsPage().searchReport(workingDataRow.title, LoginPageActions.workingDataRow.username);
 	}
  
 	/**

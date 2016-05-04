@@ -65,7 +65,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		testEnvironmentAction = new TestEnvironmentActions();
 
 		// Select run mode here.
-		setTestRunMode(ReportTestRunMode.FullTestRun);
+		setTestRunMode(ReportTestRunMode.UnitTestRun);
 		
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
@@ -287,7 +287,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnDeleteButton(EMPTY, getReportRowID(reportDataRowID1));
-		clickConfirmDeleteInComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForConfirmDeletePopupToShow(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnConfirmDeleteReport(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyReportDeletedSuccessfully(EMPTY, NOTSET));
 	}
 
