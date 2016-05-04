@@ -953,6 +953,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean checkFileExists(String fileName, String downloadPath) {
+		Log.info(String.format("Looking for file-[%s] in download directory-[%s]", fileName, downloadPath));
 		File dir = new File(downloadPath);
 		File[] dir_contents = dir.listFiles();
 		for (int i = 0; i < dir_contents.length; i++) {

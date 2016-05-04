@@ -194,8 +194,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			String newLocationName, boolean useLatLongSelector, String ethMthMin, String ethMthMax, boolean checkForError) {
 		
 		if (newLocationName.equalsIgnoreCase("Santa Clara")) {
-			latitude = "37.3971035425739";
-			longitude = "-121.98343231897";
+			setLatitude("37.3971035425739");
+			setLongitude("-121.98343231897");
 		}
 
 		this.btnAddNewLocation.click();
@@ -203,7 +203,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.inputLocationDesc.sendKeys(locationDesc);
 
 		if (!useLatLongSelector) {
-			inputLatLong(latitude, longitude);
+			inputLatLong(getLatitude(), getLongitude());
 		} else {
 			final int X_OFFSET = 100;
 			final int Y_OFFSET = 100;
@@ -610,6 +610,23 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public String getLocationDescriptionError(){
 		return this.labelLocDescError.getText();
 	}
+
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+
 	public void clickOnAddNewLocationBtn() {
 		this.btnAddNewLocation.click();
 		this.waitForNewPageLoad();

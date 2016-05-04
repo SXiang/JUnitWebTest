@@ -2,6 +2,7 @@ package surveyor.scommon.actions.data;
 
 import common.source.ExcelUtility;
 import common.source.Log;
+import surveyor.scommon.actions.ActionArguments;
 
 public class LocationDataReader extends BaseDataReader {
 
@@ -26,6 +27,7 @@ public class LocationDataReader extends BaseDataReader {
 	public static final int Excel_TestData__Col_IsotopicIdentityNoUpperBound = 12;
 	public static final int Excel_TestData__Col_EthMethRatioMin = 13;
 	public static final int Excel_TestData__Col_EthMethRatioMax = 14;
+	public static final int Excel_TestData__Col_CustomerDataRowID = 15;
  
 	public class LocationDataRow {
 		public String rowID;
@@ -43,11 +45,12 @@ public class LocationDataReader extends BaseDataReader {
 		public String isotopicIdentityNoUpperBound;
 		public String ethMethRatioMin;
 		public String ethMethRatioMax;
+		public String customerDataRowID;
  
 		public LocationDataRow(String rowID, String name, String latitude, String longitude, String standardMinAmplitude, 
 				String operatorMinAmplitude, String rapidResponseMinAmplitude, String assessmentMinAmplitude, String eQMinAmplitude, 
 				String isotopicIdentityNoLowerBound, String isotopicIdentityYesLowerBound, String isotopicIdentityYesUpperBound, 
-				String isotopicIdentityNoUpperBound, String ethMethRatioMin, String ethMethRatioMax) {
+				String isotopicIdentityNoUpperBound, String ethMethRatioMin, String ethMethRatioMax, String customerDataRowID) {
 			this.rowID = rowID;
 			this.name = name;
 			this.latitude = latitude;
@@ -63,6 +66,7 @@ public class LocationDataReader extends BaseDataReader {
 			this.isotopicIdentityNoUpperBound = isotopicIdentityNoUpperBound;
 			this.ethMethRatioMin = ethMethRatioMin;
 			this.ethMethRatioMax = ethMethRatioMax;
+			this.customerDataRowID = customerDataRowID;
 		}
 	}	
  
@@ -79,6 +83,7 @@ public class LocationDataReader extends BaseDataReader {
 	public LocationDataRow getDataRow(Integer dataRowID) throws Exception {
 		String rowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
 		String name = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Name, TESTDATA_SHEET_NAME);
+		name = ActionArguments.evaluateArgForFunction(name);
 		String latitude = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_Latitude, TESTDATA_SHEET_NAME);
 		String longitude = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_Longitude, TESTDATA_SHEET_NAME);
 		String standardMinAmplitude = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_StandardMinAmplitude, TESTDATA_SHEET_NAME);
@@ -86,23 +91,24 @@ public class LocationDataReader extends BaseDataReader {
 		String rapidResponseMinAmplitude = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_RapidResponseMinAmplitude, TESTDATA_SHEET_NAME);
 		String assessmentMinAmplitude = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_AssessmentMinAmplitude, TESTDATA_SHEET_NAME);
 		String eQMinAmplitude = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_EQMinAmplitude, TESTDATA_SHEET_NAME);
-		String isotopicIdentityNoLowerBound = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_IsotopicIdentityNoLowerBound, TESTDATA_SHEET_NAME);
-		String isotopicIdentityYesLowerBound = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_IsotopicIdentityYesLowerBound, TESTDATA_SHEET_NAME);
-		String isotopicIdentityYesUpperBound = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_IsotopicIdentityYesUpperBound, TESTDATA_SHEET_NAME);
-		String isotopicIdentityNoUpperBound = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_IsotopicIdentityNoUpperBound, TESTDATA_SHEET_NAME);
-		String ethMethRatioMin = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_EthMethRatioMin, TESTDATA_SHEET_NAME);
-		String ethMethRatioMax = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_EthMethRatioMax, TESTDATA_SHEET_NAME);
+		String isotopicIdentityNoLowerBound = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_IsotopicIdentityNoLowerBound, TESTDATA_SHEET_NAME);
+		String isotopicIdentityYesLowerBound = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_IsotopicIdentityYesLowerBound, TESTDATA_SHEET_NAME);
+		String isotopicIdentityYesUpperBound = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_IsotopicIdentityYesUpperBound, TESTDATA_SHEET_NAME);
+		String isotopicIdentityNoUpperBound = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_IsotopicIdentityNoUpperBound, TESTDATA_SHEET_NAME);
+		String ethMethRatioMin = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_EthMethRatioMin, TESTDATA_SHEET_NAME);
+		String ethMethRatioMax = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_EthMethRatioMax, TESTDATA_SHEET_NAME);
+		String customerDataRowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_CustomerDataRowID, TESTDATA_SHEET_NAME);
 		
 		Log.info(String.format("Found data row: rowID=[%s], name=[%s], latitude=[%s], longitude=[%s], standardMinAmplitude=[%s], "
 				+ "operatorMinAmplitude=[%s], rapidResponseMinAmplitude=[%s], assessmentMinAmplitude=[%s], eQMinAmplitude=[%s], "
 				+ "isotopicIdentityNoLowerBound=[%s], isotopicIdentityYesLowerBound=[%s], isotopicIdentityYesUpperBound=[%s], "
-				+ "isotopicIdentityNoUpperBound=[%s], ethMethRatioMin=[%s], ethMethRatioMax=[%s]", 
+				+ "isotopicIdentityNoUpperBound=[%s], ethMethRatioMin=[%s], ethMethRatioMax=[%s], customerDataRowID=[%s]", 
 				rowID, name, latitude, longitude, standardMinAmplitude, operatorMinAmplitude, rapidResponseMinAmplitude, 
 				assessmentMinAmplitude, eQMinAmplitude, isotopicIdentityNoLowerBound, isotopicIdentityYesLowerBound, 
-				isotopicIdentityYesUpperBound, isotopicIdentityNoUpperBound, ethMethRatioMin, ethMethRatioMax));
+				isotopicIdentityYesUpperBound, isotopicIdentityNoUpperBound, ethMethRatioMin, ethMethRatioMax, customerDataRowID));
 		
 		return new LocationDataRow(rowID, name, latitude, longitude, standardMinAmplitude, operatorMinAmplitude, rapidResponseMinAmplitude, 
 				assessmentMinAmplitude, eQMinAmplitude, isotopicIdentityNoLowerBound, isotopicIdentityYesLowerBound, isotopicIdentityYesUpperBound, 
-				isotopicIdentityNoUpperBound, ethMethRatioMin, ethMethRatioMax);
+				isotopicIdentityNoUpperBound, ethMethRatioMin, ethMethRatioMax, customerDataRowID);
 	}
 }

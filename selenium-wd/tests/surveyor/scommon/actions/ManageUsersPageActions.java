@@ -1,9 +1,15 @@
 package surveyor.scommon.actions;
 
+import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLEDR;
+import static surveyor.scommon.source.SurveyorConstants.SQACUS;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
+import static surveyor.scommon.source.SurveyorConstants.TIMEZONECTUA;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.TestSetup;
+import surveyor.regression.source.ManageLocationsPageTest_Ethane;
 import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
 import surveyor.scommon.actions.data.LocationDataReader;
@@ -91,9 +97,13 @@ public class ManageUsersPageActions extends BasePageActions {
 	 * @throws Exception
 	 */
 	private LocationDataRow getLocationDataRow(UserDataRow userDataRow) throws Exception {
-		LocationDataReader locationDataReader = new LocationDataReader(excelUtility);
-		LocationDataRow locationDataRow = locationDataReader.getDataRow(Integer.parseInt(userDataRow.locationRowID));
-		return locationDataRow;
+		if (ManageLocationPageActions.workingDataRow != null) {
+			return ManageLocationPageActions.workingDataRow;
+		} else {
+			LocationDataReader locationDataReader = new LocationDataReader(excelUtility);
+			LocationDataRow locationDataRow = locationDataReader.getDataRow(Integer.parseInt(userDataRow.locationRowID));
+			return locationDataRow;
+		}
 	}
 
 	/**
@@ -103,9 +113,13 @@ public class ManageUsersPageActions extends BasePageActions {
 	 * @throws Exception
 	 */
 	private CustomerDataRow getCustomerDataRow(UserDataRow userDataRow) throws Exception {
-		CustomerDataReader customerDataReader = new CustomerDataReader(excelUtility);
-		CustomerDataRow customerDataRow = customerDataReader.getDataRow(Integer.parseInt(userDataRow.customerRowID));
-		return customerDataRow;
+		if (ManageCustomerPageActions.workingDataRow != null) {
+			return ManageCustomerPageActions.workingDataRow;
+		} else {
+			CustomerDataReader customerDataReader = new CustomerDataReader(excelUtility);
+			CustomerDataRow customerDataRow = customerDataReader.getDataRow(Integer.parseInt(userDataRow.customerRowID));
+			return customerDataRow;
+		}
 	}
 
 	/* Invoke action using specified ActionName */
