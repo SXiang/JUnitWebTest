@@ -64,8 +64,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
 
-		// To run the test locally in UnitTest mode uncomment this line.
-		setTestRunMode(ReportTestRunMode.UnitTestRun);
+		// Select run mode here.
+		setTestRunMode(ReportTestRunMode.FullTestRun);
 		
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
