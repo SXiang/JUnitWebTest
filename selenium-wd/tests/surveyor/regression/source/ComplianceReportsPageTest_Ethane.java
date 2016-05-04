@@ -711,9 +711,10 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
-
-		if (tablesList.get(0).get(KEYINDTB).equals("1")) {
-			assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
+		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
+			if (tablesList.get(0).get(KEYINDTB).equals("1")) {
+				assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
+			}
 		}
 		else
 			fail("\nTestcase TC1729 failed.\n");
