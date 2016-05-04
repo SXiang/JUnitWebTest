@@ -1,14 +1,11 @@
 package surveyor.scommon.actions;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.PageFactory;
-
 import common.source.TestSetup;
 import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
 import surveyor.scommon.actions.data.LocationDataReader;
 import surveyor.scommon.actions.data.LocationDataReader.LocationDataRow;
-import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 
 public class ManageLocationPageActions extends BasePageActions {

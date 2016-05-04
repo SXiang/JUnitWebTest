@@ -1,15 +1,9 @@
 package surveyor.scommon.actions;
 
-import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLEDR;
-import static surveyor.scommon.source.SurveyorConstants.SQACUS;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONECTUA;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.TestSetup;
-import surveyor.regression.source.ManageLocationsPageTest_Ethane;
 import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
 import surveyor.scommon.actions.data.LocationDataReader;

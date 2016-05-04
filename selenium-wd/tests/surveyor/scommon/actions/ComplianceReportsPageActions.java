@@ -1,6 +1,5 @@
 package surveyor.scommon.actions;
 
-import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
@@ -18,11 +17,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
-import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
-import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_25;
-import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_50;
-import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
