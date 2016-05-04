@@ -8,6 +8,7 @@ import static org.junit.Assert.fail;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVETHSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVETHRRTAG;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
+import static surveyor.scommon.source.SurveyorConstants.CUSDRVRAPIDTAG;
 import static surveyor.scommon.source.SurveyorConstants.ETHRNELAT;
 import static surveyor.scommon.source.SurveyorConstants.ETHRNELON;
 import static surveyor.scommon.source.SurveyorConstants.ETHRSWLAT;
@@ -226,7 +227,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.Standard, CUSDRVETHSTDTAG));
 
 		driver.navigate().refresh();
-		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVSTDTAG));
+		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVRAPIDTAG));
 
 		driver.navigate().refresh();
 		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVETHRRTAG));

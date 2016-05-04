@@ -989,10 +989,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
 			List<WebElement> Rows = tabledata.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
-			for (int getrowvalue = 1; getrowvalue < Rows.size(); getrowvalue++) {
-				List<WebElement> Columns = Rows.get(getrowvalue)
+			for (int getrowvalue = 1; getrowvalue <= Rows.size(); getrowvalue++) {
+				List<WebElement> Columns = Rows.get(getrowvalue-1)
 						.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[6]"));
-				for (int getcolumnvalue = 1; getcolumnvalue < Columns.size(); getcolumnvalue++) {
+				for (int getcolumnvalue = 1; getcolumnvalue <= Columns.size(); getcolumnvalue++) {
 					String cellValue = driver
 							.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[6]"))
 							.getText();

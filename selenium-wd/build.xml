@@ -339,7 +339,9 @@
 					<include name="**/UserFeedbackAdminPageTest.class" />
 					<include name="**/SurveyViewPageTest5.class" />
 					<include name="**/SystemHistoryReportsPageTest.class" />	
-					<include name="**/ReferenceGasReportsPageTest.class" />		
+					<include name="**/ReferenceGasReportsPageTest.class" />	
+					<include name="**/ManageLocationsPageTest_Ethane.class" />
+					<include name="**/ManageRefGasBottlesPageTests_Ethane.class" />
 				</fileset>
 			</batchtest>
 		</junit>
