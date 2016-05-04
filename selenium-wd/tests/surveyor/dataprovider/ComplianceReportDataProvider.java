@@ -58,6 +58,10 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC737 = "dataProviderPageActionsComplianceReports_TC737";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC786 = "dataProviderPageActionsComplianceReports_TC786";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC798 = "dataProviderPageActionsComplianceReports_TC798";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC204 = "dataProviderPageActionsComplianceReports_TC204";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC210 = "dataProviderPageActionsComplianceReports_TC210";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC227 = "dataProviderPageActionsComplianceReports_TC227";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1522 = "dataProviderPageActionsComplianceReports_TC1522";
 
 	public ComplianceReportDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
@@ -544,6 +548,30 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	public static Object[][] dataProviderPageActionsComplianceReports_TC798() {
 		return new Object[][] {				
 			{ "TC798" /*TestCaseID*/, 6 /*userDataRowID*/,  -1 /*NOT USED - reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC204() {
+		return new Object[][] {				
+			{ "TC204" /*TestCaseID*/, 6 /*userDataRowID*/,  50 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC210() {
+		return new Object[][] {				
+			{ "TC210" /*TestCaseID*/, 6 /*userDataRowID*/,  51/*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC227() {
+		return new Object[][] {				
+			{ "TC227" /*TestCaseID*/, 6 /*userDataRowID*/,  51/*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1522() {
+		return new Object[][] {				
+			{ "TC1522" /*TestCaseID*/, 6 /*userDataRowID*/,  51/*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 }

@@ -315,6 +315,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return this.rptSmallBoundary;
 	}
 
+	public WebElement getCheckBoxStndRptMode() {
+		return this.checkBoxStndRptMode;
+	}
+
 	private static LatLongSelectionControl latLongSelectionControl = null;
 
 	public enum CustomerBoundaryType {
