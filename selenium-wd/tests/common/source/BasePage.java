@@ -132,7 +132,7 @@ public class BasePage {
 			return false;
 		}
 	}
-	
+
 	public boolean isElementPresent(String strXPath) {
 		return isElementPresent(By.xpath(strXPath));
 	}
@@ -255,14 +255,14 @@ public class BasePage {
 	}
 
 	protected boolean isAttributePresentOnElement(WebElement element, String attribute) {
-	    try {
-	        String value = element.getAttribute(attribute);
-	        if (value != null){
-	            return true;
-	        }
-	    } catch (Exception e) {}
+		try {
+			String value = element.getAttribute(attribute);
+			if (value != null){
+				return true;
+			}
+		} catch (Exception e) {}
 
-	    return false;
+		return false;
 	}
 
 	protected void sendKeysToTextArea(WebElement textAreaEula, String eula) {
@@ -278,18 +278,18 @@ public class BasePage {
 		actions.sendKeys(eula);
 		actions.build().perform();
 	}
-	
+
 	protected void waitUntilPresenceOfElementLocated(String elementID) {
 		waitUntilPresenceOfElementLocated(By.id(elementID));
 	}
-    protected void waitUntilPresenceOfElementLocated(By locator){
-    	(new WebDriverWait(driver, timeout)).until(
+	protected void waitUntilPresenceOfElementLocated(By locator){
+		(new WebDriverWait(driver, timeout)).until(
 				ExpectedConditions.presenceOfElementLocated(locator));
-    }
-    
-    protected String waitForPresenceOfElementText(By locator){
-    	return waitForPresenceOfElementText(locator, UNKNOWN_TEXT);
-    }
+	}
+
+	protected String waitForPresenceOfElementText(By locator){
+		return waitForPresenceOfElementText(locator, UNKNOWN_TEXT);
+	}
 	protected String waitForPresenceOfElementText(By locator, String expectedText){
 		String actualText = null;
 		try {
@@ -331,4 +331,14 @@ public class BasePage {
 		js.executeScript("arguments[0].click();", element);
 	}
 
+	/**
+	 * Javascript to set attribute value
+	 * @param element
+	 * @param attr
+	 * @param value
+	 */
+	public void jsSetAttribute(WebElement element, String attr, String value){
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].setAttribute('"+attr+"', '"+value+"')",element);
+	}
 }

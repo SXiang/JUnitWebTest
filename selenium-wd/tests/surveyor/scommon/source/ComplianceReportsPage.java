@@ -1016,7 +1016,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	private void handleOptionalDynamicViewLayersSection(List<Map<String, String>> viewLayersList) {
-		if (viewLayersList != null) {
+		if (viewLayersList != null&&!viewLayersList.isEmpty()) {
 			selectViewLayerAssets(viewLayersList.get(0));
 			selectViewLayerBoundaries(viewLayersList.get(0));
 		}
@@ -1731,7 +1731,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		setReportName(reportName);
 		List<String[]> coverageForecast = pdfTableUtility.extractPDFTable(actualReport, PDFTable.COVERAGEFORECAST);
 		List<String[]> coverageForecastTo70 = pdfTableUtility.extractPDFTable(actualReport, PDFTable.COVERAGEFORECASTTO70);
-		
+	    preCoverageForecast = coverageForecast;
+	    preCoverageForecastTo70 = coverageForecastTo70;
+	    return verifyCoverageForecastValuesTableWithDBData(reportId, coverageForecast, coverageForecastTo70);
+	}
+	private boolean verifyCoverageForecastValuesTableWithDBData(String reportId, List<String[]> coverageForecast, List<String[]> coverageForecastTo70){
 		int startIndex = 0;
 		StoredProcComplianceGetCoverageForecast coverageForecastObj = new StoredProcComplianceGetCoverageForecast();
 		String[] row = coverageForecast.get(startIndex);
@@ -2924,7 +2928,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 
 		if (reportsCompliance.getExclusionRadius() != null) {
-			inputExclusionRadius(reportsCompliance.getExclusionRadius());
+			//TODO: This is not working properly, need rewrite
+			//inputExclusionRadius(reportsCompliance.getExclusionRadius());
 		}
 
 		// 2. Area Selector
@@ -2994,10 +2999,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	private boolean isCustomBoundarySpecified(ReportsCompliance reportsCompliance) {
 		boolean useSelector = false;
 		if (reportsCompliance != null) {
-			boolean textFieldsSpecified = !BaseHelper.isNullOrEmpty(reportsCompliance.getNELat()) 
-					&& !BaseHelper.isNullOrEmpty(reportsCompliance.getNELong()) &&
-					!BaseHelper.isNullOrEmpty(reportsCompliance.getSWLat())
-					&& !BaseHelper.isNullOrEmpty(reportsCompliance.getSWLong());
+			boolean textFieldsSpecified = !BaseHelper.isNullOrEmptyOrZero(reportsCompliance.getNELat()) 
+					&& !BaseHelper.isNullOrEmptyOrZero(reportsCompliance.getNELong()) &&
+					!BaseHelper.isNullOrEmptyOrZero(reportsCompliance.getSWLat())
+					&& !BaseHelper.isNullOrEmptyOrZero(reportsCompliance.getSWLong());
 			boolean latLongFieldsSpecified = useCustomBoundaryLatLongSelector(reportsCompliance);
 			useSelector = textFieldsSpecified || latLongFieldsSpecified;
 		}

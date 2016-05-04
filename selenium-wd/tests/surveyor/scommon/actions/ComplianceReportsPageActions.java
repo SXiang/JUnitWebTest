@@ -166,13 +166,17 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	    clickComplianceReportButton(getReportTitle(dataRowID),buttonType);
 	}
 	
-	public String getReportTitle(Integer dataRowID) throws Exception{
+	public String getReportTitle(Integer dataRowID){
 		String title = workingReportsComp.getRptTitle();
-		if(workingReportsComp!=null&&!BaseHelper.isNullOrEmpty(title)){
+		if(workingReportsComp!=null&&!BaseHelper.isNullOrEmptyOrZero(title)){
 			return title;
 		}else{
-			ComplianceReportsDataRow compRptDataRow = getDataReader().getDataRow(dataRowID);
-			return compRptDataRow.title;
+			try {
+				return getDataReader().getDataRow(dataRowID).title;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return "";
 		}
 	}
 	
@@ -202,30 +206,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		listBoundary.add(SWLat);
 		listBoundary.add(SWLong);
 	}
-	private void fillCustomerBoundary(ComplianceReportDataReader reader,
-			Integer dataRowID) throws Exception {
-		String customerBoundaryType = reader.getDataRow(dataRowID).customerBoundaryType;
-		String customerBoundaryName = reader.getDataRow(dataRowID).customerBoundaryName;
-		CustomerBoundaryFilterType customerBoundaryFilterType = CustomerBoundaryFilterType.SmallBoundary;
-		switch(customerBoundaryType){
-		case "Small Boundary":
-			customerBoundaryFilterType = CustomerBoundaryFilterType.SmallBoundary;
-		    break;
-		case "Big Boundary":
-			customerBoundaryFilterType = CustomerBoundaryFilterType.BigBoundary;
-		    break;
-		case "District":
-			customerBoundaryFilterType = CustomerBoundaryFilterType.District;
-		    break;
-		case "DistrictPlat":
-			customerBoundaryFilterType = CustomerBoundaryFilterType.DistrictPlat;
-		    break;
-		case "LeakSurveyArea":
-			customerBoundaryFilterType = CustomerBoundaryFilterType.LeakSurveyArea;
-		    break;	  
-		}
-		workingReportsComp.setCustomerBoundaryInfo(customerBoundaryFilterType, customerBoundaryName);
-	} 
+
 	private void fillViewDetails(Map<String, String> viewMap, ReportViewsDataReader reader,
 			Integer dataRowID) throws Exception {
 		String viewName = reader.getDataRow(dataRowID).name;
@@ -298,8 +279,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 
 	public ReportsCompliance fillWorkingDataForReports(Integer dataRowID) throws Exception {
 		workingDataRow = getDataReader().getDataRow(dataRowID);
-		
-		String rptTitle = testCaseID+workingDataRow.title; 
+	
+		String rptTitle = workingDataRow.title; 
 		String customer = null; 
 		String customerRowID = workingDataRow.customerRowID;
 		if (customerRowID != "") {
@@ -342,11 +323,10 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, TestContext.INSTANCE.getLoggedInUser(), customer, timeZone, exclusionRadius,
 				listBoundary, tablesList, null /*surveyorUnit*/, null /*tagList*/, viewList, viewLayersList);
 		rpt.setSurveyInfoList(reportsSurveyInfoList);
-        		
+        rpt.setCustomerBoundaryInfo(workingDataRow.customerBoundaryType, workingDataRow.customerBoundaryName);
+        
 		workingReportsComp = rpt;		// Store the working report properties.
 		
-		// Add customer boundary infomation
-		fillCustomerBoundary(getDataReader(), dataRowID);
 		return rpt;
 	}
 
@@ -2326,7 +2306,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean waitForReportGenerationToComplete(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.waitForReportGenerationToComplete", data, dataRowID);
 		this.getComplianceReportsPage().waitForPageLoad();
-		this.getComplianceReportsPage().waitForReportGenerationtoComplete(workingDataRow.title, 
+		this.getComplianceReportsPage().waitForReportGenerationtoComplete(workingDataRow.title,
 				TestContext.INSTANCE.getLoggedInUser());
 		return true;
 	}

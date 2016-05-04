@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.testng.Assert;
 
@@ -27,6 +28,7 @@ import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
@@ -41,17 +43,15 @@ import surveyor.scommon.source.ReportsCompliance;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
-
-	private static final String EMPTY = "";
-	private static final Integer NOTSET = -1;	
-	private static LoginPageActions loginPageAction;	
-	private static ComplianceReportsPage complianceReportsPage;
-	private static ComplianceReportsPageActions complianceReportsPageAction;
 	
+	private static LoginPageActions loginPageAction;
+	private static ComplianceReportsPageActions complianceReportsPageAction;
+
+	private static ComplianceReportsPage complianceReportsPage;
+
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
-		
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 	}
 
@@ -62,15 +62,16 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	protected static void initializePageActions() throws Exception {
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
+
 		// To run the test locally in UnitTest mode uncomment this line.
-		setTestRunMode(ReportTestRunMode.UnitTestRun);
+		//setTestRunMode(ReportTestRunMode.UnitTestRun);
 		
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
 		}
-			
 	}
 
+	
 // TODO DE1898: https://rally1.rallydev.com/#/53512905526d/detail/defect/54567703274
 	
 	/**
@@ -87,7 +88,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
      *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Ignore @Test /* enable it later */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1319, location = ComplianceReportDataProvider.class)
 	public void TC1319_GenerateComplianceReportPicarroSupportUserIncludePercentCoverageForecast(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -122,7 +123,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Report generated successfully- Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Ignore @Test /* enable it later */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1320, location = ComplianceReportDataProvider.class)
 	public void TC1320_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast2SurveysDifferentTags(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -160,7 +161,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *  - - User friendly error messages are displayed: "Selected Percent Coverage Forecast, Please select at least two surveys with different tags"
 	 *	- - Error message will not be displayed to user when different tag value surveys are included
 	 */
-	@Test
+	@Ignore @Test /* enable it later */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1319, location = ComplianceReportDataProvider.class)
 	public void TC1339_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelected(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2, Integer reportDataRowID3) throws Exception {
@@ -206,7 +207,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *  - - User friendly error messages are displayed: "Selected Percent Coverage Forecast, Please select at least two surveys with different tags"
 	 *	- - Error message will not be displayed to user when different tag value surveys are included
 	 */
-	@Test
+	@Ignore @Test /* enable it later */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1340, location = ComplianceReportDataProvider.class)
 	public void TC1340_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelectedOnCopyCR(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2,Integer reportDataRowID3, Integer reportDataRowID4,Integer reportDataRowID5) throws Exception {
@@ -258,7 +259,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Prediction table will not show any records as 4 or more surveys with different tag values are not supported.
 	 *	- - "No Coverage Forecast Available" message is displayed
 	 */
-	@Test
+	@Ignore @Test /* enable it later */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1352, location = ComplianceReportDataProvider.class)
 	public void TC1352_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast4OrMoreSurveysDifferentTags(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -293,7 +294,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *	- - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Ignore @Test /* enable it later */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1363, location = ComplianceReportDataProvider.class)
 	public void TC1363_GenerateComplianceReportCustomerAdminUsingCopyFunctionalityIncludePercentCoverageForecast2SurveysDifferentTags(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -332,7 +333,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Ignore @Test /* enable it later */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1364, location = ComplianceReportDataProvider.class)
 	public void TC1364_GenerateComplianceReportPicarroSupportUserUsingReprocessFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -374,7 +375,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Ignore @Test /* enable it later */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1365, location = ComplianceReportDataProvider.class)
 	public void TC1365_GenerateComplianceReportPicarroAdminUsingCopyFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -386,6 +387,10 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));	
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 		
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingReportsComp.getRptTitle(), getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
@@ -415,7 +420,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Ignore @Test /* enable it later */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1366, location = ComplianceReportDataProvider.class)
 	public void TC1366_GenerateComplianceReportPicarroAdminUsingReprocessFunctionalityIncludePercentCoverageForecast2SurveysDifferentTags(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -427,6 +432,10 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));	
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 		
 		complianceReportsPageAction.clickOnResubmitButton(EMPTY, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
@@ -459,7 +468,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Ignore @Test /* enable it later */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1367, location = ComplianceReportDataProvider.class)
 	public void TC1367_GenerateComplianceReportCustomerSupervisorUserUsingCopyFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -471,6 +480,10 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));	
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 		
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingReportsComp.getRptTitle(), getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
@@ -510,7 +523,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *  - - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Ignore @Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1370, location = ComplianceReportDataProvider.class)
 	public void TC1370_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecastMultipleSurveys(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -535,7 +548,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
  
 	/**
 	 * Test Case ID: TC1371_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecastMultipleSurveys
-	 * Test Description: - Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and multiple surveys
+	 * Test Description: - Generate Compliance Report as Picarro Admin, include Percent Coverage Forecast and multiple surveys
 	 * Script: -  	
 	 *	- - Log in as Picarro Admin user
 	 *	- - On Home Page, click Reports -> Compliance -> 'New Compliance Report' button
@@ -561,15 +574,14 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 			 "\nTest Description: Generate Compliance Report as Picarro Admin, include Percent Coverage Forecast and multiple surveys");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  /* Change to Utility Admin when customer boundary is available */
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		
-        complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		Assert.assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		
@@ -625,7 +637,9 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 * Test Case ID: TC1389_MetadataExport_CSVFileMultipleSurvey_MultipleLisasISO
 	 * Test Description: - MetaData Export -CSV file (multiple survey -multiple LISAs and ISO)
 	 * Script: -  	
-	 *	- 1. Login to Pcubed as customer admin (CNP or any other customer). Click on the above mentioned Report . Click on Compliance ZIP(META) and download
+	 *	- 1. Login to Pcubed as customer admin (CNP or any other customer). 
+	 *       Click on the above mentioned Report . 
+	 *       Click on Compliance ZIP(META) and download
 	 *	- 2. Open report.csv file.
 	 *	- 3. Open survey.csv file.
 	 *	- 4.Open isoCapture.csv file.
@@ -682,6 +696,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		String rptTitle = ComplianceReportsPageActions.workingReportsComp.getRptTitle();
+		//TODO: verify cancel button is displayed.
 		//complianceReportsPage.isCancelButtonDisplayed(rtpTitle,getReportRowID(reportDataRowID1));
 		
 		complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));	
@@ -712,6 +727,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		String rptTitle = ComplianceReportsPageActions.workingReportsComp.getRptTitle();
+		//TODO: Verify cancel button is displayed
         //complianceReportsPage.isCancelButtonDisplayed(rtpTitle,getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));	
 		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
@@ -735,7 +751,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Thumbnails will be present  for compliance SSRS PDF, ZIP folders and generated view
 	 *	- - The thumbnail should still be present
 	 */
-	@Test
+	@Ignore @Test /* Need further work on implementation of Lat/Long selector */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC12, location = ComplianceReportDataProvider.class)
 	public void TC12_ReportViewThumbnailsCustomBoundarySingleView(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -775,7 +791,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 * - View1 should appear and the thumbnail should accurately reflect the view
 	 * - The thumbnails for Views 2 and 3 should accurately reflect their respective views
 	 */
-	@Test
+	@Ignore @Test /* Need further work on implementation of Lat/Long selector */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC13, location = ComplianceReportDataProvider.class)
 	public void TC13_ReportViewThumbnailsCustomBoundaryMultipleViews(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -825,10 +841,10 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));		
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));	
+		
 		//TODO: confirm these verification steps:
 		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
         complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-
         Assert.assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 
 	}
@@ -869,7 +885,6 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		//TODO: confirm these verification steps:
 		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
         complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-
         Assert.assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 
 	}
@@ -896,24 +911,13 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - The report View should have all LISAs in the shape of boxes, not fans or circles
 	 *	- - The shapes drawn by the GIS software should match those of the Compliance Report views
 	 */
-	@Test
+	@Ignore @Test /* Start Stop survey is not a candidate of automated test */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1490, location = ComplianceReportDataProvider.class)
 	public void TC1490_CreateNewCustomerLISABoxOption(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1490_CreateNewCustomerLISABoxOption ..." +
 			 "\nTest Description: Create new customer with LISA Box option");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));		
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));	
-		//TODO: confirm these verification steps:
-		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-        complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-
-        Assert.assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 
 	}
  
@@ -939,24 +943,13 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *  - - The report View should have all LISAs in the shape of fans or circles, not boxes
 	 *	- - The shapes drawn by the GIS software should match those of the Compliance Report views
 	 */
-	@Test
+	@Ignore @Test /* Start Stop survey is not a candidate of automated test */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1491, location = ComplianceReportDataProvider.class)
 	public void TC1491_CreateNewCustomerWithoutLISABoxOption(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1491_CreateNewCustomerWithoutLISABoxOption ..." +
 			 "\nTest Description: create new customer without LISA Box option");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));		
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));	
-		//TODO: confirm these verification steps:
-		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-        complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-
-        Assert.assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -977,24 +970,12 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - The report View should have all LISAs in the shape of boxes, not fans or circles
 	 *	- - The shapes drawn by the GIS software should match those of the Compliance Report views
 	 */
-	@Test
+	@Ignore @Test /* Run shape files through ArcGis needs to be done first */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1496, location = ComplianceReportDataProvider.class)
 	public void TC1496_AddLISABoxOptionExistingCustomer(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1496_AddLISABoxOptionExistingCustomer ..." +
 			 "\nTest Description: Add LISA Box option to existing customer");
-		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));		
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));	
-		//TODO: confirm these verification steps:
-		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-        complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-
-        Assert.assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 
 	}
  
@@ -1015,266 +996,12 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - The report View should have all LISAs in the shape of fans or circles, not boxes
 	 *	- - The shapes drawn by the GIS software should match those of the Compliance Report views
 	 */
-	@Test
+	@Ignore @Test /* Run shape files through ArcGis needs to be done first */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1497, location = ComplianceReportDataProvider.class)
 	public void TC1497_RemoveLISABoxOptionFromExistingCustomer(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1497_RemoveLISABoxOptionFromExistingCustomer ..." +
 			 "\nTest Description: Remove LISA Box option from existing customer");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));		
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));	
-		//TODO: confirm these verification steps:
-		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-        complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-
-        Assert.assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
-
 	}
-
-	
-	
-	/**
-	 * Provide a adaptor of ReportsCompliance for tests, you need to do modification based on your test case
-	 * 1. List<Map<String, String>> viewList = rpt.getViewList();
-     *    Map<String, String> viewMap = viewList.get(0);
-	 *
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * @return
-	 */
-	public ReportsCompliance getSampleComplianceReport(){
-		return getSampleComplianceReport("");
-	}
-	 
-	public ReportsCompliance getSampleComplianceReport(String rptTitle){
-		//*** Report
-		//*** Other parameters
-		EthaneFilter ethaneFilter = EthaneFilter.None;
-		ReportModeFilter reportModeFilter = ReportModeFilter.Standard;
-		boolean geoFilter = true;
-
-		//*** Area Selector ***
-		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add("");//IMGMAPHEIGHT
-		listBoundary.add("");//IMGMAPWIDTH
-		//Custom boundary
-		//listBoundary.add("");//RNELAT
-		//listBoundary.add("");//RNELON
-		//listBoundary.add("");//RSWLAT
-		//listBoundary.add("");//RSWLON
-		//Custom boundary - Lat/Long Map Selector
-		int latLongXOffset = 0;
-		int latLongYOffset = 0;
-		int latLongRectHeight = 0;
-		int latLongRectWidth = 0;		
-		
-		//customer boundary
-		CustomerBoundaryFilterType customerBoundaryFilterType = CustomerBoundaryFilterType.SmallBoundary;
-		String customerBoundaryName = "TestPlat-Auto-01";
-		
-		//*** Optional Tabular PDF Content ***
-		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
-		Map<String, String> tableMap = new HashMap<String, String>();
-
-		tableMap.put(KEYINDTB, "0");
-		tableMap.put(KEYISOANA, "0");
-		tableMap.put(KEYPCA, "0");
-		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYPCF, "0");
-		
-		//***  & Optional View Layers ***
-		List<Map<String, String>> viewLayersList = new ArrayList<Map<String, String>>();
-		new HashMap<String, String>();
-		tableMap.put(KEYASSETCASTIRON, "0");
-		tableMap.put(KEYASSETCOPPER, "0");
-		tableMap.put(KEYASSETOTHERPLASTIC, "0");
-		tableMap.put(KEYASSETPEPLASTIC, "0");
-		tableMap.put(KEYASSETPROTECTEDSTEEL, "0");
-		tableMap.put(KEYASSETUNPROTECTEDSTEEL, "0");
-		tableMap.put(KEYBOUNDARYDISTRICT, "0");
-		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
-		tableMap.put(KEYGAPTB, "0");
-		tablesList.add(tableMap);
-
-		//*** Views ***
-		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
-		Map<String, String> viewMap = new HashMap<String, String>();
-
-		viewMap.put(KEYVIEWNAME, "Test View");
-		viewMap.put(KEYLISA, "1");
-		viewMap.put(KEYFOV, "0");
-		viewMap.put(KEYBREADCRUMB, "0");
-		viewMap.put(KEYINDICATIONS, "0");
-		viewMap.put(KEYISOTOPICCAPTURE, "0");
-		viewMap.put(KEYANNOTATION, "0");
-		viewMap.put(KEYGAPS, "0");
-		viewMap.put(KEYASSETS, "0");
-		viewMap.put(KEYBOUNDARIES, "0");
-		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
-
-		viewList.add(viewMap);
-
-		//*** Survey Selector ***
-		List<String> tagList = new ArrayList<String>();
-		tagList.add("");		
-		
-		//*** Opacity Fine-Tuning ***
-		String fovOpacity = "0.5";
-		String lisaOpacity = "0.5";
-		String strCreatedBy = PICDFADMIN;
-		String customer = "Picarro";
-		String timeZone = TIMEZONEET;
-		String exclusionRadius = "0";
-		SurveyModeFilter  surveyMode = SurveyModeFilter.Standard;
-		String surveyorUnit = "";
-		String startDate = "";
-		String endDate = "";
-		ReportsCompliance sampleReport = new ReportsCompliance(rptTitle, 
-				strCreatedBy, customer, timeZone, exclusionRadius,
-				listBoundary, tablesList,
-				surveyorUnit, tagList, 
-				startDate, endDate, viewList, 
-				surveyMode);
-		
-        sampleReport.setViewLayersList(viewLayersList);
-        sampleReport.setEthaneFilter(ethaneFilter);
-        sampleReport.setFovOpacity(fovOpacity);
-        sampleReport.setLisaOpacity(lisaOpacity);
-        sampleReport.setReportModeFilter(reportModeFilter);
-        sampleReport.setGeoFilter(geoFilter);
-        sampleReport.setCustomBoundaryInfo(latLongXOffset, latLongYOffset, latLongRectHeight, latLongRectWidth);
-        sampleReport.setCustomerBoundaryInfo(customerBoundaryFilterType, customerBoundaryName);
-        
-        //*** Prepare ReportsSurveyInfo
-        List<ReportsSurveyInfo> surveyInfoList = new ArrayList<ReportsSurveyInfo>();
-        
-        ReportsSurveyInfo survey = getReportsSurveyInfoSample(sampleReport);
-        //2. Survey2
-        //3. Survey3
-        //...
-		surveyInfoList.add(survey);
-		
-
-		
-		sampleReport.setSurveyInfoList(surveyInfoList);
-        return sampleReport;
-	}
-	
-	public ReportsSurveyInfo getReportsSurveyInfoSample(ReportsCompliance sampleReport){
-        //1. Survey
-        String surveyor = sampleReport.getSurveyorUnit();
-        String username = sampleReport.getUsername();
-        String tag = sampleReport.getTagList().get(0);
-        String startDate = sampleReport.getStartDate();
-        String endDate = sampleReport.getEndDate();
-        SurveyModeFilter surveyModeFilter = sampleReport.getSurveyModeFilter();
-        Integer numberOfSurveysToSelect = 1;
-        boolean selectAllSurveys = false;
-        boolean isGeoFilterOn = sampleReport.getGeoFilter();
-        
-        ReportsSurveyInfo survey = new ReportsSurveyInfo(surveyor, username, tag, startDate, endDate,
-        		surveyModeFilter, isGeoFilterOn, numberOfSurveysToSelect, selectAllSurveys);
-        return survey;
-	}
-	/**
-	 * Returns the testCase ID based on the username provided by DataProvider.
-	 */
-//	private String getTestCaseName(ManageUserTestCaseType testCaseType, String username) {//TODO
-//		String testCase = "";		
-//		switch (testCaseType) {
-//		case :
-//			if (username.equalsIgnoreCase(SQAPICAD)) {
-//				testCase = "TC118";
-//			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
-//				testCase = "TC491";
-//			}
-//			break;
-//		case :
-//			if (username.equalsIgnoreCase(SQAPICAD)) {
-//				testCase = "TC119";
-//			} else if (username.equalsIgnoreCase(SQAPICSUP)) {
-//				testCase = "TC492";
-//			}
-//			break;
-//		}
-//		return testCase;
-//	}
-	// Old way for TC1319
-//	String testCaseName = "TC1319";		
-//	String rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
-//	String tag1 = "stnd-pic", tag2 = "iso cap", tag3 = "standard";
-//	String username = SQAPICSUP;
-//	String password = USERPASSWORD;
-//	String customer = "Picarro";
-//	
-//	complianceReportsPage.login(username, password);
-//	complianceReportsPage.open();
-//
-//	ReportsCompliance rpt = getSampleComplianceReport();
-//	rpt.setRptTitle(rptTitle);
-//	rpt.setCustomer(customer);
-//	rpt.setStrCreatedBy(username);
-//	
-//	//Optional Tabular PDF Content
-//	Map<String,String> tableMap = rpt.getTablesList().get(0);
-//	tableMap.put(KEYPCA, "1");
-//	tableMap.put(KEYPCRA, "1");
-//	tableMap.put(KEYPCF, "1");	
-//	
-//	//Configure Surveys
-//	List<ReportsSurveyInfo> surveyInfoList = rpt.getSurveyInfoList();
-//	ReportsSurveyInfo survey1 = surveyInfoList.get(0);
-//	ReportsSurveyInfo survey2 = getReportsSurveyInfoSample(rpt);
-//	ReportsSurveyInfo survey3 = getReportsSurveyInfoSample(rpt);
-//	
-//	survey1.setTag(tag1);
-//	
-//	survey2.setTag(tag2);		
-//	survey3.setTag(tag3);
-//	
-//	surveyInfoList.add(survey2);
-//	surveyInfoList.add(survey3);
-//	
-//	complianceReportsPage.addNewReport(rpt);
-//	complianceReportsPage.waitForPageLoad();
-//	
-//	if ((complianceReportsPage.checkActionStatus(rptTitle, username, testCaseName))) {
-//		assertTrue(complianceReportsPage.verifyShowCoverageTable( testSetup.getDownloadPath(), rptTitle));
-//		assertTrue(complianceReportsPage.verifyCoverageForecastValuesTable(testSetup.getDownloadPath(), rptTitle));
-//	} else {
-//		fail("\nTestcase " + testCaseName + " failed.\n");
-//	}
-	
-//	@BeforeClass
-//	public static void beforeTestClass() throws Exception {
-//		initializePageActions();
-//	}
-//
-//	/**
-//	 * Initializes the page action objects.
-//	 */
-//	protected static void initializePageActions() {
-//		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-//		homePageAction = new HomePageActions(driver, baseURL, testSetup);
-//		
-//		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
-//		PageFactory.initElements(driver, complianceReportsPage);
-//		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
-//		PageFactory.initElements(driver, manageUsersPage);
-//		manageCustomersPage = new ManageCustomersPage(driver, baseURL,testSetup);
-//		PageFactory.initElements(driver, manageCustomersPage);
-//		manageLocationsPage = new ManageLocationsPage(driver, baseURL,testSetup);
-//		PageFactory.initElements(driver, manageLocationsPage);
-//		testEnvironmentAction = new TestEnvironmentActions();
-//	}
 }

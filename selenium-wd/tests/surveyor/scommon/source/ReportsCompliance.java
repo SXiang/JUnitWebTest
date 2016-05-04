@@ -468,7 +468,14 @@ public class ReportsCompliance extends Reports {
 	public String getCustomerBoundaryName() {
 		return customerBoundaryName;
 	}
-
+	public void setCustomerBoundaryInfo(String customerBoundaryType, String customerBoundaryName) {
+		customerBoundaryType = customerBoundaryType.replaceAll(" ", "");
+		CustomerBoundaryFilterType customerBoundaryFilterType = null;
+		try{
+			customerBoundaryFilterType = CustomerBoundaryFilterType.valueOf(customerBoundaryType);
+		}catch(Exception e){}
+		setCustomerBoundaryInfo(customerBoundaryFilterType, customerBoundaryName);
+	}
 	public void setCustomerBoundaryInfo(CustomerBoundaryFilterType customerBoundaryFilterType, String customerBoundaryName) {
 		this.customerBoundaryFilterType = customerBoundaryFilterType;
 		this.customerBoundaryName = customerBoundaryName;

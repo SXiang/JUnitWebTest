@@ -665,8 +665,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 		// 1. Title and Customer
 		inputReportTitle(reports.getRptTitle());
-
-		if (reports.getCustomer() != null && reports.getCustomer() != "Picarro") {
+		if (reports.getCustomer() != null && !reports.getCustomer().equalsIgnoreCase("Picarro")) {
 			selectCustomer(reports.getCustomer());
 			Boolean confirmed = confirmInChangeCustomerDialog();
 			if (confirmed) {
@@ -769,7 +768,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			// Loop through table elements and check selected number of surveys.
 			for (int rowNum = 1; rowNum <= loopCount && selectedSurveysCount < numSurveysToSelect; rowNum++) {
-				checkBoxXPath = "//*[@id='datatableSurveys']/tbody/tr[" + rowNum + "]/td[7]/input";
+				checkBoxXPath = "//*[@id='datatableSurveys']/tbody/tr[" + rowNum + "]/td/input[@type='checkbox']";
 				checkBoxActionCell = surveyTable.findElement(By.xpath(checkBoxXPath));
 				checkBoxActionCell.click();
 				selectedSurveysCount++;
@@ -1497,7 +1496,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle) && createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
-				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
+				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[@title='Copy']/img";  // Don't use index for 'Copy' as it has diff values
 				copyImg = getReportTableCell(copyImgXPath);
 				copyImg.click();
 
