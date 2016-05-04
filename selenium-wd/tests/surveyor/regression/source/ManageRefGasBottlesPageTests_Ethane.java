@@ -63,7 +63,8 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 
 		Log.info("\nRunning TC1735 - Test Description: Ethane - Verify that user can add value to Ethane To Methane Ratio column to ReferenceGasBottle Page");
 
-		manageRefGasBottlesPage.login(SQAPICSUP, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
 		manageRefGasBottlesPage.open();
 		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", "15", SQACUS, SQACUSLOC, SQACUSLOCSUR);

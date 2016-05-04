@@ -174,8 +174,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 
-		complianceReportsPage.getInputSearch().sendKeys(rptTitle);
-		complianceReportsPage.clickOnFirstCopyComplianceBtn();
+		complianceReportsPage.clickOnCopyReport(rptTitle, testSetup.getLoginUser());
 
 		if (complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed())
 			assertTrue(complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed());
@@ -345,6 +344,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, strCreatedBy));
 			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rptTitle));
+			assertTrue(complianceReportsPage.verifySSRSImages(testSetup.getDownloadPath(), rptTitle, testCaseName));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
 					assertTrue(complianceReportsPage.verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle));
@@ -355,6 +355,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 				}
 				assertTrue(complianceReportsPage.verifyViewsTable(testSetup.getDownloadPath(), rptTitle, viewList));
 				assertTrue(complianceReportsPage.verifyDrivingSurveysTable(testSetup.getDownloadPath(), rptTitle));
+				assertTrue(complianceReportsPage.verifyAllViewsImages(testSetup.getDownloadPath(), rptTitle, testCaseName,viewList.size()));
 				if (tablesList.get(0).get(KEYISOANA).equals("1")) {
 					assertTrue(complianceReportsPage.verifyIsotopicAnalysisTable(testSetup.getDownloadPath(), rptTitle));
 				}
@@ -363,7 +364,8 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 				}
 			}
 		} else
-			fail("\nTestcase " + testCaseName + " failed.\n");
+			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
+
 	}
 	private static String getTestCaseName(String key) {
 		return testCaseMap.get(key);
@@ -557,15 +559,15 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	}
 
 	/**
-	 * Test Case ID:TC1727 Test Description: Compliance Report Generation : COPY generated report with custom selected Indication color should show default color only for Indication- customized Indication color
+	 * Test Case ID:TC1726 Test Description: Compliance Report Generation : COPY generated report with custom selected Indication color should show default color only for Indication- customized Indication color
 	 * @throws Exception 
 	 * 
 	 */
 	@Test
-	public void TC1727_Ethane_Verify_Indication_Table_Color_Copy_Customized_Colored_Report() throws Exception{
+	public void TC1726_Ethane_Verify_Indication_Table_Color_In_Newly_Generated_Report() throws Exception{
 		String testCaseID = "TC1727";
 		String rptTitle = "TC1727 Ethane" + testSetup.getRandomNumber();
-		Log.info("\nRunning TC1727: Compliance Report Generation : COPY generated report with custom selected Indication color should show default color only for Indication- customized Indication color" + rptTitle);
+		Log.info("\nRunning TC1727: Compliance Report Generation : downloaded View of newly generated report should show default color only for Indication" + rptTitle);
 
 
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -622,96 +624,93 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
 			if (tablesList != null) {
-				if (tablesList.get(0).get(KEYINDTB).equals("1")) {
-					assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
-				}
-
+				assertTrue(complianceReportsPage.verifyDrivingSurveysTable(testSetup.getDownloadPath(), rptTitle));
 			}
-		} else
-			fail("\n Testcase1727 failed.\n");	
+	} else
+		fail("\n Testcase1726 failed.\n");	
+}
+
+/**
+ * Test Case ID:TC1729 Test Description: Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- Default Indication color
+ * @throws InterruptedException 
+ * 
+ * @throws IOException
+ * 
+ */
+@Test
+public void TC1729_Ethane_Resubmit_Report_Verify_Indication_Table_Color() throws Exception{
+	String testCaseID = "TC1729";
+	String rptTitle = testCaseID + " Ethane" + testSetup.getRandomNumber();
+	Log.info("\nRunning " + testCaseID
+			+ ": Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- Default Indication color" + rptTitle);
+
+	complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+	complianceReportsPage.open();
+
+	List<String> listBoundary = new ArrayList<String>();
+	listBoundary.add(IMGMAPHEIGHT);
+	listBoundary.add(IMGMAPWIDTH);
+	listBoundary.add(ETHRNELAT);
+	listBoundary.add(ETHRNELON);
+	listBoundary.add(ETHRSWLAT);
+	listBoundary.add(ETHRSWLON);
+
+	List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+	Map<String, String> tableMap = new HashMap<String, String>();
+	tableMap.put(KEYINDTB, "1");
+	tableMap.put(KEYISOANA, "1");
+	tableMap.put(KEYPCA, "1");
+	tableMap.put(KEYPCRA, "1");
+	tablesList.add(tableMap);
+
+	List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
+	List<Integer> boundaryRowIDs = Arrays.asList(3, 4);				 // Boundary RowIDs from TestCaseData xlsx
+	List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
+	viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
+
+	List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+	Map<String, String> viewMap1 = new HashMap<String, String>();
+
+	viewMap1.put(KEYVIEWNAME, "First View");
+	viewMap1.put(KEYLISA, "1");
+	viewMap1.put(KEYFOV, "1");
+	viewMap1.put(KEYBREADCRUMB, "1");
+	viewMap1.put(KEYINDICATIONS, "1");
+	viewMap1.put(KEYISOTOPICCAPTURE, "1");
+	viewMap1.put(KEYANNOTATION, "1");
+	viewMap1.put(KEYGAPS, "0");
+	viewMap1.put(KEYASSETS, "1");
+	viewMap1.put(KEYBOUNDARIES, "1");
+	viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
+	viewList.add(viewMap1);
+
+	List<String> tagList = new ArrayList<String>();
+	tagList.add(CUSDRVETHSTDTAG);
+
+	ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+	rpt.setViewLayersList(viewLayerList);
+
+	complianceReportsPage.addNewReport(rpt);
+	complianceReportsPage.waitForPageLoad();
+
+	complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
+
+	complianceReportsPage.findReportbySearch(rptTitle, testSetup.getLoginUser());
+
+	try {
+		complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
+		complianceReportsPage.waitForResubmitButton();
+		complianceReportsPage.getBtnResubmitReport().click();
+	} catch (Exception e) {
+		e.printStackTrace();
 	}
+	complianceReportsPage.waitForPageLoad();
+	complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 
-	/**
-	 * Test Case ID:TC1729 Test Description: Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- Default Indication color
-	 * @throws InterruptedException 
-	 * 
-	 * @throws IOException
-	 * 
-	 */
-	@Test
-	public void TC1729_Ethane_Resubmit_Report_Verify_Indication_Table_Color() throws Exception{
-		String testCaseID = "TC1729";
-		String rptTitle = testCaseID + " Ethane" + testSetup.getRandomNumber();
-		Log.info("\nRunning " + testCaseID
-				+ ": Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- Default Indication color" + rptTitle);
-
-		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		complianceReportsPage.open();
-
-		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add(IMGMAPHEIGHT);
-		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add(ETHRNELAT);
-		listBoundary.add(ETHRNELON);
-		listBoundary.add(ETHRSWLAT);
-		listBoundary.add(ETHRSWLON);
-
-		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
-		Map<String, String> tableMap = new HashMap<String, String>();
-		tableMap.put(KEYINDTB, "1");
-		tableMap.put(KEYISOANA, "1");
-		tableMap.put(KEYPCA, "1");
-		tableMap.put(KEYPCRA, "1");
-		tablesList.add(tableMap);
-
-		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
-		List<Integer> boundaryRowIDs = Arrays.asList(3, 4);				 // Boundary RowIDs from TestCaseData xlsx
-		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
-		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
-
-		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
-		Map<String, String> viewMap1 = new HashMap<String, String>();
-
-		viewMap1.put(KEYVIEWNAME, "First View");
-		viewMap1.put(KEYLISA, "1");
-		viewMap1.put(KEYFOV, "1");
-		viewMap1.put(KEYBREADCRUMB, "1");
-		viewMap1.put(KEYINDICATIONS, "1");
-		viewMap1.put(KEYISOTOPICCAPTURE, "1");
-		viewMap1.put(KEYANNOTATION, "1");
-		viewMap1.put(KEYGAPS, "0");
-		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "1");
-		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
-		viewList.add(viewMap1);
-
-		List<String> tagList = new ArrayList<String>();
-		tagList.add(CUSDRVETHSTDTAG);
-
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
-		rpt.setViewLayersList(viewLayerList);
-
-		complianceReportsPage.addNewReport(rpt);
-		complianceReportsPage.waitForPageLoad();
-
-		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
-
-		complianceReportsPage.findReportbySearch(rptTitle, testSetup.getLoginUser());
-
-		try {
-			complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
-			complianceReportsPage.waitForResubmitButton();
-			complianceReportsPage.getBtnResubmitReport().click();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		complianceReportsPage.waitForPageLoad();
-		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
-
-			if (tablesList.get(0).get(KEYINDTB).equals("1")) {
-				assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
-			}
-		 else
-			fail("\nTestcase TC1729 failed.\n");
+	if (tablesList.get(0).get(KEYINDTB).equals("1")) {
+		assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
 	}
+	else
+		fail("\nTestcase TC1729 failed.\n");
+}
 }
