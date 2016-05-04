@@ -2,8 +2,8 @@ package surveyor.regression.source;
 
 import common.source.Log;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 import java.util.ArrayList;
@@ -12,9 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
 
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
@@ -29,13 +28,11 @@ import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.BaseReportsPageActionTest;
-import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance.CustomerBoundaryFilterType;
 import surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 import surveyor.scommon.source.ReportsSurveyInfo;
-import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
@@ -46,27 +43,16 @@ import surveyor.scommon.source.ReportsCompliance;
 public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 
 	private static final String EMPTY = "";
-	private static final Integer NOTSET = -1;
-	
-	private static HomePageActions homePageAction;
-	private static LoginPageActions loginPageAction;
-	private static TestEnvironmentActions testEnvironmentAction;
-	
+	private static final Integer NOTSET = -1;	
+	private static LoginPageActions loginPageAction;	
 	private static ComplianceReportsPage complianceReportsPage;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
-	private static ManageUsersPage manageUsersPage;
-	private static ManageCustomersPage manageCustomersPage;
-	private static ManageLocationsPage manageLocationsPage;
-	private static ManageCustomerPageActions manageCustomerPageAction;
 	
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
 		
-		homePageAction = new HomePageActions(driver, baseURL, testSetup);
-		manageCustomerPageAction = new ManageCustomerPageActions(driver, baseURL, testSetup);
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-		testEnvironmentAction = new TestEnvironmentActions();
 	}
 
 	/**
@@ -75,40 +61,15 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 */
 	protected static void initializePageActions() throws Exception {
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-		homePageAction = new HomePageActions(driver, baseURL, testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
-		testEnvironmentAction = new TestEnvironmentActions();
-
 		// To run the test locally in UnitTest mode uncomment this line.
-		// setTestRunMode(ReportTestRunMode.UnitTestRun);
+		setTestRunMode(ReportTestRunMode.UnitTestRun);
 		
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
 		}
 			
 	}
-//	@BeforeClass
-//	public static void beforeTestClass() throws Exception {
-//		initializePageActions();
-//	}
-//
-//	/**
-//	 * Initializes the page action objects.
-//	 */
-//	protected static void initializePageActions() {
-//		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-//		homePageAction = new HomePageActions(driver, baseURL, testSetup);
-//		
-//		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
-//		PageFactory.initElements(driver, complianceReportsPage);
-//		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
-//		PageFactory.initElements(driver, manageUsersPage);
-//		manageCustomersPage = new ManageCustomersPage(driver, baseURL,testSetup);
-//		PageFactory.initElements(driver, manageCustomersPage);
-//		manageLocationsPage = new ManageLocationsPage(driver, baseURL,testSetup);
-//		PageFactory.initElements(driver, manageLocationsPage);
-//		testEnvironmentAction = new TestEnvironmentActions();
-//	}
 
 // TODO DE1898: https://rally1.rallydev.com/#/53512905526d/detail/defect/54567703274
 	
@@ -132,63 +93,19 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1319_GenerateComplianceReportPicarroSupportUserIncludePercentCoverageForecast ..." +
 			 "\nTest Description: Generate Compliance Report as Picarro Support user and include Percent Coverage Forecast");
+
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* NOTE: Use Customer Admin when assets populated */
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		Assert.assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
 
-		complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
-		
-//		String testCaseName = "TC1319";		
-//		String rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
-//		String tag1 = "stnd-pic", tag2 = "iso cap", tag3 = "standard";
-//		String username = SQAPICSUP;
-//		String password = USERPASSWORD;
-//		String customer = "Picarro";
-//		
-//		complianceReportsPage.login(username, password);
-//		complianceReportsPage.open();
-//
-//		ReportsCompliance rpt = getSampleComplianceReport();
-//		rpt.setRptTitle(rptTitle);
-//		rpt.setCustomer(customer);
-//		rpt.setStrCreatedBy(username);
-//		
-//		//Optional Tabular PDF Content
-//		Map<String,String> tableMap = rpt.getTablesList().get(0);
-//		tableMap.put(KEYPCA, "1");
-//		tableMap.put(KEYPCRA, "1");
-//		tableMap.put(KEYPCF, "1");	
-//		
-//		//Configure Surveys
-//		List<ReportsSurveyInfo> surveyInfoList = rpt.getSurveyInfoList();
-//		ReportsSurveyInfo survey1 = surveyInfoList.get(0);
-//		ReportsSurveyInfo survey2 = getReportsSurveyInfoSample(rpt);
-//		ReportsSurveyInfo survey3 = getReportsSurveyInfoSample(rpt);
-//		
-//		survey1.setTag(tag1);
-//		
-//		survey2.setTag(tag2);		
-//		survey3.setTag(tag3);
-//		
-//		surveyInfoList.add(survey2);
-//		surveyInfoList.add(survey3);
-//		
-//		complianceReportsPage.addNewReport(rpt);
-//		complianceReportsPage.waitForPageLoad();
-//		
-//		if ((complianceReportsPage.checkActionStatus(rptTitle, username, testCaseName))) {
-//			assertTrue(complianceReportsPage.verifyShowCoverageTable( testSetup.getDownloadPath(), rptTitle));
-//			assertTrue(complianceReportsPage.verifyCoverageForecastValuesTable(testSetup.getDownloadPath(), rptTitle));
-//		} else {
-//			fail("\nTestcase " + testCaseName + " failed.\n");
-//		}
+		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
  
@@ -206,45 +123,31 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
 	@Test
-	public void TC1320_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast2SurveysDifferentTags() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1320, location = ComplianceReportDataProvider.class)
+	public void TC1320_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast2SurveysDifferentTags(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1320_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast2SurveysDifferentTags ..." +
 			 "\nTest Description: Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 2 surveys with different tags");
 		
-		String testCaseName = "TC1320";		
-		String rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
-		String tag1 = "stnd-pic", tag2 = "iso cap", tag3 = "history";
-		complianceReportsPage.login(SQAPGEUA, USERPASSWORD);
-		complianceReportsPage.open();
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  /* Change to Utility Admin when customer boundary is available */
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		Assert.assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
 
-		ReportsCompliance rpt = getSampleComplianceReport();
-		rpt.setRptTitle(rptTitle);
-		
-		Map<String,String> tableMap = rpt.getTablesList().get(0);
-		tableMap.put(KEYPCA, "1");
-		tableMap.put(KEYPCRA, "1");
-		tableMap.put(KEYPCF, "0");  //TODO: Enable it if surveys are available
-		
-		List<String> tagList = rpt.getTagList();
-		tagList.clear();
-		tagList.add(tag1);
-		tagList.add(tag2);
-		tagList.add(tag3);
-		
-		complianceReportsPage.addNewReport(rpt);
-		complianceReportsPage.waitForPageLoad();
-		
-		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPGEUA, testCaseName))) {
-			assertTrue(complianceReportsPage.verifyCoverageValuesTable( testSetup.getDownloadPath(), rptTitle, rpt.getTablesList().get(0)));
-		} else {
-			fail("\nTestcase " + testCaseName + " failed.\n");
-		}
-		//TODO: verify coverage in forecast table...		
+		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
  
 	/**
 	 * Test Case ID: TC1339_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelected
-	 * Test Description: - Check error mesage is displayed if Percent Coverage Forecast check box is selected on New Compliance Report screens and user has included only no or one or multiple survey with same tag
+	 * Test Description: - Check error message is displayed if Percent Coverage Forecast check box is selected on New Compliance Report screens 
+	 *                     and user has included only no or one or multiple survey with same tag
 	 * Script: -  	
 	 *  Log in to application as Customer admin user and navigate to New Compliance Report page
      * - -  Select Customer Boundary
@@ -258,59 +161,32 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Error message will not be displayed to user when different tag value surveys are included
 	 */
 	@Test
-	public void TC1339_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelected() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1319, location = ComplianceReportDataProvider.class)
+	public void TC1339_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelected(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2, Integer reportDataRowID3) throws Exception {
 		Log.info("\nRunning TC1339_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelected ..." +
 			 "\nTest Description: Check error mesage is displayed if Percent Coverage Forecast check box is selected on New Compliance Report screens and user has included only no or one or multiple survey with same tag");
-		
-		String testCaseName = "TC1339";		
-		String rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
-		String tag1 = "stnd-pic", tag2 = "iso cap", tag3 = "history";
-		String tag10 = "stnd-pic", tag11 = "stnd-sqacudr", tag12 = "stnd-sqacudr";
-		
-		
-		String expectedError = CR_CF_ASSETSINVALID_MESSAGE;
-		complianceReportsPage.login(SQAPICSU, USERPASSWORD);
-		complianceReportsPage.open();
 
-		ReportsCompliance rpt = getSampleComplianceReport();
-		rpt.setRptTitle(rptTitle);
+		String expectedError = CR_CF_ASSETSINVALID_MESSAGE;
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID)); /* Using Picarro Admin now, Change to Utility Admin when small boundary is available */
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 		
-		Map<String, String> viewMap = rpt.getViewLayersList().get(0);
-		viewMap.put(KEYLISA, "0");
-		
-		Map<String,String> tableMap = rpt.getTablesList().get(0);
-		tableMap.put(KEYPCA, "1");
-		tableMap.put(KEYPCRA, "1");
-		tableMap.put(KEYPCF, "0"); // TODO: Enable it if surveys are available
-		
-		// Different tags
-		List<String> tagList = rpt.getTagList();
-		tagList.clear();
-		tagList.add(tag1);
-		complianceReportsPage.addNewReport(rpt);		
+		//Add no surveys
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPage.verifyErrorMessages(expectedError));
+        complianceReportsPage.clickOnCancelBtn();
+        
+		//Add 2 surveys, different tags
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
+		assertFalse(complianceReportsPage.verifyErrorMessages(expectedError));
 		
-		tagList.add(tag2);
-		complianceReportsPage.addNewReport(rpt);		
-		assertTrue(!complianceReportsPage.verifyErrorMessages(expectedError));
+		//Add 2 surveys, same tag
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID3));
+		assertFalse(complianceReportsPage.verifyErrorMessages(expectedError));
+
+		complianceReportsPage.logout();
 		
-		tagList.add(tag3);		
-		complianceReportsPage.addNewReport(rpt);
-		assertTrue(!complianceReportsPage.verifyErrorMessages(expectedError));
-		
-		List<Integer> tagIndexes = new ArrayList<Integer>();
-		tagList.clear();
-		tagList.add(tag10);
-		tagList.add(tag11);
-		tagIndexes.add(0);
-		tagIndexes.add(0);
-		complianceReportsPage.addNewReport(rpt,tagIndexes,true);		
-		assertTrue(complianceReportsPage.verifyErrorMessages(expectedError));
-		
-		tagList.add(tag12);	
-		tagIndexes.add(1); // Same tag - different survey
-		complianceReportsPage.addNewReport(rpt,tagIndexes,true);
-		assertTrue(!complianceReportsPage.verifyErrorMessages(expectedError));
 	}
  
 	/**
@@ -331,13 +207,35 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Error message will not be displayed to user when different tag value surveys are included
 	 */
 	@Test
-	public void TC1340_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelectedOnCopyCR() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1340, location = ComplianceReportDataProvider.class)
+	public void TC1340_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelectedOnCopyCR(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2,Integer reportDataRowID3, Integer reportDataRowID4,Integer reportDataRowID5) throws Exception {
 		Log.info("\nRunning TC1340_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelected ..." +
 			 "\nTest Description: Check error mesage is displayed if Percent Coverage Forecast check box is selected on Copy Compliance Report screens and user has included no or only one or multiple survey with same tag");
 		
+		String expectedError = CR_CF_ASSETSINVALID_MESSAGE;
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  /* Using Picarro Admin now, Change to Utility Admin when small boundary is available */
+		       
+		//Add 2 surveys, different tags
+        complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID2));
+        complianceReportsPageAction.clickOnFirstCopyComplianceButton(EMPTY, getReportRowID(reportDataRowID1));
+		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
+		assertFalse(complianceReportsPage.verifyErrorMessages(expectedError));
+		
+		//Add no surveys
+        complianceReportsPageAction.clickOnFirstCopyComplianceButton(EMPTY, getReportRowID(reportDataRowID1));
+        complianceReportsPage.deleteAllDrivingSurveys();
+		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID3));
+		assertTrue(complianceReportsPage.verifyErrorMessages(expectedError));
+		        
+		//Add 2 surveys, same tag
+        complianceReportsPageAction.clickOnFirstCopyComplianceButton(EMPTY, getReportRowID(reportDataRowID1));
+		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID4));
+		assertFalse(complianceReportsPage.verifyErrorMessages(expectedError));
+		
+		complianceReportsPage.clickOnCancelBtn();		
+		complianceReportsPage.logout();
 	}
  
 	/**
@@ -361,13 +259,25 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - "No Coverage Forecast Available" message is displayed
 	 */
 	@Test
-	public void TC1352_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast4OrMoreSurveysDifferentTags() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1352, location = ComplianceReportDataProvider.class)
+	public void TC1352_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast4OrMoreSurveysDifferentTags(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1352_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast4OrMoreSurveysDifferentTags ..." +
 			 "\nTest Description: Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 4 or more surveys with different tags");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 1);   /* Customer Admin */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  /* Using Picarro Admin now, Change to Utility Admin when small boundary is available */
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		Assert.assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
 
+		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		//TODO, CHECK ERROR MESSAGE
+		Assert.assertFalse(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -384,12 +294,27 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
 	@Test
-	public void TC1363_GenerateComplianceReportCustomerAdminUsingCopyFunctionalityIncludePercentCoverageForecast2SurveysDifferentTags() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1363, location = ComplianceReportDataProvider.class)
+	public void TC1363_GenerateComplianceReportCustomerAdminUsingCopyFunctionalityIncludePercentCoverageForecast2SurveysDifferentTags(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1363_GenerateComplianceReportCustomerAdminUsingCopyFunctionalityIncludePercentCoverageForecast2SurveysDifferentTags ..." +
 			 "\nTest Description: Generate Compliance Report as Customer Admin using Copy functionality, include Percent Coverage Forecast and 2 surveys with different tags");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 1);   /* Customer Admin */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  /* Using Picarro Admin now, Change to Utility Admin when small boundary is available */
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.copyReport(complianceReportsPageAction.workingReportsComp.getRptTitle(), getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+
+		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfoWithPreviousResult(EMPTY, getReportRowID(reportDataRowID1)));
 
 	}
  
@@ -408,13 +333,31 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
 	@Test
-	public void TC1364_GenerateComplianceReportPicarroSupportUserUsingReprocessFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1364, location = ComplianceReportDataProvider.class)
+	public void TC1364_GenerateComplianceReportPicarroSupportUserUsingReprocessFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1364_GenerateComplianceReportPicarroSupportUserUsingReprocessFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags ..." +
 			 "\nTest Description: Generate Compliance Report as Picarro Support user using Reprocess functionality, include Percent Coverage Forecast and 3 surveys with different tags");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 5);   /* Customer Support */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID)); 
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.clickOnResubmitButton(EMPTY, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		
 
+		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfoWithPreviousResult(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -422,7 +365,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 * Test Description: - Generate Compliance Report as Picarro Admin using Copy functionality, include Percent Coverage Forecast and 3 surveys with different tags
 	 * Script: -  	
 	 *	- - Log in as Picarro Admin user
-	 *	- - Click on Reprocess button of above generated report
+	 *	- - Click on Copy button of above generated report
 	 *	- - Click Compliance Viewer button
 	 *	- - Download PDF, ZIP (PDF)
 	 * Results: - 
@@ -432,13 +375,32 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
 	@Test
-	public void TC1365_GenerateComplianceReportPicarroAdminUsingCopyFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1365, location = ComplianceReportDataProvider.class)
+	public void TC1365_GenerateComplianceReportPicarroAdminUsingCopyFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1365_GenerateComplianceReportPicarroAdminUsingCopyFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags ..." +
 			 "\nTest Description: Generate Compliance Report as Picarro Admin using Copy functionality, include Percent Coverage Forecast and 3 surveys with different tags");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID)); 
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingReportsComp.getRptTitle(), getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		
 
+		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfoWithPreviousResult(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -454,12 +416,32 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
 	@Test
-	public void TC1366_GenerateComplianceReportPicarroAdminUsingReprocessFunctionalityIncludePercentCoverageForecast2SurveysDifferentTags() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1366, location = ComplianceReportDataProvider.class)
+	public void TC1366_GenerateComplianceReportPicarroAdminUsingReprocessFunctionalityIncludePercentCoverageForecast2SurveysDifferentTags(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1366_GenerateComplianceReportPicarroAdminUsingReprocessFunctionalityIncludePercentCoverageForecast2SurveysDifferentTags ..." +
 			 "\nTest Description: Generate Compliance Report as Picarro Admin using Reprocess functionality, include Percent Coverage Forecast and 2 surveys with different tags");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.clickOnResubmitButton(EMPTY, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		
+
+		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfoWithPreviousResult(EMPTY, getReportRowID(reportDataRowID1)));
+
 
 	}
  
@@ -478,12 +460,33 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
 	@Test
-	public void TC1367_GenerateComplianceReportCustomerSupervisorUserUsingCopyFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1367, location = ComplianceReportDataProvider.class)
+	public void TC1367_GenerateComplianceReportCustomerSupervisorUserUsingCopyFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1367_GenerateComplianceReportCustomerSupervisorUserUsingCopyFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags ..." +
 			 "\nTest Description: Generate Compliance Report as Customer Supervisor user using Copy functionality, include Percent Coverage Forecast and 3 surveys with different tags");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 2);   /* Customer Supervisor */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  /* Using Picarro Admin now, Change to Customer supervisor when small boundary is available */
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingReportsComp.getRptTitle(), getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		
+
+		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfoWithPreviousResult(EMPTY, getReportRowID(reportDataRowID1)));
+
 
 	}
  
@@ -508,13 +511,26 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
 	@Test
-	public void TC1370_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecastMultipleSurveys() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1370, location = ComplianceReportDataProvider.class)
+	public void TC1370_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecastMultipleSurveys(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1370_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecastMultipleSurveys ..." +
 			 "\nTest Description: Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and multiple surveys");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 1);   /* Customer Admin */
-
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  /* Change to Utility Admin when customer boundary is available */
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		Assert.assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		
+		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -538,13 +554,27 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
 	@Test
-	public void TC1371_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecastMultipleSurveys() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1371, location = ComplianceReportDataProvider.class)
+	public void TC1371_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecastMultipleSurveys(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1371_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecastMultipleSurveys ..." +
 			 "\nTest Description: Generate Compliance Report as Picarro Admin, include Percent Coverage Forecast and multiple surveys");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		
+        complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		
+		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -568,13 +598,27 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
 	@Test
-	public void TC1373_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecastAssetsReportArea() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1373, location = ComplianceReportDataProvider.class)
+	public void TC1373_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecastAssetsReportArea(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1373_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecastAssetsReportArea ..." +
 			 "\nTest Description: Generate Compliance Report as Picarro Admin and include Percent Coverage Forecast, Assets and Report Area");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		
+        complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		
+		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -597,13 +641,22 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- Verify that there is only the record present in ReportGap.csv matches with the information in the driving survey in the report. Data present in ReportGap.csv should be same as SSRS PDF gap table
 	 */
 	@Test
-	public void TC1389_MetadataExport_CSVFileMultipleSurvey_MultipleLisasISO() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1389, location = ComplianceReportDataProvider.class)
+	public void TC1389_MetadataExport_CSVFileMultipleSurvey_MultipleLisasISO(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1389_MetadataExport_CSVFileMultipleSurvey_MultipleLisasISO ..." +
 			 "\nTest Description: MetaData Export -CSV file (multiple survey -multiple LISAs and ISO)");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));		
+		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 
+        Assert.assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -618,13 +671,22 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Report is generated successfully
 	 */
 	@Test
-	public void TC1394_CopyButtonPresentIn_ProgressComplianceReportCustomerSupervisorUser() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1394, location = ComplianceReportDataProvider.class)
+	public void TC1394_CopyButtonPresentIn_ProgressComplianceReportCustomerSupervisorUser(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1394_CopyButtonPresentIn_ProgressComplianceReportCustomerSupervisorUser ..." +
 			 "\nTest Description: Copy button present for in-progress compliance report as customer supervisor user");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 2);   /* Picarro Admin */
-
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID)); 
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		String rptTitle = ComplianceReportsPageActions.workingReportsComp.getRptTitle();
+		//complianceReportsPage.isCancelButtonDisplayed(rtpTitle,getReportRowID(reportDataRowID1));
+		
+		complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));	
+		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 	}
  
 	/**
@@ -639,13 +701,21 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Report is generated successfully
 	 */
 	@Test
-	public void TC1395_CopyButtonPresentIn_ProgressComplianceReportCustomerAdminUser() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1395, location = ComplianceReportDataProvider.class)
+	public void TC1395_CopyButtonPresentIn_ProgressComplianceReportCustomerAdminUser(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1395_CopyButtonPresentIn_ProgressComplianceReportCustomerAdminUser ..." +
 			 "\nTest Description: Copy button present for in-progress compliance report as customer admin user");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 1);   /* Customer Admin */
-
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID)); 
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		String rptTitle = ComplianceReportsPageActions.workingReportsComp.getRptTitle();
+        //complianceReportsPage.isCancelButtonDisplayed(rtpTitle,getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));	
+		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 	}
  
 	/**
@@ -666,13 +736,22 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - The thumbnail should still be present
 	 */
 	@Test
-	public void TC12_ReportViewThumbnailsCustomBoundarySingleView() throws Exception {
-		Log.info("\nRunning TC12_ReportViewThumbnailsCustomBoundarySingleView ..." +
-			 "\nTest Description: Generate Compliance Report as Picarro Admin using Custom Boundary with single view of default size to verify thumbnails");
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC12, location = ComplianceReportDataProvider.class)
+	public void TC12_ReportViewThumbnailsCustomBoundarySingleView(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+			 Log.info("\nTest Description: Generate Compliance Report as Picarro Admin using Custom Boundary with single view of default size to verify thumbnails");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));	
+		//TODO: confirm these verification steps:
+		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 
+        Assert.assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -697,12 +776,23 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 * - The thumbnails for Views 2 and 3 should accurately reflect their respective views
 	 */
 	@Test
-	public void TC13_ReportViewThumbnailsCustomBoundaryMultipleViews() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC13, location = ComplianceReportDataProvider.class)
+	public void TC13_ReportViewThumbnailsCustomBoundaryMultipleViews(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC13_ReportViewThumbnailsCustomBoundaryMultipleViews ..." +
 			 "\nTest Description: Generate Compliance Report as Picarro Supervisor using Custom Boundary with multiple views of default size to verify thumbnails");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));	
+		//TODO: confirm these verification steps:
+		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+
+        Assert.assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 
 	}
 
@@ -723,12 +813,23 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Thumbnails will be present  for compliance SSRS PDF, ZIP folders and generated view
 	 *	- - The thumbnail should still be present	 */
 	@Test
-	public void TC14_ReportViewThumbnailsCustomerBoundarySingleView() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC14, location = ComplianceReportDataProvider.class)
+	public void TC14_ReportViewThumbnailsCustomerBoundarySingleView(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC14_ReportViewThumbnailsCustomerBoundarySingleView ..." +
 			 "\nTest Description: Generate Compliance Report as Customer Admin using Customer Boundary with single view of default size to verify thumbnails");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));	
+		//TODO: confirm these verification steps:
+		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+
+        Assert.assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 
 	}
  
@@ -753,12 +854,23 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Export image should show the map for the specified Lat-Long boundary
 	 */
 	@Test
-	public void TC149_GenerateComplianceReportUsingSurveyorUnitTagFiltersMoreThanOneViewDownloadReport() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC149, location = ComplianceReportDataProvider.class)
+	public void TC149_GenerateComplianceReportUsingSurveyorUnitTagFiltersMoreThanOneViewDownloadReport(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC149_GenerateComplianceReportUsingSurveyorUnitTagFiltersMoreThanOneViewDownloadReport ..." +
 			 "\nTest Description: Generate compliance report using surveyor unit and tag filters for more than one view and download the report");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));	
+		//TODO: confirm these verification steps:
+		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+
+        Assert.assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 
 	}
  
@@ -785,12 +897,23 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - The shapes drawn by the GIS software should match those of the Compliance Report views
 	 */
 	@Test
-	public void TC1490_CreateNewCustomerLISABoxOption() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1490, location = ComplianceReportDataProvider.class)
+	public void TC1490_CreateNewCustomerLISABoxOption(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1490_CreateNewCustomerLISABoxOption ..." +
 			 "\nTest Description: Create new customer with LISA Box option");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));	
+		//TODO: confirm these verification steps:
+		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+
+        Assert.assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 
 	}
  
@@ -817,13 +940,23 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - The shapes drawn by the GIS software should match those of the Compliance Report views
 	 */
 	@Test
-	public void TC1491_CreateNewCustomerWithoutLISABoxOption() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1491, location = ComplianceReportDataProvider.class)
+	public void TC1491_CreateNewCustomerWithoutLISABoxOption(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1491_CreateNewCustomerWithoutLISABoxOption ..." +
 			 "\nTest Description: create new customer without LISA Box option");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));	
+		//TODO: confirm these verification steps:
+		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 
+        Assert.assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -845,12 +978,23 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - The shapes drawn by the GIS software should match those of the Compliance Report views
 	 */
 	@Test
-	public void TC1496_AddLISABoxOptionExistingCustomer() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1496, location = ComplianceReportDataProvider.class)
+	public void TC1496_AddLISABoxOptionExistingCustomer(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1496_AddLISABoxOptionExistingCustomer ..." +
 			 "\nTest Description: Add LISA Box option to existing customer");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));	
+		//TODO: confirm these verification steps:
+		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+
+        Assert.assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 
 	}
  
@@ -872,14 +1016,27 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - The shapes drawn by the GIS software should match those of the Compliance Report views
 	 */
 	@Test
-	public void TC1497_RemoveLISABoxOptionFromExistingCustomer() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1497, location = ComplianceReportDataProvider.class)
+	public void TC1497_RemoveLISABoxOptionFromExistingCustomer(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1497_RemoveLISABoxOptionFromExistingCustomer ..." +
 			 "\nTest Description: Remove LISA Box option from existing customer");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));	
+		//TODO: confirm these verification steps:
+		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+
+        Assert.assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 
 	}
+
+	
 	
 	/**
 	 * Provide a adaptor of ReportsCompliance for tests, you need to do modification based on your test case
@@ -1052,5 +1209,72 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 //		}
 //		return testCase;
 //	}
-
+	// Old way for TC1319
+//	String testCaseName = "TC1319";		
+//	String rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
+//	String tag1 = "stnd-pic", tag2 = "iso cap", tag3 = "standard";
+//	String username = SQAPICSUP;
+//	String password = USERPASSWORD;
+//	String customer = "Picarro";
+//	
+//	complianceReportsPage.login(username, password);
+//	complianceReportsPage.open();
+//
+//	ReportsCompliance rpt = getSampleComplianceReport();
+//	rpt.setRptTitle(rptTitle);
+//	rpt.setCustomer(customer);
+//	rpt.setStrCreatedBy(username);
+//	
+//	//Optional Tabular PDF Content
+//	Map<String,String> tableMap = rpt.getTablesList().get(0);
+//	tableMap.put(KEYPCA, "1");
+//	tableMap.put(KEYPCRA, "1");
+//	tableMap.put(KEYPCF, "1");	
+//	
+//	//Configure Surveys
+//	List<ReportsSurveyInfo> surveyInfoList = rpt.getSurveyInfoList();
+//	ReportsSurveyInfo survey1 = surveyInfoList.get(0);
+//	ReportsSurveyInfo survey2 = getReportsSurveyInfoSample(rpt);
+//	ReportsSurveyInfo survey3 = getReportsSurveyInfoSample(rpt);
+//	
+//	survey1.setTag(tag1);
+//	
+//	survey2.setTag(tag2);		
+//	survey3.setTag(tag3);
+//	
+//	surveyInfoList.add(survey2);
+//	surveyInfoList.add(survey3);
+//	
+//	complianceReportsPage.addNewReport(rpt);
+//	complianceReportsPage.waitForPageLoad();
+//	
+//	if ((complianceReportsPage.checkActionStatus(rptTitle, username, testCaseName))) {
+//		assertTrue(complianceReportsPage.verifyShowCoverageTable( testSetup.getDownloadPath(), rptTitle));
+//		assertTrue(complianceReportsPage.verifyCoverageForecastValuesTable(testSetup.getDownloadPath(), rptTitle));
+//	} else {
+//		fail("\nTestcase " + testCaseName + " failed.\n");
+//	}
+	
+//	@BeforeClass
+//	public static void beforeTestClass() throws Exception {
+//		initializePageActions();
+//	}
+//
+//	/**
+//	 * Initializes the page action objects.
+//	 */
+//	protected static void initializePageActions() {
+//		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
+//		homePageAction = new HomePageActions(driver, baseURL, testSetup);
+//		
+//		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
+//		PageFactory.initElements(driver, complianceReportsPage);
+//		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
+//		PageFactory.initElements(driver, manageUsersPage);
+//		manageCustomersPage = new ManageCustomersPage(driver, baseURL,testSetup);
+//		PageFactory.initElements(driver, manageCustomersPage);
+//		manageLocationsPage = new ManageLocationsPage(driver, baseURL,testSetup);
+//		PageFactory.initElements(driver, manageLocationsPage);
+//		testEnvironmentAction = new TestEnvironmentActions();
+//	}
 }

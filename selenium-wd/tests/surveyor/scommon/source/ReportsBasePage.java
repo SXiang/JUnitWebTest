@@ -315,7 +315,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyContent-0']/div/fieldset/div/fieldset/p/button")
 	protected WebElement btnDeleteDrivingSurvey;
-
+	
+	@FindBy(css=".surveyGroup > [style=''] button.btnDeleteSurvey")
+	protected List<WebElement> btnDeleteDrivingSurveys;
+	
 	@FindBy(how = How.ID, using = "buttonMap")
 	protected WebElement btnLatLongSelector;
 

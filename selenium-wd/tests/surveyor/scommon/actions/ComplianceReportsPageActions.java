@@ -89,7 +89,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	private ComplianceReportDataReader dataReader = null;
 	public static ReportsCompliance workingReportsComp = null;      // Stores the ReportsCompliance object from createNewReport action
 	public static ComplianceReportsDataRow workingDataRow = null;    // Stores the workingDataRow from createNewReport action
-
+    public String testCaseID = "";
 	public ComplianceReportsPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup);
 		initializePageObject(driver, new ComplianceReportsPage(driver, strBaseURL, testSetup));
@@ -166,7 +166,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	    clickComplianceReportButton(getReportTitle(dataRowID),buttonType);
 	}
 	
-	private String getReportTitle(Integer dataRowID) throws Exception{
+	public String getReportTitle(Integer dataRowID) throws Exception{
 		String title = workingReportsComp.getRptTitle();
 		if(workingReportsComp!=null&&!BaseHelper.isNullOrEmpty(title)){
 			return title;
@@ -299,7 +299,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public ReportsCompliance fillWorkingDataForReports(Integer dataRowID) throws Exception {
 		workingDataRow = getDataReader().getDataRow(dataRowID);
 		
-		String rptTitle = workingDataRow.title; 
+		String rptTitle = testCaseID+workingDataRow.title; 
 		String customer = null; 
 		String customerRowID = workingDataRow.customerRowID;
 		if (customerRowID != "") {
@@ -1135,6 +1135,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean open(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.open", data, dataRowID);
+		testCaseID = data.startsWith("TC")?data:"";
 		getComplianceReportsPage().open();
 		getComplianceReportsPage().waitForPageLoad();
 		return true;
@@ -2705,8 +2706,12 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifySSRSCoverageForecastTableInfo(String data, Integer dataRowID) throws IOException {
 		logAction("ComplianceReportsPageActions.verifySSRSCoverageForecastTableInfo", data, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.PDF);
-		this.getComplianceReportsPage().verifyCoverageForecastValuesTable(downloadPath, workingDataRow.title);
-		return true;
+		return this.getComplianceReportsPage().verifyCoverageForecastValuesTable(downloadPath, workingDataRow.title);
+	} 
+	public boolean verifySSRSCoverageForecastTableInfoWithPreviousResult(String data, Integer dataRowID) throws IOException {
+		logAction("ComplianceReportsPageActions.verifySSRSCoverageForecastTableInfoWithPreviousResult", data, dataRowID);
+		String downloadPath = getDownloadPath(ReportFileType.PDF);
+		return this.getComplianceReportsPage().verifyCoverageForecastValuesTableWithPreviousResult(downloadPath, workingDataRow.title);
 	} 
 	/**
 	 * Executes verifySSRSDrivingSurveyTableInfo action.

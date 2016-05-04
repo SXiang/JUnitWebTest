@@ -193,6 +193,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public static final String RatioSdevMetaPattern = "\\+/\\-";
 
+	public static List<String[]> preCoverageForecastTo70;
+	public static List<String[]> preCoverageForecast;
+	
 	@FindBy(how = How.ID, using = "zip-file_pdf")
 	protected WebElement zipImg;
 
@@ -1301,7 +1304,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 
 	}
-
+	public boolean deleteAllDrivingSurveys() {
+		for(WebElement btnDelete:btnDeleteDrivingSurveys){
+		     jsClick(btnDelete);
+		     this.waitForPageToLoad();
+		}
+		return btnDeleteDrivingSurveys.isEmpty();
+	}
 	public boolean deleteSurveyAndIncludeAgain(String surveyTag) {
 		this.btnDeleteDrivingSurvey.click();
 		this.waitForCopyReportPagetoLoad();
@@ -1686,7 +1695,25 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Log.info("Show Coverage Table verification passed");
 		return true;
 	}
-	
+
+	public boolean verifyCoverageForecastValuesTableWithPreviousResult(String actualPath, String reportTitle) throws IOException {
+		Log.info("Verifying Coverage Forecast Values Table");
+		
+		PDFTableUtility pdfTableUtility = new PDFTableUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
+		String reportName = "CR-" + reportId;
+		setReportName(reportName);
+		List<String[]> coverageForecast = pdfTableUtility.extractPDFTable(actualReport, PDFTable.COVERAGEFORECAST);
+		List<String[]> coverageForecastTo70 = pdfTableUtility.extractPDFTable(actualReport, PDFTable.COVERAGEFORECASTTO70);
+		
+		boolean result = coverageForecast.equals(preCoverageForecast)
+				&& coverageForecastTo70.equals(preCoverageForecastTo70);	
+		preCoverageForecast = coverageForecast;
+		preCoverageForecastTo70 = coverageForecastTo70;
+		return result;
+	}
 	/**
 	 * Method to verify the show Coverage Forecast Table in SSRS
 	 * @param actualPath
@@ -1710,6 +1737,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String[] row = coverageForecast.get(startIndex);
 		String precentageWithLisa = row[0].replaceFirst(ComplianceReportSSRS_PercentServiceCoverageWithLISAs,"").trim();
 		String precentageWithoutLisa = row[1].replaceFirst(ComplianceReportSSRS_PercentServiceCoverageWithoutLISAs,"").trim();
+		
 		
 		startIndex = 1;
 		row = coverageForecastTo70.get(startIndex++);
