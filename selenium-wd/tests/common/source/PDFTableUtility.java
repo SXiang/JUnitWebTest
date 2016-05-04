@@ -27,8 +27,8 @@ public class PDFTableUtility extends PDFUtility{
 		COVERAGEFORECAST(".*Percent Service Coverage with LISAs.*",0,"",false,1),
 		COVERAGEFORECASTTO70(".*Probability to Obtain 70% Coverage",0,"",true,4),
 		DRIVINGSURVEYTABLE("Indication Table",0,"LISA",true,-1),
-		ISOTOPICANALYSISTABLE("Surveyor Date/Time Result",0," Layers",true,-1);
-
+		ISOTOPICANALYSISTABLE("Surveyor"+wordSeparator+"Date/Time"+wordSeparator+"Result"+wordSeparator+"Isotopic Value/ Uncertainty(Å"+wordSeparator+"Field Notes",1," Layers",true,-1);
+		
 		private final String tableID;	          //1. tableID, indicator of start of a table, required
 		private final int startLine;              //2. num of lines  after 'tableID' - inclusive, optional, default to 0
 		private final String tableEndLinePattern; //3. tableEndLinePattern, indicator of end of a table, optional, default to ""
@@ -149,7 +149,7 @@ public class PDFTableUtility extends PDFUtility{
 				line += trimTableRow(pdfLines[i+combinedLine]);
 				numWords = line.split(wordSeparatorPattern).length;
 			}
-			if(equalsOrMatches(line,tableID)){     
+			if(RegexUtility.equalsOrMatches(line,tableID)){     
 				i += combinedLine;
 
 				for(j=i+startLine; j<pdfLines.length ; j++){
@@ -191,27 +191,12 @@ public class PDFTableUtility extends PDFUtility{
 		return pdfTable;
 	}
 
-	public boolean equalsOrMatches(String line, String expectedLine){
-		line = line.trim();
-		expectedLine = expectedLine.trim();
-		boolean isEqual = line.equals(expectedLine);
-		boolean isMatch = false;
-
-		if(isEqual){
-			return isEqual;
-		}else{
-			try{
-				isMatch = line.matches(expectedLine);
-			}catch(Exception e){				
-			}
-		}
-		return isMatch;
-	}
 	private String trimTableRow(String line){
 		String nelPattern = "[\\u0085]*";
 		line = line.replaceAll(nelPattern, "");
 		return line;
 	}
+	
 	private String[] getTableRow(String line){
 		line = trimTableRow(line);		
 		String[] cells = line.split(wordSeparatorPattern);

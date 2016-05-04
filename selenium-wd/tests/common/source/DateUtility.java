@@ -370,6 +370,10 @@ public class DateUtility {
 	 */
 	public static void main(String[] args) {
 
+		Log.info(DateUtility.getCurrentDate().toGMTString());
+		Log.info(DateUtility.getCurrentDate().toLocaleString());
+		Log.info(DateUtility.getCurrentDate().toString());
+		
 		// ** Unit tests for isFirstTimeGreater() method **/
 		String timeString1 = "00:00:00";
 		String timeString2 = "00:00:00";

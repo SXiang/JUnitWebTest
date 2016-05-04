@@ -364,7 +364,6 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 			}
 		} else
 			fail("\nTestcase " + testCaseName + " failed.\n");
-
 	}
 	private static String getTestCaseName(String key) {
 		return testCaseMap.get(key);
@@ -707,14 +706,12 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 			e.printStackTrace();
 		}
 		complianceReportsPage.waitForPageLoad();
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
-			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
 			if (tablesList.get(0).get(KEYINDTB).equals("1")) {
 				assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
 			}
-		} else
+		 else
 			fail("\nTestcase TC1729 failed.\n");
 	}
 }

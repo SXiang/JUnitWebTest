@@ -23,7 +23,7 @@ public class Log {
 		updateLog4jConfiguration(logFilePath);
 	}
 	*/
-	
+
 	public static void info(String message) {
 		log.info(message);
 	}
@@ -39,7 +39,31 @@ public class Log {
 	public static void error(String message) {
 		log.error(message);
 	}
-	
+
+	public static void info(String message, LogCategory logCategory) {
+		if (LogSwitches.INSTANCE.isEnabled(logCategory)) {
+			log.info(message);
+		}
+	}
+
+	public static void warn(String message, LogCategory logCategory) {
+		if (LogSwitches.INSTANCE.isEnabled(logCategory)) {
+			log.warn(message);
+		}
+	}
+
+	public static void debug(String message, LogCategory logCategory) {
+		if (LogSwitches.INSTANCE.isEnabled(logCategory)) {
+			log.debug(message);
+		}
+	}
+
+	public static void error(String message, LogCategory logCategory) {
+		if (LogSwitches.INSTANCE.isEnabled(logCategory)) {
+			log.error(message);
+		}
+	}
+
 	private static void updateLog4jConfiguration(String logFile) { 
 	    Properties props = new Properties(); 
 	    try { 
