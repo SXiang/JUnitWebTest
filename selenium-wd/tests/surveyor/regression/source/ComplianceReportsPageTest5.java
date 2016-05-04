@@ -14,6 +14,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.HomePageActions;
+import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -35,7 +36,8 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static TestEnvironmentActions testEnvironmentAction;
-
+	private static ManageCustomerPageActions manageCustomerPageAction;
+	
 	private static ComplianceReportsPage complianceReportsPage;
 
 	@BeforeClass
@@ -142,7 +144,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Survey mode filter should not show S1 mode
 	 *	- - S1 report mode should not be present on Copy compliance screen
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC227, location = ComplianceReportDataProvider.class)
 	public void TC227_S1ReportSurveyModeShouldNotPresentNewCopyComplianceReportScreens(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -153,7 +155,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 
 		ComplianceReportsPage complianceReportsPage2 = complianceReportsPageAction.getComplianceReportsPage();
 		complianceReportsPage2.open();
-		complianceReportsPage.openNewReportPage();
+		complianceReportsPage2.openNewReportPage();
 
 		//Need more work to covert String to enum from the excel sheet
 		ReportModeFilter rmode = ReportModeFilter.Standard;
@@ -179,13 +181,15 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	}
 
 	private void testReportFilters(ReportModeFilter rmode){
-		complianceReportsPage.selectReportMode(rmode);
-		Assert.assertTrue(complianceReportsPage.verifySurveyModeFilters(rmode));	
+		ComplianceReportsPage complianceReportsPage2 = complianceReportsPageAction.getComplianceReportsPage();
+		complianceReportsPage2.selectReportMode(rmode);
+		assertTrue(complianceReportsPage2.verifySurveyModeFilters(rmode));	
 	}
 	private void testSurveyFilters(SurveyModeFilter smode){
-		complianceReportsPage.selectSurveyModeForSurvey(smode);
-		complianceReportsPage.clickOnSearchSurveyButton();
-		Assert.assertTrue(complianceReportsPage.verifySurveySelectorWithFilter(smode));
+		ComplianceReportsPage complianceReportsPage2 = complianceReportsPageAction.getComplianceReportsPage();
+		complianceReportsPage2.selectSurveyModeForSurvey(smode);
+		complianceReportsPage2.clickOnSearchSurveyButton();
+		assertTrue(complianceReportsPage2.verifySurveySelectorWithFilter(smode));
 	}
 
 	/**
@@ -408,12 +412,28 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Report generation action is canceled. Copy button is present next to canceled report
 	 *	- - Report should be generated successfully and user is able to download the PDFs
 	 */
-	@Test
-	public void TC1523_CopyButtonPresentCanceledFailedComplianceReportCustomerAdminUser() throws Exception {
-		Log.info("\nRunning TC1523_CopyButtonPresentCanceledFailedComplianceReportCustomerAdminUser ...");
+		@Test
+		@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1523, location = ComplianceReportDataProvider.class)
+		public void TC1523_CopyButtonPresentCanceledFailedComplianceReportCustomerAdminUser(
+				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+			Log.info("\nRunning TC1523_CopyButtonPresentCanceledFailedComplianceReportCustomerAdminUser...");
 
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+			
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+
+			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.cancelInProgressReport(EMPTY, getReportRowID(reportDataRowID1));
+			testEnvironmentAction.idleForSeconds(String.valueOf(5), NOTSET);
+			complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+			testEnvironmentAction.idleForSeconds(String.valueOf(5), NOTSET);
+			complianceReportsPageAction.clickOnOKButton(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+			waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.openComplianceViewerDialog(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.clickOnComplianceViewerPDF(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.waitForPDFDownloadToComplete(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+
 	}
 
 	/**
