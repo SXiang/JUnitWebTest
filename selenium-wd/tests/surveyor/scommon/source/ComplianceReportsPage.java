@@ -446,56 +446,56 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			rowNum = i + 1;
 			if (viewList.get(i).get(KEYVIEWNAME) != null) {
 				colNum = 2;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				driver.findElement(By.xpath(strBaseXPath)).clear();
 				driver.findElement(By.xpath(strBaseXPath)).sendKeys(viewList.get(i).get(KEYVIEWNAME));
 			}
 
 			if (viewList.get(i).get(KEYLISA).equalsIgnoreCase("1")) {
 				colNum = 3;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				driver.findElement(By.xpath(strBaseXPath)).click();
 			}
 
 			if (viewList.get(i).get(KEYFOV).equalsIgnoreCase("1")) {
 				colNum = 4;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				driver.findElement(By.xpath(strBaseXPath)).click();
 			}
 
 			if (viewList.get(i).get(KEYBREADCRUMB).equalsIgnoreCase("1")) {
 				colNum = 5;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				driver.findElement(By.xpath(strBaseXPath)).click();
 			}
 
 			if (viewList.get(i).get(KEYINDICATIONS).equalsIgnoreCase("1")) {
 				colNum = 6;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				driver.findElement(By.xpath(strBaseXPath)).click();
 			}
 
 			if (viewList.get(i).get(KEYISOTOPICCAPTURE).equalsIgnoreCase("1")) {
 				colNum = 7;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				driver.findElement(By.xpath(strBaseXPath)).click();
 			}
 
 			if (viewList.get(i).get(KEYANNOTATION).equalsIgnoreCase("1")) {
 				colNum = 8;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				driver.findElement(By.xpath(strBaseXPath)).click();
 			}
 
 			if (viewList.get(i).get(KEYGAPS).equalsIgnoreCase("1")) {
 				colNum = 9;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				driver.findElement(By.xpath(strBaseXPath)).click();
 			}
 
 			if (viewList.get(i).get(KEYASSETS).equalsIgnoreCase("1")) {
 				colNum = 10;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				WebElement assetCheckbox = driver.findElement(By.xpath(strBaseXPath));
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				js.executeScript("arguments[0].click();", assetCheckbox);
@@ -503,7 +503,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 			if (viewList.get(i).get(KEYBOUNDARIES).equalsIgnoreCase("1")) {
 				colNum = 11;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				driver.findElement(By.xpath(strBaseXPath)).click();
 			}
 
@@ -531,6 +531,16 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				}
 			}
 		}
+	}
+
+	private String getViewXPathByRowCol(int rowNum, int colNum) {
+		String strBaseXPath;
+		if (rowNum == 1) {
+			strBaseXPath = "//*[@id='datatableViews']/tbody/tr/td[" + colNum + "]/input";
+		} else {
+			strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
+		}
+		return strBaseXPath;
 	}
 
 	public boolean isShapeIconDisplayedInViewer() {
