@@ -91,7 +91,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	private ComplianceReportDataReader dataReader = null;
 	public static ReportsCompliance workingReportsComp = null;      // Stores the ReportsCompliance object from createNewReport action
 	public static ComplianceReportsDataRow workingDataRow = null;    // Stores the workingDataRow from createNewReport action
-    public String testCaseID = "";
 	public ComplianceReportsPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup);
 		initializePageObject(driver, new ComplianceReportsPage(driver, strBaseURL, testSetup));
