@@ -667,10 +667,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void addNewReport(Reports reports, boolean openNewReportsPage) throws Exception {
-		addNewReport(reports, null, openNewReportsPage);
-	}
-	
-	public void addNewReport(Reports reports, List<Integer>tagIndexes, boolean openNewReportsPage ) throws Exception {
 		if (openNewReportsPage) {
 			openNewReportPage();
 		}
