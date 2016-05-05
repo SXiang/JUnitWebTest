@@ -19,6 +19,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.CryptoUtility;
 import common.source.Log;
+import common.source.WebElementExtender;
 import surveyor.dataprovider.UserDataProvider;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ManageCustomersPage;
@@ -62,7 +63,7 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 
 		manageLocationsPage.getBtnAddNewLocation().click();
 
-		assertTrue(manageLocationsPage.getEthMthRtoLbl().isDisplayed());
+		assertTrue(WebElementExtender.isElementPresentAndDisplayed(manageLocationsPage.getEthMthRtoLbl()));
 	}
 
 	/**
@@ -83,6 +84,7 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 		manageLocationsPage.open();
 
 		manageLocationsPage.addNewLocation(locationName, SQACUS, SQACUSSULOC, "1", "2");
+		manageLocationsPage.getInputSearch().sendKeys(locationName);
 		assertTrue(manageLocationsPage.findExistingLocation(SQACUS, locationName));
 
 		manageLocationsPage.editPDExistingLocation(SQACUS, locationName, locationNewName, ETHRNELAT, ETHRNELAT, "5", "7");
@@ -106,6 +108,7 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 		manageLocationsPage.open();
 
 		manageLocationsPage.addNewLocation(locationName, SQACUS, SQACUSSULOC, "1", "2");
+		manageLocationsPage.getInputSearch().sendKeys(locationName);
 		assertTrue(manageLocationsPage.findExistingLocation(SQACUS, locationName));
 	}
 

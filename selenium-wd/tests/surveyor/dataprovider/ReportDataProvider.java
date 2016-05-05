@@ -13,7 +13,9 @@ import static surveyor.scommon.source.SurveyorConstants.KEYGAPS;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
+import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
@@ -81,12 +83,14 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		return listBoundary;
 	}
 
-	public static HashMap<String, String> createOptionalTabularPDFContent(String indication, String isotopic, String pca, String pcra) {
+	public static HashMap<String, String> createOptionalTabularPDFContent(String indication, String isotopic, String gaptable, String pca, String pcra, String pcf) {
 		HashMap<String, String> tableMap = new HashMap<String, String>();
 		tableMap.put(KEYINDTB, indication);
 		tableMap.put(KEYISOANA, isotopic);
+		tableMap.put(KEYGAPTB, gaptable);
 		tableMap.put(KEYPCA, pca);
 		tableMap.put(KEYPCRA, pcra);
+		tableMap.put(KEYPCF, pcf);
 		return tableMap;
 	}
 

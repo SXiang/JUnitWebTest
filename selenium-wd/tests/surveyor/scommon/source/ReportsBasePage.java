@@ -329,7 +329,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "button_ok")
 	protected WebElement btnCustomOK;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a[2]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[5]/a[2]")
 	protected WebElement btnFirstCopyCompliance;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a[4]")
@@ -1014,10 +1014,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
 			List<WebElement> Rows = tabledata.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
-			for (int getrowvalue = 1; getrowvalue < Rows.size(); getrowvalue++) {
-				List<WebElement> Columns = Rows.get(getrowvalue).findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[6]"));
-				for (int getcolumnvalue = 1; getcolumnvalue < Columns.size(); getcolumnvalue++) {
-					String cellValue = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[6]")).getText();
+			for (int getrowvalue = 1; getrowvalue <= Rows.size(); getrowvalue++) {
+				List<WebElement> Columns = Rows.get(getrowvalue-1)
+						.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[6]"));
+				for (int getcolumnvalue = 1; getcolumnvalue <= Columns.size(); getcolumnvalue++) {
+					String cellValue = driver
+							.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[6]"))
+							.getText();
 					if (cellValue.contains(tag)) {
 						result = true;
 						break;
