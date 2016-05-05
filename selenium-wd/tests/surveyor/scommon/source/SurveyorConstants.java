@@ -135,6 +135,11 @@ public final class SurveyorConstants {
 	public static final String SWLAT = "37.39566424530531";
 	public static final String SWLON = "122.01141357421875";
 
+	public static final int  X_OFFSET = 150;
+	public static final int Y_OFFSET = 150;
+	public static final int RECT_WIDTH = 100;
+	public static final int RECT_HEIGHT = 100;
+
 	public static final String SURVEYORUNIT = "sqacus - sqacusloc - sqacuslocsur";
 	public static final String TAG = "dmcs1-sqa01";
 
@@ -268,11 +273,6 @@ public final class SurveyorConstants {
 
 	public static final String REXCLUSIONRADIUS = "3";
 
-	public static final int  X_OFFSET = 150;
-	public static final int Y_OFFSET = 150;
-	public static final int RECT_WIDTH = 100;
-	public static final int RECT_HEIGHT = 100;
-	
 	/*
 	 * Lat Long for Ethane Reporting
 	 */

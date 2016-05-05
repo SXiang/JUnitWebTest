@@ -198,7 +198,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		listBoundary.add(SWLat);
 		listBoundary.add(SWLong);
 	}
- 
+
 	private void fillViewDetails(Map<String, String> viewMap, ReportViewsDataReader reader,
 			Integer dataRowID) throws Exception {
 		String viewName = reader.getDataRow(dataRowID).name;
@@ -315,6 +315,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, TestContext.INSTANCE.getLoggedInUser(), customer, timeZone, exclusionRadius,
 				listBoundary, tablesList, null /*surveyorUnit*/, null /*tagList*/, viewList, viewLayersList);
 		rpt.setSurveyInfoList(reportsSurveyInfoList);
+		rpt.setCustomerBoundaryInfo(ReportsCompliance.getCustomerBoundaryType(workingDataRow.customerBoundaryType), 
+				workingDataRow.customerBoundaryName);
 
 		workingReportsComp = rpt;		// Store the working report properties.
 		return rpt;
@@ -1363,7 +1365,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		Boolean selectPercentCoverageReportArea = Boolean.valueOf(pdfContentDataRow.percentCoverageReportArea);
 		
 		if (selectGap) {
-			this.getComplianceReportsPage().selectGapCheckBox();
+			this.getComplianceReportsPage().selectGapTableCheckBox();
 		}
 		if (selectIndicationTable) {
 			this.getComplianceReportsPage().selectIndicationsTableCheckBox();
