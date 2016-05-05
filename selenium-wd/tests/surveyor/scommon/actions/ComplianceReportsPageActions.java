@@ -7,12 +7,14 @@ import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
 import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
 import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
 import static surveyor.scommon.source.SurveyorConstants.KEYGAPS;
+import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
@@ -237,15 +239,15 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			Integer dataRowID) throws Exception {
 		String showIndicationsTable = reader.getDataRow(dataRowID).indicationTable.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showIsoAnalysisTable = reader.getDataRow(dataRowID).isotopicAnalysis.equalsIgnoreCase("TRUE") ? "1" : "0";
+		String showGapTable = reader.getDataRow(dataRowID).gapTable.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showPercentCovAssetsTable = reader.getDataRow(dataRowID).percentCoverageAssets.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showPercentCoverageReportAreaTable = reader.getDataRow(dataRowID).percentCoverageReportArea.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showPercentCoverageForecastTable = reader.getDataRow(dataRowID).percentCoverageForecast.equalsIgnoreCase("TRUE") ? "1" : "0";
-		String showGapTable = reader.getDataRow(dataRowID).gapTable.equalsIgnoreCase("TRUE") ? "1" : "0";
-		if (showIndicationsTable != "") tableMap.put(KEYINDTB, showIndicationsTable);
-		if (showIsoAnalysisTable != "") tableMap.put(KEYISOANA, showIsoAnalysisTable);
-		if (showPercentCovAssetsTable != "") tableMap.put(KEYPCA, showPercentCovAssetsTable);
-		if (showPercentCoverageReportAreaTable != "") tableMap.put(KEYPCRA, showPercentCoverageReportAreaTable);
+		tableMap.put(KEYINDTB, showIndicationsTable);
+		tableMap.put(KEYISOANA, showIsoAnalysisTable);
 		tableMap.put(KEYGAPTB, showGapTable);
+		tableMap.put(KEYPCA, showPercentCovAssetsTable);
+		tableMap.put(KEYPCRA, showPercentCoverageReportAreaTable);
 		tableMap.put(KEYPCF, showPercentCoverageForecastTable);
 	}
 
@@ -415,7 +417,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
 
 	private void openComplianceViewerDialog(Integer dataRowID) throws Exception {
-		this.clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
+		clickComplianceReportButton(dataRowID, ComplianceReportButtonType.ReportViewer);
 		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
 		this.getComplianceReportsPage().waitForPdfReportIcontoAppear();
 	}
@@ -1115,7 +1117,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean open(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.open", data, dataRowID);
-		testCaseID = data.startsWith("TC")?data:"";
 		getComplianceReportsPage().open();
 		getComplianceReportsPage().waitForPageLoad();
 		return true;
@@ -1367,7 +1368,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		Boolean selectPercentCoverageReportArea = Boolean.valueOf(pdfContentDataRow.percentCoverageReportArea);
 		
 		if (selectGap) {
-			this.getComplianceReportsPage().selectGapCheckBox();
+			this.getComplianceReportsPage().selectGapTableCheckBox();
 		}
 		if (selectIndicationTable) {
 			this.getComplianceReportsPage().selectIndicationsTableCheckBox();

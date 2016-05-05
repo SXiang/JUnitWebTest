@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+  <Appenders>
+	<File name="FileLogger" fileName=".\logs\log.log" append="false">
+	  <PatternLayout pattern="%d{dd MMM yyyy HH\:mm\:ss,SSS} - %t - %p - %F [%C -> %M, Line\: %L]\: %m%n"/>
+	</File>
+	<Console name="STDOUT" target="SYSTEM_OUT">
+	  <PatternLayout pattern="%d{dd MMM yyyy HH\:mm\:ss,SSS} - %t - %p - %F [%C -> %M, Line\: %L]\: %m%n"/>
+	</Console>
+  </Appenders>
+  <Loggers>
+	<Logger name="common.source" level="debug">
+	  <AppenderRef ref="FileLogger"/>
+	</Logger>
+	<Root level="info">	
+	  <AppenderRef ref="STDOUT"/>
+	</Root>
+  </Loggers>
+</Configuration>

@@ -19,17 +19,17 @@ import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
 import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
 import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
 import static surveyor.scommon.source.SurveyorConstants.KEYGAPS;
+import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
-import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
-import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
+import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
@@ -1393,11 +1393,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public String getAreaErrorText() {
 		return this.areaErrorText.getText();
 
-	}
-
-	public void selectGapCheckBox() {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", checkBoxGap);
 	}
 
 	public void selectPercentCoverageReportArea() {
@@ -2966,11 +2961,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (tablesList.get(0).get(KEYPCRA).equalsIgnoreCase("1")) {
 			selectPercentCoverageReportArea();
 		}
-
 		if (tablesList.get(0).get(KEYPCF).equalsIgnoreCase("1")) {
 			selectPercentCoverageForecastCheckBox();
 		}
-
+		
 		// 5. Optional View layers
 		List<Map<String, String>> viewLayersList = reportsCompliance.getViewLayersList();
 		if (viewLayersList != null && viewLayersList.size() > 0) {
@@ -2989,7 +2983,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			.selectCustomerBoundaryType(reportsCompliance.getCustomerBoundaryFilterType().toString())
 			.setCustomerBoundaryName(reportsCompliance.getCustomerBoundaryName())
 			.switchMode(ControlMode.Default)
-			.clickOkButton().waitForModalDialogToClose();
+			.clickOkButton()
+			.waitForModalDialogToClose();
 	}
 
 	private boolean useCustomBoundaryLatLongSelector(ReportsCompliance reportsCompliance) {
@@ -3011,7 +3006,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	private void fillCustomBoundaryUsingLatLongSelector(ReportsCompliance reportsCompliance) {
 		openCustomBoundarySelector();
-		latLongSelectionControl.waitForModalDialogOpen().switchMode(ControlMode.MapInteraction).waitForMapImageLoad().drawSelectorRectangle(ReportsCompliance.CANVAS_X_PATH, reportsCompliance.getLatLongXOffset(), reportsCompliance.getLatLongYOffset(), reportsCompliance.getLatLongRectWidth(), reportsCompliance.getLatLongRectHeight()).switchMode(ControlMode.Default).clickOkButton();
+		latLongSelectionControl.waitForModalDialogOpen()
+			.switchMode(ControlMode.MapInteraction)
+			.waitForMapImageLoad()
+			.drawSelectorRectangle(ReportsCompliance.CANVAS_X_PATH, 
+					reportsCompliance.getLatLongXOffset(), reportsCompliance.getLatLongYOffset(), 
+					reportsCompliance.getLatLongRectWidth(), reportsCompliance.getLatLongRectHeight())
+			.switchMode(ControlMode.Default)
+			.clickOkButton()
+			.waitForModalDialogToClose();
 	}
 
 	@Override
