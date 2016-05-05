@@ -135,6 +135,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		List<Integer> reportSurveyRowIDs = ActionArguments.getNumericList(dataRow.reportSurveyRowIDs);
 		List<ReportsSurveyInfo> reportsSurveyInfoList = new ArrayList<ReportsSurveyInfo>();
 		for (Integer rowID : reportSurveyRowIDs) {
+			if(rowID==0){
+				continue;
+			}
 			ReportSurveyDataReader surveyDataReader = new ReportSurveyDataReader(this.excelUtility);
 			ReportSurveyDataRow surveyDataRow = surveyDataReader.getDataRow(rowID);
 
@@ -250,6 +253,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		if (!ActionArguments.isEmpty(argValue)) {
 			List<Integer> assetRowIDs = ActionArguments.getNumericList(argValue);
 			for (Integer rowID : assetRowIDs) {
+				if(rowID==0){
+					continue;
+				}
 				ReportOptViewLayersAssetsDataReader viewLayersAssetsDataReader = getViewLayersAssetsDataReader();
 				ReportOptViewLayersAssetsDataRow dataRow = viewLayersAssetsDataReader.getDataRow(rowID);
 				viewLayerMap.put(dataRow.assetID, ReportsCompliance.ASSET_PREFIX + dataRow.assetName);
@@ -259,6 +265,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		if (!ActionArguments.isEmpty(argValue)) {
 			List<Integer> boundariesRowIDs = ActionArguments.getNumericList(argValue);
 			for (Integer rowID : boundariesRowIDs) {
+				if(rowID==0){
+					continue;
+				}
 				ReportOptViewLayersBoundaryDataReader viewLayersBoundaryDataReader = getViewLayersBoundaryDataReader();
 				ReportOptViewLayersBoundaryDataRow dataRow = viewLayersBoundaryDataReader.getDataRow(rowID);
 				viewLayerMap.put(dataRow.boundaryID, ReportsCompliance.BOUNDARY_PREFIX + dataRow.boundaryName);
@@ -292,6 +301,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		List<Integer> reportViewRowIDs = ActionArguments.getNumericList(workingDataRow.reportViewRowIDs);
 		for (Integer rowID : reportViewRowIDs) {
+			if(rowID==0){
+				continue;
+			}
 			Map<String, String> viewMap = new HashMap<String, String>();
 			fillViewDetails(viewMap, new ReportViewsDataReader(this.excelUtility), rowID);
 			viewList.add(viewMap);
@@ -438,10 +450,10 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			.waitForModalDialogToClose();
 	}
 
-	private void verifyPresenceOfButton(Integer dataRowID, ComplianceReportButtonType buttonType) throws Exception {
+	private boolean verifyPresenceOfButton(Integer dataRowID, ComplianceReportButtonType buttonType) throws Exception {
 		ComplianceReportsDataRow compRptDataRow = getComplianceReportsDataRow(dataRowID);
 		String reportTitle = compRptDataRow.title;
-		this.getComplianceReportsPage().verifyComplianceReportButton(reportTitle, LoginPageActions.workingDataRow.username, buttonType);
+		return this.getComplianceReportsPage().verifyComplianceReportButton(reportTitle, LoginPageActions.workingDataRow.username, buttonType);
 	}
 
 	private boolean verifyReportSurveyValuesMatch(List<Integer> surveyRowIDs) throws IOException {
@@ -625,7 +637,19 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 				LoginPageActions.workingDataRow.username, ComplianceReportButtonType.Cancel);
 		return true;
 	}
- 
+	/**
+	 * Executes copyInProgressReport action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean copyInProgressReport(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.cancelInProgressReport", data, dataRowID);
+		this.getComplianceReportsPage().clickComplianceReportButton(workingDataRow.title, 
+				LoginPageActions.workingDataRow.username, ComplianceReportButtonType.InProgressCopy);
+		return true;
+	} 
 	/**
 	 * Executes checkSurveySelectorGeographicFilter action.
 	 * @param data - specifies the input data passed to the action.
@@ -1451,6 +1475,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		HashMap<String, String> viewLayerMap = new HashMap<String, String>();
 		List<Integer> boundariesRowIDs = ActionArguments.getNumericList(optViewLayersDataRow.boundariesRowIDs);
 		for (Integer rowID : boundariesRowIDs) {
+			if(rowID==0){
+				continue;
+			}
 			ReportOptViewLayersBoundaryDataReader viewLayersBoundaryDataReader = getViewLayersBoundaryDataReader();
 			ReportOptViewLayersBoundaryDataRow boundariesDataRow = viewLayersBoundaryDataReader.getDataRow(rowID);
 			viewLayerMap.put(boundariesDataRow.boundaryID, ReportsCompliance.BOUNDARY_PREFIX + boundariesDataRow.boundaryName);
@@ -1470,8 +1497,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyComplianceViewerButtonIsDisplayed(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyComplianceViewerButtonIsDisplayed", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyComplianceViewerButtonIsDisplayed", ARG_DATA_ROW_ID, dataRowID);
-		verifyPresenceOfButton(dataRowID, ComplianceReportButtonType.ReportViewer);
-		return true;
+		return verifyPresenceOfButton(dataRowID, ComplianceReportButtonType.ReportViewer);
 	}
 
 	/**
@@ -1495,10 +1521,21 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyCopyButtonIsDisplayed(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyCopyButtonIsDisplayed", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyCopyButtonIsDisplayed", ARG_DATA_ROW_ID, dataRowID);
-		verifyPresenceOfButton(dataRowID, ComplianceReportButtonType.Copy);
-		return true;
+		return verifyPresenceOfButton(dataRowID, ComplianceReportButtonType.Copy);
 	}
- 
+
+	/**
+	 * Executes verifyCopyButtonIsDisplayed action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean verifyCancelButtonIsDisplayed(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.verifyCopyButtonIsDisplayed", data, dataRowID);
+		ActionArguments.verifyGreaterThanZero("verifyCopyButtonIsDisplayed", ARG_DATA_ROW_ID, dataRowID);
+		return verifyPresenceOfButton(dataRowID, ComplianceReportButtonType.Cancel);
+	}
 	/**
 	 * Executes verifyDeleteButtonIsDisplayed action.
 	 * @param data - specifies the input data passed to the action.
@@ -1509,8 +1546,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyDeleteButtonIsDisplayed(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyDeleteButtonIsDisplayed", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyDeleteButtonIsDisplayed", ARG_DATA_ROW_ID, dataRowID);
-		verifyPresenceOfButton(dataRowID, ComplianceReportButtonType.Delete);
-		return true;
+		return verifyPresenceOfButton(dataRowID, ComplianceReportButtonType.Delete);
 	}
  
 	/**
@@ -1523,8 +1559,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyInvestigateButtonIsDisplayed(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyInvestigateButtonIsDisplayed", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyInvestigateButtonIsDisplayed", ARG_DATA_ROW_ID, dataRowID);
-		verifyPresenceOfButton(dataRowID, ComplianceReportButtonType.Investigate);
-		return true;
+		return verifyPresenceOfButton(dataRowID, ComplianceReportButtonType.Investigate);
 	}
  
 	/**
@@ -1537,8 +1572,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyInvestigatePDFButtonIsDisplayed(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyInvestigatePDFButtonIsDisplayed", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyInvestigatePDFButtonIsDisplayed", ARG_DATA_ROW_ID, dataRowID);
-		verifyPresenceOfButton(dataRowID, ComplianceReportButtonType.InvestigatePDF);
-		return true;
+		return verifyPresenceOfButton(dataRowID, ComplianceReportButtonType.InvestigatePDF);
 	}
  
 	/**
