@@ -19,16 +19,16 @@ import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
 import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
 import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
 import static surveyor.scommon.source.SurveyorConstants.KEYGAPS;
+import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
-import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
-import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
+import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
@@ -92,6 +92,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.gson.Gson;
@@ -924,10 +925,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 								this.waitForConfirmDeletePopupToShow();
 								if (confirmAction) {
 									this.clickOnConfirmInDeleteReportPopup();
-								} else {
-									this.clickOnCancelInDeleteReportPopup();
-								}
-								this.waitForConfirmDeletePopupToClose();
+									this.waitForConfirmDeletePopupToClose();
+								} 
 							}
 						}
 						return true;
@@ -1392,11 +1391,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public String getAreaErrorText() {
 		return this.areaErrorText.getText();
 
-	}
-
-	public void selectGapCheckBox() {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", checkBoxGap);
 	}
 
 	public void selectPercentCoverageReportArea() {
@@ -2714,19 +2708,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		});
 	}
 
-	private void waitForConfirmDeletePopupToShow() {
-		WebElement confirmDeletePopupSection = this.driver.findElement(By.id("deleteReportModal"));
+	public void waitForConfirmDeletePopupToShow() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
+				(new WebDriverWait(driver, timeout + 15)).until(ExpectedConditions.presenceOfElementLocated(By.id("deleteReportModal")));
+				WebElement confirmDeletePopupSection = d.findElement(By.id("deleteReportModal"));
 				return confirmDeletePopupSection.getAttribute("style").contains("display:block") || confirmDeletePopupSection.getAttribute("style").contains("display: block");
 			}
 		});
 	}
 
-	private void waitForConfirmDeletePopupToClose() {
-		WebElement confirmDeletePopupSection = this.driver.findElement(By.id("deleteReportModal"));
+	public void waitForConfirmDeletePopupToClose() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
+				(new WebDriverWait(driver, timeout + 15)).until(ExpectedConditions.presenceOfElementLocated(By.id("deleteReportModal")));
+				WebElement confirmDeletePopupSection = d.findElement(By.id("deleteReportModal"));
 				return confirmDeletePopupSection.getAttribute("style").contains("display:none") || confirmDeletePopupSection.getAttribute("style").contains("display: none");
 			}
 		});
@@ -2872,8 +2868,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (tablesList.get(0).get(KEYISOANA).equalsIgnoreCase("1")) {
 			selectIsotopicAnalysisCheckBox();
 		}
-		if (tablesList.get(0).get(KEYGAPTB).equalsIgnoreCase("1")) {
-			selectGapTableCheckBox();
+		if (tablesList.get(0).get(KEYGAPTB) != null) {
+			if (tablesList.get(0).get(KEYGAPTB).equalsIgnoreCase("1")) {
+				selectGapTableCheckBox();
+			}
 		}
 		if (tablesList.get(0).get(KEYPCA).equalsIgnoreCase("1")) {
 			selectPercentCoverageAssetCheckBox();
@@ -2881,11 +2879,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (tablesList.get(0).get(KEYPCRA).equalsIgnoreCase("1")) {
 			selectPercentCoverageReportArea();
 		}
-
-		if (tablesList.get(0).get(KEYPCF).equalsIgnoreCase("1")) {
-			selectPercentCoverageForecastCheckBox();
+		if (tablesList.get(0).get(KEYPCF) != null) {
+			if (tablesList.get(0).get(KEYPCF).equalsIgnoreCase("1")) {
+				selectPercentCoverageForecastCheckBox();
+			}
 		}
-
+		
 		List<Map<String, String>> viewLayersList = reportsCompliance.getViewLayersList();
 		if (viewLayersList != null && viewLayersList.size() > 0) {
 			handleOptionalDynamicViewLayersSection(viewLayersList);
@@ -2894,7 +2893,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	private void fillCustomerBoundary(ReportsCompliance reportsCompliance) {
 		openCustomerBoundarySelector();
-		latLongSelectionControl.waitForModalDialogOpen().switchMode(ControlMode.MapInteraction).waitForMapImageLoad().selectCustomerBoundaryType(reportsCompliance.getCustomerBoundaryFilterType().toString()).setCustomerBoundaryName(reportsCompliance.getCustomerBoundaryName()).switchMode(ControlMode.Default).clickOkButton();
+		latLongSelectionControl.waitForModalDialogOpen()
+			.switchMode(ControlMode.MapInteraction)
+			.waitForMapImageLoad()
+			.selectCustomerBoundaryType(reportsCompliance.getCustomerBoundaryFilterType().toString())
+			.setCustomerBoundaryName(reportsCompliance.getCustomerBoundaryName())
+			.switchMode(ControlMode.Default)
+			.clickOkButton()
+			.waitForModalDialogToClose();
 	}
 
 	private boolean useCustomBoundaryLatLongSelector(ReportsCompliance reportsCompliance) {
@@ -2904,9 +2910,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	private boolean isCustomBoundarySpecified(ReportsCompliance reportsCompliance) {
 		boolean useSelector = false;
 		if (reportsCompliance != null) {
-
-			boolean textFieldsSpecified = reportsCompliance.getNELat() != null && reportsCompliance.getNELong() != null && reportsCompliance.getSWLat() != null && reportsCompliance.getSWLong() != null;
-
+			boolean textFieldsSpecified = reportsCompliance.getNELat() != null && reportsCompliance.getNELong() != null && reportsCompliance.getSWLat() != null && 
+					reportsCompliance.getSWLong() != null && !reportsCompliance.getNELat().isEmpty() && !reportsCompliance.getNELong().isEmpty() &&
+					!reportsCompliance.getSWLat().isEmpty() && !reportsCompliance.getSWLong().isEmpty() && 
+					!reportsCompliance.getNELat().equals("0.0") && !reportsCompliance.getNELong().equals("0.0") &&
+							!reportsCompliance.getSWLat().equals("0.0") && !reportsCompliance.getSWLong().equals("0.0");
 			boolean latLongFieldsSpecified = useCustomBoundaryLatLongSelector(reportsCompliance);
 			useSelector = textFieldsSpecified || latLongFieldsSpecified;
 		}
@@ -2915,7 +2923,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	private void fillCustomBoundaryUsingLatLongSelector(ReportsCompliance reportsCompliance) {
 		openCustomBoundarySelector();
-		latLongSelectionControl.waitForModalDialogOpen().switchMode(ControlMode.MapInteraction).waitForMapImageLoad().drawSelectorRectangle(ReportsCompliance.CANVAS_X_PATH, reportsCompliance.getLatLongXOffset(), reportsCompliance.getLatLongYOffset(), reportsCompliance.getLatLongRectWidth(), reportsCompliance.getLatLongRectHeight()).switchMode(ControlMode.Default).clickOkButton();
+		latLongSelectionControl.waitForModalDialogOpen()
+			.switchMode(ControlMode.MapInteraction)
+			.waitForMapImageLoad()
+			.drawSelectorRectangle(ReportsCompliance.CANVAS_X_PATH, 
+					reportsCompliance.getLatLongXOffset(), reportsCompliance.getLatLongYOffset(), 
+					reportsCompliance.getLatLongRectWidth(), reportsCompliance.getLatLongRectHeight())
+			.switchMode(ControlMode.Default)
+			.clickOkButton()
+			.waitForModalDialogToClose();
 	}
 
 	@Override

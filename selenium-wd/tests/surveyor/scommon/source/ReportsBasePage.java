@@ -31,6 +31,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -394,6 +395,16 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(id = "datatableSurveys_next")
 	protected WebElement surveyNextButton;
+
+	private static final String SURVEY_GROUP_XPATH = "*[@id='page-wrapper']/div/div[3]/div/div[6]/div/div[3]";
+
+	@FindBy(how = How.XPATH, using = SURVEY_GROUP_XPATH)
+	private WebElement surveyGroup;
+
+	private static final String SURVEY_GROUP_DIVS_XPATH = "*[@id='page-wrapper']/div/div[3]/div/div[6]/div/div[3]/div";
+
+	@FindBy(how = How.XPATH, using = SURVEY_GROUP_DIVS_XPATH)
+	private WebElement surveyGroupDivs;
 
 	private static String surveyTableHeaderColumnBaseXPath = "//*[@id='datatableSurveys']/thead/tr/th[%d]";
 
@@ -771,6 +782,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			// Add the selected surveys
 			clickOnAddSurveysButton();
+			waitForSelectedSurveysToBeAdded(numSurveysToSelect);
 		}
 	}
 
@@ -783,10 +795,19 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void selectSurveyInfoGeoFilter(Boolean geoFilterOn) {
-		if ((geoFilterOn == null) || (!geoFilterOn)) {
-			JavascriptExecutor js = (JavascriptExecutor) driver;
-			js.executeScript("arguments[0].click();", this.checkGeoFilter);
+		if (geoFilterOn) {
+			if (!checkGeoFilter.isSelected())
+				clickGeoFilterCheckBox();
 		}
+		else {
+			if (checkGeoFilter.isSelected())
+				clickGeoFilterCheckBox();
+		}
+	}
+
+	private void clickGeoFilterCheckBox() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", this.checkGeoFilter);
 	}
 
 	public void selectSurveyInfoEndDate(String endDate) {
@@ -953,7 +974,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 		});
 	}
 
+	public void waitForSelectedSurveysToBeAdded(Integer countOfSurveys) {
+		(new WebDriverWait(driver, timeout + 15)).until(
+				ExpectedConditions.presenceOfElementLocated(By.id(String.format("surveyContent-%d", countOfSurveys-1))));
+	}
+
 	public boolean checkFileExists(String fileName, String downloadPath) {
+		Log.info(String.format("Looking for file-[%s] in download directory-[%s]", fileName, downloadPath));
 		File dir = new File(downloadPath);
 		File[] dir_contents = dir.listFiles();
 		for (int i = 0; i < dir_contents.length; i++) {
@@ -2243,10 +2270,16 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public ReportJobsStat getReportJobStat(String reportTitle) {
-		String apiResponse = ApiUtility.getApiResponse(String.format(ApiUtility.REPORTS_GET_REPORT_STAT_API_RELATIVE_URL, reportTitle));
+		String apiRelativePath = String.format(ApiUtility.REPORTS_GET_REPORT_STAT_API_RELATIVE_URL, reportTitle);
+		Log.info(String.format("Calling API Utility, URL : %s", apiRelativePath));
+		String apiResponse = ApiUtility.getApiResponse(apiRelativePath);
+		Log.info(String.format("API Response -> ", apiResponse));
+		Log.info("Creating gson Builder...");
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		Gson gson = gsonBuilder.create();
+		Log.info("Get ReportJobsStat from gson.fromJson()...");
 		ReportJobsStat reportJobsStatObj = gson.fromJson(apiResponse, ReportJobsStat.class);
+		Log.info("Successfully returned ReportJobsStat object.");
 		return reportJobsStatObj;
 	}
 

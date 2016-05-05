@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.PageFactory;
-
 import common.source.TestSetup;
 import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
@@ -16,16 +14,12 @@ import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 
 public class ManageCustomerPageActions extends BasePageActions {
 
-	private ManageCustomersPage manageCustomersPage = null;
 	private CustomerDataReader dataReader = null;
-	public static ManageCustomersPage workingCustomer = null;      // Stores the ManageCustomersPage object from createNewCustomer action
 	public static CustomerDataRow workingDataRow = null;    // Stores the workingDataRow from createNewCustomer action
 
 	public ManageCustomerPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL);
-		manageCustomersPage = new ManageCustomersPage(driver, strBaseURL, testSetup);
-		PageFactory.initElements(driver, manageCustomersPage);
-		
+		initializePageObject(driver, new ManageCustomersPage(driver, strBaseURL, testSetup));
 		setDataReader(new CustomerDataReader(this.excelUtility));
 	}
 	
@@ -46,14 +40,13 @@ public class ManageCustomerPageActions extends BasePageActions {
 		String customerName = ActionArguments.evaluateArgForFunction(workingDataRow.name);
 		workingDataRow.name = customerName;
 		if (workingDataRow.licensedFeaturesRowIDs.isEmpty()) {
-			this.manageCustomersPage.addNewCustomer(customerName, workingDataRow.eULA, Boolean.parseBoolean(workingDataRow.enabled));
+			this.getManageCustomersPage().addNewCustomer(customerName, workingDataRow.eULA, Boolean.parseBoolean(workingDataRow.enabled));
 		} else {
 			LicensedFeatures[] licensedFeatures = getLicensedFeatures(workingDataRow.licensedFeaturesRowIDs);
 			workingDataRow.setLicensedFeatures(licensedFeatures);
-			this.manageCustomersPage.addNewCustomer(customerName, workingDataRow.eULA, Boolean.parseBoolean(workingDataRow.enabled),
+			this.getManageCustomersPage().addNewCustomer(customerName, workingDataRow.eULA, Boolean.parseBoolean(workingDataRow.enabled),
 					licensedFeatures);
 		}
-		workingCustomer = this.manageCustomersPage;
 		return true;
 	}
 
@@ -67,7 +60,7 @@ public class ManageCustomerPageActions extends BasePageActions {
 	public boolean editCustomerSelectLicensedFeatures(String data, Integer dataRowID) throws Exception {
 		logAction("ManageCustomersPageActions.editCustomerSelectLicensedFeatures", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("editCustomerSelectLicensedFeatures", ARG_DATA, data);
-		this.manageCustomersPage.editAndSelectLicensedFeatures(workingDataRow.name, getLicensedFeatures(data));
+		this.getManageCustomersPage().editAndSelectLicensedFeatures(workingDataRow.name, getLicensedFeatures(data));
 		return true;
 	}
 
@@ -81,7 +74,7 @@ public class ManageCustomerPageActions extends BasePageActions {
 	public boolean editCustomerUnSelectLicensedFeatures(String data, Integer dataRowID) throws Exception {
 		logAction("ManageCustomersPageActions.editCustomerUnSelectLicensedFeatures", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("editCustomerUnSelectLicensedFeatures", ARG_DATA, data);
-		this.manageCustomersPage.editAndUnSelectLicensedFeatures(workingDataRow.name, getLicensedFeatures(data));
+		this.getManageCustomersPage().editAndUnSelectLicensedFeatures(workingDataRow.name, getLicensedFeatures(data));
 		return true;
 	}
 
@@ -93,8 +86,8 @@ public class ManageCustomerPageActions extends BasePageActions {
 	 */
 	public boolean open(String data, Integer dataRowID) {
 		logAction("ManageCustomersPageActions.open", data, dataRowID);
-		this.manageCustomersPage.open();
-		this.manageCustomersPage.waitForPageLoad();
+		this.getManageCustomersPage().open();
+		this.getManageCustomersPage().waitForPageLoad();
 		return true;
 	}
 	

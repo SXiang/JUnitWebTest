@@ -99,7 +99,8 @@ public class Reports {
 		EQDataGeneration ("EQDataGeneration"), 
 		ShapeFile ("ShapeFile"), 
 		ReportMeta ("ReportMeta"), 
-		PercentCoverageForecast ("PercentCoverageForecast");
+		PercentCoverageForecast ("PercentCoverageForecast"),
+		Zip ("Zip");
 		
 		private final String name;
 
@@ -326,6 +327,7 @@ public class Reports {
 		ReportJobTypeGuids.put("00000000-0000-0000-0007-000000000000", ReportJobType.ShapeFile);
 		ReportJobTypeGuids.put("00000000-0000-0000-0008-000000000000", ReportJobType.ReportMeta);
 		ReportJobTypeGuids.put("00000000-0000-0000-0009-000000000000", ReportJobType.PercentCoverageForecast);
+		ReportJobTypeGuids.put("00000000-0000-0000-0010-000000000000", ReportJobType.Zip);
 
 		ReportJobTypeReverseGuids.put(ReportJobType.Map, "00000000-0000-0000-0001-000000000000");
 		ReportJobTypeReverseGuids.put(ReportJobType.SSRS, "00000000-0000-0000-0002-000000000000");
@@ -336,6 +338,7 @@ public class Reports {
 		ReportJobTypeReverseGuids.put(ReportJobType.ShapeFile, "00000000-0000-0000-0007-000000000000");
 		ReportJobTypeReverseGuids.put(ReportJobType.ReportMeta, "00000000-0000-0000-0008-000000000000");
 		ReportJobTypeReverseGuids.put(ReportJobType.PercentCoverageForecast, "00000000-0000-0000-0009-000000000000");
+		ReportJobTypeReverseGuids.put(ReportJobType.Zip, "00000000-0000-0000-0010-000000000000");
 	}
 	
 	public static void main(String[] args) {
