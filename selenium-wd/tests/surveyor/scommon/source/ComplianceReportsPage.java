@@ -2974,8 +2974,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			handleOptionalDynamicViewLayersSection(viewLayersList);
 		}
 		
-		//TODO 6. Opacity Fine-Tuning
-		//TODO 7. View Size (PDF image output)
 	}
 
 	private void fillCustomerBoundary(ReportsCompliance reportsCompliance) {
