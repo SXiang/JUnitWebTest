@@ -6,16 +6,13 @@ package surveyor.scommon.source;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.FindBy;
 
-import common.source.BaseHelper;
 import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
@@ -147,7 +144,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		case LISABOX: 
 			inputBox = inputLISABox;
             break;
-		case SURVEYFORECASE: 
+		case SURVEYFORECAST: 
 			inputBox = inputSurveyForecase;
             break;
 		case REPORTSHAPEFILE: 
@@ -209,15 +206,18 @@ public class ManageCustomersPage extends SurveyorBasePage {
     
 	public void enabledDisableCustomer(boolean enableCustomer) {
 		if (enableCustomer) {
-			if (!inputAccountEnabled.isSelected())
+			if (!isAccountEnabled())
 				inputAccountEnabled.click();
 		}
 		else {
-			if (inputAccountEnabled.isSelected())
+			if (isAccountEnabled())
 				inputAccountEnabled.click();
 		}
 	}
 
+	public boolean isAccountEnabled(){
+		return inputAccountEnabled.isSelected();
+	}
 	public boolean isEulaRed(){
 		String eulaStyle = this.textAreaEula.getAttribute("style");
 		String eulaRed = "border: 1px solid red;";
@@ -504,7 +504,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		} else if (licFeatureName.equals("LISA Box 1.0")) {
 			licensedFeatures = LicensedFeatures.LISABOX;
 		} else if (licFeatureName.equals("Survey Protocol Forecast")) {
-			licensedFeatures = LicensedFeatures.SURVEYFORECASE;
+			licensedFeatures = LicensedFeatures.SURVEYFORECAST;
 		} else if (licFeatureName.equals("Report ShapeFile")) {
 			licensedFeatures = LicensedFeatures.REPORTSHAPEFILE;
 		}
