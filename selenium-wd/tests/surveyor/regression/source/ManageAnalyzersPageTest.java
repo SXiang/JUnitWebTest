@@ -266,4 +266,47 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		
 		assertFalse(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerNameNew));		
 	}
+	
+	/**
+	 * Test Case ID: TC109_Associate_Disassociate_Analyzers_PicAdmin
+	 * Test Description: Picarro Administrator is allowed to associate and disassociate Analyzers within Surveyor Unit of different Customers
+	 * 
+	 */	
+	@Test
+	public void TC109_EditAnalyzer_PicAdmin() {
+		String customerName = "Picarro";
+		String locationName = customerName + testSetup.getRandomNumber() + "loc";
+		String surveyorName = locationName + "sur";
+		String analyzerName = surveyorName + "ana";
+		String cityName ="Santa Clara";
+
+		String customerNameNew = CUSNAMEBASE;
+		String locationNameNew = customerName + testSetup.getRandomNumber() + CUSNAMEBASELOC;
+		String surveyorNameNew = locationName + "sur";
+				
+		Log.info("\nRunning TC109_Associate_Disassociate_Analyzers_PicAdmin - Picarro Administrator is allowed to associate and disassociate Analyzers within Surveyor Unit of different Customers");
+		
+		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerName, locationName,surveyorName,analyzerName,cityName,ANALYZERSHAREDKEY);
+		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerNameNew, locationNameNew,surveyorNameNew,analyzerName,cityName,ANALYZERSHAREDKEY);
+				
+		if (manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
+			manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationName, surveyorName, analyzerName, 
+					customerName + " - " + locationName + " - " + surveyorNameNew );
+		
+		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorNameNew, analyzerName));	
+		assertFalse(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorNameNew, analyzerName));
+	}
+	
+	private void addNewLocationSurveyorAnalyzer(String userName, String password, String customerName, String locationName, String surveyorName, String analyzerName, String city, String sharedKey){
+		loginPage.open();
+		loginPage.loginNormalAs(userName, password);		
+		
+		manageLocationsPage.open();
+		manageLocationsPage.addNewLocation(locationName, customerName, city);		
+		manageSurveyorPage.open();
+		manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName);				
+		manageAnalyzersPage.open();
+		manageAnalyzersPage.addNewAnalyzer(analyzerName, sharedKey, surveyorName, customerName, locationName);
+	}
+
 }
