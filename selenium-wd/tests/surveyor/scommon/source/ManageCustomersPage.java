@@ -72,7 +72,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	private WebElement inputLISABox;
 	
 	@FindBy(id = "LicencedFeatureId-Survey Protocol Forecast")
-	private WebElement inputSurveyForecase;
+	private WebElement inputSurveyForecast;
 	
 	@FindBy(id = "LicencedFeatureId-Report ShapeFile")
 	private WebElement inputReportShapeFile;
@@ -145,7 +145,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 			inputBox = inputLISABox;
             break;
 		case SURVEYFORECAST: 
-			inputBox = inputSurveyForecase;
+			inputBox = inputSurveyForecast;
             break;
 		case REPORTSHAPEFILE: 
 			inputBox = inputReportShapeFile;
