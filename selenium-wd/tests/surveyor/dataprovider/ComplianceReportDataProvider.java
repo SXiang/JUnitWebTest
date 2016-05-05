@@ -63,6 +63,9 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC227 = "dataProviderPageActionsComplianceReports_TC227";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1522 = "dataProviderPageActionsComplianceReports_TC1522";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1523 = "dataProviderPageActionsComplianceReports_TC1523";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1524 = "dataProviderPageActionsComplianceReports_TC1524";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1525 = "dataProviderPageActionsComplianceReports_TC1525";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1608 = "dataProviderPageActionsComplianceReports_TC1608";
 
 	public ComplianceReportDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
@@ -578,7 +581,25 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC1523() {
 		return new Object[][] {				
-			{ "TC1523" /*TestCaseID*/, 7 /*userDataRowID*/,  52/*reportDataRowID1*/, -1/*reportDataRowID2*/}
+			{ "TC1523" /*TestCaseID*/, 1/*userDataRowID*/,  52/*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1524() {
+		return new Object[][] {				
+			{ "TC1524" /*TestCaseID*/, 1/*userDataRowID*/,  52/*reportDataRowID1*/, 53/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1525() {
+		return new Object[][] {				
+			{ "TC1524" /*TestCaseID*/, 1/*userDataRowID*/,  53/*reportDataRowID1*/, 52/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1608() {
+		return new Object[][] {				
+			{ "TC1608" /*TestCaseID*/, 6/*userDataRowID*/,  53/*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 }
