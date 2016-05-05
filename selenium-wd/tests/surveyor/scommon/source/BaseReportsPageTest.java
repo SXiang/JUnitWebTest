@@ -36,6 +36,7 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 		reportJobProcessingTimeNumberMap.put(ReportJobType.ReportMeta, new NumberUtility());
 		reportJobProcessingTimeNumberMap.put(ReportJobType.ShapeFile, new NumberUtility());
 		reportJobProcessingTimeNumberMap.put(ReportJobType.SSRS, new NumberUtility());
+		reportJobProcessingTimeNumberMap.put(ReportJobType.Zip, new NumberUtility());
 	}
 	
 	public static Integer getReportJobRollingProcessingTimeAvg(ReportJobType reportJobType) {

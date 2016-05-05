@@ -135,6 +135,11 @@ public final class SurveyorConstants {
 	public static final String SWLAT = "37.39566424530531";
 	public static final String SWLON = "122.01141357421875";
 
+	public static final int  X_OFFSET = 150;
+	public static final int Y_OFFSET = 150;
+	public static final int RECT_WIDTH = 100;
+	public static final int RECT_HEIGHT = 100;
+
 	public static final String SURVEYORUNIT = "sqacus - sqacusloc - sqacuslocsur";
 	public static final String TAG = "dmcs1-sqa01";
 
@@ -191,8 +196,8 @@ public final class SurveyorConstants {
 	public static final String KEYISOANA = "Isotopic Analysis";
 	public static final String KEYGAPTB = "Gap Table";
 	public static final String KEYPCA = "Percent Coverage Assets";
-	public static final String KEYPCRA = "Percent Coverage Report Area";
 	public static final String KEYPCF = "Percent Coverage Forecast";
+	public static final String KEYPCRA = "Percent Coverage Report Area";
 
 	public static final String SQAPICADRRTAG = "dmcrapidresponse-sqapic-admin";
 	public static final String SQAPICADSTNDTAG = "dmcstandard-sqapic-admin";
@@ -238,10 +243,11 @@ public final class SurveyorConstants {
 	public static final String PICADMMANTAG = "pic";
 	public static final String CUSDRVSTDTAG = "stnd";
 	public static final String CUSDRVRRTAG = "rr";
+	public static final String CUSDRVRAPIDTAG = "rapid";
 	public static final String CUSDRVOPTAG = "op";
-	public static final String CUSDRVETHSTDTAG= "ethane-standard";
-	public static final String CUSDRVETHRRTAG= "ethane-rr";
-	public static final String CUSDRVETHMNTAG= "ethane-manual";
+	public static final String CUSDRVETHSTDTAG= "EthaneStnd";
+	public static final String CUSDRVETHRRTAG= "EthaneRR";
+	public static final String CUSDRVETHMNTAG= "EthaneManual";
 	public static final String PICADMNSTDTAG2 = "stnd-pic";
 	public static final String PICADMNRRTAG2 = "rr-pic";
 	public static final String PICADMNOPTAG2 = "op-pic";
@@ -267,12 +273,6 @@ public final class SurveyorConstants {
 	public static final String RSWLON = "-121.98390";
 
 	public static final String REXCLUSIONRADIUS = "3";
-
-	public static final int  X_OFFSET = 150;
-	public static final int Y_OFFSET = 150;
-	public static final int RECT_WIDTH = 100;
-	public static final int RECT_HEIGHT = 100;
-	public static final String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
 
 	/*
 	 * Lat Long for Ethane Reporting
