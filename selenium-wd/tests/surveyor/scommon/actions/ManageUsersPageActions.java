@@ -91,9 +91,13 @@ public class ManageUsersPageActions extends BasePageActions {
 	 * @throws Exception
 	 */
 	private LocationDataRow getLocationDataRow(UserDataRow userDataRow) throws Exception {
-		LocationDataReader locationDataReader = new LocationDataReader(excelUtility);
-		LocationDataRow locationDataRow = locationDataReader.getDataRow(Integer.parseInt(userDataRow.locationRowID));
-		return locationDataRow;
+		if (ManageLocationPageActions.workingDataRow != null) {
+			return ManageLocationPageActions.workingDataRow;
+		} else {
+			LocationDataReader locationDataReader = new LocationDataReader(excelUtility);
+			LocationDataRow locationDataRow = locationDataReader.getDataRow(Integer.parseInt(userDataRow.locationRowID));
+			return locationDataRow;
+		}
 	}
 
 	/**
@@ -103,9 +107,13 @@ public class ManageUsersPageActions extends BasePageActions {
 	 * @throws Exception
 	 */
 	private CustomerDataRow getCustomerDataRow(UserDataRow userDataRow) throws Exception {
-		CustomerDataReader customerDataReader = new CustomerDataReader(excelUtility);
-		CustomerDataRow customerDataRow = customerDataReader.getDataRow(Integer.parseInt(userDataRow.customerRowID));
-		return customerDataRow;
+		if (ManageCustomerPageActions.workingDataRow != null) {
+			return ManageCustomerPageActions.workingDataRow;
+		} else {
+			CustomerDataReader customerDataReader = new CustomerDataReader(excelUtility);
+			CustomerDataRow customerDataRow = customerDataReader.getDataRow(Integer.parseInt(userDataRow.customerRowID));
+			return customerDataRow;
+		}
 	}
 
 	/* Invoke action using specified ActionName */

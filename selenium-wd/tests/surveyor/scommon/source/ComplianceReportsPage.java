@@ -93,6 +93,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.gson.Gson;
@@ -882,11 +883,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					case Investigate:
 						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[4]/img";
 						break;
-					case InvestigatePDF:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[5]/img";
-						break;
 					case Resubmit:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[6]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[5]/img";
 						break;
 					case InProgressCopy: // NOTE: When report is in-progress, Copy is the 1st button.
 						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]/img";
@@ -907,16 +905,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 							if (buttonType == ComplianceReportButtonType.Resubmit) {
 								this.waitForResubmitPopupToShow();
 								this.btnProcessResubmit.click();
-								this.waitForResubmitPopupToClose();
+								this.waitForPageLoad();
+								this.waitForAJAXCallsToComplete();
 							}
 							if (buttonType == ComplianceReportButtonType.Delete) {
 								this.waitForConfirmDeletePopupToShow();
 								if (confirmAction) {
 									this.clickOnConfirmInDeleteReportPopup();
-								} else {
-									this.clickOnCancelInDeleteReportPopup();
-								}
-								this.waitForConfirmDeletePopupToClose();
+									this.waitForConfirmDeletePopupToClose();
+								} 
 							}
 						}
 						return true;
@@ -2788,19 +2785,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		});
 	}
 
-	private void waitForConfirmDeletePopupToShow() {
-		WebElement confirmDeletePopupSection = this.driver.findElement(By.id("deleteReportModal"));
+	public void waitForConfirmDeletePopupToShow() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
+				(new WebDriverWait(driver, timeout + 15)).until(ExpectedConditions.presenceOfElementLocated(By.id("deleteReportModal")));
+				WebElement confirmDeletePopupSection = d.findElement(By.id("deleteReportModal"));
 				return confirmDeletePopupSection.getAttribute("style").contains("display:block") || confirmDeletePopupSection.getAttribute("style").contains("display: block");
 			}
 		});
 	}
 
-	private void waitForConfirmDeletePopupToClose() {
-		WebElement confirmDeletePopupSection = this.driver.findElement(By.id("deleteReportModal"));
+	public void waitForConfirmDeletePopupToClose() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
+				(new WebDriverWait(driver, timeout + 15)).until(ExpectedConditions.presenceOfElementLocated(By.id("deleteReportModal")));
+				WebElement confirmDeletePopupSection = d.findElement(By.id("deleteReportModal"));
 				return confirmDeletePopupSection.getAttribute("style").contains("display:none") || confirmDeletePopupSection.getAttribute("style").contains("display: none");
 			}
 		});
@@ -2952,8 +2951,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (tablesList.get(0).get(KEYISOANA).equalsIgnoreCase("1")) {
 			selectIsotopicAnalysisCheckBox();
 		}
-		if (tablesList.get(0).get(KEYGAPTB).equalsIgnoreCase("1")) {
-			selectGapTableCheckBox();
+		if (tablesList.get(0).get(KEYGAPTB) != null) {
+			if (tablesList.get(0).get(KEYGAPTB).equalsIgnoreCase("1")) {
+				selectGapTableCheckBox();
+			}
 		}
 		if (tablesList.get(0).get(KEYPCA).equalsIgnoreCase("1")) {
 			selectPercentCoverageAssetCheckBox();
@@ -2961,8 +2962,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (tablesList.get(0).get(KEYPCRA).equalsIgnoreCase("1")) {
 			selectPercentCoverageReportArea();
 		}
-		if (tablesList.get(0).get(KEYPCF).equalsIgnoreCase("1")) {
-			selectPercentCoverageForecastCheckBox();
+		if (tablesList.get(0).get(KEYPCF) != null) {
+			if (tablesList.get(0).get(KEYPCF).equalsIgnoreCase("1")) {
+				selectPercentCoverageForecastCheckBox();
+			}
 		}
 		
 		// 5. Optional View layers

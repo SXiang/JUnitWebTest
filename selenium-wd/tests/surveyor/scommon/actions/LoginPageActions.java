@@ -9,11 +9,13 @@ import common.source.RegexUtility;
 import common.source.TestSetup;
 import surveyor.scommon.actions.data.UserDataReader;
 import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
+import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 
 public class LoginPageActions extends BasePageActions {
 	private static final String REGEX_PATTERN_SPLIT_BY_COLON = ":";
 	private LoginPage loginPage = null;
+	private HomePage homePage = null;
 	private UserDataReader dataReader = null;
 	
 	public static UserDataRow workingDataRow = null;    // Stores the workingDataRow from login action
@@ -22,7 +24,8 @@ public class LoginPageActions extends BasePageActions {
 		super(driver, strBaseURL);
 		loginPage = new LoginPage(driver, strBaseURL, testSetup);
 		PageFactory.initElements(driver, loginPage);
-		
+		homePage = new HomePage(driver, strBaseURL, testSetup);
+		PageFactory.initElements(driver, homePage);
 		dataReader = new UserDataReader(this.excelUtility);
 	}
 
@@ -50,9 +53,11 @@ public class LoginPageActions extends BasePageActions {
 	}
 
 	public boolean login(String usernameColonPassword, Integer dataRowID) throws Exception {
-		logAction("LoginPageActions.login", usernameColonPassword, dataRowID);
 		UserDataRow dataRow = getUsernamePassword(usernameColonPassword, dataRowID);
+		logAction("LoginPageActions.login", String.format("username=[%s],password=[%s]", dataRow.username, "HIDDEN"), dataRowID);
 		loginPage.loginNormalAs(dataRow.username, dataRow.password);
+		
+		homePage.waitForPageLoad();
 		
 		// store the working login datarow
 		workingDataRow = dataRow; 

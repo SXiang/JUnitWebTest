@@ -31,6 +31,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -337,7 +338,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "button_ok")
 	protected WebElement btnCustomOK;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a[2]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[5]/a[2]")
 	protected WebElement btnFirstCopyCompliance;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a[4]")
@@ -403,6 +404,16 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(id = "datatableSurveys_next")
 	protected WebElement surveyNextButton;
+
+	private static final String SURVEY_GROUP_XPATH = "*[@id='page-wrapper']/div/div[3]/div/div[6]/div/div[3]";
+
+	@FindBy(how = How.XPATH, using = SURVEY_GROUP_XPATH)
+	private WebElement surveyGroup;
+
+	private static final String SURVEY_GROUP_DIVS_XPATH = "*[@id='page-wrapper']/div/div[3]/div/div[6]/div/div[3]/div";
+
+	@FindBy(how = How.XPATH, using = SURVEY_GROUP_DIVS_XPATH)
+	private WebElement surveyGroupDivs;
 
 	private static String surveyTableHeaderColumnBaseXPath = "//*[@id='datatableSurveys']/thead/tr/th[%d]";
 
@@ -791,6 +802,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			// Add the selected surveys
 			clickOnAddSurveysButton();
+			waitForSelectedSurveysToBeAdded(numSurveysToSelect);
 		}
 	}
 
@@ -996,7 +1008,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 		});
 	}
 
+	public void waitForSelectedSurveysToBeAdded(Integer countOfSurveys) {
+		(new WebDriverWait(driver, timeout + 15)).until(
+				ExpectedConditions.presenceOfElementLocated(By.id(String.format("surveyContent-%d", countOfSurveys-1))));
+	}
+
 	public boolean checkFileExists(String fileName, String downloadPath) {
+		Log.info(String.format("Looking for file-[%s] in download directory-[%s]", fileName, downloadPath));
 		File dir = new File(downloadPath);
 		File[] dir_contents = dir.listFiles();
 		for (int i = 0; i < dir_contents.length; i++) {
@@ -1030,10 +1048,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
 			List<WebElement> Rows = tabledata.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
-			for (int getrowvalue = 1; getrowvalue < Rows.size(); getrowvalue++) {
-				List<WebElement> Columns = Rows.get(getrowvalue).findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[6]"));
-				for (int getcolumnvalue = 1; getcolumnvalue < Columns.size(); getcolumnvalue++) {
-					String cellValue = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[6]")).getText();
+			for (int getrowvalue = 1; getrowvalue <= Rows.size(); getrowvalue++) {
+				List<WebElement> Columns = Rows.get(getrowvalue-1)
+						.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[6]"));
+				for (int getcolumnvalue = 1; getcolumnvalue <= Columns.size(); getcolumnvalue++) {
+					String cellValue = driver
+							.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[6]"))
+							.getText();
 					if (cellValue.contains(tag)) {
 						result = true;
 						break;

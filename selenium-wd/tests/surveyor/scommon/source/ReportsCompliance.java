@@ -148,15 +148,16 @@ public class ReportsCompliance extends Reports {
 	}
 
 	public enum LISAIndicationTableColumns {
-		LISANum ("LISANum", 0),
-		Surveyor ("Surveyor", 1),
-		DateTime ("DateTime", 2),
-		Amplitude ("Amplitude", 3),
-		Concentration ("Concentration", 4),
-		EthaneMethanRatio ("EthaneMethanRatio", 5),
-		Disposition ("Disposition", 6),
+		// 0-based column index. First column has checkbox image.
+		LISANum ("LISANum", 1),
+		Surveyor ("Surveyor", 2),
+		DateTime ("DateTime", 3),
+		Amplitude ("Amplitude", 4),
+		Concentration ("Concentration", 5),
+		EthaneMethanRatio ("EthaneMethanRatio", 6),
+		Disposition ("Disposition", 7),
 		PercConfidenceInDisposition ("PercConfidenceInDisposition", 7),
-		FIeldNotes ("FIeldNotes", 8);
+		FIeldNotes ("FIeldNotes", 9);
 		
 		private final String name;
 		private final Integer colIndex;

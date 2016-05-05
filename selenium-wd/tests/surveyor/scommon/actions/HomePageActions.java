@@ -27,6 +27,18 @@ public class HomePageActions extends BasePageActions {
 	}
  
 	/**
+	 * Executes verifyPageLoaded action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyPageLoaded(String data, Integer dataRowID) {
+		logAction("HomePageActions.verifyPageLoaded", data, dataRowID);
+		homePage.waitForPageLoad();
+		return true;
+	}
+	
+	/**
 	 * Executes clickOnViewAllDrivingSurveysLink action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -70,6 +82,9 @@ public class HomePageActions extends BasePageActions {
 		else if (actionName.equals("clickByIdAndWait")) { return this.clickByIdAndWait(data, dataRowID); }
 		else if (actionName.equals("clickByXPath")) { return this.clickByXPath(data, dataRowID); }
 		else if (actionName.equals("clickByXPathAndWait")) { return this.clickByXPathAndWait(data, dataRowID); }
+		else if (actionName.equals("clickOnViewAllDrivingSurveysLink")) { return this.clickOnViewAllDrivingSurveysLink(data, dataRowID); }
+		else if (actionName.equals("clickOnFirstOnlineSurveyorLink")) { return this.clickOnFirstOnlineSurveyorLink(data, dataRowID); }
+		else if (actionName.equals("clickOnFirstMatchingDrivingSurvey")) { return this.clickOnFirstMatchingDrivingSurvey(data, dataRowID); }
 		else if (actionName.equals("insertTextById")) { return this.insertTextById(data, dataRowID); }
 		else if (actionName.equals("insertTextByXPath")) { return this.insertTextByXPath(data, dataRowID); }
 		else if (actionName.equals("open")) { return this.open(data, dataRowID); }
@@ -78,9 +93,7 @@ public class HomePageActions extends BasePageActions {
 		else if (actionName.equals("selectRadioButtonByID")) { return this.selectRadioButtonByID(data, dataRowID); }
 		else if (actionName.equals("selectRadioButtonByXPath")) { return this.selectRadioButtonByXPath(data, dataRowID); }
 		else if (actionName.equals("sortRecordsBy")) { return this.sortRecordsBy(data, dataRowID); }
-		else if (actionName.equals("clickOnViewAllDrivingSurveysLink")) { return this.clickOnViewAllDrivingSurveysLink(data, dataRowID); }
-		else if (actionName.equals("clickOnFirstOnlineSurveyorLink")) { return this.clickOnFirstOnlineSurveyorLink(data, dataRowID); }
-		else if (actionName.equals("clickOnFirstMatchingDrivingSurvey")) { return this.clickOnFirstMatchingDrivingSurvey(data, dataRowID); }
+		else if (actionName.equals("verifyPageLoaded")) { return this.verifyPageLoaded(data, dataRowID); }
 
 		return false;
 	}
