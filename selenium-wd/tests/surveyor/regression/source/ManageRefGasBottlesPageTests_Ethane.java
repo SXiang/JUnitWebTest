@@ -85,18 +85,18 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 
 		Log.info("\nRunning TC1738 - Test Description: Ethane- Verify min/max value (%) from drop down/up to Ethane To Methane Ratio column to ReferenceGasBottle Page");
 
-		manageRefGasBottlesPage.login(SQAPICSUP, USERPASSWORD);
+		manageRefGasBottlesPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
 		manageRefGasBottlesPage.open();
 
-		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber1, "-32", "1", SQAETHCUST, SQAETHLOC, SQAETHSUR);
+		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber1, "-32", "1", SQACUS, SQACUSLOC, SQACUSLOCSUR);
 		manageRefGasBottlesPage.waitForNewPageLoad();
 
-		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber1, SQAETHSUR));
+		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber1, SQACUSLOCSUR));
 
-		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber2, "-32.17", "99", SQAETHCUST, SQAETHLOC, SQAETHSUR);
+		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber2, "-32", "99", SQACUS, SQACUSLOC, SQACUSLOCSUR);
 		manageRefGasBottlesPage.waitForNewPageLoad();
 
-		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber2, SQAETHSUR));
+		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber2, SQACUSLOCSUR));
 	}
 }
