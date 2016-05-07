@@ -46,7 +46,13 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	@FindBy(id = "BatchId")
 	private WebElement inputLotNumber;
 	
-	
+	public WebElement getEthMthRtoErr() {
+		return this.inputEthMthRto;
+	}
+
+	@FindBy(how = How.XPATH, using = "//*[@id='EthaneToMethaneRatio-error']")
+	private WebElement ethMthRtoErr;
+
 	@FindBy(how = How.XPATH, using = "//*[@id='EthaneToMethaneRatio']")
 	private WebElement inputEthMthRto;
 	

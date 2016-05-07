@@ -35,7 +35,7 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 		PageFactory.initElements(driver,  manageRefGasBottlesPage);
 	}
 
-	
+
 	/**
 	 * Test Case ID: TC1734 Test Description: Ethane - Verify that Ethane To Methane Ratio column added to ReferenceGasBottle Page
 	 * 
@@ -85,18 +85,25 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 
 		Log.info("\nRunning TC1738 - Test Description: Ethane- Verify min/max value (%) from drop down/up to Ethane To Methane Ratio column to ReferenceGasBottle Page");
 
-		manageRefGasBottlesPage.login(SQAPICSUP, USERPASSWORD);
+		manageRefGasBottlesPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
 		manageRefGasBottlesPage.open();
 
-		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber1, "-32", "1", SQAETHCUST, SQAETHLOC, SQAETHSUR);
+		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber1, "-32", "1", SQACUS, SQACUSLOC, SQACUSLOCSUR);
 		manageRefGasBottlesPage.waitForNewPageLoad();
+		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber1, SQACUSLOCSUR));
 
-		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber1, SQAETHSUR));
-
-		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber2, "-32.17", "99", SQAETHCUST, SQAETHLOC, SQAETHSUR);
+		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber2, "-32", "99", SQACUS, SQACUSLOC, SQACUSLOCSUR);
 		manageRefGasBottlesPage.waitForNewPageLoad();
+		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber2, SQACUSLOCSUR));
 
-		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber2, SQAETHSUR));
+		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber2, "-32", "0", SQACUS, SQACUSLOC, SQACUSLOCSUR);
+		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals("Please enter a value greater than or equal to 1."));
+		manageRefGasBottlesPage.clickOnCancelBtn();
+
+		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber2, "-32", "100", SQACUS, SQACUSLOC, SQACUSLOCSUR);
+		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals("Please enter a value less than or equal to 99."));
+		manageRefGasBottlesPage.clickOnCancelBtn();
+
 	}
 }
