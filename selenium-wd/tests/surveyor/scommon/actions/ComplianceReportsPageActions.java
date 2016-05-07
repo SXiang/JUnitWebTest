@@ -2901,6 +2901,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("clickOnComplianceViewerPDF")) { return this.clickOnComplianceViewerPDF(data, dataRowID); }
 		else if (actionName.equals("clickOnComplianceViewerPDFZIP")) { return this.clickOnComplianceViewerPDFZIP(data, dataRowID); }
 		else if (actionName.equals("clickOnComplianceViewerShapeZIP")) { return this.clickOnComplianceViewerShapeZIP(data, dataRowID); }
+		else if (actionName.equals("clickOnComplianceViewerViewByIndex")) { return this.clickOnComplianceViewerViewByIndex(data, dataRowID); }
 		else if (actionName.equals("clickOnConfirmDeleteReport")) { return this.clickOnConfirmDeleteReport(data, dataRowID); }
 		else if (actionName.equals("clickOnCopyButton")) { return this.clickOnCopyButton(data, dataRowID); }
 		else if (actionName.equals("clickOnDeleteButton")) { return this.clickOnDeleteButton(data, dataRowID); }
@@ -3054,5 +3055,99 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 
 	public ComplianceReportsPage getComplianceReportsPage() {
 		return (ComplianceReportsPage)this.pageObject;
+	}
+
+	public boolean verifySSRSPDFFooter(String empty, Integer notset) {
+		// TODO Add implementation
+		return false;
+	}
+
+	public boolean verifyIndicationsTableIsEmpty(String empty, Integer notset) {
+		// TODO Add implementation
+		return false;
+	}
+
+	public boolean verifyIsotopicTableIsEmpty(String empty, Integer notset) {
+		// TODO Add implementation
+		return false;
+	}
+
+	public boolean verifyErrorMessages(String empty, Integer notset) {
+		// TODO Add implementation
+		return false;
+	}
+
+	public boolean verifyReportFilesArePresent(String empty, Integer notset) {
+		// TODO Add implementation
+		return false;
+	}
+
+	public boolean verifyGeographicFilterIsSelected(String empty, Integer notset) {
+		// TODO Add implementation
+		return false;
+	}
+
+	public boolean verifySearchedSurveysAreForSelectedArea(String empty, Integer notset) {
+		// TODO Add implementation
+		return false;
+	}
+
+	public void verifyPageLoaded(String empty, Integer notset) {
+		// TODO Add implementation
+		
+	}
+
+	public boolean verifyReportGenerationIsCancelled(String empty, Integer notset) {
+		// TODO Add implementation
+		return false;
+	}
+
+	public boolean verifySurveyGreaterThan100HoursCannotBeAdded(String empty, Integer notset) {
+		// TODO Add implementation
+		return false;
+	}
+
+	public boolean verifySelectedSurveysAreForSpecifiedCustomer(String empty, Integer notset) {
+		// TODO Add implementation
+		return false;
+	}
+
+	public boolean verifyStandardSurveyModeIsShownOnPage(String empty, Integer notset) {
+		// TODO Add implementation
+		return false;
+	}
+
+	public boolean verifyOperatorSurveyModeIsShownOnPage(String empty, Integer notset) {
+		// TODO Add implementation
+		return false;
+	}
+
+	public boolean verifyRapidResponseSurveyModeIsShownOnPage(String empty, Integer notset) {
+		// TODO Add implementation
+		return false;
+	}
+
+	public boolean verifySearchedSurveysMatchSelectedMode(String empty, Integer notset) {
+		// TODO Add implementation
+		return false;
+	}
+
+	public boolean verifyComplianceViewerDialogIsClosed(String empty, Integer notset) {
+		// TODO Add implementation
+		return false;
+	}
+
+	public boolean verifyCustomerSpecificBoundariesAreDisplayed(String empty, Integer notset) {
+		// TODO Add implementation
+		return false;
+	}
+
+	public void clickOnNewComplianceReport(String empty, Integer reportRowID) {
+		// TODO Add implementation		
+	}
+
+	public boolean verifyManualSurveyModeIsShownOnPage(String empty, Integer notset) {
+		// TODO Add implementation
+		return false;
 	}
 }

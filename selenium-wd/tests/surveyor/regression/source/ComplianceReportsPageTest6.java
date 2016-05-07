@@ -24,7 +24,6 @@ import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
-import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.ReportsCompliance.IsotopicAnalysisTableColumns;
 import surveyor.scommon.source.ReportsCompliance.LISAIndicationTableColumns;
@@ -40,18 +39,9 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static TestEnvironmentActions testEnvironmentAction;
 
-	private static ComplianceReportsPage complianceReportsPage;
-
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
-		
-		homePageAction = new HomePageActions(driver, baseURL, testSetup);
-		manageCustomerPageAction = new ManageCustomerPageActions(driver, baseURL, testSetup);
-		manageUsersPageAction = new ManageUsersPageActions(driver, baseURL, testSetup);
-		manageLocationPageAction = new ManageLocationPageActions(driver, baseURL, testSetup);
-		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-		testEnvironmentAction = new TestEnvironmentActions();
 	}
 
 	/**
@@ -59,13 +49,15 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 * @throws Exception 
 	 */
 	protected static void initializePageActions() throws Exception {
-		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		homePageAction = new HomePageActions(driver, baseURL, testSetup);
-		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
+		manageCustomerPageAction = new ManageCustomerPageActions(driver, baseURL, testSetup);
+		manageUsersPageAction = new ManageUsersPageActions(driver, baseURL, testSetup);
+		manageLocationPageAction = new ManageLocationPageActions(driver, baseURL, testSetup);
+		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
 
 		// Select run mode here.
-		setTestRunMode(ReportTestRunMode.FullTestRun);
+		setTestRunMode(ReportTestRunMode.UnitTestRun);
 		
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
