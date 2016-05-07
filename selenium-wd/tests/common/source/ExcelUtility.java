@@ -31,7 +31,7 @@ public class ExcelUtility {
         try {
         	String cellData = null;
         	String key = formMapKey(rowNum, colNum, sheetName);
-        	if (!cellDataMap.containsKey(key)) {
+        	if (cellDataMap.containsKey(key)) {
         		return cellDataMap.get(key);
         	}        	
         	excelWorksheet = excelWorkbook.getSheet(sheetName);
@@ -82,7 +82,11 @@ public class ExcelUtility {
     }
 
     public String getIntegerCellData(int rowNum, int colNum, String sheetName ) throws Exception{
+    	Log.info("");
     	String cellData = getCellData(rowNum, colNum, sheetName, ValueType.Integer);
+    	if(cellData==null){
+    		Log.info("");
+    	}
     	if (cellData.equals("<ERROR>")) {
         	cellData = "";
         }        

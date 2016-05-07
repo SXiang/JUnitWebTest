@@ -811,13 +811,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void selectSurveyInfoGeoFilter(Boolean geoFilterOn) {
-		if (geoFilterOn) {
-			if (!checkGeoFilter.isSelected())
-				clickGeoFilterCheckBox();
-		}
-		else {
-			if (checkGeoFilter.isSelected())
-				clickGeoFilterCheckBox();
+		if (geoFilterOn != null) {
+			if (geoFilterOn) {
+				if (!checkGeoFilter.isSelected())
+					clickGeoFilterCheckBox();
+			}
+			else {
+				if (checkGeoFilter.isSelected())
+					clickGeoFilterCheckBox();
+			}
 		}
 	}
 
