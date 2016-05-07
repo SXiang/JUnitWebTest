@@ -310,7 +310,8 @@ public final class SurveyorConstants {
 	public static final String CR_CF_AREAINVALID_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_CoverageForecastAreaInvalidMessage);
 	public static final String CR_CF_ASSETSINVALID_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_CoverageForecastAssetsInvalidMessage);
 	public static final String CR_CF_FORECASTBOUNDARYINVALID_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_CoverageForecastBoundaryInvalidMessage);
-	
+	public static final String CR_SURVEYMISSING_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_SurveyMissingMessage);
+	public static final String CR_NOCOVERAGEFORECASTAVAILABLE_MESSAGE = "No Coverage Forecast Available";
 	/*
 	 * Timeout constants
 	 */

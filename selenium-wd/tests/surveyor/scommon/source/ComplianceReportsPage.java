@@ -447,6 +447,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		int rowNum;
 		String strBaseXPath;
 		String strXPath = "";
+		
 		for (int i = 0; i < viewList.size(); i++) {
 			if (i != 0) {
 				this.btnAddViews.click();
@@ -454,9 +455,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 			rowNum = i + 1;
 			strBaseXPath = "//*[@id='datatableViews']/tbody/tr["+rowNum+"]/td";
-			
-			if (viewList.get(i).get(KEYVIEWNAME) != null) {
-				strXPath = strBaseXPath + "/input[contains(@class,'view-name')]";
+
+			if (viewList.get(i).get(KEYVIEWNAME) != null) {				
+				strXPath = strBaseXPath + "/input[contains(@class,'view-name')]";					
 				driver.findElement(By.xpath(strXPath)).clear();
 				driver.findElement(By.xpath(strXPath)).sendKeys(viewList.get(i).get(KEYVIEWNAME));
 			}
@@ -1700,8 +1701,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		List<String[]> coverageForecast = pdfTableUtility.extractPDFTable(actualReport, PDFTable.COVERAGEFORECAST);
 		List<String[]> coverageForecastTo70 = pdfTableUtility.extractPDFTable(actualReport, PDFTable.COVERAGEFORECASTTO70);
 		
-		boolean result = coverageForecast.equals(preCoverageForecast)
-				&& coverageForecastTo70.equals(preCoverageForecastTo70);	
+		boolean result = pdfTableUtility.areTablesEqual(coverageForecast, preCoverageForecast)
+				&& pdfTableUtility.areTablesEqual(coverageForecastTo70,preCoverageForecastTo70);	
 		preCoverageForecast = coverageForecast;
 		preCoverageForecastTo70 = coverageForecastTo70;
 		return result;
@@ -1714,6 +1715,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyCoverageForecastValuesTable(String actualPath, String reportTitle) throws IOException {
+		return verifyCoverageForecastValuesTable(actualPath, reportTitle, true);
+	}
+	public boolean verifyCoverageForecastValuesTable(String actualPath, String reportTitle, boolean withPredication) throws IOException {
 		Log.info("Verifying Coverage Forecast Values Table");
 		PDFTableUtility pdfTableUtility = new PDFTableUtility();
 		Report reportObj = Report.getReport(reportTitle);
@@ -1725,6 +1729,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		List<String[]> coverageForecastTo70 = pdfTableUtility.extractPDFTable(actualReport, PDFTable.COVERAGEFORECASTTO70);
 	    preCoverageForecast = coverageForecast;
 	    preCoverageForecastTo70 = coverageForecastTo70;
+	    if(!withPredication&&!coverageForecastTo70.isEmpty()){
+	    	return false;
+	    }
 	    return verifyCoverageForecastValuesTableWithDBData(reportId, coverageForecast, coverageForecastTo70);
 	}
 	private boolean verifyCoverageForecastValuesTableWithDBData(String reportId, List<String[]> coverageForecast, List<String[]> coverageForecastTo70){

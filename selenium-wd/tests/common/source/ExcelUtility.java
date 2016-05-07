@@ -31,7 +31,7 @@ public class ExcelUtility {
         try {
         	String cellData = null;
         	String key = formMapKey(rowNum, colNum, sheetName);
-        	if (cellDataMap.containsKey(key)) {
+        	if (!cellDataMap.containsKey(key)) {
         		return cellDataMap.get(key);
         	}        	
         	excelWorksheet = excelWorkbook.getSheet(sheetName);

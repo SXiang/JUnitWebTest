@@ -295,7 +295,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	protected WebElement divErrorText;
 	protected String strErrorText = "//div[@id='dvErrorText']";
 	
-	@FindBy(css = "#dvErrors #dvErrorText > ul > li")
+	@FindBy(css = "#dvErrorText > ul > li")
 	protected List<WebElement> listOfErrors;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_filter']/label/input")
@@ -338,7 +338,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "button_ok")
 	protected WebElement btnCustomOK;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[5]/a[2]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[5]/a[@title='Copy']/img")
 	protected WebElement btnFirstCopyCompliance;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a[4]")
@@ -856,14 +856,26 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean verifyErrorMessages(String... errorMessages){
+		//List<WebElement> list = driver.findElements(By.cssSelector("#dvErrorText > ul > li"));
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>(){
 			public Boolean apply(WebDriver d){
 				return errorMessages==null||errorMessages[0].isEmpty()||listOfErrors.size()>=errorMessages.length;
 			}
 		});
-		
+		for(WebElement e:listOfErrors){
+			Log.info(e.getText());
+		}
 		for(String err:errorMessages ){
-			if(!listOfErrors.contains(err)){
+			boolean msgFound = false;
+			for(WebElement element:listOfErrors){
+				msgFound = false;
+				String msg = element.getText();
+				if(msg.equals(err)){
+					msgFound = true;
+					break;
+				}
+			}
+			if(!msgFound){
 				return false;
 			}
 		}
@@ -1995,6 +2007,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void clickOnCancelBtn() {
 		this.btnCancel.click();
+		super.waitForPageLoad();
 	}
 
 	public void clickOnFirstCopyComplianceBtn() {

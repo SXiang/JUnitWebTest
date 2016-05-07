@@ -282,6 +282,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
 
 	public ReportsCompliance fillWorkingDataForReports(Integer dataRowID) throws Exception {
+		Log.info("");
 		workingDataRow = getDataReader().getDataRow(dataRowID);
 	
 		String rptTitle = workingDataRow.title; 
@@ -748,6 +749,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean clickOnFirstCopyComplianceButton(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.clickOnFirstCopyComplianceButton", data, dataRowID);
 		this.getComplianceReportsPage().clickOnFirstCopyComplianceBtn();
+		this.getComplianceReportsPage().waitForCopyReportPagetoLoad();
+		this.initializePageObject(TestContext.INSTANCE.getDriver(), this.createNewPageObject());
 		return true;
 	}
  
@@ -2768,9 +2771,12 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @throws IOException 
 	 */
 	public boolean verifySSRSCoverageForecastTableInfo(String data, Integer dataRowID) throws IOException {
+		return verifySSRSCoverageForecastTableInfo(data, dataRowID,true);
+	}
+	public boolean verifySSRSCoverageForecastTableInfo(String data, Integer dataRowID, boolean withPredication) throws IOException {
 		logAction("ComplianceReportsPageActions.verifySSRSCoverageForecastTableInfo", data, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.PDF);
-		return this.getComplianceReportsPage().verifyCoverageForecastValuesTable(downloadPath, workingDataRow.title);
+		return this.getComplianceReportsPage().verifyCoverageForecastValuesTable(downloadPath, workingDataRow.title,withPredication);
 	} 
 	public boolean verifySSRSCoverageForecastTableInfoWithPreviousResult(String data, Integer dataRowID) throws IOException {
 		logAction("ComplianceReportsPageActions.verifySSRSCoverageForecastTableInfoWithPreviousResult", data, dataRowID);

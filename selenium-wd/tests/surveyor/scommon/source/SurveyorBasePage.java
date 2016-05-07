@@ -421,6 +421,7 @@ public class SurveyorBasePage extends BasePage {
 				try {
 					element = d.findElement(By.xpath(elementXPath));
 					elementDetected = WebElementExtender.isElementPresentAndDisplayed(element);
+					d.navigate().refresh();
 				} catch (Exception ex) {
 					Log.warn(String.format("Element with xpath=[%s] NOT found", elementXPath));
 					Log.warn(String.format("Refreshing page to find element with xpath=[%s]", elementXPath));
