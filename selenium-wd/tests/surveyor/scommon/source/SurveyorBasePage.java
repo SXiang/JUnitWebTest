@@ -138,6 +138,9 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(xpath = "//*[@id='timezones' and @class='dropdown-menu']//a[contains(text(),'Eastern Standard Time')]")
 	protected WebElement easternTime;
 	
+	@FindBy(xpath = "//*[@id='datatable_filter']/label/input")
+	protected WebElement seacrchTextBox;
+	
 	private static String headerColumnBaseXPath = "//*[@id='datatable']/thead/tr/th[%d]";
 
 	public enum TableSortOrder {
