@@ -3097,6 +3097,10 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("waitForReportGenerationToComplete")) { return this.waitForReportGenerationToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForShapeZIPDownloadToComplete")) { return this.waitForShapeZIPDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForViewDownloadToCompleteByViewIndex")) { return this.waitForViewDownloadToCompleteByViewIndex(data, dataRowID); }
+		else if (actionName.equals("copyInProgressReport")) { return this.copyInProgressReport(data, dataRowID); }
+		else if (actionName.equals("verifyCancelButtonIsDisplayed")) { return this.verifyCancelButtonIsDisplayed(data, dataRowID); }
+		else if (actionName.equals("verifySSRSCoverageForecastTableInfo")) { return this.verifySSRSCoverageForecastTableInfo(data, dataRowID); }
+		else if (actionName.equals("verifySSRSCoverageForecastTableInfoWithPreviousResult")) { return this.verifySSRSCoverageForecastTableInfoWithPreviousResult(data, dataRowID); }
 		return false;
 	}
 

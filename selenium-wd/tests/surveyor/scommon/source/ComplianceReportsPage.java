@@ -2930,7 +2930,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		if (reportsCompliance.getExclusionRadius() != null) {
 			//TODO: This is not working properly, need rewrite
-			//inputExclusionRadius(reportsCompliance.getExclusionRadius());
+			inputExclusionRadius(reportsCompliance.getExclusionRadius());
 		}
 
 		// 2. Area Selector

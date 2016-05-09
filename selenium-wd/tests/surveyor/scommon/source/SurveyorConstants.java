@@ -127,8 +127,8 @@ public final class SurveyorConstants {
 	public static final String REPORTMODES = "Standard";
 
 	public static final String CUSBOUNDARY = Resources.getResource(ResourceKeys.ComplianceReport_CustomBoundary);
-	public static final String IMGMAPHEIGHT = "11";
-	public static final String IMGMAPWIDTH = "8.5";
+	public static final String IMGMAPHEIGHT = "8.5";
+	public static final String IMGMAPWIDTH = "11";
 	
 	public static final String NELAT = "37.421980615353675";
 	public static final String NELON = "121.93639755249023";
