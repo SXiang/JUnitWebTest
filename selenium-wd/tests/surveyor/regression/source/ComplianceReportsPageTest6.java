@@ -54,6 +54,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		manageUsersPageAction = new ManageUsersPageActions(driver, baseURL, testSetup);
 		manageLocationPageAction = new ManageLocationPageActions(driver, baseURL, testSetup);
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
+		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
 
 		// Select run mode here.
