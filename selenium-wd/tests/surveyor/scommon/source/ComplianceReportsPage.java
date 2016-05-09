@@ -120,6 +120,7 @@ import surveyor.dataaccess.source.StoredProcComplianceGetEthaneCapture;
 import surveyor.dataaccess.source.StoredProcComplianceGetGaps;
 import surveyor.dataaccess.source.StoredProcComplianceGetIndications;
 import surveyor.dataaccess.source.StoredProcComplianceGetIsotopics;
+import surveyor.dataaccess.source.StoredProcLisaInvestigationShowIndication;
 import surveyor.dataprovider.ReportDataProvider;
 import common.source.PDFUtility;
 import common.source.ProcessUtility;
@@ -181,6 +182,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String ComplianceReportSSRS_IndicationTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_IndicationTable);
 	public static final String ComplianceReportSSRS_GapTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_GapTable);
 	public static final String ComplianceReportSSRS_EthaneAnalysisTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_EthaneAnalysisTable);
+
+	public static final String LisaInvestigationReportSSRS_Lisa = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_Lisa);
+	public static final String LisaInvestigationReportSSRS_Amplitude = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_Amplitude);
+	public static final String Constant_Status = Resources.getResource(ResourceKeys.Constant_Status);
+	public static final String LisaInvestigationReportSSRS_Investigator = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_Investigator);
+	public static final String LisaInvestigationReportSSRS_InvestigationReport = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_InvestigationReport);
 
 	private static final String DELETE_POPUP_CONFIRM_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[1]";
 	private static final String DELETE_POPUP_CANCEL_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[2]";
@@ -936,7 +943,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 								if (confirmAction) {
 									this.clickOnConfirmInDeleteReportPopup();
 									this.waitForConfirmDeletePopupToClose();
-								} 
+								}
 							}
 						}
 						return true;
@@ -2016,6 +2023,67 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return true;
 	}
 
+	/**
+	 * Method to verify Investigation PDF
+	 * 
+	 * @param actualPath
+	 * @param reportTitle
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean verifyInvestigationResultTable(String actualPath, String reportTitle) throws IOException {
+		Log.info("Verifying Investigation Result Table");
+		PDFUtility pdfUtility = new PDFUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = actualPath + reportId.substring(0, 6) + ".pdf";
+		String reportName = reportId;
+		setReportName(reportName);
+		String actualReportString = pdfUtility.extractPDFText(actualReport);
+		List<String> expectedReportString = new ArrayList<String>();
+		expectedReportString.add(LisaInvestigationReportSSRS_Lisa);
+		expectedReportString.add(LisaInvestigationReportSSRS_Amplitude);
+		expectedReportString.add(Constant_Status);
+		expectedReportString.add(LisaInvestigationReportSSRS_Investigator);
+		expectedReportString.add(LisaInvestigationReportSSRS_InvestigationReport);
+
+		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		for (Boolean value : actualFirstPage.values()) {
+			if (!value) {
+				Log.info("Investigation Result table static text verification failed");
+				return false;
+			}
+		}
+		BufferedReader bufferReader = null;
+		try {
+			String investigationResultTable = RegexUtility.getStringInBetween(actualReportString, "LISA# Amplitude Status Investigation Date/Time Investigator Duration", "Investigation Marker ResultsLISA");
+			InputStream inputStream = new ByteArrayInputStream(investigationResultTable.getBytes());
+			bufferReader = new BufferedReader(new InputStreamReader(inputStream));
+			String line = null;
+			ArrayList<String> lineList = new ArrayList<String>();
+			while ((line = bufferReader.readLine()) != null) {
+				if (!line.isEmpty()) {
+					lineList.add(line.replaceAll("\\s+", "").trim());
+				}
+			}
+			ArrayList<StoredProcLisaInvestigationShowIndication> lisaInvestigationfromSP = StoredProcLisaInvestigationShowIndication.getLisaInvestigation(reportId);
+			Iterator<StoredProcLisaInvestigationShowIndication> lisaInvestigationIterator = lisaInvestigationfromSP.iterator();
+			ArrayList<String> storedProcList = new ArrayList<String>();
+			while (lisaInvestigationIterator.hasNext()) {
+				StoredProcLisaInvestigationShowIndication entry = lisaInvestigationIterator.next();
+				storedProcList.add(entry.toString().replaceAll("\\s+", "").trim());
+			}
+			if (!storedProcList.equals(lineList)) {
+				Log.info("Investigation Result table data verification failed");
+				return false;
+			}
+		} finally {
+			bufferReader.close();
+		}
+		Log.info("Investigation Result table verification passed");
+		return true;
+	}
+
 	public void verifyMetaDataFiles() {
 		try {
 			throw new Exception("Not implemented");
@@ -2577,7 +2645,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Wrapper to verify the Views Images
 	 * 
@@ -2589,15 +2657,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 
 	public boolean verifyAllViewsImages(String actualPath, String reportTitle, String testCase, int numberOfViews) throws IOException {
-		for(int numberViews=1;numberViews<=numberOfViews;numberViews++){
-			if (!verifyViewsImages(actualPath, reportTitle,testCase,new NumberUtility().getOrdinalNumberString(numberViews)+" View")){
+		for (int numberViews = 1; numberViews <= numberOfViews; numberViews++) {
+			if (!verifyViewsImages(actualPath, reportTitle, testCase, new NumberUtility().getOrdinalNumberString(numberViews) + " View")) {
 				return false;
 			}
 		}
-		return true;	
+		return true;
 	}
-	
-
 
 	/**
 	 * Method to verify the Views Images
@@ -2613,14 +2679,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String actualReport = actualPath + File.separator+"CR-" + reportId.substring(0, 6) +File.separator+reportTitle.replaceAll("\\s+", "")+"_" + viewName + ".pdf";
-		String reportName = "CR-" + reportId;		
+		String actualReport = actualPath + File.separator + "CR-" + reportId.substring(0, 6) + File.separator + reportTitle.replaceAll("\\s+", "") + "_" + viewName + ".pdf";
+		String reportName = "CR-" + reportId;
 		setReportName(reportName);
 		String imageExtractFolder = pdfUtility.extractPDFImages(actualReport, testCase);
 		File folder = new File(imageExtractFolder);
 		File[] listOfFiles = folder.listFiles();
 		for (File file : listOfFiles) {
-			if (file.isFile() && file.getName().contains("View")) {				
+			if (file.isFile() && file.getName().contains("View")) {
 				BufferedImage image = ImageIO.read(file);
 				int width = image.getWidth();
 				int height = image.getHeight();
@@ -2629,7 +2695,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				String actualViewPath = testSetup.getSystemTempDirectory() + file.getName().replace(".pdf", "") + ".png";
 				File outputfile = new File(actualViewPath);
 				ImageIO.write(image, "png", outputfile);
-				String baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + "View"+new NumberUtility().getOrdinalNumber(file.getName()) + ".png";
+				String baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + "View" + new NumberUtility().getOrdinalNumber(file.getName()) + ".png";
 				if (!verifyActualImageWithBase(baseViewFile, actualViewPath)) {
 					Files.delete(Paths.get(actualViewPath));
 					return false;
@@ -2639,8 +2705,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		return true;
 	}
-	
-	
 
 	public boolean verifyShapeFilesWithBaselines(String actualPath, String reportTitle, String testCaseID) throws Exception {
 		Log.info(String.format("Calling verifyShapeFilesWithBaselines() -> actualPath=[%s], reportTitle=[%s], testCaseID=[%s]", actualPath, reportTitle, testCaseID));
@@ -2894,7 +2958,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				selectPercentCoverageForecastCheckBox();
 			}
 		}
-		
+
 		List<Map<String, String>> viewLayersList = reportsCompliance.getViewLayersList();
 		if (viewLayersList != null && viewLayersList.size() > 0) {
 			handleOptionalDynamicViewLayersSection(viewLayersList);
@@ -2904,13 +2968,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	private void fillCustomerBoundary(ReportsCompliance reportsCompliance) {
 		openCustomerBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen()
-			.switchMode(ControlMode.MapInteraction)
-			.waitForMapImageLoad()
-			.selectCustomerBoundaryType(reportsCompliance.getCustomerBoundaryFilterType().toString())
-			.setCustomerBoundaryName(reportsCompliance.getCustomerBoundaryName())
-			.switchMode(ControlMode.Default)
-			.clickOkButton()
-			.waitForModalDialogToClose();
+		.switchMode(ControlMode.MapInteraction)
+		.waitForMapImageLoad()
+		.selectCustomerBoundaryType(reportsCompliance.getCustomerBoundaryFilterType().toString())
+		.setCustomerBoundaryName(reportsCompliance.getCustomerBoundaryName())
+		.switchMode(ControlMode.Default)
+		.clickOkButton()
+		.waitForModalDialogToClose();
 	}
 
 	private boolean useCustomBoundaryLatLongSelector(ReportsCompliance reportsCompliance) {
@@ -2920,11 +2984,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	private boolean isCustomBoundarySpecified(ReportsCompliance reportsCompliance) {
 		boolean useSelector = false;
 		if (reportsCompliance != null) {
-			boolean textFieldsSpecified = reportsCompliance.getNELat() != null && reportsCompliance.getNELong() != null && reportsCompliance.getSWLat() != null && 
-					reportsCompliance.getSWLong() != null && !reportsCompliance.getNELat().isEmpty() && !reportsCompliance.getNELong().isEmpty() &&
+			boolean textFieldsSpecified = reportsCompliance.getNELat() != null && reportsCompliance.getNELong() != null 
+					&& reportsCompliance.getSWLat() != null && reportsCompliance.getSWLong() != null && 
+					!reportsCompliance.getNELat().isEmpty() && !reportsCompliance.getNELong().isEmpty() && 
 					!reportsCompliance.getSWLat().isEmpty() && !reportsCompliance.getSWLong().isEmpty() && 
-					!reportsCompliance.getNELat().equals("0.0") && !reportsCompliance.getNELong().equals("0.0") &&
-							!reportsCompliance.getSWLat().equals("0.0") && !reportsCompliance.getSWLong().equals("0.0");
+					!reportsCompliance.getNELat().equals("0.0") && !reportsCompliance.getNELong().equals("0.0")
+					&& !reportsCompliance.getSWLat().equals("0.0") && !reportsCompliance.getSWLong().equals("0.0");
 			boolean latLongFieldsSpecified = useCustomBoundaryLatLongSelector(reportsCompliance);
 			useSelector = textFieldsSpecified || latLongFieldsSpecified;
 		}
@@ -2934,14 +2999,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	private void fillCustomBoundaryUsingLatLongSelector(ReportsCompliance reportsCompliance) {
 		openCustomBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen()
-			.switchMode(ControlMode.MapInteraction)
-			.waitForMapImageLoad()
-			.drawSelectorRectangle(ReportsCompliance.CANVAS_X_PATH, 
-					reportsCompliance.getLatLongXOffset(), reportsCompliance.getLatLongYOffset(), 
-					reportsCompliance.getLatLongRectWidth(), reportsCompliance.getLatLongRectHeight())
-			.switchMode(ControlMode.Default)
-			.clickOkButton()
-			.waitForModalDialogToClose();
+		.switchMode(ControlMode.MapInteraction)
+		.waitForMapImageLoad()
+		.drawSelectorRectangle(ReportsCompliance.CANVAS_X_PATH, 
+				reportsCompliance.getLatLongXOffset(), reportsCompliance.getLatLongYOffset(), 
+				reportsCompliance.getLatLongRectWidth(), reportsCompliance.getLatLongRectHeight())
+		.switchMode(ControlMode.Default)
+		.clickOkButton()
+		.waitForModalDialogToClose();
 	}
 
 	@Override

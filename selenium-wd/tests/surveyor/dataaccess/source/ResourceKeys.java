@@ -143,6 +143,12 @@ public class ResourceKeys {
 	public static final String Survey_MinutesAnd = "Survey_MinutesAnd";
 	public static final String Survey_Seconds = "Survey_Seconds";
 	public static final String Survey_SurveyWillStopIn = "Survey_SurveyWillStopIn";
+	public static final String LisaInvestigationReportSSRS_Lisa = "LisaInvestigationReportSSRS_Lisa";
+	public static final String LisaInvestigationReportSSRS_Amplitude = "LisaInvestigationReportSSRS_Amplitude";
+	public static final String Constant_Status = "Constant_Status";
+	public static final String LisaInvestigationReportSSRS_Investigator = "LisaInvestigationReportSSRS_Investigator";
+	public static final String LisaInvestigationReportSSRS_InvestigationReport = "LisaInvestigationReportSSRS_InvestigationReport";
+	
 	
 	// Constants for Capture results.
 	public static final String Survey_Rerun = "Survey_Rerun"; 
