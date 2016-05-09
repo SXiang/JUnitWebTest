@@ -190,6 +190,7 @@ public class ResourceKeys {
 	public static final String Validation_EnterValueLessThanOrEqual = "Validation_EnterValueLessThanOrEqual";
 	public static final String Validation_EnterValueGreaterThanOrEqual = "Validation_EnterValueGreaterThanOrEqual";
 	public static final String Dialog_LineSelected = "Dialog_LineSelected";
+	public static final String Constant_EthaneToMethaneRatio = "Constant_EthaneToMethaneRatio";
 	
 	// Constants for EQ
 	public static final String ComplianceReport_EQLinesMessage = "ComplianceReport_EQLinesMessage";
@@ -204,6 +205,7 @@ public class ResourceKeys {
 	public static final String Reports_EQViewer = "Reports_EQViewer";
 	public static final String EQReportSSRS_EmissionsQuantificationReport = "EQReportSSRS_EmissionsQuantificationReport";
 	public static final String EQReportSSRS_EmissionsQuantificationData = "EQReportSSRS_EmissionsQuantificationData";
+	
 
 
 }

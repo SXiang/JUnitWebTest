@@ -35,7 +35,7 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 		PageFactory.initElements(driver,  manageRefGasBottlesPage);
 	}
 
-	
+
 	/**
 	 * Test Case ID: TC1734 Test Description: Ethane - Verify that Ethane To Methane Ratio column added to ReferenceGasBottle Page
 	 * 
@@ -100,24 +100,24 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 		manageRefGasBottlesPage.waitForNewPageLoad();
 
 		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber2, SQACUSLOCSUR));
-		
+
 		manageRefGasBottlesPage.btnAddNewRefGasBottle.click();
 
 		manageRefGasBottlesPage.inputLotNumber.clear();
 		manageRefGasBottlesPage.inputLotNumber.sendKeys("TestZeroEthMthRto");
 		manageRefGasBottlesPage.inputIsoValue.clear();
 		manageRefGasBottlesPage.inputIsoValue.sendKeys("-32");
-		
+
 		assertTrue(manageRefGasBottlesPage.getEthMethRtoLbl().getText().equals(ETHMTHRTOLABEL));
-		
+
 		if ((ethMthRtoZero != null) && (ethMthRtoZero != "")) { 
 			manageRefGasBottlesPage.inputEthMthRto.clear();
 			manageRefGasBottlesPage.inputEthMthRto.sendKeys(ethMthRtoZero);
 		}
 
 		manageRefGasBottlesPage.getDropdownSurveyor().click();
-		
-		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals(ETHMTHERRLESSMSG));
+
+		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals(ETHMTHERRGRTMSG));
 		manageRefGasBottlesPage.clickOnCancelBtn();
 
 		manageRefGasBottlesPage.btnAddNewRefGasBottle.click();
@@ -126,52 +126,52 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 		manageRefGasBottlesPage.inputLotNumber.sendKeys("TestZeroEthMthRto");
 		manageRefGasBottlesPage.inputIsoValue.clear();
 		manageRefGasBottlesPage.inputIsoValue.sendKeys("-32");
-		
+
 		assertTrue(manageRefGasBottlesPage.getEthMethRtoLbl().getText().equals(ETHMTHRTOLABEL));
-		
+
 		if ((ethMthRtoHund != null) && (ethMthRtoHund != "")) { 
 			manageRefGasBottlesPage.inputEthMthRto.clear();
 			manageRefGasBottlesPage.inputEthMthRto.sendKeys(ethMthRtoHund);
 		}
 
 		manageRefGasBottlesPage.getDropdownSurveyor().click();
-		
-		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals(ETHMTHERRGRTMSG));
+
+		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals(ETHMTHERRLESSMSG));
 		manageRefGasBottlesPage.clickOnCancelBtn();
 
 	}
-	
+
 	/**
-	 * Test Case ID: TC1739 Test Description: Ethane- Verify min/max value (%) from drop down/up to Ethane To Methane Ratio column to ReferenceGasBottle Page
+	 * Test Case ID: TC1739 Test Description: Ethane - Ethane To Methane Ratio to ReferenceGasBottle Page should not take negative value
 	 * 
 	 */
 	@Test
 	public void TC1739_InvalidMinMAxValueEthMthClmn_RefGasBottles() {
 		String ethMthRtoNeg = "-1";
-		
+
 		Log.info("\nRunning TC1739 - Test Description: Ethane - Ethane To Methane Ratio to ReferenceGasBottle Page should not take negative value");
 
 		manageRefGasBottlesPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
 		manageRefGasBottlesPage.open();
-		
+
 		manageRefGasBottlesPage.btnAddNewRefGasBottle.click();
 
 		manageRefGasBottlesPage.inputLotNumber.clear();
 		manageRefGasBottlesPage.inputLotNumber.sendKeys("TestZeroEthMthRto");
 		manageRefGasBottlesPage.inputIsoValue.clear();
 		manageRefGasBottlesPage.inputIsoValue.sendKeys("-32");
-		
+
 		assertTrue(manageRefGasBottlesPage.getEthMethRtoLbl().getText().equals(ETHMTHRTOLABEL));
-		
+
 		if ((ethMthRtoNeg != null) && (ethMthRtoNeg != "")) { 
 			manageRefGasBottlesPage.inputEthMthRto.clear();
 			manageRefGasBottlesPage.inputEthMthRto.sendKeys(ethMthRtoNeg);
 		}
 
 		manageRefGasBottlesPage.getDropdownSurveyor().click();
-		
-		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals(ETHMTHERRLESSMSG));
+
+		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals(ETHMTHERRGRTMSG));
 		manageRefGasBottlesPage.clickOnCancelBtn();
 	}
 }

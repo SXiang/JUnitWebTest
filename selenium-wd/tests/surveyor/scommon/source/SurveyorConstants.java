@@ -225,9 +225,9 @@ public final class SurveyorConstants {
 	public static final String DRIVINGSURVEYTITLE = "Measurement Sessions - Surveyor";
 	public static final String DRIVINGSURVEYHEADER = "Driving Surveys";
 
-	public static final String ETHMTHRTOLABEL = "Ethane to Methane Ratio %";
-	public static final String ETHMTHERRLESSMSG = "Please enter a value greater than or equal to 1.";
-	public static final String ETHMTHERRGRTMSG = "Please enter a value less than or equal to 99.";
+	public static final String ETHMTHRTOLABEL = Resources.getResource(ResourceKeys.Constant_EthaneToMethaneRatio );
+	public static final String ETHMTHERRGRTMSG = Resources.getResource(ResourceKeys.Validation_EnterValueGreaterThanOrEqual).replace("{0}", "1");
+	public static final String ETHMTHERRLESSMSG = Resources.getResource(ResourceKeys.Validation_EnterValueLessThanOrEqual).replace("{0}", "99");
 	
 	/*
 	 * Survey View constants

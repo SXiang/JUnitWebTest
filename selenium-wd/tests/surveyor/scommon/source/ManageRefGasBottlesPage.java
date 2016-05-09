@@ -19,7 +19,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-
 import common.source.Log;
 import common.source.TestSetup;
 
@@ -35,6 +34,8 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 			.getResource(ResourceKeys.ManageRefGasBottles_PageTitle);
 	public static final String STRNewPageContentText = Resources
 			.getResource(ResourceKeys.AddRefGasBottle_PageTitle);
+	
+	
 
 	@FindBy(css = "a[class='btn btn-primary']")
 	public WebElement btnAddNewRefGasBottle;
