@@ -439,86 +439,114 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.addNewReport(reportTitle, null, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, changeMode, reportMode);
 	}
 
-	public void addNewPDReport(String reportTitle, String customer, String surveyor, List<String> tag, boolean changeMode, String reportMode) throws Exception {
-		this.addNewReport(reportTitle, customer, TIMEZONEPT, REXCLUSIONRADIUS, CUSBOUNDARY, IMGMAPHEIGHT, IMGMAPWIDTH, RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, changeMode, reportMode);
-	}
-
 	public void addViews(String customer, List<Map<String, String>> viewList) {
 		int rowNum;
+		int colNum;
 		String strBaseXPath;
-		String strXPath = "";
-		
+
 		for (int i = 0; i < viewList.size(); i++) {
 			if (i != 0) {
 				this.btnAddViews.click();
 			}
 
 			rowNum = i + 1;
-			strBaseXPath = "//*[@id='datatableViews']/tbody/tr["+rowNum+"]/td";
-
-			if (viewList.get(i).get(KEYVIEWNAME) != null) {				
-				strXPath = strBaseXPath + "/input[contains(@class,'view-name')]";					
-				driver.findElement(By.xpath(strXPath)).clear();
-				driver.findElement(By.xpath(strXPath)).sendKeys(viewList.get(i).get(KEYVIEWNAME));
+			if (viewList.get(i).get(KEYVIEWNAME) != null) {
+				colNum = 2;
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				driver.findElement(By.xpath(strBaseXPath)).clear();
+				driver.findElement(By.xpath(strBaseXPath)).sendKeys(viewList.get(i).get(KEYVIEWNAME));
 			}
 
 			if (viewList.get(i).get(KEYLISA).equalsIgnoreCase("1")) {
-				strXPath = strBaseXPath + "/input[contains(@class,'view-showlisa')]";
-				driver.findElement(By.xpath(strXPath)).click();
+				colNum = 3;
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				driver.findElement(By.xpath(strBaseXPath)).click();
 			}
 
 			if (viewList.get(i).get(KEYFOV).equalsIgnoreCase("1")) {
-				strXPath = strBaseXPath + "/input[contains(@class,'view-showfov')]";
-				driver.findElement(By.xpath(strXPath)).click();
+				colNum = 4;
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				driver.findElement(By.xpath(strBaseXPath)).click();
 			}
 
 			if (viewList.get(i).get(KEYBREADCRUMB).equalsIgnoreCase("1")) {
-				strXPath = strBaseXPath + "/input[contains(@class,'view-showbreadcrumb')]";
-				driver.findElement(By.xpath(strXPath)).click();
+				colNum = 5;
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				driver.findElement(By.xpath(strBaseXPath)).click();
 			}
 
 			if (viewList.get(i).get(KEYINDICATIONS).equalsIgnoreCase("1")) {
-				strXPath = strBaseXPath + "/input[contains(@class,'view-showindication')]";
-				driver.findElement(By.xpath(strXPath)).click();
+				colNum = 6;
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				driver.findElement(By.xpath(strBaseXPath)).click();
 			}
 
 			if (viewList.get(i).get(KEYISOTOPICCAPTURE).equalsIgnoreCase("1")) {
-				strXPath = strBaseXPath + "/input[contains(@class,'view-showisotopic')]";
-				driver.findElement(By.xpath(strXPath)).click();
+				colNum = 7;
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				driver.findElement(By.xpath(strBaseXPath)).click();
 			}
 
 			if (viewList.get(i).get(KEYANNOTATION).equalsIgnoreCase("1")) {
-				strXPath = strBaseXPath + "/input[contains(@class,'view-showannotation')]";
-				driver.findElement(By.xpath(strXPath)).click();
+				colNum = 8;
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				driver.findElement(By.xpath(strBaseXPath)).click();
 			}
 
 			if (viewList.get(i).get(KEYGAPS).equalsIgnoreCase("1")) {
-				strXPath = strBaseXPath + "/input[contains(@class,'view-showgap')]";
-				driver.findElement(By.xpath(strXPath)).click();
+				colNum = 9;
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				driver.findElement(By.xpath(strBaseXPath)).click();
 			}
 
 			if (viewList.get(i).get(KEYASSETS).equalsIgnoreCase("1")) {
-				strXPath = strBaseXPath + "/input[contains(@class,'view-showasset')]";
-				WebElement assetCheckbox = driver.findElement(By.xpath(strXPath));
+				colNum = 10;
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				WebElement assetCheckbox = driver.findElement(By.xpath(strBaseXPath));
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				js.executeScript("arguments[0].click();", assetCheckbox);
 			}
 
 			if (viewList.get(i).get(KEYBOUNDARIES).equalsIgnoreCase("1")) {
-				strXPath = strBaseXPath + "/input[contains(@class,'view-showboundry')]";
-				driver.findElement(By.xpath(strXPath)).click();
+				colNum = 11;
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				driver.findElement(By.xpath(strBaseXPath)).click();
 			}
 
-			strXPath = strBaseXPath + "/select[contains(@class,'view-basemap')]";
-			WebElement dropdownBaseMap = driver.findElement(By.xpath(strXPath));
+			if (customer != null && customer.equalsIgnoreCase("sqacus")) {
+				colNum = 10;
+				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/select";
+				WebElement dropdownBaseMap = driver.findElement(By.xpath(strBaseXPath));
 
-			List<WebElement> options = dropdownBaseMap.findElements(By.tagName("option"));
-			for (WebElement option : options) {
-				if ((viewList.get(i).get(KEYBASEMAP)).equalsIgnoreCase(option.getText().trim())) {
-					option.click();
+				List<WebElement> options = dropdownBaseMap.findElements(By.tagName("option"));
+				for (WebElement option : options) {
+					if ((viewList.get(i).get(KEYBASEMAP)).equalsIgnoreCase(option.getText().trim())) {
+						option.click();
+					}
+				}
+			} else {
+				colNum = 12;
+				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/select";
+				WebElement dropdownBaseMap = driver.findElement(By.xpath(strBaseXPath));
+
+				List<WebElement> options = dropdownBaseMap.findElements(By.tagName("option"));
+				for (WebElement option : options) {
+					if ((viewList.get(i).get(KEYBASEMAP)).equalsIgnoreCase(option.getText().trim())) {
+						option.click();
+					}
 				}
 			}
 		}
+	}
+
+	private String getViewXPathByRowCol(int rowNum, int colNum) {
+		String strBaseXPath;
+		if (rowNum == 1) {
+			strBaseXPath = "//*[@id='datatableViews']/tbody/tr/td[" + colNum + "]/input";
+		} else {
+			strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/input";
+		}
+		return strBaseXPath;
 	}
 
 	public boolean isShapeIconDisplayedInViewer() {
