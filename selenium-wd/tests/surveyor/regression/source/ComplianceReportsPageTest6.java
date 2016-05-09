@@ -57,7 +57,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		testEnvironmentAction = new TestEnvironmentActions();
 
 		// Select run mode here.
-		setTestRunMode(ReportTestRunMode.UnitTestRun);
+		setTestRunMode(ReportTestRunMode.FullTestRun);
 		
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());

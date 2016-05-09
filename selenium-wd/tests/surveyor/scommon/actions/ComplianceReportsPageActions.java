@@ -787,6 +787,18 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
  
 	/**
+	 * Executes clickOnNewComplianceReport action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean clickOnNewComplianceReport(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.clickOnNewComplianceReport", data, dataRowID);
+		// TODO: Add implementation.
+		return false;
+	}
+ 
+	/**
 	 * Executes clickOnResubmitButton action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -2849,6 +2861,222 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
  
 	/**
+	 * Executes verifyComplianceViewerDialogIsClosed action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyComplianceViewerDialogIsClosed(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyComplianceViewerDialogIsClosed", data, dataRowID);
+		// TODO: Add implementation.
+		return false;
+	}
+ 
+	/**
+	 * Executes verifyCustomerSpecificBoundariesAreDisplayed action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyCustomerSpecificBoundariesAreDisplayed(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyCustomerSpecificBoundariesAreDisplayed", data, dataRowID);
+		// TODO: Add implementation.
+		return false;
+	}
+ 
+	/**
+	 * Executes verifyErrorMessages action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyErrorMessages(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyErrorMessages", data, dataRowID);
+		// TODO: Add implementation.
+		return false;
+	}
+ 
+	/**
+	 * Executes verifyGeographicFilterIsSelected action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyGeographicFilterIsSelected(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyGeographicFilterIsSelected", data, dataRowID);
+		// TODO: Add implementation.
+		return false;
+	}
+ 
+	/**
+	 * Executes verifyIndicationsTableIsEmpty action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyIndicationsTableIsEmpty(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyIndicationsTableIsEmpty", data, dataRowID);
+		// TODO: Add implementation.
+		return false;
+	}
+ 
+	/**
+	 * Executes verifyIsotopicTableIsEmpty action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyIsotopicTableIsEmpty(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyIsotopicTableIsEmpty", data, dataRowID);
+		// TODO: Add implementation.
+		return false;
+	}
+ 
+	/**
+	 * Executes verifyManualSurveyModeIsShownOnPage action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyManualSurveyModeIsShownOnPage(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyManualSurveyModeIsShownOnPage", data, dataRowID);
+		// TODO: Add implementation.
+		return false;
+	}
+ 
+	/**
+	 * Executes verifyOperatorSurveyModeIsShownOnPage action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyOperatorSurveyModeIsShownOnPage(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyOperatorSurveyModeIsShownOnPage", data, dataRowID);
+		// TODO: Add implementation.
+		return false;
+	}
+ 
+	/**
+	 * Executes verifyPageLoaded action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyPageLoaded(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyPageLoaded", data, dataRowID);
+		// TODO: Add implementation.
+		return false;
+	}
+ 
+	/**
+	 * Executes verifyRapidResponseSurveyModeIsShownOnPage action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyRapidResponseSurveyModeIsShownOnPage(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyRapidResponseSurveyModeIsShownOnPage", data, dataRowID);
+		// TODO: Add implementation.
+		return false;
+	}
+ 
+	/**
+	 * Executes verifyReportFilesArePresent action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyReportFilesArePresent(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyReportFilesArePresent", data, dataRowID);
+		// TODO: Add implementation.
+		return false;
+	}
+ 
+	/**
+	 * Executes verifyReportGenerationIsCancelled action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyReportGenerationIsCancelled(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyReportGenerationIsCancelled", data, dataRowID);
+		// TODO: Add implementation.
+		return false;
+	}
+ 
+	/**
+	 * Executes verifySearchedSurveysAreForSelectedArea action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifySearchedSurveysAreForSelectedArea(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifySearchedSurveysAreForSelectedArea", data, dataRowID);
+		// TODO: Add implementation.
+		return false;
+	}
+ 
+	/**
+	 * Executes verifySearchedSurveysMatchSelectedMode action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifySearchedSurveysMatchSelectedMode(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifySearchedSurveysMatchSelectedMode", data, dataRowID);
+		// TODO: Add implementation.
+		return false;
+	}
+ 
+	/**
+	 * Executes verifySelectedSurveysAreForSpecifiedCustomer action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifySelectedSurveysAreForSpecifiedCustomer(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifySelectedSurveysAreForSpecifiedCustomer", data, dataRowID);
+		// TODO: Add implementation.
+		return false;
+	}
+ 
+	/**
+	 * Executes verifySSRSPDFFooter action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifySSRSPDFFooter(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifySSRSPDFFooter", data, dataRowID);
+		// TODO: Add implementation.
+		return false;
+	}
+ 
+	/**
+	 * Executes verifyStandardSurveyModeIsShownOnPage action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyStandardSurveyModeIsShownOnPage(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyStandardSurveyModeIsShownOnPage", data, dataRowID);
+		// TODO: Add implementation.
+		return false;
+	}
+ 
+	/**
+	 * Executes verifySurveyGreaterThan100HoursCannotBeAdded action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifySurveyGreaterThan100HoursCannotBeAdded(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifySurveyGreaterThan100HoursCannotBeAdded", data, dataRowID);
+		// TODO: Add implementation.
+		return false;
+	}
+
+	/**
 	/* END - Actions on the Page*/
 
 	public List<Float> getMinAmplitudesForSurveys(Integer reportDataRowID) throws Exception {
@@ -2911,6 +3139,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("clickOnInvestigatePDFButton")) { return this.clickOnInvestigatePDFButton(data, dataRowID); }
 		else if (actionName.equals("clickOnLatLongSelectorButton")) { return this.clickOnLatLongSelectorButton(data, dataRowID); }
 		else if (actionName.equals("clickOnOKButton")) { return this.clickOnOKButton(data, dataRowID); }
+		else if (actionName.equals("clickOnNewComplianceReport")) { return this.clickOnNewComplianceReport(data, dataRowID); }
 		else if (actionName.equals("clickOnResubmitButton")) { return this.clickOnResubmitButton(data, dataRowID); }
 		else if (actionName.equals("clickOnSurveySelectorSearchButton")) { return this.clickOnSurveySelectorSearchButton(data, dataRowID); }
 		else if (actionName.equals("copyReport")) { return this.copyReport(data, dataRowID); }
@@ -3031,6 +3260,24 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifyViewsCreatedAreInCorrectSequence")) { return this.verifyViewsCreatedAreInCorrectSequence(data, dataRowID); }
 		else if (actionName.equals("verifyViewsImagesWithBaselines")) { return this.verifyViewsImagesWithBaselines(data, dataRowID); }
 		else if (actionName.equals("verifyWarningMessageOnDeleteButtonClickEquals")) { return this.verifyWarningMessageOnDeleteButtonClickEquals(data, dataRowID); }
+		else if (actionName.equals("verifyComplianceViewerDialogIsClosed")) { return this.verifyComplianceViewerDialogIsClosed(data, dataRowID); }
+		else if (actionName.equals("verifyCustomerSpecificBoundariesAreDisplayed")) { return this.verifyCustomerSpecificBoundariesAreDisplayed(data, dataRowID); }
+		else if (actionName.equals("verifyErrorMessages")) { return this.verifyErrorMessages(data, dataRowID); }
+		else if (actionName.equals("verifyGeographicFilterIsSelected")) { return this.verifyGeographicFilterIsSelected(data, dataRowID); }
+		else if (actionName.equals("verifyIndicationsTableIsEmpty")) { return this.verifyIndicationsTableIsEmpty(data, dataRowID); }
+		else if (actionName.equals("verifyIsotopicTableIsEmpty")) { return this.verifyIsotopicTableIsEmpty(data, dataRowID); }
+		else if (actionName.equals("verifyManualSurveyModeIsShownOnPage")) { return this.verifyManualSurveyModeIsShownOnPage(data, dataRowID); }
+		else if (actionName.equals("verifyOperatorSurveyModeIsShownOnPage")) { return this.verifyOperatorSurveyModeIsShownOnPage(data, dataRowID); }
+		else if (actionName.equals("verifyPageLoaded")) { return this.verifyPageLoaded(data, dataRowID); }
+		else if (actionName.equals("verifyRapidResponseSurveyModeIsShownOnPage")) { return this.verifyRapidResponseSurveyModeIsShownOnPage(data, dataRowID); }
+		else if (actionName.equals("verifyReportFilesArePresent")) { return this.verifyReportFilesArePresent(data, dataRowID); }
+		else if (actionName.equals("verifyReportGenerationIsCancelled")) { return this.verifyReportGenerationIsCancelled(data, dataRowID); }
+		else if (actionName.equals("verifySearchedSurveysAreForSelectedArea")) { return this.verifySearchedSurveysAreForSelectedArea(data, dataRowID); }
+		else if (actionName.equals("verifySearchedSurveysMatchSelectedMode")) { return this.verifySearchedSurveysMatchSelectedMode(data, dataRowID); }
+		else if (actionName.equals("verifySelectedSurveysAreForSpecifiedCustomer")) { return this.verifySelectedSurveysAreForSpecifiedCustomer(data, dataRowID); }
+		else if (actionName.equals("verifySSRSPDFFooter")) { return this.verifySSRSPDFFooter(data, dataRowID); }
+		else if (actionName.equals("verifyStandardSurveyModeIsShownOnPage")) { return this.verifyStandardSurveyModeIsShownOnPage(data, dataRowID); }
+		else if (actionName.equals("verifySurveyGreaterThan100HoursCannotBeAdded")) { return this.verifySurveyGreaterThan100HoursCannotBeAdded(data, dataRowID); }
 		else if (actionName.equals("waitForComplianceViewerDialogToClose")) { return this.waitForComplianceViewerDialogToClose(data, dataRowID); }
 		else if (actionName.equals("waitForComplianceViewerDialogToOpen")) { return this.waitForComplianceViewerDialogToOpen(data, dataRowID); }
 		else if (actionName.equals("waitForMetaZIPDownloadToComplete")) { return this.waitForMetaZIPDownloadToComplete(data, dataRowID); }
@@ -3055,99 +3302,5 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 
 	public ComplianceReportsPage getComplianceReportsPage() {
 		return (ComplianceReportsPage)this.pageObject;
-	}
-
-	public boolean verifySSRSPDFFooter(String empty, Integer notset) {
-		// TODO Add implementation
-		return false;
-	}
-
-	public boolean verifyIndicationsTableIsEmpty(String empty, Integer notset) {
-		// TODO Add implementation
-		return false;
-	}
-
-	public boolean verifyIsotopicTableIsEmpty(String empty, Integer notset) {
-		// TODO Add implementation
-		return false;
-	}
-
-	public boolean verifyErrorMessages(String empty, Integer notset) {
-		// TODO Add implementation
-		return false;
-	}
-
-	public boolean verifyReportFilesArePresent(String empty, Integer notset) {
-		// TODO Add implementation
-		return false;
-	}
-
-	public boolean verifyGeographicFilterIsSelected(String empty, Integer notset) {
-		// TODO Add implementation
-		return false;
-	}
-
-	public boolean verifySearchedSurveysAreForSelectedArea(String empty, Integer notset) {
-		// TODO Add implementation
-		return false;
-	}
-
-	public void verifyPageLoaded(String empty, Integer notset) {
-		// TODO Add implementation
-		
-	}
-
-	public boolean verifyReportGenerationIsCancelled(String empty, Integer notset) {
-		// TODO Add implementation
-		return false;
-	}
-
-	public boolean verifySurveyGreaterThan100HoursCannotBeAdded(String empty, Integer notset) {
-		// TODO Add implementation
-		return false;
-	}
-
-	public boolean verifySelectedSurveysAreForSpecifiedCustomer(String empty, Integer notset) {
-		// TODO Add implementation
-		return false;
-	}
-
-	public boolean verifyStandardSurveyModeIsShownOnPage(String empty, Integer notset) {
-		// TODO Add implementation
-		return false;
-	}
-
-	public boolean verifyOperatorSurveyModeIsShownOnPage(String empty, Integer notset) {
-		// TODO Add implementation
-		return false;
-	}
-
-	public boolean verifyRapidResponseSurveyModeIsShownOnPage(String empty, Integer notset) {
-		// TODO Add implementation
-		return false;
-	}
-
-	public boolean verifySearchedSurveysMatchSelectedMode(String empty, Integer notset) {
-		// TODO Add implementation
-		return false;
-	}
-
-	public boolean verifyComplianceViewerDialogIsClosed(String empty, Integer notset) {
-		// TODO Add implementation
-		return false;
-	}
-
-	public boolean verifyCustomerSpecificBoundariesAreDisplayed(String empty, Integer notset) {
-		// TODO Add implementation
-		return false;
-	}
-
-	public void clickOnNewComplianceReport(String empty, Integer reportRowID) {
-		// TODO Add implementation		
-	}
-
-	public boolean verifyManualSurveyModeIsShownOnPage(String empty, Integer notset) {
-		// TODO Add implementation
-		return false;
 	}
 }
