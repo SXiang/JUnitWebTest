@@ -59,6 +59,87 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC786 = "dataProviderPageActionsComplianceReports_TC786";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC798 = "dataProviderPageActionsComplianceReports_TC798";
 
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1255 = "dataProviderPageActionsComplianceReports_TC1255";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1256 = "dataProviderPageActionsComplianceReports_TC1256";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1274 = "dataProviderPageActionsComplianceReports_TC1274";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1297 = "dataProviderPageActionsComplianceReports_TC1297";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1298 = "dataProviderPageActionsComplianceReports_TC1298";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1314 = "dataProviderPageActionsComplianceReports_TC1314";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1353 = "dataProviderPageActionsComplianceReports_TC1353";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1354 = "dataProviderPageActionsComplianceReports_TC1354";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1355 = "dataProviderPageActionsComplianceReports_TC1355";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1356 = "dataProviderPageActionsComplianceReports_TC1356";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1357 = "dataProviderPageActionsComplianceReports_TC1357";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1384 = "dataProviderPageActionsComplianceReports_TC1384";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1498 = "dataProviderPageActionsComplianceReports_TC1498";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1499 = "dataProviderPageActionsComplianceReports_TC1499";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC15 = "dataProviderPageActionsComplianceReports_TC15";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1500 = "dataProviderPageActionsComplianceReports_TC1500";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1501 = "dataProviderPageActionsComplianceReports_TC1501";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1538 = "dataProviderPageActionsComplianceReports_TC1538";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1539 = "dataProviderPageActionsComplianceReports_TC1539";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1567 = "dataProviderPageActionsComplianceReports_TC1567";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1570 = "dataProviderPageActionsComplianceReports_TC1570";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1572 = "dataProviderPageActionsComplianceReports_TC1572";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1577 = "dataProviderPageActionsComplianceReports_TC1577";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1578 = "dataProviderPageActionsComplianceReports_TC1578";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1611 = "dataProviderPageActionsComplianceReports_TC1611";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1612 = "dataProviderPageActionsComplianceReports_TC1612";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1635 = "dataProviderPageActionsComplianceReports_TC1635";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC165 = "dataProviderPageActionsComplianceReports_TC165";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1730 = "dataProviderPageActionsComplianceReports_TC1730";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1798 = "dataProviderPageActionsComplianceReports_TC1798";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC188 = "dataProviderPageActionsComplianceReports_TC188";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC193 = "dataProviderPageActionsComplianceReports_TC193";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC194 = "dataProviderPageActionsComplianceReports_TC194";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC199 = "dataProviderPageActionsComplianceReports_TC199";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC200 = "dataProviderPageActionsComplianceReports_TC200";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC201 = "dataProviderPageActionsComplianceReports_TC201";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC205 = "dataProviderPageActionsComplianceReports_TC205";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC206 = "dataProviderPageActionsComplianceReports_TC206";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC207 = "dataProviderPageActionsComplianceReports_TC207";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC208 = "dataProviderPageActionsComplianceReports_TC208";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC209 = "dataProviderPageActionsComplianceReports_TC209";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC211 = "dataProviderPageActionsComplianceReports_TC211";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC236 = "dataProviderPageActionsComplianceReports_TC236";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC238 = "dataProviderPageActionsComplianceReports_TC238";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC243 = "dataProviderPageActionsComplianceReports_TC243";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC522 = "dataProviderPageActionsComplianceReports_TC522";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC524 = "dataProviderPageActionsComplianceReports_TC524";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC525 = "dataProviderPageActionsComplianceReports_TC525";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC529 = "dataProviderPageActionsComplianceReports_TC529";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC579 = "dataProviderPageActionsComplianceReports_TC579";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC622 = "dataProviderPageActionsComplianceReports_TC622";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC624 = "dataProviderPageActionsComplianceReports_TC624";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC679 = "dataProviderPageActionsComplianceReports_TC679";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC682 = "dataProviderPageActionsComplianceReports_TC682";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC704 = "dataProviderPageActionsComplianceReports_TC704";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC705 = "dataProviderPageActionsComplianceReports_TC705";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC709 = "dataProviderPageActionsComplianceReports_TC709";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC710 = "dataProviderPageActionsComplianceReports_TC710";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC711 = "dataProviderPageActionsComplianceReports_TC711";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC713 = "dataProviderPageActionsComplianceReports_TC713";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC715 = "dataProviderPageActionsComplianceReports_TC715";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC716 = "dataProviderPageActionsComplianceReports_TC716";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC718 = "dataProviderPageActionsComplianceReports_TC718";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC721 = "dataProviderPageActionsComplianceReports_TC721";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC723 = "dataProviderPageActionsComplianceReports_TC723";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC727 = "dataProviderPageActionsComplianceReports_TC727";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC771 = "dataProviderPageActionsComplianceReports_TC771";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC779 = "dataProviderPageActionsComplianceReports_TC779";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC781 = "dataProviderPageActionsComplianceReports_TC781";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC787 = "dataProviderPageActionsComplianceReports_TC787";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC788 = "dataProviderPageActionsComplianceReports_TC788";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC789 = "dataProviderPageActionsComplianceReports_TC789";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC790 = "dataProviderPageActionsComplianceReports_TC790";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC791 = "dataProviderPageActionsComplianceReports_TC791";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC792 = "dataProviderPageActionsComplianceReports_TC792";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC793 = "dataProviderPageActionsComplianceReports_TC793";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC794 = "dataProviderPageActionsComplianceReports_TC794";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC795 = "dataProviderPageActionsComplianceReports_TC795";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC796 = "dataProviderPageActionsComplianceReports_TC796";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC799 = "dataProviderPageActionsComplianceReports_TC799";
+
 	public ComplianceReportDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
 	}
@@ -544,6 +625,566 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	public static Object[][] dataProviderPageActionsComplianceReports_TC798() {
 		return new Object[][] {				
 			{ "TC798" /*TestCaseID*/, 6 /*userDataRowID*/,  -1 /*NOT USED - reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1255() {
+		return new Object[][] {					
+			{ "TC1255" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1256() {
+		return new Object[][] {					
+			{ "TC1256" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1274() {
+		return new Object[][] {					
+			{ "TC1274" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1297() {
+		return new Object[][] {					
+			{ "TC1297" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1298() {
+		return new Object[][] {					
+			{ "TC1298" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1314() {
+		return new Object[][] {					
+			{ "TC1314" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1353() {
+		return new Object[][] {					
+			{ "TC1353" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1354() {
+		return new Object[][] {					
+			{ "TC1354" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1355() {
+		return new Object[][] {					
+			{ "TC1355" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1356() {
+		return new Object[][] {					
+			{ "TC1356" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1357() {
+		return new Object[][] {					
+			{ "TC1357" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1384() {
+		return new Object[][] {					
+			{ "TC1384" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1498() {
+		return new Object[][] {					
+			{ "TC1498" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1499() {
+		return new Object[][] {					
+			{ "TC1499" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC15() {
+		return new Object[][] {					
+			{ "TC15" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1500() {
+		return new Object[][] {					
+			{ "TC1500" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1501() {
+		return new Object[][] {					
+			{ "TC1501" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1538() {
+		return new Object[][] {					
+			{ "TC1538" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1539() {
+		return new Object[][] {					
+			{ "TC1539" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1567() {
+		return new Object[][] {					
+			{ "TC1567" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1570() {
+		return new Object[][] {					
+			{ "TC1570" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1572() {
+		return new Object[][] {					
+			{ "TC1572" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1577() {
+		return new Object[][] {					
+			{ "TC1577" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1578() {
+		return new Object[][] {					
+			{ "TC1578" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1611() {
+		return new Object[][] {					
+			{ "TC1611" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1612() {
+		return new Object[][] {					
+			{ "TC1612" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1635() {
+		return new Object[][] {					
+			{ "TC1635" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC165() {
+		return new Object[][] {					
+			{ "TC165" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1730() {
+		return new Object[][] {					
+			{ "TC1730" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1798() {
+		return new Object[][] {					
+			{ "TC1798" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC188() {
+		return new Object[][] {					
+			{ "TC188" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC193() {
+		return new Object[][] {					
+			{ "TC193" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC194() {
+		return new Object[][] {					
+			{ "TC194" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC199() {
+		return new Object[][] {					
+			{ "TC199" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC200() {
+		return new Object[][] {					
+			{ "TC200" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC201() {
+		return new Object[][] {					
+			{ "TC201" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC205() {
+		return new Object[][] {					
+			{ "TC205" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC206() {
+		return new Object[][] {					
+			{ "TC206" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC207() {
+		return new Object[][] {					
+			{ "TC207" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC208() {
+		return new Object[][] {					
+			{ "TC208" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC209() {
+		return new Object[][] {					
+			{ "TC209" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC211() {
+		return new Object[][] {					
+			{ "TC211" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC236() {
+		return new Object[][] {					
+			{ "TC236" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC238() {
+		return new Object[][] {					
+			{ "TC238" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC243() {
+		return new Object[][] {					
+			{ "TC243" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC522() {
+		return new Object[][] {					
+			{ "TC522" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC524() {
+		return new Object[][] {					
+			{ "TC524" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC525() {
+		return new Object[][] {					
+			{ "TC525" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC529() {
+		return new Object[][] {					
+			{ "TC529" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC579() {
+		return new Object[][] {					
+			{ "TC579" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC622() {
+		return new Object[][] {					
+			{ "TC622" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC624() {
+		return new Object[][] {					
+			{ "TC624" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC679() {
+		return new Object[][] {					
+			{ "TC679" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC682() {
+		return new Object[][] {					
+			{ "TC682" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC704() {
+		return new Object[][] {					
+			{ "TC704" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC705() {
+		return new Object[][] {					
+			{ "TC705" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC709() {
+		return new Object[][] {					
+			{ "TC709" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC710() {
+		return new Object[][] {					
+			{ "TC710" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC711() {
+		return new Object[][] {					
+			{ "TC711" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC713() {
+		return new Object[][] {					
+			{ "TC713" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC715() {
+		return new Object[][] {					
+			{ "TC715" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC716() {
+		return new Object[][] {					
+			{ "TC716" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC718() {
+		return new Object[][] {					
+			{ "TC718" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC721() {
+		return new Object[][] {					
+			{ "TC721" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC723() {
+		return new Object[][] {					
+			{ "TC723" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC727() {
+		return new Object[][] {					
+			{ "TC727" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC771() {
+		return new Object[][] {					
+			{ "TC771" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC779() {
+		return new Object[][] {					
+			{ "TC779" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC781() {
+		return new Object[][] {					
+			{ "TC781" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC787() {
+		return new Object[][] {					
+			{ "TC787" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC788() {
+		return new Object[][] {					
+			{ "TC788" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC789() {
+		return new Object[][] {					
+			{ "TC789" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC790() {
+		return new Object[][] {					
+			{ "TC790" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC791() {
+		return new Object[][] {					
+			{ "TC791" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC792() {
+		return new Object[][] {					
+			{ "TC792" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC793() {
+		return new Object[][] {					
+			{ "TC793" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC794() {
+		return new Object[][] {					
+			{ "TC794" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC795() {
+		return new Object[][] {					
+			{ "TC795" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC796() {
+		return new Object[][] {					
+			{ "TC796" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC799() {
+		return new Object[][] {					
+			{ "TC799" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
 		};
 	}
 }
