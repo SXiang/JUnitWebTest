@@ -8,9 +8,9 @@ import java.sql.CallableStatement;
 import common.source.Log;
 
 public class StoredProcLisaInvestigationShowIndication extends BaseEntity {
-	private String PeakNumber;
+	private int PeakNumber;
 	private float Amplitude;
-	private String CH4;
+	private float CH4;
 	private String InvestigationStatus;
 	private String InvestigationDateTime;
 	private String PeakAssignedUserName;
@@ -20,11 +20,11 @@ public class StoredProcLisaInvestigationShowIndication extends BaseEntity {
 		super();
 	}
 
-	public String getPeakNumber() {
+	public int getPeakNumber() {
 		return this.PeakNumber;
 	}
 
-	public void setPeakNumber(String peakNumber) {
+	public void setPeakNumber(int peakNumber) {
 		this.PeakNumber = peakNumber;
 	}
 
@@ -36,11 +36,11 @@ public class StoredProcLisaInvestigationShowIndication extends BaseEntity {
 		this.Amplitude = amplitude;
 	}
 
-	public String getCH4() {
+	public float getCH4() {
 		return this.CH4;
 	}
 
-	public void setCH4(String cH4) {
+	public void setCH4(float cH4) {
 		this.CH4 = cH4;
 	}
 
@@ -77,17 +77,18 @@ public class StoredProcLisaInvestigationShowIndication extends BaseEntity {
 	}
 
 	public String toString() {
-		return this.getPeakNumber().trim().concat(String.format("%.2f", this.getAmplitude())).concat(this.getInvestigationStatus()).concat(this.getInvestigationDateTime()).concat(this.getPeakAssignedUserName()).concat(this.getTotalDuration());
+		return Integer.toString(this.getPeakNumber()).trim().concat(String.format("%.2f", this.getAmplitude())).concat(this.getInvestigationStatus())
+				.concat(this.getInvestigationDateTime()).concat(this.getPeakAssignedUserName()).concat(this.getTotalDuration());
 	}
 
 	public boolean isEquals(StoredProcLisaInvestigationShowIndication obj) {
-		if (!this.getPeakNumber().equals(obj.getPeakNumber())) {
+		if (this.getPeakNumber()!=obj.getPeakNumber()) {
 			return false;
 		}
 		if (this.getAmplitude() != (obj.getAmplitude())) {
 			return false;
 		}
-		if (!this.getCH4().equals(obj.getCH4())) {
+		if (this.getCH4()!=obj.getCH4()) {
 			return false;
 		}
 		if (!this.getInvestigationStatus().equals(obj.getInvestigationStatus())) {
@@ -127,9 +128,9 @@ public class StoredProcLisaInvestigationShowIndication extends BaseEntity {
 	private StoredProcLisaInvestigationShowIndication loadFrom(ResultSet resultSet) {
 		StoredProcLisaInvestigationShowIndication objReport = new StoredProcLisaInvestigationShowIndication();
 		try {
-			objReport.setPeakNumber(resultSet.getString("PeakNumber"));
-			objReport.setAmplitude(resultSet.getFloat("Amplitude"));
-			objReport.setCH4(resultSet.getString("CH4"));
+			objReport.setPeakNumber(getIntColumnValue(resultSet,"PeakNumber"));
+			objReport.setAmplitude(getFloatColumnValue(resultSet,"Amplitude"));
+			objReport.setCH4(getFloatColumnValue(resultSet,"CH4"));
 			objReport.setInvestigationStatus(resultSet.getString("InvestigationStatus"));
 			objReport.setInvestigationDateTime(resultSet.getString("InvestigationDateTime"));
 			if (resultSet.wasNull()) {

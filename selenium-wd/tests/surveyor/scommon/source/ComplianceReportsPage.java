@@ -2080,7 +2080,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		} finally {
 			bufferReader.close();
 		}
-		Log.info("Ethane capture table verification passed");
+		Log.info("Investigation Result table verification passed");
 		return true;
 	}
 
@@ -2967,7 +2967,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	private void fillCustomerBoundary(ReportsCompliance reportsCompliance) {
 		openCustomerBoundarySelector();
-		latLongSelectionControl.waitForModalDialogOpen().switchMode(ControlMode.MapInteraction).waitForMapImageLoad().selectCustomerBoundaryType(reportsCompliance.getCustomerBoundaryFilterType().toString()).setCustomerBoundaryName(reportsCompliance.getCustomerBoundaryName()).switchMode(ControlMode.Default).clickOkButton().waitForModalDialogToClose();
+		latLongSelectionControl.waitForModalDialogOpen()
+		.switchMode(ControlMode.MapInteraction)
+		.waitForMapImageLoad()
+		.selectCustomerBoundaryType(reportsCompliance.getCustomerBoundaryFilterType().toString())
+		.setCustomerBoundaryName(reportsCompliance.getCustomerBoundaryName())
+		.switchMode(ControlMode.Default)
+		.clickOkButton()
+		.waitForModalDialogToClose();
 	}
 
 	private boolean useCustomBoundaryLatLongSelector(ReportsCompliance reportsCompliance) {
@@ -2987,7 +2994,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	private void fillCustomBoundaryUsingLatLongSelector(ReportsCompliance reportsCompliance) {
 		openCustomBoundarySelector();
-		latLongSelectionControl.waitForModalDialogOpen().switchMode(ControlMode.MapInteraction).waitForMapImageLoad().drawSelectorRectangle(ReportsCompliance.CANVAS_X_PATH, reportsCompliance.getLatLongXOffset(), reportsCompliance.getLatLongYOffset(), reportsCompliance.getLatLongRectWidth(), reportsCompliance.getLatLongRectHeight()).switchMode(ControlMode.Default).clickOkButton().waitForModalDialogToClose();
+		latLongSelectionControl.waitForModalDialogOpen()
+		.switchMode(ControlMode.MapInteraction)
+		.waitForMapImageLoad()
+		.drawSelectorRectangle(ReportsCompliance.CANVAS_X_PATH, reportsCompliance.getLatLongXOffset(), reportsCompliance
+				.getLatLongYOffset(), reportsCompliance.getLatLongRectWidth(), reportsCompliance.getLatLongRectHeight())
+		.switchMode(ControlMode.Default)
+		.clickOkButton()
+		.waitForModalDialogToClose();
 	}
 
 	@Override
