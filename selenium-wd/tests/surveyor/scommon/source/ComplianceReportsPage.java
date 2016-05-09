@@ -2984,7 +2984,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	private boolean isCustomBoundarySpecified(ReportsCompliance reportsCompliance) {
 		boolean useSelector = false;
 		if (reportsCompliance != null) {
-			boolean textFieldsSpecified = reportsCompliance.getNELat() != null && reportsCompliance.getNELong() != null && reportsCompliance.getSWLat() != null && reportsCompliance.getSWLong() != null && !reportsCompliance.getNELat().isEmpty() && !reportsCompliance.getNELong().isEmpty() && !reportsCompliance.getSWLat().isEmpty() && !reportsCompliance.getSWLong().isEmpty() && !reportsCompliance.getNELat().equals("0.0") && !reportsCompliance.getNELong().equals("0.0")
+			boolean textFieldsSpecified = reportsCompliance.getNELat() != null && reportsCompliance.getNELong() != null 
+					&& reportsCompliance.getSWLat() != null && reportsCompliance.getSWLong() != null && 
+					!reportsCompliance.getNELat().isEmpty() && !reportsCompliance.getNELong().isEmpty() && 
+					!reportsCompliance.getSWLat().isEmpty() && !reportsCompliance.getSWLong().isEmpty() && 
+					!reportsCompliance.getNELat().equals("0.0") && !reportsCompliance.getNELong().equals("0.0")
 					&& !reportsCompliance.getSWLat().equals("0.0") && !reportsCompliance.getSWLong().equals("0.0");
 			boolean latLongFieldsSpecified = useCustomBoundaryLatLongSelector(reportsCompliance);
 			useSelector = textFieldsSpecified || latLongFieldsSpecified;
@@ -2997,8 +3001,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		latLongSelectionControl.waitForModalDialogOpen()
 		.switchMode(ControlMode.MapInteraction)
 		.waitForMapImageLoad()
-		.drawSelectorRectangle(ReportsCompliance.CANVAS_X_PATH, reportsCompliance.getLatLongXOffset(), reportsCompliance
-				.getLatLongYOffset(), reportsCompliance.getLatLongRectWidth(), reportsCompliance.getLatLongRectHeight())
+		.drawSelectorRectangle(ReportsCompliance.CANVAS_X_PATH, 
+				reportsCompliance.getLatLongXOffset(), reportsCompliance.getLatLongYOffset(), 
+				reportsCompliance.getLatLongRectWidth(), reportsCompliance.getLatLongRectHeight())
 		.switchMode(ControlMode.Default)
 		.clickOkButton()
 		.waitForModalDialogToClose();
