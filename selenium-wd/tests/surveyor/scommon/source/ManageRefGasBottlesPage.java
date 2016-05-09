@@ -37,30 +37,25 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 			.getResource(ResourceKeys.AddRefGasBottle_PageTitle);
 
 	@FindBy(css = "a[class='btn btn-primary']")
-	private WebElement btnAddNewRefGasBottle;
+	public WebElement btnAddNewRefGasBottle;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
 	private WebElement panelDupRgbError;
 	private String panelDupRgbErrorXPath = "//*[@id='page-wrapper']/div/div[2]/div[1]";
 
 	@FindBy(id = "BatchId")
-	private WebElement inputLotNumber;
+	public WebElement inputLotNumber;
 	
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='EthaneToMethaneRatio']")
-	private WebElement inputEthMthRto;
+	public WebElement inputEthMthRto;
 	
-	public WebElement getEthMthRtoErr() {
-		return this.inputEthMthRto;
-	}
-
-
 	@FindBy(how = How.XPATH, using = "//*[@id='EthaneToMethaneRatio-error']")
 	private WebElement ethMthRtoErr;
 
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='IsotopicValue']")
-	private WebElement inputIsoValue;
+	public WebElement inputIsoValue;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='SurveyorUnitId']")
 	private WebElement dropdownSurveyor;
@@ -106,6 +101,9 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 
 	@FindBy(how = How.CSS, using = "label#IsotopicValue-error")
 	protected WebElement isotopicValueError;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='ref-gas-bottle-form']/fieldset/div[3]/label")
+	protected WebElement ethMethRtoLbl;
 	
 	/**
 	 * @param driver
@@ -387,6 +385,18 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	public String getIsotopicValueError(){
 		return this.isotopicValueError.getText().trim();
 	}
+	
+	public WebElement getDropdownSurveyor(){
+		return this.dropdownSurveyor;
+	}
+	public WebElement getEthMthRtoErr() {
+		return this.ethMthRtoErr;
+	}
+
+	public WebElement getEthMethRtoLbl() {
+		return this.ethMethRtoLbl;
+	}
+	
 	@Override
 	public void waitForPageLoad() {
 		(new WebDriverWait(driver, timeout))

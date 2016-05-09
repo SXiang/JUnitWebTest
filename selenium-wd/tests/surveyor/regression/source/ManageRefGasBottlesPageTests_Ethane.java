@@ -106,7 +106,8 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC1739_InvalidMinMAxValueEthMthClmn_RefGasBottles() {
-		String strLotNumber = "TC138_Ethane_InValid"+ testSetup.getFixedSizeRandomNumber(5);
+		String ethMthRtoZero = "0";
+		String ethMthRtoHund = "100";
 		
 		Log.info("\nRunning TC1738 - Test Description: Ethane- Verify min/max value (%) from drop down/up to Ethane To Methane Ratio column to ReferenceGasBottle Page");
 
@@ -114,13 +115,42 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 
 		manageRefGasBottlesPage.open();
 		
-		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", "0", SQACUS, SQACUSLOC, SQACUSLOCSUR);
-		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals("Please enter a value greater than or equal to 1."));
+		manageRefGasBottlesPage.btnAddNewRefGasBottle.click();
+
+		manageRefGasBottlesPage.inputLotNumber.clear();
+		manageRefGasBottlesPage.inputLotNumber.sendKeys("TestZeroEthMthRto");
+		manageRefGasBottlesPage.inputIsoValue.clear();
+		manageRefGasBottlesPage.inputIsoValue.sendKeys("-32");
+		
+		assertTrue(manageRefGasBottlesPage.getEthMethRtoLbl().getText().equals(ETHMTHRTOLABEL));
+		
+		if ((ethMthRtoZero != null) && (ethMthRtoZero != "")) { 
+			manageRefGasBottlesPage.inputEthMthRto.clear();
+			manageRefGasBottlesPage.inputEthMthRto.sendKeys(ethMthRtoZero);
+		}
+
+		manageRefGasBottlesPage.getDropdownSurveyor().click();
+		
+		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals(ETHMTHERRLESSMSG));
 		manageRefGasBottlesPage.clickOnCancelBtn();
 
-		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", "100", SQACUS, SQACUSLOC, SQACUSLOCSUR);
-		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals("Please enter a value less than or equal to 99."));
+		manageRefGasBottlesPage.btnAddNewRefGasBottle.click();
+
+		manageRefGasBottlesPage.inputLotNumber.clear();
+		manageRefGasBottlesPage.inputLotNumber.sendKeys("TestZeroEthMthRto");
+		manageRefGasBottlesPage.inputIsoValue.clear();
+		manageRefGasBottlesPage.inputIsoValue.sendKeys("-32");
+		
+		assertTrue(manageRefGasBottlesPage.getEthMethRtoLbl().getText().equals(ETHMTHRTOLABEL));
+		
+		if ((ethMthRtoHund != null) && (ethMthRtoHund != "")) { 
+			manageRefGasBottlesPage.inputEthMthRto.clear();
+			manageRefGasBottlesPage.inputEthMthRto.sendKeys(ethMthRtoHund);
+		}
+
+		manageRefGasBottlesPage.getDropdownSurveyor().click();
+		
+		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals(ETHMTHERRGRTMSG));
 		manageRefGasBottlesPage.clickOnCancelBtn();
 	}
-
 }
