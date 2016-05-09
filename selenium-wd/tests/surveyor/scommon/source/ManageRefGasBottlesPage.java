@@ -50,6 +50,15 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='EthaneToMethaneRatio']")
 	private WebElement inputEthMthRto;
 	
+	public WebElement getEthMthRtoErr() {
+		return this.inputEthMthRto;
+	}
+
+
+	@FindBy(how = How.XPATH, using = "//*[@id='EthaneToMethaneRatio-error']")
+	private WebElement ethMthRtoErr;
+
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='IsotopicValue']")
 	private WebElement inputIsoValue;
 

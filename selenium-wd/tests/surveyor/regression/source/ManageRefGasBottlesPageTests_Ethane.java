@@ -99,4 +99,28 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 
 		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber2, SQACUSLOCSUR));
 	}
+	
+	/**
+	 * Test Case ID: TC1739 Test Description: Ethane- Verify min/max value (%) from drop down/up to Ethane To Methane Ratio column to ReferenceGasBottle Page
+	 * 
+	 */
+	@Test
+	public void TC1739_InvalidMinMAxValueEthMthClmn_RefGasBottles() {
+		String strLotNumber = "TC138_Ethane_InValid"+ testSetup.getFixedSizeRandomNumber(5);
+		
+		Log.info("\nRunning TC1738 - Test Description: Ethane- Verify min/max value (%) from drop down/up to Ethane To Methane Ratio column to ReferenceGasBottle Page");
+
+		manageRefGasBottlesPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+
+		manageRefGasBottlesPage.open();
+		
+		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", "0", SQACUS, SQACUSLOC, SQACUSLOCSUR);
+		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals("Please enter a value greater than or equal to 1."));
+		manageRefGasBottlesPage.clickOnCancelBtn();
+
+		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", "100", SQACUS, SQACUSLOC, SQACUSLOCSUR);
+		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals("Please enter a value less than or equal to 99."));
+		manageRefGasBottlesPage.clickOnCancelBtn();
+	}
+
 }
