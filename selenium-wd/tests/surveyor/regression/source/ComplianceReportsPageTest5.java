@@ -23,6 +23,7 @@ import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
+import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 
@@ -58,6 +59,8 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		homePageAction = new HomePageActions(driver, baseURL, testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
+		MeasurementSessionsPage measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
+
 		// To run the test locally in UnitTest mode uncomment this line.
 		//setTestRunMode(ReportTestRunMode.UnitTestRun);
 
@@ -130,7 +133,11 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		//Driving Survey page actions are not yet implemented
+		//measurementSessionsPage.open();
 	}
 
 	/**
@@ -159,7 +166,6 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		complianceReportsPage2.open();
 		complianceReportsPage2.openNewReportPage();
 
-		//Need more work to covert String to enum from the excel sheet
 		ReportModeFilter rmode = ReportModeFilter.Standard;
 		testReportFilters(rmode);
 		SurveyModeFilter smode = SurveyModeFilter.All;
