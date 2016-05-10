@@ -925,8 +925,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void openNewReportPage() {
+		String elementXPath = "//*[@id='datatableViews']/tbody/tr/td[2]/input";
 		this.btnNewComplianceRpt.click();
+		refreshPageUntilElementFound(elementXPath);
 		this.waitForNewPageLoad();
+		
 	}
 
 	public void waitForNewPageLoad() {
@@ -1543,7 +1546,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle) && createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[@title='Copy']/img";  // Don't use index for 'Copy' as it has diff values
 				copyImg = getReportTableCell(copyImgXPath);
-				copyImg.click();
+				jsClick(copyImg);
 
 				return true;
 			}
@@ -2043,7 +2046,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			public Boolean apply(WebDriver d) {
 				boolean result = false;
 				try {
-					result = d.getPageSource().contains(getStrCopyPageText())&&inputTitle.isDisplayed();
+					result = d.getPageSource().contains(getStrCopyPageText());
 				} catch (Exception e) {
 					Log.error(e.toString());
 				}

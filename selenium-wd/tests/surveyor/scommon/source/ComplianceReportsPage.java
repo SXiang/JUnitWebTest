@@ -1459,7 +1459,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void selectCustomerBoundaryRadioButton() {
-		this.areaBoundaryRadioButtons.get(CUSTOMER_BOUNDARY_RADBUTTON_GROUP_IDX).click();
+		jsClick(this.areaBoundaryRadioButtons.get(CUSTOMER_BOUNDARY_RADBUTTON_GROUP_IDX));
 	}
 
 	@Override
