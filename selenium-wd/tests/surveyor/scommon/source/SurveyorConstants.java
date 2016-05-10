@@ -225,6 +225,10 @@ public final class SurveyorConstants {
 	public static final String DRIVINGSURVEYTITLE = "Measurement Sessions - Surveyor";
 	public static final String DRIVINGSURVEYHEADER = "Driving Surveys";
 
+	public static final String ETHMTHRTOLABEL = Resources.getResource(ResourceKeys.Constant_EthaneToMethaneRatio );
+	public static final String ETHMTHERRGRTMSG = Resources.getResource(ResourceKeys.Validation_EnterValueGreaterThanOrEqual).replace("{0}", "1");
+	public static final String ETHMTHERRLESSMSG = Resources.getResource(ResourceKeys.Validation_EnterValueLessThanOrEqual).replace("{0}", "99");
+	
 	/*
 	 * Survey View constants
 	 */
