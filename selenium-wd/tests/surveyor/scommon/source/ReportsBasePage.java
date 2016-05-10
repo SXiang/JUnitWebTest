@@ -158,9 +158,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "buttonSearchSurvey")
 	protected WebElement btnSurveySearch;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td[7]/input")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/input[@type='checkbox']")
 	protected WebElement checkboxSurFirst;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/input[@type='checkbox']")
+	protected List<WebElement> checkboxSurveys;
+	
 	@FindBy(how = How.ID, using = "report-geo-filter")
 	protected WebElement checkGeoFilter;
 
@@ -291,6 +294,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "dvErrorText")
 	protected WebElement divErrorText;
 	protected String strErrorText = "//div[@id='dvErrorText']";
+	
+	@FindBy(css = "#dvErrorText > ul > li")
+	protected List<WebElement> listOfErrors;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_filter']/label/input")
 	protected WebElement inputSearchReport;
@@ -310,7 +316,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyContent-0']/div/fieldset/div/fieldset/p/button")
 	protected WebElement btnDeleteDrivingSurvey;
-
+	
+	@FindBy(css=".surveyGroup > [style=''] button.btnDeleteSurvey")
+	protected List<WebElement> btnDeleteDrivingSurveys;
+	
 	@FindBy(how = How.ID, using = "buttonMap")
 	protected WebElement btnLatLongSelector;
 
@@ -329,7 +338,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "button_ok")
 	protected WebElement btnCustomOK;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[5]/a[2]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[5]/a[@title='Copy']/img")
 	protected WebElement btnFirstCopyCompliance;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a[4]")
@@ -661,25 +670,32 @@ public class ReportsBasePage extends SurveyorBasePage {
 		if (openNewReportsPage) {
 			openNewReportPage();
 		}
+		// 1. Title and Customer
 		inputReportTitle(reports.getRptTitle());
-
-		if (reports.getCustomer() != null && reports.getCustomer() != "Picarro") {
+		if (reports.getCustomer() != null && !reports.getCustomer().equalsIgnoreCase("Picarro")) {
 			selectCustomer(reports.getCustomer());
 			Boolean confirmed = confirmInChangeCustomerDialog();
 			if (confirmed) {
 				inputReportTitle(reports.getRptTitle());
 			}
 		}
+		
+		// 2. Other parameters
 		fillReportSpecific(reports);
+		
+		// 3. Add Surveys
 		if (reports.getSurveyInfoList() != null) {
 			addMultipleSurveysToReport(reports);
 		} else {
 			addSurveyInformation(reports);
 		}
+		
 		this.clickOnOKButton();
 	}
-
 	public void addSurveyInformation(Reports reports) throws Exception {
+		addSurveyInformation(reports, null);
+	}
+	public void addSurveyInformation(Reports reports, List<Integer> tagIndexes) throws Exception {
 		Log.info("Adding Survey information");
 		String surveyor = reports.getSurveyorUnit();
 		String username = reports.getUsername();
@@ -758,8 +774,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 				loopCount = Integer.parseInt(PAGINATIONSETTING);
 
 			// Loop through table elements and check selected number of surveys.
-			for (int rowNum = 1; rowNum <= loopCount && selectedSurveysCount <= numSurveysToSelect; rowNum++) {
-				checkBoxXPath = "//*[@id='datatableSurveys']/tbody/tr[" + rowNum + "]/td[7]/input";
+			for (int rowNum = 1; rowNum <= loopCount && selectedSurveysCount < numSurveysToSelect; rowNum++) {
+				checkBoxXPath = "//*[@id='datatableSurveys']/tbody/tr[" + rowNum + "]/td/input[@type='checkbox']";
 				checkBoxActionCell = surveyTable.findElement(By.xpath(checkBoxXPath));
 				checkBoxActionCell.click();
 				selectedSurveysCount++;
@@ -841,6 +857,32 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 
+	public boolean verifyErrorMessages(String... errorMessages){
+		//List<WebElement> list = driver.findElements(By.cssSelector("#dvErrorText > ul > li"));
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>(){
+			public Boolean apply(WebDriver d){
+				return errorMessages==null||errorMessages[0].isEmpty()||listOfErrors.size()>=errorMessages.length;
+			}
+		});
+		for(WebElement e:listOfErrors){
+			Log.info(e.getText());
+		}
+		for(String err:errorMessages ){
+			boolean msgFound = false;
+			for(WebElement element:listOfErrors){
+				msgFound = false;
+				String msg = element.getText();
+				if(msg.equals(err)){
+					msgFound = true;
+					break;
+				}
+			}
+			if(!msgFound){
+				return false;
+			}
+		}
+		return true;
+	}
 	/**
 	 * Implementation to be provided by Derived classes.
 	 */
@@ -1163,7 +1205,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		if (reportsCompliance.getSurveyorUnit() != "") {
 			selectSurveySurveyor(reportsCompliance.getSurveyorUnit());
 		}
-
+	
 		for (String tagValue : reportsCompliance.tagList) {
 			if (tagValue != "") {
 				inputSurveyTag(tagValue);
@@ -1274,8 +1316,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		this.waitForPageLoad();
 		String reportTitleXPath;
 		String createdByXPath;
-		WebElement rptTitleCell;
-		WebElement createdByCell;
 
 		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -1501,7 +1541,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle) && createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
-				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
+				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[@title='Copy']/img";  // Don't use index for 'Copy' as it has diff values
 				copyImg = getReportTableCell(copyImgXPath);
 				copyImg.click();
 
@@ -1974,6 +2014,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void clickOnCancelBtn() {
 		this.btnCancel.click();
+		super.waitForPageLoad();
 	}
 
 	public void clickOnFirstCopyComplianceBtn() {
@@ -1997,11 +2038,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void waitForCopyReportPagetoLoad() {
+		super.waitForPageToLoad();
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				boolean result = false;
 				try {
-					result = d.getPageSource().contains(getStrCopyPageText());
+					result = d.getPageSource().contains(getStrCopyPageText())&&inputTitle.isDisplayed();
 				} catch (Exception e) {
 					Log.error(e.toString());
 				}

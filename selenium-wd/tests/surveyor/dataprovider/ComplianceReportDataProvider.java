@@ -58,6 +58,35 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC737 = "dataProviderPageActionsComplianceReports_TC737";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC786 = "dataProviderPageActionsComplianceReports_TC786";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC798 = "dataProviderPageActionsComplianceReports_TC798";
+	//ComplianceReportsPageTest3
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC12 = "dataProviderPageActionsComplianceReports_TC12";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC13 = "dataProviderPageActionsComplianceReports_TC13";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1319 = "dataProviderPageActionsComplianceReports_TC1319";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1320 = "dataProviderPageActionsComplianceReports_TC1320";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1339 = "dataProviderPageActionsComplianceReports_TC1339";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1340 = "dataProviderPageActionsComplianceReports_TC1340";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1352 = "dataProviderPageActionsComplianceReports_TC1352";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1363 = "dataProviderPageActionsComplianceReports_TC1363";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1364 = "dataProviderPageActionsComplianceReports_TC1364";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1365 = "dataProviderPageActionsComplianceReports_TC1365";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1366 = "dataProviderPageActionsComplianceReports_TC1366";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1367 = "dataProviderPageActionsComplianceReports_TC1367";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1370 = "dataProviderPageActionsComplianceReports_TC1371";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1371 = "dataProviderPageActionsComplianceReports_TC1371";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1373 = "dataProviderPageActionsComplianceReports_TC1373";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1389 = "dataProviderPageActionsComplianceReports_TC1389";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1394 = "dataProviderPageActionsComplianceReports_TC1394";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1395 = "dataProviderPageActionsComplianceReports_TC1395";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC14 = "dataProviderPageActionsComplianceReports_TC14";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC149 = "dataProviderPageActionsComplianceReports_TC149";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1490 = "dataProviderPageActionsComplianceReports_TC1490";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1491 = "dataProviderPageActionsComplianceReports_TC1491";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1496 = "dataProviderPageActionsComplianceReports_TC1496";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1497 = "dataProviderPageActionsComplianceReports_TC1497";
+	
+	
+	
+	
 
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1255 = "dataProviderPageActionsComplianceReports_TC1255";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1256 = "dataProviderPageActionsComplianceReports_TC1256";
@@ -1187,4 +1216,152 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 			{ "TC799" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
 		};
 	}
+	
+	// Start of ComplianceReportsPageTest3.java
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC12() {
+		return new Object[][] {				
+			{ "TC12" /*TestCaseID*/, 4 /*userDataRowID*/,  72 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC13() {
+		return new Object[][] {				
+			{ "TC13" /*TestCaseID*/, 2 /*userDataRowID*/,  73 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1319() {
+		return new Object[][] {				
+			{ "TC1319" /*TestCaseID*/, 5 /*userDataRowID*/,  50 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1320() {
+		return new Object[][] {				// UA needed, 1,7
+			{ "TC1320" /*TestCaseID*/, 4 /*userDataRowID*/,  51 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1339() {
+		return new Object[][] {				// UA needed, 1,7
+			{ "TC1339" /*TestCaseID*/, 4 /*userDataRowID*/,  58 /*reportDataRowID1*/, 52/*reportDataRowID2*/,53/*reportDataRowID3*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1340() {
+		return new Object[][] {				// UA needed, 1,7
+			{ "TC1340" /*TestCaseID*/, 4 /*userDataRowID*/,  71 /*reportDataRowID1*/,  52/*reportDataRowID2*/,  53/*reportDataRowID3*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1352() {
+		return new Object[][] {				// UA needed, 1,7
+			{ "TC1352" /*TestCaseID*/, 4 /*userDataRowID*/,  62 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1363() {
+		return new Object[][] {				// UA needed, 1,7
+			{ "TC1363" /*TestCaseID*/, 4 /*userDataRowID*/,  59 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1364() {
+		return new Object[][] {				
+			{ "TC1364" /*TestCaseID*/, 5 /*userDataRowID*/,  52 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1365() {
+		return new Object[][] {				
+			{ "TC1365" /*TestCaseID*/, 4 /*userDataRowID*/,  53 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1366() {
+		return new Object[][] {				
+			{ "TC1366" /*TestCaseID*/, 4 /*userDataRowID*/,  60 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1367() {
+		return new Object[][] {			// Csu needed, 2,8	
+			{ "TC1367" /*TestCaseID*/, 4 /*userDataRowID*/,  54 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1370() {
+		return new Object[][] {				// UA needed, 1,7
+			{ "TC1370" /*TestCaseID*/, 4 /*userDataRowID*/,  63 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1371() {
+		return new Object[][] {				
+			{ "TC1371" /*TestCaseID*/, 4 /*userDataRowID*/,  64 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1373() {
+		return new Object[][] {				
+			{ "TC1373" /*TestCaseID*/, 4 /*userDataRowID*/,  65 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1389() {
+		return new Object[][] {			
+			{ "TC1389" /*TestCaseID*/, 1 /*userDataRowID*/,  66 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1394() {
+		return new Object[][] {			
+			{ "TC1394" /*TestCaseID*/, 2 /*userDataRowID*/,  67 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1395() {
+		return new Object[][] {			
+			{ "TC1395" /*TestCaseID*/, 1 /*userDataRowID*/,  68 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC14() {
+		return new Object[][] {				
+			{ "TC14" /*TestCaseID*/, 1 /*userDataRowID*/,  69 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC149() {
+		return new Object[][] {				
+			{ "TC149" /*TestCaseID*/, 4 /*userDataRowID*/,  70/*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1490() {
+		return new Object[][] {				
+			{ "TC1490" /*TestCaseID*/, 4 /*userDataRowID*/,  -1 /*NOT a candidate of automated tests - reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1491() {
+		return new Object[][] {				
+			{ "TC1491" /*TestCaseID*/, 4 /*userDataRowID*/,  55 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1496() {
+		return new Object[][] {				
+			{ "TC1496" /*TestCaseID*/, 4 /*userDataRowID*/,  56 /*NOT USED - reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1497() {
+		return new Object[][] {				
+			{ "TC1497" /*TestCaseID*/, 4 /*userDataRowID*/,  57 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}	
+	// End of ComplianceReportsPageTest3.java
 }

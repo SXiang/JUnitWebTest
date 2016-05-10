@@ -283,8 +283,6 @@ public class Reports {
 	public void setGeoFilter(Boolean geoFilter) {
 		this.geoFilter = geoFilter;
 	}
-
-	// <--
 	
 	public List<ReportsSurveyInfo> getSurveyInfoList() {
 		return surveyInfoList;
