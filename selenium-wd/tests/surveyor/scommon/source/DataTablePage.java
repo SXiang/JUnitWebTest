@@ -132,6 +132,37 @@ public class DataTablePage extends BasePage{
    }
 
 	
+	   /**
+     * Find records in this data table, page by page
+     * @param filter - conditions for matching a row, columnName:value pairs
+     * @param numRecords - the max number of records to be matched, search for all if it's -1
+     * @return number of matched records
+     */
+	public int performAction(Map<String,List<String>>  filter, Map<String,List<String>> action, int numRecords){
+		return performAction(filter,action, numRecords, true);
+	}
+	public int performAction(Map<String,List<String>>  filter, Map<String,List<String>> action, int numRecords, boolean match){
+		setPagination(pagination);
+		waitForTableToLoad();
+		Map<Integer,List<String>> indexedMap = new HashMap<Integer, List<String>>();
+		for(Entry<String,List<String>>  entry:filter.entrySet()){
+			indexedMap.put(getColumnIndex(entry.getKey().toString()), entry.getValue());
+		}	
+		
+		int numFound = 0;
+		do{			
+			for(WebElement row:tableRow){
+                if(match==rowMatches(row, indexedMap)){
+                	
+                	numFound++;
+                }
+				if(numRecords>-1 && numFound >= numRecords){
+					break;
+				}
+			}
+		}while(toNextPage());		
+        return numFound;
+   }
 
 	
 	
@@ -177,6 +208,23 @@ public class DataTablePage extends BasePage{
 		Log.warn("Not found: Column '"+columnName+"'");
 		return -1;
 	}
+	
+	/**
+	 * To find the index number of a column
+	 * @param columnName 
+	 * @return index of the column
+	 */
+	public int getColumnIndex(String columnName){
+		for(int i=0;i<tableHeader.size();i++){
+			String columnText = tableHeader.get(i).getText();
+			if(columnText!=null&&columnText.trim().equals(columnName)){
+				return i;
+			}
+		}
+		Log.warn("Not found: Column '"+columnName+"'");
+		return -1;
+	}
+	
 	
 	/**
 	 * Navigate to next page of this table

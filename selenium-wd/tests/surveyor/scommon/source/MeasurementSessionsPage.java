@@ -127,12 +127,17 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		}
 	}
 
-	public boolean actionOnDrivingSurveys(String surveyTag, DrivingSurveyButtonType buttonType, boolean clickButton, boolean confirmAction) throws Exception {
-		return actionOnDrivingSurveys(surveyTag, null, null, null, buttonType, clickButton, confirmAction);
+	public boolean actionOnDrivingSurveys(String surveyor, DrivingSurveyButtonType buttonType, boolean clickButton, boolean confirmAction) throws Exception {
+		return actionOnDrivingSurveys(null, null, surveyor, null, buttonType, clickButton, confirmAction);
 	}
 
 	public boolean actionOnDrivingSurveys(String surveyTag, String user, String surveyor, String analyzer, DrivingSurveyButtonType buttonType, boolean clickButton, boolean confirmAction) throws Exception {
-		this.seacrchTextBox.sendKeys(surveyTag);
+		this.searchTextBox.clear();
+		if (surveyTag != null) {
+			this.searchTextBox.sendKeys(surveyTag);
+		} else if (surveyor != null) {
+			this.searchTextBox.sendKeys(surveyor);
+		}
 		this.waitForPageLoad();
 		if (tableData.getText().equals(Constant_NoMatchingRecordsFound)) {
 			return false;
@@ -145,52 +150,85 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		int rowSize = rows.size();
 		int loopCount = 0;
 
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
+		/*if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 			loopCount = rowSize;
 		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
+			loopCount = Integer.parseInt(PAGINATIONSETTING_100);*/
 		int rowNum = 1;
 		try {
-
-			while (rowNum <= loopCount) {
-				String surveyTagCellText = getReportTableCellText("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]");
-				String userCellText = getReportTableCellText("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]");
-				String surveyorCellText = getReportTableCellText("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]");
-				String analyzerCellText = getReportTableCellText("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]");
-				String statusCellText = getReportTableCellText("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[7]");
-
-				if (user != null && surveyor != null && analyzer != null) {
-					if (surveyTagCellText.trim().equalsIgnoreCase(surveyTag) && userCellText.trim().equalsIgnoreCase(user) && surveyorCellText.trim().equalsIgnoreCase(surveyor) && analyzerCellText.trim().equalsIgnoreCase(analyzer)) {
-						performAction(buttonType, clickButton, confirmAction, rowNum, statusCellText);
-						return true;
-					}
-				} else {
-					performAction(buttonType, clickButton, confirmAction, rowNum, statusCellText);
-					if (buttonType == DrivingSurveyButtonType.DeleteSurvey) {
-						if (driver.getCurrentUrl().contains(ERROR_URL)) {
-							driver.get(strBaseURL + STRURLPath);
-							rowNum++;
-						}
-					} else
-						rowNum++;
-				}
-				if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
-					this.nextBtn.click();
-					this.waitForPageLoad();
-					List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
-					rowSize = newRows.size();
-					if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
-						loopCount = rowSize;
-					else
-						loopCount = Integer.parseInt(PAGINATIONSETTING_100);
-					rowNum = 0;
+			rowNum = getMatchingRow(surveyTag, user, surveyor, analyzer, rowNum, loopCount);
+			String statusCellText = getReportTableCellText("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[7]");
+			performAction(buttonType, clickButton, confirmAction, rowNum, statusCellText);
+			if (buttonType == DrivingSurveyButtonType.DeleteSurvey) {
+				if (driver.getCurrentUrl().contains(ERROR_URL)) {
+					driver.get(strBaseURL + STRURLPath);
+					rowNum++;
 				}
 			}
+			rowNum++;
+
+			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				this.nextBtn.click();
+				this.waitForPageLoad();
+				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				rowSize = newRows.size();
+				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
+					loopCount = rowSize;
+				else
+					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
+				rowNum = 0;
+			}
+
 		} catch (org.openqa.selenium.NoSuchElementException e) {
 			return false;
 		}
 
 		return true;
+	}
+
+	private int getMatchingRow(String surveyTag, String user, String surveyor, String analyzer, int rowNum, int loopCount) {
+		while (rowNum <= loopCount) {
+			String surveyTagCellText = getReportTableCellText("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]");
+			String userCellText = getReportTableCellText("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]");
+			String surveyorCellText = getReportTableCellText("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]");
+			String analyzerCellText = getReportTableCellText("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]");
+			boolean surveyTagSent = false;
+			boolean userSent = false;
+			boolean analyzerSent = false;
+			boolean surveyorSent = false;
+			int inputs = 0;
+			if (surveyTag != null) {
+				surveyTagSent = true;
+				inputs++;
+			}
+			if (user != null) {
+				userSent = true;
+				inputs++;
+			}
+			if (analyzer != null) {
+				analyzerSent = true;
+				inputs++;
+			}
+			if (surveyor != null) {
+				surveyorSent = true;
+				inputs++;
+			}
+
+			if (surveyTagSent && surveyTagCellText.trim().equalsIgnoreCase(surveyTag))
+				inputs--;
+			if (userSent && userCellText.trim().equalsIgnoreCase(user))
+				inputs--;
+			if (analyzerSent && analyzerCellText.trim().equalsIgnoreCase(analyzer))
+				inputs--;
+			if (surveyorSent && surveyorCellText.trim().equalsIgnoreCase(surveyor))
+				inputs--;
+
+			if (inputs == 0)
+				return rowNum;
+			else
+				rowNum++;
+		}
+		return rowNum;
 	}
 
 	private void performAction(DrivingSurveyButtonType buttonType, boolean clickButton, boolean confirmAction, int rowNum, String statusCellText) throws Exception {
@@ -242,7 +280,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	public List<String> getTagNameList(String driver) {
 		List<String> strListTag = new ArrayList<String>();
 		if (driver != null) {
-			this.seacrchTextBox.sendKeys(driver);
+			this.searchTextBox.sendKeys(driver);
 			this.waitForPageLoad();
 			if (tableData.getText().equals(Constant_NoMatchingRecordsFound)) {
 				return strListTag;
