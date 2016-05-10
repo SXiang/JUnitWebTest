@@ -83,15 +83,6 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		return listBoundary;
 	}
 	
-	public static HashMap<String, String> createOptionalTabularPDFContent(String indication, String isotopic, String pca, String pcra) {
-		HashMap<String, String> tableMap = new HashMap<String, String>();
-		tableMap.put(KEYINDTB, indication);
-		tableMap.put(KEYISOANA, isotopic);
-		tableMap.put(KEYPCA, pca);
-		tableMap.put(KEYPCRA, pcra);
-		return tableMap;
-	}
-
 	public static HashMap<String, String> createOptionalTabularPDFContent(String indication, String isotopic, String gaptable, String pca, String pcra, String pcf) {
 		HashMap<String, String> tableMap = new HashMap<String, String>();
 		tableMap.put(KEYINDTB, indication);
