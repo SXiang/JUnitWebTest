@@ -1019,6 +1019,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void waitForSelectedSurveysToBeAdded(Integer countOfSurveys) {
+		if (countOfSurveys == Integer.MAX_VALUE) {
+			// If all surveys are selected find the number of surveys shown in UI.
+			countOfSurveys = getRecordsInSurveyTable(driver); 
+		}
+		
 		(new WebDriverWait(driver, timeout + 15)).until(
 				ExpectedConditions.presenceOfElementLocated(By.id(String.format("surveyContent-%d", countOfSurveys-1))));
 	}
@@ -2102,7 +2107,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public Integer getRecordsInSurveyTable(WebDriver driver) {
-		WebElement pageInfoLabel = driver.findElement(By.id("datatableSurveys"));
+		WebElement pageInfoLabel = driver.findElement(By.id("datatableSurveys_info"));
 		return getRecordsShownOnPage(driver, pageInfoLabel);
 	}
 
