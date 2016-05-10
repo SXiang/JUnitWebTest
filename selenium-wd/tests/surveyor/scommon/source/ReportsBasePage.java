@@ -2033,11 +2033,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void waitForCopyReportPagetoLoad() {
+		super.waitForPageToLoad();
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				boolean result = false;
 				try {
-					result = d.getPageSource().contains(getStrCopyPageText());
+					result = d.getPageSource().contains(getStrCopyPageText())&&inputTitle.isDisplayed();
 				} catch (Exception e) {
 					Log.error(e.toString());
 				}

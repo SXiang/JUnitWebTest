@@ -649,6 +649,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.cancelInProgressReport", data, dataRowID);
 		this.getComplianceReportsPage().clickComplianceReportButton(workingDataRow.title, 
 				LoginPageActions.workingDataRow.username, ComplianceReportButtonType.InProgressCopy);
+		this.getComplianceReportsPage().waitForCopyReportPagetoLoad();
+		this.initializePageObject(TestContext.INSTANCE.getDriver(), this.createNewPageObject());
 		return true;
 	} 
 	/**

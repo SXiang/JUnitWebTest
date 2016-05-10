@@ -12,6 +12,7 @@ import static surveyor.scommon.source.SurveyorConstants.SUBTITLE;
 import static surveyor.scommon.source.SurveyorConstants.UNKNOWN_TEXT;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -330,15 +331,12 @@ public class BasePage {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click();", element);
 	}
-
-	/**
-	 * Javascript to set attribute value
-	 * @param element
-	 * @param attr
-	 * @param value
-	 */
-	public void jsSetAttribute(WebElement element, String attr, String value){
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].setAttribute('"+attr+"', '"+value+"')",element);
+	
+	public void minimizeBrowserWindow(){
+		driver.manage().window().setSize(new Dimension(0,0));
 	}
+    public void maxmizeBrowserWindow(){
+    	driver.manage().window().maximize();
+	}
+
 }

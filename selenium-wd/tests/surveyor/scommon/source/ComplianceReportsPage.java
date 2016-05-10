@@ -517,29 +517,20 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				driver.findElement(By.xpath(strBaseXPath)).click();
 			}
 
-			if (customer != null && customer.equalsIgnoreCase("sqacus")) {
-				colNum = 10;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/select";
+			if(viewList.get(i).get(KEYBASEMAP)!=null){
+				if(rowNum == 1){
+					strBaseXPath = "//*[@id='datatableViews']/tbody/tr/td/select[contains(@class,'view-basemap')]";
+				}else {
+				   strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td/select[contains(@class,'view-basemap')]";
+				}
 				WebElement dropdownBaseMap = driver.findElement(By.xpath(strBaseXPath));
-
 				List<WebElement> options = dropdownBaseMap.findElements(By.tagName("option"));
-				for (WebElement option : options) {
+				for (WebElement option : options) {					
 					if ((viewList.get(i).get(KEYBASEMAP)).equalsIgnoreCase(option.getText().trim())) {
 						option.click();
 					}
 				}
-			} else {
-				colNum = 12;
-				strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td[" + colNum + "]/select";
-				WebElement dropdownBaseMap = driver.findElement(By.xpath(strBaseXPath));
-
-				List<WebElement> options = dropdownBaseMap.findElements(By.tagName("option"));
-				for (WebElement option : options) {
-					if ((viewList.get(i).get(KEYBASEMAP)).equalsIgnoreCase(option.getText().trim())) {
-						option.click();
-					}
-				}
-			}
+			} 
 		}
 	}
 
@@ -2962,7 +2953,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		if (reportsCompliance.getExclusionRadius() != null) {
 			//TODO: This is not working properly, need rewrite
-			inputExclusionRadius(reportsCompliance.getExclusionRadius());
+			//inputExclusionRadius(reportsCompliance.getExclusionRadius());
 		}
 
 		// 2. Area Selector
