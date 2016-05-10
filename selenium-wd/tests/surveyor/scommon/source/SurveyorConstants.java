@@ -131,9 +131,16 @@ public final class SurveyorConstants {
 	public static final String IMGMAPWIDTH = "11";
 	
 	public static final String NELAT = "37.421980615353675";
-	public static final String NELON = "121.93639755249023";
+	public static final String NELON = "-121.93639755249023";
 	public static final String SWLAT = "37.39566424530531";
-	public static final String SWLON = "122.01141357421875";
+	public static final String SWLON = "-122.01141357421875";
+
+	// Area in the range --> 1.25 sqkms - 1.5 sqkms, which includes survey data for stnd-pic
+	// Area of this selection = 138131.88282872934 sqkms
+	public static final String NELAT_SMALL = "37.420000994238805";
+	public static final String NELON_SMALL = "-121.97592854325212";
+	public static final String SWLAT_SMALL = "37.4167629940449";
+	public static final String SWLON_SMALL = "-121.98026299302019";
 
 	public static final int  X_OFFSET = 150;
 	public static final int Y_OFFSET = 150;

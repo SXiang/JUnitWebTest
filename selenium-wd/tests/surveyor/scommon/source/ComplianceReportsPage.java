@@ -454,6 +454,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (viewList.get(i).get(KEYVIEWNAME) != null) {
 				colNum = 2;
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				strBaseXPath = strBaseXPath + "[@type='text']";
 				driver.findElement(By.xpath(strBaseXPath)).clear();
 				driver.findElement(By.xpath(strBaseXPath)).sendKeys(viewList.get(i).get(KEYVIEWNAME));
 			}
@@ -2864,7 +2865,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		});
 	}
-
+	
 	public WebElement getBtnResubmitReport() {
 		return this.btnResubmitReport;
 	}

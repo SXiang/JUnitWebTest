@@ -510,7 +510,6 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 			{ "TC678" /*TestCaseID*/, 6 /*userDataRowID*/,  25 /*reportDataRowID1*/, -1/*reportDataRowID2*/},
 			{ "TC678" /*TestCaseID*/, 6 /*userDataRowID*/,  26 /*reportDataRowID1*/, -1/*reportDataRowID2*/},
 			{ "TC678" /*TestCaseID*/, 6 /*userDataRowID*/,  27 /*reportDataRowID1*/, -1/*reportDataRowID2*/},
-			{ "TC678" /*TestCaseID*/, 6 /*userDataRowID*/,  28 /*reportDataRowID1*/, -1/*reportDataRowID2*/},
 			{ "TC678" /*TestCaseID*/, 6 /*userDataRowID*/,  29 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
@@ -532,8 +531,9 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC681() {
 		return new Object[][] {				
-			{ "TC681" /*TestCaseID*/, 6 /*userDataRowID*/,  35 /*reportDataRowID1*/, -1/*reportDataRowID2*/},
-			{ "TC681" /*TestCaseID*/, 5 /*userDataRowID*/,  36 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+			{ "TC681" /*TestCaseID*/, 6 /*userDataRowID*/,  35 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+			// TODO: Currently SQACUS customer does NOT have assets in database. 
+			//,{ "TC681" /*TestCaseID*/, 5 /*userDataRowID*/,  36 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 
