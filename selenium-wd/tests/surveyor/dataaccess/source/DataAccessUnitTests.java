@@ -96,6 +96,11 @@ public class DataAccessUnitTests {
 		testEQ_getEQData_Valid();
 		Log.info("Executing testEQ_getEQData_Invalid() ...");
 		testEQ_getEQData_Invalid();
+		Log.info("Executingtest StoredProcLisaInvestigationShowIndication_Valid()..." );
+		testStoredProcLisaInvestigationShowIndication_Valid();
+		Log.info("Executingtest StoredProcLisaInvestigationShowIndication_Invalid()..." );
+		testStoredProcLisaInvestigationShowIndication_Invalid();
+
 		Log.info("DONE!");
 
 	}
@@ -370,6 +375,23 @@ public class DataAccessUnitTests {
 	private static void testEQ_getEQData_Invalid() {
 		ArrayList<StoredProcEQGetEQData> list = StoredProcEQGetEQData.getEQData("A3F800A2-B16B-9633-B8BA-39D6B19867B");
 		Iterator<StoredProcEQGetEQData> iterator = list.iterator();
+		Assert.assertTrue(!iterator.hasNext());
+	}
+	
+
+	private static void testStoredProcLisaInvestigationShowIndication_Valid() {
+		ArrayList<StoredProcLisaInvestigationShowIndication> list = StoredProcLisaInvestigationShowIndication.getLisaInvestigation("166328b0-b266-a7c2-3e41-39d7a866a18c");
+		Iterator<StoredProcLisaInvestigationShowIndication> iterator = list.iterator();
+		Assert.assertTrue(iterator.hasNext());
+		while (iterator.hasNext()) {
+			StoredProcLisaInvestigationShowIndication obj = iterator.next();
+			Assert.assertTrue(obj != null, "Value cannot be NULL.");
+		}
+	}
+
+	private static void testStoredProcLisaInvestigationShowIndication_Invalid() {
+		ArrayList<StoredProcLisaInvestigationShowIndication> list = StoredProcLisaInvestigationShowIndication.getLisaInvestigation("f90e9dd2-1b65-0111-756a-39d7a8986637");
+		Iterator<StoredProcLisaInvestigationShowIndication> iterator = list.iterator();
 		Assert.assertTrue(!iterator.hasNext());
 	}
 }

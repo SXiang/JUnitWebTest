@@ -82,6 +82,8 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 	public void TC1738_MinMAxValueEthMthClmn_RefGasBottles() {
 		String strLotNumber1 = "TC138_Ethane_1"+ testSetup.getFixedSizeRandomNumber(5);
 		String strLotNumber2 = "TC138_Ethane_2"+ testSetup.getFixedSizeRandomNumber(5);
+		String ethMthRtoZero = "0";
+		String ethMthRtoHund = "100";
 
 		Log.info("\nRunning TC1738 - Test Description: Ethane- Verify min/max value (%) from drop down/up to Ethane To Methane Ratio column to ReferenceGasBottle Page");
 
@@ -105,5 +107,79 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals("Please enter a value less than or equal to 99."));
 		manageRefGasBottlesPage.clickOnCancelBtn();
 
+		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber2, SQACUSLOCSUR));
+
+		manageRefGasBottlesPage.btnAddNewRefGasBottle.click();
+
+		manageRefGasBottlesPage.inputLotNumber.clear();
+		manageRefGasBottlesPage.inputLotNumber.sendKeys("TestZeroEthMthRto");
+		manageRefGasBottlesPage.inputIsoValue.clear();
+		manageRefGasBottlesPage.inputIsoValue.sendKeys("-32");
+
+		assertTrue(manageRefGasBottlesPage.getEthMethRtoLbl().getText().equals(ETHMTHRTOLABEL));
+
+		if ((ethMthRtoZero != null) && (ethMthRtoZero != "")) { 
+			manageRefGasBottlesPage.inputEthMthRto.clear();
+			manageRefGasBottlesPage.inputEthMthRto.sendKeys(ethMthRtoZero);
+		}
+
+		manageRefGasBottlesPage.getDropdownSurveyor().click();
+
+		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals(ETHMTHERRGRTMSG));
+		manageRefGasBottlesPage.clickOnCancelBtn();
+
+		manageRefGasBottlesPage.btnAddNewRefGasBottle.click();
+
+		manageRefGasBottlesPage.inputLotNumber.clear();
+		manageRefGasBottlesPage.inputLotNumber.sendKeys("TestZeroEthMthRto");
+		manageRefGasBottlesPage.inputIsoValue.clear();
+		manageRefGasBottlesPage.inputIsoValue.sendKeys("-32");
+
+		assertTrue(manageRefGasBottlesPage.getEthMethRtoLbl().getText().equals(ETHMTHRTOLABEL));
+
+		if ((ethMthRtoHund != null) && (ethMthRtoHund != "")) { 
+			manageRefGasBottlesPage.inputEthMthRto.clear();
+			manageRefGasBottlesPage.inputEthMthRto.sendKeys(ethMthRtoHund);
+		}
+
+		manageRefGasBottlesPage.getDropdownSurveyor().click();
+
+		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals(ETHMTHERRLESSMSG));
+		manageRefGasBottlesPage.clickOnCancelBtn();
+
+	}
+
+	/**
+	 * Test Case ID: TC1739 Test Description: Ethane - Ethane To Methane Ratio to ReferenceGasBottle Page should not take negative value
+	 * 
+	 */
+	@Test
+	public void TC1739_InvalidMinMAxValueEthMthClmn_RefGasBottles() {
+		String ethMthRtoNeg = "-1";
+
+		Log.info("\nRunning TC1739 - Test Description: Ethane - Ethane To Methane Ratio to ReferenceGasBottle Page should not take negative value");
+
+		manageRefGasBottlesPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+
+		manageRefGasBottlesPage.open();
+
+		manageRefGasBottlesPage.btnAddNewRefGasBottle.click();
+
+		manageRefGasBottlesPage.inputLotNumber.clear();
+		manageRefGasBottlesPage.inputLotNumber.sendKeys("TestZeroEthMthRto");
+		manageRefGasBottlesPage.inputIsoValue.clear();
+		manageRefGasBottlesPage.inputIsoValue.sendKeys("-32");
+
+		assertTrue(manageRefGasBottlesPage.getEthMethRtoLbl().getText().equals(ETHMTHRTOLABEL));
+
+		if ((ethMthRtoNeg != null) && (ethMthRtoNeg != "")) { 
+			manageRefGasBottlesPage.inputEthMthRto.clear();
+			manageRefGasBottlesPage.inputEthMthRto.sendKeys(ethMthRtoNeg);
+		}
+
+		manageRefGasBottlesPage.getDropdownSurveyor().click();
+
+		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals(ETHMTHERRGRTMSG));
+		manageRefGasBottlesPage.clickOnCancelBtn();
 	}
 }
