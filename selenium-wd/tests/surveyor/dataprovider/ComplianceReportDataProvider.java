@@ -429,7 +429,6 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 			{ "TC678" /*TestCaseID*/, 6 /*userDataRowID*/,  25 /*reportDataRowID1*/, -1/*reportDataRowID2*/},
 			{ "TC678" /*TestCaseID*/, 6 /*userDataRowID*/,  26 /*reportDataRowID1*/, -1/*reportDataRowID2*/},
 			{ "TC678" /*TestCaseID*/, 6 /*userDataRowID*/,  27 /*reportDataRowID1*/, -1/*reportDataRowID2*/},
-			{ "TC678" /*TestCaseID*/, 6 /*userDataRowID*/,  28 /*reportDataRowID1*/, -1/*reportDataRowID2*/},
 			{ "TC678" /*TestCaseID*/, 6 /*userDataRowID*/,  29 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
