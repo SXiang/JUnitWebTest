@@ -86,7 +86,9 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, 0);
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete("0", 0);
 	
-		complianceReportsPageAction.verifyShapeFilesWithBaselines("0", 0);
+		for(int i=0;i<10;i++){ // Testing IO exceptions
+		   Assert.assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines("0", 0));
+		}
 	}
 	/**
 	 * TA862 - Searched Surveys should be filtered by selected report mode
