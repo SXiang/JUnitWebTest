@@ -60,6 +60,7 @@ public class ExcelUtility {
     		FileInputStream excelFile = new FileInputStream(path);
             excelWorkbook = new XSSFWorkbook(excelFile);
     	} catch (Exception e) {
+    		Log.warn(String.format("Error setting Excel file - '%s'", path));
     	}
 	}
 
