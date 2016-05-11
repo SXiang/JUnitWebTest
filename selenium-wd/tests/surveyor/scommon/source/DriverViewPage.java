@@ -20,8 +20,7 @@ import org.openqa.selenium.WebElement;
 public class DriverViewPage extends BaseDrivingViewPage {
 	private static final float DEFAULT_MIN_AMPLITUDE = -1.0F;
 
-	public static final String STRURLPath = "/Live/Driver?address=https%3A%2F%2Flocalhost&port=5600&serialNumber="
-			+ TestSetup.TEST_ANALYZER_SERIAL_NUMBER;
+	public static final String STRURLPath = "/Live/Driver?address=https%3A%2F%2Flocalhost&port=5600&serialNumber={0}";
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.Constant_Live);
 	public static final String STRPageContentText = "Map View";
 
@@ -215,6 +214,10 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	@FindBy(id = "annotation_modal")
 	@CacheLookup
 	private WebElement fieldNotesModalDialog;
+	
+	@FindBy(id = "manual_survey_params")
+	@CacheLookup
+	private WebElement manualSurveySection;
 
 	@FindBy(id = "btn_survey_warning_ok")
 	@CacheLookup
@@ -254,11 +257,24 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @param testSetup
 	 */
 	public DriverViewPage(WebDriver driver, TestSetup testSetup, String baseURL) {
-		super(driver, testSetup, baseURL, baseURL + STRURLPath);
+		super(driver, testSetup, baseURL, getPageFullUrl(baseURL));
 
+		this.open();
+		
 		Log.info("\nThe DriverView Page URL is: " + this.strPageURL);
 	}
+
+	private static String getPageFullUrl(String baseURL) {
+		String fullUrl = baseURL + STRURLPath.replace("{0}", TestSetup.getWorkingAnalyzerSerialNumber());
+		return fullUrl;
+	}
 	
+	@Override
+	public void open() {
+		// build the page url each time as the Analyzer in use could have changed.
+		driver.get(getPageFullUrl(this.strBaseURL));
+	}
+
 	public boolean checkIfAtDriverViewPage() {
 		if (driver.getTitle().equalsIgnoreCase(STRPageTitle))
 			return true;
@@ -820,6 +836,12 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		selectSurveyTimeAndRadiationInSurveyDialog(surveyTime, solarRadiation, cloudCover);
 		selectWindInSurveyDialog(wind);
 		selectSurveyTypeInSurveyDialog(surveyType);
+		
+		if (surveyType.equals(SurveyType.Manual)) {
+			this.waitForMinAmpTextFieldToShow();
+			this.setMinAmpTextField(String.valueOf(minAmplitude));
+			this.waitForStartSurveyButtonToShow();
+		}
 
 		this.clickStartSurvey();
 		this.waitForPageToLoad();
@@ -1038,6 +1060,28 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return fieldNotesModalDialog.getAttribute("class").equalsIgnoreCase("ng-hide");
+			}
+		});
+	}
+	
+	/**
+	 * Waits for the Start Survey button to be displayed.
+	 */
+	public void waitForStartSurveyButtonToShow() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return !startSurvey.getAttribute("class").contains("ng-hide");
+			}
+		});
+	}
+
+	/**
+	 * Waits for the Manual Survey text field section to display.
+	 */
+	public void waitForMinAmpTextFieldToShow() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return manualSurveySection.getAttribute("class").equalsIgnoreCase("");
 			}
 		});
 	}

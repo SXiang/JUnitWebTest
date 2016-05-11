@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
@@ -53,6 +54,7 @@ import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
 import net.lightbody.bmp.core.har.Har;
 import surveyor.dataaccess.source.Survey;
+import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.LoginPage;
 
 /**
@@ -147,6 +149,10 @@ public class TestSetup {
 	private boolean logCategorySSRSPdfContentEnabled;
 	private boolean logCategoryComplianceReportActionsEnabled;
 
+	private String surveysToUpload;
+	private boolean uploadSurveyEnabled;
+	private String surveyUploadBaseUrl;
+	
 	public TestSetup() {
 		initialize();
 	}
@@ -588,7 +594,7 @@ public class TestSetup {
 	public void setLogCategoryComplianceReportActionsEnabled(boolean logCategoryComplianceReportActionsEnabled) {
 		this.logCategoryComplianceReportActionsEnabled = logCategoryComplianceReportActionsEnabled;
 	}
-
+	
 	public void initialize() {
 		try {
 
@@ -628,49 +634,11 @@ public class TestSetup {
 
 			this.runEnvironment = this.testProp.getProperty("runEnvironment");
 			this.testRunCategory = this.testProp.getProperty("testRunCategory");
-			
-			String collectReportJobPerfMetric = this.testProp.getProperty("complianceReport_collectReportJobPerfMetric");
-			if (collectReportJobPerfMetric != null && collectReportJobPerfMetric != "") {
-				this.setCollectReportJobPerfMetric(Boolean.valueOf(collectReportJobPerfMetric));
-			}
-			String generateBaselineSSRSImages = this.testProp.getProperty("complianceReport_generateBaselineSSRSImages");
-			if (generateBaselineSSRSImages != null && generateBaselineSSRSImages != "") {
-				this.setGenerateBaselineSSRSImages(Boolean.valueOf(generateBaselineSSRSImages));
-			}
-			String generateBaselineViewImages = this.testProp.getProperty("complianceReport_generateBaselineViewImages");
-			if (generateBaselineViewImages != null && generateBaselineViewImages != "") {
-				this.setGenerateBaselineViewImages(Boolean.valueOf(generateBaselineViewImages));
-			}
-			String generateBaselineShapeFiles = this.testProp.getProperty("complianceReport_generateBaselineShapeFiles");
-			if (generateBaselineShapeFiles != null && generateBaselineShapeFiles != "") {
-				this.setGenerateBaselineShapeFiles(Boolean.valueOf(generateBaselineShapeFiles));
-			}
-			
-			String executionTimesForLightLoadBaselineCollection = this.testProp.getProperty("complianceReport_executionTimesForLightLoadBaselineCollection");
-			if (executionTimesForLightLoadBaselineCollection != null && executionTimesForLightLoadBaselineCollection != "") {
-				this.setExecutionTimesForLightLoadReportJobPerfBaseline(Integer.valueOf(executionTimesForLightLoadBaselineCollection));
-			}
-			String executionTimesForMediumLoadBaselineCollection = this.testProp.getProperty("complianceReport_executionTimesForMediumLoadBaselineCollection");
-			if (executionTimesForMediumLoadBaselineCollection != null && executionTimesForMediumLoadBaselineCollection != "") {
-				this.setExecutionTimesForMediumLoadReportJobPerfBaseline(Integer.valueOf(executionTimesForMediumLoadBaselineCollection));
-			}
-			String executionTimesForHighLoadBaselineCollection = this.testProp.getProperty("complianceReport_executionTimesForHighLoadBaselineCollection");
-			if (executionTimesForHighLoadBaselineCollection != null && executionTimesForHighLoadBaselineCollection != "") {
-				this.setExecutionTimesForHighLoadReportJobPerfBaseline(Integer.valueOf(executionTimesForHighLoadBaselineCollection));
-			}
-			String executionTimesForUltraHighLoadBaselineCollection = this.testProp.getProperty("complianceReport_executionTimesForUltraHighLoadBaselineCollection");
-			if (executionTimesForUltraHighLoadBaselineCollection != null && executionTimesForUltraHighLoadBaselineCollection != "") {
-				this.setExecutionTimesForUltraHighLoadReportJobPerfBaseline(Integer.valueOf(executionTimesForUltraHighLoadBaselineCollection));
-			}
 
-			String logCategorySSRSPdfContent = this.testProp.getProperty("logCategory.SSRSPdfContent.Enabled");
-			if (logCategorySSRSPdfContent != null && logCategorySSRSPdfContent != "") {
-				this.setLogCategorySSRSPdfContentEnabled(Boolean.valueOf(logCategorySSRSPdfContent));
-			}
-			String logCategoryComplianceReportActions = this.testProp.getProperty("logCategory.ComplianceReportActions.Enabled");
-			if (logCategoryComplianceReportActions != null && logCategoryComplianceReportActions != "") {
-				this.setLogCategoryComplianceReportActionsEnabled(Boolean.valueOf(logCategoryComplianceReportActions));
-			}
+			setLoggingTestProperties();
+			setComplianceReportBaselineGenerationTestProperties();
+			setPerformanceExecutionTestProperties();
+			setUploadSurveyTestProperties();			
 
 			this.language = this.testProp.getProperty("language");
 
@@ -692,11 +660,79 @@ public class TestSetup {
 
 			driverSetup();
 			inputStream.close();
+			
+			// If survey upload is enabled, upload the specified surveys to environment.
+			// We have a 2nd level of check (ie matching base url provided) to prevent accidental upload to unintended environment.
+			if (isUploadSurveyEnabled() && this.getSurveyUploadBaseUrl().equalsIgnoreCase(this.baseURL)) {
+				try {
+					uploadSurveys();
+				} catch (Exception e) {
+					Log.error(e.toString());
+				}
+			}
 
 		} catch (FileNotFoundException e) {
 			Log.error(e.toString());
 		} catch (IOException e) {
 			Log.error(e.toString());
+		}
+	}
+
+	private void setComplianceReportBaselineGenerationTestProperties() {
+		String collectReportJobPerfMetric = this.testProp.getProperty("complianceReport_collectReportJobPerfMetric");
+		if (collectReportJobPerfMetric != null && collectReportJobPerfMetric != "") {
+			this.setCollectReportJobPerfMetric(Boolean.valueOf(collectReportJobPerfMetric));
+		}
+		String generateBaselineSSRSImages = this.testProp.getProperty("complianceReport_generateBaselineSSRSImages");
+		if (generateBaselineSSRSImages != null && generateBaselineSSRSImages != "") {
+			this.setGenerateBaselineSSRSImages(Boolean.valueOf(generateBaselineSSRSImages));
+		}
+		String generateBaselineViewImages = this.testProp.getProperty("complianceReport_generateBaselineViewImages");
+		if (generateBaselineViewImages != null && generateBaselineViewImages != "") {
+			this.setGenerateBaselineViewImages(Boolean.valueOf(generateBaselineViewImages));
+		}
+		String generateBaselineShapeFiles = this.testProp.getProperty("complianceReport_generateBaselineShapeFiles");
+		if (generateBaselineShapeFiles != null && generateBaselineShapeFiles != "") {
+			this.setGenerateBaselineShapeFiles(Boolean.valueOf(generateBaselineShapeFiles));
+		}
+	}
+
+	private void setUploadSurveyTestProperties() {
+		String uploadSurveyEnabledValue = this.testProp.getProperty("surveyUpload.Enabled");
+		if (uploadSurveyEnabledValue != null && uploadSurveyEnabledValue != "") {
+			this.setUploadSurveyEnabled(Boolean.valueOf(uploadSurveyEnabledValue));
+		}
+		this.setSurveysToUpload(this.testProp.getProperty("surveyUpload.Surveys"));
+		this.setSurveyUploadBaseUrl(this.testProp.getProperty("surveyUpload.BaseUrl"));
+	}
+
+	private void setPerformanceExecutionTestProperties() {
+		String executionTimesForLightLoadBaselineCollection = this.testProp.getProperty("complianceReport_executionTimesForLightLoadBaselineCollection");
+		if (executionTimesForLightLoadBaselineCollection != null && executionTimesForLightLoadBaselineCollection != "") {
+			this.setExecutionTimesForLightLoadReportJobPerfBaseline(Integer.valueOf(executionTimesForLightLoadBaselineCollection));
+		}
+		String executionTimesForMediumLoadBaselineCollection = this.testProp.getProperty("complianceReport_executionTimesForMediumLoadBaselineCollection");
+		if (executionTimesForMediumLoadBaselineCollection != null && executionTimesForMediumLoadBaselineCollection != "") {
+			this.setExecutionTimesForMediumLoadReportJobPerfBaseline(Integer.valueOf(executionTimesForMediumLoadBaselineCollection));
+		}
+		String executionTimesForHighLoadBaselineCollection = this.testProp.getProperty("complianceReport_executionTimesForHighLoadBaselineCollection");
+		if (executionTimesForHighLoadBaselineCollection != null && executionTimesForHighLoadBaselineCollection != "") {
+			this.setExecutionTimesForHighLoadReportJobPerfBaseline(Integer.valueOf(executionTimesForHighLoadBaselineCollection));
+		}
+		String executionTimesForUltraHighLoadBaselineCollection = this.testProp.getProperty("complianceReport_executionTimesForUltraHighLoadBaselineCollection");
+		if (executionTimesForUltraHighLoadBaselineCollection != null && executionTimesForUltraHighLoadBaselineCollection != "") {
+			this.setExecutionTimesForUltraHighLoadReportJobPerfBaseline(Integer.valueOf(executionTimesForUltraHighLoadBaselineCollection));
+		}
+	}
+
+	private void setLoggingTestProperties() {
+		String logCategorySSRSPdfContent = this.testProp.getProperty("logCategory.SSRSPdfContent.Enabled");
+		if (logCategorySSRSPdfContent != null && logCategorySSRSPdfContent != "") {
+			this.setLogCategorySSRSPdfContentEnabled(Boolean.valueOf(logCategorySSRSPdfContent));
+		}
+		String logCategoryComplianceReportActions = this.testProp.getProperty("logCategory.ComplianceReportActions.Enabled");
+		if (logCategoryComplianceReportActions != null && logCategoryComplianceReportActions != "") {
+			this.setLogCategoryComplianceReportActionsEnabled(Boolean.valueOf(logCategoryComplianceReportActions));
 		}
 	}
 
@@ -922,11 +958,11 @@ public class TestSetup {
 		}
 	}
 
-	public static void updateAnalyzerConfiguration(String analyzerSerialNumber, String analyzerSharedKey) {
-		updateAnalyzerConfiguration(analyzerSerialNumber, analyzerSharedKey, 0);
+	public static void updateAnalyzerConfiguration(String p3Url, String analyzerSerialNumber, String analyzerSharedKey) {
+		updateAnalyzerConfiguration(p3Url, analyzerSerialNumber, analyzerSharedKey, 0);
 	}
 
-	public static void updateAnalyzerConfiguration(String analyzerSerialNumber, String analyzerSharedKey,
+	public static void updateAnalyzerConfiguration(String p3Url, String analyzerSerialNumber, String analyzerSharedKey,
 			Integer maxSurveyDuration) {
 		try {
 			String workingFolder = getExecutionPath(getRootPath());
@@ -942,6 +978,7 @@ public class TestSetup {
 			// Update the working copy.
 			Hashtable<String, String> placeholderMap = new Hashtable<String, String>();
 			placeholderMap.put("%WORKING_DIR%", workingFolder);
+			placeholderMap.put("%0%", p3Url);
 			placeholderMap.put("%1%", analyzerSerialNumber);
 			placeholderMap.put("%2%", analyzerSharedKey);
 			placeholderMap.put("%3%", String.valueOf(maxSurveyDuration));
@@ -1070,5 +1107,56 @@ public class TestSetup {
 		Assert.assertTrue(objSurvey != null, "Survey object should NOT be NULL. "
 				+ "Network connection is NOT disabled. ONLY Http traffic should be disabled.");
 		Assert.assertTrue(testSetup.getDriver().getPageSource().contains("ERR_EMPTY_RESPONSE"));
+	}
+	
+	public void uploadSurveys() throws Exception {
+		List<String> surveyInfos = RegexUtility.split(surveysToUpload, RegexUtility.SEMI_COLON_SPLIT_REGEX_PATTERN);
+		for (String surveyInfo : surveyInfos) {
+			surveyInfo = surveyInfo.replace("{", "");
+			surveyInfo = surveyInfo.replace("}", "");
+			List<String> surveyInfoParts = RegexUtility.split(surveyInfo, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
+			if (surveyInfoParts == null || surveyInfoParts.size() != 4) {
+				throw new IllegalArgumentException("Found incorrect specification for 'surveysToUpload' in test.properties");
+			}
+			
+			Integer loginUserRowID = Integer.valueOf(surveyInfoParts.get(0));
+			Integer db3AnalyzerRowID = Integer.valueOf(surveyInfoParts.get(1));
+			Integer surveyRowID = Integer.valueOf(surveyInfoParts.get(2));
+			Integer runtimeInSeconds = Integer.valueOf(surveyInfoParts.get(3));
+			
+			TestEnvironmentActions.generateSurveyForUser(loginUserRowID, 
+					db3AnalyzerRowID, surveyRowID, runtimeInSeconds);
+		}
+	}
+
+	public String getSurveysToUpload() {
+		return surveysToUpload;
+	}
+
+	public void setSurveysToUpload(String surveysToUpload) {
+		this.surveysToUpload = surveysToUpload;
+	}
+
+	public boolean isUploadSurveyEnabled() {
+		return uploadSurveyEnabled;
+	}
+
+	public void setUploadSurveyEnabled(boolean uploadSurveyEnabled) {
+		this.uploadSurveyEnabled = uploadSurveyEnabled;
+	}
+
+	public static String getWorkingAnalyzerSerialNumber() {
+		if (TestEnvironmentActions.workingDataRow != null) {
+			return TestEnvironmentActions.workingDataRow.analyzerSerialNumber;
+		}
+		return TEST_ANALYZER_SERIAL_NUMBER;
+	}
+
+	public String getSurveyUploadBaseUrl() {
+		return surveyUploadBaseUrl;
+	}
+
+	public void setSurveyUploadBaseUrl(String surveyUploadBaseUrl) {
+		this.surveyUploadBaseUrl = surveyUploadBaseUrl;
 	}
 }
