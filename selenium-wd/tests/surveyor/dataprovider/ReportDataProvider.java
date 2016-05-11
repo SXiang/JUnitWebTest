@@ -82,7 +82,7 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		listBoundary.add(RSWLON);
 		return listBoundary;
 	}
-
+	
 	public static HashMap<String, String> createOptionalTabularPDFContent(String indication, String isotopic, String gaptable, String pca, String pcra, String pcf) {
 		HashMap<String, String> tableMap = new HashMap<String, String>();
 		tableMap.put(KEYINDTB, indication);

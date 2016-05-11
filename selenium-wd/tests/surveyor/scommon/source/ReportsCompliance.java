@@ -3,8 +3,16 @@
  */
 package surveyor.scommon.source;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import common.source.Log;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
+
+import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
  * @author zlu
@@ -16,29 +24,39 @@ public class ReportsCompliance extends Reports {
 	public static final String BOUNDARY_PREFIX = "Boundary_";
 	public static final String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
 
+	//Report
 	protected String exclusionRadius;
+	
+	//Custom Boundary
 	protected List<String> listBoundary;
-	protected String imageMapHeight;
-	protected String imageMapWidth;
+	//Custom Boundary
 	protected String NELat;
 	protected String NELong;
 	protected String SWLat;
 	protected String SWLong;
+	
+	//Custom Boundary - Lat/Long Map Selector
+	private int latLongXOffset;
+	private int latLongYOffset;
+	private int latLongRectHeight;
+	private int latLongRectWidth;
+	
+	//View Size (PDF image output);
+	protected String imageMapHeight;
+	protected String imageMapWidth;
+	//Opacity Fine-Tuning
 	protected String fovOpacity;
 	protected String lisaOpacity;
-
+	//Views
 	protected List<Map<String, String>> viewList;
+	//Optional Tablular PDF Content
 	protected List<Map<String, String>> tablesList;
+	//Optional View Layers
 	protected List<Map<String, String>> viewLayersList;
 
 	protected SurveyModeFilter surveyModeFilter;
 	protected ReportModeFilter reportModeFilter;
 	protected EthaneFilter ethaneFilter;
-
-	private int latLongXOffset;
-	private int latLongYOffset;
-	private int latLongRectHeight;
-	private int latLongRectWidth;
 
 	private String customerBoundaryName; 
 	private CustomerBoundaryFilterType customerBoundaryFilterType;
@@ -217,15 +235,8 @@ public class ReportsCompliance extends Reports {
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList);
 		this.exclusionRadius=exclusionRadius;
-		this.imageMapHeight=listBoundary.get(0);
-		this.imageMapWidth=listBoundary.get(1);
-		if (listBoundary.size() > 2) {
-			this.NELat = listBoundary.get(2);
-			this.NELong =listBoundary.get(3);
-			this.SWLat = listBoundary.get(4);
-			this.SWLong = listBoundary.get(5);
-		}
-		this.listBoundary=listBoundary;
+		this.setListBoundary(listBoundary);
+
 		this.tablesList=tablesList;
 		this.tagList=tagList;
 		this.viewList=viewList;
@@ -235,16 +246,9 @@ public class ReportsCompliance extends Reports {
 	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, 
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList, startDate, endDate);
-		this.exclusionRadius=exclusionRadius;
-		this.imageMapHeight=listBoundary.get(0);
-		this.imageMapWidth=listBoundary.get(1);
-		if (listBoundary.size() > 2) {
-			this.NELat = listBoundary.get(2);
-			this.NELong =listBoundary.get(3);
-			this.SWLat = listBoundary.get(4);
-			this.SWLong = listBoundary.get(5);
-		}
-		this.listBoundary = listBoundary;
+		this.exclusionRadius=exclusionRadius;		
+        this.setListBoundary(listBoundary);
+
 		this.tablesList = tablesList;
 		this.viewList= viewList;
 		this.surveyModeFilter=surveyMode;
@@ -254,15 +258,8 @@ public class ReportsCompliance extends Reports {
 			String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode, ReportModeFilter reportMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList, startDate, endDate);
 		this.exclusionRadius=exclusionRadius;
-		this.imageMapHeight=listBoundary.get(0);
-		this.imageMapWidth=listBoundary.get(1);
-		if (listBoundary.size() > 2) {
-			this.NELat = listBoundary.get(2);
-			this.NELong =listBoundary.get(3);
-			this.SWLat = listBoundary.get(4);
-			this.SWLong = listBoundary.get(5);
-		}
-		this.listBoundary=listBoundary;
+		this.setListBoundary(listBoundary);
+
 		this.tablesList=tablesList;
 		this.viewList=viewList;
 		this.surveyModeFilter=surveyMode;
@@ -274,15 +271,8 @@ public class ReportsCompliance extends Reports {
 			List<Map<String, String>> viewList, SurveyModeFilter surveyMode, Boolean geoFilter) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList, startDate, endDate, geoFilter);
 		this.exclusionRadius=exclusionRadius;
-		this.imageMapHeight=listBoundary.get(0);
-		this.imageMapWidth=listBoundary.get(1);
-		if (listBoundary.size() > 2) {
-			this.NELat = listBoundary.get(2);
-			this.NELong =listBoundary.get(3);
-			this.SWLat = listBoundary.get(4);
-			this.SWLong = listBoundary.get(5);
-		}
-		this.listBoundary=listBoundary;
+		this.setListBoundary(listBoundary);
+
 		this.tablesList=tablesList;
 		this.viewList=viewList;
 		this.surveyModeFilter=surveyMode;
@@ -293,15 +283,8 @@ public class ReportsCompliance extends Reports {
 			SurveyModeFilter surveyMode, String userName, Boolean geoFilterOn, ReportModeFilter reportMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit,  startDate,endDate, userName, geoFilterOn,tagList);
 		this.exclusionRadius=exclusionRadius;
-		this.imageMapHeight=listBoundary.get(0);
-		this.imageMapWidth=listBoundary.get(1);
-		if (listBoundary.size() > 2) {
-			this.NELat = listBoundary.get(2);
-			this.NELong =listBoundary.get(3);
-			this.SWLat = listBoundary.get(4);
-			this.SWLong = listBoundary.get(5);
-		}
-		this.listBoundary=listBoundary;
+		this.setListBoundary(listBoundary);
+
 		this.tablesList=tablesList;
 		this.viewList=viewList;
 		this.surveyModeFilter=surveyMode;
@@ -312,15 +295,8 @@ public class ReportsCompliance extends Reports {
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList, ReportModeFilter reportMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList);
 		this.exclusionRadius=exclusionRadius;
-		this.imageMapHeight=listBoundary.get(0);
-		this.imageMapWidth=listBoundary.get(1);
-		if (listBoundary.size() > 2) {
-			this.NELat = listBoundary.get(2);
-			this.NELong =listBoundary.get(3);
-			this.SWLat = listBoundary.get(4);
-			this.SWLong = listBoundary.get(5);
-		}
-		this.listBoundary=listBoundary;
+		this.setListBoundary(listBoundary);
+
 		this.tablesList=tablesList;
 		this.viewList=viewList;
 		this.reportModeFilter=reportMode;
@@ -332,20 +308,13 @@ public class ReportsCompliance extends Reports {
 			List<Map<String, String>> viewLayersList) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, userName, startDate, endDate,geoFilter, tagList);
 		this.exclusionRadius=exclusionRadius;
-		this.imageMapHeight=listBoundary.get(0);
-		this.imageMapWidth=listBoundary.get(1);
-		if (listBoundary.size() > 2) {
-			this.NELat = listBoundary.get(2);
-			this.NELong =listBoundary.get(3);
-			this.SWLat = listBoundary.get(4);
-			this.SWLong = listBoundary.get(5);
-		}
+		this.setListBoundary(listBoundary);		
+
 		this.fovOpacity=fovOpacity;
 		this.lisaOpacity=lisaOpacity;
 		this.reportModeFilter=reportMode;
 		this.surveyModeFilter=surveyModeFilter;
 		this.ethaneFilter=ethaneFilter;
-		this.listBoundary=listBoundary;
 		this.tablesList=tablesList;
 		this.viewList=viewList;
 		this.viewLayersList=viewLayersList;
@@ -368,6 +337,16 @@ public class ReportsCompliance extends Reports {
 	}
 
 	public void setListBoundary(List<String> listBoundary) {
+		try{
+			this.imageMapHeight = listBoundary.get(0);
+			this.imageMapWidth = listBoundary.get(1);
+			this.NELat = listBoundary.get(2);
+			this.NELong = listBoundary.get(3);
+			this.SWLat = listBoundary.get(4);
+			this.SWLong = listBoundary.get(5);
+		}catch(Exception e){
+			Log.error(e.toString());
+		}
 		this.listBoundary = listBoundary;
 	}
 
@@ -490,7 +469,14 @@ public class ReportsCompliance extends Reports {
 	public String getCustomerBoundaryName() {
 		return customerBoundaryName;
 	}
-
+	public void setCustomerBoundaryInfo(String customerBoundaryType, String customerBoundaryName) {
+		customerBoundaryType = customerBoundaryType.replaceAll(" ", "");
+		CustomerBoundaryFilterType customerBoundaryFilterType = null;
+		try{
+			customerBoundaryFilterType = CustomerBoundaryFilterType.valueOf(customerBoundaryType);
+		}catch(Exception e){}
+		setCustomerBoundaryInfo(customerBoundaryFilterType, customerBoundaryName);
+	}
 	public void setCustomerBoundaryInfo(CustomerBoundaryFilterType customerBoundaryFilterType, String customerBoundaryName) {
 		this.customerBoundaryFilterType = customerBoundaryFilterType;
 		this.customerBoundaryName = customerBoundaryName;
@@ -533,6 +519,23 @@ public class ReportsCompliance extends Reports {
 		this.latLongYOffset = latLongYOffset;
 		this.latLongRectHeight = latLongRectHeight;
 		this.latLongRectWidth = latLongRectWidth;
+	}
+
+	
+	public String getFovOpacity() {
+		return fovOpacity;
+	}
+
+	public void setFovOpacity(String fovOpacity) {
+		this.fovOpacity = fovOpacity;
+	}
+
+	public void setCustomerBoundaryName(String customerBoundaryName) {
+		this.customerBoundaryName = customerBoundaryName;
+	}
+
+	public void setCustomerBoundaryFilterType(CustomerBoundaryFilterType customerBoundaryFilterType) {
+		this.customerBoundaryFilterType = customerBoundaryFilterType;
 	}
 
 	/**
