@@ -3,6 +3,7 @@ package surveyor.scommon.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import common.source.NumberUtility;
 import common.source.RegexUtility;
 
 public class ActionArguments {
@@ -22,10 +23,10 @@ public class ActionArguments {
 						+ "Supported pattern: {n1,n2,n3} .. For eg '1.33,3.4,15.213'", argValue));
 			}
 			for (int i = 0; i < splitArr.size(); i++) {
-				list.add(Double.valueOf(splitArr.get(i)));
+				list.add(NumberUtility.getDoubleValueOf(splitArr.get(i)));
 			}
 		} else {
-			list.add(Double.valueOf(argValue));
+			list.add(NumberUtility.getDoubleValueOf(argValue));
 		}
 		return list;
 	}
@@ -43,8 +44,8 @@ public class ActionArguments {
 				throw new Exception(String.format("Unsupported range pattern specified in argument - [%s]. "
 						+ "Supported pattern: {n:m} .. For eg. '3:5'", argValue));
 			}
-			Integer startRange = Integer.valueOf(splitArr.get(0));
-			Integer endRange = Integer.valueOf(splitArr.get(1));
+			Integer startRange = NumberUtility.getIntegerValueOf(splitArr.get(0));
+			Integer endRange = NumberUtility.getIntegerValueOf(splitArr.get(1));
 			for (int num = startRange; num <= endRange; num++) {
 				list.add(num);
 			}
@@ -54,10 +55,10 @@ public class ActionArguments {
 				throw new Exception(String.format("Unsupported pattern specified in argument - [%s]. Supported pattern: {n1,n2,n3} .. For eg '1,3,15'", argValue));
 			}
 			for (int i = 0; i < splitArr.size(); i++) {
-				list.add(Integer.valueOf(splitArr.get(i)));
+				list.add(NumberUtility.getIntegerValueOf(splitArr.get(i)));
 			}
 		} else {
-			list.add(Integer.valueOf(argValue));
+			list.add(NumberUtility.getIntegerValueOf(argValue));
 		}
 		return list;
 	}

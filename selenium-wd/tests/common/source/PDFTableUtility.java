@@ -572,4 +572,16 @@ public class PDFTableUtility extends PDFUtility{
 		Assert.assertEquals(value1, value2);
 		Assert.assertTrue(value1.equals(expectedTable[rowNum][colNum])||value1.matches(expectedTable[rowNum][colNum]));
 	}
+	
+	public boolean areTablesEqual(List<String[]> currentTable, List<String[]> expectedTable){
+	         if(currentTable.size()!=expectedTable.size()){
+	        	 return false;
+	         }
+	         for(int i=0; i< currentTable.size(); i++){
+	        	 if(!Arrays.equals(currentTable.get(i), expectedTable.get(i))){
+	        		 return false;
+	        	 }
+	         }
+	         return true;
+	}
 }

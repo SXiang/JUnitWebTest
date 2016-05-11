@@ -83,7 +83,7 @@ public class ReportViewsDataReader extends BaseDataReader {
 		String boundaries = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_Boundaries, TESTDATA_SHEET_NAME);
 		String isotopicCapture = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_IsotopicCapture, TESTDATA_SHEET_NAME);
 		String annotation = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_Annotation, TESTDATA_SHEET_NAME);
-		String baseMap = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_BaseMap, TESTDATA_SHEET_NAME);
+		String baseMap = excelUtility.getCellData(dataRowID, Excel_TestData_Report_Col_BaseMap, TESTDATA_SHEET_NAME);
 		
 		Log.info(String.format("Found data row: rowID=[%s], name=[%s], lISAs=[%s], fOV=[%s], breadcrumbs=[%s], indications=[%s], fieldNotes=[%s], gaps=[%s], assets=[%s], boundaries=[%s], isotopicCapture=[%s], annotation=[%s], baseMap=[%s]", rowID, name, lISAs, fOV, breadcrumbs, indications, fieldNotes, gaps, assets, boundaries, isotopicCapture, annotation, baseMap));
 		

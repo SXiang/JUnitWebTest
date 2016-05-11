@@ -82,7 +82,11 @@ public class ExcelUtility {
     }
 
     public String getIntegerCellData(int rowNum, int colNum, String sheetName ) throws Exception{
+    	Log.info("");
     	String cellData = getCellData(rowNum, colNum, sheetName, ValueType.Integer);
+    	if(cellData==null){
+    		Log.info("");
+    	}
     	if (cellData.equals("<ERROR>")) {
         	cellData = "";
         }        

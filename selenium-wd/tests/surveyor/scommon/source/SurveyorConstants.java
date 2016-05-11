@@ -131,9 +131,16 @@ public final class SurveyorConstants {
 	public static final String IMGMAPWIDTH = "11";
 	
 	public static final String NELAT = "37.421980615353675";
-	public static final String NELON = "121.93639755249023";
+	public static final String NELON = "-121.93639755249023";
 	public static final String SWLAT = "37.39566424530531";
-	public static final String SWLON = "122.01141357421875";
+	public static final String SWLON = "-122.01141357421875";
+
+	// Area in the range --> 1.25 sqkms - 1.5 sqkms, which includes survey data for stnd-pic
+	// Area of this selection = 138131.88282872934 sqkms
+	public static final String NELAT_SMALL = "37.420000994238805";
+	public static final String NELON_SMALL = "-121.97592854325212";
+	public static final String SWLAT_SMALL = "37.4167629940449";
+	public static final String SWLON_SMALL = "-121.98026299302019";
 
 	public static final int  X_OFFSET = 150;
 	public static final int Y_OFFSET = 150;
@@ -225,6 +232,10 @@ public final class SurveyorConstants {
 	public static final String DRIVINGSURVEYTITLE = "Measurement Sessions - Surveyor";
 	public static final String DRIVINGSURVEYHEADER = "Driving Surveys";
 
+	public static final String ETHMTHRTOLABEL = Resources.getResource(ResourceKeys.Constant_EthaneToMethaneRatio );
+	public static final String ETHMTHERRGRTMSG = Resources.getResource(ResourceKeys.Validation_EnterValueGreaterThanOrEqual).replace("{0}", "1");
+	public static final String ETHMTHERRLESSMSG = Resources.getResource(ResourceKeys.Validation_EnterValueLessThanOrEqual).replace("{0}", "99");
+	
 	/*
 	 * Survey View constants
 	 */
@@ -305,6 +316,14 @@ public final class SurveyorConstants {
 	public static final String REQUIRED_FIELD_VAL_MESSAGE = "This field is required.";	
 
 	/*
+	 * Error messages for compliance report
+	 */
+	public static final String CR_CF_AREAINVALID_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_CoverageForecastAreaInvalidMessage);
+	public static final String CR_CF_ASSETSINVALID_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_CoverageForecastAssetsInvalidMessage);
+	public static final String CR_CF_FORECASTBOUNDARYINVALID_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_CoverageForecastBoundaryInvalidMessage);
+	public static final String CR_SURVEYMISSING_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_SurveyMissingMessage);
+	public static final String CR_NOCOVERAGEFORECASTAVAILABLE_MESSAGE = "No Coverage Forecast Available";
+	/*
 	 * Timeout constants
 	 */
 	public static final int SECONDS_10 = 10;
@@ -322,7 +341,7 @@ public final class SurveyorConstants {
 		ASSESSMENT ("Assessment"),
 		EQ ("EQ"),
 		LISABOX ("LISA Box 1.0"),
-		SURVEYFORECASE ("Survey Protocol Forecast"),
+		SURVEYFORECAST ("Survey Protocol Forecast"),
 		REPORTSHAPEFILE ("Report ShapeFile");
 		
 		private final String name;
