@@ -592,6 +592,8 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 
 	/**
 	 * Use this test to change the default language for all users in automation to a specific language.
+	 * Change the 'cultureString' variable to appropriate dropdown text value to change culture for all
+	 * users specified in the dataprovider.
 	 */
 	@Test
 	@UseDataProvider(value = UserDataProvider.DATA_PROVIDER_ALL_USERS, location = UserDataProvider.class)
@@ -599,7 +601,8 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 			String role, String customerName, String customerLocation) {
 		Log.info("\nRunning - ChangeDefaultLanguageForAllUsers ...\n");
 		
-		String cultureString = "中文（简化字)";
+		// Change this value to dropdown culture value in Preferences page to set culture for users. 
+		String cultureString = "English (United States)";
 		
 		password = CryptoUtility.decrypt(password);
 		
