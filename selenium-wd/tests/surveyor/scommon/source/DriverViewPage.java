@@ -23,7 +23,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	public static final String STRURLPath = "/Live/Driver?address=https%3A%2F%2Flocalhost&port=5600&serialNumber="
 			+ TestSetup.TEST_ANALYZER_SERIAL_NUMBER;
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.Constant_Live);
-	public static final String STRPageContentText = "Map View";
+	public static final String STRPageContentText = Resources.getResource(ResourceKeys.Dialog_MapView);
 
 	public enum SurveyTime {
 		Day, Night

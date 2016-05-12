@@ -28,7 +28,8 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  */
 public class UserFeedbackPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/UserFeedback";
-	public static final String STRPageTitle = "User Feedback - Surveyor";
+	public static final String STRPageTitle = String.format("%s - %s", 
+			Resources.getResource(ResourceKeys.UserFeedback_PageTitle), Resources.getResource(ResourceKeys.Constant_Surveyor));
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.UserFeedback_PromptTitle);
 	public String feedbackRecievedTxt = Resources.getResource(ResourceKeys.UserFeedback_ThankYou_PromptText);
 	
