@@ -2011,6 +2011,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void clickOnNewComplianceReportBtn() {
 		this.btnNewComplianceRpt.click();
+		this.waitForNewPageLoad();
 	}
 
 	public void clickOnCancelBtn() {
