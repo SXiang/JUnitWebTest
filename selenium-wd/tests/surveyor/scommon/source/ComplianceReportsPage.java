@@ -739,7 +739,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			Path unzipDirectory = Paths.get(testSetup.getDownloadPath(), zipFileName);
 			List<String> filesInDirectory = FileUtility.getFilesInDirectory(unzipDirectory, "*.shp,*.dbf,*.prj,*.shx");
 			for (String filePath : filesInDirectory) {
-				generateBaselineShapeFiles(testCaseID, filePath);
+				generateBaselineShapeFile(testCaseID, filePath);
 			}
 		}
 		return isGenerateBaselineShapeFiles;
@@ -822,7 +822,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
 	}
 
-	protected void generateBaselineShapeFiles(String testCaseID, String shapeFileFullPath) throws Exception {
+	protected void generateBaselineShapeFile(String testCaseID, String shapeFileFullPath) throws Exception {
 		if(!shapeFileFullPath.matches(".*\\.(dbf|prj|shp|shx)")){
 			return;
 		}
