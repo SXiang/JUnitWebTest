@@ -22,7 +22,7 @@ import surveyor.dataaccess.source.Resources;
 public class BaseMapViewPage extends SurveyorBasePage {
 
 	private static final String VIRTUALEARTH_NET_BRANDING_LOGO = "https://dev.virtualearth.net/Branding/logo_powered_by.png";
-	public static final String STRPageContentText = "Map View";
+	public static final String STRPageContentText = Resources.getResource(ResourceKeys.Dialog_MapView);
 	private static final int ASSETS_ZOOM_LEVEL_LOWER_BOUND = 17;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[1]")

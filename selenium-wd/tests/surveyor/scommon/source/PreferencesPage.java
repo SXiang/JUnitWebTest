@@ -19,6 +19,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.Log;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 
 /**
  * @author zlu
@@ -26,20 +28,20 @@ import common.source.TestSetup;
  */
 public class PreferencesPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Account/Preferences";
-	public static final String STRPageTitle = "Edit User Preferences";
-	public static final String STRPageContentText = "Edit User Preferences";	
+	public static final String STRPageTitle = Resources.getResource(ResourceKeys.Dialog_EditUserPreferences);
+	public static final String STRPageContentText = Resources.getResource(ResourceKeys.Dialog_EditUserPreferences);	
 		
 	@FindBy(how = How.ID, using = "TimeZoneId")
 	private WebElement dropDownTimeZone;
 	
 	@FindBy(how = How.ID, using = "LocationId")
 	private WebElement dropDownLocation;
-	
+
+	@FindBy(how = How.ID, using = "CultureId")
+	private WebElement dropDownCulture;
+
 	@FindBy(how = How.ID, using = "buttonOk")
 	private WebElement btnOk;
-	
-	
-	
 	
 	/**
 	 * @param driver
@@ -52,28 +54,19 @@ public class PreferencesPage extends SurveyorBasePage {
 		Log.info("\nThe Preferences Page URL is: " + this.strPageURL);
 	}
 	
-	
-	
 	@Override
 	public void open() {	
 		driver.get(strPageURL);
 		this.waitForPageToLoad();
 	}
-
-
-
 	
 	public WebElement getDropDownTimeZone() {
 		return this.dropDownTimeZone;
 	}
 
-
-
 	public WebElement getDropDownLocation() {
 		return this.dropDownLocation;
 	}
-
-
 
 	@Override
 	public void waitForPageLoad() {
@@ -84,15 +77,11 @@ public class PreferencesPage extends SurveyorBasePage {
         });
     }
 
-
-
 	public WebElement getSelectedTimeZone() {
 		Select select= new Select(this.dropDownTimeZone);
 		WebElement option = select.getFirstSelectedOption();
 		return option;
 	}
-
-
 
 	public WebElement getSelectedLocation() {
 		Select select= new Select(this.dropDownLocation);
@@ -100,16 +89,21 @@ public class PreferencesPage extends SurveyorBasePage {
 		return option;
 	}
 
-
-
-	public WebElement getBtnOk() {
-		return this.btnOk;
-	}
-
-
-
 	public void setSelectedTimeZone(String newTimeZone) {
 		Select select= new Select(this.dropDownTimeZone);
 		select.selectByVisibleText(newTimeZone);
+	}
+
+	public WebElement getDropDownCulture() {
+		return dropDownCulture;
+	}
+
+	public void setSelectedCulture(String culture) {
+		Select select= new Select(this.dropDownCulture);
+		select.selectByVisibleText(culture);
+	}
+
+	public WebElement getBtnOk() {
+		return this.btnOk;
 	}
 }

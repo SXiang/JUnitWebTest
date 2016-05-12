@@ -1,6 +1,7 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
+import static surveyor.scommon.source.SurveyorConstants.TIMEZONECTUA;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,9 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
+import common.source.CryptoUtility;
 import common.source.DateUtility;
 import common.source.Log;
 import common.source.OLMapUtility;
@@ -18,10 +22,12 @@ import common.source.OLMapUtility.BreadcrumbColor;
 import common.source.OLMapUtility.IconColor;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.dataprovider.UserDataProvider;
 import surveyor.scommon.source.Coordinates;
 import surveyor.scommon.source.LatLongSelectionControl;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.ManageLocationsPage;
+import surveyor.scommon.source.PreferencesPage;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.DriverViewPage;
@@ -54,6 +60,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	private static LatLongSelectionControl latLongSelectionControl = null;
 	private static ManageLocationsPage manageLocationsPage = null;
 	private static EqReportsPage eqReportsPage = null;
+	private static PreferencesPage preferencesPage;
 
 	public PageObjectVerificationTest() {
 		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
@@ -71,6 +78,8 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		eqReportsPage = new EqReportsPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, eqReportsPage);
 
+		preferencesPage = new PreferencesPage(driver, baseURL, testSetup);
+		PageFactory.initElements(driver, preferencesPage);
 	}
 
 	/**
@@ -581,5 +590,29 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		assertTrue(eqReportsPage.getEqRptArea().getAttribute("value").contains(Resources.getResource(ResourceKeys.Dialog_LineSelected)));
 	}
 
+	/**
+	 * Use this test to change the default language for all users in automation to a specific language.
+	 */
+	@Test
+	@UseDataProvider(value = UserDataProvider.DATA_PROVIDER_ALL_USERS, location = UserDataProvider.class)
+	public void ChangeDefaultLanguageForAllUsers(String username, String password, 
+			String role, String customerName, String customerLocation) {
+		Log.info("\nRunning - ChangeDefaultLanguageForAllUsers ...\n");
+		
+		String cultureString = "中文（简化字)";
+		
+		password = CryptoUtility.decrypt(password);
+		
+		loginPage.open();
+		loginPage.loginNormalAs(username, password);
 
+		homePage.waitForPageLoad();
+		homePage.getDropDownLoginUser().click();
+		homePage.getLinkPreference().click();
+
+		preferencesPage.waitForPageLoad();
+		preferencesPage.setSelectedCulture(cultureString);
+		preferencesPage.getBtnOk().click();
+		homePage.waitForPageLoad();
+	}
 }

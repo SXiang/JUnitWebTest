@@ -10,7 +10,7 @@ public enum TestContext {
 	INSTANCE;
 	
 	private TestSetup testSetup;
-	private String userCulture = "en-US";
+	private String userCulture = null;
 	private String loggedInUserName;
 	private String runUniqueId;
 
@@ -82,6 +82,9 @@ public enum TestContext {
 	}
 
 	public String getUserCulture() {
+		if (userCulture == null) {
+			userCulture = getTestSetup().getCulture();
+		}
 		return userCulture;
 	}
 	

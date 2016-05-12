@@ -114,6 +114,7 @@ public class TestSetup {
 	private String implicitlyWaitSpecialTimeOutInSeconds;
 	private String implicitlyWaitSpecialTimeOutInMS;
 
+	private String culture;
 	private String language;
 	private boolean debug;
 
@@ -412,6 +413,10 @@ public class TestSetup {
 		return this.driver;
 	}
 
+	public String getCulture() {
+		return this.culture;
+	}
+
 	public String getBaseUrl() {
 		return this.baseURL;
 	}
@@ -673,6 +678,7 @@ public class TestSetup {
 			}
 
 			this.language = this.testProp.getProperty("language");
+			this.culture = this.testProp.getProperty("culture");
 
 			if (!isRunningLocally()) {
 				this.downloadPath = this.testProp.getProperty("downloadPath");
