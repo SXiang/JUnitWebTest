@@ -648,9 +648,10 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));		
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));		
-		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-        complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 
+		String rptTitle = complianceReportsPageAction.workingDataRow.title;
+		complianceReportsPage.handleFileDownloads(rptTitle, testCaseID);
+		
         Assert.assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
@@ -665,7 +666,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Report will be in in-progress state and user can see Copy and Cancel Report buttons
 	 *	- - Report is generated successfully
 	 */
-	@Test
+	@Test//Passed
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1394, location = ComplianceReportDataProvider.class)
 	public void TC1394_CopyButtonPresentIn_ProgressComplianceReportCustomerSupervisorUser(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -693,7 +694,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Report will be in in-progress state and user can see Copy and Cancel Report buttons
 	 *	- - Report is generated successfully
 	 */
-	@Test
+	@Test//Passed
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1395, location = ComplianceReportDataProvider.class)
 	public void TC1395_CopyButtonPresentIn_ProgressComplianceReportCustomerAdminUser(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -728,7 +729,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Thumbnails will be present  for compliance SSRS PDF, ZIP folders and generated view
 	 *	- - The thumbnail should still be present
 	 */
-	@Test /* Input Custom Boundary manually */
+	@Test//Passed /* Input Custom Boundary manually */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC12, location = ComplianceReportDataProvider.class)
 	public void TC12_ReportViewThumbnailsCustomBoundarySingleView(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -745,7 +746,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.verifyPDFZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.verifyViewThumbnailIsShownInComplianceViewerByViewIndex(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifyViewThumbnailIsShownInComplianceViewerByViewIndex("1", getReportRowID(reportDataRowID1));
 
 		complianceReportsPage.minimizeBrowserWindow();
 		complianceReportsPage.maxmizeBrowserWindow();
@@ -754,7 +755,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.verifyPDFZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.verifyViewThumbnailIsShownInComplianceViewerByViewIndex(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifyViewThumbnailIsShownInComplianceViewerByViewIndex("1", getReportRowID(reportDataRowID1));
 
 	}
 
@@ -779,7 +780,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 * - View1 should appear and the thumbnail should accurately reflect the view
 	 * - The thumbnails for Views 2 and 3 should accurately reflect their respective views
 	 */
-	@Test /* Input Custom Boundary manually */
+	@Test /* Input Custom Boundary manually */ /* Login as Picarro Admin - No Assets,Boundaries for Customer supervisor */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC13, location = ComplianceReportDataProvider.class)
 	public void TC13_ReportViewThumbnailsCustomBoundaryMultipleViews(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -797,8 +798,10 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.verifyPDFZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.verifyViewThumbnailIsShownInComplianceViewerByViewIndex(EMPTY, getReportRowID(reportDataRowID1));
-
+		complianceReportsPageAction.verifyViewThumbnailIsShownInComplianceViewerByViewIndex("1", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifyViewThumbnailIsShownInComplianceViewerByViewIndex("2", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifyViewThumbnailIsShownInComplianceViewerByViewIndex("3", getReportRowID(reportDataRowID1));
+		
 		complianceReportsPage.minimizeBrowserWindow();
 		complianceReportsPage.maxmizeBrowserWindow();
 		
@@ -806,7 +809,9 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.verifyPDFZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.verifyViewThumbnailIsShownInComplianceViewerByViewIndex(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifyViewThumbnailIsShownInComplianceViewerByViewIndex("1", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifyViewThumbnailIsShownInComplianceViewerByViewIndex("2", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifyViewThumbnailIsShownInComplianceViewerByViewIndex("3", getReportRowID(reportDataRowID1));
 
 	}
 

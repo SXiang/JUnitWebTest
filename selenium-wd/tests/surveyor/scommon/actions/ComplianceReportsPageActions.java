@@ -2211,10 +2211,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		Integer viewIdx = NumberUtility.getIntegerValueOf(data);
 		ActionArguments.verifyGreaterThanZero(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, viewIdx);
 		
-		openComplianceViewerDialog(dataRowID);
-		
 		// Find the view image to click. Order of the images is the order returned by API. 
-		WebElement viewElement = getElementById(getViewThumbnailImageId(viewIdx));
+		String viewThumbnailImageId = getViewThumbnailImageId(viewIdx);
+		WebElement viewElement = getElementById(viewThumbnailImageId);
 		return viewElement.isDisplayed();
 	}
 
@@ -2396,7 +2395,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean waitForReportGenerationToComplete(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.waitForReportGenerationToComplete", data, dataRowID);
-		this.getComplianceReportsPage().waitForPageLoad();
 		this.getComplianceReportsPage().waitForReportGenerationtoComplete(workingDataRow.title,
 				TestContext.INSTANCE.getLoggedInUser());
 		return true;

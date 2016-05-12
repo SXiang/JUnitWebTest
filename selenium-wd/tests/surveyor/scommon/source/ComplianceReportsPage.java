@@ -539,6 +539,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				for (WebElement option : options) {					
 					if ((viewList.get(i).get(KEYBASEMAP)).equalsIgnoreCase(option.getText().trim())) {
 						option.click();
+						break;
 					}
 				}
 			} 
@@ -913,7 +914,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]/img";
 						break;
 					case Copy:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[@title='Copy']/img";
 						break;
 					case ReportViewer:
 						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img";
@@ -925,10 +926,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[5]/img";
 						break;
 					case InProgressCopy: // NOTE: When report is in-progress, Copy is the 1st button.
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[@title='Copy']/img";
 						break;
 					case Cancel: // NOTE: When cancel button is visible it is the 2nd button.
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[@title='Cancel Report']/img";
 						break;
 					default:
 						throw new Exception("ButtonType NOT supported.");
