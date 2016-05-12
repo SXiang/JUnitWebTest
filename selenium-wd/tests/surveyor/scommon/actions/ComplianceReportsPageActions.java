@@ -496,13 +496,13 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			break;
 		case MetaDataZIP:
 			// get the report name without extension.
-			zipIndex = zipIndex==-1?0:zipIndex;
+			zipIndex = zipIndex==-1?1:zipIndex;
 			reportName = this.getComplianceReportsPage().getReportPDFFileName(reportTitle, false /*includeExtension*/);
 			this.getComplianceReportsPage().waitForMetadataZIPFileDownload(reportName,zipIndex);
 			break;
 		case ShapeZIP:
 			// get the report name without extension.
-			zipIndex = zipIndex==-1?0:zipIndex;
+			zipIndex = zipIndex==-1?2:zipIndex;
 			reportName = this.getComplianceReportsPage().getReportPDFFileName(reportTitle, false /*includeExtension*/);
 			this.getComplianceReportsPage().waitForShapeZIPFileDownload(reportName,zipIndex);
 			break;
