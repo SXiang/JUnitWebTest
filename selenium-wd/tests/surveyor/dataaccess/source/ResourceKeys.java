@@ -137,6 +137,7 @@ public class ResourceKeys {
 	public static final String RefGasReportSSRS_LotNumber = "RefGasReportSSRS_LotNumber#";
 	public static final String RefGasReportSSRS_TestResult = "RefGasReportSSRS_TestResult";
 	public static final String RefGasReportSSRS_NoRecord = "RefGasReportSSRS_NoRecord";
+	public static final String ReportSSRS_NoLisaRecordMsg = "ReportSSRS_NoLisaRecordMsg";
 	public static final String ReportSSRS_SelectedDrivingSurveys = "ReportSSRS_SelectedDrivingSurveys";
 	public static final String ReportSSRS_UserName = "ReportSSRS_UserName";
 	public static final String Runs_DrivingSurveys = "Runs_DrivingSurveys";

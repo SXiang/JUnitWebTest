@@ -43,6 +43,10 @@ public class ReportOptViewLayersAssetsDataReader extends BaseDataReader {
 	public void setDataRow(ReportOptViewLayersAssetsDataRow dataRow) {
 		this.dataRow = dataRow;
 	}
+	
+	public Integer getRowCount() {
+		return this.getRowCount(TESTDATA_SHEET_NAME);
+	}
  
 	public ReportOptViewLayersAssetsDataRow getDataRow(Integer dataRowID) throws Exception {
 		String rowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);

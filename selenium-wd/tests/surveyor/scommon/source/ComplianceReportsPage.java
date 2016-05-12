@@ -1548,8 +1548,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			String value = entry.getValue(); // Value is Asset/Boundary{Prefix} followed by name of Asset/Boundary
 			if (value.startsWith(ReportsCompliance.ASSET_PREFIX)) {
 				// Asset key.
-				String elementId = String.format("report-asset-layers-%s", key);
-				List<WebElement> assetElements = driver.findElements(By.id(elementId));
+				List<WebElement> assetElements = getViewLayerAssetCheckboxes(key);
 				if (assetElements.size() > 0) {
 					JavascriptExecutor js = (JavascriptExecutor) driver;
 					js.executeScript("arguments[0].click();", assetElements.get(0));
@@ -1564,14 +1563,25 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (value.startsWith(ReportsCompliance.BOUNDARY_PREFIX)) {
 				// Boundary key.
 				value = value.replace(ReportsCompliance.BOUNDARY_PREFIX, "");
-				String elementId = String.format("report-boundry-layers-%s", value);
-				List<WebElement> boundaryElements = driver.findElements(By.id(elementId));
+				List<WebElement> boundaryElements = getViewLayerBoundaryCheckboxes(value);
 				if (boundaryElements.size() > 0) {
 					JavascriptExecutor js = (JavascriptExecutor) driver;
 					js.executeScript("arguments[0].click();", boundaryElements.get(0));
 				}
 			}
 		}
+	}
+
+	public List<WebElement> getViewLayerAssetCheckboxes(String key) {
+		String elementId = String.format("report-asset-layers-%s", key);
+		List<WebElement> assetElements = driver.findElements(By.id(elementId));
+		return assetElements;
+	}
+
+	public List<WebElement> getViewLayerBoundaryCheckboxes(String value) {
+		String elementId = String.format("report-boundry-layers-%s", value);
+		List<WebElement> boundaryElements = driver.findElements(By.id(elementId));
+		return boundaryElements;
 	}
 
 	public void selectAnyCustomerBoundary(CustomerBoundaryType type) {
@@ -2537,6 +2547,35 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	/**
+	 * Method to verify SSRS PDF has the expected strings.
+	 * 
+	 * @param actualPath - path of the SSRS PDF
+	 * @param reportTitle - report title
+	 * @param expectedReportString - List of strings that are expected to be found in PDF text
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean verifySSRSPDFContainsText(String actualPath, String reportTitle, List<String> expectedReportString) throws IOException {
+		Log.info("Verifying SSRS PDF contains expected strings...");
+		PDFUtility pdfUtility = new PDFUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
+		String reportName = "CR-" + reportId;
+		setReportName(reportName);
+		String actualReportString = pdfUtility.extractPDFText(actualReport);
+		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		for (Boolean value : actualFirstPage.values()) {
+			if (!value) {
+				Log.info("Did NOT find match for all expected Strings!");
+				return false;
+			}
+		}
+		Log.info("All expected strings were found in the PDF text.");
+		return true;
+	}
+	
+	/**
 	 * Method to verify the Indication Table in SSRS
 	 * 
 	 * @param actualPath
@@ -3072,12 +3111,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	private void fillCustomerBoundary(ReportsCompliance reportsCompliance) {
+		fillCustomerBoundary(reportsCompliance.getCustomerBoundaryFilterType().toString(),
+				reportsCompliance.getCustomerBoundaryName());
+	}
+
+	public void fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName) {
 		openCustomerBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen()
 		.switchMode(ControlMode.MapInteraction)
 		.waitForMapImageLoad()
-		.selectCustomerBoundaryType(reportsCompliance.getCustomerBoundaryFilterType().toString())
-		.setCustomerBoundaryName(reportsCompliance.getCustomerBoundaryName())
+		.selectCustomerBoundaryType(customerBoundaryFilterType)
+		.setCustomerBoundaryName(customerBoundaryName)
 		.switchMode(ControlMode.Default)
 		.clickOkButton()
 		.waitForModalDialogToClose();

@@ -21,6 +21,7 @@ public class RegexUtility {
 	public static final String NEWLINE_SPLIT_REGEX_PATTERN = "\\r?\\n";
 	public static final String SPACE_SPLIT_REGEX_PATTERN = " ";
 	public static final String COLON_SPLIT_REGEX_PATTERN = ":";
+	public static final String SEMI_COLON_SPLIT_REGEX_PATTERN = ";";
 	public static final String COMMA_SPLIT_REGEX_PATTERN = ",";
 	public static final String REGEX_PATTERN_EXTRACT_FUNCTION_ARGS = "([a-zA-Z_]\\w+)\\((.+)\\)";
 	public static final String REGEX_PATTERN_EXTRACT_VALUE_WRAPPED_IN_QUOTE = "'(.+)'";

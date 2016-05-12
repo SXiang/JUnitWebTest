@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -857,8 +858,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 
-	public boolean verifyErrorMessages(String... errorMessages){
-		//List<WebElement> list = driver.findElements(By.cssSelector("#dvErrorText > ul > li"));
+	public boolean verifyErrorMessages(String[] errorMessages){
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>(){
 			public Boolean apply(WebDriver d){
 				return errorMessages==null||errorMessages[0].isEmpty()||listOfErrors.size()>=errorMessages.length;
@@ -883,6 +883,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 		return true;
 	}
+	
 	/**
 	 * Implementation to be provided by Derived classes.
 	 */
