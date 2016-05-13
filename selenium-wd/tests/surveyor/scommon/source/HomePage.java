@@ -19,6 +19,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import common.source.BrowserCommands;
 import common.source.Log;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 
 /**
  * @author zlu
@@ -26,8 +28,9 @@ import common.source.TestSetup;
  */
 public class HomePage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Home";
-	public static final String STRPageTitle = "Home - Surveyor";
-	public static final String STRPageContentText = "Dashboard";	
+	public static final String STRPageTitle = String.format("%s - %s", 
+			Resources.getResource(ResourceKeys.Index_Title), Resources.getResource(ResourceKeys.Constant_Surveyor));
+	public static final String STRPageContentText = Resources.getResource(ResourceKeys.Index_Heading);
 	public static final String STRSurveyorDashboard = "Surveyor Dashboard";
 	public static final String STRReleaseNotes="ReleaseNotes";
 	public static final String STRReleaseNotesLink="Surveyor_v2.1_ReleaseNotes.pdf";	

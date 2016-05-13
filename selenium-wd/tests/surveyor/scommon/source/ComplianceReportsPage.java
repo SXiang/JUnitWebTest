@@ -46,6 +46,9 @@ import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETPEPLASTIC;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
+
+import surveyor.scommon.actions.data.ComplianceReportDataReader.ComplianceReportsDataRow;
+import surveyor.scommon.source.ComplianceReportsPage.ReportFileType;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
@@ -648,40 +651,40 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String unzipFolder = testSetup.getDownloadPath() + reportName;
 		zipUtility.unZip(testSetup.getDownloadPath() + reportName + ".zip", unzipFolder);
 		checkAndgenerateBaselineViewImages(unzipFolder, testCaseID);
+		
+		int zipFileIndex = 1;
+		String zipFileName;
 		if (zipMeta.isDisplayed()) {
 			clickOnMetadataZIPInReportViewer();
 			waitForMetadataZIPFileDownload(reportName);
+			zipFileName = reportName + " ("+zipFileIndex++ +")";
 			Log.info("Meta data zip file got downloaded");
 			try {
-				BaseHelper.deCompressZipFile(reportName + " (1)", testSetup.getDownloadPath());
+				BaseHelper.deCompressZipFile(zipFileName, testSetup.getDownloadPath());
 			} catch (Exception e) {
 				Log.error(e.toString());
 				return false;
-			}
-			if (zipShape.isDisplayed()) {
-				clickOnShapeZIPInReportViewer();
-				waitForShapeZIPFileDownload(reportName);
-				Log.info("Shape files zip file got downloaded");
-				try {
-					BaseHelper.deCompressZipFile(reportName + " (2)", testSetup.getDownloadPath());
-				} catch (Exception e) {
-					Log.error(e.toString());
-					return false;
-				}
-				if (testCaseID != null) {
-					try {
-						checkAndGenerateBaselineShapeAndGeoJsonFiles(reportName, testCaseID);
-					} catch (Exception e) {
-						Log.error(e.toString());
-						return false;
-					}
-				}
 			}
 		}
 		if (zipShape.isDisplayed()) {
 			clickOnShapeZIPInReportViewer();
 			waitForShapeZIPFileDownload(reportName);
 			Log.info("Shape files zip file got downloaded");
+			zipFileName = reportName + " ("+zipFileIndex++ +")";
+			try {
+				BaseHelper.deCompressZipFile(zipFileName, testSetup.getDownloadPath());
+			} catch (Exception e) {
+				Log.error(e.toString());
+				return false;
+			}
+			if (testCaseID != null) {
+				try {
+					checkAndGenerateBaselineShapeFiles(zipFileName, testCaseID);
+				} catch (Exception e) {
+					Log.error(e.toString());
+					return false;
+				}
+			}
 		}
 		return true;
 	}
@@ -694,7 +697,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public String getReportPDFZipFileName(String rptTitle, boolean includeExtension) {
+		return getReportPDFZipFileName(rptTitle, 0, includeExtension);
+	}
+	
+	public String getReportPDFZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
 		String reportName = "CR-" + getReportName(rptTitle);
+		reportName = zipIndex==0?reportName:reportName + " ("+zipIndex+")";
 		if (includeExtension) {
 			reportName += ".zip";
 		}
@@ -702,8 +710,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public String getReportMetaZipFileName(String rptTitle, boolean includeExtension) {
+		return getReportMetaZipFileName(rptTitle, 1, includeExtension);
+	}
+	
+	public String getReportMetaZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
 		String reportName = "CR-" + getReportName(rptTitle);
-		reportName += " (1)";
+		reportName = zipIndex==0?reportName:reportName + " ("+zipIndex+")";
 		if (includeExtension) {
 			reportName += ".zip";
 		}
@@ -711,8 +723,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public String getReportShapeZipFileName(String rptTitle, boolean includeExtension) {
+	         return getReportShapeZipFileName(rptTitle, 2, includeExtension);
+	}
+	public String getReportShapeZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
 		String reportName = "CR-" + getReportName(rptTitle);
-		reportName += " (2)";
+		reportName = zipIndex==0?reportName:reportName + " ("+zipIndex+")";
 		if (includeExtension) {
 			reportName += ".zip";
 		}
@@ -735,17 +750,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return reportName;
 	}
 
-	private void checkAndGenerateBaselineShapeAndGeoJsonFiles(String reportName, String testCaseID) throws Exception {
+	private boolean checkAndGenerateBaselineShapeFiles(String zipFileName, String testCaseID) throws Exception {
 		boolean isGenerateBaselineShapeFiles = TestContext.INSTANCE.getTestSetup().isGenerateBaselineShapeFiles();
 		if (isGenerateBaselineShapeFiles) {
-			Path unzipDirectory = Paths.get(testSetup.getDownloadPath(), reportName + " (2)");
+			Path unzipDirectory = Paths.get(testSetup.getDownloadPath(), zipFileName);
 			List<String> filesInDirectory = FileUtility.getFilesInDirectory(unzipDirectory, "*.shp,*.dbf,*.prj,*.shx");
 			for (String filePath : filesInDirectory) {
-				generateBaselineShapeAndGeoJsonFiles(testCaseID, filePath);
+				generateBaselineShapeFile(testCaseID, filePath);
 			}
 		}
+		return isGenerateBaselineShapeFiles;
 	}
-
 	private void checkAndGenerateBaselineSSRSImage(String reportName, String testCaseID) throws Exception {
 		boolean isGenerateBaselineSSRSImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
 		if (isGenerateBaselineSSRSImages) {
@@ -824,29 +839,20 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilePath.toString()));
 	}
 
-	protected void generateBaselineShapeAndGeoJsonFiles(String testCaseID, String shapeFileFullPath) throws Exception {
+	protected void generateBaselineShapeFile(String testCaseID, String shapeFileFullPath) throws Exception {
+		if(!shapeFileFullPath.matches(".*\\.(dbf|prj|shp|shx)")){
+			return;
+		}
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
 		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "shape-files" + File.separator + testCaseID;
 		// Create the directory for test case if it does not exist.
 		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
-		String expectedFilename = FileUtility.getFileName(shapeFileFullPath);
-		String expectedFileExt = FileUtility.getFileExtension(shapeFileFullPath);
-		if (expectedFileExt.equals("dbf") || expectedFileExt.equals("prj") || expectedFileExt.equals("shp") || expectedFileExt.equals("shx")) {
-			// Delete existing files in directory (if any).
-			FileUtility.deleteFilesInDirectory(Paths.get(expectedDataFolderPath));
-
-			// Copy the file to the test case folder.
-			String expectedFilenameWithoutExt = expectedFilename.replace(".shp", "");
-			Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
-			FileUtils.copyFile(new File(shapeFileFullPath), new File(expectedFilePath.toString()));
-
-			// If specified file is .shp get GeoJson string for the shape file and store the .geojson.
-			if (expectedFileExt.equals("shp")) {
-				String geoJsonString = ShapeToGeoJsonConverter.convertToJsonString(shapeFileFullPath);
-				Path expectedGeoJsonFilePath = Paths.get(expectedDataFolderPath, expectedFilenameWithoutExt + ".geojson");
-				FileUtility.createTextFile(expectedGeoJsonFilePath, geoJsonString);
-			}
-		}
+		String expectedFilename = FileUtility.getFileName(shapeFileFullPath);		
+		Path expectedFilePath = Paths.get(expectedDataFolderPath, expectedFilename);
+		// Delete existing files in directory (if any).
+        FileUtility.deleteFile(expectedFilePath);
+		// Copy the file to the test case folder.						
+		FileUtils.copyFile(new File(shapeFileFullPath), new File(expectedFilePath.toString()));
 	}
 
 	@Override
@@ -2865,11 +2871,20 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return true;
 	}
 
-	public boolean verifyShapeFilesWithBaselines(String actualPath, String reportTitle, String testCaseID) throws Exception {
-		Log.info(String.format("Calling verifyShapeFilesWithBaselines() -> actualPath=[%s], reportTitle=[%s], testCaseID=[%s]", actualPath, reportTitle, testCaseID));
-		String shapeZipFileName = getReportShapeZipFileName(reportTitle, false /* includeExtension */);
+	public boolean verifyShapeFilesWithBaselines(String reportTitle, String testCaseID) throws Exception {		
+		return verifyShapeFilesWithBaselines(reportTitle, testCaseID, 2);
+	}
+	public boolean verifyShapeFilesWithBaselines(String reportTitle, String testCaseID, int zipIndex) throws Exception {		
+		Log.info(String.format("Calling verifyShapeFilesWithBaselines() -> reportTitle=[%s], testCaseID=[%s], downloadIndex=[%d]", reportTitle, testCaseID, zipIndex));
+		String shapeZipFileName = getReportShapeZipFileName(reportTitle, zipIndex, false /* includeExtension */);
 		BaseHelper.deCompressZipFile(shapeZipFileName, testSetup.getDownloadPath());
-		String actualDataFolderPath = actualPath;
+		
+		if(checkAndGenerateBaselineShapeFiles(shapeZipFileName, testCaseID)){
+			Log.info("Shape Files created as a baseline for '"+testCaseID+"', verification will be done on your next test run");
+			return true;
+		}
+		
+		String actualDataFolderPath =  testSetup.getDownloadPath() + shapeZipFileName;
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
 		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "shape-files" + File.separator + testCaseID;
 
@@ -2991,9 +3006,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public void waitForViewFileDownload(String reportName, String viewName) {
 		waitForFileDownload(reportName + "_" + viewName + ".pdf", testSetup.getDownloadPath());
 	}
-
 	public void waitForMetadataZIPFileDownload(String reportName) {
-		waitForFileDownload(reportName + " (1).zip", testSetup.getDownloadPath());
+		waitForMetadataZIPFileDownload(reportName,1);
+	}
+	public void waitForMetadataZIPFileDownload(String reportName, int zipIndex) {
+		reportName = zipIndex==0?reportName:reportName+" ("+zipIndex+")";
+		waitForFileDownload(reportName + ".zip", testSetup.getDownloadPath());
 	}
 
 	public void waitForPDFFileDownload(String reportName) {
@@ -3001,11 +3019,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void waitForReportZIPFileDownload(String reportName) {
+		waitForReportZIPFileDownload(reportName, 0);
+	}
+	public void waitForReportZIPFileDownload(String reportName, int zipIndex) {
+		reportName = zipIndex==0?reportName:reportName+" ("+zipIndex+")";
 		waitForFileDownload(reportName + ".zip", testSetup.getDownloadPath());
 	}
-
 	public void waitForShapeZIPFileDownload(String reportName) {
-		waitForFileDownload(reportName + " (2).zip", testSetup.getDownloadPath());
+		waitForShapeZIPFileDownload(reportName, 2);
+	}
+	public void waitForShapeZIPFileDownload(String reportName, int zipIndex) {
+		reportName = zipIndex==0?reportName:reportName+" ("+zipIndex+")" ;
+		waitForFileDownload(reportName + ".zip", testSetup.getDownloadPath());
 	}
 
 	public void waitForShapeZipFileDownload() {

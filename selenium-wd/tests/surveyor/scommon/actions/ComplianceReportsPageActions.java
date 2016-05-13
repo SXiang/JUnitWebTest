@@ -398,6 +398,12 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return downloadPath;
 	}
 
+	private int getDownloadFileIndex(String data, int fileIndex){
+		if(data!=null&&data.matches("[0-2]")){
+			fileIndex = Integer.valueOf(data);
+		}
+		return fileIndex;
+	}
 	private boolean isPDFGapSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
 		return this.getComplianceReportsPage().isPDFGapSelected() && (dataRow.gapTable == "TRUE");
 	}
@@ -477,6 +483,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @throws Exception
 	 */
 	private void waitForReportFileDownload(Integer dataRowID, ReportFileType fileType, Integer fileIndex) throws Exception {
+		waitForReportFileDownload(dataRowID, fileType, fileIndex, -1);
+	}
+	private void waitForReportFileDownload(Integer dataRowID, ReportFileType fileType, Integer fileIndex, int zipIndex) throws Exception {
 		ComplianceReportsDataRow compRptDataRow = getComplianceReportsDataRow(dataRowID);
 		String reportTitle = compRptDataRow.title;
 		String reportName = "";
@@ -488,18 +497,21 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			break;
 		case ZIP:
 			// get the report name without extension.
+			zipIndex = zipIndex==-1?0:zipIndex;
 			reportName = this.getComplianceReportsPage().getReportPDFFileName(reportTitle, false /*includeExtension*/);
-			this.getComplianceReportsPage().waitForReportZIPFileDownload(reportName);
+			this.getComplianceReportsPage().waitForReportZIPFileDownload(reportName,zipIndex);
 			break;
 		case MetaDataZIP:
 			// get the report name without extension.
+			zipIndex = zipIndex==-1?1:zipIndex;
 			reportName = this.getComplianceReportsPage().getReportPDFFileName(reportTitle, false /*includeExtension*/);
-			this.getComplianceReportsPage().waitForMetadataZIPFileDownload(reportName);
+			this.getComplianceReportsPage().waitForMetadataZIPFileDownload(reportName,zipIndex);
 			break;
 		case ShapeZIP:
 			// get the report name without extension.
+			zipIndex = zipIndex==-1?2:zipIndex;
 			reportName = this.getComplianceReportsPage().getReportPDFFileName(reportTitle, false /*includeExtension*/);
-			this.getComplianceReportsPage().waitForShapeZIPFileDownload(reportName);
+			this.getComplianceReportsPage().waitForShapeZIPFileDownload(reportName,zipIndex);
 			break;
 		case View:
 			reportName = this.getComplianceReportsPage().getReportPDFFileName(workingDataRow.title, false /*includeExtension*/); 
@@ -512,7 +524,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			break;
 		}
 	}
-	
+
 	private void waitForViewDownloadByViewIndex(String data, Integer dataRowID) throws Exception {
 		ActionArguments.verifyNotNullOrEmpty(FN_WAIT_FOR_VIEW_DOWNLOAD_TO_COMPLETE_BY_VIEW_INDEX, ARG_DATA, data);
 		Integer viewIdx = NumberUtility.getIntegerValueOf(data);
@@ -2093,7 +2105,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean verifyShapeZIPFilesAreCorrect(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyShapeZIPFilesAreCorrect", data, dataRowID);
-		this.getComplianceReportsPage().verifyShapeFilesWithBaselines(TestContext.INSTANCE.getTestSetup().getDownloadPath(),
+		this.getComplianceReportsPage().verifyShapeFilesWithBaselines(
 				workingDataRow.title, workingDataRow.tCID);
 		return true;
 	}
@@ -2487,7 +2499,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean waitForShapeZIPDownloadToComplete(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.waitForShapeZIPDownloadToComplete", data, dataRowID);
-		waitForReportFileDownload(dataRowID, ReportFileType.ShapeZIP, -1);
+		waitForReportFileDownload(dataRowID, ReportFileType.ShapeZIP, -1, getDownloadFileIndex(data,2));
 		return true;
 	}
  
@@ -2759,9 +2771,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean verifyShapeFilesWithBaselines(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyShapeFilesWithBaselines", data, dataRowID);
-		String downloadPath = getDownloadPath(ReportFileType.ShapeZIP);
-		return this.getComplianceReportsPage().verifyShapeFilesWithBaselines(downloadPath, workingDataRow.title, 
-				workingDataRow.tCID);
+		return this.getComplianceReportsPage().verifyShapeFilesWithBaselines(workingDataRow.title, 
+				workingDataRow.tCID, getDownloadFileIndex(data,2));
 	}
  
 	/**
@@ -3431,6 +3442,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("waitForShapeZIPDownloadToComplete")) { return this.waitForShapeZIPDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForViewDownloadToCompleteByViewIndex")) { return this.waitForViewDownloadToCompleteByViewIndex(data, dataRowID); }
 		else if (actionName.equals("copyInProgressReport")) { return this.copyInProgressReport(data, dataRowID); }
+		else if (actionName.equals("verifyShapeFilesWithBaselines")) { return this.verifyShapeFilesWithBaselines(data, dataRowID); }
 		else if (actionName.equals("verifyCancelButtonIsDisplayed")) { return this.verifyCancelButtonIsDisplayed(data, dataRowID); }
 		else if (actionName.equals("verifySSRSCoverageForecastTableInfo")) { return this.verifySSRSCoverageForecastTableInfo(data, dataRowID); }
 		else if (actionName.equals("verifySSRSCoverageForecastTableInfoWithPreviousResult")) { return this.verifySSRSCoverageForecastTableInfoWithPreviousResult(data, dataRowID); }

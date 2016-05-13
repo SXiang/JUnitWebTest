@@ -39,7 +39,8 @@ import common.source.TestSetup;
  */
 public class ManageLocationsPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageLocations";
-	public static final String STRPageTitle = "Manage Locations - Surveyor";
+	public static final String STRPageTitle = String.format("%s - %s", 
+			Resources.getResource(ResourceKeys.ManageLocations_PageTitle), Resources.getResource(ResourceKeys.Constant_Surveyor));
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageLocations_PageTitle);
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ManageLocation_NewLocation);
 	public static final String STREditPageContentText = Resources.getResource(ResourceKeys.ManageLocation_EditLocation);
