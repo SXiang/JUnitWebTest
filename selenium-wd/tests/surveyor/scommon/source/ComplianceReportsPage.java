@@ -2962,10 +2962,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 	public void waitForReportZIPFileDownload(String reportName, int zipIndex) {
 		reportName = zipIndex==0?reportName:reportName+" ("+zipIndex+")";
-		waitForFileDownload(reportName, testSetup.getDownloadPath());
+		waitForFileDownload(reportName + ".zip", testSetup.getDownloadPath());
 	}
 	public void waitForShapeZIPFileDownload(String reportName) {
-		waitForShapeZIPFileDownload(reportName + ".zip", 2);
+		waitForShapeZIPFileDownload(reportName, 2);
 	}
 	public void waitForShapeZIPFileDownload(String reportName, int zipIndex) {
 		reportName = zipIndex==0?reportName:reportName+" ("+zipIndex+")" ;
