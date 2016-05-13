@@ -1,6 +1,10 @@
 package surveyor.unittest.source;
 
 import common.source.Log;
+import common.source.PDFUtility;
+
+import java.io.IOException;
+
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -28,6 +32,13 @@ public class ComplianceReportsPageUnitTest extends BaseReportsPageTest {
 	protected static void initializePageObjects(){
 		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, complianceReportsPage);
+	}
+	
+	@Test
+	public void TempMethod_ForDebugging() throws IOException {
+		PDFUtility pdfUtility = new PDFUtility();
+		String pdfText = pdfUtility.extractPDFText("C:\\Users\\spulikkal\\Downloads\\CR-F6E6B8.pdf");
+		Log.info(pdfText);
 	}
 	
 	/**

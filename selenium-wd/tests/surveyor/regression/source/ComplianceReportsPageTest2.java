@@ -236,10 +236,10 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		List<String> listBoundary = new ArrayList<String>();
 		listBoundary.add(IMGMAPHEIGHT);
 		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add(RNELAT);
-		listBoundary.add(RNELON);
-		listBoundary.add(RSWLAT);
-		listBoundary.add(RSWLON);
+		listBoundary.add("37.4102286146667");
+		listBoundary.add("-121.9813578675");
+		listBoundary.add("37.399118039");
+		listBoundary.add("-121.984789916667");
 
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();

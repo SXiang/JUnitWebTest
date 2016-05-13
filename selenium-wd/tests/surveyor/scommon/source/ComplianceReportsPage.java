@@ -27,7 +27,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
-import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
@@ -96,22 +95,16 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import common.source.ApiUtility;
 import common.source.BaseHelper;
 import common.source.CSVUtility;
 import common.source.DBConnection;
 import common.source.Log;
-import common.source.NumberUtility;
 import common.source.PDFTableUtility;
 import common.source.PDFTableUtility.PDFTable;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
 import common.source.ZipUtility;
 import sun.misc.BASE64Decoder;
-import surveyor.api.source.ReportJobsStat;
 import surveyor.dataaccess.source.BaseMapType;
 import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ReportView;
@@ -340,7 +333,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public enum ComplianceReportButtonType {
-		Delete("Delete"), Copy("Copy"), ReportViewer("ReportViewer"), Investigate("Investigate"), InvestigatePDF("InvestigatePDF"), Resubmit("Resubmit"), Cancel("Cancel"), InProgressCopy("InProgressCopy");
+		Delete("Delete"), 
+		Copy("Copy"), 
+		ReportViewer("ReportViewer"), 
+		Investigate("Investigate"), 
+		InvestigatePDF("InvestigatePDF"), 
+		Resubmit("Resubmit"), 
+		Cancel("Cancel"), 
+		InProgressCopy("InProgressCopy"),
+		ReportErrorLabel("ReportErrorLabel");
 
 		private final String name;
 
@@ -354,7 +355,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public enum ReportViewerThumbnailType {
-		InvestigationPDF("InvestigationPDF"), ComplianceTablePDF("ComplianceTablePDF"), ComplianceZipPDF("ComplianceZipPDF "), ComplianceZipShape("ComplianceZipShape "), ComplianceZipMeta("ComplianceZipMeta "), FirstView("FirstView "), SecondView("SecondView "), ThirdView("ThirdView "), FourthView("FourthView "), FifthView("FifthView "), SixthView("SixthView "), SeventhView("SeventhView");
+		InvestigationPDF("InvestigationPDF"), 
+		ComplianceTablePDF("ComplianceTablePDF"), 
+		ComplianceZipPDF("ComplianceZipPDF "), 
+		ComplianceZipShape("ComplianceZipShape "), 
+		ComplianceZipMeta("ComplianceZipMeta "), 
+		FirstView("FirstView "), 
+		SecondView("SecondView "), 
+		ThirdView("ThirdView "), 
+		FourthView("FourthView "), 
+		FifthView("FifthView "), 
+		SixthView("SixthView "), 
+		SeventhView("SeventhView");
 
 		private final String name;
 
@@ -368,7 +380,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public enum ReportFileType {
-		InvestigationPDF("InvestigationPDF"), PDF("PDF"), ZIP("ZIP"), MetaDataZIP("MetaDataZIP"), ShapeZIP("ShapeZIP"), View("View");
+		InvestigationPDF("InvestigationPDF"), 
+		PDF("PDF"), 
+		ZIP("ZIP"), 
+		MetaDataZIP("MetaDataZIP"), 
+		ShapeZIP("ShapeZIP"), 
+		View("View");
 
 		private final String name;
 
@@ -924,6 +941,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					case Cancel: // NOTE: When cancel button is visible it is the 2nd button.
 						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
 						break;
+					case ReportErrorLabel: // 'Error Processing' label on report cancelled or report error.
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/span";
+						break;
 					default:
 						throw new Exception("ButtonType NOT supported.");
 					}
@@ -932,19 +952,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 					if (buttonImg.isDisplayed()) {
 						if (clickButton) {
-							buttonImg.click();
-							// If resubmit then wait for modal and confirm resubmit.
-							if (buttonType == ComplianceReportButtonType.Resubmit) {
-								this.waitForResubmitPopupToShow();
-								this.btnProcessResubmit.click();
-								this.waitForPageLoad();
-								this.waitForAJAXCallsToComplete();
-							}
-							if (buttonType == ComplianceReportButtonType.Delete) {
-								this.waitForConfirmDeletePopupToShow();
-								if (confirmAction) {
-									this.clickOnConfirmInDeleteReportPopup();
-									this.waitForConfirmDeletePopupToClose();
+							if (buttonType != ComplianceReportButtonType.ReportErrorLabel) {
+								buttonImg.click();
+								// If resubmit then wait for modal and confirm resubmit.
+								if (buttonType == ComplianceReportButtonType.Resubmit) {
+									this.waitForResubmitPopupToShow();
+									this.btnProcessResubmit.click();
+									this.waitForPageLoad();
+									this.waitForAJAXCallsToComplete();
+								}
+								if (buttonType == ComplianceReportButtonType.Delete) {
+									this.waitForConfirmDeletePopupToShow();
+									if (confirmAction) {
+										this.clickOnConfirmInDeleteReportPopup();
+										this.waitForConfirmDeletePopupToClose();
+									}
 								}
 							}
 						}

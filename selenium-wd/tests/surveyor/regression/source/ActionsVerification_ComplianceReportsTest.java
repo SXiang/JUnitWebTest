@@ -6,9 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import common.source.Log;
+import common.source.RegexUtility;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.LoginPageActions;
@@ -51,6 +55,7 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 	public ActionsVerification_ComplianceReportsTest() {
 	}
 
+	
 	@Test
 	public void TC_ComplianceReports_VerifyNewComplianceReportsPageFields() throws Exception {
 		Log.info("\nRunning TC_ComplianceReports_VerifyNewComplianceReportsPageFields ...");
@@ -59,17 +64,18 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 		Integer reportDataRowID1 = 49;
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, userDataRowID);
 		
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1 ));
-		assertTrue(complianceReportsPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1 )));
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		assertTrue(complianceReportsPageAction.verifyPageLoaded(EMPTY, reportDataRowID1));
 		
-		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, getReportRowID(reportDataRowID1 ));
-		complianceReportsPageAction.selectReportMode(EMPTY, getReportRowID(reportDataRowID1 ));
-		assertTrue(complianceReportsPageAction.verifySurveyModeFiltersByReportMode(EMPTY, getReportRowID(reportDataRowID1 )));
-		assertTrue(complianceReportsPageAction.verifyCustomerSpecificAssetsAreDisplayed(EMPTY, getReportRowID(reportDataRowID1 )));
-		assertTrue(complianceReportsPageAction.verifyCustomerSpecificBoundariesAreDisplayed(EMPTY, getReportRowID(reportDataRowID1 )));
-		assertTrue(complianceReportsPageAction.verifyGeographicFilterIsSelected(EMPTY, getReportRowID(reportDataRowID1 )));
+		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.selectReportMode(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, reportDataRowID1);
+		assertTrue(complianceReportsPageAction.verifySurveyModeFiltersByReportMode(EMPTY, reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyCustomerSpecificAssetsAreDisplayed(EMPTY, reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyCustomerSpecificBoundariesAreDisplayed(EMPTY, reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyGeographicFilterIsSelected(EMPTY, reportDataRowID1));
 	}
 
 	@Test
@@ -80,18 +86,27 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 		Integer reportDataRowID1 = 49;
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, userDataRowID);
 		
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1 ));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		// TODO: Before verification perform action to Close the Compliance viewer dialog.
-		assertTrue(complianceReportsPageAction.verifyComplianceViewerDialogIsClosed(EMPTY, getReportRowID(reportDataRowID1 )));
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		createNewComplianceReport(complianceReportsPageAction, reportDataRowID1);
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, reportDataRowID1);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerCloseButton(EMPTY, reportDataRowID1);
+		assertTrue(complianceReportsPageAction.verifyComplianceViewerDialogIsClosed(EMPTY, reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, reportDataRowID1));
 	}
 
+	/**
+	 * This unit test is data dependent. Was tested by modifying lat/long coordinates on TC824. 
+	 * To run this unit test, generate report with following data and point ReportRowID to the title of generated report:
+		 	listBoundary.add("37.4102286146667");
+			listBoundary.add("-121.9813578675");
+			listBoundary.add("37.399118039");
+			listBoundary.add("-121.984789916667");
+	 * @throws Exception
+	 */
 	@Test
 	public void TC_ComplianceReports_EmptySSRSPDFVerifications() throws Exception {
 		Log.info("\nRunning TC_ComplianceReports_EmptySSRSPDFVerifications ...");
@@ -100,34 +115,42 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 		Integer reportDataRowID1 = 49;   // Set a rowID that would generate EMPTY tables. If no such row then, create new report. 
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, userDataRowID);
 		
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1 ));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyIndicationsTableIsEmpty(EMPTY, getReportRowID(reportDataRowID1 )));
-		assertTrue(complianceReportsPageAction.verifyIsotopicTableIsEmpty(EMPTY, getReportRowID(reportDataRowID1 )));
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		createNewComplianceReport(complianceReportsPageAction, reportDataRowID1);
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, reportDataRowID1);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, reportDataRowID1);
+		assertTrue(complianceReportsPageAction.verifyIndicationsTableIsEmpty(EMPTY, reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyIsotopicTableIsEmpty(EMPTY, reportDataRowID1));
 	}
 
+	/**
+	 * This unit test simulates MinBoundary size error message by using the following lat/longs during report creation:
+		 	listBoundary.add("37.4102286146667");
+			listBoundary.add("-121.9813578675");
+			listBoundary.add("37.4102296146667");
+			listBoundary.add("-121.984789916667");
+	 * @throws Exception
+	 */
 	@Test
 	public void TC_ComplianceReports_VerifyErrorMessages() throws Exception {
 		Log.info("\nRunning TC_ComplianceReports_VerifyErrorMessages ...");
 
 		Integer userDataRowID = 6;
-		Integer reportDataRowID1 = 49;   // Use a rowID that would generate error messages. 
+		Integer reportDataRowID1 = 74;   // Use a rowID that would generate error messages. 
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, userDataRowID);
 		
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1 ));
-		complianceReportsPageAction.createNewReport(EMPTY, getReportRowID(reportDataRowID1));
-		List<String> expectedErrorMessages = new ArrayList<String>();
-		
-		// TODO: Add expected error messages.
-		expectedErrorMessages.add("TODO: Add expected error messages");
-		assertTrue(complianceReportsPageAction.verifyErrorMessages(EMPTY, getReportRowID(reportDataRowID1 )));
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		StringBuilder expectedErrorMessages = new StringBuilder();
+		expectedErrorMessages.append(Resources.getResource(ResourceKeys.ComplianceReport_BoundaryMinSizeMessage));
+		expectedErrorMessages.append("|");
+		expectedErrorMessages.append(Resources.getResource(ResourceKeys.ComplianceReport_ValueMissingMessage));
+		assertTrue(complianceReportsPageAction.verifyErrorMessages(expectedErrorMessages.toString(), reportDataRowID1));
 	}
 }

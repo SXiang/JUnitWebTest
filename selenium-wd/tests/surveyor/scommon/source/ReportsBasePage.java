@@ -405,6 +405,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(id = "datatableSurveys_next")
 	protected WebElement surveyNextButton;
+	
+	@FindBy(id = "modalClose")
+	private WebElement reportViewerCloseButton;
 
 	private static final String SURVEY_GROUP_XPATH = "*[@id='page-wrapper']/div/div[3]/div/div[6]/div/div[3]";
 
@@ -2163,7 +2166,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 		WebElement divModalcontent = this.driver.findElement(By.id("reportViewer"));
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return divModalcontent.getAttribute("style").contains("display:none") || divModalcontent.getAttribute("style").contains("display: none");
+				boolean contains1 = divModalcontent.getAttribute("style").contains("display:none");
+				boolean contains2 = divModalcontent.getAttribute("style").contains("display: none");
+				return contains1 || contains2;
 			}
 		});
 	}
@@ -2392,35 +2397,55 @@ public class ReportsBasePage extends SurveyorBasePage {
 		boolean filtersFound = true;
 		switch(rmf){
 		case Standard:
-			filtersFound = WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterAll)
-			&&WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterStd)
-			&&WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterOperator)
-			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterRapidResponse)
-			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterManual);
+			filtersFound = isAllSurveyModeShown()
+				&& isStandardSurveyModeShown()
+				&& isOperatorSurveyModeShown()
+				&& !isRapidResponseSurveyModeShown()
+				&& !isManualSurveyModeShown();
 			break;
 		case RapidResponse:
-			filtersFound = WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterAll)
-			&&WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterStd)
-			&&WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterOperator)
-			&&WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterRapidResponse)
-			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterManual);
+			filtersFound = isAllSurveyModeShown()
+				&& isStandardSurveyModeShown()
+				&& isOperatorSurveyModeShown()
+				&& isRapidResponseSurveyModeShown()
+				&& !isManualSurveyModeShown();
 			break;
 		case Manual:
-			filtersFound = WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterManual)
-			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterStd)
-			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterOperator)
-			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterAll)
-			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterRapidResponse);
+			filtersFound = isManualSurveyModeShown()
+				&& !isStandardSurveyModeShown()
+				&& !isOperatorSurveyModeShown()
+				&& !isAllSurveyModeShown()
+				&& !isRapidResponseSurveyModeShown();
 			break;
 		default:
-			filtersFound = WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterAll)
-			&&WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterStd)
-			&&WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterOperator)
-			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterRapidResponse)
-			&&!WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterManual);
+			filtersFound = isAllSurveyModeShown()
+				&& isStandardSurveyModeShown()
+				&& isOperatorSurveyModeShown()
+				&&!isRapidResponseSurveyModeShown()
+				&&!isManualSurveyModeShown();
 			break;
 		}
 		return filtersFound;
+	}
+
+	public boolean isAllSurveyModeShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterAll);
+	}
+
+	public boolean isStandardSurveyModeShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterStd);
+	}
+
+	public boolean isOperatorSurveyModeShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterOperator);
+	}
+
+	public boolean isRapidResponseSurveyModeShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterRapidResponse);
+	}
+
+	public boolean isManualSurveyModeShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterManual);
 	}
 
 	/**
@@ -2467,7 +2492,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return !findInvalidSurveyType(validType);
 
 	}
-	
+
+	/**
+	 * Click on close button in report viewer.
+	 */
+	public void clickOnReportViewerCloseButton() {
+		this.reportViewerCloseButton.click();
+	}
+
     /**
      * Click the search button for Survey filter and wait for the survey table to be loaded
      */
