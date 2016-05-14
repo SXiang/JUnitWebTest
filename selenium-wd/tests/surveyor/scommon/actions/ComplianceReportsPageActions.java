@@ -3003,7 +3003,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
  
 	/**
 	 * Executes verifyErrorMessages action.
-	 * @param data - semi-colon seperated list of error messages. For eg. 'error_msg1;error_msg2'.
+	 * @param data - vertical bar (|) seperated list of error messages. For eg. 'error_msg1|error_msg2'.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 * @throws Exception 

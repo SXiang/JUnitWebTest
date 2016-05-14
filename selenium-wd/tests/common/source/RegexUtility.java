@@ -121,7 +121,7 @@ public class RegexUtility {
 	}
 
 	/**
-	 * Returns first String in between two given patterns
+	 * Returns last occurence of String in between two given patterns
 	 * 
 	 * @param inputString
 	 * @param regexPattern1
@@ -145,7 +145,7 @@ public class RegexUtility {
 	}
 
 	/**
-	 * Returns last string match between two given patterns
+	 * Returns last occurence of string between two given patterns
 	 * 
 	 * @param inputString
 	 * @param regexPattern1
