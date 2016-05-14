@@ -134,6 +134,7 @@ public class TestSetup {
 	private String dbUser;
 	private String dbPassword;
 	private String computerName;
+	private String softwareVersion;
 
 	private boolean collectReportJobPerfMetric;
 	private boolean generateBaselineSSRSImages;
@@ -594,6 +595,10 @@ public class TestSetup {
 		this.logCategoryComplianceReportActionsEnabled = logCategoryComplianceReportActionsEnabled;
 	}
 
+	public String getSoftwareVersion() {
+		return this.softwareVersion;
+	}
+	
 	public void initialize() {
 		try {
 
@@ -679,6 +684,7 @@ public class TestSetup {
 
 			this.language = this.testProp.getProperty("language");
 			this.culture = this.testProp.getProperty("culture");
+			this.softwareVersion = this.testProp.getProperty("softwareVersion");
 
 			if (!isRunningLocally()) {
 				this.downloadPath = this.testProp.getProperty("downloadPath");

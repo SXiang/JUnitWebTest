@@ -45,8 +45,10 @@ import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.api.source.ReportJob;
 import surveyor.api.source.ReportJobsStat;
+import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.dataaccess.source.User;
 import surveyor.scommon.actions.data.AnalyzerDataReader;
 import surveyor.scommon.actions.data.AnalyzerDataReader.AnalyzerDataRow;
 import surveyor.scommon.actions.data.ComplianceReportDataReader;
@@ -1321,6 +1323,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		}
 
 		this.getComplianceReportsPage().selectCustomer(customer);
+		this.getComplianceReportsPage().confirmInChangeCustomerDialog();
 		return true;
 	}
  
@@ -3173,11 +3176,14 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
 	 */
-	public boolean verifySSRSPDFFooter(String data, Integer dataRowID) {
+	public boolean verifySSRSPDFFooter(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifySSRSPDFFooter", data, dataRowID);
-		// TODO: Add implementation.
-		return false;
+		String downloadPath = getDownloadPath(ReportFileType.PDF);
+		String expectedSoftwareVersion = TestContext.INSTANCE.getTestSetup().getSoftwareVersion();
+		return this.getComplianceReportsPage().verifySSRSPDFFooter(downloadPath, 
+				workingDataRow.title, expectedSoftwareVersion , LoginPageActions.workingDataRow.username);
 	}
  
 	/**
@@ -3185,11 +3191,27 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
 	 */
-	public boolean verifySelectedSurveysAreForSpecifiedCustomer(String data, Integer dataRowID) {
+	public boolean verifySearchedSurveysAreForSpecifiedCustomer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifySelectedSurveysAreForSpecifiedCustomer", data, dataRowID);
-		// TODO: Add implementation.
-		return false;
+		List<String> surveyUsernames = this.getComplianceReportsPage().getSelectedSurveyTableValuesForColumn(ReportsSurveyInfo.ColumnHeaders.User);
+		List<String> distinctUsernames = ArrayUtility.getDistinctValues(surveyUsernames);
+		// for each distinct user check user belongs to the specified customer.
+		Integer customerRowID = Integer.valueOf(getComplianceReportsDataRow(dataRowID).customerRowID);
+		CustomerDataReader customerDataReader = new CustomerDataReader(excelUtility);
+		CustomerDataRow customerDataRow = customerDataReader.getDataRow(customerRowID);
+		Customer customer = Customer.getCustomer(customerDataRow.name);
+		String customerID = customer.getId();
+		
+		for (String username : distinctUsernames) {
+			User user = User.getUser(username);
+			if (!customerID.equalsIgnoreCase(user.getCustomerId())) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
  
 	/**
@@ -3197,15 +3219,16 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
 	 */
-	public boolean verifySearchedSurveysMatchSelectedMode(String data, Integer dataRowID) {
+	public boolean verifySearchedSurveysMatchSelectedMode(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifySearchedSurveysMatchSelectedMode", data, dataRowID);
-		// TODO: Add implementation.
-		return false;
+		List<String> surveyModes = this.getComplianceReportsPage().getSelectedSurveyTableValuesForColumn(ReportsSurveyInfo.ColumnHeaders.SurveyType);
+		List<String> distinctSurveyModes = ArrayUtility.getDistinctValues(surveyModes);
+		ComplianceReportsDataRow reportsDataRow = getComplianceReportsDataRow(dataRowID);
+		return (distinctSurveyModes != null && distinctSurveyModes.size()==1 && distinctSurveyModes.get(0).equalsIgnoreCase(reportsDataRow.reportMode));
 	}
  
-	//////////////////////////// SKIP below methods ///////////////////////////////////
-	
 	/**
 	 * Executes verifySearchedSurveysAreForSelectedArea action.
 	 * @param data - specifies the input data passed to the action.
@@ -3426,7 +3449,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifyReportGenerationIsCancelled")) { return this.verifyReportGenerationIsCancelled(data, dataRowID); }
 		else if (actionName.equals("verifySearchedSurveysAreForSelectedArea")) { return this.verifySearchedSurveysAreForSelectedArea(data, dataRowID); }
 		else if (actionName.equals("verifySearchedSurveysMatchSelectedMode")) { return this.verifySearchedSurveysMatchSelectedMode(data, dataRowID); }
-		else if (actionName.equals("verifySelectedSurveysAreForSpecifiedCustomer")) { return this.verifySelectedSurveysAreForSpecifiedCustomer(data, dataRowID); }
+		else if (actionName.equals("verifySearchedSurveysAreForSpecifiedCustomer")) { return this.verifySearchedSurveysAreForSpecifiedCustomer(data, dataRowID); }
 		else if (actionName.equals("verifySSRSPDFFooter")) { return this.verifySSRSPDFFooter(data, dataRowID); }
 		else if (actionName.equals("verifyStandardSurveyModeIsShownOnPage")) { return this.verifyStandardSurveyModeIsShownOnPage(data, dataRowID); }
 		else if (actionName.equals("verifyRapidResponseSurveyModeIsShownOnPage")) { return this.verifyRapidResponseSurveyModeIsShownOnPage(data, dataRowID); }

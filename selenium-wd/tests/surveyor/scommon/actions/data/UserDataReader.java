@@ -69,6 +69,10 @@ public class UserDataReader extends BaseDataReader {
 	public UserDataRow getDataRow() {
 		return dataRow;
 	}
+	
+	public Integer getRowCount() {
+		return this.getRowCount(TESTDATA_SHEET_NAME);
+	}
  
 	public void setDataRow(UserDataRow dataRow) {
 		this.dataRow = dataRow;

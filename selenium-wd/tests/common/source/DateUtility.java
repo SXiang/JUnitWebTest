@@ -1,5 +1,6 @@
 package common.source;
 
+import java.io.IOException;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -361,6 +362,31 @@ public class DateUtility {
 
 		return languageTag;
 
+	}
+
+	public boolean verifyDateMatchesToday(String dateString) throws ParseException {
+		Date date = new Date(dateString);
+		Date currentDate = getCurrentDate();
+		return compareDatePart(date, currentDate);
+	}
+
+	/**
+	 * Compares equality of only the date part of the Date objects.
+	 * @param date1
+	 * @param date2
+	 * @return
+	 */
+	public boolean compareDatePart(Date d1, Date d2) {
+		if (d1.getYear() != d2.getYear()) {
+			return false; 
+		}
+		if (d1.getMonth() != d2.getMonth()) {
+			return false;
+		}
+		if (d1.getYear() != d2.getYear()) {
+			return false;
+		}
+		return true;
 	}
 
 	/**

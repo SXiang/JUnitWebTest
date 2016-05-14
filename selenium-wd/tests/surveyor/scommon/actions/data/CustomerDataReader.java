@@ -50,6 +50,10 @@ public class CustomerDataReader extends BaseDataReader {
 		return dataRow;
 	}
  
+	public Integer getRowCount() {
+		return this.getRowCount(TESTDATA_SHEET_NAME);
+	}
+	
 	public void setDataRow(CustomerDataRow dataRow) {
 		this.dataRow = dataRow;
 	}

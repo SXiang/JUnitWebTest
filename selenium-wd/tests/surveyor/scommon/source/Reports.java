@@ -147,6 +147,22 @@ public class Reports {
 			return this.name;
 		}
  	}
+	
+	public enum SSRSPdfFooterColumns {
+		SoftwareVersion ("SoftwareVersion"),
+		ReportUser ("ReportUser"),
+		ReportDate ("ReportDate");
+		
+		private final String name;
+
+		SSRSPdfFooterColumns(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
+	}
 
 	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, List<String> tagList) {
 		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, null, null, null, null, tagList);
@@ -243,8 +259,6 @@ public class Reports {
 	public Boolean getGeoFilter() {
 		return geoFilter;
 	}
-
-
 
 	public void setRptTitle(String rptTitle) {
 		this.rptTitle = rptTitle;

@@ -153,4 +153,77 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 		expectedErrorMessages.append(Resources.getResource(ResourceKeys.ComplianceReport_ValueMissingMessage));
 		assertTrue(complianceReportsPageAction.verifyErrorMessages(expectedErrorMessages.toString(), reportDataRowID1));
 	}
+
+	/**
+	 * Unit test to verify that the report generation has been cancelled successfully.
+	 * @throws Exception
+	 */
+	@Test
+	public void TC_ComplianceReports_VerifyReportCancelled() throws Exception {
+		Log.info("\nRunning TC_ComplianceReports_VerifyReportCancelled ...");
+
+		Integer userDataRowID = 6;
+		Integer reportDataRowID1 = 49;   // Use a rowID that would generate error messages. 
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, userDataRowID);
+		
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.verifyPageLoaded(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.cancelInProgressReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.verifyPageLoaded(EMPTY, reportDataRowID1);
+		assertTrue(complianceReportsPageAction.verifyReportGenerationIsCancelled(EMPTY, reportDataRowID1));
+	}
+
+	/**
+	 * Unit test to verify that the report SSRS footer is generated correctly.
+	 * @throws Exception
+	 */
+	@Test
+	public void TC_ComplianceReports_VerifySSRSPdfFooter() throws Exception {
+		Log.info("\nRunning TC_ComplianceReports_VerifySSRSPdfFooter ...");
+
+		Integer userDataRowID = 6;
+		Integer reportDataRowID1 = 49;   // Use a rowID that would generate error messages. 
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, userDataRowID);
+		
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		createNewComplianceReport(complianceReportsPageAction, reportDataRowID1);
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, reportDataRowID1);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, reportDataRowID1);
+		assertTrue(complianceReportsPageAction.verifySSRSPDFFooter(EMPTY, reportDataRowID1));
+	}
+
+	/**
+	 * Unit test to verify searched surveys results.
+	 * NOTE: BEFORE running test: Make sure the reportRowID is using CustomerRowID=2 
+	 * @throws Exception
+	 */
+	@Test
+	public void TC_ComplianceReports_VerifySearchedSurveys() throws Exception {
+		Log.info("\nRunning TC_ComplianceReports_VerifySearchedSurveys ...");
+
+		Integer userDataRowID = 6;
+		Integer reportDataRowID1 = 49;
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, userDataRowID);
+		
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		assertTrue(complianceReportsPageAction.verifyPageLoaded(EMPTY, reportDataRowID1));
+		
+		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.selectReportMode(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.selectCustomer(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.enterSurveySelectorTag("5", reportDataRowID1);
+		complianceReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, reportDataRowID1);
+		assertTrue(complianceReportsPageAction.verifySearchedSurveysMatchSelectedMode(EMPTY, reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifySearchedSurveysAreForSpecifiedCustomer(EMPTY, reportDataRowID1));
+	}
 }

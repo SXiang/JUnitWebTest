@@ -226,4 +226,9 @@ public class ResourceKeys {
     public static final String ComplianceReport_CoverageForecastAreaInvalidMessage = "ComplianceReport_CoverageForecastAreaInvalidMessage";
 	public static final String ComplianceReport_CoverageForecastAssetsInvalidMessage = "ComplianceReport_CoverageForecastAssetsInvalidMessage";
 	public static final String ComplianceReport_CoverageForecastBoundaryInvalidMessage = "ComplianceReport_CoverageForecastBoundaryInvalidMessage";
+
+	// Constants for report SSRS
+	public static final String ReportSSRS_DatePrinted = "ReportSSRS_DatePrinted";
+	public static final String ReportSSRS_ReportAuthor = "ReportSSRS_ReportAuthor";
+	public static final String ReportSSRS_SoftwareVersion = "ReportSSRS_SoftwareVersion";
 }
