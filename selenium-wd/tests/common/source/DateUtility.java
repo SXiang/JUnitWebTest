@@ -383,7 +383,7 @@ public class DateUtility {
 		if (d1.getMonth() != d2.getMonth()) {
 			return false;
 		}
-		if (d1.getYear() != d2.getYear()) {
+		if (d1.getDate() != d2.getDate()) {
 			return false;
 		}
 		return true;
