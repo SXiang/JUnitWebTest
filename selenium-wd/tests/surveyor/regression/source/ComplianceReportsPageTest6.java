@@ -24,7 +24,6 @@ import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
-import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.ReportsCompliance.IsotopicAnalysisTableColumns;
 import surveyor.scommon.source.ReportsCompliance.LISAIndicationTableColumns;
@@ -40,18 +39,9 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static TestEnvironmentActions testEnvironmentAction;
 
-	private static ComplianceReportsPage complianceReportsPage;
-
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
-		
-		homePageAction = new HomePageActions(driver, baseURL, testSetup);
-		manageCustomerPageAction = new ManageCustomerPageActions(driver, baseURL, testSetup);
-		manageUsersPageAction = new ManageUsersPageActions(driver, baseURL, testSetup);
-		manageLocationPageAction = new ManageLocationPageActions(driver, baseURL, testSetup);
-		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-		testEnvironmentAction = new TestEnvironmentActions();
 	}
 
 	/**
@@ -59,8 +49,11 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 * @throws Exception 
 	 */
 	protected static void initializePageActions() throws Exception {
-		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		homePageAction = new HomePageActions(driver, baseURL, testSetup);
+		manageCustomerPageAction = new ManageCustomerPageActions(driver, baseURL, testSetup);
+		manageUsersPageAction = new ManageUsersPageActions(driver, baseURL, testSetup);
+		manageLocationPageAction = new ManageLocationPageActions(driver, baseURL, testSetup);
+		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
 
@@ -160,7 +153,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *	- Customer Boundaries are present on map
 	 *	- Boundaries having exact same name or similar to it are searched and displayed to the user in alphabetical list
 	 */
-	@Ignore  // Needs more implementation.
+	@Test  
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC237, location = ComplianceReportDataProvider.class)
 	public void TC237_SearchValidCustomerBoundaryBoundarySelectorScreen(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -170,7 +163,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openNewReportPage(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.enterCustomerBoundaryUsingAreaSelector("50,50,50,50", NOTSET);
+		complianceReportsPageAction.enterCustomerBoundaryUsingAreaSelector(EMPTY, getReportRowID(reportDataRowID1));
 		
 		// We type 'Level 2-A' in boundary name and expect the following 2 entries to show up in the auto-complete list.
 		String expectedBoundaries = "Level 2-AA,Level 2-AB";
@@ -413,7 +406,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.enterCustomerBoundaryUsingAreaSelector(EMPTY, NOTSET);
+		complianceReportsPageAction.enterCustomerBoundaryUsingAreaSelector(EMPTY, getReportRowID(reportDataRowID1));
 	}
  
 	/**

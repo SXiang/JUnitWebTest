@@ -12,6 +12,7 @@ import static surveyor.scommon.source.SurveyorConstants.SUBTITLE;
 import static surveyor.scommon.source.SurveyorConstants.UNKNOWN_TEXT;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -132,7 +133,7 @@ public class BasePage {
 			return false;
 		}
 	}
-	
+
 	public boolean isElementPresent(String strXPath) {
 		return isElementPresent(By.xpath(strXPath));
 	}
@@ -255,14 +256,14 @@ public class BasePage {
 	}
 
 	protected boolean isAttributePresentOnElement(WebElement element, String attribute) {
-	    try {
-	        String value = element.getAttribute(attribute);
-	        if (value != null){
-	            return true;
-	        }
-	    } catch (Exception e) {}
+		try {
+			String value = element.getAttribute(attribute);
+			if (value != null){
+				return true;
+			}
+		} catch (Exception e) {}
 
-	    return false;
+		return false;
 	}
 
 	protected void sendKeysToTextArea(WebElement textAreaEula, String eula) {
@@ -278,18 +279,18 @@ public class BasePage {
 		actions.sendKeys(eula);
 		actions.build().perform();
 	}
-	
+
 	protected void waitUntilPresenceOfElementLocated(String elementID) {
 		waitUntilPresenceOfElementLocated(By.id(elementID));
 	}
-    protected void waitUntilPresenceOfElementLocated(By locator){
-    	(new WebDriverWait(driver, timeout)).until(
+	protected void waitUntilPresenceOfElementLocated(By locator){
+		(new WebDriverWait(driver, timeout)).until(
 				ExpectedConditions.presenceOfElementLocated(locator));
-    }
-    
-    protected String waitForPresenceOfElementText(By locator){
-    	return waitForPresenceOfElementText(locator, UNKNOWN_TEXT);
-    }
+	}
+
+	protected String waitForPresenceOfElementText(By locator){
+		return waitForPresenceOfElementText(locator, UNKNOWN_TEXT);
+	}
 	protected String waitForPresenceOfElementText(By locator, String expectedText){
 		String actualText = null;
 		try {
@@ -329,6 +330,13 @@ public class BasePage {
 	public void jsClick(WebElement element){
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click();", element);
+	}
+	
+	public void minimizeBrowserWindow(){
+		driver.manage().window().setSize(new Dimension(0,0));
+	}
+    public void maxmizeBrowserWindow(){
+    	driver.manage().window().maximize();
 	}
 
 }

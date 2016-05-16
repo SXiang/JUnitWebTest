@@ -95,6 +95,19 @@ public class StoredProcComplianceGetCoverage extends BaseEntity {
 		return true;
 	}
 
+	public boolean isCoverageValuesFormated(StoredProcComplianceGetCoverage obj) {
+		String invalidChars = ".";
+		if (obj.getPercentCoverageAssets()!=null
+				&&obj.getPercentCoverageAssets().trim().contains(invalidChars)) {
+			return false;
+		}
+		if (obj.getPercentCoverageReportArea()!=null
+				&&obj.getPercentCoverageReportArea().trim().contains(invalidChars)) {
+			return false;
+		}
+		return true;
+	}
+	
 	public static StoredProcComplianceGetCoverage getCoverage(String reportId) {
 		StoredProcComplianceGetCoverage objStoredProcCoverage = new StoredProcComplianceGetCoverage().get(reportId);
 		return objStoredProcCoverage;

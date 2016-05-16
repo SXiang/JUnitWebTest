@@ -275,6 +275,7 @@ public class SurveyorBasePage extends BasePage {
 	public void performSearch(String searchTerm) {
 		this.inputSearch.sendKeys(searchTerm);
 		this.inputSearch.sendKeys(Keys.ENTER);
+		super.waitForPageLoad();
 	}
 
 	public boolean getListSize(List<String> listOfElements) {

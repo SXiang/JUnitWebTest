@@ -21,6 +21,8 @@ public class RegexUtility {
 	public static final String NEWLINE_SPLIT_REGEX_PATTERN = "\\r?\\n";
 	public static final String SPACE_SPLIT_REGEX_PATTERN = " ";
 	public static final String COLON_SPLIT_REGEX_PATTERN = ":";
+	public static final String SEMI_COLON_SPLIT_REGEX_PATTERN = ";";
+	public static final String VERTICAL_BAR_SPLIT_REGEX_PATTERN = "\\|";
 	public static final String COMMA_SPLIT_REGEX_PATTERN = ",";
 	public static final String REGEX_PATTERN_EXTRACT_FUNCTION_ARGS = "([a-zA-Z_]\\w+)\\((.+)\\)";
 	public static final String REGEX_PATTERN_EXTRACT_VALUE_WRAPPED_IN_QUOTE = "'(.+)'";
@@ -119,7 +121,7 @@ public class RegexUtility {
 	}
 
 	/**
-	 * Returns a all String in between two given patterns
+	 * Returns last occurence of String in between two given patterns
 	 * 
 	 * @param inputString
 	 * @param regexPattern1
@@ -131,7 +133,19 @@ public class RegexUtility {
 	}
 
 	/**
-	 * Returns all String in between two given patterns
+	 * Returns all Strings in between two given patterns
+	 * 
+	 * @param inputString
+	 * @param regexPattern1
+	 * @param regexPattern2
+	 * @return
+	 */
+	public static List<String> getStringsInBetween(String inputString, String regexPattern1, String regexPattern2) {
+		return getStringsInBetween(inputString, regexPattern1, regexPattern2, false, false);
+	}
+
+	/**
+	 * Returns last occurence of string between two given patterns
 	 * 
 	 * @param inputString
 	 * @param regexPattern1
@@ -139,15 +153,28 @@ public class RegexUtility {
 	 * @return
 	 */
 	public static String getStringInBetween(String inputString, String regexPattern1, String regexPattern2, boolean matchBeginningOfLine, boolean matchEndOfLine) {
-		String returnString = null;
+		List<String> matchingStrings = getStringsInBetween(inputString, regexPattern1, regexPattern2, matchBeginningOfLine, matchEndOfLine);
+		return (matchingStrings.size() > 0) ? matchingStrings.get(matchingStrings.size()-1) : "";
+	}
+
+	/**
+	 * Returns all String in between two given patterns
+	 * 
+	 * @param inputString
+	 * @param regexPattern1
+	 * @param regexPattern2
+	 * @return
+	 */
+	public static List<String> getStringsInBetween(String inputString, String regexPattern1, String regexPattern2,
+			boolean matchBeginningOfLine, boolean matchEndOfLine) {
+		List<String> matchingStrings = new ArrayList<String>();
 		String regexString = (matchBeginningOfLine ? "^" : "") + Pattern.quote(regexPattern1) + REGEX_PATTERN_EXTRACT_EVERYTHING + Pattern.quote(regexPattern2) + (matchEndOfLine ? "$" : "");
 		Pattern pattern = Pattern.compile(regexString, flags | Pattern.DOTALL | Pattern.MULTILINE);
 		Matcher matcher = pattern.matcher(inputString);
 		while (matcher.find()) {
-			returnString = matcher.group(1);
-
+			matchingStrings.add(matcher.group(1));
 		}
-		return returnString;
+		return matchingStrings;
 	}
 
 	/**
