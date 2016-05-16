@@ -1,6 +1,10 @@
 package surveyor.unittest.source;
 
 import common.source.Log;
+import common.source.PDFUtility;
+
+import java.io.IOException;
+
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -85,11 +89,12 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, 0);
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, 0);
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete("0", 0);
-	
+
 		for(int i=0;i<10;i++){ // Testing IO exceptions
 		   Assert.assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines("0", 0));
 		}
 	}
+
 	/**
 	 * TA862 - Searched Surveys should be filtered by selected report mode
 	 * @throws Exception

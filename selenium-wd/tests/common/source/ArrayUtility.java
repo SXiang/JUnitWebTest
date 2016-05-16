@@ -1,6 +1,7 @@
 package common.source;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ArrayUtility {
@@ -20,6 +21,27 @@ public class ArrayUtility {
 		}
 		Log.info(String.format("Array values for column index=[%d] : %s", columnIdx, LogHelper.strListToString(retList)));
 		return retList;
+	}
+	
+	public static List<String> getDistinctValues(List<String> stringValues) {
+		List<String> outputList = new ArrayList<String>();
+		if (stringValues != null) {
+			HashMap<String, Boolean> map = new HashMap<String, Boolean>();
+			if (stringValues != null) {
+				for (String strValue : stringValues) {
+					if (!map.containsKey(strValue)) {
+						map.put(strValue, true);
+					} 
+				}
+			}
+			
+			if (map.size() > 0) {
+				for (String key : map.keySet()) {
+					outputList.add(key);
+				}
+			}
+		}		
+		return outputList;
 	}
 	
 	/**

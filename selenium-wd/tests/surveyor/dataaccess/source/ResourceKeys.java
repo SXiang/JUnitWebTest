@@ -3,11 +3,15 @@ package surveyor.dataaccess.source;
 public class ResourceKeys {
 	public static final String AddRefGasBottle_PageTitle = "AddRefGasBottle_PageTitle";
 	public static final String ComplianceReport_AlreadyAdded = "ComplianceReport_AlreadyAdded";
+	public static final String ComplianceReport_BoundaryMinSizeMessage = "ComplianceReport_BoundaryMinSizeMessage";
 	public static final String ComplianceReport_CustomBoundary = "ComplianceReport_CustomBoundary";
 	public static final String ComplianceReport_IsotopicAnalysis = "ComplianceReport_IsotopicAnalysis";
+	public static final String ComplianceReport_InvalidAssetTypeMessage = "ComplianceReport_InvalidAssetTypeMessage";
+	public static final String ComplianceReport_InvalidBoundaryTypeMessage = "ComplianceReport_InvalidBoundaryTypeMessage";
 	public static final String ComplianceReport_PageTitle = "ComplianceReport_PageTitle";
 	public static final String ComplianceReport_PercentCoverageAssets = "ComplianceReport_PercentCoverageAssets";
 	public static final String ComplianceReport_PercentCoverageReportArea = "ComplianceReport_PercentCoverageReportArea";
+	public static final String ComplianceReport_ValueMissingMessage = "ComplianceReport_ValueMissingMessage";
 	public static final String ComplianceReports_AddNew = "ComplianceReports_AddNew";
 	public static final String ComplianceReports_PageTitle = "ComplianceReports_PageTitle";
 	public static final String ComplianceReportSSRS_AdditionalSurveys = "ComplianceReportSSRS_AdditionalSurveys";
@@ -141,6 +145,7 @@ public class ResourceKeys {
 	public static final String RefGasReportSSRS_LotNumber = "RefGasReportSSRS_LotNumber#";
 	public static final String RefGasReportSSRS_TestResult = "RefGasReportSSRS_TestResult";
 	public static final String RefGasReportSSRS_NoRecord = "RefGasReportSSRS_NoRecord";
+	public static final String ReportSSRS_NoLisaRecordMsg = "ReportSSRS_NoLisaRecordMsg";
 	public static final String ReportSSRS_SelectedDrivingSurveys = "ReportSSRS_SelectedDrivingSurveys";
 	public static final String ReportSSRS_UserName = "ReportSSRS_UserName";
 	public static final String Runs_DrivingSurveys = "Runs_DrivingSurveys";
@@ -221,4 +226,9 @@ public class ResourceKeys {
     public static final String ComplianceReport_CoverageForecastAreaInvalidMessage = "ComplianceReport_CoverageForecastAreaInvalidMessage";
 	public static final String ComplianceReport_CoverageForecastAssetsInvalidMessage = "ComplianceReport_CoverageForecastAssetsInvalidMessage";
 	public static final String ComplianceReport_CoverageForecastBoundaryInvalidMessage = "ComplianceReport_CoverageForecastBoundaryInvalidMessage";
+
+	// Constants for report SSRS
+	public static final String ReportSSRS_DatePrinted = "ReportSSRS_DatePrinted";
+	public static final String ReportSSRS_ReportAuthor = "ReportSSRS_ReportAuthor";
+	public static final String ReportSSRS_SoftwareVersion = "ReportSSRS_SoftwareVersion";
 }

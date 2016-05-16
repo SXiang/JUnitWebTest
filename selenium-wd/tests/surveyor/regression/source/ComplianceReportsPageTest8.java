@@ -239,7 +239,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.selectCustomer(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifySelectedSurveysAreForSpecifiedCustomer(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifySearchedSurveysAreForSpecifiedCustomer(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -267,13 +267,9 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.selectReportMode("Standard", getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyStandardSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyOperatorSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
 		complianceReportsPageAction.selectReportMode("RR", getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyStandardSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyOperatorSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyRapidResponseSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
 		complianceReportsPageAction.selectReportMode("Manual", getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyManualSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -305,13 +301,9 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.selectReportMode("Standard", getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyStandardSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyOperatorSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
 		complianceReportsPageAction.selectReportMode("RR", getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyStandardSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyOperatorSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyRapidResponseSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
 		complianceReportsPageAction.selectReportMode("Manual", getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyManualSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**

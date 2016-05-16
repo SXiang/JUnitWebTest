@@ -14,6 +14,7 @@ import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.SurveyorConstants;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 @RunWith(SurveyorTestRunner.class)
@@ -25,8 +26,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 	private TestEnvironmentActions testEnvironmentAction;
 	private static final String EMPTY = "";
 	private static final Integer NOTSET = -1;
-	private static final String AdminUser = "Administrator";
-	private static final String AdminPass = "FastLane!911";
+
 
 	public ActionsVerificationTest() {
 		WebDriver webDriver = TestContext.INSTANCE.getDriver();
@@ -40,7 +40,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 	public void TC_SimulatorTest_DriverViewInstrumentReady() {
 		try {
 			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(AdminUser + ":" + AdminPass, NOTSET);
+			loginPageAction.login(SurveyorConstants.PICDFADMIN + ":" + SurveyorConstants.PICADMINPSWD, NOTSET);
 			testEnvironmentAction.startAnalyzer(EMPTY, 1);
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
@@ -107,7 +107,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 	public void TC_SimulatorTest_DriverViewStartDrivingSurvey() {
 		try {
 			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(AdminUser + ":" + AdminPass, NOTSET);
+			loginPageAction.login(SurveyorConstants.PICDFADMIN + ":" + SurveyorConstants.PICADMINPSWD, NOTSET);
 			testEnvironmentAction.startAnalyzer(EMPTY, 3);
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
@@ -143,7 +143,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 	public void TC_SimulatorTest_DriverViewStopDrivingSurvey() {
 		try {
 			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(AdminUser + ":" + AdminPass, NOTSET);
+			loginPageAction.login(SurveyorConstants.PICDFADMIN + ":" + SurveyorConstants.PICADMINPSWD, NOTSET);
 			testEnvironmentAction.startAnalyzer(EMPTY, 3);
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
@@ -181,7 +181,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 	public void TC_SimulatorTest_TC1147_DriverViewSurveyVerification() {
 		try {
 			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(AdminUser + ":" + AdminPass, NOTSET);
+			loginPageAction.login(SurveyorConstants.PICDFADMIN + ":" + SurveyorConstants.PICADMINPSWD, NOTSET);
 			testEnvironmentAction.startAnalyzer(EMPTY,3);
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
@@ -221,7 +221,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 			assertTrue(driverViewPageAction.verifySurveyInfoModeLabelEquals("Mode: " + driverViewPageAction.getDataReader().getDataRow(3).surveyType,NOTSET));
 			assertTrue(driverViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith("Elapsed: 00:",NOTSET));
 			assertTrue(driverViewPageAction.verifySurveyInfoSurveyStatusLabelEquals("Survey Active",NOTSET));
-			assertTrue(driverViewPageAction.verifySurveyInfoDriverLabelEquals("Driver: " + AdminUser,NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoDriverLabelEquals("Driver: " + SurveyorConstants.PICDFADMIN,NOTSET));
 			assertTrue(driverViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith("Remaining: 0",NOTSET));
 			driverViewPageAction.verifySurveyInfoZoomLevelLabelEquals("Zoom Level: 19",NOTSET);
 			driverViewPageAction.verifySurveyInfoSurveyorLabelEquals("Surveyor: " + SURVEYOR_NAME + " - " + ANALYZER_SERIAL_NUMBER,NOTSET);

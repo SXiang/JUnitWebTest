@@ -240,7 +240,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		listBoundary.add(RNELON);
 		listBoundary.add(RSWLAT);
 		listBoundary.add(RSWLON);
-
+		
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();
 		tableMap.put(KEYINDTB, "1");
