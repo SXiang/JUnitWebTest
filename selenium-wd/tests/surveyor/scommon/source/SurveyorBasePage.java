@@ -139,7 +139,7 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement easternTime;
 	
 	@FindBy(xpath = "//*[@id='datatable_filter']/label/input")
-	protected WebElement seacrchTextBox;
+	protected WebElement searchTextBox;
 	
 	private static String headerColumnBaseXPath = "//*[@id='datatable']/thead/tr/th[%d]";
 

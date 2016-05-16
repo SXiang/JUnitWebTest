@@ -188,7 +188,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 
 		msp.open();
 
-		assertTrue(msp.actionOnDrivingSurveys(tagName, DrivingSurveyButtonType.DeleteSurvey, true, true));
+		assertTrue(msp.actionOnDrivingSurvey(tagName, null, null, null, DrivingSurveyButtonType.DeleteSurvey) > 0);
 
 		msp.open();
 		tagList = msp.getTagNameList();
@@ -213,17 +213,17 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 
 		homePage.getLinkDrivingSurveys().click();
 
-		measurementSessionsPage.actionOnDrivingSurveys(PICADMNSTDTAG2, ADMINISTRATORUSER, SQAPICLOC4SUR, SQAPICLOC4SURANA, DrivingSurveyButtonType.ExportSurvey, true, false);
+		measurementSessionsPage.actionOnDrivingSurvey(PICADMNSTDTAG2, ADMINISTRATORUSER, SQAPICLOC4SUR, SQAPICLOC4SURANA, DrivingSurveyButtonType.ExportSurvey);
 
 		testSetup.slowdownInSeconds(15);
 		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTSURVEY, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), DRIVINGSURVEYSSTNDMODE, true));
 
-		measurementSessionsPage.actionOnDrivingSurveys(PICADMNSTDTAG2, ADMINISTRATORUSER, SQAPICLOC4SUR, SQAPICLOC4SURANA, DrivingSurveyButtonType.ExportPeaks, true, false);
+		measurementSessionsPage.actionOnDrivingSurvey(PICADMNSTDTAG2, ADMINISTRATORUSER, SQAPICLOC4SUR, SQAPICLOC4SURANA, DrivingSurveyButtonType.ExportPeaks);
 
 		testSetup.slowdownInSeconds(15);
 		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTPEAKS, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), DRIVINGSURVEYSSTNDMODE, true));
 
-		measurementSessionsPage.actionOnDrivingSurveys(PICADMNSTDTAG2, ADMINISTRATORUSER, SQAPICLOC4SUR, SQAPICLOC4SURANA, DrivingSurveyButtonType.ExportAnalysis, true, false);
+		measurementSessionsPage.actionOnDrivingSurvey(PICADMNSTDTAG2, ADMINISTRATORUSER, SQAPICLOC4SUR, SQAPICLOC4SURANA, DrivingSurveyButtonType.ExportAnalysis);
 
 		testSetup.slowdownInSeconds(15);
 		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTANALYSIS, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), DRIVINGSURVEYSSTNDMODE, true));
@@ -234,10 +234,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void DeleteSimulatedSurveys() {
-		String tagName1 = "SimAuto-Surveyor3";
-		String tagName2 = "SimAuto-Surveyor1";
-
-		List<String> tagList;
+		String analyzerName = "SimAuto-Surveyor1";
 
 		Log.info("\nRunning - Deleting all simulated surveys\n");
 
@@ -252,17 +249,11 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 
 		msp.open();
 		try {
-			msp.actionOnDrivingSurveys(tagName1, DrivingSurveyButtonType.DeleteSurvey, true, true);
-			msp.actionOnDrivingSurveys(tagName2, DrivingSurveyButtonType.DeleteSurvey, true, true);
+			msp.actionOnDrivingSurvey(null, null, null, analyzerName, DrivingSurveyButtonType.DeleteSurvey);
 
 		} catch (Exception e) {
 			Log.error(e.toString());
 		}
-
-		msp.open();
-		tagList = msp.getTagNameList();
-		assertTrue(!tagList.contains(tagName1));
-		assertTrue(!tagList.contains(tagName2));
 
 	}
 

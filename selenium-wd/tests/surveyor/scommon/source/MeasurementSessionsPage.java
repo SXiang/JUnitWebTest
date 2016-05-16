@@ -31,6 +31,7 @@ import surveyor.dataaccess.source.Measurement;
 import surveyor.dataaccess.source.Peak;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
 
 import static surveyor.scommon.source.SurveyorConstants.*;
 
@@ -43,6 +44,17 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.Layout_Nav_DrivingSurveys);
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.Layout_Nav_DrivingSurveys);
 	public static final String Constant_NoMatchingRecordsFound = Resources.getResource(ResourceKeys.Constant_NoMatchingRecordsFound);
+	public static final String Constant_Tag = Resources.getResource(ResourceKeys.Constant_Tag);
+	public static final String Constant_User = Resources.getResource(ResourceKeys.Constant_User);
+	public static final String Constant_Surveyor = Resources.getResource(ResourceKeys.Constant_Surveyor);
+	public static final String Constant_Analyzer = Resources.getResource(ResourceKeys.Constant_Analyzer);
+	public static final String ReportSSRS_StartDateTime = Resources.getResource(ResourceKeys.ReportSSRS_StartDateTime);
+	public static final String ReportSSRS_EndDateTime = Resources.getResource(ResourceKeys.ReportSSRS_EndDateTime);
+	public static final String Constant_Status = Resources.getResource(ResourceKeys.Constant_Status);
+	public static final String Constant_Type = Resources.getResource(ResourceKeys.Constant_Type);
+	public static final String Surveys_MinAmplitude = Resources.getResource(ResourceKeys.Surveys_MinAmplitude);
+	public static final String Surveys_Duration = Resources.getResource(ResourceKeys.Surveys_Duration);
+	public static final String Constant_Action = Resources.getResource(ResourceKeys.Constant_Action);
 
 	public static final String DSTAGUA = "dmcs1-sqacusua";
 	public static final String DSTAGSU = "dmcs1-sqacussu";
@@ -127,150 +139,81 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		}
 	}
 
-	public boolean actionOnDrivingSurveys(String surveyor, DrivingSurveyButtonType buttonType, boolean clickButton, boolean confirmAction) throws Exception {
-		return actionOnDrivingSurveys(null, null, surveyor, null, buttonType, clickButton, confirmAction);
-	}
-
-	public boolean actionOnDrivingSurveys(String surveyTag, String user, String surveyor, String analyzer, DrivingSurveyButtonType buttonType, boolean clickButton, boolean confirmAction) throws Exception {
+	public int actionOnDrivingSurvey(String surveyTag, String user, String surveyor, String analyzer, DrivingSurveyButtonType buttonType) throws Exception {
+		HashMap<String, String> userIndexMap = new HashMap<String, String>();
+		if(surveyTag!=null){
+		userIndexMap.put(Constant_Tag, surveyTag);
+		}
+		if(user!=null){
+		userIndexMap.put(Constant_User, user);
+		}
+		if(surveyor!=null){
+		userIndexMap.put(Constant_Surveyor, surveyor);
+		}
+		if(analyzer!=null){
+		userIndexMap.put(Constant_Analyzer, analyzer);
+		}
+		By tableContextBy = By.id("datatable_wrapper");
 		this.searchTextBox.clear();
 		if (surveyTag != null) {
 			this.searchTextBox.sendKeys(surveyTag);
 		} else if (surveyor != null) {
 			this.searchTextBox.sendKeys(surveyor);
 		}
-		this.waitForPageLoad();
-		if (tableData.getText().equals(Constant_NoMatchingRecordsFound)) {
-			return false;
-		}
-		setPagination(PAGINATIONSETTING_100);
-		this.waitForPageLoad();
-
-		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
-
-		int rowSize = rows.size();
-		int loopCount = 0;
-
-		/*if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
-			loopCount = rowSize;
-		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING_100);*/
-		int rowNum = 1;
-		try {
-			rowNum = getMatchingRow(surveyTag, user, surveyor, analyzer, rowNum, loopCount);
-			String statusCellText = getReportTableCellText("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[7]");
-			performAction(buttonType, clickButton, confirmAction, rowNum, statusCellText);
-			if (buttonType == DrivingSurveyButtonType.DeleteSurvey) {
-				if (driver.getCurrentUrl().contains(ERROR_URL)) {
-					driver.get(strBaseURL + STRURLPath);
-					rowNum++;
+		//sort table desc by date
+		WebElement tableContext = driver.findElement(tableContextBy);
+		DataTablePage dataTable = DataTablePage.getDataTablePage(driver, tableContext, this.testSetup, this.strBaseURL, this.strPageURL);
+		int totalRows=dataTable.
+		WebElement row = dataTable.getMatchingRow(userIndexMap);
+		int numError = 0;int maxNumErrors =100; int numOfRows=0;
+		while( row!=null){//numError < maxNumErrors &&
+			//try{
+				WebElement btn = row.findElement(By.xpath(getButtonXpath(buttonType)));
+				btn.click();
+				if (buttonType == DrivingSurveyButtonType.DeleteSurvey) {
+					this.waitForConfirmDeletePopupToShow();
+					this.clickOnConfirmInDeleteReportPopup();
+					if (driver.getCurrentUrl().contains(ERROR_URL)) {
+						driver.get(strBaseURL + STRURLPath);
+					}
 				}
-			}
-			rowNum++;
-
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-				this.waitForPageLoad();
-				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
-				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
-					loopCount = rowSize;
-				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
-				rowNum = 0;
-			}
-
-		} catch (org.openqa.selenium.NoSuchElementException e) {
-			return false;
+				numOfRows++;				
+				dataTable = DataTablePage.getDataTablePage(driver, tableContext, this.testSetup, this.strBaseURL, this.strPageURL);
+			//}catch(Exception e){
+               // Log.warn(e.toString());
+                numError++;
+			//}			
+			row = dataTable.getMatchingRow(userIndexMap);
 		}
-
-		return true;
+        return numOfRows;
+		
 	}
 
-	private int getMatchingRow(String surveyTag, String user, String surveyor, String analyzer, int rowNum, int loopCount) {
-		while (rowNum <= loopCount) {
-			String surveyTagCellText = getReportTableCellText("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]");
-			String userCellText = getReportTableCellText("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]");
-			String surveyorCellText = getReportTableCellText("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]");
-			String analyzerCellText = getReportTableCellText("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]");
-			boolean surveyTagSent = false;
-			boolean userSent = false;
-			boolean analyzerSent = false;
-			boolean surveyorSent = false;
-			int inputs = 0;
-			if (surveyTag != null) {
-				surveyTagSent = true;
-				inputs++;
-			}
-			if (user != null) {
-				userSent = true;
-				inputs++;
-			}
-			if (analyzer != null) {
-				analyzerSent = true;
-				inputs++;
-			}
-			if (surveyor != null) {
-				surveyorSent = true;
-				inputs++;
-			}
-
-			if (surveyTagSent && surveyTagCellText.trim().equalsIgnoreCase(surveyTag))
-				inputs--;
-			if (userSent && userCellText.trim().equalsIgnoreCase(user))
-				inputs--;
-			if (analyzerSent && analyzerCellText.trim().equalsIgnoreCase(analyzer))
-				inputs--;
-			if (surveyorSent && surveyorCellText.trim().equalsIgnoreCase(surveyor))
-				inputs--;
-
-			if (inputs == 0)
-				return rowNum;
-			else
-				rowNum++;
-		}
-		return rowNum;
-	}
-
-	private void performAction(DrivingSurveyButtonType buttonType, boolean clickButton, boolean confirmAction, int rowNum, String statusCellText) throws Exception {
+	private String getButtonXpath(DrivingSurveyButtonType buttonType) throws Exception {
 		String buttonXPath;
 		switch (buttonType) {
 		case ViewSurvey:
-			buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[11]/a[1]/img";
+			buttonXPath = "//td[11]/a[1]/img";
 			break;
 		case ExportSurvey:
-			buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[11]/a[2]/img";
+			buttonXPath = "//td[11]/a[2]/img";
 			break;
 		case ExportPeaks:
-			buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[11]/a[3]/img";
+			buttonXPath = "//td[11]/a[3]/img";
 			break;
 		case ExportAnalysis:
-			buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[11]/a[4]/img";
+			buttonXPath = "//td[11]/a[4]/img";
 			break;
 		case Resubmit:
-			buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[11]/a[5]/img";
+			buttonXPath = "//td[11]/a[5]/img";
 			break;
 		case DeleteSurvey:
-			buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[11]/a[6]/img";
+			buttonXPath = "//td[11]/a[6]/img";
 			break;
 		default:
 			throw new Exception("ButtonType NOT supported.");
 		}
-		if (statusCellText.trim().equals("Canceled") && (buttonType == DrivingSurveyButtonType.DeleteSurvey)) {
-			buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[11]/a[2]/img";
-		}
-		WebElement buttonImg = getTable().findElement(By.xpath(buttonXPath));
-		if (buttonImg.isDisplayed()) {
-			if (clickButton) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", buttonImg);
-				if (buttonType == buttonType.DeleteSurvey) {
-					this.waitForConfirmDeletePopupToShow();
-					if (confirmAction) {
-						this.clickOnConfirmInDeletePopup();
-					}
-				}
-			}
-		}
+		return buttonXPath;
 	}
 
 	public List<String> getTagNameList() {
@@ -616,6 +559,11 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 	private WebElement getTableCell(String elementXPath) {
 		return getTable().findElement(By.xpath(elementXPath));
+	}
+
+	public void clickOnConfirmInDeleteReportPopup() {
+		WebElement confirmDelete = this.driver.findElement(By.xpath(DELETE_POPUP_CONFIRM_BUTTON_XPATH));
+		confirmDelete.click();
 	}
 
 	@Override
