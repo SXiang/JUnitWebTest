@@ -75,11 +75,25 @@ public class LocationDataReader extends BaseDataReader {
 	public LocationDataRow getDataRow() {
 		return dataRow;
 	}
+	
+	public Integer getRowCount() {
+		return this.getRowCount(TESTDATA_SHEET_NAME);
+	}
  
 	public void setDataRow(LocationDataRow dataRow) {
 		this.dataRow = dataRow;
 	}
  
+	public LocationDataRow getLocationForCustomer(Integer customerRowID) throws Exception {
+		for (int idx = 1; idx < this.getRowCount(); idx++) {
+			LocationDataRow locationDataRow = this.getDataRow(idx);
+			if (customerRowID == Integer.valueOf(locationDataRow.customerDataRowID)) {
+				return locationDataRow;
+			}
+		}
+		return null;
+	}
+	
 	public LocationDataRow getDataRow(Integer dataRowID) throws Exception {
 		String rowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
 		String name = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Name, TESTDATA_SHEET_NAME);

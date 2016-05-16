@@ -38,6 +38,10 @@ public class TestEnvironmentDataReader extends BaseDataReader {
 		return dataRow;
 	}
  
+	public Integer getRowCount() {
+		return this.getRowCount(TESTDATA_SHEET_NAME);
+	}
+	
 	public void setDataRow(TestEnvironmentDataRow dataRow) {
 		this.dataRow = dataRow;
 	}

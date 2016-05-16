@@ -8,4 +8,8 @@ public class BaseDataReader {
 	public BaseDataReader(ExcelUtility excelUtility) {
 		this.excelUtility = excelUtility;
 	}
+	
+	protected Integer getRowCount(String testSheetName) {
+		return excelUtility.getRowCount(testSheetName);
+	}
 }

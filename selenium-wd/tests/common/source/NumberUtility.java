@@ -158,6 +158,34 @@ public class NumberUtility {
 		return decimalCount;
 	}
 
+	public static Integer getIntegerValueOf(String str){
+		Integer result = 0;
+		try{
+			result = Integer.valueOf(str);
+		}catch(NumberFormatException e){
+			Log.warn(str+ " is not an Integer");
+		}
+		return result;
+	}
+	
+	public static Double getDoubleValueOf(String str){
+		Double result = 0d;
+		try{
+			result = Double.valueOf(str);
+		}catch(NumberFormatException e){
+			Log.warn(str+ " is not a Double");
+		}
+		return result;
+	}
+	public static Float getFloatValueOf(String str){
+		Float result = 0f;
+		try{
+			result = Float.valueOf(str);
+		}catch(NumberFormatException e){
+			Log.warn(str+ " is not a Float");
+		}
+		return result;
+	}
 	public static void main(String[] args) {
 		Log.info("Running test - testDecimalsInNumber_NoDecimals() ...");
 		testDecimalsInNumber_NoDecimals();

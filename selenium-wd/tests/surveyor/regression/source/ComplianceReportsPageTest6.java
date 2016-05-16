@@ -153,7 +153,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *	- Customer Boundaries are present on map
 	 *	- Boundaries having exact same name or similar to it are searched and displayed to the user in alphabetical list
 	 */
-	@Ignore  // Needs more implementation.
+	@Test  
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC237, location = ComplianceReportDataProvider.class)
 	public void TC237_SearchValidCustomerBoundaryBoundarySelectorScreen(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -163,7 +163,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openNewReportPage(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.enterCustomerBoundaryUsingAreaSelector("50,50,50,50", NOTSET);
+		complianceReportsPageAction.enterCustomerBoundaryUsingAreaSelector(EMPTY, getReportRowID(reportDataRowID1));
 		
 		// We type 'Level 2-A' in boundary name and expect the following 2 entries to show up in the auto-complete list.
 		String expectedBoundaries = "Level 2-AA,Level 2-AB";
@@ -406,7 +406,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.enterCustomerBoundaryUsingAreaSelector(EMPTY, NOTSET);
+		complianceReportsPageAction.enterCustomerBoundaryUsingAreaSelector(EMPTY, getReportRowID(reportDataRowID1));
 	}
  
 	/**

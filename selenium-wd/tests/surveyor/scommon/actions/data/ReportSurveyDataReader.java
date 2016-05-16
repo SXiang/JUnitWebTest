@@ -58,6 +58,10 @@ public class ReportSurveyDataReader extends BaseDataReader {
 	public ReportSurveyDataRow getDataRow() {
 		return dataRow;
 	}
+	
+	public Integer getRowCount() {
+		return this.getRowCount(TESTDATA_SHEET_NAME);
+	}
  
 	public void setDataRow(ReportSurveyDataRow dataRow) {
 		this.dataRow = dataRow;

@@ -15,7 +15,7 @@ import org.openqa.selenium.WebElement;
 public class ObserverViewPage extends BaseDrivingViewPage {
 	public static final String STRURLPath = "/Live/Observer";
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.Constant_Observer);
-	public static final String STRPageContentText = "Map View";
+	public static final String STRPageContentText = Resources.getResource(ResourceKeys.Dialog_MapView);
 	
     @FindBy(id ="tag")
 	private WebElement labelTag;
