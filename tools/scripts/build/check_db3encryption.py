@@ -57,7 +57,7 @@ def check_db3file():
 		return False
 	puts("Checking DB3 file: " + db3location)
 	with open(db3location, "rb") as file:
-    		byte = file.read(21) # read the first 20 bytes    	
+    		byte = file.read(21) # read the first 21 bytes    	
 	file.close()	
 	if  (byte[20]=='\x00'): #20th byte is 0 when not encrypted
 		puts("\n\nDB3 file is not encrypted: "+db3location+"\n\n")
