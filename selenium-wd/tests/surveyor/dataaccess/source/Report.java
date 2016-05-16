@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import common.source.Log;
+import surveyor.scommon.actions.ComplianceReportsPageActions;
  
 public class Report extends BaseEntity {
 	private static final String CACHE_KEY = "REPORT.";
@@ -131,10 +132,11 @@ public class Report extends BaseEntity {
 		Report objReport = null;
 		
 		// Get from cache if present. Else fetch from Database.
-		if (DBCache.INSTANCE.containsKey(CACHE_KEY+reportTitle)) {
+		if (ComplianceReportsPageActions.workingDataRow.useDBCache
+				&&DBCache.INSTANCE.containsKey(CACHE_KEY+reportTitle)) {
 			objReport = (Report)DBCache.INSTANCE.get(CACHE_KEY+reportTitle);
 		} else {
-			String SQL = "SELECT * FROM dbo.[Report] WHERE ReportTitle='" + reportTitle + "'";
+			String SQL = "SELECT * FROM dbo.[Report] WHERE ReportTitle='" + reportTitle + "' ORDER BY DateStarted DESC ";
 			ArrayList<Report> objReportList = load(SQL);
 			if (objReportList!=null && objReportList.size()>0) {
 				objReport = objReportList.get(0);

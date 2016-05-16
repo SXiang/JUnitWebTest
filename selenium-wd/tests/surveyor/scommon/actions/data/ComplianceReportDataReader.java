@@ -58,6 +58,7 @@ public class ComplianceReportDataReader extends BaseDataReader {
 		public String reportOptViewLayerRowID;
 		public String reportOptTabularPDFContentRowID;
 		public String reportSurveyRowIDs;
+		public boolean useDBCache = true;
  
 		public ComplianceReportsDataRow(String rowID, String tCID, String title, String customerRowID, String timezone, String exclusionRadius, 
 				String reportMode, String minAmplitude, String customBoundaryNELat, String customBoundaryNELong, String customBoundarySWLat, 
