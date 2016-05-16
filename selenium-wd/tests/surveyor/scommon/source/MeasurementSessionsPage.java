@@ -163,11 +163,11 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		//sort table desc by date
 		WebElement tableContext = driver.findElement(tableContextBy);
 		DataTablePage dataTable = DataTablePage.getDataTablePage(driver, tableContext, this.testSetup, this.strBaseURL, this.strPageURL);
-		int totalRows=dataTable.
-		WebElement row = dataTable.getMatchingRow(userIndexMap);
 		int numError = 0;int maxNumErrors =100; int numOfRows=0;
 		while( row!=null){//numError < maxNumErrors &&
 			//try{
+			WebElement row = dataTable.getMatchingRow(userIndexMap);
+
 				WebElement btn = row.findElement(By.xpath(getButtonXpath(buttonType)));
 				btn.click();
 				if (buttonType == DrivingSurveyButtonType.DeleteSurvey) {
