@@ -96,6 +96,10 @@ public class ComplianceReportDataReader extends BaseDataReader {
 		return dataRow;
 	}
  
+	public Integer getRowCount() {
+		return this.getRowCount(TESTDATA_SHEET_NAME);
+	}
+	
 	public void setDataRow(ComplianceReportsDataRow dataRow) {
 		this.dataRow = dataRow;
 	}

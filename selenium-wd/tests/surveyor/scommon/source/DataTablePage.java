@@ -1,5 +1,6 @@
 package surveyor.scommon.source;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,7 +90,33 @@ public class DataTablePage extends BasePage{
 	public boolean hasRecord(Map<String,List<String>> filter, boolean match){
     	return findRecords(filter,1,match) > 0;
     }
-	
+
+	/**
+     * Get all records for specified column in this data table, page by page
+	 * @param columnName - name of the column to get values for.
+     * @param numRecords - the max number of records to be matched, search for all if it's -1
+	 * @return all the records in the specified column in the table.
+	 */
+    public List<String> getRecords(String columnName, Integer numRecords){
+		setPagination(pagination);
+		waitForTableToLoad();
+		
+		int colIdx = getColumnIndex(columnName);
+		List<String> columnValues = new ArrayList<String>();
+		int numFound = 0;
+		do{			
+			for(WebElement row: tableRow){
+				List<WebElement> field = row.findElements(By.cssSelector("td"));
+				columnValues.add(field.get(colIdx).getText());
+            	numFound++;
+				if(numRecords>-1 && numFound >= numRecords){
+					break;
+				}
+			}
+		}while(toNextPage());		
+        return columnValues;
+   }
+    
 	/**
      * Find records in this data table, page by page
 	 * @param filter - conditions for matching a row, columnName:value pairs
@@ -129,12 +156,7 @@ public class DataTablePage extends BasePage{
 			}
 		}while(toNextPage());		
         return numFound;
-   }
-
-	
-
-	
-	
+   }	
 	
 	//******************** Table Helpers ****************************
 	/**

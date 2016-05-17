@@ -3,6 +3,33 @@ package surveyor.scommon.source;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 
 public class ReportsSurveyInfo {
+	
+	public enum ColumnHeaders {
+		User ("User", 1),
+		Surveyor ("Surveyor", 2),
+		StartDate ("Start Date/Time", 3),
+		EndDate ("End Date/Time", 4),
+		SurveyType ("Type", 5),
+		Tag ("Tag", 6),
+		IsSurveySelected ("Selected?", 7);
+		
+		private final Integer index;
+		private final String name;
+
+		ColumnHeaders(String nm, Integer idx) {
+			name = nm;
+			index = idx;
+		}
+
+		public String getName() {
+			return this.name;
+		}
+
+		public Integer getIndex() {
+			return this.index;
+		}
+	}
+
 	private String surveyor;
 	private String username;
 	private String tag;

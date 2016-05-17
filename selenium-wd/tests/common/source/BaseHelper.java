@@ -187,9 +187,15 @@ public class BaseHelper {
 		}
 		return sorted;
 	}
-    public static boolean isNullOrEmptyOrZero(String str){
-    	return str==null||str.length()==0||str.matches("[0\\.]*");
+    
+	public static boolean isNullOrEmptyOrZero(String str){
+    	return isNullOrEmpty(str)||str.matches("[0\\.]*");
     }
+
+	public static boolean isNullOrEmpty(String str) {
+		return str==null||str.length()==0;
+	}
+    
 	public static String prependStringWithChar(String input, char prependChar, int times) {
 		StringBuilder builder = new StringBuilder();
 		if (times > 0) {

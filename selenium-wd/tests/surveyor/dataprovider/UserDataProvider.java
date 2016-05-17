@@ -9,6 +9,8 @@ import static surveyor.scommon.source.SurveyorConstants.USERPASSWORDHASH;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSDR;
 import static surveyor.scommon.source.SurveyorConstants.SQAPICAD;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICSU;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICSU1;
 import static surveyor.scommon.source.SurveyorConstants.SQAPICSUP;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.SQAPGEUA;
@@ -19,6 +21,7 @@ import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
 
 public class UserDataProvider extends SurveyorTestRunner {
 	public static final String USER_ROLE_INFO_PROVIDER = "dataProviderUserRoleInfo";
+	public static final String DATA_PROVIDER_ALL_USERS = "dataProviderAllUsers";
 	public static final String USER_ADMIN_SUPPORT_PROVIDER = "dataProviderPicarroAdminSupportRoleInfo";
 
 	public UserDataProvider(Class<?> klass) throws InitializationError {
@@ -52,7 +55,25 @@ public class UserDataProvider extends SurveyorTestRunner {
             };
         // @formatter:on
     }
-    
+
+    @DataProvider
+    public static Object[][] dataProviderAllUsers() {
+        // @formatter:off"
+        return new String[][] {		// Username, Password(ENCRYPTED), Role, CustomerName, CustomerLocation
+        	{ SQACUSUA,USERPASSWORDHASH,"Customer Utility Admin","sqacus","sqacusloc" },
+        	{ SQACUSSU,USERPASSWORDHASH,"Customer Supervisor","sqacus","sqaTestloc" },
+        	{ SQACUSDR,USERPASSWORDHASH,"Customer Driver","sqacus","sqacusloc" },
+        	{ SQAPICAD,USERPASSWORDHASH,"Picarro Admin","Picarro","Santa Clara" },
+        	{ SQAPICSU,USERPASSWORDHASH,"Picarro Support","Picarro","Santa Clara" },
+        	{ SQAPICSU1,USERPASSWORDHASH,"Picarro Support","Picarro","Santa Clara" },
+        	{ SQAPICSUP,USERPASSWORDHASH,"Picarro Support","Picarro","Santa Clara" },
+        	{ PICDFADMIN,USERPASSWORDHASH,"Picarro Admin","Picarro","Santa Clara" },
+        	{ SQAPGEUA,USERPASSWORDHASH,"PGE Customer Utility Admin","PG&E","pge_SC" },
+        	{SQAPGESU,USERPASSWORDHASH,"PGE Customer Supervisor","PG&E","pge_SC" },
+            };
+        // @formatter:on
+    }
+
     @DataProvider
     public static Object[][] dataProviderPicarroUserRoleInfo() {
         // @formatter:off"

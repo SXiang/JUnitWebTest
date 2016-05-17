@@ -29,6 +29,10 @@ public class CustomerLicensedFeaturesDataReader extends BaseDataReader {
 	public CustomerLicensedFeaturesDataRow getDataRow() {
 		return dataRow;
 	}
+	
+	public Integer getRowCount() {
+		return this.getRowCount(TESTDATA_SHEET_NAME);
+	}
  
 	public void setDataRow(CustomerLicensedFeaturesDataRow dataRow) {
 		this.dataRow = dataRow;

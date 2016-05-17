@@ -140,7 +140,9 @@ public class SurveyorBaseTest {
 		baseURL = testSetup.getBaseUrl();
 		screenShotsDir = "./screenshots/";
 		debug = testSetup.isRunningDebug();
-		
+
+		TestContext.INSTANCE.setTestSetup(testSetup);
+
 		Log.info("debuggug null - driver:***:" +driver);
 		driver.manage().deleteAllCookies();
 		
@@ -149,8 +151,6 @@ public class SurveyorBaseTest {
 		
 		homePage = new HomePage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  homePage);
-		
-		TestContext.INSTANCE.setTestSetup(testSetup);
 	}
 	
 	/**

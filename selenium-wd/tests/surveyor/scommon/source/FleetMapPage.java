@@ -13,6 +13,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import common.source.BasePage;
 import common.source.Log;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 
 /**
  * @author zlu
@@ -20,8 +22,9 @@ import common.source.TestSetup;
  */
 public class FleetMapPage extends BasePage {
 	public static final String STRURLPath = "/Home/FleetMap";
-	public static final String STRPageTitle = "Fleet Map - Surveyor";
-	public static final String STRPageContentText = "Fleet Map";
+	public static final String STRPageTitle = String.format("%s - %s", 
+			Resources.getResource(ResourceKeys.FleetMap_PageTitle), Resources.getResource(ResourceKeys.Constant_Surveyor));
+	public static final String STRPageContentText = Resources.getResource(ResourceKeys.FleetMap_PageTitle);
 	
 	@FindBy(how = How.XPATH, using = "//*[@class='ol-unselectable']")
 	protected WebElement fleetMap;
