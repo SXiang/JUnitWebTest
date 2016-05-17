@@ -14,7 +14,6 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 	private String surveyorUnitName;
 	private float amplitude;
 	private float ch4;
-//	private float aggregatedEthaneRatioSdev;
 	private String text;
 	private String aggregatedEthaneToMethaneRatio;
 	private String aggregatedClassificationConfidence;
@@ -26,10 +25,9 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 	}
 
 	public String toString() {
-		//String uncertainty=(this.getAggregatedEthaneRatioSdev()==0?"":Float.toString(this.getAggregatedEthaneRatioSdev()));
 		return this.getPeakNumber().concat(this.getSurveyorUnitName()).concat(this.getDateTime())
 				.concat(Float.toString(this.getAmplitude())).concat(Float.toString(this.getCh4()))
-				.concat(this.getAggregatedEthaneToMethaneRatio()).trim()./*concat(uncertainty).*/concat(this.getAggregateDisposition())
+				.concat(this.getAggregatedEthaneToMethaneRatio()).trim().concat(this.getAggregateDisposition())
 				.concat(this.getAggregatedClassificationConfidence()).concat(this.getText());
 	}
 
@@ -113,14 +111,6 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 		this.aggregatedClassificationConfidenceReport = aggregatedClassificationConfidenceReport;
 	}
 
-//	public float getAggregatedEthaneRatioSdev() {
-//		return aggregatedEthaneRatioSdev;
-//	}
-//
-//	public void setAggregatedEthaneRatioSdev(float aggregatedEthaneRatioSdev) {
-//		this.aggregatedEthaneRatioSdev = aggregatedEthaneRatioSdev;
-//	}
-
 	public ArrayList<StoredProcComplianceGetIndications> get(String reportId) {
 		ArrayList<StoredProcComplianceGetIndications> objReportList = load(reportId);
 		return objReportList;
@@ -182,10 +172,6 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 			objReport.setAggregatedClassificationConfidenceReport(resultSet.getString("AggregatedClassificationConfidence"));
 			objReport.setAggregatedEthaneToMethaneRatio(resultSet.getString("AggregatedEthaneToMethaneRatio"));
 			objReport.setAggregateDisposition(resultSet.getString("AggregatedDisposition"));
-//			objReport.setAggregatedEthaneRatioSdev(resultSet.getFloat("AggregatedEthaneRatioSdev"));
-//			if(resultSet.wasNull()){
-//				objReport.setAggregatedEthaneRatioSdev(0);
-//			}
 		} catch (SQLException e) {
 			Log.error("Class StoredProcComplianceGetIndications | " + e.toString());
 		}
