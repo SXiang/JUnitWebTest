@@ -139,19 +139,20 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		}
 	}
 
-	public int actionOnDrivingSurvey(String surveyTag, String user, String surveyor, String analyzer, DrivingSurveyButtonType buttonType) throws Exception {
+	public boolean actionOnDrivingSurvey(String surveyTag, String user, String surveyor, String analyzer, DrivingSurveyButtonType buttonType) throws Exception {
 		HashMap<String, String> userIndexMap = new HashMap<String, String>();
-		if(surveyTag!=null){
-		userIndexMap.put(Constant_Tag, surveyTag);
+		boolean result = false;
+		if (surveyTag != null) {
+			userIndexMap.put(Constant_Tag, surveyTag);
 		}
-		if(user!=null){
-		userIndexMap.put(Constant_User, user);
+		if (user != null) {
+			userIndexMap.put(Constant_User, user);
 		}
-		if(surveyor!=null){
-		userIndexMap.put(Constant_Surveyor, surveyor);
+		if (surveyor != null) {
+			userIndexMap.put(Constant_Surveyor, surveyor);
 		}
-		if(analyzer!=null){
-		userIndexMap.put(Constant_Analyzer, analyzer);
+		if (analyzer != null) {
+			userIndexMap.put(Constant_Analyzer, analyzer);
 		}
 		By tableContextBy = By.id("datatable_wrapper");
 		this.searchTextBox.clear();
@@ -160,33 +161,25 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		} else if (surveyor != null) {
 			this.searchTextBox.sendKeys(surveyor);
 		}
-		//sort table desc by date
 		WebElement tableContext = driver.findElement(tableContextBy);
 		DataTablePage dataTable = DataTablePage.getDataTablePage(driver, tableContext, this.testSetup, this.strBaseURL, this.strPageURL);
-		int numError = 0;int maxNumErrors =100; int numOfRows=0;
-		while( row!=null){//numError < maxNumErrors &&
-			//try{
+		try {
 			WebElement row = dataTable.getMatchingRow(userIndexMap);
-
-				WebElement btn = row.findElement(By.xpath(getButtonXpath(buttonType)));
-				btn.click();
-				if (buttonType == DrivingSurveyButtonType.DeleteSurvey) {
-					this.waitForConfirmDeletePopupToShow();
-					this.clickOnConfirmInDeleteReportPopup();
-					if (driver.getCurrentUrl().contains(ERROR_URL)) {
-						driver.get(strBaseURL + STRURLPath);
-					}
+			WebElement btn = row.findElement(By.xpath(getButtonXpath(buttonType)));
+			btn.click();
+			if (buttonType == DrivingSurveyButtonType.DeleteSurvey) {
+				this.waitForConfirmDeletePopupToShow();
+				this.clickOnConfirmInDeleteReportPopup();
+				if (driver.getCurrentUrl().contains(ERROR_URL)) {
+					driver.get(strBaseURL + STRURLPath);
 				}
-				numOfRows++;				
-				dataTable = DataTablePage.getDataTablePage(driver, tableContext, this.testSetup, this.strBaseURL, this.strPageURL);
-			//}catch(Exception e){
-               // Log.warn(e.toString());
-                numError++;
-			//}			
-			row = dataTable.getMatchingRow(userIndexMap);
+			}
+			result = true;
+		} catch (Exception e) {
+			Log.warn(e.toString());
+			result = false;
 		}
-        return numOfRows;
-		
+		return result;
 	}
 
 	private String getButtonXpath(DrivingSurveyButtonType buttonType) throws Exception {

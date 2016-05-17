@@ -188,7 +188,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 
 		msp.open();
 
-		assertTrue(msp.actionOnDrivingSurvey(tagName, null, null, null, DrivingSurveyButtonType.DeleteSurvey) > 0);
+		assertTrue(msp.actionOnDrivingSurvey(tagName, null, null, null, DrivingSurveyButtonType.DeleteSurvey));
 
 		msp.open();
 		tagList = msp.getTagNameList();
@@ -229,32 +229,6 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTANALYSIS, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), DRIVINGSURVEYSSTNDMODE, true));
 	}
 
-	/**
-	 * Delete all simulated surveys
-	 */
-	@Test
-	public void DeleteSimulatedSurveys() {
-		String analyzerName = "SimAuto-Surveyor1";
 
-		Log.info("\nRunning - Deleting all simulated surveys\n");
-
-		loginPage.open();
-		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
-
-		homePage.open();
-		assertTrue(homePage.checkIfAtHomePage());
-
-		MeasurementSessionsPage msp = new MeasurementSessionsPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver, msp);
-
-		msp.open();
-		try {
-			msp.actionOnDrivingSurvey(null, null, null, analyzerName, DrivingSurveyButtonType.DeleteSurvey);
-
-		} catch (Exception e) {
-			Log.error(e.toString());
-		}
-
-	}
 
 }

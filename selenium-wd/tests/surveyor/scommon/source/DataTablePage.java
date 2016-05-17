@@ -200,7 +200,6 @@ public class DataTablePage extends BasePage {
 		return null;
 	}
 	
-	
 	//******************** Table Helpers ****************************
 	/**
 	 * To find matches by equals or matches
