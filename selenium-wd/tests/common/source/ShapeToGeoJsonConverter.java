@@ -21,7 +21,7 @@ public class ShapeToGeoJsonConverter {
 		List<String> lines = ShapeToGeoJsonConverter.convertToList(shapeFileFullPath);
 		for (String line : lines) {
 			builder.append(line);
-			builder.append(System.getProperty("line.separator"));
+			builder.append(BaseHelper.getLineSeperator());
 		}
 		return builder.toString();
 	}
