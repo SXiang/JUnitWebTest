@@ -3283,16 +3283,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@Override
 	public void waitForPageLoad() {
 		waitForAJAXCallsToComplete();
-		try{
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return d.getPageSource().contains(STRPageContentText);
 			}
 		});
-		}catch(TimeoutException e){			
-			Log.error("'"+driver.getTitle()+"' page not containing '"+STRPageContentText+"'?");
-			Log.error(e.toString());
-		}
 	}
 
 	public void waitForReportGenerationtoComplete() {
