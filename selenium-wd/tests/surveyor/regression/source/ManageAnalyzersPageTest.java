@@ -11,6 +11,8 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.Log;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.ManageAnalyzersPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
@@ -29,6 +31,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	private static ManageLocationsPage manageLocationsPage;
 	private static ManageSurveyorPage manageSurveyorPage;
 	private static ManageAnalyzersPage manageAnalyzersPage;
+	public static final String ManageAnalyzer_AlreadyAssociatedError = Resources.getResource(ResourceKeys.ManageAnalyzer_AlreadyAssociatedError);
 	
 	@BeforeClass
 	public static void setupManageAnalyzersPageTest() {
@@ -273,7 +276,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	 * 
 	 */	
 	@Test
-	public void TC109_EditAnalyzer_PicAdmin() {
+	public void TC109_Associate_Disassociate_Analyzers_PicAdmin() {
 		String customerName = "Picarro";
 		String locationName = customerName + testSetup.getRandomNumber() + "loc";
 		String surveyorName = locationName + "sur";
@@ -285,22 +288,49 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		String surveyorNameNew = locationName + "sur";
 				
 		Log.info("\nRunning TC109_Associate_Disassociate_Analyzers_PicAdmin - Picarro Administrator is allowed to associate and disassociate Analyzers within Surveyor Unit of different Customers");
-		
+			
 		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerName, locationName,surveyorName,analyzerName,cityName,ANALYZERSHAREDKEY);
 		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerNameNew, locationNameNew,surveyorNameNew,analyzerName,cityName,ANALYZERSHAREDKEY);
 				
 		if (manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
 			manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationName, surveyorName, analyzerName, 
-					customerName + " - " + locationName + " - " + surveyorNameNew );
+					customerNameNew + " - " + locationNameNew + " - " + surveyorNameNew );
 		
-		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorNameNew, analyzerName));	
-		assertFalse(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorNameNew, analyzerName));
+		assertFalse(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName));	
+		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerNameNew, locationNameNew, surveyorNameNew, analyzerName));
+	}
+	
+	/**
+	 * Test Case ID: TC110_SurveyorUnit_0or1_analyzer_associated
+	 * Test Description: Surveyor Unit should have 0 or 1 analyzer associated
+	 * 
+	 */	
+	@Test
+	public void TC110_SurveyorUnit_0or1_analyzer_associated() {
+		String customerName = "PG&E";
+		String locationName = customerName + testSetup.getRandomNumber() + "loc";
+		String surveyorName = locationName + "sur";
+		String analyzerName = surveyorName + "ana";
+		String cityName ="Santa Clara";
+
+		String locationNameNew = customerName + testSetup.getRandomNumber() + CUSNAMEBASELOC;
+		String surveyorNameNew = locationName + "sur";
+		String analyzerNameNew = surveyorNameNew + "ana";
+				
+		Log.info("\nRunning TC109_Associate_Disassociate_Analyzers_PicAdmin - Picarro Administrator is allowed to associate and disassociate Analyzers within Surveyor Unit of different Customers");
+			
+		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerName, locationName,surveyorName,analyzerName,cityName,ANALYZERSHAREDKEY);
+		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerName, locationNameNew,surveyorNameNew,analyzerNameNew,cityName,ANALYZERSHAREDKEY);
+		if (manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
+		manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationNameNew, surveyorNameNew, analyzerNameNew, 
+					customerName + " - " + locationName + " - " + surveyorName, false );
+		
+		assertTrue(manageAnalyzersPage.getWarningMsg().getText().trim().equals(ManageAnalyzer_AlreadyAssociatedError));
 	}
 	
 	private void addNewLocationSurveyorAnalyzer(String userName, String password, String customerName, String locationName, String surveyorName, String analyzerName, String city, String sharedKey){
 		loginPage.open();
-		loginPage.loginNormalAs(userName, password);		
-		
+		loginPage.loginNormalAs(userName, password);			
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName, customerName, city);		
 		manageSurveyorPage.open();

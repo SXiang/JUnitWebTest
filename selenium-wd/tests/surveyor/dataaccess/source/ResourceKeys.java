@@ -143,6 +143,7 @@ public class ResourceKeys {
 	public static final String Survey_MinutesAnd = "Survey_MinutesAnd";
 	public static final String Survey_Seconds = "Survey_Seconds";
 	public static final String Survey_SurveyWillStopIn = "Survey_SurveyWillStopIn";
+	public static final String ManageAnalyzer_AlreadyAssociatedError = "ManageAnalyzer_AlreadyAssociatedError";
 	
 	// Constants for Capture results.
 	public static final String Survey_Rerun = "Survey_Rerun"; 
