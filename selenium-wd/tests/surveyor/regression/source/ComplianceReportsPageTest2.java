@@ -43,6 +43,10 @@ import static surveyor.scommon.source.SurveyorConstants.NELAT;
 import static surveyor.scommon.source.SurveyorConstants.NELON;
 import static surveyor.scommon.source.SurveyorConstants.SWLAT;
 import static surveyor.scommon.source.SurveyorConstants.SWLON;
+import static surveyor.scommon.source.SurveyorConstants.NELAT_SMALL;
+import static surveyor.scommon.source.SurveyorConstants.NELON_SMALL;
+import static surveyor.scommon.source.SurveyorConstants.SWLAT_SMALL;
+import static surveyor.scommon.source.SurveyorConstants.SWLON_SMALL;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import static surveyor.scommon.source.SurveyorConstants.X_OFFSET;
@@ -236,7 +240,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		listBoundary.add(RNELON);
 		listBoundary.add(RSWLAT);
 		listBoundary.add(RSWLON);
-
+		
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		Map<String, String> tableMap = new HashMap<String, String>();
 		tableMap.put(KEYINDTB, "1");
@@ -595,9 +599,16 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
 
+		// Selenium bug: https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/5233
+		// ISSUE: Selenium won't click at the correct offset in Lat/Long map selector.
+		// WORKAROUND: Use input text fields instead of using Lat/Long -> rpt.setCustomBoundaryInfo(X_OFFSET, Y_OFFSET, RECT_HEIGHT, RECT_WIDTH);
+		listBoundary.add(NELAT_SMALL);
+		listBoundary.add(NELON_SMALL);
+		listBoundary.add(SWLAT_SMALL);
+		listBoundary.add(SWLON_SMALL);
+		
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
-		rpt.setCustomBoundaryInfo(X_OFFSET, Y_OFFSET, RECT_HEIGHT, RECT_WIDTH);
 		complianceReportsPage.waitForPageLoad();
 
 		complianceReportsPage.addNewReport(rpt);
@@ -1675,21 +1686,32 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		List<String> tagList2 = new ArrayList<String>();
 		tagList2.add(PICADMNSTDTAG);
 		tagList2.add("standard");
-				
+
+		// Selenium bug: https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/5233
+		// ISSUE: Selenium won't click at the correct offset in Lat/Long map selector.
+		// WORKAROUND: Use input text fields instead of using Lat/Long -> rpt.setCustomBoundaryInfo(X_OFFSET, Y_OFFSET, RECT_HEIGHT, RECT_WIDTH);
+		listBoundary.add(NELAT_SMALL);
+		listBoundary.add(NELON_SMALL);
+		listBoundary.add(SWLAT_SMALL);
+		listBoundary.add(SWLON_SMALL);
+		
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList1, "", "", viewList1, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
-		rpt.setCustomBoundaryInfo(X_OFFSET, Y_OFFSET, RECT_WIDTH, RECT_HEIGHT);
 		complianceReportsPage.addNewReport(rpt);
 		assertTrue(complianceReportsPage.getAssetErrorText().getText().equals("Selected Percent Coverage Forecast, Please select Customer Boundary"));
 		assertTrue(complianceReportsPage.getBoundaryErrorText().getText().equals("Selected Percent Coverage Forecast, Please select at least two surveys with different tags"));
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
 		complianceReportsPage.clickOnCancelBtn();
 		
+		listBoundary = new ArrayList<String>();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+		
 		ReportsCompliance rpt2 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList1, "", "", viewList1, SurveyModeFilter.Standard);
 		rpt2.setViewLayersList(viewLayerList);
 		rpt2.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
 		complianceReportsPage.addNewReport(rpt2);
-		System.out.println("!!!!!" + complianceReportsPage.getAssetErrorText().getText()+ "!!!!!");
+		Log.info("!!!!!" + complianceReportsPage.getAssetErrorText().getText()+ "!!!!!");
 		assertTrue(complianceReportsPage.getAssetErrorText().getText().equals("Selected Percent Coverage Forecast, Please select at least two surveys with different tags"));
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
 		complianceReportsPage.clickOnCancelBtn();
@@ -1893,11 +1915,19 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
 
+		// Selenium bug: https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/5233
+		// ISSUE: Selenium won't click at the correct offset in Lat/Long map selector.
+		// WORKAROUND: Use input text fields instead of using Lat/Long -> rpt.setCustomBoundaryInfo(X_OFFSET, Y_OFFSET, RECT_HEIGHT, RECT_WIDTH);
+		listBoundary.add(NELAT_SMALL);
+		listBoundary.add(NELON_SMALL);
+		listBoundary.add(SWLAT_SMALL);
+		listBoundary.add(SWLON_SMALL);
+
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
-		rpt.setCustomBoundaryInfo(X_OFFSET, Y_OFFSET, RECT_HEIGHT, RECT_WIDTH);
+		rpt.setListBoundary(listBoundary);
+		
 		complianceReportsPage.waitForPageLoad();
-
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {

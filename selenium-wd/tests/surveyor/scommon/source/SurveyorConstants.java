@@ -131,9 +131,21 @@ public final class SurveyorConstants {
 	public static final String IMGMAPWIDTH = "11";
 	
 	public static final String NELAT = "37.421980615353675";
-	public static final String NELON = "121.93639755249023";
+	public static final String NELON = "-121.93639755249023";
 	public static final String SWLAT = "37.39566424530531";
-	public static final String SWLON = "122.01141357421875";
+	public static final String SWLON = "-122.01141357421875";
+
+	// Area in the range --> 1.25 sqkms - 1.5 sqkms, which includes survey data for stnd-pic
+	// Area of this selection = 138131.88282872934 sqkms
+	public static final String NELAT_SMALL = "37.420000994238805";
+	public static final String NELON_SMALL = "-121.97592854325212";
+	public static final String SWLAT_SMALL = "37.4167629940449";
+	public static final String SWLON_SMALL = "-121.98026299302019";
+
+	public static final int  X_OFFSET = 150;
+	public static final int Y_OFFSET = 150;
+	public static final int RECT_WIDTH = 100;
+	public static final int RECT_HEIGHT = 100;
 
 	public static final String SURVEYORUNIT = "sqacus - sqacusloc - sqacuslocsur";
 	public static final String TAG = "dmcs1-sqa01";
@@ -191,8 +203,8 @@ public final class SurveyorConstants {
 	public static final String KEYISOANA = "Isotopic Analysis";
 	public static final String KEYGAPTB = "Gap Table";
 	public static final String KEYPCA = "Percent Coverage Assets";
-	public static final String KEYPCRA = "Percent Coverage Report Area";
 	public static final String KEYPCF = "Percent Coverage Forecast";
+	public static final String KEYPCRA = "Percent Coverage Report Area";
 
 	public static final String SQAPICADRRTAG = "dmcrapidresponse-sqapic-admin";
 	public static final String SQAPICADSTNDTAG = "dmcstandard-sqapic-admin";
@@ -220,6 +232,10 @@ public final class SurveyorConstants {
 	public static final String DRIVINGSURVEYTITLE = "Measurement Sessions - Surveyor";
 	public static final String DRIVINGSURVEYHEADER = "Driving Surveys";
 
+	public static final String ETHMTHRTOLABEL = Resources.getResource(ResourceKeys.Constant_EthaneToMethaneRatio );
+	public static final String ETHMTHERRGRTMSG = Resources.getResource(ResourceKeys.Validation_EnterValueGreaterThanOrEqual).replace("{0}", "1");
+	public static final String ETHMTHERRLESSMSG = Resources.getResource(ResourceKeys.Validation_EnterValueLessThanOrEqual).replace("{0}", "99");
+	
 	/*
 	 * Survey View constants
 	 */
@@ -238,10 +254,11 @@ public final class SurveyorConstants {
 	public static final String PICADMMANTAG = "pic";
 	public static final String CUSDRVSTDTAG = "stnd";
 	public static final String CUSDRVRRTAG = "rr";
+	public static final String CUSDRVRAPIDTAG = "rapid";
 	public static final String CUSDRVOPTAG = "op";
-	public static final String CUSDRVETHSTDTAG= "ethane-standard";
-	public static final String CUSDRVETHRRTAG= "ethane-rr";
-	public static final String CUSDRVETHMNTAG= "ethane-manual";
+	public static final String CUSDRVETHSTDTAG= "EthaneStnd";
+	public static final String CUSDRVETHRRTAG= "EthaneRR";
+	public static final String CUSDRVETHMNTAG= "EthaneManual";
 	public static final String PICADMNSTDTAG2 = "stnd-pic";
 	public static final String PICADMNRRTAG2 = "rr-pic";
 	public static final String PICADMNOPTAG2 = "op-pic";
@@ -267,12 +284,6 @@ public final class SurveyorConstants {
 	public static final String RSWLON = "-121.98390";
 
 	public static final String REXCLUSIONRADIUS = "3";
-
-	public static final int  X_OFFSET = 150;
-	public static final int Y_OFFSET = 150;
-	public static final int RECT_WIDTH = 100;
-	public static final int RECT_HEIGHT = 100;
-	public static final String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
 
 	/*
 	 * Lat Long for Ethane Reporting
@@ -305,6 +316,14 @@ public final class SurveyorConstants {
 	public static final String REQUIRED_FIELD_VAL_MESSAGE = "This field is required.";	
 
 	/*
+	 * Error messages for compliance report
+	 */
+	public static final String CR_CF_AREAINVALID_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_CoverageForecastAreaInvalidMessage);
+	public static final String CR_CF_ASSETSINVALID_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_CoverageForecastAssetsInvalidMessage);
+	public static final String CR_CF_FORECASTBOUNDARYINVALID_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_CoverageForecastBoundaryInvalidMessage);
+	public static final String CR_SURVEYMISSING_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_SurveyMissingMessage);
+	public static final String CR_NOCOVERAGEFORECASTAVAILABLE_MESSAGE = "No Coverage Forecast Available";
+	/*
 	 * Timeout constants
 	 */
 	public static final int SECONDS_10 = 10;
@@ -322,7 +341,7 @@ public final class SurveyorConstants {
 		ASSESSMENT ("Assessment"),
 		EQ ("EQ"),
 		LISABOX ("LISA Box 1.0"),
-		SURVEYFORECASE ("Survey Protocol Forecast"),
+		SURVEYFORECAST ("Survey Protocol Forecast"),
 		REPORTSHAPEFILE ("Report ShapeFile");
 		
 		private final String name;

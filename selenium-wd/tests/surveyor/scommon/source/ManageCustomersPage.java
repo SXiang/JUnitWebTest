@@ -6,16 +6,13 @@ package surveyor.scommon.source;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.FindBy;
 
-import common.source.BaseHelper;
 import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
@@ -74,8 +71,8 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	@FindBy(id = "LicencedFeatureId-LISA Box 1.0")
 	private WebElement inputLISABox;
 	
-	@FindBy(id = "LicencedFeatureId-Survey Protocol Forecase")
-	private WebElement inputSurveyForecase;
+	@FindBy(id = "LicencedFeatureId-Survey Protocol Forecast")
+	private WebElement inputSurveyForecast;
 	
 	@FindBy(id = "LicencedFeatureId-Report ShapeFile")
 	private WebElement inputReportShapeFile;
@@ -147,8 +144,8 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		case LISABOX: 
 			inputBox = inputLISABox;
             break;
-		case SURVEYFORECASE: 
-			inputBox = inputSurveyForecase;
+		case SURVEYFORECAST: 
+			inputBox = inputSurveyForecast;
             break;
 		case REPORTSHAPEFILE: 
 			inputBox = inputReportShapeFile;
@@ -172,14 +169,6 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		return addNewCustomer(customerName, eula, enableCustomer, null /* licensed features */);
 	}
 	
-	public WebElement getInputReportMetadata() {
-		return this.inputReportMetadata;
-	}
-	
-	public WebElement getInputReportShapeFile() {
-		return this.inputReportShapeFile;
-	}
-
 	public boolean addNewCustomer(String customerName, String eula, boolean enableCustomer, LicensedFeatures[] lfs ) {
 		this.btnAddNewCustomer.click();
 		this.waitForNewPageLoad();
@@ -217,15 +206,18 @@ public class ManageCustomersPage extends SurveyorBasePage {
     
 	public void enabledDisableCustomer(boolean enableCustomer) {
 		if (enableCustomer) {
-			if (!inputAccountEnabled.isSelected())
+			if (!isAccountEnabled())
 				inputAccountEnabled.click();
 		}
 		else {
-			if (inputAccountEnabled.isSelected())
+			if (isAccountEnabled())
 				inputAccountEnabled.click();
 		}
 	}
 
+	public boolean isAccountEnabled(){
+		return inputAccountEnabled.isSelected();
+	}
 	public boolean isEulaRed(){
 		String eulaStyle = this.textAreaEula.getAttribute("style");
 		String eulaRed = "border: 1px solid red;";
@@ -491,21 +483,29 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		return null;
 	}
 	
+	public WebElement getInputReportMetadata() {
+		return this.inputReportMetadata;
+	}
+	
+	public WebElement getInputReportShapeFile() {
+		return this.inputReportShapeFile;
+	}
+	
 	public LicensedFeatures getLicensedFeature(String licFeatureName) {
 		LicensedFeatures licensedFeatures = LicensedFeatures.ASSESSMENT; 
-		if (licFeatureName == "GAP Grid 1.0") {
+		if (licFeatureName.equals("GAP Grid 1.0")) {
 			licensedFeatures = LicensedFeatures.GAPGRID;
-		} else if (licFeatureName == "Report Metadata") {
+		} else if (licFeatureName.equals("Report Metadata")) {
 			licensedFeatures = LicensedFeatures.REPORTMETADATA;
-		} else if (licFeatureName == "Assessment") {
+		} else if (licFeatureName.equals("Assessment")) {
 			licensedFeatures = LicensedFeatures.ASSESSMENT;
-		} else if (licFeatureName == "EQ") {
+		} else if (licFeatureName.equals("EQ")) {
 			licensedFeatures = LicensedFeatures.EQ;
-		} else if (licFeatureName == "LISA Box 1.0") {
+		} else if (licFeatureName.equals("LISA Box 1.0")) {
 			licensedFeatures = LicensedFeatures.LISABOX;
-		} else if (licFeatureName == "Survey Protocol Forecast") {
-			licensedFeatures = LicensedFeatures.SURVEYFORECASE;
-		} else if (licFeatureName == "Report ShapeFile") {
+		} else if (licFeatureName.equals("Survey Protocol Forecast")) {
+			licensedFeatures = LicensedFeatures.SURVEYFORECAST;
+		} else if (licFeatureName.equals("Report ShapeFile")) {
 			licensedFeatures = LicensedFeatures.REPORTSHAPEFILE;
 		}
 		return licensedFeatures;
@@ -634,5 +634,4 @@ public class ManageCustomersPage extends SurveyorBasePage {
     public boolean isEditBtnPresent(){
     	return isElementPresent(this.btnEditCustomerXPath);
     }
-
 }

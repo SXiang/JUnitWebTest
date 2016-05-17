@@ -99,7 +99,8 @@ public class Reports {
 		EQDataGeneration ("EQDataGeneration"), 
 		ShapeFile ("ShapeFile"), 
 		ReportMeta ("ReportMeta"), 
-		PercentCoverageForecast ("PercentCoverageForecast");
+		PercentCoverageForecast ("PercentCoverageForecast"),
+		Zip ("Zip");
 		
 		private final String name;
 
@@ -146,6 +147,22 @@ public class Reports {
 			return this.name;
 		}
  	}
+	
+	public enum SSRSPdfFooterColumns {
+		SoftwareVersion ("SoftwareVersion"),
+		ReportUser ("ReportUser"),
+		ReportDate ("ReportDate");
+		
+		private final String name;
+
+		SSRSPdfFooterColumns(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
+	}
 
 	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, List<String> tagList) {
 		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, null, null, null, null, tagList);
@@ -243,8 +260,6 @@ public class Reports {
 		return geoFilter;
 	}
 
-
-
 	public void setRptTitle(String rptTitle) {
 		this.rptTitle = rptTitle;
 	}
@@ -282,8 +297,6 @@ public class Reports {
 	public void setGeoFilter(Boolean geoFilter) {
 		this.geoFilter = geoFilter;
 	}
-
-	// <--
 	
 	public List<ReportsSurveyInfo> getSurveyInfoList() {
 		return surveyInfoList;
@@ -326,6 +339,7 @@ public class Reports {
 		ReportJobTypeGuids.put("00000000-0000-0000-0007-000000000000", ReportJobType.ShapeFile);
 		ReportJobTypeGuids.put("00000000-0000-0000-0008-000000000000", ReportJobType.ReportMeta);
 		ReportJobTypeGuids.put("00000000-0000-0000-0009-000000000000", ReportJobType.PercentCoverageForecast);
+		ReportJobTypeGuids.put("00000000-0000-0000-0010-000000000000", ReportJobType.Zip);
 
 		ReportJobTypeReverseGuids.put(ReportJobType.Map, "00000000-0000-0000-0001-000000000000");
 		ReportJobTypeReverseGuids.put(ReportJobType.SSRS, "00000000-0000-0000-0002-000000000000");
@@ -336,6 +350,7 @@ public class Reports {
 		ReportJobTypeReverseGuids.put(ReportJobType.ShapeFile, "00000000-0000-0000-0007-000000000000");
 		ReportJobTypeReverseGuids.put(ReportJobType.ReportMeta, "00000000-0000-0000-0008-000000000000");
 		ReportJobTypeReverseGuids.put(ReportJobType.PercentCoverageForecast, "00000000-0000-0000-0009-000000000000");
+		ReportJobTypeReverseGuids.put(ReportJobType.Zip, "00000000-0000-0000-0010-000000000000");
 	}
 	
 	public static void main(String[] args) {

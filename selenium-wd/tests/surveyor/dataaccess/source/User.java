@@ -19,6 +19,8 @@ public class User extends BaseEntity {
 	private boolean eulaAccepted;
 	private String userName;
 	private String cultureId;	
+	private String customerId;	
+	private String locationId;	
 	
 	public User() {
 		super();
@@ -60,6 +62,8 @@ public class User extends BaseEntity {
 			user.setEulaAccepted(resultSet.getBoolean("EulaAccepted"));
 			user.setUserName(resultSet.getString("UserName"));
 			user.setCultureId(resultSet.getString("CultureId"));
+			user.setCustomerId(resultSet.getString("CustomerId"));
+			user.setLocationId(resultSet.getString("LocationId"));
 		} catch (SQLException e) {
 			Log.error("Class User | " + e.toString());
 		}
@@ -180,6 +184,22 @@ public class User extends BaseEntity {
 
 	public void setCultureId(String cultureId) {
 		this.cultureId = cultureId;
+	}
+
+	public String getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
+	}
+
+	public String getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(String locationId) {
+		this.locationId = locationId;
 	}
 
 }

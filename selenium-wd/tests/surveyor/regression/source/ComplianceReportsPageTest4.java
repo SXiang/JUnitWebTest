@@ -1,10 +1,7 @@
 package surveyor.regression.source;
 
-import static org.junit.Assert.assertTrue;
-
 import common.source.Log;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;
@@ -68,7 +65,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageTest {
 		complianceReportsPageAction.verifyReportPageFieldsAreCorrect(EMPTY, 4);
 		complianceReportsPageAction.modifyReport(EMPTY, 5);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 5);
-		complianceReportsPageAction.verifyReportFilesHaveCorrectData(EMPTY, 5);
+		complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 5);
 	}
  
 	/**
@@ -94,7 +91,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageTest {
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, NOTSET);
 		complianceReportsPageAction.modifyReport(EMPTY, 7);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 7);
-		complianceReportsPageAction.verifyReportFilesHaveCorrectData(EMPTY, 7);
+		complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 7);
 
 		// TODO: Methods missing for survey filter verifications. Tracked by Task TA862
 	}
@@ -122,7 +119,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageTest {
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, NOTSET);
 		complianceReportsPageAction.modifyReport(EMPTY, 9);
 		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 9);
-		complianceReportsPageAction.verifyReportFilesHaveCorrectData(EMPTY, 9);
+		complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 9);
 
 		// TODO: Methods missing for survey filter verifications. Tracked by Task TA862
 	}

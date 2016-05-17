@@ -8,6 +8,7 @@ import static org.junit.Assert.fail;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVETHSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVETHRRTAG;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
+import static surveyor.scommon.source.SurveyorConstants.CUSDRVRAPIDTAG;
 import static surveyor.scommon.source.SurveyorConstants.ETHRNELAT;
 import static surveyor.scommon.source.SurveyorConstants.ETHRNELON;
 import static surveyor.scommon.source.SurveyorConstants.ETHRSWLAT;
@@ -25,7 +26,9 @@ import static surveyor.scommon.source.SurveyorConstants.KEYINDCLR;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
+import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
@@ -77,9 +80,9 @@ import surveyor.scommon.source.SurveyorTestRunner;
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	private static ComplianceReportsPage complianceReportsPage = null;
-	private String STRReportAreaTooLargeMsg = "Please make sure your selected boundary is more than 0.5kms and less than 25kms";
-	private String STRReportAssetNotSelectedMsg = "View(s) with Assets, Please select at least one Asset Layer";
-	private String STRReportBoundaryNotSelectedMsg = "View(s) with Boundaries, Please select at least one Boundary Layer";
+	private String STRReportAreaTooLargeMsg = Resources.getResource(ResourceKeys.ComplianceReport_BoundaryMinSizeMessage);
+	private String STRReportAssetNotSelectedMsg = Resources.getResource(ResourceKeys.ComplianceReport_InvalidAssetTypeMessage);
+	private String STRReportBoundaryNotSelectedMsg = Resources.getResource(ResourceKeys.ComplianceReport_InvalidBoundaryTypeMessage);
 	private static HashMap<String, String> testCaseMap = new HashMap<String, String>();
 
 	@BeforeClass
@@ -137,8 +140,10 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		Map<String, String> tableMap = new HashMap<String, String>();
 		tableMap.put(KEYINDTB, "0");
 		tableMap.put(KEYISOANA, "0");
+		tableMap.put(KEYGAPTB, "0");
 		tableMap.put(KEYPCA, "0");
 		tableMap.put(KEYPCRA, "0");
+		tableMap.put(KEYPCF, "0");
 		tablesList.add(tableMap);
 
 		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
@@ -167,7 +172,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
-		
+
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -225,7 +230,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.Standard, CUSDRVETHSTDTAG));
 
 		driver.navigate().refresh();
-		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVSTDTAG));
+		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVRAPIDTAG));
 
 		driver.navigate().refresh();
 		assertTrue(complianceReportsPage.verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVETHRRTAG));
@@ -343,6 +348,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, strCreatedBy));
 			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rptTitle));
+			assertTrue(complianceReportsPage.verifySSRSImages(testSetup.getDownloadPath(), rptTitle, testCaseName));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
 					assertTrue(complianceReportsPage.verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle));
@@ -353,6 +359,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 				}
 				assertTrue(complianceReportsPage.verifyViewsTable(testSetup.getDownloadPath(), rptTitle, viewList));
 				assertTrue(complianceReportsPage.verifyDrivingSurveysTable(testSetup.getDownloadPath(), rptTitle));
+				assertTrue(complianceReportsPage.verifyAllViewsImages(testSetup.getDownloadPath(), rptTitle, testCaseName,viewList.size()));
 				if (tablesList.get(0).get(KEYISOANA).equals("1")) {
 					assertTrue(complianceReportsPage.verifyIsotopicAnalysisTable(testSetup.getDownloadPath(), rptTitle));
 				}
@@ -361,7 +368,8 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 				}
 			}
 		} else
-			fail("\nTestcase " + testCaseName + " failed.\n");
+			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
+
 	}
 	private static String getTestCaseName(String key) {
 		return testCaseMap.get(key);
@@ -436,8 +444,10 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		Map<String, String> tableMap = new HashMap<String, String>();
 		tableMap.put(KEYINDTB, "1");
 		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYGAPTB, "0");
 		tableMap.put(KEYPCA, "1");
 		tableMap.put(KEYPCRA, "1");
+		tableMap.put(KEYPCF, "0");
 		tablesList.add(tableMap);
 
 		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
@@ -457,7 +467,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBOUNDARIES, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 		viewList.add(viewMap1);
 
@@ -466,7 +476,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
-		
+
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -475,10 +485,10 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
+			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rptTitle));
 			if (tablesList != null) {
-				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
-					assertTrue(complianceReportsPage.verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle));
-					assertTrue(complianceReportsPage.verifyCoverageValuesTable(testSetup.getDownloadPath(), rptTitle, tablesList.get(0)));
+				if (tablesList.get(0).get(KEYINDTB).equals("1")) {
+					assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
 				}
 			}
 		} else
@@ -511,8 +521,10 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		Map<String, String> tableMap = new HashMap<String, String>();
 		tableMap.put(KEYINDTB, "1");
 		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYGAPTB, "0");
 		tableMap.put(KEYPCA, "1");
 		tableMap.put(KEYPCRA, "1");
+		tableMap.put(KEYPCF, "0");
 		tablesList.add(tableMap);
 
 		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
@@ -532,7 +544,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBOUNDARIES, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 		viewList.add(viewMap1);
 
@@ -541,43 +553,92 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
-		
+
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 
-		complianceReportsPage.clickOnCopyReport(rptTitle, testSetup.getLoginUser());
+		complianceReportsPage.getInputSearch().sendKeys(rptTitle);
+		complianceReportsPage.clickOnFirstCopyComplianceBtn();
 
 		complianceReportsPage.verifyIfInDrivingSurvey(KEYINDCLR);
 
 	}
 
 	/**
-	 * Test Case ID:TC1727 Test Description: Compliance Report Generation : COPY generated report with custom selected Indication color should show default color only for Indication- customized Indication color
-	 * @throws InterruptedException 
-	 * 
-	 * @throws IOException
+	 * Test Case ID:TC1726 Test Description: Compliance Report Generation : COPY generated report with custom selected Indication color should show default color only for Indication- customized Indication color
+	 * @throws Exception 
 	 * 
 	 */
-	@Ignore
-	public void TC1727_Ethane_Verify_Indication_Table_Color_Copy_Customized_Colored_Report() throws IOException, InterruptedException{
+	@Test
+	public void TC1726_Ethane_Verify_Indication_Table_Color_In_Newly_Generated_Report() throws Exception{
+		String testCaseID = "TC1727";
 		String rptTitle = "TC1727 Ethane" + testSetup.getRandomNumber();
-		Log.info("\nRunning TC1727: Compliance Report Generation : COPY generated report with custom selected Indication color should show default color only for Indication- customized Indication color" + rptTitle);
+		Log.info("\nRunning TC1727: Compliance Report Generation : downloaded View of newly generated report should show default color only for Indication" + rptTitle);
 
 
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
 
-		complianceReportsPage.findReportbySearch(KEYCPSAMPLRPT, testSetup.getLoginUser());
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+		listBoundary.add(ETHRNELAT);
+		listBoundary.add(ETHRNELON);
+		listBoundary.add(ETHRSWLAT);
+		listBoundary.add(ETHRSWLON);
 
-		complianceReportsPage.clickOnCopyReport(KEYCPSAMPLRPT, testSetup.getLoginUser());
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+		tableMap.put(KEYINDTB, "1");
+		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYGAPTB, "0");
+		tableMap.put(KEYPCA, "1");
+		tableMap.put(KEYPCRA, "1");
+		tableMap.put(KEYPCF, "0");
+		tablesList.add(tableMap);
+
+		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
+		List<Integer> boundaryRowIDs = Arrays.asList(3, 4);				 // Boundary RowIDs from TestCaseData xlsx
+		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
+		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
+
+		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
+		Map<String, String> viewMap1 = new HashMap<String, String>();
+
+		viewMap1.put(KEYVIEWNAME, "First View");
+		viewMap1.put(KEYLISA, "1");
+		viewMap1.put(KEYFOV, "1");
+		viewMap1.put(KEYBREADCRUMB, "1");
+		viewMap1.put(KEYINDICATIONS, "1");
+		viewMap1.put(KEYISOTOPICCAPTURE, "1");
+		viewMap1.put(KEYANNOTATION, "1");
+		viewMap1.put(KEYGAPS, "0");
+		viewMap1.put(KEYASSETS, "1");
+		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
+		viewList.add(viewMap1);
+
+		List<String> tagList = new ArrayList<String>();
+		tagList.add(CUSDRVETHSTDTAG);
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		rpt.setViewLayersList(viewLayerList);
+
+		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
-		complianceReportsPage.verifyIfInDrivingSurvey(KEYCPSAMPLRPT);
-
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
+		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
+			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
+			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
+			if (tablesList != null) {
+				assertTrue(complianceReportsPage.verifyDrivingSurveysTable(testSetup.getDownloadPath(), rptTitle));
+			}
+		} else
+			fail("\n Testcase1726 failed.\n");	
 	}
-
 
 	/**
 	 * Test Case ID:TC1729 Test Description: Compliance Report Generation : Picaro admin should resubmit the generate report request and generated report should have default color in Indication- Default Indication color
@@ -608,8 +669,10 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		Map<String, String> tableMap = new HashMap<String, String>();
 		tableMap.put(KEYINDTB, "1");
 		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYGAPTB, "0");
 		tableMap.put(KEYPCA, "1");
 		tableMap.put(KEYPCRA, "1");
+		tableMap.put(KEYPCF, "0");
 		tablesList.add(tableMap);
 
 		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
@@ -629,7 +692,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
-		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYBOUNDARIES, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 		viewList.add(viewMap1);
 
@@ -638,7 +701,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
-		
+
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -647,21 +710,13 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		complianceReportsPage.findReportbySearch(rptTitle, testSetup.getLoginUser());
 
 		complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
-		complianceReportsPage.waitForPageLoad();
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
-
-
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
-			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
-			if (tablesList != null) {
-				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
-					assertTrue(complianceReportsPage.verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle));
-					assertTrue(complianceReportsPage.verifyCoverageValuesTable(testSetup.getDownloadPath(), rptTitle, tablesList.get(0)));
-				}
+			if (tablesList.get(0).get(KEYINDTB).equals("1")) {
+				assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
 			}
-		
-		} else
+		}
+		else
 			fail("\nTestcase TC1729 failed.\n");
 	}
 }

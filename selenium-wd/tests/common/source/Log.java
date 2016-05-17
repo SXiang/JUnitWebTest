@@ -1,29 +1,25 @@
 package common.source;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.Properties;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
 
 public class Log {
-	private static Logger log = Logger.getLogger(Log.class.getName());
+	private static Logger log = null; 
 	private static String logFilePath;
 
-	/* Generating log files for each test run tracked by US1399. 
 	static {
-		logFilePath = String.format("./selenium-wd/logs/%s-log.log", TestContext.INSTANCE.getRunUniqueId());
-		updateLog4jConfiguration(logFilePath);
+		try {
+			System.setProperty("log4j.configurationFile", TestSetup.getExecutionPath(TestSetup.getRootPath()) + "log4j2" + File.separator + "log4j2.xml");
+			log = LogManager.getLogger(Log.class.getName());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-	*/
-
+	
 	public static void info(String message) {
 		log.info(message);
 	}
@@ -64,25 +60,9 @@ public class Log {
 		}
 	}
 
-	private static void updateLog4jConfiguration(String logFile) { 
-	    Properties props = new Properties(); 
-	    try { 
-	    	String log4JPropFilePath = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "tests" + File.separator + "log4j.properties";;
-	        InputStream inputStream = new FileInputStream(log4JPropFilePath); 
-	        try {
-	        	props.load(inputStream);
-	        } finally {
-	        	inputStream.close();
-	        }
-	    } catch (IOException ex) { 
-	        Log.info("Could not load configuration file."); 
-	    } 
-	    props.setProperty("log4j.appender.FILE.file", logFile); 
-	    LogManager.resetConfiguration(); 
-	    PropertyConfigurator.configure(props); 
-	}
-	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
+		logFilePath = TestSetup.getRootPath() + File.separator + "logs" + File.separator + "log.log";
+		
 		test_LogInfo_WithMessage();
 		test_LogWarn_WithMessage();
 		test_LogDebug_WithMessage();
@@ -91,7 +71,6 @@ public class Log {
 		test_LogWarn_NoMessage();
 		test_LogDebug_NoMessage();
 		test_LogError_NoMessage();
-		FileUtility.deleteFile(Paths.get(logFilePath));
 	}
 
 	private static void assertLogLastEntryContains(String[] messages) {

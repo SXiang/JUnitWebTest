@@ -26,8 +26,9 @@ import surveyor.dataaccess.source.Resources;
  */
 public class ManageAnalyzersPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageAnalyzers";
-	public static final String STRPageTitle = "Manage Analyzers - Surveyor";
-	public static final String STRPageContentText = "Manage Analyzers";
+	public static final String STRPageTitle = String.format("%s - %s", 
+			Resources.getResource(ResourceKeys.ManageAnalyzers_PageTitle), Resources.getResource(ResourceKeys.Constant_Surveyor));
+	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageAnalyzers_PageTitle);
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ManageAnalyzer_NewAnalyzer);
 	public static final String STREditPageContentText = Resources.getResource(ResourceKeys.ManageAnalyzer_EditAnalyzer);
 

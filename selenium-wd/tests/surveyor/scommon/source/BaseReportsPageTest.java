@@ -2,6 +2,8 @@ package surveyor.scommon.source;
 
 import java.util.HashMap;
 
+import org.openqa.selenium.support.PageFactory;
+
 import common.source.NumberUtility;
 import common.source.TestContext;
 import surveyor.scommon.source.Reports.ReportJobType;
@@ -9,12 +11,19 @@ import surveyor.scommon.source.SurveyorBaseTest;
 
 public class BaseReportsPageTest extends SurveyorBaseTest {
 
+	private static ReportsBasePage reportsPage = null;
+
 	private boolean isCollectReportJobPerfMetric;
 	private boolean isGenerateBaselineSSRSImages;
 	private boolean isGenerateBaselineViewImages;
 	private boolean isGenerateBaselineShapeFiles;
 	
 	private static HashMap<ReportJobType, NumberUtility> reportJobProcessingTimeNumberMap;
+
+	protected static void initializePageObjects(ReportsBasePage reportsBasePage) {
+		setReportsPage(reportsBasePage);
+		PageFactory.initElements(driver, getReportsPage());
+	}
 
 	public BaseReportsPageTest() {
 		this.isCollectReportJobPerfMetric = TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric();
@@ -36,6 +45,7 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 		reportJobProcessingTimeNumberMap.put(ReportJobType.ReportMeta, new NumberUtility());
 		reportJobProcessingTimeNumberMap.put(ReportJobType.ShapeFile, new NumberUtility());
 		reportJobProcessingTimeNumberMap.put(ReportJobType.SSRS, new NumberUtility());
+		reportJobProcessingTimeNumberMap.put(ReportJobType.Zip, new NumberUtility());
 	}
 	
 	public static Integer getReportJobRollingProcessingTimeAvg(ReportJobType reportJobType) {
@@ -52,5 +62,13 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 
 	protected static HashMap<ReportJobType, NumberUtility> getReportJobProcessingTimeNumberMap() {
 		return reportJobProcessingTimeNumberMap;
+	}
+
+	public static ReportsBasePage getReportsPage() {
+		return reportsPage;
+	}
+
+	public static void setReportsPage(ReportsBasePage reportsPage) {
+		BaseReportsPageTest.reportsPage = reportsPage;
 	}
 }

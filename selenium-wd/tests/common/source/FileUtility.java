@@ -321,7 +321,7 @@ public class FileUtility {
 		File newDir = new File(directoryPath);
 		if (!newDir.exists()) {
 			try {
-				newDir.mkdir();
+				newDir.mkdirs();
 			} catch (SecurityException ex) {
 				Log.error("Error creating new directory - " + directoryPath + " EXCEPTION: " + ExceptionUtility.getStackTraceString(ex));
 			}

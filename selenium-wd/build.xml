@@ -179,29 +179,6 @@
 		</junit>
 	</target>
 	
-	<target name="testsurveyviewmanagelocations" depends="compileregression" description="Run survey view and manage location test cases">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-				showoutput="yes">
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-
-			<batchtest fork="yes" todir="${reports}/regression/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-
-					<include name="**/SurveyViewPageTest5.class" />
-					<include name="**/ManageLocationsPageTest.class" />
-					<include name="**/ManageLocationsAdminPageTest.class" />
-
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
 	<target name="testobserverview" depends="compileregression" description="Run observer view test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
@@ -262,7 +239,28 @@
 			</batchtest>
 		</junit>
 	</target>
-	
+
+	<target name="testcompliancereportpage6" depends="compileregression" description="Run compliance report test cases">
+		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
+				showoutput="yes">
+			<classpath>
+				<pathelement path="${build}" />
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+
+			<batchtest fork="yes" todir="${reports}/regression/xml">
+				<formatter type="xml" />
+				<fileset dir="${build}">
+
+					<include name="**/ComplianceReportsPageTest6.class" />
+
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
 	<target name="testcompliancereport" depends="compileregression" description="Run compliance report test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
@@ -280,6 +278,8 @@
 					<include name="**/ComplianceReportsPageTest.class" />
 					<include name="**/ComplianceReportsPageTest2.class" />
 					<include name="**/ComplianceReportsPageTest4.class" />
+					<include name="**/ComplianceReportsPageTest_Ethane.class" />
+					<include name="**/ComplianceReportsPageTest6.class" />
 
 				</fileset>
 			</batchtest>
@@ -340,7 +340,9 @@
 					<include name="**/UserFeedbackAdminPageTest.class" />
 					<include name="**/SurveyViewPageTest5.class" />
 					<include name="**/SystemHistoryReportsPageTest.class" />	
-					<include name="**/ReferenceGasReportsPageTest.class" />		
+					<include name="**/ReferenceGasReportsPageTest.class" />	
+					<include name="**/ManageLocationsPageTest_Ethane.class" />
+					<include name="**/ManageRefGasBottlesPageTests_Ethane.class" />
 				</fileset>
 			</batchtest>
 		</junit>

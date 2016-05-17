@@ -23,7 +23,8 @@ import common.source.TestSetup;
  */
 public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 	public static final String STRURLPath = "/Admin/ManageSurveyors";
-	public static final String STRPageTitle = "Manage ??? Surveyors - Surveyor";
+	public static final String STRPageTitle = String.format("%s - %s", 
+			Resources.getResource(ResourceKeys.ManageSurveyors_PageTitle), Resources.getResource(ResourceKeys.Constant_Surveyor));
 
 	@FindBy(how = How.XPATH, using = "//*[@class='btn btn-primary' and text()='Add New Calibration Record']")
 	protected WebElement addCalibrationRecordButton;
