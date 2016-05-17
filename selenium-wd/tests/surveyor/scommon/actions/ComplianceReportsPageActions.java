@@ -959,7 +959,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		this.getComplianceReportsPage().deleteReport(reportTitle, createdBy);
 		return true;
 	}
- 
+
 	/**
 	 * Executes enterCustomBoundaryUsingAreaSelector action.
 	 * @param data - coordinates of top-left and bottom-right pixels in comma seperated list. 
@@ -1215,6 +1215,23 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return true;
 	}
  
+	/**
+	 * Executes searchAndDeleteReport action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean searchAndDeleteReport(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.searchAndDeleteReport", data, dataRowID);
+		ActionArguments.verifyGreaterThanZero("searchAndDeleteReport", ARG_DATA_ROW_ID, dataRowID);
+		ComplianceReportsDataRow compRptDataRow = getComplianceReportsDataRow(dataRowID);
+		String reportTitle = compRptDataRow.title;
+		String createdBy = LoginPageActions.workingDataRow.username;
+		this.getComplianceReportsPage().searchAndDeleteReport(reportTitle, createdBy);
+		return true;
+	}
+
 	/**
 	 * Executes searchForSurveyByKeyword action.
 	 * @param data - specifies the input data passed to the action.
@@ -3345,6 +3362,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("open")) { return this.open(data, dataRowID); }
 		else if (actionName.equals("openComplianceViewerDialog")) { return this.openComplianceViewerDialog(data, dataRowID); }
 		else if (actionName.equals("openNewReportPage")) { return this.openNewReportPage(data, dataRowID); }
+		else if (actionName.equals("searchAndDeleteReport")) { return this.searchAndDeleteReport(data, dataRowID); }
 		else if (actionName.equals("searchForSurveyByKeyword")) { return this.searchForSurveyByKeyword(data, dataRowID); }
 		else if (actionName.equals("selectCustomer")) { return this.selectCustomer(data, dataRowID); }
 		else if (actionName.equals("selectDropDownByID")) { return this.selectDropDownByID(data, dataRowID); }

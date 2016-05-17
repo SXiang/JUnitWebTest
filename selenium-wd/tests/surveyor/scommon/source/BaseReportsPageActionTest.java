@@ -24,7 +24,7 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 		// This is the default test mode. All actions will be executed in this mode.
 		FullTestRun ("FullTestRun"),
 		// Use this mode to verify page actions for Compliance report.
-		// When test is running in this mode, we'll skip the createNewReport and waitForReportToComplete actions.
+		// When test is running in this mode, we'll skip the createNewReport, waitForReportToComplete, modifyReport actions.
 		UnitTestRun ("UnitTestRun");
 		
 		private final String name;
@@ -103,7 +103,7 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 	}
 
 	protected void deleteReport(ComplianceReportsPageActions complianceReportsPageAction, Integer reportDataRowID) throws Exception {
-		complianceReportsPageAction.deleteReport(EMPTY, reportDataRowID);
+		complianceReportsPageAction.searchAndDeleteReport(EMPTY, reportDataRowID);
 		removeReportDataRowIDFromMap(reportDataRowID);
 	}
 
