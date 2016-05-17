@@ -91,4 +91,8 @@ public class BaseEntity {
 		} 
 		return (Integer)columnValue;
 	}
+	
+	public static String trim(String str){
+		return str==null?"":str.trim();
+	}
 }

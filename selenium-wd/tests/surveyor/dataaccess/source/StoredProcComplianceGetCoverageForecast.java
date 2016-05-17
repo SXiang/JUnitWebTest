@@ -22,7 +22,7 @@ public class StoredProcComplianceGetCoverageForecast extends BaseEntity {
 	}
 
 	public void setPercentageWithLisa(String percentageWithLisa) {
-		this.percentageWithLisa = percentageWithLisa;
+		this.percentageWithLisa = trim(percentageWithLisa);
 	}
 
 	public String getPercentageWithoutLisa() {
@@ -30,7 +30,7 @@ public class StoredProcComplianceGetCoverageForecast extends BaseEntity {
 	}
 
 	public void setPercentageWithoutLisa(String percentageWithoutLisa) {
-		this.percentageWithoutLisa = percentageWithoutLisa;
+		this.percentageWithoutLisa = trim(percentageWithoutLisa);
 	}
 
 
@@ -39,7 +39,7 @@ public class StoredProcComplianceGetCoverageForecast extends BaseEntity {
 	}
 
 	public void setCoverageProbability0(String coverageProbability0) {
-		this.coverageProbability0 = coverageProbability0;
+		this.coverageProbability0 = trim(coverageProbability0);
 	}
 
 	public String getCoverageProbability1() {
@@ -47,7 +47,7 @@ public class StoredProcComplianceGetCoverageForecast extends BaseEntity {
 	}
 
 	public void setCoverageProbability1(String coverageProbability1) {
-		this.coverageProbability1 = coverageProbability1;
+		this.coverageProbability1 = trim(coverageProbability1);
 	}
 
 	public String getCoverageProbability2() {
@@ -55,23 +55,23 @@ public class StoredProcComplianceGetCoverageForecast extends BaseEntity {
 	}
 
 	public void setCoverageProbability2(String coverageProbability2) {
-		this.coverageProbability2 = coverageProbability2;
+		this.coverageProbability2 = trim(coverageProbability2);
 	}
 	public boolean isCoverageValuesEquals(StoredProcComplianceGetCoverageForecast obj) {
 	    return isCoverageValuesEquals(obj,true);
 	}
 	public boolean isCoverageValuesEquals(StoredProcComplianceGetCoverageForecast obj, boolean withPredication) {
-		String thisPercentageWithLisa = getPercentageWithLisa().trim();
-		String objPercentageWithLisa = obj.getPercentageWithLisa().trim();
-		String thisPercentageWithoutLisa = getPercentageWithoutLisa().trim();
-		String objPercentageWithoutLisa = obj.getPercentageWithoutLisa().trim();		
+		String thisPercentageWithLisa = getPercentageWithLisa();
+		String objPercentageWithLisa = obj.getPercentageWithLisa();
+		String thisPercentageWithoutLisa = getPercentageWithoutLisa();
+		String objPercentageWithoutLisa = obj.getPercentageWithoutLisa();		
 		if(withPredication){
-			String thisCoverageProbability0 = getCoverageProbability0().trim();
-			String objCoverageProbability0 = obj.getCoverageProbability0().trim();
-			String thisCoverageProbability1 = getCoverageProbability1().trim();
-			String objCoverageProbability1 = obj.getCoverageProbability1().trim();
-			String thisCoverageProbability2 = getCoverageProbability2().trim();
-			String objCoverageProbability2 = obj.getCoverageProbability2().trim();
+			String thisCoverageProbability0 = getCoverageProbability0();
+			String objCoverageProbability0 = obj.getCoverageProbability0();
+			String thisCoverageProbability1 = getCoverageProbability1();
+			String objCoverageProbability1 = obj.getCoverageProbability1();
+			String thisCoverageProbability2 = getCoverageProbability2();
+			String objCoverageProbability2 = obj.getCoverageProbability2();
 			return thisPercentageWithLisa.equals(objPercentageWithLisa)
 					&&thisPercentageWithoutLisa.equals(objPercentageWithoutLisa)
 					&&thisCoverageProbability0.equals(objCoverageProbability0)
@@ -84,25 +84,20 @@ public class StoredProcComplianceGetCoverageForecast extends BaseEntity {
 
 	public boolean isCoverageValuesFormated(StoredProcComplianceGetCoverageForecast obj, boolean withPredication) {
 		String invalidChars = ".";
-		if (obj.getPercentageWithLisa()!=null
-				&&obj.getPercentageWithLisa().trim().contains(invalidChars)) {
+		if (obj.getPercentageWithLisa().contains(invalidChars)) {
 			return false;
 		}
-		if (obj.getPercentageWithoutLisa()!=null
-				&&obj.getPercentageWithoutLisa().trim().contains(invalidChars)) {
+		if (obj.getPercentageWithoutLisa().contains(invalidChars)) {
 			return false;
 		}
 		if(withPredication){
-			if (obj.getCoverageProbability0()!=null
-					&&obj.getCoverageProbability0().trim().contains(invalidChars)) {
+			if (obj.getCoverageProbability0().contains(invalidChars)) {
 				return false;
 			}
-			if (obj.getCoverageProbability1()!=null
-					&&obj.getCoverageProbability0().trim().contains(invalidChars)) {
+			if (obj.getCoverageProbability0().contains(invalidChars)) {
 				return false;
 			}
-			if (obj.getCoverageProbability2()!=null
-					&&obj.getCoverageProbability0().trim().contains(invalidChars)) {
+			if (obj.getCoverageProbability0().contains(invalidChars)) {
 				return false;
 			}
 		}
