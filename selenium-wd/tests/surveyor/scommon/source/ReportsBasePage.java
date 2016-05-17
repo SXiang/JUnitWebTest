@@ -865,11 +865,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 
-	public boolean verifyErrorMessages(String... crCfAssetsinvalidMessages) {
+	public boolean verifyErrorMessages(String... errormessages) {
 		try{
 			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>(){
 				public Boolean apply(WebDriver d){
-					return crCfAssetsinvalidMessages==null||crCfAssetsinvalidMessages[0].isEmpty()||listOfErrors.size()>=crCfAssetsinvalidMessages.length;
+					return errormessages==null||errormessages[0].isEmpty()||listOfErrors.size()>=errormessages.length;
 				}
 			});
 		}catch(Exception e){
@@ -878,7 +878,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		for (WebElement e : listOfErrors) {
 			Log.info(e.getText());
 		}
-		for (String err : crCfAssetsinvalidMessages) {
+		for (String err : errormessages) {
 			boolean msgFound = false;
 			for (WebElement element : listOfErrors) {
 				msgFound = false;
@@ -1049,7 +1049,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public boolean checkFileExists(String fileName, String downloadPath) {
 		Log.info(String.format("Looking for file-[%s] in download directory-[%s]", fileName, downloadPath));
 		File file = new File(downloadPath,fileName);
-		return file.exists();
+		if(file.exists()){
+			Log.info("File found in the download directory");
+			return true;
+		}
+		return false;
 	}
 
 	/**

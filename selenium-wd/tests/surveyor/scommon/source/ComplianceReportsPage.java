@@ -973,26 +973,30 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		switch (buttonType) {
 		case Delete:
-			buttonXPath = "td[5]/a[1]/img";
+			buttonXPath = "td[5]/a[1]";
 			break;
 		case Copy:
-			buttonXPath = "td[5]/a[@title='Copy']/img";
+			buttonXPath = "td[5]/a[@title='Copy']";
 			break;
 		case ReportViewer:
-			buttonXPath = "td[5]/a[3]/img";
+			buttonXPath = "td[5]/a[3]";
 			break;
 		case Investigate:
-			buttonXPath = "td[5]/a[4]/img";
+			buttonXPath = "td[5]/a[4]";
 			break;
 		case Resubmit:
-			buttonXPath = "td[5]/a[@title='Resubmit']/img";
+			buttonXPath = "td[5]/a[@title='Resubmit']";
 			break;
 		case InProgressCopy: // NOTE: When report is in-progress, Copy is the 1st button.
-			buttonXPath = "td[5]/a[@title='Copy']/img";
+			buttonXPath = "td[5]/a[@title='Copy']";
 			break;
 		case Cancel: // NOTE: When cancel button is visible it is the 2nd button.
-			buttonXPath = "td[5]/a[@title='Cancel Report']/img";
+			buttonXPath = "td[5]/a[@title='Cancel Report']";
 			break;
+		case ReportErrorLabel: // 'Error Processing' label on report
+			// cancelled or report error.
+            buttonXPath = "td[5]/span";
+            break;
 		default:
 			throw new Exception("ButtonType NOT supported.");
 		}
@@ -1885,7 +1889,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return verifyCoverageForecastValuesTable(actualPath, reportTitle, true);
 	}
 
-	public boolean verifyCoverageForecastValuesTable(String actualPath, String reportTitle, boolean withPredication)
+	public boolean verifyCoverageForecastValuesTable(String actualPath, String reportTitle, boolean withPrediction)
 			throws IOException {
 		Log.info("Verifying Coverage Forecast Values Table");
 		PDFTableUtility pdfTableUtility = new PDFTableUtility();
@@ -1899,12 +1903,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				PDFTable.COVERAGEFORECASTTO70);
 		preCoverageForecast = coverageForecast;
 		preCoverageForecastTo70 = coverageForecastTo70;
-		if (!withPredication && !coverageForecastTo70.isEmpty()) {
+		if (!withPrediction && !coverageForecastTo70.isEmpty()) {
 			return false;
 		}
-	    return verifyCoverageForecastValuesTableWithDBData(reportId, coverageForecast, coverageForecastTo70, withPredication);
+	    return verifyCoverageForecastValuesTableWithDBData(reportId, coverageForecast, coverageForecastTo70, withPrediction);
 	}
-	private boolean verifyCoverageForecastValuesTableWithDBData(String reportId, List<String[]> coverageForecast, List<String[]> coverageForecastTo70, boolean withPredication){
+	private boolean verifyCoverageForecastValuesTableWithDBData(String reportId, List<String[]> coverageForecast, List<String[]> coverageForecastTo70, boolean withPrediction){
 		int startIndex = 0;
 		StoredProcComplianceGetCoverageForecast coverageForecastObj = new StoredProcComplianceGetCoverageForecast();
 		String[] row = null;
@@ -1932,12 +1936,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				.getCoverage(reportId);
 
 
-		if (!storedForecastObj.isCoverageValuesEquals(coverageForecastObj, withPredication)) {
+		if (!storedForecastObj.isCoverageValuesEquals(coverageForecastObj, withPrediction)) {
 			Log.info("Coverage Values data verification failed");
 			return false;
 		}
 		Log.info("Coverage Forecast Values data verification passed");
-		if (!storedForecastObj.isCoverageValuesFormated(coverageForecastObj, withPredication)) {
+		if (!storedForecastObj.isCoverageValuesFormated(coverageForecastObj, withPrediction)) {
 			return false;
 		}
 		return true;
@@ -2405,7 +2409,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		CSVUtility csvUtility = new CSVUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String pathToMetaDataUnZip = actualPath;//testSetup.getDownloadPath() + "//CR-" + reportId.substring(0, 6) + " (1)";
+		String pathToMetaDataUnZip = actualPath;
 		String unZipFolder = "\\CR-" + reportId.substring(0, 6) + " (1)";
 		if(!actualPath.endsWith(unZipFolder))
 			pathToMetaDataUnZip += unZipFolder;
@@ -2512,7 +2516,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId)
 			throws FileNotFoundException, IOException {
 		CSVUtility csvUtility = new CSVUtility();
-		String pathToMetaDataUnZip = actualPath;// + "//CR-" + reportId.substring(0, 6) + " (1)";
+		String pathToMetaDataUnZip = actualPath;
 		String unZipFolder = "\\CR-" + reportId.substring(0, 6) + " (1)";
 		if(!actualPath.endsWith(unZipFolder))
 			pathToMetaDataUnZip += unZipFolder;

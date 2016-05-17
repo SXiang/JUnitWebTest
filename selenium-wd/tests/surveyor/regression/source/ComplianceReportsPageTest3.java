@@ -164,7 +164,6 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
 		assertFalse(complianceReportsPage.verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
 
-		complianceReportsPage.logout();
 		
 	}
  
@@ -220,8 +219,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
         complianceReportsPage.deleteAllDrivingSurveys();
 		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID3));
 		assertFalse(complianceReportsPage.verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
-	
-		complianceReportsPage.logout();
+
 	}
  
 	/**
