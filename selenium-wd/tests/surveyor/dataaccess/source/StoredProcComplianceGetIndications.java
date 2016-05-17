@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.CallableStatement;
 
+import common.source.BaseHelper;
 import common.source.Log;
 
 public class StoredProcComplianceGetIndications extends BaseEntity {
@@ -13,7 +14,7 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 	private String surveyorUnitName;
 	private float amplitude;
 	private float ch4;
-	private float aggregatedEthaneRatioSdev;
+//	private float aggregatedEthaneRatioSdev;
 	private String text;
 	private String aggregatedEthaneToMethaneRatio;
 	private String aggregatedClassificationConfidence;
@@ -25,10 +26,10 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 	}
 
 	public String toString() {
-		String uncertainty=(this.getAggregatedEthaneRatioSdev()==0?"":Float.toString(this.getAggregatedEthaneRatioSdev()));
+		//String uncertainty=(this.getAggregatedEthaneRatioSdev()==0?"":Float.toString(this.getAggregatedEthaneRatioSdev()));
 		return this.getPeakNumber().concat(this.getSurveyorUnitName()).concat(this.getDateTime())
 				.concat(Float.toString(this.getAmplitude())).concat(Float.toString(this.getCh4()))
-				.concat(this.getAggregatedEthaneToMethaneRatio()).trim().concat(uncertainty).concat(this.getAggregateDisposition())
+				.concat(this.getAggregatedEthaneToMethaneRatio()).trim()./*concat(uncertainty).*/concat(this.getAggregateDisposition())
 				.concat(this.getAggregatedClassificationConfidence()).concat(this.getText());
 	}
 
@@ -80,11 +81,9 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 		this.text = text;
 	}
 
-
 	public String getAggregatedEthaneToMethaneRatio() {
 		return aggregatedEthaneToMethaneRatio;
 	}
-
 	
 	public void setAggregatedEthaneToMethaneRatio(String aggregatedEthaneToMethaneRatio) {
 		this.aggregatedEthaneToMethaneRatio = aggregatedEthaneToMethaneRatio;
@@ -114,13 +113,13 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 		this.aggregatedClassificationConfidenceReport = aggregatedClassificationConfidenceReport;
 	}
 
-	public float getAggregatedEthaneRatioSdev() {
-		return aggregatedEthaneRatioSdev;
-	}
-
-	public void setAggregatedEthaneRatioSdev(float aggregatedEthaneRatioSdev) {
-		this.aggregatedEthaneRatioSdev = aggregatedEthaneRatioSdev;
-	}
+//	public float getAggregatedEthaneRatioSdev() {
+//		return aggregatedEthaneRatioSdev;
+//	}
+//
+//	public void setAggregatedEthaneRatioSdev(float aggregatedEthaneRatioSdev) {
+//		this.aggregatedEthaneRatioSdev = aggregatedEthaneRatioSdev;
+//	}
 
 	public ArrayList<StoredProcComplianceGetIndications> get(String reportId) {
 		ArrayList<StoredProcComplianceGetIndications> objReportList = load(reportId);
@@ -176,16 +175,19 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 			objReport.setAmplitude(resultSet.getFloat("Amplitude"));
 			objReport.setCh4(resultSet.getFloat("CH4"));
 			objReport.setText(resultSet.getString("Text"));
-			objReport.setAggregatedClassificationConfidence(resultSet.getString("AggregatedClassificationConfidence").replaceFirst(">=", ""));
-			objReport.setAggregatedClassificationConfidenceReport(resultSet.getString("AggregatedClassificationConfidence"));
-			objReport.setAggregatedEthaneToMethaneRatio(resultSet.getString("AggregatedEthenaRatio"));
-			objReport.setAggregateDisposition(resultSet.getString("AggregatedDisposition"));
-			objReport.setAggregatedEthaneRatioSdev(resultSet.getFloat("AggregatedEthaneRatioSdev"));
-			if(resultSet.wasNull()){
-				objReport.setAggregatedEthaneRatioSdev(0);
+			String aggrClassConf = resultSet.getString("AggregatedClassificationConfidence");
+			if (!BaseHelper.isNullOrEmpty(aggrClassConf)) {
+				objReport.setAggregatedClassificationConfidence(aggrClassConf.replaceFirst(">=", ""));
 			}
+			objReport.setAggregatedClassificationConfidenceReport(resultSet.getString("AggregatedClassificationConfidence"));
+			objReport.setAggregatedEthaneToMethaneRatio(resultSet.getString("AggregatedEthaneToMethaneRatio"));
+			objReport.setAggregateDisposition(resultSet.getString("AggregatedDisposition"));
+//			objReport.setAggregatedEthaneRatioSdev(resultSet.getFloat("AggregatedEthaneRatioSdev"));
+//			if(resultSet.wasNull()){
+//				objReport.setAggregatedEthaneRatioSdev(0);
+//			}
 		} catch (SQLException e) {
-			Log.error("Class Report | " + e.toString());
+			Log.error("Class StoredProcComplianceGetIndications | " + e.toString());
 		}
 
 		return objReport;

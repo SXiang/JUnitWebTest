@@ -38,14 +38,6 @@ public class DataAccessUnitTests {
 		testUser_GetUserByName_Valid();
 		Log.info("Executing testUser_GetUserByName_Invalid() ...");
 		testUser_GetUserByName_Invalid();
-		Log.info("Executing testReportPeak_GetReportPeakByPeakNumber_Valid() ...");
-		testReportPeak_GetReportPeakByPeakNumber_Valid();
-		Log.info("Executing testReportPeak_GetReportPeakByPeakNumber_Invalid() ...");
-		testReportPeak_GetReportPeakByPeakNumber_Invalid();
-		Log.info("Executing testReportDrivingSurvey_GetReportDrivingSurveyByReportId_Valid() ...");
-		testReportDrivingSurvey_GetReportDrivingSurveyByReportId_Valid();
-		Log.info("Executing testReportDrivingSurvey_GetReportDrivingSurveyByReportId_Invalid() ...");
-		testReportDrivingSurvey_GetReportDrivingSurveyByReportId_Invalid();
 		Log.info("Executing testReportCompliance_GetReportComplianceByReportId_Valid() ...");
 		testReportCompliance_GetReportComplianceByReportId_Valid();
 		Log.info("Executing testReportCompliance_GetReportComplianceByReportId_Invalid() ...");
@@ -54,10 +46,6 @@ public class DataAccessUnitTests {
 		testReport_GetReportByReportTitle_Valid();
 		Log.info("Executing testReport_GetReportByReportTitle_Invalid() ...");
 		testReport_GetReportByReportTitle_Invalid();
-		Log.info("Executing testReportCaptureEvent_GetReportCaptureEventByReportId_Valid() ...");
-		testReportCaptureEvent_GetReportCaptureEventByReportId_Valid();
-		Log.info("Executing testReportCaptureEvent_GetReportCaptureEventByReportId_Invalid() ...");
-		testReportCaptureEvent_GetReportCaptureEventByReportId_Invalid();
 		Log.info("Executing testStoredProcSystemHistory_GetStoredProcSystemHistoryByReportId_Valid() ...");
 		testStoredProcSystemHistory_GetStoredProcSystemHistoryByReportId_Valid();
 		Log.info("Executing testStoredProcComplianceAssessmentGetReportDrivingSurveys_getReportDrivingSurveys_Valid() ...");
@@ -141,32 +129,6 @@ public class DataAccessUnitTests {
 		Assert.assertTrue(objUser == null, "Value should be NULL.");
 	}
 
-	private static void testReportPeak_GetReportPeakByPeakNumber_Valid() {
-		Integer validPeakNumber = 1;
-		ReportPeak objReportPeak = ReportPeak.getReportPeak(validPeakNumber);
-		Assert.assertTrue(objReportPeak != null, "Value cannot be NULL.");
-	}
-
-	private static void testReportPeak_GetReportPeakByPeakNumber_Invalid() {
-		Integer invalidPeakNumber = -99;
-		ReportPeak objReportPeak = ReportPeak.getReportPeak(invalidPeakNumber);
-		Assert.assertTrue(objReportPeak == null, "Value should be NULL.");
-	}
-
-	private static void testReportDrivingSurvey_GetReportDrivingSurveyByReportId_Valid() {
-		String validReportId = "D12F21F5-3FA4-C9EB-C6D6-39D47CC7AB16";
-		String validSurveyId = "3E19B2AB-1F88-F86D-5C14-39D477085D64";
-		ReportDrivingSurvey objReportDrivingSurvey = ReportDrivingSurvey.getReportDrivingSurvey(validReportId, validSurveyId);
-		Assert.assertTrue(objReportDrivingSurvey != null, "Value cannot be NULL.");
-	}
-
-	private static void testReportDrivingSurvey_GetReportDrivingSurveyByReportId_Invalid() {
-		String invalidReportId = "D12F21F5-3FA4-C9EB-C6D6-00007CC7AB16";
-		String invalidSurveyId = "3E19B2AB-1F88-F86D-5C14-000077085D64";
-		ReportDrivingSurvey objReportDrivingSurvey = ReportDrivingSurvey.getReportDrivingSurvey(invalidReportId, invalidSurveyId);
-		Assert.assertTrue(objReportDrivingSurvey == null, "Value should be NULL.");
-	}
-
 	private static void testReportCompliance_GetReportComplianceByReportId_Valid() {
 		String validReportId = "D12F21F5-3FA4-C9EB-C6D6-39D47CC7AB16";
 		ReportCompliance objReportCompliance = ReportCompliance.getReportCompliance(validReportId);
@@ -189,20 +151,6 @@ public class DataAccessUnitTests {
 		String invalidReportTitle = "Invalid value";
 		Report objReport = Report.getReport(invalidReportTitle);
 		Assert.assertTrue(objReport == null, "Value should be NULL.");
-	}
-
-	private static void testReportCaptureEvent_GetReportCaptureEventByReportId_Valid() {
-		String validReportId = "F63164E9-48BC-843D-8D04-39D1529F85A9";
-		String validSurveyId = "088822B4-9814-06B8-1049-39CEEE5E4CB8";
-		ReportCaptureEvent objReportCaptureEvent = ReportCaptureEvent.getReportCaptureEvent(validReportId, validSurveyId);
-		Assert.assertTrue(objReportCaptureEvent != null, "Value cannot be NULL.");
-	}
-
-	private static void testReportCaptureEvent_GetReportCaptureEventByReportId_Invalid() {
-		String invalidReportId = "F63164E9-48BC-843D-8D04-0000529F85A9";
-		String invalidSurveyId = "088822B4-9814-06B8-1049-0000EE5E4CB8";
-		ReportCaptureEvent objReportCaptureEvent = ReportCaptureEvent.getReportCaptureEvent(invalidReportId, invalidSurveyId);
-		Assert.assertTrue(objReportCaptureEvent == null, "Value should be NULL.");
 	}
 
 	private static void testReport_GetReportViewByReportTitle_Valid() {
@@ -253,7 +201,7 @@ public class DataAccessUnitTests {
 	}
 
 	private static void testStoredProcComplianceGetIndications_getReportIndications_Valid() {
-		String validReportId = "5B8CBAD2-DAF4-F04F-5F3F-39D62D5A3B25";
+		String validReportId = "0e64a8e7-2305-b79c-3315-39d7c71ebda3";
 		ArrayList<StoredProcComplianceGetIndications> listStoredProcIndications = StoredProcComplianceGetIndications.getReportIndications(validReportId);
 		Iterator<StoredProcComplianceGetIndications> iterator = listStoredProcIndications.iterator();
 		Assert.assertTrue(iterator.hasNext());
@@ -277,7 +225,7 @@ public class DataAccessUnitTests {
 	}
 
 	private static void testCaptureEvent_GetCaptureEventBySurveyId_Valid() {
-		String validSurveyId = "A9ED5E79-AA26-91DD-593D-39CEEF0C320F";
+		String validSurveyId = "c8782024-cc65-b53a-5317-39d4b4f4731f";
 		CaptureEvent objCaptureEvent = CaptureEvent.getCaptureEvent(validSurveyId);
 		Assert.assertTrue(objCaptureEvent != null, "Value cannot be NULL.");
 	}
@@ -289,9 +237,9 @@ public class DataAccessUnitTests {
 	}
 
 	private static void testMeasurements_getMeasurements_Valid() {
-		String analyzerId = "59839947-9569-952D-16D6-39D4011442FA";
-		Double startEpochTime = 1458849090.199D;
-		Double endEpochTime = 1458849090.339D;
+		String analyzerId = "00000015-DB64-FDE7-7E67-39C8AC533D49";
+		Double startEpochTime = 1417806315D;
+		Double endEpochTime = 1417806445D;
 		List<Measurement> measurements = Measurement.getMeasurements(analyzerId, startEpochTime, endEpochTime);
 		Iterator<Measurement> iterator = measurements.iterator();
 		Assert.assertTrue(iterator.hasNext());
@@ -341,13 +289,13 @@ public class DataAccessUnitTests {
 	}
 
 	private static void testSurveyModeTypeId_getSurveyModeTypeId_Invalid() {
-		String id = "Invalid Value";
+		String id = "B310238A-A5AE-4E94-927B-0FF165E24522";
 		SurveyModeType objSurveyModeType = SurveyModeType.getSurveyModeType(id);
 		Assert.assertTrue(objSurveyModeType == null, "Value must be NULL.");
 	}
 
 	private static void testEQ_getDrivingSurvey_Valid() {
-		ArrayList<StoredProcEQAddedSurveys> list = StoredProcEQAddedSurveys.getReportDrivingSurveys("A3F800A2-B16B-9633-B8BA-39D6B19867B1");
+		ArrayList<StoredProcEQAddedSurveys> list = StoredProcEQAddedSurveys.getReportDrivingSurveys("8be7d46f-2852-a801-768b-39d3c815d6fa");
 		Iterator<StoredProcEQAddedSurveys> iterator = list.iterator();
 		Assert.assertTrue(iterator.hasNext());
 		while (iterator.hasNext()) {
@@ -357,13 +305,13 @@ public class DataAccessUnitTests {
 	}
 
 	private static void testEQ_getDrivingSurvey_Invalid() {
-		ArrayList<StoredProcEQAddedSurveys> list = StoredProcEQAddedSurveys.getReportDrivingSurveys("A3F800A2-B16B-9633-B8BA-39D6B19867B");
+		ArrayList<StoredProcEQAddedSurveys> list = StoredProcEQAddedSurveys.getReportDrivingSurveys("43c29b0a-f669-8897-00b7-39d433f6f85e");
 		Iterator<StoredProcEQAddedSurveys> iterator = list.iterator();
 		Assert.assertTrue(!iterator.hasNext());
 	}
 
 	private static void testEQ_getEQData_Valid() {
-		ArrayList<StoredProcEQGetEQData> list = StoredProcEQGetEQData.getEQData("A3F800A2-B16B-9633-B8BA-39D6B19867B1");
+		ArrayList<StoredProcEQGetEQData> list = StoredProcEQGetEQData.getEQData("34c29b0a-f669-8897-00b7-39d433f6f8e5");
 		Iterator<StoredProcEQGetEQData> iterator = list.iterator();
 		Assert.assertTrue(iterator.hasNext());
 		while (iterator.hasNext()) {
@@ -373,7 +321,7 @@ public class DataAccessUnitTests {
 	}
 
 	private static void testEQ_getEQData_Invalid() {
-		ArrayList<StoredProcEQGetEQData> list = StoredProcEQGetEQData.getEQData("A3F800A2-B16B-9633-B8BA-39D6B19867B");
+		ArrayList<StoredProcEQGetEQData> list = StoredProcEQGetEQData.getEQData("43c29b0a-f669-8897-00b7-39d433f6f85e");
 		Iterator<StoredProcEQGetEQData> iterator = list.iterator();
 		Assert.assertTrue(!iterator.hasNext());
 	}

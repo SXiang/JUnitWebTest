@@ -1552,7 +1552,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public boolean copyReport(String rptTitle, String strCreatedBy) {
 		setPagination(PAGINATIONSETTING);
-		this.waitForCopyReportPagetoLoad();
 		String reportTitleXPath;
 		String createdByXPath;
 		String copyImgXPath;
@@ -1583,6 +1582,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[@title='Copy']/img"; // Don't use index for 'Copy' as it has diff values
 				copyImg = getReportTableCell(copyImgXPath);
 				copyImg.click();
+				this.waitForCopyReportPagetoLoad();
 
 				return true;
 			}
