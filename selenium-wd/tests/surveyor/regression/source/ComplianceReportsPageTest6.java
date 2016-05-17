@@ -281,7 +281,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnDeleteButton(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForConfirmDeletePopupToShow(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnConfirmDeleteReport(EMPTY, getReportRowID(reportDataRowID1));
+		clickOnConfirmDeleteReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyReportDeletedSuccessfully(EMPTY, NOTSET));
 	}
 
@@ -318,7 +318,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		// Navigate away from compliance reports page and then return back to compliance reports page.
 		homePageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, NOTSET);
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		
 		// TODO: Thumbnail verifications remaining.
 	}

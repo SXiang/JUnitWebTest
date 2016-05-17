@@ -49,11 +49,6 @@ import static surveyor.scommon.source.SurveyorConstants.SWLAT_SMALL;
 import static surveyor.scommon.source.SurveyorConstants.SWLON_SMALL;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
-import static surveyor.scommon.source.SurveyorConstants.X_OFFSET;
-import static surveyor.scommon.source.SurveyorConstants.Y_OFFSET;
-import static surveyor.scommon.source.SurveyorConstants.RECT_WIDTH;
-import static surveyor.scommon.source.SurveyorConstants.RECT_HEIGHT;
-
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
@@ -66,7 +61,6 @@ import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.ReportDataProvider;
 import surveyor.scommon.actions.LoginPageActions;
-import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.ManageCustomersPage;
@@ -74,13 +68,13 @@ import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.BaseReportsPageTest;
+import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 
 @RunWith(SurveyorTestRunner.class)
-public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
+public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 	private static final String EMPTY = "";
 	private static final Integer NOTSET = -1;
@@ -92,7 +86,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageLocationsPage manageLocationsPage;
 	private static ManageUsersPage manageUsersPage;
-	private static ReportsCompliance reportCompliance;
+	
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
@@ -103,7 +97,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageTest {
 	 */
 	protected static void initializePageActions() {
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-		new HomePageActions(driver, baseURL, testSetup);
 		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageCustomersPage);
 		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
