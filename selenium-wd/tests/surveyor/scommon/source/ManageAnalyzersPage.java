@@ -177,7 +177,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 
 	public boolean associateAnalyzerToOtherSurveyor(String customerName, String locationName, String surveyorName, String analyzerName, String cuslocsur, boolean confirm) {
 		setPagination(PAGINATIONSETTING_100);
-
+		System.out.println("Inside associate analyzer");
 		this.waitForTableDataToLoad();
 
 		String customerXPath;
@@ -227,8 +227,9 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 						option.click();
 				}
 
-				if (confirm) {
-					this.btnOk.click();
+				this.btnOk.click();
+				if (confirm) {	
+					System.out.println("Confirm is true");
 					this.waitForPageToLoad();
 					if (getTable().isDisplayed()) {
 						return true;
@@ -236,6 +237,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				}
 
 				else {
+					System.out.println("return true");
 					return true;
 				}
 				if (isElementPresent(this.panelDuplicationErrorXPath)) {

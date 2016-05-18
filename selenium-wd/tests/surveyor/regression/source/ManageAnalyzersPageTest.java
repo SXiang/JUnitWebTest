@@ -313,9 +313,9 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		String analyzerName = surveyorName + "ana";
 		String cityName ="Santa Clara";
 
-		String locationNameNew = customerName + testSetup.getRandomNumber() + CUSNAMEBASELOC;
-		String surveyorNameNew = locationName + "sur";
-		String analyzerNameNew = surveyorNameNew + "ana";
+		String locationNameNew = customerName + testSetup.getRandomNumber() + "newloc";
+		String surveyorNameNew = locationName + "newsur";
+		String analyzerNameNew = surveyorNameNew + "newana";
 				
 		Log.info("\nRunning TC109_Associate_Disassociate_Analyzers_PicAdmin - Picarro Administrator is allowed to associate and disassociate Analyzers within Surveyor Unit of different Customers");
 			
