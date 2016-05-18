@@ -31,6 +31,16 @@ public class FileUtility {
 	 * @throws IOException
 	 */
 	public static String readFileContents(String filePath) throws IOException {
+		return readFileContents(filePath, false /*retainNewline*/);		
+	}
+
+	/**
+	 * Reads content of the specified file into a String.
+	 * @param filePath - Path of the file.
+	 * @return - String containing file content.
+	 * @throws IOException
+	 */
+	public static String readFileContents(String filePath, boolean retainNewline) throws IOException {
 		String lineText = null;
 		StringBuilder builder = new StringBuilder();
 		
@@ -38,13 +48,16 @@ public class FileUtility {
 		try {
 			while ((lineText = buffReader.readLine()) != null) {
 				builder.append(lineText);
+				if (retainNewline) {
+					builder.append(BaseHelper.getLineSeperator());
+				}
 			} 
 		} finally {
 			buffReader.close();
 		}
 		return builder.toString();		
 	}
-
+	
 	/**
 	 * Reads content of the specified file into an ArrayList where each line in the file represents an entry in the List.
 	 * @param filePath - Path of the file.

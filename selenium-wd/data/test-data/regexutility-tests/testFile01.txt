@@ -1,0 +1,17 @@
+LISAInvestigation Complete
+Approver Signature
+Approver Name
+CGI Investigation Complete
+GAP Investigation Complete
+Report Creation Date 5/16/2016 5:42 PM PDT
+Date
+Map Height & Width: 8.50 X 11.00 in 
+Time Zone: Pacific Standard Time
+Exclusion Radius: 0 m
+Report Mode: Standard
+NE Lat & NE Long 37.42060 X -121.97250
+SW Lat & SW Long 37.41570 X -121.98390
+Compliance Report
+1 of  32.3.0.83a340dSoftware Version:sqapicsup@picarro.comReport Author:5/16/2016 5:42 PM PDTDate Printed:
+CR-75A5AF
+TC517 Report348655
