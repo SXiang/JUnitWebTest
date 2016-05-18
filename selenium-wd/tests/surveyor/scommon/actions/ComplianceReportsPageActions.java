@@ -1,5 +1,6 @@
 package surveyor.scommon.actions;
 
+import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
@@ -84,6 +85,7 @@ import surveyor.scommon.source.ReportsCompliance.IsotopicAnalysisTableColumns;
 import surveyor.scommon.source.ReportsCompliance.LISAIndicationTableColumns;
 import surveyor.scommon.source.SurveyorBasePage.TableSortOrder;
 import surveyor.scommon.source.ReportsSurveyInfo;
+import surveyor.scommon.source.SurveyorConstants;
 
 public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	private static final String FN_WAIT_FOR_VIEW_DOWNLOAD_TO_COMPLETE_BY_VIEW_INDEX = "waitForViewDownloadToCompleteByViewIndex";
@@ -367,7 +369,21 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	private ReportOptViewLayersBoundaryDataReader getViewLayersBoundaryDataReader() {
 		return new ReportOptViewLayersBoundaryDataReader(this.excelUtility);
 	}
+	
+	private CustomerDataRow getCustomerDataRow() throws Exception {
+		Integer custRowID = Integer.valueOf(workingDataRow.customerRowID);
+		CustomerDataReader customerDataReader = new CustomerDataReader(excelUtility);
+		CustomerDataRow customerDataRow = customerDataReader.getDataRow(custRowID);
+		return customerDataRow;
+	}
 
+	private ReportOptTabularPDFContentDataRow getOptionalTabularPdfDataRow() throws Exception {
+		Integer optionaltabPdfRowID = Integer.valueOf(workingDataRow.reportOptTabularPDFContentRowID);
+		ReportOptTabularPDFContentDataReader optTabularPDFContentDataReader = new ReportOptTabularPDFContentDataReader(excelUtility);
+		ReportOptTabularPDFContentDataRow optTabularPDFContentDataRow = optTabularPDFContentDataReader.getDataRow(optionaltabPdfRowID);
+		return optTabularPDFContentDataRow;
+	}
+	
 	private List<String> getViewNamesList(Integer dataRowID) throws Exception {
 		List<Integer> viewRowIDs = ActionArguments.getNumericList(workingDataRow.reportViewRowIDs);
 		List<String> viewNamesList = new ArrayList<String>();
@@ -2097,33 +2113,16 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
  
 	/**
-	 * Executes verifyShapeFilesHaveCorrectData action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 */
-	public boolean verifyShapeFilesHaveCorrectData(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.verifyShapeFilesHaveCorrectData", data, dataRowID);
-		waitForReportFileDownload(dataRowID, ReportFileType.ShapeZIP, -1);
-		
-		// TODO: Internal method needs implementation.
-		this.getComplianceReportsPage().verifyShapeFilesData();
-		return true;
-	}
-
-	/**
 	 * Executes verifyShapeZIPFilesAreCorrect action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 * @throws Exception 
 	 */
-	public boolean verifyShapeZIPFilesAreCorrect(String data, Integer dataRowID) throws Exception {
+	private boolean verifyShapeZIPFilesAreCorrect(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyShapeZIPFilesAreCorrect", data, dataRowID);
-		this.getComplianceReportsPage().verifyShapeFilesWithBaselines(
-				workingDataRow.title, workingDataRow.tCID);
-		return true;
+		// TODO: Action needs implementation.
+		return false;
 	}
  
 	/**
@@ -2637,24 +2636,82 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws IOException 
+	 * @throws Exception 
 	 */
-	public boolean verifyAllSSRSTableInfos(String data, Integer dataRowID) throws IOException {
+	public boolean verifyAllSSRSTableInfos(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyAllSSRSTableInfos", data, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.PDF);
-		return verifySSRSTableInfo(downloadPath);
+		return verifySSRSTableInfos(downloadPath);
 	}
 
-	private boolean verifySSRSTableInfo(String downloadPath) throws IOException {
-		this.getComplianceReportsPage().verifyCoverageValuesTable(downloadPath, workingDataRow.title,
-				workingReportsComp.getTablesList().get(0));
-		boolean verifyShowCoverageTable = this.getComplianceReportsPage().verifyShowCoverageTable(downloadPath, workingDataRow.title);
-		boolean verifyLayersTable = this.getComplianceReportsPage().verifyLayersTable(downloadPath, workingDataRow.title, workingReportsComp.getTablesList().get(0));
-		boolean verifyViewsTable = this.getComplianceReportsPage().verifyViewsTable(downloadPath, workingDataRow.title, workingReportsComp.getViewList());
-		boolean verifyDrivingSurveysTable = this.getComplianceReportsPage().verifyDrivingSurveysTable(downloadPath, workingDataRow.title);
-		Log.info(String.format("verifyShowCoverageTable = %b; verifyLayersTable = %b; verifyViewsTable = %b; verifyDrivingSurveysTable = %b",
-				verifyShowCoverageTable, verifyLayersTable, verifyViewsTable, verifyDrivingSurveysTable)); 
-		return verifyShowCoverageTable && verifyLayersTable && verifyViewsTable && verifyDrivingSurveysTable;
+	private boolean verifySSRSTableInfos(String downloadPath) throws Exception {
+		boolean retSuccess = true;
+		boolean verifyCoverageValuesTable = false;
+		boolean verifyShowCoverageTable = false;
+		boolean verifyIsotopicAnalysisTable = false;
+		boolean verifyIndicationTable = false;
+		boolean verifyLayersTable = false;
+		boolean verifyViewsTable = false;
+		boolean verifyDrivingSurveysTable = false;
+		
+		ReportOptTabularPDFContentDataRow optTabularPDFContentDataRow = getOptionalTabularPdfDataRow();
+		boolean pca = Boolean.valueOf(optTabularPDFContentDataRow.percentCoverageAssets);
+		boolean pcra = Boolean.valueOf(optTabularPDFContentDataRow.percentCoverageReportArea);
+		boolean isoAnalysis = Boolean.valueOf(optTabularPDFContentDataRow.isotopicAnalysis);
+		boolean indTable = Boolean.valueOf(optTabularPDFContentDataRow.indicationTable);
+		
+		if (pca && pcra) {
+			Log.info("Executing verifyCoverageValuesTable()...");
+			verifyCoverageValuesTable = this.getComplianceReportsPage().verifyCoverageValuesTable(downloadPath, workingDataRow.title,
+					workingReportsComp.getTablesList().get(0));
+			Log.info(String.format("verifyCoverageValuesTable() returned - '%b'", verifyCoverageValuesTable));
+			retSuccess = retSuccess && verifyCoverageValuesTable;
+			
+			Log.info("Executing verifyShowCoverageTable()...");
+			verifyShowCoverageTable = this.getComplianceReportsPage().verifyShowCoverageTable(downloadPath, workingDataRow.title);
+			Log.info(String.format("verifyShowCoverageTable() returned - '%b'", verifyShowCoverageTable));
+			retSuccess = retSuccess && verifyShowCoverageTable;
+		}
+		
+		if (isoAnalysis) {
+			Log.info("Executing verifyIsotopicAnalysisTable()...");
+			verifyIsotopicAnalysisTable = this.getComplianceReportsPage().verifyIsotopicAnalysisTable(downloadPath, workingDataRow.title);
+			Log.info(String.format("verifyIsotopicAnalysisTable() returned - '%b'", verifyIsotopicAnalysisTable));
+			retSuccess = retSuccess && verifyIsotopicAnalysisTable;
+		}
+		
+		if (indTable) {
+			Log.info("Executing verifyIndicationTable()...");
+			verifyIndicationTable = this.getComplianceReportsPage().verifyIndicationTable(downloadPath, workingDataRow.title);
+			Log.info(String.format("verifyIndicationTable() returned - '%b'", verifyIndicationTable));
+			retSuccess = retSuccess && verifyIndicationTable;
+		}
+		
+		List<String> customersWithAssets = SurveyorConstants.getCustomersWithAssets();
+		CustomerDataRow customerDataRow = getCustomerDataRow();
+		if (customersWithAssets.contains(customerDataRow.name)) {
+			Log.info("Executing verifyLayersTable()...");
+			verifyLayersTable = this.getComplianceReportsPage().verifyLayersTable(downloadPath, workingDataRow.title, workingReportsComp.getTablesList().get(0));
+			Log.info(String.format("verifyLayersTable() returned - '%b'", verifyLayersTable));
+			retSuccess = retSuccess && verifyLayersTable;
+		}
+			
+		Log.info("Executing verifyViewsTable()...");
+		verifyViewsTable = this.getComplianceReportsPage().verifyViewsTable(downloadPath, workingDataRow.title, workingReportsComp.getViewList());
+		retSuccess = retSuccess && verifyViewsTable;
+		Log.info(String.format("verifyViewsTable() returned - '%b'", verifyLayersTable));
+		
+		Log.info("Executing verifyDrivingSurveysTable()...");
+		verifyDrivingSurveysTable = this.getComplianceReportsPage().verifyDrivingSurveysTable(downloadPath, workingDataRow.title);
+		retSuccess = retSuccess && verifyDrivingSurveysTable;
+		Log.info(String.format("verifyDrivingSurveysTable() returned - '%b'", verifyLayersTable));
+		
+		Log.info(String.format("verifyCoverageValuesTable = %b; verifyShowCoverageTable = %b; verifyIsotopicAnalysisTable = %b; "
+				+ "verifyIndicationTable = %b; verifyLayersTable = %b; verifyViewsTable = %b; verifyDrivingSurveysTable = %b",
+				verifyCoverageValuesTable, verifyShowCoverageTable, verifyIsotopicAnalysisTable, verifyIndicationTable, 
+				verifyLayersTable, verifyViewsTable, verifyDrivingSurveysTable)); 
+		
+		return retSuccess;
 	}
 
 	/**
@@ -3441,7 +3498,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifySearchedSurveysMatchDateRange")) { return this.verifySearchedSurveysMatchDateRange(data, dataRowID); }
 		else if (actionName.equals("verifySearchedSurveysMatchSurveyorUnit")) { return this.verifySearchedSurveysMatchSurveyorUnit(data, dataRowID); }
 		else if (actionName.equals("verifySearchedSurveysMatchTag")) { return this.verifySearchedSurveysMatchTag(data, dataRowID); }
-		else if (actionName.equals("verifyShapeFilesHaveCorrectData")) { return this.verifyShapeFilesHaveCorrectData(data, dataRowID); }
 		else if (actionName.equals("verifyShapeFilesWithBaselines")) { return this.verifyShapeFilesWithBaselines(data, dataRowID); }
 		else if (actionName.equals("verifyShapeZIPFilesAreCorrect")) { return this.verifyShapeZIPFilesAreCorrect(data, dataRowID); }
 		else if (actionName.equals("verifyShapeZIPThumbnailDownloadFromComplianceViewer")) { return this.verifyShapeZIPThumbnailDownloadFromComplianceViewer(data, dataRowID); }

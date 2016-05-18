@@ -47,8 +47,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYASSETPEPLASTIC;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
 
-import surveyor.scommon.actions.data.ComplianceReportDataReader.ComplianceReportsDataRow;
-import surveyor.scommon.source.ComplianceReportsPage.ReportFileType;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SSRSPdfFooterColumns;
@@ -129,7 +127,6 @@ import common.source.PDFUtility;
 import common.source.ProcessUtility;
 import common.source.RegexUtility;
 import common.source.ShapeFileUtility;
-import common.source.ShapeToGeoJsonConverter;
 import common.source.TestContext;
 
 /**
@@ -1721,8 +1718,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains(ReportsCompliance reportsCompliance,
 			List<String> autocompleteListEntries) {
 		openCustomerBoundarySelector();
-		latLongSelectionControl.waitForModalDialogOpen().switchMode(ControlMode.MapInteraction).waitForMapImageLoad()
-				.selectCustomerBoundaryType(reportsCompliance.getCustomerBoundaryFilterType().toString());
+		latLongSelectionControl.waitForModalDialogOpen()
+			.switchMode(ControlMode.MapInteraction)
+			.waitForMapImageLoad()
+			.selectCustomerBoundaryType(reportsCompliance.getCustomerBoundaryFilterType().toString());
 
 		// Type customer boundary name and verify the autocomplete list. If not
 		// all entries shown, return false.

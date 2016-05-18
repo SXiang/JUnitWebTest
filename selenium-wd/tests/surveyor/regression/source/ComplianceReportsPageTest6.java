@@ -58,7 +58,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		testEnvironmentAction = new TestEnvironmentActions();
 
 		// Select run mode here.
-		setTestRunMode(ReportTestRunMode.FullTestRun);
+		setTestRunMode(ReportTestRunMode.UnitTestRun);
 		
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
@@ -994,7 +994,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		Integer shapeZipFileIndex = 2;
-		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY /*hasPipeIntersectingLISA*/, getReportRowID(reportDataRowID1)));
+		// TODO: Enable after action is implemented.
+		//assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY /*hasPipeIntersectingLISA*/, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(String.valueOf(shapeZipFileIndex), getReportRowID(reportDataRowID1)));
 	}
  
