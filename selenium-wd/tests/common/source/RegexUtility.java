@@ -5,7 +5,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -196,25 +195,12 @@ public class RegexUtility {
 	 * Removes all characters other than those defined in REGEX_PATTERN_NOT_ALPHANUMERIC
 	 * The character ETX (\\u0003) is handled specially to replace it with <space>.
 	 * NOTE: This method may not give expected results in non en-us locale. 
-	 * TODO: Add fix for all locales.		
+	 * TODO: Add fix for all locales. Tracked by DE1968.		
 	 * 
 	 * @param inputString
 	 * @return
 	 */
 	public static String removeSpecialChars(String inputString) {
-		// Replace ETX character by <space>
-		inputString = inputString.replaceAll("\\u0003", " ");
-		// Next remove all characters NOT in REGEX_PATTERN_NOT_ALPHANUMERIC 
-		return inputString.replaceAll(RegexUtility.REGEX_PATTERN_NOT_ALPHANUMERIC, "");
-	}
-
-	/**
-	 * Remove TM character
-	 * 
-	 * @param inputString
-	 * @return
-	 */
-	public static String removeChar(String inputString) {
 		// Replace ETX character by <space>
 		inputString = inputString.replaceAll("\\u0003", " ");
 		// Next remove all characters NOT in REGEX_PATTERN_NOT_ALPHANUMERIC 
@@ -246,6 +232,7 @@ public class RegexUtility {
 		}
 		return isMatch;
 	}
+	
 	public static void main(String[] args) throws IOException {
 		
 		Log.info("Running test - testRemoveSpecialChars_Success() ...");

@@ -723,12 +723,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			if (tagValue != "") {
 				inputSurveyTag(tagValue);
 				clickOnSearchSurveyButton();
-				this.waitForSurveyTabletoLoad();
-				this.waitForSurveySelectorCheckBoxToLoad();
-				this.waitForSurveySelectorCheckBoxToBeEnabled();
-				selectFirstSurveyCheckBox();
-				this.waitForAddSurveyButtonToLoad();
-				clickOnAddSurveysButton();
+				selectSurveysAndAddToReport(false /*selectAll*/, 1 /*numSurveysToSelect*/);
 			}
 		}
 	}

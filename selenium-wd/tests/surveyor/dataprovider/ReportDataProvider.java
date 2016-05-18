@@ -33,15 +33,20 @@ import java.util.List;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.InitializationError;
 
+import common.source.ArrayUtility;
 import common.source.ExcelUtility;
+import common.source.RegexUtility;
 import common.source.TestContext;
+import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
 import surveyor.scommon.actions.data.ReportOptViewLayersAssetsDataReader;
 import surveyor.scommon.actions.data.ReportOptViewLayersBoundaryDataReader;
+import surveyor.scommon.actions.data.ReportSurveyDataReader;
 import surveyor.scommon.actions.data.ReportOptViewLayersAssetsDataReader.ReportOptViewLayersAssetsDataRow;
 import surveyor.scommon.actions.data.ReportOptViewLayersBoundaryDataReader.ReportOptViewLayersBoundaryDataRow;
 import surveyor.scommon.source.ReportsCompliance;
+import surveyor.scommon.source.ReportsSurveyInfo;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 public class ReportDataProvider extends SurveyorTestRunner {
@@ -54,7 +59,6 @@ public class ReportDataProvider extends SurveyorTestRunner {
 	public void run(RunNotifier notifier) {
 		super.run(notifier);
 	}
-
 	
 	public static HashMap<String, String> createViewsMapTable(String viewName, String lisa, String fov, String breadcrumb, String indications, String isotopic, String annotation, String gap, String asset, String boundary, String map) {
 		HashMap<String, String> viewMap = new HashMap<String, String>();
@@ -72,17 +76,20 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		return viewMap;
 	}
 
-	public static List<String> createBoundaryList() {
+	public static List<String> createMapAndBoundaryList() {
+		return createMapAndBoundaryList(true /*includeCustomBoundary*/);
+	}
+
+	public static List<String> createMapAndBoundaryList(boolean includeCustomBoundary) {
 		List<String> listBoundary = new ArrayList<String>();
 		listBoundary.add(IMGMAPHEIGHT);
 		listBoundary.add(IMGMAPWIDTH);
-		listBoundary.add(RNELAT);
-		listBoundary.add(RNELON);
-		listBoundary.add(RSWLAT);
-		listBoundary.add(RSWLON);
+		if (includeCustomBoundary) {
+			addCustomBoundary(listBoundary);
+		}
 		return listBoundary;
 	}
-	
+
 	public static HashMap<String, String> createOptionalTabularPDFContent(String indication, String isotopic, String gaptable, String pca, String pcra, String pcf) {
 		HashMap<String, String> tableMap = new HashMap<String, String>();
 		tableMap.put(KEYINDTB, indication);
@@ -154,6 +161,20 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		return viewLayerMap;
 	}
 
+	public static List<ReportsSurveyInfo> buildReportSurveyInfoList(String surveyDataRowIDs) throws Exception {
+		ExcelUtility excelUtility = getExcelUtility();
+		List<String> strRowIDsList = RegexUtility.split(surveyDataRowIDs, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
+		List<Integer> intRowIDsList = ArrayUtility.convertStrListToIntList(strRowIDsList);
+		return ComplianceReportsPageActions.getReportSurveyInfoList(excelUtility, intRowIDsList);
+	}
+
+	private static void addCustomBoundary(List<String> listBoundary) {
+		listBoundary.add(RNELAT);
+		listBoundary.add(RNELON);
+		listBoundary.add(RSWLAT);
+		listBoundary.add(RSWLON);
+	}
+	
 	private static ExcelUtility getExcelUtility() throws Exception, IOException {
 		ExcelUtility excelUtility = new ExcelUtility();
 		excelUtility.setExcelFile(TestContext.INSTANCE.getTestSetup().getTestCaseDataPath());
