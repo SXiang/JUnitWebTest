@@ -691,7 +691,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		checkAndGenerateBaselineSSRSImage(reportName, testCaseID);
 		String unzipFolder = testSetup.getDownloadPath() + reportName;
 		zipUtility.unZip(testSetup.getDownloadPath() + reportName + ".zip", unzipFolder);
-		checkAndgenerateBaselineViewImages(unzipFolder, testCaseID);
+		checkAndGenerateBaselineViewImages(unzipFolder, testCaseID);
 
 		int zipFileIndex = 1;
 		String zipFileName;
@@ -720,7 +720,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 			if (testCaseID != null) {
 				try {
-					checkAndGenerateBaselineShapeFiles(zipFileName, testCaseID);
+					Path shapeUnzipFolder = Paths.get(testSetup.getDownloadPath(), zipFileName);
+					checkAndGenerateBaselineShapeFiles(shapeUnzipFolder.toString(), testCaseID);
 				} catch (Exception e) {
 					Log.error(e.toString());
 					return false;
@@ -792,10 +793,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return reportName;
 	}
 
-	private boolean checkAndGenerateBaselineShapeFiles(String zipFileName, String testCaseID) throws Exception {
+	public boolean checkAndGenerateBaselineShapeFiles(String unzipFolder, String testCaseID) throws Exception {
 		boolean isGenerateBaselineShapeFiles = TestContext.INSTANCE.getTestSetup().isGenerateBaselineShapeFiles();
 		if (isGenerateBaselineShapeFiles) {
-			Path unzipDirectory = Paths.get(testSetup.getDownloadPath(), zipFileName);
+			Path unzipDirectory = Paths.get(unzipFolder);
 			List<String> filesInDirectory = FileUtility.getFilesInDirectory(unzipDirectory, "*.shp,*.dbf,*.prj,*.shx");
 			for (String filePath : filesInDirectory) {
 				generateBaselineShapeFile(testCaseID, filePath);
@@ -804,7 +805,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return isGenerateBaselineShapeFiles;
 	}
 
-	private void checkAndGenerateBaselineSSRSImage(String reportName, String testCaseID) throws Exception {
+	public void checkAndGenerateBaselineSSRSImage(String reportName, String testCaseID) throws Exception {
 		boolean isGenerateBaselineSSRSImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
 		if (isGenerateBaselineSSRSImages) {
 			String htmlReportName = reportName + ".html";
@@ -829,7 +830,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 
-	private void checkAndgenerateBaselineViewImages(String unzipFolder, String testCaseID) throws Exception {
+	public void checkAndGenerateBaselineViewImages(String unzipFolder, String testCaseID) throws Exception {
 		PDFUtility pdfUtility = new PDFUtility();
 		boolean isGenerateBaselineViewImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
 		if (isGenerateBaselineViewImages) {

@@ -2787,8 +2787,13 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean verifyShapeFilesWithBaselines(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyShapeFilesWithBaselines", data, dataRowID);
-		return this.getComplianceReportsPage().verifyShapeFilesWithBaselines(workingDataRow.title, 
-				workingDataRow.tCID, getDownloadFileIndex(data,2));
+		ActionArguments.verifyNotNullOrEmpty("verifyShapeFilesWithBaselines", ARG_DATA, data);
+		ComplianceReportsDataRow complianceReportsDataRow = getComplianceReportsDataRow(dataRowID);
+		String shapeFileName = this.getComplianceReportsPage().getReportShapeZipFileName(complianceReportsDataRow.title, false);
+		String unzipFolder = TestContext.INSTANCE.getTestSetup().getDownloadPath() + shapeFileName;
+		this.getComplianceReportsPage().checkAndGenerateBaselineShapeFiles(unzipFolder, complianceReportsDataRow.tCID);
+		return this.getComplianceReportsPage().verifyShapeFilesWithBaselines(complianceReportsDataRow.title, 
+				complianceReportsDataRow.tCID, getDownloadFileIndex(data,2));
 	}
  
 	/**
@@ -2842,14 +2847,16 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws InterruptedException 
-	 * @throws IOException 
+	 * @throws Exception 
 	 */
-	public boolean verifySSRSImagesWithBaselines(String data, Integer dataRowID) throws IOException, InterruptedException {
+	public boolean verifySSRSImagesWithBaselines(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifySSRSImagesWithBaselines", data, dataRowID);
+		ComplianceReportsDataRow complianceReportsDataRow = getComplianceReportsDataRow(dataRowID);
+		String reportName = this.getComplianceReportsPage().getReportPDFFileName(complianceReportsDataRow.title, false);
+		this.getComplianceReportsPage().checkAndGenerateBaselineSSRSImage(reportName, complianceReportsDataRow.tCID);
 		String downloadPath = getDownloadPath(ReportFileType.PDF);
-		return this.getComplianceReportsPage().verifySSRSImages(downloadPath, workingDataRow.title, 
-				workingDataRow.tCID);
+		return this.getComplianceReportsPage().verifySSRSImages(downloadPath, complianceReportsDataRow.title, 
+				complianceReportsDataRow.tCID);
 	}
  
 	/**
@@ -2937,13 +2944,19 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyViewsImagesWithBaselines(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyViewsImagesWithBaselines", data, dataRowID);
 		boolean retVal = true;
+		
+		ComplianceReportsDataRow complianceReportsDataRow = getComplianceReportsDataRow(dataRowID);
+		String reportName = this.getComplianceReportsPage().getReportPDFFileName(complianceReportsDataRow.title, false);
+		String unzipFolder = TestContext.INSTANCE.getTestSetup().getDownloadPath() + reportName;
+		this.getComplianceReportsPage().checkAndGenerateBaselineViewImages(unzipFolder, complianceReportsDataRow.tCID);
+
 		// for each view in the test case verify that the view image is present.
-		List<Integer> viewRowIDs = ActionArguments.getNumericList(workingDataRow.reportViewRowIDs);
+		List<Integer> viewRowIDs = ActionArguments.getNumericList(complianceReportsDataRow.reportViewRowIDs);
 		for (Integer viewRowID : viewRowIDs) {
 			ReportViewsDataReader viewsDataReader = new ReportViewsDataReader(this.excelUtility);
 			ReportViewsDataRow viewsDataRow = viewsDataReader.getDataRow(viewRowID);
-			retVal = retVal && this.getComplianceReportsPage().verifyViewsImages(TestContext.INSTANCE.getTestSetup().getDownloadPath(), workingDataRow.title, 
-					workingDataRow.tCID, viewsDataRow.name);
+			retVal = retVal && this.getComplianceReportsPage().verifyViewsImages(TestContext.INSTANCE.getTestSetup().getDownloadPath(), 
+					complianceReportsDataRow.title, complianceReportsDataRow.tCID, viewsDataRow.name);
 		}
 		return retVal;
 	}
