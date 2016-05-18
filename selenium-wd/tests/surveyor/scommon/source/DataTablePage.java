@@ -245,23 +245,6 @@ public class DataTablePage extends BasePage {
 	}
 
 	/**
-	 * To find the index number of a column
-	 * 
-	 * @param columnName
-	 * @return index of the column
-	 */
-	public int getActionIndex(int columnName) {
-		for (int i = 0; i < tableHeader.size(); i++) {
-			String columnText = tableHeader.get(i).getText();
-			if (columnText != null && columnText.trim().equals(columnName)) {
-				return i;
-			}
-		}
-		Log.warn("Not found: Column '" + columnName + "'");
-		return -1;
-	}
-
-	/**
 	 * Navigate to next page of this table
 	 * 
 	 * @return
