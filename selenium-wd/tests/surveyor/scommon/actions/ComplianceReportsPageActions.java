@@ -352,16 +352,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return rpt;
 	}
 
-	private List<String[]> getSSRSPDFTableValues(PDFTable pdfTable) throws IOException {
-		String pdfFilename = this.getComplianceReportsPage().getReportPDFFileName(workingDataRow.title, true /*includeExtension*/);
-		String pdfFilePath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), pdfFilename).toString();
-		PDFTableUtility pdfTableUtility = new PDFTableUtility();
-		List<String[]> pdfTableList = pdfTableUtility.extractPDFTable(pdfFilePath, pdfTable);
-		Log.info(String.format("Extracted tables values from PDF : %s", LogHelper.listOfStrArrayToString(pdfTableList)),
-				LogCategory.SSRSPdfContent);
-		return pdfTableList;
-	}
- 
 	private ReportOptViewLayersAssetsDataReader getViewLayersAssetsDataReader() {
 		return new ReportOptViewLayersAssetsDataReader(this.excelUtility);
 	}
@@ -2163,7 +2153,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyIsotopicTableSortedAscByColumn(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyIsotopicTableSortedAscByColumn", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("verifyIsotopicTableSortedAscByColumn", ARG_DATA, data);
-		List<String[]> isotopicAnalysisTblList = getSSRSPDFTableValues(PDFTable.ISOTOPICANALYSISTABLE);
+		List<String[]> isotopicAnalysisTblList = this.getComplianceReportsPage().getSSRSPDFTableValues(
+				PDFTable.ISOTOPICANALYSISTABLE, workingDataRow.title);
 		IsotopicAnalysisTableColumns tableColumn = IsotopicAnalysisTableColumns.valueOf(data);
 		List<String> tableValuesList = ArrayUtility.getColumnStringList(isotopicAnalysisTblList, tableColumn.getIndex());
 		return SortHelper.isSortedASC(tableValuesList.toArray(new String[tableValuesList.size()]));
@@ -2179,7 +2170,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyIsotopicTableSortedDescByColumn(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyIsotopicTableSortedDescByColumn", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("verifyIsotopicTableSortedDescByColumn", ARG_DATA, data);
-		List<String[]> isotopicAnalysisTblList = getSSRSPDFTableValues(PDFTable.ISOTOPICANALYSISTABLE);
+		List<String[]> isotopicAnalysisTblList = this.getComplianceReportsPage().getSSRSPDFTableValues(
+				PDFTable.ISOTOPICANALYSISTABLE, workingDataRow.title);
 		IsotopicAnalysisTableColumns tableColumn = IsotopicAnalysisTableColumns.valueOf(data);
 		List<String> tableValuesList = ArrayUtility.getColumnStringList(isotopicAnalysisTblList, tableColumn.getIndex());
 		return SortHelper.isSortedDESC(tableValuesList.toArray(new String[tableValuesList.size()]));
@@ -2194,7 +2186,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean verifyIsotopicValueIsFormattedCorrectly(String data, Integer dataRowID) throws IOException {
 		logAction("ComplianceReportsPageActions.verifyIsotopicValueIsFormattedCorrectly", data, dataRowID);
-		List<String[]> isotopicAnalysisTblList = getSSRSPDFTableValues(PDFTable.ISOTOPICANALYSISTABLE);
+		List<String[]> isotopicAnalysisTblList = this.getComplianceReportsPage().getSSRSPDFTableValues(
+				PDFTable.ISOTOPICANALYSISTABLE, workingDataRow.title);
 		String[] isotopicUncertaintyValues = isotopicAnalysisTblList.get(IsotopicAnalysisTableColumns.IsotopicValueUncertainty.getIndex());
 		for (String isotopicUncertaintyValue : isotopicUncertaintyValues) {
 			if (!this.getComplianceReportsPage().verifyIsotopicValueIsFormattedCorrectly(isotopicUncertaintyValue)) {
@@ -2213,7 +2206,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean verifyUncertaintyValueIsFormattedCorrectly(String data, Integer dataRowID) throws IOException {
 		logAction("ComplianceReportsPageActions.verifyUncertaintyValueIsFormattedCorrectly", data, dataRowID);
-		List<String[]> isotopicAnalysisTblList = getSSRSPDFTableValues(PDFTable.ISOTOPICANALYSISTABLE);
+		List<String[]> isotopicAnalysisTblList = this.getComplianceReportsPage().getSSRSPDFTableValues(
+				PDFTable.ISOTOPICANALYSISTABLE, workingDataRow.title);
 		String[] isotopicUncertaintyValues = isotopicAnalysisTblList.get(IsotopicAnalysisTableColumns.IsotopicValueUncertainty.getIndex());
 		for (String isotopicUncertaintyValue : isotopicUncertaintyValues) {
 			if (!this.getComplianceReportsPage().verifyUncertaintyValueIsFormattedCorrectly(isotopicUncertaintyValue)) {
@@ -2305,7 +2299,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyLISAsIndicationTableRowCountEquals", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("verifyLISAsIndicationTableRowCountEquals", ARG_DATA, data);
 		Integer expectedRows = NumberUtility.getIntegerValueOf(data);
-		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE);
+		List<String[]> lisasIndicationTblList = this.getComplianceReportsPage().getSSRSPDFTableValues(
+				PDFTable.LISAINDICATIONTABLE, workingDataRow.title);
 		Integer actualRows = (lisasIndicationTblList != null) ? lisasIndicationTblList.size() : 0;
 		Log.info(String.format("Expected Row Count=[%d], Actual Row Count=[%d]", expectedRows, actualRows));
 		return (expectedRows == actualRows);
@@ -2321,7 +2316,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyLISAsIndicationTableSortedAscByColumn(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyLisasTableSortedAscByColumn", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("verifyLisasTableSortedAscByColumn", ARG_DATA, data);
-		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE);
+		List<String[]> lisasIndicationTblList = this.getComplianceReportsPage().getSSRSPDFTableValues(
+				PDFTable.LISAINDICATIONTABLE, workingDataRow.title);
 		LISAIndicationTableColumns tableColumn = LISAIndicationTableColumns.valueOf(data);
 		List<String> tableValuesList = ArrayUtility.getColumnStringList(lisasIndicationTblList, tableColumn.getIndex());
 		return SortHelper.isSortedASC(tableValuesList.toArray(new String[tableValuesList.size()]));
@@ -2337,7 +2333,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyLISAsIndicationTableSortedDescByColumn(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyLisasTableSortedDescByColumn", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("verifyLisasTableSortedDescByColumn", ARG_DATA, data);
-		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE);
+		List<String[]> lisasIndicationTblList = this.getComplianceReportsPage().getSSRSPDFTableValues(
+				PDFTable.LISAINDICATIONTABLE, workingDataRow.title);
 		LISAIndicationTableColumns tableColumn = LISAIndicationTableColumns.valueOf(data);
 		List<String> tableValuesList = ArrayUtility.getColumnStringList(lisasIndicationTblList, tableColumn.getIndex());
 		return SortHelper.isSortedDESC(tableValuesList.toArray(new String[tableValuesList.size()]));
@@ -2791,7 +2788,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyLISAsIndicationTableMinAmplitudeValues(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyLISAsIndicationTableMinAmplitudeValues", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("verifyLISAsIndicationTableMinAmplitudeValues", ARG_DATA, data);
-		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(PDFTable.LISAINDICATIONTABLE);
+		List<String[]> lisasIndicationTblList = this.getComplianceReportsPage().getSSRSPDFTableValues(
+				PDFTable.LISAINDICATIONTABLE, workingDataRow.title);
 		List<String> minAmplitudeValues = ArrayUtility.getColumnStringList(lisasIndicationTblList, LISAIndicationTableColumns.Amplitude.getIndex());
 		return ArrayUtility.areValuesGreater(minAmplitudeValues.toArray(new String[minAmplitudeValues.size()]), NumberUtility.getFloatValueOf(data));
 	}
@@ -2952,8 +2950,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		String downloadPath = getDownloadPath(ReportFileType.PDF);
 		return this.getComplianceReportsPage().verifyViewsTable(downloadPath, workingDataRow.title,
 				workingReportsComp.getViewList());
-	}
- 
+	} 
+
 	/**
 	 * Executes verifySurveysTableInfoByTags action.
 	 * @param data - specifies the input data passed to the action.
@@ -2976,18 +2974,19 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
  
 	/**
-	 * Executes verifyViewsCreatedAreInCorrectSequence action.
+	 * Executes verifyViewsInSSRSPDFAreInCorrectSequence action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 * @throws Exception 
 	 */
-	public boolean verifyViewsCreatedAreInCorrectSequence(String data, Integer dataRowID) throws Exception {
-		logAction("ComplianceReportsPageActions.verifyViewsCreatedAreInCorrectSequence", data, dataRowID);
-		List<String> viewNamesList = getViewNamesList(dataRowID);
-		return this.getComplianceReportsPage().verifyViewsInComplianceViewerAreInCorrectSequence(viewNamesList);
+	public boolean verifyViewsInSSRSPDFAreInCorrectSequence(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.verifyViewsInSSRSPDFAreInCorrectSequence", data, dataRowID);
+		List<String> expectedViewNamesList = getViewNamesList(dataRowID);
+		return this.getComplianceReportsPage().verifyViewsInSSRSPDFAreInCorrectSequence(
+				expectedViewNamesList, workingDataRow.title);
 	}
- 
+
 	/**
 	 * Executes verifyViewsImagesWithBaselines action.
 	 * @param data - specifies the input data passed to the action.
@@ -3512,7 +3511,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifyUncertaintyValueIsFormattedCorrectly")) { return this.verifyUncertaintyValueIsFormattedCorrectly(data, dataRowID); }
 		else if (actionName.equals("verifyViewThumbnailDownloadFromComplianceViewerByViewIndex")) { return this.verifyViewThumbnailDownloadFromComplianceViewerByViewIndex(data, dataRowID); }
 		else if (actionName.equals("verifyViewThumbnailIsShownInComplianceViewerByViewIndex")) { return this.verifyViewThumbnailIsShownInComplianceViewerByViewIndex(data, dataRowID); }
-		else if (actionName.equals("verifyViewsCreatedAreInCorrectSequence")) { return this.verifyViewsCreatedAreInCorrectSequence(data, dataRowID); }
+		else if (actionName.equals("verifyViewsCreatedAreInCorrectSequence")) { return this.verifyViewsInSSRSPDFAreInCorrectSequence(data, dataRowID); }
 		else if (actionName.equals("verifyViewsImagesWithBaselines")) { return this.verifyViewsImagesWithBaselines(data, dataRowID); }
 		else if (actionName.equals("verifyWarningMessageOnDeleteButtonClickEquals")) { return this.verifyWarningMessageOnDeleteButtonClickEquals(data, dataRowID); }
 		else if (actionName.equals("verifyComplianceViewerDialogIsClosed")) { return this.verifyComplianceViewerDialogIsClosed(data, dataRowID); }

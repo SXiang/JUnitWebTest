@@ -58,7 +58,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		testEnvironmentAction = new TestEnvironmentActions();
 
 		// Select run mode here.
-		setTestRunMode(ReportTestRunMode.UnitTestRun);
+		setTestRunMode(ReportTestRunMode.FullTestRun);
 		
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
@@ -196,9 +196,6 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC509_GenerateComplianceReportUsingCreateNewFunctionality ...");
 
-		// TODO: Re-run test with actual data and set this to correct expected value. Also uncomment the assert statement below.
-		Integer expectedLisaRows = 10;
-
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
@@ -210,11 +207,13 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		
 		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyAllSSRSTableInfos(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 
-		//assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableRowCountEquals(String.valueOf(expectedLisaRows), NOTSET));
+		Integer expectedLisaRows = 6;
+		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableRowCountEquals(String.valueOf(expectedLisaRows), NOTSET));
 		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableSortedDescByColumn(LISAIndicationTableColumns.Amplitude.toString(), NOTSET));
 		assertTrue(complianceReportsPageAction.verifyIsotopicTableSortedAscByColumn(IsotopicAnalysisTableColumns.DateTime.toString(), NOTSET));
 	}
@@ -315,9 +314,11 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifyPDFThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifyPDFZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifyViewThumbnailIsShownInComplianceViewerByViewIndex("1", getReportRowID(reportDataRowID1));
 		
-		// TODO: Navigate away and thumbnail verifications remaining.
+		// TODO: Navigate away verifications remaining. To be added post US2400 merge that implements this..
 	}
  
 	/**
@@ -365,6 +366,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		
 		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
 		
 		// TODO: Check implementation.
@@ -378,7 +380,9 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(TIMEZONE_STRING, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(ASSET_DATA_STRING, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyViewsCreatedAreInCorrectSequence(EMPTY, NOTSET));
+		
+		// TODO: Start line for Table definition is just 2 characters, which is creating issue with table parsing.
+		assertTrue(complianceReportsPageAction.verifyViewsInSSRSPDFAreInCorrectSequence(EMPTY, NOTSET));
 	}
  
 	/**
@@ -802,7 +806,6 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 	}

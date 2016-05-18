@@ -98,10 +98,12 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import common.source.ArrayUtility;
 import common.source.BaseHelper;
 import common.source.CSVUtility;
 import common.source.DBConnection;
 import common.source.Log;
+import common.source.LogCategory;
 import common.source.LogHelper;
 import common.source.PDFTableUtility;
 import common.source.PDFTableUtility.PDFTable;
@@ -980,30 +982,27 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				try {
 					switch (buttonType) {
 					case Delete:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]";
 						break;
 					case Copy:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]";
 						break;
 					case ReportViewer:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]";
 						break;
 					case Investigate:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[4]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[4]";
 						break;
 					case Resubmit:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[5]/img";
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[5]";
 						break;
-					case InProgressCopy: // NOTE: When report is in-progress,
-											// Copy is the 1st button.
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]/img";
+					case InProgressCopy: // NOTE: When report is in-progress, Copy is the 1st button.
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]";
 						break;
-					case Cancel: // NOTE: When cancel button is visible it is
-									// the 2nd button.
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
+					case Cancel: // NOTE: When cancel button is visible it is the 2nd button.
+						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]";
 						break;
-					case ReportErrorLabel: // 'Error Processing' label on report
-											// cancelled or report error.
+					case ReportErrorLabel: // 'Error Processing' label on report cancelled or report error.
 						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/span";
 						break;
 					default:
@@ -1016,8 +1015,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						if (clickButton) {
 							if (buttonType != ComplianceReportButtonType.ReportErrorLabel) {
 								buttonImg.click();
-								// If resubmit then wait for modal and confirm
-								// resubmit.
+								// If resubmit then wait for modal and confirm resubmit.
 								if (buttonType == ComplianceReportButtonType.Resubmit) {
 									this.waitForResubmitPopupToShow();
 									this.btnProcessResubmit.click();
@@ -1073,7 +1071,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (imageMapHeight == null || imageMapHeight.equals("")) {
 			return;
 		}
-		this.inputImgMapHeight.clear();
+		//this.inputImgMapHeight.clear();
 		this.inputImgMapHeight.sendKeys(imageMapHeight);
 	}
 
@@ -3038,25 +3036,45 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return true;
 	}
 
+	// NOTE (2016/05/18): As per test case steps we care more about checking the order of views in SSRS PDF.
+	// The step - "verify views are in correct sequence" are refering to sequence of views in SSRS PDF,
+	// which should be in the same order that the user has added the views from New Compliance Report page.
+	// (DE1973) tracks the issue of order in compliance viewer is NOT the same as the input order by user.
+	// Once (DE1973) is fixed we could utilize this method for checking correct order in compliance viewer.
 	public boolean verifyViewsInComplianceViewerAreInCorrectSequence(List<String> viewNamesList) {
 		List<WebElement> thumbnailImages = driver.findElements(By.xpath("//*[@id='ImageList']/li"));
 		if (viewNamesList != null && viewNamesList.size() > 0) {
 			Integer numViews = viewNamesList.size();
+			Log.info(String.format("Found %d views in Compliance viewer.", thumbnailImages.size()));
 			if (thumbnailImages != null && thumbnailImages.size() > 0) {
 				Integer numThumbnails = thumbnailImages.size();
 				// Loop from end. The thumbnails in the end are the view images.
-				for (int i = numThumbnails - 1; i >= 0 && numViews > 0; i--) {
-					WebElement viewLabel = driver
-							.findElement(By.xpath("//*[@id='ImageList']/li[" + String.valueOf(i) + "]/div/a/p"));
+				for (int i = numThumbnails; i >= 1 && numViews > 0; i--) {
+					WebElement viewLabel = driver.findElement(By.xpath("//*[@id='ImageList']/li[" + String.valueOf(i) + "]/div/a/p"));
+					Log.info(String.format("View[%d] label is: %s", i, viewLabel.getText()));
 					// Check the view labels are in order.
 					if (!viewNamesList.get(numViews - 1).equals(viewLabel.getText())) {
 						return false;
 					}
+					numViews--;
 				}
 			}
 		}
 		return true;
 	}
+
+	public boolean verifyViewsInSSRSPDFAreInCorrectSequence(List<String> expectedViewNamesList, String reportTitle) throws IOException {
+		Log.info(String.format("Expected views are: %s", LogHelper.strListToString(expectedViewNamesList)));
+		List<String[]> viewTblList = getSSRSPDFTableValues(PDFTable.VIEWSTABLE, reportTitle);
+		// Filter out additional entries that might be returned in the List array.		
+		
+		// Returned list has 2 columns. 0-th column is the view name.
+		List<String> actualViewNamesList = ArrayUtility.getColumnStringList(viewTblList, 0); 
+		Log.info(String.format("Actual views found in SSRS PDF are: %s", LogHelper.strListToString(actualViewNamesList)));
+		// Verify lists contain the same elements in the same order.
+		return actualViewNamesList.equals(expectedViewNamesList);
+	}
+
 
 	/**
 	 * Wrapper to verify the Views Images
@@ -3371,6 +3389,16 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return surveyTable.getRecords(column.getName(), -1 /*numRecords*/);
 	}
 
+	public List<String[]> getSSRSPDFTableValues(PDFTable pdfTable, String reportTitle) throws IOException {
+		String pdfFilename = this.getReportPDFFileName(reportTitle, true /*includeExtension*/);
+		String pdfFilePath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), pdfFilename).toString();
+		PDFTableUtility pdfTableUtility = new PDFTableUtility();
+		List<String[]> pdfTableList = pdfTableUtility.extractPDFTable(pdfFilePath, pdfTable);
+		Log.info(String.format("Extracted tables values from PDF : %s", LogHelper.listOfStrArrayToString(pdfTableList)),
+				LogCategory.SSRSPdfContent);
+		return pdfTableList;
+	}
+ 
 	@Override
 	public void fillReportSpecific(Reports reports) {
 		ReportsCompliance reportsCompliance = (ReportsCompliance) reports;
