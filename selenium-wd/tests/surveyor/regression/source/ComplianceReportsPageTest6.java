@@ -314,13 +314,12 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		
-		// Navigate away from compliance reports page and then return back to compliance reports page.
-		homePageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		
-		// TODO: Thumbnail verifications remaining.
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, getReportRowID(reportDataRowID1));
+		
+		// TODO: Navigate away and thumbnail verifications remaining.
 	}
  
 	/**
