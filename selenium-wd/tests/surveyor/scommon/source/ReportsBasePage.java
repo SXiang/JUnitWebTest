@@ -51,6 +51,8 @@ import common.source.TestSetup;
 import common.source.WebElementExtender;
 import net.avh4.util.imagecomparison.ImageComparisonResult;
 import surveyor.api.source.ReportJobsStat;
+import surveyor.dataaccess.source.DBCache;
+import surveyor.dataaccess.source.Report;
 import surveyor.scommon.source.Reports.ReportJobType;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.ReportStatusType;
@@ -1586,7 +1588,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[@title='Copy']/img"; // Don't use index for 'Copy' as it has diff values
 				copyImg = getReportTableCell(copyImgXPath);
 				jsClick(copyImg);
-
+				DBCache.INSTANCE.remove(Report.CACHE_KEY+rptTitle);
 				return true;
 			}
 

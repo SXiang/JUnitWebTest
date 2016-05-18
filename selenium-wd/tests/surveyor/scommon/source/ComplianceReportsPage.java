@@ -113,6 +113,7 @@ import common.source.WebElementExtender;
 import common.source.ZipUtility;
 import sun.misc.BASE64Decoder;
 import surveyor.dataaccess.source.BaseMapType;
+import surveyor.dataaccess.source.DBCache;
 import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ReportView;
 import surveyor.dataaccess.source.ResourceKeys;
@@ -970,13 +971,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		WebElement rptTitleCell;
 		WebElement createdByCell;
 		WebElement buttonImg;
-
+		boolean removeDBCache = false;
 		switch (buttonType) {
 		case Delete:
 			buttonXPath = "td[5]/a[1]";
 			break;
 		case Copy:
 			buttonXPath = "td[5]/a[@title='Copy']";
+			removeDBCache = true;
 			break;
 		case ReportViewer:
 			buttonXPath = "td[5]/a[3]";
@@ -986,6 +988,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			break;
 		case Resubmit:
 			buttonXPath = "td[5]/a[@title='Resubmit']";
+			removeDBCache = true;
 			break;
 		case InProgressCopy: // NOTE: When report is in-progress, Copy is the 1st button.
 			buttonXPath = "td[5]/a[@title='Copy']";
@@ -1046,6 +1049,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 										this.waitForConfirmDeletePopupToClose();
 									}
 								}
+								
+								if(removeDBCache){
+									   DBCache.INSTANCE.remove(Report.CACHE_KEY+rptTitle);
+									}
 							}
 						}
 						return true;

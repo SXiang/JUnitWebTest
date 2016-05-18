@@ -385,8 +385,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
 
-		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));		
-		ComplianceReportsPageActions.workingDataRow.useDBCache = false;		
+		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));			
 		
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));		
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));		
