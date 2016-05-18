@@ -107,6 +107,10 @@ public class SurveyViewPage extends BaseMapViewPage {
     @CacheLookup
     private WebElement termsOfUse;
     
+    @FindBy(id = "bottom_logo")
+    @CacheLookup
+    private WebElement logo;
+    
     @FindBy(how = How.XPATH, using = SURVEY_INFO_TAG_LABEL_XPATH)
 	private WebElement labelTag;
 
@@ -394,6 +398,10 @@ public class SurveyViewPage extends BaseMapViewPage {
 
 	public String getAnalyzerLabelText() {
 		return driver.findElement(By.xpath(SURVEY_INFO_ANALYZER_LABEL_XPATH)).getText();
+	}
+
+	public WebElement getLogo() {
+		return logo;
 	}
 
 	/**

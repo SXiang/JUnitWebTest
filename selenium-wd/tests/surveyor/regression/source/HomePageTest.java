@@ -267,6 +267,13 @@ public class HomePageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		homePage.waitForPageLoad();
 		homePage.getFirstSurvey().click();
+		surveyViewPage.waitForPageLoad();
 		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());
+		surveyViewPage.getLogo().click();
+		homePage.waitForPageLoad();
+		assertTrue(homePage.checkIfAtHomePage());
+		homePage.getLinkDrivingSurveys().click();
+		measurementSessionsPage.waitForPageLoad();
+		
 	}
 }
