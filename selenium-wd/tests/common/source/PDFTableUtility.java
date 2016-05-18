@@ -22,7 +22,7 @@ public class PDFTableUtility extends PDFUtility{
 	// All the pdf tables should be defined in this enum
 	public static enum PDFTable {		
 		LISAINVESTIGATIONTABLE ("Lisa Investigation Table",2),
-		LISAINDICATIONTABLE ("Disposition"+wordSeparator+"% Confidence in Disposition"+wordSeparator+"Field Notes",1,"",false),
+		LISAINDICATIONTABLE ("Disposition"+wordSeparator+"Confidence in Disposition (%)"+wordSeparator+"Field Notes",1,"",false),
 		COMPLIANCEREPORTSUMMARYTABLE ("Map Height & Width:.*",0,"",false,6),
 		COVERAGEFORECAST(".*Percent Service Coverage with LISAs.*",0,"",false,1),
 		COVERAGEFORECASTTO70(".*Probability to Obtain 70% Coverage",0,"",true,4),

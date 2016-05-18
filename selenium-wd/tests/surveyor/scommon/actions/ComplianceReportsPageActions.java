@@ -31,6 +31,7 @@ import org.openqa.selenium.WebElement;
 
 import common.source.ArrayUtility;
 import common.source.BaseHelper;
+import common.source.ExcelUtility;
 import common.source.FileUtility;
 import common.source.Log;
 import common.source.LogCategory;
@@ -91,6 +92,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	private ComplianceReportDataReader dataReader = null;
 	public static ReportsCompliance workingReportsComp = null;      // Stores the ReportsCompliance object from createNewReport action
 	public static ComplianceReportsDataRow workingDataRow = null;    // Stores the workingDataRow from createNewReport action
+	public static List<ReportViewsDataRow> workingReportViewsDataRows = null;    // Stores the dataRows for views created in createNewReport action.
+
 	public ComplianceReportsPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup);
 		initializePageObject(driver, new ComplianceReportsPage(driver, strBaseURL, testSetup));
@@ -100,6 +103,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	private void addView(Integer dataRowID) throws Exception {
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap = new HashMap<String, String>();
+		workingReportViewsDataRows = new ArrayList<ReportViewsDataRow>();
 		fillViewDetails(viewMap, new ReportViewsDataReader(this.excelUtility), dataRowID);
 		viewList.add(viewMap);
 		this.getComplianceReportsPage().addViews(workingReportsComp.getCustomer(), viewList);
@@ -124,14 +128,19 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return true;
 	}
 	
-	private List<ReportsSurveyInfo> buildReportSurveyInfoList(ComplianceReportsDataRow dataRow) throws Exception {
+	private List<ReportsSurveyInfo> buildReportSurveyInfoList(ComplianceReportsDataRow dataRow, ExcelUtility excelUtility) throws Exception {
 		List<Integer> reportSurveyRowIDs = ActionArguments.getNumericList(dataRow.reportSurveyRowIDs);
+		List<ReportsSurveyInfo> reportsSurveyInfoList = getReportSurveyInfoList(excelUtility, reportSurveyRowIDs);
+		return reportsSurveyInfoList;
+	}
+
+	public static List<ReportsSurveyInfo> getReportSurveyInfoList(ExcelUtility excelUtility, List<Integer> reportSurveyRowIDs) throws Exception {
 		List<ReportsSurveyInfo> reportsSurveyInfoList = new ArrayList<ReportsSurveyInfo>();
 		for (Integer rowID : reportSurveyRowIDs) {
 			if(rowID==0){
 				continue;
 			}
-			ReportSurveyDataReader surveyDataReader = new ReportSurveyDataReader(this.excelUtility);
+			ReportSurveyDataReader surveyDataReader = new ReportSurveyDataReader(excelUtility);
 			ReportSurveyDataRow surveyDataRow = surveyDataReader.getDataRow(rowID);
 
 			SurveyModeFilter modeFilter = SurveyModeFilter.All;
@@ -200,17 +209,19 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 
 	private void fillViewDetails(Map<String, String> viewMap, ReportViewsDataReader reader,
 			Integer dataRowID) throws Exception {
-		String viewName = reader.getDataRow(dataRowID).name;
-		String showLISA = reader.getDataRow(dataRowID).lISAs.equalsIgnoreCase("TRUE") ? "1" : "0";
-		String showFOV = reader.getDataRow(dataRowID).fOV.equalsIgnoreCase("TRUE") ? "1" : "0";
-		String showBreadcrumb = reader.getDataRow(dataRowID).breadcrumbs.equalsIgnoreCase("TRUE") ? "1" : "0";
-		String showIndications = reader.getDataRow(dataRowID).indications.equalsIgnoreCase("TRUE") ? "1" : "0";
-		String showIsotopicCapture = reader.getDataRow(dataRowID).isotopicCapture.equalsIgnoreCase("TRUE") ? "1" : "0";
-		String showAnnotation = reader.getDataRow(dataRowID).fieldNotes.equalsIgnoreCase("TRUE") ? "1" : "0";
-		String showGaps = reader.getDataRow(dataRowID).gaps.equalsIgnoreCase("TRUE") ? "1" : "0";
-		String showAssets = reader.getDataRow(dataRowID).assets.equalsIgnoreCase("TRUE") ? "1" : "0";
-		String showBoundaries = reader.getDataRow(dataRowID).boundaries.equalsIgnoreCase("TRUE") ? "1" : "0";
-		String baseMapType = reader.getDataRow(dataRowID).baseMap;
+		ReportViewsDataRow reportViewsDataRow = reader.getDataRow(dataRowID);
+		workingReportViewsDataRows.add(reportViewsDataRow);
+		String viewName = reportViewsDataRow.name;
+		String showLISA = reportViewsDataRow.lISAs.equalsIgnoreCase("TRUE") ? "1" : "0";
+		String showFOV = reportViewsDataRow.fOV.equalsIgnoreCase("TRUE") ? "1" : "0";
+		String showBreadcrumb = reportViewsDataRow.breadcrumbs.equalsIgnoreCase("TRUE") ? "1" : "0";
+		String showIndications = reportViewsDataRow.indications.equalsIgnoreCase("TRUE") ? "1" : "0";
+		String showIsotopicCapture = reportViewsDataRow.isotopicCapture.equalsIgnoreCase("TRUE") ? "1" : "0";
+		String showAnnotation = reportViewsDataRow.fieldNotes.equalsIgnoreCase("TRUE") ? "1" : "0";
+		String showGaps = reportViewsDataRow.gaps.equalsIgnoreCase("TRUE") ? "1" : "0";
+		String showAssets = reportViewsDataRow.assets.equalsIgnoreCase("TRUE") ? "1" : "0";
+		String showBoundaries = reportViewsDataRow.boundaries.equalsIgnoreCase("TRUE") ? "1" : "0";
+		String baseMapType = reportViewsDataRow.baseMap;
 		viewMap.put(KEYVIEWNAME, viewName);
 		if (showLISA != "") viewMap.put(KEYLISA, showLISA);
 		if (showFOV != "") viewMap.put(KEYFOV, showFOV);
@@ -291,6 +302,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		fillCustomBoundary(listBoundary, getDataReader(), dataRowID);
 
 		// Fill views list.
+		workingReportViewsDataRows = new ArrayList<ReportViewsDataRow>();
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		List<Integer> reportViewRowIDs = ActionArguments.getNumericList(workingDataRow.reportViewRowIDs);
 		for (Integer rowID : reportViewRowIDs) {
@@ -319,7 +331,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		} 
 
 		// Set survey info list.
-		List<ReportsSurveyInfo> reportsSurveyInfoList = buildReportSurveyInfoList(workingDataRow);
+		List<ReportsSurveyInfo> reportsSurveyInfoList = buildReportSurveyInfoList(workingDataRow, this.excelUtility);
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, TestContext.INSTANCE.getLoggedInUser(), customer, timeZone, exclusionRadius,
 				listBoundary, tablesList, null /*surveyorUnit*/, null /*tagList*/, viewList, viewLayersList);
 		rpt.setSurveyInfoList(reportsSurveyInfoList);
@@ -632,7 +644,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		ActionArguments.verifyGreaterThanZero("addSurveysToReport", ARG_DATA_ROW_ID, dataRowID);
 		ReportsCompliance reportsCompliance = new ReportsCompliance();
 		ComplianceReportsDataRow dataRow = getComplianceReportsDataRow(dataRowID);
-		List<ReportsSurveyInfo> reportsSurveyInfoList = buildReportSurveyInfoList(dataRow);
+		List<ReportsSurveyInfo> reportsSurveyInfoList = buildReportSurveyInfoList(dataRow, this.excelUtility);
 		reportsCompliance.setSurveyInfoList(reportsSurveyInfoList);
 		this.getComplianceReportsPage().addSurveyInformation(reportsCompliance);
 		return true;		
@@ -1830,7 +1842,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		String reportFileNameWithoutExt = workingDataRow.title.replace(" ", "");
 		expectedFileNames.add(reportFileNameWithoutExt + ".pdf");
 		for (int i=1; i<expectedFileCount; i++) {
-			expectedFileNames.add(String.format("%s_%s View.pdf", reportFileNameWithoutExt, new NumberUtility().getOrdinalNumberString(i)));
+			String viewName = workingReportViewsDataRows.get(i-1).name;
+			expectedFileNames.add(String.format("%s_%s.pdf", reportFileNameWithoutExt, viewName));
 		}
 		
 		Path downloadDirectory = Paths.get(getDownloadPath(ReportFileType.ZIP));

@@ -21,6 +21,13 @@ public class StoredProcComplianceGetCoverage extends BaseEntity {
 		super();
 	}
 
+	public String toString() {
+		return String.format("showPercentCoverageAssetsasINT=%d, showPercentCoverageReportAreaasINT=%d, showPercentCoverageForecastasINT=%d,"
+				+ "showPercentCoverageAssets=%s, showPercentCoverageReportArea=%s, showPercentCoverageForecast=%s, percentCoverageAssets=%s,"
+				+ "percentCoverageReportArea=%s", showPercentCoverageAssetsasINT, showPercentCoverageReportAreaasINT, showPercentCoverageForecastasINT,
+				showPercentCoverageAssets, showPercentCoverageReportArea, showPercentCoverageForecast, percentCoverageAssets, percentCoverageReportArea);
+	}
+
 	public Integer getShowPercentCoverageAssetsasINT() {
 		return this.showPercentCoverageAssetsasINT;
 	}
@@ -86,11 +93,15 @@ public class StoredProcComplianceGetCoverage extends BaseEntity {
 	}
 
 	public boolean isCoverageValuesEquals(StoredProcComplianceGetCoverage obj) {
-		if (!((this.getPercentCoverageAssets().replace("%", "").trim()).equals(obj.getPercentCoverageAssets().replace("%", "").trim()))) {
-			return false;
+		if (obj.getPercentCoverageAssets() != null) {
+			if (!((this.getPercentCoverageAssets().replace("%", "").trim()).equals(obj.getPercentCoverageAssets().replace("%", "").trim()))) {
+				return false;
+			}
 		}
-		if (!((this.getPercentCoverageReportArea().replace("%", "").trim()).equals(obj.getPercentCoverageReportArea().replace("%", "").trim()))) {
-			return false;
+		if (obj.getPercentCoverageReportArea() != null) {
+			if (!((this.getPercentCoverageReportArea().replace("%", "").trim()).equals(obj.getPercentCoverageReportArea().replace("%", "").trim()))) {
+				return false;
+			}
 		}
 		return true;
 	}
