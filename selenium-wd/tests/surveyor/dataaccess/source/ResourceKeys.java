@@ -89,8 +89,18 @@ public class ResourceKeys {
 	public static final String Constant_Satellite = "Constant_Satellite";
 	public static final String Constant_Standard = "Constant_Standard";
 	public static final String Constant_Survey = "Constant_Survey";
+	public static final String Constant_Tag = "Constant_Tag";
+	public static final String Constant_User = "Constant_User";
+	public static final String Constant_Type = "Constant_Type";
+	public static final String Surveys_MinAmplitude = "Surveys_MinAmplitude";
+	public static final String Surveys_Duration = "Surveys_Duration";
+	public static final String Constant_Action = "Constant_Action";	
+	public static final String Constant_Analyzer = "Constant_Analyzer";
 	public static final String Constant_Surveyor = "Constant_Surveyor";
 	public static final String Constant_Surveyors = "Constant_Surveyors";
+	public static final String Constant_Status = "Constant_Status";
+	public static final String ReportSSRS_StartDateTime = "ReportSSRS_StartDateTime";
+	public static final String ReportSSRS_EndDateTime = "ReportSSRS_EndDateTime";
 	public static final String Constant_ShowingStartToEndOfTotalEntries = "Constant_ShowingStartToEndOfTotalEntries";
 	public static final String Constant_Yes = "Constant_Yes";
 	public static final String Dialog_EditUserPreferences = "Dialog_EditUserPreferences";
@@ -154,7 +164,6 @@ public class ResourceKeys {
 	public static final String Survey_SurveyWillStopIn = "Survey_SurveyWillStopIn";
 	public static final String LisaInvestigationReportSSRS_Lisa = "LisaInvestigationReportSSRS_Lisa";
 	public static final String LisaInvestigationReportSSRS_Amplitude = "LisaInvestigationReportSSRS_Amplitude";
-	public static final String Constant_Status = "Constant_Status";
 	public static final String LisaInvestigationReportSSRS_Investigator = "LisaInvestigationReportSSRS_Investigator";
 	public static final String LisaInvestigationReportSSRS_InvestigationReport = "LisaInvestigationReportSSRS_InvestigationReport";
 	
