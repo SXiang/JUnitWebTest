@@ -155,6 +155,10 @@ public class BaseHelper {
 		return FileUtils.contentEquals(new File(file1), new File(file2));
 	}
 
+	public static String getLineSeperator() {
+		return System.getProperty("line.separator");
+	}
+	
 	public static String getPaginationShowingStartString() {
 		String paginationShowingText = Resources.getResource(ResourceKeys.Constant_ShowingStartToEndOfTotalEntries);
 		// get first 3 parts of the string.
