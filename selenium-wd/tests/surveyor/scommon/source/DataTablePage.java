@@ -180,10 +180,10 @@ public class DataTablePage extends BasePage {
 			value.add(entry.getValue());
 			indexedMap.put(entry.getKey(), value);
 		}
-		return getMatchingRows(indexedMap);
+		return getMatchingRowOptionalInput(indexedMap);
 	}
 
-	public WebElement getMatchingRows(Map<String, List<String>> filter) {
+	public WebElement getMatchingRowOptionalInput(Map<String, List<String>> filter) {
 		setPagination(pagination);
 		waitForTableToLoad();
 		Map<Integer, List<String>> indexedMap = new HashMap<Integer, List<String>>();

@@ -113,21 +113,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		if (userRole == UserRoleType.Admin) {
 			return (strListTag.containsAll(strListTagCus) && strListTag.containsAll(strListTagPic));
 
-		} else if (userRole == UserRoleType.UtilityAdmin) {
-			if (loginUser.contains(REGBASEPICUSERNAME)) {
-				return (!strListTag.contains(strListTagCus) && strListTag.containsAll(strListTagPic));
-			} else {
-				return (!strListTag.contains(strListTagPic) && strListTag.containsAll(strListTagCus));
-			}
-
-		} else if (userRole == UserRoleType.Supervisor) {
-			if (loginUser.contains(REGBASEPICUSERNAME)) {
-				return (!strListTag.contains(strListTagCus) && strListTag.containsAll(strListTagPic));
-			} else {
-				return (!strListTag.contains(strListTagPic) && strListTag.containsAll(strListTagCus));
-			}
-
-		} else if (userRole == UserRoleType.Driver) {
+		} else if (userRole == UserRoleType.UtilityAdmin || userRole == UserRoleType.Supervisor || userRole == UserRoleType.Driver) {
 			if (loginUser.contains(REGBASEPICUSERNAME)) {
 				return (!strListTag.contains(strListTagCus) && strListTag.containsAll(strListTagPic));
 			} else {
