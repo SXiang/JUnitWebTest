@@ -191,6 +191,10 @@ public class HomePage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='00000000-0000-0000-0001-000000000000']/a")
 	protected WebElement dropDownPST;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session']/tbody/tr[1]/td[5]/a")
+	protected WebElement firstSurvey;
+
 
 	/**
 	 * @param driver
@@ -703,6 +707,10 @@ public class HomePage extends SurveyorBasePage {
 				option.click();		
 		}
 	}	
+
+	public WebElement getFirstSurvey() {
+		return firstSurvey;
+	}
 
 	public void clickOnFirstMatchingDrivingSurvey(String surveyTag) {
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
