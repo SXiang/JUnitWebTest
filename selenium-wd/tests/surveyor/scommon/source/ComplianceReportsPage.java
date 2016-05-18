@@ -3138,7 +3138,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String shapeZipFileName = getReportShapeZipFileName(reportTitle, zipIndex, false /* includeExtension */);
 		BaseHelper.deCompressZipFile(shapeZipFileName, testSetup.getDownloadPath());
 
-		if (checkAndGenerateBaselineShapeFiles(shapeZipFileName, testCaseID)) {
+		if (checkAndGenerateBaselineShapeFiles(TestContext.INSTANCE.getTestSetup().getDownloadPath() + shapeZipFileName, testCaseID)) {
 			Log.info("Shape Files created as a baseline for '" + testCaseID
 					+ "', verification will be done on your next test run");
 			return true;

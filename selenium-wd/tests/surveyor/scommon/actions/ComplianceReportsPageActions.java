@@ -2789,9 +2789,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyShapeFilesWithBaselines", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("verifyShapeFilesWithBaselines", ARG_DATA, data);
 		ComplianceReportsDataRow complianceReportsDataRow = getComplianceReportsDataRow(dataRowID);
-		String shapeFileName = this.getComplianceReportsPage().getReportShapeZipFileName(complianceReportsDataRow.title, false);
-		String unzipFolder = TestContext.INSTANCE.getTestSetup().getDownloadPath() + shapeFileName;
-		this.getComplianceReportsPage().checkAndGenerateBaselineShapeFiles(unzipFolder, complianceReportsDataRow.tCID);
 		return this.getComplianceReportsPage().verifyShapeFilesWithBaselines(complianceReportsDataRow.title, 
 				complianceReportsDataRow.tCID, getDownloadFileIndex(data,2));
 	}
