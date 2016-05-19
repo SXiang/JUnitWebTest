@@ -45,6 +45,10 @@ public class ReportOptTabularPDFContentDataReader extends BaseDataReader {
 		return dataRow;
 	}
  
+	public Integer getRowCount() {
+		return this.getRowCount(TESTDATA_SHEET_NAME);
+	}
+	
 	public void setDataRow(ReportOptTabularPDFContentDataRow dataRow) {
 		this.dataRow = dataRow;
 	}

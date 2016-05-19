@@ -12,6 +12,8 @@ import org.openqa.selenium.support.How;
 import common.source.BasePage;
 import common.source.Log;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 
 /**
  * @author zlu
@@ -20,7 +22,8 @@ import common.source.TestSetup;
 public class AdministrationPage extends BasePage {
 	
 	public static final String STRURLPath = "/PicarroAdministration";
-	public static final String STRPageTitle = "Index - Surveyor";	
+	public static final String STRPageTitle = String.format("%s - %s", 
+			Resources.getResource(ResourceKeys.Constant_Index), Resources.getResource(ResourceKeys.Constant_Surveyor));
 	
 	@FindBy(how = How.CSS, using = "[href='/Account/Logout']")
 	private WebElement btnLogout;

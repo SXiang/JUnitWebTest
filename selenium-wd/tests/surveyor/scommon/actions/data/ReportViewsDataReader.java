@@ -65,6 +65,10 @@ public class ReportViewsDataReader extends BaseDataReader {
 		return dataRow;
 	}
  
+	public Integer getRowCount() {
+		return this.getRowCount(TESTDATA_SHEET_NAME);
+	}
+	
 	public void setDataRow(ReportViewsDataRow dataRow) {
 		this.dataRow = dataRow;
 	}

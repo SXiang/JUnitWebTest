@@ -2,8 +2,6 @@ package surveyor.regression.source;
 
 import common.source.Log;
 
-import static org.junit.Assert.assertTrue;
-
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.Test;
@@ -11,11 +9,11 @@ import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.BaseReportsPageTest;
+import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 
 @RunWith(SurveyorTestRunner.class)
-public class ComplianceReportsPageTest3 extends BaseReportsPageTest {
+public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 
 	private static final String EMPTY = "";
 	private static final Integer NOTSET = -1;

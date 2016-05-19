@@ -3,11 +3,15 @@ package surveyor.dataaccess.source;
 public class ResourceKeys {
 	public static final String AddRefGasBottle_PageTitle = "AddRefGasBottle_PageTitle";
 	public static final String ComplianceReport_AlreadyAdded = "ComplianceReport_AlreadyAdded";
+	public static final String ComplianceReport_BoundaryMinSizeMessage = "ComplianceReport_BoundaryMinSizeMessage";
 	public static final String ComplianceReport_CustomBoundary = "ComplianceReport_CustomBoundary";
 	public static final String ComplianceReport_IsotopicAnalysis = "ComplianceReport_IsotopicAnalysis";
+	public static final String ComplianceReport_InvalidAssetTypeMessage = "ComplianceReport_InvalidAssetTypeMessage";
+	public static final String ComplianceReport_InvalidBoundaryTypeMessage = "ComplianceReport_InvalidBoundaryTypeMessage";
 	public static final String ComplianceReport_PageTitle = "ComplianceReport_PageTitle";
 	public static final String ComplianceReport_PercentCoverageAssets = "ComplianceReport_PercentCoverageAssets";
 	public static final String ComplianceReport_PercentCoverageReportArea = "ComplianceReport_PercentCoverageReportArea";
+	public static final String ComplianceReport_ValueMissingMessage = "ComplianceReport_ValueMissingMessage";
 	public static final String ComplianceReports_AddNew = "ComplianceReports_AddNew";
 	public static final String ComplianceReports_PageTitle = "ComplianceReports_PageTitle";
 	public static final String ComplianceReportSSRS_AdditionalSurveys = "ComplianceReportSSRS_AdditionalSurveys";
@@ -85,16 +89,30 @@ public class ResourceKeys {
 	public static final String Constant_Satellite = "Constant_Satellite";
 	public static final String Constant_Standard = "Constant_Standard";
 	public static final String Constant_Survey = "Constant_Survey";
+	public static final String Constant_Tag = "Constant_Tag";
+	public static final String Constant_User = "Constant_User";
+	public static final String Constant_Type = "Constant_Type";
+	public static final String Surveys_MinAmplitude = "Surveys_MinAmplitude";
+	public static final String Surveys_Duration = "Surveys_Duration";
+	public static final String Constant_Action = "Constant_Action";	
+	public static final String Constant_Analyzer = "Constant_Analyzer";
+	public static final String Constant_Surveyor = "Constant_Surveyor";
 	public static final String Constant_Surveyors = "Constant_Surveyors";
+	public static final String Constant_Status = "Constant_Status";
+	public static final String ReportSSRS_StartDateTime = "ReportSSRS_StartDateTime";
+	public static final String ReportSSRS_EndDateTime = "ReportSSRS_EndDateTime";
 	public static final String Constant_ShowingStartToEndOfTotalEntries = "Constant_ShowingStartToEndOfTotalEntries";
 	public static final String Constant_Yes = "Constant_Yes";
+	public static final String Dialog_EditUserPreferences = "Dialog_EditUserPreferences";
 	public static final String Dialog_IsotopicAnalysis = "Dialog_IsotopicAnalysis";
 	public static final String Dialog_MapView = "Dialog_MapView";
 	public static final String Dialog_PleaseReviewEULA = "Dialog_PleaseReviewEULA";
 	public static final String Dialog_RapidResponse = "Dialog_RapidResponse";
 	public static final String Dialog_StartSurvey = "Dialog_StartSurvey";
 	public static final String Dialog_SurveyFailedtoStart = "Dialog_SurveyFailedtoStart";
+	public static final String FleetMap_PageTitle = "FleetMap_PageTitle";
 	public static final String Index_Heading = "Index_Heading";
+	public static final String Index_Title = "Index_Title";
 	public static final String Layout_Admin_Manual = "Layout_Admin_Manual";
 	public static final String Layout_Nav_Dashboard = "Layout_Nav_Dashboard";
 	public static final String Layout_Nav_DrivingSurveys = "Layout_Nav_DrivingSurveys";
@@ -137,6 +155,7 @@ public class ResourceKeys {
 	public static final String RefGasReportSSRS_LotNumber = "RefGasReportSSRS_LotNumber#";
 	public static final String RefGasReportSSRS_TestResult = "RefGasReportSSRS_TestResult";
 	public static final String RefGasReportSSRS_NoRecord = "RefGasReportSSRS_NoRecord";
+	public static final String ReportSSRS_NoLisaRecordMsg = "ReportSSRS_NoLisaRecordMsg";
 	public static final String ReportSSRS_SelectedDrivingSurveys = "ReportSSRS_SelectedDrivingSurveys";
 	public static final String ReportSSRS_UserName = "ReportSSRS_UserName";
 	public static final String Runs_DrivingSurveys = "Runs_DrivingSurveys";
@@ -145,7 +164,6 @@ public class ResourceKeys {
 	public static final String Survey_SurveyWillStopIn = "Survey_SurveyWillStopIn";
 	public static final String LisaInvestigationReportSSRS_Lisa = "LisaInvestigationReportSSRS_Lisa";
 	public static final String LisaInvestigationReportSSRS_Amplitude = "LisaInvestigationReportSSRS_Amplitude";
-	public static final String Constant_Status = "Constant_Status";
 	public static final String LisaInvestigationReportSSRS_Investigator = "LisaInvestigationReportSSRS_Investigator";
 	public static final String LisaInvestigationReportSSRS_InvestigationReport = "LisaInvestigationReportSSRS_InvestigationReport";
 	
@@ -217,4 +235,9 @@ public class ResourceKeys {
     public static final String ComplianceReport_CoverageForecastAreaInvalidMessage = "ComplianceReport_CoverageForecastAreaInvalidMessage";
 	public static final String ComplianceReport_CoverageForecastAssetsInvalidMessage = "ComplianceReport_CoverageForecastAssetsInvalidMessage";
 	public static final String ComplianceReport_CoverageForecastBoundaryInvalidMessage = "ComplianceReport_CoverageForecastBoundaryInvalidMessage";
+
+	// Constants for report SSRS
+	public static final String ReportSSRS_DatePrinted = "ReportSSRS_DatePrinted";
+	public static final String ReportSSRS_ReportAuthor = "ReportSSRS_ReportAuthor";
+	public static final String ReportSSRS_SoftwareVersion = "ReportSSRS_SoftwareVersion";
 }

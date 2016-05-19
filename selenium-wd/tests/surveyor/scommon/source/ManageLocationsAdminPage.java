@@ -19,7 +19,8 @@ import common.source.TestSetup;
  */
 public class ManageLocationsAdminPage extends ManageLocationsPage {
 	public static final String STRURLPath = "/Admin/ManageLocations";
-	public static final String STRPageTitle = "Manage Locations - Surveyor";
+	public static final String STRPageTitle = String.format("%s - %s", 
+			Resources.getResource(ResourceKeys.ManageLocations_PageTitle), Resources.getResource(ResourceKeys.Constant_Surveyor));
 
 	/**
 	 * @param driver

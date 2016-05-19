@@ -25,6 +25,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 	private LoginPageActions loginPageAction;
 	private DriverViewPageActions driverViewPageAction;
 	private TestEnvironmentActions testEnvironmentAction;
+
 	private static ManageCustomerPageActions manageCustomerPageAction;
 	private static ManageUsersPageActions manageUsersPageAction;
 	private static ManageLocationPageActions manageLocationPageAction;

@@ -43,6 +43,10 @@ public class ReportOptViewLayersBoundaryDataReader extends BaseDataReader {
 	public void setDataRow(ReportOptViewLayersBoundaryDataRow dataRow) {
 		this.dataRow = dataRow;
 	}
+	
+	public Integer getRowCount() {
+		return this.getRowCount(TESTDATA_SHEET_NAME);
+	}
  
 	public ReportOptViewLayersBoundaryDataRow getDataRow(Integer dataRowID) throws Exception {
 		String rowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);

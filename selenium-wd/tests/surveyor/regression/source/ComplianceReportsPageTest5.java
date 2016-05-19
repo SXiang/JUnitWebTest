@@ -9,11 +9,11 @@ import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
-import surveyor.scommon.source.BaseReportsPageTest;
+import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 
 @RunWith(SurveyorTestRunner.class)
-public class ComplianceReportsPageTest5 extends BaseReportsPageTest {
+public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 
 	private static final String EMPTY = "";
 	private static final Integer NOTSET = -1;

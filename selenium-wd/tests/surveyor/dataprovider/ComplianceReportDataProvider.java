@@ -438,29 +438,29 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		return new Object[][] {				
 				{ "1"/*index*/, SQAPICSUP/*strCreatedBy*/, USERPASSWORDHASH/*password(encrypted)*/, "Picarro"/*customer*/, TIMEZONEPTUA/*timeZone*/, EXCLUSIONRADIUS/*exclusionRadius*/, null/*surveyorUnit*/, null/*userName*/, null/*startDate*/,
-					null/*endDate*/, null/*fovOpacity*/, null/*lisaOpacity*/, null/*geoFilter*/, null/*reportMode*/, null/*surveyModeFilter*/, null/*ethaneFilter*/, createBoundaryList()/*listBoundary*/, tagList1/*tagList*/, tablesList1/*tablesList*/, viewList1/*viewList*/, viewLayerList1/*viewLayersList*/ },
-				{ "2", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, EXCLUSIONRADIUS, null, null, null, null, null, null, null, null, null, null, createBoundaryList(), tagList2, tablesList2, viewList2, viewLayerList2 }, // include date range
-				{ "3", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONECTUA, EXCLUSIONRADIUS, PICADMNSURVEYOR, null, null, null, null, null, null, null, SurveyModeFilter.All, null, createBoundaryList(), tagList3, tablesList3, viewList3, viewLayerList3 },
-				{ "4", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEETUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList4, tablesList4, viewList4, viewLayerList4 }, //include dates
-				{ "5", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONECTUA, "0", PICADMNSURVEYOR, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList5, tablesList5, viewList5, viewLayerList5 }, //include dates
-				{ "6", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList6, tablesList6, viewList6, viewLayerList6 },
-				{ "7", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList7, tablesList7, viewList7, viewLayerList7 },
-				{ "8", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList8, tablesList8, viewList8, viewLayerList8 },
-				{ "9", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEETUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList9, tablesList9, viewList9, viewLayerList9 },
-				{ "10", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEMTUA, "0", null, null, null, null, null, null, null, ReportModeFilter.Manual, SurveyModeFilter.Manual, null, createBoundaryList(), tagList10, tablesList10, viewList10, viewLayerList10 },
-				{ "11", PICDFADMIN, USERPASSWORDHASH, "sqacus", TIMEZONEMTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList11, tablesList11, viewList11, viewLayerList11 },
-				{ "12", SQAPICSUP, USERPASSWORDHASH, "sqacus", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList12, tablesList12, viewList12, viewLayerList12 },
-				{ "13", SQACUSSU, USERPASSWORDHASH, "sqacus", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList13, tablesList13, viewList13, viewLayerList13 },
-				{ "14", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, null, null, createBoundaryList(), tagList14, tablesList14, viewList14, viewLayerList14 },
-				{ "15", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, null, null, createBoundaryList(), tagList15, tablesList15, viewList15, viewLayerList15 },//Include Date filter for 30 days
-				{ "16", SQACUSSU, USERPASSWORDHASH, "sqacus", TIMEZONECTUA, "150", null, null, null, null, null, null, true, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList16, tablesList16, viewList16, viewLayerList16 },
-				{ "17", SQACUSSU, USERPASSWORDHASH, "sqacus", TIMEZONEETUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList17, tablesList17, viewList17, viewLayerList17 },
-				{ "18", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, null, null, createBoundaryList(), tagList18, tablesList18, viewList18, viewLayerList18 },
-				{ "19", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, null, null, createBoundaryList(), tagList19, tablesList19, viewList19, viewLayerList19 },
-				{ "20", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEMTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList20, tablesList20, viewList20, viewLayerList20 }, //include dates
-				{ "21", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList21, tablesList21, viewList21, viewLayerList21 } ,
-				{"22", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList22, tablesList22, viewList22, viewLayerList22 },
-				{"23", SQACUSSU, USERPASSWORDHASH, "sqacus", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createBoundaryList(), tagList23, tablesList23, viewList23, viewLayerList23 }
+					null/*endDate*/, null/*fovOpacity*/, null/*lisaOpacity*/, null/*geoFilter*/, null/*reportMode*/, null/*surveyModeFilter*/, null/*ethaneFilter*/, createMapAndBoundaryList()/*listBoundary*/, tagList1/*tagList*/, tablesList1/*tablesList*/, viewList1/*viewList*/, viewLayerList1/*viewLayersList*/ },
+				{ "2", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, EXCLUSIONRADIUS, null, null, null, null, null, null, null, null, null, null, createMapAndBoundaryList(), tagList2, tablesList2, viewList2, viewLayerList2 }, // include date range
+				{ "3", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONECTUA, EXCLUSIONRADIUS, PICADMNSURVEYOR, null, null, null, null, null, null, null, SurveyModeFilter.All, null, createMapAndBoundaryList(), tagList3, tablesList3, viewList3, viewLayerList3 },
+				{ "4", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEETUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList4, tablesList4, viewList4, viewLayerList4 }, //include dates
+				{ "5", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONECTUA, "0", PICADMNSURVEYOR, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList5, tablesList5, viewList5, viewLayerList5 }, //include dates
+				{ "6", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList6, tablesList6, viewList6, viewLayerList6 },
+				{ "7", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList7, tablesList7, viewList7, viewLayerList7 },
+				{ "8", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList8, tablesList8, viewList8, viewLayerList8 },
+				{ "9", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEETUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList9, tablesList9, viewList9, viewLayerList9 },
+				{ "10", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEMTUA, "0", null, null, null, null, null, null, null, ReportModeFilter.Manual, SurveyModeFilter.Manual, null, createMapAndBoundaryList(), tagList10, tablesList10, viewList10, viewLayerList10 },
+				{ "11", PICDFADMIN, USERPASSWORDHASH, "sqacus", TIMEZONEMTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList11, tablesList11, viewList11, viewLayerList11 },
+				{ "12", SQAPICSUP, USERPASSWORDHASH, "sqacus", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList12, tablesList12, viewList12, viewLayerList12 },
+				{ "13", SQACUSSU, USERPASSWORDHASH, "sqacus", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList13, tablesList13, viewList13, viewLayerList13 },
+				{ "14", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, null, null, createMapAndBoundaryList(), tagList14, tablesList14, viewList14, viewLayerList14 },
+				{ "15", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, null, null, createMapAndBoundaryList(), tagList15, tablesList15, viewList15, viewLayerList15 },//Include Date filter for 30 days
+				{ "16", SQACUSSU, USERPASSWORDHASH, "sqacus", TIMEZONECTUA, "150", null, null, null, null, null, null, true, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList16, tablesList16, viewList16, viewLayerList16 },
+				{ "17", SQACUSSU, USERPASSWORDHASH, "sqacus", TIMEZONEETUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList17, tablesList17, viewList17, viewLayerList17 },
+				{ "18", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, null, null, createMapAndBoundaryList(), tagList18, tablesList18, viewList18, viewLayerList18 },
+				{ "19", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, null, null, createMapAndBoundaryList(), tagList19, tablesList19, viewList19, viewLayerList19 },
+				{ "20", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEMTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList20, tablesList20, viewList20, viewLayerList20 }, //include dates
+				{ "21", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList21, tablesList21, viewList21, viewLayerList21 } ,
+				{"22", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList22, tablesList22, viewList22, viewLayerList22 },
+				{"23", SQACUSSU, USERPASSWORDHASH, "sqacus", TIMEZONEPTUA, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList23, tablesList23, viewList23, viewLayerList23 }
 		};
 	}
 	
@@ -551,8 +551,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 			{ "TC680" /*TestCaseID*/, 6 /*userDataRowID*/,  30 /*reportDataRowID1*/, -1/*reportDataRowID2*/},
 			{ "TC680" /*TestCaseID*/, 6 /*userDataRowID*/,  31 /*reportDataRowID1*/, -1/*reportDataRowID2*/},
 			{ "TC680" /*TestCaseID*/, 6 /*userDataRowID*/,  32 /*reportDataRowID1*/, -1/*reportDataRowID2*/},
-			{ "TC680" /*TestCaseID*/, 6 /*userDataRowID*/,  33 /*reportDataRowID1*/, -1/*reportDataRowID2*/},
-			{ "TC680" /*TestCaseID*/, 6 /*userDataRowID*/,  34 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+			{ "TC680" /*TestCaseID*/, 6 /*userDataRowID*/,  33 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 

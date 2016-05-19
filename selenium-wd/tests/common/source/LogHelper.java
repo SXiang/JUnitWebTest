@@ -37,7 +37,7 @@ public class LogHelper {
 		if (listOfStrArray != null) {
 			for (String[] array : listOfStrArray) {
 				builder.append(strArrayToString(array));
-				builder.append(System.getProperty("line.separator"));
+				builder.append(BaseHelper.getLineSeperator());
 			}
 		}
 		return builder.toString();

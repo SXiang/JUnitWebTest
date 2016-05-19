@@ -1,10 +1,7 @@
 package surveyor.regression.source;
 
-import static org.junit.Assert.assertTrue;
-
 import common.source.Log;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;
@@ -12,11 +9,11 @@ import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
-import surveyor.scommon.source.BaseReportsPageTest;
+import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 
 @RunWith(SurveyorTestRunner.class)
-public class ComplianceReportsPageTest4 extends BaseReportsPageTest {
+public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 	private static final String EMPTY = "";
 	private static final Integer NOTSET = -1;
 	
@@ -62,13 +59,13 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, 4);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 4);
+		createNewComplianceReport(complianceReportsPageAction, 4);
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 4);
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, NOTSET);
 		complianceReportsPageAction.verifyReportPageFieldsAreCorrect(EMPTY, 4);
-		complianceReportsPageAction.modifyReport(EMPTY, 5);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 5);
-		complianceReportsPageAction.verifyReportFilesHaveCorrectData(EMPTY, 5);
+		modifyComplianceReport(complianceReportsPageAction, 5);
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 5);
+		complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 5);
 	}
  
 	/**
@@ -89,12 +86,12 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, 6);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 6);
+		createNewComplianceReport(complianceReportsPageAction, 6);
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 6);
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, NOTSET);
-		complianceReportsPageAction.modifyReport(EMPTY, 7);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 7);
-		complianceReportsPageAction.verifyReportFilesHaveCorrectData(EMPTY, 7);
+		modifyComplianceReport(complianceReportsPageAction, 7);
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 7);
+		complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 7);
 
 		// TODO: Methods missing for survey filter verifications. Tracked by Task TA862
 	}
@@ -117,12 +114,12 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.createNewReport(EMPTY, 8);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 8);
+		createNewComplianceReport(complianceReportsPageAction, 8);
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 8);
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, NOTSET);
-		complianceReportsPageAction.modifyReport(EMPTY, 9);
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, 9);
-		complianceReportsPageAction.verifyReportFilesHaveCorrectData(EMPTY, 9);
+		modifyComplianceReport(complianceReportsPageAction, 9);
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 9);
+		complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 9);
 
 		// TODO: Methods missing for survey filter verifications. Tracked by Task TA862
 	}

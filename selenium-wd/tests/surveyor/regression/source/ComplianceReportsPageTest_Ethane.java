@@ -71,6 +71,7 @@ import surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
+import surveyor.scommon.source.ReportsSurveyInfo;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /**
@@ -80,9 +81,9 @@ import surveyor.scommon.source.SurveyorTestRunner;
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	private static ComplianceReportsPage complianceReportsPage = null;
-	private String STRReportAreaTooLargeMsg = "Please make sure your selected boundary is more than 0.5kms and less than 25kms";
-	private String STRReportAssetNotSelectedMsg = "View(s) with Assets, Please select at least one Asset Layer";
-	private String STRReportBoundaryNotSelectedMsg = "View(s) with Boundaries, Please select at least one Boundary Layer";
+	private String STRReportAreaTooLargeMsg = Resources.getResource(ResourceKeys.ComplianceReport_BoundaryMinSizeMessage);
+	private String STRReportAssetNotSelectedMsg = Resources.getResource(ResourceKeys.ComplianceReport_InvalidAssetTypeMessage);
+	private String STRReportBoundaryNotSelectedMsg = Resources.getResource(ResourceKeys.ComplianceReport_InvalidBoundaryTypeMessage);
 	private static HashMap<String, String> testCaseMap = new HashMap<String, String>();
 
 	@BeforeClass
@@ -340,7 +341,10 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		complianceReportsPage.open();
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
-
+		List<ReportsSurveyInfo> reportSurveyInfoList = ReportDataProvider.buildReportSurveyInfoList("24");
+		rpt.setSurveyInfoList(reportSurveyInfoList);    
+		rpt.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
+		
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 

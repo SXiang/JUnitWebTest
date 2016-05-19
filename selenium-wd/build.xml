@@ -240,7 +240,7 @@
 		</junit>
 	</target>
 
-	<target name="testcompliancereportpage6" depends="compileregression" description="Run compliance report test cases">
+	<target name="compliancereportpageactiontests" depends="compileregression" description="Run compliance report page action test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<classpath>
@@ -254,6 +254,7 @@
 				<formatter type="xml" />
 				<fileset dir="${build}">
 
+					<include name="**/ComplianceReportsPageTest4.class" />
 					<include name="**/ComplianceReportsPageTest6.class" />
 
 				</fileset>

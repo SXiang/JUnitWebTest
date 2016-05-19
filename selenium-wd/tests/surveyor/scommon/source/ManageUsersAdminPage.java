@@ -25,7 +25,8 @@ import common.source.TestSetup;
  */
 public class ManageUsersAdminPage extends ManageUsersPage {
 	public static final String STRURLPath = "/Admin/ManageUsers";
-	public static final String STRPageTitle = "Manage ??? Users - Surveyor";
+	public static final String STRPageTitle = String.format("%s - %s", 
+			Resources.getResource(ResourceKeys.ManageUsers_PageTitle), Resources.getResource(ResourceKeys.Constant_Surveyor));
 
 	/**
 	 * @param driver

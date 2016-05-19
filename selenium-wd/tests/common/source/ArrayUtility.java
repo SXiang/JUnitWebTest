@@ -1,6 +1,7 @@
 package common.source;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ArrayUtility {
@@ -22,6 +23,51 @@ public class ArrayUtility {
 		return retList;
 	}
 	
+	public static List<String> getDistinctValues(List<String> stringValues) {
+		List<String> outputList = new ArrayList<String>();
+		if (stringValues != null) {
+			HashMap<String, Boolean> map = new HashMap<String, Boolean>();
+			if (stringValues != null) {
+				for (String strValue : stringValues) {
+					if (!map.containsKey(strValue)) {
+						map.put(strValue, true);
+					} 
+				}
+			}
+			
+			if (map.size() > 0) {
+				for (String key : map.keySet()) {
+					outputList.add(key);
+				}
+			}
+		}		
+		return outputList;
+	}
+	
+	public static List<String> convertIntListToStrList(List<Integer> intList) {
+		List<String> strList = null;
+		if (intList != null) {
+			strList = new ArrayList<String>(intList.size());
+			for (Integer element : intList) {
+				strList.add(String.valueOf(element));
+			}
+		}
+		return strList;
+	}
+
+	public static List<Integer> convertStrListToIntList(List<String> strList) {
+		List<Integer> intList = null;
+		if (strList != null) {
+			intList = new ArrayList<Integer>(strList.size());
+			for (String element : strList) {
+				if (!BaseHelper.isNullOrEmpty(element)) {
+					intList.add(Integer.valueOf(element.trim()));
+				}
+			}
+		}
+		return intList;
+	}
+
 	/**
 	 * Checks if all the values in the specified String array are greater than the specified minValue.
 	 * @param values - String array to check
