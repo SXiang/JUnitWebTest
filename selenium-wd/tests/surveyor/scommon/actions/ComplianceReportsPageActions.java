@@ -124,7 +124,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		ActionArguments.verifyNotNullOrEmpty(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, data);
 		Integer viewIdx = NumberUtility.getIntegerValueOf(data);
 		ActionArguments.verifyGreaterThanZero(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, viewIdx);		
-		this.getComplianceReportsPage().clickComplianceViewerViewByIndex(viewIdx);
+		this.getComplianceReportsPage().clickViewThumbnailImageByIndex(viewIdx);
 		return true;
 	}
 	
@@ -371,21 +371,21 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return viewNamesList;
 	}
 
-	private String getViewThumbnailImageId(Integer viewIdx) {
-		String viewID = "";		
-			ReportJobsStat reportJobStat = this.getComplianceReportsPage().getReportJobStat(workingDataRow.title);		
-			List<ReportJob> reportJobs = reportJobStat.ReportJobs;
-			for (ReportJob reportJob : reportJobs) {
-				if (reportJob.ReportJobType.equals(ReportJobType.Map.toString())) {
-					viewIdx--;
-					if (viewIdx == 0) {
-						viewID = reportJob.ReportJobId;
-						break;
-					}
-				} 
-			}
-		return viewID;
-	}
+//	private String getViewThumbnailImageId(Integer viewIdx) {
+//		String viewID = "";		
+//			ReportJobsStat reportJobStat = this.getComplianceReportsPage().getReportJobStat(workingDataRow.title);		
+//			List<ReportJob> reportJobs = reportJobStat.ReportJobs;
+//			for (ReportJob reportJob : reportJobs) {
+//				if (reportJob.ReportJobType.equals(ReportJobType.Map.toString())) {
+//					viewIdx--;
+//					if (viewIdx == 0) {
+//						viewID = reportJob.ReportJobId;
+//						break;
+//					}
+//				} 
+//			}
+//		return viewID;
+//	}
 	
 	private String getDownloadPath(ReportFileType fileType) {
 		String fileName = "";
@@ -2246,7 +2246,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		
 		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
 		// Find the view image to click. Order of the images is the order returned by API. 
-		WebElement viewElement = getElementById(getViewThumbnailImageId(viewIdx));
+		WebElement viewElement = this.getComplianceReportsPage().getViewThumbnailImageByIndex(viewIdx);
 		return viewElement.isDisplayed();
 	}
 

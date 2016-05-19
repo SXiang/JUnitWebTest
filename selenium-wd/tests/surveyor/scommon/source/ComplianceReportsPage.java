@@ -639,8 +639,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		jsClick(modalClose);
 	}
 	
-	public void clickComplianceViewerViewByIndex(int viewIdx){
+	public void clickViewThumbnailImageByIndex(int viewIdx){
 		jsClick(pdfViews.get(viewIdx-1));
+	}
+	
+	public WebElement getViewThumbnailImageByIndex(int viewIdx){
+		return pdfViews.get(viewIdx-1);
 	}
 	public void clickOnShapeZIPInReportViewer() {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
