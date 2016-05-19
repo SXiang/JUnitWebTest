@@ -51,6 +51,8 @@ import common.source.TestSetup;
 import common.source.WebElementExtender;
 import net.avh4.util.imagecomparison.ImageComparisonResult;
 import surveyor.api.source.ReportJobsStat;
+import surveyor.dataaccess.source.DBCache;
+import surveyor.dataaccess.source.Report;
 import surveyor.scommon.source.Reports.ReportJobType;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.ReportStatusType;
@@ -225,7 +227,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/img")
 	protected WebElement actionStatus;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a[3]/img")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a[3]")
 	protected WebElement btnReportViewer;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/span")
@@ -269,7 +271,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyor']")
 	protected WebElement cbSurveyUnit;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[5]/a[2]/img")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[5]/a[2]")
 	protected WebElement btnDownload;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
@@ -339,7 +341,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "button_ok")
 	protected WebElement btnCustomOK;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[5]/a[@title='Copy']/img")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[5]/a[@title='Copy']")
 	protected WebElement btnFirstCopyCompliance;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a[4]")
@@ -723,12 +725,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			if (tagValue != "") {
 				inputSurveyTag(tagValue);
 				clickOnSearchSurveyButton();
-				this.waitForSurveyTabletoLoad();
-				this.waitForSurveySelectorCheckBoxToLoad();
-				this.waitForSurveySelectorCheckBoxToBeEnabled();
-				selectFirstSurveyCheckBox();
-				this.waitForAddSurveyButtonToLoad();
-				clickOnAddSurveysButton();
+				selectSurveysAndAddToReport(false /*selectAll*/, 1 /*numSurveysToSelect*/);
 			}
 		}
 	}
@@ -865,17 +862,20 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 
-	public boolean verifyErrorMessages(String[] errorMessages) {
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return errorMessages == null || errorMessages[0].isEmpty()
-						|| listOfErrors.size() >= errorMessages.length;
-			}
-		});
+	public boolean verifyErrorMessages(String... errormessages) {
+		try{
+			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>(){
+				public Boolean apply(WebDriver d){
+					return errormessages==null||errormessages[0].isEmpty()||listOfErrors.size()>=errormessages.length;
+				}
+			});
+		}catch(Exception e){
+			return false;
+		}
 		for (WebElement e : listOfErrors) {
 			Log.info(e.getText());
 		}
-		for (String err : errorMessages) {
+		for (String err : errormessages) {
 			boolean msgFound = false;
 			for (WebElement element : listOfErrors) {
 				msgFound = false;
@@ -936,8 +936,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void openNewReportPage() {
+		String elementXPath = "//*[@id='datatableViews']/tbody/tr/td[2]/input";
 		this.btnNewComplianceRpt.click();
+		refreshPageUntilElementFound(elementXPath);
 		this.waitForNewPageLoad();
+		
 	}
 
 	public void waitForNewPageLoad() {
@@ -1042,13 +1045,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public boolean checkFileExists(String fileName, String downloadPath) {
 		Log.info(String.format("Looking for file-[%s] in download directory-[%s]", fileName, downloadPath));
-		File dir = new File(downloadPath);
-		File[] dir_contents = dir.listFiles();
-		for (int i = 0; i < dir_contents.length; i++) {
-			if (dir_contents[i].getName().trim().equals(fileName.trim())) {
-				Log.info("File found in the download dirctory");
-				return true;
-			}
+		File file = new File(downloadPath,fileName);
+		if(file.exists()){
+			Log.info("File found in the download directory");
+			return true;
 		}
 		return false;
 	}
@@ -1376,8 +1376,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				while (bContinue) {
 					try {
 						if (rowSize == 1) {
-							this.btnReportViewer = getTable()
-									.findElement(By.xpath("//*[@id='datatable']/tbody/tr/td[5]/a[3]"));
+							this.btnReportViewer = getTable().findElement(By.xpath("//*[@id='datatable']/tbody/tr/td[5]/a[3]"));
 							this.btnReportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						} else {
@@ -1390,7 +1389,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							}
 
 							this.btnReportViewer = getTable().findElement(
-									By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img"));
+									By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]"));
 							this.btnReportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						}
@@ -1513,7 +1512,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							}
 
 							this.btnReportViewer = getTable().findElement(
-									By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]/img"));
+									By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]"));
 						}
 
 						return true;
@@ -1552,7 +1551,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public boolean copyReport(String rptTitle, String strCreatedBy) {
 		setPagination(PAGINATIONSETTING);
-		this.waitForCopyReportPagetoLoad();
 		String reportTitleXPath;
 		String createdByXPath;
 		String copyImgXPath;
@@ -1580,10 +1578,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 			String createdByCellText = getReportTableCellText(createdByXPath);
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
-				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[@title='Copy']/img"; // Don't use index for 'Copy' as it has diff values
+				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[@title='Copy']"; // Don't use index for 'Copy' as it has diff values
 				copyImg = getReportTableCell(copyImgXPath);
-				copyImg.click();
-
+				jsClick(copyImg);
+				DBCache.INSTANCE.remove(Report.CACHE_KEY+rptTitle);
+				this.waitForCopyReportPagetoLoad();
 				return true;
 			}
 
@@ -1709,6 +1708,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return false;
 	}
 
+	public boolean searchAndDeleteReport(String reportTitle, String reportCreatedBy) throws Exception {
+		boolean searchSuccess = searchReport(reportTitle, reportCreatedBy);
+		boolean deleteSuccess = !searchSuccess;
+		if (searchSuccess) {
+			deleteSuccess = deleteReport(reportTitle, reportCreatedBy);
+		}
+		return deleteSuccess;
+	}
+	
 	public boolean deleteReport(String rptTitle, String strCreatedBy) throws Exception {
 		setPagination(PAGINATIONSETTING);
 
@@ -1740,7 +1748,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			String createdByCellText = getReportTableCellText(createdByXPath);
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
-				deleteImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]/img";
+				deleteImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]";
 				deleteImg = getReportTableCell(deleteImgXPath);
 
 				deleteImg.click();
@@ -1811,7 +1819,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			String createdByCellText = getReportTableCellText(createdByXPath);
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
-				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
+				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]";
 				copyImg = getReportTableCell(copyImgXPath);
 
 				copyImg.click();
@@ -1877,7 +1885,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			String createdByCellText = getReportTableCellText(createdByXPath);
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
-				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
+				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]";
 				copyImg = getReportTableCell(copyImgXPath);
 
 				copyImg.click();
@@ -2064,7 +2072,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void clickOnCancelBtn() {
-		this.btnCancel.click();
+		jsClick(this.btnCancel);
 		super.waitForPageLoad();
 	}
 
@@ -2094,7 +2102,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			public Boolean apply(WebDriver d) {
 				boolean result = false;
 				try {
-					result = d.getPageSource().contains(getStrCopyPageText()) && inputTitle.isDisplayed();
+					result = d.getPageSource().contains(getStrCopyPageText());
 				} catch (Exception e) {
 					Log.error(e.toString());
 				}
@@ -2320,7 +2328,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 		String expectedFilename = expectedDataFolderPath + File.separator + "View" + counter + ".png";
 		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilename));
 	}
-
+	protected void generateBaselineViewImage(String testCaseID, String imageFileFullPath, String viewName) throws IOException {
+		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";
+		String expectedDataFolderPath = rootFolder + File.separator + "test-expected-data" + File.separator + "views-images" + File.separator + testCaseID;
+		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
+		String expectedFilename = expectedDataFolderPath + File.separator + viewName+ ".png";
+		FileUtils.copyFile(new File(imageFileFullPath), new File(expectedFilename));
+	}
 	/**
 	 * Compares the processing times for each reportJob type with baseline
 	 * processingTime values and checks actual values are not greater than the

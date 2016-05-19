@@ -73,7 +73,7 @@ def run_analyzer(dirname):
 	puts("DIRECTORY: " + dirname)
 	filename = dirname + os.sep + 'Picarro.Surveyor.Analyzer.exe'
 	puts("Excuting Analyzer: " + filename)
-	cmd = [filename, "--suppressHost"]
+	cmd = [filename, "--SuppressHost"]
 	pipe = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	time.sleep(5)
 	pipe.kill()

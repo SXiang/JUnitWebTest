@@ -89,8 +89,8 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.modifyReport(EMPTY, getReportRowID(reportDataRowID2));
-		complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, getReportRowID(reportDataRowID2));
+		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID2));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));

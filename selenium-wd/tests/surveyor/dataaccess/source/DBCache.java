@@ -24,4 +24,8 @@ public enum DBCache {
 	public boolean containsKey(String key) {
 		return cache.containsKey(key);
 	}
+
+	public void remove(String key) {
+		cache.remove(key);
+	}
 }
