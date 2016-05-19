@@ -118,7 +118,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.modifyReport(EMPTY, getReportRowID(reportDataRowID2));
+		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
 		assertTrue(complianceReportsPageAction.verifyErrorMessages(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
@@ -499,7 +499,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.modifyReport(EMPTY, getReportRowID(reportDataRowID1));
+		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
@@ -550,7 +550,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.modifyReport(EMPTY, getReportRowID(reportDataRowID1));
+		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));

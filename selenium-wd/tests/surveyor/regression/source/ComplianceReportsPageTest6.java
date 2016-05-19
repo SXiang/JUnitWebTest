@@ -281,7 +281,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnDeleteButton(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForConfirmDeletePopupToShow(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnConfirmDeleteReport(EMPTY, getReportRowID(reportDataRowID1));
+		clickOnConfirmDeleteReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyReportDeletedSuccessfully(EMPTY, NOTSET));
 	}
 

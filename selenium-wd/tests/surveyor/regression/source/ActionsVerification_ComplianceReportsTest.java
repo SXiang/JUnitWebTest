@@ -174,6 +174,7 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 		complianceReportsPageAction.cancelInProgressReport(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.verifyPageLoaded(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifyReportGenerationIsCancelled(EMPTY, reportDataRowID1));
+		complianceReportsPageAction.deleteReport(EMPTY, reportDataRowID1);
 	}
 
 	/**
