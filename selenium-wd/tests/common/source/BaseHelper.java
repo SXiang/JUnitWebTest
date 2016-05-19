@@ -9,7 +9,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -17,10 +16,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.image.PixelGrabber;
-
 import org.apache.commons.io.FileUtils;
 import org.testng.Assert;
 
@@ -52,7 +47,8 @@ public class BaseHelper {
 	}
 
 	private static void unZip(String zipFile, String outputFolder) throws FileNotFoundException, IOException {
-		ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile));
+		FileInputStream inputStream = new FileInputStream(zipFile);
+		ZipInputStream zis = new ZipInputStream(inputStream);
 		ZipEntry ze = zis.getNextEntry();
 		while (ze != null) {
 			String entryName = ze.getName();
@@ -69,10 +65,12 @@ public class BaseHelper {
 			} finally {
 				fos.close();
 			}
+			zis.closeEntry();
 			ze = zis.getNextEntry();
 		}
 		zis.closeEntry();
 		zis.close();
+		inputStream.close();
 	}
 
 	public static boolean validatePdfFile(String pdfFileName) {

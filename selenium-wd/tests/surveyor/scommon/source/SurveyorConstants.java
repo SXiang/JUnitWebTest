@@ -3,6 +3,9 @@
  */
 package surveyor.scommon.source;
 
+import java.util.List;
+
+import common.source.RegexUtility;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 
@@ -26,6 +29,8 @@ public final class SurveyorConstants {
 	public static final int ANALYZERNUM = 1; // Should be set less than 100 otherwise need review the code
 	public static final int USERNUM = 5; // Should be set less than 100 otherwise need review the code
 
+	private static final String CUSTOMERS_WITH_ASSETS = "Picarro";     // Comma seperated list of Customers that have assets in Seed script.
+	
 	public static final String CUSTOMERNAMEPREFIX = "regcus";
 	public static final String CUSTOMERSTATUS = Resources.getResource(ResourceKeys.Constant_Enabled);
 	public static final String EULASTRING = "Testing eula string, TBD";
@@ -386,4 +391,8 @@ public final class SurveyorConstants {
 			return text;
 		}
 	};
+	
+	public static List<String> getCustomersWithAssets() {
+		return RegexUtility.split(CUSTOMERS_WITH_ASSETS, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
+	}
 }
