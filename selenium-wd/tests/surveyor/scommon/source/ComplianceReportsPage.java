@@ -645,7 +645,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	
 	public WebElement getViewThumbnailImageByIndex(int viewIdx){
 		return pdfViews.get(viewIdx-1);
-	}
+	}	
 	
 	public void clickOnShapeZIPInReportViewer() {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -743,7 +743,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				try {
 					Path shapeUnzipFolder = Paths.get(testSetup.getDownloadPath(), zipFileName);
 					checkAndGenerateBaselineShapeFiles(shapeUnzipFolder.toString(), testCaseID);
-				} catch (Exception e) {
+				}catch(Exception e){
 					Log.error(e.toString());
 					return false;
 				}
