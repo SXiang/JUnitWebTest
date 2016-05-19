@@ -564,6 +564,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				driver.findElement(By.xpath(strBaseXPath)).click();
 			}
+
 			if (viewList.get(i).get(KEYANNOTATION).equalsIgnoreCase("1")) {
 				colNum = 8;
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
@@ -639,9 +640,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		jsClick(modalClose);
 	}
 	
-	public void clickComplianceViewerViewByIndex(int viewIdx){
+	public void clickViewThumbnailImageByIndex(int viewIdx){
 		jsClick(pdfViews.get(viewIdx-1));
 	}
+	
+	public WebElement getViewThumbnailImageByIndex(int viewIdx){
+		return pdfViews.get(viewIdx-1);
+	}
+	
 	public void clickOnShapeZIPInReportViewer() {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click();", zipShape);
@@ -3133,14 +3139,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		    actualReport +=  "CR-" + reportId.substring(0, 6) + "_" + viewName + ".pdf";
 		}
 		String reportName = "CR-" + reportId;
-		boolean isGenerateBaselineViewImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
 		setReportName(reportName);
 		String imageExtractFolder = pdfUtility.extractPDFImages(actualReport, testCase);
 		File folder = new File(imageExtractFolder);
 		File[] listOfFiles = folder.listFiles();
-		int counter = 0;
+
 		for (File file : listOfFiles) {
-			if (file.isFile() && (file.getName().contains("View")||actualReport.contains("View"))) {
+			if (file.isFile() && (file.getName().contains("View"))) {
 				BufferedImage image = ImageIO.read(file);
 				int width = image.getWidth();
 				int height = image.getHeight();
@@ -3151,27 +3156,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				File outputfile = new File(actualViewPath);
 				ImageIO.write(image, "png", outputfile);
 				String baseViewFile = "";
-
-
 				if(inZipFolder){
 					baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + "View" + new NumberUtility().getOrdinalNumber(file.getName()) + ".png";
-					if (isGenerateBaselineViewImages) {
-						generateBaselineViewImage(testCase, actualViewPath, ++counter);
-						Log.info("Generated baseline view image "+ baseViewFile);
-					}
 				}else{
 					baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + viewName + ".png";
-					if (isGenerateBaselineViewImages) {
-						generateBaselineViewImage(testCase, actualViewPath, viewName);
-						Log.info("Generated baseline view image "+ baseViewFile);
-					}
 				}				
 				
-				if (!isGenerateBaselineViewImages) {
-				   if (!verifyActualImageWithBase(baseViewFile, actualViewPath)) {
-					   Files.delete(Paths.get(actualViewPath));
-					   return false;
-				   }
+				if (!verifyActualImageWithBase(baseViewFile, actualViewPath)) {
+					Files.delete(Paths.get(actualViewPath));
+					return false;
 				}
 				Files.delete(Paths.get(actualViewPath));
 			}
