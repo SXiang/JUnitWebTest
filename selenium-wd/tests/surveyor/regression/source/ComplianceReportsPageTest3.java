@@ -2,10 +2,8 @@ package surveyor.regression.source;
 
 import common.source.Log;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.*;
-
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;

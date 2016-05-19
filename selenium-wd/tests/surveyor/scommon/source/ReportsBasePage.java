@@ -1708,6 +1708,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return false;
 	}
 
+	public boolean searchAndDeleteReport(String reportTitle, String reportCreatedBy) throws Exception {
+		boolean searchSuccess = searchReport(reportTitle, reportCreatedBy);
+		boolean deleteSuccess = !searchSuccess;
+		if (searchSuccess) {
+			deleteSuccess = deleteReport(reportTitle, reportCreatedBy);
+		}
+		return deleteSuccess;
+	}
+	
 	public boolean deleteReport(String rptTitle, String strCreatedBy) throws Exception {
 		setPagination(PAGINATIONSETTING);
 

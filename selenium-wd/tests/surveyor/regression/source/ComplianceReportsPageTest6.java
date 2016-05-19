@@ -196,9 +196,6 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC509_GenerateComplianceReportUsingCreateNewFunctionality ...");
 
-		// TODO: Re-run test with actual data and set this to correct expected value. Also uncomment the assert statement below.
-		Integer expectedLisaRows = 10;
-
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
@@ -210,13 +207,13 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyAllSSRSTableInfos(EMPTY, NOTSET));
 		
-		// STEP: To be enabled post baseline creation: US2265
-		//assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyAllSSRSTableInfos(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 
-		//assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableRowCountEquals(String.valueOf(expectedLisaRows), NOTSET));
+		Integer expectedLisaRows = 6;
+		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableRowCountEquals(String.valueOf(expectedLisaRows), NOTSET));
 		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableSortedDescByColumn(LISAIndicationTableColumns.Amplitude.toString(), NOTSET));
 		assertTrue(complianceReportsPageAction.verifyIsotopicTableSortedAscByColumn(IsotopicAnalysisTableColumns.DateTime.toString(), NOTSET));
 	}
@@ -281,7 +278,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnDeleteButton(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForConfirmDeletePopupToShow(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnConfirmDeleteReport(EMPTY, getReportRowID(reportDataRowID1));
+		clickOnConfirmDeleteReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyReportDeletedSuccessfully(EMPTY, NOTSET));
 	}
 
@@ -317,9 +314,11 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerButton(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifyPDFThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifyPDFZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifyViewThumbnailIsShownInComplianceViewerByViewIndex("1", getReportRowID(reportDataRowID1));
 		
-		// TODO: Navigate away and thumbnail verifications remaining.
+		// TODO: Navigate away verifications remaining. To be added post US2400 merge that implements this..
 	}
  
 	/**
@@ -367,6 +366,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		
 		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
 		
 		// TODO: Check implementation.
@@ -380,7 +380,9 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(TIMEZONE_STRING, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(ASSET_DATA_STRING, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyViewsCreatedAreInCorrectSequence(EMPTY, NOTSET));
+		
+		// TODO: Start line for Table definition is just 2 characters, which is creating issue with table parsing.
+		assertTrue(complianceReportsPageAction.verifyViewsInSSRSPDFAreInCorrectSequence(EMPTY, NOTSET));
 	}
  
 	/**
@@ -445,9 +447,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		
-		// STEP: To be enabled post baseline creation: US2265
-		//assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, NOTSET));	
+		Integer shapeZipFileIndex = 2;
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(String.valueOf(shapeZipFileIndex), getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -512,9 +513,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-
-		// STEP: To be enabled post baseline creation: US2265
-		//assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
+		Integer shapeZipFileIndex = 2;
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(String.valueOf(shapeZipFileIndex), getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -557,9 +557,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-
-		// STEP: To be enabled post baseline creation: US2265
-		//assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
+		Integer shapeZipFileIndex = 2;
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(String.valueOf(shapeZipFileIndex), getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -686,9 +685,10 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
-		
-		// TODO: Turn this ON post view image baselines are created.
-		//assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -726,10 +726,9 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, NOTSET));
-
-		// TODO: Turn this ON post view image baselines are created.
-		//assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
+		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -766,10 +765,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		
-		// TODO: Turn this ON post baselines are created.
-		//assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, NOTSET));
-		//assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -790,7 +787,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *	- There should be a 50 foot buffer between the LISA bubble and the side of the box perpendicular to the line bisecting the LISA
 	 *	- Overlapping LISA boxes should not be combined into a single box. Each LISA should have its own LISA box drawn as a distinct box unto itself
 	 */
-	@Ignore   // Need surveys that have LISAs close enough to overlap each other added by Automation seed.
+	@Test   // TODO: Need surveys that have LISAs close enough to overlap each other added by Automation seed.
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC701, location = ComplianceReportDataProvider.class)
 	public void TC701_OverlappingLISABoxes(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -809,10 +806,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, NOTSET));
-
-		//assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, NOTSET));
-		//assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -905,9 +900,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		
-		// TODO: Enable after shape baselines have been generated.
-		//assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, NOTSET));
+		Integer shapeZipFileIndex = 2;
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(String.valueOf(shapeZipFileIndex), getReportRowID(reportDataRowID1)));
 		// TODO: Enable after method is implemented.
 		//assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesAreCorrect(EMPTY, NOTSET));
 	}
@@ -955,10 +949,9 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		
-		// TODO: Enable after baselines are generated.
-		//assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, NOTSET));
-		//assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+		Integer shapeZipFileIndex = 2;
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(String.valueOf(shapeZipFileIndex), getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -1003,10 +996,10 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		
-		// TODO: Enable after baselines are generated.
-		//assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY /*hasPipeIntersectingLISA*/, NOTSET));
-		//assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
+		Integer shapeZipFileIndex = 2;
+		// TODO: Enable after action is implemented.
+		//assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY /*hasPipeIntersectingLISA*/, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(String.valueOf(shapeZipFileIndex), getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -1051,8 +1044,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY /*hasPipeIntersectingGap*/, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
+		Integer shapeZipFileIndex = 2;
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(String.valueOf(shapeZipFileIndex), getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -1110,8 +1103,10 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
 		
-		// TODO: Enable after baselines are generated.
-		//assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, NOTSET));
+		Integer shapeZipFileIndex = 2;
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(String.valueOf(shapeZipFileIndex), getReportRowID(reportDataRowID1)));
+
+		// TODO: Enable after implementation.
 		//assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesAreCorrect(EMPTY, NOTSET));
 	}
  
