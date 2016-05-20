@@ -1274,7 +1274,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC1365() {
 		return new Object[][] {				
-			{ "TC1365" /*TestCaseID*/, 4 /*userDataRowID*/,  53 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+			{ "TC1365" /*TestCaseID*/, 1 /*userDataRowID*/,  53 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 	@DataProvider
