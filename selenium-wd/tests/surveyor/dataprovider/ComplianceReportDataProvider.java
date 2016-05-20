@@ -1225,8 +1225,8 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	}
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC13() {
-		return new Object[][] {				
-			{ "TC13" /*TestCaseID*/, 2 /*userDataRowID*/,  73 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		return new Object[][] {		   //US needed, 2, 8		
+			{ "TC13" /*TestCaseID*/, 4 /*userDataRowID*/,  73 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 	@DataProvider
@@ -1237,20 +1237,20 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	}
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC1320() {
-		return new Object[][] {				// UA needed, 1,7
-			{ "TC1320" /*TestCaseID*/, 4 /*userDataRowID*/,  51 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		return new Object[][] {				// Blocked by customer assets, boundaries
+			{ "TC1320" /*TestCaseID*/, 1 /*userDataRowID*/,  51 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC1339() {
 		return new Object[][] {				// UA needed, 1,7
-			{ "TC1339" /*TestCaseID*/, 4 /*userDataRowID*/,  58 /*reportDataRowID1*/, 52/*reportDataRowID2*/,53/*reportDataRowID3*/}
+			{ "TC1339" /*TestCaseID*/, 4 /*userDataRowID*/,  58 /*reportDataRowID1*/, 75/*reportDataRowID2*/,76/*reportDataRowID3*/}
 		};
 	}
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC1340() {
 		return new Object[][] {				// UA needed, 1,7
-			{ "TC1340" /*TestCaseID*/, 4 /*userDataRowID*/,  71 /*reportDataRowID1*/,  52/*reportDataRowID2*/,  53/*reportDataRowID3*/}
+			{ "TC1340" /*TestCaseID*/, 4 /*userDataRowID*/,  71 /*reportDataRowID1*/,  77 /*reportDataRowID2*/,  78 /*reportDataRowID3*/}
 		};
 	}
 	@DataProvider
@@ -1310,7 +1310,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC1389() {
 		return new Object[][] {			
-			{ "TC1389" /*TestCaseID*/, 1 /*userDataRowID*/,  66 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+			{ "TC1389" /*TestCaseID*/, 4 /*userDataRowID*/,  66 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 	@DataProvider
@@ -1328,8 +1328,8 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC14() {
-		return new Object[][] {				
-			{ "TC14" /*TestCaseID*/, 1 /*userDataRowID*/,  69 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		return new Object[][] {		// UA required, 1, 7		
+			{ "TC14" /*TestCaseID*/, 4 /*userDataRowID*/,  69 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 	@DataProvider

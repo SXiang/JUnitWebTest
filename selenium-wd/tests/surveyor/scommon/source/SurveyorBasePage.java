@@ -68,7 +68,11 @@ public class SurveyorBasePage extends BasePage {
 
 	@FindBy(name = "datatable_length")
 	protected WebElement paginationInput;
-
+	By paginationInputBy = By.name("datatable_length");
+	
+	@FindBy(css = "#datatable_length option")
+	protected List<WebElement> paginationOptions;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_filter']/label/input")
 	protected WebElement inputSearch;
 
@@ -228,10 +232,10 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public void setPagination(String str) {
-		List<WebElement> options = this.paginationInput.findElements(By.tagName("option"));
-		for (WebElement option : options) {
+		for (WebElement option : paginationOptions) {
 			if (str.equals(option.getText().trim())) {
 				option.click();
+				break;
 			}
 		}
 	}
