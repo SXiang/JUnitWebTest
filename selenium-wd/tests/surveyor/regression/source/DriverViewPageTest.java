@@ -51,11 +51,11 @@ import surveyor.scommon.source.SurveyorTestRunner;
 @RunWith(SurveyorTestRunner.class)
 public class DriverViewPageTest extends BaseMapViewTest {
 
-	private DriverViewPageActions driverViewPageAction;
+	protected DriverViewPageActions driverViewPageAction;
 
-	private static DriverViewPage driverViewPage;
-	private static ManageCustomersPage manageCustomersPage = null;
-	private static ManageUsersPage manageUsersPage = null;
+	protected static DriverViewPage driverViewPage;
+	protected static ManageCustomersPage manageCustomersPage = null;
+	protected static ManageUsersPage manageUsersPage = null;
 	
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {

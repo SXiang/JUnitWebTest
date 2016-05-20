@@ -1,5 +1,6 @@
 package surveyor.scommon.source;
 
+import surveyor.scommon.actions.BaseActions;
 import java.util.HashMap;
 import org.junit.After;
 import common.source.ExceptionUtility;
@@ -8,8 +9,8 @@ import surveyor.scommon.actions.ComplianceReportsPageActions;
 
 public class BaseReportsPageActionTest extends BaseReportsPageTest {
 
-	protected static final String EMPTY = "";
-	protected static final Integer NOTSET = -1;
+	protected static final String EMPTY = BaseActions.EMPTY;
+	protected static final Integer NOTSET = BaseActions.NOTSET;
 	
 	//==============================================================================================================
 	// These variables are added for unit testing page actions.

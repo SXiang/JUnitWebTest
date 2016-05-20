@@ -224,13 +224,13 @@ public class BaseHelper {
 	 *         matched
 	 */
 	public static HashMap<String, Boolean> matchSinglePattern(String actualReportString, List<String> inputList) {
-
-		HashMap<String, Boolean> stringMatch = new HashMap<String, Boolean>();
+		Log.info("Calling matchSinglePattern() ...");
+		HashMap<String, Boolean> stringsToMatch = new HashMap<String, Boolean>();
 		String[] lines = actualReportString.split("\\n");
 		Iterator<String> listIterator = inputList.iterator();
 		while (listIterator.hasNext()) {
 			String stringtoMatch = listIterator.next().trim();
-			stringMatch.put(stringtoMatch, false);
+			stringsToMatch.put(stringtoMatch, false);
 		}
 		for (String line : lines) {
 			listIterator = inputList.iterator();
@@ -238,11 +238,13 @@ public class BaseHelper {
 				String stringtoMatch = listIterator.next().trim();
 				String formatteLine = line.trim();
 				if (formatteLine.contains(stringtoMatch)) {
-					stringMatch.put(stringtoMatch, true);
+					stringsToMatch.put(stringtoMatch, true);
 				}
 			}
 		}
-		return stringMatch;
+		
+		Log.info(String.format("Match String Map is : ", stringsToMatch));
+		return stringsToMatch;
 	}
 
 	/**

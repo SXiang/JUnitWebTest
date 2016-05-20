@@ -38,6 +38,8 @@ public class LoginPageActions extends BasePageActions {
 			}
 			dataRow = dataReader.createDataRow("", userPassList.get(0), userPassList.get(1), "", "",
 					"", "", "", "", "", "", "");
+		} else if (workingDataRow != null) {
+			dataRow = workingDataRow;
 		} else if (dataRowID >0) {
 			dataRow = dataReader.getDataRow(dataRowID);
 		} else {
