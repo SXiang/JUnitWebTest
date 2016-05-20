@@ -173,6 +173,9 @@ public class FileUtility {
 	}
 	
 	public static boolean compareFilesInDirectories(String firstFolderPath, String secondFolderPath) throws IOException {
+		return compareFilesInDirectories(firstFolderPath, secondFolderPath, false);
+	}
+	public static boolean compareFilesInDirectories(String firstFolderPath, String secondFolderPath, boolean contains) throws IOException {
 		Log.info(String.format("Comparing files in Folders - [%s] <==> [%s]...", firstFolderPath, secondFolderPath));
 		
 		// Check that first folder and second folder have the exact same files.
@@ -194,30 +197,30 @@ public class FileUtility {
 			return false;
 		}
 
-		// Check both directories have same number of files.
-		if ((firstDirectoryFiles.size() != secondDirectoryFiles.size())) {
-			Log.info(String.format("First folder has [%d] files. Second folder has [%d] files. <-- [Return FALSE]",
-					firstDirectoryFiles.size(), secondDirectoryFiles.size()));
-			return false;
-		}
+		if(!contains){
+			// Check both directories have same number of files.
+			if ((firstDirectoryFiles.size() != secondDirectoryFiles.size())) {
+				Log.info(String.format("First folder has [%d] files. Second folder has [%d] files. <-- [Return FALSE]",
+						firstDirectoryFiles.size(), secondDirectoryFiles.size()));
+				return false;
+			}
 
+			for (String sDirFile : secondDirectoryFiles) {
+				if (!firstDirectoryFiles.contains(sDirFile)) {
+					Log.info(String.format("First folder does NOT contain file - [%s] from second folder. <-- [Return FALSE]", sDirFile));
+					return false;
+				}
+			}			
+		}
+		
 		for (String fDirFile : firstDirectoryFiles) {
 			if (!secondDirectoryFiles.contains(fDirFile)) {
 				Log.info(String.format("Second folder does NOT contain file - [%s] from first folder. <-- [Return FALSE]", fDirFile));
 				return false;
 			}
 		}
-
-		for (String sDirFile : secondDirectoryFiles) {
-			if (!firstDirectoryFiles.contains(sDirFile)) {
-				Log.info(String.format("First folder does NOT contain file - [%s] from second folder. <-- [Return FALSE]", sDirFile));
-				return false;
-			}
-		}
-
 		return true;
 	}
-
 	/**
 	 * Returns list of files matching the specified filter from the specified directory.
 	 * @param directory - Directory to look for files.

@@ -242,7 +242,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	private static final String DELETE_POPUP_CANCEL_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[2]";
 
 	public static final String RatioSdevMetaPattern = "\\+/\\-";
-
+	
 	public static List<String[]> preCoverageForecastTo70;
 	public static List<String[]> preCoverageForecast;
 
@@ -816,12 +816,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public boolean checkAndGenerateBaselineShapeFiles(String unzipFolder, String testCaseID) throws Exception {
 		boolean isGenerateBaselineShapeFiles = TestContext.INSTANCE.getTestSetup().isGenerateBaselineShapeFiles();
-		if (isGenerateBaselineShapeFiles) {
 			Path unzipDirectory = Paths.get(unzipFolder);
 			List<String> filesInDirectory = FileUtility.getFilesInDirectory(unzipDirectory, "*.shp,*.dbf,*.prj,*.shx");
 			for (String filePath : filesInDirectory) {
-				generateBaselineShapeFile(testCaseID, filePath);
-			}
+				String newFilename = replaceReportIdWith(filePath, testCaseID);
+				new File(filePath).renameTo(new File(newFilename));
+				if(isGenerateBaselineShapeFiles){
+				   generateBaselineShapeFile(testCaseID, newFilename);
+				}
 		}
 		return isGenerateBaselineShapeFiles;
 	}
@@ -3204,7 +3206,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				reportTitle, testCaseID, zipIndex));
 		String shapeZipFileName = getReportShapeZipFileName(reportTitle, zipIndex, false /* includeExtension */);
 		BaseHelper.deCompressZipFile(shapeZipFileName, testSetup.getDownloadPath());
-
 		if (checkAndGenerateBaselineShapeFiles(TestContext.INSTANCE.getTestSetup().getDownloadPath() + shapeZipFileName, testCaseID)) {
 			Log.info("Shape Files created as a baseline for '" + testCaseID
 					+ "', verification will be done on your next test run");
@@ -3217,12 +3218,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				+ "shape-files" + File.separator + testCaseID;
 
 		// Verify files in both directories are the same.
-		if (!FileUtility.compareFilesInDirectories(actualDataFolderPath, expectedDataFolderPath)) {
+		if (!FileUtility.compareFilesInDirectories(actualDataFolderPath, expectedDataFolderPath, true)) {
 			return false;
 		}
 
 		// Assert all shape files in the folders are the same.
 		ShapeFileUtility shapeFileUtility = new ShapeFileUtility();
+		
 		shapeFileUtility.assertDirectoryEquals(actualDataFolderPath, expectedDataFolderPath);
 
 		return true;
@@ -3236,6 +3238,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 
+	public String removeReportId(String oriName){
+		return replaceReportIdWith(oriName, "");
+	}
+	public String replaceReportIdWith(String oriName, String replaceWith){
+		String CR_FilenamePattern = "(CR\\-)[A-Z0-9]{6}([\\.\\-])";
+		String newName = oriName.replaceAll(CR_FilenamePattern, "$1"+replaceWith+"$2");
+		return newName;
+	}
 	/**
 	 * 1. Verify that the ZIP file has a PDF for report and 1 PDF for each view
 	 * added in the Report. 2. Verify expected content in the PDF report. 3.
