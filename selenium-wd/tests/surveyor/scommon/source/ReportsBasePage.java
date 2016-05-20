@@ -2039,8 +2039,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage) {
-		ImagingUtility imageUtil = new ImagingUtility();
-		ImageComparisonResult result = imageUtil.compareImages(pathToActualImage, pathToBaseImage);
+		ImageComparisonResult result = ImagingUtility.compareImages(pathToActualImage, pathToBaseImage);
 		if ((result.getFailureMessage() != null) && (result.isEqual() == true)) {
 			return false;
 		}
