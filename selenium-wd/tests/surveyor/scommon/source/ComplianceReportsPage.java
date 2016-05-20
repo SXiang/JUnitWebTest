@@ -60,6 +60,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -89,6 +90,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -112,6 +114,7 @@ import common.source.WebElementExtender;
 import common.source.ZipUtility;
 import sun.misc.BASE64Decoder;
 import surveyor.dataaccess.source.BaseMapType;
+import surveyor.dataaccess.source.DBCache;
 import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ReportView;
 import surveyor.dataaccess.source.ResourceKeys;
@@ -252,6 +255,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(how = How.ID, using = "zip-file_reportmeta")
 	protected WebElement zipMeta;
 
+	@FindBy(how = How.ID, using = "modalClose")
+	protected WebElement modalClose;
+	
+    @FindBy(css = "#ImageList > li.dynamic a[href*='DownloadReportView'")
+    protected List<WebElement> pdfViews;
+    
 	@FindBy(name = "rdAreaMode")
 	private List<WebElement> areaBoundaryRadioButtons;
 
@@ -593,6 +602,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				for (WebElement option : options) {
 					if ((viewList.get(i).get(KEYBASEMAP)).equalsIgnoreCase(option.getText().trim())) {
 						option.click();
+						break;
 					}
 				}
 			}
@@ -625,6 +635,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return WebElementExtender.isElementPresentAndDisplayed(pdfImg);
 	}
 
+	public void clickOnCloseReportViewer() {
+		jsClick(modalClose);
+	}
+	
+	public void clickViewThumbnailImageByIndex(int viewIdx){
+		jsClick(pdfViews.get(viewIdx-1));
+	}
+	
+	public WebElement getViewThumbnailImageByIndex(int viewIdx){
+		return pdfViews.get(viewIdx-1);
+	}	
+	
 	public void clickOnShapeZIPInReportViewer() {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click();", zipShape);
@@ -721,7 +743,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				try {
 					Path shapeUnzipFolder = Paths.get(testSetup.getDownloadPath(), zipFileName);
 					checkAndGenerateBaselineShapeFiles(shapeUnzipFolder.toString(), testCaseID);
-				} catch (Exception e) {
+				}catch(Exception e){
 					Log.error(e.toString());
 					return false;
 				}
@@ -743,7 +765,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public String getReportPDFZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
 		String reportName = "CR-" + getReportName(rptTitle);
-		reportName = zipIndex == 0 ? reportName : reportName + " (" + zipIndex + ")";
+		reportName = getZipFileNameWithIndex(reportName, zipIndex);
 		if (includeExtension) {
 			reportName += ".zip";
 		}
@@ -756,7 +778,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public String getReportMetaZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
 		String reportName = "CR-" + getReportName(rptTitle);
-		reportName = zipIndex == 0 ? reportName : reportName + " (" + zipIndex + ")";
+		reportName = getZipFileNameWithIndex(reportName, zipIndex);
 		if (includeExtension) {
 			reportName += ".zip";
 		}
@@ -769,7 +791,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public String getReportShapeZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
 		String reportName = "CR-" + getReportName(rptTitle);
-		reportName = zipIndex == 0 ? reportName : reportName + " (" + zipIndex + ")";
+		reportName = getZipFileNameWithIndex(reportName, zipIndex);
 		if (includeExtension) {
 			reportName += ".zip";
 		}
@@ -803,8 +825,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		return isGenerateBaselineShapeFiles;
 	}
-
-	public void checkAndGenerateBaselineSSRSImage(String reportName, String testCaseID) throws Exception {
+	
+	public boolean checkAndGenerateBaselineSSRSImage(String reportName, String testCaseID) throws Exception {
 		boolean isGenerateBaselineSSRSImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
 		if (isGenerateBaselineSSRSImages) {
 			String htmlReportName = reportName + ".html";
@@ -827,9 +849,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				}
 			}
 		}
+		return isGenerateBaselineSSRSImages;
 	}
-
-	public void checkAndGenerateBaselineViewImages(String unzipFolder, String testCaseID) throws Exception {
+	
+	public boolean checkAndGenerateBaselineViewImages(String unzipFolder, String testCaseID) throws Exception {
 		PDFUtility pdfUtility = new PDFUtility();
 		boolean isGenerateBaselineViewImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
 		if (isGenerateBaselineViewImages) {
@@ -862,6 +885,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				}
 			}
 		}
+		return isGenerateBaselineViewImages;
 	}
 
 	protected void generateBaselinePerfFiles(String testCaseID, String reportId, String startTime, String endTime,
@@ -955,7 +979,39 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		WebElement rptTitleCell;
 		WebElement createdByCell;
 		WebElement buttonImg;
-
+		boolean removeDBCache = false;
+		switch (buttonType) {
+		case Delete:
+			buttonXPath = "td[5]/a[1]";
+			break;
+		case Copy:
+			buttonXPath = "td[5]/a[@title='Copy']";
+			removeDBCache = true;
+			break;
+		case ReportViewer:
+			buttonXPath = "td[5]/a[3]";
+			break;
+		case Investigate:
+			buttonXPath = "td[5]/a[4]";
+			break;
+		case Resubmit:
+			buttonXPath = "td[5]/a[@title='Resubmit']";
+			removeDBCache = true;
+			break;
+		case InProgressCopy: // NOTE: When report is in-progress, Copy is the 1st button.
+			buttonXPath = "td[5]/a[@title='Copy']";
+			break;
+		case Cancel: // NOTE: When cancel button is visible it is the 2nd button.
+			buttonXPath = "td[5]/a[@title='Cancel Report']";
+			break;
+		case ReportErrorLabel: // 'Error Processing' label on report
+			// cancelled or report error.
+            buttonXPath = "td[5]/span";
+            break;
+		default:
+			throw new Exception("ButtonType NOT supported.");
+		}
+		
 		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 		int rowSize = rows.size();
@@ -980,37 +1036,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
 					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				try {
-					switch (buttonType) {
-					case Delete:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]";
-						break;
-					case Copy:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]";
-						break;
-					case ReportViewer:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]";
-						break;
-					case Investigate:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[4]";
-						break;
-					case Resubmit:
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[5]";
-						break;
-					case InProgressCopy: // NOTE: When report is in-progress, Copy is the 1st button.
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]";
-						break;
-					case Cancel: // NOTE: When cancel button is visible it is the 2nd button.
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]";
-						break;
-					case ReportErrorLabel: // 'Error Processing' label on report cancelled or report error.
-						buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/span";
-						break;
-					default:
-						throw new Exception("ButtonType NOT supported.");
-					}
+                    buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/"+ buttonXPath;
 					buttonImg = getTable().findElement(By.xpath(buttonXPath));
-					String srcButtonImg = pdfImg.getAttribute("src");
-
 					if (buttonImg.isDisplayed()) {
 						if (clickButton) {
 							if (buttonType != ComplianceReportButtonType.ReportErrorLabel) {
@@ -1029,6 +1056,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 										this.waitForConfirmDeletePopupToClose();
 									}
 								}
+								
+								if(removeDBCache){
+									   DBCache.INSTANCE.remove(Report.CACHE_KEY+rptTitle);
+									}
 							}
 						}
 						return true;
@@ -1553,7 +1584,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void selectCustomerBoundaryRadioButton() {
-		this.areaBoundaryRadioButtons.get(CUSTOMER_BOUNDARY_RADBUTTON_GROUP_IDX).click();
+		jsClick(this.areaBoundaryRadioButtons.get(CUSTOMER_BOUNDARY_RADBUTTON_GROUP_IDX));
 	}
 
 	@Override
@@ -1875,7 +1906,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return verifyCoverageForecastValuesTable(actualPath, reportTitle, true);
 	}
 
-	public boolean verifyCoverageForecastValuesTable(String actualPath, String reportTitle, boolean withPredication)
+	public boolean verifyCoverageForecastValuesTable(String actualPath, String reportTitle, boolean withPrediction)
 			throws IOException {
 		Log.info("Verifying Coverage Forecast Values Table");
 		PDFTableUtility pdfTableUtility = new PDFTableUtility();
@@ -1889,48 +1920,45 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				PDFTable.COVERAGEFORECASTTO70);
 		preCoverageForecast = coverageForecast;
 		preCoverageForecastTo70 = coverageForecastTo70;
-		if (!withPredication && !coverageForecastTo70.isEmpty()) {
+		if (!withPrediction && !coverageForecastTo70.isEmpty()) {
 			return false;
 		}
-		return verifyCoverageForecastValuesTableWithDBData(reportId, coverageForecast, coverageForecastTo70);
+	    return verifyCoverageForecastValuesTableWithDBData(reportId, coverageForecast, coverageForecastTo70, withPrediction);
 	}
-
-	private boolean verifyCoverageForecastValuesTableWithDBData(String reportId, List<String[]> coverageForecast,
-			List<String[]> coverageForecastTo70) {
+	private boolean verifyCoverageForecastValuesTableWithDBData(String reportId, List<String[]> coverageForecast, List<String[]> coverageForecastTo70, boolean withPrediction){
 		int startIndex = 0;
 		StoredProcComplianceGetCoverageForecast coverageForecastObj = new StoredProcComplianceGetCoverageForecast();
-		String[] row = coverageForecast.get(startIndex);
-		String precentageWithLisa = row[0].replaceFirst(ComplianceReportSSRS_PercentServiceCoverageWithLISAs, "")
-				.trim();
-		String precentageWithoutLisa = row[1].replaceFirst(ComplianceReportSSRS_PercentServiceCoverageWithoutLISAs, "")
-				.trim();
+		String[] row = null;
+		if(!coverageForecast.isEmpty()){
+      		row = coverageForecast.get(startIndex);
+      		String precentageWithLisa = row[0].replaceFirst(ComplianceReportSSRS_PercentServiceCoverageWithLISAs,"").trim();
+      		String precentageWithoutLisa = row[1].replaceFirst(ComplianceReportSSRS_PercentServiceCoverageWithoutLISAs,"").trim();
+      		coverageForecastObj.setPercentageWithLisa(precentageWithLisa);		
+      		coverageForecastObj.setPercentageWithoutLisa(precentageWithoutLisa);
+		}
+		if(!coverageForecastTo70.isEmpty()){
+			startIndex = 1;
+			row = coverageForecastTo70.get(startIndex++);
+			String precentageAdditional0 = row[1].replaceFirst(ComplianceReportSSRS_ProbabilitytoObtain70Coverage,"").trim();
+			row = coverageForecastTo70.get(startIndex++);
+			String precentageAdditional1 = row[1].replaceFirst(ComplianceReportSSRS_ProbabilitytoObtain70Coverage,"").trim();
+			row = coverageForecastTo70.get(startIndex);
+			String precentageAdditional2 = row[1].replaceFirst(ComplianceReportSSRS_ProbabilitytoObtain70Coverage,"").trim();
 
-		startIndex = 1;
-		row = coverageForecastTo70.get(startIndex++);
-		String precentageAdditional0 = row[1].replaceFirst(ComplianceReportSSRS_ProbabilitytoObtain70Coverage, "")
-				.trim();
-		row = coverageForecastTo70.get(startIndex++);
-		String precentageAdditional1 = row[1].replaceFirst(ComplianceReportSSRS_ProbabilitytoObtain70Coverage, "")
-				.trim();
-		row = coverageForecastTo70.get(startIndex);
-		String precentageAdditional2 = row[1].replaceFirst(ComplianceReportSSRS_ProbabilitytoObtain70Coverage, "")
-				.trim();
-
-		coverageForecastObj.setPercentageWithLisa(precentageWithLisa);
-		coverageForecastObj.setPercentageWithoutLisa(precentageWithoutLisa);
-		coverageForecastObj.setCoverageProbability0(precentageAdditional0);
-		coverageForecastObj.setCoverageProbability1(precentageAdditional1);
-		coverageForecastObj.setCoverageProbability2(precentageAdditional2);
-
+			coverageForecastObj.setCoverageProbability0(precentageAdditional0);
+			coverageForecastObj.setCoverageProbability1(precentageAdditional1);
+			coverageForecastObj.setCoverageProbability2(precentageAdditional2);
+	}
 		StoredProcComplianceGetCoverageForecast storedForecastObj = StoredProcComplianceGetCoverageForecast
 				.getCoverage(reportId);
 
-		if (!storedForecastObj.isCoverageValuesEquals(coverageForecastObj)) {
+
+		if (!storedForecastObj.isCoverageValuesEquals(coverageForecastObj, withPrediction)) {
 			Log.info("Coverage Values data verification failed");
 			return false;
 		}
 		Log.info("Coverage Forecast Values data verification passed");
-		if (!storedForecastObj.isCoverageValuesFormated(coverageForecastObj)) {
+		if (!storedForecastObj.isCoverageValuesFormated(coverageForecastObj, withPrediction)) {
 			return false;
 		}
 		return true;
@@ -2365,8 +2393,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		CSVUtility csvUtility = new CSVUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String pathToMetaDataUnZip = actualPath + "//CR-" + reportId.substring(0, 6) + " (1)";
-		String pathToCsv = pathToMetaDataUnZip + "//" + "CR-" + reportId.substring(0, 6) + "-ReportSurvey.csv";
+		String pathToMetaDataUnZip = actualPath;
+		String unZipFolder = "\\CR-" + reportId.substring(0, 6) + " (1)";
+		if(!actualPath.endsWith(unZipFolder))
+			pathToMetaDataUnZip += unZipFolder;
+		String pathToCsv = pathToMetaDataUnZip + "\\" + "CR-" + reportId.substring(0, 6) + "-ReportSurvey.csv";
 		String reportName = "CR-" + reportId;
 		setReportName(reportName);
 		List<HashMap<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
@@ -2409,8 +2440,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		CSVUtility csvUtility = new CSVUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String pathToMetaDataUnZip = testSetup.getDownloadPath() + "//CR-" + reportId.substring(0, 6) + " (1)";
-		String pathToCsv = pathToMetaDataUnZip + "//" + "CR-" + reportId.substring(0, 6) + "-ReportIsotopic.csv";
+		String pathToMetaDataUnZip = actualPath;
+		String unZipFolder = "\\CR-" + reportId.substring(0, 6) + " (1)";
+		if(!actualPath.endsWith(unZipFolder))
+			pathToMetaDataUnZip += unZipFolder;
+		
+		String pathToCsv = pathToMetaDataUnZip + "//" + "CR-" + reportId.substring(0, 6) + "-ReportIsotopicCapture.csv";
 		String reportName = "CR-" + reportId;
 		setReportName(reportName);
 		List<HashMap<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
@@ -2512,8 +2547,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId)
 			throws FileNotFoundException, IOException {
 		CSVUtility csvUtility = new CSVUtility();
-		String pathToMetaDataUnZip = actualPath + "//CR-" + reportId.substring(0, 6) + " (1)";
-		String pathToCsv = pathToMetaDataUnZip + "//" + "CR-" + reportId.substring(0, 6) + "-ReportLISAS.csv";
+		String pathToMetaDataUnZip = actualPath;
+		String unZipFolder = "\\CR-" + reportId.substring(0, 6) + " (1)";
+		if(!actualPath.endsWith(unZipFolder))
+			pathToMetaDataUnZip += unZipFolder;
+		
+		String pathToCsv = pathToMetaDataUnZip + "\\" + "CR-" + reportId.substring(0, 6) + "-ReportLISAS.csv";
 		String reportName = "CR-" + reportId;
 
 		if (actualPath.endsWith("-ReportLISAS.csv")) {
@@ -2548,11 +2587,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			// indication
 			String ethaneMethaneRatioUncertainty = csvRow.get("EthaneMethaneRatioUncertainty").trim();
 			reportIndObj.setAggregatedEthaneToMethaneRatio(ethaneMethaneRatioUncertainty);
-
-			// covert csv float to db string ">=num%"
-			int aggregatedClassificationconfidenceFloat = (int) (Float
-					.parseFloat(csvRow.get("ConfidenceInDisposition").trim()) * 100);
-			String aggregatedClassificationconfidence = aggregatedClassificationconfidenceFloat + "%";
+			String aggregatedClassificationconfidence = "N/A";
+			try{
+			    int aggregatedClassificationconfidenceFloat = (int) (Float.parseFloat(csvRow.get("ConfidenceInDisposition").trim()) * 100);
+			    aggregatedClassificationconfidence = aggregatedClassificationconfidenceFloat + "%";
+			}catch(Exception e){
+				Log.warn(e.toString());
+			}
 			reportIndObj.setAggregatedClassificationConfidence(aggregatedClassificationconfidence);
 			reportList.add(reportIndObj);
 		}
@@ -3106,21 +3147,27 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @return
 	 * @throws IOException
 	 */
-
-	public boolean verifyViewsImages(String actualPath, String reportTitle, String testCase, String viewName)
-			throws IOException {
+	public boolean verifyViewsImages(String actualPath, String reportTitle, String testCase, String viewName) throws IOException{
+		return verifyViewsImages(actualPath, reportTitle,testCase, viewName, true);
+	}
+	public boolean verifyViewsImages(String actualPath, String reportTitle, String testCase, String viewName, boolean inZipFolder) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String actualReport = actualPath + File.separator + "CR-" + reportId.substring(0, 6) + File.separator
-				+ reportTitle.replaceAll("\\s+", "") + "_" + viewName + ".pdf";
+		String actualReport = actualPath + File.separator;
+		if(inZipFolder)	{	
+			actualReport +=	 "CR-" + reportId.substring(0, 6) + File.separator + reportTitle.replaceAll("\\s+", "") + "_" + viewName + ".pdf";
+		}else{
+		    actualReport +=  "CR-" + reportId.substring(0, 6) + "_" + viewName + ".pdf";
+		}
 		String reportName = "CR-" + reportId;
 		setReportName(reportName);
 		String imageExtractFolder = pdfUtility.extractPDFImages(actualReport, testCase);
 		File folder = new File(imageExtractFolder);
 		File[] listOfFiles = folder.listFiles();
+
 		for (File file : listOfFiles) {
-			if (file.isFile() && file.getName().contains("View")) {
+			if (file.isFile() && (file.getName().contains("View"))) {
 				BufferedImage image = ImageIO.read(file);
 				int width = image.getWidth();
 				int height = image.getHeight();
@@ -3130,10 +3177,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						+ ".png";
 				File outputfile = new File(actualViewPath);
 				ImageIO.write(image, "png", outputfile);
-				String baseViewFile = Paths
-						.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images")
-						.toString() + File.separator + testCase + File.separator + "View"
-						+ new NumberUtility().getOrdinalNumber(file.getName()) + ".png";
+				String baseViewFile = "";
+				if(inZipFolder){
+					baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + "View" + new NumberUtility().getOrdinalNumber(file.getName()) + ".png";
+				}else{
+					baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + viewName + ".png";
+				}				
+				
 				if (!verifyActualImageWithBase(baseViewFile, actualViewPath)) {
 					Files.delete(Paths.get(actualViewPath));
 					return false;
@@ -3299,7 +3349,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void waitForMetadataZIPFileDownload(String reportName, int zipIndex) {
-		reportName = zipIndex == 0 ? reportName : reportName + " (" + zipIndex + ")";
+		reportName = getZipFileNameWithIndex(reportName, zipIndex);
 		waitForFileDownload(reportName + ".zip", testSetup.getDownloadPath());
 	}
 
@@ -3312,7 +3362,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void waitForReportZIPFileDownload(String reportName, int zipIndex) {
-		reportName = zipIndex == 0 ? reportName : reportName + " (" + zipIndex + ")";
+		reportName = getZipFileNameWithIndex(reportName, zipIndex);
 		waitForFileDownload(reportName + ".zip", testSetup.getDownloadPath());
 	}
 
@@ -3321,10 +3371,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void waitForShapeZIPFileDownload(String reportName, int zipIndex) {
-		reportName = zipIndex == 0 ? reportName : reportName + " (" + zipIndex + ")";
+		reportName = getZipFileNameWithIndex(reportName, zipIndex);
 		waitForFileDownload(reportName + ".zip", testSetup.getDownloadPath());
 	}
 
+	private String getZipFileNameWithIndex(String name, int zipIndex){
+		return zipIndex==0?name:name+" ("+zipIndex+")";
+	}
 	public void waitForShapeZipFileDownload() {
 		try {
 			throw new Exception("Not implemented");

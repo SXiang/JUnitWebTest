@@ -122,21 +122,14 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return false;
 	}
 
-	private boolean clickComplianceViewerViewByIndex(String data, Integer dataRowID) throws Exception {
+	private boolean clickComplianceViewerViewByIndex(String data, Integer dataRowID) throws Exception {		
 		ActionArguments.verifyNotNullOrEmpty(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, data);
 		Integer viewIdx = NumberUtility.getIntegerValueOf(data);
-		ActionArguments.verifyGreaterThanZero(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, viewIdx);
-		
-		// Find the view image to click. Order of the images is the order returned by API. 
-		String viewID = getViewThumbnailImageId(viewIdx);
-		
-		// Click on the view image.
-		if (!viewID.equals("")) {
-			clickById(viewID, dataRowID);
-		}
+		ActionArguments.verifyGreaterThanZero(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, viewIdx);		
+		this.getComplianceReportsPage().clickViewThumbnailImageByIndex(viewIdx);
 		return true;
 	}
-
+	
 	private List<ReportsSurveyInfo> buildReportSurveyInfoList(ComplianceReportsDataRow dataRow, ExcelUtility excelUtility) throws Exception {
 		List<Integer> reportSurveyRowIDs = ActionArguments.getNumericList(dataRow.reportSurveyRowIDs);
 		List<ReportsSurveyInfo> reportsSurveyInfoList = getReportSurveyInfoList(excelUtility, reportSurveyRowIDs);
@@ -226,7 +219,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		String showBreadcrumb = reportViewsDataRow.breadcrumbs.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showIndications = reportViewsDataRow.indications.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showIsotopicCapture = reportViewsDataRow.isotopicCapture.equalsIgnoreCase("TRUE") ? "1" : "0";
-		String showAnnotation = reportViewsDataRow.annotation.equalsIgnoreCase("TRUE") ? "1" : "0";
+		String showAnnotation = reportViewsDataRow.fieldNotes.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showGaps = reportViewsDataRow.gaps.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showAssets = reportViewsDataRow.assets.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showBoundaries = reportViewsDataRow.boundaries.equalsIgnoreCase("TRUE") ? "1" : "0";
@@ -295,7 +288,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
 
 	public ReportsCompliance fillWorkingDataForReports(Integer dataRowID) throws Exception {
-		Log.info("");
 		workingDataRow = getDataReader().getDataRow(dataRowID);
 	
 		String rptTitle = workingDataRow.title; 
@@ -385,21 +377,21 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return viewNamesList;
 	}
 
-	private String getViewThumbnailImageId(Integer viewIdx) {
-		ReportJobsStat reportJobStat = this.getComplianceReportsPage().getReportJobStat(workingDataRow.title);
-		String viewID = "";
-		List<ReportJob> reportJobs = reportJobStat.ReportJobs;
-		for (ReportJob reportJob : reportJobs) {
-			if (reportJob.ReportJobType.equals(ReportJobType.Map.toString())) {
-				viewIdx--;
-				if (viewIdx == 0) {
-					viewID = reportJob.ReportJobId;
-					break;
-				}
-			} 
-		}
-		return viewID;
-	}
+//	private String getViewThumbnailImageId(Integer viewIdx) {
+//		String viewID = "";		
+//			ReportJobsStat reportJobStat = this.getComplianceReportsPage().getReportJobStat(workingDataRow.title);		
+//			List<ReportJob> reportJobs = reportJobStat.ReportJobs;
+//			for (ReportJob reportJob : reportJobs) {
+//				if (reportJob.ReportJobType.equals(ReportJobType.Map.toString())) {
+//					viewIdx--;
+//					if (viewIdx == 0) {
+//						viewID = reportJob.ReportJobId;
+//						break;
+//					}
+//				} 
+//			}
+//		return viewID;
+//	}
 	
 	private String getDownloadPath(ReportFileType fileType) {
 		String fileName = "";
@@ -2262,10 +2254,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		Integer viewIdx = NumberUtility.getIntegerValueOf(data);
 		ActionArguments.verifyGreaterThanZero(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, viewIdx);
 		
-		openComplianceViewerDialog(dataRowID);
-		
+		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
 		// Find the view image to click. Order of the images is the order returned by API. 
-		WebElement viewElement = getElementById(getViewThumbnailImageId(viewIdx));
+		WebElement viewElement = this.getComplianceReportsPage().getViewThumbnailImageByIndex(viewIdx);
 		return viewElement.isDisplayed();
 	}
 
@@ -2430,6 +2421,12 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return clickComplianceViewerViewByIndex(data, dataRowID);
 	}
 
+	public boolean clickOnCloseReportViewer(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.clickOnCloseReportViewer", data, dataRowID);
+		this.getComplianceReportsPage().clickOnCloseReportViewer();
+		return true;
+	}
+	
 	/**
 	 * Executes clickNoOnChangeReportDialog action.
 	 * @param data - specifies the input data passed to the action.
@@ -3022,11 +3019,12 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 
 		// for each view in the test case verify that the view image is present.
 		List<Integer> viewRowIDs = ActionArguments.getNumericList(complianceReportsDataRow.reportViewRowIDs);
+		boolean inZipFolder = data.equalsIgnoreCase("false")?false:true;
 		for (Integer viewRowID : viewRowIDs) {
 			ReportViewsDataReader viewsDataReader = new ReportViewsDataReader(this.excelUtility);
 			ReportViewsDataRow viewsDataRow = viewsDataReader.getDataRow(viewRowID);
 			retVal = retVal && this.getComplianceReportsPage().verifyViewsImages(TestContext.INSTANCE.getTestSetup().getDownloadPath(), 
-					complianceReportsDataRow.title, complianceReportsDataRow.tCID, viewsDataRow.name);
+					complianceReportsDataRow.title, complianceReportsDataRow.tCID, viewsDataRow.name, inZipFolder);
 		}
 		return retVal;
 	}
@@ -3404,6 +3402,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("clickOnComplianceViewerPDFZIP")) { return this.clickOnComplianceViewerPDFZIP(data, dataRowID); }
 		else if (actionName.equals("clickOnComplianceViewerShapeZIP")) { return this.clickOnComplianceViewerShapeZIP(data, dataRowID); }
 		else if (actionName.equals("clickOnComplianceViewerViewByIndex")) { return this.clickOnComplianceViewerViewByIndex(data, dataRowID); }
+		else if (actionName.equals("clickOnCloseReportViewer")) { return this.clickOnCloseReportViewer(data, dataRowID); }
 		else if (actionName.equals("clickOnConfirmDeleteReport")) { return this.clickOnConfirmDeleteReport(data, dataRowID); }
 		else if (actionName.equals("clickOnCopyButton")) { return this.clickOnCopyButton(data, dataRowID); }
 		else if (actionName.equals("clickOnDeleteButton")) { return this.clickOnDeleteButton(data, dataRowID); }
