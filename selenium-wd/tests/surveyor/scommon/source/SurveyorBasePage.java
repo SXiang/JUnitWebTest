@@ -3,7 +3,9 @@
  */
 package surveyor.scommon.source;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -25,6 +27,7 @@ import common.source.Log;
 import common.source.RegexUtility;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
+import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.SurveyorConstants.TopNavMenuItem;
 import surveyor.scommon.source.SurveyorConstants.UserTimezone;
 
@@ -358,7 +361,8 @@ public class SurveyorBasePage extends BasePage {
 		}
 		return records;
 	}
-
+	
+	
 	private WebElement getTableHeader(Integer columnIndex) {
 		WebElement headerElement = driver.findElement(By.xpath(String.format(headerColumnBaseXPath, columnIndex)));
 		return headerElement;
@@ -391,6 +395,27 @@ public class SurveyorBasePage extends BasePage {
 			multiClickElement(headerElement, 1);
 		}
 		
+	}
+	
+	public boolean checkTableSort(String datatTableElement, HashMap<String, TableColumnType> columnHeadings, String str, List<WebElement> paginationOption){
+		By tableContextBy = By.id(datatTableElement);
+		WebElement tableContext = driver.findElement(tableContextBy);
+		DataTablePage dataTable = DataTablePage.getDataTablePage(driver, tableContext, this.testSetup, this.strBaseURL, this.strPageURL);
+		List<WebElement> headings=tableContext.findElements(By.cssSelector("thead > tr > th"));
+		for(WebElement tableHeadingElement:headings){
+			for (Entry<String, TableColumnType> entry : (columnHeadings.entrySet())) {
+				if(tableHeadingElement.getText().trim().equalsIgnoreCase(entry.getKey().trim())){
+					tableHeadingElement.click();
+					if(tableHeadingElement.getAttribute("aria-sort").equals("ascending")){
+						return dataTable.isTableSortedAsc(columnHeadings,str,paginationOption,tableContext);
+					}
+					if(tableHeadingElement.getAttribute("aria-sort").equals("descending")){
+						return dataTable.isTableSortedDesc(columnHeadings,str,paginationOption,tableContext);
+					}
+				}
+			}			
+		}
+		return true;
 	}
 
 	private TableSortOrder getCurrentColumnSortOrder(WebElement headerElement, Integer columnIndex) {

@@ -12,6 +12,7 @@ import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -108,7 +109,6 @@ public class SurveyViewPage extends BaseMapViewPage {
     private WebElement termsOfUse;
     
     @FindBy(id = "bottom_logo")
-    @CacheLookup
     private WebElement logo;
     
     @FindBy(how = How.XPATH, using = SURVEY_INFO_TAG_LABEL_XPATH)
@@ -400,8 +400,9 @@ public class SurveyViewPage extends BaseMapViewPage {
 		return driver.findElement(By.xpath(SURVEY_INFO_ANALYZER_LABEL_XPATH)).getText();
 	}
 
-	public WebElement getLogo() {
-		return logo;
+	public void clickLogo() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", logo);
 	}
 
 	/**

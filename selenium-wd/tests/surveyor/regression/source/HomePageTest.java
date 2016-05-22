@@ -18,6 +18,7 @@ import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.FleetMapPage;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.MeasurementSessionsPage;
+import surveyor.scommon.source.MeasurementSessionsPage.DrivingSurveyButtonType;
 import surveyor.scommon.source.PreferencesPage;
 import surveyor.scommon.source.SurveyViewPage;
 import surveyor.scommon.source.SurveyorBaseTest;
@@ -268,12 +269,19 @@ public class HomePageTest extends SurveyorBaseTest {
 		homePage.waitForPageLoad();
 		homePage.getFirstSurvey().click();
 		surveyViewPage.waitForPageLoad();
+		surveyViewPage.waitForAJAXCallsToComplete();
 		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());
-		surveyViewPage.getLogo().click();
+		surveyViewPage.clickLogo();
 		homePage.waitForPageLoad();
 		assertTrue(homePage.checkIfAtHomePage());
 		homePage.getLinkDrivingSurveys().click();
 		measurementSessionsPage.waitForPageLoad();
-		
+		try {
+			measurementSessionsPage.actionOnDrivingSurvey("stnd-pic", "Administrator", "Software Car", "FDDS2038", DrivingSurveyButtonType.ViewSurvey);
+		} catch (Exception e) {
+			Log.error(e.toString());
+		}
+		surveyViewPage.waitForPageLoad();
+		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());
 	}
 }

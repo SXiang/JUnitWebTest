@@ -22,6 +22,7 @@ import common.source.Log;
 import common.source.RegexUtility;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
+import common.source.SortHelper;
 
 public class DataTablePage extends BasePage {
 
@@ -37,7 +38,6 @@ public class DataTablePage extends BasePage {
 	private List<WebElement> tableRow;
 	@FindBy(css = ".table.dataTable > thead > tr > th")
 	private List<WebElement> tableHeader;
-
 	@FindBy(css = ".paginate_button.next")
 	private WebElement nextButton;
 	@FindBy(css = ".paginate_button.previous")
@@ -48,6 +48,22 @@ public class DataTablePage extends BasePage {
 	private WebElement firstButton;
 	@FindBy(css = ".paginate_button.current")
 	private WebElement currentButton;
+
+	@FindBy(xpath = "//*[@id='datatable']/thead/tr")
+	private WebElement columnSort;
+
+	public enum TableColumnType {
+		Number("Number"), String("String"), Date("Date");
+		private final String name;
+
+		TableColumnType(String nm) {
+			name = nm;
+		}
+
+		public String toString() {
+			return this.name;
+		}
+	}
 
 	private DataTablePage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
 		super(driver, testSetup, strBaseURL, strPageURL);
@@ -86,38 +102,45 @@ public class DataTablePage extends BasePage {
 	 *            - conditions for matching a row, columnName:value pairs
 	 * @return true if found
 	 */
-	public boolean hasRecord(Map<String,List<String>> filter){
-    	return hasRecord(filter,true);
-    }
-	public boolean hasRecord(Map<String,List<String>> filter, boolean match){
-    	return findRecords(filter,1,match) > 0;
-    }
+	public boolean hasRecord(Map<String, List<String>> filter) {
+		return hasRecord(filter, true);
+	}
+
+	public boolean hasRecord(Map<String, List<String>> filter, boolean match) {
+		return findRecords(filter, 1, match) > 0;
+	}
 
 	/**
-     * Get all records for specified column in this data table, page by page
-	 * @param columnName - name of the column to get values for.
-     * @param numRecords - the max number of records to be matched, search for all if it's -1
+	 * Get all records for specified column in this data table, page by page
+	 * 
+	 * @param columnName
+	 *            - name of the column to get values for.
+	 * @param numRecords
+	 *            - the max number of records to be matched, search for all if it's -1
 	 * @return all the records in the specified column in the table.
 	 */
-    public List<String> getRecords(String columnName, Integer numRecords){
-		setPagination(pagination);
-		waitForTableToLoad();
-		
+	public List<String> getRecords(String columnName, Integer numRecords, String str, List<WebElement> paginationOption, WebElement dataTable) {
+		setPaginationWaitForTableLoad(str,paginationOption,dataTable);
+
 		int colIdx = getColumnIndex(columnName);
 		List<String> columnValues = new ArrayList<String>();
 		int numFound = 0;
-		do{			
-			for(WebElement row: tableRow){
+		do {
+			for (WebElement row : tableRow) {
 				List<WebElement> field = row.findElements(By.cssSelector("td"));
 				columnValues.add(field.get(colIdx).getText());
-            	numFound++;
-				if(numRecords>-1 && numFound >= numRecords){
+				numFound++;
+				if (numRecords > -1 && numFound >= numRecords) {
 					break;
 				}
 			}
-		}while(toNextPage());		
-        return columnValues;
-   }
+		} while (toNextPage());
+		return columnValues;
+	}
+	
+	public List<String> getRecords(String columnName, Integer numRecords) {		
+		return getRecords(columnName,numRecords,pagination,paginationOption,dataTable);		
+	}
 
 	/**
 	 * Find records in this data table, page by page
@@ -144,8 +167,7 @@ public class DataTablePage extends BasePage {
 	}
 
 	public int findRecords(Map<String, List<String>> filter, int numRecords, boolean match) {
-		setPagination(pagination);
-		waitForTableToLoad();
+		setPaginationWaitForTableLoad();
 		Map<Integer, List<String>> indexedMap = new HashMap<Integer, List<String>>();
 		for (Entry<String, List<String>> entry : filter.entrySet()) {
 			indexedMap.put(getColumnIndex(entry.getKey().toString()), entry.getValue());
@@ -184,8 +206,7 @@ public class DataTablePage extends BasePage {
 	}
 
 	public WebElement getMatchingRowOptionalInput(Map<String, List<String>> filter) {
-		setPagination(pagination);
-		waitForTableToLoad();
+		setPaginationWaitForTableLoad();
 		Map<Integer, List<String>> indexedMap = new HashMap<Integer, List<String>>();
 		for (Entry<String, List<String>> entry : filter.entrySet()) {
 			indexedMap.put(getColumnIndex(entry.getKey().toString()), entry.getValue());
@@ -199,8 +220,8 @@ public class DataTablePage extends BasePage {
 		} while (toNextPage());
 		return null;
 	}
-	
-	//******************** Table Helpers ****************************
+
+	// ******************** Table Helpers ****************************
 	/**
 	 * To find matches by equals or matches
 	 * 
@@ -211,7 +232,7 @@ public class DataTablePage extends BasePage {
 	public boolean rowMatches(WebElement row, Map<Integer, List<String>> filter) {
 		List<WebElement> field = row.findElements(By.cssSelector("td"));
 		for (Entry<Integer, List<String>> entry : (filter.entrySet())) {
-			String value = field.get(entry.getKey()).getText();
+			String value = field.get(entry.getKey()).getText().trim();
 			List<String> expectedValues = entry.getValue();
 			boolean fieldMatches = false;
 			for (String expectedValue : expectedValues) {
@@ -245,11 +266,61 @@ public class DataTablePage extends BasePage {
 	}
 
 	/**
+	 * check whether data in table columns are sorted Ascending
+	 * 
+	 * @param cloumnMap
+	 * @return
+	 */
+	public boolean isTableSortedAsc(HashMap<String, TableColumnType> cloumnMap, String str, List<WebElement> paginationOption, WebElement dataTable) {
+		for (Entry<String, TableColumnType> entry : (cloumnMap.entrySet())) {
+			TableColumnType columnType = cloumnMap.get(entry.getKey().trim());
+			List<String> values = getRecords(entry.getKey().trim(), -1, str, paginationOption,dataTable );
+			if (columnType == TableColumnType.Date) {
+				if (!SortHelper.isDateSortedASC(values.stream().toArray(String[]::new))) {
+					return false;
+				}
+			}
+			if (columnType == TableColumnType.String || columnType == TableColumnType.Number) {
+				if (!SortHelper.isSortedASC(values.stream().toArray(String[]::new))) {
+					return false;
+				}
+			}
+
+		}
+		return true;
+	}
+
+	/**
+	 * check whether data in table columns are sorted Descending
+	 * 
+	 * @param cloumnMap
+	 * @return
+	 */
+	public boolean isTableSortedDesc(HashMap<String, TableColumnType> cloumnMap, String str, List<WebElement> paginationOption, WebElement dataTable) {
+		for (Entry<String, TableColumnType> entry : (cloumnMap.entrySet())) {
+			TableColumnType columnType = cloumnMap.get(entry.getKey().trim());			
+			List<String> values = getRecords(entry.getKey().trim(), -1, str, paginationOption,dataTable);
+			if (columnType == TableColumnType.Date) {
+				if (!SortHelper.isDateSortedDESC(values.stream().toArray(String[]::new))) {
+					return false;
+				}
+			}
+			if (columnType == TableColumnType.String || columnType == TableColumnType.Number) {
+				if (!SortHelper.isSortedDESC(values.stream().toArray(String[]::new))) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * Navigate to next page of this table
 	 * 
 	 * @return
 	 */
 	public boolean toNextPage() {
+		nextButton =driver.findElement(By.cssSelector(".paginate_button.previous"));
 		return toPage(nextButton);
 	}
 
@@ -261,15 +332,26 @@ public class DataTablePage extends BasePage {
 	 * @return true if button clicked
 	 */
 	public boolean toPage(WebElement pageNavButton) {
+		System.out.println("nav bar"+pageNavButton.getAttribute("class").toString());
 		if (!pageNavButton.getAttribute("class").contains("disabled")) {
 			pageNavButton.click();
+			System.out.println("Clicked next");
 			waitForTableToLoad();
 			return true;
 		} else {
 			return false;
 		}
 	}
-
+	
+	private void setPaginationWaitForTableLoad() {
+		setPaginationWaitForTableLoad(pagination,paginationOption,dataTable);
+		
+	}
+	
+	private void setPaginationWaitForTableLoad(String str, List<WebElement> paginationOption, WebElement dataTable) {
+		setPagination(str, paginationOption);
+		waitForTableToLoad(dataTable);
+	}
 	/**
 	 * Set pagination for this data table
 	 * 
@@ -277,17 +359,25 @@ public class DataTablePage extends BasePage {
 	 *            - the num string of the pagination option
 	 */
 	public void setPagination(String str) {
+		setPagination(str, paginationOption);		
+	}
+	
+	public void setPagination(String str, List<WebElement> paginationOption) {
 		for (WebElement option : paginationOption) {
 			if (str.equals(option.getText().trim())) {
 				option.click();
 			}
 		}
 	}
-
+	
 	/**
 	 * Wait for this data table to be loaded
 	 */
 	public void waitForTableToLoad() {
+		waitForTableToLoad(dataTable);		
+	}
+	
+	public void waitForTableToLoad(WebElement dataTable) {
 		waitForPageLoad();
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {

@@ -9,18 +9,29 @@ import org.junit.Ignore;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.DataGenerator;
+import surveyor.scommon.source.DataTablePage;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageUsersPage;
+import surveyor.scommon.source.SurveyorBasePage.TableSortOrder;
 import common.source.Log;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.DataTablePage.TableColumnType;
 
 import static surveyor.scommon.source.SurveyorConstants.*;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author zlu
@@ -31,6 +42,10 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageUsersPage manageUsersPage;
 	private static ManageLocationsPage manageLocationsPage;
+	public static final String Constant_Customer = Resources.getResource(ResourceKeys.Constant_Customer);
+	public static final String Constant_Status = Resources.getResource(ResourceKeys.Constant_Status);
+	protected String pagination = "100";
+
 
 	@BeforeClass
 	public static void setupManageCustomersPageTest() {
@@ -574,4 +589,28 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		assertFalse(manageCustomersPage.isAddCustomerBtnPresent());
 		assertFalse(manageCustomersPage.isEditBtnPresent());
 	}
+
+	/**
+	 * Test Case ID: TC132_ManageCustomer_SortColumns
+	 * Script:   	
+	 * - Sort records based on attributes present
+	 * Results: - 
+	 * - User is able to sort the list of records based on specified attribute
+	 */
+	@Test
+	public void TC132_ManageCustomer_SortColumns() {
+		Log.info("\nRunning TC132_ManageCustomer_SortColumns");
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		manageCustomersPage.open();
+		HashMap<String, TableColumnType> columnMap=new HashMap<String, TableColumnType>();
+		HashMap<String, TableColumnType> columnMap1=new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_Customer, TableColumnType.String);
+		assertTrue(manageCustomersPage.checkTableSort("datatable", columnMap, pagination,manageCustomersPage.getPaginationOption()));
+		columnMap1.put(Constant_Status, TableColumnType.String);
+		assertTrue(manageCustomersPage.checkTableSort("datatable", columnMap1, pagination,manageCustomersPage.getPaginationOption()));
+	}
+	
+
+
 }

@@ -3,7 +3,9 @@
  */
 package surveyor.scommon.source;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -17,6 +19,7 @@ import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.source.DataTablePage.TableColumnType;
 
 import static surveyor.scommon.source.SurveyorConstants.*;
 
@@ -76,6 +79,10 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	
 	@FindBy(id = "LicencedFeatureId-Report ShapeFile")
 	private WebElement inputReportShapeFile;
+	
+	@FindBy(css = ".dataTables_length> label>select> option")
+	private List<WebElement> paginationOption;
+
 	
 	/**
 	 * @param driver
@@ -483,6 +490,8 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		return null;
 	}
 	
+
+	
 	public WebElement getInputReportMetadata() {
 		return this.inputReportMetadata;
 	}
@@ -515,6 +524,11 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		return this.textAreaEula.getAttribute("value");
 	}
 	
+	public List<WebElement> getPaginationOption() {
+		return paginationOption;
+	}
+
+
 	public boolean changeCustomerAccountStatus (String customerName, boolean bEnabled) {
 		setPagination(PAGINATIONSETTING_100);
 		

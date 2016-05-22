@@ -99,6 +99,13 @@ public class ResourceKeys {
 	public static final String Constant_Surveyor = "Constant_Surveyor";
 	public static final String Constant_Surveyors = "Constant_Surveyors";
 	public static final String Constant_Status = "Constant_Status";
+	public static final String Constant_Customer = "Constant_Customer";	
+	public static final String Constant_UserName = "Constant_UserName";	
+	public static final String Constant_Location = "Constant_Location";	
+	public static final String Constant_Roles = "Constant_Roles";
+	public static final String Constant_Latitude = "Constant_Latitude";
+	public static final String Constant_Longitude = "Constant_Longitude";
+	
 	public static final String ReportSSRS_StartDateTime = "ReportSSRS_StartDateTime";
 	public static final String ReportSSRS_EndDateTime = "ReportSSRS_EndDateTime";
 	public static final String Constant_ShowingStartToEndOfTotalEntries = "Constant_ShowingStartToEndOfTotalEntries";
