@@ -1,6 +1,7 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
+import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG2;
 import common.source.Log;
 
 import org.junit.Assert;
@@ -8,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.Test;
+import org.openqa.selenium.support.PageFactory;
 
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
@@ -40,7 +42,8 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	private static ManageCustomerPageActions manageCustomerPageAction;
 
 	private static ComplianceReportsPage complianceReportsPage;
-
+	private static MeasurementSessionsPage measurementSessionsPage;
+	
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
@@ -59,8 +62,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		homePageAction = new HomePageActions(driver, baseURL, testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
-		MeasurementSessionsPage measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
-
+	
 		// To run the test locally in UnitTest mode uncomment this line.
 		//setTestRunMode(ReportTestRunMode.UnitTestRun);
 
@@ -100,10 +102,12 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
-	}
+		}
 
 	/**
 	 * Test Case ID: TC210_GenerateReportTryDeleteSurveyUsedWhileGeneratingReport
@@ -130,15 +134,23 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		//Driving Survey page actions are not yet implemented
-		//measurementSessionsPage.open();
-	}
+		complianceReportsPageAction.clickOnComplianceViewerCloseButton(EMPTY, getReportRowID(reportDataRowID1));
+		
+		measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
+		PageFactory.initElements(driver,  measurementSessionsPage);
+		measurementSessionsPage.open();
+		measurementSessionsPage.performSearch(PICADMNSTDTAG2);
+		measurementSessionsPage.clickOnFirstSurveyDeleteLink();
+		assertTrue(homePage.getReturnHomePage().isEnabled());
+		homePage.getReturnHomePage().click();
+	}	
 
 	/**
 	 * Test Case ID: TC227_S1ReportSurveyModeShouldNotPresentNewCopyComplianceReportScreens
@@ -386,7 +398,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Report generation action is canceled. Copy button is present next to canceled report
 	 *	- - Report should be generated successfully and user is able to download the PDFs
 	 */
-	@Test //need customer supervisor assets
+	@Test //Need customer supervisor assets  (Need to update test case with customer supervisor)
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1522, location = ComplianceReportDataProvider.class)
 	public void TC1522_CopyButtonPresentCanceledFailedComplianceReportCustomerSupervisorUser(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -402,12 +414,11 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		testEnvironmentAction.idleForSeconds(String.valueOf(5), NOTSET);
 		complianceReportsPageAction.clickOnOKButton(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID2));
-		complianceReportsPageAction.extractPDFZIP(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID2));
-		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(ComplianceReportsPageActions.workingDataRow.title, NOTSET));
-
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID2));
+		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID2));
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
 	}
 
 	/**
@@ -422,7 +433,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Report generation action is canceled. Copy button is present next to canceled report
 	 *	- - Report should be generated successfully and user is able to download the PDFs
 	 */
-	@Test //customer admin does not have asset and boundary
+	@Test //customer admin does not have asset and boundary  (Need to update test case to customer admin)
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1523, location = ComplianceReportDataProvider.class)
 	public void TC1523_CopyButtonPresentCanceledFailedComplianceReportCustomerAdminUser(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -439,12 +450,11 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		testEnvironmentAction.idleForSeconds(String.valueOf(5), NOTSET);
 		complianceReportsPageAction.clickOnOKButton(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractPDFZIP(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(ComplianceReportsPageActions.workingDataRow.title, NOTSET));
-
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
 	}
 
 	/**
@@ -463,7 +473,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Report mode is changed as specified by user and all surveys are deleted
 	 *	- - Report is generated successfully in Standard mode
 	 */
-	@Test  //customer supervisor does not have asset and boundary
+	@Test  //customer supervisor does not have asset and boundary (Need to update test case to customer supervisor)
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1524, location = ComplianceReportDataProvider.class)
 	public void TC1524_ChangeReportModeGenerateComplianceReportUsingCopyFunctionalityIn_ProgressReportCustomerSupervisorUser(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -473,17 +483,16 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.selectReportMode(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID2));
-		//assert
 		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID2));
-		complianceReportsPageAction.openComplianceViewerDialog(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID2));
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID2));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID2));
-		complianceReportsPageAction.extractPDFZIP(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID2));
-		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(ComplianceReportsPageActions.workingDataRow.title, NOTSET));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
 	}
 
 	/**
@@ -503,7 +512,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Report mode is changed as specified by user and all surveys are deleted
 	 *	- - Report is generated successfully in Standard mode
 	 */
-	@Test  //customer supervisor does not have asset and boundary
+	@Test  //customer supervisor does not have asset and boundary (Need to update test case)
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1525, location = ComplianceReportDataProvider.class)
 	public void TC1525_ChangeReportModeGenerateComplianceReportUsingCopyFunctionalityOfCanceledFailedReportCustomerSupervisorUser(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -519,11 +528,11 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.selectReportMode(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID2));
 		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID2));
-		complianceReportsPageAction.openComplianceViewerDialog(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID2));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID2));
-		complianceReportsPageAction.extractPDFZIP(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID2));
-		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(ComplianceReportsPageActions.workingDataRow.title, NOTSET));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID2));
+		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID2));
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
 	}
 
 	/**
@@ -552,16 +561,21 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractPDFZIP(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyShapeFilesHaveCorrectData(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1)));
-
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, NOTSET));
+		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyShapeFilesHaveCorrectData(EMPTY, NOTSET));
+		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyMetaDataFilesHaveCorrectData(EMPTY, NOTSET));
 	}
 
 	/**
@@ -763,15 +777,16 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractPDFZIP(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyShapeFilesHaveCorrectData(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1)));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyShapeFilesHaveCorrectData(EMPTY, NOTSET));
 	}
 
 	/**

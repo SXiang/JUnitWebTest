@@ -191,7 +191,10 @@ public class HomePage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='00000000-0000-0000-0001-000000000000']/a")
 	protected WebElement dropDownPST;
-
+	
+	@FindBy(how = How.XPATH, using = "//html/body/div/div[2]/div/div/div[3]/a[2]")
+	protected WebElement returnHomePage;
+	
 	/**
 	 * @param driver
 	 * @param baseURL
@@ -279,6 +282,9 @@ public class HomePage extends SurveyorBasePage {
 		return linkPreference;
 	}
 
+	public WebElement getReturnHomePage() {
+		return returnHomePage;
+	}
 	public boolean checkVisibilityForPicarroSUP(String loginUser) {
 		if (!this.picarroLogo.isDisplayed())
 			return false;

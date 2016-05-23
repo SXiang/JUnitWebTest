@@ -665,7 +665,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		}
 	}
-	
+
 	public void addNewReport(Reports reports) throws Exception {
 		addNewReport(reports, true /**/);
 	}
@@ -1153,7 +1153,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			String str = driver
 					.findElement(By
 							.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div[" + i + "]/label"))
-					.getText();
+							.getText();
 			if (str != columnName) {
 				result = true;
 			}
@@ -2485,19 +2485,19 @@ public class ReportsBasePage extends SurveyorBasePage {
 		switch (rmf) {
 		case Standard:
 			filtersFound = isAllSurveyModeShown() && isStandardSurveyModeShown() && isOperatorSurveyModeShown()
-					&& !isRapidResponseSurveyModeShown() && !isManualSurveyModeShown();
+			&& !isRapidResponseSurveyModeShown() && !isManualSurveyModeShown();
 			break;
 		case RapidResponse:
 			filtersFound = isAllSurveyModeShown() && isStandardSurveyModeShown() && isOperatorSurveyModeShown()
-					&& isRapidResponseSurveyModeShown() && !isManualSurveyModeShown();
+			&& isRapidResponseSurveyModeShown() && !isManualSurveyModeShown();
 			break;
 		case Manual:
 			filtersFound = isManualSurveyModeShown() && !isStandardSurveyModeShown() && !isOperatorSurveyModeShown()
-					&& !isAllSurveyModeShown() && !isRapidResponseSurveyModeShown();
+			&& !isAllSurveyModeShown() && !isRapidResponseSurveyModeShown();
 			break;
 		default:
 			filtersFound = isAllSurveyModeShown() && isStandardSurveyModeShown() && isOperatorSurveyModeShown()
-					&& !isRapidResponseSurveyModeShown() && !isManualSurveyModeShown();
+			&& !isRapidResponseSurveyModeShown() && !isManualSurveyModeShown();
 			break;
 		}
 		return filtersFound;

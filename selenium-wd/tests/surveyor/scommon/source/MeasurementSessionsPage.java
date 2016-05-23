@@ -59,6 +59,9 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[11]/a[1]/img")
 	private WebElement linkViewSurvey;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[11]/a[6]/img")
+	private WebElement firstSurveyDeleteLink;
+
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -489,13 +492,13 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 					if (datFileName.contains(DRIVINGSURVEYSEXPORTSURVEY)){
 						Assert.assertTrue((verifySurveyExportFile(downloadPath + File.separator + datFileName, analyzer)));
 					}
-/*					else if (datFileName.contains(DRIVINGSURVEYSEXPORTPEAKS)){
+					/*					else if (datFileName.contains(DRIVINGSURVEYSEXPORTPEAKS)){
 						Assert.assertTrue((verifyPeakExportFile(downloadPath + File.separator + datFileName, tag, analyzer, mode)));
 					}
 					else if (datFileName.contains(DRIVINGSURVEYSEXPORTANALYSIS)){
 						Assert.assertTrue((verifyAnalysisExportFile(downloadPath + File.separator + datFileName, tag, analyzer)));
 					}
-*/				}
+					 */				}
 				catch (Exception e) {
 					Log.error(e.toString());
 					return false;
@@ -575,9 +578,9 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			dUtil.convertDATtoCSV(datFileName);
 			List<HashMap<String,String>> rows = dUtil.getAllRows();
 			Map<String, String> map = new HashMap<String, String>();
-			
+
 			List<Measurement> listOfDBMeasurement= Measurement.getMeasurements(analyzer);
-			
+
 			if (rows.size() > 0 && listOfDBMeasurement.size() > 0){
 				if (rows.size()==listOfDBMeasurement.size()){
 
@@ -673,6 +676,16 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		this.linkViewSurvey.click();
 	}
 
+	public void clickOnFirstSurveyDeleteLink() {
+		this.firstSurveyDeleteLink.click();
+
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		if (this.isElementPresent(popupConfirmationBoxXPath) && this.isElementPresent(btnDeleteXPath)) {
+			JavascriptExecutor js = (JavascriptExecutor)driver; 
+			js.executeScript("arguments[0].click();", btnDelete);
+		}
+	}
 	@Override
 	public void waitForPageLoad() {
 		waitForAJAXCallsToComplete();
