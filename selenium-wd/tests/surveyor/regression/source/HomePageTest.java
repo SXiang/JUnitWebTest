@@ -284,4 +284,6 @@ public class HomePageTest extends SurveyorBaseTest {
 		surveyViewPage.waitForPageLoad();
 		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());
 	}
+	
+	
 }

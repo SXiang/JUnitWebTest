@@ -105,6 +105,10 @@ public class ResourceKeys {
 	public static final String Constant_Roles = "Constant_Roles";
 	public static final String Constant_Latitude = "Constant_Latitude";
 	public static final String Constant_Longitude = "Constant_Longitude";
+	public static final String Constant_AnalyzerType = "Constant_AnalyzerType";
+	public static final String Constant_LotNumber = "Constant_LotNumber";
+	public static final String Constant_IsotopicValue = "Constant_IsotopicValue";
+	public static final String Constant_DateTime = "Constant_DateTime";
 	
 	public static final String ReportSSRS_StartDateTime = "ReportSSRS_StartDateTime";
 	public static final String ReportSSRS_EndDateTime = "ReportSSRS_EndDateTime";

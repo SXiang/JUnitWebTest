@@ -19,7 +19,11 @@ import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.DataTablePage.TableColumnType;
+
 import static surveyor.scommon.source.SurveyorConstants.*;
+
+import java.util.HashMap;
 
 /**
  * @author zlu
@@ -32,6 +36,13 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	private static ManageSurveyorPage manageSurveyorPage;
 	private static ManageAnalyzersPage manageAnalyzersPage;
 	public static final String ManageAnalyzer_AlreadyAssociatedError = Resources.getResource(ResourceKeys.ManageAnalyzer_AlreadyAssociatedError);
+	public static final String Constant_Customer = Resources.getResource(ResourceKeys.Constant_Customer);
+	public static final String Constant_Surveyor = Resources.getResource(ResourceKeys.Constant_Surveyor);
+	public static final String Constant_Location = Resources.getResource(ResourceKeys.Constant_Location);
+	public static final String Constant_Analyzer = Resources.getResource(ResourceKeys.Constant_Analyzer);
+	public static final String Constant_AnalyzerType = Resources.getResource(ResourceKeys.Constant_AnalyzerType);	
+
+	protected String pagination = "100";
 	
 	@BeforeClass
 	public static void setupManageAnalyzersPageTest() {
@@ -327,6 +338,51 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		
 		assertTrue(manageAnalyzersPage.getWarningMsg().getText().trim().equals(ManageAnalyzer_AlreadyAssociatedError));
 	}
+	
+	/**
+	 * Test Case ID: TC132_ManageAnalyzer_SortColumns Script: - Sort records based on attributes present Results: - - User is able to sort the list of records based on specified attribute
+	 */
+	@Test
+	public void TC132_ManageAnalyzer_SortColumns() {
+		Log.info("\nRunning TC132_ManageAnalyzer_SortColumns");
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		manageAnalyzersPage.open();
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_Customer, TableColumnType.String);
+		assertTrue(manageAnalyzersPage.checkTableSort("datatable", columnMap, pagination, manageAnalyzersPage.getPaginationOption()));
+		columnMap.remove(Constant_Customer);
+		columnMap.put(Constant_Location, TableColumnType.String);
+		assertTrue(manageAnalyzersPage.checkTableSort("datatable", columnMap, pagination, manageAnalyzersPage.getPaginationOption()));
+		columnMap.remove(Constant_Location);
+		columnMap.put(Constant_Surveyor, TableColumnType.String);
+		assertTrue(manageAnalyzersPage.checkTableSort("datatable", columnMap, pagination, manageAnalyzersPage.getPaginationOption()));
+		columnMap.remove(Constant_Surveyor);
+		columnMap.put(Constant_Analyzer, TableColumnType.String);
+		assertTrue(manageAnalyzersPage.checkTableSort("datatable", columnMap, pagination, manageAnalyzersPage.getPaginationOption()));
+		columnMap.remove(Constant_Analyzer);
+		columnMap.put(Constant_AnalyzerType, TableColumnType.String);
+		assertTrue(manageAnalyzersPage.checkTableSort("datatable", columnMap, pagination, manageAnalyzersPage.getPaginationOption()));	
+	}
+	
+	/**
+	 * Test Case ID: TC123_EditDupliateAnalyzer_PicAdmin
+	 * Test Description: Admin not allowed to edit Analyzer having details same as existing analyzer detials
+	 * 
+	 */	
+	@Test
+	public void TC123_EditDuplicateAnalyzer_PicAdmin() {
+		String customerName = "Picarro";
+		String locationName = customerName + testSetup.getRandomNumber() + "loc";
+		String surveyorName = locationName + "sur";
+		String analyzerName = surveyorName + "ana";
+		String analyzerNameNew = surveyorName + "anaNew";
+		String cityName ="Santa Clara";
+		
+		Log.info("\nRunning TC123_EditDuplicateAnalyzer_PicAdmin - Test Description: Admin not allowed to edit Analyzer having details same as existing analyzer detials");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());	
 	
 	private void addNewLocationSurveyorAnalyzer(String userName, String password, String customerName, String locationName, String surveyorName, String analyzerName, String city, String sharedKey){
 		loginPage.open();

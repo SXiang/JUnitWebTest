@@ -339,13 +339,13 @@ public class DateUtility {
 		String culture = TestContext.INSTANCE.getUserCulture();
 		String dateFormat = null;
 		if (culture.equals("en-US")) {
-			dateFormat = "MM/dd/yyyy hh:mm:ss a";
+			dateFormat = "MM/dd/yyyy hh:mm a";
 		}
 		if (culture.equals("fr")) {
-			dateFormat = "dd/MM/yyyy HH:mm:ss";
+			dateFormat = "dd/MM/yyyy HH:mm";
 		}
 		if (culture.equals("zh-Hans")) {
-			dateFormat = "YYYY/MM/dd HH:mm:ss";
+			dateFormat = "YYYY/MM/dd HH:mm";
 		}
 		return dateFormat;
 	}
