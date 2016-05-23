@@ -242,7 +242,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	private static final String DELETE_POPUP_CANCEL_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[2]";
 
 	public static final String RatioSdevMetaPattern = "\\+/\\-";
-
+	
 	public static List<String[]> preCoverageForecastTo70;
 	public static List<String[]> preCoverageForecast;
 
@@ -3032,7 +3032,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				String pathToBaseImage = Paths
 						.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\ssrs-images").toString()
 						+ "\\" + testCase + "\\" + "Page_" + pageCounter + ".png";
-				if (!verifyActualImageWithBase(pathToBaseImage, pathToActualImage)) {
+				boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
+				if (!verifyActualImageWithBase(pathToBaseImage, pathToActualImage, generateBaseline)) {
 					Files.delete(Paths.get(pathToActualImage));
 					Log.info("Image verification failed");
 					return false;
@@ -3184,7 +3185,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + viewName + ".png";
 				}				
 				
-				if (!verifyActualImageWithBase(baseViewFile, actualViewPath)) {
+				boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
+				if (!verifyActualImageWithBase(baseViewFile, actualViewPath, generateBaseline)) {
 					Files.delete(Paths.get(actualViewPath));
 					return false;
 				}

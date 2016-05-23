@@ -6,6 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
 import org.junit.Test;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
@@ -77,7 +78,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - Report should get generated successfully with gaps present in views
 	 */
-	@Ignore @Test
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1635, location = ComplianceReportDataProvider.class)
 	public void TC1635_GapsRestrictionsShouldPresentWhenUserSelectLargerReportAreaGapsClassicGapsFeatureCustomers(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -93,11 +94,8 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID2));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		
+
 		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
@@ -126,8 +124,11 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+        complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));		
+        complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
+        
+        Assert.assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
+		
 	}
  
 	/**
@@ -148,7 +149,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 *	- - Report is generated successfully
 	 *	- - Both View PDFs should have Report Title, Report View, Date Generated, Report Mode, Report Author and Report Name details displayed in footer are as expected
 	 */
-	@Test
+	@Test //TODO:
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1798, location = ComplianceReportDataProvider.class)
 	public void TC1798_ValidateInformationPresentReportViewsPDFComplianceReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -161,12 +162,15 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		
-		//assertTrue(complianceReportsPageAction.verifyPDFZipFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
-		//assertTrue(complianceReportsPageAction.verifySSRSPDFFooter(EMPTY, getReportRowID(reportDataRowID1)));
+
+		//TODO: assertTrue(complianceReportsPageAction.verifyPDFFilesFooter(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifySSRSPDFFooter(EMPTY, getReportRowID(reportDataRowID1)));
+
 	}
  
 	/**
@@ -217,9 +221,9 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyPDFZipFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+	
+		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -269,11 +273,18 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, getReportRowID(reportDataRowID1));
+		
 		complianceReportsPageAction.selectReportMode("Standard", getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyStandardSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyOperatorSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
+		
 		complianceReportsPageAction.selectReportMode("RR", getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyStandardSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyOperatorSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyRapidResponseSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
+		
 		complianceReportsPageAction.selectReportMode("Manual", getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyManualSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -300,14 +311,19 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnFirstCopyComplianceButton(EMPTY, getReportRowID(reportDataRowID1));
+		
 		complianceReportsPageAction.selectReportMode("Standard", getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyStandardSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyOperatorSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
+		
 		complianceReportsPageAction.selectReportMode("RR", getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyStandardSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyOperatorSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyRapidResponseSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
+		
 		complianceReportsPageAction.selectReportMode("Manual", getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyManualSurveyModeIsShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -321,7 +337,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - Customer Name should presists and is not modified to other
 	 */
-	@Test
+	@Test //TODO: CLICK NO AND VERIFY
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC205, location = ComplianceReportDataProvider.class)
 	public void TC205_VerifyCustomerNotChangedIfUserClicksNOChangeCustomerButton(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -332,7 +348,9 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.selectCustomer(EMPTY, getReportRowID(reportDataRowID1));
+		//complianceReportsPageAction.selectCustomer(EMPTY, getReportRowID(reportDataRowID1));
+		//TODO:
+		//TODO:
 	}
  
 	/**
@@ -346,7 +364,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - Customer Name should presists and is not modified to other
 	 */
-	@Test
+	@Test //TODO:
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC206, location = ComplianceReportDataProvider.class)
 	public void TC206_VerifyCustomerNotChangedIfUserClicksNOChangeCustomerButtonReportsUsingCopyFunctionality(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -355,17 +373,18 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.selectCustomer(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnFirstCopyComplianceButton(EMPTY, getReportRowID(reportDataRowID1));
+		//complianceReportsPageAction.selectCustomer(EMPTY, getReportRowID(reportDataRowID1));
+				//TODO:
+				//TODO:
 	}
  
 	/**
 	 * Test Case ID: TC211_GenerateReportSurveyWhichDurationLessThanMin
 	 * Test Description: Generate Report for survey which has duration less than a min
 	 * Script: -  	
-	 *	- - Include the survey which has duration as less than a min (shown as 0 min in driving surveys page) and generate the compliance report
+	 *	- - Include the survey which has duration as less than a min (shown as 0 min in driving surveys page) 
+	 *      and generate the compliance report
 	 * Results: - 
 	 *	- - Report should be generated succesfully and user should be able to download it
 	 */
@@ -386,7 +405,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyPDFZipFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -402,7 +421,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 *	- - Area selected is too small message is displayed
 	 *	- - Area selected is too large message is displayed
 	 */
-	@Test
+	@Test //TODO, get constant msgs
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC236, location = ComplianceReportDataProvider.class)
 	public void TC236_VerySmallOrBigReportAreaSelectionNotAllowedNewComplianceReportScreen(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -417,7 +436,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.enterCustomBoundaryUsingTextFields(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyErrorMessages("Area selected is too small", NOTSET));
 
-		complianceReportsPageAction.enterCustomBoundaryUsingTextFields(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.enterCustomBoundaryUsingTextFields(EMPTY, getReportRowID(reportDataRowID2));
 		assertTrue(complianceReportsPageAction.verifyErrorMessages("Area selected is too large", NOTSET));
 	}
  
@@ -434,7 +453,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 *	- - The Compliance Viewer dialog should close
 	 *	- - The Compliance Viewer dialog should close
 	 */
-	@Test
+	@Test //TODO: Click X to close
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC522, location = ComplianceReportDataProvider.class)
 	public void TC522_CloseComplianceViewerDialog(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -445,7 +464,13 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyComplianceViewerDialogIsClosed(EMPTY, getReportRowID(reportDataRowID1)));
+		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		//complianceReportsPageAction.clickOnXButtonReportViewer(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyComplianceViewerDialogIsClosed(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
@@ -462,7 +487,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - Lat and Long co-ordinates should persist
 	 */
-	@Test
+	@Test //TODO
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC524, location = ComplianceReportDataProvider.class)
 	public void TC524_LatLongCo_OrdinatesPersistCustomBoundary(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -473,6 +498,8 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.enterCustomBoundaryUsingAreaSelector(EMPTY, getReportRowID(reportDataRowID1));
+		//TODO: MAP SELECTO
+		//TODO: VERIFY
 	}
  
 	/**
@@ -501,16 +528,16 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerViewByIndex(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		
 		assertTrue(complianceReportsPageAction.verifyIsotopicTableSortedDescByColumn(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+
 	}
 
 	/**
@@ -573,10 +600,14 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnResubmitButton(EMPTY, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+		
+		complianceReportsPageAction.clickOnResubmitButton(EMPTY, getReportRowID(reportDataRowID1));
+		
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		assertFalse(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -603,7 +634,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+		assertFalse(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**

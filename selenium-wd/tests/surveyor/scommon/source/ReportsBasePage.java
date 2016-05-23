@@ -2038,7 +2038,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return dest;
 	}
 
-	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage) {
+	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage) throws IOException{	
+		return verifyActualImageWithBase(pathToActualImage, pathToBaseImage, false);
+	}
+	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage, boolean generateBaseline) throws IOException {	
+		if(generateBaseline){
+			FileUtility.copyFile(pathToActualImage, pathToBaseImage);
+			return true;
+		}
 		ImageComparisonResult result = ImagingUtility.compareImages(pathToActualImage, pathToBaseImage);
 		if ((result.getFailureMessage() != null) && (result.isEqual() == true)) {
 			return false;

@@ -1902,7 +1902,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		}
 		return true;
 	}
-
+	
 	/**
 	 * Executes verifyPDFZIPThumbnailDownloadFromComplianceViewer action.
 	 * @param data - specifies the input data passed to the action.

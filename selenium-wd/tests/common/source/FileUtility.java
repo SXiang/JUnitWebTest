@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.testng.Assert;
 
 public class FileUtility {
@@ -377,7 +378,12 @@ public class FileUtility {
 	    	deleteFile(file);
 	    }
 	}
-	
+
+	public static void copyFile(String fromFile, String toFile) throws IOException{
+		// Create the directory for test case if it does not exist.
+         createDirectoryIfNotExists(toFile);
+		 FileUtils.copyFile(new File(fromFile), new File(toFile));
+	}
 	public static void main(String[] args) throws IOException {
 		Path directoryWithFiles = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\shapefileutility-tests");
 		Path emptyDirectory = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\shapefileutility-tests\\empty-dir");
