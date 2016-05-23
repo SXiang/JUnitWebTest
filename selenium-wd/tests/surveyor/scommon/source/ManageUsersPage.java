@@ -131,10 +131,8 @@ public class ManageUsersPage extends SurveyorBasePage {
     protected WebElement tdRoleValue;
     
     @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[6]")
-    protected WebElement tdStatusValue;
-    
-    @FindBy(css = ".dataTables_length> label>select> option")
-	private List<WebElement> paginationOption;
+    protected WebElement tdStatusValue;   
+
     
 	// add more web elements here later
 
@@ -1409,7 +1407,4 @@ public class ManageUsersPage extends SurveyorBasePage {
 		return false;
 	}
 
-	public List<WebElement> getPaginationOption() {
-		return paginationOption;
-	}
 }

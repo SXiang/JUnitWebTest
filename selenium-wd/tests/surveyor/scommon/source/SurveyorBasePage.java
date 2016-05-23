@@ -144,7 +144,18 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(xpath = "//*[@id='datatable_filter']/label/input")
 	protected WebElement searchTextBox;
 	
+    @FindBy(css = ".dataTables_length> label>select> option")
+	private List<WebElement> paginationOption;
+    
+	@FindBy(how = How.XPATH, using = "//div[@id='datatable_info']")
+	protected WebElement paginationMsg;
+	
 	private static String headerColumnBaseXPath = "//*[@id='datatable']/thead/tr/th[%d]";
+	public static final String STRPaginationMsg = "Showing 1 to ";
+	
+	@FindBy(how = How.XPATH, using = "//table[@id='datatable']/tbody/tr")
+	protected List<WebElement> numberofRecords;
+
 
 	public enum TableSortOrder {
 		ASC ("ASC"),
@@ -459,6 +470,28 @@ public class SurveyorBasePage extends BasePage {
 			}
 		});
 	}
+	
+	public boolean checkPaginationSetting(String numberOfReports) {
+		setPagination(numberOfReports);
+		this.waitForPageLoad();
+
+		String msgToVerify = STRPaginationMsg + numberOfReports;
+		this.waitForNumberOfRecords(msgToVerify);
+
+		if (msgToVerify.equals(this.paginationMsg.getText().substring(0, 16).trim()))
+			return true;
+
+		return false;
+	}
+	
+
+	public void waitForNumberOfRecords(String actualMessage) {
+		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return paginationMsg.getText().substring(0, 16).trim().equals(actualMessage);
+			}
+		});
+	}
 
 	/*
 	 * Helper method to wait for an Element to be ready on the page.
@@ -501,5 +534,15 @@ public class SurveyorBasePage extends BasePage {
 		};	
 		(new WebDriverWait(driver, timeout)).until(jQueryActiveComplete);
 		(new WebDriverWait(driver, timeout)).until(documentReadyComplete);
+	}
+	
+
+	public List<WebElement> getPaginationOption() {
+		return paginationOption;
+	}
+	
+	public int getNumberofRecords() {
+		List<WebElement> records = this.numberofRecords;
+		return records.size();
 	}
 }

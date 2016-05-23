@@ -332,10 +332,8 @@ public class DataTablePage extends BasePage {
 	 * @return true if button clicked
 	 */
 	public boolean toPage(WebElement pageNavButton) {
-		System.out.println("nav bar"+pageNavButton.getAttribute("class").toString());
 		if (!pageNavButton.getAttribute("class").contains("disabled")) {
 			pageNavButton.click();
-			System.out.println("Clicked next");
 			waitForTableToLoad();
 			return true;
 		} else {
