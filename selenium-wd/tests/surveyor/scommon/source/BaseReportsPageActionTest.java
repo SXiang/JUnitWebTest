@@ -150,7 +150,7 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 			for (Integer reportDataRowID : newReportsMap.keySet()) {
 				ComplianceReportsPageActions complianceReportsPageAction = newReportsMap.get(reportDataRowID);
 				complianceReportsPageAction.open(EMPTY, reportDataRowID);
-				complianceReportsPageAction.deleteReport(EMPTY, reportDataRowID);
+				complianceReportsPageAction.searchAndDeleteReport(EMPTY, reportDataRowID);
 			}
 		}
 	}
