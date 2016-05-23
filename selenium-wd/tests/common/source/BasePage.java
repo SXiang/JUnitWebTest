@@ -341,14 +341,13 @@ public class BasePage {
 
     public void SelectCheckbox(WebElement checkbox) {
     	if (!checkbox.isSelected()){
-    		checkbox.click();
+    		jsClick(checkbox);
     	}
     }
 
     public void UnselectCheckbox(WebElement checkbox) {
     	if (checkbox.isSelected()){
-			JavascriptExecutor js = (JavascriptExecutor) driver;
-			js.executeScript("arguments[0].click();", checkbox);
+    		jsClick(checkbox);
     	}
     }
 }
