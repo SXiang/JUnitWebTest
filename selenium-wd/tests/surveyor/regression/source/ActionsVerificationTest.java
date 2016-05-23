@@ -2,16 +2,16 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.WebDriver;
-
 import common.source.Log;
-import common.source.TestContext;
-import common.source.TestSetup;
+import surveyor.scommon.actions.ActionBuilder;
+import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.ManageCustomerPageActions;
+import surveyor.scommon.actions.ManageLocationPageActions;
+import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorConstants;
@@ -21,19 +21,25 @@ import surveyor.scommon.source.SurveyorTestRunner;
 public class ActionsVerificationTest extends SurveyorBaseTest {
 	private static final String SURVEYOR_NAME = "SimAuto-Surveyor1";
 	private static final String ANALYZER_SERIAL_NUMBER = "SimAuto-Analyzer1";
+	
 	private LoginPageActions loginPageAction;
 	private DriverViewPageActions driverViewPageAction;
 	private TestEnvironmentActions testEnvironmentAction;
-	private static final String EMPTY = "";
-	private static final Integer NOTSET = -1;
 
+	private static ManageCustomerPageActions manageCustomerPageAction;
+	private static ManageUsersPageActions manageUsersPageAction;
+	private static ManageLocationPageActions manageLocationPageAction;
+	
+	private static final String EMPTY = BaseActions.EMPTY;
+	private static final Integer NOTSET = BaseActions.NOTSET;
 
 	public ActionsVerificationTest() {
-		WebDriver webDriver = TestContext.INSTANCE.getDriver();
-		TestSetup testSetup = TestContext.INSTANCE.getTestSetup();
-		String baseURL = testSetup.getBaseUrl();
-		loginPageAction = new LoginPageActions(webDriver, baseURL, testSetup);
-		driverViewPageAction = new DriverViewPageActions(webDriver, baseURL,testSetup);
+		loginPageAction = ActionBuilder.createLoginPageAction();
+		driverViewPageAction = ActionBuilder.createDriverViewPageAction();
+		testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
+		manageCustomerPageAction = ActionBuilder.createManageCustomerPageAction();
+		manageUsersPageAction = ActionBuilder.createManageUsersPageAction();
+		manageLocationPageAction = ActionBuilder.createManageLocationPageAction();		
 	}
 	
 	@Test
@@ -234,5 +240,57 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		} catch (Exception e) {
 			Log.error(e.toString());
 		}
+	}
+	
+	/**
+	 * Unit test for TestEnvironmentActions.generateSurveyForUser() with existing user.
+	 * @throws Exception 
+	 */
+	@Test
+	public void Test_generateSurveyForExistingUser() throws Exception {
+		Log.info("\nRunning Test_generateSurveyForExistingUser ...");
+	
+		final int LOGIN_USER_ROW_ID = 6;	 	/* LoginRowID. AutomationAdmin */
+		final int DB3_ANALYZER_ROW_ID = 9;	 	/* Analyzer3/Surveyor3. Replay db3 file rowID */
+		final int SURVEY_ROW_ID = 4;	 		/* Survey information rowID */
+		final int SURVEY_RUNTIME_IN_SECONDS = 60; /* Number of seconds to run the survey for. */
+
+		TestEnvironmentActions.generateSurveyForUser(LOGIN_USER_ROW_ID, 
+				DB3_ANALYZER_ROW_ID, SURVEY_ROW_ID, SURVEY_RUNTIME_IN_SECONDS);
+	}
+
+	/**
+	 * Unit test for TestEnvironmentActions.generateSurveyForUser() with new customer user.
+	 * @throws Exception 
+	 */
+	@Test
+	public void Test_generateSurveyForNewCustomerUser() throws Exception {
+		Log.info("\nRunning Test_generateSurveyForNewCustomerUser ...");
+	
+		final int LOGIN_USER_ROW_ID = 6;	 	/* LoginRowID. AutomationAdmin */
+		final int DB3_ANALYZER_ROW_ID = 9;	 	/* Analyzer3/Surveyor3. Replay db3 file rowID */
+		final int SURVEY_ROW_ID = 4;	 		/* Survey information  */
+		final int SURVEY_RUNTIME_IN_SECONDS = 60; /* Number of seconds to run the survey for. */
+
+		final int newCustomerRowID = 7;
+		final int newLocationRowID = 4;
+		final int newCustomerUserRowID = 12;
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, LOGIN_USER_ROW_ID);   
+
+		// Create new customer/location/user.
+		manageCustomerPageAction.open(EMPTY, NOTSET);
+		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
+
+		manageLocationPageAction.open(EMPTY, NOTSET);
+		manageLocationPageAction.createNewLocation(EMPTY, newLocationRowID /*locationRowID*/);
+
+		manageUsersPageAction.open(EMPTY, NOTSET);
+		manageUsersPageAction.createNewCustomerUser(EMPTY, newCustomerUserRowID /*userRowID*/);
+
+		// Generate survey for newly created customer user.
+		TestEnvironmentActions.generateSurveyForUser(newCustomerUserRowID, 
+				DB3_ANALYZER_ROW_ID, SURVEY_ROW_ID, SURVEY_RUNTIME_IN_SECONDS);
 	}
 }

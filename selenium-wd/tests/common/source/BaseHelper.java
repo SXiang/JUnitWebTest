@@ -9,7 +9,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -17,10 +16,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.image.PixelGrabber;
-
 import org.apache.commons.io.FileUtils;
 import org.testng.Assert;
 
@@ -52,7 +47,8 @@ public class BaseHelper {
 	}
 
 	private static void unZip(String zipFile, String outputFolder) throws FileNotFoundException, IOException {
-		ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile));
+		FileInputStream inputStream = new FileInputStream(zipFile);
+		ZipInputStream zis = new ZipInputStream(inputStream);
 		ZipEntry ze = zis.getNextEntry();
 		while (ze != null) {
 			String entryName = ze.getName();
@@ -69,10 +65,12 @@ public class BaseHelper {
 			} finally {
 				fos.close();
 			}
+			zis.closeEntry();
 			ze = zis.getNextEntry();
 		}
 		zis.closeEntry();
 		zis.close();
+		inputStream.close();
 	}
 
 	public static boolean validatePdfFile(String pdfFileName) {
@@ -155,6 +153,10 @@ public class BaseHelper {
 		return FileUtils.contentEquals(new File(file1), new File(file2));
 	}
 
+	public static String getLineSeperator() {
+		return System.getProperty("line.separator");
+	}
+	
 	public static String getPaginationShowingStartString() {
 		String paginationShowingText = Resources.getResource(ResourceKeys.Constant_ShowingStartToEndOfTotalEntries);
 		// get first 3 parts of the string.
@@ -222,13 +224,13 @@ public class BaseHelper {
 	 *         matched
 	 */
 	public static HashMap<String, Boolean> matchSinglePattern(String actualReportString, List<String> inputList) {
-
-		HashMap<String, Boolean> stringMatch = new HashMap<String, Boolean>();
+		Log.info("Calling matchSinglePattern() ...");
+		HashMap<String, Boolean> stringsToMatch = new HashMap<String, Boolean>();
 		String[] lines = actualReportString.split("\\n");
 		Iterator<String> listIterator = inputList.iterator();
 		while (listIterator.hasNext()) {
 			String stringtoMatch = listIterator.next().trim();
-			stringMatch.put(stringtoMatch, false);
+			stringsToMatch.put(stringtoMatch, false);
 		}
 		for (String line : lines) {
 			listIterator = inputList.iterator();
@@ -236,11 +238,13 @@ public class BaseHelper {
 				String stringtoMatch = listIterator.next().trim();
 				String formatteLine = line.trim();
 				if (formatteLine.contains(stringtoMatch)) {
-					stringMatch.put(stringtoMatch, true);
+					stringsToMatch.put(stringtoMatch, true);
 				}
 			}
 		}
-		return stringMatch;
+		
+		Log.info(String.format("Match String Map is : ", stringsToMatch));
+		return stringsToMatch;
 	}
 
 	/**

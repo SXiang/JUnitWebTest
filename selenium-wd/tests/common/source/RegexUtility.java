@@ -1,10 +1,10 @@
 package common.source;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,6 +29,7 @@ public class RegexUtility {
 	public static final String REGEX_PATTERN_EXTRACT_LINES_STARTING_WITH_DIGITS = "^\\d.*";
 	public static final String REGEX_PATTERN_EXTRACT_EVERYTHING = "(.*?)";
 	public static final String REGEX_PATTERN_SPACES = "\\s+";
+	public static final String REGEX_PATTERN_NOT_ALPHANUMERIC = "[^:,.)(/\\&\\s\\|\\.\\r\\n a-zA-Z0-9_-]";
 
 	private static int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
 
@@ -191,6 +192,22 @@ public class RegexUtility {
 	}
 	
 	/**
+	 * Removes all characters other than those defined in REGEX_PATTERN_NOT_ALPHANUMERIC
+	 * The character ETX (\\u0003) is handled specially to replace it with <space>.
+	 * NOTE: This method may not give expected results in non en-us locale. 
+	 * TODO: Add fix for all locales. Tracked by DE1968.		
+	 * 
+	 * @param inputString
+	 * @return
+	 */
+	public static String removeSpecialChars(String inputString) {
+		// Replace ETX character by <space>
+		inputString = inputString.replaceAll("\\u0003", " ");
+		// Next remove all characters NOT in REGEX_PATTERN_NOT_ALPHANUMERIC 
+		return inputString.replaceAll(RegexUtility.REGEX_PATTERN_NOT_ALPHANUMERIC, "");
+	}
+
+	/**
 	 * Compare strings by equals or matches
 	 * @param line
 	 * @param expectedLine
@@ -215,7 +232,11 @@ public class RegexUtility {
 		}
 		return isMatch;
 	}
-	public static void main(String[] args) {
+	
+	public static void main(String[] args) throws IOException {
+		
+		Log.info("Running test - testRemoveSpecialChars_Success() ...");
+		testRemoveSpecialChars_Success();
 		Log.info("Running test - testMatchesPattern_functionNameAndArgument_Success() ...");
 		testMatchesPattern_functionNameAndArgument_Success();
 		Log.info("Running test - testMatchesPattern_functionNameNoArgument_FailMatch() ...");
@@ -243,6 +264,17 @@ public class RegexUtility {
 		Log.info("Running test - testGetStringInBetween_Success() ...");
 		test_functionGetStringInBetween_Success();
 		testgetNextLineAfterPattern_Success();
+	}
+
+	private static void testRemoveSpecialChars_Success() throws IOException {
+		Path inputFilePath = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\regexutility-tests\\testFile01.txt");
+		String fileContent = FileUtility.readFileContents(inputFilePath.toString(), true);
+		fileContent = RegexUtility.removeSpecialChars(fileContent);
+		Log.info("After removing special chars file content is:");
+		Log.info(fileContent);
+		Assert.assertTrue(fileContent.contains("LISA Investigation Complete"));
+		Assert.assertTrue(fileContent.contains("Report Creation Date 5/16/2016 5:42 PM PDT"));
+		Assert.assertTrue(fileContent.contains("NE Lat & NE Long 37.42060 X -121.97250"));
 	}
 
 	private static void testMatchesPattern_functionNameAndArgument_Success() {

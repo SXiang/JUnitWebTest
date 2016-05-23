@@ -31,6 +31,16 @@ public class FileUtility {
 	 * @throws IOException
 	 */
 	public static String readFileContents(String filePath) throws IOException {
+		return readFileContents(filePath, false /*retainNewline*/);		
+	}
+
+	/**
+	 * Reads content of the specified file into a String.
+	 * @param filePath - Path of the file.
+	 * @return - String containing file content.
+	 * @throws IOException
+	 */
+	public static String readFileContents(String filePath, boolean retainNewline) throws IOException {
 		String lineText = null;
 		StringBuilder builder = new StringBuilder();
 		
@@ -38,13 +48,16 @@ public class FileUtility {
 		try {
 			while ((lineText = buffReader.readLine()) != null) {
 				builder.append(lineText);
+				if (retainNewline) {
+					builder.append(BaseHelper.getLineSeperator());
+				}
 			} 
 		} finally {
 			buffReader.close();
 		}
 		return builder.toString();		
 	}
-
+	
 	/**
 	 * Reads content of the specified file into an ArrayList where each line in the file represents an entry in the List.
 	 * @param filePath - Path of the file.
@@ -160,6 +173,9 @@ public class FileUtility {
 	}
 	
 	public static boolean compareFilesInDirectories(String firstFolderPath, String secondFolderPath) throws IOException {
+		return compareFilesInDirectories(firstFolderPath, secondFolderPath, false);
+	}
+	public static boolean compareFilesInDirectories(String firstFolderPath, String secondFolderPath, boolean contains) throws IOException {
 		Log.info(String.format("Comparing files in Folders - [%s] <==> [%s]...", firstFolderPath, secondFolderPath));
 		
 		// Check that first folder and second folder have the exact same files.
@@ -181,30 +197,30 @@ public class FileUtility {
 			return false;
 		}
 
-		// Check both directories have same number of files.
-		if ((firstDirectoryFiles.size() != secondDirectoryFiles.size())) {
-			Log.info(String.format("First folder has [%d] files. Second folder has [%d] files. <-- [Return FALSE]",
-					firstDirectoryFiles.size(), secondDirectoryFiles.size()));
-			return false;
-		}
+		if(!contains){
+			// Check both directories have same number of files.
+			if ((firstDirectoryFiles.size() != secondDirectoryFiles.size())) {
+				Log.info(String.format("First folder has [%d] files. Second folder has [%d] files. <-- [Return FALSE]",
+						firstDirectoryFiles.size(), secondDirectoryFiles.size()));
+				return false;
+			}
 
+			for (String sDirFile : secondDirectoryFiles) {
+				if (!firstDirectoryFiles.contains(sDirFile)) {
+					Log.info(String.format("First folder does NOT contain file - [%s] from second folder. <-- [Return FALSE]", sDirFile));
+					return false;
+				}
+			}			
+		}
+		
 		for (String fDirFile : firstDirectoryFiles) {
 			if (!secondDirectoryFiles.contains(fDirFile)) {
 				Log.info(String.format("Second folder does NOT contain file - [%s] from first folder. <-- [Return FALSE]", fDirFile));
 				return false;
 			}
 		}
-
-		for (String sDirFile : secondDirectoryFiles) {
-			if (!firstDirectoryFiles.contains(sDirFile)) {
-				Log.info(String.format("First folder does NOT contain file - [%s] from second folder. <-- [Return FALSE]", sDirFile));
-				return false;
-			}
-		}
-
 		return true;
 	}
-
 	/**
 	 * Returns list of files matching the specified filter from the specified directory.
 	 * @param directory - Directory to look for files.

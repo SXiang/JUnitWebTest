@@ -3,6 +3,7 @@ package surveyor.regression.source;
 import static org.junit.Assert.*;
 import common.source.Log;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -74,7 +75,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - Selected boundary areashould persist
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1255, location = ComplianceReportDataProvider.class)
 	public void TC1255_CustomerBoundaryAreaSelectionPersistCustomerBoundarySelectorScreen(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -97,7 +98,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 *	- - Tool tip should be present - Map Preview Images are not available for reports run prior to version 2.1
 	 *	- - An icon should be present indicating file download is not available
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1256, location = ComplianceReportDataProvider.class)
 	public void TC1256_DisplayErrorMessageThumbnailDownloadMapPdfOldReportsPrior21Build(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -118,7 +119,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - User is navigated to survey view
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1274, location = ComplianceReportDataProvider.class)
 	public void TC1274_SurveyTagLinkPresentSearchGridComplianceReportWorking(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -138,7 +139,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - Software version present at bottom of the page should be same as team city version- Software version present onr eport PDF should match with UI software version
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1297, location = ComplianceReportDataProvider.class)
 	public void TC1297_SoftwareVersionUIReportsPDFShouldMatch(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -163,7 +164,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - Reports page should display message as No matching records found
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC799, location = ComplianceReportDataProvider.class)
 	public void TC799_SearchReportsNon_ExistingOrInvalidReportName(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -182,7 +183,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 *	- - User is able to sort the list of reports based on specified attribute
 	 *	- - Sorting by Report Name not allowed
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC165, location = ComplianceReportDataProvider.class)
 	public void TC165_SortReportListBasedCompletionDateOtherAttributes(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -205,7 +206,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 *	- - Max Survey Duration Reached message is displayed on the search button
 	 *	- - User is able to add survey which doesnot exceed 100 hours duration  range
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC194, location = ComplianceReportDataProvider.class)
 	public void TC194_VerifyMaxSurveyDurationReachedMessageDisplayedUserIfUserTriesAddSurveysHavingTotalDurationAbove100Hours(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -229,7 +230,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 *	- - Customer Boundaries are present on map
 	 *	- - Invalid boundary name is not present and user is notified that no such boundary exists
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC238, location = ComplianceReportDataProvider.class)
 	public void TC238_SearchInvalidCustomerBoundaryBoundarySelectorScreen(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -252,7 +253,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- Reports generated successfully
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC243, location = ComplianceReportDataProvider.class)
 	public void TC243_GenerateMultipleComplianceReports4_5AtSameTime(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -285,7 +286,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 *	- - The zoom levels should persist after each click.
 	 *	- - The zoom levels should persist after each click.
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC525, location = ComplianceReportDataProvider.class)
 	public void TC525_MapZoomsOutCorrectly(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -306,7 +307,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - The   breadcrumb color should be red from the point of data latency until the point   where data latency ends
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC622, location = ComplianceReportDataProvider.class)
 	public void TC622_ComplianceReportsCheckRedTraceDueDataLatency(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -327,7 +328,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - The   Compliance Report view should exactly match the Driver View, including red   trace and Isotopic Capture
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC624, location = ComplianceReportDataProvider.class)
 	public void TC624_ComplianceReportRedTraceIsotopicCaptureAnalysis(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -351,7 +352,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 *	- - Geographic filter is by default selected in Survey Selector section
 	 *	- - Surveys present in selected geographic area are displayed
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1538, location = ComplianceReportDataProvider.class)
 	public void TC1538_VerifyGeographicFilterSelectedByDefaultNewComplianceReportScreen(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -376,7 +377,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 *	- - Geographic filter is by default selected in Survey Selector section
 	 *	- - Surveys present in selected customer boundary area are displayed
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1539, location = ComplianceReportDataProvider.class)
 	public void TC1539_VerifyGeographicFilterSelectedByDefaultCopyComplianceReportScreen(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -407,7 +408,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - Report Mode and Survey modes should presists and is not modified to other
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC207, location = ComplianceReportDataProvider.class)
 	public void TC207_VerifyReportSurveyModesAreNotModififedIfUserClicksNOChangeReportModeButton(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -434,7 +435,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - Report Mode and Survey modes should presists and is not modified to other
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC208, location = ComplianceReportDataProvider.class)
 	public void TC208_VerifyReportSurveyModesAreNotModififedIfUserClicksNOChangeReportModeButtonReportsUsingCopyFunctionality(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -461,7 +462,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - Default map location should be user's location (e.g. Houston and not Santa Clara)
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC209, location = ComplianceReportDataProvider.class)
 	public void TC209_VerifyDefaultMapLocationNon_CaliforniaCustomers(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {

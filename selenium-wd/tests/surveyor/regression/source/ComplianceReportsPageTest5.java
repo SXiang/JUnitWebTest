@@ -573,7 +573,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, NOTSET));
 		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyShapeFilesHaveCorrectData(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
 		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyMetaDataFilesHaveCorrectData(EMPTY, NOTSET));
 	}
@@ -786,7 +786,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyShapeFilesHaveCorrectData(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
 	}
 
 	/**

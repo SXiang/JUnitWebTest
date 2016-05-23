@@ -1,7 +1,10 @@
 package common.source;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class LogHelper {
 
@@ -34,7 +37,7 @@ public class LogHelper {
 		if (listOfStrArray != null) {
 			for (String[] array : listOfStrArray) {
 				builder.append(strArrayToString(array));
-				builder.append(System.getProperty("line.separator"));
+				builder.append(BaseHelper.getLineSeperator());
 			}
 		}
 		return builder.toString();
@@ -53,5 +56,18 @@ public class LogHelper {
 	public static String floatListToString(List<Float> values) {
 		Float[] array = values.toArray(new Float[values.size()]);
 		return floatArrayToString(array);
+	}
+
+	public static String boolMapToString(HashMap<String, Boolean> values) {
+		StringBuilder builder = new StringBuilder();
+		if (values != null && values.size() > 0) {
+			Iterator<String> iterator = values.keySet().iterator();
+			while (iterator.hasNext()) {
+				String key = iterator.next();
+				builder.append(String.format("    [%s=%b]", key, values.get(key)));
+				builder.append(System.getProperty("line.separator"));
+			}
+		}
+		return builder.toString();
 	}
 }

@@ -1,17 +1,10 @@
 package surveyor.scommon.actions;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Paths;
+import org.openqa.selenium.WebDriver;
 
-import org.testng.Assert;
-
-import common.source.FileUtility;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
-import net.lightbody.bmp.core.har.Har;
 import surveyor.scommon.actions.data.TestEnvironmentDataReader;
 import surveyor.scommon.actions.data.TestEnvironmentDataReader.TestEnvironmentDataRow;
 
@@ -21,6 +14,7 @@ public class TestEnvironmentActions extends BaseActions {
 	private static final String FN_START_SIMULATOR = "startAnalyzer";
 	private static final String FN_START_REPLAY = "startReplay";
 	private TestEnvironmentDataReader dataReader;
+	public static TestEnvironmentDataRow workingDataRow;
 
 	public TestEnvironmentActions() {
 		super();
@@ -39,9 +33,11 @@ public class TestEnvironmentActions extends BaseActions {
 		ActionArguments.verifyGreaterThanZero(CLS_TEST_ENVIRONMENT_ACTIONS + FN_START_SIMULATOR, ARG_DATA_ROW_ID, dataRowID);
 		try {
 			TestEnvironmentDataRow dataRow = getDataReader().getDataRow(dataRowID);
-
-			TestSetup.updateAnalyzerConfiguration(dataRow.analyzerSerialNumber, dataRow.analyzerSharedKey);
+			TestSetup.updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(), 
+					dataRow.analyzerSerialNumber, dataRow.analyzerSharedKey);
 			TestSetup.restartAnalyzer();
+			// When the Analyzer is started store the working data row.
+			workingDataRow = dataRow;
 		} catch (Exception e) {
 			Log.error(e.toString());
 			return false;
@@ -84,6 +80,8 @@ public class TestEnvironmentActions extends BaseActions {
 		logAction("TestEnvironmentActions.stopAnalyzer", data, dataRowID);
 		try {
 			TestSetup.stopAnalyzer();
+			// When the Analyzer is stopped clear off the working data row.
+			workingDataRow = null;
 		} catch (Exception e) {
 			Log.error(e.toString());
 			return false;
@@ -188,5 +186,37 @@ public class TestEnvironmentActions extends BaseActions {
 
 	public void setDataReader(TestEnvironmentDataReader dataReader) {
 		this.dataReader = dataReader;
+	}
+	
+	/**
+	 * Generates a survey with specified Analyzer/Surveyor/DB3 for the specified user.
+	 * Remarks:
+	 *  User, Analyzer/Surveyor/DB3, Survey information specified as parameter to method are used for survey creation.
+	 * 	Environment (Web app, DB information) specified from Test Properties file is used for survey creation.
+	 * @param loginUserRowID - user to generate survey for.
+	 * @param db3AnalyzerRowID - analyzer/surveyor/DB3 rowID to use for the survey.
+	 * @param surveyRowID - survey information rowID.
+	 * @param surveyRuntimeInSeconds - number of seconds to run the survey for.
+	 * @throws Exception
+	 */
+	public static void generateSurveyForUser(int loginUserRowID, int db3AnalyzerRowID, int surveyRowID,
+			int surveyRuntimeInSeconds) throws Exception {
+		LoginPageActions loginPageAction = ActionBuilder.createLoginPageAction();
+		DriverViewPageActions driverViewPageAction = ActionBuilder.createDriverViewPageAction();
+		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, loginUserRowID);  
+		testEnvironmentAction.startAnalyzer(EMPTY, db3AnalyzerRowID); 	
+		driverViewPageAction.open(EMPTY,NOTSET);
+		driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
+		testEnvironmentAction.startReplay(EMPTY, db3AnalyzerRowID); 		
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		driverViewPageAction.startDrivingSurvey(EMPTY, surveyRowID);	
+		testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
+		testEnvironmentAction.idleForSeconds(String.valueOf(60), NOTSET);    /* wait a minute for upload */
+		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 	}
 }

@@ -81,7 +81,10 @@ public class PDFUtility {
 			}
 		}
 		
-		return stringWriter.toString();
+		String pdfContent = stringWriter.toString();
+		Log.info(String.format("'%s' PDF text content is:", pdfFilePath));
+		Log.info(pdfContent);
+		return pdfContent;
 	}
 
 	/*
