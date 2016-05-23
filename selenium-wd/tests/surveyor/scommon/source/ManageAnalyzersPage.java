@@ -379,6 +379,14 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		return warningMsg;
 	}
 
+	public WebElement getBtnAddNewAnalyzer() {
+		return btnAddNewAnalyzer;
+	}
+
+	public WebElement getBtnEditAnalyzer() {
+		return btnEditAnalyzer;
+	}
+
 	@Override
 	public void waitForPageLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {

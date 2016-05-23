@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.Log;
@@ -366,23 +367,21 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	}
 	
 	/**
-	 * Test Case ID: TC123_EditDupliateAnalyzer_PicAdmin
-	 * Test Description: Admin not allowed to edit Analyzer having details same as existing analyzer detials
+	 * Test Case ID: TC499_EditAnalyzer_PicSupport
+	 * Test Description: Pic Support not allowed to edit Analyzer
 	 * 
 	 */	
 	@Test
-	public void TC123_EditDuplicateAnalyzer_PicAdmin() {
-		String customerName = "Picarro";
-		String locationName = customerName + testSetup.getRandomNumber() + "loc";
-		String surveyorName = locationName + "sur";
-		String analyzerName = surveyorName + "ana";
-		String analyzerNameNew = surveyorName + "anaNew";
-		String cityName ="Santa Clara";
-		
-		Log.info("\nRunning TC123_EditDuplicateAnalyzer_PicAdmin - Test Description: Admin not allowed to edit Analyzer having details same as existing analyzer detials");
+	public void TC499_EditAnalyzer_PicSupport() {
+		Log.info("\nRunning TC499_EditAnalyzer_PicSupport - Test Description: Pic Support not allowed to edit Analyzer");
 		
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());	
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);	
+		manageAnalyzersPage.open();
+		assertTrue(driver.findElements(By.xpath("//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")).size()==0);
+		assertTrue(driver.findElements(By.xpath("//*[@id='datatable']/tbody/tr[1]/td[7]/a[1]")).size()==0);
+	
+	}
 	
 	private void addNewLocationSurveyorAnalyzer(String userName, String password, String customerName, String locationName, String surveyorName, String analyzerName, String city, String sharedKey){
 		loginPage.open();
