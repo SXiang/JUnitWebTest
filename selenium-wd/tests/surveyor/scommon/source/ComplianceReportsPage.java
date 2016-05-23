@@ -2821,9 +2821,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		try {
 			ArrayList<String> reportIndicationsList = new ArrayList<String>();
 			while ((line = bufferReader.readLine()) != null) {
-				if (line.trim().matches("^\\? \\d+ .*")) {
+				if (line.trim().matches("^\\? \\d+ .*")) {				
 					reportIndicationsList.add(line.replaceAll("\\?", "").trim().replaceAll("\\s+", "")
-							.replace("+/-", "").replace("0.0", "").trim());
+							.replace("+/-", "").replace("0.0 ", "").trim());
 				}
 			}
 			ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications
@@ -2833,7 +2833,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			while (lineIterator.hasNext()) {
 				StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
 				String objAsString = objStoredProc.toString();
-				storedProcConvStringList.add(objAsString.replace("0.0", "0").replaceAll("\\s+", "").trim());
+				storedProcConvStringList.add(objAsString.replace("0.0 ", "0").replaceAll("\\s+", "").trim());
 			}
 
 			if (!reportIndicationsList.equals(storedProcConvStringList)) {
