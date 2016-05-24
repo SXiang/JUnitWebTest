@@ -767,7 +767,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			String checkBoxXPath;
 			WebElement checkBoxActionCell;
 
-			List<WebElement> rows = surveyTable.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
+			List<WebElement> rows = surveyTable.findElements(By.xpath("tr"));
 
 			int rowSize = rows.size();
 			int loopCount = 0;
@@ -1669,7 +1669,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		if (driver.findElements(By.xpath("//*[@class='dataTables_empty']")).size() == 1) {
 			return false;
 		}
-		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("tr"));
 		int rowSize = rows.size();
 
 		int loopCount = 0;
@@ -1681,8 +1681,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			this.waitForPageLoad();
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
+			createdByXPath = "tr[" + rowNum + "]/td[3]";
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
@@ -1694,7 +1694,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.waitForPageLoad();
-				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 					loopCount = rowSize;

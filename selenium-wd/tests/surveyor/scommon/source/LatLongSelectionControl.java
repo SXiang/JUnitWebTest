@@ -318,9 +318,10 @@ public class LatLongSelectionControl extends BaseControl {
 	public LatLongSelectionControl waitForMapImageLoad() {
 		// Wait for image data on the canvas to be present.
 		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
+			String jScript = GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION + 
+					GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION_CALL;
 			public Boolean apply(WebDriver d) {
-				Object imageData = ((JavascriptExecutor)d).executeScript(GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION + 
-						GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION_CALL);
+				Object imageData = ((JavascriptExecutor)d).executeScript(jScript);
 				return (imageData == null);
 			}
 		});

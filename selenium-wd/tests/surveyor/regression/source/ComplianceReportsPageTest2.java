@@ -1385,10 +1385,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		assertFalse(WebElementExtender.isElementPresentAndDisplayed(complianceReportsPage.getPercentCoverForecast()));
 		complianceReportsPage.clickOnCancelBtn();
 
-		String copyImgXPath = "//*[@id='datatable']/tbody/tr[1]/td[5]/a[2]/img";
-		WebElement copyImg = driver.findElement(By.xpath(copyImgXPath));
-
-		copyImg.click();
+		complianceReportsPage.clickOnFirstCopyComplianceBtn();
 		complianceReportsPage.waitForCopyReportPagetoLoad();
 		assertFalse(WebElementExtender.isElementPresentAndDisplayed(complianceReportsPage.getPercentCoverForecast()));
 	}
@@ -1821,7 +1818,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		complianceReportsPage.addNewReport(rpt2);
 		complianceReportsPage.waitForPageLoad();
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle2, testSetup.getLoginUser(), testCaseID))) {
+		if ((complianceReportsPage.checkActionStatus(rptTitle2, testSetup.getLoginUser(), testCaseID+"_2"))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt2, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle2, testSetup.getLoginUser()));
 			if (tablesList != null) {
@@ -1835,12 +1832,11 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		complianceReportsPage.open();
 		ReportsCompliance rpt3 = new ReportsCompliance(rptTitle3, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList3, SurveyModeFilter.Standard);
-		rpt3.setViewLayersList(viewLayerList2);
 		rpt3.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
 		complianceReportsPage.addNewReport(rpt3);
 		complianceReportsPage.waitForPageLoad();
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle3, testSetup.getLoginUser(), testCaseID))) {
+		if ((complianceReportsPage.checkActionStatus(rptTitle3, testSetup.getLoginUser(), testCaseID+"_3"))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt3, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle3, testSetup.getLoginUser()));
 			if (tablesList != null) {
