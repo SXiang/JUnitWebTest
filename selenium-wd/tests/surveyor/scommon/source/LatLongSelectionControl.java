@@ -38,6 +38,7 @@ public class LatLongSelectionControl extends BaseControl {
 
 	@FindBy(id = "boundary-feature-class")	
 	private WebElement filterByTypeDropDown;
+	private String filterByTypeId = "boundary-feature-class";
 	
 	@FindBy(id = "boundary-search-text")	
 	private WebElement selectByNameTextField;    
@@ -229,8 +230,6 @@ public class LatLongSelectionControl extends BaseControl {
 	 */
 	public LatLongSelectionControl selectCustomerBoundaryType(String filterByTypeValue) {
 		Log.info("Select customer boundary type '"+filterByTypeValue+"'");
-		String typeValueOptionXPath = "//*[@id='boundary-feature-class']/option[text()='"+filterByTypeValue+"']";
-		waitForElementReady(By.xpath(typeValueOptionXPath));
 		new Select(filterByTypeDropDown).selectByVisibleText(filterByTypeValue);
 		return this;
 	}
