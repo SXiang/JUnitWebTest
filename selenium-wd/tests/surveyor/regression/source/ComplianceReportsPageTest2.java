@@ -1834,7 +1834,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 			fail("\nTestcase TC1318 failed.\n");
 
 		complianceReportsPage.open();
-		ReportsCompliance rpt3 = new ReportsCompliance(rptTitle3, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
+		ReportsCompliance rpt3 = new ReportsCompliance(rptTitle3, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList3, SurveyModeFilter.Standard);
 		rpt3.setViewLayersList(viewLayerList2);
 		rpt3.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
 		complianceReportsPage.addNewReport(rpt3);
