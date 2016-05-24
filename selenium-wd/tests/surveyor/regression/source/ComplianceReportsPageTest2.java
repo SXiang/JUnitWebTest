@@ -294,7 +294,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		String testCaseID = "TC1038";
 		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
 
-		complianceReportsPage.open();		
+		complianceReportsPage.open();
 		List<String> listBoundary1 = new ArrayList<String>();
 		listBoundary1.add(IMGMAPHEIGHT);
 		listBoundary1.add(IMGMAPWIDTH);
@@ -1445,21 +1445,21 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
 
-//		complianceReportsPage.addNewReport(rpt);
-//		complianceReportsPage.waitForPageLoad();
-//		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
-//
+		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
+
 		complianceReportsPage.findReportbySearch(rptTitle, testSetup.getLoginUser());
-//
-//
-//		try {
-//			complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
-//			complianceReportsPage.waitForResubmitButton();
-//			complianceReportsPage.getBtnResubmitReport().click();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		complianceReportsPage.waitForPageLoad();
+
+
+		try {
+			complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
+			complianceReportsPage.waitForResubmitButton();
+			complianceReportsPage.getBtnResubmitReport().click();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));

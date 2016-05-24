@@ -1748,12 +1748,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains(ReportsCompliance reportsCompliance,
 			List<String> autocompleteListEntries) {
 		String typeValue = reportsCompliance.getCustomerBoundaryFilterType().toString();
-		String expectedOptionXPath = "option[text()='"+typeValue+"'";
 		openCustomerBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen()
 			.switchMode(ControlMode.MapInteraction)
 			.waitForMapImageLoad();
-		latLongSelectionControl.WaitForElementReady(By.xpath(expectedOptionXPath));
 		latLongSelectionControl.selectCustomerBoundaryType(typeValue);
 
 		// Type customer boundary name and verify the autocomplete list. If not

@@ -16,13 +16,11 @@ public class BaseControl {
     /*
 	 * Helper method to wait for an Element to be ready on the page. 
 	 */
-	public void WaitForElementReady(String elementID) {
-		(new WebDriverWait(this.driver, this.timeout))
-		  .until(ExpectedConditions.presenceOfElementLocated
-				  (By.id(elementID)));
+	public void waitForElementReady(String elementID) {
+		waitForElementReady(By.id(elementID));
 	}
 	
-	public void WaitForElementReady(By elementBy) {
+	public void waitForElementReady(By elementBy) {
 		(new WebDriverWait(this.driver, this.timeout))
 		  .until(ExpectedConditions.presenceOfElementLocated(
 				  elementBy));

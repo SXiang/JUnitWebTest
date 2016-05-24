@@ -226,6 +226,8 @@ public class LatLongSelectionControl extends BaseControl {
 	 * @return the LatLongSelectionControl class instance.
 	 */
 	public LatLongSelectionControl selectCustomerBoundaryType(String filterByTypeValue) {
+		String typeValueOptionXPath = "//*[@id='boundary-feature-class']/option[text()='"+filterByTypeValue+"']";
+		waitForElementReady(By.xpath(typeValueOptionXPath));
 		new Select(filterByTypeDropDown).selectByVisibleText(filterByTypeValue);
 		return this;
 	}
