@@ -283,8 +283,8 @@ public class BasePage {
 	protected void waitUntilPresenceOfElementLocated(String elementID) {
 		waitUntilPresenceOfElementLocated(By.id(elementID));
 	}
-	protected void waitUntilPresenceOfElementLocated(By locator){
-		(new WebDriverWait(driver, timeout)).until(
+	protected WebElement waitUntilPresenceOfElementLocated(By locator){
+		return (new WebDriverWait(driver, timeout)).until(
 				ExpectedConditions.presenceOfElementLocated(locator));
 	}
 

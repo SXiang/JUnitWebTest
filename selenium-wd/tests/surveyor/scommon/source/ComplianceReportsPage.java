@@ -579,9 +579,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (viewList.get(i).get(KEYASSETS).equalsIgnoreCase("1")) {
 				colNum = 10;
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				WebElement assetCheckbox = driver.findElement(By.xpath(strBaseXPath));
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", assetCheckbox);
+				WebElement assetCheckbox = waitUntilPresenceOfElementLocated(By.xpath(strBaseXPath));
+				jsClick(assetCheckbox);
 			}
 
 			if (viewList.get(i).get(KEYBOUNDARIES).equalsIgnoreCase("1")) {
@@ -1748,11 +1747,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 	public boolean verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains(ReportsCompliance reportsCompliance,
 			List<String> autocompleteListEntries) {
+		String typeValue = reportsCompliance.getCustomerBoundaryFilterType().toString();
+		String expectedOptionXPath = "option[text()='"+typeValue+"'";
 		openCustomerBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen()
 			.switchMode(ControlMode.MapInteraction)
-			.waitForMapImageLoad()
-			.selectCustomerBoundaryType(reportsCompliance.getCustomerBoundaryFilterType().toString());
+			.waitForMapImageLoad();
+		latLongSelectionControl.WaitForElementReady(By.xpath(expectedOptionXPath));
+		latLongSelectionControl.selectCustomerBoundaryType(typeValue);
 
 		// Type customer boundary name and verify the autocomplete list. If not
 		// all entries shown, return false.
@@ -2427,7 +2429,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				.getReportDrivingSurveys(reportId);
 		Iterator<StoredProcComplianceAssessmentGetReportDrivingSurveys> reportIterator = reportList.iterator();
 		while (reportIterator.hasNext()) {
-			if (!reportIterator.next().isInList(listFromStoredProc)) {
+			StoredProcComplianceAssessmentGetReportDrivingSurveys obj = reportIterator.next();
+			if (!obj.isInList(listFromStoredProc)) {
 				Log.info("Report survey meta data file verification failed");
 				return false;
 			}

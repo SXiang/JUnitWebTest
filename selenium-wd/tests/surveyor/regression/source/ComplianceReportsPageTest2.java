@@ -34,6 +34,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
+import static surveyor.scommon.source.SurveyorConstants.CUSDRVETHSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.REGBASEUSERNAME;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
@@ -293,7 +294,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		String testCaseID = "TC1038";
 		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
 
-		complianceReportsPage.open();
+		complianceReportsPage.open();		
 		List<String> listBoundary1 = new ArrayList<String>();
 		listBoundary1.add(IMGMAPHEIGHT);
 		listBoundary1.add(IMGMAPWIDTH);
@@ -1444,21 +1445,21 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
 
-		complianceReportsPage.addNewReport(rpt);
-		complianceReportsPage.waitForPageLoad();
-		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
-
+//		complianceReportsPage.addNewReport(rpt);
+//		complianceReportsPage.waitForPageLoad();
+//		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
+//
 		complianceReportsPage.findReportbySearch(rptTitle, testSetup.getLoginUser());
-
-
-		try {
-			complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
-			complianceReportsPage.waitForResubmitButton();
-			complianceReportsPage.getBtnResubmitReport().click();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		complianceReportsPage.waitForPageLoad();
+//
+//
+//		try {
+//			complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
+//			complianceReportsPage.waitForResubmitButton();
+//			complianceReportsPage.getBtnResubmitReport().click();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
@@ -1787,11 +1788,13 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		List<Map<String, String>> viewList3 = new ArrayList<Map<String, String>>();
+		viewList1.add(createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList3.add(createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
-		tagList.add("stnd-sqacudr");
+		tagList.add(CUSDRVETHSTDTAG);
 		
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
@@ -1832,6 +1835,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		complianceReportsPage.open();
 		ReportsCompliance rpt3 = new ReportsCompliance(rptTitle3, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
+		rpt3.setViewLayersList(viewLayerList2);
 		rpt3.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
 		complianceReportsPage.addNewReport(rpt3);
 		complianceReportsPage.waitForPageLoad();

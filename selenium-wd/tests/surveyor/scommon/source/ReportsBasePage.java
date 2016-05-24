@@ -779,7 +779,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			// Loop through table elements and check selected number of surveys.
 			for (int rowNum = 1; rowNum <= loopCount && selectedSurveysCount < numSurveysToSelect; rowNum++) {
-				checkBoxXPath = "//*[@id='datatableSurveys']/tbody/tr[" + rowNum + "]/td/input[@type='checkbox']";
+				checkBoxXPath = "tr[" + rowNum + "]/td/input[@type='checkbox']";
 				checkBoxActionCell = surveyTable.findElement(By.xpath(checkBoxXPath));
 				checkBoxActionCell.click();
 				selectedSurveysCount++;
@@ -789,7 +789,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					this.surveyNextButton.click();
 					this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 					List<WebElement> newRows = surveyTable
-							.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
+							.findElements(By.xpath("tr"));
 
 					rowSize = newRows.size();
 
@@ -937,7 +937,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void openNewReportPage() {
 		String elementXPath = "//*[@id='datatableViews']/tbody/tr/td[2]/input";
-		this.btnNewComplianceRpt.click();
+		waitUntilPresenceOfElementLocated(By.xpath(strBtnNewCompRpt));
+		jsClick(this.btnNewComplianceRpt);
 		refreshPageUntilElementFound(elementXPath);
 		this.waitForNewPageLoad();
 		
@@ -1340,8 +1341,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		this.waitForPageLoad();
 		String reportTitleXPath;
 		String createdByXPath;
-
-		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("tr"));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -1356,8 +1356,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 		String lastSeenCreatedByCellText = "";
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
+			createdByXPath = "tr[" + rowNum + "]/td[3]";
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
@@ -1376,7 +1376,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				while (bContinue) {
 					try {
 						if (rowSize == 1) {
-							this.btnReportViewer = getTable().findElement(By.xpath("//*[@id='datatable']/tbody/tr/td[5]/a[3]"));
+							this.btnReportViewer = getTable().findElement(By.xpath("tr/td[5]/a[3]"));
 							this.btnReportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						} else {
@@ -1389,7 +1389,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							}
 
 							this.btnReportViewer = getTable().findElement(
-									By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]"));
+									By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
 							this.btnReportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						}
@@ -1413,7 +1413,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.waitForPageLoad();
-				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;

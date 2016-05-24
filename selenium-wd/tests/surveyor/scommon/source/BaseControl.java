@@ -21,4 +21,10 @@ public class BaseControl {
 		  .until(ExpectedConditions.presenceOfElementLocated
 				  (By.id(elementID)));
 	}
+	
+	public void WaitForElementReady(By elementBy) {
+		(new WebDriverWait(this.driver, this.timeout))
+		  .until(ExpectedConditions.presenceOfElementLocated(
+				  elementBy));
+	}
 }
