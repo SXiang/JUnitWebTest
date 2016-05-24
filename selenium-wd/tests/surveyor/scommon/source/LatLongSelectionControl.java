@@ -156,6 +156,7 @@ public class LatLongSelectionControl extends BaseControl {
 	 * @return the LatLongSelectionControl class instance.
 	 */
 	public LatLongSelectionControl switchMode(ControlMode mode) {
+		Log.info("Switch map modal to '"+mode+"'");
 		switch (mode)
 		{
 		case MapInteraction:
@@ -213,6 +214,7 @@ public class LatLongSelectionControl extends BaseControl {
 	 * @return the LatLongSelectionControl class instance.
 	 */
 	public LatLongSelectionControl setCustomerBoundaryName(String name) {
+		Log.info("Set customer boundary name '"+name+"'");
 		selectByNameTextField.sendKeys(name);
 		this.waitForAutoCompleteListToOpen();
 		this.clickOnAutoCompleteListEntry(1);   // click on first entry in autocomplete list.
@@ -226,6 +228,7 @@ public class LatLongSelectionControl extends BaseControl {
 	 * @return the LatLongSelectionControl class instance.
 	 */
 	public LatLongSelectionControl selectCustomerBoundaryType(String filterByTypeValue) {
+		Log.info("Select customer boundary type '"+filterByTypeValue+"'");
 		String typeValueOptionXPath = "//*[@id='boundary-feature-class']/option[text()='"+filterByTypeValue+"']";
 		waitForElementReady(By.xpath(typeValueOptionXPath));
 		new Select(filterByTypeDropDown).selectByVisibleText(filterByTypeValue);
@@ -317,7 +320,8 @@ public class LatLongSelectionControl extends BaseControl {
 	 */
 	public LatLongSelectionControl waitForMapImageLoad() {
 		// Wait for image data on the canvas to be present.
-		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
+		Log.info("Wait for map image to load.");		
+		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {		
 			String jScript = GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION + 
 					GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION_CALL;
 			public Boolean apply(WebDriver d) {

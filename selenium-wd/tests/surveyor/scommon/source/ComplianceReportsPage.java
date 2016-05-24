@@ -3534,9 +3534,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public void fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName) {
 		openCustomerBoundarySelector();
-		latLongSelectionControl.waitForModalDialogOpen().switchMode(ControlMode.MapInteraction).waitForMapImageLoad()
-				.selectCustomerBoundaryType(customerBoundaryFilterType).setCustomerBoundaryName(customerBoundaryName)
-				.switchMode(ControlMode.Default).clickOkButton().waitForModalDialogToClose();
+		latLongSelectionControl.waitForModalDialogOpen();
+		latLongSelectionControl.switchMode(ControlMode.MapInteraction);
+		latLongSelectionControl.waitForMapImageLoad();
+		latLongSelectionControl.selectCustomerBoundaryType(customerBoundaryFilterType);
+		latLongSelectionControl.setCustomerBoundaryName(customerBoundaryName);
+		latLongSelectionControl.switchMode(ControlMode.Default);
+		latLongSelectionControl.clickOkButton();
+		latLongSelectionControl.waitForModalDialogToClose();
 	}
 
 	private boolean useCustomBoundaryLatLongSelector(ReportsCompliance reportsCompliance) {
