@@ -39,13 +39,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	private static ManageSurveyorPage manageSurveyorPage;
 	private static ManageAnalyzersPage manageAnalyzersPage;
 	public static final String ManageAnalyzer_AlreadyAssociatedError = Resources.getResource(ResourceKeys.ManageAnalyzer_AlreadyAssociatedError);
-	public static final String Constant_Customer = Resources.getResource(ResourceKeys.Constant_Customer);
-	public static final String Constant_Surveyor = Resources.getResource(ResourceKeys.Constant_Surveyor);
-	public static final String Constant_Location = Resources.getResource(ResourceKeys.Constant_Location);
-	public static final String Constant_Analyzer = Resources.getResource(ResourceKeys.Constant_Analyzer);
-	public static final String Constant_AnalyzerType = Resources.getResource(ResourceKeys.Constant_AnalyzerType);	
-
-	protected String pagination = "100";
+	
 	
 	@BeforeClass
 	public static void setupManageAnalyzersPageTest() {
@@ -351,21 +345,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		manageAnalyzersPage.open();
-		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
-		columnMap.put(Constant_Customer, TableColumnType.String);
-		assertTrue(manageAnalyzersPage.checkTableSort("datatable", columnMap, pagination, manageAnalyzersPage.getPaginationOption()));
-		columnMap.remove(Constant_Customer);
-		columnMap.put(Constant_Location, TableColumnType.String);
-		assertTrue(manageAnalyzersPage.checkTableSort("datatable", columnMap, pagination, manageAnalyzersPage.getPaginationOption()));
-		columnMap.remove(Constant_Location);
-		columnMap.put(Constant_Surveyor, TableColumnType.String);
-		assertTrue(manageAnalyzersPage.checkTableSort("datatable", columnMap, pagination, manageAnalyzersPage.getPaginationOption()));
-		columnMap.remove(Constant_Surveyor);
-		columnMap.put(Constant_Analyzer, TableColumnType.String);
-		assertTrue(manageAnalyzersPage.checkTableSort("datatable", columnMap, pagination, manageAnalyzersPage.getPaginationOption()));
-		columnMap.remove(Constant_Analyzer);
-		columnMap.put(Constant_AnalyzerType, TableColumnType.String);
-		assertTrue(manageAnalyzersPage.checkTableSort("datatable", columnMap, pagination, manageAnalyzersPage.getPaginationOption()));	
+		assertTrue(manageAnalyzersPage.areTableColumnsSorted());	
 	}
 	
 	/**

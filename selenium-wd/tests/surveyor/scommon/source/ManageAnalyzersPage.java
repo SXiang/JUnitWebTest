@@ -3,8 +3,10 @@
  */
 package surveyor.scommon.source;
 
+import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -19,6 +21,7 @@ import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.source.DataTablePage.TableColumnType;
 
 /**
  * @author zlu
@@ -31,6 +34,13 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageAnalyzers_PageTitle);
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ManageAnalyzer_NewAnalyzer);
 	public static final String STREditPageContentText = Resources.getResource(ResourceKeys.ManageAnalyzer_EditAnalyzer);
+	public static final String Constant_Customer = Resources.getResource(ResourceKeys.Constant_Customer);
+	public static final String Constant_Surveyor = Resources.getResource(ResourceKeys.Constant_Surveyor);
+	public static final String Constant_Location = Resources.getResource(ResourceKeys.Constant_Location);
+	public static final String Constant_Analyzer = Resources.getResource(ResourceKeys.Constant_Analyzer);
+	public static final String Constant_AnalyzerType = Resources.getResource(ResourceKeys.Constant_AnalyzerType);	
+
+	protected String pagination = "100";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	private WebElement btnAddNewAnalyzer;
@@ -359,7 +369,57 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 
 		return false;
 	}
-
+	
+	public boolean areTableColumnsSorted(){
+		if(!isCustomerColumnSorted()){
+			return false;
+		}
+		if(!isLocationColumnSorted()){
+			return false;
+		}
+		if(!isSurveyorColumnSorted()){
+			return false;
+		}
+		if(!isAnalyzerColumnSorted()){
+			return false;
+		}
+		if(!isAnalyzerTypeColumnSorted()){
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean isCustomerColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_Customer, TableColumnType.String);
+		return checkTableSort("datatable", columnMap, pagination, getPaginationOption());
+	}
+	
+	public boolean isLocationColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_Location, TableColumnType.String);
+		return checkTableSort("datatable", columnMap, pagination, getPaginationOption());
+	}
+	
+	public boolean isSurveyorColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_Surveyor, TableColumnType.String);
+		return checkTableSort("datatable", columnMap, pagination, getPaginationOption());
+	}
+	
+	public boolean isAnalyzerColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_Analyzer, TableColumnType.String);
+		return checkTableSort("datatable", columnMap, pagination, getPaginationOption());
+	}
+	
+	public boolean isAnalyzerTypeColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_AnalyzerType, TableColumnType.String);
+		return checkTableSort("datatable", columnMap, pagination, getPaginationOption());
+	}
+	
+	
 	public void clickOnAddNewAnalyzerBtn() {
 		this.btnAddNewAnalyzer.click();
 	}
