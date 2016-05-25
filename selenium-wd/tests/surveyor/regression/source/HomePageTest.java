@@ -271,13 +271,13 @@ public class HomePageTest extends SurveyorBaseTest {
 		surveyViewPage.waitForPageLoad();
 		surveyViewPage.waitForAJAXCallsToComplete();
 		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());
-		surveyViewPage.clickLogo();
+		surveyViewPage.clickPicarroLogoButton();
 		homePage.waitForPageLoad();
 		assertTrue(homePage.checkIfAtHomePage());
 		homePage.getLinkDrivingSurveys().click();
 		measurementSessionsPage.waitForPageLoad();
 		try {
-			measurementSessionsPage.actionOnDrivingSurvey("stnd-pic", "Administrator", "Software Car", "FDDS2038", DrivingSurveyButtonType.ViewSurvey);
+			measurementSessionsPage.actionOnDrivingSurvey(PICADMNSTDTAG2, ADMINISTRATORUSER, SQAPICLOC4SUR, SQACUSLOCANZ, DrivingSurveyButtonType.ViewSurvey);
 		} catch (Exception e) {
 			Log.error(e.toString());
 		}

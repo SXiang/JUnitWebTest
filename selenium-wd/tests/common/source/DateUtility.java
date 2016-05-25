@@ -175,7 +175,7 @@ public class DateUtility {
 	 *            - given date time in String, reports- whether the format check is as per long date format.
 	 * @return whether the String is a match for the locale format
 	 */
-	public static boolean compareLongDateTimeFormat(String inputDateTime) {
+	public static boolean isValidLongDateTimeFormat(String inputDateTime) {
 		TemporalAccessor inputDate;
 		Locale locale = Locale.forLanguageTag(getLanguageTag());
 		try {
@@ -482,14 +482,14 @@ public class DateUtility {
 		// Unit tests - compareLongDateTimeFormat(String inputDateTime)
 		Log.info("Executing Unit tests for compareLongDateTimeFormat(String inputDateTime)");
 		TestContext.INSTANCE.setUserCulture("en-US");
-		Log.info(result = (date.compareLongDateTimeFormat("3/9/2016 6:04:41 PM CST")) ? "PASS" : "FAIL");
-		Log.info(result = (date.compareLongDateTimeFormat("24/01/2015 18:42:01 PM CST")) ? "FAIL" : "PASS");
+		Log.info(result = (date.isValidLongDateTimeFormat("3/9/2016 6:04:41 PM CST")) ? "PASS" : "FAIL");
+		Log.info(result = (date.isValidLongDateTimeFormat("24/01/2015 18:42:01 PM CST")) ? "FAIL" : "PASS");
 		TestContext.INSTANCE.setUserCulture("fr");
-		Log.info(result = (date.compareLongDateTimeFormat("12/14/2015 8:42:01 CET")) ? "FAIL" : "PASS");
-		Log.info(result = (date.compareLongDateTimeFormat("24/01/2015 18:42:01 CET")) ? "PASS" : "FAIL");
+		Log.info(result = (date.isValidLongDateTimeFormat("12/14/2015 8:42:01 CET")) ? "FAIL" : "PASS");
+		Log.info(result = (date.isValidLongDateTimeFormat("24/01/2015 18:42:01 CET")) ? "PASS" : "FAIL");
 		TestContext.INSTANCE.setUserCulture("zh-Hans");
-		Log.info(result = (date.compareLongDateTimeFormat("2015/01/12 18:42:22 CST")) ? "PASS" : "FAIL");
-		Log.info(result = (date.compareLongDateTimeFormat("24/01/2015 18:42:22 CST")) ? "FAIL" : "PASS");
+		Log.info(result = (date.isValidLongDateTimeFormat("2015/01/12 18:42:22 CST")) ? "PASS" : "FAIL");
+		Log.info(result = (date.isValidLongDateTimeFormat("24/01/2015 18:42:22 CST")) ? "FAIL" : "PASS");
 
 		// Unit tests - compareDateTimeFormat(String inputDateTime, boolean reports)
 		Log.info("Executing Unit tests for compareDateTimeFormat(String inputDateTime, boolean reports)");

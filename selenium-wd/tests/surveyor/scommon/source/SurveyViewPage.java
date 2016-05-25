@@ -107,9 +107,7 @@ public class SurveyViewPage extends BaseMapViewPage {
     @FindBy(css = "a[class='ol-attribution-bing-tos']")
     @CacheLookup
     private WebElement termsOfUse;
-    
-    @FindBy(id = "bottom_logo")
-    private WebElement logo;
+
     
     @FindBy(how = How.XPATH, using = SURVEY_INFO_TAG_LABEL_XPATH)
 	private WebElement labelTag;
@@ -400,11 +398,7 @@ public class SurveyViewPage extends BaseMapViewPage {
 		return driver.findElement(By.xpath(SURVEY_INFO_ANALYZER_LABEL_XPATH)).getText();
 	}
 
-	public void clickLogo() {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", logo);
-	}
-
+	
 	/**
      * Submit the form to target page.
      *

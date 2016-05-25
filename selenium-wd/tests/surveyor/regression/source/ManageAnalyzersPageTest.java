@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.Log;
@@ -25,6 +26,7 @@ import surveyor.scommon.source.DataTablePage.TableColumnType;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author zlu
@@ -378,8 +380,10 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);	
 		manageAnalyzersPage.open();
-		assertTrue(driver.findElements(By.xpath("//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")).size()==0);
-		assertTrue(driver.findElements(By.xpath("//*[@id='datatable']/tbody/tr[1]/td[7]/a[1]")).size()==0);
+		List<WebElement> addAnalyzerButton=driver.findElements(By.xpath("//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a"));
+		assertTrue(addAnalyzerButton.size()==0);
+		List<WebElement> editAnalyzerButton=driver.findElements(By.xpath("//*[@id='datatable']/tbody/tr[1]/td[7]/a[1]"));
+		assertTrue(editAnalyzerButton.size()==0);
 	
 	}
 	

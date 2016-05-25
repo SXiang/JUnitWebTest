@@ -71,9 +71,16 @@ public class SortHelper {
 		return isDateSortedDESC(strArray, beginAt, strArray.length - 1);
 	}
 
+	/**
+	 * Checks whether a Date array is sorted Descending 
+	 * @param strArray
+	 * @param beginAt - index 0 based
+	 * @param endAt - index 0 based
+	 * @return
+	 */
 	public static boolean isDateSortedDESC(String[] strArray, int beginAt, int endAt) {
 		DateTimeFormatter dateFormat=DateTimeFormat.forPattern(DateUtility.getShortSimpleDateFormat());
-		for (int i = beginAt + 1; i < endAt; i++) {		
+		for (int i = beginAt ; i < endAt; i++) {		
 				DateTime dateTime1 =dateFormat.parseDateTime(strArray[i]);
 				DateTime dateTime2 =dateFormat.parseDateTime(strArray[i+1]);
 				if(dateTime1.isBefore(dateTime2)){
@@ -91,6 +98,13 @@ public class SortHelper {
 		return isDateSortedASC(strArray, beginAt, strArray.length - 1);
 	}
 
+	/**
+	 * Checks whether a Date array is sorted Ascending 
+	 * @param strArray
+	 * @param beginAt - index 0 based
+	 * @param endAt - index 0 based
+	 * @return
+	 */
 	public static boolean isDateSortedASC(String[] strArray, int beginAt, int endAt) {
 		DateTimeFormatter dateFormat=DateTimeFormat.forPattern(DateUtility.getShortSimpleDateFormat());
 		for (int i = beginAt ; i < endAt; i++) {		
@@ -102,7 +116,7 @@ public class SortHelper {
 	}
 	return true;
 	}
-
+	
 	/**
 	 * Executes the unit tests for this class.
 	 * 
@@ -124,6 +138,8 @@ public class SortHelper {
 		Assert.assertFalse(isSortedASC(numbers, 1, 12));
 		Assert.assertTrue(isSortedASC(numbers, 13, 13));
 		Assert.assertFalse(isSortedASC(numbers, 11, 13));
+		Assert.assertFalse(isSortedASC(numbers, 1));
+		Assert.assertFalse(isSortedASC(numbers, 1, 13));
 
 		Log.info("Verified isSortedASC for numbers " + Arrays.toString(numbers));
 	}
@@ -161,23 +177,27 @@ public class SortHelper {
 	
 	private static void testisDateSortedDESC_String() {
 		TestContext.INSTANCE.setUserCulture("en-US");
-		String[] strings = { "5/12/2016 2:59:36 PM", "5/11/2016 10:11:32 AM", "5/10/2016 12:31:13 PM", "5/10/2016 12:25:00 PM", "5/10/2016 12:20:46 PM" };
+		String[] strings = { "5/12/2016 2:59 PM", "5/11/2016 10:11 AM", "5/10/2016 12:31 PM", "5/10/2016 12:25 PM", "5/10/2016 12:20 PM" };
 
 		Assert.assertTrue(isDateSortedDESC(strings, 1));
 		Assert.assertTrue(isDateSortedDESC(strings));
 		Assert.assertTrue(isDateSortedDESC(strings, 0, 1));
+		Assert.assertTrue(isDateSortedDESC(strings, 1, 1));
 
 		Log.info("Verified isSortedDESC for strings " + Arrays.toString(strings));
 	}
 	
 	private static void testisDateSortedASC_String() {
 		TestContext.INSTANCE.setUserCulture("en-US");
-		String[] strings = { "5/10/2016 12:20:46 PM" , "5/10/2016 12:25:00 PM", "5/10/2016 12:31:13 PM", "5/11/2016 10:11:32 AM",  "5/12/2016 2:59:36 PM"};
+		String[] strings = { "5/10/2016 12:20 PM" , "5/10/2016 12:25 PM", "5/10/2016 12:31 PM", "5/11/2016 10:11 AM",  "5/12/2016 2:59 PM"};
 
 		Assert.assertTrue(isDateSortedASC(strings, 1));
 		Assert.assertTrue(isDateSortedASC(strings));
 		Assert.assertTrue(isDateSortedASC(strings, 0, 0));
+		Assert.assertTrue(isDateSortedASC(strings, 0, 1));
 
 		Log.info("Verified isSortedDESC for strings " + Arrays.toString(strings));
 	}
+	
+
 }

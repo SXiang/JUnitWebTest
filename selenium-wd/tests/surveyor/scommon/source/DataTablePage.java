@@ -49,8 +49,6 @@ public class DataTablePage extends BasePage {
 	@FindBy(css = ".paginate_button.current")
 	private WebElement currentButton;
 
-	@FindBy(xpath = "//*[@id='datatable']/thead/tr")
-	private WebElement columnSort;
 
 	public enum TableColumnType {
 		Number("Number"), String("String"), Date("Date");
