@@ -1742,11 +1742,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 	public boolean verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains(ReportsCompliance reportsCompliance,
 			List<String> autocompleteListEntries) {
+		String typeValue = reportsCompliance.getCustomerBoundaryFilterType().toString();
 		openCustomerBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen()
 			.switchMode(ControlMode.MapInteraction)
-			.waitForMapImageLoad()
-			.selectCustomerBoundaryType(reportsCompliance.getCustomerBoundaryFilterType().toString());
+			.waitForMapImageLoad();
+		latLongSelectionControl.selectCustomerBoundaryType(typeValue);
 
 		// Type customer boundary name and verify the autocomplete list. If not
 		// all entries shown, return false.
@@ -2421,7 +2422,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				.getReportDrivingSurveys(reportId);
 		Iterator<StoredProcComplianceAssessmentGetReportDrivingSurveys> reportIterator = reportList.iterator();
 		while (reportIterator.hasNext()) {
-			if (!reportIterator.next().isInList(listFromStoredProc)) {
+			StoredProcComplianceAssessmentGetReportDrivingSurveys obj = reportIterator.next();
+			if (!obj.isInList(listFromStoredProc)) {
 				Log.info("Report survey meta data file verification failed");
 				return false;
 			}
@@ -3532,9 +3534,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public void fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName) {
 		openCustomerBoundarySelector();
-		latLongSelectionControl.waitForModalDialogOpen().switchMode(ControlMode.MapInteraction).waitForMapImageLoad()
-				.selectCustomerBoundaryType(customerBoundaryFilterType).setCustomerBoundaryName(customerBoundaryName)
-				.switchMode(ControlMode.Default).clickOkButton().waitForModalDialogToClose();
+		latLongSelectionControl.waitForModalDialogOpen();
+		latLongSelectionControl.switchMode(ControlMode.MapInteraction);
+		latLongSelectionControl.waitForMapImageLoad();
+		latLongSelectionControl.selectCustomerBoundaryType(customerBoundaryFilterType);
+		latLongSelectionControl.setCustomerBoundaryName(customerBoundaryName);
+		latLongSelectionControl.switchMode(ControlMode.Default);
+		latLongSelectionControl.clickOkButton();
+		latLongSelectionControl.waitForModalDialogToClose();
 	}
 
 	private boolean useCustomBoundaryLatLongSelector(ReportsCompliance reportsCompliance) {
