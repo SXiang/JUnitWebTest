@@ -43,7 +43,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 
 	private static ComplianceReportsPage complianceReportsPage;
 	private static MeasurementSessionsPage measurementSessionsPage;
-	
+
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
@@ -62,7 +62,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		homePageAction = new HomePageActions(driver, baseURL, testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
-	
+
 		// To run the test locally in UnitTest mode uncomment this line.
 		//setTestRunMode(ReportTestRunMode.UnitTestRun);
 
@@ -101,13 +101,11 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.clickOnOKButton(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
-		}
+	}
 
 	/**
 	 * Test Case ID: TC210_GenerateReportTryDeleteSurveyUsedWhileGeneratingReport
@@ -142,7 +140,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerCloseButton(EMPTY, getReportRowID(reportDataRowID1));
-		
+
 		measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver,  measurementSessionsPage);
 		measurementSessionsPage.open();
