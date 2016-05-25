@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
@@ -53,6 +54,7 @@ import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
 import net.lightbody.bmp.core.har.Har;
 import surveyor.dataaccess.source.Survey;
+import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.LoginPage;
 
 /**
@@ -140,7 +142,7 @@ public class TestSetup {
 	private boolean generateBaselineSSRSImages;
 	private boolean generateBaselineViewImages;
 	private boolean generateBaselineShapeFiles;
-	
+
 	private Integer executionTimesForLightLoadReportJobPerfBaseline;
 	private Integer executionTimesForMediumLoadReportJobPerfBaseline;
 	private Integer executionTimesForHighLoadReportJobPerfBaseline;
@@ -148,6 +150,10 @@ public class TestSetup {
 
 	private boolean logCategorySSRSPdfContentEnabled;
 	private boolean logCategoryComplianceReportActionsEnabled;
+
+	private String surveysToUpload;
+	private boolean uploadSurveyEnabled;
+	private String surveyUploadBaseUrl;
 
 	public TestSetup() {
 		initialize();
@@ -240,7 +246,7 @@ public class TestSetup {
 	private void setChromeBrowserCapabilities() {
 		setChromeBrowserCapabilities(null);
 	}
-	
+
 	private void setChromeBrowserCapabilities(Proxy proxy) {
 		Log.info("-----Chrome it is ----");
 		Map<String, Object> prefs = new HashMap<String, Object>();
@@ -264,7 +270,7 @@ public class TestSetup {
 	private void setChromeBrowserCapabilitiesForGrid() throws MalformedURLException {
 		setChromeBrowserCapabilitiesForGrid(null);
 	}
-	
+
 	private void setChromeBrowserCapabilitiesForGrid(Proxy proxy) throws MalformedURLException {
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("download.default_directory", this.downloadPath);
@@ -278,23 +284,18 @@ public class TestSetup {
 		if (proxy != null) {
 			this.capabilities.setCapability(CapabilityType.PROXY, proxy);
 		}
-		driver = new RemoteWebDriver(new URL("http://" + this.remoteServerHost + ":4444/wd/hub/"),
-				this.capabilities);
+		driver = new RemoteWebDriver(new URL("http://" + this.remoteServerHost + ":4444/wd/hub/"), this.capabilities);
 	}
 
 	/* NETWORK PROXY related methods */
-	/* EXAMPLE USAGE:
-	 * 1. Using Proxy to limit Upstream/Downstream KBPS.
-	 *    startNetworkProxy(true|false);
-	 *    setNetworkProxyDownstreamKbps(<long>);
-	 *    setNetworkProxyUpstreamKbps(<long>);
-	 *    ... <perform test actions> ...
-	 *    stopNetworkProxy();
-	 *    
+	/*
+	 * EXAMPLE USAGE: 1. Using Proxy to limit Upstream/Downstream KBPS.
+	 * startNetworkProxy(true|false); setNetworkProxyDownstreamKbps(<long>);
+	 * setNetworkProxyUpstreamKbps(<long>); ... <perform test actions> ...
+	 * stopNetworkProxy();
+	 * 
 	 * 2. Using Proxy to turn OFF/ON HTTP Traffic for Selenium tests.
-	 *    turnOffHttpTraffic();
-	 *    ... <perform test actions> ...
-	 *    turnOnHttpTraffic()
+	 * turnOffHttpTraffic(); ... <perform test actions> ... turnOnHttpTraffic()
 	 */
 
 	public void startNetworkProxy(boolean createHarFile) throws MalformedURLException {
@@ -302,11 +303,12 @@ public class TestSetup {
 		networkProxy = new BrowserMobProxyServer();
 		networkProxy.start(0);
 
-		// when we start the network proxy we are recycling the driver object. Quit the driver if present.
+		// when we start the network proxy we are recycling the driver object.
+		// Quit the driver if present.
 		if (this.driver != null) {
 			this.driver.quit();
 		}
-		
+
 		// get the selenium proxy object
 		Proxy seleniumProxy = ClientUtil.createSeleniumProxy(networkProxy);
 		setChromeBrowserCapabilities(seleniumProxy);
@@ -352,7 +354,7 @@ public class TestSetup {
 
 	public void turnOffHttpTraffic() throws MalformedURLException {
 		if (networkProxy == null || !networkProxy.isStarted()) {
-			startNetworkProxy(false /*createHarFile*/);
+			startNetworkProxy(false /* createHarFile */);
 		}
 
 		this.setNetworkProxyDownstreamKbps(0);
@@ -361,18 +363,20 @@ public class TestSetup {
 
 	public void turnOnHttpTraffic() {
 		if (networkProxy != null) {
-			// when we stop the network proxy we should recycling the driver object to remove the Proxy capability.
+			// when we stop the network proxy we should recycling the driver
+			// object to remove the Proxy capability.
 			if (this.driver != null) {
 				this.driver.quit();
 			}
 
-			setChromeBrowserCapabilities();  // No proxy.
+			setChromeBrowserCapabilities(); // No proxy.
 			this.stopNetworkProxy();
 		}
 	}
 
 	private static void executeUpdateConfigCmd(String workingUpdCmdFile) {
-		// Execute update analyzer configuration script from the contained folder.
+		// Execute update analyzer configuration script from the contained
+		// folder.
 		try {
 			String updateCmdFolder = getExecutionPath(getRootPath()) + "lib";
 			String updateCmdFileFullPath = updateCmdFolder + File.separator + workingUpdCmdFile;
@@ -393,7 +397,7 @@ public class TestSetup {
 		/* For CI and Eclipse run setup */
 		String executionPath = rootPath + File.separator + "selenium-wd" + File.separator;
 		/* For build.xml run locally */
-		//String executionPath = rootPath+ File.separator;
+		// String executionPath = rootPath+ File.separator;
 		return executionPath;
 	}
 
@@ -551,7 +555,8 @@ public class TestSetup {
 		return executionTimesForLightLoadReportJobPerfBaseline;
 	}
 
-	public void setExecutionTimesForLightLoadReportJobPerfBaseline(Integer executionTimesForLightLoadReportJobPerfBaseline) {
+	public void setExecutionTimesForLightLoadReportJobPerfBaseline(
+			Integer executionTimesForLightLoadReportJobPerfBaseline) {
 		this.executionTimesForLightLoadReportJobPerfBaseline = executionTimesForLightLoadReportJobPerfBaseline;
 	}
 
@@ -559,7 +564,8 @@ public class TestSetup {
 		return executionTimesForMediumLoadReportJobPerfBaseline;
 	}
 
-	public void setExecutionTimesForMediumLoadReportJobPerfBaseline(Integer executionTimesForMediumLoadReportJobPerfBaseline) {
+	public void setExecutionTimesForMediumLoadReportJobPerfBaseline(
+			Integer executionTimesForMediumLoadReportJobPerfBaseline) {
 		this.executionTimesForMediumLoadReportJobPerfBaseline = executionTimesForMediumLoadReportJobPerfBaseline;
 	}
 
@@ -567,7 +573,8 @@ public class TestSetup {
 		return executionTimesForHighLoadReportJobPerfBaseline;
 	}
 
-	public void setExecutionTimesForHighLoadReportJobPerfBaseline(Integer executionTimesForHighLoadReportJobPerfBaseline) {
+	public void setExecutionTimesForHighLoadReportJobPerfBaseline(
+			Integer executionTimesForHighLoadReportJobPerfBaseline) {
 		this.executionTimesForHighLoadReportJobPerfBaseline = executionTimesForHighLoadReportJobPerfBaseline;
 	}
 
@@ -575,7 +582,8 @@ public class TestSetup {
 		return executionTimesForUltraHighLoadReportJobPerfBaseline;
 	}
 
-	public void setExecutionTimesForUltraHighLoadReportJobPerfBaseline(Integer executionTimesForUltraHighLoadReportJobPerfBaseline) {
+	public void setExecutionTimesForUltraHighLoadReportJobPerfBaseline(
+			Integer executionTimesForUltraHighLoadReportJobPerfBaseline) {
 		this.executionTimesForUltraHighLoadReportJobPerfBaseline = executionTimesForUltraHighLoadReportJobPerfBaseline;
 	}
 
@@ -598,7 +606,7 @@ public class TestSetup {
 	public String getSoftwareVersion() {
 		return this.softwareVersion;
 	}
-	
+
 	public void initialize() {
 		try {
 
@@ -633,54 +641,17 @@ public class TestSetup {
 
 			this.chromeDriverPath = getExecutionPath(rootPath) + "lib" + File.separator + "chromedriver.exe";
 			this.implicitlyWaitTimeOutInSeconds = this.testProp.getProperty("implicitlyWaitTimeOutInSeconds");
-			this.implicitlyWaitSpecialTimeOutInSeconds = this.testProp.getProperty("implicitlyWaitSpecialTimeOutInSeconds");
+			this.implicitlyWaitSpecialTimeOutInSeconds = this.testProp
+					.getProperty("implicitlyWaitSpecialTimeOutInSeconds");
 			this.implicitlyWaitSpecialTimeOutInMS = this.testProp.getProperty("implicitlyWaitSpecialTimeOutInMS");
 
 			this.runEnvironment = this.testProp.getProperty("runEnvironment");
 			this.testRunCategory = this.testProp.getProperty("testRunCategory");
-			
-			String collectReportJobPerfMetric = this.testProp.getProperty("complianceReport_collectReportJobPerfMetric");
-			if (collectReportJobPerfMetric != null && collectReportJobPerfMetric != "") {
-				this.setCollectReportJobPerfMetric(Boolean.valueOf(collectReportJobPerfMetric));
-			}
-			String generateBaselineSSRSImages = this.testProp.getProperty("complianceReport_generateBaselineSSRSImages");
-			if (generateBaselineSSRSImages != null && generateBaselineSSRSImages != "") {
-				this.setGenerateBaselineSSRSImages(Boolean.valueOf(generateBaselineSSRSImages));
-			}
-			String generateBaselineViewImages = this.testProp.getProperty("complianceReport_generateBaselineViewImages");
-			if (generateBaselineViewImages != null && generateBaselineViewImages != "") {
-				this.setGenerateBaselineViewImages(Boolean.valueOf(generateBaselineViewImages));
-			}
-			String generateBaselineShapeFiles = this.testProp.getProperty("complianceReport_generateBaselineShapeFiles");
-			if (generateBaselineShapeFiles != null && generateBaselineShapeFiles != "") {
-				this.setGenerateBaselineShapeFiles(Boolean.valueOf(generateBaselineShapeFiles));
-			}
-			
-			String executionTimesForLightLoadBaselineCollection = this.testProp.getProperty("complianceReport_executionTimesForLightLoadBaselineCollection");
-			if (executionTimesForLightLoadBaselineCollection != null && executionTimesForLightLoadBaselineCollection != "") {
-				this.setExecutionTimesForLightLoadReportJobPerfBaseline(Integer.valueOf(executionTimesForLightLoadBaselineCollection));
-			}
-			String executionTimesForMediumLoadBaselineCollection = this.testProp.getProperty("complianceReport_executionTimesForMediumLoadBaselineCollection");
-			if (executionTimesForMediumLoadBaselineCollection != null && executionTimesForMediumLoadBaselineCollection != "") {
-				this.setExecutionTimesForMediumLoadReportJobPerfBaseline(Integer.valueOf(executionTimesForMediumLoadBaselineCollection));
-			}
-			String executionTimesForHighLoadBaselineCollection = this.testProp.getProperty("complianceReport_executionTimesForHighLoadBaselineCollection");
-			if (executionTimesForHighLoadBaselineCollection != null && executionTimesForHighLoadBaselineCollection != "") {
-				this.setExecutionTimesForHighLoadReportJobPerfBaseline(Integer.valueOf(executionTimesForHighLoadBaselineCollection));
-			}
-			String executionTimesForUltraHighLoadBaselineCollection = this.testProp.getProperty("complianceReport_executionTimesForUltraHighLoadBaselineCollection");
-			if (executionTimesForUltraHighLoadBaselineCollection != null && executionTimesForUltraHighLoadBaselineCollection != "") {
-				this.setExecutionTimesForUltraHighLoadReportJobPerfBaseline(Integer.valueOf(executionTimesForUltraHighLoadBaselineCollection));
-			}
 
-			String logCategorySSRSPdfContent = this.testProp.getProperty("logCategory.SSRSPdfContent.Enabled");
-			if (logCategorySSRSPdfContent != null && logCategorySSRSPdfContent != "") {
-				this.setLogCategorySSRSPdfContentEnabled(Boolean.valueOf(logCategorySSRSPdfContent));
-			}
-			String logCategoryComplianceReportActions = this.testProp.getProperty("logCategory.ComplianceReportActions.Enabled");
-			if (logCategoryComplianceReportActions != null && logCategoryComplianceReportActions != "") {
-				this.setLogCategoryComplianceReportActionsEnabled(Boolean.valueOf(logCategoryComplianceReportActions));
-			}
+			setLoggingTestProperties();
+			setComplianceReportBaselineGenerationTestProperties();
+			setPerformanceExecutionTestProperties();
+			setUploadSurveyTestProperties();
 
 			this.language = this.testProp.getProperty("language");
 			this.culture = this.testProp.getProperty("culture");
@@ -705,10 +676,92 @@ public class TestSetup {
 			driverSetup();
 			inputStream.close();
 
+			// If survey upload is enabled, upload the specified surveys to
+			// environment.
+			// We have a 2nd level of check (ie matching base url provided) to
+			// prevent accidental upload to unintended environment.
+			if (isUploadSurveyEnabled() && this.getSurveyUploadBaseUrl().equalsIgnoreCase(this.baseURL)) {
+				try {
+					uploadSurveys();
+				} catch (Exception e) {
+					Log.error(e.toString());
+				}
+			}
+
 		} catch (FileNotFoundException e) {
 			Log.error(e.toString());
 		} catch (IOException e) {
 			Log.error(e.toString());
+		}
+	}
+
+	private void setComplianceReportBaselineGenerationTestProperties() {
+		String collectReportJobPerfMetric = this.testProp.getProperty("complianceReport_collectReportJobPerfMetric");
+		if (collectReportJobPerfMetric != null && collectReportJobPerfMetric != "") {
+			this.setCollectReportJobPerfMetric(Boolean.valueOf(collectReportJobPerfMetric));
+		}
+		String generateBaselineSSRSImages = this.testProp.getProperty("complianceReport_generateBaselineSSRSImages");
+		if (generateBaselineSSRSImages != null && generateBaselineSSRSImages != "") {
+			this.setGenerateBaselineSSRSImages(Boolean.valueOf(generateBaselineSSRSImages));
+		}
+		String generateBaselineViewImages = this.testProp.getProperty("complianceReport_generateBaselineViewImages");
+		if (generateBaselineViewImages != null && generateBaselineViewImages != "") {
+			this.setGenerateBaselineViewImages(Boolean.valueOf(generateBaselineViewImages));
+		}
+		String generateBaselineShapeFiles = this.testProp.getProperty("complianceReport_generateBaselineShapeFiles");
+		if (generateBaselineShapeFiles != null && generateBaselineShapeFiles != "") {
+			this.setGenerateBaselineShapeFiles(Boolean.valueOf(generateBaselineShapeFiles));
+		}
+	}
+
+	private void setUploadSurveyTestProperties() {
+		String uploadSurveyEnabledValue = this.testProp.getProperty("surveyUpload.Enabled");
+		if (uploadSurveyEnabledValue != null && uploadSurveyEnabledValue != "") {
+			this.setUploadSurveyEnabled(Boolean.valueOf(uploadSurveyEnabledValue));
+		}
+		this.setSurveysToUpload(this.testProp.getProperty("surveyUpload.Surveys"));
+		this.setSurveyUploadBaseUrl(this.testProp.getProperty("surveyUpload.BaseUrl"));
+	}
+
+	private void setPerformanceExecutionTestProperties() {
+		String executionTimesForLightLoadBaselineCollection = this.testProp
+				.getProperty("complianceReport_executionTimesForLightLoadBaselineCollection");
+		if (executionTimesForLightLoadBaselineCollection != null
+				&& executionTimesForLightLoadBaselineCollection != "") {
+			this.setExecutionTimesForLightLoadReportJobPerfBaseline(
+					Integer.valueOf(executionTimesForLightLoadBaselineCollection));
+		}
+		String executionTimesForMediumLoadBaselineCollection = this.testProp
+				.getProperty("complianceReport_executionTimesForMediumLoadBaselineCollection");
+		if (executionTimesForMediumLoadBaselineCollection != null
+				&& executionTimesForMediumLoadBaselineCollection != "") {
+			this.setExecutionTimesForMediumLoadReportJobPerfBaseline(
+					Integer.valueOf(executionTimesForMediumLoadBaselineCollection));
+		}
+		String executionTimesForHighLoadBaselineCollection = this.testProp
+				.getProperty("complianceReport_executionTimesForHighLoadBaselineCollection");
+		if (executionTimesForHighLoadBaselineCollection != null && executionTimesForHighLoadBaselineCollection != "") {
+			this.setExecutionTimesForHighLoadReportJobPerfBaseline(
+					Integer.valueOf(executionTimesForHighLoadBaselineCollection));
+		}
+		String executionTimesForUltraHighLoadBaselineCollection = this.testProp
+				.getProperty("complianceReport_executionTimesForUltraHighLoadBaselineCollection");
+		if (executionTimesForUltraHighLoadBaselineCollection != null
+				&& executionTimesForUltraHighLoadBaselineCollection != "") {
+			this.setExecutionTimesForUltraHighLoadReportJobPerfBaseline(
+					Integer.valueOf(executionTimesForUltraHighLoadBaselineCollection));
+		}
+	}
+
+	private void setLoggingTestProperties() {
+		String logCategorySSRSPdfContent = this.testProp.getProperty("logCategory.SSRSPdfContent.Enabled");
+		if (logCategorySSRSPdfContent != null && logCategorySSRSPdfContent != "") {
+			this.setLogCategorySSRSPdfContentEnabled(Boolean.valueOf(logCategorySSRSPdfContent));
+		}
+		String logCategoryComplianceReportActions = this.testProp
+				.getProperty("logCategory.ComplianceReportActions.Enabled");
+		if (logCategoryComplianceReportActions != null && logCategoryComplianceReportActions != "") {
+			this.setLogCategoryComplianceReportActionsEnabled(Boolean.valueOf(logCategoryComplianceReportActions));
 		}
 	}
 
@@ -814,7 +867,8 @@ public class TestSetup {
 			String replayCmdFullPath = replayCmdFolder + File.separator + REPLAY_DEFN_CURL_FILE;
 			String command = "cd \"" + replayCmdFolder + "\" && " + replayCmdFullPath + " " + defnFileName;
 			Log.info("Executing replay script. Command -> " + command);
-			ProcessOutputInfo processOutputInfo = ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
+			ProcessOutputInfo processOutputInfo = ProcessUtility.executeProcess(command, /* isShellCommand */ true,
+					/* waitForExit */ true);
 			analyzerProcess = processOutputInfo.getProcess();
 		} catch (IOException e) {
 			Log.error(e.toString());
@@ -859,7 +913,8 @@ public class TestSetup {
 		stopAnalyzerIfRunning();
 
 		// Start the Analyzer process.
-		ProcessOutputInfo processOutputInfo = ProcessUtility.executeProcess(ANALYZER_EXE_PATH, /* isShellCommand */ false, /* waitForExit */ false);
+		ProcessOutputInfo processOutputInfo = ProcessUtility.executeProcess(ANALYZER_EXE_PATH,
+				/* isShellCommand */ false, /* waitForExit */ false);
 		analyzerProcess = processOutputInfo.getProcess();
 		if (analyzerProcess.isAlive()) {
 			Log.info("Analyzer EXE started Successfully!");
@@ -910,7 +965,7 @@ public class TestSetup {
 		} finally {
 			bufferedWriter.close();
 		}
-		
+
 		return FileUtility.readFileContents(harDataFullPath);
 	}
 
@@ -934,11 +989,12 @@ public class TestSetup {
 		}
 	}
 
-	public static void updateAnalyzerConfiguration(String analyzerSerialNumber, String analyzerSharedKey) {
-		updateAnalyzerConfiguration(analyzerSerialNumber, analyzerSharedKey, 0);
+	public static void updateAnalyzerConfiguration(String p3Url, String analyzerSerialNumber,
+			String analyzerSharedKey) {
+		updateAnalyzerConfiguration(p3Url, analyzerSerialNumber, analyzerSharedKey, 0);
 	}
 
-	public static void updateAnalyzerConfiguration(String analyzerSerialNumber, String analyzerSharedKey,
+	public static void updateAnalyzerConfiguration(String p3Url, String analyzerSerialNumber, String analyzerSharedKey,
 			Integer maxSurveyDuration) {
 		try {
 			String workingFolder = getExecutionPath(getRootPath());
@@ -954,6 +1010,7 @@ public class TestSetup {
 			// Update the working copy.
 			Hashtable<String, String> placeholderMap = new Hashtable<String, String>();
 			placeholderMap.put("%WORKING_DIR%", workingFolder);
+			placeholderMap.put("%0%", p3Url);
 			placeholderMap.put("%1%", analyzerSerialNumber);
 			placeholderMap.put("%2%", analyzerSharedKey);
 			placeholderMap.put("%3%", String.valueOf(maxSurveyDuration));
@@ -973,19 +1030,20 @@ public class TestSetup {
 		TestSetup testSetup = new TestSetup(true /* initialization=TRUE */);
 		TestContext.INSTANCE.setTestSetup(testSetup);
 
-		// Run the Unit test for BrowserMob Proxy. 
+		// Run the Unit test for BrowserMob Proxy.
 		testBrowserMobProxyMethods(testSetup);
 	}
 
 	/**
 	 * Executes the unit tests for BrowserMobProxy related methods.
+	 * 
 	 * @param testSetup
 	 */
 	private static void testBrowserMobProxyMethods(TestSetup testSetup) {
 		String validTag = "stnd-sqacudr";
 		Survey objSurvey = null;
 		boolean stoppedProxy = false;
-		try {		
+		try {
 			Log.info("Running test - testStartNetworkProxy() ...");
 			testStartNetworkProxy(testSetup);
 			Log.info("Running test - testNetworkConnectionOff() ...");
@@ -996,7 +1054,7 @@ public class TestSetup {
 			Log.info("Running test - testHarDataFile() ...");
 			testHarDataFile(testSetup);
 		} catch (Exception e) {
-			Assert.fail("UNEXPECTED EXCEPTION: " + ExceptionUtility.getStackTraceString(e));	
+			Assert.fail("UNEXPECTED EXCEPTION: " + ExceptionUtility.getStackTraceString(e));
 		} finally {
 			if (!stoppedProxy) {
 				testStopNetworkProxy(testSetup);
@@ -1009,8 +1067,9 @@ public class TestSetup {
 
 	/**
 	 * Tests startNetworkProxy() method.
+	 * 
 	 * @param testSetup
-	 * @throws MalformedURLException 
+	 * @throws MalformedURLException
 	 */
 	private static void testStartNetworkProxy(TestSetup testSetup) throws MalformedURLException {
 		testSetup.startNetworkProxy(true);
@@ -1018,6 +1077,7 @@ public class TestSetup {
 
 	/**
 	 * Tests stopNetworkProxy() method.
+	 * 
 	 * @param testSetup
 	 */
 	private static void testStopNetworkProxy(TestSetup testSetup) {
@@ -1026,6 +1086,7 @@ public class TestSetup {
 
 	/**
 	 * Tests getNetworkProxyHarData() method.
+	 * 
 	 * @param testSetup
 	 */
 	private static void testHarDataFile(TestSetup testSetup) throws IOException {
@@ -1040,16 +1101,18 @@ public class TestSetup {
 			harData.writeTo(bufferedWriter);
 			Log.info(String.format("Created HAR data file at: %s", harDataFullPath));
 		} catch (IOException e) {
-			// No exception thrown here. 
+			// No exception thrown here.
 			e.printStackTrace();
 		} finally {
 			bufferedWriter.close();
 		}
-		Assert.assertTrue(FileUtility.readFileContents(harDataFullPath).length()>0, "HarData file should have content.");
+		Assert.assertTrue(FileUtility.readFileContents(harDataFullPath).length() > 0,
+				"HarData file should have content.");
 	}
 
 	/**
 	 * Tests turnOnNetworkConnection() method.
+	 * 
 	 * @param testSetup
 	 */
 	private static void testNetworkConnectionOn(TestSetup testSetup, String validTag, Survey objSurvey) {
@@ -1058,7 +1121,8 @@ public class TestSetup {
 			objSurvey = Survey.getSurvey(validTag);
 			testSetup.getDriver().get(testSetup.baseURL);
 		} catch (Exception e) {
-			// No exception should be thrown here, as Network Connection is back ON.
+			// No exception should be thrown here, as Network Connection is back
+			// ON.
 			Log.error("UNEXPECTED ERROR: " + ExceptionUtility.getStackTraceString(e));
 		}
 		Assert.assertTrue(objSurvey != null, "Survey object should NOT be NULL.");
@@ -1067,10 +1131,12 @@ public class TestSetup {
 
 	/**
 	 * Tests turnOffNetworkConnection() method.
+	 * 
 	 * @param testSetup
-	 * @throws MalformedURLException 
+	 * @throws MalformedURLException
 	 */
-	private static void testNetworkConnectionOff(TestSetup testSetup, String validTag, Survey objSurvey) throws MalformedURLException {
+	private static void testNetworkConnectionOff(TestSetup testSetup, String validTag, Survey objSurvey)
+			throws MalformedURLException {
 		testSetup.turnOffHttpTraffic();
 		try {
 			objSurvey = Survey.getSurvey(validTag);
@@ -1082,5 +1148,57 @@ public class TestSetup {
 		Assert.assertTrue(objSurvey != null, "Survey object should NOT be NULL. "
 				+ "Network connection is NOT disabled. ONLY Http traffic should be disabled.");
 		Assert.assertTrue(testSetup.getDriver().getPageSource().contains("ERR_EMPTY_RESPONSE"));
+	}
+
+	public void uploadSurveys() throws Exception {
+		List<String> surveyInfos = RegexUtility.split(surveysToUpload, RegexUtility.SEMI_COLON_SPLIT_REGEX_PATTERN);
+		for (String surveyInfo : surveyInfos) {
+			surveyInfo = surveyInfo.replace("{", "");
+			surveyInfo = surveyInfo.replace("}", "");
+			List<String> surveyInfoParts = RegexUtility.split(surveyInfo, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
+			if (surveyInfoParts == null || surveyInfoParts.size() != 4) {
+				throw new IllegalArgumentException(
+						"Found incorrect specification for 'surveysToUpload' in test.properties");
+			}
+
+			Integer loginUserRowID = Integer.valueOf(surveyInfoParts.get(0));
+			Integer db3AnalyzerRowID = Integer.valueOf(surveyInfoParts.get(1));
+			Integer surveyRowID = Integer.valueOf(surveyInfoParts.get(2));
+			Integer runtimeInSeconds = Integer.valueOf(surveyInfoParts.get(3));
+
+			TestEnvironmentActions.generateSurveyForUser(loginUserRowID, db3AnalyzerRowID, surveyRowID,
+					runtimeInSeconds);
+		}
+	}
+
+	public String getSurveysToUpload() {
+		return surveysToUpload;
+	}
+
+	public void setSurveysToUpload(String surveysToUpload) {
+		this.surveysToUpload = surveysToUpload;
+	}
+
+	public boolean isUploadSurveyEnabled() {
+		return uploadSurveyEnabled;
+	}
+
+	public void setUploadSurveyEnabled(boolean uploadSurveyEnabled) {
+		this.uploadSurveyEnabled = uploadSurveyEnabled;
+	}
+
+	public static String getWorkingAnalyzerSerialNumber() {
+		if (TestEnvironmentActions.workingDataRow != null) {
+			return TestEnvironmentActions.workingDataRow.analyzerSerialNumber;
+		}
+		return TEST_ANALYZER_SERIAL_NUMBER;
+	}
+
+	public String getSurveyUploadBaseUrl() {
+		return surveyUploadBaseUrl;
+	}
+
+	public void setSurveyUploadBaseUrl(String surveyUploadBaseUrl) {
+		this.surveyUploadBaseUrl = surveyUploadBaseUrl;
 	}
 }

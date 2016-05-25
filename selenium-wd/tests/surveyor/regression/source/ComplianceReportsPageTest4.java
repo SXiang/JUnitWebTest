@@ -8,6 +8,7 @@ import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
@@ -31,12 +32,20 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 
 	/**
 	 * Initializes the page action objects.
+	 * @throws Exception 
 	 */
-	protected static void initializePageActions() {
+	protected static void initializePageActions() throws Exception {
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		homePageAction = new HomePageActions(driver, baseURL, testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
+		
+		// Select run mode here.
+		setTestRunMode(ReportTestRunMode.FullTestRun);
+		
+		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
+			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
+		}
 	}
 
 	/**

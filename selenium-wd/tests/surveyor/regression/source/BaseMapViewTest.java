@@ -106,6 +106,7 @@ public class BaseMapViewTest {
 	protected static DateUtility dateUtility = new DateUtility();
 
 	public BaseMapViewTest() {
+		initializePageActions();
 	}
 	
 	// JUnit does NOT give a good way to detect which TestClass is executing.

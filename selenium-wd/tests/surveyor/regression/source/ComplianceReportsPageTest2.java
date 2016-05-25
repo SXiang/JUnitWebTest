@@ -34,6 +34,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
+import static surveyor.scommon.source.SurveyorConstants.CUSDRVETHSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.REGBASEUSERNAME;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
@@ -348,24 +349,24 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
 		complianceReportsPage.clickOnCancelBtn();
-		
+
 		ReportsCompliance rpt2 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary1, tablesList2, "", tagList, "", "", viewList2, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt2);
 		assertTrue(complianceReportsPage.getAssetErrorText().getText().equals("Please make sure your selected boundary is less than 1.5 sq km when Gaps are selected"));
 
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
 		complianceReportsPage.clickOnCancelBtn();
-		
+
 		ReportsCompliance rpt3 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary2, tablesList1, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt3);
 		complianceReportsPage.waitForPageLoad();
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt3, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
-		}else
+		}else{
 			fail("\nTestcase TC1038 failed.\n");
-
-		
+		}
+		complianceReportsPage.open();
 		ReportsCompliance rpt4 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary2, tablesList2, "", tagList, "", "", viewList2, SurveyModeFilter.Standard);
 		complianceReportsPage.addNewReport(rpt4);
 		complianceReportsPage.waitForPageLoad();
@@ -1384,10 +1385,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		assertFalse(WebElementExtender.isElementPresentAndDisplayed(complianceReportsPage.getPercentCoverForecast()));
 		complianceReportsPage.clickOnCancelBtn();
 
-		String copyImgXPath = "//*[@id='datatable']/tbody/tr[1]/td[5]/a[2]/img";
-		WebElement copyImg = driver.findElement(By.xpath(copyImgXPath));
-
-		copyImg.click();
+		complianceReportsPage.clickOnFirstCopyComplianceBtn();
 		complianceReportsPage.waitForCopyReportPagetoLoad();
 		assertFalse(WebElementExtender.isElementPresentAndDisplayed(complianceReportsPage.getPercentCoverForecast()));
 	}
@@ -1787,11 +1785,13 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		List<Map<String, String>> viewList3 = new ArrayList<Map<String, String>>();
+		viewList1.add(createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList3.add(createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
-		tagList.add("stnd-sqacudr");
+		tagList.add(CUSDRVETHSTDTAG);
 		
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
@@ -1818,7 +1818,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		complianceReportsPage.addNewReport(rpt2);
 		complianceReportsPage.waitForPageLoad();
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle2, testSetup.getLoginUser(), testCaseID))) {
+		if ((complianceReportsPage.checkActionStatus(rptTitle2, testSetup.getLoginUser(), testCaseID+"_2"))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt2, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle2, testSetup.getLoginUser()));
 			if (tablesList != null) {
@@ -1831,12 +1831,12 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 			fail("\nTestcase TC1318 failed.\n");
 
 		complianceReportsPage.open();
-		ReportsCompliance rpt3 = new ReportsCompliance(rptTitle3, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
+		ReportsCompliance rpt3 = new ReportsCompliance(rptTitle3, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList3, SurveyModeFilter.Standard);
 		rpt3.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
 		complianceReportsPage.addNewReport(rpt3);
 		complianceReportsPage.waitForPageLoad();
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle3, testSetup.getLoginUser(), testCaseID))) {
+		if ((complianceReportsPage.checkActionStatus(rptTitle3, testSetup.getLoginUser(), testCaseID+"_3"))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt3, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle3, testSetup.getLoginUser()));
 			if (tablesList != null) {

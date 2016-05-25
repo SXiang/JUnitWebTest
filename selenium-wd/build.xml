@@ -254,8 +254,8 @@
 				<formatter type="xml" />
 				<fileset dir="${build}">
 
-					<include name="**/ComplianceReportsPageTest4.class" />
-					<include name="**/ComplianceReportsPageTest6.class" />
+					<include name="**/ComplianceReportsPageTest2.class" />
+					<include name="**/ComplianceReportsPageTest3.class" />
 
 				</fileset>
 			</batchtest>
@@ -349,6 +349,25 @@
 			</batchtest>
 		</junit>
 	</target>
+	<target name="testdb3surveyupload" depends="compileregression" description="Run upload db3 tests">
+		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
+				showoutput="yes">
+			<classpath>
+				<pathelement path="${build}" />
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+
+			<batchtest fork="yes" todir="${reports}/regression/xml">
+				<formatter type="xml" />
+				<fileset dir="${build}">
+					<include name="**/UploadDb3Test.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
 	<target name="testsanity" depends="compileSanity" description="Run sanity test suite">
 
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
