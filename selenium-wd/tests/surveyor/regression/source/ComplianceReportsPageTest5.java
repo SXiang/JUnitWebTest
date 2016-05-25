@@ -598,7 +598,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- Gaps shape file should only have gaps information
 	 *	- ReportGaps.csv file in meta data will have gaps information and numbering present
 	 */
-	@Test//Need to edit customer to enable/disable
+	@Ignore//Need to edit customer to enable/disable
 	public void TC1581_ProvideGapGrid10PrivilegeExistingCustomerGenerateComplianceReport() throws Exception {
 		Log.info("\nRunning TC1581_ProvideGapGrid10PrivilegeExistingCustomerGenerateComplianceReport ...");
 
@@ -630,7 +630,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- Gaps shape file should only have gaps information
 	 *	- ReportGaps.csv file in meta data will have gaps information and numbering present
 	 */
-	@Test //Need to edit customer to enable/disable
+	@Ignore //Need to edit customer to enable/disable
 	public void TC1583_ProvideGapGrid10PrivilegeExistingCustomerGenerateComplianceReportUsingCopyFunctionality() throws Exception {
 		Log.info("\nRunning TC1583_ProvideGapGrid10PrivilegeExistingCustomerGenerateComplianceReportUsingCopyFunctionality ...");
 
@@ -657,7 +657,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- Gaps shape file should only have gaps information
 	 *	- ReportGaps.csv file in meta data will have gaps information and numbering present
 	 */ 
-	@Test //Need to edit customer to enable/disable
+	@Ignore//Need to edit customer to enable/disable
 	public void TC1589_ProvideGapGrid10PrivilegeExistingCustomerReprocessComplianceReport() throws Exception {
 		Log.info("\nRunning TC1589_ProvideGapGrid10PrivilegeExistingCustomerReprocessComplianceReport ...");
 
@@ -685,7 +685,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Gaps shape file will only have gaps information
 	 *	- - ReportGaps.csv meta data file will have only single row with gaps information
 	 */
-	@Test //Need to edit customer to enable/disable
+	@Ignore //Need to edit customer to enable/disable
 	public void TC1595_RemoveGapGrid10FeatureFromExistingCustomerGenerateNewComplianceReport() throws Exception {
 		Log.info("\nRunning TC1595_RemoveGapGrid10FeatureFromExistingCustomerGenerateNewComplianceReport ...");
 
@@ -712,7 +712,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Gaps shape file will only have gaps information
 	 *	- - ReportGaps.csv meta data file will have only single row with gaps information
 	 */
-	@Test //Need to edit customer to enable/disable
+	@Ignore //Need to edit customer to enable/disable
 	public void TC1597_RemoveGapGrid10FeatureFromExistingCustomerGenerateComplianceReportUsingCopyFunctionalty() throws Exception {
 		Log.info("\nRunning TC1597_RemoveGapGrid10FeatureFromExistingCustomerGenerateComplianceReportUsingCopyFunctionalty ...");
 
@@ -738,7 +738,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Gaps shape file will only have gaps information
 	 *	- - ReportGaps.csv meta data file will have only single row with gaps information
 	 */
-	@Test  //Need to edit customer to enable/disable
+	@Ignore //Need to edit customer to enable/disable
 	public void TC1599_RemoveGapGrid10FeatureFromExistingCustomerReprocessExistingComplianceReport() throws Exception {
 		Log.info("\nRunning TC1599_RemoveGapGrid10FeatureFromExistingCustomerReprocessExistingComplianceReport ...");
 
@@ -810,7 +810,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)- Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Ignore  //Need customer enable/Disable
 	public void TC1651_Re_EnablePercentCoverageForecastFeaturesPermissionCustomer_NewComplianceReportGeneration() throws Exception {
 		Log.info("\nRunning TC1651_Re_EnablePercentCoverageForecastFeaturesPermissionCustomer_NewComplianceReportGeneration ...");
 
@@ -835,7 +835,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)- Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test //Need to edit customer enable/disable
+	@Ignore //Need to edit customer enable/disable
 	public void TC1652_Re_EnablePercentCoverageForecastFeaturesPermissionCustomer_CopyComplianceReportGeneration() throws Exception {
 		Log.info("\nRunning TC1652_Re_EnablePercentCoverageForecastFeaturesPermissionCustomer_CopyComplianceReportGeneration ...");
 
@@ -859,7 +859,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Forecast table and Gap table will not be present in SSRS PDF (by design)
 	 *	- - Gap grids will be present in report views
 	 */
-	@Test //Need to edit customer
+	@Ignore //Need to edit customer
 	public void TC1655_Re_EnabledPercentCoverageForecastGapGridFeaturesPermissionPicarro_ReprocessComplianceReportGenerationPicarroAdmin() throws Exception {
 		Log.info("\nRunning TC1655_Re_EnabledPercentCoverageForecastGapGridFeaturesPermissionPicarro_ReprocessComplianceReportGenerationPicarroAdmin ...");
 
