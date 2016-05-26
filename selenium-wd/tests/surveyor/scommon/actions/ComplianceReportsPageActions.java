@@ -2858,7 +2858,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean verifyShapeFilesWithBaselines(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyShapeFilesWithBaselines", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty("verifyShapeFilesWithBaselines", ARG_DATA, data);
 		ComplianceReportsDataRow complianceReportsDataRow = getComplianceReportsDataRow(dataRowID);
 		return this.getComplianceReportsPage().verifyShapeFilesWithBaselines(complianceReportsDataRow.title, 
 				complianceReportsDataRow.tCID, getDownloadFileIndex(data,2));
