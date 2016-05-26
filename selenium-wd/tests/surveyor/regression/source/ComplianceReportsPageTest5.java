@@ -51,6 +51,8 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		homePageAction = new HomePageActions(driver, baseURL, testSetup);
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
+		measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
+		PageFactory.initElements(driver,  measurementSessionsPage);
 	}
 
 	/**
@@ -97,7 +99,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
-		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
+		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
 		complianceReportsPageAction.clickOnOKButton(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
@@ -141,8 +143,6 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerCloseButton(EMPTY, getReportRowID(reportDataRowID1));
 
-		measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver,  measurementSessionsPage);
 		measurementSessionsPage.open();
 		measurementSessionsPage.performSearch(PICADMNSTDTAG2);
 		measurementSessionsPage.clickOnFirstSurveyDeleteLink();
@@ -406,10 +406,11 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.cancelInProgressReport(EMPTY, getReportRowID(reportDataRowID1));
-		testEnvironmentAction.idleForSeconds(String.valueOf(5), NOTSET);
+		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
-		testEnvironmentAction.idleForSeconds(String.valueOf(5), NOTSET);
+		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
 		complianceReportsPageAction.clickOnOKButton(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
@@ -442,10 +443,11 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.cancelInProgressReport(EMPTY, getReportRowID(reportDataRowID1));
-		testEnvironmentAction.idleForSeconds(String.valueOf(5), NOTSET);
+		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
-		testEnvironmentAction.idleForSeconds(String.valueOf(5), NOTSET);
+		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
 		complianceReportsPageAction.clickOnOKButton(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
@@ -481,9 +483,9 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
-		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.selectReportMode(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID2));
+		complianceReportsPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyCancelButtonIsDisplayed(EMPTY,getReportRowID(reportDataRowID1)));
+		complianceReportsPageAction.copyInProgressReport(EMPTY,getReportRowID(reportDataRowID1));
 		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID2));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
@@ -520,10 +522,10 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.cancelInProgressReport(EMPTY, getReportRowID(reportDataRowID1));
-		testEnvironmentAction.idleForSeconds(String.valueOf(5), NOTSET);
+		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.selectReportMode(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID2));
 		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID2));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
@@ -562,18 +564,23 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, NOTSET));
-		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		
+		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyMetaDataFilesHaveCorrectData(EMPTY, NOTSET));
+		//assertTrue(complianceReportsPageAction.verifyLISASMetaDataFile(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyReportSurveyMetadataFile(EMPTY, getReportRowID(reportDataRowID1)));
+		
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -780,10 +787,12 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, NOTSET));
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, NOTSET));
 	}
 

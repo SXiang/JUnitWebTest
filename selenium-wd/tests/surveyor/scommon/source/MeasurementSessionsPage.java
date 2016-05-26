@@ -86,7 +86,8 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	public void clickOnFirstSurveyDeleteLink() {
 		this.firstSurveyDeleteLink.click();
 
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		this.waitForConfirmDeletePopupToShow();
+		//testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		if (this.isElementPresent(popupConfirmationBoxXPath) && this.isElementPresent(btnDeleteXPath)) {
 			JavascriptExecutor js = (JavascriptExecutor)driver; 
