@@ -541,57 +541,55 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (viewList.get(i).get(KEYLISA).equalsIgnoreCase("1")) {
 				colNum = 3;
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				driver.findElement(By.xpath(strBaseXPath)).click();
+				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (viewList.get(i).get(KEYFOV).equalsIgnoreCase("1")) {
 				colNum = 4;
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				driver.findElement(By.xpath(strBaseXPath)).click();
+				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (viewList.get(i).get(KEYBREADCRUMB).equalsIgnoreCase("1")) {
 				colNum = 5;
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				driver.findElement(By.xpath(strBaseXPath)).click();
+				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (viewList.get(i).get(KEYINDICATIONS).equalsIgnoreCase("1")) {
 				colNum = 6;
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				driver.findElement(By.xpath(strBaseXPath)).click();
+				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (viewList.get(i).get(KEYISOTOPICCAPTURE).equalsIgnoreCase("1")) {
 				colNum = 7;
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				driver.findElement(By.xpath(strBaseXPath)).click();
+				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (viewList.get(i).get(KEYANNOTATION).equalsIgnoreCase("1")) {
 				colNum = 8;
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				driver.findElement(By.xpath(strBaseXPath)).click();
+				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (viewList.get(i).get(KEYGAPS).equalsIgnoreCase("1")) {
 				colNum = 9;
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				driver.findElement(By.xpath(strBaseXPath)).click();
+				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (viewList.get(i).get(KEYASSETS).equalsIgnoreCase("1")) {
 				colNum = 10;
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				WebElement assetCheckbox = driver.findElement(By.xpath(strBaseXPath));
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", assetCheckbox);
+				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (viewList.get(i).get(KEYBOUNDARIES).equalsIgnoreCase("1")) {
 				colNum = 11;
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				driver.findElement(By.xpath(strBaseXPath)).click();
+				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (viewList.get(i).get(KEYBASEMAP) != null) {
@@ -1108,7 +1106,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (imageMapHeight == null || imageMapHeight.equals("")) {
 			return;
 		}
-		//this.inputImgMapHeight.clear();
+		this.inputImgMapHeight.clear();
 		this.inputImgMapHeight.sendKeys(imageMapHeight);
 	}
 
@@ -1134,15 +1132,19 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public void fillCustomBoundaryTextFields(String neLat, String neLong, String swLat, String swLong) {
 		if (neLat != null) {
+			this.inputNELat.clear();
 			this.inputNELat.sendKeys(neLat);
 		}
 		if (neLong != null) {
+			this.inputNELong.clear();
 			this.inputNELong.sendKeys(neLong);
 		}
 		if (swLat != null) {
+			this.inputSWLat.clear();
 			this.inputSWLat.sendKeys(swLat);
 		}
 		if (swLong != null) {
+			this.inputSWLong.clear();
 			this.inputSWLong.sendKeys(swLong);
 		}
 	}
@@ -1556,33 +1558,27 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void selectPercentCoverageReportArea() {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", checkBoxPCRA);
+		SelectCheckbox(checkBoxPCRA);
 	}
 
 	public void selectPercentCoverageAssetCheckBox() {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", checkBoxPCA);
+		SelectCheckbox(checkBoxPCA);
 	}
 
 	public void selectPercentCoverageForecastCheckBox() {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", checkBoxPCF);
+		SelectCheckbox(checkBoxPCF);
 	}
 
 	public void selectGapTableCheckBox() {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", checkBoxGapTb);
+		SelectCheckbox(checkBoxGapTb);
 	}
 
 	public void selectIsotopicAnalysisCheckBox() {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", checkBoxIsoAna);
+		SelectCheckbox(checkBoxIsoAna);
 	}
 
 	public void selectIndicationsTableCheckBox() {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", checkBoxIndTb);
+		SelectCheckbox(checkBoxIndTb);
 	}
 
 	public void selectCustomBoundaryRadioButton() {
@@ -1662,14 +1658,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		switch (ethaneFilter) {
 		case ExcludeVehicleExhaust:
-			js.executeScript("arguments[0].click();", checkBoxVehicleExhaust);
+			SelectCheckbox(checkBoxVehicleExhaust);
 			break;
 		case ExcludeBiogenicMethane:
-			js.executeScript("arguments[0].click();", checkBoxEtheneBiogeniceMethane);
+			SelectCheckbox(checkBoxEtheneBiogeniceMethane);
 			break;
 		case Both:
-			js.executeScript("arguments[0].click();", checkBoxVehicleExhaust);
-			js.executeScript("arguments[0].click();", checkBoxEtheneBiogeniceMethane);
+			SelectCheckbox(checkBoxVehicleExhaust);
+			SelectCheckbox(checkBoxEtheneBiogeniceMethane);
 			break;
 		default:
 			break;
@@ -1686,8 +1682,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				// Asset key.
 				List<WebElement> assetElements = getViewLayerAssetCheckboxes(key);
 				if (assetElements.size() > 0) {
-					JavascriptExecutor js = (JavascriptExecutor) driver;
-					js.executeScript("arguments[0].click();", assetElements.get(0));
+					SelectCheckbox(assetElements.get(0));
 				}
 			}
 		}
@@ -1703,8 +1698,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				value = value.replace(ReportsCompliance.BOUNDARY_PREFIX, "");
 				List<WebElement> boundaryElements = getViewLayerBoundaryCheckboxes(value);
 				if (boundaryElements.size() > 0) {
-					JavascriptExecutor js = (JavascriptExecutor) driver;
-					js.executeScript("arguments[0].click();", boundaryElements.get(0));
+					SelectCheckbox(boundaryElements.get(0));
 				}
 			}
 		}
@@ -1752,11 +1746,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 	public boolean verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains(ReportsCompliance reportsCompliance,
 			List<String> autocompleteListEntries) {
+		String typeValue = reportsCompliance.getCustomerBoundaryFilterType().toString();
 		openCustomerBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen()
 			.switchMode(ControlMode.MapInteraction)
-			.waitForMapImageLoad()
-			.selectCustomerBoundaryType(reportsCompliance.getCustomerBoundaryFilterType().toString());
+			.waitForMapImageLoad();
+		latLongSelectionControl.selectCustomerBoundaryType(typeValue);
 
 		// Type customer boundary name and verify the autocomplete list. If not
 		// all entries shown, return false.
@@ -2431,7 +2426,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				.getReportDrivingSurveys(reportId);
 		Iterator<StoredProcComplianceAssessmentGetReportDrivingSurveys> reportIterator = reportList.iterator();
 		while (reportIterator.hasNext()) {
-			if (!reportIterator.next().isInList(listFromStoredProc)) {
+			StoredProcComplianceAssessmentGetReportDrivingSurveys obj = reportIterator.next();
+			if (!obj.isInList(listFromStoredProc)) {
 				Log.info("Report survey meta data file verification failed");
 				return false;
 			}
@@ -2825,9 +2821,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		try {
 			ArrayList<String> reportIndicationsList = new ArrayList<String>();
 			while ((line = bufferReader.readLine()) != null) {
-				if (line.trim().matches("^\\? \\d+ .*")) {
+				if (line.trim().matches("^\\? \\d+ .*")) {				
 					reportIndicationsList.add(line.replaceAll("\\?", "").trim().replaceAll("\\s+", "")
-							.replace("+/-", "").replace("0.0", "").trim());
+							.replace("+/-", "").replace("0.0 ", "").trim());
 				}
 			}
 			ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications
@@ -2837,7 +2833,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			while (lineIterator.hasNext()) {
 				StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
 				String objAsString = objStoredProc.toString();
-				storedProcConvStringList.add(objAsString.replace("0.0", "0").replaceAll("\\s+", "").trim());
+				storedProcConvStringList.add(objAsString.replace("0.0 ", "0").replaceAll("\\s+", "").trim());
 			}
 
 			if (!reportIndicationsList.equals(storedProcConvStringList)) {
@@ -3542,9 +3538,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public void fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName) {
 		openCustomerBoundarySelector();
-		latLongSelectionControl.waitForModalDialogOpen().switchMode(ControlMode.MapInteraction).waitForMapImageLoad()
-				.selectCustomerBoundaryType(customerBoundaryFilterType).setCustomerBoundaryName(customerBoundaryName)
-				.switchMode(ControlMode.Default).clickOkButton().waitForModalDialogToClose();
+		latLongSelectionControl.waitForModalDialogOpen();
+		latLongSelectionControl.switchMode(ControlMode.MapInteraction);
+		latLongSelectionControl.waitForMapImageLoad();
+		latLongSelectionControl.selectCustomerBoundaryType(customerBoundaryFilterType);
+		latLongSelectionControl.setCustomerBoundaryName(customerBoundaryName);
+		latLongSelectionControl.switchMode(ControlMode.Default);
+		latLongSelectionControl.clickOkButton();
+		latLongSelectionControl.waitForModalDialogToClose();
 	}
 
 	private boolean useCustomBoundaryLatLongSelector(ReportsCompliance reportsCompliance) {

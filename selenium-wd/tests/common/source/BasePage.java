@@ -280,11 +280,11 @@ public class BasePage {
 		actions.build().perform();
 	}
 
-	protected void waitUntilPresenceOfElementLocated(String elementID) {
-		waitUntilPresenceOfElementLocated(By.id(elementID));
+	protected WebElement waitUntilPresenceOfElementLocated(String elementID) {
+		return waitUntilPresenceOfElementLocated(By.id(elementID));
 	}
-	protected void waitUntilPresenceOfElementLocated(By locator){
-		(new WebDriverWait(driver, timeout)).until(
+	protected WebElement waitUntilPresenceOfElementLocated(By locator){
+		return (new WebDriverWait(driver, timeout)).until(
 				ExpectedConditions.presenceOfElementLocated(locator));
 	}
 
@@ -339,4 +339,15 @@ public class BasePage {
     	driver.manage().window().maximize();
 	}
 
+    public void SelectCheckbox(WebElement checkbox) {
+    	if (!checkbox.isSelected()){
+    		jsClick(checkbox);
+    	}
+    }
+
+    public void UnselectCheckbox(WebElement checkbox) {
+    	if (checkbox.isSelected()){
+    		jsClick(checkbox);
+    	}
+    }
 }

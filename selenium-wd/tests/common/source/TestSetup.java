@@ -74,6 +74,7 @@ import surveyor.scommon.source.LoginPage;
 public class TestSetup {
 
 	private static final String UPDATE_ANALYZER_CONFIGURATION_CMD = "UpdateAnalyzerConfiguration.cmd";
+	private static final String POST_AUTOMATION_RUN_RESULT_CMD = "Post-AutomationRunResult.cmd";
 	private static final String[] CI_MACHINES = { "20.20.20.59", "20.20.10.82", "10.0.2.15", "10.200.2.48" };
 	private static String testPropFileName;
 
@@ -154,6 +155,9 @@ public class TestSetup {
 	private String surveysToUpload;
 	private boolean uploadSurveyEnabled;
 	private String surveyUploadBaseUrl;
+	
+	private String automationReportingApiEndpoint;
+	private boolean automationReportingApiEnabled;
 
 	public TestSetup() {
 		initialize();
@@ -165,7 +169,7 @@ public class TestSetup {
 		}
 	}
 
-	public static ExtentReports createExtentReport(String reportClassName) {
+	public static ExtentReports createExtentReport(String reportClassName, StringBuilder outReportFilePath) {
 		String executionPath = null;
 		try {
 			executionPath = TestSetup.getExecutionPath(TestSetup.getRootPath());
@@ -175,6 +179,7 @@ public class TestSetup {
 		String runEnvironment = TestContext.INSTANCE.getRunEnvironment();
 		String reportFilePath = executionPath + "reports" + File.separator
 				+ String.format("report-%s-%s.html", runEnvironment, reportClassName);
+		outReportFilePath.append(reportFilePath);
 		String configFilePath = executionPath + "tests" + File.separator + "extent-config.xml";
 
 		ExtentReports extent = new ExtentReports(reportFilePath, true /* replaceExisting */, DisplayOrder.NEWEST_FIRST,
@@ -656,6 +661,12 @@ public class TestSetup {
 			this.language = this.testProp.getProperty("language");
 			this.culture = this.testProp.getProperty("culture");
 			this.softwareVersion = this.testProp.getProperty("softwareVersion");
+			
+			this.automationReportingApiEndpoint = this.testProp.getProperty("automationReporting.ApiEndPoint");		
+			String automationReportingApiEnabledValue = this.testProp.getProperty("automationReporting.APIEnabled");
+			if (automationReportingApiEnabledValue != null && automationReportingApiEnabledValue != "") {
+				this.automationReportingApiEnabled = Boolean.valueOf(automationReportingApiEnabledValue);
+			}
 
 			if (!isRunningLocally()) {
 				this.downloadPath = this.testProp.getProperty("downloadPath");
@@ -1026,6 +1037,20 @@ public class TestSetup {
 		}
 	}
 
+	public void postAutomationRunResult(String htmlResultFilePath) {
+		try {
+			String workingFolder = getRootPath();
+			String postResultCmdFolder = getExecutionPath(getRootPath()) + "lib";
+			String postResultCmdFullPath = postResultCmdFolder + File.separator + POST_AUTOMATION_RUN_RESULT_CMD;
+			String command = "cd \"" + postResultCmdFolder + "\" && " + postResultCmdFullPath + 
+					String.format(" \"%s\" \"%s\" \"%s\"", workingFolder, automationReportingApiEndpoint, htmlResultFilePath);
+			Log.info("Posting automation run result. Command -> " + command);
+			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
+		} catch (IOException e) {
+			Log.error(e.toString());
+		}
+	}
+
 	public static void main(String[] args) {
 		TestSetup testSetup = new TestSetup(true /* initialization=TRUE */);
 		TestContext.INSTANCE.setTestSetup(testSetup);
@@ -1185,6 +1210,10 @@ public class TestSetup {
 
 	public void setUploadSurveyEnabled(boolean uploadSurveyEnabled) {
 		this.uploadSurveyEnabled = uploadSurveyEnabled;
+	}
+
+	public boolean isAutomationReportingApiEnabled() {
+		return automationReportingApiEnabled;
 	}
 
 	public static String getWorkingAnalyzerSerialNumber() {
