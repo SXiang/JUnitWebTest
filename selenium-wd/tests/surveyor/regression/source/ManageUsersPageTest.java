@@ -44,13 +44,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	private static ManageUsersPage manageUsersPage;
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageLocationsPage manageLocationsPage;
-	public static final String Constant_Status = Resources.getResource(ResourceKeys.Constant_Status);
-	public static final String Constant_Customer = Resources.getResource(ResourceKeys.Constant_Customer);
-	public static final String Constant_UserName = Resources.getResource(ResourceKeys.Constant_UserName);
-	public static final String Constant_Location = Resources.getResource(ResourceKeys.Constant_Location);
-	public static final String Constant_Roles = Resources.getResource(ResourceKeys.Constant_Roles);
-	public static final String Constant_User = Resources.getResource(ResourceKeys.Constant_User);
-	protected String pagination = "100";
+
 
 
 	private enum ManageUserTestCaseType {
@@ -504,7 +498,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		int userNum = 0;
 		int pageSize = 0;
 
-		System.out.println("\nRunning - TC115 - Test Description: Pagination (Manage Users)\n");
+		Log.info("\nRunning - TC115 - Test Description: Pagination (Manage Users)\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -908,25 +902,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC132_ManageUsers_SortColumns");
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		manageUsersPage.open();
-		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
-		columnMap.put(Constant_UserName, TableColumnType.String);
-		assertTrue(manageUsersPage.checkTableSort("datatable", columnMap, pagination, manageUsersPage.getPaginationOption()));
-		columnMap.remove(Constant_UserName);
-		columnMap.put(Constant_User, TableColumnType.String);
-		assertTrue(manageUsersPage.checkTableSort("datatable", columnMap, pagination, manageUsersPage.getPaginationOption()));
-		columnMap.remove(Constant_User);
-		columnMap.put(Constant_Customer, TableColumnType.String);
-		assertTrue(manageUsersPage.checkTableSort("datatable", columnMap, pagination, manageUsersPage.getPaginationOption()));
-		columnMap.remove(Constant_Customer);
-		columnMap.put(Constant_Location, TableColumnType.String);
-		assertTrue(manageUsersPage.checkTableSort("datatable", columnMap, pagination, manageUsersPage.getPaginationOption()));
-		columnMap.remove(Constant_Location);
-		columnMap.put(Constant_Roles, TableColumnType.String);
-		assertTrue(manageUsersPage.checkTableSort("datatable", columnMap, pagination, manageUsersPage.getPaginationOption()));
-		columnMap.remove(Constant_Roles);
-		columnMap.put(Constant_Status, TableColumnType.String);
-		assertTrue(manageUsersPage.checkTableSort("datatable", columnMap, pagination, manageUsersPage.getPaginationOption()));
+		manageUsersPage.open();		
+		assertTrue(manageUsersPage.areTableColumnsSorted());
 	}
 
 }

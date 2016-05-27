@@ -42,15 +42,7 @@ import surveyor.scommon.source.DataTablePage.TableColumnType;
 @RunWith(SurveyorTestRunner.class)
 public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	private static ManageRefGasBottlesAdminPage manageRefGasBottlesAdminPage;
-	public static final String Constant_Customer = Resources.getResource(ResourceKeys.Constant_Customer);
-	public static final String Constant_Location = Resources.getResource(ResourceKeys.Constant_Location);
-	public static final String Constant_Surveyor = Resources.getResource(ResourceKeys.Constant_Surveyor);
-	public static final String Constant_Analyzer = Resources.getResource(ResourceKeys.Constant_Analyzer);
-	public static final String Constant_LotNumber = Resources.getResource(ResourceKeys.Constant_LotNumber);
-	public static final String Constant_IsotopicValue = Resources.getResource(ResourceKeys.Constant_IsotopicValue);
-	public static final String Constant_EthaneToMethaneRatio = Resources.getResource(ResourceKeys.Constant_EthaneToMethaneRatio);
-	public static final String Constant_DateTime = Resources.getResource(ResourceKeys.Constant_DateTime);
-	protected String pagination = "100";
+
 
 	
 	@BeforeClass
@@ -285,24 +277,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC132_ManageRefGas_SortColumns");
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		manageRefGasBottlesAdminPage.open();
-		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
-		columnMap.put(Constant_Customer, TableColumnType.String);
-		assertTrue(manageRefGasBottlesAdminPage.checkTableSort("datatable", columnMap, pagination, manageRefGasBottlesAdminPage.getPaginationOption()));
-		columnMap.remove(Constant_Customer);
-		columnMap.put(Constant_Location, TableColumnType.String);
-		assertTrue(manageRefGasBottlesAdminPage.checkTableSort("datatable", columnMap, pagination, manageRefGasBottlesAdminPage.getPaginationOption()));
-		columnMap.remove(Constant_Location);
-		columnMap.put(Constant_Surveyor, TableColumnType.String);
-		assertTrue(manageRefGasBottlesAdminPage.checkTableSort("datatable", columnMap, pagination, manageRefGasBottlesAdminPage.getPaginationOption()));
-		columnMap.remove(Constant_Surveyor);
-		columnMap.put(Constant_Analyzer, TableColumnType.String);
-		assertTrue(manageRefGasBottlesAdminPage.checkTableSort("datatable", columnMap, pagination, manageRefGasBottlesAdminPage.getPaginationOption()));
-		columnMap.remove(Constant_Analyzer);
-		columnMap.put(Constant_LotNumber, TableColumnType.String);
-		assertTrue(manageRefGasBottlesAdminPage.checkTableSort("datatable", columnMap, pagination, manageRefGasBottlesAdminPage.getPaginationOption()));
-		columnMap.remove(Constant_LotNumber);
-		columnMap.put(Constant_DateTime, TableColumnType.Date);
-		assertTrue(manageRefGasBottlesAdminPage.checkTableSort("datatable", columnMap, pagination, manageRefGasBottlesAdminPage.getPaginationOption()));
+		manageRefGasBottlesAdminPage.open();		
+		assertTrue(manageRefGasBottlesAdminPage.areTableColumnsSorted());
 	}
 }

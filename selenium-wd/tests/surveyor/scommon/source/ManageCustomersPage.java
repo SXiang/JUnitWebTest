@@ -33,6 +33,10 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageCustomers_PageTitle);
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ManageCustomer_NewCustomer);
 	public static final String STREditPageContentText = Resources.getResource(ResourceKeys.ManageCustomer_EditCustomer);
+	public static final String Constant_Customer = Resources.getResource(ResourceKeys.Constant_Customer);
+	public static final String Constant_Status = Resources.getResource(ResourceKeys.Constant_Status);
+	protected String pagination = "100";
+
 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	private WebElement btnAddNewCustomer;
@@ -571,6 +575,34 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 		return false;
 	}
+	
+	public boolean areTableColumnsSorted(){
+		if(!isCustomerColumnSorted()){
+			return false;
+		}
+		if(!isCustomerColumnSorted()){
+			return false;
+		}
+		if(!isStatusColumnSorted()){
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public boolean isCustomerColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_Customer, TableColumnType.String);
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+	}
+	
+	public boolean isStatusColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_Status, TableColumnType.String);
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+	}
+	
+	
 
 	public void clickOnAddNewCustomerBtn() {
 		this.btnAddNewCustomer.click();

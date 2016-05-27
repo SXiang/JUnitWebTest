@@ -42,11 +42,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageUsersPage manageUsersPage;
 	private static ManageLocationsPage manageLocationsPage;
-	public static final String Constant_Customer = Resources.getResource(ResourceKeys.Constant_Customer);
-	public static final String Constant_Status = Resources.getResource(ResourceKeys.Constant_Status);
-	protected String pagination = "100";
-
-
+	
 	@BeforeClass
 	public static void setupManageCustomersPageTest() {
 		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
@@ -603,12 +599,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
 		manageCustomersPage.open();
-		HashMap<String, TableColumnType> columnMap=new HashMap<String, TableColumnType>();
-		HashMap<String, TableColumnType> columnMap1=new HashMap<String, TableColumnType>();
-		columnMap.put(Constant_Customer, TableColumnType.String);
-		assertTrue(manageCustomersPage.checkTableSort("datatable", columnMap, pagination,manageCustomersPage.getPaginationOption()));
-		columnMap1.put(Constant_Status, TableColumnType.String);
-		assertTrue(manageCustomersPage.checkTableSort("datatable", columnMap1, pagination,manageCustomersPage.getPaginationOption()));
+		assertTrue(manageCustomersPage.areTableColumnsSorted());		
 	}
 	
 
