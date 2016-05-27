@@ -167,7 +167,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		
 		// We type 'Level 2-A' in boundary name and expect the following 2 entries to show up in the auto-complete list.
 		String expectedBoundaries = "Level 2-AA,Level 2-AB";
-		assertTrue(complianceReportsPageAction.verifyBoundariesAutoCompleteListContains(expectedBoundaries/*comma seperated list of boundaries*/, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyBoundariesAutoCompleteListContains(expectedBoundaries/*comma seperated list of boundaries*/, getReportRowID(reportDataRowID1)));
 	}
 	
 	/**

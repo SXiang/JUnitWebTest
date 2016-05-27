@@ -51,6 +51,7 @@ import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SSRSPdfFooterColumns;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
+import surveyor.scommon.source.ReportsCompliance.CustomerBoundaryFilterType;
 import surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 import surveyor.scommon.source.ReportsSurveyInfo.ColumnHeaders;
 
@@ -1740,19 +1741,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * Verifies that the customer boundary name auto-complete list contains the
 	 * specified entries.
 	 */
-	public boolean verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains(ReportsCompliance reportsCompliance,
+	public boolean verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains(String boundaryFilterType, String customerBoundaryName,
 			List<String> autocompleteListEntries) {
-		String typeValue = reportsCompliance.getCustomerBoundaryFilterType().toString();
 		openCustomerBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen()
 			.switchMode(ControlMode.MapInteraction)
 			.waitForMapImageLoad();
-		latLongSelectionControl.selectCustomerBoundaryType(typeValue);
+		latLongSelectionControl.selectCustomerBoundaryType(boundaryFilterType);
 
 		// Type customer boundary name and verify the autocomplete list. If not
 		// all entries shown, return false.
 		if (!latLongSelectionControl.verifyCustomerBoundaryAutoCompleteListContains(
-				reportsCompliance.getCustomerBoundaryName(), autocompleteListEntries)) {
+				customerBoundaryName, autocompleteListEntries)) {
 			return false;
 		}
 
@@ -3214,7 +3214,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				+ "shape-files" + File.separator + testCaseID;
 
 		// Verify files in both directories are the same.
-		if (!FileUtility.compareFilesInDirectories(actualDataFolderPath, expectedDataFolderPath, true)) {
+		if (!FileUtility.compareFilesInDirectories(actualDataFolderPath, expectedDataFolderPath)) {
 			return false;
 		}
 
