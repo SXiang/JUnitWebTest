@@ -257,9 +257,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(how = How.ID, using = "modalClose")
 	protected WebElement modalClose;
+
+	@FindBy(css = "#reportViewer > .modal-dialog button.close")
+	protected WebElement modalX;
 	
-    @FindBy(css = "#ImageList > li.dynamic a[href*='DownloadReportView'")
+    @FindBy(css = "#ImageList > li.dynamic a[href*='DownloadReportView']")
     protected List<WebElement> pdfViews;
+
+    @FindBy(css = "#ImageList > li.dynamic a[href*='DownloadReportView']")
+    protected WebElement firstPdfView;
     
 	@FindBy(name = "rdAreaMode")
 	private List<WebElement> areaBoundaryRadioButtons;
@@ -633,16 +639,23 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return WebElementExtender.isElementPresentAndDisplayed(pdfImg);
 	}
 
-	public void clickOnCloseReportViewer() {
-		jsClick(modalClose);
+	public void clickOnCloseReportViewer(String btn) {
+		if(btn!=null&&btn.equalsIgnoreCase("XButton")){
+		   modalX.click();
+		}else{
+		   modalClose.click();
+		}
 	}
 	
 	public void clickViewThumbnailImageByIndex(int viewIdx){
-		jsClick(pdfViews.get(viewIdx-1));
+		jsClick(getViewThumbnailImageByIndex(viewIdx));
 	}
 	
 	public WebElement getViewThumbnailImageByIndex(int viewIdx){
-		return pdfViews.get(viewIdx-1);
+		if(firstPdfView.isDisplayed()){
+		   return pdfViews.get(viewIdx-1);
+		}
+		return null;
 	}	
 	
 	public void clickOnShapeZIPInReportViewer() {
@@ -857,7 +870,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		boolean isGenerateBaselineViewImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
 		if (isGenerateBaselineViewImages) {
 			File downLoadedFolder = new File(unzipFolder);
-			File[] listOfViews = downLoadedFolder.listFiles();
+			File[] listOfViews;
+			if(downLoadedFolder.isFile()){
+				listOfViews = new File[1];
+				listOfViews[0] = downLoadedFolder;
+			}else{
+			    listOfViews = downLoadedFolder.listFiles();
+			}
 			int counter = 1;
 			for (File file : listOfViews) {
 				if (file.isFile()) {
@@ -1012,7 +1031,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			throw new Exception("ButtonType NOT supported.");
 		}
 		
-		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("tr"));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -1025,8 +1044,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Log.info(String.format("Looking for rptTitle=[%s], strCreatedBy=[%s]", rptTitle, strCreatedBy));
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
+			createdByXPath = "tr[" + rowNum + "]/td[3]";
 
 			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
 			createdByCell = getTable().findElement(By.xpath(createdByXPath));
@@ -1036,7 +1055,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
 					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				try {
-                    buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/"+ buttonXPath;
+                    buttonXPath = "tr[" + rowNum + "]/"+ buttonXPath;
 					buttonImg = getTable().findElement(By.xpath(buttonXPath));
 					if (buttonImg.isDisplayed()) {
 						if (clickButton) {
@@ -1076,7 +1095,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
-				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 					loopCount = rowSize;
@@ -1601,14 +1620,16 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		default:
 			break;
 		}
+		confirmChangeRptMode();
+	}
 
+	public void confirmChangeRptMode(){
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		if (this.btnChangeRptMode.isDisplayed()) {
 			this.btnChangeRptMode.click();
 
 		}
 	}
-
 	public boolean verifySurveysTableViaSurveyMode(boolean changeMode, ReportModeFilter strReportMode,
 			SurveyModeFilter surveyModeFilter) throws IOException {
 		boolean result = false;
@@ -2921,7 +2942,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			String expectedReportAuthor) throws Exception {
 		Log.info("Verifying SSRS PDF footer...");
 		String reportPDFFilename = getReportPDFFileName(reportTitle, true /* includeExtension */);
-		String actualReport = actualPath + reportPDFFilename;
+		return verifyPDFFooter(actualPath, reportPDFFilename, expectedSoftwareVersion, expectedReportAuthor);
+	}
+	
+	public boolean verifyPDFFooter(String actualPath, String pdfFilename, String expectedSoftwareVersion,
+			String expectedReportAuthor) throws Exception {
+		String actualReport = actualPath + pdfFilename;
 		PDFUtility pdfUtility = new PDFUtility();
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 
@@ -3031,7 +3057,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\ssrs-images").toString()
 						+ "\\" + testCase + "\\" + "Page_" + pageCounter + ".png";
 				boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
-				if (!verifyActualImageWithBase(pathToBaseImage, pathToActualImage, generateBaseline)) {
+				if (!verifyActualImageWithBase(pathToActualImage, pathToBaseImage, generateBaseline)) {
 					Files.delete(Paths.get(pathToActualImage));
 					Log.info("Image verification failed");
 					return false;
@@ -3166,7 +3192,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		File[] listOfFiles = folder.listFiles();
 
 		for (File file : listOfFiles) {
-			if (file.isFile() && (file.getName().contains("View"))) {
+			if (file.isFile()){
 				BufferedImage image = ImageIO.read(file);
 				int width = image.getWidth();
 				int height = image.getHeight();
@@ -3184,7 +3210,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				}				
 				
 				boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
-				if (!verifyActualImageWithBase(baseViewFile, actualViewPath, generateBaseline)) {
+				if (!verifyActualImageWithBase(actualViewPath, baseViewFile, generateBaseline)) {
 					Files.delete(Paths.get(actualViewPath));
 					return false;
 				}

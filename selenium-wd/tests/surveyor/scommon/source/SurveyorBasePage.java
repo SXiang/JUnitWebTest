@@ -233,9 +233,13 @@ public class SurveyorBasePage extends BasePage {
 
 	public void setPagination(String str) {
 		for (WebElement option : paginationOptions) {
-			if (str.equals(option.getText().trim())) {
-				option.click();
-				break;
+			try{
+				if (str.equals(option.getText().trim())) {
+					option.click();
+					break;
+				}
+			}catch(StaleElementReferenceException e){
+				continue;
 			}
 		}
 	}

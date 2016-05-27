@@ -18,6 +18,8 @@ import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
+
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -1336,6 +1338,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @return - returns whether the action was successful or not.
 	 * @throws Exception 
 	 */
+
 	public boolean selectCustomer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.selectCustomer", data, dataRowID);
 		String customer;
@@ -2423,7 +2426,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 
 	public boolean clickOnCloseReportViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.clickOnCloseReportViewer", data, dataRowID);
-		this.getComplianceReportsPage().clickOnCloseReportViewer();
+		this.getComplianceReportsPage().clickOnCloseReportViewer(data);
 		return true;
 	}
 	
@@ -3011,15 +3014,11 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyViewsImagesWithBaselines(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyViewsImagesWithBaselines", data, dataRowID);
 		boolean retVal = true;
-		
+		boolean inZipFolder = data.equalsIgnoreCase("false")?false:true;		
 		ComplianceReportsDataRow complianceReportsDataRow = getComplianceReportsDataRow(dataRowID);
-		String reportName = this.getComplianceReportsPage().getReportPDFFileName(complianceReportsDataRow.title, false);
-		String unzipFolder = TestContext.INSTANCE.getTestSetup().getDownloadPath() + reportName;
-		this.getComplianceReportsPage().checkAndGenerateBaselineViewImages(unzipFolder, complianceReportsDataRow.tCID);
-
+		
 		// for each view in the test case verify that the view image is present.
-		List<Integer> viewRowIDs = ActionArguments.getNumericList(complianceReportsDataRow.reportViewRowIDs);
-		boolean inZipFolder = data.equalsIgnoreCase("false")?false:true;
+		List<Integer> viewRowIDs = ActionArguments.getNumericList(complianceReportsDataRow.reportViewRowIDs);		
 		for (Integer viewRowID : viewRowIDs) {
 			ReportViewsDataReader viewsDataReader = new ReportViewsDataReader(this.excelUtility);
 			ReportViewsDataRow viewsDataRow = viewsDataReader.getDataRow(viewRowID);
@@ -3279,7 +3278,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return this.getComplianceReportsPage().verifySSRSPDFFooter(downloadPath, 
 				workingDataRow.title, expectedSoftwareVersion , LoginPageActions.workingDataRow.username);
 	}
- 
+	
 	/**
 	 * Executes verifySelectedSurveysAreForSpecifiedCustomer action.
 	 * @param data - specifies the input data passed to the action.

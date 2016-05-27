@@ -253,8 +253,7 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-
-					<include name="**/ComplianceReportsPageTest2.class" />
+					<include name="**/ComplianceReportsPageTest8.class" />
 					<include name="**/ComplianceReportsPageTest3.class" />
 
 				</fileset>
@@ -282,6 +281,7 @@
 					<include name="**/ComplianceReportsPageTest4.class" />
 					<include name="**/ComplianceReportsPageTest_Ethane.class" />
 					<include name="**/ComplianceReportsPageTest6.class" />
+					<include name="**/ComplianceReportsPageTest8.class" />
 
 				</fileset>
 			</batchtest>

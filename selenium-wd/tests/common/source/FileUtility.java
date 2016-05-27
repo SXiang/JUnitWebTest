@@ -384,7 +384,8 @@ public class FileUtility {
 
 	public static void copyFile(String fromFile, String toFile) throws IOException{
 		// Create the directory for test case if it does not exist.
-         createDirectoryIfNotExists(toFile);
+		 String dirToFile = new File(toFile).getParent();
+		 createDirectoryIfNotExists(dirToFile);
 		 FileUtils.copyFile(new File(fromFile), new File(toFile));
 	}
 	public static void main(String[] args) throws IOException {
