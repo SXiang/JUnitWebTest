@@ -87,7 +87,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Report should be generated successfully
 	 *	- - User should be allowed to download the report successfully
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC204, location = ComplianceReportDataProvider.class)
 	public void TC204_GenerateComplianceReportHavingSpecialCharactersReportTitleUsingCopyFunctionality(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
