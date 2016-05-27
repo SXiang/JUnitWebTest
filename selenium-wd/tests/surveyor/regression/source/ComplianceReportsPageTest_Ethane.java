@@ -344,7 +344,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		List<ReportsSurveyInfo> reportSurveyInfoList = ReportDataProvider.buildReportSurveyInfoList("24");
 		rpt.setSurveyInfoList(reportSurveyInfoList);    
 		rpt.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
-		
+
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -491,9 +491,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
 			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rptTitle));
 			if (tablesList != null) {
-				if (tablesList.get(0).get(KEYINDTB).equals("1")) {
-					assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
-				}
+				assertTrue(complianceReportsPage.verifyDrivingSurveysTable(testSetup.getDownloadPath(), rptTitle));
 			}
 		} else
 			fail("\nTestcase TC1718 failed.\n");
@@ -571,15 +569,15 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	}
 
 	/**
-	 * Test Case ID:TC1726 Test Description: Compliance Report Generation : COPY generated report with custom selected Indication color should show default color only for Indication- customized Indication color
+	 * Test Case ID:TC1727 Test Description: Compliance Report Generation : COPY generated report with custom selected Indication color should show default color only for Indication- customized Indication color
 	 * @throws Exception 
 	 * 
 	 */
 	@Test
-	public void TC1726_Ethane_Verify_Indication_Table_Color_In_Newly_Generated_Report() throws Exception{
+	public void TC1727_Ethane_Verify_Indication_Column_Color_In_Copy_Generated_Report() throws Exception{
 		String testCaseID = "TC1727";
 		String rptTitle = "TC1727 Ethane" + testSetup.getRandomNumber();
-		Log.info("\nRunning TC1727: Compliance Report Generation : downloaded View of newly generated report should show default color only for Indication" + rptTitle);
+		Log.info("\nRunning TC1727: Compliance Report Generation : COPY generated report with custom selected Indication color should show default color only for Indication- customized Indication color" + rptTitle);
 
 
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
@@ -633,15 +631,17 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
+		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
+
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
+
+		complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Copy);
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
-			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
-			if (tablesList != null) {
 				assertTrue(complianceReportsPage.verifyDrivingSurveysTable(testSetup.getDownloadPath(), rptTitle));
-			}
 		} else
-			fail("\n Testcase1726 failed.\n");	
+			fail("\n Testcase1727 failed.\n");	
 	}
 
 	/**
@@ -711,14 +711,10 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 
-		complianceReportsPage.findReportbySearch(rptTitle, testSetup.getLoginUser());
-
 		complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
-			if (tablesList.get(0).get(KEYINDTB).equals("1")) {
-				assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
-			}
+				assertTrue(complianceReportsPage.verifyDrivingSurveysTable(testSetup.getDownloadPath(), rptTitle));
 		}
 		else
 			fail("\nTestcase TC1729 failed.\n");

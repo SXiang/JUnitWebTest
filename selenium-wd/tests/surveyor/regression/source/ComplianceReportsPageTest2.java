@@ -1355,13 +1355,16 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPage.getPercentCoverForecast().isDisplayed());
 		complianceReportsPage.clickOnCancelBtn();
 
+		complianceReportsPage.open();
+
 		String copyImgXPath = "//*[@id='datatable']/tbody/tr[1]/td[5]/a[2]/img";
 		WebElement copyImg = driver.findElement(By.xpath(copyImgXPath));
 
 		copyImg.click();
 		complianceReportsPage.waitForCopyReportPagetoLoad();
-		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
+		complianceReportsPage.waitForCopyReportPagetoLoad();
 		assertTrue(complianceReportsPage.getPercentCoverForecast().isDisplayed());
+		complianceReportsPage.clickOnCancelBtn();
 	}
 
 	/**
