@@ -179,7 +179,7 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 	public boolean verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(String data, Integer dataRowID) {
 		logAction("SurveyViewPageActions.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat", data, dataRowID);
 		String startTimeText = getSurveyViewPage().getStartTimeLabelText().replace(SURVEY_INFO_START_TIME_PREFIX, "");
-		return dateUtility.compareLongDateTimeFormat(startTimeText);
+		return dateUtility.isValidLongDateTimeFormat(startTimeText);
 	}
  
 	/**
@@ -191,7 +191,7 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 	public boolean verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(String data, Integer dataRowID) {
 		logAction("SurveyViewPageActions.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat", data, dataRowID);
 		String endTimeText = getSurveyViewPage().getEndTimeLabelText().replace(SURVEY_INFO_END_TIME_PREFIX, "");
-		return dateUtility.compareLongDateTimeFormat(endTimeText);
+		return dateUtility.isValidLongDateTimeFormat(endTimeText);
 	}
  
 	/* Invoke action using specified ActionName */

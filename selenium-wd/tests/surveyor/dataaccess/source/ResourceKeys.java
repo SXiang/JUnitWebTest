@@ -99,6 +99,17 @@ public class ResourceKeys {
 	public static final String Constant_Surveyor = "Constant_Surveyor";
 	public static final String Constant_Surveyors = "Constant_Surveyors";
 	public static final String Constant_Status = "Constant_Status";
+	public static final String Constant_Customer = "Constant_Customer";	
+	public static final String Constant_UserName = "Constant_UserName";	
+	public static final String Constant_Location = "Constant_Location";	
+	public static final String Constant_Roles = "Constant_Roles";
+	public static final String Constant_Latitude = "Constant_Latitude";
+	public static final String Constant_Longitude = "Constant_Longitude";
+	public static final String Constant_AnalyzerType = "Constant_AnalyzerType";
+	public static final String Constant_LotNumber = "Constant_LotNumber";
+	public static final String Constant_IsotopicValue = "Constant_IsotopicValue";
+	public static final String Constant_DateTime = "Constant_DateTime";
+	
 	public static final String ReportSSRS_StartDateTime = "ReportSSRS_StartDateTime";
 	public static final String ReportSSRS_EndDateTime = "ReportSSRS_EndDateTime";
 	public static final String Constant_ShowingStartToEndOfTotalEntries = "Constant_ShowingStartToEndOfTotalEntries";
@@ -162,11 +173,12 @@ public class ResourceKeys {
 	public static final String Survey_MinutesAnd = "Survey_MinutesAnd";
 	public static final String Survey_Seconds = "Survey_Seconds";
 	public static final String Survey_SurveyWillStopIn = "Survey_SurveyWillStopIn";
+	public static final String ManageAnalyzer_AlreadyAssociatedError = "ManageAnalyzer_AlreadyAssociatedError";
 	public static final String LisaInvestigationReportSSRS_Lisa = "LisaInvestigationReportSSRS_Lisa";
 	public static final String LisaInvestigationReportSSRS_Amplitude = "LisaInvestigationReportSSRS_Amplitude";
 	public static final String LisaInvestigationReportSSRS_Investigator = "LisaInvestigationReportSSRS_Investigator";
 	public static final String LisaInvestigationReportSSRS_InvestigationReport = "LisaInvestigationReportSSRS_InvestigationReport";
-	
+
 	
 	// Constants for Capture results.
 	public static final String Survey_Rerun = "Survey_Rerun"; 

@@ -565,6 +565,28 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		}
 		return testCase;
 	}
+	
+	/**
+	 * Test Case ID: TC1409_AddLocation_PicAdmin
+	 * Test Description: Adding Location
+	 * 
+	 */
+	@Test
+	public void TC1409_AddLocation_PicAdmin() {
+		String customerName = SQACUS;
+		String locationName = testSetup.getRandomNumber() + "TC1409";
+		String cityName="Santa Clara";	
+		
+		Log.info("\nRunning TC1409_AddLocation_PicAdmin- Test Description: Adding Location");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+	
+		manageLocationsPage.open();			
+		manageLocationsPage.addNewLocation(locationName,  customerName, cityName );
+		
+		assertTrue(manageLocationsPage.findExistingLocation(customerName, locationName));
+	}
 
   
 }

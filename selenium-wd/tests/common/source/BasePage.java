@@ -11,6 +11,8 @@ import static surveyor.scommon.source.SurveyorConstants.LOGINTITLE;
 import static surveyor.scommon.source.SurveyorConstants.SUBTITLE;
 import static surveyor.scommon.source.SurveyorConstants.UNKNOWN_TEXT;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
@@ -316,7 +318,7 @@ public class BasePage {
 	public void waitForPageToLoad(){
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 	}
-
+	
 	/*
 	 * Default implementation of this method makes a call to waitForPageToLoad(). Inherited Page classes can provide a page specific implementation of this method.
 	 */

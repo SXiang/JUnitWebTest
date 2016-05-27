@@ -12,6 +12,7 @@ import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -106,6 +107,7 @@ public class SurveyViewPage extends BaseMapViewPage {
     @FindBy(css = "a[class='ol-attribution-bing-tos']")
     @CacheLookup
     private WebElement termsOfUse;
+
     
     @FindBy(how = How.XPATH, using = SURVEY_INFO_TAG_LABEL_XPATH)
 	private WebElement labelTag;
@@ -396,6 +398,7 @@ public class SurveyViewPage extends BaseMapViewPage {
 		return driver.findElement(By.xpath(SURVEY_INFO_ANALYZER_LABEL_XPATH)).getText();
 	}
 
+	
 	/**
      * Submit the form to target page.
      *
