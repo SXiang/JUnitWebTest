@@ -20,6 +20,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
+import static common.source.RegexUtility.REGEX_PATTEN_SPECIAL_CHARACTERS;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -1864,7 +1865,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		}
 		
 		List<String> expectedFileNames = new ArrayList<String>();
-		String reportFileNameWithoutExt = workingDataRow.title.replace(" ", "");
+		String reportFileNameWithoutExt = workingDataRow.title.replace(" ", "").replaceAll(REGEX_PATTEN_SPECIAL_CHARACTERS, "_");
 		expectedFileNames.add(reportFileNameWithoutExt + ".pdf");
 		for (int i=1; i<expectedFileCount; i++) {
 			String viewName = workingReportViewsDataRows.get(i-1).name;

@@ -30,6 +30,7 @@ public class RegexUtility {
 	public static final String REGEX_PATTERN_EXTRACT_EVERYTHING = "(.*?)";
 	public static final String REGEX_PATTERN_SPACES = "\\s+";
 	public static final String REGEX_PATTERN_NOT_ALPHANUMERIC = "[^:,.)(/\\&\\s\\|\\.\\r\\n a-zA-Z0-9_-]";
+	public static final String REGEX_PATTEN_SPECIAL_CHARACTERS = "[<>:/?*\"|\\\\]";
 
 	private static int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
 
