@@ -380,8 +380,6 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(TIMEZONE_STRING, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(ASSET_DATA_STRING, NOTSET));
-		
-		// TODO: Start line for Table definition is just 2 characters, which is creating issue with table parsing.
 		assertTrue(complianceReportsPageAction.verifyViewsInSSRSPDFAreInCorrectSequence(EMPTY, NOTSET));
 	}
  

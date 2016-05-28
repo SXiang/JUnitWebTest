@@ -3104,16 +3104,42 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public boolean verifyViewsInSSRSPDFAreInCorrectSequence(List<String> expectedViewNamesList, String reportTitle) throws IOException {
 		Log.info(String.format("Expected views are: %s", LogHelper.strListToString(expectedViewNamesList)));
-		List<String[]> viewTblList = getSSRSPDFTableValues(PDFTable.VIEWSTABLE, reportTitle);
-		// Filter out additional entries that might be returned in the List array.		
+		
+		List<String> actualViewNamesList = getViewNamesFromSSRSPdfViewTable(reportTitle);
 		
 		// Returned list has 2 columns. 0-th column is the view name.
-		List<String> actualViewNamesList = ArrayUtility.getColumnStringList(viewTblList, 0); 
 		Log.info(String.format("Actual views found in SSRS PDF are: %s", LogHelper.strListToString(actualViewNamesList)));
 		// Verify lists contain the same elements in the same order.
 		return actualViewNamesList.equals(expectedViewNamesList);
 	}
 
+	public List<String> getViewNamesFromSSRSPdfViewTable(String reportTitle) throws IOException {
+		String pdfFilename = this.getReportPDFFileName(reportTitle, true /*includeExtension*/);
+		String pdfFilePath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), pdfFilename).toString();
+
+		PDFUtility pdfUtility = new PDFUtility();
+		String actualReportString = pdfUtility.extractPDFText(pdfFilePath);
+		
+		List<String> actualViewNamesList = new ArrayList<String>();
+		String viewTable = RegexUtility.getStringInBetween(actualReportString, "Selected Views", "View Table");
+
+		InputStream inputStream = new ByteArrayInputStream(viewTable.getBytes());
+		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
+		String line = null;
+		try {
+			while ((line = bufferReader.readLine()) != null) {
+				if (line.length() > 3) {
+					String[] split = line.split("\\s+");
+					String viewName = line.replace(split[split.length - 1], "").trim();
+					actualViewNamesList.add(viewName);
+				}
+			}
+
+		} finally {
+			bufferReader.close();
+		}
+		return actualViewNamesList;
+	}
 
 	/**
 	 * Wrapper to verify the Views Images
