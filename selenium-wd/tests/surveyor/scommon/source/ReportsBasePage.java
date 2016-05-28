@@ -155,7 +155,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[normalize-space( )='Rapid Response']//input[@name='survey-mode-type']")
 	protected WebElement inputSurModeFilterRapidResponse;
 
-	@FindBy(how = How.XPATH, using = "//*[normalize-space( )='Manual']//input[@name='survey-mode-type']")
+	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='Manual']")
 	protected WebElement inputSurModeFilterManual;
 
 	@FindBy(how = How.ID, using = "buttonSearchSurvey")
@@ -783,7 +783,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			// Loop through table elements and check selected number of surveys.
 			for (int rowNum = 1; rowNum <= loopCount && selectedSurveysCount < numSurveysToSelect; rowNum++) {
 				checkBoxXPath = "tr[" + rowNum + "]/td/input[@type='checkbox']";
-				checkBoxActionCell = surveyTable.findElement(By.xpath(checkBoxXPath));
+				checkBoxActionCell = surveyTable.findElement(By.xpath(checkBoxXPath)); //TODO: no such element TC211, TC12
 				checkBoxActionCell.click();
 				selectedSurveysCount++;
 
@@ -971,15 +971,17 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void selectCustomer(String customer) {
+		selectCustomer(customer,true);
+	}
+	public void selectCustomer(String customer, boolean confirm) {
 		if (dropdownCustomer.isDisplayed()) {
 			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
 			for (WebElement option : optionsCustomer) {
 				if (customer.equalsIgnoreCase(option.getText().trim())) {
 					option.click();
+					confirmInChangeCustomerDialog(confirm);
 				}
-			}
-
-			confirmInChangeCustomerDialog();
+			}			
 		}
 	}
 
@@ -987,7 +989,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return confirmInChangeCustomerDialog(true);
 	}
 	public boolean confirmInChangeCustomerDialog(boolean confirm) {
-		if (dropdownCustomer.isDisplayed()) {
 			if (this.isElementPresent(btnChangeCustomerXPath)) {
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				if(confirm){
@@ -997,7 +998,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 				}
 				return true;
 			}
-		}
 		return false;
 	}
 
@@ -2550,7 +2550,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean isManualSurveyModeShown() {
-		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterManual);
+		return inputSurModeFilterManual.isSelected();
 	}
 
 	/**

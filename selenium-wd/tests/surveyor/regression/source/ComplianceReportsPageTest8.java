@@ -24,6 +24,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 
 	private static final String EMPTY = "";
 	private static final Integer NOTSET = -1;
+	private static Object PreCustomerValue = null;
 	
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
@@ -86,11 +87,11 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		
 		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID2));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID2));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID2));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID2));
 
-		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID2)));
 	}
  
 	/**
@@ -343,9 +344,9 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPage.selectCustomer(CUSNAMEBASE);
-		complianceReportsPage.confirmInChangeCustomerDialog(false);
-		assertEquals(ComplianceReportsPageActions.workingReportsComp.getCustomer(),complianceReportsPage.getCustomerValue());
+		PreCustomerValue = complianceReportsPage.getCustomerValue();
+		complianceReportsPage.selectCustomer(CUSNAMEBASE,false);
+		assertEquals(PreCustomerValue,complianceReportsPage.getCustomerValue());
 	}
  
 	/**
@@ -369,10 +370,9 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnFirstCopyComplianceButton(EMPTY, getReportRowID(reportDataRowID1));
-		String preCustomerValue = complianceReportsPage.getCustomerValue();
-		complianceReportsPage.selectCustomer(CUSNAMEBASE);
-		complianceReportsPage.confirmInChangeCustomerDialog(false);
-		assertEquals(preCustomerValue,complianceReportsPage.getCustomerValue());
+		PreCustomerValue = complianceReportsPage.getCustomerValue();
+		complianceReportsPage.selectCustomer(CUSNAMEBASE,false);
+		assertEquals(PreCustomerValue,complianceReportsPage.getCustomerValue());
 		
 	}
  
@@ -598,10 +598,10 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
+		assertFalse(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
 		
-		complianceReportsPageAction.clickOnResubmitButton(EMPTY, getReportRowID(reportDataRowID1));
-		
+		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnResubmitButton(EMPTY, getReportRowID(reportDataRowID1));		
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		assertFalse(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));

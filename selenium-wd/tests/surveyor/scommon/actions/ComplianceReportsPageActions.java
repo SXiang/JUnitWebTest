@@ -2151,8 +2151,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyShapeZIPThumbnailIsShownInComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyShapeZIPThumbnailIsShownInComplianceViewer", data, dataRowID);
 		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
-		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceZipShape);
-		return true;
+		return this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceZipShape);
 	}
 
 	/**
@@ -2921,8 +2920,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifySSRSImagesWithBaselines(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifySSRSImagesWithBaselines", data, dataRowID);
 		ComplianceReportsDataRow complianceReportsDataRow = getComplianceReportsDataRow(dataRowID);
-		String reportName = this.getComplianceReportsPage().getReportPDFFileName(complianceReportsDataRow.title, false);
-		this.getComplianceReportsPage().checkAndGenerateBaselineSSRSImage(reportName, complianceReportsDataRow.tCID);
 		String downloadPath = getDownloadPath(ReportFileType.PDF);
 		return this.getComplianceReportsPage().verifySSRSImages(downloadPath, complianceReportsDataRow.title, 
 				complianceReportsDataRow.tCID);

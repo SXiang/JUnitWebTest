@@ -26,7 +26,7 @@ public class PDFTableUtility extends PDFUtility{
 		COVERAGEFORECAST(".*Percent Service Coverage with LISAs.*",0,"",false,1),
 		COVERAGEFORECASTTO70(".*Probability to Obtain 70% Coverage",0,"",true,4),
 		DRIVINGSURVEYTABLE("Indication Table",0,"LISA",true,-1),
-		ISOTOPICANALYSISTABLE("Surveyor"+wordSeparator+"Date/Time"+wordSeparator+"Result"+wordSeparator+"Isotopic Value/ Uncertainty(Å"+wordSeparator+"Field Notes",1," Layers",true,-1), 
+		ISOTOPICANALYSISTABLE("Surveyor"+wordSeparator+"Date/Time"+wordSeparator+"Result"+wordSeparator+"Isotopic Value/ Uncertainty(ï¿½"+wordSeparator+"Field Notes",1," Layers",true,-1), 
 		VIEWSTABLE (".*\\| (Map|Satellite|None)\\s?",0,"View Table",false);
 		
 		private final String tableID;	          //1. tableID, indicator of start of a table, required
@@ -160,14 +160,14 @@ public class PDFTableUtility extends PDFUtility{
 						line = trimTableRow(pdfLines[j]);
 					}
 					if(numLines==0&&hasTableHeader){
-						header = line;
+						header = line; // Remember the header, it may appear in the next page
 						pdfTable.add(getTableRow(line));
-					}else if(line.equals(header)){
+					}else if(line.equals(header)){ //Ignore header line
 						continue;
-					}else if(isLineIgnorable(line)){
-						if(line.matches(pageFooterPattern)){
+					}else if(isLineIgnorable(line)){ // Ignore others - pageheader, pagefooter and comstom patterns
+						if(line.matches(pageFooterPattern)){ // expecting records from the next page
 							break;
-						}else{
+						}else{ // continue on this page
 							continue;
 						}
 					}else if(line.matches(tableEndLinePattern)){

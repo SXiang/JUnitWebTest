@@ -585,7 +585,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (viewList.get(i).get(KEYASSETS).equalsIgnoreCase("1")) {
 				colNum = 10;
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));//TODO: no such element, TC1389, TC13, TC149
 			}
 
 			if (viewList.get(i).get(KEYBOUNDARIES).equalsIgnoreCase("1")) {
@@ -1176,7 +1176,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			mode = ReportModeFilter.Operator;
 		} else if (reportMode.equalsIgnoreCase("manual")) {
 			mode = ReportModeFilter.Manual;
-		} else if (reportMode.equalsIgnoreCase("rr")) {
+		} else if (reportMode.equalsIgnoreCase("rr")||reportMode.equalsIgnoreCase("RapidResponse")) {
 			mode = ReportModeFilter.RapidResponse;
 		}
 		return mode;
@@ -1627,7 +1627,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		if (this.btnChangeRptMode.isDisplayed()) {
 			this.btnChangeRptMode.click();
-
 		}
 	}
 	public boolean verifySurveysTableViaSurveyMode(boolean changeMode, ReportModeFilter strReportMode,
@@ -2633,13 +2632,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean verifyThumbnailInReportViewer(ReportViewerThumbnailType compliancezipmeta) {
 		switch (compliancezipmeta) {
 		case ComplianceTablePDF:
-			return this.isShapeIconDisplayedInViewer();
+			return this.isReportPDFIconDisplayedInViewer();
 		case ComplianceZipMeta:
 			return this.isMetadataIconDisplayedInViewer();
 		case ComplianceZipPDF:
 			return this.isReportZipIconDisplayedInViewer();
 		case ComplianceZipShape:
-			return this.isReportPDFIconDisplayedInViewer();
+			return this.isShapeIconDisplayedInViewer();
 		default:
 			break;
 		}
