@@ -21,12 +21,12 @@ public class PDFTableUtility extends PDFUtility{
 	// All the pdf tables should be defined in this enum
 	public static enum PDFTable {		
 		LISAINVESTIGATIONTABLE ("Lisa Investigation Table",2),
-		LISAINDICATIONTABLE ("Disposition"+wordSeparator+"Confidence in Disposition (%)"+wordSeparator+"Field Notes",1,"",true),
+		LISAINDICATIONTABLE ("Disposition"+wordSeparator+"Confidence in Disposition (%)"+wordSeparator+"Field Notes",0,"",true),
 		COMPLIANCEREPORTSUMMARYTABLE ("Map Height & Width:.*",0,"",false,6),
 		COVERAGEFORECAST(".*Percent Service Coverage with LISAs.*",0,"",false,1),
 		COVERAGEFORECASTTO70(".*Probability to Obtain 70% Coverage",0,"",true,4),
 		DRIVINGSURVEYTABLE("Indication Table",0,"LISA",true,-1),
-		ISOTOPICANALYSISTABLE("Surveyor"+wordSeparator+"Date/Time"+wordSeparator+"Result"+wordSeparator+"Isotopic Value/ Uncertainty(Å"+wordSeparator+"Field Notes",1," Layers",true,-1), 
+		ISOTOPICANALYSISTABLE("Surveyor"+wordSeparator+"Date/Time"+wordSeparator+"Result"+wordSeparator+"Isotopic Value/ Uncertainty(ï¿½"+wordSeparator+"Field Notes",1," Layers",true,-1), 
 		VIEWSTABLE (".*\\| (Map|Satellite|None)\\s?",0,"View Table",false);
 		
 		private final String tableID;	          //1. tableID, indicator of start of a table, required
@@ -381,48 +381,55 @@ public class PDFTableUtility extends PDFUtility{
 		HashMap<String, String[][]> expectedTableMap = new HashMap<String, String[][]>();
 		HashMap<String, PDFTable> expectedPDFTableMap = new HashMap<String, PDFTable>();
 
-		String fileName = "IV-12BF45.pdf";
+		String fileName = "CR-CFF847_debug.pdf";
 		expectedTableMap.put(fileName, new String[][]{
 			{"Lisa#","Amplitude","Investigated","Leak Found","Investigation Date/Time","Investigator"},
 			{"1","6.42","","","",""},{"2","2.41","","","",""},{"3","1.74","","","",""},{"4","0.37","","","",""},
 			{"5","0.34","","","",""},{"6","0.12","","","",""},{"7","0.08","","","",""},{"8","0.08","","","",""}});
-		expectedPDFTableMap.put(fileName, PDFTable.LISAINVESTIGATIONTABLE);
+		expectedPDFTableMap.put(fileName, PDFTable.LISAINDICATIONTABLE);
 
-		fileName = "TC517Report538321.pdf";
-		expectedTableMap.put(fileName, new String[][]{
-			{"Map Height & Width:","8.50 X 11.00 in"},
-			{"Time Zone:", "Pacific Standard Time"},
-			{"Exclusion Radius:","0 m"},
-			{"Report Mode:", "Standard"},
-			{"NE Lat & NE Long","37.42060 X -121.97250"},
-			{"SW Lat & SW Long","37.41570 X -121.98390"}});
-		expectedPDFTableMap.put(fileName, PDFTable.COMPLIANCEREPORTSUMMARYTABLE);
-
-		fileName = "TestReportPGE-surveynotpartofplat.pdf";
-		expectedTableMap.put(fileName, new String[][]{
-			{"0%Percent Service Coverage with LISAs","0%Percent Service Coverage Without LISAs"}
-		});
-		expectedPDFTableMap.put(fileName, PDFTable.COVERAGEFORECAST);
-
-		fileName = "TestReportPGE-nolisa.pdf";
-		expectedTableMap.put(fileName, new String[][]{
-			{"Additional Surveys","Probability to Obtain 70% Coverage"},
-			{"0","0%"},{"1","4%"},{"2","24%"}
-		});		
-		expectedPDFTableMap.put(fileName, PDFTable.COVERAGEFORECASTTO70);	
-
-		fileName = "TC517Report538320.pdf";
-		expectedTableMap.put(fileName, new String[][]{
-			{"","1","Software Car","12/14/2015 3:26 PM PST","12.3","15.56","0+/-","Possible Natural Gas","0%","1. 15.6/12.30"},
-			{"","2","Software Car","12/14/2015 3:28 PM PST","9.44","9.44","0+/-","Possible Natural Gas","0%","1. 9.4/9.44"},
-			{"","3","Software Car","12/14/2015 3:28 PM PST","8.2","13.67","0+/-","Possible Natural Gas","0%","1. 13.7/8.20"},
-			{"","4","Software Car","12/14/2015 3:28 PM PST","7.97","12.95","0+/-","Possible Natural Gas","0%","1. 13.0/7.97"},
-			{"","5","Software Car","12/14/2015 3:28 PM PST","3.02","6.01","0+/-","Possible Natural Gas","0%","1. 6.0/3.02"},
-			{"","6","Software Car","12/14/2015 3:27 PM PST","0.4","2.77","0+/-","Possible Natural Gas","0%",""}
-		});
-		expectedPDFTableMap.put(fileName,PDFTable.LISAINDICATIONTABLE);	
-
-
+//		String fileName = "IV-12BF45.pdf";
+//		expectedTableMap.put(fileName, new String[][]{
+//			{"Lisa#","Amplitude","Investigated","Leak Found","Investigation Date/Time","Investigator"},
+//			{"1","6.42","","","",""},{"2","2.41","","","",""},{"3","1.74","","","",""},{"4","0.37","","","",""},
+//			{"5","0.34","","","",""},{"6","0.12","","","",""},{"7","0.08","","","",""},{"8","0.08","","","",""}});
+//		expectedPDFTableMap.put(fileName, PDFTable.LISAINVESTIGATIONTABLE);
+//
+//		fileName = "TC517Report538321.pdf";
+//		expectedTableMap.put(fileName, new String[][]{
+//			{"Map Height & Width:","8.50 X 11.00 in"},
+//			{"Time Zone:", "Pacific Standard Time"},
+//			{"Exclusion Radius:","0 m"},
+//			{"Report Mode:", "Standard"},
+//			{"NE Lat & NE Long","37.42060 X -121.97250"},
+//			{"SW Lat & SW Long","37.41570 X -121.98390"}});
+//		expectedPDFTableMap.put(fileName, PDFTable.COMPLIANCEREPORTSUMMARYTABLE);
+//
+//		fileName = "TestReportPGE-surveynotpartofplat.pdf";
+//		expectedTableMap.put(fileName, new String[][]{
+//			{"0%Percent Service Coverage with LISAs","0%Percent Service Coverage Without LISAs"}
+//		});
+//		expectedPDFTableMap.put(fileName, PDFTable.COVERAGEFORECAST);
+//
+//		fileName = "TestReportPGE-nolisa.pdf";
+//		expectedTableMap.put(fileName, new String[][]{
+//			{"Additional Surveys","Probability to Obtain 70% Coverage"},
+//			{"0","0%"},{"1","4%"},{"2","24%"}
+//		});		
+//		expectedPDFTableMap.put(fileName, PDFTable.COVERAGEFORECASTTO70);	
+//
+//		fileName = "TC517Report538320.pdf";
+//		expectedTableMap.put(fileName, new String[][]{
+//			{"","1","Software Car","12/14/2015 3:26 PM PST","12.3","15.56","0+/-","Possible Natural Gas","0%","1. 15.6/12.30"},
+//			{"","2","Software Car","12/14/2015 3:28 PM PST","9.44","9.44","0+/-","Possible Natural Gas","0%","1. 9.4/9.44"},
+//			{"","3","Software Car","12/14/2015 3:28 PM PST","8.2","13.67","0+/-","Possible Natural Gas","0%","1. 13.7/8.20"},
+//			{"","4","Software Car","12/14/2015 3:28 PM PST","7.97","12.95","0+/-","Possible Natural Gas","0%","1. 13.0/7.97"},
+//			{"","5","Software Car","12/14/2015 3:28 PM PST","3.02","6.01","0+/-","Possible Natural Gas","0%","1. 6.0/3.02"},
+//			{"","6","Software Car","12/14/2015 3:27 PM PST","0.4","2.77","0+/-","Possible Natural Gas","0%",""}
+//		});
+//		expectedPDFTableMap.put(fileName,PDFTable.LISAINDICATIONTABLE);	
+//
+//
 		PDFTableUtility pdfTableUtility = new PDFTableUtility();
 
 		try {
@@ -462,6 +469,7 @@ public class PDFTableUtility extends PDFUtility{
 	private void testExtractPDFTable(String filePath, String[][] expectedTable, PDFTable pTable) throws IOException {
 		String pdfText = extractPDFText(filePath);
 		List<String[]> actualTable1 = extractPDFTable(filePath, pTable);
+		actualTable1 = extractPDFTable(filePath, pTable);
 		List<String[]> actualTable2 = extractTableContents(pdfText, pTable);
 		for(int i=0; i<expectedTable.length;i++){
 			for(int j=0; j<expectedTable[i].length;j++){
