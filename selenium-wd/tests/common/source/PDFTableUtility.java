@@ -180,7 +180,6 @@ public class PDFTableUtility extends PDFUtility{
 						}else{
 							continue;
 						}
-
 					}
 					numLines++;
 				}
