@@ -1362,7 +1362,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		copyImg.click();
 		complianceReportsPage.waitForCopyReportPagetoLoad();
-		complianceReportsPage.waitForCopyReportPagetoLoad();
 		assertTrue(complianceReportsPage.getPercentCoverForecast().isDisplayed());
 		complianceReportsPage.clickOnCancelBtn();
 	}
