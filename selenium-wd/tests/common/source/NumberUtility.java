@@ -10,6 +10,9 @@ import java.util.Map;
 
 import org.testng.Assert;
 
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
+
 public class NumberUtility {
 	private ArrayList<Integer> rollingNumbers = new ArrayList<Integer>();
 	private Integer currentRollingSum = 0;

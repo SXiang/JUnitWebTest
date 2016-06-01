@@ -10,7 +10,7 @@ public class Analyzer extends BaseEntity {
 
 	private Object id;
 	private Object surveyorUnitId;
-	private Float sharedKey;
+	private String sharedKey;
 	private String serialNumber;
 
 	public Analyzer() {
@@ -33,11 +33,11 @@ public class Analyzer extends BaseEntity {
 		this.surveyorUnitId = surveyorUnitId;
 	}
 
-	public Float getSharedKey() {
+	public String getSharedKey() {
 		return sharedKey;
 	}
 
-	public void setSharedKey(Float sharedKey) {
+	public void setSharedKey(String sharedKey) {
 		this.sharedKey = sharedKey;
 	}
 
@@ -98,7 +98,7 @@ public class Analyzer extends BaseEntity {
 		try {
 			objAnalyzer.setId(resultSet.getObject("Id"));
 			objAnalyzer.setSurveyorUnitId(resultSet.getObject("SurveyorUnitId"));
-			objAnalyzer.setSharedKey(resultSet.getFloat("SharedKey"));
+			objAnalyzer.setSharedKey(resultSet.getString("SharedKey"));
 			objAnalyzer.setSerialNumber(resultSet.getString("SerialNumber"));
 		} catch (SQLException e) {
 			Log.error(e.toString());

@@ -13,7 +13,7 @@ public class Measurement extends BaseEntity {
 	private static final String CACHE_KEY = "MEASUREMENT.";
 
 	private Float windSpeedLongitudinal;
-	private Integer gpsFit;
+	private Short gpsFit;
 	private Integer peripheralStatus;
 	private Date createDate;
 	private Float windSpeedEast;
@@ -22,7 +22,7 @@ public class Measurement extends BaseEntity {
 	private Float cH4;
 	private Float windDirectionStdDev;
 	private Float epochTime;
-	private String analyzerId;
+	private Object analyzerId;
 	private Integer instrumentStatus;
 	private Float deltaCH4;
 	private Float carSpeedNorth;
@@ -55,11 +55,11 @@ public class Measurement extends BaseEntity {
 		this.windSpeedLongitudinal = windSpeedLongitudinal;
 	}
  
-	public Integer getGpsFit() {
+	public Short getGpsFit() {
 		return gpsFit;
 	}
  
-	public void setGpsFit(Integer gpsFit) {
+	public void setGpsFit(Short gpsFit) {
 		this.gpsFit = gpsFit;
 	}
  
@@ -127,11 +127,11 @@ public class Measurement extends BaseEntity {
 		this.epochTime = epochTime;
 	}
  
-	public String getAnalyzerId() {
+	public Object getAnalyzerId() {
 		return analyzerId;
 	}
  
-	public void setAnalyzerId(String analyzerId) {
+	public void setAnalyzerId(Object analyzerId) {
 		this.analyzerId = analyzerId;
 	}
  
@@ -287,9 +287,9 @@ public class Measurement extends BaseEntity {
 		this.chemDetect = chemDetect;
 	}
 
-	public static List<Measurement> getMeasurements(String  analyzerId, Double startEpochTime, Double endEpochTime) {
+	public static List<Measurement> getMeasurements(String analyzerId, String startEpochTime, String endEpochTime) {
 		Measurement objMeasurement = new Measurement();
-		String SQL = "SELECT * FROM dbo.[Measurement] WHERE AnalyzerId='" + analyzerId + "' AND EpochTime >= " + startEpochTime + " AND EpochTime <= " + endEpochTime;
+		String SQL = "SELECT * FROM dbo.[Measurement] WHERE AnalyzerId='" + analyzerId + "' AND EpochTime>=" + startEpochTime + " AND EpochTime<=" + endEpochTime;
 		return objMeasurement.load(SQL);
 	}
 
@@ -314,7 +314,7 @@ public class Measurement extends BaseEntity {
 		Measurement objMeasurement = new Measurement();
 		try {
 			objMeasurement.setWindSpeedLongitudinal(getFloatColumnValue(resultSet,"WindSpeedLongitudinal"));
-			objMeasurement.setGpsFit(getIntColumnValue(resultSet,"GpsFit"));
+			objMeasurement.setGpsFit(getShortColumnValue(resultSet,"GpsFit"));
 			objMeasurement.setPeripheralStatus(getIntColumnValue(resultSet,"PeripheralStatus"));
 			objMeasurement.setCreateDate(getDateColumnValue(resultSet,"CreateDate"));
 			objMeasurement.setWindSpeedEast(getFloatColumnValue(resultSet,"WindSpeedEast"));
@@ -323,7 +323,7 @@ public class Measurement extends BaseEntity {
 			objMeasurement.setCH4(getFloatColumnValue(resultSet,"CH4"));
 			objMeasurement.setWindDirectionStdDev(getFloatColumnValue(resultSet,"WindDirectionStdDev"));
 			objMeasurement.setEpochTime(getFloatColumnValue(resultSet,"EpochTime"));
-			objMeasurement.setAnalyzerId(resultSet.getString("AnalyzerId"));
+			objMeasurement.setAnalyzerId(resultSet.getObject("AnalyzerId"));
 			objMeasurement.setInstrumentStatus(getIntColumnValue(resultSet,"InstrumentStatus"));
 			objMeasurement.setDeltaCH4(getFloatColumnValue(resultSet,"DeltaCH4"));
 			objMeasurement.setCarSpeedNorth(getFloatColumnValue(resultSet,"CarSpeedNorth"));
@@ -406,16 +406,23 @@ public class Measurement extends BaseEntity {
 		float gps_abs_long = Float.valueOf(map.get("GPS_ABS_LONG"));
 		float gps_fit = Float.valueOf(map.get("GPS_FIT"));
 		
-		if(   (Float.compare(this.getEpochTime(), epochTime)==0)   && (Float.compare(this.getCH4(), ch4)==0)
-				&& (Float.compare(this.getWindSpeedLongitudinal(), ws_wind_lon)==0)
-				&& (Float.compare(this.getWindSpeedLateral(), ws_wind_lat)==0) && (Float.compare(this.getGpsLongitude(), gps_abs_long)==0)
-				&& (Float.compare(this.getGpsFit(), gps_fit)==0)  ){
+		boolean epochTimeCompare = floatCompare(this.getEpochTime(), epochTime)==0;
+		boolean ch4Compare = floatCompare(this.getCH4(), ch4)==0;
+		boolean windSpeedLongCompare = floatCompare(this.getWindSpeedLongitudinal(), ws_wind_lon)==0;
+		boolean windSpeedLatCompare = floatCompare(this.getWindSpeedLateral(), ws_wind_lat)==0;
+		boolean gpsLongCompare = floatCompare(this.getGpsLongitude(), gps_abs_long)==0;
+		boolean gpsFitCompare = floatCompare((float)this.getGpsFit(), gps_fit)==0;
 
+		Log.info(String.format("Values from DB -> EpochTime=[%f],CH4=[%f],WindSpeedLongitudinal=[%f],WindSpeedLateral=[%f],GpsLongitude=[%f],GpsFit=[%f]", 
+				this.getEpochTime(), this.getCH4(), this.getWindSpeedLongitudinal(), this.getWindSpeedLateral(), this.getGpsLongitude(), (float)this.getGpsFit()));
+		Log.info(String.format("Values from CSV -> EpochTime=[%f],CH4=[%f],WindSpeedLongitudinal=[%f],WindSpeedLateral=[%f],GpsLongitude=[%f],GpsFit=[%f]",
+				epochTime, ch4, ws_wind_lon, ws_wind_lat, gps_abs_long, gps_fit));
+		Log.info(String.format("epochTimeCompare=%b, ch4Compare=%b, windSpeedLongCompare=%b, windSpeedLatCompare=%b, gpsLongCompare=%b, gpsFitCompare=%b", 
+				epochTimeCompare, ch4Compare, windSpeedLongCompare, windSpeedLatCompare, gpsLongCompare, gpsFitCompare));
+		if(epochTimeCompare && ch4Compare && windSpeedLongCompare && windSpeedLatCompare && gpsLongCompare && gpsFitCompare){
 			return true;
 		}
-	return false;
+		return false;
 	}
-
-
-
 }
+

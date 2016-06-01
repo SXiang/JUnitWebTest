@@ -5,6 +5,8 @@ package surveyor.scommon.source;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,8 +26,12 @@ import org.testng.Assert;
 import common.source.BaseHelper;
 import common.source.BrowserCommands;
 import common.source.DatUtility;
+import common.source.DirectoryWatcher;
+import common.source.FileUtility;
 import common.source.Log;
+import common.source.TestContext;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.Analyzer;
 import surveyor.dataaccess.source.CaptureEvent;
 import surveyor.dataaccess.source.Measurement;
 import surveyor.dataaccess.source.Peak;
@@ -98,6 +104,22 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		}
 	}
 
+	public enum ExportFileType {
+		SurveyExport ("SurveyExport"),
+		AnalysisExport ("AnalysisExport"),
+		PeakExport ("PeakExport");
+		
+		private final String name;
+
+		ExportFileType(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
+	}
+
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -152,13 +174,36 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		try {
 			WebElement row = dataTable.getMatchingRow(userIndexMap);
 			WebElement btn = row.findElement(By.xpath(getButtonXpath(buttonType)));
-			btn.click();
 			if (buttonType == DrivingSurveyButtonType.DeleteSurvey) {
+				btn.click();
 				this.waitForConfirmDeletePopupToShow();
 				this.clickOnConfirmInDeleteReportPopup();
 				if (driver.getCurrentUrl().contains(ERROR_URL)) {
 					driver.get(strBaseURL + STRURLPath);
 				}
+			} else if (buttonType == DrivingSurveyButtonType.ExportAnalysis || buttonType == DrivingSurveyButtonType.ExportPeaks ||
+					buttonType == DrivingSurveyButtonType.ExportSurvey) {
+				long timeoutInSeconds = 60;  // download timeout = 60 seconds.
+				String fileExtension = "zip";
+				ExportFileType exportFileType = ExportFileType.SurveyExport; 
+				if (buttonType == DrivingSurveyButtonType.ExportPeaks){
+					exportFileType = ExportFileType.PeakExport; 
+				} else if (buttonType == DrivingSurveyButtonType.ExportAnalysis) {
+					exportFileType = ExportFileType.AnalysisExport; 
+				}
+				String filePrefix = this.getExportFileNamePrefix(surveyTag, analyzer, exportFileType);
+
+				Path directoryToWatch = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath());
+				FileUtility.deleteFilesInDirectory(directoryToWatch, filePrefix, fileExtension);
+				DirectoryWatcher directoryWatcher = new DirectoryWatcher();
+				directoryWatcher.registerWatcher(directoryToWatch);
+				btn.click();
+				Path downloadedFile = directoryWatcher.watchForNewlyCreatedFile(directoryToWatch, filePrefix, fileExtension, timeoutInSeconds);
+				if (downloadedFile == null) {
+					return false;
+				}
+			} else {
+				btn.click();
 			}
 			result = true;
 		} catch (Exception e) {
@@ -315,7 +360,8 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		return null;
 	}
 
-	public boolean validateDatFiles(String type, String tag, String analyzer, String downloadPath, String mode, boolean delete) {
+	public boolean validateDatFiles(String type, String tag, String analyzer, String downloadPath, String mode, 
+			String startEpoch, String endEpoch, boolean delete) {
 		String zipFileNameBase = type;
 		String zipFileName = null;
 		String datFileName = null;
@@ -332,7 +378,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 					BaseHelper.deCompressZipFile(zipFileName, downloadPath, true);
 
 					if (datFileName.contains(DRIVINGSURVEYSEXPORTSURVEY)) {
-						Assert.assertTrue((verifySurveyExportFile(downloadPath + File.separator + datFileName, analyzer)));
+						Assert.assertTrue((verifySurveyExportFile(downloadPath + datFileName, analyzer, startEpoch, endEpoch)));
 					}
 					/*
 					 * else if (datFileName.contains(DRIVINGSURVEYSEXPORTPEAKS)){ Assert.assertTrue((verifyPeakExportFile(downloadPath + File.separator + datFileName, tag, analyzer, mode))); } else if
@@ -345,12 +391,12 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		}
 
 		if (datFileName != null) {
-			if (BaseHelper.validateDatFile(downloadPath + File.separator + datFileName)) {
+			if (BaseHelper.validateDatFile(downloadPath + datFileName)) {
 				if (delete) {
-					File file = new File(downloadPath + File.separator + datFileName);
+					File file = new File(downloadPath + datFileName);
 					file.delete();
 
-					file = new File(downloadPath + File.separator + zipFileName);
+					file = new File(downloadPath + zipFileName);
 					file.delete();
 				}
 				return true;
@@ -405,7 +451,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		return false;
 	}
 
-	public boolean verifySurveyExportFile(String datFileName, String analyzer) {
+	public boolean verifySurveyExportFile(String datFileName, String analyzer, String startEpoch, String endEpoch) {
 
 		boolean verifySurvey = false;
 		DatUtility dUtil = new DatUtility();
@@ -414,7 +460,8 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			List<HashMap<String, String>> rows = dUtil.getAllRows();
 			Map<String, String> map = new HashMap<String, String>();
 
-			List<Measurement> listOfDBMeasurement = Measurement.getMeasurements(analyzer);
+			Analyzer analyzerObj = Analyzer.getAnalyzerBySerialNumber(analyzer);
+			List<Measurement> listOfDBMeasurement = Measurement.getMeasurements(analyzerObj.getId().toString(), startEpoch, endEpoch);
 
 			if (rows.size() > 0 && listOfDBMeasurement.size() > 0) {
 				if (rows.size() == listOfDBMeasurement.size()) {
@@ -423,17 +470,18 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 						map = rows.get(i);
 						verifySurvey = checkMeasurementInDB(listOfDBMeasurement, map);
 						if (!verifySurvey) {
-							Log.info("One of the row does not exist in database table.");
+							Log.info("[verifySurveyExportFile MATCH=FALSE] One of the row does not exist in database table.");
 							return false;
 						}
 					}
 				} else {
 					verifySurvey = false;
-					Log.info("The number of rows in downloaded file and rows of database table does not match.");
+					Log.info("[verifySurveyExportFile MATCH=FALSE] The number of rows in downloaded file and rows of database table does not match. "
+							+ String.format("Rows in .dat file = %d. Rows in database = %d", rows.size(), listOfDBMeasurement.size()));
 				}
 			} else if (rows.size() == 0 && listOfDBMeasurement.size() == 0) {
 				verifySurvey = true;
-				Log.info("The File and database table both do not have anything.");
+				Log.info("[verifySurveyExportFile MATCH=TRUE] The File and database table both do not have anything.");
 			}
 
 		} catch (IOException e) {
@@ -495,6 +543,16 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			}
 		}
 		return false;
+	}
+	
+	public String getExportFileNamePrefix(String surveyTag, String analyzerSerialNum, ExportFileType exportFileType) {
+		StringBuilder fileNameBuilder = new StringBuilder();
+		fileNameBuilder.append(exportFileType.name());
+		fileNameBuilder.append("_");
+		fileNameBuilder.append(surveyTag);
+		fileNameBuilder.append("_");
+		fileNameBuilder.append(analyzerSerialNum);
+		return fileNameBuilder.toString();
 	}
 
 	public WebElement getFirstViewSurveyLink() {

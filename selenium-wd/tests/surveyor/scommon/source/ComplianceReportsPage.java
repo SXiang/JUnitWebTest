@@ -258,7 +258,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(how = How.ID, using = "modalClose")
 	protected WebElement modalClose;
 	
-    @FindBy(css = "#ImageList > li.dynamic a[href*='DownloadReportView'")
+	@FindBy(css = "#ImageList > li.dynamic a[href*='DownloadReportView']")
     protected List<WebElement> pdfViews;
     
 	@FindBy(name = "rdAreaMode")

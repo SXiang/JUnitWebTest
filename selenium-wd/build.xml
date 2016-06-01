@@ -254,8 +254,7 @@
 				<formatter type="xml" />
 				<fileset dir="${build}">
 
-					<include name="**/ComplianceReportsPageTest2.class" />
-					<include name="**/ComplianceReportsPageTest3.class" />
+					<include name="**/ComplianceReportsPageTest6.class" />
 
 				</fileset>
 			</batchtest>
@@ -380,7 +379,7 @@
 				</fileset>
 			</classpath>
 
-			<batchtest fork="yes" todir="${reports}/sanity/xml/">
+			<batchtest fork="no" todir="${reports}/sanity/xml/">
 				<formatter type="xml" />
 				<fileset dir="${build}">
 					<include name="**/SanityIntegrationTest.class" />

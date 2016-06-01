@@ -31,6 +31,7 @@ import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import common.source.BaseHelper;
 import common.source.Log;
+import common.source.RegexUtility;
 import common.source.TestSetup;
 
 /**
@@ -339,9 +340,17 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 	public boolean findExistingLocation(String customerName, String locationName) {
 		setPagination(PAGINATIONSETTING_100);
+		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
 		this.waitForAJAXCallsToComplete();
 		this.waitForTableDataToLoad();
+		
+		this.searchTable(locationName);
+		if (this.searchHasNoMatchingRecords()) {
+        	// revert back search field.
+        	this.clearSearchField();
+        	return false;
+		}
 
 		String customerNameXPath;
 		String locationNameXPath;
@@ -373,6 +382,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName)
 					&& (locationNameCell.getText().trim()).equalsIgnoreCase(locationName)) {
 				Log.info("Found entry at row=" + rowNum);
+            	// revert back search field.
+            	this.clearSearchField();
 				return true;
 			}
 
@@ -393,6 +404,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			}
 		}
 
+    	// revert back search field.
+    	this.clearSearchField();
 		return false;
 	}
 
@@ -423,8 +436,15 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			String longValue, String newEthMthMin, String newEthMthMax , boolean openEditorOnly, boolean checkForError){
 		
 		setPagination(PAGINATIONSETTING_100);
+		this.clearSearchFieldUsingSpace();		// clear any previous entries in search.
 
 		this.waitForTableDataToLoad();
+		this.searchTable(locationName);
+		if (this.searchHasNoMatchingRecords()) {
+        	// revert back search field.
+        	this.clearSearchField();
+        	return false;
+		}
 
 		String customerNameXPath;
 		String locationNameXPath;
@@ -504,8 +524,10 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				String curURL = driver.getCurrentUrl();
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				js.executeScript("arguments[0].click();", this.btnOK);
-				System.out.println("ok button clicked");
+				Log.info("ok button clicked");
                 if(!checkForError){
+                	// revert back search field.
+                	this.clearSearchField();
                 	return true;
                 }
 				if (newLocationName.equalsIgnoreCase("")) {
@@ -524,6 +546,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 						return false;
 					}
 				}
+
+            	// revert back search field.
+            	this.clearSearchField();
 				return true;
 			}
 
@@ -544,6 +569,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			}
 		}
 
+	   	// revert back search field.
+    	this.clearSearchField();
 		return false;
 
 	}
@@ -700,7 +727,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 
 	public boolean searchLocation(String customer, String locationName) {
-		this.getInputSearch().sendKeys(locationName);
+		this.searchTable(locationName);
 		return findExistingLocation(customer, locationName);
 	}
 

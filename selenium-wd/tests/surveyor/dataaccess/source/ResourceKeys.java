@@ -252,4 +252,7 @@ public class ResourceKeys {
 	public static final String ReportSSRS_DatePrinted = "ReportSSRS_DatePrinted";
 	public static final String ReportSSRS_ReportAuthor = "ReportSSRS_ReportAuthor";
 	public static final String ReportSSRS_SoftwareVersion = "ReportSSRS_SoftwareVersion";
+	
+	// Constants for Data table
+	public static final String Constant_FilteredFromMaxTotalEntries = "Constant_FilteredFromMaxTotalEntries";
 }
