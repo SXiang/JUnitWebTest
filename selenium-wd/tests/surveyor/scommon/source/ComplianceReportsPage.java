@@ -51,6 +51,7 @@ import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SSRSPdfFooterColumns;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
+import surveyor.scommon.source.ReportsCompliance.CustomerBoundaryFilterType;
 import surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 import surveyor.scommon.source.ReportsSurveyInfo.ColumnHeaders;
 
@@ -258,7 +259,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(how = How.ID, using = "modalClose")
 	protected WebElement modalClose;
 	
-    @FindBy(css = "#ImageList > li.dynamic a[href*='DownloadReportView'")
+    @FindBy(css = "#ImageList > li.dynamic a[href*='DownloadReportView']")
     protected List<WebElement> pdfViews;
     
 	@FindBy(name = "rdAreaMode")
@@ -1760,19 +1761,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * Verifies that the customer boundary name auto-complete list contains the
 	 * specified entries.
 	 */
-	public boolean verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains(ReportsCompliance reportsCompliance,
+	public boolean verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains(String boundaryFilterType, String customerBoundaryName,
 			List<String> autocompleteListEntries) {
-		String typeValue = reportsCompliance.getCustomerBoundaryFilterType().toString();
 		openCustomerBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen()
 			.switchMode(ControlMode.MapInteraction)
 			.waitForMapImageLoad();
-		latLongSelectionControl.selectCustomerBoundaryType(typeValue);
+		latLongSelectionControl.selectCustomerBoundaryType(boundaryFilterType);
 
 		// Type customer boundary name and verify the autocomplete list. If not
 		// all entries shown, return false.
 		if (!latLongSelectionControl.verifyCustomerBoundaryAutoCompleteListContains(
-				reportsCompliance.getCustomerBoundaryName(), autocompleteListEntries)) {
+				customerBoundaryName, autocompleteListEntries)) {
 			return false;
 		}
 
@@ -3124,16 +3124,42 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public boolean verifyViewsInSSRSPDFAreInCorrectSequence(List<String> expectedViewNamesList, String reportTitle) throws IOException {
 		Log.info(String.format("Expected views are: %s", LogHelper.strListToString(expectedViewNamesList)));
-		List<String[]> viewTblList = getSSRSPDFTableValues(PDFTable.VIEWSTABLE, reportTitle);
-		// Filter out additional entries that might be returned in the List array.		
+		
+		List<String> actualViewNamesList = getViewNamesFromSSRSPdfViewTable(reportTitle);
 		
 		// Returned list has 2 columns. 0-th column is the view name.
-		List<String> actualViewNamesList = ArrayUtility.getColumnStringList(viewTblList, 0); 
 		Log.info(String.format("Actual views found in SSRS PDF are: %s", LogHelper.strListToString(actualViewNamesList)));
 		// Verify lists contain the same elements in the same order.
 		return actualViewNamesList.equals(expectedViewNamesList);
 	}
 
+	public List<String> getViewNamesFromSSRSPdfViewTable(String reportTitle) throws IOException {
+		String pdfFilename = this.getReportPDFFileName(reportTitle, true /*includeExtension*/);
+		String pdfFilePath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), pdfFilename).toString();
+
+		PDFUtility pdfUtility = new PDFUtility();
+		String actualReportString = pdfUtility.extractPDFText(pdfFilePath);
+		
+		List<String> actualViewNamesList = new ArrayList<String>();
+		String viewTable = RegexUtility.getStringInBetween(actualReportString, "Selected Views", "View Table");
+
+		InputStream inputStream = new ByteArrayInputStream(viewTable.getBytes());
+		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
+		String line = null;
+		try {
+			while ((line = bufferReader.readLine()) != null) {
+				if (line.length() > 3) {
+					String[] split = line.split("\\s+");
+					String viewName = line.replace(split[split.length - 1], "").trim();
+					actualViewNamesList.add(viewName);
+				}
+			}
+
+		} finally {
+			bufferReader.close();
+		}
+		return actualViewNamesList;
+	}
 
 	/**
 	 * Wrapper to verify the Views Images
@@ -3234,7 +3260,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				+ "shape-files" + File.separator + testCaseID;
 
 		// Verify files in both directories are the same.
-		if (!FileUtility.compareFilesInDirectories(actualDataFolderPath, expectedDataFolderPath, true)) {
+		if (!FileUtility.compareFilesInDirectories(actualDataFolderPath, expectedDataFolderPath)) {
 			return false;
 		}
 

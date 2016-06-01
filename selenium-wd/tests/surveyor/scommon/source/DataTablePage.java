@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.SearchContext;
@@ -20,6 +21,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import common.source.BasePage;
 import common.source.Log;
 import common.source.RegexUtility;
+import common.source.SortHelper;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
 
@@ -48,6 +50,19 @@ public class DataTablePage extends BasePage {
 	private WebElement firstButton;
 	@FindBy(css = ".paginate_button.current")
 	private WebElement currentButton;
+	
+	public enum TableColumnType {
+		Number("Number"), String("String"), Date("Date");
+		private final String name;
+
+		TableColumnType(String nm) {
+			name = nm;
+		}
+
+		public String toString() {
+			return this.name;
+		}
+	}
 
 	private DataTablePage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
 		super(driver, testSetup, strBaseURL, strPageURL);
@@ -109,6 +124,7 @@ public class DataTablePage extends BasePage {
 		do{			
 			for(WebElement row: tableRow){
 				List<WebElement> field = row.findElements(By.cssSelector("td"));
+				
 				columnValues.add(field.get(colIdx).getText());
             	numFound++;
 				if(numRecords>-1 && numFound >= numRecords){
@@ -118,7 +134,7 @@ public class DataTablePage extends BasePage {
 		}while(toNextPage());		
         return columnValues;
    }
-
+    
 	/**
 	 * Find records in this data table, page by page
 	 * 
@@ -226,6 +242,56 @@ public class DataTablePage extends BasePage {
 		}
 		return true;
 	}
+	
+	/**
+	 * check whether data in table columns are sorted Ascending
+	 * 
+	 * @param cloumnMap
+	 * @return
+	 */
+	public boolean isTableSortedAsc(HashMap<String, TableColumnType> cloumnMap, String str, List<WebElement> paginationOption, WebElement dataTable) {
+		for (Entry<String, TableColumnType> entry : (cloumnMap.entrySet())) {
+			TableColumnType columnType = cloumnMap.get(entry.getKey().trim());
+			List<String> values = getRecords(entry.getKey().trim(), -1 ).stream().map(String::toLowerCase).collect(Collectors.toList());
+			if (columnType == TableColumnType.Date) {
+				if (!SortHelper.isDateSortedASC(values.stream().toArray(String[]::new))) {
+					return false;
+				}
+			}
+			if (columnType == TableColumnType.String || columnType == TableColumnType.Number) {
+				if (!SortHelper.isSortedASC(values.stream().toArray(String[]::new))) {
+					return false;
+				}
+			}
+
+		}
+		return true;
+	}
+
+	/**
+	 * check whether data in table columns are sorted Descending
+	 * 
+	 * @param cloumnMap
+	 * @return
+	 */
+	public boolean isTableSortedDesc(HashMap<String, TableColumnType> cloumnMap, String str, List<WebElement> paginationOption, WebElement dataTable) {
+		for (Entry<String, TableColumnType> entry : (cloumnMap.entrySet())) {
+			TableColumnType columnType = cloumnMap.get(entry.getKey().trim());			
+			List<String> values = getRecords(entry.getKey().trim(), -1).stream().map(String::toLowerCase).collect(Collectors.toList());
+			if (columnType == TableColumnType.Date) {
+				if (!SortHelper.isDateSortedDESC(values.stream().toArray(String[]::new))) {
+					return false;
+				}
+			}
+			if (columnType == TableColumnType.String || columnType == TableColumnType.Number) {
+				if (!SortHelper.isSortedDESC(values.stream().toArray(String[]::new))) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 
 	/**
 	 * To find the index number of a column

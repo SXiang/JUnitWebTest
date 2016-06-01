@@ -6,6 +6,7 @@ package surveyor.scommon.source;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -21,6 +22,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.source.DataTablePage.TableColumnType;
 import common.source.Log;
 import common.source.TestSetup;
 
@@ -41,6 +43,13 @@ public class ManageUsersPage extends SurveyorBasePage {
 	private static final String USERNAME_ERROR_MSG_JS_FUNCTION = "function getUserErrMsg() { var errMsg = this.document.getElementById('User.UserName-error'); "
 			+ "if (errMsg) { return errMsg.textContent; } return ''; };";
 	private static final String USERNAME_ERROR_MSG_JS_FUNCTION_CALL = "return getUserErrMsg();";
+	public static final String Constant_Status = Resources.getResource(ResourceKeys.Constant_Status);
+	public static final String Constant_Customer = Resources.getResource(ResourceKeys.Constant_Customer);
+	public static final String Constant_UserName = Resources.getResource(ResourceKeys.Constant_UserName);
+	public static final String Constant_Location = Resources.getResource(ResourceKeys.Constant_Location);
+	public static final String Constant_Roles = Resources.getResource(ResourceKeys.Constant_Roles);
+	public static final String Constant_User = Resources.getResource(ResourceKeys.Constant_User);
+	protected String pagination = "100";
 	
 	@FindBy(id = "User.UserName-error")
 	private WebElement labelUserNameError;
@@ -131,7 +140,8 @@ public class ManageUsersPage extends SurveyorBasePage {
     protected WebElement tdRoleValue;
     
     @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[6]")
-    protected WebElement tdStatusValue;
+    protected WebElement tdStatusValue;   
+
     
 	// add more web elements here later
 
@@ -1405,4 +1415,64 @@ public class ManageUsersPage extends SurveyorBasePage {
 		}
 		return false;
 	}
+	
+	public boolean areTableColumnsSorted(){
+		if(!isUserNameColumnSorted()){
+			return false;
+		}
+		if(!isUserColumnSorted()){
+			return false;
+		}
+		if(!isCustomerColumnSorted()){
+			return false;
+		}
+		if(!isLocationColumnSorted()){
+			return false;
+		}
+		if(!isRolesColumnSorted()){
+			return false;
+		}
+		if(!isStatusColumnSorted()){
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public boolean isUserNameColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_UserName, TableColumnType.String);
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+	}
+	
+	public boolean isUserColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_User, TableColumnType.String);
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+	}
+	
+	public boolean isCustomerColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_Customer, TableColumnType.String);
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+	}
+	
+	public boolean isLocationColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_Location, TableColumnType.String);
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+	}
+	
+	public boolean isRolesColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_Roles, TableColumnType.String);
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+	}
+	
+	public boolean isStatusColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_Status, TableColumnType.String);
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+	}
+
 }

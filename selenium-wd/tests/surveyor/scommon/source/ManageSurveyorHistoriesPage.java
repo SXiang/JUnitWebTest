@@ -257,6 +257,10 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 		this.btnCancel.click();
 	}
 
+	public WebElement getBtnAddNewHistoryEntry() {
+		return btnAddNewHistoryEntry;
+	}
+
 	/**
 	 * @param args
 	 */

@@ -51,6 +51,7 @@ import common.source.TestSetup;
 import surveyor.api.source.ReportJob;
 import surveyor.api.source.ReportJobsStat;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.ReportCompliance;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataaccess.source.User;
@@ -2739,7 +2740,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyBoundariesAutoCompleteListContains", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("verifyBoundariesAutoCompleteListContains", ARG_DATA, data);
 		List<String> boundaryNamesList = RegexUtility.split(data, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
-		return this.getComplianceReportsPage().verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains(workingReportsComp, boundaryNamesList);
+		ComplianceReportsDataRow complianceReportsDataRow = getComplianceReportsDataRow(dataRowID);
+		return this.getComplianceReportsPage().verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains(
+				complianceReportsDataRow.customerBoundaryType, complianceReportsDataRow.customerBoundaryName, boundaryNamesList);
 	}
  
 	/**
