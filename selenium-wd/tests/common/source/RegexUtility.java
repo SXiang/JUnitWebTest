@@ -209,7 +209,7 @@ public class RegexUtility {
 	}
 
 	public static String replaceSpecialChars(String inputString){
-		//inputString = inputString.replaceAll(" ", "");
+		inputString = inputString.replaceAll(" ", "");
 		return inputString.replaceAll(RegexUtility.REGEX_PATTEN_SPECIAL_CHARACTERS, "_");
 	}
 	
@@ -241,11 +241,11 @@ public class RegexUtility {
 	
 	public static void main(String[] args) throws IOException {
 		
-		/*Log.info("Running test - testRemoveSpecialChars_Success() ...");
+		Log.info("Running test - testRemoveSpecialChars_Success() ...");
 		testRemoveSpecialChars_Success();
-		*/Log.info("Running test - testReplaceSpecialChars_Success() ...");
+		Log.info("Running test - testReplaceSpecialChars_Success() ...");
 		testReplaceSpecialChars_Success();
-		/*Log.info("Running test - testMatchesPattern_functionNameAndArgument_Success() ...");
+		Log.info("Running test - testMatchesPattern_functionNameAndArgument_Success() ...");
 		testMatchesPattern_functionNameAndArgument_Success();
 		Log.info("Running test - testMatchesPattern_functionNameNoArgument_FailMatch() ...");
 		testMatchesPattern_functionNameNoArgument_FailMatch();
@@ -271,7 +271,7 @@ public class RegexUtility {
 		testMatchesPatternFR_functiongetReportRegexDatePattern_Success();
 		Log.info("Running test - testGetStringInBetween_Success() ...");
 		test_functionGetStringInBetween_Success();
-		testgetNextLineAfterPattern_Success();*/
+		testgetNextLineAfterPattern_Success();
 	}
 
 	private static void testRemoveSpecialChars_Success() throws IOException {
