@@ -413,12 +413,15 @@ public class Measurement extends BaseEntity {
 		boolean gpsLongCompare = floatCompare(this.getGpsLongitude(), gps_abs_long)==0;
 		boolean gpsFitCompare = floatCompare((float)this.getGpsFit(), gps_fit)==0;
 
-		Log.info(String.format("Values from DB -> EpochTime=[%f],CH4=[%f],WindSpeedLongitudinal=[%f],WindSpeedLateral=[%f],GpsLongitude=[%f],GpsFit=[%f]", 
-				this.getEpochTime(), this.getCH4(), this.getWindSpeedLongitudinal(), this.getWindSpeedLateral(), this.getGpsLongitude(), (float)this.getGpsFit()));
-		Log.info(String.format("Values from CSV -> EpochTime=[%f],CH4=[%f],WindSpeedLongitudinal=[%f],WindSpeedLateral=[%f],GpsLongitude=[%f],GpsFit=[%f]",
-				epochTime, ch4, ws_wind_lon, ws_wind_lat, gps_abs_long, gps_fit));
-		Log.info(String.format("epochTimeCompare=%b, ch4Compare=%b, windSpeedLongCompare=%b, windSpeedLatCompare=%b, gpsLongCompare=%b, gpsFitCompare=%b", 
-				epochTimeCompare, ch4Compare, windSpeedLongCompare, windSpeedLatCompare, gpsLongCompare, gpsFitCompare));
+		if (DEBUG_LOG) {
+			Log.info(String.format("Values from DB -> EpochTime=[%f],CH4=[%f],WindSpeedLongitudinal=[%f],WindSpeedLateral=[%f],GpsLongitude=[%f],GpsFit=[%f]", 
+					this.getEpochTime(), this.getCH4(), this.getWindSpeedLongitudinal(), this.getWindSpeedLateral(), this.getGpsLongitude(), (float)this.getGpsFit()));
+			Log.info(String.format("Values from CSV -> EpochTime=[%f],CH4=[%f],WindSpeedLongitudinal=[%f],WindSpeedLateral=[%f],GpsLongitude=[%f],GpsFit=[%f]",
+					epochTime, ch4, ws_wind_lon, ws_wind_lat, gps_abs_long, gps_fit));
+			Log.info(String.format("epochTimeCompare=%b, ch4Compare=%b, windSpeedLongCompare=%b, windSpeedLatCompare=%b, gpsLongCompare=%b, gpsFitCompare=%b", 
+					epochTimeCompare, ch4Compare, windSpeedLongCompare, windSpeedLatCompare, gpsLongCompare, gpsFitCompare));
+		}
+		
 		if(epochTimeCompare && ch4Compare && windSpeedLongCompare && windSpeedLatCompare && gpsLongCompare && gpsFitCompare){
 			return true;
 		}

@@ -14,7 +14,10 @@ public class BaseEntity {
     protected Statement statement = null;
     protected ResultSet resultSet = null;
     protected float floatPrecision = 0.00000001F;
-	
+
+    // Enable this flag when debugging data access classes to print log that we do not want printed in normal run.
+    protected static boolean DEBUG_LOG = false;
+    
     public BaseEntity() {
     	this.connection = ConnectionFactory.createConnection();
     }
