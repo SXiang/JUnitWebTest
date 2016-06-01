@@ -322,7 +322,9 @@ public class DateUtility {
 	 */
 	public static int compareDatesWithTZ(String dateTime1, boolean daylight1, String dateTime2, boolean daylight2) {
 		int diff = 0;
-		DateTimeParser[] parsers = { DateTimeFormat.forPattern(getLongDateFormat()).getParser(), DateTimeFormat.forPattern("MM/dd/yyyy hh:mm aa zzz").getParser(), DateTimeFormat.forPattern("dd/MM/yyyy HH:mm zzz").getParser(), DateTimeFormat.forPattern("YYYY/MM/dd HH:mm zzz").getParser() };
+		DateTimeParser[] parsers = { DateTimeFormat.forPattern(getLongDateFormatComp()).getParser(), DateTimeFormat.forPattern("MM/dd/yyyy hh:mm aa zzz").getParser(), 
+				DateTimeFormat.forPattern("dd/MM/yyyy HH:mm zzz").getParser(), DateTimeFormat.forPattern("YYYY/MM/dd HH:mm zzz").getParser(),
+				DateTimeFormat.forPattern("MM/dd/yyyy hh:mm:ss a zzz").getParser()};
 		org.joda.time.format.DateTimeFormatter formatter = new DateTimeFormatterBuilder().append(null, parsers).toFormatter();
 		Long epoch1 = formatter.parseDateTime(dateTime1).getMillis() / 1000;
 		Long epoch2 = formatter.parseDateTime(dateTime2).getMillis() / 1000;
@@ -364,7 +366,27 @@ public class DateUtility {
 		String culture = TestContext.INSTANCE.getUserCulture();
 		String dateFormat = null;
 		if (culture.equals("en-US")) {
-			dateFormat = "MM/dd/yyyy hh:mm:ss aa zzz";
+			dateFormat = "M[M]/d[d]/yyyy h[h]:mm:ss a zzz";
+		}
+		if (culture.equals("fr")) {
+			dateFormat = "d[d]/M[M]/yyyy H[H]:mm:ss zzz";
+		}
+		if (culture.equals("zh-Hans")) {
+			dateFormat = "YYYY/M[M]/d[d] H[H]:mm:ss zzz";
+		}
+		return dateFormat;
+
+	}
+	
+	public static String getLongSimpleDateFormat() {
+		return getLongDateFormat().replaceAll("[", "").replaceAll("]", "");		
+	}
+	
+	public static String getLongDateFormatComp() {
+		String culture = TestContext.INSTANCE.getUserCulture();
+		String dateFormat = null;
+		if (culture.equals("en-US")) {
+			dateFormat = "MM/dd/yyyy hh:mm:ss zzz";
 		}
 		if (culture.equals("fr")) {
 			dateFormat = "dd/MM/yyyy HH:mm:ss zzz";
@@ -490,9 +512,9 @@ public class DateUtility {
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 
-		Log.info(DateUtility.getCurrentDate().toGMTString());
-		Log.info(DateUtility.getCurrentDate().toLocaleString());
-		Log.info(DateUtility.getCurrentDate().toString());
+		//Log.info(DateUtility.getCurrentDate().toGMTString());
+		//Log.info(DateUtility.getCurrentDate().toLocaleString());
+		//Log.info(DateUtility.getCurrentDate().toString());
 
 		// ** Unit tests for isFirstTimeGreater() method
 
@@ -531,121 +553,121 @@ public class DateUtility {
 		String result; // Unit tests - compareLongDateTimeFormat(String inputDateTime)
 		Log.info("Executing Unit tests for compareLongDateTimeFormat(String inputDateTime)");
 		TestContext.INSTANCE.setUserCulture("en-US");
-		Log.info(result = (DateUtility.isValidLongDateTimeFormat("3/9/2016 6:04:41 PM CST")) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.isValidLongDateTimeFormat("24/01/2015 18:42:01 PM CST")) ? "FAIL" : "PASS");
+		Assert.assertTrue(DateUtility.isValidLongDateTimeFormat("3/9/2016 6:04:41 PM CST"));
+		Assert.assertFalse(DateUtility.isValidLongDateTimeFormat("24/01/2015 18:42:01 PM CST")) ;
 		TestContext.INSTANCE.setUserCulture("fr");
-		Log.info(result = (DateUtility.isValidLongDateTimeFormat("12/14/2015 8:42:01 CET")) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.isValidLongDateTimeFormat("24/01/2015 18:42:01 CET")) ? "PASS" : "FAIL");
+		Assert.assertFalse(DateUtility.isValidLongDateTimeFormat("12/14/2015 8:42:01 CET")) ;
+		Assert.assertTrue(DateUtility.isValidLongDateTimeFormat("24/01/2015 18:42:01 CET")) ;
 		TestContext.INSTANCE.setUserCulture("zh-Hans");
-		Log.info(result = (DateUtility.isValidLongDateTimeFormat("2015/01/12 18:42:22 CST")) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.isValidLongDateTimeFormat("24/01/2015 18:42:22 CST")) ? "FAIL" : "PASS");
+		Assert.assertTrue (DateUtility.isValidLongDateTimeFormat("2015/01/12 18:42:22 CST"));
+		Assert.assertFalse(DateUtility.isValidLongDateTimeFormat("24/01/2015 18:42:22 CST"));
 
 		// Unit tests - compareDateUtilityTimeFormat(String inputDateUtilityTime, boolean reports)
 		Log.info("Executing Unit tests for compareDateUtilityTimeFormat(String inputDateUtilityTime, boolean reports)");
 		TestContext.INSTANCE.setUserCulture("en-US");
-		Log.info(result = (DateUtility.compareDateTimeFormat("12/14/2015 8:42 PM PST", true)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDateTimeFormat("24/01/2015 18:42 CST", true)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimeFormat("24/01/2015 18:42 PM CST", true)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimeFormat("01/24/2015 08:42 PM CST", true)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDateTimeFormat("24/01/2015 18:42 PM", true)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimeFormat("24/01/15 18:42 PM CST", true)) ? "FAIL" : "PASS");
+		Assert.assertTrue(DateUtility.compareDateTimeFormat("12/14/2015 8:42 PM PST", true));
+		Assert.assertFalse(DateUtility.compareDateTimeFormat("24/01/2015 18:42 CST", true)) ;
+		Assert.assertFalse(DateUtility.compareDateTimeFormat("24/01/2015 18:42 PM CST", true));
+		Assert.assertTrue (DateUtility.compareDateTimeFormat("01/24/2015 08:42 PM CST", true)) ;
+		Assert.assertFalse (DateUtility.compareDateTimeFormat("24/01/2015 18:42 PM", true));
+		Assert.assertFalse (DateUtility.compareDateTimeFormat("24/01/15 18:42 PM CST", true)) ;
 		// US -en Page format tests TestContext.INSTANCE.setUserCulture("en-US");
-		Log.info(result = (DateUtility.compareDateTimeFormat("12/14/2015 8:42 PM PST", false)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimeFormat("24/01/2015 18:42 ", false)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimeFormat("24/01/2015 18:42 PM", false)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimeFormat("01/24/2015 08:42 PM", false)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDateTimeFormat("24/01/2015 18:42 PM", false)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimeFormat("24/01/15 18:42 PM CST", false)) ? "FAIL" : "PASS");
+		Assert.assertFalse(DateUtility.compareDateTimeFormat("12/14/2015 8:42 PM PST", false)) ;
+		Assert.assertFalse (DateUtility.compareDateTimeFormat("24/01/2015 18:42 ", false)) ;
+		Assert.assertFalse (DateUtility.compareDateTimeFormat("24/01/2015 18:42 PM", false));
+		Assert.assertTrue(DateUtility.compareDateTimeFormat("01/24/2015 08:42 PM", false));
+		Assert.assertFalse(DateUtility.compareDateTimeFormat("24/01/2015 18:42 PM", false));
+		Assert.assertFalse(DateUtility.compareDateTimeFormat("24/01/15 18:42 PM CST", false)) ;
 		// FR Report format tests
 		TestContext.INSTANCE.setUserCulture("fr");
-		Log.info(result = (DateUtility.compareDateTimeFormat("12/14/2015 8:42 CET", true)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimeFormat("30/06/2009 18:42 CET", true)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDateTimeFormat("2015/01/12 18:42 CET", true)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimeFormat("24/01/2015 18:42 CET", true)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDateTimeFormat("24/01/15 18:42 PM CST", true)) ? "FAIL" : "PASS");
+		Assert.assertFalse(DateUtility.compareDateTimeFormat("12/14/2015 8:42 CET", true));
+		Assert.assertTrue (DateUtility.compareDateTimeFormat("30/06/2009 18:42 CET", true)) ;
+		Assert.assertFalse(DateUtility.compareDateTimeFormat("2015/01/12 18:42 CET", true));
+		Assert.assertTrue(DateUtility.compareDateTimeFormat("24/01/2015 18:42 CET", true)) ;
+		Assert.assertFalse(DateUtility.compareDateTimeFormat("24/01/15 18:42 PM CST", true)) ;
 		// FR Page format tests
 		TestContext.INSTANCE.setUserCulture("fr");
-		Log.info(result = (DateUtility.compareDateTimeFormat("12/24/2015 8:42 ", false)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimeFormat("24/01/2015 8:42 ", false)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDateTimeFormat("2015/01/12 18:42 ", false)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimeFormat("24/01/2015 16:42 ", false)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDateTimeFormat("24/01/2015 18:42 PM", false)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimeFormat("24/01/15 18:42 PM ", false)) ? "FAIL" : "PASS");
+		Assert.assertFalse(DateUtility.compareDateTimeFormat("12/24/2015 8:42 ", false));
+		Assert.assertTrue(DateUtility.compareDateTimeFormat("24/01/2015 8:42 ", false));
+		Assert.assertFalse(DateUtility.compareDateTimeFormat("2015/01/12 18:42 ", false));
+		Assert.assertTrue(DateUtility.compareDateTimeFormat("24/01/2015 16:42 ", false)) ;
+		Assert.assertFalse(DateUtility.compareDateTimeFormat("24/01/2015 18:42 PM", false));
+		Assert.assertFalse(DateUtility.compareDateTimeFormat("24/01/15 18:42 PM ", false)) ;
 		// China Report format tests
 		TestContext.INSTANCE.setUserCulture("zh-Hans");
-		Log.info(result = (DateUtility.compareDateTimeFormat("2015/12/14 8:42 PST ", true)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDateTimeFormat("2015/01/12 18:42 CST", true)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDateTimeFormat("24/01/2015 18:42 CST", true)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimeFormat("2015/12/14 8:42 ", true)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimeFormat("2015/12/14 8:42 PM CST", true)) ? "FAIL" : "PASS");
+		Assert.assertTrue(DateUtility.compareDateTimeFormat("2015/12/14 8:42 PST ", true));
+		Assert.assertTrue (DateUtility.compareDateTimeFormat("2015/01/12 18:42 CST", true));
+		Assert.assertFalse(DateUtility.compareDateTimeFormat("24/01/2015 18:42 CST", true));
+		Assert.assertFalse(DateUtility.compareDateTimeFormat("2015/12/14 8:42 ", true));
+		Assert.assertFalse (DateUtility.compareDateTimeFormat("2015/12/14 8:42 PM CST", true));
 		// China Page format tests
 		TestContext.INSTANCE.setUserCulture("zh-Hans");
-		Log.info(result = (DateUtility.compareDateTimeFormat("2015/12/14 8:42 ", false)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDateTimeFormat("2015/01/12 18:42 ", false)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDateTimeFormat("24/01/2015 18:42 ", false)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimeFormat("12/14/2015 8:42 ", false)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimeFormat("2015/12/14 8:42 PM", false)) ? "FAIL" : "PASS");
+		Assert.assertTrue(DateUtility.compareDateTimeFormat("2015/12/14 8:42 ", false));
+		Assert.assertTrue(DateUtility.compareDateTimeFormat("2015/01/12 18:42 ", false)) ;
+		Assert.assertFalse(DateUtility.compareDateTimeFormat("24/01/2015 18:42 ", false));
+		Assert.assertFalse(DateUtility.compareDateTimeFormat("12/14/2015 8:42 ", false));
+		Assert.assertFalse(DateUtility.compareDateTimeFormat("2015/12/14 8:42 PM", false)) ;
 
 		// Unit tests - compareDateUtilityTimes(String inputDateUtilityTime1, DateUtility inputDateUtilityTime2, boolean reports)
 		// US -en
 		TestContext.INSTANCE.setUserCulture("en-US");
-		Log.info(result = (DateUtility.compareDateTimes("12/14/2015 8:42 PM PST", "12/14/2015 8:42 PM PST", true)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDateTimes("12/14/2015 8:40 PM PST", "12/14/2015 8:42 PM PST", true)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimes("12/14/2015 8:42 PM PST", "12/10/2015 8:42 PM PST", true)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimes("12/14/2015 8:42 PM ", "12/14/2015 8:42 PM ", false)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDateTimes("12/14/2015 8:40 PM ", "12/14/2015 8:42 PM ", false)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimes("12/14/2015 8:42 PM ", "12/10/2015 8:42 PM ", false)) ? "FAIL" : "PASS");
+		Assert.assertTrue (DateUtility.compareDateTimes("12/14/2015 8:42 PM PST", "12/14/2015 8:42 PM PST", true)) ;
+		Assert.assertFalse (DateUtility.compareDateTimes("12/14/2015 8:40 PM PST", "12/14/2015 8:42 PM PST", true)) ;
+		Assert.assertFalse (DateUtility.compareDateTimes("12/14/2015 8:42 PM PST", "12/10/2015 8:42 PM PST", true));
+		Assert.assertTrue(DateUtility.compareDateTimes("12/14/2015 8:42 PM ", "12/14/2015 8:42 PM ", false));
+		Assert.assertFalse(DateUtility.compareDateTimes("12/14/2015 8:40 PM ", "12/14/2015 8:42 PM ", false)) ;
+		Assert.assertFalse(DateUtility.compareDateTimes("12/14/2015 8:42 PM ", "12/10/2015 8:42 PM ", false)) ;
 		// FR
 		TestContext.INSTANCE.setUserCulture("fr");
 		Log.info(result = (DateUtility.compareDateTimes("24/01/2015 18:42 CST", "24/01/2015 18:42 CST", true)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDateTimes("24/01/2015 18:42 CST", "24/01/2015 18:40 CST", true)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimes("24/01/2015 18:42 CST", "20/01/2015 18:42 CST", true)) ? "FAIL" : "PASS");
+		Assert.assertFalse(DateUtility.compareDateTimes("24/01/2015 18:42 CST", "24/01/2015 18:40 CST", true));
+		Assert.assertFalse(DateUtility.compareDateTimes("24/01/2015 18:42 CST", "20/01/2015 18:42 CST", true));
 		Log.info(result = (DateUtility.compareDateTimes("24/01/2015 18:42 ", "24/01/2015 18:42", false)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDateTimes("24/01/2015 18:42 ", "24/01/2015 18:40 ", false)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimes("24/01/2015 18:42 ", "20/01/2015 18:42 ", false)) ? "FAIL" : "PASS");
+		Assert.assertFalse (DateUtility.compareDateTimes("24/01/2015 18:42 ", "24/01/2015 18:40 ", false));
+		Assert.assertFalse(DateUtility.compareDateTimes("24/01/2015 18:42 ", "20/01/2015 18:42 ", false));
 		// China
 		TestContext.INSTANCE.setUserCulture("zh-Hans");
 		Log.info(result = (DateUtility.compareDateTimes("2015/01/12 18:42 CST", "2015/01/12 18:42 CST", true)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDateTimes("2015/01/12 18:40 CST", "2015/01/12 18:42 CST", true)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimes("2015/01/12 18:42 CST", "2014/01/12 18:42 CST", true)) ? "FAIL" : "PASS");
+		Assert.assertFalse(DateUtility.compareDateTimes("2015/01/12 18:40 CST", "2015/01/12 18:42 CST", true));
+		Assert.assertFalse(DateUtility.compareDateTimes("2015/01/12 18:42 CST", "2014/01/12 18:42 CST", true)) ;
 		Log.info(result = (DateUtility.compareDateTimes("2015/01/12 18:42 ", "2015/01/12 18:42 ", false)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDateTimes("2015/01/12 18:40 ", "2015/01/12 18:42 ", false)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDateTimes("2015/01/12 18:42 ", "2014/01/12 18:42 ", false)) ? "FAIL" : "PASS");
+		Assert.assertFalse (DateUtility.compareDateTimes("2015/01/12 18:40 ", "2015/01/12 18:42 ", false)) ;
+		Assert.assertFalse(DateUtility.compareDateTimes("2015/01/12 18:42 ", "2014/01/12 18:42 ", false));
 
 		// Unit tests - compareDateUtilitys(String inputDateUtilityTime1, String inputDateUtilityTime2, boolean reports)
 		// US -en
 		TestContext.INSTANCE.setUserCulture("en-US");
-		Log.info(result = (DateUtility.compareDates("12/14/2015 8:42 PM PST", "12/14/2015 8:42 PM PST", true)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDates("12/14/2015 8:40 PM PST", "12/14/2016 8:42 PM PST", true)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDates("12/14/2015 8:42 PM PST", "12/15/2015 8:42 PM PST", true)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDates("12/14/2015 8:42 PM ", "12/14/2015 8:42 PM ", false)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDates("12/14/2015 8:40 PM ", "12/14/2016 8:42 PM ", false)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDates("12/14/2015 8:42 PM ", "12/15/2015 8:42 PM ", false)) ? "FAIL" : "PASS");
+		Assert.assertTrue(DateUtility.compareDates("12/14/2015 8:42 PM PST", "12/14/2015 8:42 PM PST", true)) ;
+		Assert.assertFalse (DateUtility.compareDates("12/14/2015 8:40 PM PST", "12/14/2016 8:42 PM PST", true)) ;
+		Assert.assertFalse(DateUtility.compareDates("12/14/2015 8:42 PM PST", "12/15/2015 8:42 PM PST", true)) ;
+		Assert.assertTrue(DateUtility.compareDates("12/14/2015 8:42 PM ", "12/14/2015 8:42 PM ", false));
+		Assert.assertFalse(DateUtility.compareDates("12/14/2015 8:40 PM ", "12/14/2016 8:42 PM ", false));
+		Assert.assertFalse (DateUtility.compareDates("12/14/2015 8:42 PM ", "12/15/2015 8:42 PM ", false)) ;
 		// FR
 		TestContext.INSTANCE.setUserCulture("fr");
-		Log.info(result = (DateUtility.compareDates("24/01/2015 18:42 CST", "24/01/2015 18:42 CST", true)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDates("24/01/2015 18:42 CST", "24/02/2015 18:42 CST", true)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDates("24/01/2015 18:42 CST", "24/01/2016 18:42 CST", true)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDates("24/01/2015 18:42 ", "24/01/2015 18:42 ", false)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDates("24/01/2015 18:42 ", "24/02/2015 18:42 ", false)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDates("24/01/2015 18:42 ", "24/01/2016 18:42 ", false)) ? "FAIL" : "PASS");
+		Assert.assertTrue(DateUtility.compareDates("24/01/2015 18:42 CST", "24/01/2015 18:42 CST", true));
+		Assert.assertFalse(DateUtility.compareDates("24/01/2015 18:42 CST", "24/02/2015 18:42 CST", true)) ;
+		Assert.assertFalse (DateUtility.compareDates("24/01/2015 18:42 CST", "24/01/2016 18:42 CST", true)) ;
+		Assert.assertTrue(DateUtility.compareDates("24/01/2015 18:42 ", "24/01/2015 18:42 ", false)) ;
+		Assert.assertFalse(DateUtility.compareDates("24/01/2015 18:42 ", "24/02/2015 18:42 ", false)) ;
+		Assert.assertFalse(DateUtility.compareDates("24/01/2015 18:42 ", "24/01/2016 18:42 ", false)) ;
 		// China
 		TestContext.INSTANCE.setUserCulture("zh-Hans");
-		Log.info(result = (DateUtility.compareDates("2015/01/12 18:42 CST", "2015/01/12 18:42 CST", true)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDates("2015/01/12 18:40 CST", "2015/02/12 18:42 CST", true)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDates("2015/01/12 18:42 CST", "2014/01/12 18:42 CST", true)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDates("2015/01/12 18:42 ", "2015/01/12 18:42 ", false)) ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.compareDates("2015/01/12 18:40 ", "2015/02/12 18:42 ", false)) ? "FAIL" : "PASS");
-		Log.info(result = (DateUtility.compareDates("2015/01/12 18:42 ", "2014/01/12 18:42 ", false)) ? "FAIL" : "PASS");
+		Assert.assertTrue(DateUtility.compareDates("2015/01/12 18:42 CST", "2015/01/12 18:42 CST", true));
+		Assert.assertFalse(DateUtility.compareDates("2015/01/12 18:40 CST", "2015/02/12 18:42 CST", true));
+		Assert.assertFalse (DateUtility.compareDates("2015/01/12 18:42 CST", "2014/01/12 18:42 CST", true)) ;
+		Assert.assertTrue(DateUtility.compareDates("2015/01/12 18:42 ", "2015/01/12 18:42 ", false));
+		Assert.assertFalse (DateUtility.compareDates("2015/01/12 18:40 ", "2015/02/12 18:42 ", false)) ;
+		Assert.assertFalse (DateUtility.compareDates("2015/01/12 18:42 ", "2014/01/12 18:42 ", false)) ;
 
 		TestContext.INSTANCE.setUserCulture("en-US");
-		Log.info(result = (DateUtility.getDuration("3/7/2016 1:55 PM PST", "3/7/2016 2:29 PM PST", true)) == 34 ? "PASS" : "FAIL");
-		Log.info(result = (DateUtility.getDuration("3/7/2016 3:50 PM PST", "3/7/2016 4:02 PM PST", true)) == 12 ? "PASS" : "FAIL");
+		Assert.assertTrue(DateUtility.getDuration("3/7/2016 1:55 PM PST", "3/7/2016 2:29 PM PST", true) == 34 );
+		Assert.assertTrue(DateUtility.getDuration("3/7/2016 3:50 PM PST", "3/7/2016 4:02 PM PST", true) == 12);
 		
 		TestContext.INSTANCE.setUserCulture("en-US");
-		Log.info(result =(DateUtility.compareDatesWithTZ("12/14/2015 11:26:27 PM GMT", false, "3/7/2016 1:55 PM PST", false))==-1?"PASS":"FAIL");
-		Log.info(result =(DateUtility.compareDatesWithTZ("12/14/2015 3:16:07 PM PST", false, "12/14/2015 11:16:07 PM GMT", false))==0?"PASS":"FAIL");
-		Log.info(result =(DateUtility.compareDatesWithTZ("12/14/2015 3:16:07 PM PST", false, "12/14/2015 12:16:07 PM GMT", false))==1?"PASS":"FAIL");
+		Assert.assertTrue(DateUtility.compareDatesWithTZ("12/14/2015 11:26:27 PM GMT", false, "3/7/2016 1:55 PM PST", false)==-1);
+		Assert.assertTrue(DateUtility.compareDatesWithTZ("12/14/2015 3:16:07 PM PST", false, "12/14/2015 11:16:07 PM GMT", false)==0);
+		Assert.assertTrue(DateUtility.compareDatesWithTZ("12/14/2015 3:16:07 PM PST", false, "12/14/2015 12:16:07 PM GMT", false)==1);
 
 	}
 }
