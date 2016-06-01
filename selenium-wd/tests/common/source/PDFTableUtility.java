@@ -422,7 +422,6 @@ public class PDFTableUtility extends PDFUtility{
 		});
 		expectedPDFTableMap.put(fileName,PDFTable.LISAINDICATIONTABLE);	
 
-
 		PDFTableUtility pdfTableUtility = new PDFTableUtility();
 
 		try {
