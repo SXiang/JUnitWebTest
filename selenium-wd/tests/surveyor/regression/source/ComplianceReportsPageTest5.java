@@ -147,6 +147,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		measurementSessionsPage.performSearch(PICADMNSTDTAG2);
 		measurementSessionsPage.clickOnFirstSurveyDeleteLink();
 		assertTrue(homePage.getReturnHomePage().isEnabled());
+		assertTrue(homePage.getReturnHomePage().isDisplayed());
 		homePage.getReturnHomePage().click();
 	}	
 
@@ -172,43 +173,15 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 
-		ComplianceReportsPage complianceReportsPage2 = complianceReportsPageAction.getComplianceReportsPage();
-		complianceReportsPage2.open();
-		complianceReportsPage2.openNewReportPage();
-
-		ReportModeFilter rmode = ReportModeFilter.Standard;
-		testReportFilters(rmode);
-		SurveyModeFilter smode = SurveyModeFilter.All;
-		testSurveyFilters(smode);
-
-		smode = SurveyModeFilter.Standard;
-		testSurveyFilters(smode);
-
-		smode = SurveyModeFilter.Operator;
-		testSurveyFilters(smode);
-
-		rmode = ReportModeFilter.RapidResponse;
-		testReportFilters(rmode);
-		smode = SurveyModeFilter.RapidResponse;
-		testSurveyFilters(smode);
-
-		rmode = ReportModeFilter.Manual;
-		testReportFilters(rmode);
-		smode = SurveyModeFilter.Manual;
-		testSurveyFilters(smode);
-	}
-
-	private void testReportFilters(ReportModeFilter rmode){
-		ComplianceReportsPage complianceReportsPage2 = complianceReportsPageAction.getComplianceReportsPage();
-		complianceReportsPage2.selectReportMode(rmode);
-		assertTrue(complianceReportsPage2.verifySurveyModeFilters(rmode));	
-	}
-	private void testSurveyFilters(SurveyModeFilter smode){
-		ComplianceReportsPage complianceReportsPage2 = complianceReportsPageAction.getComplianceReportsPage();
-		complianceReportsPage2.selectSurveyModeForSurvey(smode);
-		complianceReportsPage2.clickOnSearchSurveyButton();
-		assertTrue(complianceReportsPage2.verifySurveySelectorWithFilter(smode));
-	}
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openNewReportPage(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.selectReportMode("Standard", getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifySurveyModeFiltersByReportMode("Standard", getReportRowID(reportDataRowID1)));
+		complianceReportsPageAction.selectReportMode("RR", getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifySurveyModeFiltersByReportMode("RR", NOTSET));
+		complianceReportsPageAction.selectReportMode("Manual", getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifySurveyModeFiltersByReportMode("Manual", NOTSET));
+		}
 
 	/**
 	 * Test Case ID: TC1505_PercentCoverageForecastFeaturesPermissionCustomer_NewComplianceReportGeneration
@@ -512,6 +485,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Report mode is changed as specified by user and all surveys are deleted
 	 *	- - Report is generated successfully in Standard mode
 	 */
+	//TODO:  Need to implement method to verify "Report mode is changed as specified by user and all surveys are deleted" which is tracked by DE1999
 	@Test  //customer supervisor does not have asset and boundary (Need to update test case)
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1525, location = ComplianceReportDataProvider.class)
 	public void TC1525_ChangeReportModeGenerateComplianceReportUsingCopyFunctionalityOfCanceledFailedReportCustomerSupervisorUser(
@@ -793,10 +767,9 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, NOTSET));
-		
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("1", getReportRowID(reportDataRowID1)));
 	}
 
 	/**

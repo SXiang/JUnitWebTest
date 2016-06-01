@@ -208,6 +208,11 @@ public class RegexUtility {
 		return inputString.replaceAll(RegexUtility.REGEX_PATTERN_NOT_ALPHANUMERIC, "");
 	}
 
+	public static String replaceSpecialChars(String inputString){
+		//inputString = inputString.replaceAll(" ", "");
+		return inputString.replaceAll(RegexUtility.REGEX_PATTEN_SPECIAL_CHARACTERS, "_");
+	}
+	
 	/**
 	 * Compare strings by equals or matches
 	 * @param line
@@ -236,9 +241,11 @@ public class RegexUtility {
 	
 	public static void main(String[] args) throws IOException {
 		
-		Log.info("Running test - testRemoveSpecialChars_Success() ...");
+		/*Log.info("Running test - testRemoveSpecialChars_Success() ...");
 		testRemoveSpecialChars_Success();
-		Log.info("Running test - testMatchesPattern_functionNameAndArgument_Success() ...");
+		*/Log.info("Running test - testReplaceSpecialChars_Success() ...");
+		testReplaceSpecialChars_Success();
+		/*Log.info("Running test - testMatchesPattern_functionNameAndArgument_Success() ...");
 		testMatchesPattern_functionNameAndArgument_Success();
 		Log.info("Running test - testMatchesPattern_functionNameNoArgument_FailMatch() ...");
 		testMatchesPattern_functionNameNoArgument_FailMatch();
@@ -264,7 +271,7 @@ public class RegexUtility {
 		testMatchesPatternFR_functiongetReportRegexDatePattern_Success();
 		Log.info("Running test - testGetStringInBetween_Success() ...");
 		test_functionGetStringInBetween_Success();
-		testgetNextLineAfterPattern_Success();
+		testgetNextLineAfterPattern_Success();*/
 	}
 
 	private static void testRemoveSpecialChars_Success() throws IOException {
@@ -276,6 +283,16 @@ public class RegexUtility {
 		Assert.assertTrue(fileContent.contains("LISA Investigation Complete"));
 		Assert.assertTrue(fileContent.contains("Report Creation Date 5/16/2016 5:42 PM PDT"));
 		Assert.assertTrue(fileContent.contains("NE Lat & NE Long 37.42060 X -121.97250"));
+	}
+
+	private static void testReplaceSpecialChars_Success() throws IOException {
+		Path inputFilePath = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\regexutility-tests\\testFile02.txt");
+		String fileContent = FileUtility.readFileContents(inputFilePath.toString(), true);
+		fileContent = RegexUtility.replaceSpecialChars(fileContent);
+		Log.info("After replacing special chars file content is:");
+		Log.info(fileContent);
+		Assert.assertTrue(fileContent.contains("First report title is TC204 #%__$&_Report"));
+		Assert.assertTrue(fileContent.contains("Second report title is TC210 ______Report"));
 	}
 
 	private static void testMatchesPattern_functionNameAndArgument_Success() {

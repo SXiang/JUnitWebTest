@@ -1157,6 +1157,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			mode = ReportModeFilter.Assessment;
 		} else if (reportMode.equalsIgnoreCase("eq")) {
 			mode = ReportModeFilter.EQ;
+			
 		} else if (reportMode.equalsIgnoreCase("operator")) {
 			mode = ReportModeFilter.Operator;
 		} else if (reportMode.equalsIgnoreCase("manual")) {
@@ -1167,6 +1168,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return mode;
 	}
 
+	public SurveyModeFilter getSurveyMode(String surveyMode) {
+		SurveyModeFilter mode = SurveyModeFilter.Manual;
+		if (surveyMode.equalsIgnoreCase("standard")) {
+			mode = SurveyModeFilter.Standard;
+		} else if (surveyMode.equalsIgnoreCase("operator")) {
+			mode = SurveyModeFilter.Operator;
+		} else if (surveyMode.equalsIgnoreCase("manual")) {
+			mode = SurveyModeFilter.Manual;
+		} else if (surveyMode.equalsIgnoreCase("rr")) {
+			mode = SurveyModeFilter.RapidResponse;
+		} else if (surveyMode.equalsIgnoreCase("all")){
+			mode = SurveyModeFilter.All;
+		}
+		return mode;
+	}
 	private void handleOptionalDynamicViewLayersSection(List<Map<String, String>> viewLayersList) {
 		if (viewLayersList != null && !viewLayersList.isEmpty()) {
 			selectViewLayerAssets(viewLayersList.get(0));
