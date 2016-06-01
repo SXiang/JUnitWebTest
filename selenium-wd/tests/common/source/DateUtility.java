@@ -16,7 +16,6 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.time.Duration;
-
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
@@ -138,6 +137,8 @@ public class DateUtility {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(dateFormatString);
 		return dateFormat.parse(dateString);
 	}
+	
+
 
 	/**
 	 * Returns the current date for the current zone for which test is running.
@@ -174,7 +175,7 @@ public class DateUtility {
 	 *            - given date time in String, reports- whether the format check is as per long date format.
 	 * @return whether the String is a match for the locale format
 	 */
-	public boolean compareLongDateTimeFormat(String inputDateTime) {
+	public static boolean isValidLongDateTimeFormat(String inputDateTime) {
 		TemporalAccessor inputDate;
 		Locale locale = Locale.forLanguageTag(getLanguageTag());
 		try {
@@ -188,6 +189,27 @@ public class DateUtility {
 		}
 		return false;
 	}
+	
+	/**
+	 * This function takes a DateTime formatted String and convert it to DateTime object
+	 * 
+	 * @param inputDateTime
+	 *            - given date time in String, reports- whether the format check is as per long date format.
+	 * @return DateTime object
+	 */
+	public static TemporalAccessor stringToDateTime(String inputDateTime) {
+		TemporalAccessor inputDate=null;
+		Locale locale = Locale.forLanguageTag(getLanguageTag());
+		try {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(getLongDateFormat(), locale);
+			inputDate = formatter.parse(inputDateTime.trim());
+		} catch (DateTimeParseException e) {
+			Log.info(e.toString());
+		}
+		return inputDate;
+		
+	}
+
 
 	/**
 	 * This function takes a Date/Time format in String and compare the format is correct with the given locale format
@@ -196,7 +218,7 @@ public class DateUtility {
 	 *            - given date time in String, reports- whether the format check is for the reports
 	 * @return whether the String is a match for the locale format
 	 */
-	public boolean compareDateTimeFormat(String inputDateTime, boolean useTimeZone) {
+	public static boolean compareDateTimeFormat(String inputDateTime, boolean useTimeZone) {
 		TemporalAccessor inputDate;
 		Locale locale = Locale.forLanguageTag(getLanguageTag());
 		try {
@@ -210,7 +232,7 @@ public class DateUtility {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * This function takes two strings in Date/Time format and compare them to be equal
 	 * 
@@ -218,7 +240,7 @@ public class DateUtility {
 	 *            inputDateTime2 and whether the date check is for the reports
 	 * @return whether dates are a match or not
 	 */
-	public boolean compareDateTimes(String inputDateTime1, String inputDateTime2, boolean useTimeZone) {
+	public static boolean compareDateTimes(String inputDateTime1, String inputDateTime2, boolean useTimeZone) {
 		Locale locale = Locale.forLanguageTag(getLanguageTag());
 		try {
 			TemporalAccessor date1 = DateTimeFormatter.ofPattern(getDateFormat(useTimeZone), locale).parse(inputDateTime1.trim());
@@ -243,7 +265,7 @@ public class DateUtility {
 	 *            inputDateTime2 and whether the date check is for the reports
 	 * @return difference in minutes
 	 */
-	public long getDuration(String inputDateTime1, String inputDateTime2, boolean useTimeZone) {
+	public static long getDuration(String inputDateTime1, String inputDateTime2, boolean useTimeZone) {
 		Locale locale = Locale.forLanguageTag(getLanguageTag());
 		long diffInMinutes = 0;
 		try {
@@ -266,7 +288,7 @@ public class DateUtility {
 	 *            inputDateTime2 and whether the date check is for the reports
 	 * @return whether dates are a match or not
 	 */
-	public boolean compareDates(String inputDateTime1, String inputDateTime2, boolean useTimeZone) {
+	public static boolean compareDates(String inputDateTime1, String inputDateTime2, boolean useTimeZone) {
 		Locale locale = Locale.forLanguageTag(getLanguageTag());
 		try {
 			TemporalAccessor date1 = DateTimeFormatter.ofPattern(getDateFormat(useTimeZone), locale).parse(inputDateTime1.trim());
@@ -291,7 +313,7 @@ public class DateUtility {
 	 * @return date format for the user locale
 	 */
 
-	public String getLongDateFormat() {
+	public static String getLongDateFormat() {
 		String culture = TestContext.INSTANCE.getUserCulture();
 		String dateFormat = null;
 		if (culture.equals("en-US")) {
@@ -306,6 +328,27 @@ public class DateUtility {
 		return dateFormat;
 
 	}
+	
+	/**
+	 * This methods looks at the culture of the user and determines the short date format according to Cultures supported right now: English, French, Chinese
+	 * 
+	 * @return date format for the user locale
+	 */
+
+	public static String getShortSimpleDateFormat() {		
+		String culture = TestContext.INSTANCE.getUserCulture();
+		String dateFormat = null;
+		if (culture.equals("en-US")) {
+			dateFormat = "MM/dd/yyyy hh:mm a";
+		}
+		if (culture.equals("fr")) {
+			dateFormat = "dd/MM/yyyy HH:mm";
+		}
+		if (culture.equals("zh-Hans")) {
+			dateFormat = "YYYY/MM/dd HH:mm";
+		}
+		return dateFormat;
+	}
 
 	/**
 	 * This methods looks at the culture of the user and determines the date format accordingly Cultures supported right now: English, French, Chinese
@@ -315,7 +358,7 @@ public class DateUtility {
 	 * @return date format for the user locale
 	 */
 
-	public String getDateFormat(boolean useTimeZone) {
+	public static String getDateFormat(boolean useTimeZone) {
 		String culture = TestContext.INSTANCE.getUserCulture();
 		String dateFormat = null;
 		if (useTimeZone) {
@@ -349,7 +392,7 @@ public class DateUtility {
 	 * @return locale language tag
 	 */
 
-	public String getLanguageTag() {
+	public static String getLanguageTag() {
 		String culture = TestContext.INSTANCE.getUserCulture();
 		String languageTag = null;
 		if (culture.equals("en-US")) {
@@ -364,7 +407,7 @@ public class DateUtility {
 
 	}
 
-	public boolean verifyDateMatchesToday(String dateString) throws ParseException {
+	public static boolean verifyDateMatchesToday(String dateString) throws ParseException {
 		Date date = new Date(dateString);
 		Date currentDate = getCurrentDate();
 		return compareDatePart(date, currentDate);
@@ -376,7 +419,7 @@ public class DateUtility {
 	 * @param date2
 	 * @return
 	 */
-	public boolean compareDatePart(Date d1, Date d2) {
+	public static boolean compareDatePart(Date d1, Date d2) {
 		if (d1.getYear() != d2.getYear()) {
 			return false; 
 		}
@@ -439,14 +482,14 @@ public class DateUtility {
 		// Unit tests - compareLongDateTimeFormat(String inputDateTime)
 		Log.info("Executing Unit tests for compareLongDateTimeFormat(String inputDateTime)");
 		TestContext.INSTANCE.setUserCulture("en-US");
-		Log.info(result = (date.compareLongDateTimeFormat("3/9/2016 6:04:41 PM CST")) ? "PASS" : "FAIL");
-		Log.info(result = (date.compareLongDateTimeFormat("24/01/2015 18:42:01 PM CST")) ? "FAIL" : "PASS");
+		Log.info(result = (date.isValidLongDateTimeFormat("3/9/2016 6:04:41 PM CST")) ? "PASS" : "FAIL");
+		Log.info(result = (date.isValidLongDateTimeFormat("24/01/2015 18:42:01 PM CST")) ? "FAIL" : "PASS");
 		TestContext.INSTANCE.setUserCulture("fr");
-		Log.info(result = (date.compareLongDateTimeFormat("12/14/2015 8:42:01 CET")) ? "FAIL" : "PASS");
-		Log.info(result = (date.compareLongDateTimeFormat("24/01/2015 18:42:01 CET")) ? "PASS" : "FAIL");
+		Log.info(result = (date.isValidLongDateTimeFormat("12/14/2015 8:42:01 CET")) ? "FAIL" : "PASS");
+		Log.info(result = (date.isValidLongDateTimeFormat("24/01/2015 18:42:01 CET")) ? "PASS" : "FAIL");
 		TestContext.INSTANCE.setUserCulture("zh-Hans");
-		Log.info(result = (date.compareLongDateTimeFormat("2015/01/12 18:42:22 CST")) ? "PASS" : "FAIL");
-		Log.info(result = (date.compareLongDateTimeFormat("24/01/2015 18:42:22 CST")) ? "FAIL" : "PASS");
+		Log.info(result = (date.isValidLongDateTimeFormat("2015/01/12 18:42:22 CST")) ? "PASS" : "FAIL");
+		Log.info(result = (date.isValidLongDateTimeFormat("24/01/2015 18:42:22 CST")) ? "FAIL" : "PASS");
 
 		// Unit tests - compareDateTimeFormat(String inputDateTime, boolean reports)
 		Log.info("Executing Unit tests for compareDateTimeFormat(String inputDateTime, boolean reports)");

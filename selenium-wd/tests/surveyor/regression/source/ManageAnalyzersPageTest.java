@@ -8,16 +8,25 @@ import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.Log;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.ManageAnalyzersPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.DataTablePage.TableColumnType;
+
 import static surveyor.scommon.source.SurveyorConstants.*;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author zlu
@@ -29,6 +38,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	private static ManageLocationsPage manageLocationsPage;
 	private static ManageSurveyorPage manageSurveyorPage;
 	private static ManageAnalyzersPage manageAnalyzersPage;
+	public static final String ManageAnalyzer_AlreadyAssociatedError = Resources.getResource(ResourceKeys.ManageAnalyzer_AlreadyAssociatedError);
+	
 	
 	@BeforeClass
 	public static void setupManageAnalyzersPageTest() {
@@ -266,4 +277,105 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		
 		assertFalse(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerNameNew));		
 	}
+	
+	/**
+	 * Test Case ID: TC109_Associate_Disassociate_Analyzers_PicAdmin
+	 * Test Description: Picarro Administrator is allowed to associate and disassociate Analyzers within Surveyor Unit of different Customers
+	 * 
+	 */	
+	@Test
+	public void TC109_Associate_Disassociate_Analyzers_PicAdmin() {
+		String customerName = "Picarro";
+		String locationName = customerName + testSetup.getRandomNumber() + "loc";
+		String surveyorName = locationName + "sur";
+		String analyzerName = surveyorName + "ana";
+		String cityName ="Santa Clara";
+
+		String customerNameNew = CUSNAMEBASE;
+		String locationNameNew = customerName + testSetup.getRandomNumber() + CUSNAMEBASELOC;
+		String surveyorNameNew = locationName + "sur";
+				
+		Log.info("\nRunning TC109_Associate_Disassociate_Analyzers_PicAdmin - Picarro Administrator is allowed to associate and disassociate Analyzers within Surveyor Unit of different Customers");
+			
+		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerName, locationName,surveyorName,analyzerName,cityName,ANALYZERSHAREDKEY);
+		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerNameNew, locationNameNew,surveyorNameNew,analyzerName,cityName,ANALYZERSHAREDKEY);
+				
+		if (manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
+			manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationName, surveyorName, analyzerName, 
+					customerNameNew + " - " + locationNameNew + " - " + surveyorNameNew );
+		
+		assertFalse(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName));	
+		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerNameNew, locationNameNew, surveyorNameNew, analyzerName));
+	}
+	
+	/**
+	 * Test Case ID: TC110_SurveyorUnit_0or1_analyzer_associated
+	 * Test Description: Surveyor Unit should have 0 or 1 analyzer associated
+	 * 
+	 */	
+	@Test
+	public void TC110_SurveyorUnit_0or1_analyzer_associated() {
+		String customerName = "PG&E";
+		String locationName = customerName + testSetup.getRandomNumber() + "loc";
+		String surveyorName = locationName + "sur";
+		String analyzerName = surveyorName + "ana";
+		String cityName ="Santa Clara";
+
+		String locationNameNew = customerName + testSetup.getRandomNumber() + "newloc";
+		String surveyorNameNew = locationName + "newsur";
+		String analyzerNameNew = surveyorNameNew + "newana";
+				
+		Log.info("\nRunning TC109_Associate_Disassociate_Analyzers_PicAdmin - Picarro Administrator is allowed to associate and disassociate Analyzers within Surveyor Unit of different Customers");
+			
+		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerName, locationName,surveyorName,analyzerName,cityName,ANALYZERSHAREDKEY);
+		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerName, locationNameNew,surveyorNameNew,analyzerNameNew,cityName,ANALYZERSHAREDKEY);
+		if (manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
+		manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationNameNew, surveyorNameNew, analyzerNameNew, 
+					customerName + " - " + locationName + " - " + surveyorName, false );
+		
+		assertTrue(manageAnalyzersPage.getWarningMsg().getText().trim().equals(ManageAnalyzer_AlreadyAssociatedError));
+	}
+	
+	/**
+	 * Test Case ID: TC132_ManageAnalyzer_SortColumns Script: - Sort records based on attributes present Results: - - User is able to sort the list of records based on specified attribute
+	 */
+	@Test
+	public void TC132_ManageAnalyzer_SortColumns() {
+		Log.info("\nRunning TC132_ManageAnalyzer_SortColumns");
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		manageAnalyzersPage.open();
+		assertTrue(manageAnalyzersPage.areTableColumnsSorted());	
+	}
+	
+	/**
+	 * Test Case ID: TC499_EditAnalyzer_PicSupport
+	 * Test Description: Pic Support not allowed to edit Analyzer
+	 * 
+	 */	
+	@Test
+	public void TC499_EditAnalyzer_PicSupport() {
+		Log.info("\nRunning TC499_EditAnalyzer_PicSupport - Test Description: Pic Support not allowed to edit Analyzer");
+		
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);	
+		manageAnalyzersPage.open();
+		List<WebElement> addAnalyzerButton=driver.findElements(By.xpath("//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a"));
+		assertTrue(addAnalyzerButton.size()==0);
+		List<WebElement> editAnalyzerButton=driver.findElements(By.xpath("//*[@id='datatable']/tbody/tr[1]/td[7]/a[1]"));
+		assertTrue(editAnalyzerButton.size()==0);
+	
+	}
+	
+	private void addNewLocationSurveyorAnalyzer(String userName, String password, String customerName, String locationName, String surveyorName, String analyzerName, String city, String sharedKey){
+		loginPage.open();
+		loginPage.loginNormalAs(userName, password);			
+		manageLocationsPage.open();
+		manageLocationsPage.addNewLocation(locationName, customerName, city);		
+		manageSurveyorPage.open();
+		manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName);				
+		manageAnalyzersPage.open();
+		manageAnalyzersPage.addNewAnalyzer(analyzerName, sharedKey, surveyorName, customerName, locationName);
+	}
+
 }

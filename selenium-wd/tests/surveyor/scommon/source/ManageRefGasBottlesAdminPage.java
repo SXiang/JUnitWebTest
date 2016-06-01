@@ -5,6 +5,7 @@ package surveyor.scommon.source;
 
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -13,6 +14,9 @@ import org.openqa.selenium.WebElement;
 
 import common.source.Log;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.source.DataTablePage.TableColumnType;
 
 /**
  * @author zlu
@@ -20,6 +24,15 @@ import common.source.TestSetup;
  */
 public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 	public static final String STRURLPATH = "/Admin/ManageRefGasBottles";
+	public static final String Constant_Customer = Resources.getResource(ResourceKeys.Constant_Customer);
+	public static final String Constant_Location = Resources.getResource(ResourceKeys.Constant_Location);
+	public static final String Constant_Surveyor = Resources.getResource(ResourceKeys.Constant_Surveyor);
+	public static final String Constant_Analyzer = Resources.getResource(ResourceKeys.Constant_Analyzer);
+	public static final String Constant_LotNumber = Resources.getResource(ResourceKeys.Constant_LotNumber);
+	public static final String Constant_IsotopicValue = Resources.getResource(ResourceKeys.Constant_IsotopicValue);
+	public static final String Constant_EthaneToMethaneRatio = Resources.getResource(ResourceKeys.Constant_EthaneToMethaneRatio);
+	public static final String Constant_DateTime = Resources.getResource(ResourceKeys.Constant_DateTime);
+	protected String pagination = "100";
 	
 	/**
 	 * @param driver
@@ -87,4 +100,64 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 		
 		return false;
 	}
+	
+	public boolean areTableColumnsSorted(){
+		if(!isCustomerColumnSorted()){
+			return false;
+		}
+		if(!isLocationColumnSorted()){
+			return false;
+		}
+		if(!isSurveyorColumnSorted()){
+			return false;
+		}
+		if(!isAnlyzerColumnSorted()){
+			return false;
+		}
+		if(!isLotNumberColumnSorted()){
+			return false;
+		}
+		if(!isDateTimeColumnSorted()){
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public boolean isCustomerColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_Customer, TableColumnType.String);
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+	}
+	
+	public boolean isLocationColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_Location, TableColumnType.String);
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+	}
+	
+	public boolean isSurveyorColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_Surveyor, TableColumnType.String);
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+	}
+	
+	public boolean isAnlyzerColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_Analyzer, TableColumnType.String);
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+	}
+	
+	public boolean isLotNumberColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_LotNumber, TableColumnType.String);
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+	}
+	
+	public boolean isDateTimeColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_DateTime, TableColumnType.Date);
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+	}
+	
 }
