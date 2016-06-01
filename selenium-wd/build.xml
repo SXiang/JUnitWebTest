@@ -379,7 +379,7 @@
 				</fileset>
 			</classpath>
 
-			<batchtest fork="no" todir="${reports}/sanity/xml/">
+			<batchtest fork="yes" todir="${reports}/sanity/xml/">
 				<formatter type="xml" />
 				<fileset dir="${build}">
 					<include name="**/SanityIntegrationTest.class" />
