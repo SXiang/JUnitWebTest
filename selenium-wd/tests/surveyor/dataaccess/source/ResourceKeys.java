@@ -178,6 +178,7 @@ public class ResourceKeys {
 	public static final String LisaInvestigationReportSSRS_Amplitude = "LisaInvestigationReportSSRS_Amplitude";
 	public static final String LisaInvestigationReportSSRS_Investigator = "LisaInvestigationReportSSRS_Investigator";
 	public static final String LisaInvestigationReportSSRS_InvestigationReport = "LisaInvestigationReportSSRS_InvestigationReport";
+	public static final String Constant_Offline = "Constant_Offline";
 
 	
 	// Constants for Capture results.

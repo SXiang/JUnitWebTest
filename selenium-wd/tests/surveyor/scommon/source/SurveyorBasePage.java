@@ -549,4 +549,8 @@ public class SurveyorBasePage extends BasePage {
 		List<WebElement> records = this.numberofRecords;
 		return records.size();
 	}
+
+	public WebElement getNextBtn() {
+		return nextBtn;
+	}
 }

@@ -4,6 +4,7 @@
 package surveyor.scommon.source;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -31,6 +32,7 @@ public class HomePage extends SurveyorBasePage {
 	public static final String STRPageTitle = String.format("%s - %s", 
 			Resources.getResource(ResourceKeys.Index_Title), Resources.getResource(ResourceKeys.Constant_Surveyor));
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.Index_Heading);
+	public static final String Constant_Offline = Resources.getResource(ResourceKeys.Constant_Offline);
 	public static final String STRSurveyorDashboard = "Surveyor Dashboard";
 	public static final String STRReleaseNotes="ReleaseNotes";
 	public static final String STRReleaseNotesLink="Surveyor_v2.1_ReleaseNotes.pdf";	
@@ -115,6 +117,9 @@ public class HomePage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Surveyor']/tbody/tr[1]/td[3]/a")
 	private WebElement linkFirstOnlineSurveyor;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Surveyor']/tbody/tr[1]/td[3]")
+	private List<WebElement> linkOnlineOffline;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session']/tbody")
 	private WebElement tableRecentDrivingSurveys;
@@ -770,6 +775,22 @@ public class HomePage extends SurveyorBasePage {
 
 	public boolean getReleaseNotesLink() {
 		return getLinkReleaseNotes().getAttribute("href").contains(STRReleaseNotesLink);
+	}
+
+	public List<WebElement> getLinkOnlineOffline() {
+		return linkOnlineOffline;
+	}
+	
+	public WebElement getFirstOfflineSurveyLink(){
+		List<WebElement> firstOfflineSurvey=getLinkOnlineOffline();
+		Iterator<WebElement> listIterator=firstOfflineSurvey.iterator();
+		while(listIterator.hasNext()){
+			WebElement element=listIterator.next();
+			if(element.getText().equalsIgnoreCase(Constant_Offline)){
+				return element;
+			}
+		}		
+		return null;
 	}
 
 	public boolean isReleaseNotes(WebDriver driver,String winHandle){
