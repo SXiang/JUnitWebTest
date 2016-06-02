@@ -22,6 +22,9 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.LogStatus;
+
 public class ScreenShotOnFailure implements MethodRule {
 
 	private WebDriver driver;
@@ -29,8 +32,8 @@ public class ScreenShotOnFailure implements MethodRule {
 	private String imgPath = "/screenshots/";
 	private String format = "jpg";
 
-	public ScreenShotOnFailure(WebDriver driver, String urlPath){
-		this(driver, urlPath, true);
+	public ScreenShotOnFailure(WebDriver driver, String imgPath){
+		this(driver, imgPath, true);
 	}
 	public ScreenShotOnFailure(WebDriver driver, String imgPath, boolean isRemoteBrowser){
 		this.driver = driver;	
@@ -51,18 +54,35 @@ public class ScreenShotOnFailure implements MethodRule {
 					if(isRemoteBrowser){
 						captureBrowserScreenShot(imgName);
 					}else{
-						captureDesktopScreenShot(imgName);
+						captureBrowserScreenShot(imgName);
+						//captureDesktopScreenShot(imgName);
 					}
-					String errMsg = t.getMessage();
-					errMsg = ">>> TestMethod: "+fname+System.lineSeparator()+ errMsg;
-					errMsg = System.lineSeparator()+">>> ScreenShot: "+imgName+System.lineSeparator()+errMsg;					
-					throw new Throwable(errMsg);
+					logReportScreenShot(fname, imgName, t);			
 				}
 			}
 		};
 	}
 
 
+	public void logReportScreenShot(String fname, String imgFile, Throwable t) throws Throwable{
+		String errMsg = t.getMessage();
+		try{
+		String executionPath = TestSetup.getExecutionPath().replaceAll("\\\\", "/");
+		imgFile = imgFile.replaceAll("\\\\", "/");
+		imgFile = imgFile.replaceFirst(executionPath+TestSetup.reportDir, "./");
+		}catch(Exception e){
+			
+		}
+		ExtentTest reportLogger = TestContext.INSTANCE.getExtentTest();
+		if(reportLogger!=null){
+			String image = reportLogger.addScreenCapture(imgFile);
+			reportLogger.log(LogStatus.FAIL, errMsg, image);
+		}else{		
+		  errMsg = ">>> TestMethod: "+fname+System.lineSeparator()+ errMsg;
+		  errMsg = System.lineSeparator()+">>> ScreenShot: "+imgFile+System.lineSeparator()+errMsg;		
+		}
+		throw new Throwable(errMsg);
+	}
 	public void captureBrowserScreenShot(String fileName){
 		try{
 			File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
