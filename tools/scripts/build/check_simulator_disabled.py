@@ -61,7 +61,8 @@ def check_disabled_exe(dirname):
 	pipe = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=None)
 	out, err = pipe.communicate()
 	print("OUT: " + out)
-	if  bool(out.strip()):
+	invalidArg="An unknown command-line option was found: DEFINE: simulation ="
+	if  (bool(out.strip()) and (invalidArg not in out.strip())):
 		out_message = "\n\n" + ('-'*60) + "\n" + out +"\n" + ('-'*60) + "\n"
 		puts(out_message)
 		puts("\n\nSIMULATION_NOT_DISABLED: "+filename+"\n\n")
