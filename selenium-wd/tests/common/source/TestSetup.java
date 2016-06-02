@@ -129,7 +129,7 @@ public class TestSetup {
 	private String slowdownInSeconds; // For debugging the code and not
 										// recommended to use in real test case
 	public boolean isRemoteBrowser;
-	public static String reportDir = "reports/";;
+	public static String reportDir = "reports/";
 	
 	private String downloadPath;
 

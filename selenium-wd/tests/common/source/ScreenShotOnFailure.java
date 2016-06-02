@@ -54,8 +54,7 @@ public class ScreenShotOnFailure implements MethodRule {
 					if(isRemoteBrowser){
 						captureBrowserScreenShot(imgName);
 					}else{
-						captureBrowserScreenShot(imgName);
-						//captureDesktopScreenShot(imgName);
+						captureDesktopScreenShot(imgName);
 					}
 					logReportScreenShot(fname, imgName, t);			
 				}

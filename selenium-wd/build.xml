@@ -386,7 +386,7 @@
 			<fileset dir="${reports}/sanity">
 				<include name="*TEST-*.xml" />
 			</fileset>
-			<report styledir="." format="noframes" todir="${reports}/sanity">
+			<report styledir="./tests" format="noframes" todir="${reports}/sanity">
 			</report>
 		</junitreport>
 	</target>
@@ -396,7 +396,7 @@
 			<fileset dir="${reports}/regression">
 				<include name="*TEST-*.xml" />
 			</fileset>
-			<report styledir="." format="noframes" todir="${reports}/regression">
+			<report styledir="./tests" format="noframes" todir="${reports}/regression">
 			</report>
 		</junitreport>
 	</target>
@@ -406,7 +406,7 @@
 			<fileset dir="${reports}/compliancereport">
 				<include name="*TEST-*.xml" />
 			</fileset>
-			<report styledir="." format="noframes" todir="${reports}/compliancereport">			
+			<report styledir="./tests" format="noframes" todir="${reports}/compliancereport">			
 			</report>
 		</junitreport>
 	</target>
