@@ -25,6 +25,15 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
+/**
+ * Capturing ScreenShots Failed Selenium Test
+ * -- Screenshots is contained in: executionDir/reports/[testCategory]/screenshots/
+ * -- A link/thumbnail is inserted in the extent html report in: executionDir/reports/
+ * -- Takes browser screen shot if it's a remote browser testing, desktop screen shot otherwise
+ * -- junit-noframe.html generated with screenshot links if running a ant junit report task. 
+ * @author sxiang
+ *
+ */
 public class ScreenShotOnFailure implements MethodRule {
 
 	private WebDriver driver;
