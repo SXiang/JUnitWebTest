@@ -5,6 +5,7 @@ package surveyor.scommon.source;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Locale;
 
@@ -25,8 +26,10 @@ import com.relevantcodes.extentreports.LogStatus;
 import com.relevantcodes.extentreports.NetworkMode;
 
 import common.source.DateUtility;
+import common.source.FileUtility;
 import common.source.Log;
 import common.source.RegexUtility;
+import common.source.ScreenShotOnFailure;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.Resources;
@@ -78,6 +81,9 @@ public class SurveyorBaseTest {
 			 SurveyorBaseTest.reportTestSucceeded();
 		}
 	};
+	
+	@Rule
+	public ScreenShotOnFailure failure = new ScreenShotOnFailure(driver, screenShotsDir, testSetup.isRemoteBrowser);
 	
 	private static ExtentReports getExtentReport(String className) {
 	   ExtentReports extentReport = TestContext.INSTANCE.getReport();
@@ -144,12 +150,14 @@ public class SurveyorBaseTest {
 
 		testSetup = new TestSetup();
 		driver = testSetup.getDriver();
-		baseURL = testSetup.getBaseUrl();
-		screenShotsDir = "./screenshots/";
+		baseURL = testSetup.getBaseUrl();		
 		debug = testSetup.isRunningDebug();
-
 		TestContext.INSTANCE.setTestSetup(testSetup);
-
+		if(screenShotsDir==null){
+			screenShotsDir = "./selenium-wd/reports/"+testSetup.getTestRunCategory();
+			FileUtility.deleteFilesInDirectory(Paths.get(screenShotsDir+"/screenshots/"));
+			FileUtility.createDirectoryIfNotExists(screenShotsDir+"/screenshots/");
+		}		
 		Log.info("debuggug null - driver:***:" +driver);
 		driver.manage().deleteAllCookies();
 		

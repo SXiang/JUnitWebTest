@@ -374,7 +374,13 @@ public class FileUtility {
 	 * Delete files in the specified directory.
 	 */
 	public static void deleteFilesInDirectory(Path directory) throws IOException {
-		DirectoryStream<Path> stream = Files.newDirectoryStream(directory);
+		DirectoryStream<Path> stream = null;
+		try{
+		     stream = Files.newDirectoryStream(directory);
+		}catch(IOException e){
+			Log.warn(e.toString());
+			return;
+		}
 	    // First delete all files in directory
 		for (Path file: stream) {
 	    	deleteFile(file);

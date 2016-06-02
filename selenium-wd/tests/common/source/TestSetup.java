@@ -82,7 +82,7 @@ public class TestSetup {
 	public static final String STOP_REPLAY_CURL_FILE = "replay-stop.bat";
 	public static final String ANALYZER_EXE_PATH = "C:\\PicarroAnalyzer\\Picarro.Surveyor.Analyzer.exe";
 	public static final String TEST_ANALYZER_SERIAL_NUMBER = "SimAuto-Analyzer3";
-
+	
 	public static final String DATA_FOLDER = "data";
 	public static final String TEST_DATA_XLSX = "TestCaseData.xlsx";
 
@@ -128,7 +128,7 @@ public class TestSetup {
 	private WebDriver driver;
 	private String slowdownInSeconds; // For debugging the code and not
 										// recommended to use in real test case
-
+	public boolean isRemoteBrowser;
 	private String downloadPath;
 
 	private String dbIPAddress;
@@ -211,7 +211,7 @@ public class TestSetup {
 							this.capabilities);
 					break;
 				}
-
+				isRemoteBrowser = true;
 				Log.info("\nRunning Selenium Server for use with RemoteDrivers and the server is running on: "
 						+ this.remoteServerHost + "\n");
 			} else if (this.browser != null && (this.ieDriverPath != null || this.chromeDriverPath != null)) {
@@ -651,7 +651,7 @@ public class TestSetup {
 			this.implicitlyWaitSpecialTimeOutInMS = this.testProp.getProperty("implicitlyWaitSpecialTimeOutInMS");
 
 			this.runEnvironment = this.testProp.getProperty("runEnvironment");
-			this.testRunCategory = this.testProp.getProperty("testRunCategory");
+			this.testRunCategory = getSystemProperty(this.testProp, "testRunCategory");
 
 			setLoggingTestProperties();
 			setComplianceReportBaselineGenerationTestProperties();
@@ -1229,5 +1229,22 @@ public class TestSetup {
 
 	public void setSurveyUploadBaseUrl(String surveyUploadBaseUrl) {
 		this.surveyUploadBaseUrl = surveyUploadBaseUrl;
+	}
+	
+	public String getSystemProperty(String key){
+		return getSystemProperty(testProp, key);
+	}
+	
+	public String getSystemProperty(Properties testProp, String propKey){
+		String propValue = null;
+		try{
+		     propValue = System.getProperty(propKey);
+		}catch(Exception e){
+			Log.warn(e.toString());
+		}
+		if(propValue==null){
+			propValue = testProp.getProperty(propKey);
+		}
+		return propValue;
 	}
 }
