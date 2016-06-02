@@ -80,6 +80,20 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	protected WebElement btnDeleteConfirm;
 	protected String btnDeleteConfirmXpath = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=ComplianceReports')]";
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[11]/a[6]/img")
+	private WebElement firstSurveyDeleteLink;
+
+	public void clickOnFirstSurveyDeleteLink() {
+		this.firstSurveyDeleteLink.click();
+
+		this.waitForConfirmDeletePopupToShow();
+		
+		if (this.isElementPresent(popupConfirmationBoxXPath) && this.isElementPresent(btnDeleteXPath)) {
+			JavascriptExecutor js = (JavascriptExecutor)driver; 
+			js.executeScript("arguments[0].click();", btnDelete);
+		}
+	}
+
 	public enum DrivingSurveyButtonType {
 		ViewSurvey, ExportSurvey, ExportPeaks, ExportAnalysis, Resubmit, DeleteSurvey;
 

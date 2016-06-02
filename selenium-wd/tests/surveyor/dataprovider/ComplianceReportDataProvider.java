@@ -58,6 +58,15 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC737 = "dataProviderPageActionsComplianceReports_TC737";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC786 = "dataProviderPageActionsComplianceReports_TC786";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC798 = "dataProviderPageActionsComplianceReports_TC798";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC204 = "dataProviderPageActionsComplianceReports_TC204";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC210 = "dataProviderPageActionsComplianceReports_TC210";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC227 = "dataProviderPageActionsComplianceReports_TC227";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1522 = "dataProviderPageActionsComplianceReports_TC1522";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1523 = "dataProviderPageActionsComplianceReports_TC1523";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1524 = "dataProviderPageActionsComplianceReports_TC1524";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1525 = "dataProviderPageActionsComplianceReports_TC1525";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1608 = "dataProviderPageActionsComplianceReports_TC1608";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1532 = "dataProviderPageActionsComplianceReports_TC1532";
 	//ComplianceReportsPageTest3
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC12 = "dataProviderPageActionsComplianceReports_TC12";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC13 = "dataProviderPageActionsComplianceReports_TC13";
@@ -655,7 +664,54 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 			{ "TC798" /*TestCaseID*/, 6 /*userDataRowID*/,  -1 /*NOT USED - reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
-	
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC204() {
+		return new Object[][] {				
+			{ "TC204" /*TestCaseID*/, 6 /*userDataRowID*/,  79 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC210() {
+		return new Object[][] {				
+			{ "TC210" /*TestCaseID*/, 6 /*userDataRowID*/,  80/*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC227() {
+		return new Object[][] {				
+			{ "TC227" /*TestCaseID*/, 6 /*userDataRowID*/,  80/*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1522() {
+		return new Object[][] {				
+			{ "TC1522" /*TestCaseID*/, 6 /*userDataRowID*/,  83/*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1523() {
+		return new Object[][] {				
+			{ "TC1523" /*TestCaseID*/, 6/*userDataRowID*/,  81/*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1524() {
+		return new Object[][] {				
+			{ "TC1524" /*TestCaseID*/, 6/*userDataRowID*/,  82/*reportDataRowID1*/, 81/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1525() {
+		return new Object[][] {				
+			{ "TC1525" /*TestCaseID*/, 6/*userDataRowID*/,  82/*reportDataRowID1*/, 81/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1608() {
+		return new Object[][] {				
+			{ "TC1608" /*TestCaseID*/, 6/*userDataRowID*/,  84/*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC1255() {
 		return new Object[][] {					
@@ -1213,6 +1269,12 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	public static Object[][] dataProviderPageActionsComplianceReports_TC799() {
 		return new Object[][] {					
 			{ "TC799" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1532() {
+		return new Object[][] {					
+			{ "TC1532" /*TestCaseID*/, 6 /*userDataRowID*/,  85 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 	
