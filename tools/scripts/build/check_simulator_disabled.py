@@ -82,7 +82,7 @@ def extract_7zip(path):
 	os.chmod(tmpdir, stat.S_IRWXG)
 	os.chmod(tmpdir, stat.S_IRWXO)
 	pipe = subprocess.Popen([r"C:\Program Files\7-Zip\7z.exe", "e", path, "-o"+tmpdir, "-y"], stdout=subprocess.PIPE, stderr=None)
-        puts("EXTRACTED: "+path+ " TO: "+tmpdir)
+	puts("EXTRACTED: "+path+ " TO: "+tmpdir)
 	out, err = pipe.communicate()
 	if (pipe.returncode!=0):
 		out_message = "\n\n" + ('-'*60) + "\n" + out +"\n" + ('-'*60) + "\n"
