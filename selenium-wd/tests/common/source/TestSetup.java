@@ -129,6 +129,8 @@ public class TestSetup {
 	private String slowdownInSeconds; // For debugging the code and not
 										// recommended to use in real test case
 	public boolean isRemoteBrowser;
+	public static String reportDir = "reports/";;
+	
 	private String downloadPath;
 
 	private String dbIPAddress;
@@ -177,7 +179,7 @@ public class TestSetup {
 			e.printStackTrace();
 		}
 		String runEnvironment = TestContext.INSTANCE.getRunEnvironment();
-		String reportFilePath = executionPath + "reports" + File.separator
+		String reportFilePath = executionPath + reportDir
 				+ String.format("report-%s-%s.html", runEnvironment, reportClassName);
 		outReportFilePath.append(reportFilePath);
 		String configFilePath = executionPath + "tests" + File.separator + "extent-config.xml";
@@ -398,6 +400,9 @@ public class TestSetup {
 		return propertyfile.getCanonicalPath();
 	}
 
+	public static String getExecutionPath() throws IOException{
+		return getExecutionPath(getRootPath());
+	}
 	public static String getExecutionPath(String rootPath) {
 		/* For CI and Eclipse run setup */
 		String executionPath = rootPath + File.separator + "selenium-wd" + File.separator;

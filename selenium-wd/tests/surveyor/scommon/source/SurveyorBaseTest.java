@@ -139,6 +139,7 @@ public class SurveyorBaseTest {
 
 	private static void setExtentTest(ExtentTest test) {
 		SurveyorBaseTest.test = test;
+		TestContext.INSTANCE.setExtentTest(test);
 	}
 
 	/**
@@ -154,7 +155,7 @@ public class SurveyorBaseTest {
 		debug = testSetup.isRunningDebug();
 		TestContext.INSTANCE.setTestSetup(testSetup);
 		if(screenShotsDir==null){
-			screenShotsDir = "./selenium-wd/reports/"+testSetup.getTestRunCategory();
+			screenShotsDir = TestSetup.getExecutionPath() + TestSetup.reportDir + testSetup.getTestRunCategory();
 			FileUtility.deleteFilesInDirectory(Paths.get(screenShotsDir+"/screenshots/"));
 			FileUtility.createDirectoryIfNotExists(screenShotsDir+"/screenshots/");
 		}		
