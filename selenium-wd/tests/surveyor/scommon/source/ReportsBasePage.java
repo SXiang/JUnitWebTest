@@ -1044,16 +1044,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 				.presenceOfElementLocated(By.id(String.format("surveyContent-%d", countOfSurveys - 1))));
 	}
 
-	public boolean checkFileExists(String fileName, String downloadPath) {
-		Log.info(String.format("Looking for file-[%s] in download directory-[%s]", fileName, downloadPath));
-		File file = new File(downloadPath,fileName);
-		if(file.exists()){
-			Log.info("File found in the download directory");
-			return true;
-		}
-		return false;
-	}
-
 	/**
 	 * Method to verify the Driving Surveys Table in SSRS
 	 * 
@@ -1161,14 +1151,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 		return result;
 
-	}
-
-	public void waitForFileDownload(String fileName, String downloadPath) {
-		(new WebDriverWait(driver, timeout + 60)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return checkFileExists(fileName, downloadPath);
-			}
-		});
 	}
 
 	public void waitForSurveySearchButtonToLoad() {
@@ -2228,7 +2210,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		});
 	}
-
+	
 	public WebElement getBtnDeleteConfirm() throws Exception {
 		throw new Exception("Not implemented");
 	}
