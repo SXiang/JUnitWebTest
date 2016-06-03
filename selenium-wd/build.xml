@@ -234,7 +234,7 @@
 		</junit>
 	</target>
 
-	<target name="compliancereportpageactiontests" depends="compileregression" description="Run compliance report page action test cases">		
+	<target name="compliancereportpageactiontests" depends="compileregression" description="Run compliance report page action test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
@@ -266,7 +266,7 @@
 				</fileset>
 			</classpath>
 
-			<batchtest fork="yes" todir="${reports}/compliancereport/xml">
+			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
 
@@ -305,7 +305,7 @@
 			</junit>
 		</target>
 	
-	<target name="testregression" depends="compileregression" description="Run regression test suite">		
+	<target name="testregression" depends="compileregression" description="Run regression test suite">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
@@ -367,7 +367,7 @@
 
 	<target name="testsanity" depends="compileSanity" description="Run sanity test suite">		
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-					showoutput="yes">	
+					showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Sanity" />
 			<classpath>
 				<pathelement path="${build}" />
@@ -388,7 +388,7 @@
 
 	<!-- JUnit Test Reports -->
 	<target name="sanityreport" depends="testsanity">
-		<junitreport todir="${reports}/sanity">
+		<junitreport todir="${reports}/sanity/xml">
 			<fileset dir="${reports}/sanity/xml">
 				<include name="*TEST-*.xml" />
 			</fileset>
@@ -398,7 +398,7 @@
 	</target>
 
 	<target name="regressionreport" depends="testregression">
-		<junitreport todir="${reports}/regression">
+		<junitreport todir="${reports}/regression/xml">
 			<fileset dir="${reports}/regression/xml">
 				<include name="*TEST-*.xml" />
 			</fileset>
@@ -408,7 +408,7 @@
 	</target>
 	
 	<target name="compliancereportreport" depends="testcompliancereport">
-		<junitreport todir="${reports}/regression">
+		<junitreport todir="${reports}/regression/xml">
 			<fileset dir="${reports}/regression/xml">
 				<include name="*TEST-*.xml" />
 			</fileset>
@@ -418,7 +418,7 @@
 	</target>
 	
 	<target name="debugreport" depends="compliancereportpageactiontests">
-		<junitreport todir="${reports}/regression">
+		<junitreport todir="${reports}/regression/xml">
 			<fileset dir="${reports}/regression/xml">
 				<include name="*TEST-*.xml" />
 			</fileset>
