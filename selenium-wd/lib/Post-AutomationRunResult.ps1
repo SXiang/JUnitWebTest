@@ -9,10 +9,10 @@
 param
 (
   [Parameter(Mandatory=$true)]
-  [String] $BuildWorkingDir,                       # Path to AutomationReporting.Util.dll
+  [String] $BuildWorkingDir,                       # Path to working directory (for eg. C:\Repositories\surveyor-qa)
 
   [Parameter(Mandatory=$true)]
-  [String] $AutomationReportingAPIBaseUrl,         # Path to AutomationReporting.Util.dll
+  [String] $AutomationReportingAPIBaseUrl,         # Path to AutomationReporting API Base Url. For eg. 
 
   [Parameter(Mandatory=$true)]
   [String] $HtmlResultFilePath                     # Path to report HTML file

@@ -12,12 +12,15 @@ import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
+import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
+import static common.source.RegexUtility.REGEX_PATTEN_SPECIAL_CHARACTERS;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -1863,7 +1866,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		}
 		
 		List<String> expectedFileNames = new ArrayList<String>();
-		String reportFileNameWithoutExt = workingDataRow.title.replace(" ", "");
+		String reportFileNameWithoutExt = workingDataRow.title.replace(" ", "").replaceAll(REGEX_PATTEN_SPECIAL_CHARACTERS, "_");
 		expectedFileNames.add(reportFileNameWithoutExt + ".pdf");
 		for (int i=1; i<expectedFileCount; i++) {
 			String viewName = workingReportViewsDataRows.get(i-1).name;
@@ -2859,7 +2862,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean verifyShapeFilesWithBaselines(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyShapeFilesWithBaselines", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty("verifyShapeFilesWithBaselines", ARG_DATA, data);
 		ComplianceReportsDataRow complianceReportsDataRow = getComplianceReportsDataRow(dataRowID);
 		return this.getComplianceReportsPage().verifyShapeFilesWithBaselines(complianceReportsDataRow.title, 
 				complianceReportsDataRow.tCID, getDownloadFileIndex(data,2));

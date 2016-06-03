@@ -71,7 +71,7 @@ public class DatUtility {
 	public  void convertDATtoCSV(String filePath) throws IOException {
 
 		String workingFile = TestSetup.getUUIDString() + "_" + Paths.get(filePath).getFileName();
-		String workingFullPath = Paths.get(TestSetup.getSystemTempDirectory(), workingFile).toString();
+		String workingFullPath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), workingFile).toString();
 
 		File writeFile = new File(workingFullPath);
 
@@ -93,7 +93,7 @@ public class DatUtility {
 		Files.copy(Paths.get(workingFullPath), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
 
 		String newFileName = Paths.get(filePath).getFileName().toString().substring(0, Paths.get(filePath).getFileName().toString().indexOf("."));
-		csvPath = Paths.get(TestSetup.getSystemTempDirectory(), newFileName+".csv").toString();
+		csvPath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), newFileName+".csv").toString();
 
 		File csvFile = new File (csvPath);
 

@@ -14,6 +14,7 @@ import org.openqa.selenium.support.PageFactory;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.source.DriverViewPage;
+import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 import surveyor.scommon.actions.ObserverViewPageActions;
@@ -39,6 +40,8 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 	private static DriverViewPage driverViewPage;
 	private static ObserverViewPage observerViewPage;
+	
+	private static HomePage homePage;
 
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
@@ -64,6 +67,8 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 			driverViewPage = new DriverViewPage(driver2, testSetup2, baseURL2);
 			PageFactory.initElements(driver2, driverViewPage);
+			
+			homePage=new HomePage(driver, baseURL,testSetup);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1251,5 +1256,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
 		assertTrue(observerViewPageAction.verifyObserverViewPageIsOpened(EMPTY, NOTSET));
+		homePage.open();
+		assertTrue(!homePage.getFirstOfflineSurveyLink().isEnabled());
 	}
 }

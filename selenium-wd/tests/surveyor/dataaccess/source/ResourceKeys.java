@@ -178,6 +178,7 @@ public class ResourceKeys {
 	public static final String LisaInvestigationReportSSRS_Amplitude = "LisaInvestigationReportSSRS_Amplitude";
 	public static final String LisaInvestigationReportSSRS_Investigator = "LisaInvestigationReportSSRS_Investigator";
 	public static final String LisaInvestigationReportSSRS_InvestigationReport = "LisaInvestigationReportSSRS_InvestigationReport";
+	public static final String Constant_Offline = "Constant_Offline";
 
 	
 	// Constants for Capture results.
@@ -252,4 +253,7 @@ public class ResourceKeys {
 	public static final String ReportSSRS_DatePrinted = "ReportSSRS_DatePrinted";
 	public static final String ReportSSRS_ReportAuthor = "ReportSSRS_ReportAuthor";
 	public static final String ReportSSRS_SoftwareVersion = "ReportSSRS_SoftwareVersion";
+	
+	// Constants for Data table
+	public static final String Constant_FilteredFromMaxTotalEntries = "Constant_FilteredFromMaxTotalEntries";
 }

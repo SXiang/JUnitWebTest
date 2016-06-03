@@ -3,6 +3,9 @@
  */
 package surveyor.scommon.source;
 
+import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
+
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -27,6 +30,8 @@ import common.source.Log;
 import common.source.RegexUtility;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.SurveyorConstants.TopNavMenuItem;
 import surveyor.scommon.source.SurveyorConstants.UserTimezone;
@@ -39,6 +44,7 @@ import surveyor.scommon.source.SurveyorConstants.UserTimezone;
 public class SurveyorBasePage extends BasePage {
 
 	protected static final String DATA_TABLE_XPATH = "//*[@id='datatable']/tbody";
+	protected static final String DATATABLE_RECORDS_ELEMENT_XPATH = "datatable_info";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/a")
 	protected WebElement dropDownAdministrator;
@@ -363,7 +369,8 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public Integer getRecordsShownOnPage(WebDriver driver) {
-		WebElement pageInfoLabel = driver.findElement(By.id("datatable_info"));
+		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_XPATH)));		
+		WebElement pageInfoLabel = driver.findElement(By.id(DATATABLE_RECORDS_ELEMENT_XPATH));
 		return getRecordsShownOnPage(driver, pageInfoLabel);
 	}
 	
@@ -377,7 +384,25 @@ public class SurveyorBasePage extends BasePage {
 		return records;
 	}
 	
+	public void searchTable(String locationName) {
+		this.clearSearchField();
+		this.getInputSearch().sendKeys(locationName);
+		this.waitForSearchResultsToLoad();
+	}
+
+	public boolean searchHasNoMatchingRecords() {
+		return this.getLabelNoMatchingSearch().equalsIgnoreCase(NOMATCHINGSEARCH);
+	}
 	
+	public void clearSearchField() {
+		this.getInputSearch().clear();
+	}
+
+	public void clearSearchFieldUsingSpace() {
+		this.getInputSearch().sendKeys(" ");
+		this.waitForTableDataToLoad();
+	}
+
 	private WebElement getTableHeader(Integer columnIndex) {
 		WebElement headerElement = driver.findElement(By.xpath(String.format(headerColumnBaseXPath, columnIndex)));
 		return headerElement;
@@ -487,7 +512,24 @@ public class SurveyorBasePage extends BasePage {
 
 		return false;
 	}
-	
+
+	public boolean checkFileExists(String fileName, String downloadPath) {
+		Log.info(String.format("Looking for file-[%s] in download directory-[%s]", fileName, downloadPath));
+		File file = new File(downloadPath,fileName);
+		if(file.exists()){
+			Log.info("File found in the download directory");
+			return true;
+		}
+		return false;
+	}
+
+	public void waitForFileDownload(String fileName, String downloadPath) {
+		(new WebDriverWait(driver, timeout + 60)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return checkFileExists(fileName, downloadPath);
+			}
+		});
+	}
 
 	public void waitForNumberOfRecords(String actualMessage) {
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
@@ -504,6 +546,22 @@ public class SurveyorBasePage extends BasePage {
 		(new WebDriverWait(this.driver, this.timeout)).until(ExpectedConditions.presenceOfElementLocated(By.id(elementID)));
 	}
 
+	/**
+	 * Waits for search results to load once user has performed search in datatable.
+	 */
+	public void waitForSearchResultsToLoad() {
+		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_XPATH)));
+		String dataTableFilterText = Resources.getResource(ResourceKeys.Constant_FilteredFromMaxTotalEntries);
+		Integer index = dataTableFilterText.indexOf("_MAX_");
+		String dataTableFilterTextPrefix = dataTableFilterText.substring(0, index-1);
+		WebElement tableInfoElement = driver.findElement(By.id(DATATABLE_RECORDS_ELEMENT_XPATH));
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return (tableInfoElement.getText().contains(dataTableFilterTextPrefix));
+			}
+		});
+	}
+	
 	public void waitForTableDataToLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -548,5 +606,9 @@ public class SurveyorBasePage extends BasePage {
 	public int getNumberofRecords() {
 		List<WebElement> records = this.numberofRecords;
 		return records.size();
+	}
+
+	public WebElement getNextBtn() {
+		return nextBtn;
 	}
 }

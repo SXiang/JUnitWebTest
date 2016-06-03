@@ -667,7 +667,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		}
 	}
-	
+
 	public void addNewReport(Reports reports) throws Exception {
 		addNewReport(reports, true /**/);
 	}
@@ -1044,16 +1044,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 				.presenceOfElementLocated(By.id(String.format("surveyContent-%d", countOfSurveys - 1))));
 	}
 
-	public boolean checkFileExists(String fileName, String downloadPath) {
-		Log.info(String.format("Looking for file-[%s] in download directory-[%s]", fileName, downloadPath));
-		File file = new File(downloadPath,fileName);
-		if(file.exists()){
-			Log.info("File found in the download directory");
-			return true;
-		}
-		return false;
-	}
-
 	/**
 	 * Method to verify the Driving Surveys Table in SSRS
 	 * 
@@ -1154,21 +1144,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 			String str = driver
 					.findElement(By
 							.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div[" + i + "]/label"))
-					.getText();
+							.getText();
 			if (str != columnName) {
 				result = true;
 			}
 		}
 		return result;
 
-	}
-
-	public void waitForFileDownload(String fileName, String downloadPath) {
-		(new WebDriverWait(driver, timeout + 60)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return checkFileExists(fileName, downloadPath);
-			}
-		});
 	}
 
 	public void waitForSurveySearchButtonToLoad() {
@@ -2228,7 +2210,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		});
 	}
-
+	
 	public WebElement getBtnDeleteConfirm() throws Exception {
 		throw new Exception("Not implemented");
 	}
@@ -2499,19 +2481,19 @@ public class ReportsBasePage extends SurveyorBasePage {
 		switch (rmf) {
 		case Standard:
 			filtersFound = isAllSurveyModeShown() && isStandardSurveyModeShown() && isOperatorSurveyModeShown()
-					&& !isRapidResponseSurveyModeShown() && !isManualSurveyModeShown();
+			&& !isRapidResponseSurveyModeShown() && !isManualSurveyModeShown();
 			break;
 		case RapidResponse:
 			filtersFound = isAllSurveyModeShown() && isStandardSurveyModeShown() && isOperatorSurveyModeShown()
-					&& isRapidResponseSurveyModeShown() && !isManualSurveyModeShown();
+			&& isRapidResponseSurveyModeShown() && !isManualSurveyModeShown();
 			break;
 		case Manual:
 			filtersFound = isManualSurveyModeShown() && !isStandardSurveyModeShown() && !isOperatorSurveyModeShown()
-					&& !isAllSurveyModeShown() && !isRapidResponseSurveyModeShown();
+			&& !isAllSurveyModeShown() && !isRapidResponseSurveyModeShown();
 			break;
 		default:
 			filtersFound = isAllSurveyModeShown() && isStandardSurveyModeShown() && isOperatorSurveyModeShown()
-					&& !isRapidResponseSurveyModeShown() && !isManualSurveyModeShown();
+			&& !isRapidResponseSurveyModeShown() && !isManualSurveyModeShown();
 			break;
 		}
 		return filtersFound;

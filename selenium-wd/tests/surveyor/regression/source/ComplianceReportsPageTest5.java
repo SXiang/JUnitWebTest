@@ -1,47 +1,76 @@
 package surveyor.regression.source;
 
+import static org.junit.Assert.*;
+import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG2;
 import common.source.Log;
+
+import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.Test;
+import org.openqa.selenium.support.PageFactory;
+
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
+import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.HomePageActions;
+import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
+import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
+import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
+import surveyor.scommon.source.MeasurementSessionsPage;
+import surveyor.scommon.source.Reports.ReportModeFilter;
+import surveyor.scommon.source.Reports.SurveyModeFilter;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 
 	private static final String EMPTY = "";
 	private static final Integer NOTSET = -1;
-	
+
 	private static HomePageActions homePageAction;
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static TestEnvironmentActions testEnvironmentAction;
+	private static ManageCustomerPageActions manageCustomerPageAction;
 
 	private static ComplianceReportsPage complianceReportsPage;
-	
+	private static MeasurementSessionsPage measurementSessionsPage;
+
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
-		
+
 		homePageAction = new HomePageActions(driver, baseURL, testSetup);
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
+		measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
+		PageFactory.initElements(driver,  measurementSessionsPage);
 	}
 
 	/**
 	 * Initializes the page action objects.
+	 * @throws Exception 
 	 */
-	protected static void initializePageActions() {
+	protected static void initializePageActions() throws Exception {
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		homePageAction = new HomePageActions(driver, baseURL, testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
+
+		// To run the test locally in UnitTest mode uncomment this line.
+		//setTestRunMode(ReportTestRunMode.UnitTestRun);
+
+		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
+			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
+		}
 	}
 
 	/**
@@ -59,13 +88,27 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - User should be allowed to download the report successfully
 	 */
 	@Test
-	public void TC204_GenerateComplianceReportHavingSpecialCharactersReportTitleUsingCopyFunctionality() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC204, location = ComplianceReportDataProvider.class)
+	public void TC204_GenerateComplianceReportHavingSpecialCharactersReportTitleUsingCopyFunctionality(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC204_GenerateComplianceReportHavingSpecialCharactersReportTitleUsingCopyFunctionality ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
+		complianceReportsPageAction.clickOnOKButton(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC210_GenerateReportTryDeleteSurveyUsedWhileGeneratingReport
 	 * Test Description: Generate report and try to delete the survey used while generating the report
@@ -84,13 +127,30 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Show notification that survey is used in generated report or Delete Survey button itself is unavailable
 	 */
 	@Test
-	public void TC210_GenerateReportTryDeleteSurveyUsedWhileGeneratingReport() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC210, location = ComplianceReportDataProvider.class)
+	public void TC210_GenerateReportTryDeleteSurveyUsedWhileGeneratingReport(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC210_GenerateReportTryDeleteSurveyUsedWhileGeneratingReport ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-	}
- 
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerCloseButton(EMPTY, getReportRowID(reportDataRowID1));
+
+		measurementSessionsPage.open();
+		measurementSessionsPage.performSearch(PICADMNSTDTAG2);
+		measurementSessionsPage.clickOnFirstSurveyDeleteLink();
+		assertTrue(homePage.getReturnHomePage().isEnabled());
+		assertTrue(homePage.getReturnHomePage().isDisplayed());
+		homePage.getReturnHomePage().click();
+	}	
+
 	/**
 	 * Test Case ID: TC227_S1ReportSurveyModeShouldNotPresentNewCopyComplianceReportScreens
 	 * Test Description: S1 report and survey mode should not be present on New and Copy Compliance report screens
@@ -105,12 +165,23 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - S1 report mode should not be present on Copy compliance screen
 	 */
 	@Test
-	public void TC227_S1ReportSurveyModeShouldNotPresentNewCopyComplianceReportScreens() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC227, location = ComplianceReportDataProvider.class)
+	public void TC227_S1ReportSurveyModeShouldNotPresentNewCopyComplianceReportScreens(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC227_S1ReportSurveyModeShouldNotPresentNewCopyComplianceReportScreens ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-	}
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openNewReportPage(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.selectReportMode("Standard", getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifySurveyModeFiltersByReportMode("Standard", getReportRowID(reportDataRowID1)));
+		complianceReportsPageAction.selectReportMode("RR", getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifySurveyModeFiltersByReportMode("RR", NOTSET));
+		complianceReportsPageAction.selectReportMode("Manual", getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifySurveyModeFiltersByReportMode("Manual", NOTSET));
+		}
 
 	/**
 	 * Test Case ID: TC1505_PercentCoverageForecastFeaturesPermissionCustomer_NewComplianceReportGeneration
@@ -135,14 +206,14 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)- Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Ignore  //Need to edit and enable/disable customer 
 	public void TC1505_PercentCoverageForecastFeaturesPermissionCustomer_NewComplianceReportGeneration() throws Exception {
 		Log.info("\nRunning TC1505_PercentCoverageForecastFeaturesPermissionCustomer_NewComplianceReportGeneration ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 	}
- 
+
 	/**
 	 * Test Case ID: TC1506_PercentCoverageForecastFeaturesPermissionCustomer_CopyComplianceReportGeneration
 	 * Test Description: Percent Coverage Forecast features permission to customer - Copy Compliance report generation
@@ -160,14 +231,14 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)- Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Ignore //Need to edit and enable/disable customer
 	public void TC1506_PercentCoverageForecastFeaturesPermissionCustomer_CopyComplianceReportGeneration() throws Exception {
 		Log.info("\nRunning TC1506_PercentCoverageForecastFeaturesPermissionCustomer_CopyComplianceReportGeneration ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 	}
- 
+
 	/**
 	 * Test Case ID: TC1507_PercentCoverageForecastFeaturesPermissionPicarro_ReprocessComplianceReportGenerationPicarroAdmin
 	 * Test Description: Percent Coverage Forecast features permission to Picarro - Reprocess Compliance report generation as Picarro Admin
@@ -185,14 +256,14 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)- Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Ignore //Need to edit and enable/disable customer
 	public void TC1507_PercentCoverageForecastFeaturesPermissionPicarro_ReprocessComplianceReportGenerationPicarroAdmin() throws Exception {
 		Log.info("\nRunning TC1507_PercentCoverageForecastFeaturesPermissionPicarro_ReprocessComplianceReportGenerationPicarroAdmin ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 	}
- 
+
 	/**
 	 * Test Case ID: TC1508_GenrateNewComplianceReportPicarroSupportUserIncludePercentCoverageForecast
 	 * Test Description: Genrate New Compliance report as Picarro Support user and include Percent Coverage Forecast
@@ -212,14 +283,14 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)- Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Ignore  //Need actions to choose customer boundary
 	public void TC1508_GenrateNewComplianceReportPicarroSupportUserIncludePercentCoverageForecast() throws Exception {
 		Log.info("\nRunning TC1508_GenrateNewComplianceReportPicarroSupportUserIncludePercentCoverageForecast ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 	}
- 
+
 	/**
 	 * Test Case ID: TC1509_RemovePercentCoverageForecastFeaturePermissionFromExistingCustomer_NewComplianceReportScreenVerification
 	 * Test Description: Remove Percent Coverage Forecast feature permission from existing customer - New Compliance report screen verification
@@ -234,14 +305,14 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - Percent Coverage Forecast check box is not present on UI
 	 */
-	@Test
+	@Ignore //Need to edit and enable/disable customer
 	public void TC1509_RemovePercentCoverageForecastFeaturePermissionFromExistingCustomer_NewComplianceReportScreenVerification() throws Exception {
 		Log.info("\nRunning TC1509_RemovePercentCoverageForecastFeaturePermissionFromExistingCustomer_NewComplianceReportScreenVerification ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 	}
- 
+
 	/**
 	 * Test Case ID: TC1510_RemovePercentCoverageForecastFeaturePermissionFromExistingCustomer_CopyComplianceReportVerification
 	 * Test Description: Remove Percent Coverage Forecast feature permission from existing customer - Copy Compliance report verification
@@ -256,14 +327,14 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - On SSRS, Percent Coverage Forecast option should not appear under Show Coverage section and Coverage Forecast section should not b present
 	 */
-	@Test
+	@Ignore //Need to edit and enable/disable customer
 	public void TC1510_RemovePercentCoverageForecastFeaturePermissionFromExistingCustomer_CopyComplianceReportVerification() throws Exception {
 		Log.info("\nRunning TC1510_RemovePercentCoverageForecastFeaturePermissionFromExistingCustomer_CopyComplianceReportVerification ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 	}
- 
+
 	/**
 	 * Test Case ID: TC1511_RemovePercentCoverageForecastFeaturePermissionFromExistingCustomer_ReprocessComplianceReportVerification
 	 * Test Description: Remove Percent Coverage Forecast feature permission from existing customer - Reprocess Compliance report verification
@@ -278,14 +349,14 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - Percent Coverage Forecast related data should not be present in SSRS PDF
 	 */
-	@Test
+	@Ignore //Need to edit and enable/disable customer
 	public void TC1511_RemovePercentCoverageForecastFeaturePermissionFromExistingCustomer_ReprocessComplianceReportVerification() throws Exception {
 		Log.info("\nRunning TC1511_RemovePercentCoverageForecastFeaturePermissionFromExistingCustomer_ReprocessComplianceReportVerification ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 	}
- 
+
 	/**
 	 * Test Case ID: TC1522_CopyButtonPresentCanceledFailedComplianceReportCustomerSupervisorUser
 	 * Test Description: Copy button present for canceled/failed compliance report as customer supervisor user
@@ -298,14 +369,30 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Report generation action is canceled. Copy button is present next to canceled report
 	 *	- - Report should be generated successfully and user is able to download the PDFs
 	 */
-	@Test
-	public void TC1522_CopyButtonPresentCanceledFailedComplianceReportCustomerSupervisorUser() throws Exception {
+	@Test //Need customer supervisor assets  (Need to update test case with customer supervisor)
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1522, location = ComplianceReportDataProvider.class)
+	public void TC1522_CopyButtonPresentCanceledFailedComplianceReportCustomerSupervisorUser(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1522_CopyButtonPresentCanceledFailedComplianceReportCustomerSupervisorUser ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.cancelInProgressReport(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
+		complianceReportsPageAction.clickOnOKButton(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID2));
+		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID2));
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1523_CopyButtonPresentCanceledFailedComplianceReportCustomerAdminUser
 	 * Test Description: Copy button present for canceled/failed compliance report as customer admin user
@@ -318,14 +405,31 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Report generation action is canceled. Copy button is present next to canceled report
 	 *	- - Report should be generated successfully and user is able to download the PDFs
 	 */
-	@Test
-	public void TC1523_CopyButtonPresentCanceledFailedComplianceReportCustomerAdminUser() throws Exception {
-		Log.info("\nRunning TC1523_CopyButtonPresentCanceledFailedComplianceReportCustomerAdminUser ...");
-		
+	@Test //customer admin does not have asset and boundary  (Need to update test case to customer admin)
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1523, location = ComplianceReportDataProvider.class)
+	public void TC1523_CopyButtonPresentCanceledFailedComplianceReportCustomerAdminUser(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC1523_CopyButtonPresentCanceledFailedComplianceReportCustomerAdminUser...");
+
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.cancelInProgressReport(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
+		complianceReportsPageAction.clickOnOKButton(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1524_ChangeReportModeGenerateComplianceReportUsingCopyFunctionalityIn_ProgressReportCustomerSupervisorUser
 	 * Test Description: Change report mode and generate compliance report using Copy functionality for in-progress report as customer supervisor user
@@ -342,14 +446,28 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Report mode is changed as specified by user and all surveys are deleted
 	 *	- - Report is generated successfully in Standard mode
 	 */
-	@Test
-	public void TC1524_ChangeReportModeGenerateComplianceReportUsingCopyFunctionalityIn_ProgressReportCustomerSupervisorUser() throws Exception {
-		Log.info("\nRunning TC1524_ChangeReportModeGenerateComplianceReportUsingCopyFunctionalityIn_ProgressReportCustomerSupervisorUser ...");
-		
+	@Test  //customer supervisor does not have asset and boundary (Need to update test case to customer supervisor)
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1524, location = ComplianceReportDataProvider.class)
+	public void TC1524_ChangeReportModeGenerateComplianceReportUsingCopyFunctionalityIn_ProgressReportCustomerSupervisorUser(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC1524_ChangeReportModeGenerateComplianceReportUsingCopyFunctionalityIn_ProgressReportCustomerSupervisorUser...");
+
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyCancelButtonIsDisplayed(EMPTY,getReportRowID(reportDataRowID1)));
+		complianceReportsPageAction.copyInProgressReport(EMPTY,getReportRowID(reportDataRowID1));
+		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID2));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1525_ChangeReportModeGenerateComplianceReportUsingCopyFunctionalityOfCanceledFailedReportCustomerSupervisorUser
 	 * Test Description: Change report mode and generate compliance report using Copy functionality of canceled/failed report as customer supervisor user
@@ -367,14 +485,30 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Report mode is changed as specified by user and all surveys are deleted
 	 *	- - Report is generated successfully in Standard mode
 	 */
-	@Test
-	public void TC1525_ChangeReportModeGenerateComplianceReportUsingCopyFunctionalityOfCanceledFailedReportCustomerSupervisorUser() throws Exception {
-		Log.info("\nRunning TC1525_ChangeReportModeGenerateComplianceReportUsingCopyFunctionalityOfCanceledFailedReportCustomerSupervisorUser ...");
-		
+	//TODO:  Need to implement method to verify "Report mode is changed as specified by user and all surveys are deleted" which is tracked by DE1999
+	@Test  //customer supervisor does not have asset and boundary (Need to update test case)
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1525, location = ComplianceReportDataProvider.class)
+	public void TC1525_ChangeReportModeGenerateComplianceReportUsingCopyFunctionalityOfCanceledFailedReportCustomerSupervisorUser(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC1525_ChangeReportModeGenerateComplianceReportUsingCopyFunctionalityOfCanceledFailedReportCustomerSupervisorUser...");
+
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.cancelInProgressReport(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID2));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID2));
+		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID2));
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1532_GenerateNewComplianceReportCustomerUtilityAdminUserAssetsAreNotSelected
 	 * Test Description: Generate new Compliance report as customer utility admin user and assets are not selected
@@ -391,13 +525,39 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Report.csv, ReportSurvey.csv, ReportLisa.csv and ReportGap.csv should be present
 	 */
 	@Test
-	public void TC1532_GenerateNewComplianceReportCustomerUtilityAdminUserAssetsAreNotSelected() throws Exception {
-		Log.info("\nRunning TC1532_GenerateNewComplianceReportCustomerUtilityAdminUserAssetsAreNotSelected ...");
-		
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1532, location = ComplianceReportDataProvider.class)
+	public void TC1532_GenerateNewComplianceReportCustomerUtilityAdminUserAssetsAreNotSelected(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC1532_GenerateNewComplianceReportCustomerUtilityAdminUserAssetsAreNotSelected...");
+
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		
+		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+		//The Commented step is not working.  Steven has bug open on his plate.  
+		//assertTrue(complianceReportsPageAction.verifyLISASMetaDataFile(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyReportSurveyMetadataFile(EMPTY, getReportRowID(reportDataRowID1)));
+		
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC1581_ProvideGapGrid10PrivilegeExistingCustomerGenerateComplianceReport
 	 * Test Description: Provide Gap Grid 1.0 privilege to existing customer and generate compliance report
@@ -420,14 +580,14 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- Gaps shape file should only have gaps information
 	 *	- ReportGaps.csv file in meta data will have gaps information and numbering present
 	 */
-	@Test
+	@Ignore//Need to edit customer to enable/disable
 	public void TC1581_ProvideGapGrid10PrivilegeExistingCustomerGenerateComplianceReport() throws Exception {
 		Log.info("\nRunning TC1581_ProvideGapGrid10PrivilegeExistingCustomerGenerateComplianceReport ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 	}
- 
+
 	/**
 	 * Test Case ID: TC1583_ProvideGapGrid10PrivilegeExistingCustomerGenerateComplianceReportUsingCopyFunctionality
 	 * Test Description: Provide Gap Grid 1.0 privilege to existing customer and generate compliance report using copy functionality
@@ -452,14 +612,14 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- Gaps shape file should only have gaps information
 	 *	- ReportGaps.csv file in meta data will have gaps information and numbering present
 	 */
-	@Test
+	@Ignore //Need to edit customer to enable/disable
 	public void TC1583_ProvideGapGrid10PrivilegeExistingCustomerGenerateComplianceReportUsingCopyFunctionality() throws Exception {
 		Log.info("\nRunning TC1583_ProvideGapGrid10PrivilegeExistingCustomerGenerateComplianceReportUsingCopyFunctionality ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 	}
- 
+
 	/**
 	 * Test Case ID: TC1589_ProvideGapGrid10PrivilegeExistingCustomerReprocessComplianceReport
 	 * Test Description: Provide Gap Grid 1.0 privilege to existing customer and reprocess compliance report
@@ -478,15 +638,15 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- View will have Gaps information. The numbers will run sequentially from left to right and then top to bottom
 	 *	- Gaps shape file should only have gaps information
 	 *	- ReportGaps.csv file in meta data will have gaps information and numbering present
-	 */
-	@Test
+	 */ 
+	@Ignore//Need to edit customer to enable/disable
 	public void TC1589_ProvideGapGrid10PrivilegeExistingCustomerReprocessComplianceReport() throws Exception {
 		Log.info("\nRunning TC1589_ProvideGapGrid10PrivilegeExistingCustomerReprocessComplianceReport ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 	}
- 
+
 	/**
 	 * Test Case ID: TC1595_RemoveGapGrid10FeatureFromExistingCustomerGenerateNewComplianceReport
 	 * Test Description: Remove Gap Grid 1.0 feature from existing customer and generate new compliance report
@@ -507,14 +667,14 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Gaps shape file will only have gaps information
 	 *	- - ReportGaps.csv meta data file will have only single row with gaps information
 	 */
-	@Test
+	@Ignore //Need to edit customer to enable/disable
 	public void TC1595_RemoveGapGrid10FeatureFromExistingCustomerGenerateNewComplianceReport() throws Exception {
 		Log.info("\nRunning TC1595_RemoveGapGrid10FeatureFromExistingCustomerGenerateNewComplianceReport ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 	}
- 
+
 	/**
 	 * Test Case ID: TC1597_RemoveGapGrid10FeatureFromExistingCustomerGenerateComplianceReportUsingCopyFunctionalty
 	 * Test Description: Remove Gap Grid 1.0 feature from existing customer and generate compliance report using copy functionalty
@@ -534,14 +694,14 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Gaps shape file will only have gaps information
 	 *	- - ReportGaps.csv meta data file will have only single row with gaps information
 	 */
-	@Test
+	@Ignore //Need to edit customer to enable/disable
 	public void TC1597_RemoveGapGrid10FeatureFromExistingCustomerGenerateComplianceReportUsingCopyFunctionalty() throws Exception {
 		Log.info("\nRunning TC1597_RemoveGapGrid10FeatureFromExistingCustomerGenerateComplianceReportUsingCopyFunctionalty ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 	}
- 
+
 	/**
 	 * Test Case ID: TC1599_RemoveGapGrid10FeatureFromExistingCustomerReprocessExistingComplianceReport
 	 * Test Description: Remove Gap Grid 1.0 feature from existing customer and reprocess the existing compliance report
@@ -560,14 +720,14 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Gaps shape file will only have gaps information
 	 *	- - ReportGaps.csv meta data file will have only single row with gaps information
 	 */
-	@Test
+	@Ignore //Need to edit customer to enable/disable
 	public void TC1599_RemoveGapGrid10FeatureFromExistingCustomerReprocessExistingComplianceReport() throws Exception {
 		Log.info("\nRunning TC1599_RemoveGapGrid10FeatureFromExistingCustomerReprocessExistingComplianceReport ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 	}
- 
+
 	/**
 	 * Test Case ID: TC1608_GenerateComplianceReportPicarroAdminIncludeAssetsWithoutSelectingGAPLISA
 	 * Test Description: Generate Compliance Report as Picarro Admin and include Assets without selecting GAP and LISA
@@ -586,14 +746,32 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - View are showing assets without LISA and GAP correctly. Nohighlightingof assets is shown.
 	 *	- - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
-	public void TC1608_GenerateComplianceReportPicarroAdminIncludeAssetsWithoutSelectingGAPLISA() throws Exception {
-		Log.info("\nRunning TC1608_GenerateComplianceReportPicarroAdminIncludeAssetsWithoutSelectingGAPLISA ...");
-		
+	@Test  //Uncomment the portion once DE2003 gets fixed.
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1608, location = ComplianceReportDataProvider.class)
+	public void TC1608_GenerateComplianceReportPicarroAdminIncludeAssetsWithoutSelectingGAPLISA(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC1608_GenerateComplianceReportPicarroAdminIncludeAssetsWithoutSelectingGAPLISA...");
+
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, NOTSET));
+		
+		/*complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("1", getReportRowID(reportDataRowID1)));
+		*/
 	}
- 
+
 	/**
 	 * Test Case ID: TC1651_Re_EnablePercentCoverageForecastFeaturesPermissionCustomer_NewComplianceReportGeneration
 	 * Test Description: Re-enable Percent Coverage Forecast features permission to customer - New Compliance report generation
@@ -617,14 +795,14 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)- Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Ignore  //Need customer enable/Disable
 	public void TC1651_Re_EnablePercentCoverageForecastFeaturesPermissionCustomer_NewComplianceReportGeneration() throws Exception {
 		Log.info("\nRunning TC1651_Re_EnablePercentCoverageForecastFeaturesPermissionCustomer_NewComplianceReportGeneration ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 	}
- 
+
 	/**
 	 * Test Case ID: TC1652_Re_EnablePercentCoverageForecastFeaturesPermissionCustomer_CopyComplianceReportGeneration
 	 * Test Description: Re-enable Percent Coverage Forecast features permission to customer - Copy Compliance report generation
@@ -642,14 +820,14 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)- Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Ignore //Need to edit customer enable/disable
 	public void TC1652_Re_EnablePercentCoverageForecastFeaturesPermissionCustomer_CopyComplianceReportGeneration() throws Exception {
 		Log.info("\nRunning TC1652_Re_EnablePercentCoverageForecastFeaturesPermissionCustomer_CopyComplianceReportGeneration ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 	}
- 
+
 	/**
 	 * Test Case ID: TC1655_Re_EnabledPercentCoverageForecastGapGridFeaturesPermissionPicarro_ReprocessComplianceReportGenerationPicarroAdmin
 	 * Test Description: Re-enabled Percent Coverage Forecast and Gap Grid features permission to Picarro - Reprocess Compliance report generation as Picarro Admin
@@ -666,10 +844,10 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Forecast table and Gap table will not be present in SSRS PDF (by design)
 	 *	- - Gap grids will be present in report views
 	 */
-	@Test
+	@Ignore //Need to edit customer
 	public void TC1655_Re_EnabledPercentCoverageForecastGapGridFeaturesPermissionPicarro_ReprocessComplianceReportGenerationPicarroAdmin() throws Exception {
 		Log.info("\nRunning TC1655_Re_EnabledPercentCoverageForecastGapGridFeaturesPermissionPicarro_ReprocessComplianceReportGenerationPicarroAdmin ...");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 	}

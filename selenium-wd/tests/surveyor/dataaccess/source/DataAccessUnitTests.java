@@ -238,8 +238,8 @@ public class DataAccessUnitTests {
 
 	private static void testMeasurements_getMeasurements_Valid() {
 		String analyzerId = "00000015-DB64-FDE7-7E67-39C8AC533D49";
-		Double startEpochTime = 1417806315D;
-		Double endEpochTime = 1417806445D;
+		String startEpochTime = "1417806315";
+		String endEpochTime = "1417806445";
 		List<Measurement> measurements = Measurement.getMeasurements(analyzerId, startEpochTime, endEpochTime);
 		Iterator<Measurement> iterator = measurements.iterator();
 		Assert.assertTrue(iterator.hasNext());
@@ -251,8 +251,8 @@ public class DataAccessUnitTests {
 
 	private static void testMeasurements_getMeasurements_Invalid() {
 		String analyzerInvalidId = "D12F21F5-3FA4-C9EB-C6D6-00007CC7AB16";
-		Double startEpochTime = 0.00000D;
-		Double endEpochTime = 0.00000D;
+		String startEpochTime = "0.00000";
+		String endEpochTime = "0.00000";
 		List<Measurement> measurements = Measurement.getMeasurements(analyzerInvalidId, startEpochTime, endEpochTime);
 		Iterator<Measurement> iterator = measurements.iterator();
 		Assert.assertTrue(!iterator.hasNext());

@@ -47,7 +47,10 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	@FindBy(id = "BatchId")
 	public WebElement inputLotNumber;
 	
-	
+	public WebElement getEthMthRtoErr() {
+		return this.inputEthMthRto;
+	}
+
 	@FindBy(how = How.XPATH, using = "//*[@id='EthaneToMethaneRatio']")
 	public WebElement inputEthMthRto;
 	
@@ -390,11 +393,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	public WebElement getDropdownSurveyor(){
 		return this.dropdownSurveyor;
 	}
-	public WebElement getEthMthRtoErr() {
-		return this.ethMthRtoErr;
-	}
-
-	public WebElement getEthMethRtoLbl() {
+		public WebElement getEthMethRtoLbl() {
 		return this.ethMethRtoLbl;
 	}
 	

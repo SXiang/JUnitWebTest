@@ -383,8 +383,16 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 	public boolean findExistingUser(String userName) {
 		setPagination(PAGINATIONSETTING_100);
+		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
 		this.waitForTableDataToLoad();
+
+		this.searchTable(userName);
+		if (this.searchHasNoMatchingRecords()) {
+        	// revert back search field.
+        	this.clearSearchField();
+        	return false;
+		}
 
 		String userNameXPath;
 
@@ -409,6 +417,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 			if ((userNameCell.getText().trim()).equalsIgnoreCase(userName)) {
 				Log.info("Found entry at row=" + rowNum);
+	        	// revert back search field.
+	        	this.clearSearchField();
 				return true;
 			}
 
@@ -431,14 +441,24 @@ public class ManageUsersPage extends SurveyorBasePage {
 			}
 		}
 
+    	// revert back search field.
+    	this.clearSearchField();
 		return false;
 	}
 
 	public boolean findExistingUser(String locationName, String userName, boolean isCustomerUser) {
 		setPagination(PAGINATIONSETTING_100);
+		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
 		this.waitForAJAXCallsToComplete();
 		this.waitForTableDataToLoad();
+
+		this.searchTable(userName);
+		if (this.searchHasNoMatchingRecords()) {
+        	// revert back search field.
+        	this.clearSearchField();
+        	return false;
+		}
 
 		String locationXPath;
 		String userNameXPath;
@@ -479,6 +499,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 					&& (userNameCell.getText().trim())
 							.equalsIgnoreCase(userName)) {
 				Log.info("Found entry at row=" + rowNum);
+	        	// revert back search field.
+	        	this.clearSearchField();
 				return true;
 			}
 
@@ -503,14 +525,23 @@ public class ManageUsersPage extends SurveyorBasePage {
 			}
 		}
 
+    	// revert back search field.
+    	this.clearSearchField();
 		return false;
 	}
 
 	public boolean findExistingUser(String locationName, String userName,
 			String roleName) {
 		setPagination(PAGINATIONSETTING_100);
+		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
 		this.waitForTableDataToLoad();
+		this.searchTable(userName);
+		if (this.searchHasNoMatchingRecords()) {
+        	// revert back search field.
+        	this.clearSearchField();
+        	return false;
+		}
 
 		String locationXPath;
 		String userNameXPath;
@@ -549,6 +580,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 					&& (roleNameCell.getText().trim())
 							.equalsIgnoreCase(roleName)) {
 				Log.info("Found entry at row=" + rowNum);
+	        	// revert back search field.
+	        	this.clearSearchField();
 				return true;
 			}
 
@@ -571,6 +604,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 			}
 		}
 
+    	// revert back search field.
+    	this.clearSearchField();
 		return false;
 	}
 
@@ -712,8 +747,15 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public boolean editUser(String userName, String roleNew, String timeZoneNew, 
 			String locationDescNew, boolean accountEnable, boolean isCustomerUser) {
 		setPagination(PAGINATIONSETTING_100);
+		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
 		this.waitForTableDataToLoad();
+		this.searchTable(userName);
+		if (this.searchHasNoMatchingRecords()) {
+        	// revert back search field.
+        	this.clearSearchField();
+        	return false;
+		}
 
 		String userNameXPath;
 		String actionEditXPath;
@@ -766,9 +808,14 @@ public class ManageUsersPage extends SurveyorBasePage {
 				this.btnOk.click();
 				this.waitForPageLoad();
 
-				if (getTable().isDisplayed())
+				if (getTable().isDisplayed()) {
+		        	// revert back search field.
+		        	this.clearSearchField();
 					return true;
+				}
 
+	        	// revert back search field.
+	        	this.clearSearchField();
 				return false;
 			}
 
@@ -791,6 +838,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 			}
 		}
 
+    	// revert back search field.
+    	this.clearSearchField();
 		return false;
 	}
 

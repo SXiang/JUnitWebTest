@@ -93,11 +93,19 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 
 		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber1, "-32", "1", SQACUS, SQACUSLOC, SQACUSLOCSUR);
 		manageRefGasBottlesPage.waitForNewPageLoad();
-
 		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber1, SQACUSLOCSUR));
 
 		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber2, "-32", "99", SQACUS, SQACUSLOC, SQACUSLOCSUR);
 		manageRefGasBottlesPage.waitForNewPageLoad();
+		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber2, SQACUSLOCSUR));
+
+		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber2, "-32", "0", SQACUS, SQACUSLOC, SQACUSLOCSUR);
+		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals("Please enter a value greater than or equal to 1."));
+		manageRefGasBottlesPage.clickOnCancelBtn();
+
+		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber2, "-32", "100", SQACUS, SQACUSLOC, SQACUSLOCSUR);
+		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals("Please enter a value less than or equal to 99."));
+		manageRefGasBottlesPage.clickOnCancelBtn();
 
 		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber2, SQACUSLOCSUR));
 

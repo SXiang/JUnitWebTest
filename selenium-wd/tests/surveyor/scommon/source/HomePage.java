@@ -4,6 +4,7 @@
 package surveyor.scommon.source;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -31,6 +32,7 @@ public class HomePage extends SurveyorBasePage {
 	public static final String STRPageTitle = String.format("%s - %s", 
 			Resources.getResource(ResourceKeys.Index_Title), Resources.getResource(ResourceKeys.Constant_Surveyor));
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.Index_Heading);
+	public static final String Constant_Offline = Resources.getResource(ResourceKeys.Constant_Offline);
 	public static final String STRSurveyorDashboard = "Surveyor Dashboard";
 	public static final String STRReleaseNotes="ReleaseNotes";
 	public static final String STRReleaseNotesLink="Surveyor_v2.1_ReleaseNotes.pdf";	
@@ -116,6 +118,9 @@ public class HomePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Surveyor']/tbody/tr[1]/td[3]/a")
 	private WebElement linkFirstOnlineSurveyor;
 	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Surveyor']/tbody/tr[1]/td[3]")
+	private List<WebElement> linkOnlineOffline;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session']/tbody")
 	private WebElement tableRecentDrivingSurveys;
 	
@@ -191,6 +196,9 @@ public class HomePage extends SurveyorBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='00000000-0000-0000-0001-000000000000']/a")
 	protected WebElement dropDownPST;
+	
+	@FindBy(how = How.XPATH, using = "//html/body/div/div[2]/div/div/div[3]/a[2]")
+	protected WebElement returnHomePage;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session']/tbody/tr[1]/td[5]/a")
 	protected WebElement firstSurvey;
@@ -283,6 +291,9 @@ public class HomePage extends SurveyorBasePage {
 		return linkPreference;
 	}
 
+	public WebElement getReturnHomePage() {
+		return returnHomePage;
+	}
 	public boolean checkVisibilityForPicarroSUP(String loginUser) {
 		if (!this.picarroLogo.isDisplayed())
 			return false;
@@ -770,6 +781,22 @@ public class HomePage extends SurveyorBasePage {
 
 	public boolean getReleaseNotesLink() {
 		return getLinkReleaseNotes().getAttribute("href").contains(STRReleaseNotesLink);
+	}
+
+	public List<WebElement> getLinkOnlineOffline() {
+		return linkOnlineOffline;
+	}
+	
+	public WebElement getFirstOfflineSurveyLink(){
+		List<WebElement> firstOfflineSurvey=getLinkOnlineOffline();
+		Iterator<WebElement> listIterator=firstOfflineSurvey.iterator();
+		while(listIterator.hasNext()){
+			WebElement element=listIterator.next();
+			if(element.getText().equalsIgnoreCase(Constant_Offline)){
+				return element;
+			}
+		}		
+		return null;
 	}
 
 	public boolean isReleaseNotes(WebDriver driver,String winHandle){

@@ -1351,17 +1351,54 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		complianceReportsPage.open();
 
-		complianceReportsPage.getNewComplianceReportBtn().click();
+		complianceReportsPage.clickOnNewComplianceReportBtn();
 		assertTrue(complianceReportsPage.getPercentCoverForecast().isDisplayed());
 		complianceReportsPage.clickOnCancelBtn();
+		complianceReportsPage.waitForPageLoad();
+		
+		String testCaseID = "TC1306";
+		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		complianceReportsPage.open();
 
-		String copyImgXPath = "//*[@id='datatable']/tbody/tr[1]/td[5]/a[2]/img";
-		WebElement copyImg = driver.findElement(By.xpath(copyImgXPath));
+		List<String> listBoundary = new ArrayList<String>();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+		listBoundary.add(RNELAT);
+		listBoundary.add(RNELON);
+		listBoundary.add(RSWLAT);
+		listBoundary.add(RSWLON);
 
-		copyImg.click();
+		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
+		Map<String, String> tableMap = new HashMap<String, String>();
+		tableMap.put(KEYINDTB, "1");
+		tableMap.put(KEYISOANA, "1");
+		tableMap.put(KEYGAPTB, "1");
+		tableMap.put(KEYPCA, "0");
+		tableMap.put(KEYPCRA, "0");
+		tablesList.add(tableMap);
+
+		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
+		List<Integer> boundaryRowIDs = Arrays.asList(3, 4);				 // Boundary RowIDs from TestCaseData xlsx
+		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
+		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
+
+		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
+		viewList1.add(createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+
+		List<String> tagList = new ArrayList<String>();
+		tagList.add(PICADMNSTDTAG);
+
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
+
+		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.waitForPageLoad();
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
+		complianceReportsPage.getInputSearch().sendKeys(rptTitle);
+		complianceReportsPage.waitForPageLoad();
+		complianceReportsPage.clickOnCopyReport(rptTitle, testSetup.getLoginUser());
 		complianceReportsPage.waitForCopyReportPagetoLoad();
-		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
 		assertTrue(complianceReportsPage.getPercentCoverForecast().isDisplayed());
+		complianceReportsPage.clickOnCancelBtn();
 	}
 
 	/**

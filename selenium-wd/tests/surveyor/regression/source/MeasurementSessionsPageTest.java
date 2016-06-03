@@ -214,19 +214,16 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 		homePage.getLinkDrivingSurveys().click();
 
 		measurementSessionsPage.actionOnDrivingSurvey(PICADMNSTDTAG2, ADMINISTRATORUSER, SQAPICLOC4SUR, SQAPICLOC4SURANA, DrivingSurveyButtonType.ExportSurvey);
-
-		testSetup.slowdownInSeconds(15);
-		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTSURVEY, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), DRIVINGSURVEYSSTNDMODE, true));
+		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTSURVEY, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), DRIVINGSURVEYSSTNDMODE, 
+				PICADMNSTDTAG2_STARTEPOCH, PICADMNSTDTAG2_ENDEPOCH, true));
 
 		measurementSessionsPage.actionOnDrivingSurvey(PICADMNSTDTAG2, ADMINISTRATORUSER, SQAPICLOC4SUR, SQAPICLOC4SURANA, DrivingSurveyButtonType.ExportPeaks);
-
-		testSetup.slowdownInSeconds(15);
-		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTPEAKS, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), DRIVINGSURVEYSSTNDMODE, true));
+		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTPEAKS, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), DRIVINGSURVEYSSTNDMODE, 
+				PICADMNSTDTAG2_STARTEPOCH, PICADMNSTDTAG2_ENDEPOCH, true));
 
 		measurementSessionsPage.actionOnDrivingSurvey(PICADMNSTDTAG2, ADMINISTRATORUSER, SQAPICLOC4SUR, SQAPICLOC4SURANA, DrivingSurveyButtonType.ExportAnalysis);
-
-		testSetup.slowdownInSeconds(15);
-		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTANALYSIS, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), DRIVINGSURVEYSSTNDMODE, true));
+		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTANALYSIS, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), DRIVINGSURVEYSSTNDMODE, 
+				PICADMNSTDTAG2_STARTEPOCH, PICADMNSTDTAG2_ENDEPOCH, true));
 	}
 	
 	/**
@@ -246,7 +243,11 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 		assertTrue(!(measurementSessionsPage.getNumberofRecords() > Integer.parseInt(PAGINATIONSETTING)));
 		assertTrue(measurementSessionsPage.checkPaginationSetting(paginationSetting25));
 		assertTrue(!(measurementSessionsPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
+		measurementSessionsPage.getNextBtn().click();
+		assertTrue(!(measurementSessionsPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
 		assertTrue(measurementSessionsPage.checkPaginationSetting(paginationSetting50));
+		assertTrue(!(measurementSessionsPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
+		measurementSessionsPage.getNextBtn().click();
 		assertTrue(!(measurementSessionsPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
 		assertTrue(measurementSessionsPage.checkPaginationSetting(paginationSetting100));
 		assertTrue(!(measurementSessionsPage.getNumberofRecords() > Integer.parseInt(paginationSetting100)));

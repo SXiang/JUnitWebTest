@@ -386,6 +386,21 @@ public class FileUtility {
 	    	deleteFile(file);
 	    }
 	}
+
+	/*
+	 * Delete files in the specified directory that start with the specified filePrefix and match the specified extension.
+	 */
+	public static void deleteFilesInDirectory(Path directory, String filePrefix, String fileExtension) throws IOException {
+		DirectoryStream<Path> stream = Files.newDirectoryStream(directory);
+	    // First delete all files in directory
+		for (Path file: stream) {
+			String fileExt = FileUtility.getFileExtension(file.toString());
+			String fileName = FileUtility.getFileName(file.toString());
+			if (fileExt.equalsIgnoreCase(fileExt) && fileName.startsWith(filePrefix)) {			
+				deleteFile(file);
+			}
+	    }
+	}
 	
 	public static void main(String[] args) throws IOException {
 		Path directoryWithFiles = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\shapefileutility-tests");
