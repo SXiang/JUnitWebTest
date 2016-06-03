@@ -81,9 +81,6 @@ public class ScreenShotOnFailure implements MethodRule {
 		if(reportLogger!=null){
 			String image = reportLogger.addScreenCapture(imgFile);
 			reportLogger.log(LogStatus.FAIL, errMsg, image);
-		}else{		
-		  errMsg = ">>> TestMethod: "+fname+System.lineSeparator()+ errMsg;
-		  errMsg = System.lineSeparator()+">>> ScreenShot: "+imgFile+System.lineSeparator()+errMsg;		
 		}
 	}
 	public void captureBrowserScreenShot(String fileName){
