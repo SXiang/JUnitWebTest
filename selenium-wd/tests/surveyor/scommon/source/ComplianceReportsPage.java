@@ -713,16 +713,22 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		clickOnZIPInReportViewer();
 		waitForReportZIPFileDownload(reportName);
 		checkAndGenerateBaselineSSRSImage(reportName, testCaseID);
-		String unzipFolder = testSetup.getDownloadPath() + reportName;
-		zipUtility.unZip(testSetup.getDownloadPath() + reportName + ".zip", unzipFolder);
+		String zipFileName = getReportPDFZipFileName(rptTitle, false /*includeextension*/);
+		Log.info("Meta data zip file got downloaded");
+		try {
+			BaseHelper.deCompressZipFile(zipFileName, testSetup.getDownloadPath());
+		} catch (Exception e) {
+			Log.error(e.toString());
+			return false;
+		}
+		String unzipFolder = testSetup.getDownloadPath() + zipFileName;
 		checkAndGenerateBaselineViewImages(unzipFolder, testCaseID);
 
 		int zipFileIndex = 1;
-		String zipFileName;
 		if (zipMeta.isDisplayed()) {
 			clickOnMetadataZIPInReportViewer();
 			waitForMetadataZIPFileDownload(reportName);
-			zipFileName = reportName + " (" + zipFileIndex++ + ")";
+			zipFileName = getReportMetaZipFileName(rptTitle, false /*includeextension*/);
 			Log.info("Meta data zip file got downloaded");
 			try {
 				BaseHelper.deCompressZipFile(zipFileName, testSetup.getDownloadPath());
@@ -735,7 +741,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			clickOnShapeZIPInReportViewer();
 			waitForShapeZIPFileDownload(reportName);
 			Log.info("Shape files zip file got downloaded");
-			zipFileName = reportName + " (" + zipFileIndex++ + ")";
+			zipFileName = getReportShapeZipFileName(rptTitle, false /*includeextension*/);
 			try {
 				BaseHelper.deCompressZipFile(zipFileName, testSetup.getDownloadPath());
 			} catch (Exception e) {
@@ -767,7 +773,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public String getReportPDFZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
-		String reportName = "CR-" + getReportName(rptTitle);
+		String reportName = "CR-" + getReportName(rptTitle) + "-PDF";
 		reportName = getZipFileNameWithIndex(reportName, zipIndex);
 		if (includeExtension) {
 			reportName += ".zip";
@@ -776,11 +782,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public String getReportMetaZipFileName(String rptTitle, boolean includeExtension) {
-		return getReportMetaZipFileName(rptTitle, 1, includeExtension);
+		return getReportMetaZipFileName(rptTitle, 0, includeExtension);
 	}
 
 	public String getReportMetaZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
-		String reportName = "CR-" + getReportName(rptTitle);
+		String reportName = "CR-" + getReportName(rptTitle) + "-Meta";
 		reportName = getZipFileNameWithIndex(reportName, zipIndex);
 		if (includeExtension) {
 			reportName += ".zip";
@@ -789,11 +795,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public String getReportShapeZipFileName(String rptTitle, boolean includeExtension) {
-		return getReportShapeZipFileName(rptTitle, 2, includeExtension);
+		return getReportShapeZipFileName(rptTitle, 0, includeExtension);
 	}
 
 	public String getReportShapeZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
-		String reportName = "CR-" + getReportName(rptTitle);
+		String reportName = "CR-" + getReportName(rptTitle) + "-Shape";
 		reportName = getZipFileNameWithIndex(reportName, zipIndex);
 		if (includeExtension) {
 			reportName += ".zip";
@@ -1364,14 +1370,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean validatePdfFiles(ReportsCompliance reportsCompliance, String downloadPath) {
 		String reportId;
 		String reportName;
-		DBConnection objDbConn = new DBConnection();
-
+		String reportZipName;
 		try {
-			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportsCompliance.getRptTitle(), this.testSetup);
-			reportId = reportId.substring(0, 6);
-			reportName = "CR-" + reportId;
+			reportName = getReportPDFFileName(reportsCompliance.getRptTitle(), false /*includeExtension*/);
+			reportZipName = getReportPDFZipFileName(reportsCompliance.getRptTitle(), false /*includeExtension*/);
 			setReportName(reportName);
-			BaseHelper.deCompressZipFile(reportName, downloadPath);
+			BaseHelper.deCompressZipFile(reportZipName, downloadPath);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			return false;
@@ -1386,7 +1390,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		List<Map<String, String>> viewList = reportsCompliance.getViewList();
 
 		pdfFile1 = downloadPath + reportName + ".pdf";
-		pdfFile3 = downloadPath + reportName + File.separator + nameBase.replaceAll("_", "") + ".pdf";
+		pdfFile3 = downloadPath + reportZipName + File.separator + nameBase.replaceAll("_", "") + ".pdf";
 
 		if (BaseHelper.validatePdfFile(pdfFile1) && BaseHelper.validatePdfFile(pdfFile3)) {
 			try {
@@ -1401,7 +1405,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		for (int i = 0; i < viewList.size(); i++) {
 			viewName = viewList.get(i).get(KEYVIEWNAME);
-			pdfFile2 = downloadPath + reportName + File.separator + nameBase.replaceAll("_", "") + "_" + viewName
+			pdfFile2 = downloadPath + reportZipName + File.separator + nameBase.replaceAll("_", "") + "_" + viewName
 					+ ".pdf";
 
 			if (!BaseHelper.validatePdfFile(pdfFile2)) {
@@ -3402,7 +3406,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public void waitForMetadataZIPFileDownload(String reportName, int zipIndex) {
 		reportName = getZipFileNameWithIndex(reportName, zipIndex);
-		waitForFileDownload(reportName + ".zip", testSetup.getDownloadPath());
+		waitForFileDownload(reportName + "-Meta.zip", testSetup.getDownloadPath());
 	}
 
 	public void waitForPDFFileDownload(String reportName) {
@@ -3415,7 +3419,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public void waitForReportZIPFileDownload(String reportName, int zipIndex) {
 		reportName = getZipFileNameWithIndex(reportName, zipIndex);
-		waitForFileDownload(reportName + ".zip", testSetup.getDownloadPath());
+		waitForFileDownload(reportName + "-PDF.zip", testSetup.getDownloadPath());
 	}
 
 	public void waitForShapeZIPFileDownload(String reportName) {
@@ -3424,7 +3428,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public void waitForShapeZIPFileDownload(String reportName, int zipIndex) {
 		reportName = getZipFileNameWithIndex(reportName, zipIndex);
-		waitForFileDownload(reportName + ".zip", testSetup.getDownloadPath());
+		waitForFileDownload(reportName + "-Shape.zip", testSetup.getDownloadPath());
 	}
 
 	private String getZipFileNameWithIndex(String name, int zipIndex){

@@ -245,6 +245,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU,
 				CUSNAMEBASE, TIMEZONEPT, "0", listBoundary, tablesList,
 				SQACUSLOCSUR,tagList , viewList);
+		
 		complianceReportsPage.addNewReport(rpt);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
@@ -282,9 +283,6 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		homePage.clickOnFleetMapLink();
 		assertTrue(homePage.isLinkBroken());
 
-		homePage.clickOnFeedbackLink();
-		assertTrue(homePage.isLinkBroken());
-
 		homePage.clickOnReportsLink();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		homePage.clickOnComplianceReportLink();
@@ -302,9 +300,6 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		homePage.clickOnPicarroAdminLink();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		homePage.clickOnCalibrationLink();
-		assertTrue(homePage.isLinkBroken());
-
-		homePage.clickOnViewUserFeedbackLink();
 		assertTrue(homePage.isLinkBroken());
 
 		homePage.clickOnManageCustomersLink();
