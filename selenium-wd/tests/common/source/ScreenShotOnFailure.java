@@ -66,14 +66,15 @@ public class ScreenShotOnFailure implements MethodRule {
 					}else{
 						captureDesktopScreenShot(imgName);
 					}
-					logReportScreenShot(fname, "./"+imgLink+imgFile, t);			
+					logReportScreenShot(fname, "./"+imgLink+imgFile, t);		
+					throw t;
 				}
 			}
 		};
 	}
 
 
-	public void logReportScreenShot(String fname, String imgFile, Throwable t) throws Throwable{
+	public void logReportScreenShot(String fname, String imgFile, Throwable t){
 		String errMsg = t.getMessage();		
 		ExtentTest reportLogger = TestContext.INSTANCE.getExtentTest();
 		if(reportLogger!=null){
@@ -83,7 +84,6 @@ public class ScreenShotOnFailure implements MethodRule {
 		  errMsg = ">>> TestMethod: "+fname+System.lineSeparator()+ errMsg;
 		  errMsg = System.lineSeparator()+">>> ScreenShot: "+imgFile+System.lineSeparator()+errMsg;		
 		}
-		throw new Throwable(errMsg);
 	}
 	public void captureBrowserScreenShot(String fileName){
 		try{
