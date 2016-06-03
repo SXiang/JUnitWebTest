@@ -39,6 +39,7 @@ public class ScreenShotOnFailure implements MethodRule {
 	private WebDriver driver;
 	private boolean isRemoteBrowser = true;
 	private String imgPath = "/screenshots/";
+	private String imgLink = "./screenshots/";
 	private String format = "jpg";
 
 	public ScreenShotOnFailure(WebDriver driver, String imgPath){
@@ -65,7 +66,7 @@ public class ScreenShotOnFailure implements MethodRule {
 					}else{
 						captureDesktopScreenShot(imgName);
 					}
-					logReportScreenShot(fname, imgName, t);			
+					logReportScreenShot(fname, "./"+imgLink+imgFile, t);			
 				}
 			}
 		};
@@ -73,14 +74,7 @@ public class ScreenShotOnFailure implements MethodRule {
 
 
 	public void logReportScreenShot(String fname, String imgFile, Throwable t) throws Throwable{
-		String errMsg = t.getMessage();
-		try{
-		String executionPath = TestSetup.getExecutionPath().replaceAll("\\\\", "/");
-		imgFile = imgFile.replaceAll("\\\\", "/");
-		imgFile = imgFile.replaceFirst(executionPath+TestSetup.reportDir, "./");
-		}catch(Exception e){
-			
-		}
+		String errMsg = t.getMessage();		
 		ExtentTest reportLogger = TestContext.INSTANCE.getExtentTest();
 		if(reportLogger!=null){
 			String image = reportLogger.addScreenCapture(imgFile);

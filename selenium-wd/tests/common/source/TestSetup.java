@@ -179,7 +179,7 @@ public class TestSetup {
 			e.printStackTrace();
 		}
 		String runEnvironment = TestContext.INSTANCE.getRunEnvironment();
-		String reportFilePath = executionPath + reportDir
+		String reportFilePath = executionPath + reportDir + TestContext.INSTANCE.getTestRunCategory()+File.separator
 				+ String.format("report-%s-%s.html", runEnvironment, reportClassName);
 		outReportFilePath.append(reportFilePath);
 		String configFilePath = executionPath + "tests" + File.separator + "extent-config.xml";

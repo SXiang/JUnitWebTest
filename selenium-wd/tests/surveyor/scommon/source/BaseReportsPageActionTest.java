@@ -6,6 +6,7 @@ import org.junit.After;
 import common.source.ExceptionUtility;
 import common.source.Log;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
+import surveyor.scommon.actions.LoginPageActions;
 
 public class BaseReportsPageActionTest extends BaseReportsPageTest {
 
@@ -51,6 +52,9 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 	public void afterTestMethod() {
 		try {
 			deleteComplianceReport();
+			homePage.logout();
+			LoginPageActions.workingDataRow = null;
+			ComplianceReportsPageActions.workingDataRow = null;
 		} catch (Exception e) {
 			Log.error("Error when deleting compliance report page. Exception message:");
 			Log.error(ExceptionUtility.getStackTraceString(e));
