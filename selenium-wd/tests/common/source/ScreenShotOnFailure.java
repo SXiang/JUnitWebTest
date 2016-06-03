@@ -61,7 +61,7 @@ public class ScreenShotOnFailure implements MethodRule {
 					String fname = frameworkMethod.getName();
 					String imgFile = fname.split("\\[")[0] + "."+format;
 				    String imgName = imgPath + imgFile;
-					if(isRemoteBrowser){
+					if(!isRemoteBrowser){
 						captureBrowserScreenShot(imgName);
 					}else{
 						captureDesktopScreenShot(imgName);

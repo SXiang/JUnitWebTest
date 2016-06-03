@@ -179,7 +179,7 @@ public class TestSetup {
 			e.printStackTrace();
 		}
 		String runEnvironment = TestContext.INSTANCE.getRunEnvironment();
-		String reportFilePath = executionPath + reportDir + TestContext.INSTANCE.getTestRunCategory()+File.separator
+		String reportFilePath = executionPath + reportDir + TestContext.INSTANCE.getTestReportCategory()+File.separator
 				+ String.format("report-%s-%s.html", runEnvironment, reportClassName);
 		outReportFilePath.append(reportFilePath);
 		String configFilePath = executionPath + "tests" + File.separator + "extent-config.xml";
@@ -523,7 +523,11 @@ public class TestSetup {
 	public String getTestRunCategory() {
 		return testRunCategory;
 	}
-
+	
+	public String getTestReportCategory() {
+		return getSystemProperty(this.testProp, "testReportCategory");
+	}
+	
 	public boolean isGenerateBaselineShapeFiles() {
 		return generateBaselineShapeFiles;
 	}
@@ -656,7 +660,7 @@ public class TestSetup {
 			this.implicitlyWaitSpecialTimeOutInMS = this.testProp.getProperty("implicitlyWaitSpecialTimeOutInMS");
 
 			this.runEnvironment = this.testProp.getProperty("runEnvironment");
-			this.testRunCategory = getSystemProperty(this.testProp, "testRunCategory");
+			this.testRunCategory = testProp.getProperty("testRunCategory");						
 
 			setLoggingTestProperties();
 			setComplianceReportBaselineGenerationTestProperties();

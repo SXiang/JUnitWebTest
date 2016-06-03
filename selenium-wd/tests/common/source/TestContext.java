@@ -143,13 +143,20 @@ public enum TestContext {
 		}		
 		return environment;
 	}
-	
+
 	public String getTestRunCategory() {
 		String testRunCategory = null;
 		if (testSetup != null) {
 			testRunCategory = testSetup.getTestRunCategory();
 		}		
 		return testRunCategory;
+	}
+	public String getTestReportCategory() {
+		String testReportCategory = null;
+		if (testSetup != null) {
+			testReportCategory = testSetup.getTestReportCategory();
+		}		
+		return testReportCategory;
 	}
 
 	public String getRunUniqueId() {

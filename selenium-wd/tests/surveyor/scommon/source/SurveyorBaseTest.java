@@ -155,7 +155,7 @@ public class SurveyorBaseTest {
 		debug = testSetup.isRunningDebug();
 		TestContext.INSTANCE.setTestSetup(testSetup);
 		if(screenShotsDir==null){
-			screenShotsDir = TestSetup.getExecutionPath() + TestSetup.reportDir + testSetup.getTestRunCategory();
+			screenShotsDir = TestSetup.getExecutionPath() + TestSetup.reportDir + testSetup.getTestReportCategory();
 			FileUtility.deleteFilesInDirectory(Paths.get(screenShotsDir+"/screenshots/"));
 			FileUtility.createDirectoryIfNotExists(screenShotsDir+"/screenshots/");
 		}		

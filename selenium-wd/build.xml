@@ -110,7 +110,7 @@
 	<target name="performancetests" depends="compileperformance" description="Run performance test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
-			<sysproperty key = "testRunCategory" value = "Performance" />
+			<sysproperty key = "testReportCategory" value = "Performance" />
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -129,7 +129,7 @@
 	<target name="testdriverview" depends="compileregression" description="Run driver view test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
-			<sysproperty key = "testRunCategory" value = "Regression" />
+			<sysproperty key = "testReportCategory" value = "Regression" />
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -151,7 +151,7 @@
 	<target name="testsurveyview" depends="compileregression" description="Run survey view test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
-			<sysproperty key = "testRunCategory" value = "Regression" />
+			<sysproperty key = "testReportCategory" value = "Regression" />
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -173,7 +173,7 @@
 	<target name="testobserverview" depends="compileregression" description="Run observer view test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
-			<sysproperty key = "testRunCategory" value = "Regression" />
+			<sysproperty key = "testReportCategory" value = "Regression" />
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -195,7 +195,7 @@
 	<target name="testlogin" depends="compileregression" description="Run login page test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
-			<sysproperty key = "testRunCategory" value = "Regression" />
+			<sysproperty key = "testReportCategory" value = "Regression" />
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -214,7 +214,7 @@
 	<target name="testmanageusers" depends="compileregression" description="Run manage users page test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
-			<sysproperty key = "testRunCategory" value = "Regression" />
+			<sysproperty key = "testReportCategory" value = "Regression" />
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -237,7 +237,7 @@
 	<target name="compliancereportpageactiontests" depends="compileregression" description="Run compliance report page action test cases">		
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
-			<sysproperty key = "testRunCategory" value = "Regression" />
+			<sysproperty key = "testReportCategory" value = "Regression" />
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -258,7 +258,7 @@
 	<target name="testcompliancereport" depends="compileregression" description="Run compliance report test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
-			<sysproperty key = "testRunCategory" value = "Regression" />
+			<sysproperty key = "testReportCategory" value = "Regression" />
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -285,7 +285,7 @@
 	<target name="testsimulatorcases" depends="compileregression" description="Run action execution test cases">
 			<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
-				<sysproperty key = "testRunCategory" value = "Regression" />
+				<sysproperty key = "testReportCategory" value = "Regression" />
 				<classpath>
 					<pathelement path="${build}" />
 					<fileset dir="${basedir}/lib">
@@ -308,7 +308,7 @@
 	<target name="testregression" depends="compileregression" description="Run regression test suite">		
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
-			<sysproperty key = "testRunCategory" value = "Regression" />
+			<sysproperty key = "testReportCategory" value = "Regression" />
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -348,7 +348,7 @@
 	<target name="testdb3surveyupload" depends="compileregression" description="Run upload db3 tests">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
-			<sysproperty key = "testRunCategory" value = "Regression" />
+			<sysproperty key = "testReportCategory" value = "Regression" />
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -368,7 +368,7 @@
 	<target name="testsanity" depends="compileSanity" description="Run sanity test suite">		
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">	
-			<sysproperty key = "testRunCategory" value = "Sanity" />
+			<sysproperty key = "testReportCategory" value = "Sanity" />
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
