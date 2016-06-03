@@ -44,6 +44,7 @@ public class SurveyorBaseTest {
 	public static TestSetup testSetup;
 	public static String baseURL;
 	public static String screenShotsDir;
+	public static String screenShotsSubFolder = "screenshots/";
 	public static boolean debug;
 
 	public static LoginPage loginPage;
@@ -83,7 +84,7 @@ public class SurveyorBaseTest {
 	};
 	
 	@Rule
-	public ScreenShotOnFailure failure = new ScreenShotOnFailure(driver, screenShotsDir, testSetup.isRemoteBrowser);
+	public ScreenShotOnFailure failure = new ScreenShotOnFailure(driver, screenShotsSubFolder, screenShotsDir, testSetup.isRemoteBrowser);
 	
 	private static ExtentReports getExtentReport(String className) {
 	   ExtentReports extentReport = TestContext.INSTANCE.getReport();
@@ -156,8 +157,8 @@ public class SurveyorBaseTest {
 		TestContext.INSTANCE.setTestSetup(testSetup);
 		if(screenShotsDir==null){
 			screenShotsDir = TestSetup.getExecutionPath() + TestSetup.reportDir + testSetup.getTestReportCategory();
-			FileUtility.deleteFilesInDirectory(Paths.get(screenShotsDir+"/screenshots/"));
-			FileUtility.createDirectoryIfNotExists(screenShotsDir+"/screenshots/");
+			FileUtility.deleteFilesInDirectory(Paths.get(screenShotsDir+"/"+screenShotsSubFolder));
+			FileUtility.createDirectoryIfNotExists(screenShotsDir+"/"+screenShotsSubFolder);
 		}		
 		Log.info("debuggug null - driver:***:" +driver);
 		driver.manage().deleteAllCookies();

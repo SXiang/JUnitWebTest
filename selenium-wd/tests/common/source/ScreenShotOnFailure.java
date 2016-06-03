@@ -37,17 +37,18 @@ import com.relevantcodes.extentreports.LogStatus;
 public class ScreenShotOnFailure implements MethodRule {
 
 	private WebDriver driver;
-	private boolean isRemoteBrowser = true;
-	private String imgPath = "/screenshots/";
-	private String imgLink = "./screenshots/";
+	private boolean isRemoteBrowser;
+	private String imgPath;
+	private String imgLink;
 	private String format = "jpg";
 
 	public ScreenShotOnFailure(WebDriver driver, String imgPath){
-		this(driver, imgPath, true);
+		this(driver,"screenshots/", imgPath, true);
 	}
-	public ScreenShotOnFailure(WebDriver driver, String imgPath, boolean isRemoteBrowser){
-		this.driver = driver;	
-		this.imgPath = imgPath + this.imgPath;
+	public ScreenShotOnFailure(WebDriver driver, String screenshotFolder, String imgPath, boolean isRemoteBrowser){
+		this.driver = driver;
+		this.imgLink = "./"+screenshotFolder;
+		this.imgPath = imgPath + "/"+screenshotFolder;
 		this.isRemoteBrowser = isRemoteBrowser;
 	}
 	@Override
@@ -66,7 +67,7 @@ public class ScreenShotOnFailure implements MethodRule {
 					}else{
 						captureDesktopScreenShot(imgName);
 					}
-					logReportScreenShot(fname, "./"+imgLink+imgFile, t);		
+					logReportScreenShot(fname, imgLink+imgFile, t);		
 					throw t;
 				}
 			}

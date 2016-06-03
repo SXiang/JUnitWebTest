@@ -525,7 +525,7 @@ public class TestSetup {
 	}
 	
 	public String getTestReportCategory() {
-		return getSystemProperty(this.testProp, "testReportCategory");
+		return getSystemProperty(this.testProp, "testReportCategory","testRunCategory");
 	}
 	
 	public boolean isGenerateBaselineShapeFiles() {
@@ -1246,13 +1246,13 @@ public class TestSetup {
 	 * @return System property if it's been set, VM property otherwise
 	 */
 	public String getSystemProperty(String key){
-		return getSystemProperty(testProp, key);
+		return getSystemProperty(testProp, key, key);
 	}
 	
-	public String getSystemProperty(Properties testProp, String propKey){
+	public String getSystemProperty(Properties testProp, String sysKey, String propKey){
 		String propValue = null;
 		try{
-		     propValue = System.getProperty(propKey);
+		     propValue = System.getProperty(sysKey);
 		}catch(Exception e){
 			Log.warn(e.toString());
 		}
