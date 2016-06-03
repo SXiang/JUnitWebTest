@@ -245,7 +245,6 @@
 				<fileset dir="${build}">
 
 					<include name="**/ComplianceReportsPageTest3.class" />
-
 				</fileset>
 			</batchtest>
 		</junit>
