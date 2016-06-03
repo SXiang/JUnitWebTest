@@ -660,7 +660,7 @@ public class TestSetup {
 			this.implicitlyWaitSpecialTimeOutInMS = this.testProp.getProperty("implicitlyWaitSpecialTimeOutInMS");
 
 			this.runEnvironment = this.testProp.getProperty("runEnvironment");
-			this.testRunCategory = testProp.getProperty("testRunCategory");
+			this.testRunCategory = this.testProp.getProperty("testRunCategory");
 
 			setLoggingTestProperties();
 			setComplianceReportBaselineGenerationTestProperties();
@@ -671,7 +671,7 @@ public class TestSetup {
 			this.culture = this.testProp.getProperty("culture");
 			this.softwareVersion = this.testProp.getProperty("softwareVersion");
 			
-			this.automationReportingApiEndpoint = this.testProp.getProperty("automationReporting.ApiEndPoint");		
+			this.automationReportingApiEndpoint = this.testProp.getProperty("automationReporting.ApiEndPoint");
 			String automationReportingApiEnabledValue = this.testProp.getProperty("automationReporting.APIEnabled");
 			if (automationReportingApiEnabledValue != null && automationReportingApiEnabledValue != "") {
 				this.automationReportingApiEnabled = Boolean.valueOf(automationReportingApiEnabledValue);
