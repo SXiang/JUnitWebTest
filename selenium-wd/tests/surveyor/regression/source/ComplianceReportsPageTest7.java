@@ -380,8 +380,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", NOTSET);
 		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-		Integer shapeZipFileIndex = 2;
-		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(String.valueOf(shapeZipFileIndex), getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -429,8 +428,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", NOTSET);
 		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-		Integer shapeZipFileIndex = 2;
-		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(String.valueOf(shapeZipFileIndex), getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -511,8 +509,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", NOTSET);
 		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-		Integer shapeZipFileIndex = 2;
-		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(String.valueOf(shapeZipFileIndex), getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**
@@ -562,8 +559,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", NOTSET);
 		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-		Integer shapeZipFileIndex = 2;
-		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(String.valueOf(shapeZipFileIndex), getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 	}
  
 	/**
