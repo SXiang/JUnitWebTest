@@ -108,11 +108,6 @@ public class SurveyorBaseTest {
 				DateUtility.getCurrentDate()));
 		report.endTest(getExtentTest());
 		report.flush();
-		
-		// Post run result to DB if enabled.
-		if (TestContext.INSTANCE.getTestSetup().isAutomationReportingApiEnabled()) {
-			TestContext.INSTANCE.getTestSetup().postAutomationRunResult(extentReportFile.toString());
-		}
 	}
 
 	public static void reportTestFailed(Throwable e) {
@@ -171,6 +166,13 @@ public class SurveyorBaseTest {
 		}
 		
 		driver.quit();		
+		
+		// Post run result to DB if enabled.
+		if (extentReportFile!=null) {
+			if (TestContext.INSTANCE.getTestSetup().isAutomationReportingApiEnabled()) {
+				TestContext.INSTANCE.getTestSetup().postAutomationRunResult(extentReportFile.toString());
+			}
+		}
 	}
 
 	/**
