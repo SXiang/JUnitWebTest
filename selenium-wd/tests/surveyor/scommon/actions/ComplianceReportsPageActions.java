@@ -1908,7 +1908,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Executes verifyPDFZIPThumbnailDownloadFromComplianceViewer action.
 	 * @param data - specifies the input data passed to the action.
@@ -3241,7 +3241,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean verifyManualSurveyModeIsShownOnPage(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.verifyManualSurveyModeIsShownOnPage", data, dataRowID);
-		return this.getComplianceReportsPage().isManualSurveyModeShown();
+		return this.getComplianceReportsPage().isManualSurveyModeSelected();
 	}
  
 	/**
@@ -3282,7 +3282,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return this.getComplianceReportsPage().verifySSRSPDFFooter(downloadPath, 
 				workingDataRow.title, expectedSoftwareVersion , LoginPageActions.workingDataRow.username);
 	}
-	
+
 	/**
 	 * Executes verifySelectedSurveysAreForSpecifiedCustomer action.
 	 * @param data - specifies the input data passed to the action.
