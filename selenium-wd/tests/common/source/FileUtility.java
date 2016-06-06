@@ -373,7 +373,7 @@ public class FileUtility {
 	/*
 	 * Delete files in the specified directory.
 	 */
-	public static void deleteFilesInDirectory(Path directory) throws IOException {
+	public static void deleteFilesInDirectory(Path directory){
 		DirectoryStream<Path> stream = null;
 		try{
 		     stream = Files.newDirectoryStream(directory);
