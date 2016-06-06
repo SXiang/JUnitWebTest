@@ -584,7 +584,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (viewList.get(i).get(KEYASSETS).equalsIgnoreCase("1")) {
 				colNum = 10;
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));//TODO: no such element, TC1389, TC13, TC149
+				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (viewList.get(i).get(KEYBOUNDARIES).equalsIgnoreCase("1")) {

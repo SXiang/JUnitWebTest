@@ -126,7 +126,7 @@ public class TestSetup {
 	private String randomNumber;
 
 	private WebDriver driver;
-	private String slowdownInSeconds = "1"; // For debugging the code and not
+	private String slowdownInSeconds; // For debugging the code and not
 										// recommended to use in real test case
 
 	private String downloadPath;
