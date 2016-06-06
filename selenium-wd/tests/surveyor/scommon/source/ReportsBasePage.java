@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +44,6 @@ import common.source.FileUtility;
 import common.source.ImagingUtility;
 import common.source.Log;
 import common.source.RegexUtility;
-import common.source.ShapeToGeoJsonConverter;
 import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
@@ -671,7 +669,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		}
 	}
-	
+
 	public void addNewReport(Reports reports) throws Exception {
 		addNewReport(reports, true /**/);
 	}
@@ -782,8 +780,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			// Loop through table elements and check selected number of surveys.
 			for (int rowNum = 1; rowNum <= loopCount && selectedSurveysCount < numSurveysToSelect; rowNum++) {
-				checkBoxXPath = "tr[" + rowNum + "]/td/input[@type='checkbox']";
-				checkBoxActionCell = surveyTable.findElement(By.xpath(checkBoxXPath)); //TODO: no such element TC211, TC12
+				checkBoxXPath = "tr[" + rowNum + "]/td[7]/input[@type='checkbox']";
+				checkBoxActionCell = surveyTable.findElement(By.xpath(checkBoxXPath));
 				checkBoxActionCell.click();
 				selectedSurveysCount++;
 
@@ -1054,16 +1052,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 				.presenceOfElementLocated(By.id(String.format("surveyContent-%d", countOfSurveys - 1))));
 	}
 
-	public boolean checkFileExists(String fileName, String downloadPath) {
-		Log.info(String.format("Looking for file-[%s] in download directory-[%s]", fileName, downloadPath));
-		File file = new File(downloadPath,fileName);
-		if(file.exists()){
-			Log.info("File found in the download directory");
-			return true;
-		}
-		return false;
-	}
-
 	/**
 	 * Method to verify the Driving Surveys Table in SSRS
 	 * 
@@ -1163,21 +1151,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 			String str = driver
 					.findElement(By
 							.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div[" + i + "]/label"))
-					.getText();
+							.getText();
 			if (str != columnName) {
 				result = true;
 			}
 		}
 		return result;
 
-	}
-
-	public void waitForFileDownload(String fileName, String downloadPath) {
-		(new WebDriverWait(driver, timeout + 60)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return checkFileExists(fileName, downloadPath);
-			}
-		});
 	}
 
 	public void waitForSurveySearchButtonToLoad() {
@@ -2244,7 +2224,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		});
 	}
-
+	
 	public WebElement getBtnDeleteConfirm() throws Exception {
 		throw new Exception("Not implemented");
 	}
@@ -2515,19 +2495,19 @@ public class ReportsBasePage extends SurveyorBasePage {
 		switch (rmf) {
 		case Standard:
 			filtersFound = isAllSurveyModeShown() && isStandardSurveyModeShown() && isOperatorSurveyModeShown()
-					&& !isRapidResponseSurveyModeShown() && !isManualSurveyModeShown();
+			&& !isRapidResponseSurveyModeShown() && !isManualSurveyModeShown();
 			break;
 		case RapidResponse:
 			filtersFound = isAllSurveyModeShown() && isStandardSurveyModeShown() && isOperatorSurveyModeShown()
-					&& isRapidResponseSurveyModeShown() && !isManualSurveyModeShown();
+			&& isRapidResponseSurveyModeShown() && !isManualSurveyModeShown();
 			break;
 		case Manual:
 			filtersFound = isManualSurveyModeShown() && !isStandardSurveyModeShown() && !isOperatorSurveyModeShown()
-					&& !isAllSurveyModeShown() && !isRapidResponseSurveyModeShown();
+			&& !isAllSurveyModeShown() && !isRapidResponseSurveyModeShown();
 			break;
 		default:
 			filtersFound = isAllSurveyModeShown() && isStandardSurveyModeShown() && isOperatorSurveyModeShown()
-					&& !isRapidResponseSurveyModeShown() && !isManualSurveyModeShown();
+			&& !isRapidResponseSurveyModeShown() && !isManualSurveyModeShown();
 			break;
 		}
 		return filtersFound;

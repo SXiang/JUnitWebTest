@@ -47,6 +47,7 @@ public class SurveyorBaseTest {
 	public static HomePage homePage;
 	
 	private static ExtentTest test = null; 
+	private static StringBuilder extentReportFile = null;
 	protected static final String SQAPICAD_AND_SQAPICSUP = "sqapicad@picarro.com,sqapicsup@picarro.com";
 	
 	// JUnit does NOT give a good way to detect which TestClass is executing.
@@ -81,7 +82,8 @@ public class SurveyorBaseTest {
 	private static ExtentReports getExtentReport(String className) {
 	   ExtentReports extentReport = TestContext.INSTANCE.getReport();
 	   if (extentReport == null) {
-		   extentReport = TestSetup.createExtentReport(className);
+		   extentReportFile = new StringBuilder();
+		   extentReport = TestSetup.createExtentReport(className, extentReportFile);
 		   TestContext.INSTANCE.setReport(extentReport);
 	   }
 	   return extentReport;
@@ -164,6 +166,13 @@ public class SurveyorBaseTest {
 		}
 		
 		driver.quit();		
+		
+		// Post run result to DB if enabled.
+		if (extentReportFile!=null) {
+			if (TestContext.INSTANCE.getTestSetup().isAutomationReportingApiEnabled()) {
+				TestContext.INSTANCE.getTestSetup().postAutomationRunResult(extentReportFile.toString());
+			}
+		}
 	}
 
 	/**

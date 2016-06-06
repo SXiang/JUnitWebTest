@@ -277,6 +277,8 @@ public final class SurveyorConstants {
 	public static final String CUSDRVETHRRTAG= "EthaneRR";
 	public static final String CUSDRVETHMNTAG= "EthaneManual";
 	public static final String PICADMNSTDTAG2 = "stnd-pic";
+	public static final String PICADMNSTDTAG2_STARTEPOCH = "1450134967.928";
+	public static final String PICADMNSTDTAG2_ENDEPOCH = "1450136588.925";
 	public static final String PICADMNRRTAG2 = "rr-pic";
 	public static final String PICADMNOPTAG2 = "op-pic";
 	public static final String PICADMNMANTAG2 = "man-pic";

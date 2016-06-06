@@ -12,13 +12,15 @@ import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
+import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
+import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
-
+import static common.source.RegexUtility.REGEX_PATTEN_SPECIAL_CHARACTERS;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -50,6 +52,7 @@ import common.source.TestSetup;
 import surveyor.api.source.ReportJob;
 import surveyor.api.source.ReportJobsStat;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.ReportCompliance;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataaccess.source.User;
@@ -517,13 +520,13 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			break;
 		case MetaDataZIP:
 			// get the report name without extension.
-			zipIndex = zipIndex==-1?1:zipIndex;
+			zipIndex = zipIndex==-1?0:zipIndex;
 			reportName = this.getComplianceReportsPage().getReportPDFFileName(reportTitle, false /*includeExtension*/);
 			this.getComplianceReportsPage().waitForMetadataZIPFileDownload(reportName,zipIndex);
 			break;
 		case ShapeZIP:
 			// get the report name without extension.
-			zipIndex = zipIndex==-1?2:zipIndex;
+			zipIndex = zipIndex==-1?0:zipIndex;
 			reportName = this.getComplianceReportsPage().getReportPDFFileName(reportTitle, false /*includeExtension*/);
 			this.getComplianceReportsPage().waitForShapeZIPFileDownload(reportName,zipIndex);
 			break;
@@ -1865,7 +1868,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		}
 		
 		List<String> expectedFileNames = new ArrayList<String>();
-		String reportFileNameWithoutExt = workingDataRow.title.replace(" ", "");
+		String reportFileNameWithoutExt = workingDataRow.title.replace(" ", "").replaceAll(REGEX_PATTEN_SPECIAL_CHARACTERS, "_");
 		expectedFileNames.add(reportFileNameWithoutExt + ".pdf");
 		for (int i=1; i<expectedFileCount; i++) {
 			String viewName = workingReportViewsDataRows.get(i-1).name;
@@ -2311,7 +2314,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		Integer expectedRows = NumberUtility.getIntegerValueOf(data);
 		List<String[]> lisasIndicationTblList = this.getComplianceReportsPage().getSSRSPDFTableValues(
 				PDFTable.LISAINDICATIONTABLE, workingDataRow.title);
-		Integer actualRows = (lisasIndicationTblList != null) ? lisasIndicationTblList.size() : 0;
+		// Top row is header. Less 1.
+		Integer actualRows = (lisasIndicationTblList != null) ? lisasIndicationTblList.size()-1 : 0;
 		Log.info(String.format("Expected Row Count=[%d], Actual Row Count=[%d]", expectedRows, actualRows));
 		return (expectedRows == actualRows);
 	}
@@ -2328,6 +2332,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		ActionArguments.verifyNotNullOrEmpty("verifyLisasTableSortedAscByColumn", ARG_DATA, data);
 		List<String[]> lisasIndicationTblList = this.getComplianceReportsPage().getSSRSPDFTableValues(
 				PDFTable.LISAINDICATIONTABLE, workingDataRow.title);
+		lisasIndicationTblList.remove(0);  // Top row is header. Ignore header.
 		LISAIndicationTableColumns tableColumn = LISAIndicationTableColumns.valueOf(data);
 		List<String> tableValuesList = ArrayUtility.getColumnStringList(lisasIndicationTblList, tableColumn.getIndex());
 		return SortHelper.isSortedASC(tableValuesList.toArray(new String[tableValuesList.size()]));
@@ -2345,6 +2350,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		ActionArguments.verifyNotNullOrEmpty("verifyLisasTableSortedDescByColumn", ARG_DATA, data);
 		List<String[]> lisasIndicationTblList = this.getComplianceReportsPage().getSSRSPDFTableValues(
 				PDFTable.LISAINDICATIONTABLE, workingDataRow.title);
+		lisasIndicationTblList.remove(0);  // Top row is header. Ignore header.
 		LISAIndicationTableColumns tableColumn = LISAIndicationTableColumns.valueOf(data);
 		List<String> tableValuesList = ArrayUtility.getColumnStringList(lisasIndicationTblList, tableColumn.getIndex());
 		return SortHelper.isSortedDESC(tableValuesList.toArray(new String[tableValuesList.size()]));
@@ -2527,7 +2533,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean waitForShapeZIPDownloadToComplete(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.waitForShapeZIPDownloadToComplete", data, dataRowID);
-		waitForReportFileDownload(dataRowID, ReportFileType.ShapeZIP, -1, getDownloadFileIndex(data,2));
+		waitForReportFileDownload(dataRowID, ReportFileType.ShapeZIP, -1, 0);
 		return true;
 	}
  
@@ -2738,7 +2744,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.verifyBoundariesAutoCompleteListContains", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("verifyBoundariesAutoCompleteListContains", ARG_DATA, data);
 		List<String> boundaryNamesList = RegexUtility.split(data, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
-		return this.getComplianceReportsPage().verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains(workingReportsComp, boundaryNamesList);
+		ComplianceReportsDataRow complianceReportsDataRow = getComplianceReportsDataRow(dataRowID);
+		return this.getComplianceReportsPage().verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains(
+				complianceReportsDataRow.customerBoundaryType, complianceReportsDataRow.customerBoundaryName, boundaryNamesList);
 	}
  
 	/**
@@ -2858,10 +2866,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean verifyShapeFilesWithBaselines(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyShapeFilesWithBaselines", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty("verifyShapeFilesWithBaselines", ARG_DATA, data);
 		ComplianceReportsDataRow complianceReportsDataRow = getComplianceReportsDataRow(dataRowID);
 		return this.getComplianceReportsPage().verifyShapeFilesWithBaselines(complianceReportsDataRow.title, 
-				complianceReportsDataRow.tCID, getDownloadFileIndex(data,2));
+				complianceReportsDataRow.tCID, 0);
 	}
  
 	/**

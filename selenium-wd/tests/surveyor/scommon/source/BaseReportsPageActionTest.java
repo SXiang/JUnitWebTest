@@ -151,10 +151,12 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 
 	private void deleteComplianceReport() throws Exception {
 		if (getTestRunMode() == ReportTestRunMode.FullTestRun) {
-			for (Integer reportDataRowID : newReportsMap.keySet()) {
-				ComplianceReportsPageActions complianceReportsPageAction = newReportsMap.get(reportDataRowID);
-				complianceReportsPageAction.open(EMPTY, reportDataRowID);
-				complianceReportsPageAction.searchAndDeleteReport(EMPTY, reportDataRowID);
+			if (newReportsMap != null) {
+				for (Integer reportDataRowID : newReportsMap.keySet()) {
+					ComplianceReportsPageActions complianceReportsPageAction = newReportsMap.get(reportDataRowID);
+					complianceReportsPageAction.open(EMPTY, reportDataRowID);
+					complianceReportsPageAction.searchAndDeleteReport(EMPTY, reportDataRowID);
+				}
 			}
 		}
 	}

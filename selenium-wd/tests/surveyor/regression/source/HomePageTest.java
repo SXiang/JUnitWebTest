@@ -18,7 +18,9 @@ import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.FleetMapPage;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.MeasurementSessionsPage;
+import surveyor.scommon.source.MeasurementSessionsPage.DrivingSurveyButtonType;
 import surveyor.scommon.source.PreferencesPage;
+import surveyor.scommon.source.SurveyViewPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorSystemsPage;
 import surveyor.scommon.source.SurveyorTestRunner;
@@ -44,6 +46,7 @@ public class HomePageTest extends SurveyorBaseTest {
 	private static FleetMapPage fleetMapPage;
 	private static SurveyorSystemsPage surveyorSystemsPage;
 	private static PreferencesPage preferencesPage;
+	private static SurveyViewPage surveyViewPage;
 
 	public HomePageTest() {
 		homePage = new HomePage(driver, baseURL, testSetup);
@@ -63,22 +66,19 @@ public class HomePageTest extends SurveyorBaseTest {
 
 		preferencesPage = new PreferencesPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, preferencesPage);
+
+		surveyViewPage = new SurveyViewPage(driver, testSetup, baseURL);
+		PageFactory.initElements(driver, surveyViewPage);
 	}
 
 	/**
-	 * Test Case ID: TC1308: Picarro Admin cannot see Manage Release Notes page
-	 * Script:
-	 *  - Log in as Picarro Admin
-	 *  - Click on Administration
-	 * Results:
-	 *  Manage Release Notes link is not present 
-	 */	
-	@Test(expected=NoSuchElementException.class)
-	public void TC1308_ReleaseNotesLinkNotPresent_PicAdminRole(){
-		
-        Log.info("\nTC1308_ReleaseNotesLinkNotPresent_PicAdminRole - "+
-		         "Test Description: Picarro Admin cannot see Manage Release Notes page");
-		
+	 * Test Case ID: TC1308: Picarro Admin cannot see Manage Release Notes page Script: - Log in as Picarro Admin - Click on Administration Results: Manage Release Notes link is not present
+	 */
+	@Test(expected = NoSuchElementException.class)
+	public void TC1308_ReleaseNotesLinkNotPresent_PicAdminRole() {
+
+		Log.info("\nTC1308_ReleaseNotesLinkNotPresent_PicAdminRole - " + "Test Description: Picarro Admin cannot see Manage Release Notes page");
+
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 
@@ -257,4 +257,33 @@ public class HomePageTest extends SurveyorBaseTest {
 		assertTrue(preferencesPage.getSelectedTimeZone().getText().equals(TIMEZONEPTUA));
 
 	}
+
+	/**
+	 * Test Case ID: TC140_VerifyUserCanClickViewAllSurveysAndViewSurvey Test Description: User is able to click on View All Surveys and View Survey links present on Dashboard
+	 */
+	@Test
+	public void TC140_VerifyUserCanClickViewAllSurveysAndViewSurvey() {
+		Log.info("\nRunning - TC140_VerifyUserCanClickViewAllSurveysAndViewSurvey\n");
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		homePage.waitForPageLoad();
+		homePage.getFirstSurvey().click();
+		surveyViewPage.waitForPageLoad();
+		surveyViewPage.waitForAJAXCallsToComplete();
+		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());
+		surveyViewPage.clickPicarroLogoButton();
+		homePage.waitForPageLoad();
+		assertTrue(homePage.checkIfAtHomePage());
+		homePage.getLinkDrivingSurveys().click();
+		measurementSessionsPage.waitForPageLoad();
+		try {
+			measurementSessionsPage.actionOnDrivingSurvey(PICADMNSTDTAG2, ADMINISTRATORUSER, SQAPICLOC4SUR, SQACUSLOCANZ, DrivingSurveyButtonType.ViewSurvey);
+		} catch (Exception e) {
+			Log.error(e.toString());
+		}
+		surveyViewPage.waitForPageLoad();
+		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());
+	}
+	
+	
 }

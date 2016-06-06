@@ -8,6 +8,8 @@ import java.util.Hashtable;
 
 import org.testng.Assert;
 
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.SurveyorConstants;
 
 public class ApiUtility {
@@ -114,7 +116,7 @@ public class ApiUtility {
 		}
 		testSetup.initialize();
 		TestContext.INSTANCE.setTestSetup(testSetup);
-		
+
 		// NOTE: Before running the tests replace this constant with a valid report title on the environment 
 		String VALID_REPORT_TITLE = "cc17066cba3d4f77b654";
 		String INVALID_REPORT_TITLE = "InvalidReportTitle";

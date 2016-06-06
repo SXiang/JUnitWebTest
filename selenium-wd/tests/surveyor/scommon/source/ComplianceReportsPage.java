@@ -60,7 +60,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -90,7 +89,6 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -100,10 +98,8 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import common.source.ArrayUtility;
 import common.source.BaseHelper;
 import common.source.CSVUtility;
-import common.source.DBConnection;
 import common.source.Log;
 import common.source.LogCategory;
 import common.source.LogHelper;
@@ -111,7 +107,6 @@ import common.source.PDFTableUtility;
 import common.source.PDFTableUtility.PDFTable;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
-import common.source.ZipUtility;
 import sun.misc.BASE64Decoder;
 import surveyor.dataaccess.source.BaseMapType;
 import surveyor.dataaccess.source.DBCache;
@@ -385,6 +380,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public WebElement getRptSmallBoundary() {
 		return this.rptSmallBoundary;
+	}
+
+	public WebElement getCheckBoxStndRptMode() {
+		return this.checkBoxStndRptMode;
 	}
 
 	private static LatLongSelectionControl latLongSelectionControl = null;
@@ -713,7 +712,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@Override
 	public boolean handleFileDownloads(String rptTitle, String testCaseID) throws Exception {
-		ZipUtility zipUtility = new ZipUtility();
 		String reportName = "CR-" + getReportName(rptTitle);
 		clickOnPDFInReportViewer();
 		waitForPDFFileDownload(reportName);
@@ -721,16 +719,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		clickOnZIPInReportViewer();
 		waitForReportZIPFileDownload(reportName);
 		checkAndGenerateBaselineSSRSImage(reportName, testCaseID);
-		String unzipFolder = testSetup.getDownloadPath() + reportName;
-		zipUtility.unZip(testSetup.getDownloadPath() + reportName + ".zip", unzipFolder);
+		String zipFileName = getReportPDFZipFileName(rptTitle, false /*includeextension*/);
+		Log.info("Meta data zip file got downloaded");
+		try {
+			BaseHelper.deCompressZipFile(zipFileName, testSetup.getDownloadPath());
+		} catch (Exception e) {
+			Log.error(e.toString());
+			return false;
+		}
+		String unzipFolder = testSetup.getDownloadPath() + zipFileName;
 		checkAndGenerateBaselineViewImages(unzipFolder, testCaseID);
 
-		int zipFileIndex = 1;
-		String zipFileName;
 		if (zipMeta.isDisplayed()) {
 			clickOnMetadataZIPInReportViewer();
 			waitForMetadataZIPFileDownload(reportName);
-			zipFileName = reportName + " (" + zipFileIndex++ + ")";
+			zipFileName = getReportMetaZipFileName(rptTitle, false /*includeextension*/);
 			Log.info("Meta data zip file got downloaded");
 			try {
 				BaseHelper.deCompressZipFile(zipFileName, testSetup.getDownloadPath());
@@ -743,7 +746,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			clickOnShapeZIPInReportViewer();
 			waitForShapeZIPFileDownload(reportName);
 			Log.info("Shape files zip file got downloaded");
-			zipFileName = reportName + " (" + zipFileIndex++ + ")";
+			zipFileName = getReportShapeZipFileName(rptTitle, false /*includeextension*/);
 			try {
 				BaseHelper.deCompressZipFile(zipFileName, testSetup.getDownloadPath());
 			} catch (Exception e) {
@@ -775,7 +778,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public String getReportPDFZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
-		String reportName = "CR-" + getReportName(rptTitle);
+		String reportName = "CR-" + getReportName(rptTitle) + "-PDF";
 		reportName = getZipFileNameWithIndex(reportName, zipIndex);
 		if (includeExtension) {
 			reportName += ".zip";
@@ -784,11 +787,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public String getReportMetaZipFileName(String rptTitle, boolean includeExtension) {
-		return getReportMetaZipFileName(rptTitle, 1, includeExtension);
+		return getReportMetaZipFileName(rptTitle, 0, includeExtension);
 	}
 
 	public String getReportMetaZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
-		String reportName = "CR-" + getReportName(rptTitle);
+		String reportName = "CR-" + getReportName(rptTitle) + "-Meta";
 		reportName = getZipFileNameWithIndex(reportName, zipIndex);
 		if (includeExtension) {
 			reportName += ".zip";
@@ -797,11 +800,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public String getReportShapeZipFileName(String rptTitle, boolean includeExtension) {
-		return getReportShapeZipFileName(rptTitle, 2, includeExtension);
+		return getReportShapeZipFileName(rptTitle, 0, includeExtension);
 	}
 
 	public String getReportShapeZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
-		String reportName = "CR-" + getReportName(rptTitle);
+		String reportName = "CR-" + getReportName(rptTitle) + "-Shape";
 		reportName = getZipFileNameWithIndex(reportName, zipIndex);
 		if (includeExtension) {
 			reportName += ".zip";
@@ -1172,6 +1175,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			mode = ReportModeFilter.Assessment;
 		} else if (reportMode.equalsIgnoreCase("eq")) {
 			mode = ReportModeFilter.EQ;
+			
 		} else if (reportMode.equalsIgnoreCase("operator")) {
 			mode = ReportModeFilter.Operator;
 		} else if (reportMode.equalsIgnoreCase("manual")) {
@@ -1182,6 +1186,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return mode;
 	}
 
+	public SurveyModeFilter getSurveyMode(String surveyMode) {
+		SurveyModeFilter mode = SurveyModeFilter.Manual;
+		if (surveyMode.equalsIgnoreCase("standard")) {
+			mode = SurveyModeFilter.Standard;
+		} else if (surveyMode.equalsIgnoreCase("operator")) {
+			mode = SurveyModeFilter.Operator;
+		} else if (surveyMode.equalsIgnoreCase("manual")) {
+			mode = SurveyModeFilter.Manual;
+		} else if (surveyMode.equalsIgnoreCase("rr")) {
+			mode = SurveyModeFilter.RapidResponse;
+		} else if (surveyMode.equalsIgnoreCase("all")){
+			mode = SurveyModeFilter.All;
+		}
+		return mode;
+	}
 	private void handleOptionalDynamicViewLayersSection(List<Map<String, String>> viewLayersList) {
 		if (viewLayersList != null && !viewLayersList.isEmpty()) {
 			selectViewLayerAssets(viewLayersList.get(0));
@@ -1316,16 +1335,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean validatePdfFiles(String reportTitle, String downloadPath) {
-		String reportId;
 		String reportName;
-		DBConnection objDbConn = new DBConnection();
-
+		String reportZipName;
 		try {
-			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
-			reportId = reportId.substring(0, 6);
-			reportName = "CR-" + reportId;
+			reportName = getReportPDFFileName(reportTitle, false /*includeExtension*/);
+			reportZipName = getReportPDFZipFileName(reportTitle, false /*includeExtension*/);
 			setReportName(reportName);
-			BaseHelper.deCompressZipFile(reportName, downloadPath);
+			BaseHelper.deCompressZipFile(reportZipName, downloadPath);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			return false;
@@ -1337,8 +1353,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String pdfFile3;
 
 		pdfFile1 = downloadPath + reportName + ".pdf";
-
-		pdfFile3 = downloadPath + reportName + File.separator + nameBase.replaceAll("_", "") + ".pdf";
+		pdfFile3 = downloadPath + reportZipName + File.separator + nameBase.replaceAll("_", "") + ".pdf";
 
 		if (BaseHelper.validatePdfFile(pdfFile1) && BaseHelper.validatePdfFile(pdfFile3)) {
 			try {
@@ -1360,16 +1375,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean validatePdfFiles(ReportsCompliance reportsCompliance, String downloadPath) {
-		String reportId;
 		String reportName;
-		DBConnection objDbConn = new DBConnection();
-
+		String reportZipName;
 		try {
-			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportsCompliance.getRptTitle(), this.testSetup);
-			reportId = reportId.substring(0, 6);
-			reportName = "CR-" + reportId;
+			reportName = getReportPDFFileName(reportsCompliance.getRptTitle(), false /*includeExtension*/);
+			reportZipName = getReportPDFZipFileName(reportsCompliance.getRptTitle(), false /*includeExtension*/);
 			setReportName(reportName);
-			BaseHelper.deCompressZipFile(reportName, downloadPath);
+			BaseHelper.deCompressZipFile(reportZipName, downloadPath);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			return false;
@@ -1384,7 +1396,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		List<Map<String, String>> viewList = reportsCompliance.getViewList();
 
 		pdfFile1 = downloadPath + reportName + ".pdf";
-		pdfFile3 = downloadPath + reportName + File.separator + nameBase.replaceAll("_", "") + ".pdf";
+		pdfFile3 = downloadPath + reportZipName + File.separator + nameBase.replaceAll("_", "") + ".pdf";
 
 		if (BaseHelper.validatePdfFile(pdfFile1) && BaseHelper.validatePdfFile(pdfFile3)) {
 			try {
@@ -1399,7 +1411,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		for (int i = 0; i < viewList.size(); i++) {
 			viewName = viewList.get(i).get(KEYVIEWNAME);
-			pdfFile2 = downloadPath + reportName + File.separator + nameBase.replaceAll("_", "") + "_" + viewName
+			pdfFile2 = downloadPath + reportZipName + File.separator + nameBase.replaceAll("_", "") + "_" + viewName
 					+ ".pdf";
 
 			if (!BaseHelper.validatePdfFile(pdfFile2)) {
@@ -1760,19 +1772,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * Verifies that the customer boundary name auto-complete list contains the
 	 * specified entries.
 	 */
-	public boolean verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains(ReportsCompliance reportsCompliance,
+	public boolean verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains(String boundaryFilterType, String customerBoundaryName,
 			List<String> autocompleteListEntries) {
-		String typeValue = reportsCompliance.getCustomerBoundaryFilterType().toString();
 		openCustomerBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen()
 			.switchMode(ControlMode.MapInteraction)
 			.waitForMapImageLoad();
-		latLongSelectionControl.selectCustomerBoundaryType(typeValue);
+		latLongSelectionControl.selectCustomerBoundaryType(boundaryFilterType);
 
 		// Type customer boundary name and verify the autocomplete list. If not
 		// all entries shown, return false.
 		if (!latLongSelectionControl.verifyCustomerBoundaryAutoCompleteListContains(
-				reportsCompliance.getCustomerBoundaryName(), autocompleteListEntries)) {
+				customerBoundaryName, autocompleteListEntries)) {
 			return false;
 		}
 
@@ -2411,10 +2422,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
 		String pathToMetaDataUnZip = actualPath;
-		String unZipFolder = "\\CR-" + reportId.substring(0, 6) + " (1)";
+		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /*includeExtension*/);
+		String unZipFolder = File.separator + metaDataZipFileName;
 		if(!actualPath.endsWith(unZipFolder))
 			pathToMetaDataUnZip += unZipFolder;
-		String pathToCsv = pathToMetaDataUnZip + "\\" + "CR-" + reportId.substring(0, 6) + "-ReportSurvey.csv";
+		String pathToCsv = pathToMetaDataUnZip + File.separator + "CR-" + reportId.substring(0, 6) + "-ReportSurvey.csv";
 		String reportName = "CR-" + reportId;
 		setReportName(reportName);
 		List<HashMap<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
@@ -2459,11 +2471,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
 		String pathToMetaDataUnZip = actualPath;
-		String unZipFolder = "\\CR-" + reportId.substring(0, 6) + " (1)";
+		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /*includeExtension*/);
+		String unZipFolder = File.separator + metaDataZipFileName;
 		if(!actualPath.endsWith(unZipFolder))
 			pathToMetaDataUnZip += unZipFolder;
 		
-		String pathToCsv = pathToMetaDataUnZip + "//" + "CR-" + reportId.substring(0, 6) + "-ReportIsotopicCapture.csv";
+		String pathToCsv = pathToMetaDataUnZip + File.separator + "CR-" + reportId.substring(0, 6) + "-ReportIsotopicCapture.csv";
 		String reportName = "CR-" + reportId;
 		setReportName(reportName);
 		List<HashMap<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
@@ -2510,8 +2523,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean verifyEthaneCaptureMetaDataFile(String actualPath, String reportTitle, String reportId)
 			throws FileNotFoundException, IOException {
 		CSVUtility csvUtility = new CSVUtility();
-		String pathToMetaDataUnZip = actualPath + "//CR-" + reportId.substring(0, 6) + " (1)";
-		String pathToCsv = pathToMetaDataUnZip + "//CR-" + reportId.substring(0, 6) + "-ReportEthaneCapture.csv";
+		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /*includeExtension*/);
+		String pathToMetaDataUnZip = actualPath + File.separator + metaDataZipFileName;
+		String pathToCsv = pathToMetaDataUnZip + File.separator + "CR-" + reportId.substring(0, 6) + "-ReportEthaneCapture.csv";
 		String reportName = "CR-" + reportId;
 
 		if (actualPath.endsWith("-ReportEthaneCapture.csv")) {
@@ -2566,11 +2580,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			throws FileNotFoundException, IOException {
 		CSVUtility csvUtility = new CSVUtility();
 		String pathToMetaDataUnZip = actualPath;
-		String unZipFolder = "\\CR-" + reportId.substring(0, 6) + " (1)";
+		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /*includeExtension*/);
+		String unZipFolder = File.separator + metaDataZipFileName;
 		if(!actualPath.endsWith(unZipFolder))
 			pathToMetaDataUnZip += unZipFolder;
 		
-		String pathToCsv = pathToMetaDataUnZip + "\\" + "CR-" + reportId.substring(0, 6) + "-ReportLISAS.csv";
+		String pathToCsv = pathToMetaDataUnZip + File.separator + "CR-" + reportId.substring(0, 6) + "-ReportLISAS.csv";
 		String reportName = "CR-" + reportId;
 
 		if (actualPath.endsWith("-ReportLISAS.csv")) {
@@ -2837,9 +2852,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		try {
 			ArrayList<String> reportIndicationsList = new ArrayList<String>();
 			while ((line = bufferReader.readLine()) != null) {
-				if (line.trim().matches("^\\? \\d+ .*")) {
+				if (line.trim().matches("^\\? \\d+ .*")) {				
 					reportIndicationsList.add(line.replaceAll("\\?", "").trim().replaceAll("\\s+", "")
-							.replace("+/-", "").replace("0.0", "").trim());
+							.replace("+/-", "").replace("0.0 ", "").trim());
 				}
 			}
 			ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications
@@ -2849,7 +2864,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			while (lineIterator.hasNext()) {
 				StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
 				String objAsString = objStoredProc.toString();
-				storedProcConvStringList.add(objAsString.replace("0.0", "0").replaceAll("\\s+", "").trim());
+				storedProcConvStringList.add(objAsString.replace("0.0 ", "0").replaceAll("\\s+", "").trim());
 			}
 
 			if (!reportIndicationsList.equals(storedProcConvStringList)) {
@@ -3130,16 +3145,42 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public boolean verifyViewsInSSRSPDFAreInCorrectSequence(List<String> expectedViewNamesList, String reportTitle) throws IOException {
 		Log.info(String.format("Expected views are: %s", LogHelper.strListToString(expectedViewNamesList)));
-		List<String[]> viewTblList = getSSRSPDFTableValues(PDFTable.VIEWSTABLE, reportTitle);
-		// Filter out additional entries that might be returned in the List array.		
+		
+		List<String> actualViewNamesList = getViewNamesFromSSRSPdfViewTable(reportTitle);
 		
 		// Returned list has 2 columns. 0-th column is the view name.
-		List<String> actualViewNamesList = ArrayUtility.getColumnStringList(viewTblList, 0); 
 		Log.info(String.format("Actual views found in SSRS PDF are: %s", LogHelper.strListToString(actualViewNamesList)));
 		// Verify lists contain the same elements in the same order.
 		return actualViewNamesList.equals(expectedViewNamesList);
 	}
 
+	public List<String> getViewNamesFromSSRSPdfViewTable(String reportTitle) throws IOException {
+		String pdfFilename = this.getReportPDFFileName(reportTitle, true /*includeExtension*/);
+		String pdfFilePath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), pdfFilename).toString();
+
+		PDFUtility pdfUtility = new PDFUtility();
+		String actualReportString = pdfUtility.extractPDFText(pdfFilePath);
+		
+		List<String> actualViewNamesList = new ArrayList<String>();
+		String viewTable = RegexUtility.getStringInBetween(actualReportString, "Selected Views", "View Table");
+
+		InputStream inputStream = new ByteArrayInputStream(viewTable.getBytes());
+		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
+		String line = null;
+		try {
+			while ((line = bufferReader.readLine()) != null) {
+				if (line.length() > 3) {
+					String[] split = line.split("\\s+");
+					String viewName = line.replace(split[split.length - 1], "").trim();
+					actualViewNamesList.add(viewName);
+				}
+			}
+
+		} finally {
+			bufferReader.close();
+		}
+		return actualViewNamesList;
+	}
 
 	/**
 	 * Wrapper to verify the Views Images
@@ -3176,15 +3217,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 	public boolean verifyViewsImages(String actualPath, String reportTitle, String testCase, String viewName, boolean inZipFolder) throws IOException {
 		PDFUtility pdfUtility = new PDFUtility();
-		Report reportObj = Report.getReport(reportTitle);
-		String reportId = reportObj.getId();
 		String actualReport = actualPath + File.separator;
+		String reportName = getReportPDFFileName(reportTitle, false /*includeExtension*/);
+		String reportZipName = getReportPDFZipFileName(reportTitle, false /*includeExtension*/);
+		
 		if(inZipFolder)	{	
-			actualReport +=	 "CR-" + reportId.substring(0, 6) + File.separator + reportTitle.replaceAll("\\s+", "") + "_" + viewName + ".pdf";
+			actualReport +=	 reportZipName + File.separator + reportTitle.replaceAll("\\s+", "") + "_" + viewName + ".pdf";
 		}else{
-		    actualReport +=  "CR-" + reportId.substring(0, 6) + "_" + viewName + ".pdf";
+		    actualReport +=  reportName + "_" + viewName + ".pdf";
 		}
-		String reportName = "CR-" + reportId;
 		setReportName(reportName);
 		String imageExtractFolder = pdfUtility.extractPDFImages(actualReport, testCase);
 		File folder = new File(imageExtractFolder);
@@ -3220,7 +3261,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyShapeFilesWithBaselines(String reportTitle, String testCaseID) throws Exception {
-		return verifyShapeFilesWithBaselines(reportTitle, testCaseID, 2);
+		return verifyShapeFilesWithBaselines(reportTitle, testCaseID, 0);
 	}
 
 	public boolean verifyShapeFilesWithBaselines(String reportTitle, String testCaseID, int zipIndex) throws Exception {
@@ -3241,7 +3282,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				+ "shape-files" + File.separator + testCaseID;
 
 		// Verify files in both directories are the same.
-		if (!FileUtility.compareFilesInDirectories(actualDataFolderPath, expectedDataFolderPath, true)) {
+		if (!FileUtility.compareFilesInDirectories(actualDataFolderPath, expectedDataFolderPath)) {
 			return false;
 		}
 
@@ -3378,12 +3419,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void waitForMetadataZIPFileDownload(String reportName) {
-		waitForMetadataZIPFileDownload(reportName, 1);
+		waitForMetadataZIPFileDownload(reportName, 0);
 	}
 
 	public void waitForMetadataZIPFileDownload(String reportName, int zipIndex) {
 		reportName = getZipFileNameWithIndex(reportName, zipIndex);
-		waitForFileDownload(reportName + ".zip", testSetup.getDownloadPath());
+		waitForFileDownload(reportName + "-Meta.zip", testSetup.getDownloadPath());
 	}
 
 	public void waitForPDFFileDownload(String reportName) {
@@ -3396,16 +3437,16 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public void waitForReportZIPFileDownload(String reportName, int zipIndex) {
 		reportName = getZipFileNameWithIndex(reportName, zipIndex);
-		waitForFileDownload(reportName + ".zip", testSetup.getDownloadPath());
+		waitForFileDownload(reportName + "-PDF.zip", testSetup.getDownloadPath());
 	}
 
 	public void waitForShapeZIPFileDownload(String reportName) {
-		waitForShapeZIPFileDownload(reportName, 2);
+		waitForShapeZIPFileDownload(reportName, 0);
 	}
 
 	public void waitForShapeZIPFileDownload(String reportName, int zipIndex) {
 		reportName = getZipFileNameWithIndex(reportName, zipIndex);
-		waitForFileDownload(reportName + ".zip", testSetup.getDownloadPath());
+		waitForFileDownload(reportName + "-Shape.zip", testSetup.getDownloadPath());
 	}
 
 	private String getZipFileNameWithIndex(String name, int zipIndex){

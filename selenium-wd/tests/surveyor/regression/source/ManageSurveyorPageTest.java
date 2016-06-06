@@ -7,21 +7,26 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMERNAMEPREFIX;
 import static surveyor.scommon.source.SurveyorConstants.EULASTRING;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 import static surveyor.scommon.source.SurveyorConstants.SQAPICSUP;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
+
+import java.util.HashMap;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageSurveyorAdminPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
-
+import surveyor.scommon.source.DataTablePage.TableColumnType;
 import common.source.Log;
 
 /**
@@ -34,6 +39,10 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 	private static ManageSurveyorPage manageSurveyorPage;
 	private static ManageSurveyorAdminPage manageSurveyorAdminPage;
 	private static ManageCustomersPage manageCustomersPage;
+	public static final String Constant_Customer = Resources.getResource(ResourceKeys.Constant_Customer);
+	public static final String Constant_Surveyor = Resources.getResource(ResourceKeys.Constant_Surveyor);
+	public static final String Constant_Location = Resources.getResource(ResourceKeys.Constant_Location);
+	protected String pagination = "100";
 	
 	@BeforeClass
 	public static void setupManageSurveyorPageTest() {
@@ -351,4 +360,51 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		manageSurveyorAdminPage.editExistingSurveyor(customerName,locationName, surveyorName, locationName, surveyorName, true);
 		assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorName));
 	}
+	
+	/**
+	 * Test Case ID: TC132_ManageSurveyors_SortColumns Script: - Sort records based on attributes present Results: - - User is able to sort the list of records based on specified attribute
+	 */
+	@Test
+	public void TC132_ManageSurveyors_SortColumns() {
+		Log.info("\nRunning TC132_ManageUsers_SortColumns");
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		manageSurveyorPage.open();
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_Customer, TableColumnType.String);
+		assertTrue(manageSurveyorPage.checkTableSort("datatable", columnMap, pagination, manageSurveyorPage.getPaginationOption()));
+		columnMap.remove(Constant_Customer);
+		columnMap.put(Constant_Location, TableColumnType.String);
+		assertTrue(manageSurveyorPage.checkTableSort("datatable", columnMap, pagination, manageSurveyorPage.getPaginationOption()));
+		columnMap.remove(Constant_Location);
+		columnMap.put(Constant_Surveyor, TableColumnType.String);
+		assertTrue(manageSurveyorPage.checkTableSort("datatable", columnMap, pagination, manageSurveyorPage.getPaginationOption()));		
+	}
+	
+	/**
+	 * Test Case ID: TC144_ManageSurveyors_VerifyPagination: - Verify pagination settings
+	 */
+	@Test
+	public void TC144_ManageSurveyors_VerifyPagination() {
+		Log.info("\nRunning Pagination - 10,25,50 and 100 Pagination ManageSurveyors");
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		manageSurveyorPage.open();
+		String paginationSetting25 = "25";
+		String paginationSetting50 = "50";
+		String paginationSetting100 = "100";
+
+		assertTrue(manageSurveyorPage.checkPaginationSetting(PAGINATIONSETTING));
+		assertTrue(!(manageSurveyorPage.getNumberofRecords() > Integer.parseInt(PAGINATIONSETTING)));
+		assertTrue(manageSurveyorPage.checkPaginationSetting(paginationSetting25));
+		assertTrue(!(manageSurveyorPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
+		manageSurveyorPage.getNextBtn().click();
+		assertTrue(!(manageSurveyorPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
+		assertTrue(manageSurveyorPage.checkPaginationSetting(paginationSetting50));
+		assertTrue(!(manageSurveyorPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
+		manageSurveyorPage.getNextBtn().click();
+		assertTrue(!(manageSurveyorPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
+		assertTrue(manageSurveyorPage.checkPaginationSetting(paginationSetting100));
+		assertTrue(!(manageSurveyorPage.getNumberofRecords() > Integer.parseInt(paginationSetting100)));
+		}
 }

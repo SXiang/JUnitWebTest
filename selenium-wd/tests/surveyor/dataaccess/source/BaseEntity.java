@@ -13,7 +13,11 @@ public class BaseEntity {
     protected Connection connection = null;
     protected Statement statement = null;
     protected ResultSet resultSet = null;
-	
+    protected float floatPrecision = 0.00000001F;
+
+    // Enable this flag when debugging data access classes to print log that we do not want printed in normal run.
+    protected static boolean DEBUG_LOG = false;
+    
     public BaseEntity() {
     	this.connection = ConnectionFactory.createConnection();
     }
@@ -83,6 +87,15 @@ public class BaseEntity {
 		return (Long)columnValue;
 	}
 
+	public static Short getShortColumnValue(ResultSet resultSet, String columnName) throws SQLException
+	{
+		Object columnValue = resultSet.getShort(columnName);
+		if (resultSet.wasNull()){
+			return Short.MIN_VALUE;
+		} 
+		return (Short)columnValue;
+	}
+
 	public static Integer getIntColumnValue(ResultSet resultSet, String columnName) throws SQLException
 	{
 		Object columnValue = resultSet.getInt(columnName);
@@ -94,5 +107,14 @@ public class BaseEntity {
 	
 	public static String trim(String str){
 		return str==null?"":str.trim();
+	}
+	
+	public Integer floatCompare(Float value1, Float value2) {
+		if (Math.abs(value1 - value2) < floatPrecision) {
+			return 0;
+		} else if (value1>value2) {
+			return 1;
+		}
+		return -1;
 	}
 }

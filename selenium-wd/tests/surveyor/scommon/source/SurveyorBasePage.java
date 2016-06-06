@@ -3,7 +3,12 @@
  */
 package surveyor.scommon.source;
 
+import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
+
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -25,6 +30,9 @@ import common.source.Log;
 import common.source.RegexUtility;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.SurveyorConstants.TopNavMenuItem;
 import surveyor.scommon.source.SurveyorConstants.UserTimezone;
 
@@ -36,6 +44,7 @@ import surveyor.scommon.source.SurveyorConstants.UserTimezone;
 public class SurveyorBasePage extends BasePage {
 
 	protected static final String DATA_TABLE_XPATH = "//*[@id='datatable']/tbody";
+	protected static final String DATATABLE_RECORDS_ELEMENT_XPATH = "datatable_info";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/a")
 	protected WebElement dropDownAdministrator;
@@ -145,7 +154,18 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(xpath = "//*[@id='datatable_filter']/label/input")
 	protected WebElement searchTextBox;
 	
+    @FindBy(css = ".dataTables_length> label>select> option")
+	private List<WebElement> paginationOption;
+    
+	@FindBy(how = How.XPATH, using = "//div[@id='datatable_info']")
+	protected WebElement paginationMsg;
+	
 	private static String headerColumnBaseXPath = "//*[@id='datatable']/thead/tr/th[%d]";
+	public static final String STRPaginationMsg = "Showing 1 to ";
+	
+	@FindBy(how = How.XPATH, using = "//table[@id='datatable']/tbody/tr")
+	protected List<WebElement> numberofRecords;
+
 
 	public enum TableSortOrder {
 		ASC ("ASC"),
@@ -353,7 +373,8 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public Integer getRecordsShownOnPage(WebDriver driver) {
-		WebElement pageInfoLabel = driver.findElement(By.id("datatable_info"));
+		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_XPATH)));		
+		WebElement pageInfoLabel = driver.findElement(By.id(DATATABLE_RECORDS_ELEMENT_XPATH));
 		return getRecordsShownOnPage(driver, pageInfoLabel);
 	}
 	
@@ -365,6 +386,25 @@ public class SurveyorBasePage extends BasePage {
 			records = Integer.parseInt(strList.get(3));
 		}
 		return records;
+	}
+	
+	public void searchTable(String locationName) {
+		this.clearSearchField();
+		this.getInputSearch().sendKeys(locationName);
+		this.waitForSearchResultsToLoad();
+	}
+
+	public boolean searchHasNoMatchingRecords() {
+		return this.getLabelNoMatchingSearch().equalsIgnoreCase(NOMATCHINGSEARCH);
+	}
+	
+	public void clearSearchField() {
+		this.getInputSearch().clear();
+	}
+
+	public void clearSearchFieldUsingSpace() {
+		this.getInputSearch().sendKeys(" ");
+		this.waitForTableDataToLoad();
 	}
 
 	private WebElement getTableHeader(Integer columnIndex) {
@@ -399,6 +439,27 @@ public class SurveyorBasePage extends BasePage {
 			multiClickElement(headerElement, 1);
 		}
 		
+	}
+	
+	public boolean checkTableSort(String datatTableElement, HashMap<String, TableColumnType> columnHeadings, String str, List<WebElement> paginationOption){
+		By tableContextBy = By.id(datatTableElement);
+		WebElement tableContext = driver.findElement(tableContextBy);
+		DataTablePage dataTable = DataTablePage.getDataTablePage(driver, tableContext, this.testSetup, this.strBaseURL, this.strPageURL);
+		List<WebElement> headings=tableContext.findElements(By.cssSelector("thead > tr > th"));
+		for(WebElement tableHeadingElement:headings){
+			for (Entry<String, TableColumnType> entry : (columnHeadings.entrySet())) {
+				if(tableHeadingElement.getText().trim().equalsIgnoreCase(entry.getKey().trim())){
+					tableHeadingElement.click();
+					if(tableHeadingElement.getAttribute("aria-sort").equals("ascending")){
+						return dataTable.isTableSortedAsc(columnHeadings,str,paginationOption,tableContext);
+					}
+					if(tableHeadingElement.getAttribute("aria-sort").equals("descending")){
+						return dataTable.isTableSortedDesc(columnHeadings,str,paginationOption,tableContext);
+					}
+				}
+			}			
+		}
+		return true;
 	}
 
 	private TableSortOrder getCurrentColumnSortOrder(WebElement headerElement, Integer columnIndex) {
@@ -442,6 +503,45 @@ public class SurveyorBasePage extends BasePage {
 			}
 		});
 	}
+	
+	public boolean checkPaginationSetting(String numberOfReports) {
+		setPagination(numberOfReports);
+		this.waitForPageLoad();
+
+		String msgToVerify = STRPaginationMsg + numberOfReports;
+		this.waitForNumberOfRecords(msgToVerify);
+
+		if (msgToVerify.equals(this.paginationMsg.getText().substring(0, 16).trim()))
+			return true;
+
+		return false;
+	}
+
+	public boolean checkFileExists(String fileName, String downloadPath) {
+		Log.info(String.format("Looking for file-[%s] in download directory-[%s]", fileName, downloadPath));
+		File file = new File(downloadPath,fileName);
+		if(file.exists()){
+			Log.info("File found in the download directory");
+			return true;
+		}
+		return false;
+	}
+
+	public void waitForFileDownload(String fileName, String downloadPath) {
+		(new WebDriverWait(driver, timeout + 60)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return checkFileExists(fileName, downloadPath);
+			}
+		});
+	}
+
+	public void waitForNumberOfRecords(String actualMessage) {
+		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return paginationMsg.getText().substring(0, 16).trim().equals(actualMessage);
+			}
+		});
+	}
 
 	/*
 	 * Helper method to wait for an Element to be ready on the page.
@@ -450,6 +550,22 @@ public class SurveyorBasePage extends BasePage {
 		(new WebDriverWait(this.driver, this.timeout)).until(ExpectedConditions.presenceOfElementLocated(By.id(elementID)));
 	}
 
+	/**
+	 * Waits for search results to load once user has performed search in datatable.
+	 */
+	public void waitForSearchResultsToLoad() {
+		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_XPATH)));
+		String dataTableFilterText = Resources.getResource(ResourceKeys.Constant_FilteredFromMaxTotalEntries);
+		Integer index = dataTableFilterText.indexOf("_MAX_");
+		String dataTableFilterTextPrefix = dataTableFilterText.substring(0, index-1);
+		WebElement tableInfoElement = driver.findElement(By.id(DATATABLE_RECORDS_ELEMENT_XPATH));
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return (tableInfoElement.getText().contains(dataTableFilterTextPrefix));
+			}
+		});
+	}
+	
 	public void waitForTableDataToLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -484,5 +600,19 @@ public class SurveyorBasePage extends BasePage {
 		};	
 		(new WebDriverWait(driver, timeout)).until(jQueryActiveComplete);
 		(new WebDriverWait(driver, timeout)).until(documentReadyComplete);
+	}
+	
+
+	public List<WebElement> getPaginationOption() {
+		return paginationOption;
+	}
+	
+	public int getNumberofRecords() {
+		List<WebElement> records = this.numberofRecords;
+		return records.size();
+	}
+
+	public WebElement getNextBtn() {
+		return nextBtn;
 	}
 }

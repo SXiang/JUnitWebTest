@@ -214,19 +214,44 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 		homePage.getLinkDrivingSurveys().click();
 
 		measurementSessionsPage.actionOnDrivingSurvey(PICADMNSTDTAG2, ADMINISTRATORUSER, SQAPICLOC4SUR, SQAPICLOC4SURANA, DrivingSurveyButtonType.ExportSurvey);
-
-		testSetup.slowdownInSeconds(15);
-		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTSURVEY, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), DRIVINGSURVEYSSTNDMODE, true));
+		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTSURVEY, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), DRIVINGSURVEYSSTNDMODE, 
+				PICADMNSTDTAG2_STARTEPOCH, PICADMNSTDTAG2_ENDEPOCH, true));
 
 		measurementSessionsPage.actionOnDrivingSurvey(PICADMNSTDTAG2, ADMINISTRATORUSER, SQAPICLOC4SUR, SQAPICLOC4SURANA, DrivingSurveyButtonType.ExportPeaks);
-
-		testSetup.slowdownInSeconds(15);
-		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTPEAKS, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), DRIVINGSURVEYSSTNDMODE, true));
+		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTPEAKS, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), DRIVINGSURVEYSSTNDMODE, 
+				PICADMNSTDTAG2_STARTEPOCH, PICADMNSTDTAG2_ENDEPOCH, true));
 
 		measurementSessionsPage.actionOnDrivingSurvey(PICADMNSTDTAG2, ADMINISTRATORUSER, SQAPICLOC4SUR, SQAPICLOC4SURANA, DrivingSurveyButtonType.ExportAnalysis);
+		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTANALYSIS, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), DRIVINGSURVEYSSTNDMODE, 
+				PICADMNSTDTAG2_STARTEPOCH, PICADMNSTDTAG2_ENDEPOCH, true));
+	}
+	
+	/**
+	 * Test Case ID: TC144_MeasurementSessions_VerifyPagination: - Verify pagination settings
+	 */
+	@Test
+	public void TC144_MeasurementSessions_VerifyPagination() {
+		Log.info("\nRunning Pagination - 10,25,50 and 100 Pagination MeasurementSessions");
+		loginPage.open();
+		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		measurementSessionsPage.open();
+		String paginationSetting25 = "25";
+		String paginationSetting50 = "50";
+		String paginationSetting100 = "100";
 
-		testSetup.slowdownInSeconds(15);
-		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTANALYSIS, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), DRIVINGSURVEYSSTNDMODE, true));
+		assertTrue(measurementSessionsPage.checkPaginationSetting(PAGINATIONSETTING));
+		assertTrue(!(measurementSessionsPage.getNumberofRecords() > Integer.parseInt(PAGINATIONSETTING)));
+		assertTrue(measurementSessionsPage.checkPaginationSetting(paginationSetting25));
+		assertTrue(!(measurementSessionsPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
+		measurementSessionsPage.getNextBtn().click();
+		assertTrue(!(measurementSessionsPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
+		assertTrue(measurementSessionsPage.checkPaginationSetting(paginationSetting50));
+		assertTrue(!(measurementSessionsPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
+		measurementSessionsPage.getNextBtn().click();
+		assertTrue(!(measurementSessionsPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
+		assertTrue(measurementSessionsPage.checkPaginationSetting(paginationSetting100));
+		assertTrue(!(measurementSessionsPage.getNumberofRecords() > Integer.parseInt(paginationSetting100)));
+
 	}
 
 
