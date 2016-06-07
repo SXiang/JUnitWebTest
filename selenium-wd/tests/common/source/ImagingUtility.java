@@ -30,20 +30,6 @@ public class ImagingUtility {
 
 	private static final String NET_AVH4_UTIL_IMAGECOMPARISON_IMAGE_COMPARISON_SUCCESS = "net.avh4.util.imagecomparison.ImageComparisonSuccess";
 
-	public static void takeScreenShot(WebDriver driver, String path,
-			String fileName) {
-		
-		WebDriver augmentedDriver = new Augmenter().augment(driver);
-		File screenShotImage = ((TakesScreenshot) augmentedDriver)
-				.getScreenshotAs(OutputType.FILE);
-		try {
-			FileUtils.copyFile(screenShotImage, new File(path + fileName
-					+ ".jpg"));
-		} catch (IOException e) {
-			Log.error(e.toString());
-		}
-	}
-
 	public ImagingUtility() {
 	}
 

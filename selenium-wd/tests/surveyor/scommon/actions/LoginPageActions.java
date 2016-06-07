@@ -58,9 +58,7 @@ public class LoginPageActions extends BasePageActions {
 		UserDataRow dataRow = getUsernamePassword(usernameColonPassword, dataRowID);
 		logAction("LoginPageActions.login", String.format("username=[%s],password=[%s]", dataRow.username, "HIDDEN"), dataRowID);
 		loginPage.loginNormalAs(dataRow.username, dataRow.password);
-		
 		homePage.waitForPageLoad();
-		
 		// store the working login datarow
 		workingDataRow = dataRow; 
 		return true;
