@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -35,13 +36,13 @@ public class BaseHelper {
 	}
 
 	public static void deCompressZipFile(String strNameBase, String strDLPath) throws Exception {
-		String zipFile = strDLPath + strNameBase + ".zip";
+		String zipFile = Paths.get(strDLPath, strNameBase + ".zip").toString();
 		String outputFolder = strDLPath + strNameBase;
 		unZip(zipFile, outputFolder);
 	}
 
 	public static void deCompressZipFile(String strName, String strDLPath, boolean fullFileName) throws Exception {
-		String zipFile = strDLPath + strName;
+		String zipFile = Paths.get(strDLPath, strName).toString();
 		String outputFolder = strDLPath;
 		unZip(zipFile, outputFolder);
 	}

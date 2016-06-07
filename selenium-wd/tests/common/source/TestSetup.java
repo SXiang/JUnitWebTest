@@ -75,7 +75,7 @@ public class TestSetup {
 
 	private static final String UPDATE_ANALYZER_CONFIGURATION_CMD = "UpdateAnalyzerConfiguration.cmd";
 	private static final String POST_AUTOMATION_RUN_RESULT_CMD = "Post-AutomationRunResult.cmd";
-	private static final String[] CI_MACHINES = { "20.20.20.59", "20.20.10.82", "10.0.2.15", "10.200.2.48" };
+	private static final String[] CI_MACHINES = { "20.20.20.59", "20.20.10.82", "10.0.2.15", "10.200.2.48"};
 	private static String testPropFileName;
 
 	public static final String REPLAY_DEFN_CURL_FILE = "replay-defn-curl.bat";
@@ -669,7 +669,7 @@ public class TestSetup {
 			}
 
 			if (!isRunningLocally()) {
-				this.downloadPath = this.testProp.getProperty("downloadPath");
+				this.downloadPath = this.testProp.getProperty("downloadPath") + File.separator;
 			} else {
 				this.downloadPath = System.getProperty("user.home") + File.separator + "Downloads" + File.separator;
 			}
