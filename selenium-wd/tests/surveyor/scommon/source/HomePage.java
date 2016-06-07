@@ -82,9 +82,6 @@ public class HomePage extends SurveyorBasePage {
 	
 	private String strLinkReportsXPath = "//*[@id='report-menu']/a";
 
-	@FindBy(how = How.XPATH, using = "//*[@id='user-feedback']/a")
-	private WebElement linkSendFeedback;
-	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[1]/div/h1/strong")
 	private WebElement labelSurveyorDashboard;
 	
@@ -236,9 +233,6 @@ public class HomePage extends SurveyorBasePage {
 		return this.linkPicAdminCalibration;
 	}
 
-	public WebElement getLinkPicAdminViewUserFeedback() {
-		return this.linkPicAdminViewUserFeedback;
-	}
 	public WebElement getLinkPicAdminManageReleaseNotes() {
 		return this.linkPicAdminManageReleaseNotes;
 	}
@@ -327,9 +321,6 @@ public class HomePage extends SurveyorBasePage {
 		if (!this.linkReports.isDisplayed())
 			return false;
 		
-		if (!this.linkSendFeedback.isDisplayed())
-			return false;
-		
 		if (!this.labelFooter.isDisplayed())
 			return false;
 		
@@ -360,9 +351,6 @@ public class HomePage extends SurveyorBasePage {
 			return false;
 		
 		if (!this.linkReports.isDisplayed())
-			return false;
-		
-		if (!this.linkSendFeedback.isDisplayed())
 			return false;
 		
 		if (!this.labelFooter.isDisplayed())
@@ -402,9 +390,6 @@ public class HomePage extends SurveyorBasePage {
 		if (this.isElementPresent(this.strLinkReportsXPath))
 			return false;
 		
-		if (!this.linkSendFeedback.isDisplayed())
-			return false;
-		
 		if (!this.labelFooter.isDisplayed())
 			return false;
 		
@@ -440,9 +425,6 @@ public class HomePage extends SurveyorBasePage {
 			System.out.format("\nlinkPicarroAdmin\n");
 			return false;
 		}
-		
-		if (!this.linkSendFeedback.isDisplayed())
-			return false;
 		
 		if (!this.labelFooter.isDisplayed())
 			return false;
@@ -480,9 +462,6 @@ public class HomePage extends SurveyorBasePage {
 		catch (org.openqa.selenium.NoSuchElementException e) {
 		}
 		
-		if (!this.linkSendFeedback.isDisplayed())
-			return false;
-		
 		if (!this.labelFooter.isDisplayed())
 			return false;
 		
@@ -512,9 +491,6 @@ public class HomePage extends SurveyorBasePage {
 			return false;
 		
 		if (!this.linkPicarroAdmin.isDisplayed())
-			return false;
-		
-		if (!this.linkSendFeedback.isDisplayed())
 			return false;
 		
 		return true;	
@@ -644,10 +620,6 @@ public class HomePage extends SurveyorBasePage {
 
 	public WebElement getLinkSurveyors() {
 		return this.linkSurveyors;
-	}
-	
-	public WebElement getLinkSendFB() {
-		return this.linkSendFeedback;
 	}
 	
 	public WebElement getLinkReports() {

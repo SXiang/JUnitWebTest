@@ -64,7 +64,7 @@ public class ReferenceGasBottle extends BaseEntity {
 		return objReferenceGasBottle;
 	}
 
-	public static ReferenceGasBottle getReferenceGasBottleBySurveorId(String id) {
+	public static ReferenceGasBottle getReferenceGasBottleBySurveyorId(String id) {
 		ReferenceGasBottle objReferenceGasBottle = new ReferenceGasBottle().getTop1BySurveyorId(id);
 		return objReferenceGasBottle;
 	}

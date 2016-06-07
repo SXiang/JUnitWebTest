@@ -25,8 +25,6 @@ import common.source.Log;
 	ManageUsersPageTest.class,
 	ManageUsersAdminPageTest.class,
 	MeasurementSessionsPageTest.class,
-	UserFeedbackPageTest.class,
-	UserFeedbackAdminPageTest.class,
 	SystemHistoryReportsPageTest.class,	
 	ReferenceGasReportsPageTest.class })
 public class RegressionTestSuite {
