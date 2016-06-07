@@ -53,12 +53,12 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 		try {
 			deleteComplianceReport();
 			homePage.logout();
-			LoginPageActions.workingDataRow = null;
-			ComplianceReportsPageActions.workingDataRow = null;
 		} catch (Exception e) {
 			Log.error("Error when deleting compliance report page. Exception message:");
 			Log.error(ExceptionUtility.getStackTraceString(e));
 		}
+		LoginPageActions.workingDataRow = null;
+		ComplianceReportsPageActions.workingDataRow = null;
 	}
 
 	protected void removeReportDataRowIDFromMap(Integer reportDataRowID) {
