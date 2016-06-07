@@ -383,9 +383,9 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 *	- - Include the survey which has duration as less than a min (shown as 0 min in driving surveys page) 
 	 *      and generate the compliance report
 	 * Results: - 
-	 *	- - Report should be generated succesfully and user should be able to download it
+	 *	- - Report should be generated successfully and user should be able to download it
 	 */
-	@Test
+	@Ignore @Test	/* Waitting for a short survey for this test */ 
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC211, location = ComplianceReportDataProvider.class)
 	public void TC211_GenerateReportSurveyWhichDurationLessThanMin(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
