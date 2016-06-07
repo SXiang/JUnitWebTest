@@ -353,7 +353,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 		ArrayList<StoredProcReferenceGas> objStoredProcReferenceGas = StoredProcReferenceGas.getReferenceGas(reportId);
 		String analyzerId = objStoredProcReferenceGas.get(0).getAnalyzerId();
 		Analyzer objAnalyzer = Analyzer.getAnalyzer(analyzerId);
-		ReferenceGasBottle objReferenceGasBottle = ReferenceGasBottle.getReferenceGasBottleBySurveorId(objAnalyzer.getSurveyorUnitId().toString());
+		ReferenceGasBottle objReferenceGasBottle = ReferenceGasBottle.getReferenceGasBottleBySurveyorId(objAnalyzer.getSurveyorUnitId().toString());
 
 		for (StoredProcReferenceGas storedProcReferenceGas : objStoredProcReferenceGas) {
 			if (!storedProcReferenceGas.isInList(notesReturnList)) {
@@ -387,13 +387,9 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 								String firstPart[] = Arrays.copyOfRange(parts, 0, 4);
 								String dateInstalled = String.join(" ", firstPart);
 								storedProcRefGas.setInstallationDate(dateInstalled);
-								storedProcRefGas.setUserName(parts[4]);
+								storedProcRefGas.setDriverName(parts[4]);
 								LotNumberInReport = parts[5].trim();
-								String[] uncertaintyDelta = parts[6].split("/");
-								String delta = uncertaintyDelta[0].replace("+", "").trim();
-								String uncertainty = uncertaintyDelta[1].replace("-", "").trim();
-								storedProcRefGas.setUncertainty(uncertainty);
-								storedProcRefGas.setDelta(delta);
+								storedProcRefGas.setDeltaUncertainty(parts[6]);
 								storedProcRefGas.setTestResult(parts[7]);
 								resultsList.add(storedProcRefGas);
 							}

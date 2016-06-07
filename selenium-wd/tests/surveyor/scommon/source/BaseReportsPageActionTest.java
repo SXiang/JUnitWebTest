@@ -52,7 +52,7 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 	public void afterTestMethod() {
 		try {
 			deleteComplianceReport();
-			homePage.logout();			
+			homePage.logout();
 		} catch (Exception e) {
 			Log.error("Error when deleting compliance report page. Exception message:");
 			Log.error(ExceptionUtility.getStackTraceString(e));

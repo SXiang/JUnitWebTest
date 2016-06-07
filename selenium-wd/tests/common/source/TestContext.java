@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.openqa.selenium.WebDriver;
 
 import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.ExtentTest;
 
 public enum TestContext {
 	INSTANCE;
@@ -15,10 +16,19 @@ public enum TestContext {
 	private String runUniqueId;
 
 	private ExtentReports report;
+	private ExtentTest extentTest;
 
 	private TestContext() {
 		// Every time a context is created set a unique run ID.
 		this.setRunUniqueId(TestSetup.getUUIDString());
+	}
+
+	public ExtentTest getExtentTest() {
+		return extentTest;
+	}
+
+	public void setExtentTest(ExtentTest extentTest) {
+		this.extentTest = extentTest;
 	}
 
 	public String getDbIpAddress() {
@@ -133,13 +143,20 @@ public enum TestContext {
 		}		
 		return environment;
 	}
-	
+
 	public String getTestRunCategory() {
 		String testRunCategory = null;
 		if (testSetup != null) {
 			testRunCategory = testSetup.getTestRunCategory();
 		}		
 		return testRunCategory;
+	}
+	public String getTestReportCategory() {
+		String testReportCategory = null;
+		if (testSetup != null) {
+			testReportCategory = testSetup.getTestReportCategory();
+		}		
+		return testReportCategory;
 	}
 
 	public String getRunUniqueId() {
