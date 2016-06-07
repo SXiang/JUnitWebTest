@@ -9,9 +9,8 @@ import common.source.Log;
 
 public class StoredProcReferenceGas extends BaseEntity {
 	private String installationDate;
-	private String userName;
-	private String uncertainty;
-	private String delta;
+	private String driverName;
+	private String deltaUncertainty;
 	private String testResult;
 	private String analyzerId;
 
@@ -23,16 +22,12 @@ public class StoredProcReferenceGas extends BaseEntity {
 		return installationDate;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getDriverName() {
+		return driverName;
 	}
 
-	public String getUncertainty() {
-		return uncertainty;
-	}
-
-	public String getDelta() {
-		return delta;
+	public String getDeltaUncertainty() {
+		return deltaUncertainty;
 	}
 
 	public String getTestResult() {
@@ -51,16 +46,12 @@ public class StoredProcReferenceGas extends BaseEntity {
 		this.installationDate = installationDate;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setDriverName(String driverName) {
+		this.driverName = driverName;
 	}
 
-	public void setDelta(String delta) {
-		this.delta = delta;
-	}
-
-	public void setUncertainty(String uncertainty) {
-		this.uncertainty = uncertainty;
+	public void setDeltaUncertainty(String uncertainty) {
+		this.deltaUncertainty = uncertainty;
 	}
 
 	public void setTestResult(String testResult) {
@@ -71,13 +62,10 @@ public class StoredProcReferenceGas extends BaseEntity {
 		if (!this.getInstallationDate().equals(obj.getInstallationDate())) {
 			return false;
 		}
-		if (!this.getUserName().equals(obj.getUserName())) {
+		if (!this.getDriverName().equals(obj.getDriverName())) {
 			return false;
 		}
-		if (!this.getUncertainty().equals(obj.getUncertainty())) {
-			return false;
-		}
-		if (!this.getDelta().equals(obj.getDelta())) {
+		if (!this.getDeltaUncertainty().equals(obj.getDeltaUncertainty())) {
 			return false;
 		}
 		if (!this.getTestResult().equals(obj.getTestResult())) {
@@ -111,9 +99,8 @@ public class StoredProcReferenceGas extends BaseEntity {
 		StoredProcReferenceGas objReport = new StoredProcReferenceGas();
 		try {
 			objReport.setInstallationDate(resultSet.getString("ReferenceGasDate"));
-			objReport.setUserName(resultSet.getString("DriverName"));
-			objReport.setUncertainty(resultSet.getString("Uncertainty"));
-			objReport.setDelta(resultSet.getString("Delta"));
+			objReport.setDriverName(resultSet.getString("DriverName"));
+			objReport.setDeltaUncertainty(resultSet.getString("DeltaUncertainty"));
 			objReport.setTestResult(resultSet.getString("Disposition"));
 			objReport.setAnalyzerId(resultSet.getString("AnalyzerId"));
 
@@ -143,5 +130,4 @@ public class StoredProcReferenceGas extends BaseEntity {
 
 		return objReportList;
 	}
-
 }

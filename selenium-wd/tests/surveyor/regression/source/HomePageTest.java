@@ -24,7 +24,6 @@ import surveyor.scommon.source.SurveyViewPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorSystemsPage;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.UserFeedbackPage;
 import surveyor.scommon.source.DriverViewPage.CloudCover;
 import surveyor.scommon.source.DriverViewPage.SolarRadiation;
 import surveyor.scommon.source.DriverViewPage.SurveyTime;
@@ -42,7 +41,6 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 public class HomePageTest extends SurveyorBaseTest {
 
 	private static MeasurementSessionsPage measurementSessionsPage;
-	private static UserFeedbackPage userFeedbackPage;
 	private static FleetMapPage fleetMapPage;
 	private static SurveyorSystemsPage surveyorSystemsPage;
 	private static PreferencesPage preferencesPage;
@@ -54,9 +52,6 @@ public class HomePageTest extends SurveyorBaseTest {
 
 		measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver, measurementSessionsPage);
-
-		userFeedbackPage = new UserFeedbackPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver, userFeedbackPage);
 
 		fleetMapPage = new FleetMapPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver, fleetMapPage);
@@ -128,7 +123,6 @@ public class HomePageTest extends SurveyorBaseTest {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
 		assertTrue(homePage.getLinkPicAdminCalibration().isDisplayed());
-		assertTrue(homePage.getLinkPicAdminViewUserFeedback().isDisplayed());
 		assertTrue(homePage.getLinkPicAdminManageCus().isDisplayed());
 		assertTrue(homePage.getLinkPicAdminManageUsers().isDisplayed());
 		assertTrue(homePage.getLinkPicAdminManageLoc().isDisplayed());
@@ -138,25 +132,6 @@ public class HomePageTest extends SurveyorBaseTest {
 		assertTrue(homePage.getLinkPicAdminManageSurHistories().isDisplayed());
 		assertTrue(homePage.getLinkPicAdminViewAnlLogs().isDisplayed());
 		assertTrue(homePage.getLinkPicAdminViewSurLogs().isDisplayed());
-	}
-
-	/**
-	 * Test Case ID: TC46_VerifySendFeedbackLink_CustomerDriverRole Test Description: Send Feedback link working Test Script: - Login to p-cubed and click on Send Feedback link - Click on Send button"
-	 * Expected Results: - User is navigated to Send Feedback page
-	 */
-	@Test
-	public void TC46_VerifySendFeedbackLink_CustDriverRole() {
-		Log.info("\nRunning - TC46_VerifySendFeedbackLink_CustomerDriverRole - Test Description: Send Feedback link working\n");
-
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);
-
-		homePage.open();
-
-		homePage.getLinkSendFB().click();
-		userFeedbackPage.waitForPageLoad();
-
-		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(testSetup.getBaseUrl() + SENDFEEDBACK));
 	}
 
 	/**
