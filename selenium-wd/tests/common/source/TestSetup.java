@@ -128,7 +128,9 @@ public class TestSetup {
 	private WebDriver driver;
 	private String slowdownInSeconds; // For debugging the code and not
 										// recommended to use in real test case
-
+	public boolean isRemoteBrowser;
+	public static String reportDir = "reports/";
+	
 	private String downloadPath;
 
 	private String dbIPAddress;
@@ -177,7 +179,7 @@ public class TestSetup {
 			e.printStackTrace();
 		}
 		String runEnvironment = TestContext.INSTANCE.getRunEnvironment();
-		String reportFilePath = executionPath + "reports" + File.separator
+		String reportFilePath = executionPath + reportDir + TestContext.INSTANCE.getTestReportCategory()+File.separator
 				+ String.format("report-%s-%s.html", runEnvironment, reportClassName);
 		outReportFilePath.append(reportFilePath);
 		String configFilePath = executionPath + "tests" + File.separator + "extent-config.xml";
@@ -211,7 +213,7 @@ public class TestSetup {
 							this.capabilities);
 					break;
 				}
-
+				isRemoteBrowser = true;
 				Log.info("\nRunning Selenium Server for use with RemoteDrivers and the server is running on: "
 						+ this.remoteServerHost + "\n");
 			} else if (this.browser != null && (this.ieDriverPath != null || this.chromeDriverPath != null)) {
@@ -398,6 +400,9 @@ public class TestSetup {
 		return propertyfile.getCanonicalPath();
 	}
 
+	public static String getExecutionPath() throws IOException{
+		return getExecutionPath(getRootPath());
+	}
 	public static String getExecutionPath(String rootPath) {
 		/* For CI and Eclipse run setup */
 		String executionPath = rootPath + File.separator + "selenium-wd" + File.separator;
@@ -518,7 +523,11 @@ public class TestSetup {
 	public String getTestRunCategory() {
 		return testRunCategory;
 	}
-
+	
+	public String getTestReportCategory() {
+		return getSystemProperty(this.testProp, "testReportCategory","testRunCategory");
+	}
+	
 	public boolean isGenerateBaselineShapeFiles() {
 		return generateBaselineShapeFiles;
 	}
@@ -662,7 +671,7 @@ public class TestSetup {
 			this.culture = this.testProp.getProperty("culture");
 			this.softwareVersion = this.testProp.getProperty("softwareVersion");
 			
-			this.automationReportingApiEndpoint = this.testProp.getProperty("automationReporting.ApiEndPoint");		
+			this.automationReportingApiEndpoint = this.testProp.getProperty("automationReporting.ApiEndPoint");
 			String automationReportingApiEnabledValue = this.testProp.getProperty("automationReporting.APIEnabled");
 			if (automationReportingApiEnabledValue != null && automationReportingApiEnabledValue != "") {
 				this.automationReportingApiEnabled = Boolean.valueOf(automationReportingApiEnabledValue);
@@ -1229,5 +1238,27 @@ public class TestSetup {
 
 	public void setSurveyUploadBaseUrl(String surveyUploadBaseUrl) {
 		this.surveyUploadBaseUrl = surveyUploadBaseUrl;
+	}
+	
+	/**
+	 * Use value of System property over VM property
+	 * @param key
+	 * @return System property if it's been set, VM property otherwise
+	 */
+	public String getSystemProperty(String key){
+		return getSystemProperty(testProp, key, key);
+	}
+	
+	public String getSystemProperty(Properties testProp, String sysKey, String propKey){
+		String propValue = null;
+		try{
+		     propValue = System.getProperty(sysKey);
+		}catch(Exception e){
+			Log.warn(e.toString());
+		}
+		if(propValue==null){
+			propValue = testProp.getProperty(propKey);
+		}
+		return propValue;
 	}
 }
