@@ -7,6 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
 
+import common.source.BasePage.ElementType;
+
 public class Log {
 	private static Logger log = null; 
 	private static String logFilePath;
@@ -60,6 +62,23 @@ public class Log {
 		}
 	}
 
+	// Extension to logs for page objects	
+	public static void clickElementInfo(String name) {
+		clickElementInfo(name,ElementType.BUTTON);
+	}
+
+	public static void clickElementInfo(String name, ElementType type){
+		info("Click on "+type+" - "+ name);
+	}
+	
+	public static void error(String name, Throwable e){
+		error("Failed to perform '"+name+"': "+e);
+	}
+
+	public static void findElementInfo(String name) {
+		clickElementInfo("Find element '"+name+"'");
+	}	
+	/* Unit test */
 	public static void main(String[] args) throws IOException {
 		logFilePath = TestSetup.getRootPath() + File.separator + "logs" + File.separator + "log.log";
 		
