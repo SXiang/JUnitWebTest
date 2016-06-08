@@ -1,6 +1,5 @@
 package surveyor.scommon.actions;
 
-import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
@@ -12,13 +11,11 @@ import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
-import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
-import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static common.source.RegexUtility.REGEX_PATTEN_SPECIAL_CHARACTERS;
 import java.io.FileNotFoundException;
@@ -38,20 +35,14 @@ import common.source.BaseHelper;
 import common.source.ExcelUtility;
 import common.source.FileUtility;
 import common.source.Log;
-import common.source.LogCategory;
-import common.source.LogHelper;
 import common.source.NumberUtility;
-import common.source.PDFTableUtility;
 import common.source.PDFTableUtility.PDFTable;
 import common.source.PDFUtility;
 import common.source.RegexUtility;
 import common.source.SortHelper;
 import common.source.TestContext;
 import common.source.TestSetup;
-import surveyor.api.source.ReportJob;
-import surveyor.api.source.ReportJobsStat;
 import surveyor.dataaccess.source.Customer;
-import surveyor.dataaccess.source.ReportCompliance;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataaccess.source.User;
@@ -82,7 +73,6 @@ import surveyor.scommon.source.ComplianceReportsPage.ReportViewerThumbnailType;
 import surveyor.scommon.source.LatLongSelectionControl;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
-import surveyor.scommon.source.Reports.ReportJobType;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.ReportsCompliance.IsotopicAnalysisTableColumns;
@@ -104,6 +94,13 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		super(driver, strBaseURL, testSetup);
 		initializePageObject(driver, new ComplianceReportsPage(driver, strBaseURL, testSetup));
 		setDataReader(new ComplianceReportDataReader(this.excelUtility));
+	}
+
+	// Note: Not thread-safe.
+	public static void clearStoredObjects() {
+		workingReportsComp = null;
+		workingDataRow = null;
+		workingReportViewsDataRows = null;
 	}
 	
 	private void addView(Integer dataRowID) throws Exception {

@@ -27,6 +27,11 @@ public class ManageCustomerPageActions extends BasePageActions {
 		this.dataReader = customerDataReader;	
 	}
 
+	// Note: Not thread-safe.
+	public static void clearStoredObjects() {
+		workingDataRow = null;
+	}
+	
 	/**
 	 * Executes createNewCustomer action.
 	 * @param data - specifies the input data passed to the action.

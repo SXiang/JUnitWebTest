@@ -16,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -287,7 +288,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 			return false;
 		}
 		String pdfFile1;
-		pdfFile1 = downloadPath + reportName + ".pdf";
+		pdfFile1 = Paths.get(downloadPath, reportName + ".pdf").toString();
 
 		boolean result = false;
 		result = BaseHelper.validatePdfFileForRefGas(pdfFile1);
@@ -298,7 +299,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String fullDownloadPath = downloadPath + "RG-" + reportId.substring(0, 6) + ".pdf";
+		String fullDownloadPath = Paths.get(downloadPath, "RG-" + reportId.substring(0, 6) + ".pdf").toString();
 		try {
 			String pdfInText = (pdfUtility.extractPDFText(fullDownloadPath));
 			if (!pdfInText.contains(STRReportTitle)) {
@@ -329,7 +330,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String fullDownloadPath = downloadPath + "RG-" + reportId.substring(0, 6) + ".pdf";
+		String fullDownloadPath = Paths.get(downloadPath, "RG-" + reportId.substring(0, 6) + ".pdf").toString();
 		try {
 			String pdfInText = (pdfUtility.extractPDFText(fullDownloadPath));
 			Iterator<String> inputIterator = inputs.iterator();
@@ -348,7 +349,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	public boolean verifyResultTable(String downloadPath, String reportTitle) {
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String fullDownloadPath = downloadPath + "RG-" + reportId.substring(0, 6) + ".pdf";
+		String fullDownloadPath = Paths.get(downloadPath, "RG-" + reportId.substring(0, 6) + ".pdf").toString();
 		ArrayList<StoredProcReferenceGas> notesReturnList = tokenizeSystemHistoryNotesTable(fullDownloadPath);
 		ArrayList<StoredProcReferenceGas> objStoredProcReferenceGas = StoredProcReferenceGas.getReferenceGas(reportId);
 		String analyzerId = objStoredProcReferenceGas.get(0).getAnalyzerId();
