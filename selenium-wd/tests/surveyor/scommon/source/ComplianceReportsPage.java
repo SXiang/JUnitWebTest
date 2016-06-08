@@ -2961,7 +2961,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	
 	public boolean verifyPDFFooter(String actualPath, String pdfFilename, String expectedSoftwareVersion,
 			String expectedReportAuthor) throws Exception {
-		String actualReport = actualPath + pdfFilename;
+		String actualReport = Paths.get(actualPath,pdfFilename).toString();
 		PDFUtility pdfUtility = new PDFUtility();
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 
