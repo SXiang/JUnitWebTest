@@ -340,10 +340,12 @@ public class ReportsCompliance extends Reports {
 		try{
 			this.imageMapHeight = listBoundary.get(0);
 			this.imageMapWidth = listBoundary.get(1);
-			this.NELat = listBoundary.get(2);
-			this.NELong = listBoundary.get(3);
-			this.SWLat = listBoundary.get(4);
-			this.SWLong = listBoundary.get(5);
+			if (listBoundary.size() > 2) {
+				this.NELat = listBoundary.get(2);
+				this.NELong = listBoundary.get(3);
+				this.SWLat = listBoundary.get(4);
+				this.SWLong = listBoundary.get(5);
+			}
 		}catch(Exception e){
 			Log.error(e.toString());
 		}

@@ -34,6 +34,12 @@ public class ManageUsersPageActions extends BasePageActions {
 	private void setDataReader(UserDataReader customerDataReader) {
 		this.dataReader = customerDataReader;	
 	}
+	
+	// Note: Not thread-safe.
+	public static void clearStoredObjects() {
+		workingUser = null;
+		workingDataRow = null;
+	}
 
 	/**
 	 * Executes open action.

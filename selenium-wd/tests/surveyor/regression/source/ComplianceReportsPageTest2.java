@@ -265,7 +265,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
-			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rptTitle));
+			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rpt));
 			if (tablesList != null) {
 				if (tablesList.get(0).get(KEYINDTB).equals("1")) {
 					assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
@@ -755,7 +755,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
-			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rptTitle));
+			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rpt));
 			if (tablesList != null) {
 				if (tablesList.get(0).get(KEYINDTB).equals("1") || tablesList.get(0).get(KEYISOANA).equals("1")) {
 					assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
@@ -824,7 +824,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
-			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rptTitle));
+			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rpt));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
 					assertTrue(complianceReportsPage.verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle));

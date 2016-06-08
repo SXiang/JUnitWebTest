@@ -29,6 +29,11 @@ public class LoginPageActions extends BasePageActions {
 		dataReader = new UserDataReader(this.excelUtility);
 	}
 
+	// Note: Not thread-safe.
+	public static void clearStoredObjects() {
+		workingDataRow = null;
+	}
+
 	public UserDataRow getUsernamePassword(String usernameColonPassword, Integer dataRowID) throws Exception {
 		UserDataRow dataRow = null;
 		if (usernameColonPassword != null && !usernameColonPassword.isEmpty()) {		

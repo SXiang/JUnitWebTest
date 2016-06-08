@@ -1773,8 +1773,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean verifyComplianceReportStaticText(String reportTitle) throws IOException {
-		return verifyComplianceReportStaticText(testSetup.getDownloadPath(), reportTitle);
+	public boolean verifyComplianceReportStaticText(ReportsCompliance reportsCompliance) throws IOException {
+		return verifyComplianceReportStaticText(reportsCompliance, testSetup.getDownloadPath());
 	}
 
 	/**
@@ -1785,23 +1785,37 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean verifyComplianceReportStaticText(String actualPath, String reportTitle) throws IOException {
+	public boolean verifyComplianceReportStaticText(ReportsCompliance reportsCompliance, String actualPath) throws IOException {
+		Log.info("Calling verifyComplianceReportStaticText()...");
 		PDFUtility pdfUtility = new PDFUtility();
-		Report reportObj = Report.getReport(reportTitle);
+		Report reportObj = Report.getReport(reportsCompliance.rptTitle);
 		String reportId = reportObj.getId();
 		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
 		setReportName("CR-" + reportId);
 		setReportName(getReportName());
 		String actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
 		actualReportString = RegexUtility.removeSpecialChars(actualReportString);
+		Log.info(String.format("PDF Text Content : %s", actualReportString));
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(STRReportTitle);
 		expectedReportString.add(RegexUtility.removeSpecialChars(ComplianceReportSSRS_LISAInvestigationComplete));
 		expectedReportString.add(ComplianceReportSSRS_GAPInvestigationComplete);
 		expectedReportString.add(ComplianceReportSSRS_CGIInvestigationComplete);
 		expectedReportString.add(ComplianceReportSSRS_MapHeightWidth);
-		expectedReportString.add(ComplianceReportSSRS_NELatNELong);
-		expectedReportString.add(ComplianceReportSSRS_SWLatSWLong);
+		if (isCustomBoundarySpecified(reportsCompliance)) {
+			if (!BaseHelper.isNullOrEmpty(reportsCompliance.getNELat()) && !BaseHelper.isNullOrEmpty(reportsCompliance.getNELong())) {
+				expectedReportString.add(ComplianceReportSSRS_NELatNELong);
+			} 
+			if (!BaseHelper.isNullOrEmpty(reportsCompliance.getSWLat()) && !BaseHelper.isNullOrEmpty(reportsCompliance.getSWLong())) {
+				expectedReportString.add(ComplianceReportSSRS_SWLatSWLong);
+			} 
+		} else {
+			if (!BaseHelper.isNullOrEmpty(reportsCompliance.getCustomerBoundaryName())) {
+				expectedReportString.add(ComplianceReportSSRS_Boundary);
+			} 
+		}
+
+		Log.info(String.format("Expected Strings in PDF Text Content : %s", LogHelper.strListToString(expectedReportString)));
 
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
@@ -2705,7 +2719,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyIsotopicAnalysisTable(String actualPath, String reportTitle) throws IOException {
-		Log.info("Verifying Isotopic Analysis Table");
+		Log.info("Calling verifyIsotopicAnalysisTable() ...");
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2715,6 +2729,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(ComplianceReportSSRS_IsotopicAnalysisTable);
+		Log.info(String.format("PDF Text Content : %s", actualReportString));
+		Log.info(String.format("Expected Strings in PDF Text Content : %s", LogHelper.strListToString(expectedReportString)));
+		
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
@@ -2723,6 +2740,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 		String isoTable = RegexUtility.getStringInBetween(actualReportString, "Surveyor Date/Time Result", " Layers");
+		Log.info(String.format("Extracted Isotopic Analysis Table : %s", isoTable));
 		if (isoTable != null) {
 			InputStream inputStream = new ByteArrayInputStream(isoTable.getBytes());
 			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -2734,6 +2752,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						reportIsotopicList.add(line);
 					}
 				}
+				
+				Log.info(String.format("ReportIsotopic ArrayList Values : %s", LogHelper.strListToString(reportIsotopicList)));
 				ArrayList<StoredProcComplianceGetIsotopics> storedProcIsotopicList = StoredProcComplianceGetIsotopics
 						.getReportIsotopics(reportId);
 				Iterator<StoredProcComplianceGetIsotopics> lineIterator = storedProcIsotopicList.iterator();
@@ -2744,6 +2764,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					storedProcConvStringList.add(objAsString.trim());
 				}
 
+				Log.info(String.format("Checking in ReportIsotopic ArrayList, StoredProcConvStringList Values : %s", 
+						LogHelper.strListToString(storedProcConvStringList)));
 				if (!reportIsotopicList.equals(storedProcConvStringList)) {
 					Log.info("Isotopic Analysis table verification failed");
 					return false;
@@ -2809,6 +2831,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(ComplianceReportSSRS_IndicationTable);
+		Log.info(String.format("PDF Text Content : %s", actualReportString));
+		Log.info(String.format("Expected Strings in PDF Text Content : %s", LogHelper.strListToString(expectedReportString)));
+		
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
@@ -2827,6 +2852,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 							.replace("+/-", "").replace("0.0 ", "").trim());
 				}
 			}
+			Log.info(String.format("ReportIndications ArrayList Values : %s", LogHelper.strListToString(reportIndicationsList)));
+
 			ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications
 					.getReportIndications(reportId);
 			Iterator<StoredProcComplianceGetIndications> lineIterator = storedProcIndicationsList.iterator();
@@ -2837,6 +2864,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				storedProcConvStringList.add(objAsString.replace("0.0 ", "0").replaceAll("\\s+", "").trim());
 			}
 
+			Log.info(String.format("Checking in ReportIndications ArrayList, StoredProcConvStringList Values : %s", 
+					LogHelper.strListToString(storedProcConvStringList)));
 			if (!reportIndicationsList.equals(storedProcConvStringList)) {
 				Log.info("Indication table verification failed");
 				return false;
@@ -3503,8 +3532,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 
 		if (reportsCompliance.getExclusionRadius() != null) {
-			// TODO: This is not working properly, need rewrite
-			// inputExclusionRadius(reportsCompliance.getExclusionRadius());
+			inputExclusionRadius(reportsCompliance.getExclusionRadius());
 		}
 
 		// 2. Area Selector
