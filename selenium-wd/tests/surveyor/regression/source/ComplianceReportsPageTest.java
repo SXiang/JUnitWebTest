@@ -117,6 +117,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		} else {
 			rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
 		}
+		
 		Log.info("\nRunning " + testCaseName + " - " + rptTitle);
 
 		complianceReportsPage.login(strCreatedBy, CryptoUtility.decrypt(password));
@@ -130,7 +131,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, strCreatedBy, testCaseName))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, strCreatedBy));
-			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rptTitle));
+			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rpt));
 			assertTrue(complianceReportsPage.verifySSRSImages(testSetup.getDownloadPath(), rptTitle, testCaseName));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {

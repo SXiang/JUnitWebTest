@@ -44,6 +44,7 @@ import surveyor.scommon.source.SurveyorConstants.UserTimezone;
 public class SurveyorBasePage extends BasePage {
 
 	protected static final String DATA_TABLE_XPATH = "//*[@id='datatable']/tbody";
+	protected static final String DATATABLE_TBODY_TR = "//*[@id='datatable']/tbody/tr";
 	protected static final String DATATABLE_RECORDS_ELEMENT_XPATH = "datatable_info";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/a")

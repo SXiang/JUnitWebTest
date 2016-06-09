@@ -19,6 +19,8 @@ public class GeoJsonShapeFileComparer implements IShapeFileComparer {
 	public void assertEquals(String file1Path, String file2Path) throws Exception {
 		String jsonString1 = ShapeToGeoJsonConverter.convertToJsonString(file1Path);
 		String jsonString2 = ShapeToGeoJsonConverter.convertToJsonString(file2Path);
+		Log.info("jsonString1=" + jsonString1);
+		Log.info("jsonString2=" + jsonString2);
 		JSONAssert.assertEquals(jsonString1, jsonString2, false /*strict*/);
 	}
 	
