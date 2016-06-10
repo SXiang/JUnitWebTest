@@ -46,6 +46,7 @@ import common.source.Log;
 import common.source.PDFUtility;
 import common.source.ProcessUtility;
 import common.source.RegexUtility;
+import common.source.TestContext;
 import common.source.TestSetup;
 
 public class EqReportsPage extends ReportsBasePage {
@@ -259,7 +260,9 @@ public class EqReportsPage extends ReportsBasePage {
 					image = cropImage(image, rect);
 					File outputfile = new File(testSetup.getSystemTempDirectory() + testCase + ".png");
 					ImageIO.write(image, "png", outputfile);
-					if (!verifyActualImageWithBase(baseViewFile, actualViewPath)) {
+					boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
+					
+					if (!verifyActualImageWithBase(baseViewFile, actualViewPath, generateBaseline)) {
 						Files.delete(Paths.get(actualViewPath));
 						return false;
 					}

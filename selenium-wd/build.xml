@@ -19,7 +19,7 @@
 		<mkdir dir="${reports}/performance/xml" />
 		
 		<mkdir dir="${basedir}/tests/common/build" />
-		<mkdir dir="${basedir}/tests/common/dist" />		
+		<mkdir dir="${basedir}/tests/common/dist" />
 		<mkdir dir="${basedir}/tests/surveyor/scommon/build" />
 		<mkdir dir="${basedir}/tests/surveyor/scommon/dist" />
 	</target>
@@ -248,7 +248,7 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-
+					<include name="**/ComplianceReportsPageTest8.class" />
 					<include name="**/ComplianceReportsPageTest3.class" />
 				</fileset>
 			</batchtest>
@@ -276,6 +276,7 @@
 					<include name="**/ComplianceReportsPageTest4.class" />
 					<include name="**/ComplianceReportsPageTest_Ethane.class" />
 					<include name="**/ComplianceReportsPageTest6.class" />
+					<include name="**/ComplianceReportsPageTest8.class" />
 
 				</fileset>
 			</batchtest>
@@ -363,7 +364,7 @@
 		</junit>
 	</target>
 
-	<target name="testsanity" depends="compileSanity" description="Run sanity test suite">		
+	<target name="testsanity" depends="compileSanity" description="Run sanity test suite">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Sanity" />
@@ -410,7 +411,7 @@
 			<fileset dir="${reports}/regression/xml">
 				<include name="*TEST-*.xml" />
 			</fileset>
-			<report styledir="./tests" format="noframes" todir="${reports}/regression">			
+			<report styledir="./tests" format="noframes" todir="${reports}/regression">
 			</report>
 		</junitreport>
 	</target>

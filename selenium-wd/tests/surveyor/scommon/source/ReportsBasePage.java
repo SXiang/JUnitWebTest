@@ -153,7 +153,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[normalize-space( )='Rapid Response']//input[@name='survey-mode-type']")
 	protected WebElement inputSurModeFilterRapidResponse;
 
-	@FindBy(how = How.XPATH, using = "//*[normalize-space( )='Manual']//input[@name='survey-mode-type']")
+	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='Manual']")
 	protected WebElement inputSurModeFilterManual;
 
 	@FindBy(how = How.ID, using = "buttonSearchSurvey")
@@ -244,6 +244,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='customerModal']/div/div/div[3]/a[1]")
 	protected WebElement btnChangeCustomer;
 	protected String btnChangeCustomerXPath = "//*[@id='customerModal']/div/div/div[3]/a[1]";
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='customerModal']/div/div/div[3]/a[2]")
+	protected WebElement btnCancelChangeCustomer;
+	protected String btnCancelChangeCustomerXPath = "//*[@id='customerModal']/div/div/div[3]/a[2]";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyModal']/div/div/div[3]/a[1]")
 	protected WebElement btnChangeMode;
@@ -693,7 +697,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		} else {
 			addSurveyInformation(reports);
 		}
-
 		this.clickOnOKButton();
 	}
 
@@ -966,26 +969,34 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void selectCustomer(String customer) {
+		selectCustomer(customer,true);
+	}
+	public void selectCustomer(String customer, boolean confirm) {
 		if (dropdownCustomer.isDisplayed()) {
 			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
 			for (WebElement option : optionsCustomer) {
 				if (customer.equalsIgnoreCase(option.getText().trim())) {
 					option.click();
+					confirmInChangeCustomerDialog(confirm);
+					return;
 				}
-			}
-
-			confirmInChangeCustomerDialog();
+			}			
 		}
 	}
 
 	public boolean confirmInChangeCustomerDialog() {
-		if (dropdownCustomer.isDisplayed()) {
+		return confirmInChangeCustomerDialog(true);
+	}
+	public boolean confirmInChangeCustomerDialog(boolean confirm) {
 			if (this.isElementPresent(btnChangeCustomerXPath)) {
 				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", btnChangeCustomer);
+				if(confirm){
+				   js.executeScript("arguments[0].click();", btnChangeCustomer);
+				}else{
+					jsClick(btnCancelChangeCustomer);
+				}
 				return true;
 			}
-		}
 		return false;
 	}
 
@@ -1130,7 +1141,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 
 		addViewDetails(customer, boundary);
-
 		this.clickOnOKButton();
 	}
 
@@ -1445,7 +1455,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		String reportTitleXPath;
 		String createdByXPath;
 
-		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("tr"));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -1460,8 +1470,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
+			createdByXPath = "tr[" + rowNum + "]/td[3]";
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
@@ -1481,7 +1491,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					try {
 						if (rowSize == 1) {
 							this.btnReportViewer = getTable()
-									.findElement(By.xpath("//*[@id='datatable']/tbody/tr/td[5]/a[3]"));
+									.findElement(By.xpath("tr/td[5]/a[3]"));
 
 						} else {
 							int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
@@ -1492,7 +1502,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							}
 
 							this.btnReportViewer = getTable().findElement(
-									By.xpath("//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[3]"));
+									By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
 						}
 
 						return true;
@@ -1516,7 +1526,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 				this.waitForPageLoad();
 
-				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
 					loopCount = rowSize;
@@ -1539,7 +1549,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		WebElement createdByCell;
 		WebElement copyImg;
 
-		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("tr"));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -1551,14 +1561,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		this.waitForPageLoad();
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
+			createdByXPath = "tr[" + rowNum + "]/td[3]";
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
-				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[@title='Copy']"; // Don't use index for 'Copy' as it has diff values
+				copyImgXPath = "tr[" + rowNum + "]/td[5]/a[@title='Copy']"; // Don't use index for 'Copy' as it has diff values
 				copyImg = getReportTableCell(copyImgXPath);
 				jsClick(copyImg);
 				DBCache.INSTANCE.remove(Report.CACHE_KEY+rptTitle);
@@ -1571,7 +1581,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 				this.waitForPageLoad();
 
-				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 					loopCount = rowSize;
@@ -1593,7 +1603,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		WebElement rptTitleCell;
 		WebElement createdByCell;
 
-		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("tr"));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -1604,8 +1614,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
+			createdByXPath = "tr[" + rowNum + "]/td[3]";
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
@@ -1619,7 +1629,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				this.nextBtn.click();
 
 				this.waitForPageLoad();
-				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 					loopCount = rowSize;
@@ -2018,9 +2028,16 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return dest;
 	}
 
-	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage) {
-		ImagingUtility imageUtil = new ImagingUtility();
-		ImageComparisonResult result = imageUtil.compareImages(pathToActualImage, pathToBaseImage);
+	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage) throws IOException{	
+		return verifyActualImageWithBase(pathToActualImage, pathToBaseImage, false);
+	}
+	
+	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage, boolean generateBaseline) throws IOException {	
+		if(generateBaseline){
+			FileUtility.copyFile(pathToActualImage, pathToBaseImage);
+			return true;
+		}
+		ImageComparisonResult result = ImagingUtility.compareImages(pathToActualImage, pathToBaseImage);
 		if ((result.getFailureMessage() != null) && (result.isEqual() == true)) {
 			return false;
 		}
@@ -2479,19 +2496,19 @@ public class ReportsBasePage extends SurveyorBasePage {
 		switch (rmf) {
 		case Standard:
 			filtersFound = isAllSurveyModeShown() && isStandardSurveyModeShown() && isOperatorSurveyModeShown()
-			&& !isRapidResponseSurveyModeShown() && !isManualSurveyModeShown();
+			&& !isRapidResponseSurveyModeShown() && !isManualSurveyModeSelected();
 			break;
 		case RapidResponse:
 			filtersFound = isAllSurveyModeShown() && isStandardSurveyModeShown() && isOperatorSurveyModeShown()
-			&& isRapidResponseSurveyModeShown() && !isManualSurveyModeShown();
+			&& isRapidResponseSurveyModeShown() && !isManualSurveyModeSelected();
 			break;
 		case Manual:
-			filtersFound = isManualSurveyModeShown() && !isStandardSurveyModeShown() && !isOperatorSurveyModeShown()
+			filtersFound = isManualSurveyModeSelected() && !isStandardSurveyModeShown() && !isOperatorSurveyModeShown()
 			&& !isAllSurveyModeShown() && !isRapidResponseSurveyModeShown();
 			break;
 		default:
 			filtersFound = isAllSurveyModeShown() && isStandardSurveyModeShown() && isOperatorSurveyModeShown()
-			&& !isRapidResponseSurveyModeShown() && !isManualSurveyModeShown();
+			&& !isRapidResponseSurveyModeShown() && !isManualSurveyModeSelected();
 			break;
 		}
 		return filtersFound;
@@ -2515,6 +2532,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public boolean isManualSurveyModeShown() {
 		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterManual);
+	}
+	
+	public boolean isManualSurveyModeSelected() {
+		return inputSurModeFilterManual.isSelected();
 	}
 
 	/**
@@ -2576,7 +2597,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 * to be loaded
 	 */
 	public void clickOnSearchSurveyButton() {
-		jsClick(this.btnSurveySearch);
+		this.btnSurveySearch.click();		
 		this.waitForSurveyTabletoLoad();
 	}
 
