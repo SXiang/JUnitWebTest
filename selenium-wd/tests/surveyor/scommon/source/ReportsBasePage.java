@@ -418,6 +418,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = SURVEY_GROUP_DIVS_XPATH)
 	private WebElement surveyGroupDivs;
+	
+	private Integer reportGenerationTimeoutInSeconds = SurveyorConstants.ACTIONTIMEOUT + 900;
 
 	private static String surveyTableHeaderColumnBaseXPath = "//*[@id='datatableSurveys']/thead/tr/th[%d]";
 
@@ -593,6 +595,16 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return this.inputImgMapHeight.getText();
 	}
 
+	/************ Report Generation Timeout *************/
+
+	public Integer getReportGenerationTimeout() {
+		return reportGenerationTimeoutInSeconds;
+	}
+
+	public void setReportGenerationTimeout(Integer reportGenerationTimeout) {
+		this.reportGenerationTimeoutInSeconds = reportGenerationTimeout;
+	}
+	
 	/************ PDF Output Values *************/
 
 	public boolean isViewLisaSelected() {
@@ -1498,7 +1510,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 						return true;
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
-						if (elapsedTime >= (ACTIONTIMEOUT + 900 * 1000)) {
+						if (elapsedTime >= (getReportGenerationTimeout() * 1000)) {
 							return false;
 						}
 
