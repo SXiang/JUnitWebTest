@@ -101,6 +101,9 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	public boolean clickOnDisplayButton(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.clickOnDisplayButton", data, dataRowID);
 		getDriverViewPage().clickDisplayButton();
+		if (!getDriverViewPage().isDisplayMenuOpen()) {
+			this.getDriverViewPage().waitForDisplayMenuToOpen();
+		}
 		return true;
 	}
 
@@ -114,19 +117,30 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	public boolean clickOnGisButton(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.clickOnGisButton", data, dataRowID);
 		getDriverViewPage().clickGisButton();
+		if (!getDriverViewPage().isGisMenuOpen()) {
+			getDriverViewPage().waitForGisMenuToOpen();
+		}
+		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
 		return true;
 	}
 
 	public boolean clickOnMapButton(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.clickOnMapButton", data, dataRowID);
 		getDriverViewPage().clickMapButton();
+		if (!getDriverViewPage().isMapMenuOpen()) {
+			getDriverViewPage().waitForMapMenuToOpen();
+		} 
 		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
 		return true;
 	}
 
 	public boolean clickOnModeButton(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.clickOnModeButton", data, dataRowID);
+		this.waitForSignalRCallsToComplete();
 		getDriverViewPage().clickModeButton();
+		if (!getDriverViewPage().isModeMenuOpen()) {
+			getDriverViewPage().waitForModeMenuToOpen();
+		} 
 		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
 		return true;
 	}
@@ -214,6 +228,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.waitForPageLoad", data, dataRowID);
 		getDriverViewPage().waitForPageLoad();
 		getDriverViewPage().waitForConnectionComplete();
+		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
 		return true;
 	}
 	
@@ -924,6 +939,27 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	public boolean verifyWBTempButtonIsRed(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyWBTempButtonIsRed", data, dataRowID);
 		return getDriverViewPage().isWBTempButtonRed();
+	}
+
+	/**
+	 * Executes verifyStartSurveyIsNotShownOnMap action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyStartSurveyIsNotShownOnMap(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyStartSurveyIsNotShownOnMap", data, dataRowID);
+		return !getDriverViewPage().isStartSurveyButtonVisible();
+	}
+	/**
+	 * Executes verifyStopSurveyIsNotShownOnMap action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyStopSurveyIsNotShownOnMap(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyStopSurveyIsNotShownOnMap", data, dataRowID);
+		return !getDriverViewPage().isStopDrivingSurveyButtonVisible();
 	}
 
 	/* Verify EQ methods */

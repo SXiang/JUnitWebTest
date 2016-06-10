@@ -12,7 +12,6 @@ import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -315,16 +314,6 @@ public class SurveyViewPage extends BaseMapViewPage {
      */
     public SurveyViewPage clickStandardButton() {
         standard.click();
-        return this;
-    }
-
-    /**
-     * Click on Start Survey Button.
-     *
-     * @return the SurveyViewPage class instance.
-     */
-    public SurveyViewPage clickStartSurveyButton() {
-        startSurvey.click();
         return this;
     }
 

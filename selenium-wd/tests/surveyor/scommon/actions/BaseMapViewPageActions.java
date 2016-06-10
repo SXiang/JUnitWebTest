@@ -1127,26 +1127,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyStatusIsNotShownOnMap", data, dataRowID);
 		return !getBaseMapViewPageObject().isModeButtonVisible();
 	}
-	/**
-	 * Executes verifyStartSurveyIsNotShownOnMap action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyStartSurveyIsNotShownOnMap(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".verifyStartSurveyIsNotShownOnMap", data, dataRowID);
-		return !getBaseMapViewPageObject().isStartSurveyButtonVisible();
-	}
-	/**
-	 * Executes verifyStopSurveyIsNotShownOnMap action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyStopSurveyIsNotShownOnMap(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".verifyStopSurveyIsNotShownOnMap", data, dataRowID);
-		return !getBaseMapViewPageObject().isStopSurveyButtonVisible();
-	}
 	
 	/**
 	 * Executes verifyShutdownAnalyzerIsNotShownOnMap action.

@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.Log;
+import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
 import surveyor.dataaccess.source.ResourceKeys;
@@ -250,7 +251,17 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	@FindBy(id = "eq_warning_message")
 	@CacheLookup
 	protected WebElement eqModeDialogMessage;
+
+	@FindBy(id = "menu_layer")
+	@CacheLookup
+	protected WebElement modeMenu;
+
+	@FindBy(id = "start_survey_modal")
+	protected WebElement startSurveyModalDialog;
 	
+	@FindBy(xpath = "//*[@id='button_close_survey_modal']/..")
+	protected WebElement closeSurveyModalButton;
+
 	/**
 	 * @param driver
 	 * @param baseURL
@@ -258,9 +269,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 */
 	public DriverViewPage(WebDriver driver, TestSetup testSetup, String baseURL) {
 		super(driver, testSetup, baseURL, getPageFullUrl(baseURL));
-
-		this.open();
-		
 		Log.info("\nThe DriverView Page URL is: " + this.strPageURL);
 	}
 
@@ -711,6 +719,16 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	/**
+	 * Click on the close survey modal dialog.
+	 *
+	 * @return the DriverViewPage class instance.
+	 */
+	public DriverViewPage closeSurveyModalDialog() {
+		this.closeSurveyModalButton.click();
+		return this;
+	}
+	
+	/**
 	 * Click on Strong Button.
 	 *
 	 * @return the DriverViewPage class instance.
@@ -829,8 +847,10 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 */
 	public DriverViewPage startDrivingSurvey(String tag, SurveyTime surveyTime, SolarRadiation solarRadiation,
 			Wind wind, CloudCover cloudCover, SurveyType surveyType, float minAmplitude) {
+		this.waitForSignalRCallsToComplete();
 		openStartSurveyModalDialog();
 
+		this.waitForSignalRCallsToComplete();
 		this.setTagSurveyTextField(tag);
 		
 		selectSurveyTimeAndRadiationInSurveyDialog(surveyTime, solarRadiation, cloudCover);
@@ -963,17 +983,20 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	public void openStartSurveyModalDialog() {
+		this.waitForSignalRCallsToComplete();
 		Log.info("Opening the StartSurvey modal dialog..");
 		this.clickStartSurveyButton();
 		Log.info("Opened the StartSurvey modal dialog..");
-		this.waitForPageToLoad();
+		this.waitForStartSurveyModalDialogToShow();
+		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
 	}
 
 	public void openStartEQSurveyModalDialog() {
 		Log.info("Opening the StartSurvey modal dialog..");
 		this.clickStartEQSurveyButton();
 		Log.info("Opened the StartSurvey modal dialog..");
-		this.waitForPageToLoad();
+		this.waitForStartSurveyModalDialogToShow();
+		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
 	}
 
 	public DriverViewPage stopDrivingSurvey() {
@@ -1017,6 +1040,10 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		return this.eqModeDialogMessage.getText().equals(message);
 	}
 
+	public boolean isStartSurveyDialogVisible() {
+		return !this.startSurveyModalDialog.getAttribute("class").contains("ng-hide");
+	}
+
 	/**
 	 * Verify that current page URL matches the expected URL.
 	 *
@@ -1038,6 +1065,17 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return d.getPageSource().contains(STRPageContentText);
+			}
+		});
+	}
+
+	/**
+	 * Waits for the start survey modal dialog to show.
+	 */
+	public void waitForStartSurveyModalDialogToShow() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isStartSurveyDialogVisible();
 			}
 		});
 	}
@@ -1082,6 +1120,36 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return manualSurveySection.getAttribute("class").equalsIgnoreCase("");
+			}
+		});
+	}
+
+	public boolean isModeMenuOpen() {
+		return this.modeMenu.getAttribute("class").equalsIgnoreCase("");
+	}
+
+	public boolean isModeMenuClosed() {
+		return this.modeMenu.getAttribute("class").equalsIgnoreCase("ng-hide");
+	}
+
+	/**
+	 * Waits for the survey mode menu to open.
+	 */
+	public void waitForModeMenuToOpen() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isModeMenuOpen();
+			}
+		});
+	}
+
+	/**
+	 * Waits for the survey mode menu to close.
+	 */
+	public void waitForModeMenuToClose() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isModeMenuClosed();
 			}
 		});
 	}
