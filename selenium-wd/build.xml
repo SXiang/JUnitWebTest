@@ -275,6 +275,7 @@
 					<include name="**/ComplianceReportsPageTest3.class" />
 					<include name="**/ComplianceReportsPageTest4.class" />
 					<include name="**/ComplianceReportsPageTest_Ethane.class" />
+					<include name="**/ComplianceReportsPageTest5.class" />
 					<include name="**/ComplianceReportsPageTest6.class" />
 					<include name="**/ComplianceReportsPageTest8.class" />
 
