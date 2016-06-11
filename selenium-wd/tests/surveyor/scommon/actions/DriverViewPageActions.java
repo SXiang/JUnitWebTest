@@ -36,13 +36,17 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	private static final String CLS_DRIVER_VIEW_PAGE_ACTIONS = "DriverViewPageActions::";
 	
 	private DriverViewDataReader dataReader = null;
-
 	public static DriverViewDataRow workingDataRow = null;    // Stores the workingDataRow from startSurvey action
 
 	public DriverViewPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup);
 		initializePageObject(driver, new DriverViewPage(driver, testSetup, strBaseURL));
 		setDataReader(new DriverViewDataReader(this.excelUtility));
+	}
+
+	// Note: Not thread-safe.
+	public static void clearStoredObjects() {
+		workingDataRow = null;
 	}
 
 	private DriverViewPage createNewPageObject() {

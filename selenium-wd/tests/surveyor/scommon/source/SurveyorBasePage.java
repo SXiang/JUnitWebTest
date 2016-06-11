@@ -44,6 +44,7 @@ import surveyor.scommon.source.SurveyorConstants.UserTimezone;
 public class SurveyorBasePage extends BasePage {
 
 	protected static final String DATA_TABLE_XPATH = "//*[@id='datatable']/tbody";
+	protected static final String DATATABLE_TBODY_TR = "//*[@id='datatable']/tbody/tr";
 	protected static final String DATATABLE_RECORDS_ELEMENT_XPATH = "datatable_info";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/a")
@@ -256,10 +257,14 @@ public class SurveyorBasePage extends BasePage {
 
 	public void setPagination(String str) {
 		for (WebElement option : paginationOptions) {
-			if (str.equals(option.getText().trim())) {
+			try{
+				if (str.equals(option.getText().trim())) {
 				Log.info(String.format("Select pagination - '%s'",str));
-				option.click();
-				break;
+					option.click();
+					break;
+				}
+			}catch(StaleElementReferenceException e){
+				continue;
 			}
 		}
 	}

@@ -1,6 +1,5 @@
 package surveyor.scommon.actions;
 
-import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
@@ -12,15 +11,14 @@ import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
-import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
-import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static common.source.RegexUtility.REGEX_PATTEN_SPECIAL_CHARACTERS;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -38,20 +36,14 @@ import common.source.BaseHelper;
 import common.source.ExcelUtility;
 import common.source.FileUtility;
 import common.source.Log;
-import common.source.LogCategory;
-import common.source.LogHelper;
 import common.source.NumberUtility;
-import common.source.PDFTableUtility;
 import common.source.PDFTableUtility.PDFTable;
 import common.source.PDFUtility;
 import common.source.RegexUtility;
 import common.source.SortHelper;
 import common.source.TestContext;
 import common.source.TestSetup;
-import surveyor.api.source.ReportJob;
-import surveyor.api.source.ReportJobsStat;
 import surveyor.dataaccess.source.Customer;
-import surveyor.dataaccess.source.ReportCompliance;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataaccess.source.User;
@@ -82,7 +74,6 @@ import surveyor.scommon.source.ComplianceReportsPage.ReportViewerThumbnailType;
 import surveyor.scommon.source.LatLongSelectionControl;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
-import surveyor.scommon.source.Reports.ReportJobType;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.ReportsCompliance.IsotopicAnalysisTableColumns;
@@ -104,6 +95,13 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		super(driver, strBaseURL, testSetup);
 		initializePageObject(driver, new ComplianceReportsPage(driver, strBaseURL, testSetup));
 		setDataReader(new ComplianceReportDataReader(this.excelUtility));
+	}
+
+	// Note: Not thread-safe.
+	public static void clearStoredObjects() {
+		workingReportsComp = null;
+		workingDataRow = null;
+		workingReportViewsDataRows = null;
 	}
 	
 	private void addView(Integer dataRowID) throws Exception {
@@ -1340,6 +1338,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @return - returns whether the action was successful or not.
 	 * @throws Exception 
 	 */
+
 	public boolean selectCustomer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.selectCustomer", data, dataRowID);
 		String customer;
@@ -2152,8 +2151,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyShapeZIPThumbnailIsShownInComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyShapeZIPThumbnailIsShownInComplianceViewer", data, dataRowID);
 		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
-		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceZipShape);
-		return true;
+		return this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceZipShape);
 	}
 
 	/**
@@ -2430,7 +2428,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 
 	public boolean clickOnCloseReportViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.clickOnCloseReportViewer", data, dataRowID);
-		this.getComplianceReportsPage().clickOnCloseReportViewer();
+		this.getComplianceReportsPage().clickOnCloseReportViewer(data);
 		return true;
 	}
 	
@@ -2926,8 +2924,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifySSRSImagesWithBaselines(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifySSRSImagesWithBaselines", data, dataRowID);
 		ComplianceReportsDataRow complianceReportsDataRow = getComplianceReportsDataRow(dataRowID);
-		String reportName = this.getComplianceReportsPage().getReportPDFFileName(complianceReportsDataRow.title, false);
-		this.getComplianceReportsPage().checkAndGenerateBaselineSSRSImage(reportName, complianceReportsDataRow.tCID);
 		String downloadPath = getDownloadPath(ReportFileType.PDF);
 		return this.getComplianceReportsPage().verifySSRSImages(downloadPath, complianceReportsDataRow.title, 
 				complianceReportsDataRow.tCID);
@@ -3019,15 +3015,11 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyViewsImagesWithBaselines(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyViewsImagesWithBaselines", data, dataRowID);
 		boolean retVal = true;
-		
+		boolean inZipFolder = data.equalsIgnoreCase("false")?false:true;		
 		ComplianceReportsDataRow complianceReportsDataRow = getComplianceReportsDataRow(dataRowID);
-		String reportName = this.getComplianceReportsPage().getReportPDFFileName(complianceReportsDataRow.title, false);
-		String unzipFolder = TestContext.INSTANCE.getTestSetup().getDownloadPath() + reportName;
-		this.getComplianceReportsPage().checkAndGenerateBaselineViewImages(unzipFolder, complianceReportsDataRow.tCID);
-
+		
 		// for each view in the test case verify that the view image is present.
-		List<Integer> viewRowIDs = ActionArguments.getNumericList(complianceReportsDataRow.reportViewRowIDs);
-		boolean inZipFolder = data.equalsIgnoreCase("false")?false:true;
+		List<Integer> viewRowIDs = ActionArguments.getNumericList(complianceReportsDataRow.reportViewRowIDs);		
 		for (Integer viewRowID : viewRowIDs) {
 			ReportViewsDataReader viewsDataReader = new ReportViewsDataReader(this.excelUtility);
 			ReportViewsDataRow viewsDataRow = viewsDataReader.getDataRow(viewRowID);
@@ -3246,7 +3238,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean verifyManualSurveyModeIsShownOnPage(String data, Integer dataRowID) {
 		logAction("ComplianceReportsPageActions.verifyManualSurveyModeIsShownOnPage", data, dataRowID);
-		return this.getComplianceReportsPage().isManualSurveyModeShown();
+		return this.getComplianceReportsPage().isManualSurveyModeSelected();
 	}
  
 	/**
@@ -3287,7 +3279,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return this.getComplianceReportsPage().verifySSRSPDFFooter(downloadPath, 
 				workingDataRow.title, expectedSoftwareVersion , LoginPageActions.workingDataRow.username);
 	}
- 
+
 	/**
 	 * Executes verifySelectedSurveysAreForSpecifiedCustomer action.
 	 * @param data - specifies the input data passed to the action.

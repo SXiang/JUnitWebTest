@@ -35,6 +35,7 @@ import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.DataAnnotations;
+import surveyor.scommon.actions.PageActionsStore;
 
 /**
  * @author zlu
@@ -193,6 +194,7 @@ public class SurveyorBaseTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		PageActionsStore.INSTANCE.clearStore();
 	}
 
 	/**

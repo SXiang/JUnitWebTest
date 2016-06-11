@@ -23,6 +23,11 @@ public class ManageLocationPageActions extends BasePageActions {
 		this.dataReader = customerDataReader;	
 	}
 
+	// Note: Not thread-safe.
+	public static void clearStoredObjects() {
+		workingDataRow = null;
+	}
+
 	/**
 	 * Executes open action.
 	 * @param data - specifies the input data passed to the action.

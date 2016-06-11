@@ -71,16 +71,6 @@ public class DataTablePage extends BasePage {
 	/**
 	 * 
 	 * @param driver
-	 *            - the search context will be the root of the document
-	 * @return instance of this page
-	 */
-	public static DataTablePage getDataTablePage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
-		return getDataTablePage(driver, driver, testSetup, strBaseURL, strPageURL);
-	}
-
-	/**
-	 * 
-	 * @param driver
 	 * @param searchContext
 	 *            - The root WebElement of this datatable
 	 * @return instance of this page

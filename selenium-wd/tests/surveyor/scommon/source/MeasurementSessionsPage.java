@@ -390,6 +390,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		File dir = new File(downloadPath);
 		String[] files = dir.list();
 
+		String datFileFullPath = Paths.get(downloadPath, datFileName).toString();
 		for (int i = 0; i < files.length; i++) {
 			if (files[i].startsWith(zipFileNameBase) && files[i].endsWith(".zip") && files[i].contains(tag) && files[i].contains(analyzer)) {
 				zipFileName = files[i];
@@ -399,11 +400,11 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 					BaseHelper.deCompressZipFile(zipFileName, downloadPath, true);
 
 					if (datFileName.contains(DRIVINGSURVEYSEXPORTSURVEY)) {
-						Assert.assertTrue((verifySurveyExportFile(downloadPath + datFileName, analyzer, startEpoch, endEpoch)));
+						Assert.assertTrue((verifySurveyExportFile(datFileFullPath, analyzer, startEpoch, endEpoch)));
 					}
 					/*
-					 * else if (datFileName.contains(DRIVINGSURVEYSEXPORTPEAKS)){ Assert.assertTrue((verifyPeakExportFile(downloadPath + File.separator + datFileName, tag, analyzer, mode))); } else if
-					 * (datFileName.contains(DRIVINGSURVEYSEXPORTANALYSIS)){ Assert.assertTrue((verifyAnalysisExportFile(downloadPath + File.separator + datFileName, tag, analyzer))); }
+					 * else if (datFileName.contains(DRIVINGSURVEYSEXPORTPEAKS)){ Assert.assertTrue((verifyPeakExportFile(Paths.get(downloadPath, datFileName).toString(), tag, analyzer, mode))); } else if
+					 * (datFileName.contains(DRIVINGSURVEYSEXPORTANALYSIS)){ Assert.assertTrue((verifyAnalysisExportFile(Paths.get(downloadPath, datFileName).toString(), tag, analyzer))); }
 					 */ } catch (Exception e) {
 					Log.error(e.toString());
 					return false;
@@ -412,12 +413,12 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		}
 
 		if (datFileName != null) {
-			if (BaseHelper.validateDatFile(downloadPath + datFileName)) {
+			if (BaseHelper.validateDatFile(datFileFullPath)) {
 				if (delete) {
-					File file = new File(downloadPath + datFileName);
+					File file = new File(datFileFullPath);
 					file.delete();
 
-					file = new File(downloadPath + zipFileName);
+					file = new File(Paths.get(downloadPath, zipFileName).toString());
 					file.delete();
 				}
 				return true;
