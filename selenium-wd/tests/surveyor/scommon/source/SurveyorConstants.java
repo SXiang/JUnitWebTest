@@ -146,7 +146,19 @@ public final class SurveyorConstants {
 	public static final String NELON_SMALL = "-121.97592854325212";
 	public static final String SWLAT_SMALL = "37.4167629940449";
 	public static final String SWLON_SMALL = "-121.98026299302019";
+	
+	// Area in the range --> less than 5 sqms
+	public static final String NELAT_XSMALL = "37.420000994238805";
+	public static final String NELON_XSMALL = "-121.97592854325212";
+	public static final String SWLAT_XSMALL = "37.420000994238705";
+	public static final String SWLON_XSMALL = "-121.97592854325312";
 
+	// Area in the range --> grate than 15 sqkms
+	public static final String NELAT_XLARGE = "37.420000994238805";
+	public static final String NELON_XLARGE = "-121.97592854325212";
+	public static final String SWLAT_XLARGE = "39.4167629940449";
+	public static final String SWLON_XLARGE = "-123.98026299302019";
+	
 	public static final int  X_OFFSET = 150;
 	public static final int Y_OFFSET = 150;
 	public static final int RECT_WIDTH = 100;
@@ -330,6 +342,10 @@ public final class SurveyorConstants {
 	public static final String CR_CF_FORECASTBOUNDARYINVALID_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_CoverageForecastBoundaryInvalidMessage);
 	public static final String CR_SURVEYMISSING_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_SurveyMissingMessage);
 	public static final String CR_NOCOVERAGEFORECASTAVAILABLE_MESSAGE = "No Coverage Forecast Available";
+	public static final String DIALOG_SELECTEDAREALSTOOLARGE_MESSAGE = Resources.getResource(ResourceKeys.Dialog_SelectedArealsTooLarge);
+	public static final String DIALOG_SELECTEDAREALSTOOSMALL_MESSAGE = Resources.getResource(ResourceKeys.Dialog_SelectedArealsTooSmall);
+	public static final String CR_BOUNDARYMINSIZE_MESSAGE = Resources.getResource(ResourceKeys.ComplianceReport_BoundaryMinSizeMessage);
+
 	/*
 	 * Timeout constants
 	 */
