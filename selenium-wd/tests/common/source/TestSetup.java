@@ -33,6 +33,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.runner.Description;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -194,7 +195,7 @@ public class TestSetup {
 
 	private void driverSetup() {
 		try {
-			if (this.runningOnRemoteServer != null && this.runningOnRemoteServer.trim().equalsIgnoreCase("Yes")
+			if (this.runningOnRemoteServer != null && this.runningOnRemoteServer.trim().equalsIgnoreCase("true")
 					&& this.browser != null) {
 				switch (this.browser.trim()) {
 				case "chrome":
@@ -202,14 +203,14 @@ public class TestSetup {
 					setChromeBrowserCapabilitiesForGrid();
 					break;
 				case "ie":
-					driver = new RemoteWebDriver(new URL("http://" + this.remoteServerHost + ":4444/wd/hub/"),
+					driver = new RemoteWebDriver(new URL("http://" + this.remoteServerHost + ":" + this.remoteServerPort + "/wd/hub/"),
 							DesiredCapabilities.internetExplorer());
 					break;
 				case "ff":
 
 					this.capabilities = DesiredCapabilities.firefox();
 					this.capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-					driver = new RemoteWebDriver(new URL("http://" + this.remoteServerHost + ":4444/wd/hub/"),
+					driver = new RemoteWebDriver(new URL("http://" + this.remoteServerHost + ":" + this.remoteServerPort + "/wd/hub/"),
 							this.capabilities);
 					break;
 				}
@@ -282,6 +283,7 @@ public class TestSetup {
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("download.default_directory", this.downloadPath);
 		this.capabilities = DesiredCapabilities.chrome();
+		this.capabilities.setPlatform(Platform.WINDOWS);
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("start-maximized");
 		options.addArguments(Arrays.asList("--incognito", "test-type"));
@@ -291,7 +293,7 @@ public class TestSetup {
 		if (proxy != null) {
 			this.capabilities.setCapability(CapabilityType.PROXY, proxy);
 		}
-		driver = new RemoteWebDriver(new URL("http://" + this.remoteServerHost + ":4444/wd/hub/"), this.capabilities);
+		driver = new RemoteWebDriver(new URL("http://" + this.remoteServerHost + ":" + this.remoteServerPort + "/wd/hub/"), this.capabilities);
 	}
 
 	/* NETWORK PROXY related methods */

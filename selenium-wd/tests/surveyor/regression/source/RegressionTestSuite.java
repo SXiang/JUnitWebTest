@@ -6,9 +6,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import com.googlecode.junittoolbox.ParallelSuite;
+
 import common.source.Log;
 
-@RunWith(Suite.class)
+@RunWith(ParallelSuite.class)
 @SuiteClasses({ 
 	ACLandVisibilityTest.class,
 	HomePageTest.class,
