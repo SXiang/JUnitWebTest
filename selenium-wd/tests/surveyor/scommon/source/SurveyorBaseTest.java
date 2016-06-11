@@ -154,8 +154,8 @@ public class SurveyorBaseTest {
 		TestContext.INSTANCE.setTestSetup(testSetup);
 		if(screenShotsDir==null){
 			screenShotsDir = TestSetup.getExecutionPath() + TestSetup.reportDir + testSetup.getTestReportCategory();
-			FileUtility.deleteFilesInDirectory(Paths.get(screenShotsDir+"/"+screenShotsSubFolder));
-			FileUtility.createDirectoryIfNotExists(screenShotsDir+"/"+screenShotsSubFolder);
+			FileUtility.deleteFilesInDirectory(Paths.get(screenShotsDir,screenShotsSubFolder));
+			FileUtility.createDirectoryIfNotExists(Paths.get(screenShotsDir,screenShotsSubFolder).toString());
 		}		
 		Log.info("debuggug null - driver:***:" +driver);
 		driver.manage().deleteAllCookies();
