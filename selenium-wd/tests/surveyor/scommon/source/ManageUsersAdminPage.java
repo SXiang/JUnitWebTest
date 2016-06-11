@@ -40,29 +40,37 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 	}
 	
 	public void addNewUser(String email, String password, String role) {
+		Log.clickElementInfo("Add New Customer User");
 		this.btnAddNewCustomerUser.click();
-		
+		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
+		Log.info("Set password - '"+password+"'");
 		this.inputPassword.sendKeys(password);
 		this.inputPasswordConfirm.sendKeys(password);
 		
 		List<WebElement> roleOptions = this.dropDownRole.findElements(By.tagName("option"));
 		for (WebElement roleOption : roleOptions) {
-			if (roleOption.getText().trim().equalsIgnoreCase(role))
+			if (roleOption.getText().trim().equalsIgnoreCase(role)){
+				Log.info("Selection Role - '"+roleOption+"'");
 				roleOption.click();
+				break;
+			}
 		}		
-		
+		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 		
 		if (isElementPresent(this.panelDuplicationErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
+			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
+				Log.clickElementInfo("Cancel");
 				this.cancelAddBtn.click();
+			}
 		}
 	}
 
 	public void addNewUser(String email, String password, String location, String role, String timeZone) {
+		Log.clickElementInfo("Add New Customer User");
 		this.btnAddNewCustomerUser.click();
 		
 		this.waitForNewPageLoad();
@@ -70,74 +78,99 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		Select droplist = new Select(this.dropDownCustomer);
 		droplist.selectByVisibleText(location);
 
+		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
+		Log.info("Set password - '"+password+"'");
 		this.inputPassword.sendKeys(password);
 		this.inputPasswordConfirm.sendKeys(password);
 		
 		List<WebElement> roleOptions = this.dropDownRole.findElements(By.tagName("option"));
 		for (WebElement roleOption : roleOptions) {
-			if (roleOption.getText().trim().equalsIgnoreCase(role))
+			if (roleOption.getText().trim().equalsIgnoreCase(role)){
+				Log.info("Selection Role - '"+roleOption+"'");
 				roleOption.click();
+				break;
+			}
 		}
 		
 		List<WebElement> tzOptions = this.dropDownRole.findElements(By.tagName("option"));
 		for (WebElement tzOption : tzOptions) {
-			if (tzOption.getText().trim().equalsIgnoreCase(timeZone))
+			if (tzOption.getText().trim().equalsIgnoreCase(timeZone)){
+				Log.info("Selection Role - '"+tzOption+"'");
 				tzOption.click();
+				break;
+			}
 		}		
-		
+		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 		
 		if (isElementPresent(this.panelDuplicationErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
+			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
+				Log.clickElementInfo("Cancel");
 				this.cancelAddBtn.click();
+			}
 		}
 		
 		this.waitForPageLoad();
 	}
 	
 	public void addNewUser(String email, String password, String location, String role, String timeZone, boolean accountEnabled) {
+		Log.clickElementInfo("Add New Customer User");
 		this.btnAddNewCustomerUser.click();
 		
 		this.waitForNewPageLoad();
 		
 		Select droplist = new Select(this.dropDownCustomer);
 		droplist.selectByVisibleText(location);
-		
+
+		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
+		Log.info("Set password - '"+password+"'");
 		this.inputPassword.sendKeys(password);
 		this.inputPasswordConfirm.sendKeys(password);
 		
 		List<WebElement> roleOptions = this.dropDownRole.findElements(By.tagName("option"));
 		for (WebElement roleOption : roleOptions) {
-			if (roleOption.getText().trim().equalsIgnoreCase(role))
+			if (roleOption.getText().trim().equalsIgnoreCase(role)){
+				Log.info("Selection Role - '"+roleOption+"'");
 				roleOption.click();
+				break;
+			}
 		}
 		
 		List<WebElement> tzOptions = this.dropDownRole.findElements(By.tagName("option"));
 		for (WebElement tzOption : tzOptions) {
-			if (tzOption.getText().trim().equalsIgnoreCase(timeZone))
+			if (tzOption.getText().trim().equalsIgnoreCase(timeZone)){
+				Log.info("Selection Role - '"+tzOption+"'");
 				tzOption.click();
+				break;
+			}
 		}
 		
 		if (accountEnabled) {
-			if (!inputAccountEnabled.isSelected())
+			if (!inputAccountEnabled.isSelected()){
+				Log.info("Check to enable account");
 				inputAccountEnabled.click();
+			}
 		}
 		else {
-			if (inputAccountEnabled.isSelected())
+			if (inputAccountEnabled.isSelected()){
+				Log.info("Uncheck to disable account");
 				inputAccountEnabled.click();
+			}
 		}		
-		
+		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 		
 		if (isElementPresent(this.panelDuplicationErrorXPath)){
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
+			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
+				Log.clickElementInfo("Cancel");
 				this.cancelAddBtn.click();
+			}
 		}
 		
 		this.waitForPageLoad();

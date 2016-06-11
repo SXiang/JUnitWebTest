@@ -68,7 +68,7 @@ public class Log {
 	}
 
 	public static void clickElementInfo(String name, ElementType type){
-		info("Click on "+type+" - "+ name);
+		info("Click on "+type+" - "+ name, LogCategory.ClickWebElement);
 	}
 	
 	public static void error(String name, Throwable e){

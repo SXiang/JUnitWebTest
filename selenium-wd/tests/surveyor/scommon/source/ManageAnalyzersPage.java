@@ -78,36 +78,49 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	}
 
 	public void addNewAnalyzer(String serialNumber, String sharedKey, String cuslocsur) {
+		Log.clickElementInfo("Add New Analyzer");
 		this.btnAddNewAnalyzer.click();
 		this.waitForNewPageLoad();
 
+		Log.info("Set serial number - '"+serialNumber+"'");
 		this.inputSerialNumber.sendKeys(serialNumber);
+		Log.info("Set shared key - '"+sharedKey+"'");
 		this.inputSharedKey.sendKeys(sharedKey);
 
 		List<WebElement> options = this.dropDownSurveyor.findElements(By.tagName("option"));
 		for (WebElement option : options) {
-			if (cuslocsur.equals(option.getText().trim()))
+			if (cuslocsur.equals(option.getText().trim())){
+				Log.info("Select surveyor '"+cuslocsur+"'");
 				option.click();
+				break;
+			}
 		}
 
+		Log.clickElementInfo("OK");
 		this.btnOk.click();
 	}
 
 	public boolean addNewAnalyzer(String serialNumber, String sharedKey, String surveyor, String customerName, String locationName) {
 		boolean result = true;
+		Log.clickElementInfo("Add New Analyzer");
 		this.btnAddNewAnalyzer.click();
 		this.waitForNewPageLoad();
 
+		Log.info("Set serial number - '"+serialNumber+"'");
 		this.inputSerialNumber.sendKeys(serialNumber);
+		Log.info("Set shared key - '"+sharedKey+"'");
 		this.inputSharedKey.sendKeys(sharedKey);
 
 		List<WebElement> options = this.dropDownSurveyor.findElements(By.tagName("option"));
 		for (WebElement option : options) {
 			if (option.getText().trim().equalsIgnoreCase(customerName + " - " + locationName + " - " + surveyor)) {
+				Log.info("Select surveyor '"+customerName + " - " + locationName + " - " + surveyor+"'");
 				option.click();
+				break;
 			}
 		}
 
+		Log.clickElementInfo("OK");
 		this.btnOk.click();
 
 		if (isElementPresent(this.panelDuplicationErrorXPath)) {
@@ -115,6 +128,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 			String errMsg = panelError.getText();
 			if (errMsg.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
 				result = false;
+				Log.clickElementInfo("Cancel");
 				this.btnCancel.click();
 			}
 		}
@@ -232,11 +246,16 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 
 				List<WebElement> options = this.dropDownSurveyor.findElements(By.tagName("option"));
 				for (WebElement option : options) {
-					if (cuslocsur.equals(option.getText().trim()))
+					if (cuslocsur.equals(option.getText().trim())){
+						Log.info("Select surveyor '"+cuslocsur+"'");
 						option.click();
+						break;
+					}
 				}
 
+				Log.clickElementInfo("OK");
 				this.btnOk.click();
+				
 				if (confirm) {	
 					this.waitForPageToLoad();
 					if (getTable().isDisplayed()) {
@@ -250,6 +269,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				if (isElementPresent(this.panelDuplicationErrorXPath)) {
 					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
 					if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
+						Log.clickElementInfo("Cancel");
 						this.btnCancel.click();
 						return false;
 					}
@@ -257,6 +277,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 
 			}
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				List<WebElement> newRows = getTable().findElements(By.xpath("/tr"));
@@ -322,20 +343,26 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				this.waitForEditPageLoad();
 
 				if (!analyzerNew.isEmpty()) {
+					Log.info("Set serial number - '"+analyzerNew+"'");
 					this.inputSerialNumber.sendKeys(analyzerNew);
 				}
 
 				if (!keyNew.isEmpty()) {
+					Log.info("Set shared key - '"+keyNew+"'");
 					this.inputSharedKey.clear();
 					this.inputSharedKey.sendKeys(keyNew);
 				}
 
 				List<WebElement> options = this.dropDownSurveyor.findElements(By.tagName("option"));
 				for (WebElement option : options) {
-					if (cuslocsur.equals(option.getText().trim()))
+					if (cuslocsur.equals(option.getText().trim())){
+						Log.info("Select surveyor '"+cuslocsur+"'");
 						option.click();
+						break;
+					}
 				}
 
+				Log.clickElementInfo("OK");
 				this.btnOk.click();
 				this.waitForPageToLoad();
 
@@ -345,6 +372,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				if (isElementPresent(this.panelDuplicationErrorXPath)) {
 					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
 					if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
+						Log.clickElementInfo("Cancel");
 						this.btnCancel.click();
 						return false;
 					}

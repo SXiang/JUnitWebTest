@@ -5,6 +5,7 @@ package surveyor.scommon.source;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Locale;
@@ -152,8 +153,10 @@ public class SurveyorBaseTest {
 		TestContext.INSTANCE.setTestSetup(testSetup);
 		if(screenShotsDir==null){
 			screenShotsDir = TestSetup.getExecutionPath() + TestSetup.reportDir + testSetup.getTestReportCategory();
-			FileUtility.deleteFilesInDirectory(Paths.get(screenShotsDir+"/"+screenShotsSubFolder));
-			FileUtility.createDirectoryIfNotExists(screenShotsDir+"/"+screenShotsSubFolder);
+			Path screenShotsPath = Paths.get(screenShotsDir, screenShotsSubFolder);
+			Log.info(String.format("Create screenshots foler for this test - '%s'", screenShotsPath));
+			FileUtility.deleteFilesInDirectory(screenShotsPath);
+			FileUtility.createDirectoryIfNotExists(screenShotsPath.toString());
 		}		
 		Log.info("debuggug null - driver:***:" +driver);
 		driver.manage().deleteAllCookies();

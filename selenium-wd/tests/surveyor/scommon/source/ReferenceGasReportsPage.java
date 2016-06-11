@@ -74,15 +74,19 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	private void addNewReport(String title, String timeZone, String surUnit, String startDate, String endDate) {
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		Log.clickElementInfo("New RefGas Report");
 		this.btnNewRefGasRpt.click();
 
+		Log.info(String.format("Input title - '%s'", title));
 		this.inputTitle.clear();
 		this.inputTitle.sendKeys(title);
 
 		List<WebElement> optionsTZ = this.cBoxTimezone.findElements(By.tagName("option"));
 		for (WebElement option : optionsTZ) {
-			if ((timeZone).equalsIgnoreCase(option.getText().trim())) {
+			if ((timeZone).equalsIgnoreCase(option.getText().trim())){
+				Log.info(String.format("Select Timezone - '%s'", timeZone));
 				option.click();
+				break;
 			}
 		}
 
@@ -90,7 +94,9 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 			List<WebElement> optionsSU = this.cbSurveyUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsSU) {
 				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
+					Log.info(String.format("Select Surveyor Unit - '%s'", surUnit));
 					option.click();
+					break;
 				}
 			}
 		}
@@ -103,22 +109,26 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 
 		if (testSetup.isRunningDebug())
 			testSetup.slowdownInSeconds(3);
-
+		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 	}
 
 	public void addNewReport(String title, String timeZone, String surUnit, String startDate, String endDate, int noOfPreStartMonth, int noOfPreEndMonth) {
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		Log.clickElementInfo("New RefGas Report");
 		this.btnNewRefGasRpt.click();
 
+		Log.info(String.format("Input title - '%s'", title));
 		this.inputTitle.clear();
 		this.inputTitle.sendKeys(title);
 
 		List<WebElement> optionsTZ = this.cBoxTimezone.findElements(By.tagName("option"));
 		for (WebElement option : optionsTZ) {
 			if ((timeZone).equalsIgnoreCase(option.getText().trim())) {
+				Log.info(String.format("Select Timezone - '%s'", timeZone));
 				option.click();
+				break;
 			}
 		}
 
@@ -126,7 +136,9 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 			List<WebElement> optionsSU = this.cbSurveyUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsSU) {
 				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
+					Log.info(String.format("Select Surveyor Unit - '%s'", surUnit));
 					option.click();
+					break;
 				}
 			}
 		}
@@ -139,7 +151,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 
 		if (testSetup.isRunningDebug())
 			testSetup.slowdownInSeconds(3);
-
+		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 	}
 
@@ -189,6 +201,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 
 				while (bContinue) {
 					try {
+						Log.clickElementInfo("Download");
 						this.btnDownload.click();
 						testSetup.slowdownInSeconds(15);
 						return true;
@@ -251,6 +264,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -302,21 +316,27 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 		try {
 			String pdfInText = (pdfUtility.extractPDFText(fullDownloadPath));
 			if (!pdfInText.contains(STRReportTitle)) {
+				Log.error(String.format("Report title not found in pdf - '%s'", STRReportTitle));
 				return false;
 			}
 			if (!pdfInText.contains(STRReportSubTitle)) {
+				Log.error(String.format("Sub-Title not found in pdf - '%s'", STRReportSubTitle));
 				return false;
 			}
 			if (!pdfInText.contains(STRReportTableColumnDate)) {
+				Log.error(String.format("Date not found in pdf - '%s'", STRReportTableColumnDate));
 				return false;
 			}
 			if (!pdfInText.contains(STRReportTableColumnUserName)) {
+				Log.error(String.format("User Name not found in pdf - '%s'", STRReportTableColumnUserName));
 				return false;
 			}
 			if (!pdfInText.contains(STRReportTableColumnLotNumber)) {
+				Log.error(String.format("Lot Number not found in pdf - '%s'", STRReportTableColumnLotNumber));
 				return false;
 			}
 			if (!pdfInText.contains(STRReportTableColumnTestResult)) {
+				Log.error(String.format("Test Result not found in pdf - '%s'", STRReportTableColumnTestResult));
 				return false;
 			}
 		} catch (IOException e) {
@@ -334,7 +354,9 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 			String pdfInText = (pdfUtility.extractPDFText(fullDownloadPath));
 			Iterator<String> inputIterator = inputs.iterator();
 			while (inputIterator.hasNext()) {
-				if (!pdfInText.contains(inputIterator.next())) {
+				String userInput = inputIterator.next();
+				if (!pdfInText.contains(userInput)) {
+					Log.error(String.format("User Input not found in pdf - '%s'", userInput));
 					return false;
 				}
 			}
@@ -420,13 +442,14 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyCancelButtonFunctionality() {
+		Log.clickElementInfo("New RefGas Report");
 		this.btnNewRefGasRpt.click();
 		this.waitForNewPageLoad();
+		Log.clickElementInfo("Cancel");
 		this.btnCancel.click();
 		this.waitForPageLoad();
 		if (isElementPresent(strNewRefGasRpt))
 			return true;
-
 		return false;
 	}
 	

@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import common.source.Log;
 import common.source.TestSetup;
 
 /**
@@ -86,6 +87,7 @@ public class ManageSurveyorHistoriesAdminPage extends
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 
 				this.testSetup.slowdownInSeconds(this.testSetup

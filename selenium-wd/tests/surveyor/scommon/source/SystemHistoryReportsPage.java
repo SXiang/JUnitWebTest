@@ -68,15 +68,18 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 	private void addNewReport(String title, String timeZone, String surUnit, String startDate, String endDate) {
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		Log.clickElementInfo("Add New SysHistory Report");
 		this.btnNewSysHistoryRpt.click();
-
+		Log.info("Set title - '"+title+"'");
 		this.inputTitle.clear();
 		this.inputTitle.sendKeys(title);
 
 		List<WebElement> optionsTZ = this.cBoxTimezone.findElements(By.tagName("option"));
 		for (WebElement option : optionsTZ) {
 			if ((timeZone).equalsIgnoreCase(option.getText().trim())) {
+				Log.info("Select Timezone - '"+timeZone+"'");
 				option.click();
+				break;
 			}
 		}
 
@@ -84,7 +87,9 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 			List<WebElement> optionsSU = this.cbSurveyUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsSU) {
 				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
+					Log.info("Select Survey Unit - '"+surUnit+"'");
 					option.click();
+					break;
 				}
 			}
 		}
@@ -97,7 +102,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 
 		if (testSetup.isRunningDebug())
 			testSetup.slowdownInSeconds(3);
-
+		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 	}
 
@@ -146,6 +151,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 
 				while (bContinue) {
 					try {
+						Log.clickElementInfo("Download");
 						this.btnDownload.click();
 						testSetup.slowdownInSeconds(15);
 						return true;
@@ -160,6 +166,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -210,6 +217,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -266,7 +274,9 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyCancelButtonFunctionality() {
+		Log.clickElementInfo("New SysHistory Report");
 		this.btnNewSysHistoryRpt.click();
+		Log.clickElementInfo("Cancel");
 		this.btnCancel.click();
 		testSetup.slowdownInSeconds(3);
 
@@ -284,18 +294,23 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 		try {
 			String pdfInText = (pdfUtility.extractPDFText(fullDownloadPath));
 			if (!pdfInText.contains(STRReportTitle)) {
+				Log.error(String.format("Report title not found in pdf - '%s'", STRReportTitle));
 				return false;
 			}
 			if (!pdfInText.contains(STRRptSubHeading)) {
+				Log.error(String.format("Sub-Heading not found in pdf - '%s'", STRRptSubHeading));
 				return false;
 			}
 			if (!pdfInText.contains(STRRptColumnDate)) {
+				Log.error(String.format("Column Date not found in pdf - '%s'", STRRptColumnDate));
 				return false;
 			}
 			if (!pdfInText.contains(STRRptColumnUser)) {
+				Log.error(String.format("Column User not found in pdf - '%s'", STRRptColumnUser));
 				return false;
 			}
 			if (!pdfInText.contains(STRRptColumnNote)) {
+				Log.error(String.format("Column Note not found in pdf - '%s'", STRRptColumnNote));
 				return false;
 			}
 		} catch (IOException e) {
@@ -313,7 +328,9 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 			String pdfInText = (pdfUtility.extractPDFText(fullDownloadPath));
 			Iterator<String> inputIterator = inputs.iterator();
 			while (inputIterator.hasNext()) {
-				if (!pdfInText.contains(inputIterator.next())) {
+				String userInput = inputIterator.next();
+				if (!pdfInText.contains(userInput)) {
+					Log.error(String.format("User input not found in pdf - '%s'", userInput));
 					return false;
 				}
 			}

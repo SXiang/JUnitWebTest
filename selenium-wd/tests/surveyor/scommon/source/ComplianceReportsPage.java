@@ -609,8 +609,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				WebElement dropdownBaseMap = driver.findElement(By.xpath(strBaseXPath));
 				List<WebElement> options = dropdownBaseMap.findElements(By.tagName("option"));
 				for (WebElement option : options) {
-					if ((viewList.get(i).get(KEYBASEMAP)).equalsIgnoreCase(option.getText().trim())) {
-						Log.clickElementInfo("BASEMAP", ElementType.OPTION);
+					String thisMap = viewList.get(i).get(KEYBASEMAP);
+					if ((thisMap).equalsIgnoreCase(option.getText().trim())) {
+						Log.info(String.format("Select base map - '%s'", thisMap));
 						option.click();
 						break;
 					}

@@ -73,11 +73,13 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 	}
 
 	public LoginPage logout() {
+		Log.clickElementInfo("Administrator",ElementType.DROPDOWN);
 		this.dropDownAdministrator.click();
 
 		if (this.testSetup.isRunningDebug())
 			this.testSetup.slowdownInSeconds(1);
 
+		Log.clickElementInfo("Log Out");
 		this.linkLogOut.click();
 
 		if (this.testSetup.isRunningDebug())
@@ -95,21 +97,27 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 			Log.info(note);
 		}
 
+		Log.clickElementInfo("Add New History Entry");
 		this.btnAddNewHistoryEntry.click();
 		this.waitForNewPageLoad();
 
 		List<WebElement> options = this.dropDownSurveyorUnit.findElements(By
 				.tagName("option"));
 		for (WebElement option : options) {
-			if (surveyorUnit.equals(option.getText().trim()))
+			if (surveyorUnit.equals(option.getText().trim())){
+				Log.info("Select Surveyor Unit - '"+surveyorUnit+"'");
 				option.click();
+				break;
+			}
 		}
 
+		Log.info("Set note - '"+note+"'");
 		this.textareaNote.sendKeys(note);
 
 		if (this.testSetup.isRunningDebug())
 			this.testSetup.slowdownInSeconds(5);
 
+		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 	}
 
@@ -121,6 +129,7 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 			Log.info(note);
 		}
 
+		Log.clickElementInfo("Add New History Entry");
 		this.btnAddNewHistoryEntry.click();
 		this.waitForNewPageLoad();
 
@@ -128,15 +137,19 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 				.tagName("option"));
 		for (WebElement option : options) {
 			if (surveyorUnit.equals(locationName + " - "
-					+ option.getText().trim()))
+					+ option.getText().trim())){
+				Log.info("Select Surveyor Unit - '"+surveyorUnit+"'");
 				option.click();
+				break;
+			}
 		}
 
+		Log.info("Set Note - '"+note+"'");
 		this.textareaNote.sendKeys(note);
 
 		if (this.testSetup.isRunningDebug())
 			this.testSetup.slowdownInSeconds(5);
-
+		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 	}
 
@@ -149,6 +162,7 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 			Log.info(note);
 		}
 
+		Log.clickElementInfo("Add New History Entry");
 		this.btnAddNewHistoryEntry.click();
 		this.waitForNewPageLoad();
 
@@ -160,15 +174,20 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 					.trim()
 					.equalsIgnoreCase(
 							customerName + " - " + locationName + " - "
-									+ surveyorUnit))
+									+ surveyorUnit)){
+				Log.info("Select Surveyor Unit - '"+option.getText()+"'");
 				option.click();
+				break;
+			}
 		}
 
+		Log.info("Set Note - '"+note +"'");
 		this.textareaNote.sendKeys(note);
 
 		if (this.testSetup.isRunningDebug())
 			this.testSetup.slowdownInSeconds(3);
 
+		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 	}
 
@@ -250,14 +269,17 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 	}
 	
 	public void clickOnAddNewHistoryEntryBtn() {
+		Log.clickElementInfo("Add New History Entry");
 		this.btnAddNewHistoryEntry.click();
 	}
 	
 	public void clickOnCancelBtn() {
+		Log.clickElementInfo("Cancel");
 		this.btnCancel.click();
 	}
 
 	public WebElement getBtnAddNewHistoryEntry() {
+		Log.clickElementInfo("Add New History Entry");
 		return btnAddNewHistoryEntry;
 	}
 

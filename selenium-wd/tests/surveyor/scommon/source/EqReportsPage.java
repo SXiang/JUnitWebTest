@@ -287,12 +287,13 @@ public class EqReportsPage extends ReportsBasePage {
 
 	@Override
 	public void fillReportSpecific(Reports reports) {
-		ReportsEQ eqReports = (ReportsEQ) reports;
+		ReportsEQ eqReports = (ReportsEQ) reports;		
 		getSelectArea().click();
 		for (List<Coordinates> coordinates : eqReports.getListOfCords()) {
 			latLongSelectionControl.waitForModalDialogOpen().switchMode(ControlMode.MapInteraction).waitForMapImageLoad().selectSegment(CANVAS_X_PATH, coordinates).switchMode(ControlMode.Default);
 
 		}
+		Log.info("Click OK for lat/long selection");
 		latLongSelectionControl.clickOkButton();
 
 	}
@@ -302,7 +303,7 @@ public class EqReportsPage extends ReportsBasePage {
 		Report objReport = Report.getReport(rptTitle);
 		String reportId = objReport.getId();
 		reportId = reportId.substring(0, 6);
-		String reportName = "EQ-" + reportId;
+		String reportName = "EQ-" + reportId;		
 		clickOnPDFInReportViewer();
 		waitForPDFFileDownload(reportName);
 		Log.info("PDF file got downloaded");
@@ -317,11 +318,13 @@ public class EqReportsPage extends ReportsBasePage {
 	}
 
 	public void clickOnZIPInReportViewer() {
+		Log.clickElementInfo("ZIP",ElementType.ICON);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click();", zipImg);
 	}
 
 	public void clickOnPDFInReportViewer() {
+		Log.clickElementInfo("PDF",ElementType.ICON);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click();", pdfImg);
 	}
@@ -361,6 +364,7 @@ public class EqReportsPage extends ReportsBasePage {
 	}
 
 	public void clickOnNewEQReportBtn() {
+		Log.clickElementInfo("New EQ Report");
 		this.btnNewEQRpt.click();
 	}
 

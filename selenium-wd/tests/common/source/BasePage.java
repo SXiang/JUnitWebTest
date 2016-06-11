@@ -112,7 +112,7 @@ public class BasePage {
 	private WebElement linkViewServerLogs;
 
 	public static enum ElementType{BUTTON,LABEL,CHECKBOX,RADIOBUTTON,INPUT
-		,DIVISION, LINK, OPTION, ICON};
+		,DIVISION, LINK, OPTION, ICON, DROPDOWN};
 	public BasePage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
 		this.driver = driver;
 		this.testSetup = testSetup;

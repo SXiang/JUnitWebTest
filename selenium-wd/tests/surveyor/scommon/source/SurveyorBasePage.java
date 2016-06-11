@@ -195,6 +195,7 @@ public class SurveyorBasePage extends BasePage {
 	public boolean closeTopDropdownMenu(){
 		String opened = topDropdownMenu.getAttribute("aria-expanded");
 		if(opened!=null&&opened.equals("true")){
+			Log.clickElementInfo("Menu",ElementType.DROPDOWN);
 			topDropdownMenu.click();
 		}		 
 		 return (new WebDriverWait(driver, 3)).until(new ExpectedCondition<Boolean>(){
@@ -209,6 +210,7 @@ public class SurveyorBasePage extends BasePage {
 		waitForPageToLoad(); // This will be removed after all wait conditions settled while jumping from page to page
 		String opened = topDropdownMenu.getAttribute("aria-expanded");
 		if(opened==null||opened.equals("false")){
+			Log.clickElementInfo("Menu",ElementType.DROPDOWN);
 			topDropdownMenu.click();
 		}		 
 		 return (new WebDriverWait(driver, 5)).until(new ExpectedCondition<Boolean>(){
@@ -235,6 +237,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 	public LoginPage logout() {
 		openTopDropdownMenu();
+		Log.clickElementInfo("Log Out",ElementType.LINK);
 		this.linkLogOut.click();
 
 		LoginPage loginPage = new LoginPage(this.driver, this.strBaseURL, this.testSetup);
@@ -254,6 +257,7 @@ public class SurveyorBasePage extends BasePage {
 	public void setPagination(String str) {
 		for (WebElement option : paginationOptions) {
 			if (str.equals(option.getText().trim())) {
+				Log.info(String.format("Select pagination - '%s'",str));
 				option.click();
 				break;
 			}
@@ -297,6 +301,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public void performSearch(String searchTerm) {
+		Log.info(String.format("Input search text - '%s'",searchTerm));
 		this.inputSearch.sendKeys(searchTerm);
 		this.inputSearch.sendKeys(Keys.ENTER);
 		super.waitForPageLoad();
@@ -338,6 +343,7 @@ public class SurveyorBasePage extends BasePage {
 	
 	public boolean changeUserTimezone(UserTimezone ut){
 		if(this.timezoneCloseDropdown.isEmpty()){
+			Log.clickElementInfo("Timezone",ElementType.DROPDOWN);
 			this.timezoneDropdown.click();
 		}
 		WebElement utItem;
@@ -358,7 +364,7 @@ public class SurveyorBasePage extends BasePage {
 			   utItem = pacificTime;
 			   break;
 		}
-	
+		Log.info(String.format("Select timezone - '%s'", ut));
 		utItem.click();	
 		
 		return ( new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>(){
@@ -429,6 +435,7 @@ public class SurveyorBasePage extends BasePage {
 		TableSortOrder currTblSortOrder = getCurrentColumnSortOrder(headerElement, columnIndex);
 		// If current sort order is same as requested sort order, click twice to refresh data.
 		// If current sort order is different than requested sort order, click once to change sorted order.
+		Log.info(String.format("Sort table by column '%d'", columnIndex));
 		if (currTblSortOrder.equals(sortOrder)) {
 			multiClickElement(headerElement, 2);
 		} else {

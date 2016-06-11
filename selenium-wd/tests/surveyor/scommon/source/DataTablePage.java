@@ -316,6 +316,7 @@ public class DataTablePage extends BasePage {
 	 * @return
 	 */
 	public boolean toNextPage() {
+		Log.clickElementInfo("Next");
 		return toPage(nextButton);
 	}
 
@@ -332,6 +333,7 @@ public class DataTablePage extends BasePage {
 			waitForTableToLoad();
 			return true;
 		} else {
+			Log.error("Page navigation button is disabled");
 			return false;
 		}
 	}
@@ -345,7 +347,9 @@ public class DataTablePage extends BasePage {
 	public void setPagination(String str) {
 		for (WebElement option : paginationOption) {
 			if (str.equals(option.getText().trim())) {
+				Log.info("Select '"+str+"' for the pagination");
 				option.click();
+				break;
 			}
 		}
 	}
