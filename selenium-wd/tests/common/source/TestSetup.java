@@ -141,6 +141,7 @@ public class TestSetup {
 	private String dbPassword;
 	private String computerName;
 	private String softwareVersion;
+	private String platform;
 
 	private boolean collectReportJobPerfMetric;
 	private boolean generateBaselineSSRSImages;
@@ -283,7 +284,13 @@ public class TestSetup {
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("download.default_directory", this.downloadPath);
 		this.capabilities = DesiredCapabilities.chrome();
-		this.capabilities.setPlatform(Platform.WINDOWS);
+		
+		if (this.platform.equalsIgnoreCase("windows")) {
+			this.capabilities.setPlatform(Platform.WINDOWS);
+		} else if (this.platform.equalsIgnoreCase("linux")) {
+			this.capabilities.setPlatform(Platform.LINUX);
+		}
+		
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("start-maximized");
 		options.addArguments(Arrays.asList("--incognito", "test-type"));
@@ -672,6 +679,7 @@ public class TestSetup {
 			this.language = this.testProp.getProperty("language");
 			this.culture = this.testProp.getProperty("culture");
 			this.softwareVersion = this.testProp.getProperty("softwareVersion");
+			this.platform = this.testProp.getProperty("platform");
 			
 			this.automationReportingApiEndpoint = this.testProp.getProperty("automationReporting.ApiEndPoint");
 			String automationReportingApiEnabledValue = this.testProp.getProperty("automationReporting.APIEnabled");
