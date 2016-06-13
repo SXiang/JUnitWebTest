@@ -86,7 +86,8 @@ public class SurveyorBaseTest {
 	};
 	
 	@Rule
-	public ScreenShotOnFailure failure = new ScreenShotOnFailure(driver, screenShotsSubFolder, screenShotsDir, testSetup.isRemoteBrowser);
+	public ScreenShotOnFailure failure = new ScreenShotOnFailure(driver, screenShotsSubFolder, 
+			screenShotsDir, testSetup.isRemoteBrowser);
 	
 	private static ExtentReports getExtentReport(String className) {
 	   ExtentReports extentReport = TestContext.INSTANCE.getReport();
