@@ -75,9 +75,6 @@ public class Log {
 		error("Failed to perform '"+name+"': "+e);
 	}
 
-	public static void findElementInfo(String name) {
-		clickElementInfo("Find element '"+name+"'");
-	}	
 	/* Unit test */
 	public static void main(String[] args) throws IOException {
 		logFilePath = TestSetup.getRootPath() + File.separator + "logs" + File.separator + "log.log";

@@ -393,42 +393,36 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	}
 	public WebElement getPeakInfoPopupTextElement() {
 		// element value changes dynamically on peakInfo click. Seek new each time.
-		Log.findElementInfo("Peak Info");
 		peakInfoOverlayText = this.driver.findElement(By.id("peak_info"));
 		return peakInfoOverlayText;
 	}
 
 	public WebElement getPeakInfoCoordinateElement() {
 		// element value changes dynamically on peakInfo click. Seek new each time.
-		Log.findElementInfo("Annotation-coordinate");
 		peakInfoCoordinate = this.driver.findElement(By.id("annotation-coordinate"));
 		return peakInfoCoordinate;
 	}
 
 	public WebElement getPeakInfoTextElement() {
 		// element value changes dynamically on peakInfo click. Seek new each time.
-		Log.findElementInfo("Annotation-text");
 		peakInfoText = this.driver.findElement(By.id("annotation-text"));
 		return peakInfoText;
 	}
 
 	public WebElement getPeakInfoLongitudeElement() {
 		// element value changes dynamically on peakInfo click. Seek new each time.
-		Log.findElementInfo("Annotation-longitude");
 		peakInfoLongitude = this.driver.findElement(By.id("annotation-longitude"));
 		return peakInfoLongitude;
 	}
 
 	public WebElement getPeakInfoLatitudeElement() {
 		// element value changes dynamically on peakInfo click. Seek new each time.
-		Log.findElementInfo("Annotation-latitude");
 		peakInfoLatitude = this.driver.findElement(By.id("annotation-latitude"));
 		return peakInfoLatitude;
 	}
 
 	public WebElement getPeakInfoEpochElement() {
 		// element value changes dynamically on peakInfo click. Seek new each time.
-		Log.findElementInfo("Annotation-eoch");
 		peakInfoEpoch = this.driver.findElement(By.id("annotation-epoch"));
 		return peakInfoEpoch;
 	}
