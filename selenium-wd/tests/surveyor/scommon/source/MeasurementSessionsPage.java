@@ -231,7 +231,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		String buttonXPath;
 		switch (buttonType) {
 		case ViewSurvey:
-			buttonXPath = "//td[11]/a[1]/img";
+			buttonXPath = "td[11]/a[1]/img";
 			break;
 		case ExportSurvey:
 			buttonXPath = "//td[11]/a[2]/img";
