@@ -154,7 +154,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public ManageUsersPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 
-		Log.info("\nThe Manager Users Page URL is: "
+		Log.info("\nThe Manage Users Page URL is: "
 				+ this.strPageURL);
 	}
 

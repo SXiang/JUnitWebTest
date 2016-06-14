@@ -65,8 +65,9 @@ public class ManageUsersPageActions extends BasePageActions {
 		logAction("ManageUsersPageActions.createNewPicarroUser", data, dataRowID);
 		workingDataRow = this.dataReader.getDataRow(dataRowID);
 		LocationDataRow locationDataRow = getLocationDataRow(workingDataRow);
+		CustomerDataRow customerDataRow = getCustomerDataRow(workingDataRow);
 		this.manageUsersPage.addNewPicarroUser(workingDataRow.username, 
-				workingDataRow.password, workingDataRow.role, locationDataRow.name, workingDataRow.timezone);
+				workingDataRow.password, workingDataRow.role, customerDataRow.name + " - " + locationDataRow.name, workingDataRow.timezone);
 		workingUser = this.manageUsersPage;
 		return true;
 	}

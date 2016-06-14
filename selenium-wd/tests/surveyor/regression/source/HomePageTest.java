@@ -14,6 +14,9 @@ import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.actions.BaseActions;
+import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.FleetMapPage;
 import surveyor.scommon.source.HomePage;
@@ -45,6 +48,8 @@ public class HomePageTest extends SurveyorBaseTest {
 	private static SurveyorSystemsPage surveyorSystemsPage;
 	private static PreferencesPage preferencesPage;
 	private static SurveyViewPage surveyViewPage;
+	private static ManageUsersPageActions manageUsersPageAction;
+	private static LoginPageActions loginPageAction;
 
 	public HomePageTest() {
 		homePage = new HomePage(driver, baseURL, testSetup);
@@ -64,6 +69,9 @@ public class HomePageTest extends SurveyorBaseTest {
 
 		surveyViewPage = new SurveyViewPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver, surveyViewPage);
+		
+		manageUsersPageAction = new ManageUsersPageActions(driver, baseURL, testSetup);
+		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 	}
 
 	/**
@@ -195,12 +203,23 @@ public class HomePageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC54_VerifyEditUserPreferences Test Description: Modify timezone of user in Preferences
+	 * @throws Exception 
 	 */
 	@Test
-	public void TC54_VerifyEditUserPreferences() {
+	public void TC54_VerifyEditUserPreferences() throws Exception {
 		Log.info("\nRunning - TC54_VerifyEditUserPreferences Test Description: Modify timezone of user in Preferences\n");
+		
+		/* Login as automation admin and create new Picarro admin user. Do NOT alter existing user. */
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+
+		manageUsersPageAction.open(BaseActions.EMPTY, BaseActions.NOTSET);
+		manageUsersPageAction.createNewPicarroUser(BaseActions.EMPTY, 14 /*userRowID*/);
+		
+		String usernameColonPassword = String.format("%s:%s", ManageUsersPageActions.workingDataRow.username, 
+				ManageUsersPageActions.workingDataRow.password);
+		loginPageAction.open(BaseActions.EMPTY, BaseActions.NOTSET);
+		loginPageAction.login(usernameColonPassword, BaseActions.NOTSET);   /* login using newly created user */
 
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
@@ -215,12 +234,24 @@ public class HomePageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC55_VerifyEditUserPreferences Test Description: Modify timezone of user from drop-down
+	 * @throws Exception 
 	 */
 	@Test
-	public void TC55_VerifyEditUserPreferencesfromDropDown() {
+	public void TC55_VerifyEditUserPreferencesfromDropDown() throws Exception {
 		Log.info("\nRunning - TC55_VerifyEditUserPreferences Test Description: Modify timezone of user from drop-down\n");
+
+		/* Login as automation admin and create new Picarro admin user. Do NOT alter existing user. */
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+
+		manageUsersPageAction.open(BaseActions.EMPTY, BaseActions.NOTSET);
+		manageUsersPageAction.createNewPicarroUser(BaseActions.EMPTY, 14 /*userRowID*/);
+		
+		String usernameColonPassword = String.format("%s:%s", ManageUsersPageActions.workingDataRow.username, 
+				ManageUsersPageActions.workingDataRow.password);
+		loginPageAction.open(BaseActions.EMPTY, BaseActions.NOTSET);
+		loginPageAction.login(usernameColonPassword, BaseActions.NOTSET);   /* login using newly created user */
+
 		homePage.waitForPageLoad();
 		homePage.getDropDownTimeZone().click();
 		homePage.waitForPageLoad();
@@ -252,7 +283,7 @@ public class HomePageTest extends SurveyorBaseTest {
 		homePage.getLinkDrivingSurveys().click();
 		measurementSessionsPage.waitForPageLoad();
 		try {
-			measurementSessionsPage.actionOnDrivingSurvey(PICADMNSTDTAG2, ADMINISTRATORUSER, SQAPICLOC4SUR, SQACUSLOCANZ, DrivingSurveyButtonType.ViewSurvey);
+			measurementSessionsPage.actionOnDrivingSurvey(PICADMNSTDTAG2, ADMINISTRATORUSER, SQAPICLOC4SUR, SQAPICLOC4SURANA, DrivingSurveyButtonType.ViewSurvey);
 		} catch (Exception e) {
 			Log.error(e.toString());
 		}
