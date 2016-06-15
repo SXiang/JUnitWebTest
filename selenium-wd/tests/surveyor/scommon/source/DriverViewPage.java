@@ -107,6 +107,10 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	@FindBy(id = "btn_cancel_annotation")
 	@CacheLookup
 	private WebElement fieldNotesCancel;
+	
+	@FindBy(id = "btn_close_annotation")
+	@CacheLookup
+	private WebElement fieldNotesClose;
 
 	@FindBy(css = "a[href='http://openlayers.org/']")
 	@CacheLookup
@@ -261,7 +265,16 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	
 	@FindBy(xpath = "//*[@id='button_close_survey_modal']/..")
 	protected WebElement closeSurveyModalButton;
+	
+	@FindBy(id = "featureinfo_modal")
+	protected WebElement featureInfoModalDialog;
+	
+	@FindBy(id = "feature_info")
+	protected WebElement featureInfoText;
 
+	@FindBy(id = "btn_addupdate_annotation")
+	protected WebElement addUpdateNoteButton;
+	
 	/**
 	 * @param driver
 	 * @param baseURL
@@ -315,6 +328,18 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		return this;
 	}
 
+	public boolean isFieldNotesDialogShown() {
+		return !this.fieldNotesModalDialog.getAttribute("class").contains("ng-hide");
+	}
+	
+	public boolean isFeatureInfoDialogShown() {
+		return !this.featureInfoModalDialog.getAttribute("class").contains("ng-hide");
+	}
+	
+	public String getFeatureInfoDialogText() {
+		return this.featureInfoText.getAttribute("value");
+	}
+	
 	public WebElement getStartSurveyButton() {
 		return this.startSurveyButton;
 	}
@@ -486,13 +511,22 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	/**
-	 * Click on Cancel Button.
+	 * Click on Cancel Button in Field notes.
 	 *
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickFieldNotesCancelButton() {
-		fieldNotesCancel = driver.findElement(By.id("btn_cancel_annotation"));
 		fieldNotesCancel.click();
+		return this;
+	}
+
+	/**
+	 * Click on Close Button in Field Notes.
+	 *
+	 * @return the DriverViewPage class instance.
+	 */
+	public DriverViewPage clickFieldNotesCloseButton() {
+		fieldNotesClose.click();
 		return this;
 	}
 
@@ -661,7 +695,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickFieldNotesSaveButton() {
-		fieldNotesSave = driver.findElement(By.id("btn_save_annotation")); 
 		fieldNotesSave.click();
 		return this;
 	}
@@ -748,6 +781,16 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		return this;
 	}
 
+	/**
+	 * Click on Add/Update note button.
+	 *
+	 * @return the DriverViewPage class instance.
+	 */
+	public DriverViewPage clickOnAddUpdateNoteButton() {
+		addUpdateNoteButton.click();
+		return this;
+	}
+	
 	/**
 	 * Click on Terms Of Use Link.
 	 *
@@ -1081,28 +1124,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	/**
-	 * Verifies that the field notes modal dialog popup is shown.
-	 */
-	public void waitForFieldNotesDialogToOpen() {
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return fieldNotesModalDialog.getAttribute("class").equalsIgnoreCase("");
-			}
-		});
-	}
-
-	/**
-	 * Verifies that the field notes modal dialog popup is closed.
-	 */
-	public void waitForFieldNotesDialogToClose() {
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return fieldNotesModalDialog.getAttribute("class").equalsIgnoreCase("ng-hide");
-			}
-		});
-	}
-	
-	/**
 	 * Waits for the Start Survey button to be displayed.
 	 */
 	public void waitForStartSurveyButtonToShow() {
@@ -1172,6 +1193,50 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return divSurveyStartWarning.getAttribute("class").equalsIgnoreCase("cssFade ng-hide");
+			}
+		});
+	}
+
+	/**
+	 * Waits for the Field notes dialog to be shown.
+	 */
+	public void waitForFieldNotesDialogToOpen() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isFieldNotesDialogShown();
+			}
+		});
+	}
+
+	/**
+	 * Waits for the Field notes dialog to be closed.
+	 */
+	public void waitForFieldNotesDialogToClose() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return !isFieldNotesDialogShown();
+			}
+		});
+	}
+
+	/**
+	 * Waits for the Feature info dialog to be shown.
+	 */
+	public void waitForFeatureInfoDialogToOpen() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isFeatureInfoDialogShown();
+			}
+		});
+	}
+
+	/**
+	 * Waits for the Feature info dialog to be closed.
+	 */
+	public void waitForFeatureInfoDialogToClose() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return !isFeatureInfoDialogShown();
 			}
 		});
 	}

@@ -83,27 +83,21 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean clickOnDisplayButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnDisplayButton", data, dataRowID);
 		getBaseMapViewPageObject().clickDisplayButton();
-		TestContext.INSTANCE.stayIdle(2);
+		TestContext.INSTANCE.stayIdle(1);
 		return true;
-	}
-
-	public boolean clickOnFirstIndicationShownOnMap(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".clickOnFirstIndicationShownOnMap", data, dataRowID);
-		String mapCanvasXPath = "//*[@id='map']/div/canvas";
-		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
-		return mapUtility.clickFirstIndicationOnMap(mapCanvasXPath);
 	}
 
 	public boolean clickOnGisButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnGisButton", data, dataRowID);
 		getBaseMapViewPageObject().clickGisButton();
+		TestContext.INSTANCE.stayIdle(1);
 		return true;
 	}
 
 	public boolean clickOnMapButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnMapButton", data, dataRowID);
 		getBaseMapViewPageObject().clickMapButton();
-		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
+		TestContext.INSTANCE.stayIdle(1);
 		return true;
 	}
 

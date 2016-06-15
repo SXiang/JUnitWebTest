@@ -100,6 +100,7 @@ public class ActionsExecutionEngine implements IMethodObserver {
 
 	private void beforeTestSetup(String testCaseID, String testCaseRallyID, String testCaseUserRowIDs,
 			String testCaseName) throws Exception {
+		PageActionsStore.INSTANCE.clearStore();
 		SurveyorBaseTest.setUpBeforeClass();
 		SurveyorBaseTest.reportTestStarting(CLASS_NAME, testCaseRallyID + " - " + testCaseName, testCaseID + " : " + testCaseName);
 	}

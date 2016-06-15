@@ -14,6 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.OLMapUtility;
 import common.source.RegexUtility;
+import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
 import surveyor.dataaccess.source.ResourceKeys;
@@ -40,8 +41,17 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[5]")
 	private WebElement displaySwitchIsotopicAnalysisDivElement;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]")
+	@FindBy(how = How.XPATH, using = "*[@id='menu_content']/div[6]/div[1]")
 	private WebElement displaySwitchIndicationsDivElement;
+	
+	@FindBy(how = How.XPATH, using = "*[@id='menu_content']/div[6]/div[2]")
+	private WebElement displaySwitchPossibleNaturalGasDivElement;
+	
+	@FindBy(how = How.XPATH, using = "*[@id='menu_content']/div[6]/div[3]")
+	private WebElement displaySwitchNotNaturalGasDivElement;
+	
+	@FindBy(how = How.XPATH, using = "*[@id='menu_content']/div[6]/div[4]")
+	private WebElement displaySwitchVehicleExhaustDivElement;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[7]")
 	private WebElement displaySwitchLisasDivElement;
@@ -73,6 +83,18 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@CacheLookup
 	protected WebElement displaySwitchIndications;
 
+	@FindBy(id = "display_switch_possible_natural_gas")
+	@CacheLookup
+	protected WebElement displaySwitchPossibleNaturalGas;
+	
+	@FindBy(id = "display_switch_not_natural_gas")
+	@CacheLookup
+	protected WebElement displaySwitchNotNaturalGas;
+	
+	@FindBy(id = "display_switch_vehicle_exhaust")
+	@CacheLookup
+	protected WebElement displaySwitchVehicleExhaust;
+	
 	@FindBy(id = "display_switch_lisas")
 	@CacheLookup
 	protected WebElement displaySwitchLisas;
@@ -257,7 +279,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	}
 
 	public enum DisplaySwitchType {
-		EightHourHistory, WindRose, ConcentrationChart, Notes, IsotopicAnalysis, Indications, Lisas, FOVs
+		EightHourHistory, WindRose, ConcentrationChart, Notes, IsotopicAnalysis, Indications, PossibleNaturalGas, NotNaturalGas, VehicleExhaust, Lisas, FOVs
 	}
 
 	public enum MapSwitchType {
@@ -473,6 +495,21 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	public boolean isDisplaySwitchIndicationsButtonVisible() {
 		return !(WebElementExtender.isAttributePresent(this.displaySwitchIndicationsDivElement,"ng-cloak") ||
 					this.displaySwitchIndicationsDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isDisplaySwitchNotNaturalGasButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.displaySwitchNotNaturalGasDivElement,"ng-cloak") ||
+					this.displaySwitchNotNaturalGasDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isDisplaySwitchVehicleExhaustButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.displaySwitchVehicleExhaustDivElement,"ng-cloak") ||
+					this.displaySwitchVehicleExhaustDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isDisplaySwitchPossibleNaturalGasButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.displaySwitchPossibleNaturalGasDivElement,"ng-cloak") ||
+					this.displaySwitchPossibleNaturalGasDivElement.getAttribute("class").contains("ng-hide"));
 	}
 
 	public boolean isDisplaySwitchLisasButtonVisible() {
@@ -857,6 +894,15 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case Indications:
 			isSelected = this.displaySwitchIndications.getAttribute("class").equalsIgnoreCase("switch");
 			break;
+		case PossibleNaturalGas:
+			isSelected = this.displaySwitchPossibleNaturalGas.getAttribute("class").equalsIgnoreCase("switch subswitch");
+			break;
+		case NotNaturalGas:
+			isSelected = this.displaySwitchNotNaturalGas.getAttribute("class").equalsIgnoreCase("switch subswitch");
+			break;
+		case VehicleExhaust:
+			isSelected = this.displaySwitchVehicleExhaust.getAttribute("class").equalsIgnoreCase("switch subswitch");
+			break;
 		case IsotopicAnalysis:
 			isSelected = this.displaySwitchIsotopicAnalysis.getAttribute("class").equalsIgnoreCase("switch");
 			break;
@@ -891,6 +937,15 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			break;
 		case Indications:
 			isSelected = this.displaySwitchIndications.getAttribute("class").equalsIgnoreCase("switch on");
+			break;
+		case PossibleNaturalGas:
+			isSelected = this.displaySwitchPossibleNaturalGas.getAttribute("class").equalsIgnoreCase("switch on");
+			break;
+		case NotNaturalGas:
+			isSelected = this.displaySwitchNotNaturalGas.getAttribute("class").equalsIgnoreCase("switch on");
+			break;
+		case VehicleExhaust:
+			isSelected = this.displaySwitchVehicleExhaust.getAttribute("class").equalsIgnoreCase("switch on");
 			break;
 		case IsotopicAnalysis:
 			isSelected = this.displaySwitchIsotopicAnalysis.getAttribute("class").equalsIgnoreCase("switch on");
@@ -950,10 +1005,45 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.displaySwitchIndications.getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
 					this.displaySwitchIndications.click();
+					TestContext.INSTANCE.stayIdle(2);
 				}
 			} else if (this.displaySwitchIndications.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
 					this.displaySwitchIndications.click();
+					TestContext.INSTANCE.stayIdle(2);
+				}
+			}
+			break;
+		case PossibleNaturalGas:
+			if (this.displaySwitchPossibleNaturalGas.getAttribute("class").equalsIgnoreCase("switch subswitch")) {
+				if (turnOn) {
+					this.displaySwitchPossibleNaturalGas.click();
+				}
+			} else if (this.displaySwitchPossibleNaturalGas.getAttribute("class").equalsIgnoreCase("switch on")) {
+				if (!turnOn) {
+					this.displaySwitchPossibleNaturalGas.click();
+				}
+			}
+			break;
+		case NotNaturalGas:
+			if (this.displaySwitchNotNaturalGas.getAttribute("class").equalsIgnoreCase("switch subswitch")) {
+				if (turnOn) {
+					this.displaySwitchNotNaturalGas.click();
+				}
+			} else if (this.displaySwitchNotNaturalGas.getAttribute("class").equalsIgnoreCase("switch on")) {
+				if (!turnOn) {
+					this.displaySwitchNotNaturalGas.click();
+				}
+			}
+			break;
+		case VehicleExhaust:
+			if (this.displaySwitchVehicleExhaust.getAttribute("class").equalsIgnoreCase("switch subswitch")) {
+				if (turnOn) {
+					this.displaySwitchVehicleExhaust.click();
+				}
+			} else if (this.displaySwitchVehicleExhaust.getAttribute("class").equalsIgnoreCase("switch on")) {
+				if (!turnOn) {
+					this.displaySwitchVehicleExhaust.click();
 				}
 			}
 			break;
