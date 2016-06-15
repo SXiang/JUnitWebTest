@@ -74,7 +74,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	public ManageAnalyzersPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 
-		System.out.format("\nThe Manager Analyzers Page URL is: %s\n", this.strPageURL);
+		System.out.format("\nThe Manage Analyzers Page URL is: %s\n", this.strPageURL);
 	}
 
 	public void addNewAnalyzer(String serialNumber, String sharedKey, String cuslocsur) {

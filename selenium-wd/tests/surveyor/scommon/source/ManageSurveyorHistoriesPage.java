@@ -63,7 +63,7 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 			TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 
-		Log.info("\nThe Manager Surveyor Histories Page URL is: "
+		Log.info("\nThe Manage Surveyor Histories Page URL is: "
 				+ this.strPageURL);
 	}
 

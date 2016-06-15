@@ -106,7 +106,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	public ManageSurveyorPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 		
-		Log.info("\nThe Manager Surveyor Page URL is: " + this.strPageURL);
+		Log.info("\nThe Manage Surveyor Page URL is: " + this.strPageURL);
 	}
 	
 	public ManageSurveyorPage(WebDriver driver, String baseURL, TestSetup testSetup, String urlPath) {

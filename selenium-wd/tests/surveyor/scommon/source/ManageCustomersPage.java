@@ -94,7 +94,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public ManageCustomersPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 
-		Log.info("\nThe Manager Customers Page URL is: " + this.strPageURL);
+		Log.info("\nThe Manage Customers Page URL is: " + this.strPageURL);
 	}
 
 	public boolean selectLicensedFeatures(LicensedFeatures... lfs) {
