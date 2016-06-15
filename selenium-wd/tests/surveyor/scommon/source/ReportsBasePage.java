@@ -1638,6 +1638,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean findReport(String rptTitle, String strCreatedBy) {
+		Log.info(String.format("Find report with title = '%s', created by = '%s", rptTitle, strCreatedBy ));
 		setPagination(PAGINATIONSETTING);
 
 		String reportTitleXPath;
@@ -1683,11 +1684,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
-
+		Log.error(String.format("Report not found: title = '%s', created by = '%s", rptTitle, strCreatedBy ));
 		return false;
 	}
 
 	public boolean findReportbySearch(String rptTitle, String strCreatedBy) {
+		Log.info(String.format("Find report with title = '%s', created by = '%s", rptTitle, strCreatedBy ));
 		setPagination(PAGINATIONSETTING);
 		this.waitForPageLoad();
 		String reportTitleXPath;
@@ -1739,7 +1741,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
-
+		Log.error(String.format("Report not found: title = '%s', created by = '%s", rptTitle, strCreatedBy ));
 		return false;
 	}
 

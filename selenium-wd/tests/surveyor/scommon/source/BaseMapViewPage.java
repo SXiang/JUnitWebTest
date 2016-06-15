@@ -617,12 +617,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case BoundariesDistrict:
 			if (this.boundariesDistrict.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch on");
 					this.boundariesDistrict.click();
 				}
 			} else if (this.boundariesDistrict.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch off");
 					this.boundariesDistrict.click();
 				}
 			}
@@ -630,12 +630,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case BoundariesDistrictPlat:
 			if (this.boundariesDistrictPlat.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch on");
 					this.boundariesDistrictPlat.click();
 				}
 			} else if (this.boundariesDistrictPlat.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch off");
 					this.boundariesDistrictPlat.click();
 				}
 			}
@@ -643,12 +643,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case MaterialTypeCopper:
 			if (this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch on");
 					this.materialTypeCopper.click();
 				}
 			} else if (this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch off");
 					this.materialTypeCopper.click();
 				}
 			}
@@ -661,7 +661,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 				}
 			} else if (this.materialTypeCastIron.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch off");
 					this.materialTypeCastIron.click();
 				}
 			}
@@ -669,13 +669,13 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case MaterialTypeOtherPlastic:
 			if (this.materialTypeOtherPlastic.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch on");
 					this.materialTypeOtherPlastic.click();
 				}
 			} else
 				if (this.materialTypeOtherPlastic.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch off");
 					this.materialTypeOtherPlastic.click();
 				}
 			}
@@ -683,12 +683,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case MaterialTypePEPlastic:
 			if (this.materialTypePEPlastic.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch on");
 					this.materialTypePEPlastic.click();
 				}
 			} else if (this.materialTypePEPlastic.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch off");
 					this.materialTypePEPlastic.click();
 				}
 			}
@@ -696,13 +696,13 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case MaterialTypeProtectedSteel:
 			if (this.materialTypeProtectedSteel.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch on");
 					this.materialTypeProtectedSteel.click();
 				}
 			} else if (this.materialTypeProtectedSteel.getAttribute("class")
 					.equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch off");
 					this.materialTypeProtectedSteel.click();
 				}
 			}
@@ -710,13 +710,13 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case MaterialTypeUnprotectedSteel:
 			if (this.materialTypeUnprotectedSteel.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch on");
 					this.materialTypeUnprotectedSteel.click();
 				}
 			} else if (this.materialTypeUnprotectedSteel.getAttribute("class")
 					.equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch off");
 					this.materialTypeUnprotectedSteel.click();
 				}
 			}
@@ -724,12 +724,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case UseAllBoundaries:
 			if (this.useAllBoundaries.getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch on");
 					this.useAllBoundaries.click();
 				}
 			} else if (this.useAllBoundaries.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch off");
 					this.useAllBoundaries.click();
 				}
 			}
@@ -737,12 +737,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case UseAllPipes:
 			if (this.useAllPipes.getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch on");
 					this.useAllPipes.click();
 				}
 			} else if (this.useAllPipes.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch off");
 					this.useAllPipes.click();
 				}
 			}
@@ -830,12 +830,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case Satellite:
 			if (this.mapSwitchSatellite.getAttribute("class").equalsIgnoreCase("switch radio_switch")) {
 				if (turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch on");
 					this.mapSwitchSatellite.click();
 				}
 			} else if (this.mapSwitchSatellite.getAttribute("class").equalsIgnoreCase("switch radio_switch on")) {
 				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch off");
 					this.mapSwitchSatellite.click();
 				}
 			}
@@ -843,12 +843,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case Map:
 			if (this.mapSwitchMap.getAttribute("class").equalsIgnoreCase("switch radio_switch")) {
 				if (turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch on");
 					this.mapSwitchMap.click();
 				}
 			} else if (this.mapSwitchMap.getAttribute("class").equalsIgnoreCase("switch radio_switch on")) {
 				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch off");
 					this.mapSwitchMap.click();
 				}
 			}
@@ -935,12 +935,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case EightHourHistory:
 			if (this.displaySwitch8HourHistory.getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch on");
 					this.displaySwitch8HourHistory.click();
 				}
 			} else if (this.displaySwitch8HourHistory.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch off");
 					this.displaySwitch8HourHistory.click();
 				}
 			}
@@ -948,12 +948,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case ConcentrationChart:
 			if (this.displaySwitchConcentrationChart.getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch on");
 					this.displaySwitchConcentrationChart.click();
 				}
 			} else if (this.displaySwitchConcentrationChart.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch off");
 					this.displaySwitchConcentrationChart.click();
 				}
 			}
@@ -961,12 +961,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case FOVs:
 			if (this.displaySwitchFovs.getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch on");
 					this.displaySwitchFovs.click();
 				}
 			} else if (this.displaySwitchFovs.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch off");
 					this.displaySwitchFovs.click();
 				}
 			}
@@ -974,12 +974,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case Indications:
 			if (this.displaySwitchIndications.getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch on");
 					this.displaySwitchIndications.click();
 				}
 			} else if (this.displaySwitchIndications.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch off");
 					this.displaySwitchIndications.click();
 				}
 			}
@@ -987,12 +987,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case IsotopicAnalysis:
 			if (this.displaySwitchIsotopicAnalysis.getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch on");
 					this.displaySwitchIsotopicAnalysis.click();
 				}
 			} else if (this.displaySwitchIsotopicAnalysis.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch off");
 					this.displaySwitchIsotopicAnalysis.click();
 				}
 			}
@@ -1000,12 +1000,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case Lisas:
 			if (this.displaySwitchLisas.getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch on");
 					this.displaySwitchLisas.click();
 				}
 			} else if (this.displaySwitchLisas.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch off");
 					this.displaySwitchLisas.click();
 				}
 			}
@@ -1018,7 +1018,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 				}
 			} else if (this.displaySwitchNotes.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch off");
 					this.displaySwitchNotes.click();
 				}
 			}
@@ -1026,12 +1026,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case WindRose:
 			if (this.displaySwitchWindrose.getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch on");
 					this.displaySwitchWindrose.click();
 				}
 			} else if (this.displaySwitchWindrose.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString());
+					Log.clickElementInfo(switchType.toString(), "to switch off");
 					this.displaySwitchWindrose.click();
 				}
 			}

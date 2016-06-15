@@ -1173,7 +1173,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void inputSurveyUsername(String username) {
-		Log.info("Set username to '"+username+"'");
+		Log.info("Set survey username to '"+username+"'");
 		this.userName.clear();
 		this.userName.sendKeys(username);
 	}

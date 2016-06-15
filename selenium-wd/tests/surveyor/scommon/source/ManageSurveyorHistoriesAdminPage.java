@@ -40,6 +40,8 @@ public class ManageSurveyorHistoriesAdminPage extends
 	public boolean findExistingSurveyorHistoryNote(String strNote,
 			String strSurveyorName, String strLocationName,
 			String strCustomerName) {
+		Log.info(String.format("Find surveyor history not %s, customer = '%s', location = '%s', surveyor = '%s'", 
+				strNote,strCustomerName,strLocationName,strSurveyorName));
 		setPagination(PAGINATIONSETTING);
 
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
@@ -104,6 +106,8 @@ public class ManageSurveyorHistoriesAdminPage extends
 				rowNum = 0;
 			}
 		}
+		Log.info(String.format("Surveyor history note not found: %s, customer = '%s', location = '%s', surveyor = '%s'", 
+				strNote,strCustomerName,strLocationName,strSurveyorName));
 		return false;
 	}
 

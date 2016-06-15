@@ -44,6 +44,8 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 	}
 
 	public boolean findExistingSurveyor(String locationName, String surveyorName) {
+		Log.info(String.format("Find surveyor %s, location = '%s'",
+				surveyorName, locationName));
 		setPagination(PAGE_PAGINATIONSETTING);
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -91,13 +93,16 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 				rowNum = 0;
 			}
 		}
-
+		Log.info(String.format("Surveyor not found: %s, location = '%s'",
+				surveyorName, locationName));
 		return false;
 	}
 
 	
 
 	public boolean editExistingSurveyor(String customer, String locationName, String surveyorName, String locationNameNew, String surveyorNameNew, boolean addCalibration) {
+		Log.info(String.format("Edit surveyor %s, customer = '%s', location = '%s'",
+				surveyorName, customer,locationName));
 		setPagination(PAGE_PAGINATIONSETTING);
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -214,7 +219,8 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 				rowNum = 0;
 			}
 		}
-
+		Log.error(String.format("Surveyor not found: %s, customer = '%s', location = '%s'",
+				surveyorName, customer,locationName));
 		return false;
 	}
 

@@ -245,6 +245,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	}
 
 	public boolean findExistingCustomer(String customerName, boolean enabledStatus) {
+		Log.info(String.format("Find customer '%s'",customerName));
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -299,11 +300,12 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
-
+		Log.info(String.format("Customer not found: '%s'",customerName));
 		return false;
 	}
 
 	public boolean findCustomerAndOpenEditPage(String customerName) {
+		Log.info(String.format("Find customer '%s'",customerName));
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -355,11 +357,12 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
-
+		Log.info(String.format("Customer not found: '%s'",customerName));
 		return false;
 	}
 
 	public boolean editExistingCustomerName(String customerName, String eulaNew, boolean enableCustomer) {
+		Log.info(String.format("Edit customer '%s'",customerName));
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -428,7 +431,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
-
+		Log.info(String.format("Customer not found: '%s'",customerName));
 		return false;
 	}
 

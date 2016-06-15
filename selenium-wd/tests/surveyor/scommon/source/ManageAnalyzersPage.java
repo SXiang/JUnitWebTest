@@ -136,6 +136,8 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	}
 
 	public boolean findExistingAnalyzer(String customerName, String locationName, String surveyorName, String analyzerName) {
+		Log.info(String.format("Find analyzer '%s', customer = '%s', location = '%s', surveyor = '%s'",
+				analyzerName, customerName, locationName, surveyorName));
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -191,7 +193,8 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
-
+		Log.error(String.format("Analyzer not found: '%s', customer = '%s', location = '%s', surveyor = '%s'",
+				analyzerName, customerName, locationName, surveyorName));
 		return false;
 	}
 
@@ -297,6 +300,8 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	}
 
 	public boolean editExistingAnalyzer(String customerName, String locationName, String surveyorName, String analyzerName, String keyNew, String cuslocsur, String analyzerNew) {
+		Log.info(String.format("Edit analyzer '%s', customer = '%s', location = '%s', surveyor = '%s'",
+				analyzerName, customerName, locationName, surveyorName));
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -394,7 +399,8 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
-
+		Log.error(String.format("Analyzer not found: '%s', customer = '%s', location = '%s', surveyor = '%s'",
+				analyzerName, customerName, locationName, surveyorName));
 		return false;
 	}
 	
@@ -449,14 +455,17 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	
 	
 	public void clickOnAddNewAnalyzerBtn() {
+		Log.clickElementInfo("Add New Analyzer");
 		this.btnAddNewAnalyzer.click();
 	}
 
 	public void clickOnFirstEditAnalyzerBtn() {
+		Log.clickElementInfo("Edit", "on the first analyzer");
 		this.btnEditAnalyzer.click();
 	}
 
 	public void clickOnCancelBtn() {
+		Log.clickElementInfo("Cancel");
 		this.btnCancel.click();
 	}
 

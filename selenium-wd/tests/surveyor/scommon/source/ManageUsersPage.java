@@ -425,6 +425,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}	
 
 	public boolean findExistingUser(String userName) {
+		Log.info(String.format("Find user '%s'", userName));
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
@@ -486,10 +487,12 @@ public class ManageUsersPage extends SurveyorBasePage {
 
     	// revert back search field.
     	this.clearSearchField();
+    	Log.error(String.format("User not found: '%s'", userName));
 		return false;
 	}
 
 	public boolean findExistingUser(String locationName, String userName, boolean isCustomerUser) {
+		Log.info(String.format("Find user '%s', locationname = '%s'", userName, locationName));
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
@@ -571,11 +574,13 @@ public class ManageUsersPage extends SurveyorBasePage {
 
     	// revert back search field.
     	this.clearSearchField();
+    	Log.error(String.format("User not found: '%s', location = '%s'", userName, locationName));
 		return false;
 	}
 
 	public boolean findExistingUser(String locationName, String userName,
 			String roleName) {
+		Log.info(String.format("Find user '%s', location = '%s', role = '%s'", userName, locationName, roleName));
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
@@ -651,10 +656,12 @@ public class ManageUsersPage extends SurveyorBasePage {
 
     	// revert back search field.
     	this.clearSearchField();
+    	Log.error(String.format("User not found: '%s', location = '%s', role = '%s'", userName, locationName, roleName));
 		return false;
 	}
 
 	public String getUserRole(String userName) {
+		Log.info(String.format("Looking for user role of '%s'", userName));
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -709,11 +716,12 @@ public class ManageUsersPage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
-
+		Log.error(String.format("User role not found: '%s'", userName));
 		return null;
 	}
 
 	public String getUserStatus(String userName, boolean isCustomerUser) {
+		Log.info(String.format("Looking for user status of '%s'", userName));
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -772,7 +780,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
-
+		Log.error(String.format("User status not found: '%s'", userName));
 		return null;
 	}
 
@@ -1439,12 +1447,12 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public void clickOnFirstEditUserBtn() {
-		Log.clickElementInfo("Edit");
+		Log.clickElementInfo("Edit", "on the first user");
 		this.btnEditUser.click();
 	}
 
 	public void clickOnCustomerFirstEditUserBtn() {
-		Log.clickElementInfo("Edit Customer User");
+		Log.clickElementInfo("Edit", "on the first customer user");
 		this.btnEditCustomerUser.click();
 	}
 
@@ -1495,7 +1503,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		this.inputOldPassword.sendKeys(oldPassword);
 		Log.info("Set new password - '"+newPassword+"'");
 		this.inputNewPassword.sendKeys(newPassword);
-		Log.clickElementInfo("Confirm new password - '"+newPassword+"'");
+		Log.info("Confirm new password - '"+newPassword+"'");
 		this.inputNewPasswordConfirm.sendKeys(newPassword);
 		Log.clickElementInfo("Ok");
 		btnOk.click();

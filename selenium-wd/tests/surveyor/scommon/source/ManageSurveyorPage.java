@@ -199,6 +199,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	}	
 	
 	public boolean findExistingSurveyor(String customerName, String locationName, String surveyorName) {
+		Log.info(String.format("Find surveyor '%s', location = '%s', customer = '%s'", surveyorName, locationName, customerName));
 		setPagination(PAGE_PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -251,11 +252,12 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 				rowNum = 0;
 			}	
 		}
-		
+		Log.error(String.format("Surveyor not found: '%s', location = '%s', customer = '%s'", surveyorName, locationName, customerName));		
 		return false;
 	}
 	
 	public boolean editExistingSurveyor(String customerName, String locationName, String surveyorName, String surveyorNameNew) {
+		Log.info(String.format("Edit surveyor '%s'", surveyorName));
 		setPagination(PAGE_PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -340,7 +342,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 				rowNum = 0;
 			}	
 		}
-		
+		Log.error(String.format("Surveyor not found: '%s'", surveyorName));
 		return false;
 	}
 	
@@ -350,12 +352,12 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	}
 	
 	public void clickOnFirstEditSurveyorBtn() {
-		Log.clickElementInfo("Edit Surveyor");
+		Log.clickElementInfo("Edit", "on the first surveyor");
 		this.btnEditSurveyor.click();
 	}
 	
 	public void clickOnCustomerFirstEditSurveyorBtn() {
-		Log.clickElementInfo("Edit Customer Surveyor");
+		Log.clickElementInfo("Edit", "on the first customer surveyor");
 		this.btnEditCustomerSurveyor.click();
 	}
 

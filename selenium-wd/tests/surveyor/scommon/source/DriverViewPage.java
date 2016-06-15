@@ -491,7 +491,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 */
 	public DriverViewPage clickFieldNotesCancelButton() {
 		fieldNotesCancel = driver.findElement(By.id("btn_cancel_annotation"));
-		Log.clickElementInfo("Cancel");
+		Log.clickElementInfo("Cancel", "in field Notes dialog");
 		fieldNotesCancel.click();
 		return this;
 	}
@@ -524,7 +524,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickFieldNotesDeleteButton() {
-		Log.clickElementInfo("Delete");
+		Log.clickElementInfo("Delete", "in Field Notes dialog");
 		fieldNotesDelete.click();
 		return this;
 	}
@@ -654,7 +654,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickOvercastButton() {
-		Log.clickElementInfo("Overcase");
+		Log.clickElementInfo("Overcast");
 		overcast.click();
 		return this;
 	}

@@ -193,6 +193,8 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 
 	public boolean findExistingHistoryNote(String customerName,
 			String locationName, String surveyorName, String note) {
+		Log.info(String.format("Find history note %s, customer = '%s', location = '%s', surveyor = '%s'", 
+				note,customerName,locationName,surveyorName));
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -265,6 +267,8 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
+		Log.error(String.format("History note not found: %s, customer = '%s', location = '%s', surveyor = '%s'", 
+				note,customerName,locationName,surveyorName));
 		return false;
 	}
 	

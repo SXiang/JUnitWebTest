@@ -235,6 +235,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	}
 
 	public boolean findReport(String rptTitle, String strCreatedBy) {
+		Log.info(String.format("Find report with title = '%s', created by = '%s", rptTitle, strCreatedBy ));
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
 		String reportTitleXPath;
@@ -280,7 +281,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 				rowNum = 0;
 			}
 		}
-
+		Log.error(String.format("Report not found: title = '%s', createdBy = '%s'",rptTitle, strCreatedBy));
 		return false;
 	}
 

@@ -350,6 +350,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		return editExistingLocation(customerName, locationName, newLocationName,null,null,null,null, false, checkForError);
 	}
 	public boolean findExistingLocation(String customerName, String locationName) {
+		Log.info(String.format("Find Location '%s', customer = '%s'",
+				locationName, customerName));
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
@@ -417,6 +419,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
     	// revert back search field.
     	this.clearSearchField();
+    	Log.error(String.format("Location not found: '%s', customer = '%s'",
+				locationName, customerName));
 		return false;
 	}
 
@@ -445,7 +449,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public boolean editExistingLocation(String customerName,
 			String locationName, String newLocationName, String latValue,
 			String longValue, String newEthMthMin, String newEthMthMax , boolean openEditorOnly, boolean checkForError){
-		
+		Log.info(String.format("Edit Location '%s', customer = '%s'",
+				locationName, customerName));
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();		// clear any previous entries in search.
 
@@ -589,6 +594,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	   	// revert back search field.
     	this.clearSearchField();
+    	Log.error(String.format("Location not found: '%s', customer = '%s'",
+				locationName, customerName));
 		return false;
 
 	}
