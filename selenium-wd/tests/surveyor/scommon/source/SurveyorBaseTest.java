@@ -137,7 +137,10 @@ public class SurveyorBaseTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		TestSetup.stopChromeProcesses();
+		initializeTestObjects();
+	}
 
+	public static void initializeTestObjects() {
 		testSetup = new TestSetup();
 		driver = testSetup.getDriver();
 		baseURL = testSetup.getBaseUrl();
@@ -161,14 +164,22 @@ public class SurveyorBaseTest {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		logoutQuitDriver();		
+		
+		// Post run result to DB if enabled.
+		postResultsToAutomationAPI();
+	}
+
+	public static void logoutQuitDriver() {
 		if (!driver.getTitle().equalsIgnoreCase("Login")) {
 			homePage.open();
 			homePage.logout();
 		}
 		
-		driver.quit();		
-		
-		// Post run result to DB if enabled.
+		driver.quit();
+	}
+
+	public static void postResultsToAutomationAPI() {
 		if (extentReportFile!=null) {
 			if (TestContext.INSTANCE.getTestSetup().isAutomationReportingApiEnabled()) {
 				TestContext.INSTANCE.getTestSetup().postAutomationRunResult(extentReportFile.toString());
