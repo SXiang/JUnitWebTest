@@ -5,6 +5,7 @@ package surveyor.scommon.source;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Locale;
@@ -146,7 +147,10 @@ public class SurveyorBaseTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		TestSetup.stopChromeProcesses();
+		initializeTestObjects();
+	}
 
+	public static void initializeTestObjects() throws IOException {
 		testSetup = new TestSetup();
 		driver = testSetup.getDriver();
 		baseURL = testSetup.getBaseUrl();		
@@ -154,8 +158,10 @@ public class SurveyorBaseTest {
 		TestContext.INSTANCE.setTestSetup(testSetup);
 		if(screenShotsDir==null){
 			screenShotsDir = TestSetup.getExecutionPath() + TestSetup.reportDir + testSetup.getTestReportCategory();
-			FileUtility.deleteFilesInDirectory(Paths.get(screenShotsDir,screenShotsSubFolder));
-			FileUtility.createDirectoryIfNotExists(Paths.get(screenShotsDir,screenShotsSubFolder).toString());
+			Path screenShotsPath = Paths.get(screenShotsDir, screenShotsSubFolder);
+			Log.info(String.format("Create screenshots foler for this test - '%s'", screenShotsPath));
+			FileUtility.deleteFilesInDirectory(screenShotsPath);
+			FileUtility.createDirectoryIfNotExists(screenShotsPath.toString());
 		}		
 		Log.info("debuggug null - driver:***:" +driver);
 		driver.manage().deleteAllCookies();
@@ -172,14 +178,22 @@ public class SurveyorBaseTest {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		logoutQuitDriver();		
+		
+		// Post run result to DB if enabled.
+		postResultsToAutomationAPI();
+	}
+
+	public static void logoutQuitDriver() {
 		if (!driver.getTitle().equalsIgnoreCase("Login")) {
 			homePage.open();
 			homePage.logout();
 		}
 		
-		driver.quit();		
-		
-		// Post run result to DB if enabled.
+		driver.quit();
+	}
+
+	public static void postResultsToAutomationAPI() {
 		if (extentReportFile!=null) {
 			if (TestContext.INSTANCE.getTestSetup().isAutomationReportingApiEnabled()) {
 				TestContext.INSTANCE.getTestSetup().postAutomationRunResult(extentReportFile.toString());

@@ -103,7 +103,6 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("clickOnCurtainZoomInButton")) { return this.clickOnCurtainZoomInButton(data, dataRowID); }
 		else if (actionName.equals("clickOnCurtainZoomOutButton")) { return this.clickOnCurtainZoomOutButton(data, dataRowID); }
 		else if (actionName.equals("clickOnDisplayButton")) { return this.clickOnDisplayButton(data, dataRowID); }
-		else if (actionName.equals("clickOnFirstIndicationShownOnMap")) { return this.clickOnFirstIndicationShownOnMap(data, dataRowID); }
 		else if (actionName.equals("clickOnGisButton")) { return this.clickOnGisButton(data, dataRowID); }
 		else if (actionName.equals("clickOnHeaderInfoBox")) { return this.clickOnHeaderInfoBox(data, dataRowID); }
 		else if (actionName.equals("clickOnMapButton")) { return this.clickOnMapButton(data, dataRowID); }

@@ -11,6 +11,7 @@ import common.source.ExcelUtility;
 import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.TestContext;
+import common.source.TestSetup;
 import surveyor.scommon.source.SurveyorBaseTest;
 
 /**
@@ -98,17 +99,27 @@ public class ActionsExecutionEngine implements IMethodObserver {
     	}
     }
 
+	private void beforeTestClassSetup() throws Exception {
+		TestSetup.stopChromeProcesses();
+	}
+
 	private void beforeTestSetup(String testCaseID, String testCaseRallyID, String testCaseUserRowIDs,
 			String testCaseName) throws Exception {
-		SurveyorBaseTest.setUpBeforeClass();
+		PageActionsStore.INSTANCE.clearStore();
+		TestSetup.stopChromeProcesses();
+		SurveyorBaseTest.initializeTestObjects();
 		SurveyorBaseTest.reportTestStarting(CLASS_NAME, testCaseRallyID + " - " + testCaseName, testCaseID + " : " + testCaseName);
 	}
 
 	private void afterTestTearDown() throws Exception {
 		SurveyorBaseTest.reportTestFinished(CLASS_NAME);
-		SurveyorBaseTest.tearDownAfterClass();
+		SurveyorBaseTest.logoutQuitDriver();
 	}
 
+	private void afterTestClassTearDown() throws Exception {
+		SurveyorBaseTest.postResultsToAutomationAPI();
+	}
+	
 	private void executeTestCaseAction(String testCaseSheetName, String testStepsSheetName, int iTestcase) throws Exception {
 		Log.info(String.format("START Executing Test Case ID = %s", testCaseID));
 		
@@ -170,6 +181,7 @@ public class ActionsExecutionEngine implements IMethodObserver {
 	    		Log.info("Reading test case sheet: " + testCaseSheetName);
 	    		int iTotalTestCases = excelUtility.getRowCount(testCaseSheetName);
 	    		String testStepsSheetName = testCaseSheetName + "-TestSteps";
+	    		beforeTestClassSetup();
 	    		for (int iTestcase=1; iTestcase < iTotalTestCases; iTestcase++) {
 	    			bResult = true;
 
@@ -188,6 +200,7 @@ public class ActionsExecutionEngine implements IMethodObserver {
 		    			afterTestTearDown();
 	    			}	    			
 	    		}
+	    		afterTestClassTearDown();
 			}
     	}
     }

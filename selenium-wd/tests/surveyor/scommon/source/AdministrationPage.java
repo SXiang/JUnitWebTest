@@ -58,7 +58,7 @@ public class AdministrationPage extends BasePage {
 	public LoginPage logout() {
 		
 		this.btnLogout.click();
-		
+		Log.clickElementInfo("Logout");
 		if (this.testSetup.isRunningDebug())
 			this.testSetup.slowdownInSeconds(3);
 		
@@ -71,12 +71,12 @@ public class AdministrationPage extends BasePage {
 		
 		Actions action = new Actions(driver);
 		
-		try {
-			
+		try {			
 			action.dragAndDrop(source, target).perform();
+			Log.info("Drag from '"+source+"' and drop at '"+target+"'");
 			
 		} catch (Exception e) {
-			
+			Log.error("DragAndDrop", e);
 			return false;
 			
 		}

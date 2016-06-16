@@ -46,6 +46,8 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 	}
 	
 	public boolean findExistingRefGasBottle(String strLotNumber, String strSurveyor, String location) {
+		Log.info(String.format("Find RefGas bottle lot = '%s', surveyor = '%s', location = '%s'",
+				strLotNumber, strSurveyor, location));
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -83,6 +85,7 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 			}
 			
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -97,7 +100,8 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 				rowNum = 0;
 			}
 		}
-		
+		Log.error(String.format("RefGas bottle not found: lot = '%s', surveyor = '%s', location = '%s'",
+				strLotNumber, strSurveyor, location));		
 		return false;
 	}
 	

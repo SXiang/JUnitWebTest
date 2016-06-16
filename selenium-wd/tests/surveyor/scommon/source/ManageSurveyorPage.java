@@ -114,11 +114,12 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	}	
 	
 	public LoginPage logout() {
+		Log.clickElementInfo("Administrtor",ElementType.DROPDOWN);
 		this.dropDownAdministrator.click();
 		
 		if (this.testSetup.isRunningDebug())
 			this.testSetup.slowdownInSeconds(1);
-		
+		Log.clickElementInfo("Log Out");
 		this.linkLogOut.click();
 		
 		if (this.testSetup.isRunningDebug())
@@ -139,19 +140,23 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 			Log.info(location);
 		}
 		
+		Log.clickElementInfo("Add New Surveyor");
 		this.btnAddNewSurveyor.click();
-		
+		Log.info("Set Surveyor Desc - '"+surveyorDesc+"'");
 		this.inputSurveyorDesc.sendKeys(surveyorDesc);
 		
 		List<WebElement> options = this.dropDownLocation.findElements(By.tagName("option"));
 		for (WebElement option : options) {
-			if (option.getText().trim().equalsIgnoreCase(location))
+			if (option.getText().trim().equalsIgnoreCase(location)){
+				Log.info("Select Location - '"+location+"'");
 				option.click();
+				break;
+			}
 		}
 		
 		if (this.testSetup.isRunningDebug())
 			this.testSetup.slowdownInSeconds(5);		
-		
+		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 		
 		this.waitForPageLoad();
@@ -164,16 +169,20 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 			Log.info(locationName);
 			Log.info(customerName);
 		}
-		
+		Log.clickElementInfo("Add New Surveyor");
 		this.btnAddNewSurveyor.click();
+		Log.info("Set Surveyor Desc - '"+surveyorDesc+"'");
 		this.inputSurveyorDesc.sendKeys(surveyorDesc);
 		
 		List<WebElement> options = this.dropDownLocation.findElements(By.tagName("option"));
 		for (WebElement option : options) {
-			if (option.getText().trim().equalsIgnoreCase(customerName + " - " + locationName))
-				option.click();		
+			if (option.getText().trim().equalsIgnoreCase(customerName + " - " + locationName)){
+				Log.info("Select Location - '"+customerName + " - " + locationName+"'");
+				option.click();
+				break;
+			}
 		}
-		
+		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 		
 		if (isElementPresent(this.panelDupSurErrorXPath)){
@@ -181,6 +190,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 			String errMsg = panelError.getText();
 			if (errMsg.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
 				result = false;
+				Log.clickElementInfo("Cancel");
 				this.btnAddCancel.click();
 			}
 		}
@@ -189,6 +199,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	}	
 	
 	public boolean findExistingSurveyor(String customerName, String locationName, String surveyorName) {
+		Log.info(String.format("Find surveyor '%s', location = '%s', customer = '%s'", surveyorName, locationName, customerName));
 		setPagination(PAGE_PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -241,11 +252,12 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 				rowNum = 0;
 			}	
 		}
-		
+		Log.error(String.format("Surveyor not found: '%s', location = '%s', customer = '%s'", surveyorName, locationName, customerName));		
 		return false;
 	}
 	
 	public boolean editExistingSurveyor(String customerName, String locationName, String surveyorName, String surveyorNameNew) {
+		Log.info(String.format("Edit surveyor '%s'", surveyorName));
 		setPagination(PAGE_PAGINATIONSETTING);
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -285,23 +297,28 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 				actionEditCell = getTable().findElement(By.xpath(actionEditXPath));
 				
 				Log.info("Found cell at xpath=" + actionEditXPath);
+				Log.clickElementInfo("Edit",ElementType.ICON);
 				actionEditCell.click();
 				this.waitForEditPageLoad();
-				
+				Log.info("Set Surveyor Desc - '"+surveyorNameNew+"'");
 				this.inputSurveyorDesc.clear();
 				this.inputSurveyorDesc.sendKeys(surveyorNameNew);
 				
 				List<WebElement> options = this.dropDownLocation.findElements(By.tagName("option"));
 				for (WebElement option : options) {
-					if (option.getText().trim().equalsIgnoreCase(customerName + " - " + locationName))
+					if (option.getText().trim().equalsIgnoreCase(customerName + " - " + locationName)){
+						Log.info("Select Location - '"+customerName + " - " + locationName+"'");
 						option.click();
+						break;
+					}
 				}
-				
+				Log.clickElementInfo("Ok");
 				this.btnOK.click();
 				
 				if (isElementPresent(this.panelDuplicationErrorXPath)) {
 					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
 					if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
+						Log.clickElementInfo("Cancel");
 						this.btnEditCancel.click();
 						return false;
 					}
@@ -325,27 +342,32 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 				rowNum = 0;
 			}	
 		}
-		
+		Log.error(String.format("Surveyor not found: '%s'", surveyorName));
 		return false;
 	}
 	
 	public void clickOnAddNewSurveyorBtn() {
+		Log.clickElementInfo("Add New Surveyor");
 		this.btnAddNewSurveyor.click();
 	}
 	
 	public void clickOnFirstEditSurveyorBtn() {
+		Log.clickElementInfo("Edit", "on the first surveyor");
 		this.btnEditSurveyor.click();
 	}
 	
 	public void clickOnCustomerFirstEditSurveyorBtn() {
+		Log.clickElementInfo("Edit", "on the first customer surveyor");
 		this.btnEditCustomerSurveyor.click();
 	}
 
 	public void clickOnAddCancelBtn() {
+		Log.clickElementInfo("Cancel(Add)");
 		this.btnAddCancel.click();
 	}
 	
 	public void clickOnEditCancelBtn() {
+		Log.clickElementInfo("Cancel(Edit)");
 		this.btnEditCancel.click();
 	}
 	
@@ -439,6 +461,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(pageSizeStr)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
@@ -489,6 +512,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(pageSizeStr)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());

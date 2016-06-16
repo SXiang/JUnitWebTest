@@ -59,7 +59,7 @@ public class FleetMapPage extends BasePage {
 	public boolean checkIfAtFleetMapPage() {
 		if (driver.getTitle().equalsIgnoreCase(STRPageTitle))
 			return true;
-		
+		Log.warn("Current page is not '"+STRPageTitle+"'");
 		return false;
 	}
 
