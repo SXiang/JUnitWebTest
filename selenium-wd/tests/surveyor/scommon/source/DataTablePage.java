@@ -71,16 +71,6 @@ public class DataTablePage extends BasePage {
 	/**
 	 * 
 	 * @param driver
-	 *            - the search context will be the root of the document
-	 * @return instance of this page
-	 */
-	public static DataTablePage getDataTablePage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
-		return getDataTablePage(driver, driver, testSetup, strBaseURL, strPageURL);
-	}
-
-	/**
-	 * 
-	 * @param driver
 	 * @param searchContext
 	 *            - The root WebElement of this datatable
 	 * @return instance of this page
@@ -316,6 +306,7 @@ public class DataTablePage extends BasePage {
 	 * @return
 	 */
 	public boolean toNextPage() {
+		Log.clickElementInfo("Next");
 		return toPage(nextButton);
 	}
 
@@ -332,6 +323,7 @@ public class DataTablePage extends BasePage {
 			waitForTableToLoad();
 			return true;
 		} else {
+			Log.error("Page navigation button is disabled");
 			return false;
 		}
 	}
@@ -345,7 +337,9 @@ public class DataTablePage extends BasePage {
 	public void setPagination(String str) {
 		for (WebElement option : paginationOption) {
 			if (str.equals(option.getText().trim())) {
+				Log.info("Select '"+str+"' for the pagination");
 				option.click();
+				break;
 			}
 		}
 	}

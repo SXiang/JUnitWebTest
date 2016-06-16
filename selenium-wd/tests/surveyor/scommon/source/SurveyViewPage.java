@@ -163,6 +163,7 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage clickCalmButton() {
+    	Log.clickElementInfo("Calm");
         calm.click();
         return this;
     }
@@ -173,6 +174,7 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage clickCancelButton() {
+    	Log.clickElementInfo("Cancel");
         cancel.click();
         return this;
     }
@@ -183,6 +185,7 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage clickDayButton() {
+    	Log.clickElementInfo("Day");
         day.click();
         return this;
     }
@@ -193,6 +196,7 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage clickDeleteButton() {
+    	Log.clickElementInfo("Delete");
         delete.click();
         return this;
     }
@@ -203,6 +207,7 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage clickIButton() {
+    	Log.clickElementInfo("I");
         i.click();
         return this;
     }
@@ -213,6 +218,7 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage clickLightButton() {
+    	Log.clickElementInfo("Light");
         light.click();
         return this;
     }
@@ -223,6 +229,7 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage clickManualButton() {
+    	Log.clickElementInfo("Manual");
         manual.click();
         return this;
     }
@@ -233,6 +240,7 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage clickModerateButton() {
+    	Log.clickElementInfo("Moderate");
         moderate.click();
         return this;
     }
@@ -243,6 +251,7 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage clickNightButton() {
+    	Log.clickElementInfo("Night");
         night.click();
         return this;
     }
@@ -253,6 +262,7 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage clickOk1Button() {
+    	Log.clickElementInfo("Ok1");
         ok1.click();
         return this;
     }
@@ -263,6 +273,7 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage clickOk2Button() {
+    	Log.clickElementInfo("Ok2");
         ok2.click();
         return this;
     }
@@ -273,6 +284,7 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage clickOperatorButton() {
+    	Log.clickElementInfo("Operator");
         operator.click();
         return this;
     }
@@ -283,6 +295,7 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage clickOvercastButton() {
+    	Log.clickElementInfo("Overcast");
         overcast.click();
         return this;
     }
@@ -293,6 +306,7 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage clickRapidResponseButton() {
+    	Log.clickElementInfo("Rapid Respose");
         rapidResponse.click();
         return this;
     }
@@ -303,6 +317,7 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage clickSaveButton() {
+    	Log.clickElementInfo("Save");
         save.click();
         return this;
     }
@@ -313,16 +328,32 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage clickStandardButton() {
+    	Log.clickElementInfo("Standard");
         standard.click();
         return this;
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Click on Start Survey Button.
+     *
+     * @return the SurveyViewPage class instance.
+     */
+    public SurveyViewPage clickStartSurveyButton() {
+    	Log.clickElementInfo("Start Survey");
+        startSurvey.click();
+        return this;
+    }
+
+    /**
+>>>>>>> master
      * Click on Strong Button.
      *
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage clickStrong1Button() {
+    	Log.clickElementInfo("Strong1");
         strong1.click();
         return this;
     }
@@ -333,6 +364,7 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage clickStrong2Button() {
+    	Log.clickElementInfo("Strong2");
         strong2.click();
         return this;
     }
@@ -343,6 +375,7 @@ public class SurveyViewPage extends BaseMapViewPage {
      * @return the SurveyViewPage class instance.
      */
     public SurveyViewPage clickTermsOfUseLink() {
+    	Log.clickElementInfo("Terms of use");
         termsOfUse.click();
         return this;
     }

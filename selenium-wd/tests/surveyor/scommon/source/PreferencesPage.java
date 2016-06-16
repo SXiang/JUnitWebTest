@@ -90,6 +90,7 @@ public class PreferencesPage extends SurveyorBasePage {
 	}
 
 	public void setSelectedTimeZone(String newTimeZone) {
+		Log.info(String.format("Select timezone %s", newTimeZone));
 		Select select= new Select(this.dropDownTimeZone);
 		select.selectByVisibleText(newTimeZone);
 	}
@@ -99,6 +100,7 @@ public class PreferencesPage extends SurveyorBasePage {
 	}
 
 	public void setSelectedCulture(String culture) {
+		Log.info(String.format("Select culture %s", culture));
 		Select select= new Select(this.dropDownCulture);
 		select.selectByVisibleText(culture);
 	}

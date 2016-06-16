@@ -41,13 +41,11 @@ public class PrimePage extends BasePage {
 	}
 	
 	public void browsingSettingControls() {
-		
-		this.btnSidePanel.click();
-		
+		Log.clickElementInfo("Side Panel",ElementType.LINK);
+		this.btnSidePanel.click();		
 		this.testSetup.slowdownInSeconds(3);
-		
-		this.btnSidePanel.click();
-		
+		Log.clickElementInfo("Side Panel",ElementType.LINK);
+		this.btnSidePanel.click();		
 		this.testSetup.slowdownInSeconds(3);
 	}
 }

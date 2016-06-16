@@ -94,7 +94,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public ManageCustomersPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 
-		Log.info("\nThe Manager Customers Page URL is: " + this.strPageURL);
+		Log.info("\nThe Manage Customers Page URL is: " + this.strPageURL);
 	}
 
 	public boolean selectLicensedFeatures(LicensedFeatures... lfs) {
@@ -122,11 +122,15 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public boolean selectLicensedFeature(LicensedFeatures lf, boolean enableFeature) {
 		WebElement inputBox = getInputBoxOfLicensedFeature(lf);
 		if (enableFeature) {
-			if (!inputBox.isSelected())
+			if (!inputBox.isSelected()){
+				Log.info("Select licensed features - '"+lf+"'");
 				inputBox.click();
+			}
 		} else {
-			if (inputBox.isSelected())
+			if (inputBox.isSelected()){
+				Log.info("Unselect licensed features - '"+lf+"'");
 				inputBox.click();
+			}
 		}
 		return enableFeature;
 	}
@@ -175,6 +179,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	}
 
 	public boolean addNewCustomer(String customerName, String eula, boolean enableCustomer, LicensedFeatures[] lfs) {
+		Log.clickElementInfo("Add New Customer");
 		this.btnAddNewCustomer.click();
 		this.waitForNewPageLoad();
 
@@ -186,16 +191,19 @@ public class ManageCustomersPage extends SurveyorBasePage {
 			Log.info("this.inputCustomerName is NOT displayed");
 		}
 
+		Log.info("Set customer name - '"+customerName+"'");
 		this.inputCustomerName.sendKeys(customerName);
 
 		setEULAText(eula);
 		enabledDisableCustomer(enableCustomer);
 		selectLicensedFeatures(lfs);
+		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 
 		if (isElementPresent(this.panelDuplicationErrorXPath)) {
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
 			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
+				Log.clickElementInfo("Cancel");
 				this.cancelAddBtn.click();
 				return false;
 			}
@@ -210,6 +218,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	}
 
 	public void enabledDisableCustomer(boolean enableCustomer) {
+		Log.info("Customer account "+(enableCustomer?"enabled":"disabled"));
 		if (enableCustomer) {
 			if (!isAccountEnabled())
 				inputAccountEnabled.click();
@@ -236,6 +245,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	}
 
 	public boolean findExistingCustomer(String customerName, boolean enabledStatus) {
+		Log.info(String.format("Find customer '%s'",customerName));
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -275,6 +285,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				List<WebElement> newRows = getTable().findElements(By.xpath(DATATABLE_TBODY_TR));
@@ -289,11 +300,12 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
-
+		Log.info(String.format("Customer not found: '%s'",customerName));
 		return false;
 	}
 
 	public boolean findCustomerAndOpenEditPage(String customerName) {
+		Log.info(String.format("Find customer '%s'",customerName));
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -330,6 +342,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				List<WebElement> newRows = getTable().findElements(By.xpath(DATATABLE_TBODY_TR));
@@ -344,11 +357,12 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
-
+		Log.info(String.format("Customer not found: '%s'",customerName));
 		return false;
 	}
 
 	public boolean editExistingCustomerName(String customerName, String eulaNew, boolean enableCustomer) {
+		Log.info(String.format("Edit customer '%s'",customerName));
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -381,10 +395,11 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 				actionCell.click();
 				this.waitForEditPageLoad();
-
+				
+				Log.info("Set EULA - '"+eulaNew+"'");
 				setEULAText(eulaNew);
 				enabledDisableCustomer(enableCustomer);
-
+				Log.clickElementInfo("Ok");
 				this.btnOk.click();
 
 				if (getTable().isDisplayed())
@@ -393,6 +408,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				if (isElementPresent(this.panelDuplicationErrorXPath)) {
 					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
 					if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
+						Log.clickElementInfo("Cancel");
 						this.cancelEditBtn.click();
 						return false;
 					}
@@ -400,6 +416,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				List<WebElement> newRows = getTable().findElements(By.xpath(DATATABLE_TBODY_TR));
@@ -414,7 +431,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
-
+		Log.info(String.format("Customer not found: '%s'",customerName));
 		return false;
 	}
 
@@ -552,12 +569,14 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 				enabledDisableCustomer(bEnabled);
 
+				Log.clickElementInfo("Ok");
 				this.btnOk.click();
 
 				return true;
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				List<WebElement> newRows = getTable().findElements(By.xpath(DATATABLE_TBODY_TR));
@@ -605,22 +624,27 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	
 
 	public void clickOnAddNewCustomerBtn() {
+		Log.clickElementInfo("Add New Customer");
 		this.btnAddNewCustomer.click();
 	}
 
 	public void clickOnFirstEditCustomerBtn() {
+		Log.clickElementInfo("Edit Customer");
 		this.btnEditCustomer.click();
 	}
 
 	public void clickOnAddCancelBtn() {
+		Log.clickElementInfo("Cancel(add customer)");
 		this.cancelAddBtn.click();
 	}
 
 	public void clickOnEditCancelBtn() {
+		Log.clickElementInfo("Cancel(edit customer)");
 		this.cancelEditBtn.click();
 	}
 
 	public void clickOnEditOkBtn() {
+		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 	}
 

@@ -36,10 +36,11 @@ public class ManageLocationsAdminPage extends ManageLocationsPage {
 	}
 
 	public void addNewLocation(String locationDesc) {
+		Log.clickElementInfo("Add New Location");
 		this.btnAddNewLocation.click();
-
+		Log.info("Set Location Desc - '"+locationDesc+"'");
 		this.inputLocationDesc.sendKeys(locationDesc);
-
+		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 
 		if (isElementPresent(this.panelDuplicationErrorXPath)) {
@@ -49,18 +50,20 @@ public class ManageLocationsAdminPage extends ManageLocationsPage {
 					.getText()
 					.equalsIgnoreCase(
 							Resources
-									.getResource(ResourceKeys.Validation_SummaryTitle)))
+									.getResource(ResourceKeys.Validation_SummaryTitle))){
+				Log.clickElementInfo("Cancel");
 				this.btnCancel.click();
+			}
 		}
 	}
 
 	public boolean addNewLocation(String locationDesc, boolean bFlag) {
+		Log.clickElementInfo("Add New Location");
 		this.btnAddNewLocation.click();
-
+		Log.info("Set Location Desc - '"+locationDesc+"'");
 		this.inputLocationDesc.sendKeys(locationDesc);
-
 		String curURL = driver.getCurrentUrl();
-
+		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 
 		if (locationDesc.equalsIgnoreCase("")) {
@@ -76,6 +79,7 @@ public class ManageLocationsAdminPage extends ManageLocationsPage {
 					.equalsIgnoreCase(
 							Resources
 									.getResource(ResourceKeys.Validation_SummaryTitle))) {
+				Log.clickElementInfo("Cancel");
 				this.btnCancel.click();
 				return false;
 			}

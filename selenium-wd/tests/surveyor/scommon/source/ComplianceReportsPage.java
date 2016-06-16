@@ -252,9 +252,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(how = How.ID, using = "modalClose")
 	protected WebElement modalClose;
+
+	@FindBy(css = "#reportViewer > .modal-dialog button.close")
+	protected WebElement modalX;
 	
     @FindBy(css = "#ImageList > li.dynamic a[href*='DownloadReportView']")
     protected List<WebElement> pdfViews;
+
+    @FindBy(css = "#ImageList > li.dynamic a[href*='DownloadReportView']")
+    protected WebElement firstPdfView;
     
 	@FindBy(name = "rdAreaMode")
 	private List<WebElement> areaBoundaryRadioButtons;
@@ -521,6 +527,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		for (int i = 0; i < viewList.size(); i++) {
 			if (i != 0) {
+				Log.clickElementInfo("Add Views");
 				this.btnAddViews.click();
 			}
 
@@ -529,60 +536,71 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				colNum = 2;
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				strBaseXPath = strBaseXPath + "[@type='text']";
+				String viewName = viewList.get(i).get(KEYVIEWNAME);
+				Log.info("Set view name to '"+viewName);
 				driver.findElement(By.xpath(strBaseXPath)).clear();
-				driver.findElement(By.xpath(strBaseXPath)).sendKeys(viewList.get(i).get(KEYVIEWNAME));
+				driver.findElement(By.xpath(strBaseXPath)).sendKeys(viewName);
 			}
 
 			if (viewList.get(i).get(KEYLISA).equalsIgnoreCase("1")) {
 				colNum = 3;
+				Log.clickElementInfo("LISA", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (viewList.get(i).get(KEYFOV).equalsIgnoreCase("1")) {
 				colNum = 4;
+				Log.clickElementInfo("FOV", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (viewList.get(i).get(KEYBREADCRUMB).equalsIgnoreCase("1")) {
 				colNum = 5;
+				Log.clickElementInfo("BREADCRUMB", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (viewList.get(i).get(KEYINDICATIONS).equalsIgnoreCase("1")) {
 				colNum = 6;
+				Log.clickElementInfo("INDICATIONS", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (viewList.get(i).get(KEYISOTOPICCAPTURE).equalsIgnoreCase("1")) {
 				colNum = 7;
+				Log.clickElementInfo("ISOTOPICCAPTURE", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (viewList.get(i).get(KEYANNOTATION).equalsIgnoreCase("1")) {
 				colNum = 8;
+				Log.clickElementInfo("ANNOTATION", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (viewList.get(i).get(KEYGAPS).equalsIgnoreCase("1")) {
 				colNum = 9;
+				Log.clickElementInfo("GAPS", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (viewList.get(i).get(KEYASSETS).equalsIgnoreCase("1")) {
 				colNum = 10;
+				Log.clickElementInfo("ASSETS", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (viewList.get(i).get(KEYBOUNDARIES).equalsIgnoreCase("1")) {
 				colNum = 11;
+				Log.clickElementInfo("BOUNDARIES", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
@@ -597,7 +615,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				WebElement dropdownBaseMap = driver.findElement(By.xpath(strBaseXPath));
 				List<WebElement> options = dropdownBaseMap.findElements(By.tagName("option"));
 				for (WebElement option : options) {
-					if ((viewList.get(i).get(KEYBASEMAP)).equalsIgnoreCase(option.getText().trim())) {
+					String thisMap = viewList.get(i).get(KEYBASEMAP);
+					if ((thisMap).equalsIgnoreCase(option.getText().trim())) {
+						Log.info(String.format("Select base map - '%s'", thisMap));
 						option.click();
 						break;
 					}
@@ -632,57 +652,73 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return WebElementExtender.isElementPresentAndDisplayed(pdfImg);
 	}
 
-	public void clickOnCloseReportViewer() {
-		jsClick(modalClose);
+	public void clickOnCloseReportViewer(String btn) {
+		if(btn!=null&&btn.equalsIgnoreCase("XButton")){
+		   modalX.click();
+		}else{
+		   modalClose.click();
+		}
 	}
 	
 	public void clickViewThumbnailImageByIndex(int viewIdx){
-		jsClick(pdfViews.get(viewIdx-1));
+		jsClick(getViewThumbnailImageByIndex(viewIdx));
 	}
 	
 	public WebElement getViewThumbnailImageByIndex(int viewIdx){
-		return pdfViews.get(viewIdx-1);
+		if(firstPdfView.isDisplayed()){
+		   return pdfViews.get(viewIdx-1);
+		}
+		return null;
 	}	
 	
 	public void clickOnShapeZIPInReportViewer() {
+		Log.clickElementInfo("Shape ZIP", ElementType.LINK);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click();", zipShape);
 	}
 
 	public void clickOnMetadataZIPInReportViewer() {
+		Log.clickElementInfo("Meta ZIP", ElementType.LINK);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click();", zipMeta);
 	}
 
 	public void clickOnZIPInReportViewer() {
+		Log.clickElementInfo("ZIP", ElementType.LINK);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click();", zipImg);
 	}
 
 	public void clickOnPDFInReportViewer() {
+		Log.clickElementInfo("PDF", ElementType.LINK);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click();", pdfImg);
 	}
 
 	public void clickOnFirstInvestigateComplianceBtn() {
+		Log.clickElementInfo("Investigate of the first compliance report", ElementType.LINK);
 		this.btnFirstInvestigateCompliance.click();
 	}
 
 	public void clickLatLongMapSelectorBtn() {
+		Log.clickElementInfo("Lat/Long Map Selector");
 		this.latLongMapSelectorBtn.click();
 	}
 
 	public void clickBoundarySelectorBtn() {
+		Log.clickElementInfo("Boundary Selector");
 		this.boundarySelectorBtn.click();
 	}
 
 	public void clickOnConfirmInDeleteReportPopup() {
 		WebElement confirmDelete = this.driver.findElement(By.xpath(DELETE_POPUP_CONFIRM_BUTTON_XPATH));
+		Log.clickElementInfo("Confirm of deletion");
 		confirmDelete.click();
 	}
 
 	public void clickOnCancelInDeleteReportPopup() {
 		WebElement cancelDelete = this.driver.findElement(By.xpath(DELETE_POPUP_CANCEL_BUTTON_XPATH));
+		Log.clickElementInfo("Cancel of deletion");
 		cancelDelete.click();
 	}
 
@@ -757,6 +793,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Report objReport = Report.getReport(rptTitle);
 		String reportId = objReport.getId();
 		reportId = reportId.substring(0, 6);
+		Log.info("The reportID of "+rptTitle+"' is '"+reportId+"'");
 		return reportId;
 	}
 
@@ -859,7 +896,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		boolean isGenerateBaselineViewImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
 		if (isGenerateBaselineViewImages) {
 			File downLoadedFolder = new File(unzipFolder);
-			File[] listOfViews = downLoadedFolder.listFiles();
+			File[] listOfViews;
+			if(downLoadedFolder.isFile()){
+				listOfViews = new File[1];
+				listOfViews[0] = downLoadedFolder;
+			}else{
+			    listOfViews = downLoadedFolder.listFiles();
+			}
 			int counter = 1;
 			for (File file : listOfViews) {
 				if (file.isFile()) {
@@ -942,8 +985,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		zipImg = getTable().findElement(By.xpath(zipImgXPath));
 		String srcZipImg = zipImg.getAttribute("src");
 		if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip")) {
+			Log.clickElementInfo("PDF",ElementType.ICON);
 			pdfImg.click();
 			waitForPDFFileDownload(getReportName());
+			Log.clickElementInfo("ZIP",ElementType.ICON);
 			zipImg.click();
 			waitForReportZIPFileDownload(getReportName());
 			return true;
@@ -1010,7 +1055,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			throw new Exception("ButtonType NOT supported.");
 		}
 		
-		List<WebElement> rows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+		List<WebElement> rows = getTable().findElements(By.xpath("tr"));
 
 		int rowSize = rows.size();
 		int loopCount = 0;
@@ -1023,8 +1068,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Log.info(String.format("Looking for rptTitle=[%s], strCreatedBy=[%s]", rptTitle, strCreatedBy));
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
+			createdByXPath = "tr[" + rowNum + "]/td[3]";
 
 			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
 			createdByCell = getTable().findElement(By.xpath(createdByXPath));
@@ -1034,15 +1079,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
 					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				try {
-                    buttonXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/"+ buttonXPath;
+                    buttonXPath = "tr[" + rowNum + "]/"+ buttonXPath;
 					buttonImg = getTable().findElement(By.xpath(buttonXPath));
 					if (buttonImg.isDisplayed()) {
 						if (clickButton) {
 							if (buttonType != ComplianceReportButtonType.ReportErrorLabel) {
+								Log.clickElementInfo("buttonType");
 								buttonImg.click();
 								// If resubmit then wait for modal and confirm resubmit.
 								if (buttonType == ComplianceReportButtonType.Resubmit) {
 									this.waitForResubmitPopupToShow();
+									Log.clickElementInfo("Confirm Resubmit");
 									this.btnProcessResubmit.click();
 									this.waitForPageLoad();
 									this.waitForAJAXCallsToComplete();
@@ -1050,6 +1097,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 								if (buttonType == ComplianceReportButtonType.Delete) {
 									this.waitForConfirmDeletePopupToShow();
 									if (confirmAction) {
+										Log.clickElementInfo("Confirm Delete");
 										this.clickOnConfirmInDeleteReportPopup();
 										this.waitForConfirmDeletePopupToClose();
 									}
@@ -1074,7 +1122,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
-				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
 					loopCount = rowSize;
@@ -1092,6 +1140,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (imageMapWidth == null || imageMapWidth.equals("")) {
 			return;
 		}
+		Log.info("Set image width to '"+imageMapWidth+"'");
 		this.inputImgMapWidth.clear();
 		this.inputImgMapWidth.sendKeys(imageMapWidth);
 	}
@@ -1100,44 +1149,53 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		if (imageMapHeight == null || imageMapHeight.equals("")) {
 			return;
 		}
+		Log.info("Set image height to '"+imageMapHeight+"'");
 		this.inputImgMapHeight.clear();
 		this.inputImgMapHeight.sendKeys(imageMapHeight);
 	}
 
 	public void inputExclusionRadius(String exclusionRadius) {
+		Log.info("Set exclusion redius to '"+exclusionRadius+"'");
 		this.inputExclusionRadius.clear();
 		this.inputExclusionRadius.sendKeys(exclusionRadius);
 	}
 
 	public void inputFOVOpacity(String fovOpacity) {
+		Log.info("Set FOV Opacity to '"+fovOpacity+"'");
 		this.inputFOVOpacity.clear();
 		this.inputFOVOpacity.sendKeys(fovOpacity);
 	}
 
 	public void inputLISAOpacity(String lisaOpacity) {
+		Log.info("Set LISA Opacity to '"+lisaOpacity+"'");
 		this.inputLISAOpacity.clear();
 		this.inputLISAOpacity.sendKeys(lisaOpacity);
 	}
 
 	public void inputSurveyUsername(String username) {
+		Log.info("Set survey username to '"+username+"'");
 		this.userName.clear();
 		this.userName.sendKeys(username);
 	}
 
 	public void fillCustomBoundaryTextFields(String neLat, String neLong, String swLat, String swLong) {
 		if (neLat != null) {
+			Log.info("Set NELat to '"+neLat+"'");
 			this.inputNELat.clear();
 			this.inputNELat.sendKeys(neLat);
 		}
 		if (neLong != null) {
+			Log.info("Set NELong to '"+neLong+"'");
 			this.inputNELong.clear();
 			this.inputNELong.sendKeys(neLong);
 		}
 		if (swLat != null) {
+			Log.info("Set SWLat to '"+swLat+"'");
 			this.inputSWLat.clear();
 			this.inputSWLat.sendKeys(swLat);
 		}
 		if (swLong != null) {
+			Log.info("Set SWLong to '"+swLong+"'");
 			this.inputSWLong.clear();
 			this.inputSWLong.sendKeys(swLong);
 		}
@@ -1156,7 +1214,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			mode = ReportModeFilter.Operator;
 		} else if (reportMode.equalsIgnoreCase("manual")) {
 			mode = ReportModeFilter.Manual;
-		} else if (reportMode.equalsIgnoreCase("rr")) {
+		} else if (reportMode.equalsIgnoreCase("rr")||reportMode.equalsIgnoreCase("RapidResponse")) {
 			mode = ReportModeFilter.RapidResponse;
 		}
 		return mode;
@@ -1218,13 +1276,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				investigateImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[4]/img";
 				investigateImg = getTable().findElement(By.xpath(investigateImgXPath));
-
+				Log.clickElementInfo("Investigate",ElementType.ICON);
 				investigateImg.click();
 				return true;
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 
 				this.waitForPageLoad();
@@ -1277,13 +1336,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
 				resubmitImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
 				resubmitImg = getTable().findElement(By.xpath(resubmitImgXPath));
-
+				Log.clickElementInfo("Resubmit",ElementType.ICON);
 				resubmitImg.click();
 
 				this.waitForCopyReportPagetoLoad();
 				this.waitForInputTitleToEnable();
 
 				this.waitForOkButtonToEnable();
+				Log.clickElementInfo("OK");
 				clickOnOKButton();
 
 				return true;
@@ -1291,6 +1351,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 
 				this.waitForPageLoad();
@@ -1423,13 +1484,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				reportDate = formatteLine.substring(matcher.end() + 1).trim();
 			}
 		}
-		DateUtility date = new DateUtility();
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/YYYY hh:mm a zzz");
 		String currentDate = dateFormat.format(new Date()).toString();
-		if (date.compareDateTimeFormat(reportDate, true)
-				&& (date.compareDates(currentDate.toString(), reportDate, true))) {
+		if (DateUtility.compareDateTimeFormat(reportDate, true)
+				&& (DateUtility.compareDates(currentDate.toString(), reportDate, true))) {
 			return true;
 		}
+		Log.error("Date not match, expected: "+currentDate+", actual: "+reportDate);
 		return false;
 	}
 
@@ -1606,14 +1667,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		default:
 			break;
 		}
+		confirmChangeRptMode();
+	}
 
+	public void confirmChangeRptMode(){
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		if (this.btnChangeRptMode.isDisplayed()) {
 			this.btnChangeRptMode.click();
-
 		}
 	}
-
 	public boolean verifySurveysTableViaSurveyMode(boolean changeMode, ReportModeFilter strReportMode,
 			SurveyModeFilter surveyModeFilter) throws IOException {
 		boolean result = false;
@@ -2631,13 +2693,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean verifyThumbnailInReportViewer(ReportViewerThumbnailType compliancezipmeta) {
 		switch (compliancezipmeta) {
 		case ComplianceTablePDF:
-			return this.isShapeIconDisplayedInViewer();
+			return this.isReportPDFIconDisplayedInViewer();
 		case ComplianceZipMeta:
 			return this.isMetadataIconDisplayedInViewer();
 		case ComplianceZipPDF:
 			return this.isReportZipIconDisplayedInViewer();
 		case ComplianceZipShape:
-			return this.isReportPDFIconDisplayedInViewer();
+			return this.isShapeIconDisplayedInViewer();
 		default:
 			break;
 		}
@@ -2955,7 +3017,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			String expectedReportAuthor) throws Exception {
 		Log.info("Verifying SSRS PDF footer...");
 		String reportPDFFilename = getReportPDFFileName(reportTitle, true /* includeExtension */);
-		String actualReport = Paths.get(actualPath, reportPDFFilename).toString();
+		return verifyPDFFooter(actualPath, reportPDFFilename, expectedSoftwareVersion, expectedReportAuthor);
+	}
+	
+	public boolean verifyPDFFooter(String actualPath, String pdfFilename, String expectedSoftwareVersion,
+			String expectedReportAuthor) throws Exception {
+		String actualReport = Paths.get(actualPath,pdfFilename).toString();
 		PDFUtility pdfUtility = new PDFUtility();
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 
@@ -3063,7 +3130,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				String pathToBaseImage = Paths
 						.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\ssrs-images").toString()
 						+ "\\" + testCase + "\\" + "Page_" + pageCounter + ".png";
-				if (!verifyActualImageWithBase(pathToBaseImage, pathToActualImage)) {
+				boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
+				if (!verifyActualImageWithBase(pathToActualImage, pathToBaseImage, generateBaseline)) {
 					Files.delete(Paths.get(pathToActualImage));
 					Log.info("Image verification failed");
 					return false;
@@ -3223,7 +3291,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		File[] listOfFiles = folder.listFiles();
 
 		for (File file : listOfFiles) {
-			if (file.isFile() && (file.getName().contains("View"))) {
+			if (file.isFile()){
 				BufferedImage image = ImageIO.read(file);
 				int width = image.getWidth();
 				int height = image.getHeight();
@@ -3239,7 +3307,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images").toString() + File.separator + testCase + File.separator + viewName + ".png";
 				}				
 				
-				if (!verifyActualImageWithBase(baseViewFile, actualViewPath)) {
+				boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
+				if (!verifyActualImageWithBase(actualViewPath, baseViewFile, generateBaseline)) {
 					Files.delete(Paths.get(actualViewPath));
 					return false;
 				}

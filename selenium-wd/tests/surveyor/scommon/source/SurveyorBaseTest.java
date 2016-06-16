@@ -5,6 +5,8 @@ package surveyor.scommon.source;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Locale;
 
@@ -25,8 +27,10 @@ import com.relevantcodes.extentreports.LogStatus;
 import com.relevantcodes.extentreports.NetworkMode;
 
 import common.source.DateUtility;
+import common.source.FileUtility;
 import common.source.Log;
 import common.source.RegexUtility;
+import common.source.ScreenShotOnFailure;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.Resources;
@@ -42,6 +46,7 @@ public class SurveyorBaseTest {
 	public static TestSetup testSetup;
 	public static String baseURL;
 	public static String screenShotsDir;
+	public static String screenShotsSubFolder = "screenshots/";
 	public static boolean debug;
 
 	public static LoginPage loginPage;
@@ -79,6 +84,10 @@ public class SurveyorBaseTest {
 			 SurveyorBaseTest.reportTestSucceeded();
 		}
 	};
+	
+	@Rule
+	public ScreenShotOnFailure failure = new ScreenShotOnFailure(driver, screenShotsSubFolder, 
+			screenShotsDir, testSetup.isRemoteBrowser);
 	
 	private static ExtentReports getExtentReport(String className) {
 	   ExtentReports extentReport = TestContext.INSTANCE.getReport();
@@ -129,6 +138,7 @@ public class SurveyorBaseTest {
 
 	private static void setExtentTest(ExtentTest test) {
 		SurveyorBaseTest.test = test;
+		TestContext.INSTANCE.setExtentTest(test);
 	}
 
 	/**
@@ -143,12 +153,16 @@ public class SurveyorBaseTest {
 	public static void initializeTestObjects() {
 		testSetup = new TestSetup();
 		driver = testSetup.getDriver();
-		baseURL = testSetup.getBaseUrl();
-		screenShotsDir = "./screenshots/";
+		baseURL = testSetup.getBaseUrl();		
 		debug = testSetup.isRunningDebug();
-
 		TestContext.INSTANCE.setTestSetup(testSetup);
-
+		if(screenShotsDir==null){
+			screenShotsDir = TestSetup.getExecutionPath() + TestSetup.reportDir + testSetup.getTestReportCategory();
+			Path screenShotsPath = Paths.get(screenShotsDir, screenShotsSubFolder);
+			Log.info(String.format("Create screenshots foler for this test - '%s'", screenShotsPath));
+			FileUtility.deleteFilesInDirectory(screenShotsPath);
+			FileUtility.createDirectoryIfNotExists(screenShotsPath.toString());
+		}		
 		Log.info("debuggug null - driver:***:" +driver);
 		driver.manage().deleteAllCookies();
 		

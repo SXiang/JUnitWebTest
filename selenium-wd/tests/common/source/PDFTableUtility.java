@@ -160,14 +160,14 @@ public class PDFTableUtility extends PDFUtility{
 						line = trimTableRow(pdfLines[j]);
 					}
 					if(numLines==0&&hasTableHeader){
-						header = line;
+						header = line; // Remember the header, it may appear in the next page
 						pdfTable.add(getTableRow(line));
-					}else if(line.equals(header)){
+					}else if(line.equals(header)){ //Ignore header line
 						continue;
-					}else if(isLineIgnorable(line)){
-						if(line.matches(pageFooterPattern)){
+					}else if(isLineIgnorable(line)){ // Ignore others - pageheader, pagefooter and comstom patterns
+						if(line.matches(pageFooterPattern)){ // expecting records from the next page
 							break;
-						}else{
+						}else{ // continue on this page
 							continue;
 						}
 					}else if(line.matches(tableEndLinePattern)){
@@ -180,7 +180,6 @@ public class PDFTableUtility extends PDFUtility{
 						}else{
 							continue;
 						}
-
 					}
 					numLines++;
 				}

@@ -44,6 +44,8 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 	}
 
 	public boolean findExistingSurveyor(String locationName, String surveyorName) {
+		Log.info(String.format("Find surveyor %s, location = '%s'",
+				surveyorName, locationName));
 		setPagination(PAGE_PAGINATIONSETTING);
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -91,13 +93,16 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 				rowNum = 0;
 			}
 		}
-
+		Log.info(String.format("Surveyor not found: %s, location = '%s'",
+				surveyorName, locationName));
 		return false;
 	}
 
 	
 
 	public boolean editExistingSurveyor(String customer, String locationName, String surveyorName, String locationNameNew, String surveyorNameNew, boolean addCalibration) {
+		Log.info(String.format("Edit surveyor %s, customer = '%s', location = '%s'",
+				surveyorName, customer,locationName));
 		setPagination(PAGE_PAGINATIONSETTING);
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -148,11 +153,13 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 				actionEditCell = getTable().findElement(By.xpath(actionEditXPath));
 
 				Log.info("Found entry at rowNum=" + rowNum);
-
+				
+				Log.clickElementInfo("Edit",ElementType.ICON);
 				actionEditCell.click();
 				this.waitForEditPageLoad();
 
 				if (!surveyorName.equals(surveyorNameNew)) {
+					Log.info("Set surveyor name - '"+surveyorNameNew+"'");
 					this.inputSurveyorDesc.clear();
 					this.inputSurveyorDesc.sendKeys(surveyorNameNew);
 				}
@@ -162,24 +169,29 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 					List<WebElement> options = this.dropDownLocation.findElements(By.tagName("option"));
 					for (WebElement option : options) {
 						if (option.getText().trim().equalsIgnoreCase(locationNameNew)) {
+							Log.info("Select location - '"+locationNameNew+"'");
 							option.click();
 							bFound = true;
 							break;
 						}
 					}
 
-					if (!bFound)
+					if (!bFound){
+						Log.error("Location not found: '"+locationNameNew+"'");
 						return false;
+					}
 				}
 
 				if (addCalibration) {
+					Log.clickElementInfo("Add Calibration Record");
 					this.addCalibrationRecordButton.click();
 					this.waitForPageLoad();
+					Log.clickElementInfo("Ok");
 					this.btnOK.click();
 					this.waitForEditPageLoad();
 				}
 				
-
+				Log.clickElementInfo("Ok");
 				this.btnOK.click();
 
 				if (isElementPresent(this.panelDuplicationErrorXPath)) {
@@ -192,6 +204,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 			}
 
 			if (rowNum == Integer.parseInt(PAGE_PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
@@ -206,7 +219,8 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 				rowNum = 0;
 			}
 		}
-
+		Log.error(String.format("Surveyor not found: %s, customer = '%s', location = '%s'",
+				surveyorName, customer,locationName));
 		return false;
 	}
 
@@ -215,6 +229,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 	}
 
 	public void clickOnFirstEditSurveyorBtn() {
+		Log.clickElementInfo("Edit Surveyor");
 		this.btnEditSurveyor.click();
 	}
 

@@ -153,6 +153,7 @@ public class TestSetup {
 
 	private boolean logCategorySSRSPdfContentEnabled;
 	private boolean logCategoryComplianceReportActionsEnabled;
+	private boolean logCategoryWebElementEnabled;
 
 	private String surveysToUpload;
 	private boolean uploadSurveyEnabled;
@@ -617,6 +618,13 @@ public class TestSetup {
 		this.logCategoryComplianceReportActionsEnabled = logCategoryComplianceReportActionsEnabled;
 	}
 
+	public boolean isLogCategoryClickWebElementEnabled() {
+		return logCategoryWebElementEnabled;
+	}
+
+	public void setLogCategoryClickWebElementEnabled(boolean logCategoryWebElementEnabled) {
+		this.logCategoryWebElementEnabled = logCategoryWebElementEnabled;
+	}
 	public String getSoftwareVersion() {
 		return this.softwareVersion;
 	}
@@ -782,6 +790,11 @@ public class TestSetup {
 				.getProperty("logCategory.ComplianceReportActions.Enabled");
 		if (logCategoryComplianceReportActions != null && logCategoryComplianceReportActions != "") {
 			this.setLogCategoryComplianceReportActionsEnabled(Boolean.valueOf(logCategoryComplianceReportActions));
+		}
+		String logCategoryClickWebElement = this.testProp
+				.getProperty("logCategory.ClickWebElement.Enabled");
+		if (logCategoryClickWebElement != null && logCategoryClickWebElement != "") {
+			this.setLogCategoryClickWebElementEnabled(Boolean.valueOf(logCategoryClickWebElement));
 		}
 	}
 

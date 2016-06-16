@@ -37,7 +37,7 @@ public class BasePage {
 	protected WebDriver driver;
 	protected TestSetup testSetup;
 
-	protected int timeout = 15;
+	protected int timeout = 30;   // Intermittent test failures seen with 15 seconds. Increasing timeout to 30 seconds.
 
 	@FindBy(how = How.XPATH, using = "//h1/strong")
 	private WebElement pageHeader;
@@ -111,6 +111,8 @@ public class BasePage {
 	@FindBy(how = How.XPATH, using = "//li[@id='picarro-administration-server-log']/a")
 	private WebElement linkViewServerLogs;
 
+	public static enum ElementType{BUTTON,LABEL,CHECKBOX,RADIOBUTTON,INPUT
+		,DIVISION, LINK, OPTION, ICON, DROPDOWN};
 	public BasePage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
 		this.driver = driver;
 		this.testSetup = testSetup;
@@ -141,94 +143,117 @@ public class BasePage {
 	}
 
 	public void clickOnDashboardLink() {
+		Log.clickElementInfo("Dashboard", ElementType.LINK);
 		this.linkDashboard.click();
 	}
 
 	public void clickOnDrivingSurveyLink() {
+		Log.clickElementInfo("Driving Surveys", ElementType.LINK);
 		this.linkDrivingSurveys.click();
 	}
 
 	public void clickOnSurveyorsLink() {
+		Log.clickElementInfo("Surveyors", ElementType.LINK);
 		this.linkSurveyors.click();
 	}
 
 	public void clickOnFleetMapLink() {
+		Log.clickElementInfo("Fleet Map", ElementType.LINK);
 		this.linkFleetMap.click();
 	}
 
 	public void clickOnFeedbackLink() {
+		Log.clickElementInfo("Feedback", ElementType.LINK);
 		this.linkFeedback.click();
 	}
 
 	public void clickOnReportsLink() {
+		Log.clickElementInfo("Reports", ElementType.LINK);
 		this.linkReports.click();
 	}
 
 	public void clickOnComplianceReportLink() {
+		Log.clickElementInfo("Compliance Report", ElementType.LINK);
 		this.linkComplianceReport.click();
 	}
 
 	public void clickOnEQReportLink() {
+		Log.clickElementInfo("EQ Report", ElementType.LINK);
 		this.linkEQReport.click();
 	}
 
 	public void clickOnReferenceGasReportLink() {
+		Log.clickElementInfo("Reference Gas Report", ElementType.LINK);
 		this.linkReferenceGasReport.click();
 	}
 
 	public void clickOnSystemHistoryReportLink() {
+		Log.clickElementInfo("System History Report", ElementType.LINK);
 		this.linkSystemHistoryReport.click();
 	}
 
 	public void clickOnPicarroAdminLink() {
+		Log.clickElementInfo("Picarro Admin", ElementType.LINK);
 		this.linkPicarroAdmin.click();
 	}
 
 	public void clickOnCalibrationLink() {
+		Log.clickElementInfo("Calibration ", ElementType.LINK);
 		this.linkCalibration.click();
 	}
 
 	public void clickOnViewUserFeedbackLink() {
+		Log.clickElementInfo("View User Feedback", ElementType.LINK);
 		this.linkViewUserFeedback.click();
 	}
 
 	public void clickOnManageCustomersLink() {
+		Log.clickElementInfo("Manage Customers", ElementType.LINK);
 		this.linkManageCustomers.click();
 	}
 
 	public void clickOnManageUsersLink() {
+		Log.clickElementInfo("Manage Users", ElementType.LINK);
 		this.linkManageUsers.click();
 	}
 
 	public void clickOnManageLocationsLink() {
+		Log.clickElementInfo("Manage Locations", ElementType.LINK);
 		this.linkManageLocations.click();
 	}
 
 	public void clickOnManageSurveyorsLink() {
+		Log.clickElementInfo("Manage Surveyors", ElementType.LINK);
 		this.linkManageSurveyors.click();
 	}
 
 	public void clickOnManageAnalyzersLink() {
+		Log.clickElementInfo("Manage Analyzers", ElementType.LINK);
 		this.linkManageAnalyzers.click();
 	}
 
 	public void clickOnManageRefGasBottlesLink() {
+		Log.clickElementInfo("Manage Ref Gas Bottles", ElementType.LINK);
 		this.linkManageRefGasBottles.click();
 	}
 
 	public void clickOnManageReleaseNotesLink() {
+		Log.clickElementInfo("Manage Release Notes", ElementType.LINK);
 		this.linkManageReleaseNotes.click();
 	}
 
 	public void clickOnManageSurveyorHistoriesLink() {
+		Log.clickElementInfo("Manage Surveyor Histories", ElementType.LINK);
 		this.linkManageSurveyorHistories.click();
 	}
 
 	public void clickOnViewAnalyzerLogsLink(String strBaseURL) {
+		Log.info("Navigate to Analyzer Logs page");
 		driver.get(strBaseURL + "/Picarro/AnalyzerLogs");
 	}
 
 	public void clickOnViewServerlogsLink(String strBaseURL) {
+		Log.info("Navigate to Server Logs page");
 		driver.get(strBaseURL + "/Picarro/ServerLog");
 	}
 
@@ -274,6 +299,7 @@ public class BasePage {
 		if(eula == null){
 			return;
 		}
+		Log.info("Send '"+eula+"' to eula text area");
 		textAreaEula.clear();
 		Actions actions = new Actions(driver);
 		actions.moveToElement(textAreaEula);
@@ -335,9 +361,11 @@ public class BasePage {
 	}
 	
 	public void minimizeBrowserWindow(){
+		Log.info("Minimize browser window");
 		driver.manage().window().setSize(new Dimension(0,0));
 	}
     public void maxmizeBrowserWindow(){
+    	Log.info("Maximize browser window");
     	driver.manage().window().maximize();
 	}
 
