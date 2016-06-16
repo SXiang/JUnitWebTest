@@ -116,13 +116,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		return true;
 	}
 	
-//	public boolean clickOnGisButton(String data, Integer dataRowID) {
-//		logAction("DriverViewPageActions.clickOnGisButton", data, dataRowID);
-//		getDriverViewPage().clickGisButton();
-//		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(1);
-//		return true;
-//	}
-//
 	public boolean clickOnModeButton(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.clickOnModeButton", data, dataRowID);
 		this.waitForSignalRCallsToComplete();

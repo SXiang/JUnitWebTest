@@ -523,12 +523,8 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickFieldNotesCancelButton() {
-<<<<<<< HEAD
-=======
 		fieldNotesCancel = driver.findElement(By.id("btn_cancel_annotation"));
 		Log.clickElementInfo("Cancel", "in field Notes dialog");
->>>>>>> master
-		fieldNotesCancel.click();
 		return this;
 	}
 
@@ -722,12 +718,8 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickFieldNotesSaveButton() {
-<<<<<<< HEAD
-=======
 		fieldNotesSave = driver.findElement(By.id("btn_save_annotation")); 
 		Log.clickElementInfo("Save Field Notes");
->>>>>>> master
-		fieldNotesSave.click();
 		return this;
 	}
 
@@ -1070,25 +1062,17 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		this.waitForSignalRCallsToComplete();
 		Log.info("Opening the StartSurvey modal dialog..");
 		this.clickStartSurveyButton();
-<<<<<<< HEAD
 		Log.info("Opened the StartSurvey modal dialog..");
 		this.waitForStartSurveyModalDialogToShow();
 		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
-=======
-		this.waitForPageToLoad();
->>>>>>> master
 	}
 
 	public void openStartEQSurveyModalDialog() {
 		Log.info("Opening the StartSurvey modal dialog..");
 		this.clickStartEQSurveyButton();
-<<<<<<< HEAD
 		Log.info("Opened the StartSurvey modal dialog..");
 		this.waitForStartSurveyModalDialogToShow();
 		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
-=======
-		this.waitForPageToLoad();
->>>>>>> master
 	}
 
 	public DriverViewPage stopDrivingSurvey() {
