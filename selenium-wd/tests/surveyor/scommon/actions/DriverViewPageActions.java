@@ -98,36 +98,29 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		return true;
 	}
 
-	public boolean clickOnDisplayButton(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.clickOnDisplayButton", data, dataRowID);
-		getDriverViewPage().clickDisplayButton();
-		return true;
-	}
-
 	public boolean clickOnFirstIndicationShownOnMap(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.clickOnFirstIndicationShownOnMap", data, dataRowID);
 		String mapCanvasXPath = "//*[@id='map']/div/canvas";
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
-		return mapUtility.clickFirstIndicationOnMap(mapCanvasXPath);
+		boolean retVal = mapUtility.clickFirstIndicationOnMap(mapCanvasXPath);
+		if (retVal) {
+			getDriverViewPage().waitForFeatureInfoDialogToOpen();
+		}
+		return retVal;
 	}
 
-	public boolean clickOnGisButton(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.clickOnGisButton", data, dataRowID);
-		getDriverViewPage().clickGisButton();
+	public boolean clickOnFeatureInfoAddUpdateNote(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.clickOnFeatureInfoAddUpdateFieldNote", data, dataRowID);
+		getDriverViewPage().clickOnAddUpdateNoteButton();
+		getDriverViewPage().waitForFieldNotesDialogToOpen();
 		return true;
 	}
-
-	public boolean clickOnMapButton(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.clickOnMapButton", data, dataRowID);
-		getDriverViewPage().clickMapButton();
-		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
-		return true;
-	}
-
+	
 	public boolean clickOnModeButton(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.clickOnModeButton", data, dataRowID);
+		this.waitForSignalRCallsToComplete();
 		getDriverViewPage().clickModeButton();
-		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
+		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(1);
 		return true;
 	}
 
@@ -214,6 +207,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.waitForPageLoad", data, dataRowID);
 		getDriverViewPage().waitForPageLoad();
 		getDriverViewPage().waitForConnectionComplete();
+		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
 		return true;
 	}
 	
@@ -634,6 +628,21 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		getDriverViewPage().toggleDisplaySwitch(DisplaySwitchType.Indications, true);
 		return true;
 	}
+	public boolean turnOnPossibleNaturalGas(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOnPossibleNaturalGas", data, dataRowID);
+		getDriverViewPage().toggleDisplaySwitch(DisplaySwitchType.PossibleNaturalGas, true);
+		return true;
+	}
+	public boolean turnOnNotNaturalGas(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOnNotNaturalGas", data, dataRowID);
+		getDriverViewPage().toggleDisplaySwitch(DisplaySwitchType.NotNaturalGas, true);
+		return true;
+	}
+	public boolean turnOnVehicleExhaust(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOnVehicleExhaust", data, dataRowID);
+		getDriverViewPage().toggleDisplaySwitch(DisplaySwitchType.VehicleExhaust, true);
+		return true;
+	}
 	public boolean turnOnIsotopicAnalysis(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.turnOnIsotopicAnalysis", data, dataRowID);
 		getDriverViewPage().toggleDisplaySwitch(DisplaySwitchType.IsotopicAnalysis, true);
@@ -684,6 +693,21 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	public boolean turnOffIndications(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.turnOffIndications", data, dataRowID);
 		getDriverViewPage().toggleDisplaySwitch(DisplaySwitchType.Indications, false);
+		return true;
+	}
+	public boolean turnOffPossibleNaturalGas(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOffPossibleNaturalGas", data, dataRowID);
+		getDriverViewPage().toggleDisplaySwitch(DisplaySwitchType.PossibleNaturalGas, false);
+		return true;
+	}
+	public boolean turnOffNotNaturalGas(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOffNotNaturalGas", data, dataRowID);
+		getDriverViewPage().toggleDisplaySwitch(DisplaySwitchType.NotNaturalGas, false);
+		return true;
+	}
+	public boolean turnOffVehicleExhaust(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOffVehicleExhaust", data, dataRowID);
+		getDriverViewPage().toggleDisplaySwitch(DisplaySwitchType.VehicleExhaust, false);
 		return true;
 	}
 	public boolean turnOffIsotopicAnalysis(String data, Integer dataRowID) {
@@ -924,6 +948,27 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	public boolean verifyWBTempButtonIsRed(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyWBTempButtonIsRed", data, dataRowID);
 		return getDriverViewPage().isWBTempButtonRed();
+	}
+
+	/**
+	 * Executes verifyStartSurveyIsNotShownOnMap action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyStartSurveyIsNotShownOnMap(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyStartSurveyIsNotShownOnMap", data, dataRowID);
+		return !getDriverViewPage().isStartSurveyButtonVisible();
+	}
+	/**
+	 * Executes verifyStopSurveyIsNotShownOnMap action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyStopSurveyIsNotShownOnMap(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyStopSurveyIsNotShownOnMap", data, dataRowID);
+		return !getDriverViewPage().isStopDrivingSurveyButtonVisible();
 	}
 
 	/* Verify EQ methods */
@@ -1666,6 +1711,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("clickOnCurtainZoomOutButton")) { return this.clickOnCurtainZoomOutButton(data, dataRowID); }
 		else if (actionName.equals("clickOnDisplayButton")) { return this.clickOnDisplayButton(data, dataRowID); }
 		else if (actionName.equals("clickOnFirstIndicationShownOnMap")) { return this.clickOnFirstIndicationShownOnMap(data, dataRowID); }
+		else if (actionName.equals("clickOnFeatureInfoAddUpdateNote")) { return this.clickOnFeatureInfoAddUpdateNote(data, dataRowID); }
 		else if (actionName.equals("clickOnGisButton")) { return this.clickOnGisButton(data, dataRowID); }
 		else if (actionName.equals("clickOnHeaderInfoBox")) { return this.clickOnHeaderInfoBox(data, dataRowID); }
 		else if (actionName.equals("clickOnMapButton")) { return this.clickOnMapButton(data, dataRowID); }
@@ -1699,6 +1745,9 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("turnOffEightHourHistory")) { return this.turnOffEightHourHistory(data, dataRowID); }
 		else if (actionName.equals("turnOffFOVs")) { return this.turnOffFOVs(data, dataRowID); }
 		else if (actionName.equals("turnOffIndications")) { return this.turnOffIndications(data, dataRowID); }
+		else if (actionName.equals("turnOffPossibleNaturalGas")) { return this.turnOffPossibleNaturalGas(data, dataRowID); }
+		else if (actionName.equals("turnOffNotNaturalGas")) { return this.turnOffNotNaturalGas(data, dataRowID); }
+		else if (actionName.equals("turnOffVehicleExhaust")) { return this.turnOffVehicleExhaust(data, dataRowID); }
 		else if (actionName.equals("turnOffIsotopicAnalysis")) { return this.turnOffIsotopicAnalysis(data, dataRowID); }
 		else if (actionName.equals("turnOffLisas")) { return this.turnOffLisas(data, dataRowID); }
 		else if (actionName.equals("turnOffMaterialTypeCastIron")) { return this.turnOffMaterialTypeCastIron(data, dataRowID); }
@@ -1722,6 +1771,9 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("turnOnEightHourHistory")) { return this.turnOnEightHourHistory(data, dataRowID); }
 		else if (actionName.equals("turnOnFOVs")) { return this.turnOnFOVs(data, dataRowID); }
 		else if (actionName.equals("turnOnIndications")) { return this.turnOnIndications(data, dataRowID); }
+		else if (actionName.equals("turnOnPossibleNaturalGas")) { return this.turnOnPossibleNaturalGas(data, dataRowID); }
+		else if (actionName.equals("turnOnNotNaturalGas")) { return this.turnOnNotNaturalGas(data, dataRowID); }
+		else if (actionName.equals("turnOnVehicleExhaust")) { return this.turnOnVehicleExhaust(data, dataRowID); }
 		else if (actionName.equals("turnOnIsotopicAnalysis")) { return this.turnOnIsotopicAnalysis(data, dataRowID); }
 		else if (actionName.equals("turnOnLisas")) { return this.turnOnLisas(data, dataRowID); }
 		else if (actionName.equals("turnOnMapView")) { return this.turnOnMapView(data, dataRowID); }

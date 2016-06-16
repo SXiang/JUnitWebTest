@@ -83,27 +83,21 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean clickOnDisplayButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnDisplayButton", data, dataRowID);
 		getBaseMapViewPageObject().clickDisplayButton();
-		TestContext.INSTANCE.stayIdle(2);
+		TestContext.INSTANCE.stayIdle(1);
 		return true;
-	}
-
-	public boolean clickOnFirstIndicationShownOnMap(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".clickOnFirstIndicationShownOnMap", data, dataRowID);
-		String mapCanvasXPath = "//*[@id='map']/div/canvas";
-		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
-		return mapUtility.clickFirstIndicationOnMap(mapCanvasXPath);
 	}
 
 	public boolean clickOnGisButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnGisButton", data, dataRowID);
 		getBaseMapViewPageObject().clickGisButton();
+		TestContext.INSTANCE.stayIdle(1);
 		return true;
 	}
 
 	public boolean clickOnMapButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnMapButton", data, dataRowID);
 		getBaseMapViewPageObject().clickMapButton();
-		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
+		TestContext.INSTANCE.stayIdle(1);
 		return true;
 	}
 
@@ -1126,26 +1120,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyModeButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyStatusIsNotShownOnMap", data, dataRowID);
 		return !getBaseMapViewPageObject().isModeButtonVisible();
-	}
-	/**
-	 * Executes verifyStartSurveyIsNotShownOnMap action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyStartSurveyIsNotShownOnMap(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".verifyStartSurveyIsNotShownOnMap", data, dataRowID);
-		return !getBaseMapViewPageObject().isStartSurveyButtonVisible();
-	}
-	/**
-	 * Executes verifyStopSurveyIsNotShownOnMap action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyStopSurveyIsNotShownOnMap(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".verifyStopSurveyIsNotShownOnMap", data, dataRowID);
-		return !getBaseMapViewPageObject().isStopSurveyButtonVisible();
 	}
 	
 	/**
