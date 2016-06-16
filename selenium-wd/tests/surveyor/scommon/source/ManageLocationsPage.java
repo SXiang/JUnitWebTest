@@ -161,7 +161,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		latLongSelectionControl = new LatLongSelectionControl(driver);
 		PageFactory.initElements(driver, latLongSelectionControl);
 
-		Log.info("\nThe Manager Locations Page URL is: " + this.strPageURL);
+		Log.info("\nThe Manage Locations Page URL is: " + this.strPageURL);
 	}
 
 	public ManageLocationsPage(WebDriver driver, String baseURL, TestSetup testSetup, String urlPath) {

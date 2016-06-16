@@ -610,7 +610,29 @@ public class SurveyorBasePage extends BasePage {
 		(new WebDriverWait(driver, timeout)).until(documentReadyComplete);
 	}
 	
-
+	public void waitForAnimationToComplete() {
+		ExpectedCondition<Boolean> jQueryAnimationComplete = new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				try {
+					Object jQueryAnimate = ((JavascriptExecutor)d).executeScript("return jQuery(':animated').length");
+					if (jQueryAnimate.toString().equalsIgnoreCase("0")) {
+						return true;
+					}
+				} catch (WebDriverException e) {
+					Log.info("jQuery NOT available. Skipping wait on jQuery(':animated')");
+					return true;
+				}
+				return false;	
+			}
+		};	
+		(new WebDriverWait(driver, timeout)).until(jQueryAnimationComplete);
+	}
+	
+	public void waitForSignalRCallsToComplete() {
+		this.waitForAJAXCallsToComplete();
+		this.waitForAnimationToComplete();
+	}
+	
 	public List<WebElement> getPaginationOption() {
 		return paginationOption;
 	}

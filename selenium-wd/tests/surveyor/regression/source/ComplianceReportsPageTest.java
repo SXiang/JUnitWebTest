@@ -1082,14 +1082,14 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	}
 
 	/**
-	 * Test Case ID: TC297 Test Description: Software version on UI and reports PDF should match
+	 * Test Case ID: TC1297 Test Description: Software version on UI and reports PDF should match
 	 * 
 	 * @throws Exception
 	 * 
 	 */
 	@Test
-	public void TC297_ComplianceReportTest_VerifyVersion() throws Exception {
-		String testCaseID = "TC297";
+	public void TC1297_ComplianceReportTest_VerifyVersion() throws Exception {
+		String testCaseID = "TC1297";
 		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
 		Log.info("Running " + testCaseID + ": Software version on UI and reports PDF should match, " + rptTitle);
 

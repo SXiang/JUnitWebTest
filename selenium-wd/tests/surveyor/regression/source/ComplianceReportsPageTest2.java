@@ -1486,13 +1486,10 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		complianceReportsPage.findReportbySearch(rptTitle, testSetup.getLoginUser());
 
 
-		try {
-			complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
-			complianceReportsPage.waitForResubmitButton();
-			complianceReportsPage.getBtnResubmitReport().click();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
+		complianceReportsPage.waitForResubmitButton();
+		complianceReportsPage.getBtnResubmitReport().click();
+
 		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {

@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import common.source.Log;
 import common.source.OLMapUtility;
 import common.source.RegexUtility;
+import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
 import surveyor.dataaccess.source.ResourceKeys;
@@ -41,8 +42,17 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[5]")
 	private WebElement displaySwitchIsotopicAnalysisDivElement;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]")
+	@FindBy(how = How.XPATH, using = "*[@id='menu_content']/div[6]/div[1]")
 	private WebElement displaySwitchIndicationsDivElement;
+	
+	@FindBy(how = How.XPATH, using = "*[@id='menu_content']/div[6]/div[2]")
+	private WebElement displaySwitchPossibleNaturalGasDivElement;
+	
+	@FindBy(how = How.XPATH, using = "*[@id='menu_content']/div[6]/div[3]")
+	private WebElement displaySwitchNotNaturalGasDivElement;
+	
+	@FindBy(how = How.XPATH, using = "*[@id='menu_content']/div[6]/div[4]")
+	private WebElement displaySwitchVehicleExhaustDivElement;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[7]")
 	private WebElement displaySwitchLisasDivElement;
@@ -74,6 +84,18 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@CacheLookup
 	protected WebElement displaySwitchIndications;
 
+	@FindBy(id = "display_switch_possible_natural_gas")
+	@CacheLookup
+	protected WebElement displaySwitchPossibleNaturalGas;
+	
+	@FindBy(id = "display_switch_not_natural_gas")
+	@CacheLookup
+	protected WebElement displaySwitchNotNaturalGas;
+	
+	@FindBy(id = "display_switch_vehicle_exhaust")
+	@CacheLookup
+	protected WebElement displaySwitchVehicleExhaust;
+	
 	@FindBy(id = "display_switch_lisas")
 	@CacheLookup
 	protected WebElement displaySwitchLisas;
@@ -222,18 +244,24 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(id = "shutting_down")
 	protected WebElement ShutdownAnalyzerButton;
 	
-	@FindBy(id = "start_survey_modal")
-	protected WebElement startSurveyButton;
-	
-	@FindBy(xpath = "//*[@id='button_close_survey_modal']/..")
-	protected WebElement stopSurveyButton;
-
 	@FindBy(id = "blocked_ui")
 	private WebElement divBlockedUI;
 	
 	@FindBy(id = "btn_close_annotation")
 	@CacheLookup
 	private WebElement fieldNotesDialogCloseButton;
+
+	@FindBy(id = "display_menu")
+	@CacheLookup
+	private WebElement displayMenu;
+
+	@FindBy(id = "gis_menu")
+	@CacheLookup
+	private WebElement gisMenu;
+	
+	@FindBy(id = "base_map_menu")
+	@CacheLookup
+	protected WebElement mapMenu;
 	
 	// Peak info popup values are updated on each peakInfo click. Seek these elements newly when get*() method is called.
 	private WebElement peakInfoEpoch;
@@ -252,7 +280,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	}
 
 	public enum DisplaySwitchType {
-		EightHourHistory, WindRose, ConcentrationChart, Notes, IsotopicAnalysis, Indications, Lisas, FOVs
+		EightHourHistory, WindRose, ConcentrationChart, Notes, IsotopicAnalysis, Indications, PossibleNaturalGas, NotNaturalGas, VehicleExhaust, Lisas, FOVs
 	}
 
 	public enum MapSwitchType {
@@ -335,8 +363,18 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	}
 
 	public BaseMapViewPage hideMapMenu() {
-		clickMapButton();
+		if (isMapMenuOpen()) {
+			clickMapButton();
+		}
 		return this;
+	}
+
+	public boolean isMapMenuOpen() {
+		return !this.mapMenu.getAttribute("class").toLowerCase().contains("ng-hide");
+	}
+
+	public boolean isMapMenuClosed() {
+		return !isMapMenuOpen();
 	}
 
 	public BaseMapViewPage clickGisButton() {
@@ -346,8 +384,18 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	}
 
 	public BaseMapViewPage hideGisMenu() {
-		clickGisButton();
+		if (isGisMenuOpen()) {
+			clickGisButton();
+		}
 		return this;
+	}
+
+	public boolean isGisMenuOpen() {
+		return !this.gisMenu.getAttribute("class").toLowerCase().contains("ng-hide");
+	}
+
+	public boolean isGisMenuClosed() {
+		return !isGisMenuOpen();
 	}
 
 	public BaseMapViewPage clickDisplayButton() {
@@ -357,8 +405,18 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	}
 
 	public BaseMapViewPage hideDisplayMenu() {
-		clickDisplayButton();
+		if (isDisplayMenuOpen()) {
+			clickDisplayButton();
+		}
 		return this;
+	}
+	
+	public boolean isDisplayMenuOpen() {
+		return !this.displayMenu.getAttribute("class").toLowerCase().contains("ng-hide");
+	}
+
+	public boolean isDisplayMenuClosed() {
+		return !isDisplayMenuOpen();
 	}
 
 	public BaseMapViewPage clickCurtainButton() {
@@ -381,12 +439,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	}
 	public boolean isStatusButtonVisible() {
 		return !this.statusButton.getAttribute("class").contains("ng-hide");
-	}
-	public boolean isStartSurveyButtonVisible() {
-		return !this.startSurveyButton.getAttribute("class").contains("ng-hide");
-	}
-	public boolean isStopSurveyButtonVisible() {
-		   return !this.stopSurveyButton.getAttribute("class").contains("ng-hide");
 	}
 	public boolean isShutdownAnalyzerButtonVisible() {
 		return !this.ShutdownAnalyzerButton.getAttribute("class").contains("ng-hide");
@@ -459,6 +511,21 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	public boolean isDisplaySwitchIndicationsButtonVisible() {
 		return !(WebElementExtender.isAttributePresent(this.displaySwitchIndicationsDivElement,"ng-cloak") ||
 					this.displaySwitchIndicationsDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isDisplaySwitchNotNaturalGasButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.displaySwitchNotNaturalGasDivElement,"ng-cloak") ||
+					this.displaySwitchNotNaturalGasDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isDisplaySwitchVehicleExhaustButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.displaySwitchVehicleExhaustDivElement,"ng-cloak") ||
+					this.displaySwitchVehicleExhaustDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isDisplaySwitchPossibleNaturalGasButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.displaySwitchPossibleNaturalGasDivElement,"ng-cloak") ||
+					this.displaySwitchPossibleNaturalGasDivElement.getAttribute("class").contains("ng-hide"));
 	}
 
 	public boolean isDisplaySwitchLisasButtonVisible() {
@@ -874,6 +941,15 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case Indications:
 			isSelected = this.displaySwitchIndications.getAttribute("class").equalsIgnoreCase("switch");
 			break;
+		case PossibleNaturalGas:
+			isSelected = this.displaySwitchPossibleNaturalGas.getAttribute("class").equalsIgnoreCase("switch subswitch");
+			break;
+		case NotNaturalGas:
+			isSelected = this.displaySwitchNotNaturalGas.getAttribute("class").equalsIgnoreCase("switch subswitch");
+			break;
+		case VehicleExhaust:
+			isSelected = this.displaySwitchVehicleExhaust.getAttribute("class").equalsIgnoreCase("switch subswitch");
+			break;
 		case IsotopicAnalysis:
 			isSelected = this.displaySwitchIsotopicAnalysis.getAttribute("class").equalsIgnoreCase("switch");
 			break;
@@ -909,6 +985,15 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			break;
 		case Indications:
 			isSelected = this.displaySwitchIndications.getAttribute("class").equalsIgnoreCase("switch on");
+			break;
+		case PossibleNaturalGas:
+			isSelected = this.displaySwitchPossibleNaturalGas.getAttribute("class").equalsIgnoreCase("switch on");
+			break;
+		case NotNaturalGas:
+			isSelected = this.displaySwitchNotNaturalGas.getAttribute("class").equalsIgnoreCase("switch on");
+			break;
+		case VehicleExhaust:
+			isSelected = this.displaySwitchVehicleExhaust.getAttribute("class").equalsIgnoreCase("switch on");
 			break;
 		case IsotopicAnalysis:
 			isSelected = this.displaySwitchIsotopicAnalysis.getAttribute("class").equalsIgnoreCase("switch on");
@@ -976,11 +1061,46 @@ public class BaseMapViewPage extends SurveyorBasePage {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
 					this.displaySwitchIndications.click();
+					TestContext.INSTANCE.stayIdle(2);
 				}
 			} else if (this.displaySwitchIndications.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
 					this.displaySwitchIndications.click();
+					TestContext.INSTANCE.stayIdle(2);
+				}
+			}
+			break;
+		case PossibleNaturalGas:
+			if (this.displaySwitchPossibleNaturalGas.getAttribute("class").equalsIgnoreCase("switch subswitch")) {
+				if (turnOn) {
+					this.displaySwitchPossibleNaturalGas.click();
+				}
+			} else if (this.displaySwitchPossibleNaturalGas.getAttribute("class").equalsIgnoreCase("switch on")) {
+				if (!turnOn) {
+					this.displaySwitchPossibleNaturalGas.click();
+				}
+			}
+			break;
+		case NotNaturalGas:
+			if (this.displaySwitchNotNaturalGas.getAttribute("class").equalsIgnoreCase("switch subswitch")) {
+				if (turnOn) {
+					this.displaySwitchNotNaturalGas.click();
+				}
+			} else if (this.displaySwitchNotNaturalGas.getAttribute("class").equalsIgnoreCase("switch on")) {
+				if (!turnOn) {
+					this.displaySwitchNotNaturalGas.click();
+				}
+			}
+			break;
+		case VehicleExhaust:
+			if (this.displaySwitchVehicleExhaust.getAttribute("class").equalsIgnoreCase("switch subswitch")) {
+				if (turnOn) {
+					this.displaySwitchVehicleExhaust.click();
+				}
+			} else if (this.displaySwitchVehicleExhaust.getAttribute("class").equalsIgnoreCase("switch on")) {
+				if (!turnOn) {
+					this.displaySwitchVehicleExhaust.click();
 				}
 			}
 			break;
@@ -1041,7 +1161,70 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		}
 	}
 
+	public String getSurveyId() {
+		return surveyId;
+	}
+
+	public void setSurveyId(String surveyId) {
+		this.surveyId = surveyId;
+	}
+	
 	/**
+	 * Executes setMapZoomLevel action.
+	 * @param zoomlevel - specifies the zoom level on the map.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean setZoomLevel(int zoomlevel) {
+		OLMapUtility mapUtility = new OLMapUtility(driver);
+		int currentZoomlevel = mapUtility.getMapZoomLevel();
+		int numClicks = Math.abs(currentZoomlevel-zoomlevel);
+		
+		for(int i=0;i<numClicks;i++){
+		  if(currentZoomlevel > zoomlevel){
+			  clickZoomOutButton();
+		  }else if(currentZoomlevel < zoomlevel){
+			  clickZoomInButton();
+		  }else{
+			  return true;
+		  }
+		}
+		return mapUtility.getMapZoomLevel()==zoomlevel;
+	}
+	
+	/**
+	 * Executes setMapZoomLevelForAssets action.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean setZoomLevelForAssets() {
+		OLMapUtility mapUtility = new OLMapUtility(driver);
+		int currentZoomlevel = mapUtility.getMapZoomLevel();
+		if(currentZoomlevel >= ASSETS_ZOOM_LEVEL_LOWER_BOUND){
+			return true;
+		}
+		int numClicks = Math.abs(currentZoomlevel-ASSETS_ZOOM_LEVEL_LOWER_BOUND);
+		
+		for(int i=0;i<numClicks;i++){
+			  clickZoomInButton();
+		}
+		int newZoomlevel = mapUtility.getMapZoomLevel();
+		return newZoomlevel==ASSETS_ZOOM_LEVEL_LOWER_BOUND;		
+	}
+
+    /**
+     * Verify that the page loaded completely.
+     *
+     * @return the SurveyViewPage class instance.
+     */
+    public BaseMapViewPage verifyPageLoaded() {
+        (new WebDriverWait(driver, timeout * 4)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRPageContentText);                		 
+            }
+        });
+        return this;
+    }
+
+    /**
 	 * Verifies that the Disposition value in peak info popup equals the specified value.
 	 * @param value - value to compare with.
 	 * @return
@@ -1133,73 +1316,76 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		});
 	}
 	
+	/**
+	 * Waits for the Gis menu to open.
+	 */
+	public void waitForGisMenuToOpen() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isGisMenuOpen();
+			}
+		});
+	}
+
+	/**
+	 * Waits for the Gis menu to close.
+	 */
+	public void waitForGisMenuToClose() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isGisMenuClosed();
+			}
+		});
+	}
+
+	/**
+	 * Waits for the display menu to open.
+	 */
+	public void waitForDisplayMenuToOpen() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isDisplayMenuOpen();
+			}
+		});
+	}
+
+	/**
+	 * Waits for the display menu to close.
+	 */
+	public void waitForDisplayMenuToClose() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isDisplayMenuClosed();
+			}
+		});
+	}
+
+	/**
+	 * Waits for the map menu to open.
+	 */
+	public void waitForMapMenuToOpen() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isMapMenuOpen();
+			}
+		});
+	}
+
+	/**
+	 * Waits for the map menu to close.
+	 */
+	public void waitForMapMenuToClose() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isMapMenuClosed();
+			}
+		});
+	}
+
     /**
 	 * Verify that the page loaded completely.
 	 */
 	public void waitForPageLoad() {
 		this.verifyPageLoaded();
-	}
-
-	public String getSurveyId() {
-		return surveyId;
-	}
-
-	public void setSurveyId(String surveyId) {
-		this.surveyId = surveyId;
-	}
-	
-    /**
-     * Verify that the page loaded completely.
-     *
-     * @return the SurveyViewPage class instance.
-     */
-    public BaseMapViewPage verifyPageLoaded() {
-        (new WebDriverWait(driver, timeout * 4)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                return d.getPageSource().contains(STRPageContentText);                		 
-            }
-        });
-        return this;
-    }
-
-	/**
-	 * Executes setMapZoomLevel action.
-	 * @param zoomlevel - specifies the zoom level on the map.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean setZoomLevel(int zoomlevel) {
-		OLMapUtility mapUtility = new OLMapUtility(driver);
-		int currentZoomlevel = mapUtility.getMapZoomLevel();
-		int numClicks = Math.abs(currentZoomlevel-zoomlevel);
-		
-		for(int i=0;i<numClicks;i++){
-		  if(currentZoomlevel > zoomlevel){
-			  clickZoomOutButton();
-		  }else if(currentZoomlevel < zoomlevel){
-			  clickZoomInButton();
-		  }else{
-			  return true;
-		  }
-		}
-		return mapUtility.getMapZoomLevel()==zoomlevel;
-	}
-	
-	/**
-	 * Executes setMapZoomLevelForAssets action.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean setZoomLevelForAssets() {
-		OLMapUtility mapUtility = new OLMapUtility(driver);
-		int currentZoomlevel = mapUtility.getMapZoomLevel();
-		if(currentZoomlevel >= ASSETS_ZOOM_LEVEL_LOWER_BOUND){
-			return true;
-		}
-		int numClicks = Math.abs(currentZoomlevel-ASSETS_ZOOM_LEVEL_LOWER_BOUND);
-		
-		for(int i=0;i<numClicks;i++){
-			  clickZoomInButton();
-		}
-		int newZoomlevel = mapUtility.getMapZoomLevel();
-		return newZoomlevel==ASSETS_ZOOM_LEVEL_LOWER_BOUND;		
 	}
 }

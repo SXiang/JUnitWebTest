@@ -36,7 +36,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 	public ManageUsersAdminPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, baseURL, testSetup, STRURLPath);
 		
-		Log.info("\nThe Manager Users Admin Page URL is: %s\n"+ baseURL + STRURLPath);
+		Log.info("\nThe Manage Users Admin Page URL is: %s\n"+ baseURL + STRURLPath);
 	}
 	
 	public void addNewUser(String email, String password, String role) {
