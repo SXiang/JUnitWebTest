@@ -334,8 +334,6 @@ public class SurveyViewPage extends BaseMapViewPage {
     }
 
     /**
-<<<<<<< HEAD
-=======
      * Click on Start Survey Button.
      *
      * @return the SurveyViewPage class instance.
@@ -347,7 +345,6 @@ public class SurveyViewPage extends BaseMapViewPage {
     }
 
     /**
->>>>>>> master
      * Click on Strong Button.
      *
      * @return the SurveyViewPage class instance.

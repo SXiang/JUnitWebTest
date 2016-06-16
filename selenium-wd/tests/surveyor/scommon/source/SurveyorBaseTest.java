@@ -150,7 +150,7 @@ public class SurveyorBaseTest {
 		initializeTestObjects();
 	}
 
-	public static void initializeTestObjects() {
+	public static void initializeTestObjects() throws IOException {
 		testSetup = new TestSetup();
 		driver = testSetup.getDriver();
 		baseURL = testSetup.getBaseUrl();		
