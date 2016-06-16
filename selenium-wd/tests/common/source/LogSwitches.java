@@ -10,6 +10,7 @@ public enum LogSwitches {
 	private LogSwitches() {
 		switchMap.put(LogCategory.SSRSPdfContent, TestContext.INSTANCE.getTestSetup().isLogCategorySSRSPdfContentEnabled());
 		switchMap.put(LogCategory.ComplianceReportActions, TestContext.INSTANCE.getTestSetup().isLogCategoryComplianceReportActionsEnabled());
+		switchMap.put(LogCategory.ClickWebElement, TestContext.INSTANCE.getTestSetup().isLogCategoryClickWebElementEnabled());
 	}
 	
 	public Boolean isEnabled(LogCategory logCategory) {

@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import common.source.Log;
 import common.source.TestSetup;
 
 /**
@@ -39,6 +40,8 @@ public class ManageSurveyorHistoriesAdminPage extends
 	public boolean findExistingSurveyorHistoryNote(String strNote,
 			String strSurveyorName, String strLocationName,
 			String strCustomerName) {
+		Log.info(String.format("Find surveyor history not %s, customer = '%s', location = '%s', surveyor = '%s'", 
+				strNote,strCustomerName,strLocationName,strSurveyorName));
 		setPagination(PAGINATIONSETTING);
 
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
@@ -86,6 +89,7 @@ public class ManageSurveyorHistoriesAdminPage extends
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 
 				this.testSetup.slowdownInSeconds(this.testSetup
@@ -102,6 +106,8 @@ public class ManageSurveyorHistoriesAdminPage extends
 				rowNum = 0;
 			}
 		}
+		Log.info(String.format("Surveyor history note not found: %s, customer = '%s', location = '%s', surveyor = '%s'", 
+				strNote,strCustomerName,strLocationName,strSurveyorName));
 		return false;
 	}
 

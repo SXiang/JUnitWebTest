@@ -9,6 +9,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import common.source.Log;
 import common.source.TestSetup;
 
 public class BaseDrivingViewPage extends BaseMapViewPage {
@@ -55,16 +56,19 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 	}
 
 	public BaseDrivingViewPage clickHeaderInfoBox() {
-		this.divHeaderInfoBox.click();
+		Log.clickElementInfo("HeaderInfo", ElementType.DIVISION);
+		this.divHeaderInfoBox.click();		
 		return this;
 	}
 
 	public BaseDrivingViewPage clickPositionButton() {
+		Log.clickElementInfo("Position");
 		this.positionButton.click();
 		return this;
 	}
 	
 	public BaseDrivingViewPage clickStatusButton() {
+		Log.clickElementInfo("Status");
 		this.statusButton.click();
 		return this;
 	}
@@ -128,8 +132,10 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 	public boolean isWindRoseShown() {
 		boolean isShown = true;
 		if ((this.windRose.getAttribute("class").contains("ng-hide")) && (this.windRoseArrow.getAttribute("class").contains("ng-hide"))) {
+			Log.error("WindRose is not shown");
 			isShown = false;
 		}
+		Log.info("WindRose is shown");
 		return isShown;
 	}
 

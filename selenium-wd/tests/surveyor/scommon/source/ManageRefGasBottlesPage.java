@@ -143,14 +143,18 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	}
 	public void addRefGasBottle(String strLotNumber, String strIsoValue, String ethMthRto,
 			String strCusName, String strLocName, String strSurveyor, boolean cancelIfError) {
+		Log.clickElementInfo("Add New RefGas Bottle");
 		this.btnAddNewRefGasBottle.click();
 
+		Log.info("Set Log Number - '"+strLotNumber+"'");
 		this.inputLotNumber.clear();
 		this.inputLotNumber.sendKeys(strLotNumber);
+		Log.info("Set Iso Value - '"+strIsoValue+"'");
 		this.inputIsoValue.clear();
 		this.inputIsoValue.sendKeys(strIsoValue);
 		
 		if ((ethMthRto != null) && (ethMthRto != "")) { 
+			Log.info("Set EthMth Ratio - '"+ethMthRto+"'");
 			this.inputEthMthRto.clear();
 			this.inputEthMthRto.sendKeys(ethMthRto);
 		}
@@ -163,10 +167,15 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 					.trim()
 					.equalsIgnoreCase(
 							strCusName + " - " + strLocName + " - "
-									+ strSurveyor))
+									+ strSurveyor)){
+				Log.info("Select Surveyor '"+strCusName + " - " + strLocName + " - "
+						+ strSurveyor+"'");
 				option.click();
+				break;
+			}
 		}
 		
+		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 
 		if(!cancelIfError){
@@ -180,8 +189,10 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 					.getText()
 					.equalsIgnoreCase(
 							Resources
-									.getResource(ResourceKeys.Validation_SummaryTitle)))
+									.getResource(ResourceKeys.Validation_SummaryTitle))){
+				Log.clickElementInfo("Cancel");
 				this.btnCancel.click();
+			}
 		}
 
 		this.waitForPageLoad();
@@ -190,12 +201,17 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	public boolean addNewRefGasBottle(String strLotNumber, String strIsoValue, String ethMthRto,  
 			String strCusName, String strLocName, String strSurveyor,
 			boolean bFlag) {
+		Log.clickElementInfo("Add New RefGas Bottle");
 		this.btnAddNewRefGasBottle.click();
+		Log.info("Set Log Number - '"+strLotNumber+"'");
+		this.inputLotNumber.clear();
 		this.inputLotNumber.sendKeys(strLotNumber);
+		Log.info("Set Iso Value - '"+strIsoValue+"'");
 		this.inputIsoValue.clear();
 		this.inputIsoValue.sendKeys(strIsoValue);
 		
 		if ((ethMthRto != null) && (ethMthRto != "")) { 
+			Log.info("Set EthMth Ratio - '"+ethMthRto+"'");
 			this.inputEthMthRto.clear();
 			this.inputEthMthRto.sendKeys(ethMthRto);
 		}
@@ -208,10 +224,15 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 					.trim()
 					.equalsIgnoreCase(
 							strCusName + " - " + strLocName + " - "
-									+ strSurveyor))
+									+ strSurveyor)){
+				Log.info("Select Surveyor '"+strCusName + " - " + strLocName + " - "
+						+ strSurveyor+"'");
 				option.click();
+				break;
+			}
 		}
 
+		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 
 		if (bFlag == false) {
@@ -228,6 +249,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 					.xpath(this.panelDupRgbErrorXPath));
 			if (panelError.getText().equalsIgnoreCase(
 					"Please fill out this field.")) {
+				Log.clickElementInfo("Cancel");
 				this.btnCancel.click();
 				return false;
 			}
@@ -335,6 +357,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 
 				this.testSetup.slowdownInSeconds(this.testSetup
@@ -375,10 +398,12 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	}
 
 	public void clickOnAddNewRefGasBottleBtn() {
+		Log.clickElementInfo("Add New RefGas Bottle");
 		this.btnAddNewRefGasBottle.click();
 	}
 
 	public void clickOnCancelBtn() {
+		Log.clickElementInfo("Cancel");
 		this.btnCancel.click();
 	}
 
@@ -444,6 +469,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(pageSizeStr)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
@@ -582,6 +608,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(pageSizeStr)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
@@ -629,6 +656,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(pageSizeStr)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());

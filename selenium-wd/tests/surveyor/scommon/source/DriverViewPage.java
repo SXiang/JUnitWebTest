@@ -278,11 +278,12 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	public boolean checkIfAtDriverViewPage() {
 		if (driver.getTitle().equalsIgnoreCase(STRPageTitle))
 			return true;
-		
+		Log.warn("Current  page is not '"+STRPageTitle+"'");
 		return false;
 	}
 
 	public DriverViewPage clickModeButton() {
+		Log.clickElementInfo("Mode");
 		this.modeButton.click();
 		return this;
 	}
@@ -293,16 +294,19 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	public DriverViewPage clickShutdownButton() {
+		Log.clickElementInfo("System Shutdown");
 		this.getSystemShutdownButton().click();
 		return this;
 	}
 
 	public DriverViewPage clickShutdownConfirmButton() {
+		Log.clickElementInfo("Confirm Shutdown");
 		this.getShutdownConfirmButton().click();
 		return this;
 	}
 
 	public DriverViewPage clickShutdownCancelButton() {
+		Log.clickElementInfo("Cancel Shutdown");
 		this.getShutdownCancelButton().click();
 		return this;
 	}
@@ -407,11 +411,13 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 	
 	public DriverViewPage clickSurveyDurationWarningDialogOkButton() {
+		Log.info("Click Ok in survey duration warning dialog");
 		this.surveyDurationWarningDialogOkButton.click();
 		return this;
 	}
 
 	public DriverViewPage clickFailedToStartSurveyDialogOkButton() {
+		Log.info("Click Ok in failed to start survey dialog");
 		this.failedToStartSurveyDialogOkButton.click();
 		return this;
 	}
@@ -473,6 +479,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickCalmButton() {
+		Log.clickElementInfo("Calm");
 		calm.click();
 		return this;
 	}
@@ -484,6 +491,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 */
 	public DriverViewPage clickFieldNotesCancelButton() {
 		fieldNotesCancel = driver.findElement(By.id("btn_cancel_annotation"));
+		Log.clickElementInfo("Cancel", "in field Notes dialog");
 		fieldNotesCancel.click();
 		return this;
 	}
@@ -494,6 +502,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickImageDataLink() {
+		Log.clickElementInfo("Image data");
 		imageData.click();
 		return this;
 	}
@@ -504,6 +513,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickDayButton() {
+		Log.clickElementInfo("Day");
 		day.click();
 		return this;
 	}
@@ -514,6 +524,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickFieldNotesDeleteButton() {
+		Log.clickElementInfo("Delete", "in Field Notes dialog");
 		fieldNotesDelete.click();
 		return this;
 	}
@@ -524,6 +535,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickIButton() {
+		Log.clickElementInfo("I");
 		i.click();
 		return this;
 	}
@@ -534,6 +546,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickLightButton() {
+		Log.clickElementInfo("Light");
 		light.click();
 		return this;
 	}
@@ -553,6 +566,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickManualButton() {
+		Log.clickElementInfo("Manual");
 		manual.click();
 		return this;
 	}
@@ -563,6 +577,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickModerateButton() {
+		Log.clickElementInfo("Moderate");
 		moderate.click();
 		return this;
 	}
@@ -573,6 +588,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickCloudCoverLessThan50Button() {
+		Log.clickElementInfo("Cloud Cover Less Than 50");
 		cloudCoverLessThan50.click();
 		return this;
 	}
@@ -583,6 +599,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickCloudCoverMoreThan50Button() {
+		Log.clickElementInfo("Cloud Cover More Than 50");
 		cloudCoverMoreThan50.click();
 		return this;
 	}
@@ -593,6 +610,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickNightButton() {
+		Log.clickElementInfo("Night");
 		night.click();
 		return this;
 	}
@@ -603,6 +621,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickOk1Button() {
+		Log.clickElementInfo("Ok1");
 		ok1.click();
 		return this;
 	}
@@ -613,6 +632,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickOk2Button() {
+		Log.clickElementInfo("Ok2");
 		ok2.click();
 		return this;
 	}
@@ -623,6 +643,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickOperatorButton() {
+		Log.clickElementInfo("Operator");
 		operator.click();
 		return this;
 	}
@@ -633,6 +654,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickOvercastButton() {
+		Log.clickElementInfo("Overcast");
 		overcast.click();
 		return this;
 	}
@@ -643,6 +665,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickRapidResponseButton() {
+		Log.clickElementInfo("Rapid Response");
 		rapidResponse.click();
 		return this;
 	}
@@ -654,6 +677,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 */
 	public DriverViewPage clickFieldNotesSaveButton() {
 		fieldNotesSave = driver.findElement(By.id("btn_save_annotation")); 
+		Log.clickElementInfo("Save Field Notes");
 		fieldNotesSave.click();
 		return this;
 	}
@@ -664,6 +688,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickStandardButton() {
+		Log.clickElementInfo("Standard");
 		standard.click();
 		return this;
 	}
@@ -674,6 +699,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickAssessmentButton() {
+		Log.clickElementInfo("Assessment");
 		assessment.click();
 		return this;
 	}
@@ -686,7 +712,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	public DriverViewPage clickStartSurvey() {
 		Log.info("Clicking on StartSurvey button..");
 		startSurvey.click();
-		Log.info("Clicked on StartSurvey button..");
 		return this;
 	}
 
@@ -706,6 +731,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickStartSurveyButton() {
+		Log.clickElementInfo("Start Survey");
 		this.startSurveyButton.click();
 		return this;
 	}
@@ -716,6 +742,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickRadiationStrongButton() {
+		Log.clickElementInfo("Radiation Strong");
 		radiationStrong.click();
 		return this;
 	}
@@ -726,6 +753,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickWindStrongButton() {
+		Log.clickElementInfo("Wind Strong");
 		windStrong.click();
 		return this;
 	}
@@ -736,6 +764,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickTermsOfUseLink() {
+		Log.clickElementInfo("Terms of Use");
 		termsOfUse.click();
 		return this;
 	}
@@ -755,6 +784,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage setMinAmpTextField(String minAmpValue) {
+		Log.info("Set Min Amp to '"+minAmpValue+"'");
 		manualModeMinAmp.sendKeys(minAmpValue);
 		return this;
 	}
@@ -767,6 +797,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	public DriverViewPage setFieldNotesTextField(String fieldNotes) {
 		Log.info(String.format("Adding fields notes text - %s", fieldNotes));
 		fieldNotesTextField = driver.findElement(By.id("anno_input"));
+		Log.info("Set field notes as '"+fieldNotes+"'");
 		fieldNotesTextField.sendKeys(fieldNotes);
 		return this;
 	}
@@ -874,7 +905,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		// NOTE: This check will NOT always work correctly as this button might be showing when multiple tests are run one after the other. 
 		//assertTrue(this.getStartSurveyButtonFromStartSurveyDialog().isDisplayed() == false);
 		
-		Log.info("Selecting surveyType..");		
+		Log.info("Selecting surveyType - '"+surveyType+"'");		
 		switch (surveyType) {
 		case Manual:
 			this.clickManualButton();
@@ -897,7 +928,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	private void selectWindInSurveyDialog(Wind wind) {
-		Log.info("Selecting wind..");
+		Log.info("Selecting wind - '"+wind+"'");
 		switch (wind) {
 		case Calm:
 			this.clickCalmButton();
@@ -914,7 +945,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	private void selectSurveyTimeAndRadiationInSurveyDialog(SurveyTime surveyTime, SolarRadiation solarRadiation, CloudCover cloudCover) {
-		Log.info("Selecting surveyTime..");
+		Log.info("Selecting surveyTime - '"+surveyTime+"'");
 		switch (surveyTime) {
 		case Day:
 			selectDayInSurveyDialog(solarRadiation);
@@ -931,6 +962,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		this.clickNightButton();
 		Log.info("Survey Time: Night selected.");
 		// Cloud Cover option is valid only during Night time.
+		Log.info("Selecting night in survey dialog - '"+cloudCover+"'");
 		switch (cloudCover) {
 		case LessThan50:
 			this.clickCloudCoverLessThan50Button();
@@ -947,6 +979,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		this.clickDayButton();
 		Log.info("Survey Time: Day selected.");
 		// Solar Radiation is valid only during Day time.
+		Log.info("Selecting day in survey dialog - '" +solarRadiation +"'");
 		switch (solarRadiation) {
 		case Moderate:
 			this.clickModerateButton();
@@ -965,18 +998,17 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	public void openStartSurveyModalDialog() {
 		Log.info("Opening the StartSurvey modal dialog..");
 		this.clickStartSurveyButton();
-		Log.info("Opened the StartSurvey modal dialog..");
 		this.waitForPageToLoad();
 	}
 
 	public void openStartEQSurveyModalDialog() {
 		Log.info("Opening the StartSurvey modal dialog..");
 		this.clickStartEQSurveyButton();
-		Log.info("Opened the StartSurvey modal dialog..");
 		this.waitForPageToLoad();
 	}
 
 	public DriverViewPage stopDrivingSurvey() {
+		Log.clickElementInfo("Stop Driving Survey");
 		this.getStopDrivingSurveyButton().click();
 		this.waitForUIUnBlock();
 		return this;
@@ -986,6 +1018,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * Clicks on the Start EQ Survey button.
 	 */
 	private void clickStartEQSurveyButton() {
+		Log.clickElementInfo("EQ Survey");
 		this.startEQSurveyButton.click();
 	}
 

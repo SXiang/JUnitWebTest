@@ -456,6 +456,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void clickLatLongAreaSelectorBtn() {
+		Log.clickElementInfo("Lat/Long Map Selector");
 		this.latLongMapSelectorBtn.click();
 	}
 
@@ -665,7 +666,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 		List<WebElement> options = this.surveyTableRows.findElements(By.tagName("option"));
 		for (WebElement option : options) {
 			if (numPages.equals(option.getText().trim())) {
+				Log.info(String.format("Select Pagination - '%s'", numPages));
 				option.click();
+				break;
 			}
 		}
 	}
@@ -782,11 +785,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 			for (int rowNum = 1; rowNum <= loopCount && selectedSurveysCount < numSurveysToSelect; rowNum++) {
 				checkBoxXPath = "tr[" + rowNum + "]/td[7]/input[@type='checkbox']";
 				checkBoxActionCell = surveyTable.findElement(By.xpath(checkBoxXPath));
+				Log.info(String.format("Select survey - row %d", rowNum));
 				checkBoxActionCell.click();
 				selectedSurveysCount++;
 
 				if (rowNum == Integer.parseInt(PAGINATIONSETTING)
 						&& !this.surveyNextButton.getAttribute("class").contains("disabled")) {
+					Log.clickElementInfo("Next");
 					this.surveyNextButton.click();
 					this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 					List<WebElement> newRows = surveyTable
@@ -810,21 +815,27 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	private void selectFirstSurveyCheckBox() {
+		Log.info(String.format("Select the first survey in the table"));
 		this.checkboxSurFirst.click();
 	}
 
 	public void clickOnAddSurveysButton() {
+		Log.clickElementInfo("Add Surveys");
 		this.btnAddSurveys.click();
 	}
 
 	public void selectSurveyInfoGeoFilter(Boolean geoFilterOn) {
 		if (geoFilterOn != null) {
 			if (geoFilterOn) {
-				if (!checkGeoFilter.isSelected())
+				if (!checkGeoFilter.isSelected()){
+					Log.info(String.format("Click to select Geofilter"));
 					clickGeoFilterCheckBox();
+				}
 			} else {
-				if (checkGeoFilter.isSelected())
+				if (checkGeoFilter.isSelected()){
+					Log.info(String.format("Click to unselect Geofilter"));
 					clickGeoFilterCheckBox();
+				}
 			}
 		}
 	}
@@ -848,6 +859,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void enterSurveyInfoUsername(String username) {
 		if (username != null && (!username.isEmpty())) {
+			Log.info(String.format("Set username - '%s'", username));
 			this.userName.sendKeys(username);
 		}
 	}
@@ -857,7 +869,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsSU) {
 				if (surveyor.equalsIgnoreCase(option.getText().trim())) {
+					Log.info(String.format("Select Surveyor Unit - '%s'", surveyor));
 					option.click();
+					break;
 				}
 			}
 		}
@@ -939,6 +953,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void openNewReportPage() {
 		String elementXPath = "//*[@id='datatableViews']/tbody/tr/td[2]/input";
 		waitUntilPresenceOfElementLocated(By.xpath(strBtnNewCompRpt));
+		Log.clickElementInfo("New Compliance Report");
 		jsClick(this.btnNewComplianceRpt);
 		refreshPageUntilElementFound(elementXPath);
 		this.waitForNewPageLoad();
@@ -964,6 +979,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void inputReportTitle(String rptTitle) {
+		Log.info(String.format("Input report title - '%s'", rptTitle));
 		this.inputTitle.clear();
 		this.inputTitle.sendKeys(rptTitle);
 	}
@@ -976,6 +992,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
 			for (WebElement option : optionsCustomer) {
 				if (customer.equalsIgnoreCase(option.getText().trim())) {
+					Log.info(String.format("Select Customer - '%s'", customer));
 					option.click();
 					confirmInChangeCustomerDialog(confirm);
 					return;
@@ -989,6 +1006,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 	public boolean confirmInChangeCustomerDialog(boolean confirm) {
 			if (this.isElementPresent(btnChangeCustomerXPath)) {
+				Log.clickElementInfo("Confirm Change Customer",ElementType.LINK);
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				if(confirm){
 				   js.executeScript("arguments[0].click();", btnChangeCustomer);
@@ -1001,11 +1019,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void clickOnOKButton() {
+		Log.clickElementInfo("Ok");
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click();", btnOK);
 	}
 
 	public void inputSurveyTag(String tag) {
+		Log.info(String.format("Input survey tag - '%s'", tag));
 		this.cbTag.clear();
 		this.cbTag.sendKeys(tag);
 	}
@@ -1068,9 +1088,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 		if (strReportMode != null && changeMode) {
 			selectReportMode(strReportMode);
 
+			Log.info(String.format("Input survey tag - '%s'", tag));
 			this.getCbTag().clear();
 			this.getCbTag().sendKeys(tag);
 			this.waitForSurveySearchButtonToLoad();
+			Log.clickElementInfo("Survey Search");
 			this.getBtnSurveySearch().click();
 			this.waitForSurveyTabletoLoad();
 
@@ -1104,11 +1126,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
 			for (WebElement option : optionsCustomer) {
 				if ((customer).equalsIgnoreCase(option.getText().trim())) {
+					Log.info(String.format("Select Customer - '%s'", customer));
 					option.click();
+					break;
 				}
 			}
 		}
-
+		Log.info(String.format("Input report title - '%s'", title));
 		this.inputTitle.clear();
 		this.inputTitle.sendKeys(title);
 
@@ -1121,7 +1145,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsSU) {
 				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
+					Log.info(String.format("Select Surveyor Unit - '%s'", surUnit));
 					option.click();
+					break;
 				}
 			}
 		}
@@ -1200,11 +1226,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
 			for (WebElement option : optionsCustomer) {
 				if ((reportsCompliance.getCustomer()).equalsIgnoreCase(option.getText().trim())) {
+					Log.info(String.format("Select Customer - '%s'", option.getText()));
 					option.click();
+					break;
 				}
 			}
 
 			if (this.isElementPresent(btnChangeCustomerXPath)) {
+				Log.clickElementInfo("Confirm change customer",ElementType.LINK);
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				js.executeScript("arguments[0].click();", btnChangeCustomer);
 
@@ -1239,7 +1268,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 		List<WebElement> optionsTZ = this.cBoxTimezone.findElements(By.tagName("option"));
 		for (WebElement option : optionsTZ) {
 			if (timeZone.equalsIgnoreCase(option.getText().trim())) {
+				Log.info(String.format("Select Timezone - '%s'", timeZone));
 				option.click();
+				break;
 			}
 		}
 	}
@@ -1248,7 +1279,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 		List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
 		for (WebElement option : optionsSU) {
 			if (surveyorUnit.equalsIgnoreCase(option.getText().trim())) {
+				Log.info(String.format("Select surveyor unit - '%s'", surveyorUnit));
 				option.click();
+				break;
 			}
 		}
 	}
@@ -1287,14 +1320,16 @@ public class ReportsBasePage extends SurveyorBasePage {
 			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
 			for (WebElement option : optionsCustomer) {
 				if ((customer).equalsIgnoreCase(option.getText().trim())) {
+					Log.info(String.format("Select Customer - '%s'", customer));
 					option.click();
+					break;
 				}
 			}
 
 			if (this.isElementPresent(btnChangeCustomerXPath)) {
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				js.executeScript("arguments[0].click();", btnChangeCustomer);
-
+				Log.info(String.format("Input title - '%s'",title));
 				this.inputTitle.clear();
 				this.inputTitle.sendKeys(title);
 			}
@@ -1307,8 +1342,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 		if (surUnit != "") {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsSU) {
-				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
+				if ((surUnit).equalsIgnoreCase(option.getText().trim())){
+					Log.info(String.format("Select Surveyor Unit - '%s'", surUnit));
 					option.click();
+					break;
 				}
 			}
 		}
@@ -1367,6 +1404,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					try {
 						if (rowSize == 1) {
 							this.btnReportViewer = getTable().findElement(By.xpath("tr/td[5]/a[3]"));
+							Log.clickElementInfo("Report Viewer");
 							this.btnReportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						} else {
@@ -1380,6 +1418,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 							this.btnReportViewer = getTable().findElement(
 									By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
+							Log.clickElementInfo("Report Viewer");
 							this.btnReportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						}
@@ -1401,6 +1440,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.waitForPageLoad();
 				List<WebElement> newRows = getTable().findElements(By.xpath("tr"));
@@ -1522,6 +1562,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 
 				this.waitForPageLoad();
@@ -1570,6 +1611,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				copyImgXPath = "tr[" + rowNum + "]/td[5]/a[@title='Copy']"; // Don't use index for 'Copy' as it has diff values
 				copyImg = getReportTableCell(copyImgXPath);
+				Log.clickElementInfo("Copy",ElementType.ICON);
 				jsClick(copyImg);
 				DBCache.INSTANCE.remove(Report.CACHE_KEY+rptTitle);
 				this.waitForCopyReportPagetoLoad();
@@ -1577,6 +1619,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 
 				this.waitForPageLoad();
@@ -1595,6 +1638,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean findReport(String rptTitle, String strCreatedBy) {
+		Log.info(String.format("Find report with title = '%s', created by = '%s", rptTitle, strCreatedBy ));
 		setPagination(PAGINATIONSETTING);
 
 		String reportTitleXPath;
@@ -1626,6 +1670,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 
 				this.waitForPageLoad();
@@ -1639,11 +1684,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
-
+		Log.error(String.format("Report not found: title = '%s', created by = '%s", rptTitle, strCreatedBy ));
 		return false;
 	}
 
 	public boolean findReportbySearch(String rptTitle, String strCreatedBy) {
+		Log.info(String.format("Find report with title = '%s', created by = '%s", rptTitle, strCreatedBy ));
 		setPagination(PAGINATIONSETTING);
 		this.waitForPageLoad();
 		String reportTitleXPath;
@@ -1682,6 +1728,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.waitForPageLoad();
 				List<WebElement> newRows = getTable().findElements(By.xpath("tr"));
@@ -1694,7 +1741,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
-
+		Log.error(String.format("Report not found: title = '%s', created by = '%s", rptTitle, strCreatedBy ));
 		return false;
 	}
 
@@ -1740,7 +1787,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				deleteImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]";
 				deleteImg = getReportTableCell(deleteImgXPath);
-
+				Log.clickElementInfo("Delete",ElementType.ICON);
 				deleteImg.click();
 				waitForDeletePopupLoad();
 
@@ -1750,6 +1797,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					this.waitForPageLoad();
 
 					if (this.isElementPresent(errorMsgDeleteCompliacneReportXPath)) {
+						Log.clickElementInfo("Return to home page");
 						this.btnReturnToHomePage.click();
 						return false;
 					} else
@@ -1760,6 +1808,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 
 				this.waitForPageLoad();
@@ -1811,12 +1860,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]";
 				copyImg = getReportTableCell(copyImgXPath);
-
+				Log.clickElementInfo("Copy",ElementType.ICON);
 				copyImg.click();
 
 				this.waitForCopyReportPagetoLoad();
 				this.waitForInputTitleToEnable();
 				this.waitForDeleteSurveyButtonToLoad();
+				Log.info(String.format("Input new report title - '%s'", rptTitleNew));
 				this.inputTitle.clear();
 				this.inputTitle.sendKeys(rptTitleNew);
 				this.waitForOkButtonToEnable();
@@ -1827,6 +1877,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 
 				this.waitForPageLoad();
@@ -1877,12 +1928,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]";
 				copyImg = getReportTableCell(copyImgXPath);
-
+				Log.clickElementInfo("Copy",ElementType.ICON);
 				copyImg.click();
 				break;
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 
 				this.waitForPageLoad();
@@ -1912,6 +1964,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsSU) {
 				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
+					Log.info(String.format("Select Surveyor Unit - '%s'", surUnit));
 					option.click();
 				}
 			}
@@ -1986,12 +2039,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 		if (customer != null && customer != "Picarro") {
 			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
 			for (WebElement option : optionsCustomer) {
-				if ((customer).equalsIgnoreCase(option.getText().trim())) {
+				if ((customer).equalsIgnoreCase(option.getText().trim())){
+					Log.info(String.format("Select Customer - '%s'", customer));
 					option.click();
 				}
 			}
 
 			if (this.isElementPresent(btnChangeModeXPath)) {
+				Log.clickElementInfo("Change Mode");
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				js.executeScript("arguments[0].click();", btnChangeMode);
 			}
@@ -2054,6 +2109,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public boolean verifyCancelButtonFunctionality() {
 		openNewReportPage();
+		Log.clickElementInfo("Cancel");
 		this.btnCancel.click();
 		this.waitForPageLoad();
 
@@ -2064,16 +2120,19 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void clickOnNewComplianceReportBtn() {
+		Log.clickElementInfo("New Compliance Report");
 		this.btnNewComplianceRpt.click();
 		this.waitForNewPageLoad();
 	}
 
 	public void clickOnCancelBtn() {
+		Log.clickElementInfo("Cancel");
 		jsClick(this.btnCancel);
 		super.waitForPageLoad();
 	}
 
 	public void clickOnFirstCopyComplianceBtn() {
+		Log.clickElementInfo("Copy",ElementType.ICON);
 		this.btnFirstCopyCompliance.click();
 	}
 
@@ -2589,6 +2648,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 * Click on close button in report viewer.
 	 */
 	public void clickOnReportViewerCloseButton() {
+		Log.clickElementInfo("Viewer Close");
 		this.reportViewerCloseButton.click();
 	}
 
@@ -2597,6 +2657,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 * to be loaded
 	 */
 	public void clickOnSearchSurveyButton() {
+		Log.clickElementInfo("Survey Search");
 		this.btnSurveySearch.click();		
 		this.waitForSurveyTabletoLoad();
 	}

@@ -90,11 +90,13 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	private WebElement firstSurveyDeleteLink;
 
 	public void clickOnFirstSurveyDeleteLink() {
+		Log.clickElementInfo("Delete",ElementType.LINK);
 		this.firstSurveyDeleteLink.click();
 
 		this.waitForConfirmDeletePopupToShow();
 		
 		if (this.isElementPresent(popupConfirmationBoxXPath) && this.isElementPresent(btnDeleteXPath)) {
+			Log.clickElementInfo("Confirm Deletion",ElementType.LINK);
 			JavascriptExecutor js = (JavascriptExecutor)driver; 
 			js.executeScript("arguments[0].click();", btnDelete);
 		}
@@ -177,10 +179,13 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			userIndexMap.put(Constant_Analyzer, analyzer);
 		}
 		By tableContextBy = By.id("datatable_wrapper");
+		
 		this.searchTextBox.clear();
 		if (surveyTag != null) {
+			Log.info("Set search text - '"+surveyTag+"'");
 			this.searchTextBox.sendKeys(surveyTag);
 		} else if (surveyor != null) {
+			Log.info("Set search text - '"+surveyor+"'");
 			this.searchTextBox.sendKeys(surveyor);
 		}
 		WebElement tableContext = driver.findElement(tableContextBy);
@@ -188,6 +193,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		try {
 			WebElement row = dataTable.getMatchingRow(userIndexMap);
 			WebElement btn = row.findElement(By.xpath(getButtonXpath(buttonType)));
+			Log.clickElementInfo(buttonType.toString());
 			if (buttonType == DrivingSurveyButtonType.DeleteSurvey) {
 				btn.click();
 				this.waitForConfirmDeletePopupToShow();
@@ -286,6 +292,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			strListTag.add(col1.getText().trim());
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 
 				this.waitForPageLoad();
@@ -573,20 +580,24 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	}
 
 	public WebElement getFirstViewSurveyLink() {
+		Log.clickElementInfo("View Survey",ElementType.LINK);
 		return linkViewSurvey;
 	}
 
 	public void clickOnFirstViewSurveyLink() {
+		Log.clickElementInfo("View Survey",ElementType.LINK);
 		this.linkViewSurvey.click();
 	}
 
 	public void clickOnConfirmInDeletePopup() {
 		WebElement confirmDelete = this.driver.findElement(By.xpath(DELETE_POPUP_CONFIRM_BUTTON_XPATH));
+		Log.clickElementInfo("Confirm Deletion",ElementType.LINK);
 		confirmDelete.click();
 	}
 
 	public void clickOnCancelInDeleteReportPopup() {
 		WebElement cancelDelete = this.driver.findElement(By.xpath(DELETE_POPUP_CANCEL_BUTTON_XPATH));
+		Log.clickElementInfo("Cancel Delete",ElementType.LINK);
 		cancelDelete.click();
 	}
 
@@ -617,6 +628,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 	public void clickOnConfirmInDeleteReportPopup() {
 		WebElement confirmDelete = this.driver.findElement(By.xpath(DELETE_POPUP_CONFIRM_BUTTON_XPATH));
+		Log.clickElementInfo("Confirm Deletion",ElementType.LINK);
 		confirmDelete.click();
 	}
 

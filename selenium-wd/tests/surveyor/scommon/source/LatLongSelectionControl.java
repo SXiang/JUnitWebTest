@@ -177,6 +177,7 @@ public class LatLongSelectionControl extends BaseControl {
 	 * @return the LatLongSelectionControl class instance.
 	 */
 	public LatLongSelectionControl clickOkButton() {
+		Log.clickElementInfo("OK", "in Lat/Long Selection control");
 		okButton.click();
 		return this;
 	}
@@ -187,6 +188,7 @@ public class LatLongSelectionControl extends BaseControl {
 	 * @return the LatLongSelectionControl class instance.
 	 */
 	public LatLongSelectionControl clickCancelButton() {
+		Log.clickElementInfo("Cancel", "in Lat/Long Secection control");
 		cancelButton.click();
 		return this;
 	}
@@ -197,6 +199,7 @@ public class LatLongSelectionControl extends BaseControl {
 	 * @return the LatLongSelectionControl class instance.
 	 */
 	public boolean verifyCustomerBoundaryAutoCompleteListContains(String boundaryName, List<String> autocompleteListEntries) {
+		Log.info("Set boundary name to '"+boundaryName+"'");
 		selectByNameTextField.sendKeys(boundaryName);
 		this.waitForAutoCompleteListToOpen();
 

@@ -59,11 +59,13 @@ public class ManageReleaseNotesPage extends SurveyorBasePage {
 	}
 
 	public LoginPage logout() {
+		Log.clickElementInfo("Administrator",ElementType.DROPDOWN);
 		this.dropDownAdministrator.click();
 
 		if (this.testSetup.isRunningDebug())
 			this.testSetup.slowdownInSeconds(1);
 
+		Log.clickElementInfo("Log Out");
 		this.linkLogOut.click();
 
 		if (this.testSetup.isRunningDebug())
@@ -76,14 +78,17 @@ public class ManageReleaseNotesPage extends SurveyorBasePage {
 	}
 	
 	public void clickOnAddNewReleaseNoteBtn() {
+		Log.clickElementInfo("Add New Release Note");
 		this.btnAddNewReleaseNote.click();
 	}
 	
 	public void clickOnFirstEditNoteBtn() {
-		this.btnAddNewReleaseNote.click();
+		Log.clickElementInfo("Edit Note");
+		this.btnEditNote.click();
 	}
 	
 	public void clickOnCancelBtn() {
+		Log.clickElementInfo("Cancel");
 		this.btnCancel.click();
 	}
 
