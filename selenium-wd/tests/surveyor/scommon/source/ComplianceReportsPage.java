@@ -599,7 +599,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 
 			if (viewList.get(i).get(KEYBOUNDARIES).equalsIgnoreCase("1")) {
-				colNum = 11;
+				colNum = 13;
 				Log.clickElementInfo("BOUNDARIES", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
