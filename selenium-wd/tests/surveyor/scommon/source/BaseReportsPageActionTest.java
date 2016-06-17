@@ -110,7 +110,7 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 		removeReportDataRowIDFromMap(reportDataRowID);
 	}
 
-	protected void waitForComplianceReportGenerationToComplete(ComplianceReportsPageActions complianceReportsPageAction, Integer reportDataRowID) {
+	protected void waitForComplianceReportGenerationToComplete(ComplianceReportsPageActions complianceReportsPageAction, Integer reportDataRowID) throws Exception {
 		if (getTestRunMode() == ReportTestRunMode.FullTestRun) {
 			complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID);
 		}
