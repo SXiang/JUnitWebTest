@@ -545,11 +545,17 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				}
 
 				String curURL = driver.getCurrentUrl();
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", this.btnOK);
+				this.btnOK.click();
 				Log.info("ok button clicked");
                 if(!checkForError){
-                	// revert back search field.
+                	Log.info("Not checking for errors");
+                	if (isElementPresent(this.panelDuplicationErrorXPath)) {
+                		// We are still on the new locations page. Return.
+                    	Log.info("Error on page. Returning to caller.");
+                    	return true; 
+                	}
+                	
+                	// Redirected to Manage location page. Revert back search field and return.
                 	this.clearSearchField();
                 	return true;
                 }

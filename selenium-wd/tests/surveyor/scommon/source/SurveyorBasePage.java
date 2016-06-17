@@ -3,6 +3,7 @@
  */
 package surveyor.scommon.source;
 
+import static surveyor.scommon.source.SurveyorConstants.BLANKFIELDERROR;
 import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
 
 import java.io.File;
@@ -406,6 +407,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 	
 	public void clearSearchField() {
+		Log.info("clearing search field");
 		this.getInputSearch().clear();
 	}
 
@@ -543,6 +545,19 @@ public class SurveyorBasePage extends BasePage {
 		});
 	}
 
+	public boolean verifyFieldNotBlank(WebElement validationLabel, String fieldName) {
+		if (!WebElementExtender.isElementPresentAndDisplayed(validationLabel)) {
+			Log.info(String.format("%s error is NOT displayed.", fieldName));
+			return false;
+		}
+		if (!validationLabel.getText().equals(BLANKFIELDERROR)) {
+			Log.info(String.format("%s error text is NOT correct.", fieldName));
+			return false;
+		}
+		Log.info(String.format("%s error validation passed", fieldName));
+		return true;
+	}
+	
 	public void waitForNumberOfRecords(String actualMessage) {
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {

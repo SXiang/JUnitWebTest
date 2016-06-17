@@ -373,6 +373,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.waitForPageLoad();
 		String output = manageUsersPage.addTestUser(usernameNew, USERPASSWORD, USERPASSWORD);
 		Log.info("Found error message:" + output);
+		Log.info("Looking for error message: " + DUPLICATIONERROR);
 		assertTrue(output.contains(DUPLICATIONERROR));
 	}
 

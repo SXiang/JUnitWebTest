@@ -122,8 +122,8 @@ public class ManageSurveyorHistoriesPageTest extends SurveyorBaseTest {
 	 * 
 	 */
 	@Test
-	public void TC501_ControlVisisbility_PicarroSupport() {
-		Log.info("\nRunning TC501_ControlVisisbility_PicarroSupport\n");
+	public void TC501_ControlVisibility_PicarroSupport() {
+		Log.info("\nRunning TC501_ControlVisibility_PicarroSupport\n");
 		String strNote = "TC501 Automation Note " + testSetup.getRandomNumber();
 		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
 		loginPage.open();
