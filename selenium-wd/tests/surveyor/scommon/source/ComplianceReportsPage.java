@@ -1072,9 +1072,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			createdByXPath = "tr[" + rowNum + "]/td[3]";
 
 			try{
-			rptTitleCellText = getTable().findElement(By.xpath(reportTitleXPath)).getText().trim();
-			createdByCellText = getTable().findElement(By.xpath(createdByXPath)).getText().trim();
+				rptTitleCellText = getTable().findElement(By.xpath(reportTitleXPath)).getText().trim();
+				createdByCellText = getTable().findElement(By.xpath(createdByXPath)).getText().trim();
 			}catch(Exception e){
+				Log.error("Failed to get text of report title/createdBy cells on row '"+rowNum+"' and will try again: "+e);
 				rowNum--;
 				continue;
 			}
