@@ -1076,7 +1076,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			createdByCellText = getTable().findElement(By.xpath(createdByXPath)).getText().trim();
 			}catch(Exception e){
 				rowNum--;
-				break;
+				continue;
 			}
 			Log.info(String.format("Found rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]",
 					rptTitleCellText, createdByCellText));
