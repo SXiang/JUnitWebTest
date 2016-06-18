@@ -274,4 +274,7 @@ public class ResourceKeys {
 	public static final String CaptureAnalysisDispositionTypes_Uncertainty_Out_Of_Range = "CaptureAnalysisDispositionTypes_Uncertainty_Out_Of_Range";
 	public static final String CaptureAnalysisDispositionTypes_Unknown = "CaptureAnalysisDispositionTypes_Unknown";
 	public static final String CaptureAnalysisDispositionTypes_User_Cancellation = "CaptureAnalysisDispositionTypes_User_Cancellation";
+	
+	// Ref Gas Capture description types.
+	public static final String ReferenceGasCaptureDescription_Isotopic_Reference_Pass = "ReferenceGasCaptureDescription_Isotopic_Reference_Pass";
 }

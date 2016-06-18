@@ -12,6 +12,7 @@ import surveyor.scommon.source.SurveyorConstants;
 
 import static surveyor.scommon.source.SurveyorConstants.ISOTOPIC_CAPTURE_CANCELLED;
 import static surveyor.scommon.source.SurveyorConstants.ISOTOPIC_CAPTURE_NOT_NATURAL_GAS;
+import static surveyor.scommon.source.SurveyorConstants.REFGAS_CAPTURE_PASSED;
 /*
  * **** NOTES ****:
  *  1. Action based tests that work on MapView (Survey, Observer, Driver) can derive from BaseMapViewTest.
@@ -613,7 +614,7 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
-		assertTrue(surveyViewPageAction.verifyRefGasCaptureResultIsPresentOnMap(SurveyorConstants.SURVEY_PASSED, NOTSET));
+		assertTrue(surveyViewPageAction.verifyRefGasCaptureResultIsPresentOnMap(REFGAS_CAPTURE_PASSED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
@@ -655,7 +656,7 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_CANCELLED, NOTSET));
-		assertTrue(surveyViewPageAction.verifyRefGasCaptureResultIsPresentOnMap(SurveyorConstants.SURVEY_PASSED, NOTSET));
+		assertTrue(surveyViewPageAction.verifyRefGasCaptureResultIsPresentOnMap(REFGAS_CAPTURE_PASSED, NOTSET));
 		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
