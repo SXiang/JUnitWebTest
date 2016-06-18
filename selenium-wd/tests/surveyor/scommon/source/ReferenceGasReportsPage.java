@@ -336,15 +336,14 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 				Log.error(String.format("Sub-Title not found in pdf - '%s'", STRReportSubTitle));
 				return false;
 			}
-// TODO: Commented to check remaining.
-//			if (!pdfInText.contains(STRReportTableColumnDate)) {
-//				Log.error(String.format("Date not found in pdf - '%s'", STRReportTableColumnDate));
-//				return false;
-//			}
-//			if (!pdfInText.contains(STRReportTableColumnUserName)) {
-//				Log.error(String.format("User Name not found in pdf - '%s'", STRReportTableColumnUserName));
-//				return false;
-//			}
+			if (!pdfInText.contains(STRReportTableColumnDate)) {
+				Log.error(String.format("Date not found in pdf - '%s'", STRReportTableColumnDate));
+				return false;
+			}
+			if (!pdfInText.contains(STRReportTableColumnUserName)) {
+				Log.error(String.format("User Name not found in pdf - '%s'", STRReportTableColumnUserName));
+				return false;
+			}
 			if (!pdfInText.contains(STRReportTableColumnLotNumber)) {
 				Log.error(String.format("Lot Number not found in pdf - '%s'", STRReportTableColumnLotNumber));
 				return false;
