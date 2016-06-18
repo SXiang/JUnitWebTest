@@ -877,11 +877,23 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 
+	public void checkErrorMessages() throws Exception{
+		waitForAJAXCallsToComplete();
+		if(listOfErrors.size()>0){
+			String error = "";
+			for(WebElement err:listOfErrors){
+				error += err.getText()+System.lineSeparator();
+			}
+			throw new Exception(error);
+		}
+		
+	}
 	public boolean verifyErrorMessages(String... errormessages) {
 		try{
 			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>(){
 				public Boolean apply(WebDriver d){
-					return errormessages==null||errormessages[0].isEmpty()||listOfErrors.size()>=errormessages.length;
+					return errormessages==null||errormessages.length==0
+							||errormessages[0].isEmpty()||listOfErrors.size()>=errormessages.length;
 				}
 			});
 		}catch(Exception e){
