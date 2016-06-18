@@ -169,32 +169,34 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 
 	public void addNewLocation(String locationDesc, String customer, String newLocationName) {
+		Log.method("addNewLocation", locationDesc, customer, newLocationName);
 		addNewLocation(locationDesc, customer, newLocationName, false /* UseLatLongSelector */, "1", "2");
 	}
 
 	public void addNewLocationUsingLatLongSelector(String locationDesc, String customer, String newLocationName) {
+		Log.method("addNewLocationUsingLatLongSelector", locationDesc, customer, newLocationName);
 		addNewLocation(locationDesc, customer, newLocationName, true /* UseLatLongSelector */, "1", "2");
 	}
 
-	public void addNewLocation(String locationDesc, String customer, String newLocationName, String ethMthMin,
-			String ethMthMax) {
+	public void addNewLocation(String locationDesc, String customer, String newLocationName, String ethMthMin, String ethMthMax) {
+		Log.method("addNewLocation", locationDesc, customer, newLocationName, ethMthMin, ethMthMax);
 		addNewLocation(locationDesc, customer, newLocationName, false /* UseLatLongSelector */, ethMthMin, ethMthMax);
 	}
 
-	public void addNewLocationUsingLatLongSelector(String locationDesc, String customer, String newLocationName,
-			String ethMthMin, String ethMthMax) {
+	public void addNewLocationUsingLatLongSelector(String locationDesc, String customer, String newLocationName, String ethMthMin, String ethMthMax) {
+		Log.method("addNewLocationUsingLatLongSelector", locationDesc, customer, newLocationName, ethMthMin, ethMthMax);
 		addNewLocation(locationDesc, customer, newLocationName, true /* UseLatLongSelector */, ethMthMin, ethMthMax);
 	}
 
 	private void addNewLocation(String locationDesc, String customer, String newLocationName,
 			boolean useLatLongSelector, String ethMthMin, String ethMthMax) {
-
+		Log.method("addNewLocation", locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin, ethMthMax);
 	    addNewLocation(locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin,ethMthMax,true);
 	}
 
 	public void addNewLocation(String locationDesc, String customer,
 			String newLocationName, boolean useLatLongSelector, String ethMthMin, String ethMthMax, boolean checkForError) {
-		
+		Log.method("addNewLocation", locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin, ethMthMax, checkForError);
 		if (newLocationName.equalsIgnoreCase("Santa Clara")) {
 			setLatitude("37.3971035425739");
 			setLongitude("-121.98343231897");
@@ -290,10 +292,12 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 	
 	public boolean verifyErrorMessage(String errorMsg){
+		Log.method("verifyErrorMessage", errorMsg);
 		return verifyErrorMessage(errorMsg, false /*checkOnlyErrorSummary*/);
 	}
 	
 	private boolean verifyErrorMessage(String errorMsg, boolean checkOnlyErrorSummary){
+		Log.method("verifyErrorMessage", errorMsg, checkOnlyErrorSummary);
 		boolean found = false;
 		if (isElementPresent(this.summaryErrorsBy)) {			
 			if (this.summaryErrors.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
@@ -314,6 +318,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 	
 	public void inputLatLong(String latitude, String longitude){
+		Log.method("inputLatLong", latitude, longitude);
 		this.inputLocationLat.clear();
 		this.inputLocationLong.clear();
 		
@@ -325,6 +330,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	
 
 	public void selectOnLatLong(int xOffset, int yOffset){
+		Log.method("selectOnLatLong", xOffset, yOffset);
 		String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
 		latLongSelectionControl.waitForModalDialogOpen()
 		.switchMode(ControlMode.MapInteraction)
@@ -334,22 +340,29 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 	
 	public void clickOnLatLongCancelBtn(){
+		Log.method("clickOnLatLongCancelBtn");
 		latLongSelectionControl.clickCancelButton()
 		.waitForModalDialogToClose();
 	}
 
 	public void clickOnLatLongOkBtn(){
+		Log.method("clickOnLatLongOkBtn");
 		latLongSelectionControl.clickOkButton()
 		.waitForModalDialogToClose();
 	}
 	
 	public boolean findExistingLocationAndClickEdit(String customerName, String locationName){
+		Log.method("findExistingLocationAndClickEdit", customerName, locationName);
 		return editExistingLocation(customerName, locationName, null,null,null,null,null, true, true);
 	}
+
 	public boolean editExistingLocation(String customerName, String locationName, String newLocationName, boolean checkForError){
+		Log.method("editExistingLocation", customerName, locationName, newLocationName, checkForError);
 		return editExistingLocation(customerName, locationName, newLocationName,null,null,null,null, false, checkForError);
 	}
+	
 	public boolean findExistingLocation(String customerName, String locationName) {
+		Log.method("findExistingLocation", customerName, locationName);
 		Log.info(String.format("Find Location '%s', customer = '%s'",
 				locationName, customerName));
 		setPagination(PAGINATIONSETTING_100);
@@ -425,23 +438,26 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 
 	public boolean editPDExistingLocation(String customerName, String locationName, String newLocationName) {
+		Log.method("editPDExistingLocation", customerName, locationName, newLocationName);
 		return this.editExistingLocation(customerName, locationName, newLocationName, null, null, null, null);
 	}
 
 	public boolean editPDExistingLocation(String customerName, String locationName, String newLocationName,
 			String latValue, String longValue) {
+		Log.method("editPDExistingLocation", customerName, locationName, newLocationName, latValue, longValue);
 		return this.editExistingLocation(customerName, locationName, newLocationName, latValue, longValue, null, null);
 	}
 
 	public boolean editPDExistingLocation(String customerName, String locationName, String newLocationName,
 			String latValue, String longValue, String newEthMthMin, String newEthMthMax) {
+		Log.method("editPDExistingLocation", customerName, locationName, newLocationName, latValue, longValue, newEthMthMin, newEthMthMax);
 		return this.editExistingLocation(customerName, locationName, newLocationName, latValue, longValue, newEthMthMin,
 				newEthMthMax);
 	}
 	public boolean editExistingLocation(String customerName,
 			String locationName, String newLocationName, String latValue,
 			String longValue, String newEthMthMin, String newEthMthMax){
-		
+		Log.method("editExistingLocation", customerName, locationName, newLocationName, latValue, longValue, newEthMthMin, newEthMthMax);
 		return editExistingLocation(customerName, locationName, newLocationName, latValue,
 				longValue, newEthMthMin, newEthMthMax, false,true);
 	}
@@ -449,6 +465,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public boolean editExistingLocation(String customerName,
 			String locationName, String newLocationName, String latValue,
 			String longValue, String newEthMthMin, String newEthMthMax , boolean openEditorOnly, boolean checkForError){
+		Log.method("editExistingLocation", customerName, locationName, newLocationName, latValue,
+				longValue, newEthMthMin, newEthMthMax, openEditorOnly, checkForError);
 		Log.info(String.format("Edit Location '%s', customer = '%s'",
 				locationName, customerName));
 		setPagination(PAGINATIONSETTING_100);
@@ -607,10 +625,12 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 
 	public String getSelectedPoint(){
+		Log.method("getSelectedPoint");
 		return getSelectedPoint(SECONDS_10);
 	}
+
 	public String getSelectedPoint(int timeout){
-		
+		Log.method("getSelectedPoint", timeout);
 		latLongSelectionControl.waitForModalDialogOpen()
 		.switchMode(ControlMode.MapInteraction);
 		
@@ -721,6 +741,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 
 	public List<String> getLocationList(boolean allPages, int paginationSize) {
+		Log.method("getLocationList", allPages, paginationSize);
 		List<String> locationList = new ArrayList<String>();
 
 		String pageSizeStr = String.valueOf(paginationSize);
@@ -763,11 +784,13 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 
 	public boolean searchLocation(String customer, String locationName) {
+		Log.method("searchLocation", customer, locationName);
 		this.searchTable(locationName);
 		return findExistingLocation(customer, locationName);
 	}
 
 	public boolean isDuplicateLocMsgPresent() {
+		Log.method("isDuplicateLocMsgPresent");
 		return this.liDuplicateMsg.getText().equals(STRDuplicateLocMsg);
 	}
 
