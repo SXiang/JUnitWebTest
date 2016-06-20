@@ -6,11 +6,7 @@ import org.junit.Test;
 
 import common.source.Log;
 
-public class SurveyViewPageTest1 extends SurveyViewPageTest {
-
-	public SurveyViewPageTest1()  {
-		super();
-	}
+public class SurveyViewPageTest1 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC950_SurveyView_ViewOperatorSurveySurveyMapViewWhenAllDisplayOptionsAreONOtherPlasticProtectedSteelCastIronAssetsONBoundariesOFF
