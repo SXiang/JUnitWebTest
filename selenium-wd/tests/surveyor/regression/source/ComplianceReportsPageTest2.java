@@ -50,6 +50,7 @@ import static surveyor.scommon.source.SurveyorConstants.SWLAT_SMALL;
 import static surveyor.scommon.source.SurveyorConstants.SWLON_SMALL;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
+
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
@@ -1483,15 +1484,10 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		complianceReportsPage.waitForPageLoad();
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 
-		complianceReportsPage.findReportbySearch(rptTitle, testSetup.getLoginUser());
-
-
 		complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
-		complianceReportsPage.waitForResubmitButton();
+		complianceReportsPage.waitForResubmitButton(); //failing on this step.  steven fixed it.
 		complianceReportsPage.getBtnResubmitReport().click();
-
-		complianceReportsPage.waitForPageLoad();
-
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
@@ -1670,7 +1666,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 
-		String testCaseID = "TC1313";
+		String testCaseID = "TC1315";
 		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
 
 		complianceReportsPage.open();
@@ -1735,7 +1731,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		ReportsCompliance rpt2 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList1, "", "", viewList1, SurveyModeFilter.Standard);
 		rpt2.setViewLayersList(viewLayerList);
 		rpt2.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
-		complianceReportsPage.addNewReport(rpt2);
+		complianceReportsPage.addNewReport(rpt2); //SQAAUTO is not able to find the smallest boundary
 		Log.info("!!!!!" + complianceReportsPage.getAssetErrorText().getText()+ "!!!!!");
 		assertTrue(complianceReportsPage.getAssetErrorText().getText().equals("Selected Percent Coverage Forecast, Please select at least two surveys with different tags"));
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
@@ -1830,7 +1826,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
 		rpt.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
-		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.addNewReport(rpt);//SQAAUTO is not working for customer boundary 
 		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
