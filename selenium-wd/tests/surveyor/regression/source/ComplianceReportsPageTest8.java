@@ -430,7 +430,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.enterCustomBoundaryUsingTextFields(xsBoundary, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));

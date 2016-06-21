@@ -15,6 +15,8 @@ import static surveyor.scommon.source.SurveyorConstants.IMGMAPWIDTH;
 import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
+import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
+import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
 import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
 import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
@@ -598,6 +600,20 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
+			if (viewList.get(i).get(KEYHIGHLIGHTLISAASSETS).equalsIgnoreCase("1")) {
+				colNum = 11;
+				Log.clickElementInfo("Highlight LISA Assets", ElementType.CHECKBOX);
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+			}
+			
+			if (viewList.get(i).get(KEYHIGHLIGHTGAPASSETS).equalsIgnoreCase("1")) {
+				colNum = 12;
+				Log.clickElementInfo("Highlight GAP Assets", ElementType.CHECKBOX);
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+			}
+			
 			if (viewList.get(i).get(KEYBOUNDARIES).equalsIgnoreCase("1")) {
 				colNum = 13;
 				Log.clickElementInfo("BOUNDARIES", ElementType.CHECKBOX);
@@ -1019,8 +1035,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String createdByXPath;
 		String buttonXPath;
 
-		WebElement rptTitleCell;
-		WebElement createdByCell;
+		String rptTitleCellText;
+		String createdByCellText;
 		WebElement buttonImg;
 		boolean removeDBCache = false;
 		switch (buttonType) {
@@ -1071,13 +1087,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
 			createdByXPath = "tr[" + rowNum + "]/td[3]";
 
-			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
-			createdByCell = getTable().findElement(By.xpath(createdByXPath));
-
+			try{
+				rptTitleCellText = getTable().findElement(By.xpath(reportTitleXPath)).getText().trim();
+				createdByCellText = getTable().findElement(By.xpath(createdByXPath)).getText().trim();
+			}catch(Exception e){
+				Log.error("Failed to get text of report title/createdBy cells on row '"+rowNum+"' and will try again: "+e);
+				rowNum--;
+				continue;
+			}
 			Log.info(String.format("Found rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]",
-					rptTitleCell.getText(), createdByCell.getText()));
-			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
-					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
+					rptTitleCellText, createdByCellText));
+			if (rptTitleCellText.equalsIgnoreCase(rptTitle)
+					&& createdByCellText.equalsIgnoreCase(strCreatedBy)) {
 				try {
                     buttonXPath = "tr[" + rowNum + "]/"+ buttonXPath;
 					buttonImg = getTable().findElement(By.xpath(buttonXPath));
@@ -1110,8 +1131,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 						}
 						return true;
 					}
+					Log.error("Button image is not visible '"+buttonXPath+"'");
 					return false;
 				} catch (org.openqa.selenium.NoSuchElementException e) {
+					Log.error("Button image not found '"+buttonXPath+"': "+e);
 					return false;
 				}
 			}

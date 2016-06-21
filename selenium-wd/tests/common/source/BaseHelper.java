@@ -29,6 +29,9 @@ import surveyor.dataaccess.source.Resources;
  */
 public class BaseHelper {
 
+	private static final double SYSTEMHISTPDF_MINSIZE_IN_KB = 11.2;
+	private static final int REFGASPDF_MINSIZE_IN_KB = 10;
+
 	/**
 	 * 
 	 */
@@ -96,6 +99,7 @@ public class BaseHelper {
 	}
 
 	public static boolean validatePdfFileForRefGas(String pdfFileName) {
+		Log.method("validatePdfFileForRefGas", pdfFileName);
 		File pdfFile = new File(pdfFileName);
 
 		long sizeKB = 0;
@@ -109,7 +113,7 @@ public class BaseHelper {
 
 		System.out.format("\nThe \"%s\" size is: %d\n", pdfFileName, sizeKB);
 
-		if (sizeKB > 77) {
+		if (sizeKB > REFGASPDF_MINSIZE_IN_KB) {
 			return true;
 		}
 
@@ -128,7 +132,7 @@ public class BaseHelper {
 		}
 		System.out.format("\nThe \"%s\" size is: %.2f\n", pdfFileName, sizeKB);
 
-		if (sizeKB > (11.2)) {
+		if (sizeKB > SYSTEMHISTPDF_MINSIZE_IN_KB) {
 			return true;
 		}
 

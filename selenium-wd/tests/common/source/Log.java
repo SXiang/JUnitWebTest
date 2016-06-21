@@ -2,6 +2,7 @@ package common.source;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -80,6 +81,10 @@ public class Log {
 	}
 	public static void error(String name, Throwable e){
 		error("Failed to perform '"+name+"': "+ExceptionUtility.getStackTraceString(e));
+	}
+
+	public static void method(String methodName, Object... args) {
+		info(String.format("Calling method '%s' with parameter values -> %s", methodName, Arrays.toString(args)));
 	}
 
 	/* Unit test */
