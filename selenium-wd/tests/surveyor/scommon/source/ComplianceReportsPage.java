@@ -15,6 +15,8 @@ import static surveyor.scommon.source.SurveyorConstants.IMGMAPWIDTH;
 import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
+import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
+import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
 import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
 import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
@@ -598,6 +600,20 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
+			if (viewList.get(i).get(KEYHIGHLIGHTLISAASSETS).equalsIgnoreCase("1")) {
+				colNum = 11;
+				Log.clickElementInfo("Highlight LISA Assets", ElementType.CHECKBOX);
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+			}
+			
+			if (viewList.get(i).get(KEYHIGHLIGHTGAPASSETS).equalsIgnoreCase("1")) {
+				colNum = 12;
+				Log.clickElementInfo("Highlight GAP Assets", ElementType.CHECKBOX);
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+			}
+			
 			if (viewList.get(i).get(KEYBOUNDARIES).equalsIgnoreCase("1")) {
 				colNum = 13;
 				Log.clickElementInfo("BOUNDARIES", ElementType.CHECKBOX);
