@@ -142,16 +142,16 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		manageCustomersPage.open();
 		// add customer with an empty Eula
 		manageCustomersPage.addNewCustomer(customerName, "");
-		Log.info("Looking for a red border around the Eula text area - when it's empty");
-		assertTrue("There is no red line around the Eula text area when it's empty!",manageCustomersPage.isEulaRed());
+		Log.info("Looking for field required validation message on Eula text area - when it's empty");
+		assertTrue("There is no field required validation message on Eula text area when it's empty!", manageCustomersPage.verifyEulaValidation());
 		
-		// candel add 
+		// cancel add 
 		manageCustomersPage.clickOnAddCancelBtn();
 		
 		// add customer with an empty Name		
 		manageCustomersPage.addNewCustomer("", eula);
-		Log.info("Looking for a red border around the Name input field - when it's empty");
-		assertTrue("There is no red line around the Name input field when it's empty!",manageCustomersPage.isNameRed());
+		Log.info("Looking for field required validation message on Name input field - when it's empty");
+		assertTrue("There is no field required validation message on Name input field when it's empty!", manageCustomersPage.verifyNameValidation());
 		
 	}	
 	
@@ -191,9 +191,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		manageCustomersPage.setEULAText("");
 		manageCustomersPage.clickOnEditOkBtn();
 		
-		Log.info("Looking for a red border around the Eula text area - when it's empty");
-		assertTrue("There is no red line around the Eula text area when it's empty!",
-				manageCustomersPage.isEulaRed());
+		Log.info("Looking for field required validation message on Eula text area - when it's empty");
+		assertTrue("There is no field required validation message on Eula text area when it's empty!", manageCustomersPage.verifyEulaValidation());
 				
 		// cancel add 
 		manageCustomersPage.clickOnEditCancelBtn();

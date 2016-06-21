@@ -182,8 +182,8 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC443_DuplicateUserCreationNotAllowed() {
-		String userName = SQACUS + testSetup.getFixedSizePseudoRandomString(24)
-				+ "_TC443" + REGBASEUSERNAME;
+		String userName = SQACUS + testSetup.getFixedSizePseudoRandomString(12)
+				+ "TC443" + REGBASEUSERNAME;
 
 		Log.info("\nRunning - TC443 - Customer admin not allowed to create duplicate User\n");
 

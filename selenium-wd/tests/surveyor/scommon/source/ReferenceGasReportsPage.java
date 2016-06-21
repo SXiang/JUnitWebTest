@@ -32,6 +32,7 @@ import common.source.BaseHelper;
 import common.source.DBConnection;
 import common.source.DateUtility;
 import common.source.Log;
+import common.source.LogHelper;
 import common.source.PDFUtility;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.Analyzer;
@@ -73,6 +74,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	}
 
 	private void addNewReport(String title, String timeZone, String surUnit, String startDate, String endDate) {
+		Log.method("addNewReport", title, timeZone, surUnit, startDate, endDate);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		Log.clickElementInfo("New RefGas Report");
@@ -115,7 +117,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	}
 
 	public void addNewReport(String title, String timeZone, String surUnit, String startDate, String endDate, int noOfPreStartMonth, int noOfPreEndMonth) {
-
+		Log.method("addNewPDReport", title, timeZone, surUnit, startDate, endDate, noOfPreStartMonth, noOfPreEndMonth);
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		Log.clickElementInfo("New RefGas Report");
 		this.btnNewRefGasRpt.click();
@@ -157,14 +159,18 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	}
 
 	public void addNewPDReport(String reportTitle) {
+		Log.method("addNewPDReport", reportTitle);
 		this.addNewReport(reportTitle, TIMEZONE, SURVEYORUNIT, STARTDATE, ENDDATE);
 	}
 
 	public void addNewPDReport(String reportTitle, String timezone, String surveyor, String startDate, String endDate) {
+		Log.method("addNewPDReport", reportTitle, timezone, surveyor, startDate, endDate);
 		this.addNewReport(reportTitle, timezone, surveyor, startDate, endDate);
 	}
 
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy) {
+		Log.method("checkActionStatus", rptTitle, strCreatedBy);
+		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
 		setPagination(PAGINATIONSETTING_100);
@@ -235,6 +241,8 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	}
 
 	public boolean findReport(String rptTitle, String strCreatedBy) {
+		Log.method("findReport", rptTitle, strCreatedBy);
+		
 		Log.info(String.format("Find report with title = '%s', created by = '%s", rptTitle, strCreatedBy ));
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
@@ -286,6 +294,8 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	}
 
 	public boolean validatePdfFiles(String reportTitle, String downloadPath) {
+		Log.method("validatePdfFiles", reportTitle, downloadPath);
+		
 		String reportId;
 		String reportName;
 		DBConnection objDbConn = new DBConnection();
@@ -297,7 +307,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 			Log.info(reportId);
 			Log.info(String.valueOf(reportId.length()));
 			reportName = "RG-" + reportId;
-			Log.info(reportName);
+			Log.info("ReportName = " + reportName);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			return false;
@@ -311,6 +321,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyStaticTextInPDF(String downloadPath, String reportTitle) {
+		Log.method("verifyStaticTextInPDF", downloadPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -348,6 +359,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyUserInputInPDF(String downloadPath, String reportTitle, ArrayList<String> inputs) {
+		Log.method("verifyUserInputInPDF", downloadPath, reportTitle, LogHelper.strListToString(inputs));
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -370,6 +382,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyResultTable(String downloadPath, String reportTitle) {
+		Log.method("verifyResultTable", downloadPath, reportTitle);
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
 		String fullDownloadPath = Paths.get(downloadPath, "RG-" + reportId.substring(0, 6) + ".pdf").toString();
@@ -392,6 +405,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	}
 
 	public ArrayList<StoredProcReferenceGas> tokenizeSystemHistoryNotesTable(String fullPathtoPdf) {
+		Log.method("tokenizeSystemHistoryNotesTable", fullPathtoPdf);
 		PDFUtility pdfUtility = new PDFUtility();
 		String pdfInText;
 		ArrayList<StoredProcReferenceGas> resultsList = new ArrayList<StoredProcReferenceGas>();
@@ -432,6 +446,8 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	}
 
 	public boolean checkPaginationSetting(String numberOfReports) {
+		Log.method("checkPaginationSetting", numberOfReports);
+		
 		setPagination(numberOfReports);
 		testSetup.slowdownInSeconds(3);
 		String msgToVerify = STRPaginationMsg + numberOfReports;
@@ -444,6 +460,8 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyCancelButtonFunctionality() {
+		Log.method("verifyCancelButtonFunctionality");
+				
 		Log.clickElementInfo("New RefGas Report");
 		this.btnNewRefGasRpt.click();
 		this.waitForNewPageLoad();
