@@ -63,7 +63,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[2]/ul/li")
 	private WebElement warningMsg;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[7]/a[1]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[10]/a[1]")
 	protected WebElement btnEditAnalyzer;
 
 	/**
@@ -78,6 +78,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	}
 
 	public void addNewAnalyzer(String serialNumber, String sharedKey, String cuslocsur) {
+		Log.method("addNewAnalyzer", serialNumber, sharedKey, cuslocsur);
 		Log.clickElementInfo("Add New Analyzer");
 		this.btnAddNewAnalyzer.click();
 		this.waitForNewPageLoad();
@@ -101,6 +102,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	}
 
 	public boolean addNewAnalyzer(String serialNumber, String sharedKey, String surveyor, String customerName, String locationName) {
+		Log.method("addNewAnalyzer", serialNumber, sharedKey, surveyor, customerName, locationName);
 		boolean result = true;
 		Log.clickElementInfo("Add New Analyzer");
 		this.btnAddNewAnalyzer.click();
@@ -136,6 +138,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	}
 
 	public boolean findExistingAnalyzer(String customerName, String locationName, String surveyorName, String analyzerName) {
+		Log.method("findExistingAnalyzer", customerName, locationName, surveyorName, analyzerName);
 		Log.info(String.format("Find analyzer '%s', customer = '%s', location = '%s', surveyor = '%s'",
 				analyzerName, customerName, locationName, surveyorName));
 		setPagination(PAGINATIONSETTING_100);
@@ -199,10 +202,12 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	}
 
 	public boolean associateAnalyzerToOtherSurveyor(String customerName, String locationName, String surveyorName, String analyzerName, String cuslocsur) {
+		Log.method("associateAnalyzerToOtherSurveyor", customerName, locationName, surveyorName, analyzerName, cuslocsur);
 		return associateAnalyzerToOtherSurveyor(customerName, locationName, surveyorName, analyzerName, cuslocsur, true);
 	}
 
 	public boolean associateAnalyzerToOtherSurveyor(String customerName, String locationName, String surveyorName, String analyzerName, String cuslocsur, boolean confirm) {
+		Log.method("associateAnalyzerToOtherSurveyor", customerName, locationName, surveyorName, analyzerName, cuslocsur, confirm);
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForTableDataToLoad();
 
@@ -229,10 +234,10 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			customerXPath = "/tr[" + rowNum + "]/td[1]";
-			locationXPath = "/tr[" + rowNum + "]/td[2]";
-			surveyorXPath = "/tr[" + rowNum + "]/td[3]";
-			analyzerXPath = "/tr[" + rowNum + "]/td[4]";
+			customerXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			locationXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
+			surveyorXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			analyzerXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]";
 
 			customerCell = getTable().findElement(By.xpath(customerXPath));
 			locationCell = getTable().findElement(By.xpath(locationXPath));
@@ -241,7 +246,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 
 			if ((customerCell.getText().trim()).equalsIgnoreCase(customerName) && (locationCell.getText().trim()).equalsIgnoreCase(locationName) && (surveyorCell.getText().trim()).equalsIgnoreCase(surveyorName) && analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
 				Log.info("Found entry at row=" + rowNum);
-				actionXPath = "/tr[" + rowNum + "]/td[7]/a[1]";
+				actionXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[10]/a[1]";
 				actionCell = getTable().findElement(By.xpath(actionXPath));
 				Log.info("Found entry at row=" + rowNum);
 				actionCell.click();
@@ -283,7 +288,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-				List<WebElement> newRows = getTable().findElements(By.xpath("/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
 
@@ -300,6 +305,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	}
 
 	public boolean editExistingAnalyzer(String customerName, String locationName, String surveyorName, String analyzerName, String keyNew, String cuslocsur, String analyzerNew) {
+		Log.method("editExistingAnalyzer", customerName, locationName, surveyorName, analyzerName, keyNew, cuslocsur, analyzerNew);
 		Log.info(String.format("Edit analyzer '%s', customer = '%s', location = '%s', surveyor = '%s'",
 				analyzerName, customerName, locationName, surveyorName));
 		setPagination(PAGINATIONSETTING_100);
@@ -329,10 +335,10 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			customerXPath = "/tr[" + rowNum + "]/td[1]";
-			locationXPath = "/tr[" + rowNum + "]/td[2]";
-			surveyorXPath = "/tr[" + rowNum + "]/td[3]";
-			analyzerXPath = "/tr[" + rowNum + "]/td[4]";
+			customerXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			locationXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
+			surveyorXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			analyzerXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]";
 
 			customerCell = getTable().findElement(By.xpath(customerXPath));
 			locationCell = getTable().findElement(By.xpath(locationXPath));
@@ -341,7 +347,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 
 			if ((customerCell.getText().trim()).equalsIgnoreCase(customerName) && (locationCell.getText().trim()).equalsIgnoreCase(locationName) && (surveyorCell.getText().trim()).equalsIgnoreCase(surveyorName) && analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
 
-				actionXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[7]/a[1]";
+				actionXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[10]/a[1]";
 				actionCell = getTable().findElement(By.xpath(actionXPath));
 				Log.info("Found entry at row=" + rowNum);
 				actionCell.click();
@@ -387,7 +393,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-				List<WebElement> newRows = getTable().findElements(By.xpath("/tr"));
+				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
 
@@ -405,6 +411,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	}
 	
 	public boolean areTableColumnsSorted(){
+		Log.method("areTableColumnsSorted");
 		if(!isCustomerColumnSorted()){
 			return false;
 		}
@@ -424,35 +431,39 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	}
 	
 	public boolean isCustomerColumnSorted(){
+		Log.method("isCustomerColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Customer, TableColumnType.String);
 		return checkTableSort("datatable", columnMap, pagination, getPaginationOption());
 	}
 	
 	public boolean isLocationColumnSorted(){
+		Log.method("isLocationColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Location, TableColumnType.String);
 		return checkTableSort("datatable", columnMap, pagination, getPaginationOption());
 	}
 	
 	public boolean isSurveyorColumnSorted(){
+		Log.method("isSurveyorColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Surveyor, TableColumnType.String);
 		return checkTableSort("datatable", columnMap, pagination, getPaginationOption());
 	}
 	
 	public boolean isAnalyzerColumnSorted(){
+		Log.method("isAnalyzerColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Analyzer, TableColumnType.String);
 		return checkTableSort("datatable", columnMap, pagination, getPaginationOption());
 	}
 	
 	public boolean isAnalyzerTypeColumnSorted(){
+		Log.method("isAnalyzerTypeColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_AnalyzerType, TableColumnType.String);
 		return checkTableSort("datatable", columnMap, pagination, getPaginationOption());
 	}
-	
 	
 	public void clickOnAddNewAnalyzerBtn() {
 		Log.clickElementInfo("Add New Analyzer");

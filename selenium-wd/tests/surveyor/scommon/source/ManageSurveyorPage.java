@@ -131,10 +131,12 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	}
 	
     public void setRecordsPerPageDropDownListField(String recordsPerPageValue) {
+    	Log.method("setRecordsPerPageDropDownListField", recordsPerPageValue);
         new Select(recordsPerPage).selectByVisibleText(recordsPerPageValue);
     }
 
 	public void addNewSurveyor(String surveyorDesc, String location) {
+    	Log.method("addNewSurveyor", surveyorDesc, location);
 		if (this.testSetup.isRunningDebug()) {
 			Log.info(surveyorDesc);
 			Log.info(location);
@@ -163,6 +165,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	}
 	
 	public boolean addNewSurveyor(String surveyorDesc, String locationName, String customerName) {
+		Log.method("addNewSurveyor", surveyorDesc, locationName, customerName);
 		boolean result = true;
 		if (this.testSetup.isRunningDebug()) {
 			Log.info(surveyorDesc);
@@ -199,6 +202,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	}	
 	
 	public boolean findExistingSurveyor(String customerName, String locationName, String surveyorName) {
+		Log.method("findExistingSurveyor", customerName, locationName, surveyorName);
 		Log.info(String.format("Find surveyor '%s', location = '%s', customer = '%s'", surveyorName, locationName, customerName));
 		setPagination(PAGE_PAGINATIONSETTING);
 		
@@ -257,6 +261,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	}
 	
 	public boolean editExistingSurveyor(String customerName, String locationName, String surveyorName, String surveyorNameNew) {
+    	Log.method("editExistingSurveyor", customerName, locationName, surveyorName, surveyorNameNew);
 		Log.info(String.format("Edit surveyor '%s'", surveyorName));
 		setPagination(PAGE_PAGINATIONSETTING);
 		
@@ -383,34 +388,8 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		return surveyorsTable;
 	}
 	
-	@Override
-	public void waitForPageLoad() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                return d.getPageSource().contains(STRPageContentText);
-            }
-        });
-    }
-
-	public void waitForNewPageLoad() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                return d.getPageSource().contains(STRNewPageContentText);
-            }
-        });
-    }
-
-    public void waitForEditPageLoad() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-            	Log.info("Checking for content on EDIT page: " + STREditPageContentText);
-                return d.getPageSource().contains(STREditPageContentText);
-            }
-        });
-    }
-    
-
 	public boolean searchSurveyor(String locationName, String surveyorName) {
+    	Log.method("searchSurveyor", locationName, surveyorName);
 		this.getInputSearch().sendKeys(surveyorName);
 		try {
 			if (this.tdSurveyorValue.getText().contentEquals(surveyorName)) {
@@ -433,6 +412,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	}
 	
 	public List<String> getSurveyorList(boolean allPages, int paginationSize) {
+    	Log.method("getSurveyorList", allPages, paginationSize);
 		List<String> surveyorList = new ArrayList<String>();
 
 		String pageSizeStr = String.valueOf(paginationSize);
@@ -482,6 +462,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	}
 	
 	public List<String> getLocationList(boolean allPages, int paginationSize) {
+    	Log.method("getLocationList", allPages, paginationSize);
 		List<String> locationList = new ArrayList<String>();
 
 		String pageSizeStr = String.valueOf(paginationSize);
@@ -533,10 +514,41 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	}
 	
 	public boolean isDuplicateSurMsgPresent(String locationName){
+    	Log.method("isDuplicateSurMsgPresent", locationName);
 		String STRDuplicateSurMsg = "Surveyor name already exists for location " + locationName +", please try another name.";
 		return this.liDuplicateMsg.getText().equals(STRDuplicateSurMsg);
 	}
 
+	public boolean isAddNewSurveyorBtnPresent() {
+    	Log.method("isAddNewSurveyorBtnPresent");
+		return isElementPresent(this.btnAddNewSurveyorXPath);
+	}
+
+	@Override
+	public void waitForPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRPageContentText);
+            }
+        });
+    }
+
+	public void waitForNewPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.getPageSource().contains(STRNewPageContentText);
+            }
+        });
+    }
+
+    public void waitForEditPageLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+            	Log.info("Checking for content on EDIT page: " + STREditPageContentText);
+                return d.getPageSource().contains(STREditPageContentText);
+            }
+        });
+    }
 
 	public void waitForDataTabletoLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
@@ -545,9 +557,4 @@ public class ManageSurveyorPage extends SurveyorBasePage {
             }
         });
     }
-
-	public boolean isAddNewSurveyorBtnPresent() {
-		return isElementPresent(this.btnAddNewSurveyorXPath);
-	}
-
 }
