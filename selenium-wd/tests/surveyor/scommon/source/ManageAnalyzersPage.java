@@ -3,7 +3,6 @@
  */
 package surveyor.scommon.source;
 
-import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 import java.util.HashMap;
@@ -29,8 +28,7 @@ import surveyor.scommon.source.DataTablePage.TableColumnType;
  */
 public class ManageAnalyzersPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageAnalyzers";
-	public static final String STRPageTitle = String.format("%s - %s", 
-			Resources.getResource(ResourceKeys.ManageAnalyzers_PageTitle), Resources.getResource(ResourceKeys.Constant_Surveyor));
+	public static final String STRPageTitle = String.format("%s - %s", Resources.getResource(ResourceKeys.ManageAnalyzers_PageTitle), Resources.getResource(ResourceKeys.Constant_Surveyor));
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageAnalyzers_PageTitle);
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ManageAnalyzer_NewAnalyzer);
 	public static final String STREditPageContentText = Resources.getResource(ResourceKeys.ManageAnalyzer_EditAnalyzer);
