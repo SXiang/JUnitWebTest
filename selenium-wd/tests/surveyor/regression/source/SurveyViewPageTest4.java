@@ -5,11 +5,7 @@ import common.source.Log;
 import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
-public class SurveyViewPageTest4 extends SurveyViewPageTest3 {
-
-	public SurveyViewPageTest4() {
-		super();
-	}
+public class SurveyViewPageTest4 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC982_SurveyView_ViewStandardSurveySatelliteViewWhenIndicationsONAssetsBoundariesOFF
