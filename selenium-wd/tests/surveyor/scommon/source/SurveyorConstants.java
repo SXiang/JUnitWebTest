@@ -259,9 +259,11 @@ public final class SurveyorConstants {
 	 * Survey View constants
 	 */
 	
-	public static final String ISOTOPIC_CAPTURE_NATURAL_GAS = Resources.getResource(ResourceKeys.Survey_NaturalGas);
-	public static final String ISOTOPIC_CAPTURE_NOT_NATURAL_GAS = Resources.getResource(ResourceKeys.Survey_NotNaturalGas);
-	public static final String ISOTOPIC_CAPTURE_CANCELLED= Resources.getResource(ResourceKeys.Survey_IsotopicCanceled);
+	public static final String SURVEY_PASSED = Resources.getResource(ResourceKeys.Survey_Passed);
+	public static final String ISOTOPIC_CAPTURE_NATURAL_GAS = Resources.getResource(ResourceKeys.CaptureAnalysisDispositionTypes_Natural_Gas);
+	public static final String ISOTOPIC_CAPTURE_NOT_NATURAL_GAS = Resources.getResource(ResourceKeys.CaptureAnalysisDispositionTypes_Not_Natural_Gas);
+	public static final String ISOTOPIC_CAPTURE_CANCELLED= Resources.getResource(ResourceKeys.CaptureAnalysisDispositionTypes_User_Cancellation);
+	public static final String REFGAS_CAPTURE_PASSED = Resources.getResource(ResourceKeys.ReferenceGasCaptureDescription_Isotopic_Reference_Pass);	
 	
 	/*
 	 * Driving survey tag for Compliance Reports

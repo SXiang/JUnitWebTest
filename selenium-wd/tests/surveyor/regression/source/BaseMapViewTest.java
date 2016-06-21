@@ -2,6 +2,7 @@ package surveyor.regression.source;
 
 import java.util.Calendar;
 
+import org.junit.AfterClass;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
@@ -180,6 +181,12 @@ public class BaseMapViewTest {
 		PageFactory.initElements(driver2, homePage2);
 	}
 
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+		// Post run result to DB if enabled.
+		SurveyorBaseTest.postResultsToAutomationAPI();
+	}
+	
 	protected void afterTest() {
 		homePage.open();
 		
