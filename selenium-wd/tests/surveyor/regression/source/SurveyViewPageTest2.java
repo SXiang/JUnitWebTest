@@ -8,11 +8,7 @@ import common.source.Log;
 import static surveyor.scommon.source.SurveyorConstants.ISOTOPIC_CAPTURE_CANCELLED;
 import static surveyor.scommon.source.SurveyorConstants.ISOTOPIC_CAPTURE_NOT_NATURAL_GAS;
 
-public class SurveyViewPageTest2 extends SurveyViewPageTest1 {
-
-	public SurveyViewPageTest2() {
-		super();
-	}
+public class SurveyViewPageTest2 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC393_UserNotAllowedStartStopSurveySurveyView
