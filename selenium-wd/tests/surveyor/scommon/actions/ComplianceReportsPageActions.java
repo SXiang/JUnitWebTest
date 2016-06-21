@@ -2463,9 +2463,11 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
 	 */
-	public boolean waitForReportGenerationToComplete(String data, Integer dataRowID) {
+	public boolean waitForReportGenerationToComplete(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.waitForReportGenerationToComplete", data, dataRowID);
+		this.getComplianceReportsPage().checkErrorMessages();
 		this.getComplianceReportsPage().waitForPageLoad();
 		this.getComplianceReportsPage().waitForReportGenerationtoComplete(workingDataRow.title,
 				TestContext.INSTANCE.getLoggedInUser());

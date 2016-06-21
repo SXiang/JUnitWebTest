@@ -746,7 +746,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - View are showing assets without LISA and GAP correctly. Nohighlightingof assets is shown.
 	 *	- - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test  //Uncomment the portion once DE2003 gets fixed.
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1608, location = ComplianceReportDataProvider.class)
 	public void TC1608_GenerateComplianceReportPicarroAdminIncludeAssetsWithoutSelectingGAPLISA(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -766,10 +766,8 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, NOTSET));
 		
-		/*complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("1", getReportRowID(reportDataRowID1)));
-		*/
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+		
 	}
 
 	/**
