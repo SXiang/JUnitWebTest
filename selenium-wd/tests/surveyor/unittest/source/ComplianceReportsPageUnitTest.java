@@ -3,6 +3,8 @@ package surveyor.unittest.source;
 import common.source.Log;
 import common.source.PDFUtility;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 
 import org.junit.Assert;
@@ -131,7 +133,20 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 	
 		complianceReportsPage.logout();
 	}
-	
+
+	@Test
+	public void complianceReportPDFVerification() throws IOException{
+		String rptTitle = "7314F66A-556C-3925-92C3-39D8853CF49D";//Methane
+		assertTrue(complianceReportsPage.verifyIsotopicAnalysisTable(testSetup.getDownloadPath(), rptTitle));
+		
+		rptTitle = "104C6530-2FDF-3EF0-8127-39D8813BF31D";//Ethane
+		assertTrue(complianceReportsPage.verifyEthaneAnalysisTable(testSetup.getDownloadPath(), rptTitle));
+		rptTitle = "7314F66A-556C-3925-92C3-39D8853CF49D";
+		assertTrue(complianceReportsPage.verifyIsotopicAnalysisTable(testSetup.getDownloadPath(), rptTitle));
+		
+		rptTitle = "104C6530-2FDF-3EF0-8127-39D8813BF31D";
+		assertTrue(complianceReportsPage.verifyEthaneAnalysisTable(testSetup.getDownloadPath(), rptTitle));
+	}
 	private void testReportFilters(ReportModeFilter rmode){
 		complianceReportsPage.selectReportMode(rmode);
 		Assert.assertTrue(complianceReportsPage.verifySurveyModeFilters(rmode));	
