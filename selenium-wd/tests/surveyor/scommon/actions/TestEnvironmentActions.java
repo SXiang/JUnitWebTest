@@ -205,8 +205,41 @@ public class TestEnvironmentActions extends BaseActions {
 		DriverViewPageActions driverViewPageAction = ActionBuilder.createDriverViewPageAction();
 		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
 
+		LoginPageActions.clearStoredObjects();
+		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, loginUserRowID);  
+
+		generateSurveyForUser(db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, driverViewPageAction, testEnvironmentAction);
+	}
+
+	/**
+	 * Generates a survey with specified Analyzer/Surveyor/DB3 for the specified user.
+	 * Use this method if the username/password for the newly generated user is a dynamic string.
+	 * For eg. if you used 'GenerateRandomEmail(20)' for username then use this overload for generating survey for user.
+	 * Remarks:
+	 *  User, Analyzer/Surveyor/DB3, Survey information specified as parameter to method are used for survey creation.
+	 * 	Environment (Web app, DB information) specified from Test Properties file is used for survey creation.
+	 * @param loginUserRowID - user to generate survey for.
+	 * @param db3AnalyzerRowID - analyzer/surveyor/DB3 rowID to use for the survey.
+	 * @param surveyRowID - survey information rowID.
+	 * @param surveyRuntimeInSeconds - number of seconds to run the survey for.
+	 * @throws Exception
+	 */
+	public static void generateSurveyForUser(String username, String password, int db3AnalyzerRowID, int surveyRowID,
+			int surveyRuntimeInSeconds) throws Exception {
+		LoginPageActions loginPageAction = ActionBuilder.createLoginPageAction();
+		DriverViewPageActions driverViewPageAction = ActionBuilder.createDriverViewPageAction();
+		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(String.format("%s:%s", username, password), NOTSET);  
+
+		generateSurveyForUser(db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, driverViewPageAction, testEnvironmentAction);
+	}
+
+	private static void generateSurveyForUser(int db3AnalyzerRowID, int surveyRowID, int surveyRuntimeInSeconds,
+			DriverViewPageActions driverViewPageAction, TestEnvironmentActions testEnvironmentAction) throws Exception {
 		testEnvironmentAction.startAnalyzer(EMPTY, db3AnalyzerRowID); 	
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
@@ -216,7 +249,7 @@ public class TestEnvironmentActions extends BaseActions {
 		testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
-		testEnvironmentAction.idleForSeconds(String.valueOf(60), NOTSET);    /* wait a minute for upload */
+		testEnvironmentAction.idleForSeconds(String.valueOf(30), NOTSET);    /* wait 30 seconds for upload */
 		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 	}
 }
