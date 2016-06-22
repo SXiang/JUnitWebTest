@@ -440,6 +440,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
@@ -516,6 +518,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYGAPS, "1");
 		viewMap.put(KEYASSETS, "1");
 		viewMap.put(KEYBOUNDARIES, "0");
+		viewMap.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap.put(KEYHIGHLIGHTGAPASSETS, "0");
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap);
