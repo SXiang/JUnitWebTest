@@ -2790,7 +2790,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Log.info("Calling verifyEthaneAnalysisTable() ...");
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
-		String reportId = reportObj.getId();		
+		String reportId = reportObj.getId();
 		String actualReport = Paths.get(actualPath, "CR-" + reportId.substring(0, 6) + ".pdf").toString();
 		String reportName = "CR-" + reportId;
 		setReportName(reportName);
@@ -2860,7 +2860,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Log.info("Calling verifyIsotopicAnalysisTable() ...");
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
-		String reportId = reportObj.getId();		
+		String reportId = reportObj.getId();
 		String actualReport = Paths.get(actualPath, "CR-" + reportId.substring(0, 6) + ".pdf").toString();
 		String reportName = "CR-" + reportId;
 		setReportName(reportName);
