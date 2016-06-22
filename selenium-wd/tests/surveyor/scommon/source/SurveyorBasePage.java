@@ -28,6 +28,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BasePage;
 import common.source.Log;
+import common.source.LogHelper;
 import common.source.RegexUtility;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
@@ -195,6 +196,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public boolean closeTopDropdownMenu(){
+		Log.method("closeTopDropdownMenu");
 		String opened = topDropdownMenu.getAttribute("aria-expanded");
 		if(opened!=null&&opened.equals("true")){
 			Log.clickElementInfo("Menu",ElementType.DROPDOWN);
@@ -209,6 +211,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 	
 	public boolean openTopDropdownMenu(){
+		Log.method("openTopDropdownMenu");
 		waitForPageToLoad(); // This will be removed after all wait conditions settled while jumping from page to page
 		String opened = topDropdownMenu.getAttribute("aria-expanded");
 		if(opened==null||opened.equals("false")){
@@ -221,9 +224,10 @@ public class SurveyorBasePage extends BasePage {
 			 }
 		 });		 		
 	}
+
 	public boolean verifyDropdownMenuItems(){
+		Log.method("verifyDropdownMenuItems");
 		openTopDropdownMenu();
-						
 		boolean itemFound = true;
 		TopNavMenuItem[] items = TopNavMenuItem.values();
 		for(int i=0;i<this.topNavMenuItems.size();i++){
@@ -237,7 +241,9 @@ public class SurveyorBasePage extends BasePage {
 		closeTopDropdownMenu();		
 		return itemFound;
 	}
+	
 	public LoginPage logout() {
+		Log.method("logout");
 		openTopDropdownMenu();
 		Log.clickElementInfo("Log Out",ElementType.LINK);
 		this.linkLogOut.click();
@@ -248,6 +254,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public void login(String user, String password) {
+		Log.method("login", user, password);
 		LoginPage loginPage = new LoginPage(driver, strBaseURL, testSetup);
 		PageFactory.initElements(driver, loginPage);
 
@@ -257,6 +264,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public void setPagination(String str) {
+		Log.method("setPagination", str);
 		for (WebElement option : paginationOptions) {
 			try{
 				if (str.equals(option.getText().trim())) {
@@ -307,6 +315,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public void performSearch(String searchTerm) {
+		Log.method("performSearch", searchTerm);
 		Log.info(String.format("Input search text - '%s'",searchTerm));
 		this.inputSearch.sendKeys(searchTerm);
 		this.inputSearch.sendKeys(Keys.ENTER);
@@ -314,6 +323,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public boolean getListSize(List<String> listOfElements) {
+		Log.method("getListSize", LogHelper.strListToString(listOfElements));
 		String numTextString;
 		String[] strList;
 		int result = 0;
@@ -326,6 +336,7 @@ public class SurveyorBasePage extends BasePage {
 
 	
 	public String getUserTimezone(){		
+		Log.method("getUserTimezone");
 		String text = "";		
 		
 		text = ( new WebDriverWait(driver, timeout)).until(new ExpectedCondition<String>(){
@@ -348,6 +359,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 	
 	public boolean changeUserTimezone(UserTimezone ut){
+		Log.method("changeUserTimezone", ut);
 		if(this.timezoneCloseDropdown.isEmpty()){
 			Log.clickElementInfo("Timezone",ElementType.DROPDOWN);
 			this.timezoneDropdown.click();
@@ -381,12 +393,14 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public Integer getRecordsShownOnPage(WebDriver driver) {
+		Log.method("getRecordsShownOnPage", driver);
 		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_XPATH)));		
 		WebElement pageInfoLabel = driver.findElement(By.id(DATATABLE_RECORDS_ELEMENT_XPATH));
 		return getRecordsShownOnPage(driver, pageInfoLabel);
 	}
 	
 	public Integer getRecordsShownOnPage(WebDriver driver, WebElement tableElement) {		
+		Log.method("getRecordsShownOnPage", driver, tableElement);
 		String numTextString = tableElement.getText().trim();
 		List<String> strList = RegexUtility.split(numTextString, RegexUtility.SPACE_SPLIT_REGEX_PATTERN);
 		Integer records = 0;
@@ -397,31 +411,37 @@ public class SurveyorBasePage extends BasePage {
 	}
 	
 	public void searchTable(String locationName) {
+		Log.method("searchTable", locationName);
 		this.clearSearchField();
 		this.getInputSearch().sendKeys(locationName);
 		this.waitForSearchResultsToLoad();
 	}
 
 	public boolean searchHasNoMatchingRecords() {
+		Log.method("searchHasNoMatchingRecords");
 		return this.getLabelNoMatchingSearch().equalsIgnoreCase(NOMATCHINGSEARCH);
 	}
 	
 	public void clearSearchField() {
+		Log.method("clearSearchField");
 		Log.info("clearing search field");
 		this.getInputSearch().clear();
 	}
 
 	public void clearSearchFieldUsingSpace() {
+		Log.method("clearSearchFieldUsingSpace");
 		this.getInputSearch().sendKeys(" ");
 		this.waitForTableDataToLoad();
 	}
 
 	private WebElement getTableHeader(Integer columnIndex) {
+		Log.method("getTableHeader", columnIndex);
 		WebElement headerElement = driver.findElement(By.xpath(String.format(headerColumnBaseXPath, columnIndex)));
 		return headerElement;
 	}
 
 	public TableSortOrder getSortOrderFromString(String sortOrderString) {
+		Log.method("getSortOrderFromString", sortOrderString);
 		TableSortOrder tblSortOrder = TableSortOrder.ASC;
 		if (sortOrderString.equals("DESC")) {
 			tblSortOrder = TableSortOrder.DESC;
@@ -438,6 +458,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public void sortTableByColumn(Integer columnIndex, TableSortOrder sortOrder) {
+		Log.method("sortTableByColumn", columnIndex, sortOrder);
 		WebElement headerElement = getTableHeader(columnIndex);
 		TableSortOrder currTblSortOrder = getCurrentColumnSortOrder(headerElement, columnIndex);
 		// If current sort order is same as requested sort order, click twice to refresh data.
@@ -451,8 +472,9 @@ public class SurveyorBasePage extends BasePage {
 		
 	}
 	
-	public boolean checkTableSort(String datatTableElement, HashMap<String, TableColumnType> columnHeadings, String str, List<WebElement> paginationOption){
-		By tableContextBy = By.id(datatTableElement);
+	public boolean checkTableSort(String dataTableElement, HashMap<String, TableColumnType> columnHeadings, String str, List<WebElement> paginationOption){
+		Log.method("checkTableSort", dataTableElement, columnHeadings, paginationOption);
+		By tableContextBy = By.id(dataTableElement);
 		WebElement tableContext = driver.findElement(tableContextBy);
 		DataTablePage dataTable = DataTablePage.getDataTablePage(driver, tableContext, this.testSetup, this.strBaseURL, this.strPageURL);
 		List<WebElement> headings=tableContext.findElements(By.cssSelector("thead > tr > th"));
@@ -473,6 +495,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	private TableSortOrder getCurrentColumnSortOrder(WebElement headerElement, Integer columnIndex) {
+		Log.method("getCurrentColumnSortOrder", headerElement, columnIndex);
 		String classAttrValue = headerElement.getAttribute("class");
 		// Get the current sorted order of the column.
 		TableSortOrder currTblSortOrder = TableSortOrder.ASC;
@@ -483,11 +506,13 @@ public class SurveyorBasePage extends BasePage {
 	}
 	
 	public void clickOnColumnHeader(Integer columnIndex, Integer numTimesToClick) {
+		Log.method("clickOnColumnHeader", columnIndex, numTimesToClick);
 		WebElement headerElement = getTableHeader(columnIndex);
 		multiClickElement(headerElement, numTimesToClick);
 	}
 
 	private void multiClickElement(WebElement element, Integer numTimesToClick) {
+		Log.method("multiClickElement", element, numTimesToClick);
 		if (element != null && numTimesToClick > 0) {
 			for (int i = 0; i < numTimesToClick; i++) {
 				element.click();
@@ -496,6 +521,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public void refreshPageUntilElementFound(String elementXPath) {
+		Log.method("refreshPageUntilElementFound", elementXPath);
 		waitForAJAXCallsToComplete();
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -515,6 +541,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 	
 	public boolean checkPaginationSetting(String numberOfReports) {
+		Log.method("checkPaginationSetting", numberOfReports);
 		setPagination(numberOfReports);
 		this.waitForPageLoad();
 
@@ -528,6 +555,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public boolean checkFileExists(String fileName, String downloadPath) {
+		Log.method("checkFileExists", fileName, downloadPath);
 		Log.info(String.format("Looking for file-[%s] in download directory-[%s]", fileName, downloadPath));
 		File file = new File(downloadPath,fileName);
 		if(file.exists()){
@@ -538,6 +566,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public void waitForFileDownload(String fileName, String downloadPath) {
+		Log.method("waitForFileDownload", fileName, downloadPath);
 		(new WebDriverWait(driver, timeout + 60)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return checkFileExists(fileName, downloadPath);
@@ -546,6 +575,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public boolean verifyFieldNotBlank(WebElement validationLabel, String fieldName) {
+		Log.method("verifyFieldNotBlank", validationLabel, fieldName);
 		if (!WebElementExtender.isElementPresentAndDisplayed(validationLabel)) {
 			Log.info(String.format("%s error is NOT displayed.", fieldName));
 			return false;
@@ -559,6 +589,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 	
 	public void waitForNumberOfRecords(String actualMessage) {
+		Log.method("waitForNumberOfRecords", actualMessage);
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return paginationMsg.getText().substring(0, 16).trim().equals(actualMessage);
@@ -569,7 +600,8 @@ public class SurveyorBasePage extends BasePage {
 	/*
 	 * Helper method to wait for an Element to be ready on the page.
 	 */
-	public void WaitForElementReady(String elementID) {
+	public void waitForElementReady(String elementID) {
+		Log.method("waitForElementReady", elementID);
 		(new WebDriverWait(this.driver, this.timeout)).until(ExpectedConditions.presenceOfElementLocated(By.id(elementID)));
 	}
 
@@ -577,6 +609,7 @@ public class SurveyorBasePage extends BasePage {
 	 * Waits for search results to load once user has performed search in datatable.
 	 */
 	public void waitForSearchResultsToLoad() {
+		Log.method("waitForSearchResultsToLoad");
 		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_XPATH)));
 		String dataTableFilterText = Resources.getResource(ResourceKeys.Constant_FilteredFromMaxTotalEntries);
 		Integer index = dataTableFilterText.indexOf("_MAX_");
@@ -590,6 +623,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 	
 	public void waitForTableDataToLoad() {
+		Log.method("waitForTableDataToLoad");
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return (getRecordsShownOnPage(d) > 0);
@@ -598,6 +632,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public void waitForAJAXCallsToComplete() {
+		Log.method("waitForAJAXCallsToComplete");
 		ExpectedCondition<Boolean> jQueryActiveComplete = new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				try {
@@ -626,6 +661,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 	
 	public void waitForAnimationToComplete() {
+		Log.method("waitForAnimationToComplete");
 		ExpectedCondition<Boolean> jQueryAnimationComplete = new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				try {
@@ -644,6 +680,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 	
 	public void waitForSignalRCallsToComplete() {
+		Log.method("waitForSignalRCallsToComplete");
 		this.waitForAJAXCallsToComplete();
 		this.waitForAnimationToComplete();
 	}
