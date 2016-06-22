@@ -647,11 +647,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	private boolean selectView(Map<String, String> viewMap, String option){
-		boolean select = true;
+		boolean select = false;
 		String value = viewMap.get(option);
-		if(value==null
-				||value.equalsIgnoreCase("0")){
-			select = false;
+		if(value!=null
+				&&value.equalsIgnoreCase("1")){
+			select = true;
 		}
 		return select;
 	}
