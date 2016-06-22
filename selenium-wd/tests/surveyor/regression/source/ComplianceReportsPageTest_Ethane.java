@@ -368,8 +368,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 				// View images baseline creation tracked by DE2023.
 				//assertTrue(complianceReportsPage.verifyAllViewsImages(testSetup.getDownloadPath(), rptTitle, testCaseName,viewList.size()));
 				if (tablesList.get(0).get(KEYISOANA).equals("1")) {
-					// Not working correctly. Tracked by defect DE2024.
-					//assertTrue(complianceReportsPage.verifyIsotopicAnalysisTable(testSetup.getDownloadPath(), rptTitle));
+					assertTrue(complianceReportsPage.verifyEthaneAnalysisTable(testSetup.getDownloadPath(), rptTitle));
 				}
 				if (tablesList.get(0).get(KEYINDTB).equals("1")) {
 					assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
