@@ -24,7 +24,7 @@ public class GeoJsonShapeFileComparer implements IShapeFileComparer {
 		String jsonString2 = ShapeToGeoJsonConverter.convertToJsonString(file2Path);
 		Log.info("jsonString1=" + jsonString1);
 		Log.info("jsonString2=" + jsonString2);
-		JSONAssert.assertEquals(jsonString1, jsonString2, JSONCompareMode.LENIENT);
+		JSONAssert.assertEquals(jsonString1, jsonString2, JSONCompareMode.NON_EXTENSIBLE);
 	}
 	
 	public static void main(String[] args) throws Exception {
