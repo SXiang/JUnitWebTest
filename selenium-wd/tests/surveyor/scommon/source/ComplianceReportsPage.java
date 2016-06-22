@@ -528,100 +528,104 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String strBaseXPath;
 
 		for (int i = 0; i < viewList.size(); i++) {
+			rowNum = i + 1;
+			Map<String, String> viewMap = viewList.get(i);
+			if(viewMap==null){
+				continue;
+			}
 			if (i != 0) {
 				Log.clickElementInfo("Add Views");
 				this.btnAddViews.click();
 			}
 
-			rowNum = i + 1;
-			if (viewList.get(i).get(KEYVIEWNAME) != null) {
+			if (viewMap.get(KEYVIEWNAME) != null) {
 				colNum = 2;
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				strBaseXPath = strBaseXPath + "[@type='text']";
-				String viewName = viewList.get(i).get(KEYVIEWNAME);
+				String viewName = viewMap.get(KEYVIEWNAME);
 				Log.info("Set view name to '"+viewName);
 				driver.findElement(By.xpath(strBaseXPath)).clear();
 				driver.findElement(By.xpath(strBaseXPath)).sendKeys(viewName);
 			}
 
-			if (viewList.get(i).get(KEYLISA).equalsIgnoreCase("1")) {
+			if (selectView(viewMap, KEYLISA)) {
 				colNum = 3;
 				Log.clickElementInfo("LISA", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (viewList.get(i).get(KEYFOV).equalsIgnoreCase("1")) {
+			if (selectView(viewMap, KEYFOV)) {
 				colNum = 4;
 				Log.clickElementInfo("FOV", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (viewList.get(i).get(KEYBREADCRUMB).equalsIgnoreCase("1")) {
+			if (selectView(viewMap, KEYBREADCRUMB)) {
 				colNum = 5;
 				Log.clickElementInfo("BREADCRUMB", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (viewList.get(i).get(KEYINDICATIONS).equalsIgnoreCase("1")) {
+			if (selectView(viewMap, KEYINDICATIONS)) {
 				colNum = 6;
 				Log.clickElementInfo("INDICATIONS", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (viewList.get(i).get(KEYISOTOPICCAPTURE).equalsIgnoreCase("1")) {
+			if (selectView(viewMap, KEYISOTOPICCAPTURE)) {
 				colNum = 7;
 				Log.clickElementInfo("ISOTOPICCAPTURE", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (viewList.get(i).get(KEYANNOTATION).equalsIgnoreCase("1")) {
+			if (selectView(viewMap, KEYANNOTATION)) {
 				colNum = 8;
 				Log.clickElementInfo("ANNOTATION", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (viewList.get(i).get(KEYGAPS).equalsIgnoreCase("1")) {
+			if (selectView(viewMap, KEYGAPS)) {
 				colNum = 9;
 				Log.clickElementInfo("GAPS", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (viewList.get(i).get(KEYASSETS).equalsIgnoreCase("1")) {
+			if (selectView(viewMap, KEYASSETS)) {
 				colNum = 10;
 				Log.clickElementInfo("ASSETS", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (viewList.get(i).get(KEYHIGHLIGHTLISAASSETS).equalsIgnoreCase("1")) {
+			if (selectView(viewMap, KEYHIGHLIGHTLISAASSETS)) {
 				colNum = 11;
 				Log.clickElementInfo("Highlight LISA Assets", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 			
-			if (viewList.get(i).get(KEYHIGHLIGHTGAPASSETS).equalsIgnoreCase("1")) {
+			if (selectView(viewMap, KEYHIGHLIGHTGAPASSETS)) {
 				colNum = 12;
 				Log.clickElementInfo("Highlight GAP Assets", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 			
-			if (viewList.get(i).get(KEYBOUNDARIES).equalsIgnoreCase("1")) {
+			if (selectView(viewMap, KEYBOUNDARIES)) {
 				colNum = 13;
 				Log.clickElementInfo("BOUNDARIES", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (viewList.get(i).get(KEYBASEMAP) != null) {
+			if (viewMap.get(KEYBASEMAP) != null) {
 				if (rowNum == 1) {
 					strBaseXPath = "//*[@id='datatableViews']/tbody/tr/td/select[contains(@class,'view-basemap')]";
 				} else {
@@ -630,8 +634,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				}
 				WebElement dropdownBaseMap = driver.findElement(By.xpath(strBaseXPath));
 				List<WebElement> options = dropdownBaseMap.findElements(By.tagName("option"));
-				for (WebElement option : options) {
-					String thisMap = viewList.get(i).get(KEYBASEMAP);
+				for (WebElement option : options) { 
+					String thisMap = viewMap.get(KEYBASEMAP);
 					if ((thisMap).equalsIgnoreCase(option.getText().trim())) {
 						Log.info(String.format("Select base map - '%s'", thisMap));
 						option.click();
@@ -642,6 +646,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 
+	private boolean selectView(Map<String, String> viewMap, String option){
+		boolean select = false;
+		String value = viewMap.get(option);
+		if(value!=null
+				&&value.equalsIgnoreCase("1")){
+			select = true;
+		}
+		return select;
+	}
 	private String getViewXPathByRowCol(int rowNum, int colNum) {
 		String strBaseXPath;
 		if (rowNum == 1) {
