@@ -21,8 +21,8 @@ public class StoredProcComplianceGetEthaneCapture extends BaseEntity {
 	}
 
 	public String toString() {
-		String ethaneRatio = (this.getEthaneRatio() == 0.0) ? "0" : Float.toString(this.getEthaneRatio());
-		String ethaneRatioSdev = (this.getEthaneRatioSdev() == 0.0) ? "0" : Float.toString(this.getEthaneRatioSdev());
+		String ethaneRatio = (this.getEthaneRatio() == 0.0) ? "0.00" : Float.toString(this.getEthaneRatio());
+		String ethaneRatioSdev = (this.getEthaneRatioSdev() == 0.0) ? "0.00" : Float.toString(this.getEthaneRatioSdev());
 		return this.getSurveyorUnitName().concat(" ").concat(this.getDateTime()).concat(" ")
 				.concat(this.getDisposition()).concat(" ")
 				.concat(ethaneRatio).concat("+/-")
