@@ -6,7 +6,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
-import static surveyor.dataaccess.source.ResourceKeys.CaptureAnalysisDispositionTypes;
+import static surveyor.dataaccess.source.ResourceKeys.CaptureAnalysisDispositionTypesPrefix;
 
 import common.source.Log;
 
@@ -125,7 +125,7 @@ public class StoredProcComplianceGetIsotopics extends BaseEntity {
 		try {
 			objReport.setDateTime(resultSet.getString("Date_Time"));
 			objReport.setSurveyorUnitName(resultSet.getString("SurveyorUnitName"));
-			String dispositionType = CaptureAnalysisDispositionTypes+(" "+resultSet.getString("Disposition")).replaceAll(" ", "_");
+			String dispositionType = CaptureAnalysisDispositionTypesPrefix+(" "+resultSet.getString("Disposition")).replaceAll(" ", "_");
 			objReport.setDisposition(Resources.getResource(dispositionType));
 			objReport.setDelta(resultSet.getFloat("Delta"));
 			objReport.setUncertainty(resultSet.getFloat("Uncertainty"));

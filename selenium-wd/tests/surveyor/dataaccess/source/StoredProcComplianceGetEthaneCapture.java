@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static surveyor.dataaccess.source.ResourceKeys.CaptureAnalysisDispositionTypes;
+import static surveyor.dataaccess.source.ResourceKeys.CaptureAnalysisDispositionTypesPrefix;
 
 import java.sql.CallableStatement;
 
@@ -138,7 +138,7 @@ public class StoredProcComplianceGetEthaneCapture extends BaseEntity {
 		try {
 			objEthaneCapture.setDateTime(resultSet.getString("Date_Time"));
 			objEthaneCapture.setSurveyorUnitName(resultSet.getString("SurveyorUnitName"));
-			String dispositionType = CaptureAnalysisDispositionTypes+(" "+resultSet.getString("Disposition")).replaceAll(" ", "_");
+			String dispositionType = CaptureAnalysisDispositionTypesPrefix+(" "+resultSet.getString("Disposition")).replaceAll(" ", "_");
 			objEthaneCapture.setDisposition(Resources.getResource(dispositionType));
 			objEthaneCapture.setEthaneRatioSdev(resultSet.getFloat("EthaneRatioSdev"));
 			objEthaneCapture.setEthaneRatio(resultSet.getFloat("EthaneRatio"));
