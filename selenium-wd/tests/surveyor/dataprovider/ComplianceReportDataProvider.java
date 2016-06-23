@@ -1,6 +1,6 @@
 package surveyor.dataprovider;
 
-import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
+import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG3200;
 import static surveyor.scommon.source.SurveyorConstants.EXCLUSIONRADIUS;
 import static surveyor.scommon.source.SurveyorConstants.PICADMMANTAG;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSDRTAG;
@@ -210,7 +210,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		tagList1.add(SQACUSDRTAG);
 
 		List<Map<String, String>> viewList2 = new ArrayList<Map<String, String>>();
-		viewList2.add(createViewsMapTable("First View", "0", "0", "0", "1", "0", "1", "0", "1", "0","1","0", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList2.add(createViewsMapTable("First View", "0", "0", "0", "1", "0", "1", "0", "1", "0","0","0", Resources.getResource(ResourceKeys.Constant_Map)));
 		viewList2.add(createViewsMapTable("Second View", "1", "1", "0", "1", "1", "0", "0", "0", "0","0","0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList2 = new ArrayList<Map<String, String>>();
 		tablesList2.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
@@ -221,7 +221,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		tagList2.add(PICADMNSTDTAG);
 
 		List<Map<String, String>> viewList3 = new ArrayList<Map<String, String>>();
-		viewList3.add(createViewsMapTable("First View", "0", "0", "0", "1", "0", "1", "0", "1", "0","1","0", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList3.add(createViewsMapTable("First View", "0", "0", "0", "1", "0", "1", "0", "1", "0","0","0", Resources.getResource(ResourceKeys.Constant_Map)));
 		List<Map<String, String>> tablesList3 = new ArrayList<Map<String, String>>();
 		tablesList3.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<Integer> assetRowIDs3 = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
@@ -300,25 +300,25 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		tagList10.add(PICADMMANTAG);
 		
 		List<Map<String, String>> viewList11 = new ArrayList<Map<String, String>>();
-		viewList11.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0", "1","0",Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList11.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0", "0","0",Resources.getResource(ResourceKeys.Constant_Map)));
 		List<Map<String, String>> tablesList11 = new ArrayList<Map<String, String>>();
 		tablesList11.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<Integer> assetRowIDs11 = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
 		List<Map<String, String>> viewLayerList11 = new ArrayList<Map<String, String>>();
 		viewLayerList11.add(createViewLayerAssetsContent(assetRowIDs11));
 		List<String> tagList11 = new ArrayList<String>();
-		tagList11.add(CUSDRVSTDTAG);
+		tagList11.add(CUSDRVSTDTAG3200);
 		
 		List<Map<String, String>> viewList12 = new ArrayList<Map<String, String>>();
 		viewList12.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0","0","0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 		viewList12.add(createViewsMapTable("Second View", "0", "0", "1", "1", "0", "0", "0", "0", "0","0","0", Resources.getResource(ResourceKeys.Constant_Map)));
 		viewList12.add(createViewsMapTable("Third View", "1", "1", "0", "0", "1", "0", "0", "0", "0", "0","0","None"));
-		viewList12.add(createViewsMapTable("Fourth View", "0", "1", "0", "0", "0", "0", "1", "0", "0","1","0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList12.add(createViewsMapTable("Fourth View", "0", "1", "0", "0", "0", "0", "1", "0", "0","0","0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList12 = new ArrayList<Map<String, String>>();
 		tablesList12.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<Map<String, String>> viewLayerList12 = null;
 		List<String> tagList12 = new ArrayList<String>();
-		tagList12.add(CUSDRVSTDTAG);
+		tagList12.add(CUSDRVSTDTAG3200);
 		
 		List<Map<String, String>> viewList13 = new ArrayList<Map<String, String>>();
 		viewList13.add(createViewsMapTable("First View", "1", "1", "0", "0", "0", "0", "0", "0", "0","0","0", Resources.getResource(ResourceKeys.Constant_Satellite)));
@@ -327,7 +327,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		tablesList13.add(createOptionalTabularPDFContent("1", "0", "0", "0", "0", "0"));
 		List<Map<String, String>> viewLayerList13 = null;
 		List<String> tagList13 = new ArrayList<String>();
-		tagList13.add(CUSDRVSTDTAG);
+		tagList13.add(CUSDRVSTDTAG3200);
 		
 		List<Map<String, String>> viewList14 = new ArrayList<Map<String, String>>();
 		viewList14.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1","1","1", Resources.getResource(ResourceKeys.Constant_Satellite)));
@@ -343,9 +343,9 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		tagList14.add(SQACUSDRTAG);
 		
 		List<Map<String, String>> viewList15 = new ArrayList<Map<String, String>>();
-		viewList15.add(createViewsMapTable("First View", "1", "1", "0", "1", "0", "0", "0", "1", "0","0","0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList15.add(createViewsMapTable("First View", "1", "1", "0", "1", "0", "0", "0", "1", "0","1","0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 		viewList15.add(createViewsMapTable("Second View", "0", "0", "1", "1", "0", "0", "0", "1", "0","0","0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList15.add(createViewsMapTable("Third View", "0", "1", "0", "0", "0", "0", "1", "1", "0","1","0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList15.add(createViewsMapTable("Third View", "0", "1", "0", "0", "0", "0", "1", "1", "0","0","1", Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList15 = new ArrayList<Map<String, String>>();
 		tablesList15.add(createOptionalTabularPDFContent("1", "1", "1", "1", "0", "0"));
 		List<Integer> assetRowIDs15 = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
@@ -361,7 +361,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		tablesList16.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<Map<String, String>> viewLayerList16 = null;
 		List<String> tagList16 = new ArrayList<String>();
-		tagList16.add(CUSDRVSTDTAG);
+		tagList16.add(CUSDRVSTDTAG3200);
 		
 		List<Map<String, String>> viewList17 = new ArrayList<Map<String, String>>();
 		viewList17.add(createViewsMapTable("First View", "1", "1", "0", "0", "0", "0", "0", "0", "0","0","0", Resources.getResource(ResourceKeys.Constant_Satellite)));
@@ -369,7 +369,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		tablesList17.add(createOptionalTabularPDFContent("1", "0", "0", "0", "0", "0"));
 		List<Map<String, String>> viewLayerList17 = null;
 		List<String> tagList17 = new ArrayList<String>();
-		tagList17.add(CUSDRVSTDTAG); // include 8 hr survey
+		tagList17.add(CUSDRVSTDTAG3200); // include 8 hr survey
 		
 		List<Map<String, String>> viewList18 = new ArrayList<Map<String, String>>();
 		viewList18.add(createViewsMapTable("First View", "0", "0", "0", "0", "1", "0", "0", "1", "1","0","0", Resources.getResource(ResourceKeys.Constant_Map)));
@@ -422,7 +422,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		List<Map<String, String>> viewLayerList21 = new ArrayList<Map<String, String>>();
 		viewLayerList21.add(createOptionalViewLayersContent(assetRowIDs21, boundaryRowIDs21));
 		List<String> tagList21 = new ArrayList<String>();
-		tagList21.add(CUSDRVSTDTAG); 
+		tagList21.add(CUSDRVSTDTAG3200); 
 		
 		List<Map<String, String>> viewList22 = new ArrayList<Map<String, String>>();
 		viewList22.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1","1","1", Resources.getResource(ResourceKeys.Constant_Satellite)));
@@ -435,7 +435,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		List<Map<String, String>> viewLayerList22 = new ArrayList<Map<String, String>>();
 		viewLayerList22.add(createOptionalViewLayersContent(assetRowIDs22, boundaryRowIDs22));
 		List<String> tagList22 = new ArrayList<String>();
-		tagList22.add(CUSDRVSTDTAG); 
+		tagList22.add(CUSDRVSTDTAG3200); 
 		
 		List<Map<String, String>> viewList23 = new ArrayList<Map<String, String>>();
 		viewList23.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0","0","0", Resources.getResource(ResourceKeys.Constant_Satellite)));
@@ -443,7 +443,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		tablesList23.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<Map<String, String>> viewLayerList23 = null;
 		List<String> tagList23 = new ArrayList<String>();
-		tagList23.add(CUSDRVSTDTAG); 
+		tagList23.add(CUSDRVSTDTAG3200); 
 
 		return new Object[][] {				
 				{ "1"/*index*/, SQAPICSUP/*strCreatedBy*/, USERPASSWORDHASH/*password(encrypted)*/, "Picarro"/*customer*/, TIMEZONEPTUA/*timeZone*/, EXCLUSIONRADIUS/*exclusionRadius*/, null/*surveyorUnit*/, null/*userName*/, null/*startDate*/,
