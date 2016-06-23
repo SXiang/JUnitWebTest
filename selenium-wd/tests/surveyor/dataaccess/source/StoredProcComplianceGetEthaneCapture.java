@@ -3,6 +3,9 @@ package surveyor.dataaccess.source;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import static surveyor.dataaccess.source.ResourceKeys.CaptureAnalysisDispositionTypes;
+
 import java.sql.CallableStatement;
 
 import common.source.Log;
@@ -108,7 +111,6 @@ public class StoredProcComplianceGetEthaneCapture extends BaseEntity {
 
 	public boolean isInList(ArrayList<StoredProcComplianceGetEthaneCapture> list) {
 		for (StoredProcComplianceGetEthaneCapture storedProcEthaneCapture : list) {
-			Log.debug(this.toString()+"  ---   "+storedProcEthaneCapture);	
 			if (this.isEquals(storedProcEthaneCapture)) {
 				return true;
 			}
@@ -122,7 +124,8 @@ public class StoredProcComplianceGetEthaneCapture extends BaseEntity {
 		try {
 			objEthaneCapture.setDateTime(resultSet.getString("Date_Time"));
 			objEthaneCapture.setSurveyorUnitName(resultSet.getString("SurveyorUnitName"));
-			objEthaneCapture.setDisposition(resultSet.getString("Disposition"));
+			String dispositionType = CaptureAnalysisDispositionTypes+(" "+resultSet.getString("Disposition")).replaceAll(" ", "_");
+			objEthaneCapture.setDisposition(Resources.getResource(dispositionType));
 			objEthaneCapture.setEthaneRatioSdev(resultSet.getFloat("EthaneRatioSdev"));
 			objEthaneCapture.setEthaneRatio(resultSet.getFloat("EthaneRatio"));
 			objEthaneCapture.setText(resultSet.getString("Text"));

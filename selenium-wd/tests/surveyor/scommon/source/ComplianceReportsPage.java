@@ -346,6 +346,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(id = "report-ethene-biogenic-methane")
 	protected WebElement checkBoxEtheneBiogeniceMethane;
 
+	@FindBy(id = "report-ethene-possible-natural-gas")
+	protected WebElement checkBoxPossibleNaturalGas;
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[1]")
 	protected WebElement fstRptTilNm;
 
@@ -1741,21 +1744,40 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void selectEthaneFilter(EthaneFilter ethaneFilter) {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
+		selectEthaneFilter(ethaneFilter, true);
+	}
+	
+	public void unselectEthaneFilter(EthaneFilter ethaneFilter) {
+		selectEthaneFilter(ethaneFilter, false);
+	}
+	
+	public void selectEthaneFilter(EthaneFilter ethaneFilter, boolean select){
+		List<WebElement> elements = new ArrayList<WebElement>();
 		switch (ethaneFilter) {
 		case ExcludeVehicleExhaust:
-			SelectCheckbox(checkBoxVehicleExhaust);
+			elements.add(checkBoxVehicleExhaust);
 			break;
 		case ExcludeBiogenicMethane:
-			SelectCheckbox(checkBoxEtheneBiogeniceMethane);
+			elements.add(checkBoxEtheneBiogeniceMethane);
 			break;
-		case Both:
-			SelectCheckbox(checkBoxVehicleExhaust);
-			SelectCheckbox(checkBoxEtheneBiogeniceMethane);
+		case ExcludePossibleNaturalGas:
+			elements.add(checkBoxPossibleNaturalGas);
+			break;
+		case All:
+			elements.add(checkBoxVehicleExhaust);
+			elements.add(checkBoxEtheneBiogeniceMethane);
+			elements.add(checkBoxPossibleNaturalGas);
 			break;
 		default:
 			break;
 		}
+		for(WebElement element:elements){
+			if(select)
+				SelectCheckbox(element);
+			else
+				UnselectCheckbox(element);
+		}
+		
 	}
 
 	public void selectViewLayerAssets(Map<String, String> viewLayerMap) {
@@ -2494,9 +2516,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
 		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /*includeExtension*/);
-		String pathToMetaDataUnZip = Paths.get(actualPath, metaDataZipFileName).toString();
-		String pathToCsv = Paths.get(pathToMetaDataUnZip, "CR-" + reportId.substring(0, 6) + "-ReportSurvey.csv").toString();
+		String pathToMetaDataUnZip = actualPath;
+		String unZipFolder = File.separator + metaDataZipFileName;
+		if(!actualPath.endsWith(unZipFolder))
+			pathToMetaDataUnZip += unZipFolder;
+		
+		String pathToCsv = pathToMetaDataUnZip + File.separator + "CR-" + reportId.substring(0, 6) + "-ReportSurvey.csv";
 		String reportName = "CR-" + reportId;
+
+		if (actualPath.endsWith("-ReportSurvey.csv")) {
+			pathToCsv = actualPath;
+		}
+
 		setReportName(reportName);
 		List<HashMap<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
 		Iterator<HashMap<String, String>> csvIterator = csvRows.iterator();
@@ -3615,6 +3646,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		ReportsCompliance reportsCompliance = (ReportsCompliance) reports;
 
 		// 1. Report general
+		/* Temp solution to enable lisa table on 3200 - Unselect Exclude Possible Natural Gas by default*/
+		unselectEthaneFilter(EthaneFilter.ExcludePossibleNaturalGas);
 		if (reportsCompliance.getEthaneFilter() != null) {
 			selectEthaneFilter(reportsCompliance.getEthaneFilter());
 		}
