@@ -248,7 +248,7 @@ public class BaseHelper {
 			}
 		}
 		
-		Log.info(String.format("Match String Map is : ", stringsToMatch));
+		Log.info(String.format("Match String Map is : ", LogHelper.boolMapToString(stringsToMatch)));
 		return stringsToMatch;
 	}
 

@@ -22,8 +22,8 @@ public class StoredProcComplianceGetIsotopics extends BaseEntity {
 	}
 
 	public String toString() {
-		String delta = (this.getDelta() == 0.0) ? "0" : Float.toString(this.getDelta());
-		String uncertainty = (this.getUncertainty() == 0.0) ? "0" : Float.toString(this.getUncertainty());
+		String delta = (this.getDelta() == 0.0) ? "0.00" : Float.toString(this.getDelta());
+		String uncertainty = (this.getUncertainty() == 0.0) ? "0.00" : Float.toString(this.getUncertainty());
 		return this.getSurveyorUnitName().concat(" ").concat(this.getDateTime()).concat(" ").concat(this.getDisposition()).concat(" ").concat(delta).concat("+/-").concat(uncertainty).concat(" ").concat(this.getText());
 
 	}
@@ -78,18 +78,28 @@ public class StoredProcComplianceGetIsotopics extends BaseEntity {
 
 	public boolean isEquals(StoredProcComplianceGetIsotopics obj) {
 		if (!this.getSurveyorUnitName().trim().equals(obj.getSurveyorUnitName().trim())) {
+			Log.error(String.format("Surveyor Name not equal - Expect '%s', Actual '%s'",
+					this.getSurveyorUnitName().trim(),obj.getSurveyorUnitName().trim()));
 			return false;
 		}
 		if (!this.getDisposition().trim().equals(obj.getDisposition().trim())) {
+			Log.error(String.format("Disposition not equal - Expect '%s', Actual '%s'",
+					this.getDisposition().trim(),obj.getDisposition().trim()));
 			return false;
 		}
 		if (this.getDelta() != (obj.getDelta())) {
+			Log.error(String.format("Delta not equal - Expect '%s', Actual '%s'",
+					this.getDelta(),obj.getDelta()));
 			return false;
 		}
 		if (this.getUncertainty() != (obj.getUncertainty())) {
+			Log.error(String.format("Uncertainty not equal - Expect '%s', Actual '%s'",
+					this.getUncertainty(),obj.getUncertainty()));
 			return false;
 		}
 		if (!this.getText().trim().equals(obj.getText().trim())) {
+			Log.error(String.format("Field Notes not equal - Expect '%s', Actual '%s'",
+					this.getText().trim(),obj.getText().trim()));
 			return false;
 		}
 		return true;
