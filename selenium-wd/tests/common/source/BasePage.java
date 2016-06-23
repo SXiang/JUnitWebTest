@@ -371,8 +371,7 @@ public class BasePage {
 
     public void SelectCheckbox(WebElement checkbox) {
     	if (!checkbox.isSelected()){
-    		checkbox.click();
-    		//jsClick(checkbox);
+    		jsClick(checkbox);
     	}
     }
 
