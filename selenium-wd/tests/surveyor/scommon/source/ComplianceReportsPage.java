@@ -1764,7 +1764,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		selectEthaneFilter(ethaneFilter, false);
 	}
 	
-	public void selectEthaneFilter(EthaneFilter ethaneFilter, boolean select){
+	private void selectEthaneFilter(EthaneFilter ethaneFilter, boolean select){
 		List<WebElement> elements = new ArrayList<WebElement>();
 		switch (ethaneFilter) {
 		case ExcludeVehicleExhaust:
