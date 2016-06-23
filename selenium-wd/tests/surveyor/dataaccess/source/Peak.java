@@ -45,6 +45,20 @@ public class Peak extends BaseEntity {
 		super();
 	}
 
+	@Override
+	public String toString() {
+		return (this.getAnalyzerId().toString()).concat("|")
+				.concat(this.getSurveyId().toString()).concat("|")
+				.concat(String.valueOf(this.getCH4())).concat("|")
+				.concat(String.valueOf(this.getAmplitude())).concat("|")
+				.concat(String.valueOf(this.getLisa())).concat("|")
+				.concat(this.getWindSpeedEast().toString()).concat("|")
+				.concat(this.getWindSpeedNorth().toString()).concat("|")
+				.concat(this.getGpsLatitude().toString()).concat("|")
+				.concat(this.getGpsLongitude().toString()).concat("|")
+				.concat(this.getEpochTime().toString());
+	}
+	
 	public float getCH4() {
 		return cH4;
 	}

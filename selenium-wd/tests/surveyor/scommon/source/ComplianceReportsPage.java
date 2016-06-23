@@ -2117,7 +2117,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 
 		Log.info(String.format("Matching expected report strings-[%s], with actual PDF text.", 
-				LogHelper.strArrayToString(expectedReportString.toArray(new String[expectedReportString.size()])) ));
+				LogHelper.arrayToString(expectedReportString.toArray(new String[expectedReportString.size()])) ));
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
@@ -2807,7 +2807,76 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		return true;
 	}
+	/**
+	 * Method to verify the Ethane Analysis Table in SSRS
+	 * 
+	 * @param actualPath
+	 * @param reportTitle
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean verifyEthaneAnalysisTable(String actualPath, String reportTitle) throws IOException {
+		Log.info("Calling verifyEthaneAnalysisTable() ...");
+		PDFUtility pdfUtility = new PDFUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = Paths.get(actualPath, "CR-" + reportId.substring(0, 6) + ".pdf").toString();
+		String reportName = "CR-" + reportId;
+		setReportName(reportName);
+		String actualReportString = pdfUtility.extractPDFText(actualReport);
+		List<String> expectedReportString = new ArrayList<String>();
+		expectedReportString.add(ComplianceReportSSRS_EthaneAnalysisTable);
+		Log.info(String.format("PDF Text Content : %s", actualReportString));
+		Log.info(String.format("Expected Strings in PDF Text Content : %s", LogHelper.strListToString(expectedReportString)));
+		
+		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		for (Boolean value : actualFirstPage.values()) {
+			if (!value) {
+				Log.info("Ethane Analysis table verification failed");
+				return false;
+			}
+		}
+		String isoTable = RegexUtility.getStringInBetween(actualReportString, "Surveyor Date/Time Result",ComplianceReportSSRS_EthaneAnalysisTable);
+		Log.info(String.format("Extracted Ethane Analysis Table : %s", isoTable));
+		if (isoTable != null) {
+			InputStream inputStream = new ByteArrayInputStream(isoTable.getBytes());
+			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
+			String line = null;
+			try {
+				ArrayList<String> reportEthaneList = new ArrayList<String>();
+				while ((line = bufferReader.readLine()) != null) {
+					if (!line.trim().startsWith("Ethane/Methane Ratio and Uncertainty")) {
+						line = line.replaceAll(" +", " ").trim();
+						reportEthaneList.add(line);
+					}
+				}
+				
+				Log.info(String.format("ReportEthaneCapture ArrayList Values : %s", LogHelper.strListToString(reportEthaneList)));
+				ArrayList<StoredProcComplianceGetEthaneCapture> storedProcEthaneList = StoredProcComplianceGetEthaneCapture
+						.getReportEthaneCapture(reportId);
+				Iterator<StoredProcComplianceGetEthaneCapture> lineIterator = storedProcEthaneList.iterator();
+				ArrayList<String> storedProcConvStringList = new ArrayList<String>();
+				while (lineIterator.hasNext()) {
+					StoredProcComplianceGetEthaneCapture objStoredProc = lineIterator.next();
+					String objAsString = objStoredProc.toString();
+					storedProcConvStringList.add(objAsString.trim());
+				}
 
+				Log.info(String.format("Checking in ReportEthaneCapture ArrayList, StoredProcConvStringList Values : %s", 
+						LogHelper.strListToString(storedProcConvStringList)));
+				if (!reportEthaneList.equals(storedProcConvStringList)) {
+					Log.info(String.format("EthaneCapture Analysis table verification failed, Expected: '%s', Actual: '%s'",storedProcConvStringList,reportEthaneList));
+					return false;
+				}
+			} finally {
+				bufferReader.close();
+			}
+		}
+		Log.info("Ethane Analysis table verification passed");
+		return true;
+
+	}
+	
 	/**
 	 * Method to verify the Isotopic Analysis Table in SSRS
 	 * 
@@ -2847,6 +2916,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				ArrayList<String> reportIsotopicList = new ArrayList<String>();
 				while ((line = bufferReader.readLine()) != null) {
 					if (!line.trim().startsWith("Isotopic Value/ Uncertainty")) {
+						line = line.replaceAll(" +", " ").trim();
 						reportIsotopicList.add(line);
 					}
 				}
@@ -3618,7 +3688,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String pdfFilePath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), pdfFilename).toString();
 		PDFTableUtility pdfTableUtility = new PDFTableUtility();
 		List<String[]> pdfTableList = pdfTableUtility.extractPDFTable(pdfFilePath, pdfTable);
-		Log.info(String.format("Extracted tables values from PDF : %s", LogHelper.listOfStrArrayToString(pdfTableList)),
+		Log.info(String.format("Extracted tables values from PDF : %s", LogHelper.listOfArrayToString(pdfTableList)),
 				LogCategory.SSRSPdfContent);
 		return pdfTableList;
 	}
