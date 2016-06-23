@@ -213,9 +213,10 @@ public class HomePage extends SurveyorBasePage {
 	}
 	
 	public boolean checkIfAtHomePage() {
-		if (driver.getTitle().equalsIgnoreCase(STRPageTitle))
+		if (driver.getTitle().equalsIgnoreCase(STRPageTitle)) {
+			Log.info("Current page is '"+STRPageTitle+"'");
 			return true;
-		Log.warn("Current page is not '"+STRPageTitle+"'");
+		}
 		return false;
 	}
 	

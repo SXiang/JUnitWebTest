@@ -95,9 +95,11 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_next']")
 	protected WebElement nextBtn;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable_previous']")
+	protected WebElement previousBtn;
+
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonOk']")
 	protected WebElement btnOk;
-
 
 	@FindBy(css = ".validation-summary-errors > .panel-heading")
 	protected WebElement summaryErrors;
@@ -590,9 +592,11 @@ public class SurveyorBasePage extends BasePage {
 	
 	public void waitForNumberOfRecords(String actualMessage) {
 		Log.method("waitForNumberOfRecords", actualMessage);
+		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_XPATH)));
+		WebElement tableInfoElement = driver.findElement(By.id(DATATABLE_RECORDS_ELEMENT_XPATH));
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return paginationMsg.getText().substring(0, 16).trim().equals(actualMessage);
+				return tableInfoElement.getText().substring(0, 16).trim().equals(actualMessage);
 			}
 		});
 	}
@@ -696,5 +700,9 @@ public class SurveyorBasePage extends BasePage {
 
 	public WebElement getNextBtn() {
 		return nextBtn;
+	}
+
+	public WebElement getPreviousBtn() {
+		return previousBtn;
 	}
 }

@@ -244,16 +244,18 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 		assertTrue(measurementSessionsPage.checkPaginationSetting(paginationSetting25));
 		assertTrue(!(measurementSessionsPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
 		measurementSessionsPage.getNextBtn().click();
+		measurementSessionsPage.waitForPageToLoad();
 		assertTrue(!(measurementSessionsPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
+		measurementSessionsPage.getPreviousBtn().click();
+		measurementSessionsPage.waitForPageToLoad();
 		assertTrue(measurementSessionsPage.checkPaginationSetting(paginationSetting50));
 		assertTrue(!(measurementSessionsPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
 		measurementSessionsPage.getNextBtn().click();
+		measurementSessionsPage.waitForPageToLoad();
 		assertTrue(!(measurementSessionsPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
+		measurementSessionsPage.getPreviousBtn().click();
+		measurementSessionsPage.waitForPageToLoad();
 		assertTrue(measurementSessionsPage.checkPaginationSetting(paginationSetting100));
 		assertTrue(!(measurementSessionsPage.getNumberofRecords() > Integer.parseInt(paginationSetting100)));
-
 	}
-
-
-
 }

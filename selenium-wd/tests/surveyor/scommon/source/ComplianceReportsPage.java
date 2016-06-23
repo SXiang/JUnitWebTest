@@ -2104,7 +2104,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 
 		Log.info(String.format("Matching expected report strings-[%s], with actual PDF text.", 
-				LogHelper.strArrayToString(expectedReportString.toArray(new String[expectedReportString.size()])) ));
+				LogHelper.arrayToString(expectedReportString.toArray(new String[expectedReportString.size()])) ));
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
@@ -3605,7 +3605,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String pdfFilePath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), pdfFilename).toString();
 		PDFTableUtility pdfTableUtility = new PDFTableUtility();
 		List<String[]> pdfTableList = pdfTableUtility.extractPDFTable(pdfFilePath, pdfTable);
-		Log.info(String.format("Extracted tables values from PDF : %s", LogHelper.listOfStrArrayToString(pdfTableList)),
+		Log.info(String.format("Extracted tables values from PDF : %s", LogHelper.listOfArrayToString(pdfTableList)),
 				LogCategory.SSRSPdfContent);
 		return pdfTableList;
 	}

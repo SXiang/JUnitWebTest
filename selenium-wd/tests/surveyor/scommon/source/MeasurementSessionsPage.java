@@ -29,6 +29,7 @@ import common.source.DatUtility;
 import common.source.DirectoryWatcher;
 import common.source.FileUtility;
 import common.source.Log;
+import common.source.LogHelper;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.Analyzer;
@@ -37,8 +38,6 @@ import surveyor.dataaccess.source.Measurement;
 import surveyor.dataaccess.source.Peak;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
-
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
@@ -146,6 +145,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	}
 
 	public boolean checkVisibilityForDrivingSurveys(String loginUser, UserRoleType userRole, List<String> strListTagCus, List<String> strListTagPic) throws Exception {
+		Log.method("checkVisibilityForDrivingSurveys", loginUser, userRole, LogHelper.strListToString(strListTagCus), LogHelper.strListToString(strListTagPic));
 		List<String> strListTag = getTagNameList();
 
 		if (userRole == UserRoleType.Admin) {
@@ -164,6 +164,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	}
 
 	public boolean actionOnDrivingSurvey(String surveyTag, String user, String surveyor, String analyzer, DrivingSurveyButtonType buttonType) throws Exception {
+		Log.method("actionOnDrivingSurvey", surveyTag, user, surveyor, analyzer, buttonType);
 		HashMap<String, String> userIndexMap = new HashMap<String, String>();
 		boolean result = false;
 		if (surveyTag != null) {
@@ -193,8 +194,8 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		try {
 			WebElement row = dataTable.getMatchingRow(userIndexMap);
 			WebElement btn = row.findElement(By.xpath(getButtonXpath(buttonType)));
-			Log.clickElementInfo(buttonType.toString());
 			if (buttonType == DrivingSurveyButtonType.DeleteSurvey) {
+				Log.clickElementInfo(buttonType.toString());
 				btn.click();
 				this.waitForConfirmDeletePopupToShow();
 				this.clickOnConfirmInDeleteReportPopup();
@@ -217,12 +218,15 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 				FileUtility.deleteFilesInDirectory(directoryToWatch, filePrefix, fileExtension);
 				DirectoryWatcher directoryWatcher = new DirectoryWatcher();
 				directoryWatcher.registerWatcher(directoryToWatch);
+				Log.clickElementInfo(buttonType.toString());
 				btn.click();
 				Path downloadedFile = directoryWatcher.watchForNewlyCreatedFile(directoryToWatch, filePrefix, fileExtension, timeoutInSeconds);
 				if (downloadedFile == null) {
+					Log.info("Download failed. File NOT downloaded correctly.");
 					return false;
 				}
 			} else {
+				Log.clickElementInfo(buttonType.toString());
 				btn.click();
 			}
 			result = true;
@@ -234,6 +238,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	}
 
 	private String getButtonXpath(DrivingSurveyButtonType buttonType) throws Exception {
+		Log.method("getButtonXpath", buttonType);
 		String buttonXPath;
 		switch (buttonType) {
 		case ViewSurvey:
@@ -261,10 +266,12 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	}
 
 	public List<String> getTagNameList() {
+		Log.method("getTagNameList");
 		return getTagNameList(null);
 	}
 
 	public List<String> getTagNameList(String driver) {
+		Log.method("getTagNameList", driver);
 		List<String> strListTag = new ArrayList<String>();
 		if (driver != null) {
 			this.searchTextBox.sendKeys(driver);
@@ -313,6 +320,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	}
 
 	public String getStartDT(String tag, String user, String surveyor, String analyzer, boolean allPages) {
+		Log.method("getStartDT", tag, user, surveyor, analyzer, allPages);
 		this.setPagination(PAGINATIONSETTING_100);
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -383,6 +391,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 	public boolean validateDatFiles(String type, String tag, String analyzer, String downloadPath, String mode, 
 			String startEpoch, String endEpoch, boolean delete) {
+		Log.method("validateDatFiles", type, tag, analyzer, downloadPath, mode, startEpoch, endEpoch, delete);
 		String zipFileNameBase = type;
 		String zipFileName = null;
 		String datFileName = null;
@@ -430,13 +439,13 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	}
 
 	public boolean verifyPeakExportFile(String datFileName, String tag, String analyzer, String mode) {
-
+		Log.method("verifyPeakExportFile", datFileName, tag, analyzer, mode);
 		boolean verifyPeak = false;
 		DatUtility dUtil = new DatUtility();
 		try {
 			dUtil.convertDATtoCSV(datFileName);
 			List<HashMap<String, String>> rows = dUtil.getAllRows();
-			Map<String, String> map = new HashMap<String, String>();
+			HashMap<String, String> map = new HashMap<String, String>();
 
 			List<Peak> listOfDBPeak = Peak.getPeaks(tag, analyzer, mode);
 
@@ -448,6 +457,8 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 						verifyPeak = checkPeakInDB(listOfDBPeak, map);
 						if (!verifyPeak) {
 							Log.info("One of the row does not exist in database table.");
+							Log.info(String.format("Row=[%d]: NOT Matching listOfDBPeak=[%s] in Map=[%s]", 
+									i, LogHelper.listToString(listOfDBPeak), LogHelper.mapToString(map)));
 							return false;
 						}
 					}
@@ -476,13 +487,13 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	}
 
 	public boolean verifySurveyExportFile(String datFileName, String analyzer, String startEpoch, String endEpoch) {
-
+		Log.method("verifySurveyExportFile", datFileName, analyzer, startEpoch, endEpoch);
 		boolean verifySurvey = false;
 		DatUtility dUtil = new DatUtility();
 		try {
 			dUtil.convertDATtoCSV(datFileName);
 			List<HashMap<String, String>> rows = dUtil.getAllRows();
-			Map<String, String> map = new HashMap<String, String>();
+			HashMap<String, String> map = new HashMap<String, String>();
 
 			Analyzer analyzerObj = Analyzer.getAnalyzerBySerialNumber(analyzer);
 			List<Measurement> listOfDBMeasurement = Measurement.getMeasurements(analyzerObj.getId().toString(), startEpoch, endEpoch);
@@ -495,6 +506,8 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 						verifySurvey = checkMeasurementInDB(listOfDBMeasurement, map);
 						if (!verifySurvey) {
 							Log.info("[verifySurveyExportFile MATCH=FALSE] One of the row does not exist in database table.");
+							Log.info(String.format("Row=[%d]: NOT Matching listOfDBMeasurement=[%s] in Map=[%s]", 
+									i, LogHelper.listToString(listOfDBMeasurement), LogHelper.mapToString(map)));
 							return false;
 						}
 					}
@@ -524,13 +537,13 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	}
 
 	public boolean verifyAnalysisExportFile(String datFileName, String tag, String analyzer) {
-
+		Log.method("verifyAnalysisExportFile", datFileName, tag, analyzer);
 		boolean verifyAnalysis = false;
 		DatUtility dUtil = new DatUtility();
 		try {
 			dUtil.convertDATtoCSV(datFileName);
 			List<HashMap<String, String>> rows = dUtil.getAllRows();
-			Map<String, String> map = new HashMap<String, String>();
+			HashMap<String, String> map = new HashMap<String, String>();
 
 			List<CaptureEvent> listOfDBCaptureEvent = CaptureEvent.getCaptureEvent(tag, analyzer);
 
@@ -542,6 +555,8 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 						verifyAnalysis = checkAnalysisInDB(listOfDBCaptureEvent, map);
 						if (!verifyAnalysis) {
 							Log.info("One of the row does not exist in database table.");
+							Log.info(String.format("Row=[%d]: NOT Matching listOfDBCaptureEvent=[%s] in Map=[%s]", 
+									i, LogHelper.listToString(listOfDBCaptureEvent), LogHelper.mapToString(map)));
 							return false;
 						}
 					}
@@ -570,6 +585,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	}
 	
 	public String getExportFileNamePrefix(String surveyTag, String analyzerSerialNum, ExportFileType exportFileType) {
+		Log.method("getExportFileNamePrefix", surveyTag, analyzerSerialNum, exportFileType);
 		StringBuilder fileNameBuilder = new StringBuilder();
 		fileNameBuilder.append(exportFileType.name());
 		fileNameBuilder.append("_");
@@ -601,31 +617,6 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		cancelDelete.click();
 	}
 
-	private String getReportTableCellText(String elementXPath) {
-		WebElement cellElement = getReportTableCell(elementXPath);
-		return cellElement.getText();
-	}
-
-	private WebElement getReportTableCell(String elementXPath) {
-		boolean retry = false;
-		WebElement tableCell = null;
-		try {
-			tableCell = getTableCell(elementXPath);
-		} catch (Exception e) {
-			retry = true;
-		}
-		if (retry) {
-			this.waitForPageLoad();
-			refreshPageUntilElementFound(elementXPath);
-		}
-
-		return getTableCell(elementXPath);
-	}
-
-	private WebElement getTableCell(String elementXPath) {
-		return getTable().findElement(By.xpath(elementXPath));
-	}
-
 	public void clickOnConfirmInDeleteReportPopup() {
 		WebElement confirmDelete = this.driver.findElement(By.xpath(DELETE_POPUP_CONFIRM_BUTTON_XPATH));
 		Log.clickElementInfo("Confirm Deletion",ElementType.LINK);
@@ -634,6 +625,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 	@Override
 	public void waitForPageLoad() {
+		Log.method("waitForPageLoad");
 		waitForAJAXCallsToComplete();
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -643,6 +635,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	}
 
 	public void waitForConfirmDeletePopupToShow() {
+		Log.method("waitForConfirmDeletePopupToShow");
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				(new WebDriverWait(driver, timeout + 15)).until(ExpectedConditions.presenceOfElementLocated(By.id("myModal")));
@@ -653,6 +646,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	}
 
 	public void waitForConfirmDeletePopupToClose() {
+		Log.method("waitForConfirmDeletePopupToClose");
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				(new WebDriverWait(driver, timeout + 15)).until(ExpectedConditions.presenceOfElementLocated(By.id("myModal")));
@@ -663,6 +657,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	}
 
 	public void waitForFirstSurveyInTableToBeCompleted() {
+		Log.method("waitForFirstSurveyInTableToBeCompleted");
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				BrowserCommands.refresh();
