@@ -26,7 +26,7 @@ public class PDFTableUtility extends PDFUtility{
 		COVERAGEFORECAST(".*Percent Service Coverage with LISAs.*",0,"",false,1),
 		COVERAGEFORECASTTO70(".*Probability to Obtain 70% Coverage",0,"",true,4),
 		DRIVINGSURVEYTABLE("Indication Table",0,"LISA",true,-1),
-		ISOTOPICANALYSISTABLE("Surveyor"+wordSeparator+"Date/Time"+wordSeparator+"Result"+wordSeparator+"Isotopic Value/ Uncertainty("+wordSeparator+"Field Notes",1," Layers",true,-1), 
+		ISOTOPICANALYSISTABLE("Surveyor"+wordSeparator+"Date/Time"+wordSeparator+"Result"+wordSeparator+"Isotopic Value/ Uncertainty(Å"+wordSeparator+"Field Notes",1," Layers",true,-1), 
 		VIEWSTABLE (".*\\| (Map|Satellite|None)\\s?",0,"View Table",false);
 		
 		private final String tableID;	          //1. tableID, indicator of start of a table, required
