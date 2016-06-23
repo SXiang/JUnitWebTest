@@ -13,19 +13,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.Log;
-import surveyor.dataaccess.source.ResourceKeys;
-import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.ManageAnalyzersPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.DataTablePage.TableColumnType;
-
 import static surveyor.scommon.source.SurveyorConstants.*;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -38,8 +33,6 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	private static ManageLocationsPage manageLocationsPage;
 	private static ManageSurveyorPage manageSurveyorPage;
 	private static ManageAnalyzersPage manageAnalyzersPage;
-	public static final String ManageAnalyzer_AlreadyAssociatedError = Resources.getResource(ResourceKeys.ManageAnalyzer_AlreadyAssociatedError);
-	
 	
 	@BeforeClass
 	public static void setupManageAnalyzersPageTest() {
@@ -333,7 +326,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationNameNew, surveyorNameNew, analyzerNameNew, 
 					customerName + " - " + locationName + " - " + surveyorName, false );
 		
-		assertTrue(manageAnalyzersPage.getWarningMsg().getText().trim().equals(ManageAnalyzer_AlreadyAssociatedError));
+		assertTrue(manageAnalyzersPage.getWarningMsg().getText().trim().equals(ANALYZER_ALREADY_ASSOCIATED_ERROR));
 	}
 	
 	/**
