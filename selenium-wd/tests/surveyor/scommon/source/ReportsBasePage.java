@@ -86,7 +86,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(css = "#page-wrapper  fieldset  div.radio > .report-survey-mode-text > #Manual")
 	protected WebElement inputReportModeManual;
-	
+
 	@FindBy(how = How.ID, using = "report-survey-mode-minimum-amplitude")
 	protected WebElement inputMinAmp;
 
@@ -690,7 +690,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				inputReportTitle(reports.getRptTitle());
 			}
 		}
-		
+
 		// 2. Other parameters
 		fillReportSpecific(reports);
 
