@@ -1485,8 +1485,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 
 		complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
-		complianceReportsPage.waitForResubmitButton(); //failing on this step.  steven fixed it.
-		complianceReportsPage.getBtnResubmitReport().click();
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
@@ -1731,7 +1729,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		ReportsCompliance rpt2 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList1, "", "", viewList1, SurveyModeFilter.Standard);
 		rpt2.setViewLayersList(viewLayerList);
 		rpt2.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
-		complianceReportsPage.addNewReport(rpt2); //SQAAUTO is not able to find the smallest boundary
+		complianceReportsPage.addNewReport(rpt2);
 		Log.info("!!!!!" + complianceReportsPage.getAssetErrorText().getText()+ "!!!!!");
 		assertTrue(complianceReportsPage.getAssetErrorText().getText().equals("Selected Percent Coverage Forecast, Please select at least two surveys with different tags"));
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
@@ -1826,7 +1824,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
 		rpt.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
-		complianceReportsPage.addNewReport(rpt);//SQAAUTO is not working for customer boundary 
+		complianceReportsPage.addNewReport(rpt); 
 		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
