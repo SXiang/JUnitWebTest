@@ -80,6 +80,7 @@ public class DirectoryWatcher {
 		            }
 	
 			        // Found matching file. Return file.
+		            Log.info(String.format("Found file - '%s'", filename)); 
 		            return filename;
 			    }
 	
