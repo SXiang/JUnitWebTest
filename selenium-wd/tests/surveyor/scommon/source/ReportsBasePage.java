@@ -1549,14 +1549,17 @@ public class ReportsBasePage extends SurveyorBasePage {
 							int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
 							rowNum = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
 									maxRows);
-							if (rowNum == maxRows) {
+							if (rowNum > maxRows) {
 								break;
 							}
-
 							this.btnReportViewer = getTable().findElement(
 									By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
+							//* Double check the correctness of the rowNum
+							if(rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
+									maxRows)){
+								continue;
+							}
 						}
-
 						return true;
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
