@@ -149,7 +149,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		String password = CryptoUtility.decrypt(pwd);
 		String customerName = SQACUS;
 		String eula = customerName + ": " + EULASTRING;
-		String locationName = customerName + "Loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "Loc";
 		String cityName="Santa Clara";	
 		
 		Log.info("\nRunning TC60_TC489_AddLocation_PicAdmin_PicSupport - Test Description: Adding Location");

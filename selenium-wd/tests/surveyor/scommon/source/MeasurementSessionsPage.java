@@ -281,7 +281,9 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			}
 		}
 		setPagination(PAGINATIONSETTING_100);
-		this.waitForPageLoad();
+
+		this.waitForTableDataToLoad();
+		
 		WebElement col1;
 		List<WebElement> rows = this.getTable().findElements(By.xpath(this.strTRXPath));
 
