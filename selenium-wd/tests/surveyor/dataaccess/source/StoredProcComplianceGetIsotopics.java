@@ -82,8 +82,12 @@ public class StoredProcComplianceGetIsotopics extends BaseEntity {
 			Log.error(String.format("SurveyorUnitName is not match, Expect '%s', Actual '%s'", obj.getSurveyorUnitName().trim(), this.getSurveyorUnitName().trim()));
 			return false;
 		}
-		if (!this.getDisposition().trim().equals(obj.getDisposition().trim())) {
-			Log.error(String.format("Disposition is not match, Expect '%s', Actual '%s'", obj.getDisposition().trim(), this.getDisposition().trim()));
+		
+		String dispositionType = CaptureAnalysisDispositionTypesPrefix+(" "+obj.getDisposition().trim()).replaceAll(" ", "_");
+		String dispositionValue = Resources.getResource(dispositionType);
+		if (!(this.getDisposition().trim().equals(obj.getDisposition().trim())
+				|| dispositionValue.trim().equals(this.getDisposition().trim()))) {
+			Log.error(String.format("Disposition is not match, Expect '%s', Actual '%s'", obj.getDisposition().trim()+"/"+dispositionValue, this.getDisposition().trim()));
 			return false;
 		}
 		if (this.getDelta() != (obj.getDelta())) {
@@ -125,8 +129,7 @@ public class StoredProcComplianceGetIsotopics extends BaseEntity {
 		try {
 			objReport.setDateTime(resultSet.getString("Date_Time"));
 			objReport.setSurveyorUnitName(resultSet.getString("SurveyorUnitName"));
-			String dispositionType = CaptureAnalysisDispositionTypesPrefix+(" "+resultSet.getString("Disposition")).replaceAll(" ", "_");
-			objReport.setDisposition(Resources.getResource(dispositionType));
+			objReport.setDisposition(resultSet.getString("Disposition"));
 			objReport.setDelta(resultSet.getFloat("Delta"));
 			objReport.setUncertainty(resultSet.getFloat("Uncertainty"));
 			objReport.setText(resultSet.getString("Text"));

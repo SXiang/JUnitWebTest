@@ -99,12 +99,15 @@ public class StoredProcComplianceGetEthaneCapture extends BaseEntity {
 					this.getSurveyorUnitName().trim(),obj.getSurveyorUnitName().trim()));
 			return false; 
 		}
-
-		if (!this.getDisposition().trim().equals(obj.getDisposition().trim())) {
-			Log.error(String.format("Disposition not equal - Expect '%s', Actual '%s'",
-					this.getDisposition().trim(),obj.getDisposition().trim()));
+		
+		String dispositionType = CaptureAnalysisDispositionTypesPrefix+(" "+obj.getDisposition().trim()).replaceAll(" ", "_");
+		String dispositionValue = Resources.getResource(dispositionType);
+		if (!(this.getDisposition().trim().equals(obj.getDisposition().trim())
+				|| dispositionValue.trim().equals(this.getDisposition().trim()))) {
+			Log.error(String.format("Disposition is not match, Expect '%s', Actual '%s'", obj.getDisposition().trim()+"/"+dispositionValue, this.getDisposition().trim()));
 			return false;
 		}
+
 		if (this.getEthaneRatio() != (obj.getEthaneRatio())) {
 			Log.error(String.format("EthaneRatio not equal - Expect '%s', Actual '%s'",
 					this.getEthaneRatio(),obj.getEthaneRatio()));
@@ -138,8 +141,7 @@ public class StoredProcComplianceGetEthaneCapture extends BaseEntity {
 		try {
 			objEthaneCapture.setDateTime(resultSet.getString("Date_Time"));
 			objEthaneCapture.setSurveyorUnitName(resultSet.getString("SurveyorUnitName"));
-			String dispositionType = CaptureAnalysisDispositionTypesPrefix+(" "+resultSet.getString("Disposition")).replaceAll(" ", "_");
-			objEthaneCapture.setDisposition(Resources.getResource(dispositionType));
+			objEthaneCapture.setDisposition(resultSet.getString("Disposition"));
 			objEthaneCapture.setEthaneRatioSdev(resultSet.getFloat("EthaneRatioSdev"));
 			objEthaneCapture.setEthaneRatio(resultSet.getFloat("EthaneRatio"));
 			objEthaneCapture.setText(resultSet.getString("Text"));
