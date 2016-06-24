@@ -260,6 +260,7 @@ public class ResourceKeys {
 	public static final String Constant_FilteredFromMaxTotalEntries = "Constant_FilteredFromMaxTotalEntries";
 	
 	// Capture Analysis Disposition types.
+	public static final String CaptureAnalysisDispositionTypesPrefix = "CaptureAnalysisDispositionTypes";
 	public static final String CaptureAnalysisDispositionTypes_Delta_Out_Of_Range = "CaptureAnalysisDispositionTypes_Delta_Out_Of_Range";
 	public static final String CaptureAnalysisDispositionTypes_Ethane_Ratio_Out_Of_Range = "CaptureAnalysisDispositionTypes_Ethane_Ratio_Out_Of_Range";
 	public static final String CaptureAnalysisDispositionTypes_Ethane_Ratio_SDev_Out_Of_Range = "CaptureAnalysisDispositionTypes_Ethane_Ratio_SDev_Out_Of_Range";
