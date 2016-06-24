@@ -47,6 +47,21 @@ public class Measurement extends BaseEntity {
 		super();
 	}
 
+	@Override
+	public String toString() {
+		return ("AnalyzerId=" + this.getAnalyzerId().toString().concat("|")
+				.concat("CH4=" + this.getCH4().toString()).concat("|")
+				.concat("DeltaCH4=" + this.getDeltaCH4().toString()).concat("|")
+				.concat("WindSpeedEast=" + this.getWindSpeedEast().toString()).concat("|")
+				.concat("WindSpeedLateral=" + this.getWindSpeedLateral().toString()).concat("|")
+				.concat("WindSpeedLongitudinal=" + this.getWindSpeedLongitudinal().toString()).concat("|")
+				.concat("WindSpeedNorth=" + this.getWindSpeedNorth().toString()).concat("|")
+				.concat("GpsFit=" + this.getGpsFit().toString()).concat("|")
+				.concat("GpsLatitude=" + this.getGpsLatitude().toString()).concat("|")
+				.concat("getGpsLongitude=" + this.getGpsLongitude().toString()).concat("|")
+				.concat("getEpochTime=" + this.getEpochTime().toString()));
+	}
+
 	public Float getWindSpeedLongitudinal() {
 		return windSpeedLongitudinal;
 	}
@@ -413,6 +428,10 @@ public class Measurement extends BaseEntity {
 		boolean gpsLongCompare = floatCompare(this.getGpsLongitude(), gps_abs_long)==0;
 		boolean gpsFitCompare = floatCompare((float)this.getGpsFit(), gps_fit)==0;
 
+		if(epochTimeCompare && ch4Compare && windSpeedLongCompare && windSpeedLatCompare && gpsLongCompare && gpsFitCompare){
+			return true;
+		}
+
 		if (DEBUG_LOG) {
 			Log.info(String.format("Values from DB -> EpochTime=[%f],CH4=[%f],WindSpeedLongitudinal=[%f],WindSpeedLateral=[%f],GpsLongitude=[%f],GpsFit=[%f]", 
 					this.getEpochTime(), this.getCH4(), this.getWindSpeedLongitudinal(), this.getWindSpeedLateral(), this.getGpsLongitude(), (float)this.getGpsFit()));
@@ -422,9 +441,6 @@ public class Measurement extends BaseEntity {
 					epochTimeCompare, ch4Compare, windSpeedLongCompare, windSpeedLatCompare, gpsLongCompare, gpsFitCompare));
 		}
 		
-		if(epochTimeCompare && ch4Compare && windSpeedLongCompare && windSpeedLatCompare && gpsLongCompare && gpsFitCompare){
-			return true;
-		}
 		return false;
 	}
 }

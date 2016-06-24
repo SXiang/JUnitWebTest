@@ -346,6 +346,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(id = "report-ethene-biogenic-methane")
 	protected WebElement checkBoxEtheneBiogeniceMethane;
 
+	@FindBy(id = "report-ethene-possible-natural-gas")
+	protected WebElement checkBoxPossibleNaturalGas;
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[1]")
 	protected WebElement fstRptTilNm;
 
@@ -1754,21 +1757,42 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void selectEthaneFilter(EthaneFilter ethaneFilter) {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
+		selectEthaneFilter(ethaneFilter, true);
+	}
+	
+	public void unselectEthaneFilter(EthaneFilter ethaneFilter) {
+		selectEthaneFilter(ethaneFilter, false);
+	}
+	
+	private void selectEthaneFilter(EthaneFilter ethaneFilter, boolean select){
+		List<WebElement> elements = new ArrayList<WebElement>();
 		switch (ethaneFilter) {
 		case ExcludeVehicleExhaust:
-			SelectCheckbox(checkBoxVehicleExhaust);
+			elements.add(checkBoxVehicleExhaust);
 			break;
 		case ExcludeBiogenicMethane:
-			SelectCheckbox(checkBoxEtheneBiogeniceMethane);
+			elements.add(checkBoxEtheneBiogeniceMethane);
 			break;
-		case Both:
-			SelectCheckbox(checkBoxVehicleExhaust);
-			SelectCheckbox(checkBoxEtheneBiogeniceMethane);
+		case ExcludePossibleNaturalGas:
+			elements.add(checkBoxPossibleNaturalGas);
+			break;
+		case All:
+			elements.add(checkBoxVehicleExhaust);
+			elements.add(checkBoxEtheneBiogeniceMethane);
+			elements.add(checkBoxPossibleNaturalGas);
+		case None:
+			select = false;
 			break;
 		default:
 			break;
 		}
+		for(WebElement element:elements){
+			if(select)
+				SelectCheckbox(element);
+			else
+				UnselectCheckbox(element);
+		}
+		
 	}
 
 	public void selectViewLayerAssets(Map<String, String> viewLayerMap) {
@@ -2117,7 +2141,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 
 		Log.info(String.format("Matching expected report strings-[%s], with actual PDF text.", 
-				LogHelper.strArrayToString(expectedReportString.toArray(new String[expectedReportString.size()])) ));
+				LogHelper.arrayToString(expectedReportString.toArray(new String[expectedReportString.size()])) ));
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
@@ -2507,9 +2531,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
 		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /*includeExtension*/);
-		String pathToMetaDataUnZip = Paths.get(actualPath, metaDataZipFileName).toString();
-		String pathToCsv = Paths.get(pathToMetaDataUnZip, "CR-" + reportId.substring(0, 6) + "-ReportSurvey.csv").toString();
+		String pathToMetaDataUnZip = actualPath;
+		String unZipFolder = File.separator + metaDataZipFileName;
+		if(!actualPath.endsWith(unZipFolder))
+			pathToMetaDataUnZip += unZipFolder;
+		
+		String pathToCsv = pathToMetaDataUnZip + File.separator + "CR-" + reportId.substring(0, 6) + "-ReportSurvey.csv";
 		String reportName = "CR-" + reportId;
+
+		if (actualPath.endsWith("-ReportSurvey.csv")) {
+			pathToCsv = actualPath;
+		}
+
 		setReportName(reportName);
 		List<HashMap<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
 		Iterator<HashMap<String, String>> csvIterator = csvRows.iterator();
@@ -2807,7 +2840,76 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		return true;
 	}
+	/**
+	 * Method to verify the Ethane Analysis Table in SSRS
+	 * 
+	 * @param actualPath
+	 * @param reportTitle
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean verifyEthaneAnalysisTable(String actualPath, String reportTitle) throws IOException {
+		Log.info("Calling verifyEthaneAnalysisTable() ...");
+		PDFUtility pdfUtility = new PDFUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = Paths.get(actualPath, "CR-" + reportId.substring(0, 6) + ".pdf").toString();
+		String reportName = "CR-" + reportId;
+		setReportName(reportName);
+		String actualReportString = pdfUtility.extractPDFText(actualReport);
+		List<String> expectedReportString = new ArrayList<String>();
+		expectedReportString.add(ComplianceReportSSRS_EthaneAnalysisTable);
+		Log.info(String.format("PDF Text Content : %s", actualReportString));
+		Log.info(String.format("Expected Strings in PDF Text Content : %s", LogHelper.strListToString(expectedReportString)));
+		
+		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		for (Boolean value : actualFirstPage.values()) {
+			if (!value) {
+				Log.info("Ethane Analysis table verification failed");
+				return false;
+			}
+		}
+		String isoTable = RegexUtility.getStringInBetween(actualReportString, "Surveyor Date/Time Result",ComplianceReportSSRS_EthaneAnalysisTable);
+		Log.info(String.format("Extracted Ethane Analysis Table : %s", isoTable));
+		if (isoTable != null) {
+			InputStream inputStream = new ByteArrayInputStream(isoTable.getBytes());
+			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
+			String line = null;
+			try {
+				ArrayList<String> reportEthaneList = new ArrayList<String>();
+				while ((line = bufferReader.readLine()) != null) {
+					if (!line.trim().startsWith("Ethane/Methane Ratio and Uncertainty")) {
+						line = line.replaceAll(" +", " ").trim();
+						reportEthaneList.add(line);
+					}
+				}
+				
+				Log.info(String.format("ReportEthaneCapture ArrayList Values : %s", LogHelper.strListToString(reportEthaneList)));
+				ArrayList<StoredProcComplianceGetEthaneCapture> storedProcEthaneList = StoredProcComplianceGetEthaneCapture
+						.getReportEthaneCapture(reportId);
+				Iterator<StoredProcComplianceGetEthaneCapture> lineIterator = storedProcEthaneList.iterator();
+				ArrayList<String> storedProcConvStringList = new ArrayList<String>();
+				while (lineIterator.hasNext()) {
+					StoredProcComplianceGetEthaneCapture objStoredProc = lineIterator.next();
+					String objAsString = objStoredProc.toString();
+					storedProcConvStringList.add(objAsString.trim());
+				}
 
+				Log.info(String.format("Checking in ReportEthaneCapture ArrayList, StoredProcConvStringList Values : %s", 
+						LogHelper.strListToString(storedProcConvStringList)));
+				if (!reportEthaneList.equals(storedProcConvStringList)) {
+					Log.info(String.format("EthaneCapture Analysis table verification failed, Expected: '%s', Actual: '%s'",storedProcConvStringList,reportEthaneList));
+					return false;
+				}
+			} finally {
+				bufferReader.close();
+			}
+		}
+		Log.info("Ethane Analysis table verification passed");
+		return true;
+
+	}
+	
 	/**
 	 * Method to verify the Isotopic Analysis Table in SSRS
 	 * 
@@ -2847,6 +2949,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				ArrayList<String> reportIsotopicList = new ArrayList<String>();
 				while ((line = bufferReader.readLine()) != null) {
 					if (!line.trim().startsWith("Isotopic Value/ Uncertainty")) {
+						line = line.replaceAll(" +", " ").trim();
 						reportIsotopicList.add(line);
 					}
 				}
@@ -3618,7 +3721,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String pdfFilePath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), pdfFilename).toString();
 		PDFTableUtility pdfTableUtility = new PDFTableUtility();
 		List<String[]> pdfTableList = pdfTableUtility.extractPDFTable(pdfFilePath, pdfTable);
-		Log.info(String.format("Extracted tables values from PDF : %s", LogHelper.listOfStrArrayToString(pdfTableList)),
+		Log.info(String.format("Extracted tables values from PDF : %s", LogHelper.listOfArrayToString(pdfTableList)),
 				LogCategory.SSRSPdfContent);
 		return pdfTableList;
 	}
@@ -3628,6 +3731,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		ReportsCompliance reportsCompliance = (ReportsCompliance) reports;
 
 		// 1. Report general
+		/* Temp solution to enable lisa table on 3200 - Unselect Exclude Possible Natural Gas by default*/
+		unselectEthaneFilter(EthaneFilter.ExcludePossibleNaturalGas);
 		if (reportsCompliance.getEthaneFilter() != null) {
 			selectEthaneFilter(reportsCompliance.getEthaneFilter());
 		}
