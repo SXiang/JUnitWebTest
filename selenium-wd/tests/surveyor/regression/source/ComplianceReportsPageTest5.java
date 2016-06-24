@@ -126,7 +126,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 *	- - Report should be generated and user can download the report successfully
 	 *	- - Show notification that survey is used in generated report or Delete Survey button itself is unavailable
 	 */
-	@Test
+	@Ignore  //DE2073
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC210, location = ComplianceReportDataProvider.class)
 	public void TC210_GenerateReportTryDeleteSurveyUsedWhileGeneratingReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -135,7 +135,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 
-		TestEnvironmentActions.generateSurveyForUser(6, 9, 4, 60);
+		TestEnvironmentActions.generateSurveyForUser(6, 9, 51, 60);
 		
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
