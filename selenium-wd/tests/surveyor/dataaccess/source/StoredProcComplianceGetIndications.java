@@ -127,7 +127,7 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 			return false;
 		}
 		if (!this.getSurveyorUnitName().trim().equalsIgnoreCase(obj.getSurveyorUnitName().trim())) {
-			Log.error(String.format("PeakNumber is not match, Expect '%s', Actual '%s'", obj.getPeakNumber().trim(), getPeakNumber().trim()));
+			Log.error(String.format("SurveyorUnitName is not match, Expect '%s', Actual '%s'", obj.getPeakNumber().trim(), getPeakNumber().trim()));
 			return false;
 		}
 		if (this.getAmplitude() != (obj.getAmplitude())) {
@@ -139,7 +139,7 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 			return false;
 		}
 		if (!this.getText().trim().equals(obj.getText().trim())) {
-			Log.error(String.format("FieldNots is not match, Expect '%s', Actual '%s'", obj.getText().trim(), getText().trim()));
+			Log.error(String.format("FieldNotes is not match, Expect '%s', Actual '%s'", obj.getText().trim(), getText().trim()));
 			return false;
 		}
 		if(!this.getAggregatedClassificationConfidence().equals(obj.getAggregatedClassificationConfidence())){
