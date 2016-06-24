@@ -501,22 +501,13 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			List<Measurement> listOfDBMeasurement = Measurement.getMeasurements(analyzerObj.getId().toString(), startEpoch, endEpoch);
 
 			if (rows.size() > 0 && listOfDBMeasurement.size() > 0) {
-				if (rows.size() == listOfDBMeasurement.size()) {
-
-					for (int i = 0; i < rows.size(); i++) {
-						map = rows.get(i);
-						verifySurvey = checkMeasurementInDB(listOfDBMeasurement, map);
-						if (!verifySurvey) {
-							Log.info("[verifySurveyExportFile MATCH=FALSE] One of the row does not exist in database table.");
-							Log.info(String.format("Row=[%d]: NOT Matching listOfDBMeasurement=[%s] in Map=[%s]", 
-									i, LogHelper.listToString(listOfDBMeasurement), LogHelper.mapToString(map)));
-							return false;
-						}
-					}
-				} else {
+				if (rows.size() != listOfDBMeasurement.size()) {
 					verifySurvey = false;
 					Log.info("[verifySurveyExportFile MATCH=FALSE] The number of rows in downloaded file and rows of database table does not match. "
 							+ String.format("Rows in .dat file = %d. Rows in database = %d", rows.size(), listOfDBMeasurement.size()));
+				} else {
+					verifySurvey = true;
+					Log.info("[verifySurveyExportFile MATCH=TRUE] Number of rows in downloaded file and rows of database table MATCH.");
 				}
 			} else if (rows.size() == 0 && listOfDBMeasurement.size() == 0) {
 				verifySurvey = true;
@@ -527,15 +518,6 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			Log.error(e.toString());
 		}
 		return verifySurvey;
-	}
-
-	private boolean checkMeasurementInDB(List<Measurement> listOFDBMeasurement, Map<String, String> map) {
-		for (Measurement ms : listOFDBMeasurement) {
-			if (ms.equalsTo(map)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public boolean verifyAnalysisExportFile(String datFileName, String tag, String analyzer) {
