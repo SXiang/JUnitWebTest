@@ -268,7 +268,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
-		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "0");
+		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
