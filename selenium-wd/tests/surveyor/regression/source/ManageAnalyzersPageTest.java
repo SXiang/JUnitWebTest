@@ -212,7 +212,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC122_DuplicateAnalyzer_PicAdmin() {
 		String customerName = "Picarro";
-		String locationName = customerName + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "loc";
 		String surveyorName = locationName + testSetup.getRandomNumber() + "sur";
 		String analyzerName = surveyorName + "ana";
 		String cityName="Santa Clara";

@@ -396,12 +396,18 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		assertTrue(manageSurveyorPage.checkPaginationSetting(paginationSetting25));
 		assertTrue(!(manageSurveyorPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
 		manageSurveyorPage.getNextBtn().click();
+		manageSurveyorPage.waitForPageToLoad();
 		assertTrue(!(manageSurveyorPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
+		manageSurveyorPage.getPreviousBtn().click();
+		manageSurveyorPage.waitForPageToLoad();
 		assertTrue(manageSurveyorPage.checkPaginationSetting(paginationSetting50));
 		assertTrue(!(manageSurveyorPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
 		manageSurveyorPage.getNextBtn().click();
+		manageSurveyorPage.waitForPageToLoad();
 		assertTrue(!(manageSurveyorPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
+		manageSurveyorPage.getPreviousBtn().click();
+		manageSurveyorPage.waitForPageToLoad();
 		assertTrue(manageSurveyorPage.checkPaginationSetting(paginationSetting100));
 		assertTrue(!(manageSurveyorPage.getNumberofRecords() > Integer.parseInt(paginationSetting100)));
-		}
+	}
 }
