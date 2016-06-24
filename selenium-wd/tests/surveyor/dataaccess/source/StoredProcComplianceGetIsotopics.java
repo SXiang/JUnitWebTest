@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
+import static surveyor.dataaccess.source.ResourceKeys.CaptureAnalysisDispositionTypesPrefix;
 
 import common.source.Log;
 
@@ -78,28 +79,27 @@ public class StoredProcComplianceGetIsotopics extends BaseEntity {
 
 	public boolean isEquals(StoredProcComplianceGetIsotopics obj) {
 		if (!this.getSurveyorUnitName().trim().equals(obj.getSurveyorUnitName().trim())) {
-			Log.error(String.format("Surveyor Name not equal - Expect '%s', Actual '%s'",
-					this.getSurveyorUnitName().trim(),obj.getSurveyorUnitName().trim()));
+			Log.error(String.format("SurveyorUnitName is not match, Expect '%s', Actual '%s'", obj.getSurveyorUnitName().trim(), this.getSurveyorUnitName().trim()));
 			return false;
 		}
-		if (!this.getDisposition().trim().equals(obj.getDisposition().trim())) {
-			Log.error(String.format("Disposition not equal - Expect '%s', Actual '%s'",
-					this.getDisposition().trim(),obj.getDisposition().trim()));
+		
+		String dispositionType = CaptureAnalysisDispositionTypesPrefix+(" "+obj.getDisposition().trim()).replaceAll(" ", "_");
+		String dispositionValue = Resources.getResource(dispositionType);
+		if (!(this.getDisposition().trim().equals(obj.getDisposition().trim())
+				|| dispositionValue.trim().equals(this.getDisposition().trim()))) {
+			Log.error(String.format("Disposition is not match, Expect '%s', Actual '%s'", obj.getDisposition().trim()+"/"+dispositionValue, this.getDisposition().trim()));
 			return false;
 		}
 		if (this.getDelta() != (obj.getDelta())) {
-			Log.error(String.format("Delta not equal - Expect '%s', Actual '%s'",
-					this.getDelta(),obj.getDelta()));
+			Log.error(String.format("Delta is not match, Expect '%s', Actual '%s'", obj.getDelta(), this.getDelta()));
 			return false;
 		}
 		if (this.getUncertainty() != (obj.getUncertainty())) {
-			Log.error(String.format("Uncertainty not equal - Expect '%s', Actual '%s'",
-					this.getUncertainty(),obj.getUncertainty()));
+			Log.error(String.format("Uncertainty is not match, Expect '%s', Actual '%s'", obj.getUncertainty(), this.getUncertainty()));
 			return false;
 		}
 		if (!this.getText().trim().equals(obj.getText().trim())) {
-			Log.error(String.format("Field Notes not equal - Expect '%s', Actual '%s'",
-					this.getText().trim(),obj.getText().trim()));
+			Log.error(String.format("FieldNotes is not match, Expect '%s', Actual '%s'", obj.getText().trim(), this.getText().trim()));
 			return false;
 		}
 		return true;

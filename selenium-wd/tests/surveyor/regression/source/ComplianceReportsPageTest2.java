@@ -134,7 +134,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + "customerUser01" + REGBASEUSERNAME;
 		String cityName = "Santa Clara";
-		String locationName = customerName + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "loc";
 		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
 
 		loginPageAction.open(EMPTY, NOTSET);

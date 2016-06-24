@@ -3,6 +3,9 @@ package surveyor.dataaccess.source;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import static surveyor.dataaccess.source.ResourceKeys.CaptureAnalysisDispositionTypesPrefix;
+
 import java.sql.CallableStatement;
 
 import common.source.Log;
@@ -96,12 +99,15 @@ public class StoredProcComplianceGetEthaneCapture extends BaseEntity {
 					this.getSurveyorUnitName().trim(),obj.getSurveyorUnitName().trim()));
 			return false; 
 		}
-
-		if (!this.getDisposition().trim().equals(obj.getDisposition().trim())) {
-			Log.error(String.format("Disposition not equal - Expect '%s', Actual '%s'",
-					this.getDisposition().trim(),obj.getDisposition().trim()));
+		
+		String dispositionType = CaptureAnalysisDispositionTypesPrefix+(" "+obj.getDisposition().trim()).replaceAll(" ", "_");
+		String dispositionValue = Resources.getResource(dispositionType);
+		if (!(this.getDisposition().trim().equals(obj.getDisposition().trim())
+				|| dispositionValue.trim().equals(this.getDisposition().trim()))) {
+			Log.error(String.format("Disposition is not match, Expect '%s', Actual '%s'", obj.getDisposition().trim()+"/"+dispositionValue, this.getDisposition().trim()));
 			return false;
 		}
+
 		if (this.getEthaneRatio() != (obj.getEthaneRatio())) {
 			Log.error(String.format("EthaneRatio not equal - Expect '%s', Actual '%s'",
 					this.getEthaneRatio(),obj.getEthaneRatio()));
@@ -122,7 +128,6 @@ public class StoredProcComplianceGetEthaneCapture extends BaseEntity {
 
 	public boolean isInList(ArrayList<StoredProcComplianceGetEthaneCapture> list) {
 		for (StoredProcComplianceGetEthaneCapture storedProcEthaneCapture : list) {
-			Log.debug(this.toString()+"  ---   "+storedProcEthaneCapture);	
 			if (this.isEquals(storedProcEthaneCapture)) {
 				return true;
 			}

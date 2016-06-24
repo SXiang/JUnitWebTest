@@ -57,7 +57,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC65_AddAnalyzer_PicAdmin() {
 		String customerName = "Picarro";
-		String locationName = customerName + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "loc";
 		String surveyorName = locationName + testSetup.getRandomNumber() + "sur";
 		String analyzerName = surveyorName + "ana";
 		String cityName="Santa Clara";
@@ -97,7 +97,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC66_AddAnalyzerNonPicarroCustomer_PicAdmin() {
 		String customerName = "Picarro";
-		String locationName = customerName + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "loc";
 		String surveyorName = locationName + testSetup.getRandomNumber() + "sur";
 		String analyzerName = surveyorName + "ana";
 		String cityName="Santa Clara";
@@ -169,7 +169,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	public void TC99_AnalyzerMax50CharsSerialNumber_PicAdmin() {
 		final int MAX_SIZE = 50;
 		String customerName = "Picarro";
-		String locationName = customerName + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "loc";
 		String surveyorName = locationName + testSetup.getRandomNumber() + "sur";
 		String analyzerName50 = "TC99" + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-4);
 		String analyzerName51 = "TC99" + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-4) + "A";
@@ -212,7 +212,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC122_DuplicateAnalyzer_PicAdmin() {
 		String customerName = "Picarro";
-		String locationName = customerName + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "loc";
 		String surveyorName = locationName + testSetup.getRandomNumber() + "sur";
 		String analyzerName = surveyorName + "ana";
 		String cityName="Santa Clara";
