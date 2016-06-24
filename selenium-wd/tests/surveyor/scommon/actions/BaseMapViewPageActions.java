@@ -83,21 +83,21 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean clickOnDisplayButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnDisplayButton", data, dataRowID);
 		getBaseMapViewPageObject().clickDisplayButton();
-		TestContext.INSTANCE.stayIdle(1);
+		TestContext.INSTANCE.stayIdle(3);
 		return true;
 	}
 
 	public boolean clickOnGisButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnGisButton", data, dataRowID);
 		getBaseMapViewPageObject().clickGisButton();
-		TestContext.INSTANCE.stayIdle(1);
+		TestContext.INSTANCE.stayIdle(3);
 		return true;
 	}
 
 	public boolean clickOnMapButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnMapButton", data, dataRowID);
 		getBaseMapViewPageObject().clickMapButton();
-		TestContext.INSTANCE.stayIdle(1);
+		TestContext.INSTANCE.stayIdle(3);
 		return true;
 	}
 

@@ -720,6 +720,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	public DriverViewPage clickFieldNotesSaveButton() {
 		fieldNotesSave = driver.findElement(By.id("btn_save_annotation")); 
 		Log.clickElementInfo("Save Field Notes");
+		fieldNotesSave.click();
 		return this;
 	}
 
@@ -859,6 +860,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		Log.info(String.format("Adding fields notes text - %s", fieldNotes));
 		fieldNotesTextField = driver.findElement(By.id("anno_input"));
 		Log.info("Set field notes as '"+fieldNotes+"'");
+		fieldNotesTextField.clear();
 		fieldNotesTextField.sendKeys(fieldNotes);
 		return this;
 	}

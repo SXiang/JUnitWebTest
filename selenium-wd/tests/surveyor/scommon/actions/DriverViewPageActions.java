@@ -55,7 +55,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 				TestContext.INSTANCE.getBaseUrl());
 		return driverViewPage;
 	}
-
+	
 	public boolean clickOnCurtainArrowDownButton(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.clickOnCurtainArrowDownButton", data, dataRowID);
 		getDriverViewPage().clickCurtainArrowDownButton();		

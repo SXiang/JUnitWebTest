@@ -17,6 +17,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -861,7 +862,17 @@ public class TestSetup {
 	public static void restartAnalyzer() throws IOException {
 		Log.info("Restarting Analyzer EXE...");
 		stopAnalyzerIfRunning();
+		deleteAnalyzerLocalDB3();
 		startAnalyzer();
+	}
+
+	private static void deleteAnalyzerLocalDB3() {
+		Log.method("deleteAnalyzerLocalDB3");
+		String appDataFolder = SystemUtility.getAppDataFolder();
+		Path surveyorDb3Path = Paths.get(appDataFolder, 
+				"Picarro" + File.separator + "Surveyor" + File.separator + "Data" + File.separator + "Surveyor.db3");
+		Log.info(String.format("Deleting file - '%s'", surveyorDb3Path.toString()));
+		FileUtility.deleteFile(surveyorDb3Path);
 	}
 
 	public static void replayDB3Script(String defnFileName, String db3FileName) {
