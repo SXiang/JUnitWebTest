@@ -142,16 +142,16 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		manageCustomersPage.open();
 		// add customer with an empty Eula
 		manageCustomersPage.addNewCustomer(customerName, "");
-		Log.info("Looking for a red border around the Eula text area - when it's empty");
-		assertTrue("There is no red line around the Eula text area when it's empty!",manageCustomersPage.isEulaRed());
+		Log.info("Looking for field required validation message on Eula text area - when it's empty");
+		assertTrue("There is no field required validation message on Eula text area when it's empty!", manageCustomersPage.verifyEulaValidation());
 		
-		// candel add 
+		// cancel add 
 		manageCustomersPage.clickOnAddCancelBtn();
 		
 		// add customer with an empty Name		
 		manageCustomersPage.addNewCustomer("", eula);
-		Log.info("Looking for a red border around the Name input field - when it's empty");
-		assertTrue("There is no red line around the Name input field when it's empty!",manageCustomersPage.isNameRed());
+		Log.info("Looking for field required validation message on Name input field - when it's empty");
+		assertTrue("There is no field required validation message on Name input field when it's empty!", manageCustomersPage.verifyNameValidation());
 		
 	}	
 	
@@ -191,9 +191,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		manageCustomersPage.setEULAText("");
 		manageCustomersPage.clickOnEditOkBtn();
 		
-		Log.info("Looking for a red border around the Eula text area - when it's empty");
-		assertTrue("There is no red line around the Eula text area when it's empty!",
-				manageCustomersPage.isEulaRed());
+		Log.info("Looking for field required validation message on Eula text area - when it's empty");
+		assertTrue("There is no field required validation message on Eula text area when it's empty!", manageCustomersPage.verifyEulaValidation());
 				
 		// cancel add 
 		manageCustomersPage.clickOnEditCancelBtn();
@@ -324,7 +323,6 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 		Log.info(String.format("Looking for user: Location-[%s]; Username-[%s]", locationName, userName));
 		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
-		loginPage = manageUsersPage.logout();
 
 		// verify disabled customer user cannot login.
 		loginPage.open();
@@ -373,7 +371,6 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 		Log.info(String.format("Looking for User: Location-[%s], UserName-[%s]", customerName, userName));
 		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
-		loginPage = manageUsersPage.logout();
 
 		loginPage.open();
 		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
@@ -541,7 +538,6 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 		Log.info(String.format("Looking for user: Location-[%s]; Username-[%s]", locationName, userName));
 		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
-		loginPage = manageUsersPage.logout();
 
 		// verify disabled customer user cannot login.
 		loginPage.open();
@@ -601,7 +597,4 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		manageCustomersPage.open();
 		assertTrue(manageCustomersPage.areTableColumnsSorted());		
 	}
-	
-
-
 }

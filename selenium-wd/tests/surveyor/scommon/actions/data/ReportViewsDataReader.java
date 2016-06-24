@@ -26,7 +26,9 @@ public class ReportViewsDataReader extends BaseDataReader {
 	public static final int Excel_TestData_Report_Col_IsotopicCapture = 10;
 	public static final int Excel_TestData_Report_Col_Annotation = 11;
 	public static final int Excel_TestData_Report_Col_BaseMap = 12;
- 
+	public static final int Excel_TestData_Report_Col_HighlightLISAAssets = 13;
+	public static final int Excel_TestData_Report_Col_HighlightGAPAssets = 14;
+	
 	public class ReportViewsDataRow {
 		public String rowID;
 		public String name;
@@ -40,9 +42,12 @@ public class ReportViewsDataReader extends BaseDataReader {
 		public String boundaries;
 		public String isotopicCapture;
 		public String annotation;
+		public String highlightLisa;
+		public String highlightGap;
 		public String baseMap;
  
-		public ReportViewsDataRow(String rowID, String name, String lISAs, String fOV, String breadcrumbs, String indications, String fieldNotes, String gaps, String assets, String boundaries, String isotopicCapture, String annotation, String baseMap) {
+		public ReportViewsDataRow(String rowID, String name, String lISAs, String fOV, String breadcrumbs, String indications, String fieldNotes, String gaps, String assets, String boundaries, String isotopicCapture, String annotation, 
+				String highlightLisa, String highlightGap, String baseMap) {
 			this.rowID = rowID;
 			this.name = name;
 			this.lISAs = lISAs;
@@ -55,6 +60,8 @@ public class ReportViewsDataReader extends BaseDataReader {
 			this.boundaries = boundaries;
 			this.isotopicCapture = isotopicCapture;
 			this.annotation = annotation;
+			this.highlightLisa = highlightLisa;
+			this.highlightGap = highlightGap;
 			this.baseMap = baseMap;
 		}
 	}	
@@ -87,10 +94,15 @@ public class ReportViewsDataReader extends BaseDataReader {
 		String boundaries = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_Boundaries, TESTDATA_SHEET_NAME);
 		String isotopicCapture = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_IsotopicCapture, TESTDATA_SHEET_NAME);
 		String annotation = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_Annotation, TESTDATA_SHEET_NAME);
+		String highlightLisa = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_HighlightLISAAssets, TESTDATA_SHEET_NAME);
+		String highlightGap = excelUtility.getBooleanCellData(dataRowID, Excel_TestData_Report_Col_HighlightGAPAssets, TESTDATA_SHEET_NAME);
 		String baseMap = excelUtility.getCellData(dataRowID, Excel_TestData_Report_Col_BaseMap, TESTDATA_SHEET_NAME);
 		
-		Log.info(String.format("Found data row: rowID=[%s], name=[%s], lISAs=[%s], fOV=[%s], breadcrumbs=[%s], indications=[%s], fieldNotes=[%s], gaps=[%s], assets=[%s], boundaries=[%s], isotopicCapture=[%s], annotation=[%s], baseMap=[%s]", rowID, name, lISAs, fOV, breadcrumbs, indications, fieldNotes, gaps, assets, boundaries, isotopicCapture, annotation, baseMap));
+		Log.info(String.format("Found data row: rowID=[%s], name=[%s], lISAs=[%s], fOV=[%s], breadcrumbs=[%s], indications=[%s], fieldNotes=[%s], gaps=[%s], assets=[%s], boundaries=[%s], isotopicCapture=[%s], annotation=[%s], "
+				+ "highlightLisa=[%s], highlightGap={%s], baseMap=[%s]",
+				rowID, name, lISAs, fOV, breadcrumbs, indications, fieldNotes, gaps, assets, boundaries, isotopicCapture, annotation, highlightLisa, highlightGap, baseMap));
 		
-		return new ReportViewsDataRow(rowID, name, lISAs, fOV, breadcrumbs, indications, fieldNotes, gaps, assets, boundaries, isotopicCapture, annotation, baseMap);
+		return new ReportViewsDataRow(rowID, name, lISAs, fOV, breadcrumbs, indications, fieldNotes, gaps, assets, boundaries, isotopicCapture, annotation, 
+				highlightLisa, highlightGap, baseMap);
 	}
 }

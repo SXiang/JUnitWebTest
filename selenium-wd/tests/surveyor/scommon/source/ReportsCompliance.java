@@ -62,7 +62,7 @@ public class ReportsCompliance extends Reports {
 	private CustomerBoundaryFilterType customerBoundaryFilterType;
 
 	public enum EthaneFilter {
-		ExcludeVehicleExhaust, ExcludeBiogenicMethane, Both, None
+		ExcludeVehicleExhaust, ExcludeBiogenicMethane, ExcludePossibleNaturalGas, All, None
 	}
 
 	public enum CustomerBoundaryFilterType {

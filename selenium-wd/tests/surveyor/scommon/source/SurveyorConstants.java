@@ -203,6 +203,8 @@ public final class SurveyorConstants {
 	public static final String KEYGAPS = "Gaps";
 	public static final String KEYASSETS = "Assets";
 	public static final String KEYBOUNDARIES = "Boundaries";
+	public static final String KEYHIGHLIGHTLISAASSETS = "Highlight LISA Assets";
+	public static final String KEYHIGHLIGHTGAPASSETS = "Highlight GAP Assets";
 	public static final String KEYBASEMAP = "Base Map";
 	public static final String KEYASSETCASTIRON = "Cast Iron";
 	public static final String KEYASSETCOPPER = "Copper";
@@ -348,6 +350,14 @@ public final class SurveyorConstants {
 	public static final String DIALOG_SELECTEDAREALSTOOSMALL_MESSAGE = Resources.getResource(ResourceKeys.Dialog_SelectedArealsTooSmall);
 	public static final String CR_BOUNDARYMINSIZE_MESSAGE = Resources.getResource(ResourceKeys.ComplianceReport_BoundaryMinSizeMessage);
 
+	/*
+	 * Analyzer and surveyor constants.
+	 */
+	public static final String ANALYZER_ALREADY_ASSOCIATED_ERROR = Resources.getResource(ResourceKeys.ManageAnalyzer_AlreadyAssociatedError);
+	public static final String CONSTANT_CUSTOMER = Resources.getResource(ResourceKeys.Constant_Customer);
+	public static final String CONSTANT_SURVEYOR = Resources.getResource(ResourceKeys.Constant_Surveyor);
+	public static final String CONSTANT_LOCATION = Resources.getResource(ResourceKeys.Constant_Location);
+			
 	/*
 	 * Timeout constants
 	 */

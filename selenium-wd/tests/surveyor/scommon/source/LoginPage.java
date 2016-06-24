@@ -106,7 +106,7 @@ public class LoginPage extends BasePage {
 	public void login(String userName, String password) {
 		Log.info("Input username as '"+userName+"'");
 		this.tbUserName.sendKeys(userName);
-		Log.info("Input password as '"+password+"'");
+		Log.info("Input password as '<HIDDEN>'");
 		this.tbPassword.sendKeys(password);
 		Log.clickElementInfo("Login");
 		this.btnLogin.click();

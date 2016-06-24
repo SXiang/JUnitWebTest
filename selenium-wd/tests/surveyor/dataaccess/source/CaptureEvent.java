@@ -37,6 +37,19 @@ public class CaptureEvent extends BaseEntity {
 		super();
 	}
  
+	@Override
+	public String toString() {
+		return (this.getAnalyzerId().toString()).concat("|")
+				.concat(this.getSurveyId().toString()).concat("|")
+				.concat(String.valueOf(this.getDistance())).concat("|")
+				.concat(String.valueOf(this.getDelta())).concat("|")
+				.concat(String.valueOf(this.getGpsLatitude())).concat("|")
+				.concat(String.valueOf(this.getGpsLongitude())).concat("|")
+				.concat(String.valueOf(this.getConcentration())).concat("|")
+				.concat(String.valueOf(this.getClassificationConfidence())).concat("|")
+				.concat(this.getDisposition().toString()).concat("|");
+	}
+
 	public String getId() {
 		return id;
 	}

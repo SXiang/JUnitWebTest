@@ -4,67 +4,63 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 public class LogHelper {
 
 	public LogHelper() {
 	}
 
-	public static String strArrayToString(String[] array) {
+	public static <T> String arrayToString(T[] array) {
 		if (array != null && array.length > 0) {
 			return String.format("[Array values] -> %s", Arrays.toString(array));
 		}
 		return "";
 	}
 
-	public static String intArrayToString(Integer[] array) {
-		if (array != null && array.length > 0) {
-			return String.format("[Array values] -> %s", Arrays.toString(array));
-		}
-		return "";
-	}
-
-	public static String floatArrayToString(Float[] array) {
-		if (array != null && array.length > 0) {
-			return String.format("[Array values] -> %s", Arrays.toString(array));
-		}
-		return "";
-	}
-
-	public static String listOfStrArrayToString(List<String[]> listOfStrArray) {
+	public static <T> String listOfArrayToString(List<T[]> listOfArray) {
 		StringBuilder builder = new StringBuilder();
-		if (listOfStrArray != null) {
-			for (String[] array : listOfStrArray) {
-				builder.append(strArrayToString(array));
+		if (listOfArray != null) {
+			for (T[] array : listOfArray) {
+				builder.append(arrayToString(array));
 				builder.append(BaseHelper.getLineSeperator());
 			}
 		}
 		return builder.toString();
 	}
 
+	public static <T> String listToString(List<T> values) {
+		StringBuilder builder = new StringBuilder();
+		if (values != null && values.size() > 0) {
+			builder.append(values.get(0));
+			if (values.size() > 1) {
+				for (int i = 1; i < values.size(); i++) {
+					builder.append(",");
+					builder.append(values.get(i));
+				}
+			}
+		}
+		return String.format("[List values] -> [%s]", builder.toString());
+	}
+	
 	public static String strListToString(List<String> values) {
-		String[] array = values.toArray(new String[values.size()]);
-		return strArrayToString(array);
+		return listToString(values);
 	}
 
 	public static String intListToString(List<Integer> values) {
-		Integer[] array = values.toArray(new Integer[values.size()]);
-		return intArrayToString(array);
+		return listToString(values);
 	}
 
 	public static String floatListToString(List<Float> values) {
-		Float[] array = values.toArray(new Float[values.size()]);
-		return floatArrayToString(array);
+		return listToString(values);
 	}
 
-	public static String boolMapToString(HashMap<String, Boolean> values) {
+	public static <K,V> String mapToString(HashMap<K, V> values) {
 		StringBuilder builder = new StringBuilder();
 		if (values != null && values.size() > 0) {
-			Iterator<String> iterator = values.keySet().iterator();
+			Iterator<K> iterator = values.keySet().iterator();
 			while (iterator.hasNext()) {
-				String key = iterator.next();
-				builder.append(String.format("    [%s=%b]", key, values.get(key)));
+				K key = iterator.next();
+				builder.append(String.format("    [%s=%s]", key, values.get(key)));
 				builder.append(System.getProperty("line.separator"));
 			}
 		}

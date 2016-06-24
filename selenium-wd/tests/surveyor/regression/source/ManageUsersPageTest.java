@@ -356,7 +356,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String testCaseID = getTestCaseName(ManageUserTestCaseType.ResetPwd, username);
 		password = CryptoUtility.decrypt(password);
 
-		String usernameNew = SQACUS + testSetup.getFixedSizePseudoRandomString(24) + "_" + testCaseID + REGBASEUSERNAME;
+		String usernameNew = SQACUS + testSetup.getFixedSizePseudoRandomString(12) + testCaseID + REGBASEUSERNAME;
 
 		Log.info(String.format("\nRunning - %s - %s not allowed to create duplicate User\n", testCaseID, role));
 
@@ -373,6 +373,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.waitForPageLoad();
 		String output = manageUsersPage.addTestUser(usernameNew, USERPASSWORD, USERPASSWORD);
 		Log.info("Found error message:" + output);
+		Log.info("Looking for error message: " + DUPLICATIONERROR);
 		assertTrue(output.contains(DUPLICATIONERROR));
 	}
 

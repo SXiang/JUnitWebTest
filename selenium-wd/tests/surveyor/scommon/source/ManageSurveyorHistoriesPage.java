@@ -72,26 +72,8 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 		super(driver, testSetup, baseURL, baseURL + urlPath);
 	}
 
-	public LoginPage logout() {
-		Log.clickElementInfo("Administrator",ElementType.DROPDOWN);
-		this.dropDownAdministrator.click();
-
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(1);
-
-		Log.clickElementInfo("Log Out");
-		this.linkLogOut.click();
-
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(3);
-
-		LoginPage loginPage = new LoginPage(this.driver, this.strBaseURL,
-				this.testSetup);
-
-		return loginPage;
-	}
-
 	public void addNewHistoryNote(String surveyorUnit, String note) {
+		Log.method("addNewHistoryNote", surveyorUnit, note);
 		if (this.testSetup.isRunningDebug()) {
 			Log.info(surveyorUnit);
 			Log.info(note);
@@ -119,10 +101,11 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 
 		Log.clickElementInfo("Ok");
 		this.btnOK.click();
+		this.waitForPageLoad();
 	}
 
-	public void addNewHistoryNote(String surveyorUnit, String locationName,
-			String note) {
+	public void addNewHistoryNote(String surveyorUnit, String locationName, String note) {
+		Log.method("addNewHistoryNote", surveyorUnit, locationName, note);
 		if (this.testSetup.isRunningDebug()) {
 			Log.info(surveyorUnit);
 			Log.info(locationName);
@@ -151,10 +134,11 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 			this.testSetup.slowdownInSeconds(5);
 		Log.clickElementInfo("Ok");
 		this.btnOK.click();
+		this.waitForPageLoad();
 	}
 
-	public void addNewHistoryNote(String surveyorUnit, String locationName,
-			String customerName, String note) {
+	public void addNewHistoryNote(String surveyorUnit, String locationName, String customerName, String note) {
+		Log.method("addNewHistoryNote", surveyorUnit, locationName, customerName, note);
 		if (this.testSetup.isRunningDebug()) {
 			Log.info(surveyorUnit);
 			Log.info(locationName);
@@ -189,10 +173,11 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 
 		Log.clickElementInfo("Ok");
 		this.btnOK.click();
+		this.waitForPageLoad();
 	}
 
-	public boolean findExistingHistoryNote(String customerName,
-			String locationName, String surveyorName, String note) {
+	public boolean findExistingHistoryNote(String customerName, String locationName, String surveyorName, String note) {
+		Log.method("findExistingHistoryNote", customerName, locationName, surveyorName, note);
 		Log.info(String.format("Find history note %s, customer = '%s', location = '%s', surveyor = '%s'", 
 				note,customerName,locationName,surveyorName));
 		setPagination(PAGINATIONSETTING_100);

@@ -41,27 +41,27 @@ public class PerformanceReportJobDataProvider extends ReportDataProvider {
 	private static final int ULTRA_HIGH_LOAD1_EXECUTIONS_FOR_BASELINES = 5;
 
 	private static final int HIGH_LOAD4_USER_ROW_ID = 10;
-	private static final int HIGH_LOAD4_REPORT_DATA_ROW_ID = 86;
+	private static final int HIGH_LOAD4_REPORT_DATA_ROW_ID = 106;
 	private static final int HIGH_LOAD4_EXECUTIONS_FOR_BASELINES = 10;
 
 	private static final int ULTRA_HIGH_LOAD4_USER_ROW_ID = 10;
-	private static final int ULTRA_HIGH_LOAD4_REPORT_DATA_ROW_ID = 87;
+	private static final int ULTRA_HIGH_LOAD4_REPORT_DATA_ROW_ID = 107;
 	private static final int ULTRA_HIGH_LOAD4_EXECUTIONS_FOR_BASELINES = 5;
 
 	private static final int HIGH_LOAD5_USER_ROW_ID = 10;
-	private static final int HIGH_LOAD5_REPORT_DATA_ROW_ID = 88;
+	private static final int HIGH_LOAD5_REPORT_DATA_ROW_ID = 108;
 	private static final int HIGH_LOAD5_EXECUTIONS_FOR_BASELINES = 10;
 
 	private static final int ULTRA_HIGH_LOAD5_USER_ROW_ID = 10;
-	private static final int ULTRA_HIGH_LOAD5_REPORT_DATA_ROW_ID = 89;
+	private static final int ULTRA_HIGH_LOAD5_REPORT_DATA_ROW_ID = 109;
 	private static final int ULTRA_HIGH_LOAD5_EXECUTIONS_FOR_BASELINES = 5;
 
 	private static final int HIGH_LOAD6_USER_ROW_ID = 10;
-	private static final int HIGH_LOAD6_REPORT_DATA_ROW_ID = 90;
+	private static final int HIGH_LOAD6_REPORT_DATA_ROW_ID = 110;
 	private static final int HIGH_LOAD6_EXECUTIONS_FOR_BASELINES = 10;
 
 	private static final int ULTRA_HIGH_LOAD6_USER_ROW_ID = 10;
-	private static final int ULTRA_HIGH_LOAD6_REPORT_DATA_ROW_ID = 91;
+	private static final int ULTRA_HIGH_LOAD6_REPORT_DATA_ROW_ID = 111;
 	private static final int ULTRA_HIGH_LOAD6_EXECUTIONS_FOR_BASELINES = 5;
 
 	public static final String REPORT_JOB_PERFORMANCE_PROVIDER = "dataProviderReportJobPerformance";

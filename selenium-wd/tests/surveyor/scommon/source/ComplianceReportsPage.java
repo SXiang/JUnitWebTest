@@ -15,6 +15,8 @@ import static surveyor.scommon.source.SurveyorConstants.IMGMAPWIDTH;
 import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
+import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
+import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
 import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
 import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
@@ -344,6 +346,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(id = "report-ethene-biogenic-methane")
 	protected WebElement checkBoxEtheneBiogeniceMethane;
 
+	@FindBy(id = "report-ethene-possible-natural-gas")
+	protected WebElement checkBoxPossibleNaturalGas;
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[1]")
 	protected WebElement fstRptTilNm;
 
@@ -526,86 +531,104 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String strBaseXPath;
 
 		for (int i = 0; i < viewList.size(); i++) {
+			rowNum = i + 1;
+			Map<String, String> viewMap = viewList.get(i);
+			if(viewMap==null){
+				continue;
+			}
 			if (i != 0) {
 				Log.clickElementInfo("Add Views");
 				this.btnAddViews.click();
 			}
 
-			rowNum = i + 1;
-			if (viewList.get(i).get(KEYVIEWNAME) != null) {
+			if (viewMap.get(KEYVIEWNAME) != null) {
 				colNum = 2;
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				strBaseXPath = strBaseXPath + "[@type='text']";
-				String viewName = viewList.get(i).get(KEYVIEWNAME);
+				String viewName = viewMap.get(KEYVIEWNAME);
 				Log.info("Set view name to '"+viewName);
 				driver.findElement(By.xpath(strBaseXPath)).clear();
 				driver.findElement(By.xpath(strBaseXPath)).sendKeys(viewName);
 			}
 
-			if (viewList.get(i).get(KEYLISA).equalsIgnoreCase("1")) {
+			if (selectView(viewMap, KEYLISA)) {
 				colNum = 3;
 				Log.clickElementInfo("LISA", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (viewList.get(i).get(KEYFOV).equalsIgnoreCase("1")) {
+			if (selectView(viewMap, KEYFOV)) {
 				colNum = 4;
 				Log.clickElementInfo("FOV", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (viewList.get(i).get(KEYBREADCRUMB).equalsIgnoreCase("1")) {
+			if (selectView(viewMap, KEYBREADCRUMB)) {
 				colNum = 5;
 				Log.clickElementInfo("BREADCRUMB", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (viewList.get(i).get(KEYINDICATIONS).equalsIgnoreCase("1")) {
+			if (selectView(viewMap, KEYINDICATIONS)) {
 				colNum = 6;
 				Log.clickElementInfo("INDICATIONS", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (viewList.get(i).get(KEYISOTOPICCAPTURE).equalsIgnoreCase("1")) {
+			if (selectView(viewMap, KEYISOTOPICCAPTURE)) {
 				colNum = 7;
 				Log.clickElementInfo("ISOTOPICCAPTURE", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (viewList.get(i).get(KEYANNOTATION).equalsIgnoreCase("1")) {
+			if (selectView(viewMap, KEYANNOTATION)) {
 				colNum = 8;
 				Log.clickElementInfo("ANNOTATION", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (viewList.get(i).get(KEYGAPS).equalsIgnoreCase("1")) {
+			if (selectView(viewMap, KEYGAPS)) {
 				colNum = 9;
 				Log.clickElementInfo("GAPS", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (viewList.get(i).get(KEYASSETS).equalsIgnoreCase("1")) {
+			if (selectView(viewMap, KEYASSETS)) {
 				colNum = 10;
 				Log.clickElementInfo("ASSETS", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (viewList.get(i).get(KEYBOUNDARIES).equalsIgnoreCase("1")) {
+			if (selectView(viewMap, KEYHIGHLIGHTLISAASSETS)) {
+				colNum = 11;
+				Log.clickElementInfo("Highlight LISA Assets", ElementType.CHECKBOX);
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+			}
+			
+			if (selectView(viewMap, KEYHIGHLIGHTGAPASSETS)) {
+				colNum = 12;
+				Log.clickElementInfo("Highlight GAP Assets", ElementType.CHECKBOX);
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+			}
+			
+			if (selectView(viewMap, KEYBOUNDARIES)) {
 				colNum = 13;
 				Log.clickElementInfo("BOUNDARIES", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (viewList.get(i).get(KEYBASEMAP) != null) {
+			if (viewMap.get(KEYBASEMAP) != null) {
 				if (rowNum == 1) {
 					strBaseXPath = "//*[@id='datatableViews']/tbody/tr/td/select[contains(@class,'view-basemap')]";
 				} else {
@@ -614,8 +637,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				}
 				WebElement dropdownBaseMap = driver.findElement(By.xpath(strBaseXPath));
 				List<WebElement> options = dropdownBaseMap.findElements(By.tagName("option"));
-				for (WebElement option : options) {
-					String thisMap = viewList.get(i).get(KEYBASEMAP);
+				for (WebElement option : options) { 
+					String thisMap = viewMap.get(KEYBASEMAP);
 					if ((thisMap).equalsIgnoreCase(option.getText().trim())) {
 						Log.info(String.format("Select base map - '%s'", thisMap));
 						option.click();
@@ -626,6 +649,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 
+	private boolean selectView(Map<String, String> viewMap, String option){
+		boolean select = false;
+		String value = viewMap.get(option);
+		if(value!=null
+				&&value.equalsIgnoreCase("1")){
+			select = true;
+		}
+		return select;
+	}
 	private String getViewXPathByRowCol(int rowNum, int colNum) {
 		String strBaseXPath;
 		if (rowNum == 1) {
@@ -1082,7 +1114,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			Log.info(String.format("Found rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]",
 					rptTitleCellText, createdByCellText));
 			if (rptTitleCellText.equalsIgnoreCase(rptTitle)
-					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
+					&& createdByCellText.equalsIgnoreCase(strCreatedBy)) {
 				try {
                     buttonXPath = "tr[" + rowNum + "]/"+ buttonXPath;
 					buttonImg = getTable().findElement(By.xpath(buttonXPath));
@@ -1725,21 +1757,42 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void selectEthaneFilter(EthaneFilter ethaneFilter) {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
+		selectEthaneFilter(ethaneFilter, true);
+	}
+	
+	public void unselectEthaneFilter(EthaneFilter ethaneFilter) {
+		selectEthaneFilter(ethaneFilter, false);
+	}
+	
+	private void selectEthaneFilter(EthaneFilter ethaneFilter, boolean select){
+		List<WebElement> elements = new ArrayList<WebElement>();
 		switch (ethaneFilter) {
 		case ExcludeVehicleExhaust:
-			SelectCheckbox(checkBoxVehicleExhaust);
+			elements.add(checkBoxVehicleExhaust);
 			break;
 		case ExcludeBiogenicMethane:
-			SelectCheckbox(checkBoxEtheneBiogeniceMethane);
+			elements.add(checkBoxEtheneBiogeniceMethane);
 			break;
-		case Both:
-			SelectCheckbox(checkBoxVehicleExhaust);
-			SelectCheckbox(checkBoxEtheneBiogeniceMethane);
+		case ExcludePossibleNaturalGas:
+			elements.add(checkBoxPossibleNaturalGas);
+			break;
+		case All:
+			elements.add(checkBoxVehicleExhaust);
+			elements.add(checkBoxEtheneBiogeniceMethane);
+			elements.add(checkBoxPossibleNaturalGas);
+		case None:
+			select = false;
 			break;
 		default:
 			break;
 		}
+		for(WebElement element:elements){
+			if(select)
+				SelectCheckbox(element);
+			else
+				UnselectCheckbox(element);
+		}
+		
 	}
 
 	public void selectViewLayerAssets(Map<String, String> viewLayerMap) {
@@ -2088,7 +2141,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 
 		Log.info(String.format("Matching expected report strings-[%s], with actual PDF text.", 
-				LogHelper.strArrayToString(expectedReportString.toArray(new String[expectedReportString.size()])) ));
+				LogHelper.arrayToString(expectedReportString.toArray(new String[expectedReportString.size()])) ));
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
@@ -2478,9 +2531,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
 		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /*includeExtension*/);
-		String pathToMetaDataUnZip = Paths.get(actualPath, metaDataZipFileName).toString();
-		String pathToCsv = Paths.get(pathToMetaDataUnZip, "CR-" + reportId.substring(0, 6) + "-ReportSurvey.csv").toString();
+		String pathToMetaDataUnZip = actualPath;
+		String unZipFolder = File.separator + metaDataZipFileName;
+		if(!actualPath.endsWith(unZipFolder))
+			pathToMetaDataUnZip += unZipFolder;
+		
+		String pathToCsv = pathToMetaDataUnZip + File.separator + "CR-" + reportId.substring(0, 6) + "-ReportSurvey.csv";
 		String reportName = "CR-" + reportId;
+
+		if (actualPath.endsWith("-ReportSurvey.csv")) {
+			pathToCsv = actualPath;
+		}
+
 		setReportName(reportName);
 		List<HashMap<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
 		Iterator<HashMap<String, String>> csvIterator = csvRows.iterator();
@@ -2778,7 +2840,76 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		return true;
 	}
+	/**
+	 * Method to verify the Ethane Analysis Table in SSRS
+	 * 
+	 * @param actualPath
+	 * @param reportTitle
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean verifyEthaneAnalysisTable(String actualPath, String reportTitle) throws IOException {
+		Log.info("Calling verifyEthaneAnalysisTable() ...");
+		PDFUtility pdfUtility = new PDFUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = Paths.get(actualPath, "CR-" + reportId.substring(0, 6) + ".pdf").toString();
+		String reportName = "CR-" + reportId;
+		setReportName(reportName);
+		String actualReportString = pdfUtility.extractPDFText(actualReport);
+		List<String> expectedReportString = new ArrayList<String>();
+		expectedReportString.add(ComplianceReportSSRS_EthaneAnalysisTable);
+		Log.info(String.format("PDF Text Content : %s", actualReportString));
+		Log.info(String.format("Expected Strings in PDF Text Content : %s", LogHelper.strListToString(expectedReportString)));
+		
+		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		for (Boolean value : actualFirstPage.values()) {
+			if (!value) {
+				Log.info("Ethane Analysis table verification failed");
+				return false;
+			}
+		}
+		String isoTable = RegexUtility.getStringInBetween(actualReportString, "Surveyor Date/Time Result",ComplianceReportSSRS_EthaneAnalysisTable);
+		Log.info(String.format("Extracted Ethane Analysis Table : %s", isoTable));
+		if (isoTable != null) {
+			InputStream inputStream = new ByteArrayInputStream(isoTable.getBytes());
+			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
+			String line = null;
+			try {
+				ArrayList<String> reportEthaneList = new ArrayList<String>();
+				while ((line = bufferReader.readLine()) != null) {
+					if (!line.trim().startsWith("Ethane/Methane Ratio and Uncertainty")) {
+						line = line.replaceAll(" +", " ").trim();
+						reportEthaneList.add(line);
+					}
+				}
+				
+				Log.info(String.format("ReportEthaneCapture ArrayList Values : %s", LogHelper.strListToString(reportEthaneList)));
+				ArrayList<StoredProcComplianceGetEthaneCapture> storedProcEthaneList = StoredProcComplianceGetEthaneCapture
+						.getReportEthaneCapture(reportId);
+				Iterator<StoredProcComplianceGetEthaneCapture> lineIterator = storedProcEthaneList.iterator();
+				ArrayList<String> storedProcConvStringList = new ArrayList<String>();
+				while (lineIterator.hasNext()) {
+					StoredProcComplianceGetEthaneCapture objStoredProc = lineIterator.next();
+					String objAsString = objStoredProc.toString();
+					storedProcConvStringList.add(objAsString.trim());
+				}
 
+				Log.info(String.format("Checking in ReportEthaneCapture ArrayList, StoredProcConvStringList Values : %s", 
+						LogHelper.strListToString(storedProcConvStringList)));
+				if (!reportEthaneList.equals(storedProcConvStringList)) {
+					Log.info(String.format("EthaneCapture Analysis table verification failed, Expected: '%s', Actual: '%s'",storedProcConvStringList,reportEthaneList));
+					return false;
+				}
+			} finally {
+				bufferReader.close();
+			}
+		}
+		Log.info("Ethane Analysis table verification passed");
+		return true;
+
+	}
+	
 	/**
 	 * Method to verify the Isotopic Analysis Table in SSRS
 	 * 
@@ -2818,6 +2949,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				ArrayList<String> reportIsotopicList = new ArrayList<String>();
 				while ((line = bufferReader.readLine()) != null) {
 					if (!line.trim().startsWith("Isotopic Value/ Uncertainty")) {
+						line = line.replaceAll(" +", " ").trim();
 						reportIsotopicList.add(line);
 					}
 				}
@@ -3589,7 +3721,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String pdfFilePath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), pdfFilename).toString();
 		PDFTableUtility pdfTableUtility = new PDFTableUtility();
 		List<String[]> pdfTableList = pdfTableUtility.extractPDFTable(pdfFilePath, pdfTable);
-		Log.info(String.format("Extracted tables values from PDF : %s", LogHelper.listOfStrArrayToString(pdfTableList)),
+		Log.info(String.format("Extracted tables values from PDF : %s", LogHelper.listOfArrayToString(pdfTableList)),
 				LogCategory.SSRSPdfContent);
 		return pdfTableList;
 	}
@@ -3599,6 +3731,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		ReportsCompliance reportsCompliance = (ReportsCompliance) reports;
 
 		// 1. Report general
+		/* Temp solution to enable lisa table on 3200 - Unselect Exclude Possible Natural Gas by default*/
+		unselectEthaneFilter(EthaneFilter.ExcludePossibleNaturalGas);
 		if (reportsCompliance.getEthaneFilter() != null) {
 			selectEthaneFilter(reportsCompliance.getEthaneFilter());
 		}
