@@ -307,7 +307,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		List<Map<String, String>> viewLayerList11 = new ArrayList<Map<String, String>>();
 		viewLayerList11.add(createViewLayerAssetsContent(assetRowIDs11));
 		List<String> tagList11 = new ArrayList<String>();
-		tagList11.add(CUSDRVSTDTAG3200);
+		tagList11.add(PICADMNSTDTAG);
 		
 		List<Map<String, String>> viewList12 = new ArrayList<Map<String, String>>();
 		viewList12.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0","0","0", Resources.getResource(ResourceKeys.Constant_Satellite)));

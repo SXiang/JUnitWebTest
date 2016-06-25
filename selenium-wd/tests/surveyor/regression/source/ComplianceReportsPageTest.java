@@ -695,7 +695,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, ReportModeFilter.Standard);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, false);
 		rpt.setViewLayersList(viewLayerList);
 
 		complianceReportsPage.addNewReport(rpt);
