@@ -176,6 +176,31 @@ public class FileUtility {
 	public static boolean compareFilesInDirectories(String firstFolderPath, String secondFolderPath) throws IOException {
 		return compareFilesInDirectories(firstFolderPath, secondFolderPath, false);
 	}
+
+	public static boolean compareFilesAndSizesInDirectories(String firstFolderPath, String secondFolderPath) throws IOException {
+		Log.info(String.format("Comparing files sizes in Folders - [%s] <==> [%s]...", firstFolderPath, secondFolderPath));
+		
+		// First check all files in both directories are the same.
+		boolean retVal = compareFilesInDirectories(firstFolderPath, secondFolderPath, false);
+		if (retVal) {		
+			// Check that first folder and second folder have files of exact same size.
+			List<String> firstDirectoryFiles = FileUtility.getFilesInDirectory(Paths.get(firstFolderPath), false /*includeFullPath*/);
+			for (String fDirFile : firstDirectoryFiles) {
+				Path fFileFullPath = Paths.get(firstFolderPath, fDirFile);
+				Path sFileFullPath = Paths.get(secondFolderPath, fDirFile);
+				long fFileSize = new File(fFileFullPath.toString()).length();
+				long sFileSize = new File(sFileFullPath.toString()).length();
+				
+				if (fFileSize != sFileSize) {
+					Log.info(String.format("[File-1 =%s, Size=%s] does NOT match in size with [File-2 =%s, Size=%s] . <-- [Return FALSE]", 
+							fFileFullPath, fFileSize, sFileFullPath, sFileSize));
+					return false;
+				}
+			}			
+		}
+		return retVal;
+	}
+		
 	public static boolean compareFilesInDirectories(String firstFolderPath, String secondFolderPath, boolean contains) throws IOException {
 		Log.info(String.format("Comparing files in Folders - [%s] <==> [%s]...", firstFolderPath, secondFolderPath));
 		
@@ -414,7 +439,15 @@ public class FileUtility {
 		Path directoryWithFiles = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\shapefileutility-tests");
 		Path emptyDirectory = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\shapefileutility-tests\\empty-dir");
 		
+		Path compareFolder1 = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\fileutility-tests\\folder1a");
+		Path compareFolder2 = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\fileutility-tests\\folder1b");
+		Path compareFolder3 = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\fileutility-tests\\folder1c");
+
 		// Unit tests for -> getFilesInDirectory(Path directory, String filter)
+		Log.info("Executing test -> test_compareFilesAndSizesInDirectories_SameSize_Success() ...");
+		test_compareFilesAndSizesInDirectories_SameSize_Success(compareFolder1, compareFolder2);
+		Log.info("Executing test -> test_compareFilesAndSizesInDirectories_DifferentSizeFile_Failure() ...");
+		test_compareFilesAndSizesInDirectories_DifferentSizeFile_Failure(compareFolder1, compareFolder3);
 		Log.info("Executing test -> test_getFilesInDirectory_DirWithFiles_ValidFilterWithMatch() ...");
 		test_getFilesInDirectory_DirWithFiles_ValidFilterWithMatch(directoryWithFiles);
 		Log.info("Executing test -> test_getFilesInDirectory_DirWithFiles_ValidFilterWithNoMatch() ...");
@@ -425,6 +458,14 @@ public class FileUtility {
 		test_getFilesInDirectory_DirWithFiles_ValidFilterSingleExtWithMatch(directoryWithFiles);
 		Log.info("Executing test -> test_getFilesInDirectory_DirWithNoFiles_ValidFilter() ...");
 		test_getFilesInDirectory_DirWithNoFiles_ValidFilter(emptyDirectory);
+	}
+
+	private static void test_compareFilesAndSizesInDirectories_SameSize_Success(Path firstFolderPath, Path secondFolderPath) throws IOException {
+		Assert.assertTrue(FileUtility.compareFilesAndSizesInDirectories(firstFolderPath.toString(), secondFolderPath.toString()));
+	}
+
+	private static void test_compareFilesAndSizesInDirectories_DifferentSizeFile_Failure(Path firstFolderPath, Path secondFolderPath) throws IOException {
+		Assert.assertFalse(FileUtility.compareFilesAndSizesInDirectories(firstFolderPath.toString(), secondFolderPath.toString()));
 	}
 
 	private static void test_getFilesInDirectory_DirWithFiles_ValidFilterWithMatch(Path rootDirectory) throws IOException {

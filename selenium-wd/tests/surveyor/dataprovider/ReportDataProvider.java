@@ -44,7 +44,6 @@ import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
 import surveyor.scommon.actions.data.ReportOptViewLayersAssetsDataReader;
 import surveyor.scommon.actions.data.ReportOptViewLayersBoundaryDataReader;
-import surveyor.scommon.actions.data.ReportSurveyDataReader;
 import surveyor.scommon.actions.data.ReportOptViewLayersAssetsDataReader.ReportOptViewLayersAssetsDataRow;
 import surveyor.scommon.actions.data.ReportOptViewLayersBoundaryDataReader.ReportOptViewLayersBoundaryDataRow;
 import surveyor.scommon.source.ReportsCompliance;
