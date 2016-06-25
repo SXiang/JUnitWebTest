@@ -2513,10 +2513,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 					"Found cell (skipping newly added) : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]",
 					rptTitleCellText.trim(), createByCellText.trim()));
 
-			if (rowNum == maxRows)
-				break;
-
 			rowNum++;
+			if (rowNum > maxRows)
+				break;
 
 			Log.info(String.format("Processing row number - %d", rowNum));
 
