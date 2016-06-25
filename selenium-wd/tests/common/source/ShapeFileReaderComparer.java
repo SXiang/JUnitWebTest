@@ -667,6 +667,8 @@ public class ShapeFileReaderComparer implements IShapeFileComparer {
 	public static void main(String[] args) throws Exception {
 		Log.info("Running test - testShapeFileComparison_assertEquals_Success() ...");
 		testShapeFileComparison_assertEquals_Success();
+		Log.info("Running test - testShapeFileComparison_assertEquals_DifferentFiles_Success() ...");
+		testShapeFileComparison_assertEquals_DifferentFiles_Success();
 		Log.info("Running test - testShapeFileComparison_assertEquals_Failure() ...");
 		testShapeFileComparison_assertEquals_Failure();
 	}
@@ -687,11 +689,36 @@ public class ShapeFileReaderComparer implements IShapeFileComparer {
 		}
 	}
 
+	private static void testShapeFileComparison_assertEquals_DifferentFiles_Success() throws Exception {
+		Path shpDirectory = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\shapefileutility-tests\\shape-compare-data\\folder1a");
+		List<String> shpFilesInDirectory = FileUtility.getFilesInDirectory(shpDirectory, "*.shp");
+		for (String filePath : shpFilesInDirectory) {
+			String file1Path = filePath;
+			String file2Path = file1Path.replace("\\folder1a\\", "\\folder1b\\");
+			Log.info("---------------------------------------------------------------------");
+			Log.info("Comparing Shape Files... ");
+			Log.info(String.format("File1=[%s]", file1Path));
+			Log.info(String.format("File2=[%s]", file2Path));
+			ShapeFileReaderComparer comparer = new ShapeFileReaderComparer();
+			comparer.assertEquals(file1Path, file2Path);
+			Log.info("---------------------------------------------------------------------");
+		}
+	}
+
 	private static void testShapeFileComparison_assertEquals_Failure() throws Exception {
 		Path shpDirectory = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\shapefileutility-tests");
 		String file1Path = shpDirectory.toString() + File.separator + "CR-0AEE84-FOV.shp";
 		String file2Path = shpDirectory.toString() + File.separator + "CR-0AEE84-BreadCrumb.shp";
 		ShapeFileReaderComparer comparer = new ShapeFileReaderComparer();
-		comparer.assertEquals(file1Path, file2Path);
+		boolean result = false;
+		try {
+			comparer.assertEquals(file1Path, file2Path);
+		} catch (Exception e) {
+			result = true;
+			Log.info("Caught EXPECTED exception. Test PASS.");
+		}
+		if (!result) {
+			throw new Exception("Test FAILED!");
+		}
 	}
 }
