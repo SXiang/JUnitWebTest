@@ -2299,14 +2299,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		String surveyTable;
 		if (RegexUtility.getStringInBetween(actualReportString, "Indication Table", "Surveyor Date") != null) {
-			surveyTable = RegexUtility.getStringInBetween(actualReportString, "Indication Table", "Surveyor Date");
+			surveyTable = (RegexUtility.getStringInBetween(actualReportString, "Indication Table", "Surveyor Date")).trim().replaceAll("//s+", "").replace("#", "").replace("LISA ", "");
 			if (surveyTable.contains("Gap Table")) {
 				// TODO: DEFECT in parsing. SKIP check for this case.
 				Log.warn("SKIPPING Driving survey verification. The case of Driving Survey table and Gap table PDF parsing is currently NOT supported!!!");
 				return true;
 			}
 		} else {
-			surveyTable = RegexUtility.getStringInBetween(actualReportString, "Selected Driving Surveys", " Layers");
+			surveyTable = (RegexUtility.getStringInBetween(actualReportString, "Selected Driving Surveys", " Layers")).trim().replaceAll("//s+", "").replace("#", "").replace("LISA ", "");
 		}
 		InputStream inputStream = new ByteArrayInputStream(surveyTable.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
