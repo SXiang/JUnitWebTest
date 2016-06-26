@@ -1776,12 +1776,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		case ExcludePossibleNaturalGas:
 			elements.add(checkBoxPossibleNaturalGas);
 			break;
+		case None:
+			select = false;
 		case All:
 			elements.add(checkBoxVehicleExhaust);
 			elements.add(checkBoxEtheneBiogeniceMethane);
 			elements.add(checkBoxPossibleNaturalGas);
-		case None:
-			select = false;
 			break;
 		default:
 			break;
@@ -2740,7 +2740,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			    int aggregatedClassificationconfidenceFloat = (int) (Float.parseFloat(csvRow.get("ConfidenceInDisposition").trim()) * 100);
 			    aggregatedClassificationconfidence = aggregatedClassificationconfidenceFloat + "%";
 			}catch(Exception e){
-				Log.warn(e.toString());
+//				Log.warn(e.toString());
 			}
 			reportIndObj.setAggregatedClassificationConfidence(aggregatedClassificationconfidence);
 			reportList.add(reportIndObj);
