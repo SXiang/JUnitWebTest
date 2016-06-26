@@ -304,7 +304,7 @@ public class Measurement extends BaseEntity {
 
 	public static List<Measurement> getMeasurements(String analyzerId, String startEpochTime, String endEpochTime) {
 		Measurement objMeasurement = new Measurement();
-		String SQL = "SELECT * FROM dbo.[Measurement] WHERE AnalyzerId='" + analyzerId + "' AND EpochTime>=" + startEpochTime + " AND EpochTime<=" + endEpochTime;
+		String SQL = "SELECT * FROM dbo.[Measurement] WHERE AnalyzerId='" + analyzerId + "' AND EpochTime > " + startEpochTime + " AND EpochTime < " + endEpochTime;
 		return objMeasurement.load(SQL);
 	}
 
@@ -315,7 +315,7 @@ public class Measurement extends BaseEntity {
 		if (DBCache.INSTANCE.containsKey(CACHE_KEY + analyzerId + "_" + startEpochTime + "_" + endEpochTime)) {
 			objMeasurement = (Measurement)DBCache.INSTANCE.get(CACHE_KEY + analyzerId + "_" + startEpochTime + "_" + endEpochTime);
 		} else {
-			String SQL = "SELECT * FROM dbo.[Measurement] WHERE AnalyzerId='" + analyzerId + "' AND EpochTime >= " + startEpochTime + " AND EpochTime <= " + endEpochTime;
+			String SQL = "SELECT * FROM dbo.[Measurement] WHERE AnalyzerId='" + analyzerId + "' AND EpochTime > " + startEpochTime + " AND EpochTime < " + endEpochTime;
 			ArrayList<Measurement> objMeasurementList = load(SQL);
 			if (objMeasurementList!=null && objMeasurementList.size()>0) {
 				objMeasurement = objMeasurementList.get(0);
