@@ -339,6 +339,8 @@ public final class SurveyorConstants {
 	
 	public static final String SQACUSSULOC="Santa Clara";
 	public static final String DEFAULTLOC="Default";
+	
+	public static final Integer DEFAULT_LOCATION_DATAROWID = 6;
 
 	public static final String REQUIRED_FIELD_VAL_MESSAGE = "This field is required.";	
 
@@ -371,9 +373,30 @@ public final class SurveyorConstants {
 	 * Other string constants
 	 */
 	public static final String UNKNOWN_TEXT = "UnknownText";
+	
 	/*
 	 * enum for list of constants
 	 */
+
+	public enum SurveyModeType {
+		Standard ("Standard"),
+		RapidResponse ("RapidResponse"),
+		Manual ("Manual"),
+		Operator ("Operator"),
+		Assessment ("Assessment"),
+		EQ ("EQ");
+		
+		private final String name;
+
+		SurveyModeType(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
+	}
+
 	public enum LicensedFeatures {
 		GAPGRID ("GAP Grid 1.0"),
 		REPORTMETADATA ("Report Metadata"),
