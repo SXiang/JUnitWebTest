@@ -3502,7 +3502,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			// Future improvement: Sort JSON using utility like Boon (https://github.com/RichardHightower/boon/wiki) before comparison. 
 			// Tracked by US3052.
 			Log.warn("JSONAssert comparison failed. Fallback to compareFilesAndSizesInDirectories() comparison.");
-			if (!FileUtility.compareFilesAndSizesInDirectories(actualDataFolderPath, expectedDataFolderPath)) {
+
+			Log.info("Compare .prj files for exact match.");
+			List<String> includeExtensions = new ArrayList<String>();
+			includeExtensions.add("prj");
+			if (!FileUtility.compareFilesForExactMatch(actualDataFolderPath, expectedDataFolderPath, includeExtensions)) {
+				return false;
+			}
+
+			Log.info("Compare all files in Shape folder (except .prj) for file size match.");
+			List<String> excludeExtensions = new ArrayList<String>();
+			excludeExtensions.add("prj");
+			if (!FileUtility.compareFilesAndSizesInDirectories(actualDataFolderPath, expectedDataFolderPath, excludeExtensions)) {
 				return false;
 			}
 		}
