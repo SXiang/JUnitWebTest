@@ -155,7 +155,7 @@ public class StoredProcComplianceAssessmentGetReportDrivingSurveys extends BaseE
 		try {
 			objReport.setAnalyzerId(resultSet.getString("AnalyzerId"));
 			objReport.setStartDateTimeWithTZ(resultSet.getString("StartDateTimeWithTZ"));
-			objReport.setEndDateTimeWithTZ(resultSet.getString("EndDateTimeWithTZ"));			
+			objReport.setEndDateTimeWithTZ(resultSet.getString("EndDateTimeWithTZ"));
 			objReport.setUserName(resultSet.getString("UserName"));
 			objReport.setTag(resultSet.getString("Tag"));
 			objReport.setStabilityClass(resultSet.getString("StabilityClass"));
