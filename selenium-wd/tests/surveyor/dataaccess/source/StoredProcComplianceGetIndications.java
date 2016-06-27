@@ -76,6 +76,9 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 	}
 
 	public void setText(String text) {
+		if(text==null){
+			text = "";
+		}
 		this.text = text;
 	}
 

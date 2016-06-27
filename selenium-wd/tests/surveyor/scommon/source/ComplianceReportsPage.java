@@ -1776,12 +1776,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		case ExcludePossibleNaturalGas:
 			elements.add(checkBoxPossibleNaturalGas);
 			break;
+		case None:
+			select = false;
 		case All:
 			elements.add(checkBoxVehicleExhaust);
 			elements.add(checkBoxEtheneBiogeniceMethane);
 			elements.add(checkBoxPossibleNaturalGas);
-		case None:
-			select = false;
 			break;
 		default:
 			break;
