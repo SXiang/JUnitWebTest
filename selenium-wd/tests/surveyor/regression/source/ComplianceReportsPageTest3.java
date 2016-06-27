@@ -4,6 +4,8 @@ import common.source.Log;
 
 import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.*;
+
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
@@ -17,6 +19,7 @@ import surveyor.scommon.actions.LoginPageActions;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 
@@ -32,6 +35,22 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		initializePageActions();
 		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  complianceReportsPage);
+
+		// Select run mode here.
+		setPropertiesForTestRunMode();
+	}
+
+	@Before
+	public void beforeTest() throws Exception{
+		setPropertiesForTestRunMode();
+	}
+
+	private static void setPropertiesForTestRunMode() throws Exception {
+		setTestRunMode(ReportTestRunMode.FullTestRun);
+		
+		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
+			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
+		}
 	}
 
 	/**
@@ -41,13 +60,6 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	protected static void initializePageActions() throws Exception {
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
-
-		// To run the test locally in UnitTest mode uncomment this line.
-		//setTestRunMode(ReportTestRunMode.UnitTestRun);
-		
-		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
-			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
-		}
 	}
 	
 	/**

@@ -38,6 +38,7 @@ import common.source.BaseHelper;
 import common.source.ExcelUtility;
 import common.source.FileUtility;
 import common.source.Log;
+import common.source.LogHelper;
 import common.source.NumberUtility;
 import common.source.PDFTableUtility.PDFTable;
 import common.source.PDFUtility;
@@ -2820,6 +2821,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		List<String[]> lisasIndicationTblList = this.getComplianceReportsPage().getSSRSPDFTableValues(
 				PDFTable.LISAINDICATIONTABLE, workingDataRow.title);
 		List<String> minAmplitudeValues = ArrayUtility.getColumnStringList(lisasIndicationTblList, LISAIndicationTableColumns.Amplitude.getIndex());
+		Log.info(String.format("Verifying min amplitude array values are greater than expected location min amplitude = [%s]", data));
+		Log.info(String.format("Min Amplitude array values are -> %s", LogHelper.listToString(minAmplitudeValues)));
 		return ArrayUtility.areValuesGreater(minAmplitudeValues.toArray(new String[minAmplitudeValues.size()]), NumberUtility.getFloatValueOf(data));
 	}
 

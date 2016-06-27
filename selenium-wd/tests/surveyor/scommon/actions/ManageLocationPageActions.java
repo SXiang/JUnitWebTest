@@ -7,6 +7,7 @@ import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
 import surveyor.scommon.actions.data.LocationDataReader;
 import surveyor.scommon.actions.data.LocationDataReader.LocationDataRow;
 import surveyor.scommon.source.ManageLocationsPage;
+import surveyor.scommon.source.SurveyorConstants.SurveyModeType;
 
 public class ManageLocationPageActions extends BasePageActions {
 
@@ -76,9 +77,14 @@ public class ManageLocationPageActions extends BasePageActions {
 		
 		return true;
 	}
-
+	
 	private ManageLocationsPage getManageLocationsPage() {
 		return (ManageLocationsPage)this.getPageObject();
+	}
+
+	public Float getMinAmplitudeForLocation(Integer dataRowID, SurveyModeType surveyModeType) throws Exception {
+		LocationDataReader locationDataReader = new LocationDataReader(excelUtility);
+		return locationDataReader.getMinAmpForLocation(dataRowID, surveyModeType);
 	}
 
 	/* Invoke action using specified ActionName */

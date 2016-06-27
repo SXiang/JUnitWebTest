@@ -168,19 +168,19 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 	private StoredProcComplianceGetIndications loadFrom(ResultSet resultSet) {
 		StoredProcComplianceGetIndications objReport = new StoredProcComplianceGetIndications();
 		try {
-			objReport.setPeakNumber(resultSet.getString("PeakNumber"));
-			objReport.setDateTime(resultSet.getString("Date_Time"));
-			objReport.setSurveyorUnitName(resultSet.getString("SurveyorUnitName"));
-			objReport.setAmplitude(resultSet.getFloat("Amplitude"));
-			objReport.setCh4(resultSet.getFloat("CH4"));
-			objReport.setText(resultSet.getString("Text"));
-			String aggrClassConf = resultSet.getString("AggregatedClassificationConfidence");
+			objReport.setPeakNumber(getStringColumnValue(resultSet, "PeakNumber"));
+			objReport.setDateTime(getStringColumnValue(resultSet, "Date_Time"));
+			objReport.setSurveyorUnitName(getStringColumnValue(resultSet, "SurveyorUnitName"));
+			objReport.setAmplitude(getFloatColumnValue(resultSet, "Amplitude"));
+			objReport.setCh4(getFloatColumnValue(resultSet, "CH4"));
+			objReport.setText(getStringColumnValue(resultSet, "Text"));
+			String aggrClassConf = getStringColumnValue(resultSet, "AggregatedClassificationConfidence");
 			if (!BaseHelper.isNullOrEmpty(aggrClassConf)) {
 				objReport.setAggregatedClassificationConfidence(aggrClassConf.replaceFirst(">=", ""));
 			}
-			objReport.setAggregatedClassificationConfidenceReport(resultSet.getString("AggregatedClassificationConfidence"));
-			objReport.setAggregatedEthaneToMethaneRatio(resultSet.getString("AggregatedEthaneToMethaneRatio"));
-			objReport.setAggregateDisposition(resultSet.getString("AggregatedDisposition"));
+			objReport.setAggregatedClassificationConfidenceReport(getStringColumnValue(resultSet, "AggregatedClassificationConfidence"));
+			objReport.setAggregatedEthaneToMethaneRatio(getStringColumnValue(resultSet, "AggregatedEthaneToMethaneRatio"));
+			objReport.setAggregateDisposition(getStringColumnValue(resultSet, "AggregatedDisposition"));
 		} catch (SQLException e) {
 			Log.error("Class StoredProcComplianceGetIndications | " + e.toString());
 		}

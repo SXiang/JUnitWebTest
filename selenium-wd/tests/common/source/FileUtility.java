@@ -177,7 +177,38 @@ public class FileUtility {
 		return compareFilesInDirectories(firstFolderPath, secondFolderPath, false);
 	}
 
+	public static boolean compareFilesForExactMatch(String firstFolderPath, String secondFolderPath, List<String> includeExtensions) throws IOException {
+		Log.method("compareFilesForExactMatch", firstFolderPath, secondFolderPath, LogHelper.strListToString(includeExtensions));
+		Log.info(String.format("Comparing files content (for specified extensions) in Folders - [%s] <==> [%s]...", firstFolderPath, secondFolderPath));
+		
+		// Check that first folder and second folder have files with exact same content (for specified extensions).
+		List<String> firstDirectoryFiles = FileUtility.getFilesInDirectory(Paths.get(firstFolderPath), false /*includeFullPath*/);
+		for (String fDirFile : firstDirectoryFiles) {
+			Path fFileFullPath = Paths.get(firstFolderPath, fDirFile);
+			Path sFileFullPath = Paths.get(secondFolderPath, fDirFile);
+			
+			String fFileExt= getFileExtension(fFileFullPath.toString());
+			if ((includeExtensions == null) || (includeExtensions.contains(fFileExt.toLowerCase()))) {
+				if (!FileUtils.contentEqualsIgnoreEOL(new File(fFileFullPath.toString()), new File(sFileFullPath.toString()), null /*charset name*/)) {
+					Log.info(String.format("[File-1 =%s] and [File-2 =%s] content does NOT match . <-- [Return FALSE]", 
+							fFileFullPath, sFileFullPath));
+					Log.info(String.format("[File-1 =%s] content : %s", fFileFullPath, 
+							FileUtility.readFileContents(fFileFullPath.toString(), true /*retainNewline*/)));
+					Log.info(String.format("[File-2 =%s] content : %s", sFileFullPath, 
+							FileUtility.readFileContents(sFileFullPath.toString(), true /*retainNewline*/)));
+					return false;
+				}
+			}
+		}			
+
+		return true;
+	}
+		
 	public static boolean compareFilesAndSizesInDirectories(String firstFolderPath, String secondFolderPath) throws IOException {
+		return compareFilesAndSizesInDirectories(firstFolderPath, secondFolderPath, null /*skipExtensions*/);
+	}
+	
+	public static boolean compareFilesAndSizesInDirectories(String firstFolderPath, String secondFolderPath, List<String> excludeExtensions) throws IOException {
 		Log.info(String.format("Comparing files sizes in Folders - [%s] <==> [%s]...", firstFolderPath, secondFolderPath));
 		
 		// First check all files in both directories are the same.
@@ -188,6 +219,12 @@ public class FileUtility {
 			for (String fDirFile : firstDirectoryFiles) {
 				Path fFileFullPath = Paths.get(firstFolderPath, fDirFile);
 				Path sFileFullPath = Paths.get(secondFolderPath, fDirFile);
+				
+				String fFileExt= getFileExtension(fFileFullPath.toString());
+				if (excludeExtensions != null && excludeExtensions.contains(fFileExt.toLowerCase())) {
+					continue;    // skip files which are in SKIP list.
+				}
+				
 				long fFileSize = new File(fFileFullPath.toString()).length();
 				long sFileSize = new File(sFileFullPath.toString()).length();
 				
@@ -198,6 +235,7 @@ public class FileUtility {
 				}
 			}			
 		}
+
 		return retVal;
 	}
 		
@@ -439,15 +477,29 @@ public class FileUtility {
 		Path directoryWithFiles = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\shapefileutility-tests");
 		Path emptyDirectory = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\shapefileutility-tests\\empty-dir");
 		
-		Path compareFolder1 = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\fileutility-tests\\folder1a");
-		Path compareFolder2 = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\fileutility-tests\\folder1b");
-		Path compareFolder3 = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\fileutility-tests\\folder1c");
+		Path compareFolder1a = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\fileutility-tests\\folder1a");
+		Path compareFolder1b = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\fileutility-tests\\folder1b");
+		Path compareFolder1c = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\fileutility-tests\\folder1c");
+
+		Path compareFolder2a = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\fileutility-tests\\folder2a");
+		Path compareFolder2b = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\fileutility-tests\\folder2b");
 
 		// Unit tests for -> getFilesInDirectory(Path directory, String filter)
+		Log.info("Executing test -> test_compareFilesForExactMatchNoFilter_Success() ...");
+		test_compareFilesForExactMatchNoFilter_Failure(compareFolder2a, compareFolder2b);
+		Log.info("Executing test -> test_compareFilesForExactMatchWithFilter_Success() ...");
+		List<String> includeExtensions = new ArrayList<String>();
+		includeExtensions.add("prj");
+		test_compareFilesForExactMatchWithFilter_Success(compareFolder2a, compareFolder2b, includeExtensions);
+		Log.info("Executing test -> test_compareFilesAndSizesInDirectoriesWithFilter_Success() ...");
+		List<String> excludeExtensions = new ArrayList<String>();
+		excludeExtensions.add("prj");
+		test_compareFilesAndSizesInDirectoriesWithFilter_Success(compareFolder2a, compareFolder2b, excludeExtensions);
+
 		Log.info("Executing test -> test_compareFilesAndSizesInDirectories_SameSize_Success() ...");
-		test_compareFilesAndSizesInDirectories_SameSize_Success(compareFolder1, compareFolder2);
+		test_compareFilesAndSizesInDirectories_SameSize_Success(compareFolder1a, compareFolder1b);
 		Log.info("Executing test -> test_compareFilesAndSizesInDirectories_DifferentSizeFile_Failure() ...");
-		test_compareFilesAndSizesInDirectories_DifferentSizeFile_Failure(compareFolder1, compareFolder3);
+		test_compareFilesAndSizesInDirectories_DifferentSizeFile_Failure(compareFolder1a, compareFolder1c);
 		Log.info("Executing test -> test_getFilesInDirectory_DirWithFiles_ValidFilterWithMatch() ...");
 		test_getFilesInDirectory_DirWithFiles_ValidFilterWithMatch(directoryWithFiles);
 		Log.info("Executing test -> test_getFilesInDirectory_DirWithFiles_ValidFilterWithNoMatch() ...");
@@ -458,6 +510,18 @@ public class FileUtility {
 		test_getFilesInDirectory_DirWithFiles_ValidFilterSingleExtWithMatch(directoryWithFiles);
 		Log.info("Executing test -> test_getFilesInDirectory_DirWithNoFiles_ValidFilter() ...");
 		test_getFilesInDirectory_DirWithNoFiles_ValidFilter(emptyDirectory);
+	}
+
+	private static void test_compareFilesForExactMatchNoFilter_Failure(Path firstFolderPath, Path secondFolderPath) throws IOException {
+		Assert.assertFalse(FileUtility.compareFilesForExactMatch(firstFolderPath.toString(), secondFolderPath.toString(), null /*includeExtensions*/));
+	}
+
+	private static void test_compareFilesForExactMatchWithFilter_Success(Path firstFolderPath, Path secondFolderPath, List<String> includeExtensions) throws IOException {
+		Assert.assertTrue(FileUtility.compareFilesForExactMatch(firstFolderPath.toString(), secondFolderPath.toString(), includeExtensions));
+	}
+
+	private static void test_compareFilesAndSizesInDirectoriesWithFilter_Success(Path firstFolderPath, Path secondFolderPath, List<String> skipExtensions) throws IOException {
+		Assert.assertTrue(FileUtility.compareFilesAndSizesInDirectories(firstFolderPath.toString(), secondFolderPath.toString(), skipExtensions));
 	}
 
 	private static void test_compareFilesAndSizesInDirectories_SameSize_Success(Path firstFolderPath, Path secondFolderPath) throws IOException {
