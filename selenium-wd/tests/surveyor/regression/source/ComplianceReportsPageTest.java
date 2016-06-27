@@ -39,8 +39,10 @@ import static surveyor.scommon.source.SurveyorConstants.RSURENDDATE;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNMANTAG;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNRRTAG;
-import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
+import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG3200;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPTUA;
+import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
+import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
 import static surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 
 import java.io.IOException;
@@ -265,6 +267,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
@@ -363,6 +367,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
@@ -434,6 +440,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
@@ -510,6 +518,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYGAPS, "1");
 		viewMap.put(KEYASSETS, "1");
 		viewMap.put(KEYBOUNDARIES, "0");
+		viewMap.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap);
@@ -584,6 +594,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
@@ -662,6 +674,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
@@ -731,6 +745,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "0");
 		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "0");
+		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 		viewList.add(viewMap1);
 
@@ -786,12 +802,14 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYGAPS, "0");
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
+		viewMap.put(KEYHIGHLIGHTLISAASSETS, "0");
+		viewMap.put(KEYHIGHLIGHTGAPASSETS, "0");
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewList.add(viewMap);
 
 		List<String> tagList = new ArrayList<String>();
-		tagList.add(CUSDRVSTDTAG);
+		tagList.add(CUSDRVSTDTAG3200);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSUA, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 
@@ -853,12 +871,14 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYGAPS, "0");
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
+		viewMap.put(KEYHIGHLIGHTLISAASSETS, "0");
+		viewMap.put(KEYHIGHLIGHTGAPASSETS, "0");
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewList.add(viewMap);
 
 		List<String> tagList = new ArrayList<String>();
-		tagList.add(CUSDRVSTDTAG);
+		tagList.add(CUSDRVSTDTAG3200);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 
@@ -912,6 +932,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
+		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
@@ -1000,12 +1022,16 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYGAPS, "0");
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
+		viewMap.put(KEYHIGHLIGHTLISAASSETS, "0");
+		viewMap.put(KEYHIGHLIGHTGAPASSETS, "0");
+
+		
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewList.add(viewMap);
 
 		List<String> tagList = new ArrayList<String>();
-		tagList.add(CUSDRVSTDTAG);
+		tagList.add(CUSDRVSTDTAG3200);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 
@@ -1056,6 +1082,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "1");
+		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
 		viewList.add(viewMap1);
@@ -1126,12 +1154,14 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYGAPS, "1");
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
+		viewMap.put(KEYHIGHLIGHTLISAASSETS, "0");
+		viewMap.put(KEYHIGHLIGHTGAPASSETS, "0");
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewList.add(viewMap);
 
 		List<String> tagList = new ArrayList<String>();
-		tagList.add(CUSDRVSTDTAG);
+		tagList.add(CUSDRVSTDTAG3200);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEPTUA, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 

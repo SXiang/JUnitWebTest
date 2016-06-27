@@ -700,7 +700,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 		} else {
 			addSurveyInformation(reports);
 		}
-		this.clickOnOKButton();
+		//this.clickOnOKButton();
+		this.clickOnCancelBtn();
 	}
 
 	public void addSurveyInformation(Reports reports) throws Exception {

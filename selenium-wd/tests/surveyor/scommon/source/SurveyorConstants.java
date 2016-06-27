@@ -274,6 +274,7 @@ public final class SurveyorConstants {
 	public static final String PICADMNMANTAG = "man";
 	public static final String PICADMMANTAG = "pic";
 	public static final String CUSDRVSTDTAG = "stnd";
+	public static final String CUSDRVSTDTAG3200 = "stnd-pic";
 	public static final String CUSDRVRRTAG = "rr";
 	public static final String CUSDRVRAPIDTAG = "rapid";
 	public static final String CUSDRVOPTAG = "op";
@@ -282,7 +283,10 @@ public final class SurveyorConstants {
 	public static final String CUSDRVETHMNTAG= "EthaneManual";
 	public static final String PICADMNSTDTAG2 = "stnd-pic";
 	public static final String PICADMNSTDTAG2_STARTEPOCH = "1450134967.928";
+	public static final String PICADMNSTDTAG2_STARTEPOCH_MINUS_EPSILON = "1450134967.878";
 	public static final String PICADMNSTDTAG2_ENDEPOCH = "1450136588.925";
+	public static final String PICADMNSTDTAG2_ENDEPOCH_PLUS_EPSILON = "1450136588.975";
+	public static final double EPSILON = 0.05;
 	public static final String PICADMNRRTAG2 = "rr-pic";
 	public static final String PICADMNOPTAG2 = "op-pic";
 	public static final String PICADMNMANTAG2 = "man-pic";
