@@ -86,6 +86,16 @@ public class StoredProcComplianceAssessmentGetReportDrivingSurveys extends BaseE
 		this.description = description;
 	}
 
+	@Override
+	public String toString(){
+		String wsp = " ";
+		long duration = DateUtility.getDuration(getStartDateTimeWithTZ(), getEndDateTimeWithTZ(), true);
+		String text = getStartDateTimeWithTZ() + wsp + getEndDateTimeWithTZ() + wsp + duration + wsp + getUserName()
+				+ wsp + getDescription()
+				+ wsp + getAnalyzerId() + wsp + getTag() + wsp+getStabilityClass();
+		return text;
+	}
+	
 	public boolean isEquals(StoredProcComplianceAssessmentGetReportDrivingSurveys obj) {
 
 		if (!((this.getAnalyzerId().trim()).equals(obj.getAnalyzerId().trim()))) {
@@ -145,12 +155,11 @@ public class StoredProcComplianceAssessmentGetReportDrivingSurveys extends BaseE
 		try {
 			objReport.setAnalyzerId(resultSet.getString("AnalyzerId"));
 			objReport.setStartDateTimeWithTZ(resultSet.getString("StartDateTimeWithTZ"));
-			objReport.setEndDateTimeWithTZ(resultSet.getString("EndDateTimeWithTZ"));
+			objReport.setEndDateTimeWithTZ(resultSet.getString("EndDateTimeWithTZ"));			
 			objReport.setUserName(resultSet.getString("UserName"));
 			objReport.setTag(resultSet.getString("Tag"));
 			objReport.setStabilityClass(resultSet.getString("StabilityClass"));
 			objReport.setDescription(resultSet.getString("Description"));
-
 		} catch (SQLException e) {
 			Log.error("Class Report | " + e.toString());
 		}

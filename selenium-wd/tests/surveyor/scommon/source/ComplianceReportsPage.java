@@ -2308,75 +2308,30 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		} else {
 			surveyTable = RegexUtility.getStringInBetween(actualReportString, "Selected Driving Surveys", " Layers");
 		}
-		InputStream inputStream = new ByteArrayInputStream(surveyTable.getBytes());
-		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
-		String line = null;
-		ArrayList<String> lineList = new ArrayList<String>();
-		try {
-			int countLines = 0;
-			StringBuilder lineBuilder = new StringBuilder();
-			boolean valid = false;
-			while ((line = bufferReader.readLine()) != null) {
-				if (valid||line.length() > 3) {
-					valid = true;
-					lineBuilder.append(line);
-					countLines++;
-					if (countLines == 4 || countLines == 6) {
-						lineBuilder.append(" ");
-					}
-					if (countLines % 4 == 0) {
-						lineList.add(lineBuilder.toString());
-						lineBuilder = new StringBuilder();
-					}
-				}
-			}
-			if(lineBuilder.length()!=0){//*** Temp solution for overlooked lines
-				String lastLine = lineList.remove(lineList.size()-1) + " "+lineBuilder.toString();
-				lineList.add(lastLine);
-			}
-			
-			ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys> reportSurveyList = new ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys>();
-			Iterator<String> lineIterator = lineList.iterator();
-			while (lineIterator.hasNext()) {
-				StoredProcComplianceAssessmentGetReportDrivingSurveys reportSurveyEntry = new StoredProcComplianceAssessmentGetReportDrivingSurveys();
-				Pattern datePattern = Pattern.compile(RegexUtility.getReportRegexDatePattern(true));
-				String lineForMatching = lineIterator.next();
-				Matcher matchingDate = datePattern.matcher(lineForMatching);
-				int dateCounter = 1;
-				String remaining = lineForMatching;
-				while (matchingDate.find()) {
-					if (dateCounter == 1) {
-						reportSurveyEntry.setStartDateTimeWithTZ(matchingDate.group(0).trim());
-						remaining = remaining.replace(matchingDate.group(0), "").trim();
-					}else if (dateCounter == 2) {
-						reportSurveyEntry.setEndDateTimeWithTZ(matchingDate.group(0).trim());
-						remaining = remaining.replace(matchingDate.group(0), "").trim();
-					}
-					dateCounter++;
-				}
-				String lineWithoutDates = remaining.trim();
-				String[] splitWithSpace = lineWithoutDates.split("\\s+");
-				if(splitWithSpace.length>=6){
-					reportSurveyEntry.setUserName(splitWithSpace[1].trim());
-					reportSurveyEntry.setStabilityClass(splitWithSpace[4].trim());
-					reportSurveyEntry.setTag(splitWithSpace[3].trim());
-					reportSurveyEntry.setAnalyzerId(splitWithSpace[2].trim());
-					reportSurveyEntry.setDescription(splitWithSpace[0].trim());
-				}
-				reportSurveyList.add(reportSurveyEntry);
-			}
-			ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys> listFromStoredProc = StoredProcComplianceAssessmentGetReportDrivingSurveys
+		surveyTable = surveyTable.replaceAll(System.lineSeparator(), "");
+		String datePattern = RegexUtility.getReportRegexDatePattern(true);
+		String drivingSurveysLinePattern = datePattern+" *"+datePattern;
+		surveyTable = surveyTable.replaceAll("("+drivingSurveysLinePattern+")", System.lineSeparator()+"$1");
+		String[] lines =  surveyTable.split(System.lineSeparator());
+		Log.info("Driving survey table contains "+(lines.length-1)+" records");
+		ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys> listFromStoredProc = StoredProcComplianceAssessmentGetReportDrivingSurveys
 					.getReportDrivingSurveys(reportId);
-			Iterator<StoredProcComplianceAssessmentGetReportDrivingSurveys> reportIterator = reportSurveyList
-					.iterator();
-			while (reportIterator.hasNext()) {
-				if (!reportIterator.next().isInList(listFromStoredProc)) {
-					Log.info("Driving survey table data verification failed");
-					return false;
+		for(int i=1;i<lines.length;i++){
+			boolean validLine = false;
+			String expectedLine = "";
+			String actualLine = lines[i].replaceAll(" ", "");
+			Log.info("Looking for driving survey '"+actualLine+"' in DB");
+			for(StoredProcComplianceAssessmentGetReportDrivingSurveys survey:listFromStoredProc){
+				expectedLine = survey.toString().replaceAll(" ", "");
+				if(actualLine.equalsIgnoreCase(expectedLine)){
+					validLine = true;
+					break;
 				}
 			}
-		} finally {
-			bufferReader.close();
+			if(!validLine){
+				Log.error(String.format("Driving survey in PDF is not found, '%s'",actualLine));
+				return false;
+			}
 		}
 		Log.info("Driving survey table verification passed");
 		return true;
