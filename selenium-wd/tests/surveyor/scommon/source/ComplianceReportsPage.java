@@ -2309,74 +2309,30 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		} else {
 			surveyTable = (RegexUtility.getStringInBetween(actualReportString, "Selected Driving Surveys", " Layers")).trim().replaceAll("//s+", "").replace("#", "").replace("LISA ", "");
 		}
-		InputStream inputStream = new ByteArrayInputStream(surveyTable.getBytes());
-		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
-		String line = null;
-		ArrayList<String> lineList = new ArrayList<String>();
-		try {
-			int countLines = 0;
-			StringBuilder lineBuilder = new StringBuilder();
-			while ((line = bufferReader.readLine()) != null) {
-				if (line.length() > 3) {
-					lineBuilder.append(line);
-					countLines++;
-					if (countLines == 4 || countLines == 6) {
-						lineBuilder.append(" ");
-					}
-
-					if (countLines % 8 == 0) {
-						lineList.add(lineBuilder.toString());
-						lineBuilder = new StringBuilder();
-					}
-				}
-			}
-			ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys> reportSurveyList = new ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys>();
-			Iterator<String> lineIterator = lineList.iterator();
-			while (lineIterator.hasNext()) {
-				StoredProcComplianceAssessmentGetReportDrivingSurveys reportSurveyEntry = new StoredProcComplianceAssessmentGetReportDrivingSurveys();
-				Pattern datePattern = Pattern.compile(RegexUtility.getReportRegexDatePattern(true));
-				String lineForMatching = lineIterator.next();
-				Matcher matchingDate = datePattern.matcher(lineForMatching);
-				int dateCounter = 1;
-				String remaining = lineForMatching;
-				while (matchingDate.find()) {
-
-					if (dateCounter == 1) {
-						reportSurveyEntry.setStartDateTimeWithTZ(matchingDate.group(0).trim());
-						remaining = remaining.replace(matchingDate.group(0), "").trim();
-					}
-					if (dateCounter == 2) {
-						reportSurveyEntry.setEndDateTimeWithTZ(matchingDate.group(0).trim());
-						remaining = remaining.replace(matchingDate.group(0), "").trim();
-					}
-					dateCounter++;
-
-				}
-				String lineWithoutDates = remaining.trim();
-				String[] splitWithSpace = lineWithoutDates.split("\\s+");
-				reportSurveyEntry.setUserName(splitWithSpace[1].trim());
-				remaining = remaining.replace(splitWithSpace[1], "");
-				reportSurveyEntry.setStabilityClass(splitWithSpace[splitWithSpace.length - 1].trim());
-				remaining = remaining.replace(splitWithSpace[splitWithSpace.length - 1], "");
-				reportSurveyEntry.setTag(splitWithSpace[splitWithSpace.length - 2].trim());
-				remaining = remaining.replace(splitWithSpace[splitWithSpace.length - 2], "");
-				reportSurveyEntry.setAnalyzerId(splitWithSpace[splitWithSpace.length - 3].trim());
-				remaining = remaining.replace(splitWithSpace[splitWithSpace.length - 3], "");
-				reportSurveyEntry.setDescription(remaining.replace(splitWithSpace[0].trim(), "").trim());
-				reportSurveyList.add(reportSurveyEntry);
-			}
-			ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys> listFromStoredProc = StoredProcComplianceAssessmentGetReportDrivingSurveys
+		surveyTable = surveyTable.replaceAll(System.lineSeparator(), "");
+		String datePattern = RegexUtility.getReportRegexDatePattern(true);
+		String drivingSurveysLinePattern = datePattern+" *"+datePattern;
+		surveyTable = surveyTable.replaceAll("("+drivingSurveysLinePattern+")", System.lineSeparator()+"$1");
+		String[] lines =  surveyTable.split(System.lineSeparator());
+		Log.info("Driving survey table contains "+(lines.length-1)+" records");
+		ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys> listFromStoredProc = StoredProcComplianceAssessmentGetReportDrivingSurveys
 					.getReportDrivingSurveys(reportId);
-			Iterator<StoredProcComplianceAssessmentGetReportDrivingSurveys> reportIterator = reportSurveyList
-					.iterator();
-			while (reportIterator.hasNext()) {
-				if (!reportIterator.next().isInList(listFromStoredProc)) {
-					Log.info("Driving survey table data verification failed");
-					return false;
+		for(int i=1;i<lines.length;i++){
+			boolean validLine = false;
+			String expectedLine = "";
+			String actualLine = lines[i].replaceAll(" ", "");
+			Log.info("Looking for driving survey '"+actualLine+"' in DB");
+			for(StoredProcComplianceAssessmentGetReportDrivingSurveys survey:listFromStoredProc){
+				expectedLine = survey.toString().replaceAll(" ", "");
+				if(actualLine.equalsIgnoreCase(expectedLine)){
+					validLine = true;
+					break;
 				}
 			}
-		} finally {
-			bufferReader.close();
+			if(!validLine){
+				Log.error(String.format("Driving survey in PDF is not found, '%s'",actualLine));
+				return false;
+			}
 		}
 		Log.info("Driving survey table verification passed");
 		return true;
