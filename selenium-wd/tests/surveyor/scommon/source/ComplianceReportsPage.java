@@ -100,6 +100,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import common.source.ArrayUtility;
 import common.source.BaseHelper;
 import common.source.CSVUtility;
 import common.source.Log;
@@ -243,13 +244,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static List<String[]> preCoverageForecastTo70;
 	public static List<String[]> preCoverageForecast;
 
-	@FindBy(how = How.ID, using = "zip-file_pdf")
+	@FindBy(how = How.ID, using = "compliance-zip-pdf-download")
 	protected WebElement zipImg;
 
-	@FindBy(how = How.ID, using = "zip-file_shapefile")
+	@FindBy(how = How.ID, using = "compliance-zip-shapefile-download")
 	protected WebElement zipShape;
 
-	@FindBy(how = How.ID, using = "zip-file_reportmeta")
+	@FindBy(how = How.ID, using = "compliance-zip-reportmeta-download")
 	protected WebElement zipMeta;
 
 	@FindBy(how = How.ID, using = "modalClose")
@@ -1121,7 +1122,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					if (buttonImg.isDisplayed()) {
 						if (clickButton) {
 							if (buttonType != ComplianceReportButtonType.ReportErrorLabel) {
-								Log.clickElementInfo("buttonType");
+								Log.clickElementInfo(buttonType.toString());
 								buttonImg.click();
 								// If resubmit then wait for modal and confirm resubmit.
 								if (buttonType == ComplianceReportButtonType.Resubmit) {
@@ -2299,14 +2300,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		String surveyTable;
 		if (RegexUtility.getStringInBetween(actualReportString, "Indication Table", "Surveyor Date") != null) {
-			surveyTable = RegexUtility.getStringInBetween(actualReportString, "Indication Table", "Surveyor Date");
+			surveyTable = (RegexUtility.getStringInBetween(actualReportString, "Indication Table", "Surveyor Date")).trim().replaceAll("//s+", "").replace("#", "").replace("LISA ", "");
 			if (surveyTable.contains("Gap Table")) {
 				// TODO: DEFECT in parsing. SKIP check for this case.
 				Log.warn("SKIPPING Driving survey verification. The case of Driving Survey table and Gap table PDF parsing is currently NOT supported!!!");
 				return true;
 			}
 		} else {
-			surveyTable = RegexUtility.getStringInBetween(actualReportString, "Selected Driving Surveys", " Layers");
+			surveyTable = (RegexUtility.getStringInBetween(actualReportString, "Selected Driving Surveys", " Layers")).trim().replaceAll("//s+", "").replace("#", "").replace("LISA ", "");
 		}
 		surveyTable = surveyTable.replaceAll(System.lineSeparator(), "");
 		String datePattern = RegexUtility.getReportRegexDatePattern(true);
@@ -3457,7 +3458,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			// Future improvement: Sort JSON using utility like Boon (https://github.com/RichardHightower/boon/wiki) before comparison. 
 			// Tracked by US3052.
 			Log.warn("JSONAssert comparison failed. Fallback to compareFilesAndSizesInDirectories() comparison.");
-			if (!FileUtility.compareFilesAndSizesInDirectories(actualDataFolderPath, expectedDataFolderPath)) {
+
+			Log.info("Compare .prj files for exact match.");
+			List<String> includeExtensions = new ArrayList<String>();
+			includeExtensions.add("prj");
+			if (!FileUtility.compareFilesForExactMatch(actualDataFolderPath, expectedDataFolderPath, includeExtensions)) {
+				return false;
+			}
+
+			Log.info("Compare all files in Shape folder (except .prj) for file size match.");
+			List<String> excludeExtensions = new ArrayList<String>();
+			excludeExtensions.add("prj");
+			if (!FileUtility.compareFilesAndSizesInDirectories(actualDataFolderPath, expectedDataFolderPath, excludeExtensions)) {
 				return false;
 			}
 		}
@@ -3695,6 +3707,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String pdfFilePath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), pdfFilename).toString();
 		PDFTableUtility pdfTableUtility = new PDFTableUtility();
 		List<String[]> pdfTableList = pdfTableUtility.extractPDFTable(pdfFilePath, pdfTable);
+		Log.info("Checking if Array values returned has header...");
+		if (ArrayUtility.listValuesHasHeader(pdfTableList)) {
+			Log.info("Found header in returned array values. Skipping header...");
+			Log.info(String.format("Extracted tables values from PDF (before skipping header) : %s", LogHelper.listOfArrayToString(pdfTableList)),
+					LogCategory.SSRSPdfContent);
+			pdfTableList = ArrayUtility.getListValuesSkipHeader(pdfTableList);
+		}
 		Log.info(String.format("Extracted tables values from PDF : %s", LogHelper.listOfArrayToString(pdfTableList)),
 				LogCategory.SSRSPdfContent);
 		return pdfTableList;

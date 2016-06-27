@@ -40,6 +40,7 @@ import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNMANTAG;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNRRTAG;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG3200;
+import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPTUA;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
@@ -155,6 +156,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 			}
 		} else
 			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
+
 
 	}
 
@@ -546,6 +548,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		complianceReportsPage.open();
 
 		rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, ReportModeFilter.Standard);
+		rpt.setViewLayersList(viewLayerList);
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
@@ -695,7 +698,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, ReportModeFilter.Standard);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, false);
 		rpt.setViewLayersList(viewLayerList);
 
 		complianceReportsPage.addNewReport(rpt);
@@ -809,7 +812,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewList.add(viewMap);
 
 		List<String> tagList = new ArrayList<String>();
-		tagList.add(CUSDRVSTDTAG3200);
+		tagList.add(CUSDRVSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSUA, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 
@@ -878,7 +881,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewList.add(viewMap);
 
 		List<String> tagList = new ArrayList<String>();
-		tagList.add(CUSDRVSTDTAG3200);
+		tagList.add(CUSDRVSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 
@@ -1031,7 +1034,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewList.add(viewMap);
 
 		List<String> tagList = new ArrayList<String>();
-		tagList.add(CUSDRVSTDTAG3200);
+		tagList.add(CUSDRVSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 
@@ -1161,7 +1164,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewList.add(viewMap);
 
 		List<String> tagList = new ArrayList<String>();
-		tagList.add(CUSDRVSTDTAG3200);
+		tagList.add(CUSDRVSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEPTUA, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 

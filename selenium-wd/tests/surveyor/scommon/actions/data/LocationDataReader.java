@@ -3,6 +3,8 @@ package surveyor.scommon.actions.data;
 import common.source.ExcelUtility;
 import common.source.Log;
 import surveyor.scommon.actions.ActionArguments;
+import surveyor.scommon.actions.data.LocationDataReader.LocationDataRow;
+import surveyor.scommon.source.SurveyorConstants.SurveyModeType;
 
 public class LocationDataReader extends BaseDataReader {
 
@@ -94,6 +96,23 @@ public class LocationDataReader extends BaseDataReader {
 		return null;
 	}
 	
+	public Float getMinAmpForLocation(Integer dataRowID, SurveyModeType surveyModeType) throws Exception {
+		Float minAmp = 0.0F;
+		LocationDataRow locationDataRow = this.getDataRow(dataRowID);
+		if (surveyModeType.equals("Standard")) {
+			minAmp = Float.valueOf(locationDataRow.standardMinAmplitude);
+		} else if (surveyModeType.equals("RapidResponse")) {
+			minAmp = Float.valueOf(locationDataRow.rapidResponseMinAmplitude);
+		} else if (surveyModeType.equals("Operator")) {
+			minAmp = Float.valueOf(locationDataRow.operatorMinAmplitude);
+		} else if (surveyModeType.equals("Assessment")) {
+			minAmp = Float.valueOf(locationDataRow.assessmentMinAmplitude);
+		} else if (surveyModeType.equals("EQ")) {
+			minAmp = Float.valueOf(locationDataRow.eQMinAmplitude);
+		}
+		return minAmp;
+	}
+
 	public LocationDataRow getDataRow(Integer dataRowID) throws Exception {
 		String rowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
 		String name = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Name, TESTDATA_SHEET_NAME);

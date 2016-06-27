@@ -388,7 +388,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li")
 	protected WebElement msgEmptySurvey;
 
-	@FindBy(how = How.ID, using = "pdf")
+	@FindBy(how = How.ID, using = "compliance-table-pdf-download")
 	protected WebElement pdfImg;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys_length']/label/select")
@@ -1549,14 +1549,17 @@ public class ReportsBasePage extends SurveyorBasePage {
 							int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
 							rowNum = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
 									maxRows);
-							if (rowNum == maxRows) {
+							if (rowNum > maxRows) {
 								break;
 							}
-
 							this.btnReportViewer = getTable().findElement(
 									By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
+							//* Double check the correctness of the rowNum
+							if(rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
+									maxRows)){
+								continue;
+							}
 						}
-
 						return true;
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
@@ -1572,7 +1575,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				}
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
+			if (rowNum >= Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
 				this.nextBtn.click();
@@ -2510,10 +2513,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 					"Found cell (skipping newly added) : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]",
 					rptTitleCellText.trim(), createByCellText.trim()));
 
-			if (rowNum == maxRows)
-				break;
-
 			rowNum++;
+			if (rowNum > maxRows)
+				break;
 
 			Log.info(String.format("Processing row number - %d", rowNum));
 

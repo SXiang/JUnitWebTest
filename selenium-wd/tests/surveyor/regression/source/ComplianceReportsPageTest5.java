@@ -5,6 +5,7 @@ import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG2;
 import common.source.Log;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
@@ -53,6 +54,22 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		testEnvironmentAction = new TestEnvironmentActions();
 		measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver,  measurementSessionsPage);
+
+		// Select run mode here.
+		setPropertiesForTestRunMode();
+	}
+
+	@Before
+	public void beforeTest() throws Exception{
+		setPropertiesForTestRunMode();
+	}
+
+	private static void setPropertiesForTestRunMode() throws Exception {
+		setTestRunMode(ReportTestRunMode.FullTestRun);
+		
+		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
+			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
+		}
 	}
 
 	/**
@@ -64,13 +81,6 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		homePageAction = new HomePageActions(driver, baseURL, testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
-
-		// To run the test locally in UnitTest mode uncomment this line.
-		//setTestRunMode(ReportTestRunMode.UnitTestRun);
-
-		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
-			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
-		}
 	}
 
 	/**
