@@ -35,7 +35,7 @@ public class NumberUtility {
 		numberOrdinalMap.put(3, "Third");
 		numberOrdinalMap.put(4, "Fourth");
 		numberOrdinalMap.put(5, "Fifth");
-		numberOrdinalMap.put(6, "Sixsth");
+		numberOrdinalMap.put(6, "Sixth");
 		numberOrdinalMap.put(7, "Seventh");
 		numberOrdinalMap.put(8, "Eighth");
 		numberOrdinalMap.put(9, "Ninth");

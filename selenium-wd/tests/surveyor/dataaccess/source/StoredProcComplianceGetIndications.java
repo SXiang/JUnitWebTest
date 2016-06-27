@@ -170,13 +170,7 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 			objReport.setSurveyorUnitName(resultSet.getString("SurveyorUnitName"));
 			objReport.setAmplitude(resultSet.getFloat("Amplitude"));
 			objReport.setCh4(resultSet.getFloat("CH4"));
-			String text=resultSet.getString("Text");
-			if (!BaseHelper.isNullOrEmpty(text)) {
-				objReport.setText(text);
-			}
-			else{
-				objReport.setText("");
-			}
+			objReport.setText(resultSet.getString("Text"));
 			String aggrClassConf = resultSet.getString("AggregatedClassificationConfidence");
 			if (!BaseHelper.isNullOrEmpty(aggrClassConf)) {
 				objReport.setAggregatedClassificationConfidence(aggrClassConf.replaceFirst(">=", ""));
