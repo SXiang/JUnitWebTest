@@ -965,8 +965,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
 		complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
-		complianceReportsPage.waitForResubmitButton();
-		complianceReportsPage.getBtnResubmitReport().click();
 		
 		complianceReportsPage.waitForPageLoad();
 
