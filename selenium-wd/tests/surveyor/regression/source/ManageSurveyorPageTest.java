@@ -369,13 +369,13 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		manageSurveyorPage.open();
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(CONSTANT_CUSTOMER, TableColumnType.String);
-		assertTrue(manageSurveyorPage.checkTableSort("datatable", columnMap, pagination, manageSurveyorPage.getPaginationOption()));
+		assertTrue(manageSurveyorPage.checkTableSort("datatable_wrapper", columnMap, pagination, manageSurveyorPage.getPaginationOption()));
 		columnMap.remove(CONSTANT_CUSTOMER);
 		columnMap.put(CONSTANT_LOCATION, TableColumnType.String);
-		assertTrue(manageSurveyorPage.checkTableSort("datatable", columnMap, pagination, manageSurveyorPage.getPaginationOption()));
+		assertTrue(manageSurveyorPage.checkTableSort("datatable_wrapper", columnMap, pagination, manageSurveyorPage.getPaginationOption()));
 		columnMap.remove(CONSTANT_LOCATION);
 		columnMap.put(CONSTANT_SURVEYOR, TableColumnType.String);
-		assertTrue(manageSurveyorPage.checkTableSort("datatable", columnMap, pagination, manageSurveyorPage.getPaginationOption()));		
+		assertTrue(manageSurveyorPage.checkTableSort("datatable_wrapper", columnMap, pagination, manageSurveyorPage.getPaginationOption()));		
 	}
 	
 	/**
