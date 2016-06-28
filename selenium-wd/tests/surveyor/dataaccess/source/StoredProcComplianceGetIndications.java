@@ -76,6 +76,9 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 	}
 
 	public void setText(String text) {
+		if(text==null){
+			text = "";
+		}
 		this.text = text;
 	}
 
@@ -123,24 +126,31 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 
 	public boolean isEquals(StoredProcComplianceGetIndications obj) {
 		if (!this.getPeakNumber().trim().equals(obj.getPeakNumber().trim())) {
+			Log.error(String.format("PeakNumber is not match, Expect '%s', Actual '%s'", obj.getPeakNumber().trim(), getPeakNumber().trim()));
 			return false;
 		}
 		if (!this.getSurveyorUnitName().trim().equalsIgnoreCase(obj.getSurveyorUnitName().trim())) {
+			Log.error(String.format("SurveyorUnitName is not match, Expect '%s', Actual '%s'", obj.getPeakNumber().trim(), getPeakNumber().trim()));
 			return false;
 		}
 		if (this.getAmplitude() != (obj.getAmplitude())) {
+			Log.error(String.format("Amplitude is not match, Expect '%s', Actual '%s'", obj.getAmplitude(), getAmplitude()));
 			return false;
 		}
 		if (this.getCh4() != (obj.getCh4())) {
+			Log.error(String.format("Ch4 is not match, Expect '%s', Actual '%s'", obj.getCh4(), getCh4()));
 			return false;
 		}
 		if (!this.getText().trim().equals(obj.getText().trim())) {
+			Log.error(String.format("FieldNotes is not match, Expect '%s', Actual '%s'", obj.getText().trim(), getText().trim()));
 			return false;
 		}
 		if(!this.getAggregatedClassificationConfidence().equals(obj.getAggregatedClassificationConfidence())){
+			Log.error(String.format("AggregatedClassificationConfidence is not match, Expect '%s', Actual '%s'", obj.getAggregatedClassificationConfidence().trim(), getAggregatedClassificationConfidence().trim()));
 			return false;
 		}
 		if(!this.getAggregatedEthaneToMethaneRatio().equals(obj.getAggregatedEthaneToMethaneRatio())){
+			Log.error(String.format("AggregatedEthaneToMethaneRatio is not match, Expect '%s', Actual '%s'", obj.getAggregatedEthaneToMethaneRatio().trim(), getAggregatedEthaneToMethaneRatio().trim()));
 			return false;
 		}
 		return true;
@@ -148,7 +158,6 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 
 	public boolean isInList(ArrayList<StoredProcComplianceGetIndications> list) {
 		for (StoredProcComplianceGetIndications storedProcIndications : list) {
-			Log.debug(this.toString()+"  ---   "+storedProcIndications);	
 			if (this.isEquals(storedProcIndications)) {
 				return true;
 			}
@@ -159,19 +168,19 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 	private StoredProcComplianceGetIndications loadFrom(ResultSet resultSet) {
 		StoredProcComplianceGetIndications objReport = new StoredProcComplianceGetIndications();
 		try {
-			objReport.setPeakNumber(resultSet.getString("PeakNumber"));
-			objReport.setDateTime(resultSet.getString("Date_Time"));
-			objReport.setSurveyorUnitName(resultSet.getString("SurveyorUnitName"));
-			objReport.setAmplitude(resultSet.getFloat("Amplitude"));
-			objReport.setCh4(resultSet.getFloat("CH4"));
-			objReport.setText(resultSet.getString("Text"));
-			String aggrClassConf = resultSet.getString("AggregatedClassificationConfidence");
+			objReport.setPeakNumber(getStringColumnValue(resultSet, "PeakNumber"));
+			objReport.setDateTime(getStringColumnValue(resultSet, "Date_Time"));
+			objReport.setSurveyorUnitName(getStringColumnValue(resultSet, "SurveyorUnitName"));
+			objReport.setAmplitude(getFloatColumnValue(resultSet, "Amplitude"));
+			objReport.setCh4(getFloatColumnValue(resultSet, "CH4"));
+			objReport.setText(getStringColumnValue(resultSet, "Text"));
+			String aggrClassConf = getStringColumnValue(resultSet, "AggregatedClassificationConfidence");
 			if (!BaseHelper.isNullOrEmpty(aggrClassConf)) {
 				objReport.setAggregatedClassificationConfidence(aggrClassConf.replaceFirst(">=", ""));
 			}
-			objReport.setAggregatedClassificationConfidenceReport(resultSet.getString("AggregatedClassificationConfidence"));
-			objReport.setAggregatedEthaneToMethaneRatio(resultSet.getString("AggregatedEthaneToMethaneRatio"));
-			objReport.setAggregateDisposition(resultSet.getString("AggregatedDisposition"));
+			objReport.setAggregatedClassificationConfidenceReport(getStringColumnValue(resultSet, "AggregatedClassificationConfidence"));
+			objReport.setAggregatedEthaneToMethaneRatio(getStringColumnValue(resultSet, "AggregatedEthaneToMethaneRatio"));
+			objReport.setAggregateDisposition(getStringColumnValue(resultSet, "AggregatedDisposition"));
 		} catch (SQLException e) {
 			Log.error("Class StoredProcComplianceGetIndications | " + e.toString());
 		}

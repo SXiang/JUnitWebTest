@@ -2,19 +2,14 @@ package surveyor.regression.source;
 
 import org.junit.Test;
 
-import surveyor.dataaccess.source.ResourceKeys;
-import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.SurveyViewPage;
 import static org.junit.Assert.*;
 import common.source.Log;
 import static surveyor.scommon.source.SurveyorConstants.ISOTOPIC_CAPTURE_CANCELLED;
 import static surveyor.scommon.source.SurveyorConstants.ISOTOPIC_CAPTURE_NOT_NATURAL_GAS;
 
-public class SurveyViewPageTest3 extends SurveyViewPageTest2 {
+public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
-	public SurveyViewPageTest3() {
-		super();
-	}
 	/* * Test Case ID: TC428_SurveyView_ViewIndicationsRapidResponseSurveyWhenNoGISLoaded
 	 * Script: -  	
 	 *	- - On Home Page, click on Driving Surveys -& View Survey

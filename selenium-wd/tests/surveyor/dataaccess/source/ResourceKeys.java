@@ -258,4 +258,24 @@ public class ResourceKeys {
 
 	// Constants for Data table
 	public static final String Constant_FilteredFromMaxTotalEntries = "Constant_FilteredFromMaxTotalEntries";
+	
+	// Capture Analysis Disposition types.
+	public static final String CaptureAnalysisDispositionTypesPrefix = "CaptureAnalysisDispositionTypes";
+	public static final String CaptureAnalysisDispositionTypes_Delta_Out_Of_Range = "CaptureAnalysisDispositionTypes_Delta_Out_Of_Range";
+	public static final String CaptureAnalysisDispositionTypes_Ethane_Ratio_Out_Of_Range = "CaptureAnalysisDispositionTypes_Ethane_Ratio_Out_Of_Range";
+	public static final String CaptureAnalysisDispositionTypes_Ethane_Ratio_SDev_Out_Of_Range = "CaptureAnalysisDispositionTypes_Ethane_Ratio_SDev_Out_Of_Range";
+	public static final String CaptureAnalysisDispositionTypes_Ethane_Reference_Fail = "CaptureAnalysisDispositionTypes_Ethane_Reference_Fail";
+	public static final String CaptureAnalysisDispositionTypes_Ethane_Reference_Pass = "CaptureAnalysisDispositionTypes_Ethane_Reference_Pass";
+	public static final String CaptureAnalysisDispositionTypes_Isotopic_Reference_Fail = "CaptureAnalysisDispositionTypes_Isotopic_Reference_Fail";
+	public static final String CaptureAnalysisDispositionTypes_Isotopic_Reference_Pass = "CaptureAnalysisDispositionTypes_Isotopic_Reference_Pass";
+	public static final String CaptureAnalysisDispositionTypes_Natural_Gas = "CaptureAnalysisDispositionTypes_Natural_Gas";
+	public static final String CaptureAnalysisDispositionTypes_Not_Natural_Gas = "CaptureAnalysisDispositionTypes_Not_Natural_Gas";
+	public static final String CaptureAnalysisDispositionTypes_Possible_Natural_Gas = "CaptureAnalysisDispositionTypes_Possible_Natural_Gas";
+	public static final String CaptureAnalysisDispositionTypes_Sample_Size_Too_Small = "CaptureAnalysisDispositionTypes_Sample_Size_Too_Small";
+	public static final String CaptureAnalysisDispositionTypes_Uncertainty_Out_Of_Range = "CaptureAnalysisDispositionTypes_Uncertainty_Out_Of_Range";
+	public static final String CaptureAnalysisDispositionTypes_Unknown = "CaptureAnalysisDispositionTypes_Unknown";
+	public static final String CaptureAnalysisDispositionTypes_User_Cancellation = "CaptureAnalysisDispositionTypes_User_Cancellation";
+	
+	// Ref Gas Capture description types.
+	public static final String ReferenceGasCaptureDescription_Isotopic_Reference_Pass = "ReferenceGasCaptureDescription_Isotopic_Reference_Pass";
 }

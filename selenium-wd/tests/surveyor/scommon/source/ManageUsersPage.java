@@ -164,6 +164,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public void addNewPicarroUser(String email, String password, boolean enabled) {
+		Log.method("addNewPicarroUser", email, password, enabled);
 		Log.clickElementInfo("Add New Picarro User");
 		this.btnAddNewPicarroUser.click();
 		this.waitForNewPageLoad();
@@ -200,11 +201,13 @@ public class ManageUsersPage extends SurveyorBasePage {
 	 */
 	public void addNewPicarroUser(String email, String password, String role,
 			String location, String timeZone) {
+		Log.method("addNewPicarroUser", email, password, role, location, timeZone);
 		addNewPicarroUser(email,password,password,role,location,timeZone);
 	}
 	
 	public void addNewPicarroUser(String email, String password, String passwordConfirm, String role,
 			String location, String timeZone) {
+		Log.method("addNewPicarroUser", email, password, passwordConfirm, role, location, timeZone);
 		Log.clickElementInfo("Add New Picarro User");
 		this.btnAddNewPicarroUser.click();
 		this.waitForNewPageLoad();
@@ -255,16 +258,19 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 	public void addNewCustomerUser(String customerName, String email,
 			String password, String role, String location) {
+		Log.method("addNewCustomerUser", customerName, email, password, role, location);
 		addNewCustomerUser(customerName, email, password, role, location, true /*enabled*/);
 	}
 
 	public void addNewCustomerUser(String customerName, String email,
 			String password, String role, String location, boolean enabled) {
+		Log.method("addNewCustomerUser", customerName, email, password, role, location, enabled);
 		addNewCustomerUser(customerName,email,password,password,role,location,enabled);
 	}
 	public void addNewCustomerUser(String customerName, String email,
 			String password, String passwordConfirm, String role, String location, boolean enabled) {
-		
+		Log.method("addNewCustomerUser", customerName, email, password, passwordConfirm, role, location, enabled);
+
 		Log.info(String.format("Adding new Customer user. Name=%s, Email=%s, Password=[HIDDEN], Role=%s, Location=%s", customerName, 
 				email, role, location));
 		Log.clickElementInfo("Add New Customer User");
@@ -306,8 +312,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 		this.waitForPageLoad();
 	}
 	
-	public void addNewCustomerUser(String customerName, String email,
-			String password, String role, String timeZone, String location) {
+	public void addNewCustomerUser(String customerName, String email, String password, String role, String timeZone, String location) {
+		Log.method("addNewCustomerUser", customerName, email, password, role, timeZone, location);
 		Log.info(String.format("Adding new Customer user. CustomerName=%s, Email=%s, Password=[HIDDEN], Role=%s, TimeZone=%s, Location=%s", 
 				customerName, email, role, timeZone, location));
 		Log.clickElementInfo("Add New Customer User");
@@ -358,6 +364,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public String addTestUser(String email, String password1, String password2) {
+		Log.method("addTestUser", email, password1, password2);
 		String rtnMsg = "";
 		waitForPageToLoad();
 		Log.clickElementInfo("Add New Customer User");
@@ -394,6 +401,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			rtnMsg = this.labelUserNameError.getText().trim();
 			Log.clickElementInfo("Cancel");
 			this.cancelAddBtn.click();
+			Log.info("Username error: " + rtnMsg);
 			return rtnMsg;
 		}
 		
@@ -401,6 +409,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			rtnMsg = this.labelUserPwdError.getText().trim();
 			Log.clickElementInfo("Cancel");
 			this.cancelAddBtn.click();
+			Log.info("User password error: " + rtnMsg);
 			return rtnMsg; 
 		}
 		
@@ -408,6 +417,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			rtnMsg = this.labelPwdConfirmError.getText().trim();
 			Log.clickElementInfo("Cancel");
 			this.cancelAddBtn.click();
+			Log.info("User password confirm error: " + rtnMsg);
 			return rtnMsg; 
 		}		
 		
@@ -418,6 +428,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				rtnMsg = userErrMsg;
 				Log.clickElementInfo("Cancel");
 				this.cancelAddBtn.click();
+				Log.info("Validation summary message: " + userErrMsg);
 			}
 		}
 		
@@ -425,6 +436,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}	
 
 	public boolean findExistingUser(String userName) {
+		Log.method("findExistingUser", userName);
 		Log.info(String.format("Find user '%s'", userName));
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
@@ -492,6 +504,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public boolean findExistingUser(String locationName, String userName, boolean isCustomerUser) {
+		Log.method("findExistingUser", locationName, userName, isCustomerUser);
 		Log.info(String.format("Find user '%s', locationname = '%s'", userName, locationName));
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
@@ -578,8 +591,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 		return false;
 	}
 
-	public boolean findExistingUser(String locationName, String userName,
-			String roleName) {
+	public boolean findExistingUser(String locationName, String userName, String roleName) {
+		Log.method("findExistingUser", locationName, userName, roleName);
 		Log.info(String.format("Find user '%s', location = '%s', role = '%s'", userName, locationName, roleName));
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
@@ -661,6 +674,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public String getUserRole(String userName) {
+		Log.method("getUserRole", userName);
 		Log.info(String.format("Looking for user role of '%s'", userName));
 		setPagination(PAGINATIONSETTING_100);
 
@@ -721,6 +735,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public String getUserStatus(String userName, boolean isCustomerUser) {
+		Log.method("getUserStatus", userName, isCustomerUser);
 		Log.info(String.format("Looking for user status of '%s'", userName));
 		setPagination(PAGINATIONSETTING_100);
 
@@ -784,8 +799,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 		return null;
 	}
 
-	public boolean editUser(String userName, String role, String timeZone,
-			boolean accountEnable, boolean isCustomerUser) {
+	public boolean editUser(String userName, String role, String timeZone, boolean accountEnable, boolean isCustomerUser) {
+		Log.method("editUser", userName, role, timeZone, accountEnable, isCustomerUser);
 		return editUser(userName, role, timeZone, "" /*customerLocation*/, accountEnable, isCustomerUser);
 	}
 	
@@ -799,8 +814,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 	 * @param isCustomerUser - whether logged-in user is a customer user.
 	 * @return
 	 */
-	public boolean editUser(String userName, String roleNew, String timeZoneNew, 
-			String locationDescNew, boolean accountEnable, boolean isCustomerUser) {
+	public boolean editUser(String userName, String roleNew, String timeZoneNew, String locationDescNew, boolean accountEnable, boolean isCustomerUser) {
+		Log.method("editUser", userName, roleNew, timeZoneNew, locationDescNew, accountEnable, isCustomerUser);
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
@@ -901,6 +916,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public boolean resetUserPassword(String userName, String newPassword, boolean isCustomerUser) {
+		Log.method("resetUserPassword", userName, newPassword, isCustomerUser);
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -975,6 +991,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public boolean findExistingUser(String userName, boolean allPages) {
+		Log.method("findExistingUser", userName, allPages);
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -1030,12 +1047,14 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	private String getUsernameErrorMessage() {
+		Log.method("getUsernameErrorMessage");
 		Object userErrorMsg = ((JavascriptExecutor)this.driver).executeScript(USERNAME_ERROR_MSG_JS_FUNCTION + 
 				USERNAME_ERROR_MSG_JS_FUNCTION_CALL);
 		return String.valueOf(userErrorMsg);
 	}
 	
 	private void enableDisableUser(boolean accountEnable) {
+		Log.method("enableDisableUser", accountEnable);
 		if (accountEnable) {
 			if (!inputAccountEnabled.isSelected()){
 				Log.info("Select to enable account");
@@ -1050,11 +1069,13 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	private void selectCustomerLocationDropdown(String customerName, String location) {
+		Log.method("selectCustomerLocationDropdown", customerName, location);
 		String custLoc = customerName + " - " + location;
 		selectLocationDropdown(custLoc);
 	}
 
 	private void selectLocationDropdown(String customerLocation) {
+		Log.method("selectLocationDropdown", customerLocation);
 		List<WebElement> options = this.dropDownCustomer.findElements(By.tagName("option")); 
 		for	(WebElement option : options) { 
 			if (option.getText().trim().equalsIgnoreCase(customerLocation)){
@@ -1066,6 +1087,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	private void selectTimeZoneDropdown(String timeZone) {
+		Log.method("selectTimeZoneDropdown", timeZone);
 		List<WebElement> optionsTZ = dropDownTimeZone.findElements(By.tagName("option"));
 		for (WebElement optionTZ : optionsTZ) {
 			if (optionTZ.getText().trim().equals(timeZone)){
@@ -1077,6 +1099,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	private void selectRoleDropdown(String role) {
+		Log.method("selectRoleDropdown", role);
 		List<WebElement> options = dropDownRole.findElements(By.tagName("option"));
 		for (WebElement option : options) {
 			if (option.getText().trim().equals(role)){
@@ -1087,8 +1110,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 		}
 	}
 	
-	public boolean findExistingUser(String location, String userName,
-			String roleName, boolean allPages) {
+	public boolean findExistingUser(String location, String userName, String roleName, boolean allPages) {
+		Log.method("findExistingUser", location, userName, roleName, allPages);
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -1158,10 +1181,12 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public List<String> getUserNameList(boolean allPages) {
+		Log.method("getUserNameList", allPages);
 		return getUserNameList(allPages, Integer.valueOf(PAGINATIONSETTING_100));
 	}
 	
 	public List<String> getUserNameList(boolean allPages, int paginationSize) {
+		Log.method("getUserNameList", allPages, paginationSize);
 		List<String> userList = new ArrayList<String>();
 
 		String pageSizeStr = String.valueOf(paginationSize);
@@ -1215,6 +1240,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public List<String> getNameList(boolean allPages) {
+		Log.method("getNameList", allPages);
 		List<String> userList = new ArrayList<String>();
 
 		setPagination(PAGINATIONSETTING_100);
@@ -1267,6 +1293,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public List<String> getLocationList(boolean allPages) {
+		Log.method("getLocationList", allPages);
 		List<String> locationList = new ArrayList<String>();
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForTableDataToLoad();
@@ -1316,6 +1343,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public List<String> getRolesList(boolean allPages) {
+		Log.method("getRolesList", allPages);
 		List<String> rolesList = new ArrayList<String>();
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForTableDataToLoad();
@@ -1364,6 +1392,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public List<String> getStatusList(boolean allPages) {
+		Log.method("getStatusList", allPages);
 		List<String> statusList = new ArrayList<String>();
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForTableDataToLoad();
@@ -1493,6 +1522,7 @@ public class ManageUsersPage extends SurveyorBasePage {
     }
 
 	public void changeUserPassword(String oldPassword, String newPassword) {
+		Log.method("changeUserPassword", oldPassword, newPassword);
 		Log.clickElementInfo("User",ElementType.DROPDOWN);
 		this.dropDownUser.click();
 		Log.clickElementInfo("Chang Password", ElementType.LINK);
@@ -1524,8 +1554,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 		return InvalidEmailError.getText().trim();		
 	}
 	
-	public boolean searchUser(String userName, String locationName,
-			String role, String status, boolean searchAsCustomerAdmin) {
+	public boolean searchUser(String userName, String locationName, String role, String status, boolean searchAsCustomerAdmin) {
+		Log.method("searchUser", userName, locationName, role, status, searchAsCustomerAdmin);
 		this.getInputSearch().sendKeys(userName);
 		this.waitForPageToLoad();
 		try {
@@ -1558,6 +1588,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 	
 	public boolean areTableColumnsSorted(){
+		Log.method("areTableColumnsSorted");
 		if(!isUserNameColumnSorted()){
 			return false;
 		}
@@ -1581,39 +1612,44 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 	
 	public boolean isUserNameColumnSorted(){
+		Log.method("isUserNameColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_UserName, TableColumnType.String);
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
 	}
 	
 	public boolean isUserColumnSorted(){
+		Log.method("isUserColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_User, TableColumnType.String);
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
 	}
 	
 	public boolean isCustomerColumnSorted(){
+		Log.method("isCustomerColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Customer, TableColumnType.String);
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
 	}
 	
 	public boolean isLocationColumnSorted(){
+		Log.method("isLocationColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Location, TableColumnType.String);
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
 	}
 	
 	public boolean isRolesColumnSorted(){
+		Log.method("isRolesColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Roles, TableColumnType.String);
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
 	}
 	
 	public boolean isStatusColumnSorted(){
+		Log.method("isStatusColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Status, TableColumnType.String);
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
 	}
-
 }

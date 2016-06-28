@@ -51,7 +51,8 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 	@After
 	public void afterTestMethod() {
 		try {
-			deleteComplianceReport();
+			// TODO: Turn off report deletion for debugging.
+			//deleteComplianceReport();
 			homePage.logout();
 		} catch (Exception e) {
 			Log.error("Error when deleting compliance report page. Exception message:");
@@ -110,7 +111,7 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 		removeReportDataRowIDFromMap(reportDataRowID);
 	}
 
-	protected void waitForComplianceReportGenerationToComplete(ComplianceReportsPageActions complianceReportsPageAction, Integer reportDataRowID) {
+	protected void waitForComplianceReportGenerationToComplete(ComplianceReportsPageActions complianceReportsPageAction, Integer reportDataRowID) throws Exception {
 		if (getTestRunMode() == ReportTestRunMode.FullTestRun) {
 			complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID);
 		}

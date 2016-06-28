@@ -3,6 +3,8 @@ package surveyor.scommon.actions;
 import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
+import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
+import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
 import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
 import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
@@ -36,6 +38,7 @@ import common.source.BaseHelper;
 import common.source.ExcelUtility;
 import common.source.FileUtility;
 import common.source.Log;
+import common.source.LogHelper;
 import common.source.NumberUtility;
 import common.source.PDFTableUtility.PDFTable;
 import common.source.PDFUtility;
@@ -224,6 +227,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		String showAnnotation = reportViewsDataRow.fieldNotes.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showGaps = reportViewsDataRow.gaps.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showAssets = reportViewsDataRow.assets.equalsIgnoreCase("TRUE") ? "1" : "0";
+		String highlightLisaAssets = reportViewsDataRow.highlightLisa.equalsIgnoreCase("TRUE") ? "1" : "0";
+		String highlightGapAssets = reportViewsDataRow.highlightGap.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showBoundaries = reportViewsDataRow.boundaries.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String baseMapType = reportViewsDataRow.baseMap;
 		viewMap.put(KEYVIEWNAME, viewName);
@@ -235,6 +240,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		if (showAnnotation != "") viewMap.put(KEYANNOTATION, showAnnotation);
 		if (showGaps != "") viewMap.put(KEYGAPS, showGaps);
 		if (showAssets != "") viewMap.put(KEYASSETS, showAssets);
+		if (highlightLisaAssets != "") viewMap.put(KEYHIGHLIGHTLISAASSETS, highlightLisaAssets);
+		if (highlightGapAssets != "") viewMap.put(KEYHIGHLIGHTGAPASSETS, highlightGapAssets);
 		if (showBoundaries != "") viewMap.put(KEYBOUNDARIES, showBoundaries);
 		viewMap.put(KEYBASEMAP, baseMapType);
 	}
@@ -2449,9 +2456,11 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
 	 */
-	public boolean waitForReportGenerationToComplete(String data, Integer dataRowID) {
+	public boolean waitForReportGenerationToComplete(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.waitForReportGenerationToComplete", data, dataRowID);
+		this.getComplianceReportsPage().checkErrorMessages();
 		this.getComplianceReportsPage().waitForPageLoad();
 		this.getComplianceReportsPage().waitForReportGenerationtoComplete(workingDataRow.title,
 				TestContext.INSTANCE.getLoggedInUser());
@@ -2812,6 +2821,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		List<String[]> lisasIndicationTblList = this.getComplianceReportsPage().getSSRSPDFTableValues(
 				PDFTable.LISAINDICATIONTABLE, workingDataRow.title);
 		List<String> minAmplitudeValues = ArrayUtility.getColumnStringList(lisasIndicationTblList, LISAIndicationTableColumns.Amplitude.getIndex());
+		Log.info(String.format("Verifying min amplitude array values are greater than expected location min amplitude = [%s]", data));
+		Log.info(String.format("Min Amplitude array values are -> %s", LogHelper.listToString(minAmplitudeValues)));
 		return ArrayUtility.areValuesGreater(minAmplitudeValues.toArray(new String[minAmplitudeValues.size()]), NumberUtility.getFloatValueOf(data));
 	}
 

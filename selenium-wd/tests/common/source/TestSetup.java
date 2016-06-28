@@ -261,6 +261,7 @@ public class TestSetup {
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("download.default_directory", this.downloadPath);
 		this.capabilities = DesiredCapabilities.chrome();
+		this.capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("start-maximized");
 		options.addArguments(Arrays.asList("--incognito", "test-type"));
@@ -284,6 +285,7 @@ public class TestSetup {
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("download.default_directory", this.downloadPath);
 		this.capabilities = DesiredCapabilities.chrome();
+		this.capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("start-maximized");
 		options.addArguments(Arrays.asList("--incognito", "test-type"));
@@ -866,7 +868,7 @@ public class TestSetup {
 		startAnalyzer();
 	}
 
-	private static void deleteAnalyzerLocalDB3() {
+	public static void deleteAnalyzerLocalDB3() {
 		Log.method("deleteAnalyzerLocalDB3");
 		String appDataFolder = SystemUtility.getAppDataFolder();
 		Path surveyorDb3Path = Paths.get(appDataFolder, 

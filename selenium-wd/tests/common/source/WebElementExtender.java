@@ -27,6 +27,11 @@ import org.openqa.selenium.NoSuchElementException;
 
 public class WebElementExtender {
 
+	public static void executeScript(WebElement element, WebDriver driver, String jsScript) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript(jsScript, element);
+	}
+
    public static boolean isAttributePresent(WebElement element, String attributeName)
    {
 	   try {

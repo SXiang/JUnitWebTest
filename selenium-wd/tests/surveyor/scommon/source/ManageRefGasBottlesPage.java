@@ -48,7 +48,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	public WebElement inputLotNumber;
 	
 	public WebElement getEthMthRtoErr() {
-		return this.inputEthMthRto;
+		return this.ethMthRtoErr;
 	}
 
 	@FindBy(how = How.XPATH, using = "//*[@id='EthaneToMethaneRatio']")
@@ -192,10 +192,9 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 									.getResource(ResourceKeys.Validation_SummaryTitle))){
 				Log.clickElementInfo("Cancel");
 				this.btnCancel.click();
+				this.waitForPageLoad();
 			}
 		}
-
-		this.waitForPageLoad();
 	}
 
 	public boolean addNewRefGasBottle(String strLotNumber, String strIsoValue, String ethMthRto,  
@@ -251,10 +250,11 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 					"Please fill out this field.")) {
 				Log.clickElementInfo("Cancel");
 				this.btnCancel.click();
+				this.waitForPageLoad();
 				return false;
 			}
 		}
-		this.waitForPageLoad();
+
 		return true;
 	}
 

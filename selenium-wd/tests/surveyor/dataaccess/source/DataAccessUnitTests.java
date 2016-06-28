@@ -201,14 +201,14 @@ public class DataAccessUnitTests {
 	}
 
 	private static void testStoredProcComplianceGetIndications_getReportIndications_Valid() {
-		String validReportId = "0e64a8e7-2305-b79c-3315-39d7c71ebda3";
+		String validReportId = "2B4CCDFD-887F-57F7-D208-39D8A0D3D79F";
 		ArrayList<StoredProcComplianceGetIndications> listStoredProcIndications = StoredProcComplianceGetIndications.getReportIndications(validReportId);
 		Iterator<StoredProcComplianceGetIndications> iterator = listStoredProcIndications.iterator();
 		Assert.assertTrue(iterator.hasNext());
 		while (iterator.hasNext()) {
 			StoredProcComplianceGetIndications objStoredProcIndications = iterator.next();
 			Assert.assertTrue(objStoredProcIndications != null, "Value cannot be NULL.");
-
+			Assert.assertTrue(objStoredProcIndications.toString().length()>0, "toString() is NOT valid.");
 		}
 	}
 
