@@ -635,6 +635,15 @@ public class SurveyorBasePage extends BasePage {
 		});
 	}
 
+	public void waitForTextElementToBeCleared(WebElement element) {
+		Log.method("waitForTextElementToBeCleared", element);
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return element.getText().isEmpty();
+			}
+		});
+	}
+  
 	public void waitForAJAXCallsToComplete() {
 		Log.method("waitForAJAXCallsToComplete");
 		ExpectedCondition<Boolean> jQueryActiveComplete = new ExpectedCondition<Boolean>() {
