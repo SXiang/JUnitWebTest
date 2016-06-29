@@ -42,16 +42,16 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[5]")
 	private WebElement displaySwitchIsotopicAnalysisDivElement;
 
-	@FindBy(how = How.XPATH, using = "*[@id='menu_content']/div[6]/div[1]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]/div[1]")
 	private WebElement displaySwitchIndicationsDivElement;
 	
-	@FindBy(how = How.XPATH, using = "*[@id='menu_content']/div[6]/div[2]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]/div[2]")
 	private WebElement displaySwitchPossibleNaturalGasDivElement;
 	
-	@FindBy(how = How.XPATH, using = "*[@id='menu_content']/div[6]/div[3]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]/div[3]")
 	private WebElement displaySwitchNotNaturalGasDivElement;
 	
-	@FindBy(how = How.XPATH, using = "*[@id='menu_content']/div[6]/div[4]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]/div[4]")
 	private WebElement displaySwitchVehicleExhaustDivElement;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[7]")

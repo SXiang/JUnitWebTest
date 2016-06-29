@@ -924,6 +924,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	public DriverViewPage startDrivingSurvey(String tag, SurveyTime surveyTime, SolarRadiation solarRadiation,
 			Wind wind, CloudCover cloudCover, SurveyType surveyType, float minAmplitude) {
 		this.waitForSignalRCallsToComplete();
+		this.waitForStartSurveyButtonToBeVisible();
 		openStartSurveyModalDialog();
 
 		this.waitForSignalRCallsToComplete();
@@ -1274,6 +1275,17 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return !isFeatureInfoDialogShown();
+			}
+		});
+	}
+
+	/**
+	 * Waits for StartSurvey button to be visible.
+	 */
+	public void waitForStartSurveyButtonToBeVisible() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isStartSurveyButtonVisible();
 			}
 		});
 	}

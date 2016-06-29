@@ -868,8 +868,9 @@ public class TestSetup {
 		startAnalyzer();
 	}
 
-	public static void deleteAnalyzerLocalDB3() {
+	public static void deleteAnalyzerLocalDB3() throws UnknownHostException {
 		Log.method("deleteAnalyzerLocalDB3");
+		stopAnalyzerIfRunning();
 		String appDataFolder = SystemUtility.getAppDataFolder();
 		Path surveyorDb3Path = Paths.get(appDataFolder, 
 				"Picarro" + File.separator + "Surveyor" + File.separator + "Data" + File.separator + "Surveyor.db3");
@@ -992,8 +993,8 @@ public class TestSetup {
 	}
 
 	public static void stopAnalyzer() {
-		ProcessUtility.killProcess("supervisor.exe", /* killChildProcesses */ true);
 		ProcessUtility.killProcess("Picarro.Surveyor.Analyzer.exe", /* killChildProcesses */ true);
+		ProcessUtility.killProcess("supervisor.exe", /* killChildProcesses */ true);
 	}
 
 	public static String getNetworkProxyHarFileContent() throws Exception {
