@@ -118,7 +118,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 			rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber() + "#%$";
 
 		} else {
-			rptTitle = testCaseName + " " + "Report";// + testSetup.getRandomNumber();
+			rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
 		}
 		
 		Log.info("\nRunning " + testCaseName + " - " + rptTitle);
