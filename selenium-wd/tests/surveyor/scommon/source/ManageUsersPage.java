@@ -371,9 +371,10 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.clickElementInfo("Add New Customer User");
 		this.btnAddNewCustomerUser.click();
 		this.waitForNewPageLoad();
-		Log.info("Set email - '"+email+"'");
 		this.waitForElementReady(USERNAME_FIELD_ELEMENT_ID);
 		this.inputEmail.clear();
+		this.waitForTextElementToBeCleared(this.inputEmail);
+		Log.info("Set email - '"+email+"'");
 		this.inputEmail.sendKeys(email);
 		
 		// If user inputted greater than allowed max characters in Email, then check if 'Max character' message label is shown. 
