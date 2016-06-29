@@ -31,7 +31,6 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.Log;
-import common.source.TestContext;
 import surveyor.scommon.source.ManageSurveyorHistoriesPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
@@ -46,8 +45,6 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	private static SystemHistoryReportsPage systemHistoryReportsPage = null;
 	private static ManageSurveyorHistoriesPage manageSurveyorHistoriesPage = null;
 
-	private static DateFormat dateFormat = new SimpleDateFormat("dd");
-	
 	@BeforeClass
 	public static void setupSystemHistoryReportsPageTest() {
 		systemHistoryReportsPage = new SystemHistoryReportsPage(driver, baseURL, testSetup);
@@ -141,9 +138,10 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		String rptTitle = "TC178 Report" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC178 Test Description: Generate system history report as Customer Administrator, %s\n" + rptTitle);
 
+		DateFormat dateFormat = new SimpleDateFormat("dd");
 		Date date = new Date();
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DATE, 0);
+		cal.add(Calendar.DATE, -5);
 		String startDate = dateFormat.format(cal.getTime());
 		if (startDate.startsWith("0")) {
 			startDate = startDate.replaceFirst("0*", "");
@@ -219,7 +217,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		DateFormat dateFormat = new SimpleDateFormat("dd");
 		Date date = new Date();
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DATE, 0);
+		cal.add(Calendar.DATE, -1);
 		String startDate = dateFormat.format(cal.getTime());
 		if (startDate.startsWith("0")) {
 			startDate = startDate.replaceFirst("0*", "");

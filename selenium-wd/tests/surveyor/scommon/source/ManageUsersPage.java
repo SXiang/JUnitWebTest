@@ -34,7 +34,6 @@ import common.source.TestSetup;
  *
  */
 public class ManageUsersPage extends SurveyorBasePage {
-	private static final String USERNAME_FIELD_ELEMENT_ID = "User.UserName";
 	public static final String STRURLPath = "/Picarro/ManageUsers";
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.ManageUsers_PageTitle);
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageUsers_PageTitle);
@@ -372,7 +371,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 		this.btnAddNewCustomerUser.click();
 		this.waitForNewPageLoad();
 		Log.info("Set email - '"+email+"'");
-		this.waitForElementReady(USERNAME_FIELD_ELEMENT_ID);
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
 		

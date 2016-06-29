@@ -239,30 +239,27 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 	}
 
 	public boolean validatePdfFiles(String reportTitle, String downloadPath) {
-		Log.method("validatePdfFiles", reportTitle, downloadPath);
 		String reportId;
 		String reportName;
 		DBConnection objDbConn = new DBConnection();
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		try {
-			Log.info("Getting report ID from DB..");
 			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
-			Log.info(String.format("ReportId is : '%s'", reportId));
 			reportId = reportId.substring(0, 6);
 			Log.info(reportId);
 			Log.info(String.valueOf(reportId.length()));
 			reportName = "SH-" + reportId;
-			Log.info(String.format("ReportName is : '%s'", reportName));
+			Log.info(reportName);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			return false;
 		}
-		String pdfFile1 = Paths.get(downloadPath, reportName + ".pdf").toString();
+		String pdfFile1;
+		pdfFile1 = Paths.get(downloadPath, reportName + ".pdf").toString();
+
 		boolean result = false;
-		Log.info(String.format("Validating SystemHistory PDF file - '%s'", pdfFile1));
 		result = BaseHelper.validatePdfFileForSysHis(pdfFile1);
-		Log.info(String.format("Validation results = %b", result));
 		return result;
 	}
 
