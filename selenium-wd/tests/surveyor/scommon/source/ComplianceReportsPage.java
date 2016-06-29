@@ -2999,38 +2999,53 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				return false;
 			}
 		}
+		
+		// Read as Bytes to retain characters and add to pdfLines arrayList.
 		InputStream inputStream = new ByteArrayInputStream(actualReportString.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 		String line = null;
+		List<String> pdfLines = new ArrayList<String>(); 
 		try {
-			ArrayList<String> reportIndicationsList = new ArrayList<String>();
 			while ((line = bufferReader.readLine()) != null) {
-				if (line.trim().matches("^\\? \\d+ .*")) {				
-					reportIndicationsList.add(line.replaceAll("\\?", "").trim().replaceAll("\\s+", "")
-							.replace("+/-", "").replace("0.0 ", "").trim());
-				}
-			}
-			Log.info(String.format("ReportIndications ArrayList Values : %s", LogHelper.strListToString(reportIndicationsList)));
-
-			ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications
-					.getReportIndications(reportId);
-			Iterator<StoredProcComplianceGetIndications> lineIterator = storedProcIndicationsList.iterator();
-			ArrayList<String> storedProcConvStringList = new ArrayList<String>();
-			while (lineIterator.hasNext()) {
-				StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
-				String objAsString = objStoredProc.toString();
-				storedProcConvStringList.add(objAsString.replace("0.0 ", "0").replaceAll("\\s+", "").trim());
-			}
-
-			Log.info(String.format("Checking in ReportIndications ArrayList, StoredProcConvStringList Values : %s", 
-					LogHelper.strListToString(storedProcConvStringList)));
-			if (!reportIndicationsList.equals(storedProcConvStringList)) {
-				Log.info("Indication table verification failed");
-				return false;
+				pdfLines.add(line);
 			}
 		} finally {
 			bufferReader.close();
 		}
+		
+		// Look for matches in pdfLines arrayList.
+		ArrayList<String> reportIndicationsList = new ArrayList<String>();
+		for (int i=0; i<pdfLines.size(); i++) {
+			line = pdfLines.get(i);
+			if (line.trim().matches(RegexUtility.INDICATION_TABLE_LINE_REGEX_PATTERN)) {				
+				String matchingValue = line.replaceAll("\\?", "").trim().replaceAll("\\s+", "").replace("+/-", "").replace("0.0 ", "").trim();
+				// Keep moving ahead till we find a line with field notes start indicator. Merge all field notes line into matchingValue.
+				while (i+1<pdfLines.size() && pdfLines.get(i+1).matches(RegexUtility.FIELD_NOTE_LINE_REGEX_PATTERN)) {
+					matchingValue += pdfLines.get(i+1).replace("0.0 ", "0").replaceAll("\\s+", "").trim();
+					i++;
+				}
+				reportIndicationsList.add(matchingValue);
+			}
+		}
+		Log.info(String.format("ReportIndications ArrayList Values : %s", LogHelper.strListToString(reportIndicationsList)));
+
+		ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications
+				.getReportIndications(reportId);
+		Iterator<StoredProcComplianceGetIndications> lineIterator = storedProcIndicationsList.iterator();
+		ArrayList<String> storedProcConvStringList = new ArrayList<String>();
+		while (lineIterator.hasNext()) {
+			StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
+			String objAsString = objStoredProc.toString();
+			storedProcConvStringList.add(objAsString.replace("0.0 ", "0").replaceAll("\\s+", "").trim());
+		}
+
+		Log.info(String.format("Checking in ReportIndications ArrayList, StoredProcConvStringList Values : %s", 
+				LogHelper.strListToString(storedProcConvStringList)));
+		if (!reportIndicationsList.equals(storedProcConvStringList)) {
+			Log.info("Indication table verification failed");
+			return false;
+		}
+
 		Log.info("Indication table verification passed");
 		return true;
 	}
