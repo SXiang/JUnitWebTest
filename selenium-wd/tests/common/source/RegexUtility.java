@@ -32,6 +32,9 @@ public class RegexUtility {
 	public static final String REGEX_PATTERN_NOT_ALPHANUMERIC = "[^:,.)(/\\&\\s\\|\\.\\r\\n a-zA-Z0-9_-]";
 	public static final String REGEX_PATTEN_SPECIAL_CHARACTERS = "[<>:/?*\"|\\\\]";
 
+	public static final String FIELD_NOTE_LINE_REGEX_PATTERN = "^\\d+\\. .*";
+	public static final String INDICATION_TABLE_LINE_REGEX_PATTERN = "^\\? \\d+ .*";
+	
 	private static int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
 
 	/**
