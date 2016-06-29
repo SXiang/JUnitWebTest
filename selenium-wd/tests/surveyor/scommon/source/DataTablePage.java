@@ -244,18 +244,14 @@ public class DataTablePage extends BasePage {
 			TableColumnType columnType = cloumnMap.get(entry.getKey().trim());
 			List<String> values = getRecords(entry.getKey().trim(), -1 ).stream().map(String::toLowerCase).collect(Collectors.toList());
 			if (columnType == TableColumnType.Date) {
-				if (!SortHelper.isDateSortedASC(values.stream().toArray(String[]::new))) {
-					return false;
-				}
+				return SortHelper.isDateSortedASC(values.stream().toArray(String[]::new));
+			}else if (columnType == TableColumnType.String){
+				return SortHelper.isStringSortedASC(values.stream().toArray(String[]::new));
+			}else if (columnType == TableColumnType.Number) {
+				return SortHelper.isNumberSortedASC(values.stream().toArray(String[]::new));
 			}
-			if (columnType == TableColumnType.String || columnType == TableColumnType.Number) {
-				if (!SortHelper.isSortedASC(values.stream().toArray(String[]::new))) {
-					return false;
-				}
-			}
-
 		}
-		return true;
+		return false;
 	}
 
 	/**
@@ -269,17 +265,14 @@ public class DataTablePage extends BasePage {
 			TableColumnType columnType = cloumnMap.get(entry.getKey().trim());			
 			List<String> values = getRecords(entry.getKey().trim(), -1).stream().map(String::toLowerCase).collect(Collectors.toList());
 			if (columnType == TableColumnType.Date) {
-				if (!SortHelper.isDateSortedDESC(values.stream().toArray(String[]::new))) {
-					return false;
-				}
-			}
-			if (columnType == TableColumnType.String || columnType == TableColumnType.Number) {
-				if (!SortHelper.isSortedDESC(values.stream().toArray(String[]::new))) {
-					return false;
-				}
+				return SortHelper.isDateSortedDESC(values.stream().toArray(String[]::new));
+			}else if (columnType == TableColumnType.String){
+				return SortHelper.isStringSortedDESC(values.stream().toArray(String[]::new));
+			}else if (columnType == TableColumnType.Number) {
+				return SortHelper.isNumberSortedDESC(values.stream().toArray(String[]::new));
 			}
 		}
-		return true;
+		return false;
 	}
 
 

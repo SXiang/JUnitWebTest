@@ -301,13 +301,16 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			String tagXPath = strTRXPath + "[" + rowNum + "]/td[1]";
 			tagCell = getTable().findElement(By.xpath(tagXPath));
 
+			TestContext.INSTANCE.stayIdle(3);
+			
 			strListTag.add(tagCell.getText().trim());
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 
-				this.waitForPageLoad();
+				this.waitForTableDataToLoad();
+				this.waitForAJAXCallsToComplete();
 
 				List<WebElement> newRows = this.getTable().findElements(By.xpath(this.strTRXPath));
 				rowSize = newRows.size();
