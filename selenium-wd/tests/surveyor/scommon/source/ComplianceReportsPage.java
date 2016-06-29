@@ -2999,17 +2999,29 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				return false;
 			}
 		}
-		InputStream inputStream = new ByteArrayInputStream(actualReportString.getBytes());
+		
+		ArrayList<String> indicationTables =  (ArrayList<String>) RegexUtility.getStringsInBetween(actualReportString, "Disposition Confidence in Disposition", "Software Version");
+		String indicationTable = "";
+		for(String table:indicationTables){
+			indicationTable += System.lineSeparator() + table;
+		}
+		InputStream inputStream = new ByteArrayInputStream(indicationTable.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 		String line = null;
 		try {
 			ArrayList<String> reportIndicationsList = new ArrayList<String>();
+			String extraLines = "";
 			while ((line = bufferReader.readLine()) != null) {
-				if (line.trim().matches("^\\? \\d+ .*")) {				
-					reportIndicationsList.add(line.replaceAll("\\?", "").trim().replaceAll("\\s+", "")
-							.replace("+/-", "").replace("0.0 ", "").trim());
+				if (line.trim().matches("^\\? \\d+ .*")) {
+					ArrayUtility.appendToLastString(reportIndicationsList, extraLines.replaceAll(" ", ""));
+					reportIndicationsList.add(line.replaceAll("\\?", "").trim()
+							.replace("+/-", "").replace("0.0 ", "").trim().replaceAll(" ", ""));
+					extraLines = "";
+				}else if(!reportIndicationsList.isEmpty() && line.trim().matches("\\d\\. [\\d\\./]{3,}")){
+					extraLines += line.trim();
 				}
 			}
+			ArrayUtility.appendToLastString(reportIndicationsList, extraLines.replaceAll(" ", ""));
 			Log.info(String.format("ReportIndications ArrayList Values : %s", LogHelper.strListToString(reportIndicationsList)));
 
 			ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications

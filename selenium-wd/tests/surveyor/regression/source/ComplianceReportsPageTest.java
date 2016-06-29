@@ -118,7 +118,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 			rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber() + "#%$";
 
 		} else {
-			rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
+			rptTitle = testCaseName + " " + "Report";// + testSetup.getRandomNumber();
 		}
 		
 		Log.info("\nRunning " + testCaseName + " - " + rptTitle);
@@ -132,8 +132,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, strCreatedBy, testCaseName))) {
+			complianceReportsPage.clickOnReportViewerCloseButton();
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(complianceReportsPage.findReport(rptTitle, strCreatedBy));
 			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rpt));
 			assertTrue(complianceReportsPage.verifySSRSImages(testSetup.getDownloadPath(), rptTitle, testCaseName));
 			if (tablesList != null) {

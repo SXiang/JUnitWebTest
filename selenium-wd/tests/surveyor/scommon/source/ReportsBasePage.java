@@ -1424,17 +1424,24 @@ public class ReportsBasePage extends SurveyorBasePage {
 							int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
 							rowNum = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
 									maxRows);
-							if (rowNum == maxRows) {
+							if (rowNum > maxRows) {
 								break;
 							}
 
 							this.btnReportViewer = getTable().findElement(
 									By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
+							
+							if(rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
+									maxRows)){
+								continue;
+							}
+							
 							Log.clickElementInfo("Report Viewer");
 							this.btnReportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						}
 						return handleFileDownloads(rptTitle, testCaseID);
+						
 
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
@@ -1445,12 +1452,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 						continue;
 					} catch (NullPointerException ne) {
 						Log.info("Null Pointer Exception: " + ne);
-						fail("Report failed to generate!!");
+						fail("Report failed to be generated!!");
 					}
 				}
 			}
 
-			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
+			if (rowNum >= Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
 				this.nextBtn.click();
@@ -1654,7 +1661,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public boolean findReport(String rptTitle, String strCreatedBy) {
 		Log.info(String.format("Find report with title = '%s', created by = '%s", rptTitle, strCreatedBy ));
-		setPagination(PAGINATIONSETTING);
+		setPagination(PAGINATIONSETTING_100);
 
 		String reportTitleXPath;
 		String createdByXPath;
