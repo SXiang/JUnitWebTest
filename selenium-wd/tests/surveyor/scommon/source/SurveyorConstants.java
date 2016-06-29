@@ -123,8 +123,6 @@ public final class SurveyorConstants {
 	public static final String SQACRPTTAG = "tc56";
 	public static final String RGBNAMEBASE = "rgb";
 
-	public static String STRFEEDBACK = "This is sqa test feedback message";
-
 	public static final String TITLENAMEBASE = "sqacrpt";
 	public static final String TIMEZONE = "Pacific Standard Time";
 	public static final String EXCLUSIONRADIUS = "50";

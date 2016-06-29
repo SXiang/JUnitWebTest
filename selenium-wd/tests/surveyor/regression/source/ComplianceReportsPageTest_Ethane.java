@@ -116,7 +116,8 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC1637 Test Description: Ethane: Compliance Report UI: Verify Ethane Filter is available in Copy Report Page
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 * @throws IOException
 	 * 
@@ -147,7 +148,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		tableMap.put(KEYPCF, "0");
 		tablesList.add(tableMap);
 
-		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
+		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
 		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
 		viewLayerList.add(ReportDataProvider.createViewLayerAssetsContent(assetRowIDs));
 
@@ -194,13 +195,14 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC1654 Test Description: Ethane: Compliance Report UI: Verify Analysis column in Views table
-	 * @throws InterruptedException 
+	 * 
+	 * @throws InterruptedException
 	 * 
 	 * @throws IOException
 	 * 
 	 */
 	@Test
-	public void TC1654_Ethane_Verify_Analyses_Column_View_Table() throws IOException{
+	public void TC1654_Ethane_Verify_Analyses_Column_View_Table() throws IOException {
 		String rptTitle = "TC1654 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1654: Ethane: Compliance Report UI: Verify Analysis column in Views table, " + rptTitle);
 
@@ -213,11 +215,12 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC1636 Test Description: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane Standard mode surveys are displayed
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@Test
-	public void TC1636_Ethane_Verify_NONEthane_Survey() throws Exception{
+	public void TC1636_Ethane_Verify_NONEthane_Survey() throws Exception {
 		String rptTitle = "TC1636 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1636: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane Standard mode surveys are displayed" + rptTitle);
 
@@ -239,13 +242,14 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC1654 Test Description: Ethane: Compliance Report UI: Verify Analysis column in Optional Tabular PDF Content table
-	 * @throws InterruptedException 
+	 * 
+	 * @throws InterruptedException
 	 * 
 	 * @throws IOException
 	 * 
 	 */
 	@Test
-	public void TC1725_Ethane_Verify_Analysis_Column_Tubular_Content() throws IOException{
+	public void TC1725_Ethane_Verify_Analysis_Column_Tubular_Content() throws IOException {
 		String rptTitle = "TC1725 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1725: Ethane: Compliance Report UI: Verify Analysis column in Optional Tabular PDF Content table" + rptTitle);
 
@@ -259,13 +263,14 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC1639 Test Description: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane operator mode surveys are displayed
-	 * @throws InterruptedException 
+	 * 
+	 * @throws InterruptedException
 	 * 
 	 * @throws IOException
 	 * 
 	 */
 	@Test
-	public void TC1639_Ethane_Verify_Ethane_NONEthane_Survey_Via_Operator_SurveyMode() throws IOException, InterruptedException{
+	public void TC1639_Ethane_Verify_Ethane_NONEthane_Survey_Via_Operator_SurveyMode() throws IOException, InterruptedException {
 		String rptTitle = "TC1639 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1639: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane operator mode surveys are displayed" + rptTitle);
 
@@ -281,13 +286,14 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC1653 Test Description: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane Rapid response mode surveys are displayed
-	 * @throws InterruptedException 
+	 * 
+	 * @throws InterruptedException
 	 * 
 	 * @throws IOException
 	 * 
 	 */
 	@Test
-	public void TC1653_Ethane_Verify_Ethane_NONEthane_Survey_Via_RapidResponse_SurveyMode() throws IOException, InterruptedException{
+	public void TC1653_Ethane_Verify_Ethane_NONEthane_Survey_Via_RapidResponse_SurveyMode() throws IOException, InterruptedException {
 		String rptTitle = "TC1653 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1653: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane Rapid response mode surveys are displayed" + rptTitle);
 
@@ -297,7 +303,6 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		assertTrue(complianceReportsPage.verifySurveysTableViaSurveyMode(true, ReportModeFilter.RapidResponse, SurveyModeFilter.RapidResponse));
 
-
 		complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed();
 		complianceReportsPage.getCheckBoxEtheneBiogeniceMethane().isDisplayed();
 
@@ -305,13 +310,14 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID:TC1640 Test Description: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane manual mode surveys are displayed
-	 * @throws InterruptedException 
+	 * 
+	 * @throws InterruptedException
 	 * 
 	 * @throws IOException
 	 * 
 	 */
 	@Test
-	public void TC1640_Ethane_Verify_Ethane_NONEthane_Survey_Via_Manual_SurveyMode() throws IOException, InterruptedException{
+	public void TC1640_Ethane_Verify_Ethane_NONEthane_Survey_Via_Manual_SurveyMode() throws IOException, InterruptedException {
 		String rptTitle = "TC1640 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1640: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane manual mode surveys are displayed" + rptTitle);
 
@@ -323,9 +329,8 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	}
 
-
-	//Using data provider 12 test cases-generate reports with different report mode and different ethane checkbox selection
-	//(TC1638, TC1642, TC1737 TC1658, TC1710, TC1712, TC1716, TC1714, TC1709, TC1711, TC1715, TC1713)
+	// Using data provider 12 test cases-generate reports with different report mode and different ethane checkbox selection
+	// (TC1638, TC1642, TC1737 TC1658, TC1710, TC1712, TC1716, TC1714, TC1709, TC1711, TC1715, TC1713)
 
 	@Test
 	@UseDataProvider(value = ComplianceReportEthaneDataProvider.COMPLIANCE_ETHANE_REPORT_PROVIDER, location = ComplianceReportEthaneDataProvider.class)
@@ -342,8 +347,8 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		complianceReportsPage.open();
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
-		List<ReportsSurveyInfo> reportSurveyInfoList = ReportDataProvider.buildReportSurveyInfoList("24");
-		rpt.setSurveyInfoList(reportSurveyInfoList);    
+		List<ReportsSurveyInfo> reportSurveyInfoList = ReportDataProvider.buildReportSurveyInfoList("36");
+		rpt.setSurveyInfoList(reportSurveyInfoList);
 		rpt.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
 
 		complianceReportsPage.addNewReport(rpt);
@@ -354,7 +359,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 			assertTrue(complianceReportsPage.findReport(rptTitle, strCreatedBy));
 			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rpt));
 			// SSRS image baseline creation tracked by DE2023.
-			//assertTrue(complianceReportsPage.verifySSRSImages(testSetup.getDownloadPath(), rptTitle, testCaseName));
+			// assertTrue(complianceReportsPage.verifySSRSImages(testSetup.getDownloadPath(), rptTitle, testCaseName));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
 					assertTrue(complianceReportsPage.verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle));
@@ -366,7 +371,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 				assertTrue(complianceReportsPage.verifyViewsTable(testSetup.getDownloadPath(), rptTitle, viewList));
 				assertTrue(complianceReportsPage.verifyDrivingSurveysTable(testSetup.getDownloadPath(), rptTitle));
 				// View images baseline creation tracked by DE2023.
-				//assertTrue(complianceReportsPage.verifyAllViewsImages(testSetup.getDownloadPath(), rptTitle, testCaseName,viewList.size()));
+				// assertTrue(complianceReportsPage.verifyAllViewsImages(testSetup.getDownloadPath(), rptTitle, testCaseName,viewList.size()));
 				if (tablesList.get(0).get(KEYISOANA).equals("1")) {
 					assertTrue(complianceReportsPage.verifyEthaneAnalysisTable(testSetup.getDownloadPath(), rptTitle));
 				}
@@ -378,34 +383,36 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
 
 	}
+
 	private static String getTestCaseName(String key) {
 		return testCaseMap.get(key);
 	}
 
 	private static void createTestCaseMap() {
-		testCaseMap.put("1", "TC1638");  //std--exclude vehicle exhaust
-		testCaseMap.put("2", "TC1642");  //std--exclude biogenic methane
-		testCaseMap.put("3", "TC1737");  //std--both
-		testCaseMap.put("4", "TC1658");  //std--none
-		testCaseMap.put("5", "TC1710");  //manual--exclude vehicle exhaust
-		testCaseMap.put("6", "TC1712");  //manual--exclude biogenic methane
-		testCaseMap.put("7", "TC1716");  //manual--both
-		testCaseMap.put("8", "TC1714");  //manual--none
-		testCaseMap.put("9", "TC1709");  //rapid--exclude vehicle exhaust
-		testCaseMap.put("10", "TC1711");  //rapid--exclude biogenic methane
-		testCaseMap.put("11", "TC1715");  //rapid--both
-		testCaseMap.put("12", "TC1713");  //rapid--none		
+		testCaseMap.put("1", "TC1638"); // std--exclude vehicle exhaust
+		testCaseMap.put("2", "TC1642"); // std--exclude biogenic methane
+		testCaseMap.put("3", "TC1737"); // std--both
+		testCaseMap.put("4", "TC1658"); // std--none
+		testCaseMap.put("5", "TC1710"); // manual--exclude vehicle exhaust
+		testCaseMap.put("6", "TC1712"); // manual--exclude biogenic methane
+		testCaseMap.put("7", "TC1716"); // manual--both
+		testCaseMap.put("8", "TC1714"); // manual--none
+		testCaseMap.put("9", "TC1709"); // rapid--exclude vehicle exhaust
+		testCaseMap.put("10", "TC1711"); // rapid--exclude biogenic methane
+		testCaseMap.put("11", "TC1715"); // rapid--both
+		testCaseMap.put("12", "TC1713"); // rapid--none
 	}
 
 	/**
 	 * Test Case ID:TC1717 Test Description: Compliance Report Generation : Remove user selection color for Indications
-	 * @throws InterruptedException 
+	 * 
+	 * @throws InterruptedException
 	 * 
 	 * @throws IOException
 	 * 
 	 */
 	@Test
-	public void TC1717_Ethane_Verify_Indication_Table_Color_Selection_Removal() throws IOException, InterruptedException{
+	public void TC1717_Ethane_Verify_Indication_Table_Color_Selection_Removal() throws IOException, InterruptedException {
 		String rptTitle = "TC1717 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1717: Compliance Report Generation : Remove user selection color for Indications" + rptTitle);
 
@@ -426,11 +433,12 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID:TC1719 Test Description: Compliance Report Generation : COPY generated report should show default color only for Indication
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@Test
-	public void TC1719_Ethane_Copy_Report_Verify_Indication_Table_Color() throws Exception{
+	public void TC1719_Ethane_Copy_Report_Verify_Indication_Table_Color() throws Exception {
 		String rptTitle = "TC1719 Ethane" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC1719: Compliance Report Generation : COPY generated report should show default color only for Indication" + rptTitle);
 
@@ -455,8 +463,8 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		tableMap.put(KEYPCF, "0");
 		tablesList.add(tableMap);
 
-		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
-		List<Integer> boundaryRowIDs = Arrays.asList(3, 4);				 // Boundary RowIDs from TestCaseData xlsx
+		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
+		List<Integer> boundaryRowIDs = Arrays.asList(3, 4); // Boundary RowIDs from TestCaseData xlsx
 		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
