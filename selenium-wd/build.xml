@@ -281,6 +281,7 @@
 				<fileset dir="${build}">
 					<include name="**/ComplianceReportsPageTest2.class" />
 					<include name="**/ComplianceReportsPageTest6.class" />
+					<include name="**/ComplianceReportsPageTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>

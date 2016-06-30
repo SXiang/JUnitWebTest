@@ -106,4 +106,27 @@ public class ArrayUtility {
 		
 		return true;
 	}
+	
+	/**
+	 * Append text value to the last element in a list
+	 * @param list
+	 * @param value
+	 */
+	public static void appendToLastString(List<String> list, String value){
+		appendToString(list, list.size()-1, value);
+	}
+	
+	/**
+	 * Append text value to element indexed in a list
+	 * @param list
+	 * @param index
+	 * @param value
+	 */
+	public static void appendToString(List<String>list, int index, String value){
+		if(value.isEmpty()||list.size()<=index){
+			return;
+		}
+		value = list.get(index) + value;
+		list.set(index, value);
+	}
 }
