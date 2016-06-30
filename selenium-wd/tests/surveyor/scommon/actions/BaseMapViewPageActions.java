@@ -232,8 +232,8 @@ public class BaseMapViewPageActions extends BasePageActions {
 	 */
 	public boolean turnOnAllBoundaries(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnAllBoundaries", data, dataRowID);
-		turnOnBoundariesDistrict(data, dataRowID);
-		turnOnBoundariesDistrictPlat(data, dataRowID);
+		turnOnBigBoundary(data, dataRowID);
+		turnOnSmallBoundary(data, dataRowID);
 		return true;
 	}
  
@@ -250,14 +250,14 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return true;
 	}
 
-	public boolean turnOnBoundariesDistrict(String data, Integer dataRowID) {
+	public boolean turnOnBigBoundary(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnBoundariesDistrict", data, dataRowID);
-		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.BoundariesDistrict, true);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.BigBoundary, true);
 		return true;
 	}
-	public boolean turnOnBoundariesDistrictPlat(String data, Integer dataRowID) {
+	public boolean turnOnSmallBoundary(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnBoundariesDistrictPlat", data, dataRowID);
-		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.BoundariesDistrictPlat, true);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.SmallBoundary, true);
 		return true;
 	}
 	public boolean turnOnMaterialTypeCopper(String data, Integer dataRowID) {
@@ -300,14 +300,14 @@ public class BaseMapViewPageActions extends BasePageActions {
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.UseAllPipes, true);
 		return true;
 	}
-	public boolean turnOffBoundariesDistrict(String data, Integer dataRowID) {
+	public boolean turnOffBigBoundary(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffBoundariesDistrict", data, dataRowID);
-		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.BoundariesDistrict, false);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.BigBoundary, false);
 		return true;
 	}
-	public boolean turnOffBoundariesDistrictPlat(String data, Integer dataRowID) {
+	public boolean turnOffSmallBoundary(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffBoundariesDistrictPlat", data, dataRowID);
-		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.BoundariesDistrictPlat, false);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.SmallBoundary, false);
 		return true;
 	}
 	public boolean turnOffMaterialTypeCopper(String data, Integer dataRowID) {
@@ -377,8 +377,8 @@ public class BaseMapViewPageActions extends BasePageActions {
 	 */
 	public boolean turnOffAllBoundaries(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffAllBoundaries", data, dataRowID);
-		turnOffBoundariesDistrict(data, dataRowID);
-		turnOffBoundariesDistrictPlat(data, dataRowID);
+		turnOffBigBoundary(data, dataRowID);
+		turnOffSmallBoundary(data, dataRowID);
 		return true;
 	}
  
@@ -547,7 +547,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		if (data.equalsIgnoreCase("BoundariesDistrict")) {
 			switchType = GisSwitchType.MaterialTypePEPlastic;
 		} else if (data.equalsIgnoreCase("BoundariesDistrictPlat")) {
-			switchType = GisSwitchType.BoundariesDistrictPlat;
+			switchType = GisSwitchType.SmallBoundary;
 		} else if (data.equalsIgnoreCase("MaterialTypeCastIron")) {
 			switchType = GisSwitchType.MaterialTypeCastIron;
 		} else if (data.equalsIgnoreCase("MaterialTypeCopper")) {

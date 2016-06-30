@@ -82,7 +82,7 @@ public class TestSetup {
 	public static final String REPLAY_DEFN_CURL_FILE = "replay-defn-curl.bat";
 	public static final String STOP_REPLAY_CURL_FILE = "replay-stop.bat";
 	public static final String ANALYZER_EXE_PATH = "C:\\PicarroAnalyzer\\Picarro.Surveyor.Analyzer.exe";
-	public static final String TEST_ANALYZER_SERIAL_NUMBER = "SimAuto-Analyzer3";
+	public static final String TEST_ANALYZER_SERIAL_NUMBER = "SimAuto-Analyzer1";
 
 	public static final String DATA_FOLDER = "data";
 	public static final String TEST_DATA_XLSX = "TestCaseData.xlsx";
