@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -311,14 +312,21 @@ public class DataTablePage extends BasePage {
 	 * @return true if button clicked
 	 */
 	public boolean toPage(WebElement pageNavButton) {
-		if (!pageNavButton.getAttribute("class").contains("disabled")) {
-			pageNavButton.click();
-			waitForTableToLoad();
-			return true;
-		} else {
-			Log.error("Page navigation button is disabled");
-			return false;
+		int numTry = 0 ;
+		boolean done = false;
+		while (!done && numTry++ < 3 && !pageNavButton.getAttribute("class").contains("disabled")) {
+			try{
+				pageNavButton.click();
+				done = true;
+			}catch(WebDriverException e){
+				Log.warn("pageNavButton is not clickable: '"+e+"', will try again");
+			}finally{
+				waitForTableToLoad();
+			}
 		}
+		if(!done)
+			Log.error("Page navigation button is disabled/not clickable");
+		return done;
 	}
 
 	/**
