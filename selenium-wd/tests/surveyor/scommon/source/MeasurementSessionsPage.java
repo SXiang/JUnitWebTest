@@ -275,7 +275,8 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		List<String> strListTag = new ArrayList<String>();
 		if (driver != null) {
 			this.searchTextBox.sendKeys(driver);
-			this.waitForPageLoad();
+			this.waitForTableDataToLoad();
+			this.waitForAJAXCallsToComplete();
 			if (tableData.getText().equals(Constant_NoMatchingRecordsFound)) {
 				return strListTag;
 			}
@@ -283,8 +284,9 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
+		this.waitForAJAXCallsToComplete();
 		
-		WebElement col1;
+		WebElement tagCell;
 		List<WebElement> rows = this.getTable().findElements(By.xpath(this.strTRXPath));
 
 		int rowSize = rows.size();
@@ -296,15 +298,19 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			col1 = this.getTable().findElement(By.xpath(this.strTRXPath + "[" + rowNum + "]/td[1]"));
+			String tagXPath = strTRXPath + "[" + rowNum + "]/td[1]";
+			tagCell = getTable().findElement(By.xpath(tagXPath));
 
-			strListTag.add(col1.getText().trim());
+			TestContext.INSTANCE.stayIdle(3);
+			
+			strListTag.add(tagCell.getText().trim());
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 
-				this.waitForPageLoad();
+				this.waitForTableDataToLoad();
+				this.waitForAJAXCallsToComplete();
 
 				List<WebElement> newRows = this.getTable().findElements(By.xpath(this.strTRXPath));
 				rowSize = newRows.size();

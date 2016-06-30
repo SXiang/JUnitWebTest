@@ -444,7 +444,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		tablesList23.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<Map<String, String>> viewLayerList23 = null;
 		List<String> tagList23 = new ArrayList<String>();
-		tagList23.add(CUSDRVSTDTAG3200); 
+		tagList23.add(CUSDRVSTDTAG); 
 
 		return new Object[][] {				
 				{ "1"/*index*/, SQAPICSUP/*strCreatedBy*/, USERPASSWORDHASH/*password(encrypted)*/, "Picarro"/*customer*/, TIMEZONEPTUA/*timeZone*/, EXCLUSIONRADIUS/*exclusionRadius*/, null/*surveyorUnit*/, null/*userName*/, null/*startDate*/,

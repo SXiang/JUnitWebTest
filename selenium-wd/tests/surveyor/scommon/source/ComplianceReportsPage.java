@@ -2309,74 +2309,30 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		} else {
 			surveyTable = (RegexUtility.getStringInBetween(actualReportString, "Selected Driving Surveys", " Layers")).trim().replaceAll("//s+", "").replace("#", "").replace("LISA ", "");
 		}
-		InputStream inputStream = new ByteArrayInputStream(surveyTable.getBytes());
-		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
-		String line = null;
-		ArrayList<String> lineList = new ArrayList<String>();
-		try {
-			int countLines = 0;
-			StringBuilder lineBuilder = new StringBuilder();
-			while ((line = bufferReader.readLine()) != null) {
-				if (line.length() > 3) {
-					lineBuilder.append(line);
-					countLines++;
-					if (countLines == 4 || countLines == 6) {
-						lineBuilder.append(" ");
-					}
-
-					if (countLines % 8 == 0) {
-						lineList.add(lineBuilder.toString());
-						lineBuilder = new StringBuilder();
-					}
-				}
-			}
-			ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys> reportSurveyList = new ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys>();
-			Iterator<String> lineIterator = lineList.iterator();
-			while (lineIterator.hasNext()) {
-				StoredProcComplianceAssessmentGetReportDrivingSurveys reportSurveyEntry = new StoredProcComplianceAssessmentGetReportDrivingSurveys();
-				Pattern datePattern = Pattern.compile(RegexUtility.getReportRegexDatePattern(true));
-				String lineForMatching = lineIterator.next();
-				Matcher matchingDate = datePattern.matcher(lineForMatching);
-				int dateCounter = 1;
-				String remaining = lineForMatching;
-				while (matchingDate.find()) {
-
-					if (dateCounter == 1) {
-						reportSurveyEntry.setStartDateTimeWithTZ(matchingDate.group(0).trim());
-						remaining = remaining.replace(matchingDate.group(0), "").trim();
-					}
-					if (dateCounter == 2) {
-						reportSurveyEntry.setEndDateTimeWithTZ(matchingDate.group(0).trim());
-						remaining = remaining.replace(matchingDate.group(0), "").trim();
-					}
-					dateCounter++;
-
-				}
-				String lineWithoutDates = remaining.trim();
-				String[] splitWithSpace = lineWithoutDates.split("\\s+");
-				reportSurveyEntry.setUserName(splitWithSpace[1].trim());
-				remaining = remaining.replace(splitWithSpace[1], "");
-				reportSurveyEntry.setStabilityClass(splitWithSpace[splitWithSpace.length - 1].trim());
-				remaining = remaining.replace(splitWithSpace[splitWithSpace.length - 1], "");
-				reportSurveyEntry.setTag(splitWithSpace[splitWithSpace.length - 2].trim());
-				remaining = remaining.replace(splitWithSpace[splitWithSpace.length - 2], "");
-				reportSurveyEntry.setAnalyzerId(splitWithSpace[splitWithSpace.length - 3].trim());
-				remaining = remaining.replace(splitWithSpace[splitWithSpace.length - 3], "");
-				reportSurveyEntry.setDescription(remaining.replace(splitWithSpace[0].trim(), "").trim());
-				reportSurveyList.add(reportSurveyEntry);
-			}
-			ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys> listFromStoredProc = StoredProcComplianceAssessmentGetReportDrivingSurveys
+		surveyTable = surveyTable.replaceAll(System.lineSeparator(), "");
+		String datePattern = RegexUtility.getReportRegexDatePattern(true);
+		String drivingSurveysLinePattern = datePattern+" *"+datePattern;
+		surveyTable = surveyTable.replaceAll("("+drivingSurveysLinePattern+")", System.lineSeparator()+"$1");
+		String[] lines =  surveyTable.split(System.lineSeparator());
+		Log.info("Driving survey table contains "+(lines.length-1)+" records");
+		ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys> listFromStoredProc = StoredProcComplianceAssessmentGetReportDrivingSurveys
 					.getReportDrivingSurveys(reportId);
-			Iterator<StoredProcComplianceAssessmentGetReportDrivingSurveys> reportIterator = reportSurveyList
-					.iterator();
-			while (reportIterator.hasNext()) {
-				if (!reportIterator.next().isInList(listFromStoredProc)) {
-					Log.info("Driving survey table data verification failed");
-					return false;
+		for(int i=1;i<lines.length;i++){
+			boolean validLine = false;
+			String expectedLine = "";
+			String actualLine = lines[i].replaceAll(" ", "");
+			Log.info("Looking for driving survey '"+actualLine+"' in DB");
+			for(StoredProcComplianceAssessmentGetReportDrivingSurveys survey:listFromStoredProc){
+				expectedLine = survey.toString().replaceAll(" ", "");
+				if(actualLine.equalsIgnoreCase(expectedLine)){
+					validLine = true;
+					break;
 				}
 			}
-		} finally {
-			bufferReader.close();
+			if(!validLine){
+				Log.error(String.format("Driving survey in PDF is not found, '%s'",actualLine));
+				return false;
+			}
 		}
 		Log.info("Driving survey table verification passed");
 		return true;
@@ -3043,38 +2999,51 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				return false;
 			}
 		}
-		InputStream inputStream = new ByteArrayInputStream(actualReportString.getBytes());
+		
+		ArrayList<String> indicationTables =  (ArrayList<String>) RegexUtility.getStringsInBetween(actualReportString, "Disposition Confidence in Disposition", "Software Version");
+		String indicationTable = "";
+		for(String table:indicationTables){
+			indicationTable += System.lineSeparator() + table;
+		}
+		InputStream inputStream = new ByteArrayInputStream(indicationTable.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 		String line = null;
+		ArrayList<String> reportIndicationsList = new ArrayList<String>();
+		String extraLines = "";
 		try {
-			ArrayList<String> reportIndicationsList = new ArrayList<String>();
 			while ((line = bufferReader.readLine()) != null) {
-				if (line.trim().matches("^\\? \\d+ .*")) {				
-					reportIndicationsList.add(line.replaceAll("\\?", "").trim().replaceAll("\\s+", "")
-							.replace("+/-", "").replace("0.0 ", "").trim());
+				if (line.trim().matches(RegexUtility.INDICATION_TABLE_LINE_REGEX_PATTERN)){
+					ArrayUtility.appendToLastString(reportIndicationsList, extraLines.replaceAll(" ", ""));
+					reportIndicationsList.add(line.replaceAll("\\?", "").trim()
+							.replace("+/-", "").replace("0.0 ", "").trim().replaceAll(" ", ""));
+					extraLines = "";
+				}else if(!reportIndicationsList.isEmpty() && line.trim().matches(RegexUtility.FIELD_NOTE_LINE_REGEX_PATTERN)){
+					extraLines += line.trim();
 				}
-			}
-			Log.info(String.format("ReportIndications ArrayList Values : %s", LogHelper.strListToString(reportIndicationsList)));
-
-			ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications
-					.getReportIndications(reportId);
-			Iterator<StoredProcComplianceGetIndications> lineIterator = storedProcIndicationsList.iterator();
-			ArrayList<String> storedProcConvStringList = new ArrayList<String>();
-			while (lineIterator.hasNext()) {
-				StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
-				String objAsString = objStoredProc.toString();
-				storedProcConvStringList.add(objAsString.replace("0.0 ", "0").replaceAll("\\s+", "").trim());
-			}
-
-			Log.info(String.format("Checking in ReportIndications ArrayList, StoredProcConvStringList Values : %s", 
-					LogHelper.strListToString(storedProcConvStringList)));
-			if (!reportIndicationsList.equals(storedProcConvStringList)) {
-				Log.info("Indication table verification failed");
-				return false;
 			}
 		} finally {
 			bufferReader.close();
 		}
+		ArrayUtility.appendToLastString(reportIndicationsList, extraLines.replaceAll(" ", ""));
+		Log.info(String.format("ReportIndications ArrayList Values : %s", LogHelper.strListToString(reportIndicationsList)));
+
+		ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications
+					.getReportIndications(reportId);
+		Iterator<StoredProcComplianceGetIndications> lineIterator = storedProcIndicationsList.iterator();
+		ArrayList<String> storedProcConvStringList = new ArrayList<String>();
+		while (lineIterator.hasNext()) {
+				StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
+				String objAsString = objStoredProc.toString();
+				storedProcConvStringList.add(objAsString.replace("0.0 ", "0").replaceAll("\\s+", "").trim());
+		}
+
+		Log.info(String.format("Checking in ReportIndications ArrayList, StoredProcConvStringList Values : %s", 
+					LogHelper.strListToString(storedProcConvStringList)));
+		if (!reportIndicationsList.equals(storedProcConvStringList)) {
+				Log.info("Indication table verification failed");
+				return false;
+		}
+
 		Log.info("Indication table verification passed");
 		return true;
 	}

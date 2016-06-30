@@ -26,7 +26,7 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 
 	public String toString() {
 		return this.getPeakNumber().concat(this.getSurveyorUnitName()).concat(this.getDateTime())
-				.concat(Float.toString(this.getAmplitude())).concat(Float.toString(this.getCh4()))
+				.concat(String.format("%.2f",this.getAmplitude())).concat(String.format("%.2f", this.getCh4()))
 				.concat(this.getAggregatedEthaneToMethaneRatio()).trim().concat(this.getAggregateDisposition())
 				.concat(this.getAggregatedClassificationConfidence()).concat(this.getText());
 	}

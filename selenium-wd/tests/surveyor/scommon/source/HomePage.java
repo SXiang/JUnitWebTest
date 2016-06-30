@@ -158,9 +158,6 @@ public class HomePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-calibration']/a")
 	protected WebElement linkPicAdminCalibration;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-user-feedback']/a")
-	protected WebElement linkPicAdminViewUserFeedback;
-
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-release-notes']/a")
 	protected WebElement linkPicAdminManageReleaseNotes;
 	

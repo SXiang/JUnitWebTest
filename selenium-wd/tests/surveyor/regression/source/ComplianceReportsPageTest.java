@@ -132,8 +132,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, strCreatedBy, testCaseName))) {
+			complianceReportsPage.clickOnReportViewerCloseButton();
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(complianceReportsPage.findReport(rptTitle, strCreatedBy));
 			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rpt));
 			assertTrue(complianceReportsPage.verifySSRSImages(testSetup.getDownloadPath(), rptTitle, testCaseName));
 			if (tablesList != null) {
@@ -965,8 +965,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
 		complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
-		complianceReportsPage.waitForResubmitButton();
-		complianceReportsPage.getBtnResubmitReport().click();
 		
 		complianceReportsPage.waitForPageLoad();
 

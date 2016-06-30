@@ -544,9 +544,9 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisSwitchIsOn", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty(CLS_BASEMAP_VIEW_PAGE_ACTIONS + FN_VERIFY_GIS_SWITCH_IS_ON, ARG_DATA, data);
 		GisSwitchType switchType = GisSwitchType.UseAllPipes;
-		if (data.equalsIgnoreCase("BoundariesDistrict")) {
-			switchType = GisSwitchType.MaterialTypePEPlastic;
-		} else if (data.equalsIgnoreCase("BoundariesDistrictPlat")) {
+		if (data.equalsIgnoreCase("BigBoundary")) {
+			switchType = GisSwitchType.BigBoundary;
+		} else if (data.equalsIgnoreCase("SmallBoundary")) {
 			switchType = GisSwitchType.SmallBoundary;
 		} else if (data.equalsIgnoreCase("MaterialTypeCastIron")) {
 			switchType = GisSwitchType.MaterialTypeCastIron;

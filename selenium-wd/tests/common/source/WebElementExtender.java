@@ -21,6 +21,8 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.WrapsDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -98,7 +100,6 @@ public class WebElementExtender {
 		return true;
 	}
 
-   
    /*
     * Captures Screenshot of the element and saves to a file.
     * NOTES: This method is useful for cases where test wants to capture bitmap of image shown in Canvas element for example.
