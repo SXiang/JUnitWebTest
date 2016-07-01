@@ -56,6 +56,10 @@ public class WebElementExtender {
 	   return false;
    }
 
+   public static String getInnerHtml(WebElement element) {
+	   return element.getAttribute("innerHTML");
+   }
+   
    public static void setAttribute(WebElement element, String attributeName, String value)
    {
        WrapsDriver wrappedElement = (WrapsDriver) element;

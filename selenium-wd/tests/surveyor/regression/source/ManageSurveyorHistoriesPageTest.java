@@ -59,25 +59,6 @@ public class ManageSurveyorHistoriesPageTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC1249 Test Description: Add Surveyor History Note
-	 * 
-	 */
-	@Test
-	public void TC1249_AddSurveyorHistoryNote_PicarroSupport() {
-		String strNote = "TC1249 Automation Note " + testSetup.getRandomNumber();
-		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
-
-		System.out.format("\nRunning TC1249 Test Description: Add Surveyor History Note as Picarro Support user\n");
-
-		loginPage.open();
-		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
-
-		manageSurveyorHistoriesPage.open();
-		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, strNote);
-		assertTrue("Picarro Support user not able to add new history note!", manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS, SQACUSLOC, SQACUSLOCSUR, strNote));
-	}
-
-	/**
 	 * Test Case ID: TC134_TC1254_AddNoteMaxCharLimit More than 1500 characters not allowed in Note field present on Manage Add Surveyor History screen
 	 * 
 	 */
@@ -122,8 +103,27 @@ public class ManageSurveyorHistoriesPageTest extends SurveyorBaseTest {
 	 * 
 	 */
 	@Test
-	public void TC501_ControlVisibility_PicarroSupport() {
-		Log.info("\nRunning TC501_ControlVisibility_PicarroSupport\n");
+	public void TC1249_AddSurveyorHistoryNote_PicarroSupport() {
+		String strNote = "TC1249 Automation Note " + testSetup.getRandomNumber();
+		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
+
+		System.out.format("\nRunning TC1249 Test Description: Add Surveyor History Note as Picarro Support user\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+
+		manageSurveyorHistoriesPage.open();
+		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, strNote);
+		assertTrue("Picarro Support user not able to add new history note!", manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS, SQACUSLOC, SQACUSLOCSUR, strNote));
+	}
+
+	/**
+	 * Test Case ID: Test Case TC501: Manage Surveyor History
+	 * 
+	 */
+	@Test
+	public void TC501_Manage_Surveyor_History() {
+		Log.info("\nRunning TC501_Manage_Surveyor_History\n");
 		String strNote = "TC501 Automation Note " + testSetup.getRandomNumber();
 		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
 		loginPage.open();
@@ -134,6 +134,8 @@ public class ManageSurveyorHistoriesPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 		manageSurveyorHistoriesPage.open();
 		assertTrue(manageSurveyorHistoriesPage.getBtnAddNewHistoryEntry().isDisplayed());
+		manageSurveyorHistoriesPage.searchTable(SQACUSLOCSUR);
 		assertTrue("Picarro Support user not able to add new history note!", manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS, SQACUSLOC, SQACUSLOCSUR, strNote));
+		assertTrue("No buttons are expected to be shown in the page", manageSurveyorHistoriesPage.verifyNoButtonsArePresentInTable());
 	}
 }

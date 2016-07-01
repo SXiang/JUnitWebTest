@@ -62,14 +62,12 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a")
 	protected WebElement btnEditSurveyor;
 
-	//*[@id="datatable"]/tbody/tr[1]/td[3]/a
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[3]/a")
 	protected WebElement btnEditCustomerSurveyor;
 	
     @FindBy(name = "datatable_length")
     private WebElement recordsPerPage;
     
-
     @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[1]")
     protected WebElement tdLocationValue;
     
@@ -87,7 +85,6 @@ public class ManageSurveyorPage extends SurveyorBasePage {
     
     @FindBy(how = How.XPATH, using = "//*[@id='datatable']")
    	protected WebElement surveyorsTable;
-
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/thead/tr/th[2]")
 	protected WebElement theadSurveyor;
