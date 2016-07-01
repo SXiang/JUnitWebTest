@@ -23,6 +23,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 
@@ -631,6 +632,15 @@ public class SurveyorBasePage extends BasePage {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return (getRecordsShownOnPage(d) > 0);
+			}
+		});
+	}
+
+	public void waitForDropdownToBePopulated(Select dropdownElement) {
+		Log.method("waitForDropdownToBePopulated", dropdownElement);
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return !dropdownElement.getOptions().isEmpty();
 			}
 		});
 	}

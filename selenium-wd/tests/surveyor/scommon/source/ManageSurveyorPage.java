@@ -177,6 +177,9 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		Log.info("Set Surveyor Desc - '"+surveyorDesc+"'");
 		this.inputSurveyorDesc.sendKeys(surveyorDesc);
 		
+		Log.info("Waiting for Location dropdown to be populated..");
+		this.waitForDropdownToBePopulated(new Select(this.dropDownLocation));
+		
 		List<WebElement> options = this.dropDownLocation.findElements(By.tagName("option"));
 		for (WebElement option : options) {
 			if (option.getText().trim().equalsIgnoreCase(customerName + " - " + locationName)){

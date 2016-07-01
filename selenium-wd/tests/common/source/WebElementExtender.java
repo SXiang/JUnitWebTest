@@ -20,9 +20,8 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.internal.WrapsDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -69,7 +68,17 @@ public class WebElementExtender {
        JavascriptExecutor driver = (JavascriptExecutor) wrappedElement.getWrappedDriver();
        driver.executeScript("arguments[0].setAttribute(arguments[1], arguments[2])", element, attributeName, value);
    }
+
+   public static void setElementAttribute(WebElement element, String attributeName, String value)
+   {
+       JavascriptExecutor driver = (JavascriptExecutor) TestContext.INSTANCE.getDriver();
+       driver.executeScript("arguments[0].setAttribute(arguments[1], arguments[2])", element, attributeName, value);
+   }
    
+   public static void setFocusOnElement(WebElement element) {
+	   new Actions(TestContext.INSTANCE.getDriver()).moveToElement(element).perform();
+   }
+
    public static void highlightElement(WebElement element) {
 	    for (int i = 0; i < 5; i++) {
 	    	WrapsDriver wrappedElement = (WrapsDriver) element;
