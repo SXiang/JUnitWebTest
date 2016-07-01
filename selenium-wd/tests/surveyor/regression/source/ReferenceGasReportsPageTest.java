@@ -48,6 +48,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 	private static ReferenceGasReportsPage referenceGasReportsPage = null;
 	private static DateFormat dateFormat = new SimpleDateFormat("dd");
 	private static final int START_DATE_DAY = 12;
+	private static final int START_DATE_SINGLE_DAY = 15;
 	private static final int START_DATE_MONTH = 12;
 	private static final int START_DATE_YEAR = 2015;
 
@@ -179,14 +180,11 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC196 Test Description: Generate Generate Reference Gas Capture Report for single day
 	 * 
 	 */
-	//@Test
-	// Need simulator reference gas capture as pre-requisite or better way to
-	// select 6/29 start date. PDF size verification will fail if no data is
-	// present
+	@Test
 	public void TC196_GenerateRefGasRpt_SingleDay() {
 		String rptTitle = "TC196 Report" + testSetup.getRandomNumber();
-		String startDate = getStartDate();
-		String endDate = getEndDate();
+		String startDate = getSingleDayStartDate();
+		String endDate = startDate;
 		Integer monthDiff = getNumberOfPreMonths() + 1;
 
 		Log.info("\nRunning TC196 Test Description: Generate Reference Gas Capture Report for single day. Report title - " + rptTitle);
@@ -269,6 +267,16 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 	private String getStartDate() {
 		Calendar cal = Calendar.getInstance();
 		cal.set(START_DATE_YEAR, START_DATE_MONTH, START_DATE_DAY);
+		String startDate = dateFormat.format(cal.getTime());
+		if (startDate.startsWith("0")) {
+			startDate = startDate.replaceFirst("0*", "");
+		}
+		return startDate;
+	}
+
+	private String getSingleDayStartDate() {
+		Calendar cal = Calendar.getInstance();
+		cal.set(START_DATE_YEAR, START_DATE_MONTH, START_DATE_SINGLE_DAY);
 		String startDate = dateFormat.format(cal.getTime());
 		if (startDate.startsWith("0")) {
 			startDate = startDate.replaceFirst("0*", "");
