@@ -445,7 +445,7 @@ public class PDFTableUtility extends PDFUtility{
 			{"", "4", "Software Car", "12/14/2015 3:27 PM PST", "0.4", "2.77", "N/A", "Possible Natural Gas", "N/A",""},
 		});
 		expectedPDFTableMap.put(fileName,PDFTable.LISAINDICATIONTABLE);	
-		
+
 		PDFTableUtility pdfTableUtility = new PDFTableUtility();
 
 		try {
@@ -460,19 +460,19 @@ public class PDFTableUtility extends PDFUtility{
 					pdfTableUtility.testExtractPDFTable(Paths.get(filePath).toString(), 
 							expectedTableMap.get(filename),expectedPDFTableMap.get(filename));				
 					Log.info("Verified table '"+expectedPDFTableMap.get(filename)+ "' in file '"+expectedTableMap.get(filename)+"'");
-//					//2. test extract a column from a PDF table
-//					pdfTableUtility.testExtractPDFTable_getColumn(Paths.get(filePath).toString(), 
-//							expectedTableMap.get(filename),expectedPDFTableMap.get(filename));				
-//					Log.info("Verified getCoumn from table '"+expectedPDFTableMap.get(filename)+ "' in file '"+expectedTableMap.get(filename)+"'");
-//					//3. test extract a row from a PDF table
-//					pdfTableUtility.testExtractPDFTable_getRow(Paths.get(filePath).toString(), 
-//							expectedTableMap.get(filename),expectedPDFTableMap.get(filename));				
-//					Log.info("Verified getRow from table '"+expectedPDFTableMap.get(filename)+ "' in file '"+expectedTableMap.get(filename)+"'");
-//					//4. test extract a cell from a PDF table
-//					pdfTableUtility.testExtractPDFTable_getCell(Paths.get(filePath).toString(), 
-//							expectedTableMap.get(filename),expectedPDFTableMap.get(filename));				
-//					Log.info("Verified getCell from table '"+expectedPDFTableMap.get(filename)+ "' in file '"+expectedTableMap.get(filename)+"'");
-//					Log.info("\nEnd of Test PDF File "+filename+" - Table: "+expectedPDFTableMap.get(filename));
+					//2. test extract a column from a PDF table
+					pdfTableUtility.testExtractPDFTable_getColumn(Paths.get(filePath).toString(), 
+							expectedTableMap.get(filename),expectedPDFTableMap.get(filename));				
+					Log.info("Verified getCoumn from table '"+expectedPDFTableMap.get(filename)+ "' in file '"+expectedTableMap.get(filename)+"'");
+					//3. test extract a row from a PDF table
+					pdfTableUtility.testExtractPDFTable_getRow(Paths.get(filePath).toString(), 
+							expectedTableMap.get(filename),expectedPDFTableMap.get(filename));				
+					Log.info("Verified getRow from table '"+expectedPDFTableMap.get(filename)+ "' in file '"+expectedTableMap.get(filename)+"'");
+					//4. test extract a cell from a PDF table
+					pdfTableUtility.testExtractPDFTable_getCell(Paths.get(filePath).toString(), 
+							expectedTableMap.get(filename),expectedPDFTableMap.get(filename));				
+					Log.info("Verified getCell from table '"+expectedPDFTableMap.get(filename)+ "' in file '"+expectedTableMap.get(filename)+"'");
+					Log.info("\nEnd of Test PDF File "+filename+" - Table: "+expectedPDFTableMap.get(filename));
 				}
 
 			}
