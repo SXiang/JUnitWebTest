@@ -21,10 +21,13 @@ import static surveyor.scommon.source.SurveyorConstants.SQACUSLOCANZ;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import common.source.DateUtility;
+import common.source.DateUtility.DatePart;
 import common.source.Log;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -41,9 +44,13 @@ import surveyor.scommon.source.SurveyorTestRunner;
  */
 @RunWith(SurveyorTestRunner.class)
 public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
-	private static ReferenceGasReportsPage referenceGasReportsPage = null;
 
+	private static ReferenceGasReportsPage referenceGasReportsPage = null;
 	private static DateFormat dateFormat = new SimpleDateFormat("dd");
+	private static final int START_DATE_DAY = 12;
+	private static final int START_DATE_SINGLE_DAY = 15;
+	private static final int START_DATE_MONTH = 12;
+	private static final int START_DATE_YEAR = 2015;
 
 	@BeforeClass
 	public static void setupReferenceGasReportsPageTest() {
@@ -63,6 +70,8 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR + "-" + SQACUSLOCANZ;
 		String startDate = getStartDate();
 		String endDate = getEndDate();
+		Integer monthDiff = getNumberOfPreMonths() + 1;
+		
 		ArrayList<String> inputList=new ArrayList<String>();
 		inputList.add(rptTitle);
 		inputList.add(SQACUS);
@@ -73,7 +82,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		referenceGasReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		referenceGasReportsPage.open();
 
-		referenceGasReportsPage.addNewReport(rptTitle, TIMEZONEET, surveyorUnit, startDate, endDate, 7, 0);
+		referenceGasReportsPage.addNewReport(rptTitle, TIMEZONEET, surveyorUnit, startDate, endDate, monthDiff, 0);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		if ((referenceGasReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
@@ -122,6 +131,8 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR + "-" + SQACUSLOCANZ;
 		String startDate = getStartDate();
 		String endDate = getEndDate();
+		Integer monthDiff = getNumberOfPreMonths() + 1;
+		
 		ArrayList<String> inputList=new ArrayList<String>();
 		inputList.add(rptTitle);
 		inputList.add(SQACUS);
@@ -132,7 +143,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		referenceGasReportsPage.login(SQACUSUA, USERPASSWORD);
 		referenceGasReportsPage.open();
 
-		referenceGasReportsPage.addNewReport(rptTitle, TIMEZONEMT, surveyorUnit, startDate, endDate, 6, 0);
+		referenceGasReportsPage.addNewReport(rptTitle, TIMEZONEMT, surveyorUnit, startDate, endDate, monthDiff, 0);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
@@ -169,14 +180,12 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC196 Test Description: Generate Generate Reference Gas Capture Report for single day
 	 * 
 	 */
-	// @Test
-	// Need simulator reference gas capture as pre-requisite or better way to
-	// select 6/29 start date. PDF size verification will fail if no data is
-	// present
+	@Test
 	public void TC196_GenerateRefGasRpt_SingleDay() {
 		String rptTitle = "TC196 Report" + testSetup.getRandomNumber();
-		String startDate = "28";
-		String endDate = "29";
+		String startDate = getSingleDayStartDate();
+		String endDate = startDate;
+		Integer monthDiff = getNumberOfPreMonths() + 1;
 
 		Log.info("\nRunning TC196 Test Description: Generate Reference Gas Capture Report for single day. Report title - " + rptTitle);
 
@@ -185,7 +194,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		referenceGasReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		referenceGasReportsPage.open();
 
-		referenceGasReportsPage.addNewReport(rptTitle, TIMEZONEPT, surveyorUnit, startDate, endDate, 6, 6);
+		referenceGasReportsPage.addNewReport(rptTitle, TIMEZONEPT, surveyorUnit, startDate, endDate, monthDiff, monthDiff);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
@@ -212,6 +221,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR + "-" + SQACUSLOCANZ;
 		String startDate = getStartDate();
 		String endDate = getEndDate();
+		Integer monthDiff = getNumberOfPreMonths() + 1;
 		
 		ArrayList<String> inputList=new ArrayList<String>();
 		inputList.add(rptTitle);
@@ -223,7 +233,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		referenceGasReportsPage.login(SQACUSSU, USERPASSWORD);
 		referenceGasReportsPage.open();
 
-		referenceGasReportsPage.addNewReport(rptTitle, TIMEZONECT, surveyorUnit, startDate, endDate, 6, 0);
+		referenceGasReportsPage.addNewReport(rptTitle, TIMEZONECT, surveyorUnit, startDate, endDate, monthDiff, 0);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
@@ -249,9 +259,24 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		return endDate;
 	}
 
+	private Integer getNumberOfPreMonths() {
+		return Integer.parseInt(DateUtility.getDateDiff(LocalDate.of(START_DATE_YEAR, START_DATE_MONTH, START_DATE_DAY), 
+				LocalDate.now(), DatePart.Month).toString());
+	}
+	
 	private String getStartDate() {
 		Calendar cal = Calendar.getInstance();
-		cal.set(2015, 12, 12);
+		cal.set(START_DATE_YEAR, START_DATE_MONTH, START_DATE_DAY);
+		String startDate = dateFormat.format(cal.getTime());
+		if (startDate.startsWith("0")) {
+			startDate = startDate.replaceFirst("0*", "");
+		}
+		return startDate;
+	}
+
+	private String getSingleDayStartDate() {
+		Calendar cal = Calendar.getInstance();
+		cal.set(START_DATE_YEAR, START_DATE_MONTH, START_DATE_SINGLE_DAY);
 		String startDate = dateFormat.format(cal.getTime());
 		if (startDate.startsWith("0")) {
 			startDate = startDate.replaceFirst("0*", "");
