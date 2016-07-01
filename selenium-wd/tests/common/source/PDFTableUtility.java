@@ -21,7 +21,7 @@ public class PDFTableUtility extends PDFUtility{
 	// All the pdf tables should be defined in this enum
 	public static enum PDFTable {		
 		LISAINVESTIGATIONTABLE ("Lisa Investigation Table",2),
-		LISAINDICATIONTABLE ("Disposition"+wordSeparator+"Confidence in Disposition (%)"+wordSeparator+"Field Notes",0,"",true),
+		LISAINDICATIONTABLE ("Disposition"+wordSeparator+"Confidence in Disposition (%)"+wordSeparator+"Field Notes",0,"",true,-1,10),
 		COMPLIANCEREPORTSUMMARYTABLE ("Map Height & Width:.*",0,"",false,6),
 		COVERAGEFORECAST(".*Percent Service Coverage with LISAs.*",0,"",false,1),
 		COVERAGEFORECASTTO70(".*Probability to Obtain 70% Coverage",0,"",true,4),
@@ -34,7 +34,8 @@ public class PDFTableUtility extends PDFUtility{
 		private final String tableEndLinePattern; //3. tableEndLinePattern, indicator of end of a table, optional, default to ""
 		private final boolean hasTableHeader;     //4. With table header or without table header
 		private final int numRows;                //5. num of rows within the table if it's positive, otherwise the size of table is unknown.
-
+		private final int numFields;              //6. num of fields within a table row if it's positive, otherwise it's is unknown.
+		
 		// Table from the line matching the tableID to the end of file
 		PDFTable(String tableID){
 			this(tableID,0);
@@ -60,11 +61,15 @@ public class PDFTableUtility extends PDFUtility{
 			this(tableID, startLine, tableEndLinePattern, true,-1);
 		}
 		PDFTable(String tableID,  int startLine, String tableEndLinePattern, boolean hasTableHeader, int numRows){
+			this(tableID, startLine, tableEndLinePattern, hasTableHeader, numRows, 0);
+		}
+		PDFTable(String tableID,  int startLine, String tableEndLinePattern, boolean hasTableHeader, int numRows, int numFields){
 			this.tableID = tableID;
 			this.startLine = startLine;
 			this.tableEndLinePattern = tableEndLinePattern;
 			this.hasTableHeader = hasTableHeader;
 			this.numRows = numRows;
+			this.numFields = numFields;
 		}
 
 		public String gettableID(){
@@ -138,7 +143,7 @@ public class PDFTableUtility extends PDFUtility{
 			String line = trimTableRow(pdfLines[i]);        	
 			int numWords = line.split(wordSeparatorPattern).length;
 			int combinedLine = 0;
-			int validNumFields = 0;
+			int validNumFields = pTable.numFields;
 			while(numWords<numTableNameWords){
 				if(++combinedLine%maxWordNumLine==1){
 					line += wordSeparator;
@@ -174,6 +179,16 @@ public class PDFTableUtility extends PDFUtility{
 						return pdfTable;
 					}else{
 						String[] row = getTableRow(line);
+						if(row.length==validNumFields-1){
+								int lineIndex = j+1;
+								String lastField = "";
+								while(lineIndex < pdfLines.length &&
+										(!pdfLines[lineIndex].startsWith(pdfParagraphEnd+pdfParagraphStart))){
+									lastField += pdfLines[lineIndex++];
+								}
+								j = lineIndex-1;
+								row = getTableRow(line+wordSeparator+lastField);
+						}
 						if(validNumFields==0||row.length==validNumFields){
 							pdfTable.add(row);
 							validNumFields = row.length;
@@ -186,13 +201,15 @@ public class PDFTableUtility extends PDFUtility{
 				i = j++;
 			}
 		}
-
+		printTableContents(pdfTable);
 		return pdfTable;
 	}
 
 	private String trimTableRow(String line){
 		String nelPattern = "[\\u0085]*";
 		line = line.replaceAll(nelPattern, "");
+		line = line.replaceAll(pdfParagraphEnd, "");
+		line = line.replaceAll(pdfParagraphStart, "");
 		return line;
 	}
 	
@@ -369,6 +386,15 @@ public class PDFTableUtility extends PDFUtility{
 	}
 
 
+	public void printTableContents(List<String[]> table){
+		for(String[] tr:table){
+			String row = "";
+			for(String td:tr){
+			   row += String.format("\t|%1$-10s",td);
+			}
+			Log.info(row);
+		}
+	}
 	/**
 	 * Executes the unit tests for this class.
 	 * @param args
@@ -381,44 +407,47 @@ public class PDFTableUtility extends PDFUtility{
 		HashMap<String, PDFTable> expectedPDFTableMap = new HashMap<String, PDFTable>();
 
 		String fileName = "IV-12BF45.pdf";
-//		expectedTableMap.put(fileName, new String[][]{
-//			{"Lisa#","Amplitude","Investigated","Leak Found","Investigation Date/Time","Investigator"},
-//			{"1","6.42","","","",""},{"2","2.41","","","",""},{"3","1.74","","","",""},{"4","0.37","","","",""},
-//			{"5","0.34","","","",""},{"6","0.12","","","",""},{"7","0.08","","","",""},{"8","0.08","","","",""}});
-//		expectedPDFTableMap.put(fileName, PDFTable.LISAINVESTIGATIONTABLE);
-//
-//		fileName = "TC517Report538321.pdf";
-//		expectedTableMap.put(fileName, new String[][]{
-//			{"Map Height & Width:","8.50 X 11.00 in"},
-//			{"Time Zone:", "Pacific Standard Time"},
-//			{"Exclusion Radius:","0 m"},
-//			{"Report Mode:", "Standard"},
-//			{"NE Lat & NE Long","37.42060 X -121.97250"},
-//			{"SW Lat & SW Long","37.41570 X -121.98390"}});
-//		expectedPDFTableMap.put(fileName, PDFTable.COMPLIANCEREPORTSUMMARYTABLE);
-//
-//		fileName = "TestReportPGE-surveynotpartofplat.pdf";
-//		expectedTableMap.put(fileName, new String[][]{
-//			{"0%Percent Service Coverage with LISAs","0%Percent Service Coverage Without LISAs"}
-//		});
-//		expectedPDFTableMap.put(fileName, PDFTable.COVERAGEFORECAST);
-//
-//		fileName = "TestReportPGE-nolisa.pdf";
-//		expectedTableMap.put(fileName, new String[][]{
-//			{"Additional Surveys","Probability to Obtain 70% Coverage"},
-//			{"0","0%"},{"1","4%"},{"2","24%"}
-//		});		
-//		expectedPDFTableMap.put(fileName, PDFTable.COVERAGEFORECASTTO70);	
-
-		fileName = "CR-E6522E_debug.pdf";
 		expectedTableMap.put(fileName, new String[][]{
+			{"Lisa#","Amplitude","Investigated","Leak Found","Investigation Date/Time","Investigator"},
+			{"1","6.42","","","",""},{"2","2.41","","","",""},{"3","1.74","","","",""},{"4","0.37","","","",""},
+			{"5","0.34","","","",""},{"6","0.12","","","",""},{"7","0.08","","","",""},{"8","0.08","","","",""}});
+		expectedPDFTableMap.put(fileName, PDFTable.LISAINVESTIGATIONTABLE);
+
+		fileName = "TC517Report538321.pdf";
+		expectedTableMap.put(fileName, new String[][]{
+			{"Map Height & Width:","8.50 X 11.00 in"},
+			{"Time Zone:", "Pacific Standard Time"},
+			{"Exclusion Radius:","0 m"},
+			{"Report Mode:", "Standard"},
+			{"NE Lat & NE Long","37.42060 X -121.97250"},
+			{"SW Lat & SW Long","37.41570 X -121.98390"}});
+		expectedPDFTableMap.put(fileName, PDFTable.COMPLIANCEREPORTSUMMARYTABLE);
+
+		fileName = "TestReportPGE-surveynotpartofplat.pdf";
+		expectedTableMap.put(fileName, new String[][]{
+			{"0%Percent Service Coverage with LISAs","0%Percent Service Coverage Without LISAs"}
+		});
+		expectedPDFTableMap.put(fileName, PDFTable.COVERAGEFORECAST);
+
+		fileName = "TestReportPGE-nolisa.pdf";
+		expectedTableMap.put(fileName, new String[][]{
+			{"Additional Surveys","Probability to Obtain 70% Coverage"},
+			{"0","0%"},{"1","4%"},{"2","24%"}
+		});		
+		expectedPDFTableMap.put(fileName, PDFTable.COVERAGEFORECASTTO70);	
+
+		fileName = "CR-E6522E.pdf";
+		fileName = "CR-A973F7_debug.pdf";
+		//fileName = "CR-CFF847_debug.pdf";
+		expectedTableMap.put(fileName, new String[][]{
+			{"Disposition", "Confidence in Disposition (%)", "Field Notes"},
 			{"", "1", "Software Car", "12/14/2015 3:26 PM PST", "12.3", "15.56", "N/A", "Possible Natural Gas", "N/A", "1. 15.6/12.30"},
 			{"", "2", "Software Car", "12/14/2015 3:28 PM PST", "9.44", "9.44", "N/A", "Possible Natural Gas", "N/A", "1. 13.7/8.202. 13.0/7.973. 9.4/9.44"},
 			{"", "3", "Software Car", "12/14/2015 3:28 PM PST", "3.02", "6.01", "N/A", "Possible Natural Gas", "N/A", "1. 6.0/3.02"},
 			{"", "4", "Software Car", "12/14/2015 3:27 PM PST", "0.4", "2.77", "N/A", "Possible Natural Gas", "N/A",""},
 		});
 		expectedPDFTableMap.put(fileName,PDFTable.LISAINDICATIONTABLE);	
-
+		
 		PDFTableUtility pdfTableUtility = new PDFTableUtility();
 
 		try {
@@ -433,19 +462,19 @@ public class PDFTableUtility extends PDFUtility{
 					pdfTableUtility.testExtractPDFTable(Paths.get(filePath).toString(), 
 							expectedTableMap.get(filename),expectedPDFTableMap.get(filename));				
 					Log.info("Verified table '"+expectedPDFTableMap.get(filename)+ "' in file '"+expectedTableMap.get(filename)+"'");
-//					//2. test extract a column from a PDF table
-//					pdfTableUtility.testExtractPDFTable_getColumn(Paths.get(filePath).toString(), 
-//							expectedTableMap.get(filename),expectedPDFTableMap.get(filename));				
-//					Log.info("Verified getCoumn from table '"+expectedPDFTableMap.get(filename)+ "' in file '"+expectedTableMap.get(filename)+"'");
-//					//3. test extract a row from a PDF table
-//					pdfTableUtility.testExtractPDFTable_getRow(Paths.get(filePath).toString(), 
-//							expectedTableMap.get(filename),expectedPDFTableMap.get(filename));				
-//					Log.info("Verified getRow from table '"+expectedPDFTableMap.get(filename)+ "' in file '"+expectedTableMap.get(filename)+"'");
-//					//4. test extract a cell from a PDF table
-//					pdfTableUtility.testExtractPDFTable_getCell(Paths.get(filePath).toString(), 
-//							expectedTableMap.get(filename),expectedPDFTableMap.get(filename));				
-//					Log.info("Verified getCell from table '"+expectedPDFTableMap.get(filename)+ "' in file '"+expectedTableMap.get(filename)+"'");
-//					Log.info("\nEnd of Test PDF File "+filename+" - Table: "+expectedPDFTableMap.get(filename));
+					//2. test extract a column from a PDF table
+					pdfTableUtility.testExtractPDFTable_getColumn(Paths.get(filePath).toString(), 
+							expectedTableMap.get(filename),expectedPDFTableMap.get(filename));				
+					Log.info("Verified getCoumn from table '"+expectedPDFTableMap.get(filename)+ "' in file '"+expectedTableMap.get(filename)+"'");
+					//3. test extract a row from a PDF table
+					pdfTableUtility.testExtractPDFTable_getRow(Paths.get(filePath).toString(), 
+							expectedTableMap.get(filename),expectedPDFTableMap.get(filename));				
+					Log.info("Verified getRow from table '"+expectedPDFTableMap.get(filename)+ "' in file '"+expectedTableMap.get(filename)+"'");
+					//4. test extract a cell from a PDF table
+					pdfTableUtility.testExtractPDFTable_getCell(Paths.get(filePath).toString(), 
+							expectedTableMap.get(filename),expectedPDFTableMap.get(filename));				
+					Log.info("Verified getCell from table '"+expectedPDFTableMap.get(filename)+ "' in file '"+expectedTableMap.get(filename)+"'");
+					Log.info("\nEnd of Test PDF File "+filename+" - Table: "+expectedPDFTableMap.get(filename));
 				}
 
 			}
