@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
+import static surveyor.dataaccess.source.ResourceKeys.CaptureAnalysisDispositionTypesPrefix;
 
 import common.source.Log;
 
@@ -22,8 +23,8 @@ public class StoredProcComplianceGetIsotopics extends BaseEntity {
 	}
 
 	public String toString() {
-		String delta = (this.getDelta() == 0.0) ? "0" : Float.toString(this.getDelta());
-		String uncertainty = (this.getUncertainty() == 0.0) ? "0" : Float.toString(this.getUncertainty());
+		String delta = String.format("%.2f",this.getDelta());
+		String uncertainty = String.format("%.2f",this.getUncertainty());
 		return this.getSurveyorUnitName().concat(" ").concat(this.getDateTime()).concat(" ").concat(this.getDisposition()).concat(" ").concat(delta).concat("+/-").concat(uncertainty).concat(" ").concat(this.getText());
 
 	}
@@ -78,18 +79,27 @@ public class StoredProcComplianceGetIsotopics extends BaseEntity {
 
 	public boolean isEquals(StoredProcComplianceGetIsotopics obj) {
 		if (!this.getSurveyorUnitName().trim().equals(obj.getSurveyorUnitName().trim())) {
+			Log.error(String.format("SurveyorUnitName is not match, Expect '%s', Actual '%s'", obj.getSurveyorUnitName().trim(), this.getSurveyorUnitName().trim()));
 			return false;
 		}
-		if (!this.getDisposition().trim().equals(obj.getDisposition().trim())) {
+		
+		String dispositionType = CaptureAnalysisDispositionTypesPrefix+(" "+obj.getDisposition().trim()).replaceAll(" ", "_");
+		String dispositionValue = Resources.getResource(dispositionType);
+		if (!(this.getDisposition().trim().equals(obj.getDisposition().trim())
+				|| dispositionValue.trim().equals(this.getDisposition().trim()))) {
+			Log.error(String.format("Disposition is not match, Expect '%s', Actual '%s'", obj.getDisposition().trim()+"/"+dispositionValue, this.getDisposition().trim()));
 			return false;
 		}
 		if (this.getDelta() != (obj.getDelta())) {
+			Log.error(String.format("Delta is not match, Expect '%s', Actual '%s'", obj.getDelta(), this.getDelta()));
 			return false;
 		}
 		if (this.getUncertainty() != (obj.getUncertainty())) {
+			Log.error(String.format("Uncertainty is not match, Expect '%s', Actual '%s'", obj.getUncertainty(), this.getUncertainty()));
 			return false;
 		}
 		if (!this.getText().trim().equals(obj.getText().trim())) {
+			Log.error(String.format("FieldNotes is not match, Expect '%s', Actual '%s'", obj.getText().trim(), this.getText().trim()));
 			return false;
 		}
 		return true;

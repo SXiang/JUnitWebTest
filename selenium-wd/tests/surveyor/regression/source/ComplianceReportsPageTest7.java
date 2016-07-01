@@ -1,6 +1,9 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
+
+import org.junit.Before;
+
 import common.source.Log;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -15,6 +18,7 @@ import surveyor.scommon.actions.SurveyViewPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.dataprovider.ComplianceReportDataProvider;
@@ -38,6 +42,22 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
+
+		// Select run mode here.
+		setPropertiesForTestRunMode();
+	}
+
+	@Before
+	public void beforeTest() throws Exception{
+		setPropertiesForTestRunMode();
+	}
+
+	private static void setPropertiesForTestRunMode() throws Exception {
+		setTestRunMode(ReportTestRunMode.FullTestRun);
+		
+		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
+			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
+		}
 	}
 
 	/**
@@ -52,13 +72,6 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 		surveyViewPageAction = new SurveyViewPageActions(driver, baseURL, testSetup);
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
-
-		// Select run mode here.
-		setTestRunMode(ReportTestRunMode.FullTestRun);
-		
-		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
-			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
-		}
 	}
 
 	/**

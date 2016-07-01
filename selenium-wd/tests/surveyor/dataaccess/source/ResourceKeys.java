@@ -206,9 +206,6 @@ public class ResourceKeys {
 	public static final String SystemHistoryReports_NoteColumn = "SysHistoryReportSSRS_Note";
 	public static final String SystemHistoryReports_UserNameColumn = "SysHistoryReportSSRS_UserName";
 	public static final String SystemHistoryReports_NoRecords = "SysHistoryReportSSRS_NoRecord";
-	public static final String UserFeedback_PageTitle = "UserFeedback_PageTitle";
-	public static final String UserFeedback_PromptTitle = "UserFeedback_PromptTitle";
-	public static final String UserFeedback_ThankYou_PromptText = "UserFeedback_ThankYou_PromptText";
 	public static final String Validation_SummaryTitle = "Validation_SummaryTitle";
 	public static final String Validation_Required = "Validation_Required";
 	public static final String Validation_FixThisField = "Validation_FixThisField";
@@ -260,6 +257,7 @@ public class ResourceKeys {
 	public static final String Constant_FilteredFromMaxTotalEntries = "Constant_FilteredFromMaxTotalEntries";
 	
 	// Capture Analysis Disposition types.
+	public static final String CaptureAnalysisDispositionTypesPrefix = "CaptureAnalysisDispositionTypes";
 	public static final String CaptureAnalysisDispositionTypes_Delta_Out_Of_Range = "CaptureAnalysisDispositionTypes_Delta_Out_Of_Range";
 	public static final String CaptureAnalysisDispositionTypes_Ethane_Ratio_Out_Of_Range = "CaptureAnalysisDispositionTypes_Ethane_Ratio_Out_Of_Range";
 	public static final String CaptureAnalysisDispositionTypes_Ethane_Ratio_SDev_Out_Of_Range = "CaptureAnalysisDispositionTypes_Ethane_Ratio_SDev_Out_Of_Range";

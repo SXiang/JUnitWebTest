@@ -239,6 +239,32 @@
 		</junit>
 	</target>
 
+	<target name="testplaceholdertests" depends="compileregression" description="Run ManageAnalyzer and ManageSurveyor test cases">
+		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
+				showoutput="yes">
+			<sysproperty key = "testReportCategory" value = "Regression" />
+			<classpath>
+				<pathelement path="${build}" />
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+
+			<batchtest fork="yes" todir="${reports}/regression/xml">
+				<formatter type="xml" />
+				<fileset dir="${build}">
+
+					<include name="**/ManageAnalyzersPageTest.class" />
+					<include name="**/ComplianceReportsPageTest6.class" />
+					<include name="**/SurveyViewPageTest.class" />
+					<include name="**/ManageCustomersPageTest.class" />
+					<include name="**/ComplianceReportsPageTest.class" />
+
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
 	<target name="compliancereportpageactiontests" depends="compileregression" description="Run compliance report page action test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
@@ -253,8 +279,9 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ComplianceReportsPageTest3.class" />
-					<include name="**/ComplianceReportsPageTest8.class" />
+					<include name="**/ComplianceReportsPageTest2.class" />
+					<include name="**/ComplianceReportsPageTest6.class" />
+					<include name="**/ComplianceReportsPageTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>

@@ -47,13 +47,9 @@ public class PageActionsFactory {
 			return null;  // not yet implemented.
 		} else if (pageObjectName.equals("ReferenceGasReportsPage")) {
 			return null;  // not yet implemented.
-		} else if (pageObjectName.equals("SendFeedbackPage")) {
-			return null;  // not yet implemented.
 		} else if (pageObjectName.equals("SurveyorSystemsPage")) {
 			return null;  // not yet implemented.
 		} else if (pageObjectName.equals("SurveyorHistoryReportsPage")) {
-			return null;  // not yet implemented.
-		} else if (pageObjectName.equals("UserFeedbackPage")) {
 			return null;  // not yet implemented.
 		} else if (pageObjectName.equals("TestEnvironment")) {
 			return new TestEnvironmentActions();

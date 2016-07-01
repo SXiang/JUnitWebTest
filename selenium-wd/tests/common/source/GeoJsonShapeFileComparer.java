@@ -5,7 +5,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import org.testng.Assert;
+
 import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 
 public class GeoJsonShapeFileComparer implements IShapeFileComparer {
 
@@ -21,7 +24,7 @@ public class GeoJsonShapeFileComparer implements IShapeFileComparer {
 		String jsonString2 = ShapeToGeoJsonConverter.convertToJsonString(file2Path);
 		Log.info("jsonString1=" + jsonString1);
 		Log.info("jsonString2=" + jsonString2);
-		JSONAssert.assertEquals(jsonString1, jsonString2, false /*strict*/);
+		JSONAssert.assertEquals(jsonString1, jsonString2, JSONCompareMode.NON_EXTENSIBLE);
 	}
 	
 	public static void main(String[] args) throws Exception {
@@ -52,7 +55,12 @@ public class GeoJsonShapeFileComparer implements IShapeFileComparer {
 		String file1Path = shpDirectory.toString() + File.separator + "CR-0AEE84-FOV.shp";
 		String file2Path = shpDirectory.toString() + File.separator + "CR-0AEE84-BreadCrumb.shp";
 		GeoJsonShapeFileComparer comparer = new GeoJsonShapeFileComparer();
-		comparer.assertEquals(file1Path, file2Path);
+		boolean result = false;
+		try {
+			comparer.assertEquals(file1Path, file2Path);
+		} catch (AssertionError e) {
+			result = true;
+		}
+		Assert.assertTrue(result);
 	}
-
 }

@@ -123,8 +123,6 @@ public final class SurveyorConstants {
 	public static final String SQACRPTTAG = "tc56";
 	public static final String RGBNAMEBASE = "rgb";
 
-	public static String STRFEEDBACK = "This is sqa test feedback message";
-
 	public static final String TITLENAMEBASE = "sqacrpt";
 	public static final String TIMEZONE = "Pacific Standard Time";
 	public static final String EXCLUSIONRADIUS = "50";
@@ -274,6 +272,7 @@ public final class SurveyorConstants {
 	public static final String PICADMNMANTAG = "man";
 	public static final String PICADMMANTAG = "pic";
 	public static final String CUSDRVSTDTAG = "stnd";
+	public static final String CUSDRVSTDTAG3200 = "stnd-pic";
 	public static final String CUSDRVRRTAG = "rr";
 	public static final String CUSDRVRAPIDTAG = "rapid";
 	public static final String CUSDRVOPTAG = "op";
@@ -282,7 +281,10 @@ public final class SurveyorConstants {
 	public static final String CUSDRVETHMNTAG= "EthaneManual";
 	public static final String PICADMNSTDTAG2 = "stnd-pic";
 	public static final String PICADMNSTDTAG2_STARTEPOCH = "1450134967.928";
+	public static final String PICADMNSTDTAG2_STARTEPOCH_MINUS_EPSILON = "1450134967.878";
 	public static final String PICADMNSTDTAG2_ENDEPOCH = "1450136588.925";
+	public static final String PICADMNSTDTAG2_ENDEPOCH_PLUS_EPSILON = "1450136588.975";
+	public static final double EPSILON = 0.05;
 	public static final String PICADMNRRTAG2 = "rr-pic";
 	public static final String PICADMNOPTAG2 = "op-pic";
 	public static final String PICADMNMANTAG2 = "man-pic";
@@ -335,6 +337,8 @@ public final class SurveyorConstants {
 	
 	public static final String SQACUSSULOC="Santa Clara";
 	public static final String DEFAULTLOC="Default";
+	
+	public static final Integer DEFAULT_LOCATION_DATAROWID = 6;
 
 	public static final String REQUIRED_FIELD_VAL_MESSAGE = "This field is required.";	
 
@@ -351,6 +355,14 @@ public final class SurveyorConstants {
 	public static final String CR_BOUNDARYMINSIZE_MESSAGE = Resources.getResource(ResourceKeys.ComplianceReport_BoundaryMinSizeMessage);
 
 	/*
+	 * Analyzer and surveyor constants.
+	 */
+	public static final String ANALYZER_ALREADY_ASSOCIATED_ERROR = Resources.getResource(ResourceKeys.ManageAnalyzer_AlreadyAssociatedError);
+	public static final String CONSTANT_CUSTOMER = Resources.getResource(ResourceKeys.Constant_Customer);
+	public static final String CONSTANT_SURVEYOR = Resources.getResource(ResourceKeys.Constant_Surveyor);
+	public static final String CONSTANT_LOCATION = Resources.getResource(ResourceKeys.Constant_Location);
+			
+	/*
 	 * Timeout constants
 	 */
 	public static final int SECONDS_10 = 10;
@@ -359,9 +371,30 @@ public final class SurveyorConstants {
 	 * Other string constants
 	 */
 	public static final String UNKNOWN_TEXT = "UnknownText";
+	
 	/*
 	 * enum for list of constants
 	 */
+
+	public enum SurveyModeType {
+		Standard ("Standard"),
+		RapidResponse ("RapidResponse"),
+		Manual ("Manual"),
+		Operator ("Operator"),
+		Assessment ("Assessment"),
+		EQ ("EQ");
+		
+		private final String name;
+
+		SurveyModeType(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
+	}
+
 	public enum LicensedFeatures {
 		GAPGRID ("GAP Grid 1.0"),
 		REPORTMETADATA ("Report Metadata"),

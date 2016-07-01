@@ -38,6 +38,15 @@ public class BaseEntity {
 		this.resultSet = resultSet;
 	}
 
+	public static String getStringColumnValue(ResultSet resultSet, String columnName) throws SQLException
+	{
+		Object columnValue = resultSet.getString(columnName);
+		if (resultSet.wasNull()){
+			return "";
+		}
+		return String.valueOf(columnValue);
+	}
+
 	public static Object getBooleanColumnValue(ResultSet resultSet, String columnName) throws SQLException
 	{
 		Object columnValue = resultSet.getBoolean(columnName);

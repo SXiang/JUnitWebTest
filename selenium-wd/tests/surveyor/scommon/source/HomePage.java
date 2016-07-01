@@ -158,9 +158,6 @@ public class HomePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-calibration']/a")
 	protected WebElement linkPicAdminCalibration;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-user-feedback']/a")
-	protected WebElement linkPicAdminViewUserFeedback;
-
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-release-notes']/a")
 	protected WebElement linkPicAdminManageReleaseNotes;
 	
@@ -213,9 +210,10 @@ public class HomePage extends SurveyorBasePage {
 	}
 	
 	public boolean checkIfAtHomePage() {
-		if (driver.getTitle().equalsIgnoreCase(STRPageTitle))
+		if (driver.getTitle().equalsIgnoreCase(STRPageTitle)) {
+			Log.info("Current page is '"+STRPageTitle+"'");
 			return true;
-		Log.warn("Current page is not '"+STRPageTitle+"'");
+		}
 		return false;
 	}
 	

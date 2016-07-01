@@ -9,29 +9,17 @@ import org.junit.Ignore;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import surveyor.dataaccess.source.ResourceKeys;
-import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.DataGenerator;
-import surveyor.scommon.source.DataTablePage;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageUsersPage;
-import surveyor.scommon.source.SurveyorBasePage.TableSortOrder;
 import common.source.Log;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.DataTablePage.TableColumnType;
-
 import static surveyor.scommon.source.SurveyorConstants.*;
-
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author zlu
@@ -323,7 +311,6 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 		Log.info(String.format("Looking for user: Location-[%s]; Username-[%s]", locationName, userName));
 		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
-		loginPage = manageUsersPage.logout();
 
 		// verify disabled customer user cannot login.
 		loginPage.open();
@@ -372,7 +359,6 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 		Log.info(String.format("Looking for User: Location-[%s], UserName-[%s]", customerName, userName));
 		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
-		loginPage = manageUsersPage.logout();
 
 		loginPage.open();
 		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
@@ -502,52 +488,6 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	}	
 	
 	/**
-	 * Test Case ID: TC1243_DisableExistingCustomer_PicAdmin
-	 * Script:
-	 * - On Home Page, click Picarro Administration -> Manage Customers
-	 * - Click on 'Edit' button
-	 * - Disable the Customer account. Click OK	 
-	 * Results: - 
-	 * - Disabled Customer's User will not be allowed to log in the application
-	 */
-	@Ignore  
-	public void TC1243_DisabledExistingCustomer_PicAdmin() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getFixedSizeRandomNumber(12) + "TC1243";
-		String userName = customerName + testSetup.getFixedSizeRandomNumber(12) + REGBASEUSERNAME;
-		String eula = customerName + ": " + EULASTRING;
-		String cityName = "Santa Clara";
-		String locationName = customerName + "loc";
-		Log.info("\nRunning TC1243_DisableExistingCustomer_PicAdmin - Test Description: Disable Existing Customer");
-		
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
-
-		manageCustomersPage.open();
-		manageCustomersPage.addNewCustomer(customerName, eula, true);
-		
-		Log.info(String.format("Looking for customer - '%s' with enabled status - '%b'", customerName, true));
-		assertTrue(manageCustomersPage.findExistingCustomer(customerName, true));
-
-		manageLocationsPage.open();
-		manageLocationsPage.addNewLocation(locationName, customerName, cityName);
-
-		manageUsersPage.open();
-		manageUsersPage.addNewCustomerUser(customerName, userName,
-				USERPASSWORD, CUSUSERROLEUA, locationName);
-		
-		manageCustomersPage.open();
-		manageCustomersPage.editExistingCustomerName(customerName, eula, false);
-
-		Log.info(String.format("Looking for user: Location-[%s]; Username-[%s]", locationName, userName));
-		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
-		loginPage = manageUsersPage.logout();
-
-		// verify disabled customer user cannot login.
-		loginPage.open();
-		assertTrue(loginPage.loginNormalAs(userName, USERPASSWORD) == null);
-	}
-	
-	/**
 	 * Test Case ID: TC469_ManageCustomer
 	 * Script:   	
 	 * - On Home Page, click on Administration -> Manage Customer 
@@ -600,7 +540,4 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		manageCustomersPage.open();
 		assertTrue(manageCustomersPage.areTableColumnsSorted());		
 	}
-	
-
-
 }
