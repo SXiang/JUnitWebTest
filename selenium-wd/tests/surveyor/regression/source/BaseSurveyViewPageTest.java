@@ -38,6 +38,11 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 	protected static final String TEST_SURVEY_MANUAL1_TAG = "man-pic";
 	protected static final String TEST_SURVEY_MANUAL1_TYPE = "Manual";
 	protected static final String TEST_SURVEY_MANUAL1_USERNAME = "Administrator";
+	// Use this Manual survey for verifying Field notes are present.
+	protected static final String TEST_SURVEY_MANUAL2_ID = "2278D26F-8D69-B070-56FD-39D4B552F8F2";
+	protected static final String TEST_SURVEY_MANUAL2_TAG = "man-pic";
+	protected static final String TEST_SURVEY_MANUAL2_TYPE = "Manual";
+	protected static final String TEST_SURVEY_MANUAL2_USERNAME = "Administrator";
 	protected static final String TEST_SURVEY_OPERATOR1_ID = "1556ac85-a125-0347-2a02-39d4b529c6bd";
 	protected static final String TEST_SURVEY_OPERATOR1_TAG = "op-pic";
 	protected static final String TEST_SURVEY_OPERATOR1_TYPE = "Operator";
@@ -52,8 +57,6 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 	protected static final String TEST_ETHANE_SURVEY_STANDARD_TYPE = "Standard";
 	protected static final String TEST_ETHANE_SURVEY_STANDARD_USERNAME = "picscdr@picarro.com";
 
-	// Use this Manual survey for verifying Field notes are present.
-	protected static final String TEST_SURVEY_MANUAL2_ID = "2278D26F-8D69-B070-56FD-39D4B552F8F2";
 	protected static final String EMPTY = "";
 	protected static final Integer NOTSET = -1;
 	
