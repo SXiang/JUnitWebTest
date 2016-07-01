@@ -156,7 +156,6 @@ public class PDFTableUtility extends PDFUtility{
 			}
 			if(RegexUtility.equalsOrMatches(line,tableID)){     
 				i += combinedLine;
-
 				for(j=i+startLine; j<pdfLines.length ; j++){
 					if(maxNumLines>0&&numLines>=maxNumLines){
 						return pdfTable;
