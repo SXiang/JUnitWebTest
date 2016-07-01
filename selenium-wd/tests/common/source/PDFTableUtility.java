@@ -522,8 +522,11 @@ public class PDFTableUtility extends PDFUtility{
 		}
 
 		if(pTable.equals(PDFTable.LISAINDICATIONTABLE)){
-			Assert.assertTrue(SortHelper.isSortedASC(colValue1, 0));
-			Assert.assertTrue(SortHelper.isSortedASC(colValue2, 0));
+			int index = 0;
+			if(pTable.hasTableHeader)
+				index = 1;
+			Assert.assertTrue(SortHelper.isNumberSortedASC(colValue1, index));
+			Assert.assertTrue(SortHelper.isNumberSortedASC(colValue2, index));
 		}
 		// Retrieve values of a random column, based on name and index
 		colNum = expectedTable[0].length/2;
