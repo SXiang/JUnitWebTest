@@ -206,8 +206,8 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 			driverViewPageAction.turnOffWindRose(EMPTY,NOTSET);
 			
 			driverViewPageAction.clickOnGisButton(EMPTY,NOTSET);
-			driverViewPageAction.turnOffBoundariesDistrict(EMPTY,NOTSET);
-			driverViewPageAction.turnOffBoundariesDistrictPlat(EMPTY,NOTSET);
+			driverViewPageAction.turnOffBigBoundary(EMPTY,NOTSET);
+			driverViewPageAction.turnOffSmallBoundary(EMPTY,NOTSET);
 			driverViewPageAction.turnOffMaterialTypeCopper (EMPTY,NOTSET);
 			driverViewPageAction.turnOffMaterialTypeCastIron(EMPTY,NOTSET);
 			driverViewPageAction.turnOffMaterialTypeOtherPlastic(EMPTY,NOTSET);

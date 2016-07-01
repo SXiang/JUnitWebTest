@@ -2,11 +2,17 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+
 import org.junit.Test;
 
 import common.source.Log;
 
 public class SurveyViewPageTest1 extends BaseSurveyViewPageTest {
+
+	public SurveyViewPageTest1() throws IOException {
+		super();
+	}
 
 	/**
 	 * Test Case ID: TC950_SurveyView_ViewOperatorSurveySurveyMapViewWhenAllDisplayOptionsAreONOtherPlasticProtectedSteelCastIronAssetsONBoundariesOFF

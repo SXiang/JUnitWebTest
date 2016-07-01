@@ -11,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import common.source.Log;
 import common.source.TestSetup;
 
 /**
@@ -44,8 +45,8 @@ public class DatetimePickerSetting extends SurveyorBasePage {
 		super(driver, testSetup, strBaseURL, strPageURL);
 	}
 	
-	//Temporary solution for now to bypass the test case date picker issue.  
 	public boolean setDay(String startOrEnd, int numOfPreMonths, String day, boolean survey) {
+		Log.method("setDay", startOrEnd, numOfPreMonths, day, survey);
 		if (survey)
 			if (startOrEnd.equalsIgnoreCase("start"))
 				this.inputSurveyStartDT.click();
@@ -63,12 +64,18 @@ public class DatetimePickerSetting extends SurveyorBasePage {
 		WebElement dateWidget = driver.findElement(By.className("bootstrap-datetimepicker-widget"));
 		
 		List<WebElement> columns = dateWidget.findElements(By.tagName("td"));  
-	    
-		for (WebElement cell: columns){     
-			if (cell.getText().trim().equals(day)){
-				cell.click();
-				this.pcubedLogo.click();
-				return true;  
+
+		Log.info("Matching the day to click...");
+		for (WebElement cell: columns){   
+			Log.info(String.format("Cell : class='%s', value='%s'", cell.getAttribute("class"), cell.getText()));
+			if (cell.getAttribute("class").equals("day") || cell.getAttribute("class").equals("day weekend") || 
+					cell.getAttribute("class").equals("day today") || cell.getAttribute("class").equals("day active today")) {
+				if (cell.getText().trim().equals(day)){
+					Log.info(String.format("Clicking on day=[%s] cell", day));
+					cell.click();
+					this.pcubedLogo.click();
+					return true;  
+				}
 			}
 		}
 		

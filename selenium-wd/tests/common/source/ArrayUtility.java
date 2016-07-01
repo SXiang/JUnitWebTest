@@ -23,6 +23,26 @@ public class ArrayUtility {
 		return retList;
 	}
 	
+	public static List<String[]> getListValuesSkipHeader(List<String[]> values) {
+		List<String[]> retList = new ArrayList<String[]>(); 
+		if (values != null && values.size() > 1) {
+			for (int i = 1; i < values.size(); i++) {
+				retList.add(values.get(i));
+			}
+		}
+		return retList;
+	}
+
+	public static boolean listValuesHasHeader(List<String[]> values) {
+		boolean retVal = false;
+		if (values != null && values.size() > 1) {
+			if (values.get(0).length != values.get(1).length) {
+				retVal = true;
+			}
+		}
+		return retVal;
+	}
+
 	public static List<String> getDistinctValues(List<String> stringValues) {
 		List<String> outputList = new ArrayList<String>();
 		if (stringValues != null) {
@@ -85,5 +105,28 @@ public class ArrayUtility {
 		}
 		
 		return true;
+	}
+	
+	/**
+	 * Append text value to the last element in a list
+	 * @param list
+	 * @param value
+	 */
+	public static void appendToLastString(List<String> list, String value){
+		appendToString(list, list.size()-1, value);
+	}
+	
+	/**
+	 * Append text value to element indexed in a list
+	 * @param list
+	 * @param index
+	 * @param value
+	 */
+	public static void appendToString(List<String>list, int index, String value){
+		if(value.isEmpty()||list.size()<=index){
+			return;
+		}
+		value = list.get(index) + value;
+		list.set(index, value);
 	}
 }

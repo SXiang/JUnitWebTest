@@ -2,6 +2,8 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.*;
 import common.source.Log;
+
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
@@ -12,6 +14,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -35,6 +38,22 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		initializePageActions();
 		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  complianceReportsPage);
+
+		// Select run mode here.
+		setPropertiesForTestRunMode();
+	}
+
+	@Before
+	public void beforeTest() throws Exception{
+		setPropertiesForTestRunMode();
+	}
+
+	private static void setPropertiesForTestRunMode() throws Exception {
+		setTestRunMode(ReportTestRunMode.FullTestRun);
+		
+		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
+			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
+		}
 	}
 
 	/**
@@ -44,13 +63,6 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	protected static void initializePageActions() throws Exception {
   		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
-
-		// Select run mode here.
-		setTestRunMode(ReportTestRunMode.FullTestRun);
-		
-		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
-			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
-		}
 	}
 
 	/**

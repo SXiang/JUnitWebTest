@@ -53,10 +53,10 @@ public class RunExecutionListener extends RunListener {
     		exceptionMessage.append("Test method failed. Refer failing method name above.");
     	} else {
 	    	if (failingMethod != "") {
-	    		exceptionMessage.append(String.format("Failure in {0}. ", failingMethod));
+	    		exceptionMessage.append(String.format("Failure in %s. ", failingMethod));
 	    	}
 	    	if (stackTraceString != "") {
-	    		exceptionMessage.append(String.format("EXCEPTION: {0}", stackTraceString));
+	    		exceptionMessage.append(String.format("EXCEPTION: %s", stackTraceString));
 	    	}
     	}
 		SurveyorBaseTest.getExtentTest().log(LogStatus.FAIL, exceptionMessage.toString());

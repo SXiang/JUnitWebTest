@@ -42,16 +42,16 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[5]")
 	private WebElement displaySwitchIsotopicAnalysisDivElement;
 
-	@FindBy(how = How.XPATH, using = "*[@id='menu_content']/div[6]/div[1]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]/div[1]")
 	private WebElement displaySwitchIndicationsDivElement;
 	
-	@FindBy(how = How.XPATH, using = "*[@id='menu_content']/div[6]/div[2]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]/div[2]")
 	private WebElement displaySwitchPossibleNaturalGasDivElement;
 	
-	@FindBy(how = How.XPATH, using = "*[@id='menu_content']/div[6]/div[3]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]/div[3]")
 	private WebElement displaySwitchNotNaturalGasDivElement;
 	
-	@FindBy(how = How.XPATH, using = "*[@id='menu_content']/div[6]/div[4]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]/div[4]")
 	private WebElement displaySwitchVehicleExhaustDivElement;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[7]")
@@ -172,11 +172,11 @@ public class BaseMapViewPage extends SurveyorBasePage {
 
 	@FindBy(id = "551cb7c0-005b-4e3e-bfae-d19da0ed7efe")
 	@CacheLookup
-	protected WebElement boundariesDistrictPlat;
+	protected WebElement smallBoundary;
 
 	@FindBy(id = "024249ae-374b-4f6f-bd87-e8fdcacb48e1")
 	@CacheLookup
-	protected WebElement boundariesDistrict;
+	protected WebElement bigBoundary;
 
 	@FindBy(id = "gis_switch_all_boundaries")
 	@CacheLookup
@@ -288,7 +288,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	}
 
 	public enum GisSwitchType {
-		MaterialTypeCopper, MaterialTypeUnprotectedSteel, MaterialTypeProtectedSteel, MaterialTypeCastIron, MaterialTypeOtherPlastic, MaterialTypePEPlastic, UseAllPipes, BoundariesDistrictPlat, BoundariesDistrict, UseAllBoundaries
+		MaterialTypeCopper, MaterialTypeUnprotectedSteel, MaterialTypeProtectedSteel, MaterialTypeCastIron, MaterialTypeOtherPlastic, MaterialTypePEPlastic, UseAllPipes, SmallBoundary, BigBoundary, UseAllBoundaries
 	}
 
 	public void clickFieldNotesDialogCloseButton() {
@@ -592,11 +592,11 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		boolean isSelected = false;
 
 		switch (switchType) {
-		case BoundariesDistrict:
-			isSelected = this.boundariesDistrict.getAttribute("class").equalsIgnoreCase("switch material_radio on");
+		case BigBoundary:
+			isSelected = this.bigBoundary.getAttribute("class").equalsIgnoreCase("switch material_radio on");
 			break;
-		case BoundariesDistrictPlat:
-			isSelected = this.boundariesDistrictPlat.getAttribute("class").equalsIgnoreCase("switch material_radio on");
+		case SmallBoundary:
+			isSelected = this.smallBoundary.getAttribute("class").equalsIgnoreCase("switch material_radio on");
 			break;
 		case MaterialTypeCopper:
 			isSelected = this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio on");
@@ -637,11 +637,11 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		boolean isSelected = false;
 
 		switch (switchType) {
-		case BoundariesDistrict:
-			isSelected = this.boundariesDistrict.getAttribute("class").equalsIgnoreCase("switch material_radio");
+		case BigBoundary:
+			isSelected = this.bigBoundary.getAttribute("class").equalsIgnoreCase("switch material_radio");
 			break;
-		case BoundariesDistrictPlat:
-			isSelected = this.boundariesDistrictPlat.getAttribute("class").equalsIgnoreCase("switch material_radio");
+		case SmallBoundary:
+			isSelected = this.smallBoundary.getAttribute("class").equalsIgnoreCase("switch material_radio");
 			break;
 		case MaterialTypeCopper:
 			isSelected = this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio");
@@ -681,29 +681,29 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		boolean isSelected = false;
 
 		switch (switchType) {
-		case BoundariesDistrict:
-			if (this.boundariesDistrict.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
+		case BigBoundary:
+			if (this.bigBoundary.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.boundariesDistrict.click();
+					this.bigBoundary.click();
 				}
-			} else if (this.boundariesDistrict.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
+			} else if (this.bigBoundary.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.boundariesDistrict.click();
+					this.bigBoundary.click();
 				}
 			}
 			break;
-		case BoundariesDistrictPlat:
-			if (this.boundariesDistrictPlat.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
+		case SmallBoundary:
+			if (this.smallBoundary.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.boundariesDistrictPlat.click();
+					this.smallBoundary.click();
 				}
-			} else if (this.boundariesDistrictPlat.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
+			} else if (this.smallBoundary.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.boundariesDistrictPlat.click();
+					this.smallBoundary.click();
 				}
 			}
 			break;

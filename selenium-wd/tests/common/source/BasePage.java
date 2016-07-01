@@ -54,9 +54,6 @@ public class BasePage {
 	@FindBy(how = How.XPATH, using = "//li[@id='fleet-map']/a")
 	private WebElement linkFleetMap;
 
-	@FindBy(how = How.XPATH, using = "//li[@id='user-feedback']/a")
-	private WebElement linkFeedback;
-
 	@FindBy(how = How.XPATH, using = "//li/a[@data-target='#report-menu']")
 	private WebElement linkReports;
 
@@ -77,9 +74,6 @@ public class BasePage {
 
 	@FindBy(how = How.XPATH, using = "//li[@id='picarro-administration-calibration']/a")
 	private WebElement linkCalibration;
-
-	@FindBy(how = How.XPATH, using = "//li[@id='picarro-administration-user-feedback']/a")
-	private WebElement linkViewUserFeedback;
 
 	@FindBy(how = How.XPATH, using = "//li[@id='picarro-administration-manage-customers']/a")
 	private WebElement linkManageCustomers;
@@ -162,11 +156,6 @@ public class BasePage {
 		this.linkFleetMap.click();
 	}
 
-	public void clickOnFeedbackLink() {
-		Log.clickElementInfo("Feedback", ElementType.LINK);
-		this.linkFeedback.click();
-	}
-
 	public void clickOnReportsLink() {
 		Log.clickElementInfo("Reports", ElementType.LINK);
 		this.linkReports.click();
@@ -200,11 +189,6 @@ public class BasePage {
 	public void clickOnCalibrationLink() {
 		Log.clickElementInfo("Calibration ", ElementType.LINK);
 		this.linkCalibration.click();
-	}
-
-	public void clickOnViewUserFeedbackLink() {
-		Log.clickElementInfo("View User Feedback", ElementType.LINK);
-		this.linkViewUserFeedback.click();
 	}
 
 	public void clickOnManageCustomersLink() {

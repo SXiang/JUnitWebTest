@@ -100,6 +100,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import common.source.ArrayUtility;
 import common.source.BaseHelper;
 import common.source.CSVUtility;
 import common.source.Log;
@@ -243,13 +244,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static List<String[]> preCoverageForecastTo70;
 	public static List<String[]> preCoverageForecast;
 
-	@FindBy(how = How.ID, using = "zip-file_pdf")
+	@FindBy(how = How.ID, using = "compliance-zip-pdf-download")
 	protected WebElement zipImg;
 
-	@FindBy(how = How.ID, using = "zip-file_shapefile")
+	@FindBy(how = How.ID, using = "compliance-zip-shapefile-download")
 	protected WebElement zipShape;
 
-	@FindBy(how = How.ID, using = "zip-file_reportmeta")
+	@FindBy(how = How.ID, using = "compliance-zip-reportmeta-download")
 	protected WebElement zipMeta;
 
 	@FindBy(how = How.ID, using = "modalClose")
@@ -1121,7 +1122,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					if (buttonImg.isDisplayed()) {
 						if (clickButton) {
 							if (buttonType != ComplianceReportButtonType.ReportErrorLabel) {
-								Log.clickElementInfo("buttonType");
+								Log.clickElementInfo(buttonType.toString());
 								buttonImg.click();
 								// If resubmit then wait for modal and confirm resubmit.
 								if (buttonType == ComplianceReportButtonType.Resubmit) {
@@ -1776,12 +1777,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		case ExcludePossibleNaturalGas:
 			elements.add(checkBoxPossibleNaturalGas);
 			break;
+		case None:
+			select = false;
 		case All:
 			elements.add(checkBoxVehicleExhaust);
 			elements.add(checkBoxEtheneBiogeniceMethane);
 			elements.add(checkBoxPossibleNaturalGas);
-		case None:
-			select = false;
 			break;
 		default:
 			break;
@@ -2299,83 +2300,39 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		String surveyTable;
 		if (RegexUtility.getStringInBetween(actualReportString, "Indication Table", "Surveyor Date") != null) {
-			surveyTable = RegexUtility.getStringInBetween(actualReportString, "Indication Table", "Surveyor Date");
+			surveyTable = (RegexUtility.getStringInBetween(actualReportString, "Indication Table", "Surveyor Date")).trim().replaceAll("//s+", "").replace("#", "").replace("LISA ", "");
 			if (surveyTable.contains("Gap Table")) {
 				// TODO: DEFECT in parsing. SKIP check for this case.
 				Log.warn("SKIPPING Driving survey verification. The case of Driving Survey table and Gap table PDF parsing is currently NOT supported!!!");
 				return true;
 			}
 		} else {
-			surveyTable = RegexUtility.getStringInBetween(actualReportString, "Selected Driving Surveys", " Layers");
+			surveyTable = (RegexUtility.getStringInBetween(actualReportString, "Selected Driving Surveys", " Layers")).trim().replaceAll("//s+", "").replace("#", "").replace("LISA ", "");
 		}
-		InputStream inputStream = new ByteArrayInputStream(surveyTable.getBytes());
-		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
-		String line = null;
-		ArrayList<String> lineList = new ArrayList<String>();
-		try {
-			int countLines = 0;
-			StringBuilder lineBuilder = new StringBuilder();
-			while ((line = bufferReader.readLine()) != null) {
-				if (line.length() > 3) {
-					lineBuilder.append(line);
-					countLines++;
-					if (countLines == 4 || countLines == 6) {
-						lineBuilder.append(" ");
-					}
-
-					if (countLines % 8 == 0) {
-						lineList.add(lineBuilder.toString());
-						lineBuilder = new StringBuilder();
-					}
-				}
-			}
-			ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys> reportSurveyList = new ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys>();
-			Iterator<String> lineIterator = lineList.iterator();
-			while (lineIterator.hasNext()) {
-				StoredProcComplianceAssessmentGetReportDrivingSurveys reportSurveyEntry = new StoredProcComplianceAssessmentGetReportDrivingSurveys();
-				Pattern datePattern = Pattern.compile(RegexUtility.getReportRegexDatePattern(true));
-				String lineForMatching = lineIterator.next();
-				Matcher matchingDate = datePattern.matcher(lineForMatching);
-				int dateCounter = 1;
-				String remaining = lineForMatching;
-				while (matchingDate.find()) {
-
-					if (dateCounter == 1) {
-						reportSurveyEntry.setStartDateTimeWithTZ(matchingDate.group(0).trim());
-						remaining = remaining.replace(matchingDate.group(0), "").trim();
-					}
-					if (dateCounter == 2) {
-						reportSurveyEntry.setEndDateTimeWithTZ(matchingDate.group(0).trim());
-						remaining = remaining.replace(matchingDate.group(0), "").trim();
-					}
-					dateCounter++;
-
-				}
-				String lineWithoutDates = remaining.trim();
-				String[] splitWithSpace = lineWithoutDates.split("\\s+");
-				reportSurveyEntry.setUserName(splitWithSpace[1].trim());
-				remaining = remaining.replace(splitWithSpace[1], "");
-				reportSurveyEntry.setStabilityClass(splitWithSpace[splitWithSpace.length - 1].trim());
-				remaining = remaining.replace(splitWithSpace[splitWithSpace.length - 1], "");
-				reportSurveyEntry.setTag(splitWithSpace[splitWithSpace.length - 2].trim());
-				remaining = remaining.replace(splitWithSpace[splitWithSpace.length - 2], "");
-				reportSurveyEntry.setAnalyzerId(splitWithSpace[splitWithSpace.length - 3].trim());
-				remaining = remaining.replace(splitWithSpace[splitWithSpace.length - 3], "");
-				reportSurveyEntry.setDescription(remaining.replace(splitWithSpace[0].trim(), "").trim());
-				reportSurveyList.add(reportSurveyEntry);
-			}
-			ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys> listFromStoredProc = StoredProcComplianceAssessmentGetReportDrivingSurveys
+		surveyTable = surveyTable.replaceAll(System.lineSeparator(), "");
+		String datePattern = RegexUtility.getReportRegexDatePattern(true);
+		String drivingSurveysLinePattern = datePattern+" *"+datePattern;
+		surveyTable = surveyTable.replaceAll("("+drivingSurveysLinePattern+")", System.lineSeparator()+"$1");
+		String[] lines =  surveyTable.split(System.lineSeparator());
+		Log.info("Driving survey table contains "+(lines.length-1)+" records");
+		ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys> listFromStoredProc = StoredProcComplianceAssessmentGetReportDrivingSurveys
 					.getReportDrivingSurveys(reportId);
-			Iterator<StoredProcComplianceAssessmentGetReportDrivingSurveys> reportIterator = reportSurveyList
-					.iterator();
-			while (reportIterator.hasNext()) {
-				if (!reportIterator.next().isInList(listFromStoredProc)) {
-					Log.info("Driving survey table data verification failed");
-					return false;
+		for(int i=1;i<lines.length;i++){
+			boolean validLine = false;
+			String expectedLine = "";
+			String actualLine = lines[i].replaceAll(" ", "");
+			Log.info("Looking for driving survey '"+actualLine+"' in DB");
+			for(StoredProcComplianceAssessmentGetReportDrivingSurveys survey:listFromStoredProc){
+				expectedLine = survey.toString().replaceAll(" ", "");
+				if(actualLine.equalsIgnoreCase(expectedLine)){
+					validLine = true;
+					break;
 				}
 			}
-		} finally {
-			bufferReader.close();
+			if(!validLine){
+				Log.error(String.format("Driving survey in PDF is not found, '%s'",actualLine));
+				return false;
+			}
 		}
 		Log.info("Driving survey table verification passed");
 		return true;
@@ -3042,38 +2999,51 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				return false;
 			}
 		}
-		InputStream inputStream = new ByteArrayInputStream(actualReportString.getBytes());
+		
+		ArrayList<String> indicationTables =  (ArrayList<String>) RegexUtility.getStringsInBetween(actualReportString, "Disposition Confidence in Disposition", "Software Version");
+		String indicationTable = "";
+		for(String table:indicationTables){
+			indicationTable += System.lineSeparator() + table;
+		}
+		InputStream inputStream = new ByteArrayInputStream(indicationTable.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 		String line = null;
+		ArrayList<String> reportIndicationsList = new ArrayList<String>();
+		String extraLines = "";
 		try {
-			ArrayList<String> reportIndicationsList = new ArrayList<String>();
 			while ((line = bufferReader.readLine()) != null) {
-				if (line.trim().matches("^\\? \\d+ .*")) {				
-					reportIndicationsList.add(line.replaceAll("\\?", "").trim().replaceAll("\\s+", "")
-							.replace("+/-", "").replace("0.0 ", "").trim());
+				if (line.trim().matches(RegexUtility.INDICATION_TABLE_LINE_REGEX_PATTERN)){
+					ArrayUtility.appendToLastString(reportIndicationsList, extraLines.replaceAll(" ", ""));
+					reportIndicationsList.add(line.replaceAll("\\?", "").trim()
+							.replace("+/-", "").replace("0.0 ", "").trim().replaceAll(" ", ""));
+					extraLines = "";
+				}else if(!reportIndicationsList.isEmpty() && line.trim().matches(RegexUtility.FIELD_NOTE_LINE_REGEX_PATTERN)){
+					extraLines += line.trim();
 				}
-			}
-			Log.info(String.format("ReportIndications ArrayList Values : %s", LogHelper.strListToString(reportIndicationsList)));
-
-			ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications
-					.getReportIndications(reportId);
-			Iterator<StoredProcComplianceGetIndications> lineIterator = storedProcIndicationsList.iterator();
-			ArrayList<String> storedProcConvStringList = new ArrayList<String>();
-			while (lineIterator.hasNext()) {
-				StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
-				String objAsString = objStoredProc.toString();
-				storedProcConvStringList.add(objAsString.replace("0.0 ", "0").replaceAll("\\s+", "").trim());
-			}
-
-			Log.info(String.format("Checking in ReportIndications ArrayList, StoredProcConvStringList Values : %s", 
-					LogHelper.strListToString(storedProcConvStringList)));
-			if (!reportIndicationsList.equals(storedProcConvStringList)) {
-				Log.info("Indication table verification failed");
-				return false;
 			}
 		} finally {
 			bufferReader.close();
 		}
+		ArrayUtility.appendToLastString(reportIndicationsList, extraLines.replaceAll(" ", ""));
+		Log.info(String.format("ReportIndications ArrayList Values : %s", LogHelper.strListToString(reportIndicationsList)));
+
+		ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications
+					.getReportIndications(reportId);
+		Iterator<StoredProcComplianceGetIndications> lineIterator = storedProcIndicationsList.iterator();
+		ArrayList<String> storedProcConvStringList = new ArrayList<String>();
+		while (lineIterator.hasNext()) {
+				StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
+				String objAsString = objStoredProc.toString();
+				storedProcConvStringList.add(objAsString.replace("0.0 ", "0").replaceAll("\\s+", "").trim());
+		}
+
+		Log.info(String.format("Checking in ReportIndications ArrayList, StoredProcConvStringList Values : %s", 
+					LogHelper.strListToString(storedProcConvStringList)));
+		if (!reportIndicationsList.equals(storedProcConvStringList)) {
+				Log.info("Indication table verification failed");
+				return false;
+		}
+
 		Log.info("Indication table verification passed");
 		return true;
 	}
@@ -3485,8 +3455,37 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		// Assert all shape files in the folders are the same.
 		ShapeFileUtility shapeFileUtility = new ShapeFileUtility();
-		
-		shapeFileUtility.assertDirectoryEquals(actualDataFolderPath, expectedDataFolderPath);
+		try {		
+			shapeFileUtility.assertDirectoryEquals(actualDataFolderPath, expectedDataFolderPath);
+		} catch (AssertionError e) {
+			/* JsonAssert does NOT handle array of array ordering. REFERENCE: http://jsonassert.skyscreamer.org/javadoc/org/skyscreamer/jsonassert/JSONAssert.html
+			   Due to this we'll see false positives for case like below:
+			   EXPECTED: { "type": "Feature", "properties": { "ID": 1.0, "GapNumber": "Gap H8", "Row": 7.0, "Column": 7.0 }, "geometry": 
+				{ "type": "Polygon", "coordinates": [ [ [ -121.97907358930351, 37.416219070608356 ], [ -121.97907358930351, 37.41676668678231 ], 
+				[ -121.97838410206116, 37.41676668678231 ], [ -121.97838410206116, 37.416219070608356 ], [ -121.97907358930351, 37.416219070608356 ] ] ] } }
+			   ACTUAL:	 { "type": "Feature", "properties": { "ID": 49.0, "GapNumber": "Gap H8", "Row": 7.0, "Column": 7.0 }, "geometry": 
+				{ "type": "Polygon", "coordinates": [ [ [ -121.97907358930351, 37.416219070608356 ], [ -121.97838410206116, 37.416219070608356 ], 
+				[ -121.97838410206116, 37.41676668678231 ], [ -121.97907358930351, 37.41676668678231 ], [ -121.97907358930351, 37.416219070608356 ] ] ] } }
+			 */
+			// If an exception is thrown by JsonAssert fallback to comparing exact filesize match between baseline and actual shape files.
+			// Future improvement: Sort JSON using utility like Boon (https://github.com/RichardHightower/boon/wiki) before comparison. 
+			// Tracked by US3052.
+			Log.warn("JSONAssert comparison failed. Fallback to compareFilesAndSizesInDirectories() comparison.");
+
+			Log.info("Compare .prj files for exact match.");
+			List<String> includeExtensions = new ArrayList<String>();
+			includeExtensions.add("prj");
+			if (!FileUtility.compareFilesForExactMatch(actualDataFolderPath, expectedDataFolderPath, includeExtensions)) {
+				return false;
+			}
+
+			Log.info("Compare all files in Shape folder (except .prj) for file size match.");
+			List<String> excludeExtensions = new ArrayList<String>();
+			excludeExtensions.add("prj");
+			if (!FileUtility.compareFilesAndSizesInDirectories(actualDataFolderPath, expectedDataFolderPath, excludeExtensions)) {
+				return false;
+			}
+		}
 
 		return true;
 	}
@@ -3721,6 +3720,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String pdfFilePath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), pdfFilename).toString();
 		PDFTableUtility pdfTableUtility = new PDFTableUtility();
 		List<String[]> pdfTableList = pdfTableUtility.extractPDFTable(pdfFilePath, pdfTable);
+		Log.info("Checking if Array values returned has header...");
+		if (ArrayUtility.listValuesHasHeader(pdfTableList)) {
+			Log.info("Found header in returned array values. Skipping header...");
+			Log.info(String.format("Extracted tables values from PDF (before skipping header) : %s", LogHelper.listOfArrayToString(pdfTableList)),
+					LogCategory.SSRSPdfContent);
+			pdfTableList = ArrayUtility.getListValuesSkipHeader(pdfTableList);
+		}
 		Log.info(String.format("Extracted tables values from PDF : %s", LogHelper.listOfArrayToString(pdfTableList)),
 				LogCategory.SSRSPdfContent);
 		return pdfTableList;
@@ -3807,6 +3813,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		latLongSelectionControl.switchMode(ControlMode.MapInteraction);
 		latLongSelectionControl.waitForMapImageLoad();
 		latLongSelectionControl.selectCustomerBoundaryType(customerBoundaryFilterType);
+		latLongSelectionControl.waitForElementToBeEnabled(latLongSelectionControl.getCustomerBoundaryTextField());
 		latLongSelectionControl.setCustomerBoundaryName(customerBoundaryName);
 		latLongSelectionControl.switchMode(ControlMode.Default);
 		latLongSelectionControl.clickOkButton();

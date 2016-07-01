@@ -99,12 +99,18 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 		manageRefGasBottlesPage.waitForNewPageLoad();
 		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber2, SQACUSLOCSUR));
 
-		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber2, "-32", "0", SQACUS, SQACUSLOC, SQACUSLOCSUR);
-		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals("Please enter a value greater than or equal to 1."));
+		manageRefGasBottlesPage.addRefGasBottle(strLotNumber2, "-32", "0", SQACUS, SQACUSLOC, SQACUSLOCSUR, false);
+		String actualErrorMessage = manageRefGasBottlesPage.getEthMthRtoErr().getText();
+		Log.info("ACTUAL:" + actualErrorMessage);
+		Log.info("EXPECTED:" + ETHMTHERRGRTMSG);
+		assertTrue(actualErrorMessage.equals(ETHMTHERRGRTMSG));
 		manageRefGasBottlesPage.clickOnCancelBtn();
 
-		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber2, "-32", "100", SQACUS, SQACUSLOC, SQACUSLOCSUR);
-		assertTrue(manageRefGasBottlesPage.getEthMthRtoErr().getText().equals("Please enter a value less than or equal to 99."));
+		manageRefGasBottlesPage.addRefGasBottle(strLotNumber2, "-32", "100", SQACUS, SQACUSLOC, SQACUSLOCSUR, false);
+		actualErrorMessage = manageRefGasBottlesPage.getEthMthRtoErr().getText();
+		Log.info("ACTUAL:" + actualErrorMessage);
+		Log.info("EXPECTED:" + ETHMTHERRLESSMSG);
+		assertTrue(actualErrorMessage.equals(ETHMTHERRLESSMSG));
 		manageRefGasBottlesPage.clickOnCancelBtn();
 
 		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber2, SQACUSLOCSUR));

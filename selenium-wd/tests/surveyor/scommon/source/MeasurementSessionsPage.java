@@ -275,7 +275,8 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		List<String> strListTag = new ArrayList<String>();
 		if (driver != null) {
 			this.searchTextBox.sendKeys(driver);
-			this.waitForPageLoad();
+			this.waitForTableDataToLoad();
+			this.waitForAJAXCallsToComplete();
 			if (tableData.getText().equals(Constant_NoMatchingRecordsFound)) {
 				return strListTag;
 			}
@@ -283,8 +284,9 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
+		this.waitForAJAXCallsToComplete();
 		
-		WebElement col1;
+		WebElement tagCell;
 		List<WebElement> rows = this.getTable().findElements(By.xpath(this.strTRXPath));
 
 		int rowSize = rows.size();
@@ -296,15 +298,19 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			col1 = this.getTable().findElement(By.xpath(this.strTRXPath + "[" + rowNum + "]/td[1]"));
+			String tagXPath = strTRXPath + "[" + rowNum + "]/td[1]";
+			tagCell = getTable().findElement(By.xpath(tagXPath));
 
-			strListTag.add(col1.getText().trim());
+			TestContext.INSTANCE.stayIdle(3);
+			
+			strListTag.add(tagCell.getText().trim());
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 
-				this.waitForPageLoad();
+				this.waitForTableDataToLoad();
+				this.waitForAJAXCallsToComplete();
 
 				List<WebElement> newRows = this.getTable().findElements(By.xpath(this.strTRXPath));
 				rowSize = newRows.size();
@@ -501,22 +507,13 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			List<Measurement> listOfDBMeasurement = Measurement.getMeasurements(analyzerObj.getId().toString(), startEpoch, endEpoch);
 
 			if (rows.size() > 0 && listOfDBMeasurement.size() > 0) {
-				if (rows.size() == listOfDBMeasurement.size()) {
-
-					for (int i = 0; i < rows.size(); i++) {
-						map = rows.get(i);
-						verifySurvey = checkMeasurementInDB(listOfDBMeasurement, map);
-						if (!verifySurvey) {
-							Log.info("[verifySurveyExportFile MATCH=FALSE] One of the row does not exist in database table.");
-							Log.info(String.format("Row=[%d]: NOT Matching listOfDBMeasurement=[%s] in Map=[%s]", 
-									i, LogHelper.listToString(listOfDBMeasurement), LogHelper.mapToString(map)));
-							return false;
-						}
-					}
-				} else {
+				if (rows.size() != listOfDBMeasurement.size()) {
 					verifySurvey = false;
 					Log.info("[verifySurveyExportFile MATCH=FALSE] The number of rows in downloaded file and rows of database table does not match. "
 							+ String.format("Rows in .dat file = %d. Rows in database = %d", rows.size(), listOfDBMeasurement.size()));
+				} else {
+					verifySurvey = true;
+					Log.info("[verifySurveyExportFile MATCH=TRUE] Number of rows in downloaded file and rows of database table MATCH.");
 				}
 			} else if (rows.size() == 0 && listOfDBMeasurement.size() == 0) {
 				verifySurvey = true;
@@ -527,15 +524,6 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			Log.error(e.toString());
 		}
 		return verifySurvey;
-	}
-
-	private boolean checkMeasurementInDB(List<Measurement> listOFDBMeasurement, Map<String, String> map) {
-		for (Measurement ms : listOFDBMeasurement) {
-			if (ms.equalsTo(map)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public boolean verifyAnalysisExportFile(String datFileName, String tag, String analyzer) {
