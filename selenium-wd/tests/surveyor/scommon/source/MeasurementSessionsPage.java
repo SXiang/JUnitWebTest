@@ -299,10 +299,9 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			String tagXPath = strTRXPath + "[" + rowNum + "]/td[1]";
-			tagCell = getTable().findElement(By.xpath(tagXPath));
-
-			TestContext.INSTANCE.stayIdle(3);
-			
+			// Re-fetch the element each time to prevent staleElement exception.
+			tagCell = TestContext.INSTANCE.getDriver().findElement(By.xpath(tagXPath));
+			getTable().findElement(By.xpath(tagXPath));
 			strListTag.add(tagCell.getText().trim());
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
