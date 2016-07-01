@@ -13,6 +13,8 @@ import surveyor.scommon.source.SurveyorConstants;
 import static surveyor.scommon.source.SurveyorConstants.ISOTOPIC_CAPTURE_CANCELLED;
 import static surveyor.scommon.source.SurveyorConstants.ISOTOPIC_CAPTURE_NOT_NATURAL_GAS;
 import static surveyor.scommon.source.SurveyorConstants.REFGAS_CAPTURE_PASSED;
+
+import java.io.IOException;
 /*
  * **** NOTES ****:
  *  1. Action based tests that work on MapView (Survey, Observer, Driver) can derive from BaseMapViewTest.
@@ -24,6 +26,10 @@ import static surveyor.scommon.source.SurveyorConstants.REFGAS_CAPTURE_PASSED;
  */
 @RunWith(SurveyorTestRunner.class)
 public class SurveyViewPageTest extends BaseSurveyViewPageTest {
+
+	public SurveyViewPageTest() throws IOException {
+		super();
+	}
 
 	/**
 	 * Test Case ID: TC1000_SurveyView_ViewIndicationsRapidResponseSurveySatelliteViewWhenNoGISLoaded

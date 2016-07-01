@@ -3,13 +3,10 @@
  */
 package surveyor.scommon.source;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Locale;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -20,12 +17,9 @@ import org.junit.runner.Description;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
-import com.relevantcodes.extentreports.DisplayOrder;
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
-import com.relevantcodes.extentreports.NetworkMode;
-
 import common.source.DateUtility;
 import common.source.FileUtility;
 import common.source.Log;
@@ -33,7 +27,6 @@ import common.source.RegexUtility;
 import common.source.ScreenShotOnFailure;
 import common.source.TestContext;
 import common.source.TestSetup;
-import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.DataAnnotations;
 import surveyor.scommon.actions.PageActionsStore;
 

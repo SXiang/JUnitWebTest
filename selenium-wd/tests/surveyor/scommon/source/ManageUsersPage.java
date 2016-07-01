@@ -173,7 +173,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
-		Log.info("Set password - '"+password+"'");
+		Log.info("Set password - '<HIDDEN>'");
 		this.inputPassword.sendKeys(password);
 		this.inputPasswordConfirm.sendKeys(password);
 		
@@ -219,7 +219,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
-		Log.info("Set password - '"+password+"'");
+		Log.info("Set password - '<HIDDEN>'");
 		this.inputPassword.sendKeys(password);
 		this.inputPasswordConfirm.sendKeys(password);
 
@@ -282,7 +282,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
-		Log.info("Set password - '"+password+"'");
+		Log.info("Set password - '<HIDDEN>'");
 		this.inputPassword.sendKeys(password);
 		Log.info("Confirm password - '"+passwordConfirm+"'");
 		this.inputPasswordConfirm.sendKeys(passwordConfirm);
@@ -325,7 +325,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
-		Log.info("Set password - '"+password+"'");
+		Log.info("Set password - '<HIDDEN>'");
 		this.inputPassword.sendKeys(password);
 		this.inputPasswordConfirm.sendKeys(password);
 
@@ -392,9 +392,9 @@ public class ManageUsersPage extends SurveyorBasePage {
 				this.inputEmail.sendKeys(email.substring(difflen, email.length()-1));
 			}
 		}
-		Log.info("Set password - '"+password1+"'");
+		Log.info("Set password - '<HIDDEN>'");
 		this.inputPassword.sendKeys(password1);
-		Log.info("Confirm password - '"+password2+"'");
+		Log.info("Confirm password - '<HIDDEN>'");
 		this.inputPasswordConfirm.sendKeys(password2);
 		Log.clickElementInfo("Ok");
 		this.btnOk.click();

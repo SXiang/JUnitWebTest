@@ -45,7 +45,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
-		Log.info("Set password - '"+password+"'");
+		Log.info("Set password - '<HIDDEN>'");
 		this.inputPassword.sendKeys(password);
 		this.inputPasswordConfirm.sendKeys(password);
 		
@@ -81,7 +81,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
-		Log.info("Set password - '"+password+"'");
+		Log.info("Set password - '<HIDDEN>'");
 		this.inputPassword.sendKeys(password);
 		this.inputPasswordConfirm.sendKeys(password);
 		
@@ -128,7 +128,7 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
-		Log.info("Set password - '"+password+"'");
+		Log.info("Set password - '<HIDDEN>'");
 		this.inputPassword.sendKeys(password);
 		this.inputPasswordConfirm.sendKeys(password);
 		

@@ -3000,50 +3000,48 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 		
-		// Read as Bytes to retain characters and add to pdfLines arrayList.
-		InputStream inputStream = new ByteArrayInputStream(actualReportString.getBytes());
+		ArrayList<String> indicationTables =  (ArrayList<String>) RegexUtility.getStringsInBetween(actualReportString, "Disposition Confidence in Disposition", "Software Version");
+		String indicationTable = "";
+		for(String table:indicationTables){
+			indicationTable += System.lineSeparator() + table;
+		}
+		InputStream inputStream = new ByteArrayInputStream(indicationTable.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 		String line = null;
-		List<String> pdfLines = new ArrayList<String>(); 
+		ArrayList<String> reportIndicationsList = new ArrayList<String>();
+		String extraLines = "";
 		try {
 			while ((line = bufferReader.readLine()) != null) {
-				pdfLines.add(line);
+				if (line.trim().matches(RegexUtility.INDICATION_TABLE_LINE_REGEX_PATTERN)){
+					ArrayUtility.appendToLastString(reportIndicationsList, extraLines.replaceAll(" ", ""));
+					reportIndicationsList.add(line.replaceAll("\\?", "").trim()
+							.replace("+/-", "").replace("0.0 ", "").trim().replaceAll(" ", ""));
+					extraLines = "";
+				}else if(!reportIndicationsList.isEmpty() && line.trim().matches(RegexUtility.FIELD_NOTE_LINE_REGEX_PATTERN)){
+					extraLines += line.trim();
+				}
 			}
 		} finally {
 			bufferReader.close();
 		}
-		
-		// Look for matches in pdfLines arrayList.
-		ArrayList<String> reportIndicationsList = new ArrayList<String>();
-		for (int i=0; i<pdfLines.size(); i++) {
-			line = pdfLines.get(i);
-			if (line.trim().matches(RegexUtility.INDICATION_TABLE_LINE_REGEX_PATTERN)) {				
-				String matchingValue = line.replaceAll("\\?", "").trim().replaceAll("\\s+", "").replace("+/-", "").replace("0.0 ", "").trim();
-				// Keep moving ahead till we find a line with field notes start indicator. Merge all field notes line into matchingValue.
-				while (i+1<pdfLines.size() && pdfLines.get(i+1).matches(RegexUtility.FIELD_NOTE_LINE_REGEX_PATTERN)) {
-					matchingValue += pdfLines.get(i+1).replace("0.0 ", "0").replaceAll("\\s+", "").trim();
-					i++;
-				}
-				reportIndicationsList.add(matchingValue);
-			}
-		}
+		ArrayUtility.appendToLastString(reportIndicationsList, extraLines.replaceAll(" ", ""));
 		Log.info(String.format("ReportIndications ArrayList Values : %s", LogHelper.strListToString(reportIndicationsList)));
 
 		ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications
-				.getReportIndications(reportId);
+					.getReportIndications(reportId);
 		Iterator<StoredProcComplianceGetIndications> lineIterator = storedProcIndicationsList.iterator();
 		ArrayList<String> storedProcConvStringList = new ArrayList<String>();
 		while (lineIterator.hasNext()) {
-			StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
-			String objAsString = objStoredProc.toString();
-			storedProcConvStringList.add(objAsString.replace("0.0 ", "0").replaceAll("\\s+", "").trim());
+				StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
+				String objAsString = objStoredProc.toString();
+				storedProcConvStringList.add(objAsString.replace("0.0 ", "0").replaceAll("\\s+", "").trim());
 		}
 
 		Log.info(String.format("Checking in ReportIndications ArrayList, StoredProcConvStringList Values : %s", 
-				LogHelper.strListToString(storedProcConvStringList)));
+					LogHelper.strListToString(storedProcConvStringList)));
 		if (!reportIndicationsList.equals(storedProcConvStringList)) {
-			Log.info("Indication table verification failed");
-			return false;
+				Log.info("Indication table verification failed");
+				return false;
 		}
 
 		Log.info("Indication table verification passed");

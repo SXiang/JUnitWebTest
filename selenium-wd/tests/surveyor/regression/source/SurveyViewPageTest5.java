@@ -5,7 +5,13 @@ import common.source.Log;
 import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.ISOTOPIC_CAPTURE_NATURAL_GAS;
 
+import java.io.IOException;
+
 public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
+
+	public SurveyViewPageTest5() throws IOException {
+		super();
+	}
 
 	/**
 	 * Test Case ID: TC946_SurveyView_ViewOperatorSurveySurveyMapViewWhenLISAFieldNotesAreONGISOFF

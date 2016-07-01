@@ -107,6 +107,7 @@ public class ActionsExecutionEngine implements IMethodObserver {
 			String testCaseName) throws Exception {
 		PageActionsStore.INSTANCE.clearStore();
 		TestSetup.stopChromeProcesses();
+		TestSetup.deleteAnalyzerLocalDB3();
 		SurveyorBaseTest.initializeTestObjects();
 		SurveyorBaseTest.reportTestStarting(CLASS_NAME, testCaseRallyID + " - " + testCaseName, testCaseID + " : " + testCaseName);
 	}

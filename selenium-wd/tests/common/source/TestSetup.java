@@ -17,6 +17,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -81,7 +82,7 @@ public class TestSetup {
 	public static final String REPLAY_DEFN_CURL_FILE = "replay-defn-curl.bat";
 	public static final String STOP_REPLAY_CURL_FILE = "replay-stop.bat";
 	public static final String ANALYZER_EXE_PATH = "C:\\PicarroAnalyzer\\Picarro.Surveyor.Analyzer.exe";
-	public static final String TEST_ANALYZER_SERIAL_NUMBER = "SimAuto-Analyzer3";
+	public static final String TEST_ANALYZER_SERIAL_NUMBER = "SimAuto-Analyzer1";
 
 	public static final String DATA_FOLDER = "data";
 	public static final String TEST_DATA_XLSX = "TestCaseData.xlsx";
@@ -260,6 +261,7 @@ public class TestSetup {
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("download.default_directory", this.downloadPath);
 		this.capabilities = DesiredCapabilities.chrome();
+		this.capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("start-maximized");
 		options.addArguments(Arrays.asList("--incognito", "test-type"));
@@ -283,6 +285,7 @@ public class TestSetup {
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("download.default_directory", this.downloadPath);
 		this.capabilities = DesiredCapabilities.chrome();
+		this.capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("start-maximized");
 		options.addArguments(Arrays.asList("--incognito", "test-type"));
@@ -861,7 +864,18 @@ public class TestSetup {
 	public static void restartAnalyzer() throws IOException {
 		Log.info("Restarting Analyzer EXE...");
 		stopAnalyzerIfRunning();
+		deleteAnalyzerLocalDB3();
 		startAnalyzer();
+	}
+
+	public static void deleteAnalyzerLocalDB3() throws UnknownHostException {
+		Log.method("deleteAnalyzerLocalDB3");
+		stopAnalyzerIfRunning();
+		String appDataFolder = SystemUtility.getAppDataFolder();
+		Path surveyorDb3Path = Paths.get(appDataFolder, 
+				"Picarro" + File.separator + "Surveyor" + File.separator + "Data" + File.separator + "Surveyor.db3");
+		Log.info(String.format("Deleting file - '%s'", surveyorDb3Path.toString()));
+		FileUtility.deleteFile(surveyorDb3Path);
 	}
 
 	public static void replayDB3Script(String defnFileName, String db3FileName) {
@@ -979,8 +993,8 @@ public class TestSetup {
 	}
 
 	public static void stopAnalyzer() {
-		ProcessUtility.killProcess("supervisor.exe", /* killChildProcesses */ true);
 		ProcessUtility.killProcess("Picarro.Surveyor.Analyzer.exe", /* killChildProcesses */ true);
+		ProcessUtility.killProcess("supervisor.exe", /* killChildProcesses */ true);
 	}
 
 	public static String getNetworkProxyHarFileContent() throws Exception {

@@ -1,5 +1,7 @@
 package surveyor.regression.source;
 
+import java.io.IOException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -11,7 +13,7 @@ import surveyor.scommon.source.SurveyViewPage;
 
 public class BaseSurveyViewPageTest extends BaseMapViewTest {
 
-	public BaseSurveyViewPageTest() {
+	public BaseSurveyViewPageTest() throws IOException {
 	}
 
 	protected static final String SAMPLE_SURVEY_FIELD_NOTES1 = "Ref Gas Canceled";

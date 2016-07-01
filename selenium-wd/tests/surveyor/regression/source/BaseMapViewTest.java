@@ -1,5 +1,6 @@
 package surveyor.regression.source;
 
+import java.net.UnknownHostException;
 import java.util.Calendar;
 
 import org.junit.AfterClass;
@@ -10,12 +11,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.DateUtility;
+import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.PageActionsStore;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.actions.data.TestEnvironmentDataReader.TestEnvironmentDataRow;
 import surveyor.scommon.source.HomePage;
@@ -58,7 +61,7 @@ public class BaseMapViewTest {
 	protected static final String SURVEY_INFO_DRIVER_PREFIX = "Driver: ";
 	protected static final String SURVEY_INFO_ELAPSED_TIME_00 = "Elapsed: 00:";
 	protected static final String SURVEY_INFO_REMAINING_TIME_07 = "Remaining: 07:";
-	protected static final String SURVEY_INFO_ZOOM_LEVEL_19 = "Zoom Level: 19";
+	protected static final String SURVEY_INFO_ZOOM_LEVEL_X = "Zoom Level: %d";
 	protected static final String SURVEY_INFO_STABILITY_CLASS_A = "Stability Class: A";
 	protected static final String SURVEY_INFO_STABILITY_CLASS_B = "Stability Class: B";
 	protected static final String SURVEY_INFO_STABILITY_CLASS_C = "Stability Class: C";
@@ -118,6 +121,12 @@ public class BaseMapViewTest {
 	public TestWatcher watcher = new TestWatcher() {
 		@Override
 		public void starting(Description description) {
+			PageActionsStore.INSTANCE.clearStore();
+			try {
+				TestSetup.deleteAnalyzerLocalDB3();
+			} catch (UnknownHostException e) {
+				Log.info(ExceptionUtility.getStackTraceString(e));
+			}
 			SurveyorBaseTest.reportTestStarting(description);
 			TestSetup.simulatorTestStarting(description);
 		}
