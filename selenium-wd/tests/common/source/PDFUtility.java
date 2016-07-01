@@ -25,7 +25,7 @@ public class PDFUtility {
 	protected static String wordSeparator = "| ";
 	protected static String wordSeparatorPattern = "[\\|]";
 	protected boolean setWordSeparator = false;
-	protected static String pdfLineSeparator = "", pdfParagraphStart=">", pdfParagraphEnd="<";
+	protected static String pdfLineSeparator = "", pdfParagraphStart="<\u200E", pdfParagraphEnd="\u200F>";
 	
 	public PDFUtility(){
 		this(false);
