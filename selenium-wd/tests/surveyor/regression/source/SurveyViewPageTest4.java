@@ -5,7 +5,13 @@ import common.source.Log;
 import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
+import java.io.IOException;
+
 public class SurveyViewPageTest4 extends BaseSurveyViewPageTest {
+
+	public SurveyViewPageTest4() throws IOException {
+		super();
+	}
 
 	/**
 	 * Test Case ID: TC982_SurveyView_ViewStandardSurveySatelliteViewWhenIndicationsONAssetsBoundariesOFF

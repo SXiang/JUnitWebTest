@@ -1,9 +1,10 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
-import common.source.Log;
-import common.source.TestSetup;
 
+import java.io.IOException;
+
+import common.source.Log;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -31,6 +32,10 @@ import surveyor.scommon.source.ObserverViewPage;
  */
 @RunWith(SurveyorTestRunner.class)
 public class ObserverViewPageTest extends BaseMapViewTest {
+
+	public ObserverViewPageTest() throws IOException {
+		super();
+	}
 
 	// Change this: When test defaulted to Analyzer 1.
 	private static String SURVEY_INFO_SURVEYOR_ANALYZER_FOR_TEST = SURVEY_INFO_SURVEYOR3_ANALYZER3;
@@ -321,7 +326,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(SURVEY_INFO_ZOOM_LEVEL_19, NOTSET));
+		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
 
@@ -461,7 +466,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(SURVEY_INFO_ZOOM_LEVEL_19, NOTSET));
+		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
@@ -559,7 +564,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(SURVEY_INFO_ZOOM_LEVEL_19, NOTSET));
+		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
@@ -621,7 +626,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(SURVEY_INFO_ZOOM_LEVEL_19, NOTSET));
+		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
@@ -907,7 +912,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(SURVEY_INFO_ZOOM_LEVEL_19, NOTSET));
+		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER1, NOTSET));
@@ -955,7 +960,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(SURVEY_INFO_ZOOM_LEVEL_19, NOTSET));
+		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER1, NOTSET));
@@ -1069,7 +1074,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(SURVEY_INFO_ZOOM_LEVEL_19, NOTSET));
+		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER1, NOTSET));
@@ -1135,7 +1140,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(SURVEY_INFO_ZOOM_LEVEL_19, NOTSET));
+		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER1, NOTSET));
@@ -1187,7 +1192,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(SURVEY_INFO_ZOOM_LEVEL_19, NOTSET));
+		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
 		assertTrue(observerViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER1, NOTSET));

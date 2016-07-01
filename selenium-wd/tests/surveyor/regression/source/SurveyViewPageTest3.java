@@ -8,7 +8,13 @@ import common.source.Log;
 import static surveyor.scommon.source.SurveyorConstants.ISOTOPIC_CAPTURE_CANCELLED;
 import static surveyor.scommon.source.SurveyorConstants.ISOTOPIC_CAPTURE_NOT_NATURAL_GAS;
 
+import java.io.IOException;
+
 public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
+
+	public SurveyViewPageTest3() throws IOException {
+		super();
+	}
 
 	/* * Test Case ID: TC428_SurveyView_ViewIndicationsRapidResponseSurveyWhenNoGISLoaded
 	 * Script: -  	
