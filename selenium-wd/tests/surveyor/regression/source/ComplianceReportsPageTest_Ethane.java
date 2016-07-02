@@ -352,7 +352,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		rpt.setSurveyInfoList(reportSurveyInfoList);
 		rpt.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
 
-	/*	complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, strCreatedBy, testCaseName))) {
@@ -381,10 +381,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 				}
 			}
 		} else
-			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");*/
-		
-		assertTrue(complianceReportsPage.verifyIndicationTable("C:\\Users\\cnanayakkara\\Downloads\\", "TC1658 Report619250"));
-
+			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
 
 	}
 
