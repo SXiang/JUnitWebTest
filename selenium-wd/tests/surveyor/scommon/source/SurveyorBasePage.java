@@ -46,6 +46,7 @@ import surveyor.scommon.source.SurveyorConstants.UserTimezone;
  */
 public class SurveyorBasePage extends BasePage {
 
+	protected static final String TABLE_BUTTON_CLASS = "btn btn-primary";
 	protected static final String DATA_TABLE_XPATH = "//*[@id='datatable']/tbody";
 	protected static final String DATATABLE_TBODY_TR = "//*[@id='datatable']/tbody/tr";
 	protected static final String DATATABLE_RECORDS_ELEMENT_XPATH = "datatable_info";
@@ -172,6 +173,8 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//table[@id='datatable']/tbody/tr")
 	protected List<WebElement> numberofRecords;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]")
+    protected WebElement firstRowTr;
 
 	public enum TableSortOrder {
 		ASC ("ASC"),
@@ -577,6 +580,11 @@ public class SurveyorBasePage extends BasePage {
 		});
 	}
 
+	public boolean verifyNoButtonsArePresentInTable() {
+		Log.method("verifyNoButtonsArePresentInTable");
+		return !WebElementExtender.getInnerHtml(this.firstRowTr).contains(TABLE_BUTTON_CLASS);
+	}
+	
 	public boolean verifyFieldNotBlank(WebElement validationLabel, String fieldName) {
 		Log.method("verifyFieldNotBlank", validationLabel, fieldName);
 		if (!WebElementExtender.isElementPresentAndDisplayed(validationLabel)) {
