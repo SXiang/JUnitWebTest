@@ -1321,18 +1321,14 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, 5);   /* Picarro Customer*/
 
 		complianceReportsPage.open();
-
-		complianceReportsPage.getNewComplianceReportBtn().click();
+		complianceReportsPage.openNewReportPage();
 		assertTrue(complianceReportsPage.getPercentCoverReportArea().isDisplayed());
 		complianceReportsPage.clickOnCancelBtn();
 		complianceReportsPage.waitForPageLoad();
 
-		String copyImgXPath = "//*[@id='datatable']/tbody/tr[1]/td[5]/a[2]/img";
-		WebElement copyImg = driver.findElement(By.xpath(copyImgXPath));
-
-		copyImg.click();
+		complianceReportsPage.open();
+		complianceReportsPage.clickOnFirstCopyComplianceBtn();
 		complianceReportsPage.waitForCopyReportPagetoLoad();
-		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
 		assertTrue(complianceReportsPage.getPercentCoverReportArea().isDisplayed());
 	}
 

@@ -2176,6 +2176,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void waitForCopyReportPagetoLoad() {
 		super.waitForPageToLoad();
+		waitForAJAXCallsToComplete();
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				boolean result = false;
