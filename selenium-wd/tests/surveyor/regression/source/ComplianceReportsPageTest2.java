@@ -1325,6 +1325,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		complianceReportsPage.getNewComplianceReportBtn().click();
 		assertTrue(complianceReportsPage.getPercentCoverReportArea().isDisplayed());
 		complianceReportsPage.clickOnCancelBtn();
+		complianceReportsPage.waitForPageLoad();
 
 		String copyImgXPath = "//*[@id='datatable']/tbody/tr[1]/td[5]/a[2]/img";
 		WebElement copyImg = driver.findElement(By.xpath(copyImgXPath));
