@@ -3015,7 +3015,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				if (line.trim().matches(RegexUtility.INDICATION_TABLE_LINE_REGEX_PATTERN)){
 					ArrayUtility.appendToLastString(reportIndicationsList, extraLines.replaceAll(" ", ""));
 					reportIndicationsList.add(line.replaceAll("\\?", "").trim()
-							.replace("+/-", "").replace("0.0 ", "").trim().replaceAll(" ", "").replace(">=95%", "95%"));
+							.replace("+/-", "").replace("0.0 ", "").trim().replaceAll(" ", "").replace(">=", ""));
 					extraLines = "";
 				}else if(!reportIndicationsList.isEmpty() && line.trim().matches(RegexUtility.FIELD_NOTE_LINE_REGEX_PATTERN)){
 					extraLines += line.trim();
