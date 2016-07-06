@@ -1,6 +1,5 @@
 package common.source;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,6 +22,10 @@ import org.nocrala.tools.gis.data.esri.shapefile.shape.shapes.PointShape;
 import org.nocrala.tools.gis.data.esri.shapefile.shape.shapes.PointZShape;
 import org.nocrala.tools.gis.data.esri.shapefile.shape.shapes.PolygonShape;
 import org.nocrala.tools.gis.data.esri.shapefile.shape.shapes.PolylineShape;
+
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.WKBWriter;
+import com.vividsolutions.jts.io.WKTReader;
 
 /**
  * *** NOTES ***: 
@@ -47,6 +50,19 @@ public class ShapeFileUtility {
 
 	public ShapeFileUtility(IShapeFileComparer shapeFileComparer) {
 		this.shapeFileComparer = shapeFileComparer;
+	}
+	
+   public static byte[] convertFromTextToBinary(final String wktString) {
+        WKTReader fromText = new WKTReader();
+        byte[] geometryBlob;
+        try {
+            Geometry geometry = fromText.read(wktString);
+            WKBWriter writer = new WKBWriter();
+            geometryBlob = writer.write(geometry);
+        } catch (com.vividsolutions.jts.io.ParseException e) {
+            throw new RuntimeException("Not a WKT string:" + wktString);
+        }
+        return geometryBlob;
 	}
 
 	private static GeoJsonShapeFileComparer getDefaultComparer() {
