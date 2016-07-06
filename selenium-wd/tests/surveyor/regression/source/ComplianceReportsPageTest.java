@@ -3,6 +3,7 @@
  */
 package surveyor.regression.source;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
@@ -44,6 +45,7 @@ import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPTUA;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
+import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
 import static surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 
 import java.io.IOException;
@@ -115,8 +117,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		String testCaseName = getTestCaseName(index);
 		
 		if (testCaseName.equals("TC203")) {
-			rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber() + "#%$";
-
+			rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber() + "#%$,\"<>";
 		} else {
 			rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
 		}
@@ -192,7 +193,14 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC157 Test Description: Check that report cannot be generated unless all filters are selected
-	 * 
+	 * On Home Page, click Reports -> Compliance -> 'New Compliance Report' button
+	 * Scripts: - 
+	 *	- Don't provide report title, lat long co-ordinates
+	 *	- Don't include any survey
+	 *	- Include Views but dont select any option to display in view
+	 *	- Provide same view names
+	 * Results: -
+	 *  - Required fields should be highlighted in red color
 	 */
 	@Test
 	public void TC157_ComplianceReportTest_VerifyReportCannotbeGeneratedUnlessAllFiltersarePresent() {
@@ -200,8 +208,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
-		assertTrue(complianceReportsPage.checkBlankReportErrorTextPresent());
-
+		assertTrue(complianceReportsPage.checkBlankReportErrorTextPresentAndRequiredFieldsHighlighted());
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
 	}
@@ -306,18 +313,23 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC164 Test Description: Search invalid reports
-	 * 
+	 * Script: - 
+	 * 	-Provide any invalid report title on compliance or investigation or reference gas or system history report screen
+	 * Result: -
+	 *  Message should be displayed : 'No matching records found'
+	 * 	- 
 	 */
 	@Test
 	public void TC164_ComplianceReportTest_VerifySearchInvalidReports() {
-		String rptTitle = "TC164 Report";
+		String rptTitle = "TC164 Report Not Exists";
 		Log.info("Running TC164: Search invalid reports " + rptTitle);
 
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
 
 		assertTrue(!complianceReportsPage.searchReport(rptTitle, testSetup.getLoginUser()));
-
+		assertEquals(NOMATCHINGSEARCH, complianceReportsPage.getEmptyTableMessage());
+		
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
 	}

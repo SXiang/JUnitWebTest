@@ -180,6 +180,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='deleteView2']/span")
 	protected WebElement btnDeleteView2;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr")
+	protected List<WebElement> dataTableViews;
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[2]/input")
 	protected WebElement inputViewName;
 
@@ -701,6 +704,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			addSurveyInformation(reports);
 		}
 		this.clickOnOKButton();
+//		this.clickOnCancelBtn();
 	}
 
 	public void addSurveyInformation(Reports reports) throws Exception {
@@ -2029,6 +2033,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return false;
 	}
 
+	public String getEmptyTableMessage(){
+		String msg = dataTableEmpty.getText();
+		return msg.trim();		
+	}
 	public boolean checkPaginationSetting(String numberOfReports) {
 		setPagination(numberOfReports);
 		this.waitForPageLoad();

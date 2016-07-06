@@ -105,6 +105,9 @@ public class BasePage {
 	@FindBy(how = How.XPATH, using = "//li[@id='picarro-administration-server-log']/a")
 	private WebElement linkViewServerLogs;
 
+	@FindBy(how = How.CSS, using = "#datatable td.dataTables_empty")
+	private WebElement emptyDataTableMessage;
+	
 	public static enum ElementType{BUTTON,LABEL,CHECKBOX,RADIOBUTTON,INPUT
 		,DIVISION, LINK, OPTION, ICON, DROPDOWN};
 	public BasePage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {

@@ -1464,7 +1464,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			return false;
 		}
 
-		String nameBase = reportsCompliance.getRptTitle().trim().replaceAll(" ", "_");
+		String nameBase = RegexUtility.replaceSpecialChars(reportsCompliance.getRptTitle().trim());//.replaceAll(" ", "_");
 		String viewName;
 		String pdfFile1;
 		String pdfFile2;
@@ -1473,8 +1473,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		List<Map<String, String>> viewList = reportsCompliance.getViewList();
 
 		pdfFile1 = Paths.get(downloadPath, reportName + ".pdf").toString();
-		pdfFile3 = Paths.get(downloadPath, reportZipName + File.separator + nameBase.replaceAll("_", "") + ".pdf").toString();
-
+//		pdfFile3 = Paths.get(downloadPath, reportZipName + File.separator + nameBase.replaceAll("_", "") + ".pdf").toString();
+		pdfFile3 = Paths.get(downloadPath, reportZipName + File.separator + nameBase + ".pdf").toString();
 		if (BaseHelper.validatePdfFile(pdfFile1) && BaseHelper.validatePdfFile(pdfFile3)) {
 			try {
 				if (!BaseHelper.compareTwoFilesByContent(pdfFile1, pdfFile3))
@@ -1488,7 +1488,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		for (int i = 0; i < viewList.size(); i++) {
 			viewName = viewList.get(i).get(KEYVIEWNAME);
-			pdfFile2 = Paths.get(downloadPath, reportZipName + File.separator + nameBase.replaceAll("_", "") + "_" + viewName + ".pdf").toString();
+			pdfFile2 = Paths.get(downloadPath, reportZipName + File.separator + nameBase + "_" + viewName + ".pdf").toString();
 			if (!BaseHelper.validatePdfFile(pdfFile2)) {
 				Log.info("PDF Validation failed for: " + pdfFile2);
 				return false;
@@ -1534,14 +1534,38 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return false;
 	}
 
-	public boolean checkBlankReportErrorTextPresent() {
+	public boolean checkBlankReportErrorTextPresentAndRequiredFieldsHighlighted() {
 		openNewReportPage();
 		this.clickOnOKButton();
-		if (isElementPresent(strErrorText))
-			return true;
-		return false;
+		boolean done = false;
+		if (done = isElementPresent(strErrorText)){
+			done &= isHighlightedInRed(inputTitle);
+			done &= isHighlightedInRed(inputNELat);
+			done &= isHighlightedInRed(inputNELong);
+			done &= isHighlightedInRed(inputSWLat);
+			done &= isHighlightedInRed(inputNELong);
+			for(WebElement view:dataTableViews){
+				done &= isHighlightedInRed(view);
+			}
+		}
+		return done;
 	}
 
+	public boolean isHighlightedInRed(WebElement element){
+		String background = "background: rgb(255, 206, 206)";
+		String border = "border: 1px solid red;";
+		boolean highlighted = true;
+		String value = element.getAttribute("style");
+		if(value == null){
+			return false;
+		}else if(value.contains("border: ")){
+			highlighted &= value.contains(border);
+		}
+		
+		highlighted &= value.contains(background);
+		return highlighted;
+	}
+	
 	@Override
 	public void modifyComplianceViews() {
 
@@ -3390,7 +3414,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String reportZipName = getReportPDFZipFileName(reportTitle, false /*includeExtension*/);
 		String actualReport = null;
 		if(inZipFolder)	{	
-			actualReport = Paths.get(actualPath, reportZipName + File.separator + reportTitle.replaceAll("\\s+", "") + "_" + viewName + ".pdf").toString();
+			actualReport = Paths.get(actualPath, reportZipName + File.separator + RegexUtility.replaceSpecialChars(reportTitle.replaceAll("\\s+", "")) + "_" + viewName + ".pdf").toString();
 		}else{
 		    actualReport = Paths.get(actualPath, reportName + "_" + viewName + ".pdf").toString();
 		}
