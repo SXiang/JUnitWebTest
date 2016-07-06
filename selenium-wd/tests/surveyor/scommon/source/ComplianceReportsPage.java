@@ -2995,7 +2995,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
-				Log.info("Indication table verification failed");
+				Log.info("Indication table static text verification failed");
 				return false;
 			}
 		}
@@ -3015,7 +3015,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				if (line.trim().matches(RegexUtility.INDICATION_TABLE_LINE_REGEX_PATTERN)){
 					ArrayUtility.appendToLastString(reportIndicationsList, extraLines.replaceAll(" ", ""));
 					reportIndicationsList.add(line.replaceAll("\\?", "").trim()
-							.replace("+/-", "").replace("0.0 ", "").trim().replaceAll(" ", ""));
+							.replace("+/-", "").replace("0.0 ", "").trim().replaceAll(" ", "").replace(">=", ""));
 					extraLines = "";
 				}else if(!reportIndicationsList.isEmpty() && line.trim().matches(RegexUtility.FIELD_NOTE_LINE_REGEX_PATTERN)){
 					extraLines += line.trim();
@@ -3034,13 +3034,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		while (lineIterator.hasNext()) {
 				StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
 				String objAsString = objStoredProc.toString();
-				storedProcConvStringList.add(objAsString.replace("0.0 ", "0").replaceAll("\\s+", "").trim());
+				storedProcConvStringList.add(objAsString.replace("0.0 ", "0").replaceAll("\\s+", "").trim().replace("+/-", ""));
 		}
 
 		Log.info(String.format("Checking in ReportIndications ArrayList, StoredProcConvStringList Values : %s", 
 					LogHelper.strListToString(storedProcConvStringList)));
 		if (!reportIndicationsList.equals(storedProcConvStringList)) {
-				Log.info("Indication table verification failed");
+				Log.info("Indication data table verification failed");
 				return false;
 		}
 
