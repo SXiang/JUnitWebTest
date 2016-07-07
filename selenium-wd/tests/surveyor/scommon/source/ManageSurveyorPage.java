@@ -141,6 +141,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		
 		Log.clickElementInfo("Add New Surveyor");
 		this.btnAddNewSurveyor.click();
+		waitForNewPageLoad();
 		Log.info("Set Surveyor Desc - '"+surveyorDesc+"'");
 		this.inputSurveyorDesc.sendKeys(surveyorDesc);
 		
@@ -171,6 +172,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		}
 		Log.clickElementInfo("Add New Surveyor");
 		this.btnAddNewSurveyor.click();
+		waitForNewPageLoad();
 		Log.info("Set Surveyor Desc - '"+surveyorDesc+"'");
 		this.inputSurveyorDesc.sendKeys(surveyorDesc);
 		

@@ -203,7 +203,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		}
 
 		this.btnAddNewLocation.click();
-
+		waitForNewPageLoad();
 		this.inputLocationDesc.sendKeys(locationDesc);
 
 		if (!useLatLongSelector) {
@@ -259,25 +259,13 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.NoUpper.sendKeys("-25");
 
 		if (ethMthMin != null && ethMthMin != "") {
-			List<WebElement> optionsMIN = this.ethMthMinUnit.findElements(By.tagName("option"));
-			for (WebElement option : optionsMIN) {
-				if ((ethMthMin).equalsIgnoreCase(option.getText().trim())) {
-					Log.info("Select option - '"+ethMthMin+"'");
-					option.click();
-					break;
-				}
-			}
+			this.ethMthMinUnit.clear();
+			this.ethMthMinUnit.sendKeys(ethMthMin);
 		}
 
 		if (ethMthMax != null && ethMthMax != "") {
-			List<WebElement> optionsMAX = this.ethMthMaxUnit.findElements(By.tagName("option"));
-			for (WebElement option : optionsMAX) {
-				if ((ethMthMax).equalsIgnoreCase(option.getText().trim())) {
-					Log.info("Select option - '"+ethMthMax+"'");
-					option.click();
-					break;
-				}
-			}
+			this.ethMthMaxUnit.clear();
+			this.ethMthMaxUnit.sendKeys(ethMthMax);
 		}
 
 		JavascriptExecutor js = (JavascriptExecutor) driver;
