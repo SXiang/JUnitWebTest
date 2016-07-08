@@ -218,7 +218,7 @@ public class TestSetup {
 				isRemoteBrowser = true;
 				Log.info("\nRunning Selenium Server for use with RemoteDrivers and the server is running on: "
 						+ this.remoteServerHost + "\n");
-			} else if (this.browser != null && (this.ieDriverPath != null || this.chromeDriverPath != null)) {
+			} else if (this.browser != null && (this.ieDriverPath != null || this.getChromeDriverPath() != null)) {
 				switch (this.browser.trim()) {
 				case "chrome":
 					setChromeBrowserCapabilities();
@@ -271,7 +271,7 @@ public class TestSetup {
 		if (proxy != null) {
 			this.capabilities.setCapability(CapabilityType.PROXY, proxy);
 		}
-		System.setProperty("webdriver.chrome.driver", this.chromeDriverPath);
+		System.setProperty("webdriver.chrome.driver", this.getChromeDriverPath());
 		Log.info("\nThe System Propery 'webdriver.chrome.driver' is: "
 				+ System.getProperty("webdriver.chrome.driver").toString() + "\n");
 		driver = new ChromeDriver(this.capabilities);
@@ -429,7 +429,16 @@ public class TestSetup {
 	}
 
 	public WebDriver getDriver() {
+		try {
+			this.driver = DriverFactory.getDriver();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return this.driver;
+	}
+
+	public void setDriver(WebDriver driver) {
+		this.driver = driver;
 	}
 
 	public String getCulture() {
@@ -664,7 +673,7 @@ public class TestSetup {
 
 			this.ieDriverPath = this.testProp.getProperty("ieDriverPath");
 
-			this.chromeDriverPath = getExecutionPath(rootPath) + "lib" + File.separator + "chromedriver.exe";
+			this.setChromeDriverPath(getExecutionPath(rootPath) + "lib" + File.separator + "chromedriver.exe");
 			this.implicitlyWaitTimeOutInSeconds = this.testProp.getProperty("implicitlyWaitTimeOutInSeconds");
 			this.implicitlyWaitSpecialTimeOutInSeconds = this.testProp
 					.getProperty("implicitlyWaitSpecialTimeOutInSeconds");
@@ -1287,5 +1296,13 @@ public class TestSetup {
 			propValue = testProp.getProperty(propKey);
 		}
 		return propValue;
+	}
+
+	public String getChromeDriverPath() {
+		return chromeDriverPath;
+	}
+
+	public void setChromeDriverPath(String chromeDriverPath) {
+		this.chromeDriverPath = chromeDriverPath;
 	}
 }

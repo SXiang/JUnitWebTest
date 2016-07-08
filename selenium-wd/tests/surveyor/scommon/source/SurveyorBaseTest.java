@@ -145,10 +145,10 @@ public class SurveyorBaseTest {
 
 	public static void initializeTestObjects() throws IOException {
 		testSetup = new TestSetup();
-		driver = testSetup.getDriver();
 		baseURL = testSetup.getBaseUrl();		
 		debug = testSetup.isRunningDebug();
 		TestContext.INSTANCE.setTestSetup(testSetup);
+		driver = testSetup.getDriver();
 		if(screenShotsDir==null){
 			screenShotsDir = TestSetup.getExecutionPath() + TestSetup.reportDir + testSetup.getTestReportCategory();
 			Path screenShotsPath = Paths.get(screenShotsDir, screenShotsSubFolder);
