@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import common.source.Log;
 import surveyor.dataaccess.source.Customer;
-import surveyor.dbseed.source.DBSeedExecutor;
+import surveyor.dbseed.source.DBSeedExecutorOriginal;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.actions.DriverViewPageActions;
@@ -339,17 +339,19 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 	@Test
 	public void Test_executeGisSeedForNewCustomer() throws Exception {
 		Log.info("\nRunning Test_executeGisSeedForNewCustomer ...");
-	
-		final int LOGIN_USER_ROW_ID = 6;	 	/* LoginRowID. AutomationAdmin */
-		final int newCustomerRowID = 7;
+
+		DBSeedExecutorOriginal.executeGisSeed("4ED045F6-E89E-0500-4F06-39D8D020A0BF");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, LOGIN_USER_ROW_ID);   
-
-		// Create new customer/location/user.
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
-
-		Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.name);
-		DBSeedExecutor.executeGisSeed(customer.getId());
+//		final int LOGIN_USER_ROW_ID = 6;	 	/* LoginRowID. AutomationAdmin */
+//		final int newCustomerRowID = 7;
+//		
+//		loginPageAction.open(EMPTY, NOTSET);
+//		loginPageAction.login(EMPTY, LOGIN_USER_ROW_ID);   
+//
+//		// Create new customer/location/user.
+//		manageCustomerPageAction.open(EMPTY, NOTSET);
+//		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
+//
+//		Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.name);
+//		DBSeedExecutor.executeGisSeed(customer.getId());
 	}}
