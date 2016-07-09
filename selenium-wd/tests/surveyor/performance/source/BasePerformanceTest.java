@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.After;
-import org.junit.BeforeClass;
-
-import common.source.DriverFactory;
 import common.source.FileUtility;
 import common.source.Log;
 import common.source.NumberUtility;

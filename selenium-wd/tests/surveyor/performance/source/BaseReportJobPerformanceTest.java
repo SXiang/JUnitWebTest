@@ -1,16 +1,21 @@
 package surveyor.performance.source;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
+import common.source.DriverFactory;
 import common.source.Log;
 import common.source.TestContext;
 import surveyor.dataprovider.PerformanceReportJobDataProvider;
@@ -23,11 +28,11 @@ import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 @RunWith(SurveyorTestRunner.class)
-public class ReportJobPerformanceTest extends BasePerformanceTest {
-	private static final String EMPTY = "";
-	private static final Integer NOTSET = -1;
-	private static final Integer REPORT_GENERATION_TIMEOUT_IN_SECONDS = 3600;  // Max timeout= 1hr for report gen.
-	
+public class BaseReportJobPerformanceTest extends BasePerformanceTest {
+	protected static final String EMPTY = "";
+	protected static final Integer NOTSET = -1;
+	protected static final Integer REPORT_GENERATION_TIMEOUT_IN_SECONDS = 3600;  // Max timeout= 1hr for report gen.
+
 	private static HomePageActions homePageAction;
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
@@ -41,55 +46,37 @@ public class ReportJobPerformanceTest extends BasePerformanceTest {
 	}
 
 	@Before
-	public void beforeTestMethod() {
+	public void beforeTestMethod() throws Exception {
 		initializeProperties();
 	}
-		
+	
 	/**
 	 * Initializes the page action objects.
 	 */
 	protected static void initializePageActions() {
-		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		homePageAction = new HomePageActions(driver, baseURL, testSetup);
+		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
 	}
 
-	public ReportJobPerformanceTest() {
+	public HomePageActions getHomePageAction() {
+		return homePageAction;
 	}
 
-	/**
-	 * Test Case ID: ReportJob_PerformanceTest
-	 * Script: -  	
-	 *	- - Login as specified user
-	 *	- - Create New Compliance Report with specified report data
-	 *  - - Wait for Report to be generated
-	 *  - - Query DB to find processing time for each report job
-	 * Results: - 
-	 *	- - Verify report job processing time values confirm to the baseline values.
-	 */
-	@Test
-	@UseDataProvider(value = PerformanceReportJobDataProvider.REPORT_JOB_PERFORMANCE_PROVIDER, location = PerformanceReportJobDataProvider.class)
-	public void ReportJob_PerformanceTest(String rallyTestCaseID, Integer userDataRowID, Integer reportDataRowID,
-			Integer executionTimesForBaselines, String category) throws Exception {
-		Log.info(String.format("\nRunning [%s] ReportJob_PerformanceTest ...", rallyTestCaseID));
-		
-		// Run for specified number of times depending on whether we are generating baselines or not.
-		Integer testExecutionTimes = getTestExecutionTimes(executionTimesForBaselines, ReportJobTestCategory.valueOf(category));
-		for (int i=0; i<testExecutionTimes; i++) {
-			initializePageActions();
-			
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, userDataRowID);   
-			complianceReportsPageAction.open(EMPTY, NOTSET);
-			complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID);
-			complianceReportsPageAction.setReportGenerationTimeout(String.valueOf(REPORT_GENERATION_TIMEOUT_IN_SECONDS), reportDataRowID);
-			complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID);
-			complianceReportsPageAction.verifyReportJobBaselines(EMPTY, reportDataRowID);
-		}
+	public LoginPageActions getLoginPageAction() {
+		return loginPageAction;
+	}
+	
+	public ComplianceReportsPageActions getComplianceReportsPageAction() {
+		return complianceReportsPageAction;
+	}
 
-		// Generate the CSV if collecting baselines
-		checkAndGenerateReportJobBaselineCsv();
+	public TestEnvironmentActions getTestEnvironmentAction() {
+		return testEnvironmentAction;
+	}
+
+	public BaseReportJobPerformanceTest() {
 	}
 
 	/**
@@ -139,9 +126,29 @@ public class ReportJobPerformanceTest extends BasePerformanceTest {
 		return executionTimes;
 	}
 
-	private void checkAndGenerateReportJobBaselineCsv() throws IOException {
+	protected void checkAndGenerateReportJobBaselineCsv() throws IOException {
 		if (TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
 			generateReportJobBaselineRunExecutionCsv(complianceReportsPageAction.workingDataRow.tCID);
 		}
+	}
+	
+	protected void executePerformanceTest(Integer userDataRowID, Integer reportDataRowID, Integer executionTimesForBaselines,
+			String category) throws Exception, IOException {
+		// Run for specified number of times depending on whether we are generating baselines or not.
+		Integer testExecutionTimes = getTestExecutionTimes(executionTimesForBaselines, ReportJobTestCategory.valueOf(category));
+		for (int i=0; i<testExecutionTimes; i++) {
+			initializePageActions();
+			
+			getLoginPageAction().open(EMPTY, NOTSET);
+			getLoginPageAction().login(EMPTY, userDataRowID);   
+			getComplianceReportsPageAction().open(EMPTY, NOTSET);
+			getComplianceReportsPageAction().createNewReport(EMPTY, reportDataRowID);
+			getComplianceReportsPageAction().setReportGenerationTimeout(String.valueOf(REPORT_GENERATION_TIMEOUT_IN_SECONDS), reportDataRowID);
+			getComplianceReportsPageAction().waitForReportGenerationToComplete(EMPTY, reportDataRowID);
+			getComplianceReportsPageAction().verifyReportJobBaselines(EMPTY, reportDataRowID);
+		}
+
+		// Generate the CSV if collecting baselines
+		checkAndGenerateReportJobBaselineCsv();
 	}
 }
