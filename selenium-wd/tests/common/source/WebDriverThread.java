@@ -17,11 +17,11 @@ public class WebDriverThread {
 
 	public WebDriver getDriver() throws Exception {
 		if (null == driver) {
-			System.out.println(" ");
-			System.out.println("Current Operating System: " + operatingSystem);
-			System.out.println("Current Architecture: " + systemArchitecture);
-			System.out.println("Current Browser Selection: Firefox");
-			System.out.println(" ");
+			Log.info(" ");
+			Log.info("Current Operating System: " + operatingSystem);
+			Log.info("Current Architecture: " + systemArchitecture);
+			Log.info("Current Browser Selection: Chrome");
+			Log.info(" ");
 
 			Log.info("-----Chrome it is ----");
 			Map<String, Object> prefs = new HashMap<String, Object>();
