@@ -226,10 +226,10 @@ public class HomePageTest extends SurveyorBaseTest {
 		homePage.getLinkPreference().click();
 
 		preferencesPage.waitForPageLoad();
-		preferencesPage.setSelectedTimeZone(TIMEZONECTUA);
+		preferencesPage.setSelectedTimeZone(TIMEZONECT);
 		preferencesPage.getBtnOk().click();
 		homePage.waitForPageLoad();
-		assertTrue(homePage.getDropDownTimeZone().getText().equals(TIMEZONECTUA));
+		assertTrue(homePage.getDropDownTimeZone().getText().equals(TIMEZONECT));
 	}
 
 	/**
@@ -260,7 +260,7 @@ public class HomePageTest extends SurveyorBaseTest {
 		homePage.getDropDownLoginUser().click();
 		homePage.getLinkPreference().click();
 		preferencesPage.waitForPageLoad();
-		assertTrue(preferencesPage.getSelectedTimeZone().getText().equals(TIMEZONEPTUA));
+		assertTrue(preferencesPage.getSelectedTimeZone().getText().equals(TIMEZONEPT));
 
 	}
 

@@ -1,7 +1,7 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONECTUA;
+import static surveyor.scommon.source.SurveyorConstants.TIMEZONECT;
 
 import java.util.ArrayList;
 import java.util.List;
