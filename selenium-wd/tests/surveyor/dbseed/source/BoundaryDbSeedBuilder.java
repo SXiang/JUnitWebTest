@@ -68,7 +68,6 @@ public class BoundaryDbSeedBuilder extends BaseDbSeedBuilder {
         }
         catch (Exception e)  
         {  
-            // Handle any errors that may have occurred.  
             Log.error(ExceptionUtility.getStackTraceString(e));  
         }  
         finally  

@@ -37,7 +37,7 @@ public class CustomerMaterialTypeDbSeedBuilder extends BaseDbSeedBuilder {
         try  
         {              
             // Get data from the source file by loading it into a class that implements ISQLServerBulkRecord.  
-            // Here we are using the SQLServerBulkCSVFileRecord implementation to import the example CSV file.  
+            // Use the SQLServerBulkCSVFileRecord implementation to import the CSV file.  
             fileRecord = new SQLServerBulkCSVFileRecord(workingCSVFile, true);      
   
             // Set the metadata for each column to be copied.  
@@ -53,7 +53,6 @@ public class CustomerMaterialTypeDbSeedBuilder extends BaseDbSeedBuilder {
         }
         catch (Exception e)  
         {  
-            // Handle any errors that may have occurred.  
             Log.error(ExceptionUtility.getStackTraceString(e));  
         }  
         finally  
