@@ -3,7 +3,6 @@ package common.source;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,12 +14,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
-
 import org.apache.commons.io.FileUtils;
 import org.testng.Assert;
 
@@ -428,6 +424,7 @@ public class FileUtility {
 	 */
 	public static void deleteFile(Path file) {
 		try {
+			Log.info(String.format("Deleting file - '%s'", file.toString()));
 		    Files.delete(file);
 		} catch (NoSuchFileException x) {
 		    System.err.format("%s: no such" + " file or directory%n", file);

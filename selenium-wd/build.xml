@@ -41,7 +41,7 @@
 
 	<target name="compile_common" depends="init"
 			description="Compile common source code">
-		<javac srcdir="${basedir}/tests/common/source:${basedir}/tests/surveyor/scommon/source:${basedir}/tests/surveyor/scommon/actions:${basedir}/tests/surveyor/scommon/actions/data:${basedir}/tests/surveyor/dataaccess/source:${basedir}/tests/surveyor/dbseed/source:${basedir}/tests/surveyor/dataprovider::${basedir}/tests/surveyor/api" includeantruntime="false" destdir="${basedir}/tests/common/build" debug="true">
+		<javac srcdir="${basedir}/tests/common/source:${basedir}/tests/surveyor/dbseed/source:${basedir}/tests/surveyor/scommon/source:${basedir}/tests/surveyor/scommon/actions:${basedir}/tests/surveyor/scommon/actions/data:${basedir}/tests/surveyor/dataaccess/source:${basedir}/tests/surveyor/dataprovider:${basedir}/tests/surveyor/api" includeantruntime="false" destdir="${basedir}/tests/common/build" debug="true">
 			<classpath>
 				<fileset dir="${basedir}">
 					<include name="**/*.jar" />
@@ -254,11 +254,8 @@
 				<formatter type="xml" />
 				<fileset dir="${build}">
 
-					<include name="**/ManageAnalyzersPageTest.class" />
-					<include name="**/ComplianceReportsPageTest6.class" />
-					<include name="**/SurveyViewPageTest.class" />
-					<include name="**/ManageCustomersPageTest.class" />
-					<include name="**/ComplianceReportsPageTest.class" />
+					<include name="**/ManageUsersPageTest.class" />
+					<include name="**/ManageUsersAdminPageTest.class" />
 
 				</fileset>
 			</batchtest>

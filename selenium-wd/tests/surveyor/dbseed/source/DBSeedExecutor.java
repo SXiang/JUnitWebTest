@@ -12,6 +12,8 @@ import surveyor.dataaccess.source.ConnectionFactory;
 
 public class DBSeedExecutor {
 
+	private static final boolean ENABLE_VERBOSE_LOGGING = false;
+	
 	/* Seed data for pushing GIS data (CustomerBoundaryType, CustomerMaterialType, Boundary and Asset) */
 	
 	public static void executeGisSeed() throws Exception {
@@ -118,7 +120,9 @@ public class DBSeedExecutor {
                 	}
                 	
                 	for (String insertStmt : insertStatements) {
-                    	Log.info(String.format("Executing statement -> '%s'", insertStmt));
+                		if (ENABLE_VERBOSE_LOGGING) {
+                			Log.info(String.format("Executing statement -> '%s'", insertStmt));
+                		}
 						stmt.executeUpdate(insertStmt);
 					}
                 }

@@ -23,10 +23,6 @@ import org.nocrala.tools.gis.data.esri.shapefile.shape.shapes.PointZShape;
 import org.nocrala.tools.gis.data.esri.shapefile.shape.shapes.PolygonShape;
 import org.nocrala.tools.gis.data.esri.shapefile.shape.shapes.PolylineShape;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKBWriter;
-import com.vividsolutions.jts.io.WKTReader;
-
 /**
  * *** NOTES ***: 
  * We have integrated 2 mechanisms for comparing Shape files:
@@ -52,19 +48,6 @@ public class ShapeFileUtility {
 		this.shapeFileComparer = shapeFileComparer;
 	}
 	
-   public static byte[] convertFromTextToBinary(final String wktString) {
-        WKTReader fromText = new WKTReader();
-        byte[] geometryBlob;
-        try {
-            Geometry geometry = fromText.read(wktString);
-            WKBWriter writer = new WKBWriter();
-            geometryBlob = writer.write(geometry);
-        } catch (com.vividsolutions.jts.io.ParseException e) {
-            throw new RuntimeException("Not a WKT string:" + wktString);
-        }
-        return geometryBlob;
-	}
-
 	private static GeoJsonShapeFileComparer getDefaultComparer() {
 		return new GeoJsonShapeFileComparer();
 	}
