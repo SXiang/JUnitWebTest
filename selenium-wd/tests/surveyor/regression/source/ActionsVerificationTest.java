@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import common.source.Log;
 import surveyor.dataaccess.source.Customer;
-import surveyor.dbseed.source.DBSeedExecutorOriginal;
+import surveyor.dbseed.source.DBSeedExecutor;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.actions.DriverViewPageActions;
@@ -340,7 +340,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 	public void Test_executeGisSeedForNewCustomer() throws Exception {
 		Log.info("\nRunning Test_executeGisSeedForNewCustomer ...");
 
-		DBSeedExecutorOriginal.executeGisSeed("4ED045F6-E89E-0500-4F06-39D8D020A0BF");
+		DBSeedExecutor.executeGisSeed("4ED045F6-E89E-0500-4F06-39D8D020A0BF");
 		
 //		final int LOGIN_USER_ROW_ID = 6;	 	/* LoginRowID. AutomationAdmin */
 //		final int newCustomerRowID = 7;

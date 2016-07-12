@@ -25,13 +25,15 @@ public class CSVUtility {
 	
 	public List<String> getHeadings(String fileAbsolutePath) throws FileNotFoundException, IOException{
 		ArrayList<String> headers=new ArrayList<String>();
-		CSVParser parser = new CSVParser(new FileReader(fileAbsolutePath),CSVFormat.EXCEL.withHeader());
+		FileReader fileReader = new FileReader(fileAbsolutePath);
+		CSVParser parser = new CSVParser(fileReader,CSVFormat.EXCEL.withHeader());
 		try {
 			Map<String,Integer> headerMap=parser.getHeaderMap();
 			for(String key:headerMap.keySet()){
 				headers.add(key);
 			}
 		} finally {
+			fileReader.close();
 			parser.close();
 		}
 		return headers;			
@@ -45,7 +47,8 @@ public class CSVUtility {
 	 */
 	public List<HashMap<String,String>> getAllRows(String fileAbsolutePath) throws FileNotFoundException, IOException{
 		List<HashMap<String,String>> rowsList=new ArrayList<HashMap<String,String>>();
-		CSVParser parser = new CSVParser(new FileReader(fileAbsolutePath),CSVFormat.EXCEL.withHeader());
+		FileReader fileReader = new FileReader(fileAbsolutePath);
+		CSVParser parser = new CSVParser(fileReader,CSVFormat.EXCEL.withHeader());
 		try {
 			Map<String,Integer> headerMap=parser.getHeaderMap();
 			List<CSVRecord> rows=parser.getRecords();
@@ -60,11 +63,19 @@ public class CSVUtility {
 				
 			}
 		} finally {
+			fileReader.close();
 			parser.close();
 		}
 		return rowsList;	
 	}
 	
+	public static String createCsvString(List<String> values) {
+		String csvString = "";
+		if (values != null) {
+			csvString = String.join(",", values.toArray(new String[values.size()]));
+		}
+		return csvString;
+	}
 		
 	public static void main(String[] args) throws Exception {
 		

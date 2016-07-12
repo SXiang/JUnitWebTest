@@ -11,4 +11,6 @@ public interface IDbSeed {
 	void setSeedData(ISQLServerBulkRecord fileRecord);
 	void setDestinationTableName(String tableName);
 	String getDestinationTableName();
+	void addInsertStatement(String value);
+	List<String> getInsertStatements();
 }

@@ -1,42 +1,81 @@
 package surveyor.dbseed.source;
 
-import com.microsoft.sqlserver.jdbc.SQLServerBulkCSVFileRecord;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.List;
+
+import common.source.CSVUtility;
+import common.source.ExceptionUtility;
+import common.source.FileUtility;
+import common.source.Log;
+import common.source.TestContext;
+import common.source.TestSetup;
 
 public class AssetDbSeedBuilder extends BaseDbSeedBuilder {
-	
-	private static final String TABLE_NAME = "[dbo].[Asset]";
-	private static final String SEED_DATA_FILE_PATH = "C:\\Test\\TestBulkCSVExample.csv";
+	public static final String TABLE_NAME = "[dbo].[Asset]";
+	private static final String PK_COL_NAME = "Id";
+	private static final String SEED_FILE_NAME = "AssetSeed.csv";
+	private static final String INSERT_TEMPLATE = "INSERT [dbo].[Asset] ([Id], [ExternalId], [CustomerId], [AssetTypeId], [CustomerMaterialTypeId], [Description], [Shape], [Date], [State]) VALUES "
+			+ "(N'%s', N'%s', N'%s', N'%s', N'%s', NULL, %s, CAST(N'%s' AS DateTime), NULL)";
 
-	public DbSeed build() {
-		DbSeed seedData = new DbSeed();
-		seedData.addCleanupStatement("DELETE [dbo].[Asset] WHERE [CustomerId]='%s'");
+	public AssetDbSeedBuilder() {
+		SeedDataFilePath = TestContext.INSTANCE.getExecutionPath() + TestSetup.SQL_DATA_FOLDER + File.separator + SEED_FILE_NAME;
+	}
+	
+	public DbSeed build(String customerID) throws FileNotFoundException, IOException {
+		String workingCSVFile = SeedDataFilePath;
+		boolean customerIDSpecified = false;
+		if (customerID != null && !customerID.isEmpty()) {
+			customerIDSpecified = true;
+			workingCSVFile = createCSVFileWithCustomerData(customerID, PK_COL_NAME, TABLE_NAME);
+		}
 		
-		SQLServerBulkCSVFileRecord fileRecord = null;  
+		DbSeed seedData = new DbSeed();
+		if (customerIDSpecified) {
+			seedData.addCleanupStatement(String.format("DELETE [dbo].[Asset] WHERE [CustomerId]='%s'", customerID));
+		}
+		
         try  
         {              
-            // Get data from the source file by loading it into a class that implements ISQLServerBulkRecord.  
-            // Here we are using the SQLServerBulkCSVFileRecord implementation to import the example CSV file.  
-            fileRecord = new SQLServerBulkCSVFileRecord(SEED_DATA_FILE_PATH, true);      
-  
-            // Set the metadata for each column to be copied.  
-            fileRecord.addColumnMetadata(1, null, java.sql.Types.INTEGER, 0, 0);  
-            fileRecord.addColumnMetadata(2, null, java.sql.Types.NVARCHAR, 50, 0);  
-            
-            // NOTE: The data value for GEOMETRY should be in binary format.
-            // See example - http://stackoverflow.com/questions/5792467/sqlbulkcopy-datatable-with-wellknowntext-spatial-data-column
-            fileRecord.addColumnMetadata(3, null, java.sql.Types.NVARCHAR, 25, 0);
-            
-            seedData.setSeedData(fileRecord);
+    		CSVUtility csvUtility = new CSVUtility();
+    		List<HashMap<String, String>> allRows = csvUtility.getAllRows(workingCSVFile);
+    		for (HashMap<String, String> rowItem : allRows) {
+    			String id = rowItem.get("Id");
+    			String externalId = rowItem.get("ExternalId");
+    			String custId = rowItem.get("CustomerId");
+    			if (customerIDSpecified) {
+    				custId = customerID;
+    			}
+    			String assetTypeId = rowItem.get("AssetTypeId");
+
+    			String customerMaterialTypeId = rowItem.get("CustomerMaterialTypeId");
+    			// If cache contains a newId replace with new id.
+    			String custMaterialTypeIdFromCache = getDbSeedCache().getIdFromTablePKIdCache(CustomerMaterialTypeDbSeedBuilder.TABLE_NAME, customerMaterialTypeId);
+    			if (custMaterialTypeIdFromCache != null) {
+    				customerMaterialTypeId = custMaterialTypeIdFromCache;
+    			}
+    			
+    			String shape = rowItem.get("Shape");
+    			String date = rowItem.get("Date");
+
+    			seedData.addInsertStatement(String.format(INSERT_TEMPLATE, id, externalId, custId, assetTypeId, customerMaterialTypeId, shape, date));
+			}
+    		
             seedData.setDestinationTableName(TABLE_NAME);
         }
         catch (Exception e)  
         {  
             // Handle any errors that may have occurred.  
-            e.printStackTrace();  
+            Log.error(ExceptionUtility.getStackTraceString(e));  
         }  
         finally  
         {  
-            if (fileRecord != null) try { fileRecord.close(); } catch(Exception e) {}  
+            if (customerIDSpecified) {
+            	FileUtility.deleteFile(Paths.get(workingCSVFile));
+            }
         }  
 		return seedData;
 	}

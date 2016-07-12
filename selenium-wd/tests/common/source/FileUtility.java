@@ -95,6 +95,21 @@ public class FileUtility {
 	}
 
 	/*
+	 * Writes specified lines from the string array to file with a newline after each line.
+	 */
+	public static void writeToFile(String filePath, String[] linesToWrite) throws IOException {
+		BufferedWriter buffWriter = new BufferedWriter(new FileWriter(filePath));
+		try {
+			for (String lineText : linesToWrite) {
+				buffWriter.write(lineText);
+				buffWriter.newLine();
+			}
+		} finally {
+			buffWriter.close();
+		}
+	}
+	
+	/*
 	 * Searches the specified file for 'searchForText' and replaces it with 'replaceWithText'
 	 * Creates a copy with the updated content and replaces the source file with the copy file.
 	 */

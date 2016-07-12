@@ -85,6 +85,7 @@ public class TestSetup {
 	public static final String TEST_ANALYZER_SERIAL_NUMBER = "SimAuto-Analyzer1";
 
 	public static final String DATA_FOLDER = "data";
+	public static final String SQL_DATA_FOLDER = "data\\sql";
 	public static final String TEST_DATA_XLSX = "TestCaseData.xlsx";
 
 	private static Process analyzerProcess;
