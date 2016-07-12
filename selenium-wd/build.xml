@@ -256,6 +256,9 @@
 
 					<include name="**/ManageUsersPageTest.class" />
 					<include name="**/ManageUsersAdminPageTest.class" />
+					<include name="**/ComplianceReportsPageTest6.class" />
+					<include name="**/SurveyViewPageTest.class" />
+					<include name="**/SurveyViewPageTest1.class" />
 
 				</fileset>
 			</batchtest>
