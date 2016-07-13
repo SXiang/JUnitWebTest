@@ -159,15 +159,11 @@ public class SurveyorBaseTest {
 		baseURL = testSetup.getBaseUrl();		
 		debug = testSetup.isRunningDebug();
 		TestContext.INSTANCE.setTestSetup(testSetup);
-		if(screenShotsDir==null){
-			screenShotsDir = TestSetup.getExecutionPath() + TestSetup.reportDir + testSetup.getTestReportCategory();
-			Path screenShotsPath = Paths.get(screenShotsDir, screenShotsSubFolder);
-			Log.info(String.format("Create screenshots foler for this test - '%s'", screenShotsPath));
-			FileUtility.deleteFilesInDirectory(screenShotsPath);
-			FileUtility.createDirectoryIfNotExists(screenShotsPath.toString());
-			screenCapture = new ScreenShotOnFailure(screenShotsSubFolder, 
-					screenShotsDir, testSetup.isRemoteBrowser);
-		}		
+		screenShotsDir = TestSetup.getExecutionPath() + TestSetup.reportDir + testSetup.getTestReportCategory();
+		Path screenShotsPath = Paths.get(screenShotsDir, screenShotsSubFolder);
+		FileUtility.createDirectoryIfNotExists(screenShotsPath.toString());			
+		screenCapture = new ScreenShotOnFailure(screenShotsSubFolder, 
+				screenShotsDir, testSetup.isRemoteBrowser);
 		
 		driver.manage().deleteAllCookies();
 		
