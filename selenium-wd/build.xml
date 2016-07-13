@@ -421,7 +421,7 @@
 		<echo message="junit build : ${build}" />
 	</target>
 	
-	<target name="testdebug" depends="compileregression" description="Run test on local branch before merge">
+	<target name="tc_localrun" depends="compileregression" description="Run regression on TC before merge">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
@@ -432,7 +432,7 @@
 				</fileset>
 			</classpath>
 
-			<batchtest fork="yes" todir="${reports}/sanity/xml">
+			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
 					<include name="**/ManageAnalyzersPageTest.class" />
@@ -442,6 +442,7 @@
 		</junit>
 	</target>
 
+	
 	<!-- JUnit Test Reports -->
 	<target name="sanityreport" depends="testsanity">
 		<junitreport todir="${reports}/sanity/xml">
@@ -473,7 +474,7 @@
 		</junitreport>
 	</target>
 	
-	<target name="debugreport" depends="testdebug">
+	<target name="debugreport" depends="tc_localrun">
 		<junitreport todir="${reports}/regression/xml">
 			<fileset dir="${reports}/regression/xml">
 				<include name="*TEST-*.xml" />

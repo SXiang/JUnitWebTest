@@ -20,12 +20,15 @@ public class ExcelUtility {
 	private org.apache.poi.ss.usermodel.Cell cellText;
 	private XSSFRow row;
 	private String excelFilePath;
-	
 	private HashMap<String, String> cellDataMap = new HashMap<String, String>();
    
 	private static String formMapKey(int rowNum, int colNum, String sheetName) {
 		return String.format("%d:%d:%s", rowNum, colNum, sheetName);
 	}
+	
+	private static String formMapKey(int rowId, String colName, String sheetName) {
+		return String.format("%s:%s:%s", rowId, colName, sheetName);
+	}	
 	
     private String getCellData(int rowNum, int colNum, String sheetName, ValueType valueType) throws Exception{
         try {
@@ -33,19 +36,8 @@ public class ExcelUtility {
         	String key = formMapKey(rowNum, colNum, sheetName);
         	if (cellDataMap.containsKey(key)) {
         		return cellDataMap.get(key);
-        	}        	
-        	excelWorksheet = excelWorkbook.getSheet(sheetName);
-           	cellText = excelWorksheet.getRow(rowNum).getCell(colNum);
-           	if (valueType == ValueType.String) {
-           		cellData = cellText.getStringCellValue();
-           	} else if (valueType == ValueType.Integer) {
-           		Double cellValue = cellText.getNumericCellValue();
-           		cellData = String.valueOf(cellValue.intValue());
-           	} else if (valueType == ValueType.Numeric) {
-           		cellData = String.valueOf(cellText.getNumericCellValue());
-	       	} else if (valueType == ValueType.Boolean) {
-	       		cellData = String.valueOf(cellText.getBooleanCellValue());
-	       	} 
+        	}
+        	cellData = retriveCellData(rowNum, colNum, sheetName, valueType);
             // cache cellData
             cellDataMap.put(key, cellData);
             return cellData;
@@ -54,7 +46,73 @@ public class ExcelUtility {
          }
      }
 
-	public void setExcelFile(String path) throws Exception {
+    private String retriveCellData(int rowNum, int colNum, String sheetName, ValueType valueType) throws Exception{
+    	String cellData = null;
+    	excelWorksheet = excelWorkbook.getSheet(sheetName);
+       	cellText = excelWorksheet.getRow(rowNum).getCell(colNum);
+       	if (valueType == ValueType.String) {
+       		cellData = cellText.getStringCellValue();
+       	} else if (valueType == ValueType.Integer) {
+       		Double cellValue = cellText.getNumericCellValue();
+       		cellData = String.valueOf(cellValue.intValue());
+       	} else if (valueType == ValueType.Numeric) {
+       		cellData = String.valueOf(cellText.getNumericCellValue());
+       	} else if (valueType == ValueType.Boolean) {
+       		cellData = String.valueOf(cellText.getBooleanCellValue());
+       	} 
+       	return cellData;
+    }
+    
+    private int getRowIndex(int rowId, String sheetName){
+    	int columnIndex = 0;
+    	excelWorksheet = excelWorkbook.getSheet(sheetName);
+    	int numRows = excelWorksheet.getLastRowNum()+1;
+    	for(int i=1; i<numRows; i++){
+    		int id = (int) excelWorksheet.getRow(i).getCell(columnIndex).getNumericCellValue();
+    		if(rowId == id){
+    			return i;
+    		}
+    	}
+        return -1;
+    }
+    
+    private int getColumnIndex(String colName, String sheetName){
+    	int headerIndex = 0;
+    	excelWorksheet = excelWorkbook.getSheet(sheetName);
+       	row = excelWorksheet.getRow(headerIndex);
+       	int rowSize = row.getLastCellNum();
+       	for(int i=0; i<rowSize; i++){
+       		String name = row.getCell(i).getStringCellValue();
+       		if(colName.equalsIgnoreCase(name)){
+       			return i;
+       		}
+       	}
+       	return -1;
+    }
+    
+    public String getExcelFilePath(){
+    	return excelFilePath;
+    }
+    public String getCellData(int rowId, String colName, String sheetName, ValueType valueType){
+        try {
+        	String cellData = null;
+        	String key = formMapKey(rowId, colName, sheetName);
+        	if (cellDataMap.containsKey(key)) {
+        		return cellDataMap.get(key);
+        	}
+        	int colNum = getColumnIndex(colName, sheetName);
+        	int rowNum = getRowIndex(rowId,sheetName);
+        	
+        	cellData = retriveCellData(rowNum, colNum, sheetName, valueType);
+
+            cellDataMap.put(key, cellData);
+            return cellData;
+         } catch (Exception e) {
+             return "<ERROR>";
+         }    	
+    }
+    
+	public void setExcelFile(String path) {
     	try {
             this.excelFilePath = path;
     		FileInputStream excelFile = new FileInputStream(path);
