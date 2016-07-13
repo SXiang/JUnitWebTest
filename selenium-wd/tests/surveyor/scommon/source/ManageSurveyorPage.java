@@ -528,7 +528,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 
 	@Override
 	public void waitForPageLoad() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+        (new WebDriverWait(driver, 2*timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getPageSource().contains(STRPageContentText);
             }
@@ -536,7 +536,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
     }
 
 	public void waitForNewPageLoad() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+        (new WebDriverWait(driver, 2*timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getPageSource().contains(STRNewPageContentText);
             }
@@ -544,7 +544,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
     }
 
     public void waitForEditPageLoad() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+        (new WebDriverWait(driver, 2*timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
             	Log.info("Checking for content on EDIT page: " + STREditPageContentText);
                 return d.getPageSource().contains(STREditPageContentText);
