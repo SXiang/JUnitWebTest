@@ -420,6 +420,28 @@
 		</junit>
 		<echo message="junit build : ${build}" />
 	</target>
+	
+	<target name="testdebug" depends="compileSanity" description="Run test on local branch before merge">
+		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
+					showoutput="yes">
+			<sysproperty key = "testReportCategory" value = "Sanity" />
+			<classpath>
+				<pathelement path="${build}" />
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+
+			<batchtest fork="yes" todir="${reports}/sanity/xml">
+				<formatter type="xml" />
+				<fileset dir="${build}">
+					<include name="**/ManageAnalyzersPageTest.class" />
+					<include name="**/ManageLocationsAdminPageTest.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<echo message="junit build : ${build}" />
+	</target>
 
 	<!-- JUnit Test Reports -->
 	<target name="sanityreport" depends="testsanity">
@@ -452,7 +474,7 @@
 		</junitreport>
 	</target>
 	
-	<target name="debugreport" depends="compliancereportpageactiontests">
+	<target name="debugreport" depends="testdebug">
 		<junitreport todir="${reports}/regression/xml">
 			<fileset dir="${reports}/regression/xml">
 				<include name="*TEST-*.xml" />

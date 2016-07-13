@@ -6,12 +6,15 @@ package surveyor.scommon.source;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
+import org.junit.rules.ExternalResource;
+import org.junit.rules.TestRule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.openqa.selenium.WebDriver;
@@ -69,6 +72,11 @@ public class SurveyorBaseTest {
 
 		@Override
 		protected void failed(Throwable e, Description description) {
+			SurveyorBaseTest.reportTestWarning();
+			ScreenShotOnFailure failure = new ScreenShotOnFailure(driver, screenShotsSubFolder, 
+					screenShotsDir, testSetup.isRemoteBrowser);
+			failure.takeScreenshot();
+			Log.error("Exception: "+e+" Description: "+description);
 			SurveyorBaseTest.reportTestFailed(e);
 		}
 
@@ -77,11 +85,7 @@ public class SurveyorBaseTest {
 			 SurveyorBaseTest.reportTestSucceeded();
 		}
 	};
-	
-	@Rule
-	public ScreenShotOnFailure failure = new ScreenShotOnFailure(driver, screenShotsSubFolder, 
-			screenShotsDir, testSetup.isRemoteBrowser);
-	
+
 	private static ExtentReports getExtentReport(String className) {
 	   ExtentReports extentReport = TestContext.INSTANCE.getReport();
 	   if (extentReport == null) {
@@ -113,6 +117,13 @@ public class SurveyorBaseTest {
 		report.flush();
 	}
 
+	public static void reportTestWarning() {
+		ArrayList<String> testMessage = TestContext.INSTANCE.getTestMessage();
+		for(String message:testMessage){
+			getExtentTest().log(LogStatus.WARNING, "Extra messages before the failure", "INFO: " + message);
+		}
+	}
+	
 	public static void reportTestFailed(Throwable e) {
 		getExtentTest().log(LogStatus.FAIL, "FAILURE: " + e.getMessage());
 	}
