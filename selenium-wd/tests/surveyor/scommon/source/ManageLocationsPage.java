@@ -779,7 +779,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	public boolean isDuplicateLocMsgPresent() {
 		Log.method("isDuplicateLocMsgPresent");
-		return this.liDuplicateMsg.getText().equals(STRDuplicateLocMsg);
+		return getElementText(this.liDuplicateMsg).equals(STRDuplicateLocMsg);
 	}
 
 	@Override

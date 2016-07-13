@@ -177,7 +177,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		this.inputSurveyorDesc.sendKeys(surveyorDesc);
 		
 		Log.info("Waiting for Location dropdown to be populated..");
-		this.waitForDropdownToBePopulated(new Select(this.dropDownLocation));
+		this.waitForDropdownToBePopulated(this.dropDownLocation);
 		
 		List<WebElement> options = this.dropDownLocation.findElements(By.tagName("option"));
 		for (WebElement option : options) {
@@ -518,7 +518,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	public boolean isDuplicateSurMsgPresent(String locationName){
     	Log.method("isDuplicateSurMsgPresent", locationName);
 		String STRDuplicateSurMsg = "Surveyor name already exists for location " + locationName +", please try another name.";
-		return this.liDuplicateMsg.getText().equals(STRDuplicateSurMsg);
+		return getElementText(this.liDuplicateMsg).equals(STRDuplicateSurMsg);
 	}
 
 	public boolean isAddNewSurveyorBtnPresent() {

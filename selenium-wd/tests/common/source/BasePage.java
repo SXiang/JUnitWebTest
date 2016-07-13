@@ -364,4 +364,14 @@ public class BasePage {
     		jsClick(checkbox);
     	}
     }
+    
+    public String getElementText(WebElement element) {
+    	String text = "";
+    	try{
+    		text = element.getText();
+    	}catch(Exception e){
+    		Log.error("Faile to get text of element '"+element+"'");
+    	}
+    	return text;
+    }
 }

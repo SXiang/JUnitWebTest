@@ -644,11 +644,11 @@ public class SurveyorBasePage extends BasePage {
 		});
 	}
 
-	public void waitForDropdownToBePopulated(Select dropdownElement) {
+	public void waitForDropdownToBePopulated(WebElement dropdownElement) {
 		Log.method("waitForDropdownToBePopulated", dropdownElement);
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return !dropdownElement.getOptions().isEmpty();
+				return !new Select(dropdownElement).getOptions().isEmpty();
 			}
 		});
 	}
