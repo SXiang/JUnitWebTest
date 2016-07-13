@@ -50,6 +50,7 @@ public class SurveyorBaseTest {
 	
 	private static ExtentTest test = null; 
 	private static StringBuilder extentReportFile = null;
+	private static ScreenShotOnFailure screenCapture;
 	protected static final String SQAPICAD_AND_SQAPICSUP = "sqapicad@picarro.com,sqapicsup@picarro.com";
 	
 	// JUnit does NOT give a good way to detect which TestClass is executing.
@@ -72,10 +73,8 @@ public class SurveyorBaseTest {
 
 		@Override
 		protected void failed(Throwable e, Description description) {
-			SurveyorBaseTest.reportTestWarning();
-			ScreenShotOnFailure failure = new ScreenShotOnFailure(driver, screenShotsSubFolder, 
-					screenShotsDir, testSetup.isRemoteBrowser);
-			failure.takeScreenshot();
+			SurveyorBaseTest.reportTestConsoleMessage();			
+			screenCapture.takeScreenshot(driver);
 			Log.error("Exception: "+e+" Description: "+description);
 			SurveyorBaseTest.reportTestFailed(e);
 		}
@@ -117,10 +116,10 @@ public class SurveyorBaseTest {
 		report.flush();
 	}
 
-	public static void reportTestWarning() {
+	public static void reportTestConsoleMessage() {
 		ArrayList<String> testMessage = TestContext.INSTANCE.getTestMessage();
 		for(String message:testMessage){
-			getExtentTest().log(LogStatus.WARNING, "Extra messages before the failure", "INFO: " + message);
+			getExtentTest().log(LogStatus.WARNING, "Extra messages before the failure", "Console Message: " + message);
 		}
 	}
 	
@@ -166,8 +165,10 @@ public class SurveyorBaseTest {
 			Log.info(String.format("Create screenshots foler for this test - '%s'", screenShotsPath));
 			FileUtility.deleteFilesInDirectory(screenShotsPath);
 			FileUtility.createDirectoryIfNotExists(screenShotsPath.toString());
+			screenCapture = new ScreenShotOnFailure(screenShotsSubFolder, 
+					screenShotsDir, testSetup.isRemoteBrowser);
 		}		
-		Log.info("debuggug null - driver:***:" +driver);
+		
 		driver.manage().deleteAllCookies();
 		
 		loginPage = new LoginPage(driver, baseURL, testSetup);

@@ -33,24 +33,24 @@ public class ScreenShotOnFailure{
 	private String imgLink;
 	private String format = "jpg";
 
-	public ScreenShotOnFailure(WebDriver driver, String imgPath){
-		this(driver,"screenshots/", imgPath, true);
+	public ScreenShotOnFailure(String imgPath){
+		this("screenshots/", imgPath, true);
 	}
-	public ScreenShotOnFailure(WebDriver driver, String screenshotFolder, String imgPath, boolean isRemoteBrowser){
-		this.driver = driver;
+	public ScreenShotOnFailure(String screenshotFolder, String imgPath, boolean isRemoteBrowser){
 		this.imgLink = "./"+screenshotFolder;
 		this.imgPath = imgPath + "/"+screenshotFolder;
 		this.isRemoteBrowser = isRemoteBrowser;
 	}
 
-	public String takeScreenshot() {
+	public String takeScreenshot(WebDriver driver) {
+		this.driver = driver;
 		String imgName = imgPath;
 		try{
 			ExtentTest reportLogger = TestContext.INSTANCE.getExtentTest();
 			String fname = reportLogger.getTest().getName();
 			String imgFile = fname.split("\\[")[0] + "."+format;
 			imgName += imgFile;
-			if(isRemoteBrowser){
+			if(isRemoteBrowser && driver!=null){
 				captureBrowserScreenShot(imgName);
 			}else{
 				captureDesktopScreenShot(imgName);
