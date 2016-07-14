@@ -364,7 +364,29 @@ public class BasePage {
     		jsClick(checkbox);
     	}
     }
-    
+
+	protected boolean selectDropdownOption(WebElement dropdown, String option){
+		boolean selected = false;
+		int numTry = 0;
+		By optBy = By.xpath("option[text()='"+option.trim()+"']");
+		do{
+			try{
+				WebElement opt =  dropdown.findElement(optBy);
+				opt.click();
+				selected = true;
+			}catch(Exception e){
+				numTry++;
+				Log.error("Failed to select option '"+option+"'");
+			}
+		}while(!selected&&numTry<5);
+		if(!selected){
+			WebElement opt =  dropdown.findElement(optBy);
+			opt.click();
+			selected = true;
+		}
+		return selected;
+	}
+	
     public String getElementText(WebElement element) {
     	String text = "";
     	try{

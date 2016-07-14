@@ -33,9 +33,9 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	public static final String STREditPageContentText = Resources.getResource(ResourceKeys.ManageSurveyor_EditSurveyor);
 	public static final String PAGE_PAGINATIONSETTING = "100";
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']//a[@href='/Picarro/ManageSurveyor']")
 	protected WebElement btnAddNewSurveyor;
-	protected String btnAddNewSurveyorXPath = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a";
+	protected String btnAddNewSurveyorXPath = "//*[@id='page-wrapper']//a[@href='/Picarro/ManageSurveyor']";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
 	protected WebElement panelDupSurError;
@@ -179,14 +179,9 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		Log.info("Waiting for Location dropdown to be populated..");
 		this.waitForDropdownToBePopulated(this.dropDownLocation);
 		
-		List<WebElement> options = this.dropDownLocation.findElements(By.tagName("option"));
-		for (WebElement option : options) {
-			if (option.getText().trim().equalsIgnoreCase(customerName + " - " + locationName)){
-				Log.info("Select Location - '"+customerName + " - " + locationName+"'");
-				option.click();
-				break;
-			}
-		}
+		Log.info("Select Location - '"+customerName + " - " + locationName+"'");
+		selectDropdownOption(this.dropDownLocation, customerName + " - " + locationName);
+		
 		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 		
@@ -528,7 +523,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 
 	@Override
 	public void waitForPageLoad() {
-        (new WebDriverWait(driver, 2*timeout)).until(new ExpectedCondition<Boolean>() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getPageSource().contains(STRPageContentText);
             }
@@ -536,7 +531,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
     }
 
 	public void waitForNewPageLoad() {
-        (new WebDriverWait(driver, 2*timeout)).until(new ExpectedCondition<Boolean>() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.getPageSource().contains(STRNewPageContentText);
             }
@@ -544,7 +539,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
     }
 
     public void waitForEditPageLoad() {
-        (new WebDriverWait(driver, 2*timeout)).until(new ExpectedCondition<Boolean>() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
             	Log.info("Checking for content on EDIT page: " + STREditPageContentText);
                 return d.getPageSource().contains(STREditPageContentText);
