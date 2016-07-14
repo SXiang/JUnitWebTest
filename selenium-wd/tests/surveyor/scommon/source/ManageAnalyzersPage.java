@@ -491,6 +491,12 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	}
 
 	@Override
+	public void open(){
+		super.open();
+		waitForPageLoad();
+	}
+	
+	@Override
 	public void waitForPageLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
