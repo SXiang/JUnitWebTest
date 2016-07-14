@@ -33,9 +33,9 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	public static final String STREditPageContentText = Resources.getResource(ResourceKeys.ManageSurveyor_EditSurveyor);
 	public static final String PAGE_PAGINATIONSETTING = "100";
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']//a[@href='/Picarro/ManageSurveyor']")
 	protected WebElement btnAddNewSurveyor;
-	protected String btnAddNewSurveyorXPath = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a";
+	protected String btnAddNewSurveyorXPath = "//*[@id='page-wrapper']//a[@href='/Picarro/ManageSurveyor']";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
 	protected WebElement panelDupSurError;
@@ -177,16 +177,11 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		this.inputSurveyorDesc.sendKeys(surveyorDesc);
 		
 		Log.info("Waiting for Location dropdown to be populated..");
-		this.waitForDropdownToBePopulated(new Select(this.dropDownLocation));
+		this.waitForDropdownToBePopulated(this.dropDownLocation);
 		
-		List<WebElement> options = this.dropDownLocation.findElements(By.tagName("option"));
-		for (WebElement option : options) {
-			if (option.getText().trim().equalsIgnoreCase(customerName + " - " + locationName)){
-				Log.info("Select Location - '"+customerName + " - " + locationName+"'");
-				option.click();
-				break;
-			}
-		}
+		Log.info("Select Location - '"+customerName + " - " + locationName+"'");
+		selectDropdownOption(this.dropDownLocation, customerName + " - " + locationName);
+		
 		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 		
@@ -518,7 +513,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	public boolean isDuplicateSurMsgPresent(String locationName){
     	Log.method("isDuplicateSurMsgPresent", locationName);
 		String STRDuplicateSurMsg = "Surveyor name already exists for location " + locationName +", please try another name.";
-		return this.liDuplicateMsg.getText().equals(STRDuplicateSurMsg);
+		return getElementText(this.liDuplicateMsg).equals(STRDuplicateSurMsg);
 	}
 
 	public boolean isAddNewSurveyorBtnPresent() {

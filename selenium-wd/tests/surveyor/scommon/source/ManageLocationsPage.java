@@ -224,15 +224,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			Log.info("Location Longitude Field value = " + locationLongitudeText);
 			assertTrue(!locationLongitudeText.isEmpty());
 		}
-
-		List<WebElement> options = this.dropDownCustomer.findElements(By.tagName("option"));
-		for (WebElement option : options) {
-			if (customer.equalsIgnoreCase(option.getText().trim())){
-				Log.info("Select customer - '"+customer+"'");
-				option.click();
-				break;
-			}
-		}
+		
+		Log.info("Select customer - '"+customer+"'");
+		selectDropdownOption(this.dropDownCustomer, customer);
 
 		this.stdMinAmp.clear();
 		this.stdMinAmp.sendKeys("0.035");
@@ -779,7 +773,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	public boolean isDuplicateLocMsgPresent() {
 		Log.method("isDuplicateLocMsgPresent");
-		return this.liDuplicateMsg.getText().equals(STRDuplicateLocMsg);
+		return getElementText(this.liDuplicateMsg).equals(STRDuplicateLocMsg);
 	}
 
 	@Override

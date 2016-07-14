@@ -3,6 +3,9 @@ package surveyor.scommon.source;
 import surveyor.scommon.actions.BaseActions;
 import java.util.HashMap;
 import org.junit.After;
+import org.junit.Rule;
+import org.junit.rules.*;
+
 import common.source.ExceptionUtility;
 import common.source.Log;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -55,7 +58,7 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 			//deleteComplianceReport();
 			homePage.logout();
 		} catch (Exception e) {
-			Log.warn("Exception in BaseReportsPageTest.afterTestMethod(). Exception message:");
+			Log.warn("Exception in BaseReportsPageActionTest.afterTestMethod(). Exception message:");
 			Log.warn(ExceptionUtility.getStackTraceString(e));
 		}
 	}

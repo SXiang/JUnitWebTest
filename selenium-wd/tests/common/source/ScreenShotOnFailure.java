@@ -5,22 +5,13 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.rules.MethodRule;
-import org.junit.runners.model.FrameworkMethod;
-import org.junit.runners.model.Statement;
-import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.OutputType;
-import org.openqa.selenium.Proxy;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
@@ -34,7 +25,7 @@ import com.relevantcodes.extentreports.LogStatus;
  * @author sxiang
  *
  */
-public class ScreenShotOnFailure implements MethodRule {
+public class ScreenShotOnFailure{
 
 	private WebDriver driver;
 	private boolean isRemoteBrowser;
@@ -42,46 +33,39 @@ public class ScreenShotOnFailure implements MethodRule {
 	private String imgLink;
 	private String format = "jpg";
 
-	public ScreenShotOnFailure(WebDriver driver, String imgPath){
-		this(driver,"screenshots/", imgPath, true);
+	public ScreenShotOnFailure(String imgPath){
+		this("screenshots/", imgPath, true);
 	}
-	public ScreenShotOnFailure(WebDriver driver, String screenshotFolder, String imgPath, boolean isRemoteBrowser){
-		this.driver = driver;
+	public ScreenShotOnFailure(String screenshotFolder, String imgPath, boolean isRemoteBrowser){
 		this.imgLink = "./"+screenshotFolder;
 		this.imgPath = imgPath + "/"+screenshotFolder;
 		this.isRemoteBrowser = isRemoteBrowser;
 	}
-	@Override
-	public Statement apply(final Statement statement, final FrameworkMethod frameworkMethod, final Object o) {
-		return new Statement() {
-			@Override
-			public void evaluate() throws Throwable {				
-				try {
-					statement.evaluate();
-				} catch (Throwable t) {	
-					String fname = frameworkMethod.getName();
-					String imgFile = fname.split("\\[")[0] + "."+format;
-				    String imgName = imgPath + imgFile;
-					if(isRemoteBrowser){
-						captureBrowserScreenShot(imgName);
-					}else{
-						captureDesktopScreenShot(imgName);
-					}
-					logReportScreenShot(fname, imgLink+imgFile, t);		
-					throw t;
-				}
+
+	public String takeScreenshot(WebDriver driver) {
+		this.driver = driver;
+		String imgName = imgPath;
+		try{
+			ExtentTest reportLogger = TestContext.INSTANCE.getExtentTest();
+			String fname = reportLogger.getTest().getName();
+			String imgFile = fname.split("\\[")[0] + "."+format;
+			imgName += imgFile;
+			if(isRemoteBrowser && driver!=null){
+				captureBrowserScreenShot(imgName);
+			}else{
+				captureDesktopScreenShot(imgName);
 			}
-		};
+			logReportScreenShot(reportLogger, fname, imgLink+imgFile);
+		}catch(Exception e){
+			Log.warn("Failed to take screenshot: "+e);
+		}
+		return imgName;
 	}
 
 
-	public void logReportScreenShot(String fname, String imgFile, Throwable t){
-		String errMsg = t.getMessage();		
-		ExtentTest reportLogger = TestContext.INSTANCE.getExtentTest();
-		if(reportLogger!=null){
-			String image = reportLogger.addScreenCapture(imgFile);
-			reportLogger.log(LogStatus.FAIL, errMsg, image);
-		}
+	public void logReportScreenShot(ExtentTest reportLogger, String fname, String imgFile){	
+		String image = reportLogger.addScreenCapture(imgFile);
+			reportLogger.log(LogStatus.FAIL, "Screenshot", image);
 	}
 	
 	public void captureBrowserScreenShot(String fileName){

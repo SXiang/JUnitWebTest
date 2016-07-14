@@ -40,7 +40,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 
 	protected String pagination = "100";
 
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']//a[@href='/Picarro/ManageAnalyzer']")
 	private WebElement btnAddNewAnalyzer;
 
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Administrator')]")
