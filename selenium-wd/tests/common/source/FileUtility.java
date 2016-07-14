@@ -3,7 +3,6 @@ package common.source;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,16 +14,22 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
-
 import org.apache.commons.io.FileUtils;
 import org.testng.Assert;
 
 public class FileUtility {
+	/**
+	 * Checks whether a file exists at the specified path.
+	 * @param filePath - Path of the file.
+	 * @return - Whether file exists or not.
+	 */
+	public static boolean fileExists(String filePath) {
+		return Files.exists(Paths.get(filePath));
+	}
+	
 	/**
 	 * Reads content of the specified file into a String.
 	 * @param filePath - Path of the file.
@@ -94,6 +99,21 @@ public class FileUtility {
 		}	
 	}
 
+	/*
+	 * Writes specified lines from the string array to file with a newline after each line.
+	 */
+	public static void writeToFile(String filePath, String[] linesToWrite) throws IOException {
+		BufferedWriter buffWriter = new BufferedWriter(new FileWriter(filePath));
+		try {
+			for (String lineText : linesToWrite) {
+				buffWriter.write(lineText);
+				buffWriter.newLine();
+			}
+		} finally {
+			buffWriter.close();
+		}
+	}
+	
 	/*
 	 * Searches the specified file for 'searchForText' and replaces it with 'replaceWithText'
 	 * Creates a copy with the updated content and replaces the source file with the copy file.
@@ -413,6 +433,7 @@ public class FileUtility {
 	 */
 	public static void deleteFile(Path file) {
 		try {
+			Log.info(String.format("Deleting file - '%s'", file.toString()));
 		    Files.delete(file);
 		} catch (NoSuchFileException x) {
 		    System.err.format("%s: no such" + " file or directory%n", file);

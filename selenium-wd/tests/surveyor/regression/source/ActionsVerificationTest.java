@@ -5,6 +5,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import common.source.Log;
+import surveyor.dataaccess.source.Customer;
+import surveyor.dbseed.source.DBSeedExecutor;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.actions.DriverViewPageActions;
@@ -329,4 +331,25 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass, 
 				DB3_ANALYZER_ROW_ID, SURVEY_ROW_ID, SURVEY_RUNTIME_IN_SECONDS);
 	}
-}
+
+	/**
+	 * Unit test for DBSeedExecutor.executeGisSeed() with new customer user.
+	 * @throws Exception 
+	 */
+	@Test
+	public void Test_executeGisSeedForNewCustomer() throws Exception {
+		Log.info("\nRunning Test_executeGisSeedForNewCustomer ...");
+
+		final int LOGIN_USER_ROW_ID = 6;	 	/* LoginRowID. AutomationAdmin */
+		final int newCustomerRowID = 7;
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, LOGIN_USER_ROW_ID);   
+
+		// Create new customer/location/user.
+		manageCustomerPageAction.open(EMPTY, NOTSET);
+		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
+
+		Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.name);
+		DBSeedExecutor.executeGisSeed(customer.getId());
+	}}
