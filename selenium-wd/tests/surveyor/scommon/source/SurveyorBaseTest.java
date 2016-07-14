@@ -73,7 +73,7 @@ public class SurveyorBaseTest {
 
 		@Override
 		protected void failed(Throwable e, Description description) {
-			SurveyorBaseTest.reportTestConsoleMessage();			
+			SurveyorBaseTest.reportTestLogMessage();			
 			screenCapture.takeScreenshot(driver);
 			Log.error("Exception: "+e+" Description: "+description);
 			SurveyorBaseTest.reportTestFailed(e);
@@ -116,10 +116,10 @@ public class SurveyorBaseTest {
 		report.flush();
 	}
 
-	public static void reportTestConsoleMessage() {
+	public static void reportTestLogMessage() {
 		ArrayList<String> testMessage = TestContext.INSTANCE.getTestMessage();
 		for(String message:testMessage){
-			getExtentTest().log(LogStatus.WARNING, "Extra messages before the failure", "Console Message: " + message);
+			getExtentTest().log(LogStatus.WARNING, "Extra messages before the failure", "Log Message: " + message);
 		}
 	}
 	

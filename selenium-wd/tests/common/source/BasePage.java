@@ -392,7 +392,7 @@ public class BasePage {
     	try{
     		text = element.getText();
     	}catch(Exception e){
-    		Log.error("Faile to get text of element '"+element+"'");
+    		Log.error("Failed to get text of element '"+element+"'");
     	}
     	return text;
     }
