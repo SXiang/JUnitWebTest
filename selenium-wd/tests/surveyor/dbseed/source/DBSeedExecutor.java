@@ -7,14 +7,132 @@ import java.util.List;
 
 import com.microsoft.sqlserver.jdbc.SQLServerBulkCopy;
 import common.source.ExceptionUtility;
+import common.source.FileUtility;
 import common.source.Log;
 import surveyor.dataaccess.source.ConnectionFactory;
 
 public class DBSeedExecutor {
 
 	private static final boolean ENABLE_VERBOSE_LOGGING = false;
+
+	/* Method for pushing Survey seed data */
+
+	public static void executeSurveyDataSeed() throws Exception {
+		Log.method("executeSurveyDataSeed");
+		Connection connection = ConnectionFactory.createConnection();
+
+		SurveyDbSeedBuilder surveyDbSeedBuilder = null;
+		SurveyConditionDbSeedBuilder surveyConditionDbSeedBuilder = null;
+		SurveyResultDbSeedBuilder surveyResultDbSeedBuilder = null;
+		MeasurementDbSeedBuilder measurementDbSeedBuilder = null;
+		GPSRawDbSeedBuilder gpsRawDbSeedBuilder = null;
+		AnemometerRawDbSeedBuilder anemometerRawDbSeedBuilder = null;
+		CaptureEventDbSeedBuilder captureEventDbSeedBuilder = null;
+		FieldOfViewDbSeedBuilder fieldOfViewDbSeedBuilder = null;
+		PeakDbSeedBuilder peakDbSeedBuilder = null;
+		SegmentDbSeedBuilder segmentDbSeedBuilder = null;
+		NoteDbSeedBuilder noteDbSeedBuilder = null;
+		
+		String[] surveyTags = {"stnd-pic","rr-pic","man-pic-1","man-pic-2","op-pic","EthaneStnd","EthaneManual",
+				"stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3","rr-sqacudr-1","rr-sqacudr-2","op-sqacudr"};
+
+		try {
+			for (String surveyTag : surveyTags) {
+				try
+		        {
+					surveyDbSeedBuilder = new SurveyDbSeedBuilder(String.format("Survey-%s.csv", surveyTag));
+					surveyConditionDbSeedBuilder = new SurveyConditionDbSeedBuilder(String.format("SurveyCondition-%s.csv", surveyTag));
+					surveyResultDbSeedBuilder = new SurveyResultDbSeedBuilder(String.format("SurveyResult-%s.csv", surveyTag));
+					measurementDbSeedBuilder = new MeasurementDbSeedBuilder(String.format("Measurement-%s.csv", surveyTag));
+					gpsRawDbSeedBuilder = new GPSRawDbSeedBuilder(String.format("GPSRaw-%s.csv", surveyTag));
+					anemometerRawDbSeedBuilder = new AnemometerRawDbSeedBuilder(String.format("AnemometerRaw-%s.csv", surveyTag));
+					captureEventDbSeedBuilder = new CaptureEventDbSeedBuilder(String.format("CaptureEvent-%s.csv", surveyTag));
+					fieldOfViewDbSeedBuilder = new FieldOfViewDbSeedBuilder(String.format("FieldOfView-%s.csv", surveyTag));
+					peakDbSeedBuilder = new PeakDbSeedBuilder(String.format("Peak-%s.csv", surveyTag));
+					segmentDbSeedBuilder = new SegmentDbSeedBuilder(String.format("Segment-%s.csv", surveyTag));
+					noteDbSeedBuilder = new NoteDbSeedBuilder(String.format("Note-%s.csv", surveyTag));
+					
+					if (FileUtility.fileExists(surveyDbSeedBuilder.getSeedFilePath())) {
+						executeSeed(connection, surveyDbSeedBuilder.build());
+					}
+					if (FileUtility.fileExists(surveyConditionDbSeedBuilder.getSeedFilePath())) {
+						executeSeed(connection, surveyConditionDbSeedBuilder.build());
+					}
+					if (FileUtility.fileExists(surveyResultDbSeedBuilder.getSeedFilePath())) {
+						executeSeed(connection, surveyResultDbSeedBuilder.build());
+					}
+					if (FileUtility.fileExists(measurementDbSeedBuilder.getSeedFilePath())) {
+						executeSeed(connection, measurementDbSeedBuilder.build());
+					}
+					if (FileUtility.fileExists(gpsRawDbSeedBuilder.getSeedFilePath())) {
+						executeSeed(connection, gpsRawDbSeedBuilder.build());
+					}
+					if (FileUtility.fileExists(anemometerRawDbSeedBuilder.getSeedFilePath())) {
+						executeSeed(connection, anemometerRawDbSeedBuilder.build());
+					}
+					if (FileUtility.fileExists(captureEventDbSeedBuilder.getSeedFilePath())) {
+						executeSeed(connection, captureEventDbSeedBuilder.build());
+					}
+					if (FileUtility.fileExists(fieldOfViewDbSeedBuilder.getSeedFilePath())) {
+						executeSeed(connection, fieldOfViewDbSeedBuilder.build());
+					}
+					if (FileUtility.fileExists(peakDbSeedBuilder.getSeedFilePath())) {
+						executeSeed(connection, peakDbSeedBuilder.build());
+					}
+					if (FileUtility.fileExists(segmentDbSeedBuilder.getSeedFilePath())) {
+						executeSeed(connection, segmentDbSeedBuilder.build());
+					}
+					if (FileUtility.fileExists(noteDbSeedBuilder.getSeedFilePath())) {
+						executeSeed(connection, noteDbSeedBuilder.build());
+					}
+					
+		        } catch (Exception ex) {
+		        	Log.error(String.format("EXCEPTION in executeSurveyDataSeed(), tag='%s'. ERROR: %s", surveyTag, ExceptionUtility.getStackTraceString(ex)));
+		        } finally {
+		            // cleanup seed builders.
+		            if (surveyDbSeedBuilder!=null) { 
+		            	surveyDbSeedBuilder.close(); 
+	            	}
+		            if (surveyConditionDbSeedBuilder!=null) { 
+		            	surveyConditionDbSeedBuilder.close(); 
+	            	}
+		            if (surveyResultDbSeedBuilder!=null) { 
+		            	surveyResultDbSeedBuilder.close(); 
+	            	}
+		            if (measurementDbSeedBuilder!=null) { 
+		            	measurementDbSeedBuilder.close(); 
+	            	}
+		            if (gpsRawDbSeedBuilder!=null) { 
+		            	gpsRawDbSeedBuilder.close(); 
+	            	}
+		            if (anemometerRawDbSeedBuilder!=null) { 
+		            	anemometerRawDbSeedBuilder.close(); 
+	            	}
+		            if (captureEventDbSeedBuilder!=null) { 
+		            	captureEventDbSeedBuilder.close(); 
+	            	}
+		            if (fieldOfViewDbSeedBuilder!=null) { 
+		            	fieldOfViewDbSeedBuilder.close(); 
+	            	}
+		            if (peakDbSeedBuilder!=null) { 
+	            		peakDbSeedBuilder.close(); 
+            		}
+		            if (segmentDbSeedBuilder!=null) { 
+		            	segmentDbSeedBuilder.close(); 
+	            	}
+		            if (noteDbSeedBuilder!=null) { 
+		            	noteDbSeedBuilder.close(); 
+	            	}
+		        }
+			}
+		} catch (Exception ex) {
+        	Log.error(String.format("EXCEPTION in executeSurveyDataSeed() - %s", ExceptionUtility.getStackTraceString(ex)));
+		} finally {
+            connection.close();
+		}
+	}
 	
-	/* Seed data for pushing GIS data (CustomerBoundaryType, CustomerMaterialType, Boundary and Asset) */
+	/* Methods for pushing GIS seed data (CustomerBoundaryType, CustomerMaterialType, Boundary and Asset) */
 	
 	public static void executeGisSeed() throws Exception {
 		Log.method("executeGisSeed");
@@ -29,6 +147,7 @@ public class DBSeedExecutor {
 		CustomerMaterialTypeDbSeedBuilder customerMaterialTypeDbSeedBuilder = null;
 		BoundaryDbSeedBuilder boundaryDbSeedBuilder = null;
 		AssetDbSeedBuilder assetDbSeedBuilder = null;
+		
 		try
         {
         	customerBoundaryTypeDbSeedBuilder = new CustomerBoundaryTypeDbSeedBuilder();

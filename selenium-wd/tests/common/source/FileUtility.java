@@ -22,6 +22,15 @@ import org.testng.Assert;
 
 public class FileUtility {
 	/**
+	 * Checks whether a file exists at the specified path.
+	 * @param filePath - Path of the file.
+	 * @return - Whether file exists or not.
+	 */
+	public static boolean fileExists(String filePath) {
+		return Files.exists(Paths.get(filePath));
+	}
+	
+	/**
 	 * Reads content of the specified file into a String.
 	 * @param filePath - Path of the file.
 	 * @return - String containing file content.

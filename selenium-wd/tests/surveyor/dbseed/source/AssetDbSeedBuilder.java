@@ -17,12 +17,13 @@ import common.source.TestSetup;
 public class AssetDbSeedBuilder extends BaseDbSeedBuilder {
 	public static final String TABLE_NAME = "[dbo].[Asset]";
 	private static final String PK_COL_NAME = "Id";
+	private static final String SEED_DATA_FOLDER = "GisSeedData";
 	private static final String SEED_FILE_NAME = "AssetSeed.csv";
 	private static final String INSERT_TEMPLATE = "INSERT [dbo].[Asset] ([Id], [ExternalId], [CustomerId], [AssetTypeId], [CustomerMaterialTypeId], [Description], [Shape], [Date], [State]) VALUES "
 			+ "(N'%s', N'%s', N'%s', N'%s', N'%s', NULL, %s, CAST(N'%s' AS DateTime), NULL)";
 
 	public AssetDbSeedBuilder() {
-		SeedDataFilePath = TestContext.INSTANCE.getExecutionPath() + TestSetup.SQL_DATA_FOLDER + File.separator + SEED_FILE_NAME;
+		SeedDataFilePath = TestContext.INSTANCE.getExecutionPath() + TestSetup.SQL_DATA_FOLDER + File.separator + SEED_DATA_FOLDER + File.separator + SEED_FILE_NAME;
 	}
 	
 	public DbSeed build(String customerID) throws FileNotFoundException, IOException {

@@ -1,20 +1,22 @@
 package surveyor.dbseed.source;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import com.microsoft.sqlserver.jdbc.SQLServerBulkCSVFileRecord;
 import common.source.ExceptionUtility;
 import common.source.Log;
-import common.source.TestContext;
-import common.source.TestSetup;
 
 public class SurveyDbSeedBuilder extends BaseDbSeedBuilder {
 	private static final String TABLE_NAME = "[dbo].[Survey]";
+	private static final String SEED_DATA_FOLDER = SURVEY_SEED_DATA_FOLDER;
 	private static final String SEED_FILE_NAME = "SurveySeed.csv";
 
 	public SurveyDbSeedBuilder() {
-		SeedDataFilePath = TestContext.INSTANCE.getExecutionPath() + TestSetup.SQL_DATA_FOLDER + File.separator + SEED_FILE_NAME;
+		setSeedFilePath(SEED_DATA_FOLDER, SEED_FILE_NAME);
+	}
+
+	public SurveyDbSeedBuilder(String seedFileName) {
+		setSeedFilePath(SEED_DATA_FOLDER, seedFileName);
 	}
 
 	public DbSeed build() throws FileNotFoundException, IOException {

@@ -17,10 +17,20 @@ import common.source.TestSetup;
 
 public class BaseDbSeedBuilder {
 	
+	public static final String SURVEY_SEED_DATA_FOLDER = "SurveySeedData";
+
 	protected String SeedDataFilePath;
 	private DbSeedBuilderCache dbSeedCache;
 	private DbSeed dbSeedData = null;
 
+	protected void setSeedFilePath(String seedDataFolder, String seedFileName) {
+		SeedDataFilePath = TestContext.INSTANCE.getExecutionPath() + TestSetup.SQL_DATA_FOLDER + File.separator + seedDataFolder + File.separator + seedFileName;
+	}
+
+	public String getSeedFilePath() {
+		return SeedDataFilePath;
+	}
+	
 	public DbSeed getDbSeedData() {
 		return dbSeedData;
 	}

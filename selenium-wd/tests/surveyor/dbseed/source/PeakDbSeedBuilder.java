@@ -1,6 +1,5 @@
 package surveyor.dbseed.source;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
@@ -9,18 +8,21 @@ import java.util.List;
 import common.source.CSVUtility;
 import common.source.ExceptionUtility;
 import common.source.Log;
-import common.source.TestContext;
-import common.source.TestSetup;
 
 public class PeakDbSeedBuilder extends BaseDbSeedBuilder {
 	private static final String TABLE_NAME = "[dbo].[Peak]";
+	private static final String SEED_DATA_FOLDER = SURVEY_SEED_DATA_FOLDER;
 	private static final String SEED_FILE_NAME = "PeakSeed.csv";
 	private static final String INSERT_TEMPLATE = "INSERT [dbo].[Peak] ([AnalyzerId], [EpochTime], [SurveyModeTypeId], [Amplitude], [CH4], [Position], [Lisa], [LisaOpeningAngle], [LisaBearing], [CarBearing], [Major], [Minor], [CarSpeedNorth], [CarSpeedEast], [WindDirectionStdDev], [WindSpeedNorth], [WindSpeedEast], [Sigma], [Distance], [GpsLatitude], [GpsLongitude], [PassedAutoThreshold], [SurveyId], [EthaneRatio], [EthaneRatioSdevRaw], [EthaneRatioSdev], [EthaneConcentrationSdev], [EthyleneRatio], [EthyleneRatioSdevRaw], [EthyleneRatioSdev], [EthyleneConcentrationSdev], [PipEnergy], [MethanePeaktoPeak], [Disposition], [ClassificationConfidence]) VALUES (N'%s', %s, N'%s', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, N'%s', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)";
 
 	public PeakDbSeedBuilder() {
-		SeedDataFilePath = TestContext.INSTANCE.getExecutionPath() + TestSetup.SQL_DATA_FOLDER + File.separator + SEED_FILE_NAME;
+		setSeedFilePath(SEED_DATA_FOLDER, SEED_FILE_NAME);
 	}
-	
+
+	public PeakDbSeedBuilder(String seedFileName) {
+		setSeedFilePath(SEED_DATA_FOLDER, seedFileName);
+	}
+
 	public DbSeed build() throws FileNotFoundException, IOException {
 		String workingCSVFile = SeedDataFilePath;
 		DbSeed seedData = new DbSeed();

@@ -1,6 +1,5 @@
 package surveyor.dbseed.source;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
@@ -9,18 +8,21 @@ import java.util.List;
 import common.source.CSVUtility;
 import common.source.ExceptionUtility;
 import common.source.Log;
-import common.source.TestContext;
-import common.source.TestSetup;
 
 public class FieldOfViewDbSeedBuilder extends BaseDbSeedBuilder {
 	private static final String TABLE_NAME = "[dbo].[FieldOfView]";
+	private static final String SEED_DATA_FOLDER = SURVEY_SEED_DATA_FOLDER;
 	private static final String SEED_FILE_NAME = "FieldOfViewSeed.csv";
 	private static final String INSERT_TEMPLATE = "INSERT [dbo].[FieldOfView] ([AnalyzerId], [EpochTime], [SurveyModeTypeId], [Shape], [SurveyId]) VALUES (N'%s', %s, N'%s', %s, N'%s')";
 
 	public FieldOfViewDbSeedBuilder() {
-		SeedDataFilePath = TestContext.INSTANCE.getExecutionPath() + TestSetup.SQL_DATA_FOLDER + File.separator + SEED_FILE_NAME;
+		setSeedFilePath(SEED_DATA_FOLDER, SEED_FILE_NAME);
 	}
-	
+
+	public FieldOfViewDbSeedBuilder(String seedFileName) {
+		setSeedFilePath(SEED_DATA_FOLDER, seedFileName);
+	}
+
 	public DbSeed build() throws FileNotFoundException, IOException {
 		String workingCSVFile = SeedDataFilePath;
 		DbSeed seedData = new DbSeed();

@@ -14,10 +14,11 @@ import common.source.TestSetup;
 public class CustomerBoundaryTypeDbSeedBuilder extends BaseDbSeedBuilder {
 	public static final String TABLE_NAME = "[dbo].[CustomerBoundaryType]";
 	private static final String PK_COL_NAME = "Id";
+	private static final String SEED_DATA_FOLDER = "GisSeedData";
 	private static final String SEED_FILE_NAME = "CustomerBoundaryTypeSeed.csv";
 
 	public CustomerBoundaryTypeDbSeedBuilder() {
-		SeedDataFilePath = TestContext.INSTANCE.getExecutionPath() + TestSetup.SQL_DATA_FOLDER + File.separator + SEED_FILE_NAME;
+		SeedDataFilePath = TestContext.INSTANCE.getExecutionPath() + TestSetup.SQL_DATA_FOLDER + File.separator + SEED_DATA_FOLDER + File.separator + SEED_FILE_NAME;
 	}
 	
 	public DbSeed build(String customerID) throws FileNotFoundException, IOException {

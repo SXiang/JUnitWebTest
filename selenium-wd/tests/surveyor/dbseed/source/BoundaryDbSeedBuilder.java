@@ -17,12 +17,13 @@ import common.source.TestSetup;
 public class BoundaryDbSeedBuilder extends BaseDbSeedBuilder {
 	public static final String TABLE_NAME = "[dbo].[Boundary]";
 	private static final String PK_COL_NAME = "Id";
+	private static final String SEED_DATA_FOLDER = "GisSeedData";
 	private static final String SEED_FILE_NAME = "BoundarySeed.csv";
 	private static final String INSERT_TEMPLATE = "INSERT [dbo].[Boundary] ([Id], [ExternalId], [CustomerId], [CustomerBoundaryTypeID], [Description], [Level], [Shape], [State]) VALUES "
 			+ "(N'%s', N'%s', N'%s', N'%s', N'%s', %s, %s, NULL)";
 
 	public BoundaryDbSeedBuilder() {
-		SeedDataFilePath = TestContext.INSTANCE.getExecutionPath() + TestSetup.SQL_DATA_FOLDER + File.separator + SEED_FILE_NAME;
+		SeedDataFilePath = TestContext.INSTANCE.getExecutionPath() + TestSetup.SQL_DATA_FOLDER + File.separator + SEED_DATA_FOLDER + File.separator + SEED_FILE_NAME;
 	}
 	
 	public DbSeed build(String customerID) throws FileNotFoundException, IOException {
