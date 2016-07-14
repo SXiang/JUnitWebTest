@@ -411,7 +411,7 @@ public class SurveyorBasePage extends BasePage {
 		List<String> strList = RegexUtility.split(numTextString, RegexUtility.SPACE_SPLIT_REGEX_PATTERN);
 		Integer records = 0;
 		if (strList != null && strList.size() > 3) {
-			records = Integer.parseInt(strList.get(3));
+			records = Integer.parseInt(strList.get(3).replace(",", ""));
 		}
 		return records;
 	}
