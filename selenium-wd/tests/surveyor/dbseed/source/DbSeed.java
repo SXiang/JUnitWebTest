@@ -61,5 +61,5 @@ public class DbSeed implements IDbSeed {
 	@Override
 	public void addInsertStatement(String value) {
 		this.insertStatements.add(value);
-	}	
+	}
 }

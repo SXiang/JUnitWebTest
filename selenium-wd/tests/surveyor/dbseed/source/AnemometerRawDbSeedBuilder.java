@@ -7,7 +7,7 @@ import common.source.ExceptionUtility;
 import common.source.Log;
 
 public class AnemometerRawDbSeedBuilder extends BaseDbSeedBuilder {
-	private static final String TABLE_NAME = "[dbo].[AnemometerRaw]";
+	public static final String TABLE_NAME = "[dbo].[AnemometerRaw]";
 	private static final String SEED_DATA_FOLDER = SURVEY_SEED_DATA_FOLDER;
 	private static final String SEED_FILE_NAME = "AnemometerRawSeed.csv";
 

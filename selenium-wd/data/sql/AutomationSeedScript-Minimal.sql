@@ -83,7 +83,7 @@ IF @@ROWCOUNT=0
 SELECT @customerId=[Id] FROM [dbo].[Customer] WHERE Name='PG&E'
 UPDATE [dbo].[Location] SET [CustomerId]=@customerId, [Description]=N'pge_SC',[Latitude]='37.4020925705503',[Longitude]='-121.984820397399' WHERE [Id]='EE13ACD0-C158-ECAC-7F48-39D18113D501' 
 IF @@ROWCOUNT=0
-	INSERT [dbo].[Location] ([Id], [CustomerId], [Description],[Latitude],[Longitude]) VALUES (N'EE13ACD0-C158-ECAC-7F48-39D18113D501', @customerId, N'sqaTestloc','37.4020925705503','-121.984820397399')
+	INSERT [dbo].[Location] ([Id], [CustomerId], [Description],[Latitude],[Longitude]) VALUES (N'EE13ACD0-C158-ECAC-7F48-39D18113D501', @customerId, N'pge_SC','37.4020925705503','-121.984820397399')
 
 --SurveyModeTypeConfiguration:
 
@@ -186,55 +186,55 @@ END
 -- FDDS2037 - White Dodge
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'FDDS2037' AND [SharedKey]=N'fdds2037')
 BEGIN 
-UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'2AA6AC90-B839-4787-F3B5-39D4B4DCEE95', [SerialNumber]=N'FDDS2037', [SharedKey]=N'fdds2037' WHERE [Id]='00000015-DB64-FDE7-7E67-39C8AC533D49'
+UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'2AA6AC90-B839-4787-F3B5-39D4B4DCEE95', [SerialNumber]=N'FDDS2037', [SharedKey]=N'fdds2037' WHERE [Id]='00000015-DB64-FDE7-7E67-39C8AC533D50'
 IF @@ROWCOUNT=0
-	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey], [AnalyzerTypeId]) VALUES (N'00000015-DB64-FDE7-7E67-39C8AC533D49', N'2AA6AC90-B839-4787-F3B5-39D4B4DCEE95', N'FDDS2037', N'fdds2037', '68DACAE4-1806-B975-AF6F-39D5BB733262')
+	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'00000015-DB64-FDE7-7E67-39C8AC533D50', N'2AA6AC90-B839-4787-F3B5-39D4B4DCEE95', N'FDDS2037', N'fdds2037')
 END
 -- FDDS2038 - Software Car
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'FDDS2038' AND [SharedKey]=N'fdds2038')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'DEBACFF7-E103-C14C-9DF8-39CD7B5F2A0A', [SerialNumber]=N'FDDS2038', [SharedKey]=N'fdds2038' WHERE [Id]='34A34021-8814-8A01-9183-39D4B4DE03BE'
 IF @@ROWCOUNT=0
-	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey], [AnalyzerTypeId]) VALUES (N'34A34021-8814-8A01-9183-39D4B4DE03BE', N'DEBACFF7-E103-C14C-9DF8-39CD7B5F2A0A', N'FDDS2038', N'fdds2038', '68DACAE4-1806-B975-AF6F-39D5BB733262')
+	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'34A34021-8814-8A01-9183-39D4B4DE03BE', N'DEBACFF7-E103-C14C-9DF8-39CD7B5F2A0A', N'FDDS2038', N'fdds2038')
 END
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'FDDS2037-2' AND [SharedKey]=N'fdds2037-2')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'00000014-fb61-2ef6-5dd1-39c8ac533d42', [SerialNumber]=N'FDDS2037-2', [SharedKey]=N'fdds2037-2' WHERE [Id]='00000015-db64-fde7-7e67-39c8ac533d52'
 IF @@ROWCOUNT=0
-	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey], [AnalyzerTypeId]) VALUES (N'00000015-db64-fde7-7e67-39c8ac533d52', N'00000014-fb61-2ef6-5dd1-39c8ac533d42', N'FDDS2037-2', N'fdds2037-2', '68DACAE4-1806-B975-AF6F-39D5BB733262')
+	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'00000015-db64-fde7-7e67-39c8ac533d52', N'00000014-fb61-2ef6-5dd1-39c8ac533d42', N'FDDS2037-2', N'fdds2037-2')
 END
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'FEDS2015' AND [SharedKey]=N'feds2015')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'C24E9253-F195-9AEC-DE1E-39D0FBB5D8A1', [SerialNumber]=N'FEDS2015', [SharedKey]=N'feds2015' WHERE [Id]='00000015-DB64-FDE7-7E67-39C8AC533D49'
 IF @@ROWCOUNT=0
-	INSERT [dbo].[Analyzer] ([Id],[SurveyorUnitId],[SerialNumber],[SharedKey], [AnalyzerTypeId]) VALUES ('00000015-DB64-FDE7-7E67-39C8AC533D49','C24E9253-F195-9AEC-DE1E-39D0FBB5D8A1','FEDS2015','feds2015', '68DACAE4-1806-B975-AF6F-39D5BB733262')
+	INSERT [dbo].[Analyzer] ([Id],[SurveyorUnitId],[SerialNumber],[SharedKey]) VALUES ('00000015-DB64-FDE7-7E67-39C8AC533D49','C24E9253-F195-9AEC-DE1E-39D0FBB5D8A1','FEDS2015','feds2015')
 END
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'FDDS2037-1' AND [SharedKey]=N'fdds2037-1')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'00000014-fb61-2ef6-5dd1-39c8ac533d41', [SerialNumber]=N'FDDS2037-1', [SharedKey]=N'fdds2037-1' WHERE [Id]='00000015-db64-fde7-7e67-39c8ac533d51'
 IF @@ROWCOUNT=0
-	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey], [AnalyzerTypeId]) VALUES (N'00000015-db64-fde7-7e67-39c8ac533d51', N'00000014-fb61-2ef6-5dd1-39c8ac533d41', N'FDDS2037-1', N'fdds2037-1', '68DACAE4-1806-B975-AF6F-39D5BB733262')
+	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'00000015-db64-fde7-7e67-39c8ac533d51', N'00000014-fb61-2ef6-5dd1-39c8ac533d41', N'FDDS2037-1', N'fdds2037-1')
 END
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SimAuto-Analyzer1' AND [SharedKey]=N'SimAuto-AnalyzerKey1')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'FB4F3579-843A-113E-001C-39D4011393C9', [SerialNumber]=N'SimAuto-Analyzer1', [SharedKey]=N'SimAuto-AnalyzerKey1' WHERE [Id]='58839947-9569-952D-16D6-39D4011442FA'
 IF @@ROWCOUNT=0
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]='SimAuto-Analyzer1' AND [SharedKey]='SimAuto-AnalyzerKey1')
-	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey], [AnalyzerTypeId]) VALUES (N'58839947-9569-952D-16D6-39D4011442FA', N'FB4F3579-843A-113E-001C-39D4011393C9', N'SimAuto-Analyzer1', N'SimAuto-AnalyzerKey1', '68DACAE4-1806-B975-AF6F-39D5BB733262')
+	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'58839947-9569-952D-16D6-39D4011442FA', N'FB4F3579-843A-113E-001C-39D4011393C9', N'SimAuto-Analyzer1', N'SimAuto-AnalyzerKey1')
 END
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SimAuto-Analyzer2' AND [SharedKey]=N'SimAuto-AnalyzerKey2')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'FB5F3579-843A-113E-001C-39D4011393C90', [SerialNumber]=N'SimAuto-Analyzer2', [SharedKey]=N'SimAuto-AnalyzerKey2' WHERE [Id]='59839947-9569-952D-16D6-39D4011442FA'
 IF @@ROWCOUNT=0
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]='SimAuto-Analyzer2' AND [SharedKey]='SimAuto-AnalyzerKey2')
-	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey], [AnalyzerTypeId]) VALUES (N'59839947-9569-952D-16D6-39D4011442FA', N'FB5F3579-843A-113E-001C-39D4011393C9', N'SimAuto-Analyzer2', N'SimAuto-AnalyzerKey2', '68DACAE4-1806-B975-AF6F-39D5BB733262')
+	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'59839947-9569-952D-16D6-39D4011442FA', N'FB5F3579-843A-113E-001C-39D4011393C9', N'SimAuto-Analyzer2', N'SimAuto-AnalyzerKey2')
 END
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SimAuto-Analyzer3' AND [SharedKey]=N'SimAuto-AnalyzerKey3')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'FB6F3579-843A-113E-001C-39D4011393C90', [SerialNumber]=N'SimAuto-Analyzer3', [SharedKey]=N'SimAuto-AnalyzerKey3' WHERE [Id]='5a839947-9569-952D-16D6-39D4011442FA'
 IF @@ROWCOUNT=0
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]='SimAuto-Analyzer3' AND [SharedKey]='SimAuto-AnalyzerKey3')
-	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey], [AnalyzerTypeId]) VALUES (N'5a839947-9569-952D-16D6-39D4011442FA', N'FB6F3579-843A-113E-001C-39D4011393C9', N'SimAuto-Analyzer3', N'SimAuto-AnalyzerKey3', '68DACAE4-1806-B975-AF6F-39D5BB733262')
+	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'5a839947-9569-952D-16D6-39D4011442FA', N'FB6F3579-843A-113E-001C-39D4011393C9', N'SimAuto-Analyzer3', N'SimAuto-AnalyzerKey3')
 END
 	
 --ReferenceGasBottle: (UPDATE if EXISTS, else INSERT)

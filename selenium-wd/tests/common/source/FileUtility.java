@@ -3,9 +3,11 @@ package common.source;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.LineNumberReader;
 import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -305,6 +307,22 @@ public class FileUtility {
 		}
 		return true;
 	}
+	
+	public static Integer getLineCountInFile(Path filePath) throws IOException {
+		Integer totalNumberOfLines = 0;
+		LineNumberReader lineReader = null;
+		try {
+			lineReader = new LineNumberReader(new FileReader(filePath.toFile()));
+		    lineReader.skip(Long.MAX_VALUE);
+		    totalNumberOfLines = lineReader.getLineNumber() + 1;
+		} finally {
+			if (lineReader != null) {
+				lineReader.close();
+			}
+		}
+		return totalNumberOfLines;
+	}
+	
 	/**
 	 * Returns list of files matching the specified filter from the specified directory.
 	 * @param directory - Directory to look for files.

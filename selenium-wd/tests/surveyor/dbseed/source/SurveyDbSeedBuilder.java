@@ -7,7 +7,7 @@ import common.source.ExceptionUtility;
 import common.source.Log;
 
 public class SurveyDbSeedBuilder extends BaseDbSeedBuilder {
-	private static final String TABLE_NAME = "[dbo].[Survey]";
+	public static final String TABLE_NAME = "[dbo].[Survey]";
 	private static final String SEED_DATA_FOLDER = SURVEY_SEED_DATA_FOLDER;
 	private static final String SEED_FILE_NAME = "SurveySeed.csv";
 
