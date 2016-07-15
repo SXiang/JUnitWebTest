@@ -12,7 +12,6 @@ public class SqlCmdUtility {
 
 	public static void executeSQLFile(String dbIPAddress, String dbPort, String databaseName, String dbUser, String dbPass, 
 			String sqlFileFullPath, String outLogFileFullPath) {
-		// InvokeSqlCmd.cmd 20.20.130.210 1433 SurveyorSQAAuto awssa 3Vf763pSg2 "C:\temp\sqlcmd\sampleQuery.sql" "C:\temp\sqlcmd\out2.txt"
 		try {
 			String invokeCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
 			String invokeCmdFullPath = invokeCmdFolder + File.separator + INVOKE_SQL_CMD;
