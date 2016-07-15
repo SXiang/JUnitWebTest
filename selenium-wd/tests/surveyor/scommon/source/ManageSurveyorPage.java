@@ -531,7 +531,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	public void waitForPageLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return d.getTitle().startsWith(STRPageContentText);
+				return isPageTitleMatch(d.getTitle(),STRPageContentText);
 			}
 		});
 	}
@@ -539,7 +539,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	public void waitForNewPageLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return d.getTitle().startsWith(STRNewPageContentText);
+				return isPageTitleMatch(d.getTitle(),STRNewPageContentText);
 			}
 		});
 	}
@@ -547,7 +547,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	public void waitForEditPageLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return d.getTitle().startsWith(STREditPageContentText);
+				return isPageTitleMatch(d.getTitle(),STREditPageContentText);
 			}
 		});
 	}

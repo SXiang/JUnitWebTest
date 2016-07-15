@@ -396,4 +396,17 @@ public class BasePage {
     	}
     	return text;
     }
+    
+    public boolean isPageTitleMatch(String title, String keywords){
+    	if(title.contains(keywords)){
+    		return true;
+    	}
+    	String[] words = keywords.split(" ");
+    	for(String word:words){
+    		if(!title.contains(word.trim())){
+    			return false;
+    		}
+    	}
+    	return true;
+    }
 }

@@ -148,8 +148,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		manageAnalyzersPage.open();
 		manageAnalyzersPage.addNewAnalyzer(analyzerName, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
 		
-		if (manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
-			manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationName, surveyorName, analyzerName, 
+		manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName);
+		manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationName, surveyorName, analyzerName, 
 					customerName + " - " + locationName + " - " + surveyorNameNew );
 		
 		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorNameNew, analyzerName));		
@@ -293,8 +293,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerName, locationName,surveyorName,analyzerName,cityName,ANALYZERSHAREDKEY);
 		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerNameNew, locationNameNew,surveyorNameNew,analyzerName,cityName,ANALYZERSHAREDKEY);
 				
-		if (manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
-			manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationName, surveyorName, analyzerName, 
+		manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName);
+		manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationName, surveyorName, analyzerName, 
 					customerNameNew + " - " + locationNameNew + " - " + surveyorNameNew );
 		
 		assertFalse(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName));	
@@ -322,7 +322,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 			
 		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerName, locationName,surveyorName,analyzerName,cityName,ANALYZERSHAREDKEY);
 		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerName, locationNameNew,surveyorNameNew,analyzerNameNew,cityName,ANALYZERSHAREDKEY);
-		if (manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
+		manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName);
 		manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationNameNew, surveyorNameNew, analyzerNameNew, 
 					customerName + " - " + locationName + " - " + surveyorName, false );
 		
