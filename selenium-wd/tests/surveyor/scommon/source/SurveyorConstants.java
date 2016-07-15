@@ -8,6 +8,7 @@ import java.util.List;
 import common.source.RegexUtility;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.dataprovider.ConstantDataProvider;
 
 /**
  * @author zlu
@@ -193,15 +194,10 @@ public final class SurveyorConstants {
 	public static final String CUSTOMERENABLED = Resources.getResource(ResourceKeys.Constant_Enabled);
 	public static final String CUSTOMERDISABLED = Resources.getResource(ResourceKeys.Constant_Disabled);
 
-	public static final String TIMEZONEPT = "Pacific Time (US and Canada)";
-	public static final String TIMEZONEMT = "Mountain Time (US and Canada)";
-	public static final String TIMEZONECT = "Central Time (US and Canada)";
-	public static final String TIMEZONEET = "Eastern Time (US and Canada)";
-
-	public static final String TIMEZONEPTUA = "Pacific Standard Time";
-	public static final String TIMEZONEMTUA = "Mountain Standard Time (Mexico)";
-	public static final String TIMEZONECTUA = "Central Standard Time";
-	public static final String TIMEZONEETUA = "Eastern Standard Time";
+	public static final String TIMEZONEPT = ConstantDataProvider.getConstantDataProvider().getCellData("Timezone", "Timezone", 1);
+	public static final String TIMEZONEMT = ConstantDataProvider.getConstantDataProvider().getCellData("Timezone", "Timezone", 2);
+	public static final String TIMEZONECT = ConstantDataProvider.getConstantDataProvider().getCellData("Timezone", "Timezone", 3);
+	public static final String TIMEZONEET = ConstantDataProvider.getConstantDataProvider().getCellData("Timezone", "Timezone", 4);
 
 	public static final String KEYVIEWNAME = "ViewName";
 	public static final String KEYLISA = "Lisa";
@@ -290,6 +286,7 @@ public final class SurveyorConstants {
 	public static final String CUSDRVOPTAG = "op";
 	public static final String CUSDRVETHSTDTAG= "EthaneStnd";
 	public static final String CUSDRVETHRRTAG= "EthaneRR";
+	public static final String CUSDRVETHOPTAG="EthaneOpertor1";
 	public static final String CUSDRVETHMNTAG= "EthaneManual";
 	public static final String PICADMNSTDTAG2 = "stnd-pic";
 	public static final String PICADMNSTDTAG2_STARTEPOCH = "1450134967.928";

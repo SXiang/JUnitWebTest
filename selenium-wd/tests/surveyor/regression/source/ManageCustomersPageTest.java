@@ -73,7 +73,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		manageLocationsPage.addNewLocation(locationDesc, customerName, location);
 		
 		manageUsersPage.open();
-		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONECTUA, locationDesc);
+		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONECT, locationDesc);
 		
 		
 		loginPage = manageCustomersPage.logout();;
