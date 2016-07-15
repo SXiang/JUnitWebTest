@@ -11,8 +11,8 @@ import org.skyscreamer.jsonassert.JSONCompareMode;
 
 public class GeoJsonShapeFileComparer implements IShapeFileComparer {
 
-	private static final String[][] incomparableValues = {{"(\"ID\":\\s*)[\\.0-9]+(,)", "$1000$2"},
-			{"(\"Label\":\\s*\"[\\w\\s]+\\s)[0-9]+(\")", "$1xxx$2"}
+	private static final String[][] incomparableValues = {{"(\"ID\":\\s*)[\\.0-9]+(,)", "$1000.0$2"},
+			{"(\"Label\":\\s*\"[\\w\\s]+\\s)[0-9]+(\")", "$1000$2"}
 			};
 	
 	public GeoJsonShapeFileComparer() {
@@ -55,10 +55,10 @@ public class GeoJsonShapeFileComparer implements IShapeFileComparer {
 		testGeoJsonFileComparison_assertEquals_Failure();
 		
 		Log.info("Running test - testShapeFileComparison_assertJsonEquals() ");
-		testGeoJsonFileComparison_assertJsonEquals_Success();
+		testGeoJsonFileComparison_assertJsonEquals_IgnoreIncomparableValues();
 	}
 
-	private static void testGeoJsonFileComparison_assertJsonEquals_Success() throws Exception{
+	private static void testGeoJsonFileComparison_assertJsonEquals_IgnoreIncomparableValues() throws Exception{
 		String dir = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\shapefileutility-tests\\shape-compare-data\\shapeJson").toString();
 		String oriShpFile = Paths.get(dir,"originalShape.shp").toString();
 		String jsonFile = Paths.get(dir,"originalJsonString.json").toString();
