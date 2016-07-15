@@ -80,28 +80,24 @@ public class GeoJsonShapeFileComparer implements IShapeFileComparer {
 		String coordChangeJsonString = FileUtility.readFileContents(coordChangeJsonFile, true);
 		String idOrderCoordChangeJsonString = FileUtility.readFileContents(idOrderCoordChangeJsonFile, true);
 		
-		try{
-			JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(jsonString), JSONCompareMode.NON_EXTENSIBLE);
-			Log.info("Equals: Shape file -> Json String - convered" );
-			JSONAssert.assertEquals(removeIncomparableShapeValue(jsonString), removeIncomparableShapeValue(oriJsonString), JSONCompareMode.NON_EXTENSIBLE);
-			Log.info("Equals: Json String - converted -> Json String" );
-			JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(oriJsonString), JSONCompareMode.NON_EXTENSIBLE);
-			Log.info("Equals: Shape file -> Json String" );
-			JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(orderChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
-			Log.info("Equals: Shape file -> Json String - order changed" );
-			JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(idChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
-			Log.info("Equals: Shape file -> Json String - id changed" );
-			JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(idOrderChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
-			Log.info("Equals: Shape file -> Json String - id and order changed" );
-			
-			/* Negative tests - find unmatched element */
-			JSONAssert.assertNotEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(coordChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
-			Log.info("Not Equals: Shape file -> Json String - coordinates changed" );
-			JSONAssert.assertNotEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(idOrderCoordChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
-			Log.info("Not Equals: Shape file -> Json String - id and label and coordinates changed" );
-		}catch(Exception e){
-			Log.error(e.toString());
-		}
+		JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(jsonString), JSONCompareMode.NON_EXTENSIBLE);
+		Log.info("Equals: Shape file -> Json String - convered" );
+		JSONAssert.assertEquals(removeIncomparableShapeValue(jsonString), removeIncomparableShapeValue(oriJsonString), JSONCompareMode.NON_EXTENSIBLE);
+		Log.info("Equals: Json String - converted -> Json String" );
+		JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(oriJsonString), JSONCompareMode.NON_EXTENSIBLE);
+		Log.info("Equals: Shape file -> Json String" );
+		JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(orderChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
+		Log.info("Equals: Shape file -> Json String - order changed" );
+		JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(idChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
+		Log.info("Equals: Shape file -> Json String - id changed" );
+		JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(idOrderChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
+		Log.info("Equals: Shape file -> Json String - id and order changed" );
+
+		/* Negative tests - find unmatched element */
+		JSONAssert.assertNotEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(coordChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
+		Log.info("Not Equals: Shape file -> Json String - coordinates changed" );
+		JSONAssert.assertNotEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(idOrderCoordChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
+		Log.info("Not Equals: Shape file -> Json String - id and label and coordinates changed" );
 	}
 	private static void testGeoJsonFileComparison_assertEquals_Success() throws Exception {
 		Path shpDirectory = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\shapefileutility-tests\\shape-compare-data\\01");
