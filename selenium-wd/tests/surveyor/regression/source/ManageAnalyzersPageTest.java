@@ -264,8 +264,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		manageAnalyzersPage.open();
 		manageAnalyzersPage.addNewAnalyzer(analyzerName, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
 		
-		if (manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
-			manageAnalyzersPage.editExistingAnalyzer(customerName, locationName, surveyorName, analyzerName, 
+		manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName);
+		manageAnalyzersPage.editExistingAnalyzer(customerName, locationName, surveyorName, analyzerName, 
 					ANALYZERSHAREDKEY, customerName + " - " + locationName + " - " + surveyorName, analyzerNameNew);
 		
 		assertFalse(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerNameNew));		
