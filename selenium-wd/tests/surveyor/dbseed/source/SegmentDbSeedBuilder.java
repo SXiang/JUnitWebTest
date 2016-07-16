@@ -10,7 +10,7 @@ import common.source.ExceptionUtility;
 import common.source.Log;
 
 public class SegmentDbSeedBuilder extends BaseDbSeedBuilder {
-	private static final String TABLE_NAME = "[dbo].[Segment]";
+	public static final String TABLE_NAME = "[dbo].[Segment]";
 	private static final String SEED_DATA_FOLDER = SURVEY_SEED_DATA_FOLDER;
 	private static final String SEED_FILE_NAME = "SegmentSeed.csv";
 	private static final String INSERT_TEMPLATE = "INSERT [dbo].[Segment] ([SurveyId], [Order], [Mode], [Shape]) VALUES (N'%s', %s, %s, %s)";

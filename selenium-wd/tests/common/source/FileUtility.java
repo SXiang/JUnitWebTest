@@ -310,6 +310,10 @@ public class FileUtility {
 	
 	public static Integer getLineCountInFile(Path filePath) throws IOException {
 		Integer totalNumberOfLines = 0;
+		if (!FileUtility.fileExists(filePath.toString())) {
+			return 0;
+		}
+		
 		LineNumberReader lineReader = null;
 		try {
 			lineReader = new LineNumberReader(new FileReader(filePath.toFile()));

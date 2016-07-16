@@ -85,6 +85,11 @@ UPDATE [dbo].[Location] SET [CustomerId]=@customerId, [Description]=N'pge_SC',[L
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Location] ([Id], [CustomerId], [Description],[Latitude],[Longitude]) VALUES (N'EE13ACD0-C158-ECAC-7F48-39D18113D501', @customerId, N'pge_SC','37.4020925705503','-121.984820397399')
 
+-- Update lat/long on 'DEFAULT' location pushed by product seed script. (This is needed for Surveys pushed in automation DB to work correctly.)
+SELECT @customerId=[Id] FROM [dbo].[Customer] WHERE Name='Picarro'
+UPDATE [dbo].[Location] SET [CustomerId]=@customerId, [Description]=N'Default',[Latitude]='37.4020925705503',[Longitude]='-121.984820397399' WHERE [Id]='00000000-0000-0000-0001-000000000000' 
+	
+	
 --SurveyModeTypeConfiguration:
 
 DECLARE @surveyModeTypeID uniqueidentifier 

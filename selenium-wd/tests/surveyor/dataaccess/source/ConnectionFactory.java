@@ -54,14 +54,30 @@ public class ConnectionFactory {
 
 		if (connectionCache.containsKey(connectionUrl)) {
 			conn = connectionCache.get(connectionUrl);
-		} else {		
 			try {
-				Class.forName(MICROSOFT_SQLSERVER_JDBC_DRIVER);
-				conn = DriverManager.getConnection(connectionUrl, dbUser, dbPassword);
-				connectionCache.put(connectionUrl, conn);
-			} catch (ClassNotFoundException | SQLException e) {
-				Log.error(e.toString());
+				if (conn.isClosed()) {
+					conn = createNewConnection(conn, dbUser, dbPassword, connectionUrl);
+				}
+			} catch (SQLException e) {
+				Log.error(String.format("Error creating connection. EXCEPTION: %s", ExceptionUtility.getStackTraceString(e)));
 			}
+		} else {		
+			conn = createNewConnection(conn, dbUser, dbPassword, connectionUrl);
+		}
+		return conn;
+	}
+
+	private static Connection createNewConnection(Connection conn, String dbUser, String dbPassword, String connectionUrl) {
+		try {
+			Class.forName(MICROSOFT_SQLSERVER_JDBC_DRIVER);
+			conn = DriverManager.getConnection(connectionUrl, dbUser, dbPassword);
+			if (!connectionCache.containsKey(connectionUrl)) {
+				connectionCache.put(connectionUrl, conn);
+			} else {
+				connectionCache.replace(connectionUrl, conn);
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			Log.error(e.toString());
 		}
 		return conn;
 	}
