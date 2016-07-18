@@ -529,11 +529,14 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	
 	@Override
 	public void waitForPageLoad() {
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+		int numOpen = 0;
+		while(!(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return isPageTitleMatch(d.getTitle(),STRPageContentText);
 			}
-		});
+		}) && numOpen++ < 3){
+			open();
+		}
 	}
 
 	public void waitForNewPageLoad() {

@@ -263,6 +263,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		}
 
 		JavascriptExecutor js = (JavascriptExecutor) driver;
+		Log.clickElementInfo("Ok");
 		js.executeScript("arguments[0].click();", this.btnOK);
 
 		this.waitForPageToLoad();

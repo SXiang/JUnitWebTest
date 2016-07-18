@@ -115,6 +115,7 @@ public class BasePage {
 	}
 
 	public void open() {
+		Log.info("Get URL: '"+strPageURL+"'");
 		driver.get(strPageURL);
 		this.waitForPageToLoad();
 	}
