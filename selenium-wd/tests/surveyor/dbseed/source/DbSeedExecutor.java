@@ -74,10 +74,10 @@ public class DbSeedExecutor {
 		SegmentDbSeedBuilder segmentDbSeedBuilder = null;
 		NoteDbSeedBuilder noteDbSeedBuilder = null;
 
-		// NOTE: "man-pic-2","rr-sqacudr-1","EthaneStnd" survey NOT included. 
+		// NOTE: "stnd-sqacudr-3","man-pic-2","rr-sqacudr-1","EthaneStnd" survey NOT included. 
 		// SurveyResult entry does NOT get inserted using INSERT statements. Tracked by DE2178.
 		final String[] surveyTags = {"stnd-pic","rr-pic","man-pic-1","op-pic",
-			"stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3","rr-sqacudr-2","op-sqacudr"};
+				"stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","rr-sqacudr-2","op-sqacudr"};
 
 		try {
 			connection = ConnectionFactory.createConnection();
@@ -259,6 +259,7 @@ public class DbSeedExecutor {
 	}
 	
 	public static void executeGisSeed(String customerId) throws Exception {
+		Log.method("DbSeedExecutor.executeGisSeed", customerId);
 		boolean isCustomerSpecified = true;
 		if (customerId == null) {
 			isCustomerSpecified = false;
@@ -266,7 +267,6 @@ public class DbSeedExecutor {
 			customerId = customer.getId();
 		}
 		 
-		Log.method("DbSeedExecutor.executeGisSeed", customerId);
 		Connection connection = null;
 		DbSeedBuilderCache dbSeedBuilderCache = new DbSeedBuilderCache(); 
 		CustomerBoundaryTypeDbSeedBuilder customerBoundaryTypeDbSeedBuilder = null;
@@ -301,14 +301,11 @@ public class DbSeedExecutor {
 				return;
 			}
 			
-			DbSeed custBoundaryTypeDbSeed = customerBoundaryTypeDbSeedBuilder.build(customerId);
-			DbSeed custMaterialTypeDbSeed = customerMaterialTypeDbSeedBuilder.build(customerId);
+			DbSeed custBoundaryTypeDbSeed = customerBoundaryTypeDbSeedBuilder.build(isCustomerSpecified ? customerId : null);
+			DbSeed custMaterialTypeDbSeed = customerMaterialTypeDbSeedBuilder.build(isCustomerSpecified ? customerId : null);
 
-			if (isCustomerSpecified) {
-				// CustomerBoundaryType and CustomerMaterialType are already present in product seed for Picarro customer.
-				executeSeed(connection, custBoundaryTypeDbSeed);
-				executeSeed(connection, custMaterialTypeDbSeed);
-			}
+			executeSeed(connection, custBoundaryTypeDbSeed);
+			executeSeed(connection, custMaterialTypeDbSeed);
 			executeSeed(connection, boundaryDbSeed);
 			executeSeed(connection, assetDbSeed);
         	
