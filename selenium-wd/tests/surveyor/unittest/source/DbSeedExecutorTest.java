@@ -85,6 +85,14 @@ public class DbSeedExecutorTest {
 		verifySurveySeedDataIsPresent();
 	}
 
+	@Test
+	public void execute05_pushAssetBoundariesForSpecificCustomerTest() throws Exception {
+		// By default is no customerId is specified the GIS data is pushed for Picarro customer.
+		String customerId = "00000000-0000-0000-0000-000000000002";
+		DbSeedExecutor.executeGisSeed(customerId);
+		verifyGisSeedDataIsPresent(customerId);
+	}
+
 	private void verifyGenericSeedDataIsPresent() throws Exception, SQLException {
 		// Verify generic seed data is now present in the DB.
 		Connection connection = null;
