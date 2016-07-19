@@ -25,18 +25,51 @@ public class CSVUtility {
 	
 	public List<String> getHeadings(String fileAbsolutePath) throws FileNotFoundException, IOException{
 		ArrayList<String> headers=new ArrayList<String>();
-		CSVParser parser = new CSVParser(new FileReader(fileAbsolutePath),CSVFormat.EXCEL.withHeader());
+		FileReader fileReader = new FileReader(fileAbsolutePath);
+		CSVParser parser = new CSVParser(fileReader,CSVFormat.EXCEL.withHeader());
 		try {
 			Map<String,Integer> headerMap=parser.getHeaderMap();
 			for(String key:headerMap.keySet()){
 				headers.add(key);
 			}
 		} finally {
+			fileReader.close();
 			parser.close();
 		}
 		return headers;			
 	}
-	
+
+	/*
+	 * This method returns the number of rows specified in the csv file (except header row) 
+	 * Rows are returned as key(column heading), value pairs
+	 * @param - absolute path to the csv file
+	 * @return - list of hashmaps, hashmap per record
+	 */
+	public List<HashMap<String,String>> getTopRows(String fileAbsolutePath, Integer rowsToFetch) throws FileNotFoundException, IOException{
+		List<HashMap<String,String>> rowsList=new ArrayList<HashMap<String,String>>();
+		FileReader fileReader = new FileReader(fileAbsolutePath);
+		CSVParser parser = new CSVParser(fileReader,CSVFormat.EXCEL.withHeader());
+		try {
+			Map<String,Integer> headerMap=parser.getHeaderMap();
+			List<CSVRecord> rows=parser.getRecords();
+			Iterator<CSVRecord> rowIterator=rows.iterator();
+			int count = 0;
+			while(rowIterator.hasNext() && count<rowsToFetch){
+				CSVRecord currentRow=rowIterator.next();
+				HashMap<String, String> rowMap=new HashMap<String, String>();
+				for(String key:headerMap.keySet()){
+					rowMap.put(key, currentRow.get(key));				
+				}
+				rowsList.add(rowMap);
+				count++;
+			}
+		} finally {
+			fileReader.close();
+			parser.close();
+		}
+		return rowsList;	
+	}
+
 	/*
 	 * This method returns all rows in the csv file except headings
 	 * rows are returned as key(column heading), value pairs
@@ -44,27 +77,16 @@ public class CSVUtility {
 	 * @return - list of hashmaps, hashmap per record
 	 */
 	public List<HashMap<String,String>> getAllRows(String fileAbsolutePath) throws FileNotFoundException, IOException{
-		List<HashMap<String,String>> rowsList=new ArrayList<HashMap<String,String>>();
-		CSVParser parser = new CSVParser(new FileReader(fileAbsolutePath),CSVFormat.EXCEL.withHeader());
-		try {
-			Map<String,Integer> headerMap=parser.getHeaderMap();
-			List<CSVRecord> rows=parser.getRecords();
-			Iterator<CSVRecord> rowIterator=rows.iterator();
-			while(rowIterator.hasNext()){
-				CSVRecord currentRow=rowIterator.next();
-				HashMap<String, String> rowMap=new HashMap<String, String>();
-				for(String key:headerMap.keySet()){
-					rowMap.put(key, currentRow.get(key));				
-				}
-				rowsList.add(rowMap);
-				
-			}
-		} finally {
-			parser.close();
-		}
-		return rowsList;	
+		return getTopRows(fileAbsolutePath, Integer.MAX_VALUE);	
 	}
 	
+	public static String createCsvString(List<String> values) {
+		String csvString = "";
+		if (values != null) {
+			csvString = String.join(",", values.toArray(new String[values.size()]));
+		}
+		return csvString;
+	}
 		
 	public static void main(String[] args) throws Exception {
 		

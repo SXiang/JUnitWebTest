@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAccessor;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,6 +15,8 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 import java.time.Duration;
+import java.time.LocalDate;
+
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.joda.time.Chronology;
@@ -29,6 +32,25 @@ public class DateUtility {
 	public static Date DATE_MINVALUE = new Date(0);
 	public static Set<String> zoneIds = DateTimeZone.getAvailableIDs();
 
+	public enum DatePart {
+		Month ("Month"),
+		Year ("Year"),
+		Day ("Day"),
+		Hour ("Hour"),
+		Minute ("Minute"),
+		Second ("Second");
+		
+		private final String name;
+
+		DatePart(String nm) {
+			name = nm;
+		}
+		
+		public String toString() {
+			return this.name;
+		}
+	}
+	
 	/**
 	 * Compares the first time string with second time string and returns if the first time string is greater than the second.
 	 * 
@@ -504,6 +526,23 @@ public class DateUtility {
 		return true;
 	}
 
+	public static Long getDateDiff(LocalDate d1, LocalDate d2, DatePart datePart) {
+		if (datePart.equals(DatePart.Month)) {
+			return ChronoUnit.MONTHS.between(d1, d2);
+		} else if (datePart.equals(DatePart.Year)) {
+			return ChronoUnit.YEARS.between(d1, d2);
+		} else if (datePart.equals(DatePart.Day)) {
+			return ChronoUnit.DAYS.between(d1,  d2);	
+		} else if (datePart.equals(DatePart.Hour)) {
+			return ChronoUnit.HOURS.between(d1, d2);
+		} else if (datePart.equals(DatePart.Minute)) {
+			return ChronoUnit.MINUTES.between(d1, d2);
+		} else if (datePart.equals(DatePart.Second)) {
+			return ChronoUnit.SECONDS.between(d1, d2);
+		}		
+		return 0L;
+	}
+	
 	/**
 	 * Executes the unit tests for this class.
 	 * 

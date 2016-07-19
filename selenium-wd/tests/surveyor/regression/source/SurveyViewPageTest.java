@@ -1328,7 +1328,7 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 
-		// Assets don't have unique IDs in UI. Specific assets checks cannot be currently done from UI.
+		// TODO: Assets don't have unique IDs in UI. Specific assets checks cannot be currently done from UI.
 		// Specific Assets check is tracked as an API test.
 	}
  
@@ -1469,7 +1469,7 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL2_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
@@ -1503,13 +1503,12 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 	 *	- - All other survey data, assets and boundaries are not displayed
 	 */
 	@Test
-	// TODO: Test coding complete. Need a manual survey with field notes that has been pushed to automation DB.
 	public void TC1033_SurveyView_ViewManualSurveyMapViewWhenFieldNotesONAssetsBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC1033_SurveyView_ViewManualSurveyMapViewWhenFieldNotesONAssetsBoundariesOFF ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL2_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
@@ -1520,8 +1519,7 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		// TODO: Need a manual survey with Field notes for verification.
-		//assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
 		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
@@ -1544,13 +1542,12 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 	 *	- - All other survey data, assets and boundaries are not displayed
 	 */
 	@Test
-	// TODO: Test coding complete. Need a manual survey with field notes that has been pushed to automation DB.
 	public void TC1034_SurveyView_ViewManualSurveySatelliteViewWhenFieldNotesONAssetsBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC1034_SurveyView_ViewManualSurveySatelliteViewWhenFieldNotesONAssetsBoundariesOFF ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_MANUAL1_ID, NOTSET);
+		surveyViewPageAction.open(TEST_SURVEY_MANUAL2_ID, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
@@ -1561,8 +1558,7 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		// TODO: Need a manual survey with Field notes for verification.
-		//assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
 		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
@@ -2025,7 +2021,7 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 		
-		// Assets don't have unique IDs in UI. Specific assets checks cannot be currently done from UI.
+		// TODO: Assets don't have unique IDs in UI. Specific assets checks cannot be currently done from UI.
 		// Specific Assets check is tracked as an API test.
 	}
  
@@ -2074,7 +2070,7 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 
-		// Assets don't have unique IDs in UI. Specific assets checks cannot be currently done from UI.
+		// TODO: Assets don't have unique IDs in UI. Specific assets checks cannot be currently done from UI.
 		// Specific Assets check is tracked as an API test.
 	}
  

@@ -23,6 +23,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 
@@ -45,6 +46,7 @@ import surveyor.scommon.source.SurveyorConstants.UserTimezone;
  */
 public class SurveyorBasePage extends BasePage {
 
+	protected static final String TABLE_BUTTON_CLASS = "btn btn-primary";
 	protected static final String DATA_TABLE_XPATH = "//*[@id='datatable']/tbody";
 	protected static final String DATATABLE_TBODY_TR = "//*[@id='datatable']/tbody/tr";
 	protected static final String DATATABLE_RECORDS_ELEMENT_XPATH = "datatable_info";
@@ -171,6 +173,8 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//table[@id='datatable']/tbody/tr")
 	protected List<WebElement> numberofRecords;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]")
+    protected WebElement firstRowTr;
 
 	public enum TableSortOrder {
 		ASC ("ASC"),
@@ -407,7 +411,7 @@ public class SurveyorBasePage extends BasePage {
 		List<String> strList = RegexUtility.split(numTextString, RegexUtility.SPACE_SPLIT_REGEX_PATTERN);
 		Integer records = 0;
 		if (strList != null && strList.size() > 3) {
-			records = Integer.parseInt(strList.get(3));
+			records = Integer.parseInt(strList.get(3).replace(",", ""));
 		}
 		return records;
 	}
@@ -576,6 +580,11 @@ public class SurveyorBasePage extends BasePage {
 		});
 	}
 
+	public boolean verifyNoButtonsArePresentInTable() {
+		Log.method("verifyNoButtonsArePresentInTable");
+		return !WebElementExtender.getInnerHtml(this.firstRowTr).contains(TABLE_BUTTON_CLASS);
+	}
+	
 	public boolean verifyFieldNotBlank(WebElement validationLabel, String fieldName) {
 		Log.method("verifyFieldNotBlank", validationLabel, fieldName);
 		if (!WebElementExtender.isElementPresentAndDisplayed(validationLabel)) {
@@ -631,6 +640,15 @@ public class SurveyorBasePage extends BasePage {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return (getRecordsShownOnPage(d) > 0);
+			}
+		});
+	}
+
+	public void waitForDropdownToBePopulated(WebElement dropdownElement) {
+		Log.method("waitForDropdownToBePopulated", dropdownElement);
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return !new Select(dropdownElement).getOptions().isEmpty();
 			}
 		});
 	}

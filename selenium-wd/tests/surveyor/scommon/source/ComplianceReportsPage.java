@@ -2995,7 +2995,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
-				Log.info("Indication table verification failed");
+				Log.info("Indication table static text verification failed");
 				return false;
 			}
 		}
@@ -3015,7 +3015,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				if (line.trim().matches(RegexUtility.INDICATION_TABLE_LINE_REGEX_PATTERN)){
 					ArrayUtility.appendToLastString(reportIndicationsList, extraLines.replaceAll(" ", ""));
 					reportIndicationsList.add(line.replaceAll("\\?", "").trim()
-							.replace("+/-", "").replace("0.0 ", "").trim().replaceAll(" ", ""));
+							.replace("+/-", "").replace("0.0 ", "").trim().replaceAll(" ", "").replace(">=", ""));
 					extraLines = "";
 				}else if(!reportIndicationsList.isEmpty() && line.trim().matches(RegexUtility.FIELD_NOTE_LINE_REGEX_PATTERN)){
 					extraLines += line.trim();
@@ -3034,13 +3034,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		while (lineIterator.hasNext()) {
 				StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
 				String objAsString = objStoredProc.toString();
-				storedProcConvStringList.add(objAsString.replace("0.0 ", "0").replaceAll("\\s+", "").trim());
+				storedProcConvStringList.add(objAsString.replace("0.0 ", "0").replaceAll("\\s+", "").trim().replace("+/-", ""));
 		}
 
 		Log.info(String.format("Checking in ReportIndications ArrayList, StoredProcConvStringList Values : %s", 
 					LogHelper.strListToString(storedProcConvStringList)));
 		if (!reportIndicationsList.equals(storedProcConvStringList)) {
-				Log.info("Indication table verification failed");
+				Log.info("Indication data table verification failed");
 				return false;
 		}
 
@@ -3455,38 +3455,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		// Assert all shape files in the folders are the same.
 		ShapeFileUtility shapeFileUtility = new ShapeFileUtility();
-		try {		
-			shapeFileUtility.assertDirectoryEquals(actualDataFolderPath, expectedDataFolderPath);
-		} catch (AssertionError e) {
-			/* JsonAssert does NOT handle array of array ordering. REFERENCE: http://jsonassert.skyscreamer.org/javadoc/org/skyscreamer/jsonassert/JSONAssert.html
-			   Due to this we'll see false positives for case like below:
-			   EXPECTED: { "type": "Feature", "properties": { "ID": 1.0, "GapNumber": "Gap H8", "Row": 7.0, "Column": 7.0 }, "geometry": 
-				{ "type": "Polygon", "coordinates": [ [ [ -121.97907358930351, 37.416219070608356 ], [ -121.97907358930351, 37.41676668678231 ], 
-				[ -121.97838410206116, 37.41676668678231 ], [ -121.97838410206116, 37.416219070608356 ], [ -121.97907358930351, 37.416219070608356 ] ] ] } }
-			   ACTUAL:	 { "type": "Feature", "properties": { "ID": 49.0, "GapNumber": "Gap H8", "Row": 7.0, "Column": 7.0 }, "geometry": 
-				{ "type": "Polygon", "coordinates": [ [ [ -121.97907358930351, 37.416219070608356 ], [ -121.97838410206116, 37.416219070608356 ], 
-				[ -121.97838410206116, 37.41676668678231 ], [ -121.97907358930351, 37.41676668678231 ], [ -121.97907358930351, 37.416219070608356 ] ] ] } }
-			 */
-			// If an exception is thrown by JsonAssert fallback to comparing exact filesize match between baseline and actual shape files.
-			// Future improvement: Sort JSON using utility like Boon (https://github.com/RichardHightower/boon/wiki) before comparison. 
-			// Tracked by US3052.
-			Log.warn("JSONAssert comparison failed. Fallback to compareFilesAndSizesInDirectories() comparison.");
-
-			Log.info("Compare .prj files for exact match.");
-			List<String> includeExtensions = new ArrayList<String>();
-			includeExtensions.add("prj");
-			if (!FileUtility.compareFilesForExactMatch(actualDataFolderPath, expectedDataFolderPath, includeExtensions)) {
-				return false;
-			}
-
-			Log.info("Compare all files in Shape folder (except .prj) for file size match.");
-			List<String> excludeExtensions = new ArrayList<String>();
-			excludeExtensions.add("prj");
-			if (!FileUtility.compareFilesAndSizesInDirectories(actualDataFolderPath, expectedDataFolderPath, excludeExtensions)) {
-				return false;
-			}
-		}
-
+		shapeFileUtility.assertDirectoryEquals(actualDataFolderPath, expectedDataFolderPath);
+		
 		return true;
 	}
 

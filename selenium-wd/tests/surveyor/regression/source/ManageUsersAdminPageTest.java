@@ -57,7 +57,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		manageUsersAdminPage.waitForNewPageLoad();
 
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC,
-				CUSUSERROLEDR, TIMEZONECTUA);
+				CUSUSERROLEDR, TIMEZONECT);
 
 		assertTrue(manageUsersAdminPage.findExistingUser(SQACUSLOC, userName,
 				CUSUSERROLEDR));
@@ -89,11 +89,11 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		manageUsersAdminPage.waitForNewPageLoad();
 
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC,
-				CUSUSERROLEDR, TIMEZONECTUA);
+				CUSUSERROLEDR, TIMEZONECT);
 		assertTrue(manageUsersAdminPage.findExistingUser(SQACUSLOC, userName,
 				CUSUSERROLEDR));
 
-		manageUsersAdminPage.editUser(userName, CUSUSERROLESU, TIMEZONEETUA,
+		manageUsersAdminPage.editUser(userName, CUSUSERROLESU, TIMEZONEET,
 				true, true);
 		assertTrue(manageUsersAdminPage.findExistingUser(SQACUSLOC, userName,
 				CUSUSERROLESU));
@@ -119,7 +119,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		manageUsersAdminPage.open();
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC,
-				CUSUSERROLEDR, TIMEZONECTUA);
+				CUSUSERROLEDR, TIMEZONECT);
 
 		assertTrue(manageUsersAdminPage.findExistingUser(userName));
 
@@ -161,7 +161,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		manageUsersAdminPage.waitForNewPageLoad();
 
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC,
-				CUSUSERROLEDR, TIMEZONECTUA, false);
+				CUSUSERROLEDR, TIMEZONECT, false);
 
 		Log.info("userName = " + userName);
 
@@ -308,8 +308,8 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		manageUsersAdminPage.waitForNewPageLoad();
 
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC,
-				CUSUSERROLEDR, TIMEZONEPTUA);
-		manageUsersAdminPage.editUser(userName, CUSUSERROLESU, TIMEZONEPTUA,
+				CUSUSERROLEDR, TIMEZONEPT);
+		manageUsersAdminPage.editUser(userName, CUSUSERROLESU, TIMEZONEPT,
 				false, true);
 
 		assertTrue(manageUsersAdminPage.getUserRole(userName).equalsIgnoreCase(
@@ -504,7 +504,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		manageUsersAdminPage.open();
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC,
-				CUSUSERROLEDR, TIMEZONECTUA);
+				CUSUSERROLEDR, TIMEZONECT);
 
 		assertTrue(manageUsersAdminPage.findExistingUser(userName));
 

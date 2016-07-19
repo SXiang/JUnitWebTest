@@ -203,7 +203,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		}
 
 		this.btnAddNewLocation.click();
-
+		waitForNewPageLoad();
 		this.inputLocationDesc.sendKeys(locationDesc);
 
 		if (!useLatLongSelector) {
@@ -224,15 +224,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			Log.info("Location Longitude Field value = " + locationLongitudeText);
 			assertTrue(!locationLongitudeText.isEmpty());
 		}
-
-		List<WebElement> options = this.dropDownCustomer.findElements(By.tagName("option"));
-		for (WebElement option : options) {
-			if (customer.equalsIgnoreCase(option.getText().trim())){
-				Log.info("Select customer - '"+customer+"'");
-				option.click();
-				break;
-			}
-		}
+		
+		Log.info("Select customer - '"+customer+"'");
+		selectDropdownOption(this.dropDownCustomer, customer);
 
 		this.stdMinAmp.clear();
 		this.stdMinAmp.sendKeys("0.035");
@@ -259,25 +253,13 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.NoUpper.sendKeys("-25");
 
 		if (ethMthMin != null && ethMthMin != "") {
-			List<WebElement> optionsMIN = this.ethMthMinUnit.findElements(By.tagName("option"));
-			for (WebElement option : optionsMIN) {
-				if ((ethMthMin).equalsIgnoreCase(option.getText().trim())) {
-					Log.info("Select option - '"+ethMthMin+"'");
-					option.click();
-					break;
-				}
-			}
+			this.ethMthMinUnit.clear();
+			this.ethMthMinUnit.sendKeys(ethMthMin);
 		}
 
 		if (ethMthMax != null && ethMthMax != "") {
-			List<WebElement> optionsMAX = this.ethMthMaxUnit.findElements(By.tagName("option"));
-			for (WebElement option : optionsMAX) {
-				if ((ethMthMax).equalsIgnoreCase(option.getText().trim())) {
-					Log.info("Select option - '"+ethMthMax+"'");
-					option.click();
-					break;
-				}
-			}
+			this.ethMthMaxUnit.clear();
+			this.ethMthMaxUnit.sendKeys(ethMthMax);
 		}
 
 		JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -791,7 +773,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	public boolean isDuplicateLocMsgPresent() {
 		Log.method("isDuplicateLocMsgPresent");
-		return this.liDuplicateMsg.getText().equals(STRDuplicateLocMsg);
+		return getElementText(this.liDuplicateMsg).equals(STRDuplicateLocMsg);
 	}
 
 	@Override

@@ -110,7 +110,6 @@ public class LoginPage extends BasePage {
 		this.tbPassword.sendKeys(password);
 		Log.clickElementInfo("Login");
 		this.btnLogin.click();
-
 	}
 
 

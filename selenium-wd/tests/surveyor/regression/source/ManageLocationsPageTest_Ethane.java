@@ -128,6 +128,7 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 		manageLocationsPage.open();
 
 		manageLocationsPage.getBtnAddNewLocation().click();
+		manageLocationsPage.waitForNewPageLoad();
 
 		assertTrue(manageLocationsPage.getEthMthRtoLbl().isDisplayed());
 	}

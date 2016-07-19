@@ -6,6 +6,7 @@ package surveyor.sanity.source;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static surveyor.scommon.source.SurveyorConstants.CUSNAMEBASE;
+import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
 import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETCASTIRON;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETCOPPER;
@@ -30,7 +31,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
-import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSDR;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSDRTAG;
@@ -69,7 +69,6 @@ import surveyor.scommon.source.SurveyorTestRunner;
 
 @RunWith(SurveyorTestRunner.class)
 public class SanityIntegrationTest extends SurveyorBaseTest {
-	private static final String PICARRO_CUSTOMER = "Picarro";
 	private static ComplianceReportsPage complianceReportsPage;
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageUsersPage manageUsersPage;
@@ -328,7 +327,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		assertTrue(manageUsersPage.isLinkBroken());
 		manageUsersPage.clickOnCancelAddBtn();
 		manageUsersPage.waitForPageToLoad();
-		manageUsersPage.getInputSearch().sendKeys(PICARRO_CUSTOMER);
+		manageUsersPage.getInputSearch().sendKeys(CUSTOMER_PICARRO);
 		manageUsersPage.clickOnFirstEditUserBtn();
 	
 		manageUsersPage.waitForEditPageLoad();

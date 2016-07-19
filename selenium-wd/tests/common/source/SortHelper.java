@@ -82,7 +82,7 @@ public class SortHelper {
 	public static boolean isSortedDESC(String[] strArray, int beginAt, int endAt){
 		// The actual data type of the elements is determined by the type of the first element specified
 		boolean isNumber = NumberUtils.isNumber(strArray[beginAt]);
-		return isSortedASC(isNumber, strArray, beginAt, endAt);
+		return isSortedDESC(isNumber, strArray, beginAt, endAt);
 	}
 	
 	public static boolean isSortedDESC(boolean isNumber, String[] strArray, int beginAt, int endAt) {

@@ -464,6 +464,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 		// Edit location as Utility admin. 50 characters works. 51 characters
 		// doesn't work.
+		homePage.logout();
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 

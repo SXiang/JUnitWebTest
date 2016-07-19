@@ -343,7 +343,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				.tagName("option"));
 		for (WebElement tzOption : tzOptions) {
 			if (tzOption.getText().trim().equalsIgnoreCase(timeZone)){
-				Log.info("Select role - '"+tzOption+"'");
+				Log.info("Select Timezone - '"+tzOption+"'");
 				tzOption.click();
 				break;
 			}

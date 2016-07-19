@@ -33,9 +33,9 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	public static final String STREditPageContentText = Resources.getResource(ResourceKeys.ManageSurveyor_EditSurveyor);
 	public static final String PAGE_PAGINATIONSETTING = "100";
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']//a[@href='/Picarro/ManageSurveyor']")
 	protected WebElement btnAddNewSurveyor;
-	protected String btnAddNewSurveyorXPath = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a";
+	protected String btnAddNewSurveyorXPath = "//*[@id='page-wrapper']//a[@href='/Picarro/ManageSurveyor']";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
 	protected WebElement panelDupSurError;
@@ -62,14 +62,12 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a")
 	protected WebElement btnEditSurveyor;
 
-	//*[@id="datatable"]/tbody/tr[1]/td[3]/a
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[3]/a")
 	protected WebElement btnEditCustomerSurveyor;
 	
     @FindBy(name = "datatable_length")
     private WebElement recordsPerPage;
     
-
     @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[1]")
     protected WebElement tdLocationValue;
     
@@ -87,7 +85,6 @@ public class ManageSurveyorPage extends SurveyorBasePage {
     
     @FindBy(how = How.XPATH, using = "//*[@id='datatable']")
    	protected WebElement surveyorsTable;
-
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/thead/tr/th[2]")
 	protected WebElement theadSurveyor;
@@ -144,6 +141,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		
 		Log.clickElementInfo("Add New Surveyor");
 		this.btnAddNewSurveyor.click();
+		waitForNewPageLoad();
 		Log.info("Set Surveyor Desc - '"+surveyorDesc+"'");
 		this.inputSurveyorDesc.sendKeys(surveyorDesc);
 		
@@ -174,17 +172,16 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		}
 		Log.clickElementInfo("Add New Surveyor");
 		this.btnAddNewSurveyor.click();
+		waitForNewPageLoad();
 		Log.info("Set Surveyor Desc - '"+surveyorDesc+"'");
 		this.inputSurveyorDesc.sendKeys(surveyorDesc);
 		
-		List<WebElement> options = this.dropDownLocation.findElements(By.tagName("option"));
-		for (WebElement option : options) {
-			if (option.getText().trim().equalsIgnoreCase(customerName + " - " + locationName)){
-				Log.info("Select Location - '"+customerName + " - " + locationName+"'");
-				option.click();
-				break;
-			}
-		}
+		Log.info("Waiting for Location dropdown to be populated..");
+		this.waitForDropdownToBePopulated(this.dropDownLocation);
+		
+		Log.info("Select Location - '"+customerName + " - " + locationName+"'");
+		selectDropdownOption(this.dropDownLocation, customerName + " - " + locationName);
+		
 		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 		
@@ -516,7 +513,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	public boolean isDuplicateSurMsgPresent(String locationName){
     	Log.method("isDuplicateSurMsgPresent", locationName);
 		String STRDuplicateSurMsg = "Surveyor name already exists for location " + locationName +", please try another name.";
-		return this.liDuplicateMsg.getText().equals(STRDuplicateSurMsg);
+		return getElementText(this.liDuplicateMsg).equals(STRDuplicateSurMsg);
 	}
 
 	public boolean isAddNewSurveyorBtnPresent() {
@@ -524,6 +521,12 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		return isElementPresent(this.btnAddNewSurveyorXPath);
 	}
 
+	@Override
+	public void open(){
+		super.open();
+		waitForPageLoad();
+	}
+	
 	@Override
 	public void waitForPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {

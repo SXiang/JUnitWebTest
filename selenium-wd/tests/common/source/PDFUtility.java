@@ -25,7 +25,8 @@ public class PDFUtility {
 	protected static String wordSeparator = "| ";
 	protected static String wordSeparatorPattern = "[\\|]";
 	protected boolean setWordSeparator = false;
-
+	protected static String pdfLineSeparator = "", pdfParagraphStart="<\u200E", pdfParagraphEnd="\u200F>";
+	
 	public PDFUtility(){
 		this(false);
 	}
@@ -61,7 +62,9 @@ public class PDFUtility {
 			
 			PDFTextStripper pdfTextStripper = new PDFTextStripper();
 			if(setWordSeparator){
-			   pdfTextStripper.setWordSeparator(wordSeparator);
+				pdfTextStripper.setWordSeparator(wordSeparator);
+				pdfTextStripper.setParagraphStart(pdfParagraphStart);
+				pdfTextStripper.setParagraphEnd(pdfParagraphEnd);
 			}
 			if (startPage > 0) {
 				pdfTextStripper.setStartPage(startPage);

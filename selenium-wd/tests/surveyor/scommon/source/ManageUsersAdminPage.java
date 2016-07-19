@@ -94,10 +94,10 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 			}
 		}
 		
-		List<WebElement> tzOptions = this.dropDownRole.findElements(By.tagName("option"));
+		List<WebElement> tzOptions = this.dropDownTimeZone.findElements(By.tagName("option"));
 		for (WebElement tzOption : tzOptions) {
 			if (tzOption.getText().trim().equalsIgnoreCase(timeZone)){
-				Log.info("Selection Role - '"+tzOption+"'");
+				Log.info("Selection Timezone - '"+tzOption+"'");
 				tzOption.click();
 				break;
 			}
@@ -141,10 +141,10 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 			}
 		}
 		
-		List<WebElement> tzOptions = this.dropDownRole.findElements(By.tagName("option"));
+		List<WebElement> tzOptions = this.dropDownTimeZone.findElements(By.tagName("option"));
 		for (WebElement tzOption : tzOptions) {
 			if (tzOption.getText().trim().equalsIgnoreCase(timeZone)){
-				Log.info("Selection Role - '"+tzOption+"'");
+				Log.info("Selection Timezone - '"+tzOption+"'");
 				tzOption.click();
 				break;
 			}
