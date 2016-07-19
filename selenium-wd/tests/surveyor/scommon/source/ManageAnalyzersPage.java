@@ -58,7 +58,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@class='button-cancel btn btn-danger']")
 	private WebElement btnCancel;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[2]/ul/li")
+	@FindBy(how = How.CSS, using = ".validation-summary-errors.panel > .panel-body > ul > li")
 	private WebElement warningMsg;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[10]/a[1]")
