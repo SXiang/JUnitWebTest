@@ -638,11 +638,15 @@ public class SurveyorBasePage extends BasePage {
 	
 	public void waitForTableDataToLoad() {
 		Log.method("waitForTableDataToLoad");
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return (getRecordsShownOnPage(d) > 0);
-			}
-		});
+		try{
+			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+				public Boolean apply(WebDriver d) {
+					return (getRecordsShownOnPage(d) > 0);
+				}
+			});
+		}catch(Exception e){
+			Log.warn("Empty data table!");
+		}
 	}
 
 	public void waitForDropdownToBePopulated(WebElement dropdownElement) {
