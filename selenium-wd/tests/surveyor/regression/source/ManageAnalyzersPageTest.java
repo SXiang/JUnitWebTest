@@ -148,10 +148,9 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		manageAnalyzersPage.open();
 		assertTrue(manageAnalyzersPage.addNewAnalyzer(analyzerName, ANALYZERSHAREDKEY, surveyorName, customerName, locationName));
 		
-		manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName);
-		assertTrue(manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationName, surveyorName, analyzerName, 
+		if(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
+			assertTrue(manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationName, surveyorName, analyzerName, 
 					customerName + " - " + locationName + " - " + surveyorNameNew ));
-		manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorNameNew, analyzerName);
 		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorNameNew, analyzerName));		
 	}
 
@@ -264,8 +263,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		manageAnalyzersPage.open();
 		manageAnalyzersPage.addNewAnalyzer(analyzerName, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
 		
-		manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName);
-		manageAnalyzersPage.editExistingAnalyzer(customerName, locationName, surveyorName, analyzerName, 
+		if(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
+			manageAnalyzersPage.editExistingAnalyzer(customerName, locationName, surveyorName, analyzerName, 
 					ANALYZERSHAREDKEY, customerName + " - " + locationName + " - " + surveyorName, analyzerNameNew);
 		
 		assertFalse(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerNameNew));		
@@ -293,11 +292,11 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerName, locationName,surveyorName,analyzerName,cityName,ANALYZERSHAREDKEY);
 		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerNameNew, locationNameNew,surveyorNameNew,analyzerName,cityName,ANALYZERSHAREDKEY);
 				
-		manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName);
-		manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationName, surveyorName, analyzerName, 
+		if(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
+			manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationName, surveyorName, analyzerName, 
 					customerNameNew + " - " + locationNameNew + " - " + surveyorNameNew );
 		
-		assertFalse(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName));	
+		assertFalse(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName));
 		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerNameNew, locationNameNew, surveyorNameNew, analyzerName));
 	}
 	
@@ -322,8 +321,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 			
 		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerName, locationName,surveyorName,analyzerName,cityName,ANALYZERSHAREDKEY);
 		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerName, locationNameNew,surveyorNameNew,analyzerNameNew,cityName,ANALYZERSHAREDKEY);
-		manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName);
-		manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationNameNew, surveyorNameNew, analyzerNameNew, 
+		if(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
+			manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationNameNew, surveyorNameNew, analyzerNameNew, 
 					customerName + " - " + locationName + " - " + surveyorName, false );
 
 		assertTrue(manageAnalyzersPage.getElementText(manageAnalyzersPage.getWarningMsg()).trim().equals(ANALYZER_ALREADY_ASSOCIATED_ERROR));
