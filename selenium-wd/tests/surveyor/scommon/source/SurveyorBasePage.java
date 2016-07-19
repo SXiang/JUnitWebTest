@@ -636,7 +636,7 @@ public class SurveyorBasePage extends BasePage {
 		});
 	}
 	
-	public void waitForTableDataToLoad() {
+	public boolean waitForTableDataToLoad() {
 		Log.method("waitForTableDataToLoad");
 		try{
 			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
@@ -646,7 +646,9 @@ public class SurveyorBasePage extends BasePage {
 			});
 		}catch(Exception e){
 			Log.warn("Empty data table!");
+			return false;
 		}
+		return true;
 	}
 
 	public void waitForDropdownToBePopulated(WebElement dropdownElement) {

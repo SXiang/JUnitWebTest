@@ -111,14 +111,8 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		Log.info("Set shared key - '"+sharedKey+"'");
 		this.inputSharedKey.sendKeys(sharedKey);
 
-		List<WebElement> options = this.dropDownSurveyor.findElements(By.tagName("option"));
-		for (WebElement option : options) {
-			if (option.getText().trim().equalsIgnoreCase(customerName + " - " + locationName + " - " + surveyor)) {
-				Log.info("Select surveyor '"+customerName + " - " + locationName + " - " + surveyor+"'");
-				option.click();
-				break;
-			}
-		}
+		Log.info("Select surveyor '"+customerName + " - " + locationName + " - " + surveyor+"'");
+		selectDropdownOption(this.dropDownSurveyor, customerName + " - " + locationName + " - " + surveyor);
 
 		Log.clickElementInfo("OK");
 		this.btnOk.click();
@@ -128,8 +122,9 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 			String errMsg = panelError.getText();
 			if (errMsg.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
 				result = false;
-				Log.clickElementInfo("Cancel");
+				Log.clickElementInfo("Cancel due to error '"+errMsg+"'");
 				this.btnCancel.click();
+				result = false;
 			}
 		}
 		return result;
@@ -141,7 +136,9 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				analyzerName, customerName, locationName, surveyorName));
 		setPagination(PAGINATIONSETTING_100);
 		performSearch(analyzerName);
-		this.waitForTableDataToLoad();
+		if(!this.waitForTableDataToLoad()){
+			return false;
+		}
 
 		String customerXPath;
 		String locationXPath;
@@ -208,7 +205,9 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		Log.method("associateAnalyzerToOtherSurveyor", customerName, locationName, surveyorName, analyzerName, cuslocsur, confirm);
 		setPagination(PAGINATIONSETTING_100);
 		performSearch(analyzerName);
-		this.waitForTableDataToLoad();
+		if(!this.waitForTableDataToLoad()){
+			return false;
+		}
 
 		String customerXPath;
 		String locationXPath;

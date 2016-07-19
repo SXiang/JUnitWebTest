@@ -172,7 +172,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		String locationName = customerName + testSetup.getRandomNumber() + "loc";
 		String surveyorName = locationName + testSetup.getRandomNumber() + "sur";
 		String analyzerName50 = "TC99" + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-4);
-		String analyzerName51 = "TC99" + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-4) + "A";
+		String analyzerName51 = "TC99" + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-4) + "a";
 		String cityName="Santa Clara";
 		
 		Log.info("\nRunning TC99_AnalyzerMax50CharsSerialNumber_PicAdmin - Test Description: More than 50 characters not allowed in Serial Number field");
@@ -197,7 +197,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName50));
 		
 		// Reset analyzerName and create new Analyzer with 51 chars.
-		analyzerName51 = "TC99" + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-4) + "A";
+		analyzerName51 = "TC99" + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-4) + "a";
 		manageAnalyzersPage.open();
 		manageAnalyzersPage.addNewAnalyzer(analyzerName51, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
 		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName51.substring(0, MAX_SIZE)));
@@ -247,7 +247,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		String locationName = customerName + testSetup.getRandomNumber() + "loc";
 		String surveyorName = locationName + "sur";
 		String analyzerName = surveyorName + "ana";
-		String analyzerNameNew = surveyorName + "anaNew";
+		String analyzerNameNew = surveyorName + "ananew";
 		String cityName ="Santa Clara";
 		
 		Log.info("\nRunning TC123_EditDuplicateAnalyzer_PicAdmin - Test Description: Admin not allowed to edit Analyzer having details same as existing analyzer detials");
