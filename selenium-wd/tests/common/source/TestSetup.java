@@ -3,8 +3,6 @@
  */
 package common.source;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,7 +41,6 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
 import com.relevantcodes.extentreports.DisplayOrder;
@@ -56,7 +53,6 @@ import net.lightbody.bmp.client.ClientUtil;
 import net.lightbody.bmp.core.har.Har;
 import surveyor.dataaccess.source.Survey;
 import surveyor.scommon.actions.TestEnvironmentActions;
-import surveyor.scommon.source.LoginPage;
 
 /**
  * This is the initial class to setup up the testing environment and
@@ -1251,13 +1247,6 @@ public class TestSetup {
 
 	public boolean isAutomationReportingApiEnabled() {
 		return automationReportingApiEnabled;
-	}
-
-	public static String getWorkingAnalyzerSerialNumber() {
-		if (TestEnvironmentActions.workingDataRow != null) {
-			return TestEnvironmentActions.workingDataRow.analyzerSerialNumber;
-		}
-		return TEST_ANALYZER_SERIAL_NUMBER;
 	}
 
 	public String getSurveyUploadBaseUrl() {

@@ -7,12 +7,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
+import groovy.swing.factory.ActionFactory;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.actions.ActionBuilder;
 
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
@@ -286,7 +289,12 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	private static String getPageFullUrl(String baseURL) {
-		String fullUrl = baseURL + STRURLPath.replace("{0}", TestSetup.getWorkingAnalyzerSerialNumber());
+		String fullUrl = null;
+		try {
+			fullUrl = baseURL + STRURLPath.replace("{0}", ActionBuilder.createTestEnvironmentAction().getWorkingAnalyzerSerialNumber());
+		} catch (Exception e) {
+			Log.error(String.format("ERROR when getting workingAnalyzerSerialNumber. EXCEPTION - %s", ExceptionUtility.getStackTraceString(e)));
+		}
 		return fullUrl;
 	}
 	
