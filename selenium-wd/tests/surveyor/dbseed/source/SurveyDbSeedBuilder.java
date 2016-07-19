@@ -7,7 +7,7 @@ import common.source.ExceptionUtility;
 import common.source.Log;
 
 public class SurveyDbSeedBuilder extends BaseDbSeedBuilder {
-	private static final String TABLE_NAME = "[dbo].[Survey]";
+	public static final String TABLE_NAME = "[dbo].[Survey]";
 	private static final String SEED_DATA_FOLDER = SURVEY_SEED_DATA_FOLDER;
 	private static final String SEED_FILE_NAME = "SurveySeed.csv";
 
@@ -46,7 +46,8 @@ public class SurveyDbSeedBuilder extends BaseDbSeedBuilder {
             fileRecord.addColumnMetadata(16, null, java.sql.Types.BIT, 0, 0);  
             fileRecord.addColumnMetadata(17, null, java.sql.Types.TIMESTAMP, 0, 0);  
             fileRecord.addColumnMetadata(18, null, java.sql.Types.CHAR, 0, 0);  
-            fileRecord.addColumnMetadata(19, null, java.sql.Types.NVARCHAR, 50, 0);  
+            fileRecord.addColumnMetadata(19, null, java.sql.Types.NVARCHAR, 50, 0); 
+            fileRecord.addColumnMetadata(20, null, java.sql.Types.TIMESTAMP, 0, 0); 
 
             seedData.setSeedData(fileRecord);
             seedData.setDestinationTableName(TABLE_NAME);
