@@ -250,14 +250,8 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				actionCell.click();
 				this.waitForEditPageLoad();
 
-				List<WebElement> options = this.dropDownSurveyor.findElements(By.tagName("option"));
-				for (WebElement option : options) {
-					if (cuslocsur.equals(option.getText().trim())){
-						Log.info("Select surveyor '"+cuslocsur+"'");
-						option.click();
-						break;
-					}
-				}
+				Log.info("Select surveyor '"+cuslocsur+"'");
+				selectDropdownOption(this.dropDownSurveyor, cuslocsur);
 
 				Log.clickElementInfo("OK");
 				this.btnOk.click();
