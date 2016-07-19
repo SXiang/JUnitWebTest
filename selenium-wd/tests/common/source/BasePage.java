@@ -369,7 +369,6 @@ public class BasePage {
 	protected boolean selectDropdownOption(WebElement dropdown, String option){
 		boolean selected = false;
 		int numTry = 0;
-		option = "Picarro - Picarro13464loc - Picarro13464locsurnew";
 		By optBy = By.xpath("option[text()='"+option.trim()+"']");
 		do{
 			try{

@@ -322,6 +322,7 @@ public class SurveyorBasePage extends BasePage {
 
 	public void performSearch(String searchTerm) {
 		Log.method("performSearch", searchTerm);
+		this.inputSearch.clear();
 		Log.info(String.format("Input search text - '%s'",searchTerm));
 		this.inputSearch.sendKeys(searchTerm);
 		this.inputSearch.sendKeys(Keys.ENTER);

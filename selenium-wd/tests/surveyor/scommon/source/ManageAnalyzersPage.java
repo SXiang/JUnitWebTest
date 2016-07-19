@@ -140,7 +140,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		Log.info(String.format("Find analyzer '%s', customer = '%s', location = '%s', surveyor = '%s'",
 				analyzerName, customerName, locationName, surveyorName));
 		setPagination(PAGINATIONSETTING_100);
-
+		performSearch(analyzerName);
 		this.waitForTableDataToLoad();
 
 		String customerXPath;
@@ -207,6 +207,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	public boolean associateAnalyzerToOtherSurveyor(String customerName, String locationName, String surveyorName, String analyzerName, String cuslocsur, boolean confirm) {
 		Log.method("associateAnalyzerToOtherSurveyor", customerName, locationName, surveyorName, analyzerName, cuslocsur, confirm);
 		setPagination(PAGINATIONSETTING_100);
+		performSearch(analyzerName);
 		this.waitForTableDataToLoad();
 
 		String customerXPath;
