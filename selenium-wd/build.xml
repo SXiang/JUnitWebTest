@@ -232,6 +232,7 @@
 				<fileset dir="${build}">
 
 					<include name="**/ManageUsersPageTest.class" />
+					<include name="**/ManageUsersAdminPageTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
@@ -434,6 +435,7 @@
 				<formatter type="xml" />
 				<fileset dir="${build}">
 					<include name="**/ManageAnalyzersPageTest.class" />
+					<include name="**/ManageLocationsAdminPageTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
