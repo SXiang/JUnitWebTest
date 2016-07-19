@@ -434,7 +434,6 @@
 				<formatter type="xml" />
 				<fileset dir="${build}">
 					<include name="**/ManageAnalyzersPageTest.class" />
-					<include name="**/ManageLocationsAdminPageTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>

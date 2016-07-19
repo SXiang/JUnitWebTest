@@ -146,11 +146,11 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		manageSurveyorPage.addNewSurveyor(surveyorNameNew, locationName, customerName);
 		
 		manageAnalyzersPage.open();
-		manageAnalyzersPage.addNewAnalyzer(analyzerName, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
+		assertTrue(manageAnalyzersPage.addNewAnalyzer(analyzerName, ANALYZERSHAREDKEY, surveyorName, customerName, locationName));
 		
 		manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName);
-		manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationName, surveyorName, analyzerName, 
-					customerName + " - " + locationName + " - " + surveyorNameNew );
+		assertTrue(manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationName, surveyorName, analyzerName, 
+					customerName + " - " + locationName + " - " + surveyorNameNew ));
 		manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorNameNew, analyzerName);
 		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorNameNew, analyzerName));		
 	}

@@ -117,12 +117,13 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		Log.clickElementInfo("OK");
 		this.btnOk.click();
 
-		if (isElementPresent(this.panelDuplicationErrorXPath)) {
-			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-			String errMsg = panelError.getText();
+		if (isElementPresent(summaryErrorsBy)) {
+			String errMsg = getElementText(summaryErrors);
 			if (errMsg.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
-				result = false;
-				Log.clickElementInfo("Cancel due to error '"+errMsg+"'");
+				Log.error("Cancel due to error '"+errMsg+"':");
+				for(WebElement err:panelErrors){
+					Log.error("/t - '"+getElementText(err)+"'");
+				}
 				this.btnCancel.click();
 				result = false;
 			}
@@ -267,10 +268,13 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				else {
 					return true;
 				}
-				if (isElementPresent(this.panelDuplicationErrorXPath)) {
-					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-					if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
-						Log.clickElementInfo("Cancel");
+				if (isElementPresent(summaryErrorsBy)) {
+					String errMsg = getElementText(summaryErrors);
+					if (errMsg.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
+						Log.error("Cancel due to error '"+errMsg+"':");
+						for(WebElement err:panelErrors){
+							Log.error("/t - '"+getElementText(err)+"'");
+						}
 						this.btnCancel.click();
 						return false;
 					}
