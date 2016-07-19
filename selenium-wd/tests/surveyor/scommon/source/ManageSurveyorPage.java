@@ -190,7 +190,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 			if (errMsg.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
 				Log.error("Cancel due to error '"+errMsg+"':");
 				for(WebElement err:panelErrors){
-					Log.error("/t - '"+getElementText(err)+"'");
+					Log.error("   - '"+getElementText(err)+"'");
 				}
 				this.btnAddCancel.click();
 				return false;

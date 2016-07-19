@@ -57,7 +57,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC65_AddAnalyzer_PicAdmin() {
 		String customerName = "Picarro";
-		String locationName = customerName + testSetup.getRandomNumber() + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "tc65loc";
 		String surveyorName = locationName + testSetup.getRandomNumber() + "sur";
 		String analyzerName = surveyorName + "ana";
 		String cityName="Santa Clara";
@@ -97,7 +97,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC66_AddAnalyzerNonPicarroCustomer_PicAdmin() {
 		String customerName = "Picarro";
-		String locationName = customerName + testSetup.getRandomNumber() + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "tc66loc";
 		String surveyorName = locationName + testSetup.getRandomNumber() + "sur";
 		String analyzerName = surveyorName + "ana";
 		String cityName="Santa Clara";
@@ -126,7 +126,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC67_EditAnalyzer_PicAdmin() {
 		String customerName = "Picarro";
-		String locationName = customerName + testSetup.getRandomNumber() + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "tc67loc";
 		String surveyorName = locationName + "sur";
 		String surveyorNameNew = locationName + "surnew";
 		String analyzerName = surveyorName + "ana";
@@ -212,7 +212,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC122_DuplicateAnalyzer_PicAdmin() {
 		String customerName = "Picarro";
-		String locationName = customerName + testSetup.getRandomNumber() + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "tc122loc";
 		String surveyorName = locationName + testSetup.getRandomNumber() + "sur";
 		String analyzerName = surveyorName + "ana";
 		String cityName="Santa Clara";
@@ -244,7 +244,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC123_EditDuplicateAnalyzer_PicAdmin() {
 		String customerName = "Picarro";
-		String locationName = customerName + testSetup.getRandomNumber() + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "tc123loc";
 		String surveyorName = locationName + "sur";
 		String analyzerName = surveyorName + "ana";
 		String analyzerNameNew = surveyorName + "ananew";
@@ -279,7 +279,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC109_Associate_Disassociate_Analyzers_PicAdmin() {
 		String customerName = "Picarro";
-		String locationName = customerName + testSetup.getRandomNumber() + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "tc109loc";
 		String surveyorName = locationName + "sur";
 		String analyzerName = surveyorName + "ana";
 		String cityName ="Santa Clara";
@@ -309,7 +309,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC110_SurveyorUnit_0or1_analyzer_associated() {
 		String customerName = "PG&E";
-		String locationName = customerName + testSetup.getRandomNumber() + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "tc110loc";
 		String surveyorName = locationName + "sur";
 		String analyzerName = surveyorName + "ana";
 		String cityName ="Santa Clara";
