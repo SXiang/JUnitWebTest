@@ -369,12 +369,13 @@ public class BasePage {
 	protected boolean selectDropdownOption(WebElement dropdown, String option){
 		boolean selected = false;
 		int numTry = 0;
+		option = "Picarro - Picarro13464loc - Picarro13464locsurnew";
 		By optBy = By.xpath("option[text()='"+option.trim()+"']");
 		do{
 			try{
 				WebElement opt =  dropdown.findElement(optBy);
 				opt.click();
-				selected = true;
+				selected = opt.isSelected();
 			}catch(Exception e){
 				numTry++;
 				Log.error("Failed to select option '"+option+"'");
@@ -383,11 +384,11 @@ public class BasePage {
 		if(!selected){
 			WebElement opt =  dropdown.findElement(optBy);
 			opt.click();
-			selected = true;
+			selected = opt.isSelected();
 		}
 		return selected;
 	}
-	
+
     public String getElementText(WebElement element) {
     	String text = "";
     	try{

@@ -243,7 +243,6 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 			analyzerCell = getTable().findElement(By.xpath(analyzerXPath));
 
 			if ((customerCell.getText().trim()).equalsIgnoreCase(customerName) && (locationCell.getText().trim()).equalsIgnoreCase(locationName) && (surveyorCell.getText().trim()).equalsIgnoreCase(surveyorName) && analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
-				Log.info("Found entry at row=" + rowNum);
 				actionXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[10]/a[1]";
 				actionCell = getTable().findElement(By.xpath(actionXPath));
 				Log.info("Found entry at row=" + rowNum);
@@ -251,7 +250,9 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				this.waitForEditPageLoad();
 
 				Log.info("Select surveyor '"+cuslocsur+"'");
-				selectDropdownOption(this.dropDownSurveyor, cuslocsur);
+				if(!selectDropdownOption(this.dropDownSurveyor, cuslocsur)){
+					Log.error("Failed to select surveyor for analyzer '"+cuslocsur+"'");
+				}
 
 				Log.clickElementInfo("OK");
 				this.btnOk.click();

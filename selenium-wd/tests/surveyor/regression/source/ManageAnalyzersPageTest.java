@@ -325,8 +325,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName);
 		manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationNameNew, surveyorNameNew, analyzerNameNew, 
 					customerName + " - " + locationName + " - " + surveyorName, false );
-		
-		assertTrue(manageAnalyzersPage.getWarningMsg().getText().trim().equals(ANALYZER_ALREADY_ASSOCIATED_ERROR));
+
+		assertTrue(manageAnalyzersPage.getElementText(manageAnalyzersPage.getWarningMsg()).trim().equals(ANALYZER_ALREADY_ASSOCIATED_ERROR));
 	}
 	
 	/**
