@@ -185,16 +185,17 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 		
-		if (isElementPresent(this.panelDupSurErrorXPath)){
-			WebElement panelError = driver.findElement(By.xpath(this.panelDupSurErrorXPath));
-			String errMsg = panelError.getText();
-			if (errMsg.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
-				result = false;
-				Log.clickElementInfo("Cancel");
+		if (isElementPresent(summaryErrorsBy)) {
+			String errMsg = getElementText(summaryErrors);
+			if (errMsg.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
+				Log.error("Cancel due to error '"+errMsg+"':");
+				for(WebElement err:panelErrors){
+					Log.error("/t - '"+getElementText(err)+"'");
+				}
 				this.btnAddCancel.click();
+				return false;
 			}
 		}
-		
 		return result;
 	}	
 	
