@@ -243,13 +243,20 @@ public class TestEnvironmentActions extends BaseActions {
 		testEnvironmentAction.startAnalyzer(EMPTY, db3AnalyzerRowID); 	
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		testEnvironmentAction.startReplay(EMPTY, db3AnalyzerRowID); 		
+		
+		testEnvironmentAction.startReplay(EMPTY, db3AnalyzerRowID);
+		for(int i=0;i<1;i++){
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-		driverViewPageAction.startDrivingSurvey(EMPTY, surveyRowID);	
+		driverViewPageAction.startDrivingSurvey(EMPTY, surveyRowID);
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
+		}
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		driverViewPageAction.startDrivingSurvey(EMPTY, surveyRowID);
 		testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
-		testEnvironmentAction.idleForSeconds(String.valueOf(60), NOTSET);    /* wait 60 seconds after stop survey for data upload */
+		testEnvironmentAction.idleForSeconds(String.valueOf(60), NOTSET);	/* wait 60 seconds after stop survey for data upload */
 		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 	}
 }

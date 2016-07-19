@@ -684,6 +684,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		// 1. Title and Customer
 		inputReportTitle(reports.getRptTitle());
 		if (reports.getCustomer() != null && !reports.getCustomer().equalsIgnoreCase("Picarro")) {
+			Log.info("Select customer '"+reports.getCustomer());
 			selectCustomer(reports.getCustomer());
 			Boolean confirmed = confirmInChangeCustomerDialog();
 			if (confirmed) {
