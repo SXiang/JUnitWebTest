@@ -312,7 +312,6 @@
 
 					<include name="**/ManageUsersPageTest.class" />
 					<include name="**/ManageUsersAdminPageTest.class" />
-
 				</fileset>
 			</batchtest>
 		</junit>

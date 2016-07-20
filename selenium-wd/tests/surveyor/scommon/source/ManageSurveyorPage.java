@@ -185,16 +185,17 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 		
-		if (isElementPresent(this.panelDupSurErrorXPath)){
-			WebElement panelError = driver.findElement(By.xpath(this.panelDupSurErrorXPath));
-			String errMsg = panelError.getText();
-			if (errMsg.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
-				result = false;
-				Log.clickElementInfo("Cancel");
+		if (isElementPresent(summaryErrorsBy)) {
+			String errMsg = getElementText(summaryErrors);
+			if (errMsg.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
+				Log.error("Cancel due to error '"+errMsg+"':");
+				for(WebElement err:panelErrors){
+					Log.error("   - '"+getElementText(err)+"'");
+				}
 				this.btnAddCancel.click();
+				return false;
 			}
 		}
-		
 		return result;
 	}	
 	
@@ -529,29 +530,35 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	
 	@Override
 	public void waitForPageLoad() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                return d.getPageSource().contains(STRPageContentText);
-            }
-        });
-    }
+		int numOpen = 0;
+		do{
+			try{
+				new WebDriverWait(driver, timeout).until(new ExpectedCondition<Boolean>() {
+					public Boolean apply(WebDriver d) {
+					return isPageTitleMatch(d.getTitle(),STRPageContentText);
+					}
+				});
+			}catch(Exception e){
+				open();
+			}				
+		}while(numOpen++ < 3);
+	}
 
 	public void waitForNewPageLoad() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                return d.getPageSource().contains(STRNewPageContentText);
-            }
-        });
-    }
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isPageTitleMatch(d.getTitle(),STRNewPageContentText);
+			}
+		});
+	}
 
-    public void waitForEditPageLoad() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-            	Log.info("Checking for content on EDIT page: " + STREditPageContentText);
-                return d.getPageSource().contains(STREditPageContentText);
-            }
-        });
-    }
+	public void waitForEditPageLoad() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isPageTitleMatch(d.getTitle(),STREditPageContentText);
+			}
+		});
+	}
 
 	public void waitForDataTabletoLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
