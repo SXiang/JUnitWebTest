@@ -149,7 +149,9 @@ public class SurveyorBaseTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		TestSetup.stopChromeProcesses();
+		if (!TestSetup.isParallelBuildEnabled()) {
+			TestSetup.stopChromeProcesses();
+		}
 		initializeTestObjects();
 	}
 

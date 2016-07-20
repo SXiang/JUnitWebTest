@@ -168,6 +168,8 @@ public class TestSetup {
 	private String automationReportingApiEndpoint;
 	private boolean automationReportingApiEnabled;
 
+	private static boolean parallelBuildEnabled;
+	
 	public TestSetup() {
 		initialize();
 	}
@@ -692,6 +694,7 @@ public class TestSetup {
 			setPerformanceExecutionTestProperties();
 			setUploadSurveyTestProperties();
 			setPushDBSeedTestProperties();
+			setParallelBuildTestProperties();
 
 			this.language = this.testProp.getProperty("language");
 			this.culture = this.testProp.getProperty("culture");
@@ -751,6 +754,13 @@ public class TestSetup {
 			Log.error(e.toString());
 		} catch (IOException e) {
 			Log.error(e.toString());
+		}
+	}
+
+	private void setParallelBuildTestProperties() {
+		String parallelBuildEnabledValue = this.testProp.getProperty("parallelBuild.Enabled");
+		if (parallelBuildEnabledValue != null && !parallelBuildEnabledValue.isEmpty()) {
+			this.setParallelBuildEnabled(Boolean.valueOf(parallelBuildEnabledValue));
 		}
 	}
 
@@ -1395,5 +1405,13 @@ public class TestSetup {
 
 	public void setAutomationReportingApiEndpoint(String automationReportingApiEndpoint) {
 		this.automationReportingApiEndpoint = automationReportingApiEndpoint;
+	}
+
+	public static boolean isParallelBuildEnabled() {
+		return parallelBuildEnabled;
+	}
+
+	public static void setParallelBuildEnabled(boolean parallelBldEnabled) {
+		parallelBuildEnabled = parallelBldEnabled;
 	}
 }
