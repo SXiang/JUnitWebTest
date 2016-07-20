@@ -32,6 +32,11 @@ public final class SurveyorConstants {
 
 	private static final String CUSTOMERS_WITH_ASSETS = "Picarro";     // Comma seperated list of Customers that have assets in Seed script.
 	
+	public static final String CUSTOMER_PICARRO = "Picarro";
+	public static final String CUSTOMER_SQACUS = "sqacus";
+	public static final String CUSTOMER_SQATEST = "sqaTest";
+	public static final String CUSTOMER_PGE = "PG&E";
+
 	public static final String CUSTOMERNAMEPREFIX = "regcus";
 	public static final String CUSTOMERSTATUS = Resources.getResource(ResourceKeys.Constant_Enabled);
 	public static final String EULASTRING = "Testing eula string, TBD";
@@ -40,10 +45,13 @@ public final class SurveyorConstants {
 	public static final String PICNAMEPREFIX = "sqapic";
 	public static final String REGBASEPICUSERNAME = "@picarro.com";
 
-	public static final String CUSNAMEBASE = "sqacus";
+	public static final String CUSNAMEBASE = CUSTOMER_SQACUS;
 	public static final String CUSNAMEBASELOC = "sqacusloc";
 	
-	public static final String SQACUS = "sqacus";
+	public static final String SQATESTLOC = "sqaTestloc";
+	public static final String PGESCLOC = "pge_SC";
+	
+	public static final String SQACUS = CUSTOMER_SQACUS;
 	public static final String SQACUSLOC = "sqacusloc";
 	public static final String SQAPIC = "sqapic";
 	public static final String SQAPICLOC = "sqapicloc";
@@ -88,12 +96,16 @@ public final class SurveyorConstants {
 	public static final String SQAPICLOC4SUR = "Software Car";
 	public static final String SQACUSLOCSUR = "White Dodge";
 	public static final String SQACUSLOCANZ = "FDDS2037";
+	public static final String SQACUSLOCANZ1 = "FDDS2037-1";
+	public static final String SQACUSLOCANZ2 = "FDDS2037-2";
 	public static final String SQACUSLOC0SUR = "sqacusloc0sur";
 	public static final String SQACUSLOC1SUR = "sqacusloc1sur";
 	public static final String SQACUSLOC2SUR = "sqacusloc2sur";
 	public static final String SQACUSLOC3SUR = "sqacusloc3sur";
 
-	public static final String SQAETHCUST= "PG&E";
+	public static final String FEDS2015ANZ = "FEDS2015";
+	
+	public static final String SQAETHCUST= CUSTOMER_PGE;
 	public static final String SQAETHSUR="Black Dodge-P3300";
 	public static final String SQAETHLOC= "PGE-Santa Clara";
 	
@@ -289,7 +301,29 @@ public final class SurveyorConstants {
 	public static final String CUSDRVRRTAG2 = "rr-sqacudr";
 	public static final String CUSDRVOPTAG2 = "op-sqacudr";
 	
-		
+	/*
+	 * Simulator Analyzers
+	 */
+	public static final String SIMAUTO_ANALYZER1 = "SimAuto-Analyzer1";
+	public static final String SIMAUTO_ANALYZER2 = "SimAuto-Analyzer2";
+	public static final String SIMAUTO_ANALYZER3 = "SimAuto-Analyzer3";
+
+	/*
+	 * Simulator SurveyorUnits
+	 */
+	public static final String SIMAUTO_SURVEYOR1 = "SimAuto-Surveyor1";
+	public static final String SIMAUTO_SURVEYOR2 = "SimAuto-Surveyor2";
+	public static final String SIMAUTO_SURVEYOR3 = "SimAuto-Surveyor3";
+
+	/*
+	 * Surveyor Units
+	 */
+	public static final String SURVEYOR_SOFTWARECAR2037PIC = "SoftwareCar_2037_picarro";
+	public static final String SURVEYOR_SOFTWARECAR2037CUST = "SoftwareCar_2037_cust";
+	public static final String SURVEYOR_SOFTWARECAR2037TESTCUST = "SoftwareCar_2037_Testcust";
+	public static final String SURVEYOR_PGEFEDS2015 = "PGE-FEDS2015";
+
+
 	/*
 	 * Compliance Report Surveyor Units
 	 */

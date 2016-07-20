@@ -158,7 +158,7 @@ public class SurveyorBaseTest {
 		driver = testSetup.getDriver();
 		baseURL = testSetup.getBaseUrl();		
 		debug = testSetup.isRunningDebug();
-		TestContext.INSTANCE.setTestSetup(testSetup);
+
 		screenShotsDir = TestSetup.getExecutionPath() + TestSetup.reportDir + testSetup.getTestReportCategory();
 		Path screenShotsPath = Paths.get(screenShotsDir, screenShotsSubFolder);
 		FileUtility.createDirectoryIfNotExists(screenShotsPath.toString());			

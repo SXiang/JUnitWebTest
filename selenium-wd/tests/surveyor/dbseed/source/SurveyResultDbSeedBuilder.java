@@ -10,7 +10,7 @@ import common.source.ExceptionUtility;
 import common.source.Log;
 
 public class SurveyResultDbSeedBuilder extends BaseDbSeedBuilder {
-	private static final String TABLE_NAME = "[dbo].[SurveyResult]";
+	public static final String TABLE_NAME = "[dbo].[SurveyResult]";
 	private static final String SEED_DATA_FOLDER = SURVEY_SEED_DATA_FOLDER;
 	private static final String SEED_FILE_NAME = "SurveyResultSeed.csv";
 	private static final String INSERT_TEMPLATE = "INSERT [dbo].[SurveyResult] ([SurveyId], [FieldOfView], [Breadcrumb]) VALUES (N'%s', %s, %s)";
