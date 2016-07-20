@@ -57,7 +57,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC65_AddAnalyzer_PicAdmin() {
 		String customerName = "Picarro";
-		String locationName = customerName + testSetup.getRandomNumber() + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "tc65loc";
 		String surveyorName = locationName + testSetup.getRandomNumber() + "sur";
 		String analyzerName = surveyorName + "ana";
 		String cityName="Santa Clara";
@@ -97,7 +97,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC66_AddAnalyzerNonPicarroCustomer_PicAdmin() {
 		String customerName = "Picarro";
-		String locationName = customerName + testSetup.getRandomNumber() + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "tc66loc";
 		String surveyorName = locationName + testSetup.getRandomNumber() + "sur";
 		String analyzerName = surveyorName + "ana";
 		String cityName="Santa Clara";
@@ -126,7 +126,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC67_EditAnalyzer_PicAdmin() {
 		String customerName = "Picarro";
-		String locationName = customerName + testSetup.getRandomNumber() + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "tc67loc";
 		String surveyorName = locationName + "sur";
 		String surveyorNameNew = locationName + "surnew";
 		String analyzerName = surveyorName + "ana";
@@ -146,12 +146,11 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		manageSurveyorPage.addNewSurveyor(surveyorNameNew, locationName, customerName);
 		
 		manageAnalyzersPage.open();
-		manageAnalyzersPage.addNewAnalyzer(analyzerName, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
+		assertTrue(manageAnalyzersPage.addNewAnalyzer(analyzerName, ANALYZERSHAREDKEY, surveyorName, customerName, locationName));
 		
-		if (manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
-			manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationName, surveyorName, analyzerName, 
-					customerName + " - " + locationName + " - " + surveyorNameNew );
-		
+		if(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
+			assertTrue(manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationName, surveyorName, analyzerName, 
+					customerName + " - " + locationName + " - " + surveyorNameNew ));
 		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorNameNew, analyzerName));		
 	}
 
@@ -172,7 +171,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		String locationName = customerName + testSetup.getRandomNumber() + "loc";
 		String surveyorName = locationName + testSetup.getRandomNumber() + "sur";
 		String analyzerName50 = "TC99" + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-4);
-		String analyzerName51 = "TC99" + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-4) + "A";
+		String analyzerName51 = "TC99" + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-4) + "a";
 		String cityName="Santa Clara";
 		
 		Log.info("\nRunning TC99_AnalyzerMax50CharsSerialNumber_PicAdmin - Test Description: More than 50 characters not allowed in Serial Number field");
@@ -197,7 +196,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName50));
 		
 		// Reset analyzerName and create new Analyzer with 51 chars.
-		analyzerName51 = "TC99" + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-4) + "A";
+		analyzerName51 = "TC99" + testSetup.getFixedSizePseudoRandomString(MAX_SIZE-4) + "a";
 		manageAnalyzersPage.open();
 		manageAnalyzersPage.addNewAnalyzer(analyzerName51, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
 		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName51.substring(0, MAX_SIZE)));
@@ -212,7 +211,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC122_DuplicateAnalyzer_PicAdmin() {
 		String customerName = "Picarro";
-		String locationName = customerName + testSetup.getRandomNumber() + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "tc122loc";
 		String surveyorName = locationName + testSetup.getRandomNumber() + "sur";
 		String analyzerName = surveyorName + "ana";
 		String cityName="Santa Clara";
@@ -244,10 +243,10 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC123_EditDuplicateAnalyzer_PicAdmin() {
 		String customerName = "Picarro";
-		String locationName = customerName + testSetup.getRandomNumber() + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "tc123loc";
 		String surveyorName = locationName + "sur";
 		String analyzerName = surveyorName + "ana";
-		String analyzerNameNew = surveyorName + "anaNew";
+		String analyzerNameNew = surveyorName + "ananew";
 		String cityName ="Santa Clara";
 		
 		Log.info("\nRunning TC123_EditDuplicateAnalyzer_PicAdmin - Test Description: Admin not allowed to edit Analyzer having details same as existing analyzer detials");
@@ -264,7 +263,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		manageAnalyzersPage.open();
 		manageAnalyzersPage.addNewAnalyzer(analyzerName, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
 		
-		if (manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
+		if(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
 			manageAnalyzersPage.editExistingAnalyzer(customerName, locationName, surveyorName, analyzerName, 
 					ANALYZERSHAREDKEY, customerName + " - " + locationName + " - " + surveyorName, analyzerNameNew);
 		
@@ -279,7 +278,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC109_Associate_Disassociate_Analyzers_PicAdmin() {
 		String customerName = "Picarro";
-		String locationName = customerName + testSetup.getRandomNumber() + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "tc109loc";
 		String surveyorName = locationName + "sur";
 		String analyzerName = surveyorName + "ana";
 		String cityName ="Santa Clara";
@@ -293,11 +292,11 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerName, locationName,surveyorName,analyzerName,cityName,ANALYZERSHAREDKEY);
 		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerNameNew, locationNameNew,surveyorNameNew,analyzerName,cityName,ANALYZERSHAREDKEY);
 				
-		if (manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
+		if(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
 			manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationName, surveyorName, analyzerName, 
 					customerNameNew + " - " + locationNameNew + " - " + surveyorNameNew );
 		
-		assertFalse(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName));	
+		assertFalse(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName));
 		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerNameNew, locationNameNew, surveyorNameNew, analyzerName));
 	}
 	
@@ -309,7 +308,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC110_SurveyorUnit_0or1_analyzer_associated() {
 		String customerName = "PG&E";
-		String locationName = customerName + testSetup.getRandomNumber() + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "tc110loc";
 		String surveyorName = locationName + "sur";
 		String analyzerName = surveyorName + "ana";
 		String cityName ="Santa Clara";
@@ -322,11 +321,11 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 			
 		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerName, locationName,surveyorName,analyzerName,cityName,ANALYZERSHAREDKEY);
 		addNewLocationSurveyorAnalyzer(testSetup.getLoginUser(), testSetup.getLoginPwd(), customerName, locationNameNew,surveyorNameNew,analyzerNameNew,cityName,ANALYZERSHAREDKEY);
-		if (manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
-		manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationNameNew, surveyorNameNew, analyzerNameNew, 
+		if(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
+			manageAnalyzersPage.associateAnalyzerToOtherSurveyor(customerName, locationNameNew, surveyorNameNew, analyzerNameNew, 
 					customerName + " - " + locationName + " - " + surveyorName, false );
-		
-		assertTrue(manageAnalyzersPage.getWarningMsg().getText().trim().equals(ANALYZER_ALREADY_ASSOCIATED_ERROR));
+
+		assertTrue(manageAnalyzersPage.getElementText(manageAnalyzersPage.getWarningMsg()).trim().equals(ANALYZER_ALREADY_ASSOCIATED_ERROR));
 	}
 	
 	/**

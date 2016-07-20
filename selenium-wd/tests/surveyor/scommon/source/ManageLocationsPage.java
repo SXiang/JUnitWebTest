@@ -263,6 +263,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		}
 
 		JavascriptExecutor js = (JavascriptExecutor) driver;
+		Log.clickElementInfo("Ok");
 		js.executeScript("arguments[0].click();", this.btnOK);
 
 		this.waitForPageToLoad();
@@ -786,7 +787,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public void waitForPageLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return d.getPageSource().contains(STRPageContentText);
+				return isPageTitleMatch(d.getTitle(),STRPageContentText);
 			}
 		});
 	}
@@ -794,7 +795,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public void waitForNewPageLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return d.getPageSource().contains(STRNewPageContentText);
+				return isPageTitleMatch(d.getTitle(),STRNewPageContentText);
 			}
 		});
 	}
@@ -802,7 +803,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public void waitForEditPageLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return d.getPageSource().contains(STREditPageContentText);
+				return isPageTitleMatch(d.getTitle(),STREditPageContentText);
 			}
 		});
 	}

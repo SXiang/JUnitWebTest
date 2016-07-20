@@ -115,6 +115,7 @@ public class BasePage {
 	}
 
 	public void open() {
+		Log.info("Get URL: '"+strPageURL+"'");
 		driver.get(strPageURL);
 		this.waitForPageToLoad();
 	}
@@ -373,7 +374,7 @@ public class BasePage {
 			try{
 				WebElement opt =  dropdown.findElement(optBy);
 				opt.click();
-				selected = true;
+				selected = opt.isSelected();
 			}catch(Exception e){
 				numTry++;
 				Log.error("Failed to select option '"+option+"'");
@@ -382,11 +383,11 @@ public class BasePage {
 		if(!selected){
 			WebElement opt =  dropdown.findElement(optBy);
 			opt.click();
-			selected = true;
+			selected = opt.isSelected();
 		}
 		return selected;
 	}
-	
+
     public String getElementText(WebElement element) {
     	String text = "";
     	try{
@@ -395,5 +396,18 @@ public class BasePage {
     		Log.error("Failed to get text of element '"+element+"'");
     	}
     	return text;
+    }
+    
+    public boolean isPageTitleMatch(String title, String keywords){
+    	if(title.contains(keywords)){
+    		return true;
+    	}
+    	String[] words = keywords.split(" ");
+    	for(String word:words){
+    		if(!title.contains(word.trim())){
+    			return false;
+    		}
+    	}
+    	return true;
     }
 }
