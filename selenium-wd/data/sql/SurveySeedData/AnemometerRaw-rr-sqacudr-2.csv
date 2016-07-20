@@ -1,4 +1,4 @@
-﻿AnalyzerId,EpochTime,WindSpeedLateral,WindSpeedLongitudinal,Status,Index
+AnalyzerId,EpochTime,WindSpeedLateral,WindSpeedLongitudinal,Status,Index
 00000015-DB64-FDE7-7E67-39C8AC533D49,1450300419.55,-1.21,-0.43,0,0
 00000015-DB64-FDE7-7E67-39C8AC533D49,1450300420.548,-1.21,-0.35,0,0
 00000015-DB64-FDE7-7E67-39C8AC533D49,1450300421.553,-1.31,-0.64,0,0

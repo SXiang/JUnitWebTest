@@ -89,7 +89,7 @@ public class Customer extends BaseEntity {
 		String SQL = "SELECT * FROM dbo.[Customer]";
 		return load(SQL);
 	}
- 
+
 	public ArrayList<Customer> load(String SQL) {
 		ArrayList<Customer> objCustomerList = new ArrayList<Customer>();
 		

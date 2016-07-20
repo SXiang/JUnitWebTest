@@ -58,7 +58,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@class='button-cancel btn btn-danger']")
 	private WebElement btnCancel;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[2]/ul/li")
+	@FindBy(how = How.CSS, using = ".validation-summary-errors.panel > .panel-body > ul > li")
 	private WebElement warningMsg;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[10]/a[1]")
@@ -111,25 +111,21 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		Log.info("Set shared key - '"+sharedKey+"'");
 		this.inputSharedKey.sendKeys(sharedKey);
 
-		List<WebElement> options = this.dropDownSurveyor.findElements(By.tagName("option"));
-		for (WebElement option : options) {
-			if (option.getText().trim().equalsIgnoreCase(customerName + " - " + locationName + " - " + surveyor)) {
-				Log.info("Select surveyor '"+customerName + " - " + locationName + " - " + surveyor+"'");
-				option.click();
-				break;
-			}
-		}
+		Log.info("Select surveyor '"+customerName + " - " + locationName + " - " + surveyor+"'");
+		selectDropdownOption(this.dropDownSurveyor, customerName + " - " + locationName + " - " + surveyor);
 
 		Log.clickElementInfo("OK");
 		this.btnOk.click();
 
-		if (isElementPresent(this.panelDuplicationErrorXPath)) {
-			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-			String errMsg = panelError.getText();
+		if (isElementPresent(summaryErrorsBy)) {
+			String errMsg = getElementText(summaryErrors);
 			if (errMsg.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
-				result = false;
-				Log.clickElementInfo("Cancel");
+				Log.error("Cancel due to error '"+errMsg+"':");
+				for(WebElement err:panelErrors){
+					Log.error("/t - '"+getElementText(err)+"'");
+				}
 				this.btnCancel.click();
+				result = false;
 			}
 		}
 		return result;
@@ -140,8 +136,10 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		Log.info(String.format("Find analyzer '%s', customer = '%s', location = '%s', surveyor = '%s'",
 				analyzerName, customerName, locationName, surveyorName));
 		setPagination(PAGINATIONSETTING_100);
-
-		this.waitForTableDataToLoad();
+		performSearch(analyzerName);
+		if(!this.waitForTableDataToLoad()){
+			return false;
+		}
 
 		String customerXPath;
 		String locationXPath;
@@ -207,7 +205,10 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	public boolean associateAnalyzerToOtherSurveyor(String customerName, String locationName, String surveyorName, String analyzerName, String cuslocsur, boolean confirm) {
 		Log.method("associateAnalyzerToOtherSurveyor", customerName, locationName, surveyorName, analyzerName, cuslocsur, confirm);
 		setPagination(PAGINATIONSETTING_100);
-		this.waitForTableDataToLoad();
+		performSearch(analyzerName);
+		if(!this.waitForTableDataToLoad()){
+			return false;
+		}
 
 		String customerXPath;
 		String locationXPath;
@@ -243,20 +244,15 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 			analyzerCell = getTable().findElement(By.xpath(analyzerXPath));
 
 			if ((customerCell.getText().trim()).equalsIgnoreCase(customerName) && (locationCell.getText().trim()).equalsIgnoreCase(locationName) && (surveyorCell.getText().trim()).equalsIgnoreCase(surveyorName) && analyzerCell.getText().trim().equalsIgnoreCase(analyzerName)) {
-				Log.info("Found entry at row=" + rowNum);
 				actionXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[10]/a[1]";
 				actionCell = getTable().findElement(By.xpath(actionXPath));
 				Log.info("Found entry at row=" + rowNum);
 				actionCell.click();
 				this.waitForEditPageLoad();
 
-				List<WebElement> options = this.dropDownSurveyor.findElements(By.tagName("option"));
-				for (WebElement option : options) {
-					if (cuslocsur.equals(option.getText().trim())){
-						Log.info("Select surveyor '"+cuslocsur+"'");
-						option.click();
-						break;
-					}
+				Log.info("Select surveyor '"+cuslocsur+"'");
+				if(!selectDropdownOption(this.dropDownSurveyor, cuslocsur)){
+					Log.error("Failed to select surveyor for analyzer '"+cuslocsur+"'");
 				}
 
 				Log.clickElementInfo("OK");
@@ -272,10 +268,13 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				else {
 					return true;
 				}
-				if (isElementPresent(this.panelDuplicationErrorXPath)) {
-					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-					if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
-						Log.clickElementInfo("Cancel");
+				if (isElementPresent(summaryErrorsBy)) {
+					String errMsg = getElementText(summaryErrors);
+					if (errMsg.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
+						Log.error("Cancel due to error '"+errMsg+"':");
+						for(WebElement err:panelErrors){
+							Log.error("   - '"+getElementText(err)+"'");
+						}
 						this.btnCancel.click();
 						return false;
 					}
@@ -500,7 +499,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	public void waitForPageLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return d.getPageSource().contains(STRPageContentText);
+				return isPageTitleMatch(d.getTitle(),STRPageContentText);
 			}
 		});
 	}
@@ -508,7 +507,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	public void waitForNewPageLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return d.getPageSource().contains(STRNewPageContentText);
+				return isPageTitleMatch(d.getTitle(),STRNewPageContentText);
 			}
 		});
 	}
@@ -516,7 +515,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 	public void waitForEditPageLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return d.getPageSource().contains(STREditPageContentText);
+				return isPageTitleMatch(d.getTitle(),STREditPageContentText);
 			}
 		});
 	}

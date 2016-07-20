@@ -52,6 +52,7 @@ import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
 import net.lightbody.bmp.core.har.Har;
 import surveyor.dataaccess.source.Survey;
+import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.TestEnvironmentActions;
 
 /**
@@ -156,7 +157,10 @@ public class TestSetup {
 	private String surveysToUpload;
 	private boolean uploadSurveyEnabled;
 	private String surveyUploadBaseUrl;
-	
+
+	private boolean pushDBSeedEnabled;
+	private String pushDBSeedBaseUrl;
+
 	private String automationReportingApiEndpoint;
 	private boolean automationReportingApiEnabled;
 
@@ -674,6 +678,7 @@ public class TestSetup {
 			setComplianceReportBaselineGenerationTestProperties();
 			setPerformanceExecutionTestProperties();
 			setUploadSurveyTestProperties();
+			setPushDBSeedTestProperties();
 
 			this.language = this.testProp.getProperty("language");
 			this.culture = this.testProp.getProperty("culture");
@@ -704,6 +709,8 @@ public class TestSetup {
 			driverSetup();
 			inputStream.close();
 
+			TestContext.INSTANCE.setTestSetup(this);
+
 			// If survey upload is enabled, upload the specified surveys to
 			// environment.
 			// We have a 2nd level of check (ie matching base url provided) to
@@ -712,7 +719,18 @@ public class TestSetup {
 				try {
 					uploadSurveys();
 				} catch (Exception e) {
-					Log.error(e.toString());
+					Log.error(String.format("ERROR when uploading survey. EXCEPTION: %s", e.toString()));
+				}
+			}
+
+			// If pushDBSeed is enabled, push DB seed data to environment.
+			// We have a 2nd level of check (ie matching base url provided) to
+			// prevent accidental upload to unintended environment.
+			if (isPushDBSeedEnabled() && this.getPushDBSeedBaseUrl().equalsIgnoreCase(this.baseURL)) {
+				try {
+					DbSeedExecutor.executeAllDataSeed();
+				} catch (Exception e) {
+					Log.error(String.format("ERROR when pushing DB seed. EXCEPTION: %s", e.toString()));
 				}
 			}
 
@@ -749,6 +767,14 @@ public class TestSetup {
 		}
 		this.setSurveysToUpload(this.testProp.getProperty("surveyUpload.Surveys"));
 		this.setSurveyUploadBaseUrl(this.testProp.getProperty("surveyUpload.BaseUrl"));
+	}
+
+	private void setPushDBSeedTestProperties() {
+		String pushDBSeedEnabledValue = this.testProp.getProperty("pushDBSeed.Enabled");
+		if (pushDBSeedEnabledValue != null && pushDBSeedEnabledValue != "") {
+			this.setPushDBSeedEnabled(Boolean.valueOf(pushDBSeedEnabledValue));
+		}
+		this.setPushDBSeedBaseUrl(this.testProp.getProperty("pushDBSeed.BaseUrl"));
 	}
 
 	private void setPerformanceExecutionTestProperties() {
@@ -1245,6 +1271,14 @@ public class TestSetup {
 		this.uploadSurveyEnabled = uploadSurveyEnabled;
 	}
 
+	public boolean isPushDBSeedEnabled() {
+		return pushDBSeedEnabled;
+	}
+
+	public void setPushDBSeedEnabled(boolean pushDBSeedEnabled) {
+		this.pushDBSeedEnabled = pushDBSeedEnabled;
+	}
+
 	public boolean isAutomationReportingApiEnabled() {
 		return automationReportingApiEnabled;
 	}
@@ -1256,7 +1290,15 @@ public class TestSetup {
 	public void setSurveyUploadBaseUrl(String surveyUploadBaseUrl) {
 		this.surveyUploadBaseUrl = surveyUploadBaseUrl;
 	}
-	
+
+	public String getPushDBSeedBaseUrl() {
+		return pushDBSeedBaseUrl;
+	}
+
+	public void setPushDBSeedBaseUrl(String pushDBSeedBaseUrl) {
+		this.pushDBSeedBaseUrl = pushDBSeedBaseUrl;
+	}	
+
 	/**
 	 * Use value of System property over VM property
 	 * @param key

@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import common.source.Log;
 import surveyor.dataaccess.source.Customer;
-import surveyor.dbseed.source.DBSeedExecutor;
+import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.actions.DriverViewPageActions;
@@ -377,5 +377,5 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
 
 		Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.name);
-		DBSeedExecutor.executeGisSeed(customer.getId());
+		DbSeedExecutor.executeGisSeed(customer.getId());
 	}}

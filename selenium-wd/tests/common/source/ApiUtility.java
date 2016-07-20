@@ -8,8 +8,6 @@ import java.util.Hashtable;
 
 import org.testng.Assert;
 
-import surveyor.dataaccess.source.ResourceKeys;
-import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.SurveyorConstants;
 
 public class ApiUtility {
