@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.CallableStatement;
 
+import common.source.DateUtility;
 import common.source.Log;
 
 public class StoredProcComplianceAssessmentGetReportDrivingSurveys extends BaseEntity {
@@ -85,25 +86,46 @@ public class StoredProcComplianceAssessmentGetReportDrivingSurveys extends BaseE
 		this.description = description;
 	}
 
+	@Override
+	public String toString(){
+		String wsp = " ";
+		long duration = DateUtility.getDuration(getStartDateTimeWithTZ(), getEndDateTimeWithTZ(), true);
+		String text = getStartDateTimeWithTZ() + wsp + getEndDateTimeWithTZ() + wsp + duration + wsp + getUserName()
+				+ wsp + getDescription()
+				+ wsp + getAnalyzerId() + wsp + getTag() + wsp+getStabilityClass();
+		return text;
+	}
+	
 	public boolean isEquals(StoredProcComplianceAssessmentGetReportDrivingSurveys obj) {
 
 		if (!((this.getAnalyzerId().trim()).equals(obj.getAnalyzerId().trim()))) {
+			Log.error(String.format("AnalyzerId is not match, Expect '%s', Actual '%s'", this.getAnalyzerId().trim(), obj.getAnalyzerId().trim()));
 			return false;
 		}
-// TODO: datetime comparison - need to compare date instead of string	- DE1985 on Rally
-//		if (!((this.getStartDateTimeWithTZ().trim().replaceAll("\\s+", "")).equals(obj.getStartDateTimeWithTZ().trim().replaceAll("\\s+", "")))) {
-//			return false;
-//		}
-//		if (!((this.getEndDateTimeWithTZ().trim().replaceAll("\\s+", "")).equals(obj.getEndDateTimeWithTZ().trim().replaceAll("\\s+", "")))) {
-//			return false;
-//		}
+		String minutesPattern = "(\\d{1,2}:\\d{1,2}):\\d{1,2}";
+		String expectedDate = obj.getStartDateTimeWithTZ().trim().replaceFirst(minutesPattern,"$1").replaceAll("\\s+", " ");
+		String actualDate = this.getStartDateTimeWithTZ().trim().replaceFirst(minutesPattern,"$1").replaceAll("\\s+", " ");
+
+		if(DateUtility.compareDatesWithTZ(expectedDate, false, actualDate, false)!=0){
+			Log.error(String.format("StartDate is not match, Expect '%s', Actual '%s'", expectedDate, actualDate));
+			return false;
+		}
+		expectedDate = obj.getEndDateTimeWithTZ().trim().replaceFirst(minutesPattern,"$1").replaceAll("\\s+", " ");
+		actualDate = this.getEndDateTimeWithTZ().trim().replaceFirst(minutesPattern,"$1").replaceAll("\\s+", " ");
+		if(DateUtility.compareDatesWithTZ(expectedDate, false, actualDate, false)!=0){
+			Log.error(String.format("EndDate is not match, Expect '%s', Actual '%s'", expectedDate, actualDate));
+			return false;
+		}
 		if (!((this.getUserName().trim()).equals(obj.getUserName().trim()))) {
+			Log.error(String.format("UserName is not match, Expect '%s', Actual '%s'", this.getUserName().trim(), obj.getUserName().trim()));
 			return false;
 		}
 		if (!((this.getStabilityClass().trim()).equals(obj.getStabilityClass().trim()))) {
+			Log.error(String.format("Stability is not match, Expect '%s', Actual '%s'", this.getStabilityClass().trim(), obj.getStabilityClass().trim()));
 			return false;
 		}
 		if (!((this.getDescription().trim()).equals(obj.getDescription().trim()))) {
+			Log.error(String.format("Description is not match, Expect '%s', Actual '%s'", this.getDescription().trim(), obj.getDescription().trim()));
 			return false;
 		}
 		return true;
@@ -138,7 +160,6 @@ public class StoredProcComplianceAssessmentGetReportDrivingSurveys extends BaseE
 			objReport.setTag(resultSet.getString("Tag"));
 			objReport.setStabilityClass(resultSet.getString("StabilityClass"));
 			objReport.setDescription(resultSet.getString("Description"));
-
 		} catch (SQLException e) {
 			Log.error("Class Report | " + e.toString());
 		}

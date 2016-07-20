@@ -83,27 +83,21 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean clickOnDisplayButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnDisplayButton", data, dataRowID);
 		getBaseMapViewPageObject().clickDisplayButton();
-		TestContext.INSTANCE.stayIdle(2);
+		TestContext.INSTANCE.stayIdle(3);
 		return true;
-	}
-
-	public boolean clickOnFirstIndicationShownOnMap(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".clickOnFirstIndicationShownOnMap", data, dataRowID);
-		String mapCanvasXPath = "//*[@id='map']/div/canvas";
-		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
-		return mapUtility.clickFirstIndicationOnMap(mapCanvasXPath);
 	}
 
 	public boolean clickOnGisButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnGisButton", data, dataRowID);
 		getBaseMapViewPageObject().clickGisButton();
+		TestContext.INSTANCE.stayIdle(3);
 		return true;
 	}
 
 	public boolean clickOnMapButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnMapButton", data, dataRowID);
 		getBaseMapViewPageObject().clickMapButton();
-		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
+		TestContext.INSTANCE.stayIdle(3);
 		return true;
 	}
 
@@ -238,8 +232,8 @@ public class BaseMapViewPageActions extends BasePageActions {
 	 */
 	public boolean turnOnAllBoundaries(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnAllBoundaries", data, dataRowID);
-		turnOnBoundariesDistrict(data, dataRowID);
-		turnOnBoundariesDistrictPlat(data, dataRowID);
+		turnOnBigBoundary(data, dataRowID);
+		turnOnSmallBoundary(data, dataRowID);
 		return true;
 	}
  
@@ -256,14 +250,14 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return true;
 	}
 
-	public boolean turnOnBoundariesDistrict(String data, Integer dataRowID) {
+	public boolean turnOnBigBoundary(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnBoundariesDistrict", data, dataRowID);
-		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.BoundariesDistrict, true);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.BigBoundary, true);
 		return true;
 	}
-	public boolean turnOnBoundariesDistrictPlat(String data, Integer dataRowID) {
+	public boolean turnOnSmallBoundary(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnBoundariesDistrictPlat", data, dataRowID);
-		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.BoundariesDistrictPlat, true);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.SmallBoundary, true);
 		return true;
 	}
 	public boolean turnOnMaterialTypeCopper(String data, Integer dataRowID) {
@@ -306,14 +300,14 @@ public class BaseMapViewPageActions extends BasePageActions {
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.UseAllPipes, true);
 		return true;
 	}
-	public boolean turnOffBoundariesDistrict(String data, Integer dataRowID) {
+	public boolean turnOffBigBoundary(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffBoundariesDistrict", data, dataRowID);
-		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.BoundariesDistrict, false);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.BigBoundary, false);
 		return true;
 	}
-	public boolean turnOffBoundariesDistrictPlat(String data, Integer dataRowID) {
+	public boolean turnOffSmallBoundary(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffBoundariesDistrictPlat", data, dataRowID);
-		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.BoundariesDistrictPlat, false);
+		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.SmallBoundary, false);
 		return true;
 	}
 	public boolean turnOffMaterialTypeCopper(String data, Integer dataRowID) {
@@ -383,8 +377,8 @@ public class BaseMapViewPageActions extends BasePageActions {
 	 */
 	public boolean turnOffAllBoundaries(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffAllBoundaries", data, dataRowID);
-		turnOffBoundariesDistrict(data, dataRowID);
-		turnOffBoundariesDistrictPlat(data, dataRowID);
+		turnOffBigBoundary(data, dataRowID);
+		turnOffSmallBoundary(data, dataRowID);
 		return true;
 	}
  
@@ -550,10 +544,10 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisSwitchIsOn", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty(CLS_BASEMAP_VIEW_PAGE_ACTIONS + FN_VERIFY_GIS_SWITCH_IS_ON, ARG_DATA, data);
 		GisSwitchType switchType = GisSwitchType.UseAllPipes;
-		if (data.equalsIgnoreCase("BoundariesDistrict")) {
-			switchType = GisSwitchType.MaterialTypePEPlastic;
-		} else if (data.equalsIgnoreCase("BoundariesDistrictPlat")) {
-			switchType = GisSwitchType.BoundariesDistrictPlat;
+		if (data.equalsIgnoreCase("BigBoundary")) {
+			switchType = GisSwitchType.BigBoundary;
+		} else if (data.equalsIgnoreCase("SmallBoundary")) {
+			switchType = GisSwitchType.SmallBoundary;
 		} else if (data.equalsIgnoreCase("MaterialTypeCastIron")) {
 			switchType = GisSwitchType.MaterialTypeCastIron;
 		} else if (data.equalsIgnoreCase("MaterialTypeCopper")) {
@@ -1126,26 +1120,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyModeButtonIsNotVisible(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyStatusIsNotShownOnMap", data, dataRowID);
 		return !getBaseMapViewPageObject().isModeButtonVisible();
-	}
-	/**
-	 * Executes verifyStartSurveyIsNotShownOnMap action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyStartSurveyIsNotShownOnMap(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".verifyStartSurveyIsNotShownOnMap", data, dataRowID);
-		return !getBaseMapViewPageObject().isStartSurveyButtonVisible();
-	}
-	/**
-	 * Executes verifyStopSurveyIsNotShownOnMap action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyStopSurveyIsNotShownOnMap(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".verifyStopSurveyIsNotShownOnMap", data, dataRowID);
-		return !getBaseMapViewPageObject().isStopSurveyButtonVisible();
 	}
 	
 	/**

@@ -7,6 +7,8 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 import java.util.List;
 
 import common.source.Log;
+
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
@@ -42,6 +44,22 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
+
+		// Select run mode here.
+		setPropertiesForTestRunMode();
+	}
+
+	@Before
+	public void beforeTest() throws Exception{
+		setPropertiesForTestRunMode();
+	}
+
+	private static void setPropertiesForTestRunMode() throws Exception {
+		setTestRunMode(ReportTestRunMode.FullTestRun);
+		
+		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
+			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
+		}
 	}
 
 	/**
@@ -56,13 +74,6 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
-
-		// Select run mode here.
-		setTestRunMode(ReportTestRunMode.FullTestRun);
-		
-		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
-			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
-		}
 	}
 
 	/**
@@ -94,7 +105,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		
 		// Get min amplitude for the Analyzer and assert all values in Indication table > MinAmp.
 		List<Float> minAmps = complianceReportsPageAction.getMinAmplitudesForSurveys(reportDataRowID1);
-		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableMinAmplitudeValues(String.valueOf(minAmps.get(0)), NOTSET));
+		Float locationMinAmp = manageLocationPageAction.getMinAmplitudeForLocation(DEFAULT_LOCATION_DATAROWID, SurveyModeType.Standard);
+		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableMinAmplitudeValues(String.valueOf(locationMinAmp), NOTSET));
 	}
 
 	/**
@@ -212,7 +224,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPageAction.verifyAllSSRSTableInfos(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 
-		Integer expectedLisaRows = 4;
+		Integer expectedLisaRows = 5;  
 		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableRowCountEquals(String.valueOf(expectedLisaRows), NOTSET));
 		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableSortedDescByColumn(LISAIndicationTableColumns.Amplitude.toString(), NOTSET));
 		assertTrue(complianceReportsPageAction.verifyIsotopicTableSortedAscByColumn(IsotopicAnalysisTableColumns.DateTime.toString(), NOTSET));

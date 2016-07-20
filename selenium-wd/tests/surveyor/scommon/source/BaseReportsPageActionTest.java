@@ -3,6 +3,9 @@ package surveyor.scommon.source;
 import surveyor.scommon.actions.BaseActions;
 import java.util.HashMap;
 import org.junit.After;
+import org.junit.Rule;
+import org.junit.rules.*;
+
 import common.source.ExceptionUtility;
 import common.source.Log;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -51,11 +54,12 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 	@After
 	public void afterTestMethod() {
 		try {
-			deleteComplianceReport();
+			// TODO: Turn off report deletion for debugging.
+			//deleteComplianceReport();
 			homePage.logout();
 		} catch (Exception e) {
-			Log.error("Error when deleting compliance report page. Exception message:");
-			Log.error(ExceptionUtility.getStackTraceString(e));
+			Log.warn("Exception in BaseReportsPageActionTest.afterTestMethod(). Exception message:");
+			Log.warn(ExceptionUtility.getStackTraceString(e));
 		}
 	}
 
@@ -110,7 +114,7 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 		removeReportDataRowIDFromMap(reportDataRowID);
 	}
 
-	protected void waitForComplianceReportGenerationToComplete(ComplianceReportsPageActions complianceReportsPageAction, Integer reportDataRowID) {
+	protected void waitForComplianceReportGenerationToComplete(ComplianceReportsPageActions complianceReportsPageAction, Integer reportDataRowID) throws Exception {
 		if (getTestRunMode() == ReportTestRunMode.FullTestRun) {
 			complianceReportsPageAction.waitForReportGenerationToComplete(EMPTY, reportDataRowID);
 		}

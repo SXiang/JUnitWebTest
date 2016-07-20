@@ -1,6 +1,7 @@
 package common.source;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.openqa.selenium.WebDriver;
 
@@ -17,16 +18,32 @@ public enum TestContext {
 
 	private ExtentReports report;
 	private ExtentTest extentTest;
+	private ArrayList<String> testMessage;
+	private int numTestMessagesToRetain = 5;
 
 	private TestContext() {
 		// Every time a context is created set a unique run ID.
 		this.setRunUniqueId(TestSetup.getUUIDString());
+		this.testMessage = new ArrayList<String>(numTestMessagesToRetain);
 	}
 
 	public ExtentTest getExtentTest() {
 		return extentTest;
 	}
 
+	public void updateTestMessage(String message){
+		if(message==null||message.isEmpty()){
+			return;
+		}
+		while(testMessage.size()>=numTestMessagesToRetain){
+			testMessage.remove(0);
+		}
+		testMessage.add(new java.util.Date() + ": " + message);
+	}
+	
+	public ArrayList<String> getTestMessage(){
+		return testMessage;
+	}
 	public void setExtentTest(ExtentTest extentTest) {
 		this.extentTest = extentTest;
 	}

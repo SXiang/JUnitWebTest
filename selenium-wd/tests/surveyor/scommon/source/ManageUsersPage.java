@@ -34,6 +34,7 @@ import common.source.TestSetup;
  *
  */
 public class ManageUsersPage extends SurveyorBasePage {
+	private static final String USERNAME_FIELD_ELEMENT_ID = "User.UserName";
 	public static final String STRURLPath = "/Picarro/ManageUsers";
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.ManageUsers_PageTitle);
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageUsers_PageTitle);
@@ -154,7 +155,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public ManageUsersPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 
-		Log.info("\nThe Manager Users Page URL is: "
+		Log.info("\nThe Manage Users Page URL is: "
 				+ this.strPageURL);
 	}
 
@@ -164,24 +165,30 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public void addNewPicarroUser(String email, String password, boolean enabled) {
+		Log.method("addNewPicarroUser", email, password, enabled);
+		Log.clickElementInfo("Add New Picarro User");
 		this.btnAddNewPicarroUser.click();
 		this.waitForNewPageLoad();
 		
+		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
+		Log.info("Set password - '<HIDDEN>'");
 		this.inputPassword.sendKeys(password);
 		this.inputPasswordConfirm.sendKeys(password);
 		
 		enableDisableUser(enabled);
-
+		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 
 		if (isElementPresent(this.panelDuplicationErrorXPath)) {
 			WebElement panelError = driver.findElement(By
 					.xpath(this.panelDuplicationErrorXPath));
 			if (panelError.getText().equalsIgnoreCase(
-					Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
+					Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
+				Log.clickElementInfo("Cancel");
 				this.cancelAddBtn.click();
+			}
 		}
 	}
 
@@ -195,140 +202,179 @@ public class ManageUsersPage extends SurveyorBasePage {
 	 */
 	public void addNewPicarroUser(String email, String password, String role,
 			String location, String timeZone) {
+		Log.method("addNewPicarroUser", email, password, role, location, timeZone);
 		addNewPicarroUser(email,password,password,role,location,timeZone);
 	}
 	
 	public void addNewPicarroUser(String email, String password, String passwordConfirm, String role,
 			String location, String timeZone) {
+		Log.method("addNewPicarroUser", email, password, passwordConfirm, role, location, timeZone);
+		Log.clickElementInfo("Add New Picarro User");
 		this.btnAddNewPicarroUser.click();
 		this.waitForNewPageLoad();
 
 		Select droplist = new Select(this.dropDownCustomer);
 		droplist.selectByVisibleText(location);
-
+		
+		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
-		this.inputPassword.sendKeys(password);
-		this.inputPasswordConfirm.sendKeys(passwordConfirm);
-
-		List<WebElement> roleOptions = this.dropDownRole.findElements(By
-				.tagName("option"));
-		for (WebElement roleOption : roleOptions) {
-			if (roleOption.getText().trim().equalsIgnoreCase(role))
-				roleOption.click();
-		}
-
-		List<WebElement> tzOptions = this.dropDownTimeZone.findElements(By
-				.tagName("option"));
-		for (WebElement tzOption : tzOptions) {
-			if (tzOption.getText().trim().equalsIgnoreCase(timeZone))
-				tzOption.click();
-		}
-
-		this.btnOk.click();
-
-		if (isElementPresent(this.panelDuplicationErrorXPath)) {
-			WebElement panelError = driver.findElement(By
-					.xpath(this.panelDuplicationErrorXPath));
-			if (panelError.getText().equalsIgnoreCase(
-					Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
-				this.cancelAddBtn.click();
-		}
-	}
-
-	public void addNewCustomerUser(String customerName, String email,
-			String password, String role, String location) {
-		addNewCustomerUser(customerName, email, password, role, location, true /*enabled*/);
-	}
-
-	public void addNewCustomerUser(String customerName, String email,
-			String password, String role, String location, boolean enabled) {
-		addNewCustomerUser(customerName,email,password,password,role,location,enabled);
-	}
-	public void addNewCustomerUser(String customerName, String email,
-			String password, String passwordConfirm, String role, String location, boolean enabled) {
-		
-		Log.info(String.format("Adding new Customer user. Name=%s, Email=%s, Password=[HIDDEN], Role=%s, Location=%s", customerName, 
-				email, role, location));
-		
-		this.btnAddNewCustomerUser.click();
-		
-		selectCustomerLocationDropdown(customerName, location);
-		
-		this.inputEmail.clear();
-		this.inputEmail.sendKeys(email);
-		this.inputPassword.sendKeys(password);
-		this.inputPasswordConfirm.sendKeys(passwordConfirm);
-
-		List<WebElement> roleOptions = this.dropDownRole.findElements(By.tagName("option"));
-		for (WebElement roleOption : roleOptions) {
-			if (roleOption.getText().trim().equalsIgnoreCase(role))
-				roleOption.click();
-		}
-
-		enableDisableUser(enabled);
-		
-		this.btnOk.click();
-
-		if (isElementPresent(this.panelDuplicationErrorXPath)) {
-			WebElement panelError = driver.findElement(By
-					.xpath(this.panelDuplicationErrorXPath));
-			if (panelError.getText().equalsIgnoreCase(
-					Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
-				this.cancelAddBtn.click();
-		}
-		
-		this.waitForPageLoad();
-	}
-	
-	public void addNewCustomerUser(String customerName, String email,
-			String password, String role, String timeZone, String location) {
-		Log.info(String.format("Adding new Customer user. CustomerName=%s, Email=%s, Password=[HIDDEN], Role=%s, TimeZone=%s, Location=%s", 
-				customerName, email, role, timeZone, location));
-
-		this.btnAddNewCustomerUser.click();
-
-		selectCustomerLocationDropdown(customerName, location);
-
-		this.inputEmail.clear();
-		this.inputEmail.sendKeys(email);
+		Log.info("Set password - '<HIDDEN>'");
 		this.inputPassword.sendKeys(password);
 		this.inputPasswordConfirm.sendKeys(password);
 
 		List<WebElement> roleOptions = this.dropDownRole.findElements(By
 				.tagName("option"));
 		for (WebElement roleOption : roleOptions) {
-			if (roleOption.getText().trim().equalsIgnoreCase(role))
+			if (roleOption.getText().trim().equalsIgnoreCase(role)){
+				Log.info("Select role - '"+roleOption+"'");
 				roleOption.click();
+				break;
+			}
 		}
 
 		List<WebElement> tzOptions = this.dropDownTimeZone.findElements(By
 				.tagName("option"));
 		for (WebElement tzOption : tzOptions) {
-			if (tzOption.getText().trim().equalsIgnoreCase(timeZone))
+			if (tzOption.getText().trim().equalsIgnoreCase(timeZone)){
+				Log.info("Select role - '"+tzOption+"'");
 				tzOption.click();
+				break;
+			}
 		}
 
+		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 
 		if (isElementPresent(this.panelDuplicationErrorXPath)) {
 			WebElement panelError = driver.findElement(By
 					.xpath(this.panelDuplicationErrorXPath));
 			if (panelError.getText().equalsIgnoreCase(
-					Resources.getResource(ResourceKeys.Validation_SummaryTitle)))
+					Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
+				Log.clickElementInfo("Cancel");
 				this.cancelAddBtn.click();
+			}
+		}
+	}
+
+	public void addNewCustomerUser(String customerName, String email,
+			String password, String role, String location) {
+		Log.method("addNewCustomerUser", customerName, email, password, role, location);
+		addNewCustomerUser(customerName, email, password, role, location, true /*enabled*/);
+	}
+
+	public void addNewCustomerUser(String customerName, String email,
+			String password, String role, String location, boolean enabled) {
+		Log.method("addNewCustomerUser", customerName, email, password, role, location, enabled);
+		addNewCustomerUser(customerName,email,password,password,role,location,enabled);
+	}
+	public void addNewCustomerUser(String customerName, String email,
+			String password, String passwordConfirm, String role, String location, boolean enabled) {
+		Log.method("addNewCustomerUser", customerName, email, password, passwordConfirm, role, location, enabled);
+
+		Log.info(String.format("Adding new Customer user. Name=%s, Email=%s, Password=[HIDDEN], Role=%s, Location=%s", customerName, 
+				email, role, location));
+		Log.clickElementInfo("Add New Customer User");
+		this.btnAddNewCustomerUser.click();
+		
+		selectCustomerLocationDropdown(customerName, location);
+		
+		Log.info("Set email - '"+email+"'");
+		this.inputEmail.clear();
+		this.inputEmail.sendKeys(email);
+		Log.info("Set password - '<HIDDEN>'");
+		this.inputPassword.sendKeys(password);
+		Log.info("Confirm password - '"+passwordConfirm+"'");
+		this.inputPasswordConfirm.sendKeys(passwordConfirm);
+		
+		List<WebElement> roleOptions = this.dropDownRole.findElements(By.tagName("option"));
+		for (WebElement roleOption : roleOptions) {
+			if (roleOption.getText().trim().equalsIgnoreCase(role)){
+				Log.info("Select role - '"+roleOption+"'");
+				roleOption.click();
+				break;
+			}
+		}
+
+		enableDisableUser(enabled);
+		Log.clickElementInfo("Ok");
+		this.btnOk.click();
+
+		if (isElementPresent(this.panelDuplicationErrorXPath)) {
+			WebElement panelError = driver.findElement(By
+					.xpath(this.panelDuplicationErrorXPath));
+			if (panelError.getText().equalsIgnoreCase(
+					Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
+				Log.clickElementInfo("Cancel");
+				this.cancelAddBtn.click();
+			}
+		}
+		
+		this.waitForPageLoad();
+	}
+	
+	public void addNewCustomerUser(String customerName, String email, String password, String role, String timeZone, String location) {
+		Log.method("addNewCustomerUser", customerName, email, password, role, timeZone, location);
+		Log.info(String.format("Adding new Customer user. CustomerName=%s, Email=%s, Password=[HIDDEN], Role=%s, TimeZone=%s, Location=%s", 
+				customerName, email, role, timeZone, location));
+		Log.clickElementInfo("Add New Customer User");
+		this.btnAddNewCustomerUser.click();
+
+		selectCustomerLocationDropdown(customerName, location);
+
+		Log.info("Set email - '"+email+"'");
+		this.inputEmail.clear();
+		this.inputEmail.sendKeys(email);
+		Log.info("Set password - '<HIDDEN>'");
+		this.inputPassword.sendKeys(password);
+		this.inputPasswordConfirm.sendKeys(password);
+
+		List<WebElement> roleOptions = this.dropDownRole.findElements(By
+				.tagName("option"));
+		for (WebElement roleOption : roleOptions) {
+			if (roleOption.getText().trim().equalsIgnoreCase(role)){
+				Log.info("Select role - '"+roleOption+"'");
+				roleOption.click();
+				break;
+			}
+		}
+
+		List<WebElement> tzOptions = this.dropDownTimeZone.findElements(By
+				.tagName("option"));
+		for (WebElement tzOption : tzOptions) {
+			if (tzOption.getText().trim().equalsIgnoreCase(timeZone)){
+				Log.info("Select Timezone - '"+tzOption+"'");
+				tzOption.click();
+				break;
+			}
+		}
+		Log.clickElementInfo("Ok");
+		this.btnOk.click();
+
+		if (isElementPresent(this.panelDuplicationErrorXPath)) {
+			WebElement panelError = driver.findElement(By
+					.xpath(this.panelDuplicationErrorXPath));
+			if (panelError.getText().equalsIgnoreCase(
+					Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
+				Log.clickElementInfo("Cancel");
+				this.cancelAddBtn.click();
+			}
 		}
 		
 		this.waitForPageLoad();
 	}
 
 	public String addTestUser(String email, String password1, String password2) {
+		Log.method("addTestUser", email, password1, password2);
 		String rtnMsg = "";
 		waitForPageToLoad();
+		Log.clickElementInfo("Add New Customer User");
 		this.btnAddNewCustomerUser.click();
 		this.waitForNewPageLoad();
-		
+		this.waitForElementReady(USERNAME_FIELD_ELEMENT_ID);
 		this.inputEmail.clear();
+		this.waitForTextElementToBeCleared(this.inputEmail);
+		Log.info("Set email - '"+email+"'");
 		this.inputEmail.sendKeys(email);
 		
 		// If user inputted greater than allowed max characters in Email, then check if 'Max character' message label is shown. 
@@ -336,36 +382,45 @@ public class ManageUsersPage extends SurveyorBasePage {
 		if (email.length() > ALLOWED_MAX_EMAIL_LENGTH) {
 			if (isElementPresent(this.labelUserNameErrorXPath)) {
 				rtnMsg = this.labelUserNameError.getText().trim();
+				Log.clickElementInfo("Cancel");
 				this.cancelAddBtn.click();
 				return rtnMsg;
 			} else {
 				int difflen = email.length() - ALLOWED_MAX_EMAIL_LENGTH;
+				Log.info("Set email - '"+email.substring(difflen, email.length()-1)+"'");
 				this.inputEmail.clear();
 				this.inputEmail.sendKeys(email.substring(difflen, email.length()-1));
 			}
 		}
-		
+		Log.info("Set password - '<HIDDEN>'");
 		this.inputPassword.sendKeys(password1);
+		Log.info("Confirm password - '<HIDDEN>'");
 		this.inputPasswordConfirm.sendKeys(password2);
-		
+		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 		waitForPageToLoad();
 		
 		if (isElementPresent(this.labelUserNameErrorXPath)) {
 			rtnMsg = this.labelUserNameError.getText().trim();
+			Log.clickElementInfo("Cancel");
 			this.cancelAddBtn.click();
+			Log.info("Username error: " + rtnMsg);
 			return rtnMsg;
 		}
 		
 		if (isElementPresent(this.labelUserPwdErrorXPath)) {
 			rtnMsg = this.labelUserPwdError.getText().trim();
+			Log.clickElementInfo("Cancel");
 			this.cancelAddBtn.click();
+			Log.info("User password error: " + rtnMsg);
 			return rtnMsg; 
 		}
 		
 		if (isElementPresent(this.labelPwdConfirmErrorXPath)) {
 			rtnMsg = this.labelPwdConfirmError.getText().trim();
+			Log.clickElementInfo("Cancel");
 			this.cancelAddBtn.click();
+			Log.info("User password confirm error: " + rtnMsg);
 			return rtnMsg; 
 		}		
 		
@@ -374,7 +429,9 @@ public class ManageUsersPage extends SurveyorBasePage {
 			String userErrMsg = getUsernameErrorMessage();
 			if (userErrMsg.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
 				rtnMsg = userErrMsg;
+				Log.clickElementInfo("Cancel");
 				this.cancelAddBtn.click();
+				Log.info("Validation summary message: " + userErrMsg);
 			}
 		}
 		
@@ -382,6 +439,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}	
 
 	public boolean findExistingUser(String userName) {
+		Log.method("findExistingUser", userName);
+		Log.info(String.format("Find user '%s'", userName));
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
@@ -443,10 +502,13 @@ public class ManageUsersPage extends SurveyorBasePage {
 
     	// revert back search field.
     	this.clearSearchField();
+    	Log.error(String.format("User not found: '%s'", userName));
 		return false;
 	}
 
 	public boolean findExistingUser(String locationName, String userName, boolean isCustomerUser) {
+		Log.method("findExistingUser", locationName, userName, isCustomerUser);
+		Log.info(String.format("Find user '%s', locationname = '%s'", userName, locationName));
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
@@ -508,6 +570,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.info("Clicking on next button");
 				Log.info(String.format("rowNum = %d", rowNum));
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
@@ -527,11 +590,13 @@ public class ManageUsersPage extends SurveyorBasePage {
 
     	// revert back search field.
     	this.clearSearchField();
+    	Log.error(String.format("User not found: '%s', location = '%s'", userName, locationName));
 		return false;
 	}
 
-	public boolean findExistingUser(String locationName, String userName,
-			String roleName) {
+	public boolean findExistingUser(String locationName, String userName, String roleName) {
+		Log.method("findExistingUser", locationName, userName, roleName);
+		Log.info(String.format("Find user '%s', location = '%s', role = '%s'", userName, locationName, roleName));
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
@@ -587,6 +652,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
@@ -606,10 +672,13 @@ public class ManageUsersPage extends SurveyorBasePage {
 
     	// revert back search field.
     	this.clearSearchField();
+    	Log.error(String.format("User not found: '%s', location = '%s', role = '%s'", userName, locationName, roleName));
 		return false;
 	}
 
 	public String getUserRole(String userName) {
+		Log.method("getUserRole", userName);
+		Log.info(String.format("Looking for user role of '%s'", userName));
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -647,6 +716,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
@@ -663,11 +733,13 @@ public class ManageUsersPage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
-
+		Log.error(String.format("User role not found: '%s'", userName));
 		return null;
 	}
 
 	public String getUserStatus(String userName, boolean isCustomerUser) {
+		Log.method("getUserStatus", userName, isCustomerUser);
+		Log.info(String.format("Looking for user status of '%s'", userName));
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -710,6 +782,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
@@ -725,12 +798,12 @@ public class ManageUsersPage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
-
+		Log.error(String.format("User status not found: '%s'", userName));
 		return null;
 	}
 
-	public boolean editUser(String userName, String role, String timeZone,
-			boolean accountEnable, boolean isCustomerUser) {
+	public boolean editUser(String userName, String role, String timeZone, boolean accountEnable, boolean isCustomerUser) {
+		Log.method("editUser", userName, role, timeZone, accountEnable, isCustomerUser);
 		return editUser(userName, role, timeZone, "" /*customerLocation*/, accountEnable, isCustomerUser);
 	}
 	
@@ -744,8 +817,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 	 * @param isCustomerUser - whether logged-in user is a customer user.
 	 * @return
 	 */
-	public boolean editUser(String userName, String roleNew, String timeZoneNew, 
-			String locationDescNew, boolean accountEnable, boolean isCustomerUser) {
+	public boolean editUser(String userName, String roleNew, String timeZoneNew, String locationDescNew, boolean accountEnable, boolean isCustomerUser) {
+		Log.method("editUser", userName, roleNew, timeZoneNew, locationDescNew, accountEnable, isCustomerUser);
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
@@ -790,6 +863,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 				actionEditCell = getTable().findElement(By.xpath(actionEditXPath));
 				Log.info("Found cell at xpath=" + actionEditXPath);
+				Log.clickElementInfo("Edit", ElementType.ICON);
 				actionEditCell.click();
 				this.waitForEditPageLoad();
 
@@ -804,7 +878,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				}
 
 				enableDisableUser(accountEnable);
-				
+				Log.clickElementInfo("Ok");
 				this.btnOk.click();
 				this.waitForPageLoad();
 
@@ -821,6 +895,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
@@ -844,6 +919,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public boolean resetUserPassword(String userName, String newPassword, boolean isCustomerUser) {
+		Log.method("resetUserPassword", userName, newPassword, isCustomerUser);
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -877,23 +953,26 @@ public class ManageUsersPage extends SurveyorBasePage {
 				}
 				actionResetPWDCell = getTable().findElement(By.xpath(actionResetPWDXPath));
 				Log.info("Found cell at xpath=" + actionResetPWDCell);
+				Log.clickElementInfo("Reset PWD",ElementType.ICON);
 				actionResetPWDCell.click();
 				waitForPageToLoad();
 
+				Log.info("Set new password - '"+newPassword+"'");
 				inputNewPassword.sendKeys(newPassword);
 				inputNewPasswordConfirm.sendKeys(newPassword);
-
+				Log.clickElementInfo("Ok");
 				btnOk.click();
 
 				waitForPageToLoad();
 				if (getTable().isDisplayed())
 					return true;
-
+				Log.error("Datatable not loaded");
 				return false;
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
@@ -915,6 +994,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public boolean findExistingUser(String userName, boolean allPages) {
+		Log.method("findExistingUser", userName, allPages);
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -948,6 +1028,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
@@ -969,52 +1050,71 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	private String getUsernameErrorMessage() {
+		Log.method("getUsernameErrorMessage");
 		Object userErrorMsg = ((JavascriptExecutor)this.driver).executeScript(USERNAME_ERROR_MSG_JS_FUNCTION + 
 				USERNAME_ERROR_MSG_JS_FUNCTION_CALL);
 		return String.valueOf(userErrorMsg);
 	}
 	
 	private void enableDisableUser(boolean accountEnable) {
+		Log.method("enableDisableUser", accountEnable);
 		if (accountEnable) {
-			if (!inputAccountEnabled.isSelected())
+			if (!inputAccountEnabled.isSelected()){
+				Log.info("Select to enable account");
 				inputAccountEnabled.click();
+			}
 		} else {
-			if (inputAccountEnabled.isSelected())
+			if (inputAccountEnabled.isSelected()){
+				Log.info("Unselect to disable acount");
 				inputAccountEnabled.click();
+			}
 		}
 	}
 
 	private void selectCustomerLocationDropdown(String customerName, String location) {
+		Log.method("selectCustomerLocationDropdown", customerName, location);
 		String custLoc = customerName + " - " + location;
 		selectLocationDropdown(custLoc);
 	}
 
 	private void selectLocationDropdown(String customerLocation) {
+		Log.method("selectLocationDropdown", customerLocation);
 		List<WebElement> options = this.dropDownCustomer.findElements(By.tagName("option")); 
 		for	(WebElement option : options) { 
-			if (option.getText().trim().equalsIgnoreCase(customerLocation))
+			if (option.getText().trim().equalsIgnoreCase(customerLocation)){
+				Log.info("Select Customer - '"+customerLocation+"'");
 				option.click(); 
+				break;
+			}
 		}
 	}
 
 	private void selectTimeZoneDropdown(String timeZone) {
+		Log.method("selectTimeZoneDropdown", timeZone);
 		List<WebElement> optionsTZ = dropDownTimeZone.findElements(By.tagName("option"));
 		for (WebElement optionTZ : optionsTZ) {
-			if (optionTZ.getText().trim().equals(timeZone))
-				optionTZ.click();
-		}
+			if (optionTZ.getText().trim().equals(timeZone)){
+				Log.info("Select TimeZone - '"+optionTZ+"'");
+				optionTZ.click(); 
+				break;
+			}
+			}
 	}
 
 	private void selectRoleDropdown(String role) {
+		Log.method("selectRoleDropdown", role);
 		List<WebElement> options = dropDownRole.findElements(By.tagName("option"));
 		for (WebElement option : options) {
-			if (option.getText().trim().equals(role))
-				option.click();
+			if (option.getText().trim().equals(role)){
+				Log.info("Select Role - '"+role+"'");
+				option.click(); 
+				break;
+			}
 		}
 	}
 	
-	public boolean findExistingUser(String location, String userName,
-			String roleName, boolean allPages) {
+	public boolean findExistingUser(String location, String userName, String roleName, boolean allPages) {
+		Log.method("findExistingUser", location, userName, roleName, allPages);
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -1062,6 +1162,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
@@ -1083,10 +1184,12 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public List<String> getUserNameList(boolean allPages) {
+		Log.method("getUserNameList", allPages);
 		return getUserNameList(allPages, Integer.valueOf(PAGINATIONSETTING_100));
 	}
 	
 	public List<String> getUserNameList(boolean allPages, int paginationSize) {
+		Log.method("getUserNameList", allPages, paginationSize);
 		List<String> userList = new ArrayList<String>();
 
 		String pageSizeStr = String.valueOf(paginationSize);
@@ -1118,6 +1221,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(pageSizeStr)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
@@ -1139,6 +1243,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public List<String> getNameList(boolean allPages) {
+		Log.method("getNameList", allPages);
 		List<String> userList = new ArrayList<String>();
 
 		setPagination(PAGINATIONSETTING_100);
@@ -1169,6 +1274,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
@@ -1190,6 +1296,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public List<String> getLocationList(boolean allPages) {
+		Log.method("getLocationList", allPages);
 		List<String> locationList = new ArrayList<String>();
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForTableDataToLoad();
@@ -1218,6 +1325,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
@@ -1238,6 +1346,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public List<String> getRolesList(boolean allPages) {
+		Log.method("getRolesList", allPages);
 		List<String> rolesList = new ArrayList<String>();
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForTableDataToLoad();
@@ -1265,6 +1374,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
@@ -1285,6 +1395,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public List<String> getStatusList(boolean allPages) {
+		Log.method("getStatusList", allPages);
 		List<String> statusList = new ArrayList<String>();
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForTableDataToLoad();
@@ -1312,6 +1423,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 				this.testSetup.slowdownInSeconds(this.testSetup
 						.getSlowdownInSeconds());
@@ -1352,26 +1464,32 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public void clickOnAddNewPicarroUserBtn() {
+		Log.clickElementInfo("Add New Picarro User");
 		this.btnAddNewPicarroUser.click();
 	}
 
 	public void clickOnAddNewCustomerUserBtn() {
+		Log.clickElementInfo("Add New Customer User");
 		this.btnAddNewCustomerUser.click();
 	}
 
 	public void clickOnCancelAddBtn() {
+		Log.clickElementInfo("Cancel");
 		this.cancelAddBtn.click();
 	}
 
 	public void clickOnFirstEditUserBtn() {
+		Log.clickElementInfo("Edit", "on the first user");
 		this.btnEditUser.click();
 	}
 
 	public void clickOnCustomerFirstEditUserBtn() {
+		Log.clickElementInfo("Edit", "on the first customer user");
 		this.btnEditCustomerUser.click();
 	}
 
 	public void clickOnCancelEditBtn() {
+		Log.clickElementInfo("Cancel");
 		this.cancelEditBtn.click();
 	}
 	
@@ -1407,13 +1525,20 @@ public class ManageUsersPage extends SurveyorBasePage {
     }
 
 	public void changeUserPassword(String oldPassword, String newPassword) {
+		Log.method("changeUserPassword", oldPassword, newPassword);
+		Log.clickElementInfo("User",ElementType.DROPDOWN);
 		this.dropDownUser.click();
+		Log.clickElementInfo("Chang Password", ElementType.LINK);
 		this.linkChangePwd.click();
 		waitForPageToLoad();
 
+		Log.info("Input old password - '"+oldPassword+"'");
 		this.inputOldPassword.sendKeys(oldPassword);
+		Log.info("Set new password - '"+newPassword+"'");
 		this.inputNewPassword.sendKeys(newPassword);
+		Log.info("Confirm new password - '"+newPassword+"'");
 		this.inputNewPasswordConfirm.sendKeys(newPassword);
+		Log.clickElementInfo("Ok");
 		btnOk.click();
 		waitForPageToLoad();
 	}
@@ -1432,8 +1557,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 		return InvalidEmailError.getText().trim();		
 	}
 	
-	public boolean searchUser(String userName, String locationName,
-			String role, String status, boolean searchAsCustomerAdmin) {
+	public boolean searchUser(String userName, String locationName, String role, String status, boolean searchAsCustomerAdmin) {
+		Log.method("searchUser", userName, locationName, role, status, searchAsCustomerAdmin);
 		this.getInputSearch().sendKeys(userName);
 		this.waitForPageToLoad();
 		try {
@@ -1466,6 +1591,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 	
 	public boolean areTableColumnsSorted(){
+		Log.method("areTableColumnsSorted");
 		if(!isUserNameColumnSorted()){
 			return false;
 		}
@@ -1489,39 +1615,44 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 	
 	public boolean isUserNameColumnSorted(){
+		Log.method("isUserNameColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_UserName, TableColumnType.String);
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
 	}
 	
 	public boolean isUserColumnSorted(){
+		Log.method("isUserColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_User, TableColumnType.String);
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
 	}
 	
 	public boolean isCustomerColumnSorted(){
+		Log.method("isCustomerColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Customer, TableColumnType.String);
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
 	}
 	
 	public boolean isLocationColumnSorted(){
+		Log.method("isLocationColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Location, TableColumnType.String);
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
 	}
 	
 	public boolean isRolesColumnSorted(){
+		Log.method("isRolesColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Roles, TableColumnType.String);
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
 	}
 	
 	public boolean isStatusColumnSorted(){
+		Log.method("isStatusColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Status, TableColumnType.String);
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
 	}
-
 }

@@ -29,6 +29,9 @@ import surveyor.dataaccess.source.Resources;
  */
 public class BaseHelper {
 
+	private static final double SYSTEMHISTPDF_MINSIZE_IN_KB = 11.2;
+	private static final int REFGASPDF_MINSIZE_IN_KB = 10;
+
 	/**
 	 * 
 	 */
@@ -36,18 +39,21 @@ public class BaseHelper {
 	}
 
 	public static void deCompressZipFile(String strNameBase, String strDLPath) throws Exception {
+		Log.method("deCompressZipFile", strNameBase, strDLPath);
 		String zipFile = Paths.get(strDLPath, strNameBase + ".zip").toString();
 		String outputFolder = strDLPath + strNameBase;
 		unZip(zipFile, outputFolder);
 	}
 
 	public static void deCompressZipFile(String strName, String strDLPath, boolean fullFileName) throws Exception {
+		Log.method("deCompressZipFile", strName, strDLPath, fullFileName);
 		String zipFile = Paths.get(strDLPath, strName).toString();
 		String outputFolder = strDLPath;
 		unZip(zipFile, outputFolder);
 	}
 
 	private static void unZip(String zipFile, String outputFolder) throws FileNotFoundException, IOException {
+		Log.method("unZip", zipFile, outputFolder);
 		FileInputStream inputStream = new FileInputStream(zipFile);
 		ZipInputStream zis = new ZipInputStream(inputStream);
 		ZipEntry ze = zis.getNextEntry();
@@ -75,6 +81,7 @@ public class BaseHelper {
 	}
 
 	public static boolean validatePdfFile(String pdfFileName) {
+		Log.method("validatePdfFile", pdfFileName);
 		File pdfFile = new File(pdfFileName);
 
 		long sizeKB = 0;
@@ -82,11 +89,11 @@ public class BaseHelper {
 		if (pdfFile.exists()) {
 			sizeKB = (long) (pdfFile.length() / 1024);
 		} else {
-			System.out.format("\nThe \"%s\" file doesn't exists!\n", pdfFileName);
+			Log.info(String.format("\nThe \"%s\" file doesn't exists!\n", pdfFileName));
 			return false;
 		}
 
-		System.out.format("\nThe \"%s\" size is: %d\n", pdfFileName, sizeKB);
+		Log.info(String.format("\nThe \"%s\" size is: %d\n", pdfFileName, sizeKB));
 
 		if (sizeKB > 1) {
 			return true;
@@ -96,6 +103,7 @@ public class BaseHelper {
 	}
 
 	public static boolean validatePdfFileForRefGas(String pdfFileName) {
+		Log.method("validatePdfFileForRefGas", pdfFileName);
 		File pdfFile = new File(pdfFileName);
 
 		long sizeKB = 0;
@@ -103,13 +111,13 @@ public class BaseHelper {
 		if (pdfFile.exists()) {
 			sizeKB = (long) (pdfFile.length() / 1024);
 		} else {
-			System.out.format("\nThe \"%s\" file doesn't exists!\n", pdfFileName);
+			Log.info(String.format("\nThe \"%s\" file doesn't exists!\n", pdfFileName));
 			return false;
 		}
 
-		System.out.format("\nThe \"%s\" size is: %d\n", pdfFileName, sizeKB);
+		Log.info(String.format("\nThe \"%s\" size is: %d\n", pdfFileName, sizeKB));
 
-		if (sizeKB > 77) {
+		if (sizeKB > REFGASPDF_MINSIZE_IN_KB) {
 			return true;
 		}
 
@@ -117,33 +125,38 @@ public class BaseHelper {
 	}
 
 	public static boolean validatePdfFileForSysHis(String pdfFileName) {
+		Log.method("validatePdfFileForSysHis", pdfFileName);
 		File pdfFile = new File(pdfFileName);
 		double sizeKB;
 
 		if (pdfFile.exists()) {
 			sizeKB = pdfFile.length() / 1024.2d;
 		} else {
-			System.out.format("\nThe \"%s\" file doesn't exists!\n", pdfFileName);
+			Log.info(String.format("\nThe \"%s\" file doesn't exists!\n", pdfFileName));
 			return false;
 		}
-		System.out.format("\nThe \"%s\" size is: %.2f\n", pdfFileName, sizeKB);
+		Log.info(String.format("\nThe \"%s\" size is: %.2f\n", pdfFileName, sizeKB));
 
-		if (sizeKB > (11.2)) {
+		if (sizeKB > SYSTEMHISTPDF_MINSIZE_IN_KB) {
+			Log.info(String.format("\nThe \"%s\" size is %s > min size = %s\n", pdfFileName, sizeKB, SYSTEMHISTPDF_MINSIZE_IN_KB));
+			Log.info("validatePdfFileForSysHis = TRUE");
 			return true;
 		}
 
+		Log.info(String.format("\nThe \"%s\" size is %s < min size = %s\n", pdfFileName, sizeKB, SYSTEMHISTPDF_MINSIZE_IN_KB));
+		Log.info("validatePdfFileForSysHis = FALSE");
 		return false;
 	}
 
 	public static boolean validateDatFile(String datFileName) {
-		// Temporary solution for now
+		Log.method("validateDatFile", datFileName);
 		File datFile = new File(datFileName);
 
 		if (datFile.exists()) {
 			if (datFile.canRead())
 				return true;
 		} else {
-			System.out.format("\nThe \"%s\" file doesn't exists!\n", datFileName);
+			Log.info(String.format("\nThe \"%s\" file doesn't exists!\n", datFileName));
 			return false;
 		}
 
@@ -225,7 +238,7 @@ public class BaseHelper {
 	 *         matched
 	 */
 	public static HashMap<String, Boolean> matchSinglePattern(String actualReportString, List<String> inputList) {
-		Log.info("Calling matchSinglePattern() ...");
+		Log.method("matchSinglePattern", actualReportString, LogHelper.strListToString(inputList));
 		HashMap<String, Boolean> stringsToMatch = new HashMap<String, Boolean>();
 		String[] lines = actualReportString.split("\\n");
 		Iterator<String> listIterator = inputList.iterator();
@@ -244,7 +257,7 @@ public class BaseHelper {
 			}
 		}
 		
-		Log.info(String.format("Match String Map is : ", stringsToMatch));
+		Log.info(String.format("Match String Map is : ", LogHelper.mapToString(stringsToMatch)));
 		return stringsToMatch;
 	}
 
@@ -257,6 +270,7 @@ public class BaseHelper {
 	 * @return HashMap<String, String> a map with the string and whether it's matched
 	 */
 	public static HashMap<String, String> matchPatternforPairs(String actualReportString, List<String> inputList) {
+		Log.method("matchPatternforPairs", actualReportString, LogHelper.strListToString(inputList));
 		HashMap<String, String> stringMatch = new HashMap<String, String>();
 		String[] lines = actualReportString.split("\\n");
 		Iterator<String> listIterator = inputList.iterator();

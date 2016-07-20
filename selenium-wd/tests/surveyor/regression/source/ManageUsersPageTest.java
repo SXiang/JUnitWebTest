@@ -192,8 +192,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		Log.info(String.format("Adding new user: CustomerName=[%s]; Username=[%s]; Role=[%s]; Location=[%s]", customerName, userName, CUSUSERROLEUA, locationName));
 		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEUA, locationName);
 
-		Log.info(String.format("Editing user: Username=[%s]; Role=[%s]; Timezone=[%s]; Enabled=[%b]; IsCustomerUser=[%b]", userName, CUSUSERROLESU, TIMEZONEETUA, true, false));
-		manageUsersPage.editUser(userName, CUSUSERROLESU, TIMEZONEETUA, true, false);
+		Log.info(String.format("Editing user: Username=[%s]; Role=[%s]; Timezone=[%s]; Enabled=[%b]; IsCustomerUser=[%b]", userName, CUSUSERROLESU, TIMEZONEET, true, false));
+		manageUsersPage.editUser(userName, CUSUSERROLESU, TIMEZONEET, true, false);
 
 		Log.info(String.format("Editing user: Location=[%s]; Username=[%s]; IsCustomerUser=[%b]", locationName, userName, false));
 		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
@@ -226,7 +226,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
-		manageUsersPage.addNewCustomerUser(SQACUS, usernameNew, password, CUSUSERROLEDR, TIMEZONECTUA, SQACUSLOC);
+		manageUsersPage.addNewCustomerUser(SQACUS, usernameNew, password, CUSUSERROLEDR, TIMEZONECT, SQACUSLOC);
 
 		Log.info(String.format("Looking for user: Location-[%s]; Username-[%s]", SQACUSLOC, usernameNew));
 		assertTrue(manageUsersPage.findExistingUser(SQACUSLOC, usernameNew, false));
@@ -270,7 +270,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
-		manageUsersPage.addNewCustomerUser(SQACUS, usernameNew, USERPASSWORD, CUSUSERROLEDR, TIMEZONECTUA, SQACUSLOC);
+		manageUsersPage.addNewCustomerUser(SQACUS, usernameNew, USERPASSWORD, CUSUSERROLEDR, TIMEZONECT, SQACUSLOC);
 
 		Log.info(String.format("Looking for user: Location-[%s]; Username-[%s]", SQACUSLOC, usernameNew));
 		assertTrue(manageUsersPage.findExistingUser(SQACUSLOC, usernameNew, false));
@@ -334,8 +334,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.waitForPageLoad();
 
 		// Edit role, location and timezone
-		Log.info(String.format("Editing user - Username=%s;Role=%s;Timezone=%s;Location=%s;Enabled=%b;IsCustomerUser=%b", userName, CUSUSERROLESU, TIMEZONEETUA, locationNameNew, true, false));
-		manageUsersPage.editUser(userName, CUSUSERROLESU, TIMEZONEETUA, locationNameNewDesc, true, false);
+		Log.info(String.format("Editing user - Username=%s;Role=%s;Timezone=%s;Location=%s;Enabled=%b;IsCustomerUser=%b", userName, CUSUSERROLESU, TIMEZONEET, locationNameNew, true, false));
+		manageUsersPage.editUser(userName, CUSUSERROLESU, TIMEZONEET, locationNameNewDesc, true, false);
 
 		Log.info(String.format("Finding user - Location=%s;Username=%s;IsCustomerUser=%b", locationNameNew, userName, false));
 		assertTrue(manageUsersPage.findExistingUser(locationNameNew, userName, false));
@@ -356,7 +356,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String testCaseID = getTestCaseName(ManageUserTestCaseType.ResetPwd, username);
 		password = CryptoUtility.decrypt(password);
 
-		String usernameNew = SQACUS + testSetup.getFixedSizePseudoRandomString(24) + "_" + testCaseID + REGBASEUSERNAME;
+		String usernameNew = SQACUS + testSetup.getFixedSizePseudoRandomString(12) + testCaseID + REGBASEUSERNAME;
 
 		Log.info(String.format("\nRunning - %s - %s not allowed to create duplicate User\n", testCaseID, role));
 
@@ -373,6 +373,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.waitForPageLoad();
 		String output = manageUsersPage.addTestUser(usernameNew, USERPASSWORD, USERPASSWORD);
 		Log.info("Found error message:" + output);
+		Log.info("Looking for error message: " + DUPLICATIONERROR);
 		assertTrue(output.contains(DUPLICATIONERROR));
 	}
 
@@ -435,7 +436,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD, CUSUSERROLEDR, SQACUSLOC, false);
 
 		// enable the user
-		assertTrue(manageUsersPage.editUser(userName, CUSUSERROLEDR, TIMEZONEETUA, locationDesc, true /* enable user */, false));
+		assertTrue(manageUsersPage.editUser(userName, CUSUSERROLEDR, TIMEZONEET, locationDesc, true /* enable user */, false));
 		manageUsersPage.logout();
 
 		// verify user can login correctly

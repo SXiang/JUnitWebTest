@@ -1,14 +1,15 @@
 package surveyor.regression.source;
 
 import org.junit.Ignore;
-import org.junit.Test;
 import common.source.Log;
 import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.ISOTOPIC_CAPTURE_NATURAL_GAS;
 
-public class SurveyViewPageTest5 extends SurveyViewPageTest4 {
+import java.io.IOException;
 
-	public SurveyViewPageTest5() {
+public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
+
+	public SurveyViewPageTest5() throws IOException {
 		super();
 	}
 

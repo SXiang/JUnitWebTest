@@ -168,5 +168,9 @@ public class BasePageActions extends BaseActions {
 		return true;
 	}
  
-
+	public boolean waitForSignalRCallsToComplete() {
+		this.getPageObject().waitForAJAXCallsToComplete();
+		this.getPageObject().waitForAnimationToComplete();
+		return true;
+	}
 }

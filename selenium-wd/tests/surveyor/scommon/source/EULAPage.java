@@ -49,6 +49,7 @@ public class EULAPage extends SurveyorBasePage {
      * @return the EULAPage class instance.
      */
     public EULAPage clickIAcceptButton() {
+    	Log.clickElementInfo("Accept");
         iAccept.click();
         return this;
     }

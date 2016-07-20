@@ -21,10 +21,28 @@ public class SortHelper {
 		return isSortedASC(strArray, beginAt, strArray.length - 1);
 	}
 
-	public static boolean isSortedASC(String[] strArray, int beginAt, int endAt) {
-		boolean sorted = true;
+	public static boolean isNumberSortedASC(String[] strArray) {
+		return isNumberSortedASC(strArray, 0);
+	}
+
+	public static boolean isNumberSortedASC(String[] strArray, int beginAt) {
+		return isSortedASC(true, strArray, beginAt, strArray.length - 1);
+	}
+	public static boolean isStringSortedASC(String[] strArray) {
+		return isStringSortedASC(strArray, 0);
+	}
+
+	public static boolean isStringSortedASC(String[] strArray, int beginAt) {
+		return isSortedASC(false, strArray, beginAt, strArray.length - 1);
+	}
+	
+	public static boolean isSortedASC(String[] strArray, int beginAt, int endAt){
 		// The actual data type of the elements is determined by the type of the first element specified
 		boolean isNumber = NumberUtils.isNumber(strArray[beginAt]);
+		return isSortedASC(isNumber, strArray, beginAt, endAt);
+	}
+	
+	public static boolean isSortedASC(boolean isNumber, String[] strArray, int beginAt, int endAt) {
 		for (int i = beginAt + 1; i <= endAt; i++) {
 			if (isNumber) {
 				if (NumberUtils.createFloat(strArray[i - 1]).compareTo(NumberUtils.createFloat(strArray[i])) > 0) {
@@ -35,7 +53,7 @@ public class SortHelper {
 					return false;
 			}
 		}
-		return sorted;
+		return true;
 	}
 
 	public static boolean isSortedDESC(String[] strArray) {
@@ -46,10 +64,28 @@ public class SortHelper {
 		return isSortedDESC(strArray, beginAt, strArray.length - 1);
 	}
 
-	public static boolean isSortedDESC(String[] strArray, int beginAt, int endAt) {
-		boolean sorted = true;
+	public static boolean isNumberSortedDESC(String[] strArray) {
+		return isNumberSortedDESC(strArray, 0);
+	}
+
+	public static boolean isNumberSortedDESC(String[] strArray, int beginAt) {
+		return isSortedDESC(true, strArray, beginAt, strArray.length - 1);
+	}
+
+	public static boolean isStringSortedDESC(String[] strArray) {
+		return isStringSortedDESC(strArray, 0);
+	}
+
+	public static boolean isStringSortedDESC(String[] strArray, int beginAt) {
+		return isSortedDESC(false, strArray, beginAt, strArray.length - 1);
+	}
+	public static boolean isSortedDESC(String[] strArray, int beginAt, int endAt){
 		// The actual data type of the elements is determined by the type of the first element specified
 		boolean isNumber = NumberUtils.isNumber(strArray[beginAt]);
+		return isSortedDESC(isNumber, strArray, beginAt, endAt);
+	}
+	
+	public static boolean isSortedDESC(boolean isNumber, String[] strArray, int beginAt, int endAt) {
 		for (int i = beginAt + 1; i <= endAt; i++) {
 			if (isNumber) {
 				if (NumberUtils.createFloat(strArray[i - 1]).compareTo(NumberUtils.createFloat(strArray[i])) < 0) {
@@ -60,7 +96,7 @@ public class SortHelper {
 					return false;				
 			}
 		}
-		return sorted;
+		return true;
 	}
 	
 	public static boolean isDateSortedDESC(String[] strArray) {

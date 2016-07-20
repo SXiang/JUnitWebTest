@@ -18,8 +18,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
-import surveyor.dataaccess.source.ResourceKeys;
-import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageSurveyorAdminPage;
@@ -28,6 +26,8 @@ import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.DataTablePage.TableColumnType;
 import common.source.Log;
+
+import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
  * @author zlu
@@ -39,9 +39,6 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 	private static ManageSurveyorPage manageSurveyorPage;
 	private static ManageSurveyorAdminPage manageSurveyorAdminPage;
 	private static ManageCustomersPage manageCustomersPage;
-	public static final String Constant_Customer = Resources.getResource(ResourceKeys.Constant_Customer);
-	public static final String Constant_Surveyor = Resources.getResource(ResourceKeys.Constant_Surveyor);
-	public static final String Constant_Location = Resources.getResource(ResourceKeys.Constant_Location);
 	protected String pagination = "100";
 	
 	@BeforeClass
@@ -371,14 +368,14 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		manageSurveyorPage.open();
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
-		columnMap.put(Constant_Customer, TableColumnType.String);
-		assertTrue(manageSurveyorPage.checkTableSort("datatable", columnMap, pagination, manageSurveyorPage.getPaginationOption()));
-		columnMap.remove(Constant_Customer);
-		columnMap.put(Constant_Location, TableColumnType.String);
-		assertTrue(manageSurveyorPage.checkTableSort("datatable", columnMap, pagination, manageSurveyorPage.getPaginationOption()));
-		columnMap.remove(Constant_Location);
-		columnMap.put(Constant_Surveyor, TableColumnType.String);
-		assertTrue(manageSurveyorPage.checkTableSort("datatable", columnMap, pagination, manageSurveyorPage.getPaginationOption()));		
+		columnMap.put(CONSTANT_CUSTOMER, TableColumnType.String);
+		assertTrue(manageSurveyorPage.checkTableSort("datatable_wrapper", columnMap, pagination, manageSurveyorPage.getPaginationOption()));
+		columnMap.remove(CONSTANT_CUSTOMER);
+		columnMap.put(CONSTANT_LOCATION, TableColumnType.String);
+		assertTrue(manageSurveyorPage.checkTableSort("datatable_wrapper", columnMap, pagination, manageSurveyorPage.getPaginationOption()));
+		columnMap.remove(CONSTANT_LOCATION);
+		columnMap.put(CONSTANT_SURVEYOR, TableColumnType.String);
+		assertTrue(manageSurveyorPage.checkTableSort("datatable_wrapper", columnMap, pagination, manageSurveyorPage.getPaginationOption()));		
 	}
 	
 	/**
@@ -399,12 +396,18 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		assertTrue(manageSurveyorPage.checkPaginationSetting(paginationSetting25));
 		assertTrue(!(manageSurveyorPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
 		manageSurveyorPage.getNextBtn().click();
+		manageSurveyorPage.waitForPageToLoad();
 		assertTrue(!(manageSurveyorPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
+		manageSurveyorPage.getPreviousBtn().click();
+		manageSurveyorPage.waitForPageToLoad();
 		assertTrue(manageSurveyorPage.checkPaginationSetting(paginationSetting50));
 		assertTrue(!(manageSurveyorPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
 		manageSurveyorPage.getNextBtn().click();
+		manageSurveyorPage.waitForPageToLoad();
 		assertTrue(!(manageSurveyorPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
+		manageSurveyorPage.getPreviousBtn().click();
+		manageSurveyorPage.waitForPageToLoad();
 		assertTrue(manageSurveyorPage.checkPaginationSetting(paginationSetting100));
 		assertTrue(!(manageSurveyorPage.getNumberofRecords() > Integer.parseInt(paginationSetting100)));
-		}
+	}
 }

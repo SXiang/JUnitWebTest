@@ -6,6 +6,7 @@ package surveyor.scommon.source;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.How;
@@ -63,7 +64,7 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 			TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 
-		Log.info("\nThe Manager Surveyor Histories Page URL is: "
+		Log.info("\nThe Manage Surveyor Histories Page URL is: "
 				+ this.strPageURL);
 	}
 
@@ -72,55 +73,47 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 		super(driver, testSetup, baseURL, baseURL + urlPath);
 	}
 
-	public LoginPage logout() {
-		this.dropDownAdministrator.click();
-
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(1);
-
-		this.linkLogOut.click();
-
-		if (this.testSetup.isRunningDebug())
-			this.testSetup.slowdownInSeconds(3);
-
-		LoginPage loginPage = new LoginPage(this.driver, this.strBaseURL,
-				this.testSetup);
-
-		return loginPage;
-	}
-
 	public void addNewHistoryNote(String surveyorUnit, String note) {
+		Log.method("addNewHistoryNote", surveyorUnit, note);
 		if (this.testSetup.isRunningDebug()) {
 			Log.info(surveyorUnit);
 			Log.info(note);
 		}
 
+		Log.clickElementInfo("Add New History Entry");
 		this.btnAddNewHistoryEntry.click();
 		this.waitForNewPageLoad();
 
 		List<WebElement> options = this.dropDownSurveyorUnit.findElements(By
 				.tagName("option"));
 		for (WebElement option : options) {
-			if (surveyorUnit.equals(option.getText().trim()))
+			if (surveyorUnit.equals(option.getText().trim())){
+				Log.info("Select Surveyor Unit - '"+surveyorUnit+"'");
 				option.click();
+				break;
+			}
 		}
 
+		Log.info("Set note - '"+note+"'");
 		this.textareaNote.sendKeys(note);
 
 		if (this.testSetup.isRunningDebug())
 			this.testSetup.slowdownInSeconds(5);
 
+		Log.clickElementInfo("Ok");
 		this.btnOK.click();
+		this.waitForPageLoad();
 	}
 
-	public void addNewHistoryNote(String surveyorUnit, String locationName,
-			String note) {
+	public void addNewHistoryNote(String surveyorUnit, String locationName, String note) {
+		Log.method("addNewHistoryNote", surveyorUnit, locationName, note);
 		if (this.testSetup.isRunningDebug()) {
 			Log.info(surveyorUnit);
 			Log.info(locationName);
 			Log.info(note);
 		}
 
+		Log.clickElementInfo("Add New History Entry");
 		this.btnAddNewHistoryEntry.click();
 		this.waitForNewPageLoad();
 
@@ -128,20 +121,25 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 				.tagName("option"));
 		for (WebElement option : options) {
 			if (surveyorUnit.equals(locationName + " - "
-					+ option.getText().trim()))
+					+ option.getText().trim())){
+				Log.info("Select Surveyor Unit - '"+surveyorUnit+"'");
 				option.click();
+				break;
+			}
 		}
 
+		Log.info("Set Note - '"+note+"'");
 		this.textareaNote.sendKeys(note);
 
 		if (this.testSetup.isRunningDebug())
 			this.testSetup.slowdownInSeconds(5);
-
+		Log.clickElementInfo("Ok");
 		this.btnOK.click();
+		this.waitForPageLoad();
 	}
 
-	public void addNewHistoryNote(String surveyorUnit, String locationName,
-			String customerName, String note) {
+	public void addNewHistoryNote(String surveyorUnit, String locationName, String customerName, String note) {
+		Log.method("addNewHistoryNote", surveyorUnit, locationName, customerName, note);
 		if (this.testSetup.isRunningDebug()) {
 			Log.info(surveyorUnit);
 			Log.info(locationName);
@@ -149,6 +147,7 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 			Log.info(note);
 		}
 
+		Log.clickElementInfo("Add New History Entry");
 		this.btnAddNewHistoryEntry.click();
 		this.waitForNewPageLoad();
 
@@ -160,20 +159,28 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 					.trim()
 					.equalsIgnoreCase(
 							customerName + " - " + locationName + " - "
-									+ surveyorUnit))
+									+ surveyorUnit)){
+				Log.info("Select Surveyor Unit - '"+option.getText()+"'");
 				option.click();
+				break;
+			}
 		}
 
+		Log.info("Set Note - '"+note +"'");
 		this.textareaNote.sendKeys(note);
 
 		if (this.testSetup.isRunningDebug())
 			this.testSetup.slowdownInSeconds(3);
 
+		Log.clickElementInfo("Ok");
 		this.btnOK.click();
+		this.waitForPageLoad();
 	}
 
-	public boolean findExistingHistoryNote(String customerName,
-			String locationName, String surveyorName, String note) {
+	public boolean findExistingHistoryNote(String customerName, String locationName, String surveyorName, String note) {
+		Log.method("findExistingHistoryNote", customerName, locationName, surveyorName, note);
+		Log.info(String.format("Find history note %s, customer = '%s', location = '%s', surveyor = '%s'", 
+				note,customerName,locationName,surveyorName));
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -246,18 +253,23 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
+		Log.error(String.format("History note not found: %s, customer = '%s', location = '%s', surveyor = '%s'", 
+				note,customerName,locationName,surveyorName));
 		return false;
 	}
 	
 	public void clickOnAddNewHistoryEntryBtn() {
+		Log.clickElementInfo("Add New History Entry");
 		this.btnAddNewHistoryEntry.click();
 	}
 	
 	public void clickOnCancelBtn() {
+		Log.clickElementInfo("Cancel");
 		this.btnCancel.click();
 	}
 
 	public WebElement getBtnAddNewHistoryEntry() {
+		Log.clickElementInfo("Add New History Entry");
 		return btnAddNewHistoryEntry;
 	}
 

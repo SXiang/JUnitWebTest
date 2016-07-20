@@ -5,9 +5,11 @@ import common.source.Log;
 import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
-public class SurveyViewPageTest4 extends SurveyViewPageTest3 {
+import java.io.IOException;
 
-	public SurveyViewPageTest4() {
+public class SurveyViewPageTest4 extends BaseSurveyViewPageTest {
+
+	public SurveyViewPageTest4() throws IOException {
 		super();
 	}
 

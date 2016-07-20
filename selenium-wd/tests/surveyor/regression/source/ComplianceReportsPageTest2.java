@@ -50,6 +50,7 @@ import static surveyor.scommon.source.SurveyorConstants.SWLAT_SMALL;
 import static surveyor.scommon.source.SurveyorConstants.SWLON_SMALL;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
+
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
@@ -133,7 +134,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + "customerUser01" + REGBASEUSERNAME;
 		String cityName = "Santa Clara";
-		String locationName = customerName + "loc";
+		String locationName = customerName + testSetup.getRandomNumber() + "loc";
 		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
 
 		loginPageAction.open(EMPTY, NOTSET);
@@ -1320,17 +1321,14 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, 5);   /* Picarro Customer*/
 
 		complianceReportsPage.open();
-
-		complianceReportsPage.getNewComplianceReportBtn().click();
+		complianceReportsPage.openNewReportPage();
 		assertTrue(complianceReportsPage.getPercentCoverReportArea().isDisplayed());
 		complianceReportsPage.clickOnCancelBtn();
+		complianceReportsPage.waitForPageLoad();
 
-		String copyImgXPath = "//*[@id='datatable']/tbody/tr[1]/td[5]/a[2]/img";
-		WebElement copyImg = driver.findElement(By.xpath(copyImgXPath));
-
-		copyImg.click();
+		complianceReportsPage.open();
+		complianceReportsPage.clickOnFirstCopyComplianceBtn();
 		complianceReportsPage.waitForCopyReportPagetoLoad();
-		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
 		assertTrue(complianceReportsPage.getPercentCoverReportArea().isDisplayed());
 	}
 
@@ -1483,18 +1481,8 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		complianceReportsPage.waitForPageLoad();
 		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 
-		complianceReportsPage.findReportbySearch(rptTitle, testSetup.getLoginUser());
-
-
-		try {
-			complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
-			complianceReportsPage.waitForResubmitButton();
-			complianceReportsPage.getBtnResubmitReport().click();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		complianceReportsPage.waitForPageLoad();
-
+		complianceReportsPage.clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
@@ -1673,7 +1661,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 
-		String testCaseID = "TC1313";
+		String testCaseID = "TC1315";
 		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
 
 		complianceReportsPage.open();
@@ -1833,7 +1821,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
 		rpt.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
-		complianceReportsPage.addNewReport(rpt);
+		complianceReportsPage.addNewReport(rpt); 
 		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {

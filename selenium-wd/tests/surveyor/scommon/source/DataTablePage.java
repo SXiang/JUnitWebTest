@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -66,16 +67,6 @@ public class DataTablePage extends BasePage {
 
 	private DataTablePage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
 		super(driver, testSetup, strBaseURL, strPageURL);
-	}
-
-	/**
-	 * 
-	 * @param driver
-	 *            - the search context will be the root of the document
-	 * @return instance of this page
-	 */
-	public static DataTablePage getDataTablePage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
-		return getDataTablePage(driver, driver, testSetup, strBaseURL, strPageURL);
 	}
 
 	/**
@@ -254,18 +245,14 @@ public class DataTablePage extends BasePage {
 			TableColumnType columnType = cloumnMap.get(entry.getKey().trim());
 			List<String> values = getRecords(entry.getKey().trim(), -1 ).stream().map(String::toLowerCase).collect(Collectors.toList());
 			if (columnType == TableColumnType.Date) {
-				if (!SortHelper.isDateSortedASC(values.stream().toArray(String[]::new))) {
-					return false;
-				}
+				return SortHelper.isDateSortedASC(values.stream().toArray(String[]::new));
+			}else if (columnType == TableColumnType.String){
+				return SortHelper.isStringSortedASC(values.stream().toArray(String[]::new));
+			}else if (columnType == TableColumnType.Number) {
+				return SortHelper.isNumberSortedASC(values.stream().toArray(String[]::new));
 			}
-			if (columnType == TableColumnType.String || columnType == TableColumnType.Number) {
-				if (!SortHelper.isSortedASC(values.stream().toArray(String[]::new))) {
-					return false;
-				}
-			}
-
 		}
-		return true;
+		return false;
 	}
 
 	/**
@@ -279,17 +266,14 @@ public class DataTablePage extends BasePage {
 			TableColumnType columnType = cloumnMap.get(entry.getKey().trim());			
 			List<String> values = getRecords(entry.getKey().trim(), -1).stream().map(String::toLowerCase).collect(Collectors.toList());
 			if (columnType == TableColumnType.Date) {
-				if (!SortHelper.isDateSortedDESC(values.stream().toArray(String[]::new))) {
-					return false;
-				}
-			}
-			if (columnType == TableColumnType.String || columnType == TableColumnType.Number) {
-				if (!SortHelper.isSortedDESC(values.stream().toArray(String[]::new))) {
-					return false;
-				}
+				return SortHelper.isDateSortedDESC(values.stream().toArray(String[]::new));
+			}else if (columnType == TableColumnType.String){
+				return SortHelper.isStringSortedDESC(values.stream().toArray(String[]::new));
+			}else if (columnType == TableColumnType.Number) {
+				return SortHelper.isNumberSortedDESC(values.stream().toArray(String[]::new));
 			}
 		}
-		return true;
+		return false;
 	}
 
 
@@ -316,6 +300,7 @@ public class DataTablePage extends BasePage {
 	 * @return
 	 */
 	public boolean toNextPage() {
+		Log.clickElementInfo("Next");
 		return toPage(nextButton);
 	}
 
@@ -327,13 +312,21 @@ public class DataTablePage extends BasePage {
 	 * @return true if button clicked
 	 */
 	public boolean toPage(WebElement pageNavButton) {
-		if (!pageNavButton.getAttribute("class").contains("disabled")) {
-			pageNavButton.click();
-			waitForTableToLoad();
-			return true;
-		} else {
-			return false;
+		int numTry = 0 ;
+		boolean done = false;
+		while (!done && numTry++ < 3 && !pageNavButton.getAttribute("class").contains("disabled")) {
+			try{
+				pageNavButton.click();
+				done = true;
+			}catch(WebDriverException e){
+				Log.warn("pageNavButton is not clickable: '"+e+"', will try again");
+			}finally{
+				waitForTableToLoad();
+			}
 		}
+		if(!done)
+			Log.error("Page navigation button is disabled/not clickable");
+		return done;
 	}
 
 	/**
@@ -345,7 +338,9 @@ public class DataTablePage extends BasePage {
 	public void setPagination(String str) {
 		for (WebElement option : paginationOption) {
 			if (str.equals(option.getText().trim())) {
+				Log.info("Select '"+str+"' for the pagination");
 				option.click();
+				break;
 			}
 		}
 	}

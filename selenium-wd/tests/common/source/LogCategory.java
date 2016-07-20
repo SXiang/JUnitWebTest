@@ -2,7 +2,8 @@ package common.source;
 
 public enum LogCategory {
 	SSRSPdfContent ("SSRSPdfContent"),
-	ComplianceReportActions ("ComplianceReportActions");
+	ComplianceReportActions ("ComplianceReportActions"),
+	ClickWebElement ("ClickWebElement");
 	
 	private final String name;
 

@@ -2,10 +2,13 @@ package common.source;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
+
+import common.source.BasePage.ElementType;
 
 public class Log {
 	private static Logger log = null; 
@@ -22,18 +25,22 @@ public class Log {
 	
 	public static void info(String message) {
 		log.info(message);
+		TestContext.INSTANCE.updateTestMessage(message);
 	}
 
 	public static void warn(String message) {
 		log.warn(message);
+		TestContext.INSTANCE.updateTestMessage(message);
 	}
 
 	public static void debug(String message) {
 		log.debug(message);
+		TestContext.INSTANCE.updateTestMessage(message);
 	}
 
 	public static void error(String message) {
 		log.error(message);
+		TestContext.INSTANCE.updateTestMessage(message);
 	}
 
 	public static void info(String message, LogCategory logCategory) {
@@ -60,6 +67,31 @@ public class Log {
 		}
 	}
 
+	// Extension to logs for page objects	
+	public static void clickElementInfo(String name) {
+		clickElementInfo(name,ElementType.BUTTON);
+	}
+
+	public static void clickElementInfo(String name, ElementType type){
+		info(String.format("Click on '%s' %s",name,type), LogCategory.ClickWebElement);
+	}
+	
+	public static void clickElementInfo(String name, String info) {
+		clickElementInfo(name,ElementType.BUTTON);
+	}
+
+	public static void clickElementInfo(String name, String info, ElementType type){
+		info(String.format("Click on '%s' %s - %s",name,type, info), LogCategory.ClickWebElement);
+	}
+	public static void error(String name, Throwable e){
+		error("Failed to perform '"+name+"': "+ExceptionUtility.getStackTraceString(e));
+	}
+
+	public static void method(String methodName, Object... args) {
+		info(String.format("Calling method '%s' with parameter values -> %s", methodName, Arrays.toString(args)));
+	}
+
+	/* Unit test */
 	public static void main(String[] args) throws IOException {
 		logFilePath = TestSetup.getRootPath() + File.separator + "logs" + File.separator + "log.log";
 		

@@ -69,15 +69,18 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 	private void addNewReport(String title, String timeZone, String surUnit, String startDate, String endDate) {
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		Log.clickElementInfo("Add New SysHistory Report");
 		this.btnNewSysHistoryRpt.click();
-
+		Log.info("Set title - '"+title+"'");
 		this.inputTitle.clear();
 		this.inputTitle.sendKeys(title);
 
 		List<WebElement> optionsTZ = this.cBoxTimezone.findElements(By.tagName("option"));
 		for (WebElement option : optionsTZ) {
 			if ((timeZone).equalsIgnoreCase(option.getText().trim())) {
+				Log.info("Select Timezone - '"+timeZone+"'");
 				option.click();
+				break;
 			}
 		}
 
@@ -85,7 +88,9 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 			List<WebElement> optionsSU = this.cbSurveyUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsSU) {
 				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
+					Log.info("Select Survey Unit - '"+surUnit+"'");
 					option.click();
+					break;
 				}
 			}
 		}
@@ -98,7 +103,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 
 		if (testSetup.isRunningDebug())
 			testSetup.slowdownInSeconds(3);
-
+		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 	}
 
@@ -147,6 +152,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 
 				while (bContinue) {
 					try {
+						Log.clickElementInfo("Download");
 						this.btnDownload.click();
 						testSetup.slowdownInSeconds(15);
 						return true;
@@ -161,6 +167,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -179,6 +186,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 	}
 
 	public boolean findExistingReport(String rptTitle, String strCreatedBy) {
+		Log.info(String.format("Find report with title = '%s', created by = '%s", rptTitle, strCreatedBy ));
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -211,6 +219,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -225,32 +234,35 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 				rowNum = 0;
 			}
 		}
-
+		Log.info(String.format("Report not found: title = '%s', created by = '%s", rptTitle, strCreatedBy ));
 		return false;
 	}
 
 	public boolean validatePdfFiles(String reportTitle, String downloadPath) {
+		Log.method("validatePdfFiles", reportTitle, downloadPath);
 		String reportId;
 		String reportName;
 		DBConnection objDbConn = new DBConnection();
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		try {
+			Log.info("Getting report ID from DB..");
 			reportId = objDbConn.getIdOfSpecifiedReportTitle(reportTitle, this.testSetup);
+			Log.info(String.format("ReportId is : '%s'", reportId));
 			reportId = reportId.substring(0, 6);
 			Log.info(reportId);
 			Log.info(String.valueOf(reportId.length()));
 			reportName = "SH-" + reportId;
-			Log.info(reportName);
+			Log.info(String.format("ReportName is : '%s'", reportName));
 		} catch (Exception e) {
 			Log.error(e.toString());
 			return false;
 		}
-		String pdfFile1;
-		pdfFile1 = Paths.get(downloadPath, reportName + ".pdf").toString();
-
+		String pdfFile1 = Paths.get(downloadPath, reportName + ".pdf").toString();
 		boolean result = false;
+		Log.info(String.format("Validating SystemHistory PDF file - '%s'", pdfFile1));
 		result = BaseHelper.validatePdfFileForSysHis(pdfFile1);
+		Log.info(String.format("Validation results = %b", result));
 		return result;
 	}
 
@@ -267,7 +279,9 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyCancelButtonFunctionality() {
+		Log.clickElementInfo("New SysHistory Report");
 		this.btnNewSysHistoryRpt.click();
+		Log.clickElementInfo("Cancel");
 		this.btnCancel.click();
 		testSetup.slowdownInSeconds(3);
 
@@ -285,18 +299,23 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 		try {
 			String pdfInText = (pdfUtility.extractPDFText(fullDownloadPath));
 			if (!pdfInText.contains(STRReportTitle)) {
+				Log.error(String.format("Report title not found in pdf - '%s'", STRReportTitle));
 				return false;
 			}
 			if (!pdfInText.contains(STRRptSubHeading)) {
+				Log.error(String.format("Sub-Heading not found in pdf - '%s'", STRRptSubHeading));
 				return false;
 			}
 			if (!pdfInText.contains(STRRptColumnDate)) {
+				Log.error(String.format("Column Date not found in pdf - '%s'", STRRptColumnDate));
 				return false;
 			}
 			if (!pdfInText.contains(STRRptColumnUser)) {
+				Log.error(String.format("Column User not found in pdf - '%s'", STRRptColumnUser));
 				return false;
 			}
 			if (!pdfInText.contains(STRRptColumnNote)) {
+				Log.error(String.format("Column Note not found in pdf - '%s'", STRRptColumnNote));
 				return false;
 			}
 		} catch (IOException e) {
@@ -314,7 +333,9 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 			String pdfInText = (pdfUtility.extractPDFText(fullDownloadPath));
 			Iterator<String> inputIterator = inputs.iterator();
 			while (inputIterator.hasNext()) {
-				if (!pdfInText.contains(inputIterator.next())) {
+				String userInput = inputIterator.next();
+				if (!pdfInText.contains(userInput)) {
+					Log.error(String.format("User input not found in pdf - '%s'", userInput));
 					return false;
 				}
 			}

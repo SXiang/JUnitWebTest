@@ -5,6 +5,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import common.source.Log;
+import surveyor.dataaccess.source.Customer;
+import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.actions.DriverViewPageActions;
@@ -206,8 +208,8 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 			driverViewPageAction.turnOffWindRose(EMPTY,NOTSET);
 			
 			driverViewPageAction.clickOnGisButton(EMPTY,NOTSET);
-			driverViewPageAction.turnOffBoundariesDistrict(EMPTY,NOTSET);
-			driverViewPageAction.turnOffBoundariesDistrictPlat(EMPTY,NOTSET);
+			driverViewPageAction.turnOffBigBoundary(EMPTY,NOTSET);
+			driverViewPageAction.turnOffSmallBoundary(EMPTY,NOTSET);
 			driverViewPageAction.turnOffMaterialTypeCopper (EMPTY,NOTSET);
 			driverViewPageAction.turnOffMaterialTypeCastIron(EMPTY,NOTSET);
 			driverViewPageAction.turnOffMaterialTypeOtherPlastic(EMPTY,NOTSET);
@@ -255,6 +257,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		final int SURVEY_ROW_ID = 4;	 		/* Survey information rowID */
 		final int SURVEY_RUNTIME_IN_SECONDS = 60; /* Number of seconds to run the survey for. */
 
+		// Existing user with static username/password. Use overload with LoginUserRowID.
 		TestEnvironmentActions.generateSurveyForUser(LOGIN_USER_ROW_ID, 
 				DB3_ANALYZER_ROW_ID, SURVEY_ROW_ID, SURVEY_RUNTIME_IN_SECONDS);
 	}
@@ -270,12 +273,13 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		final int LOGIN_USER_ROW_ID = 6;	 	/* LoginRowID. AutomationAdmin */
 		final int DB3_ANALYZER_ROW_ID = 9;	 	/* Analyzer3/Surveyor3. Replay db3 file rowID */
 		final int SURVEY_ROW_ID = 4;	 		/* Survey information  */
+		
 		final int SURVEY_RUNTIME_IN_SECONDS = 60; /* Number of seconds to run the survey for. */
 
 		final int newCustomerRowID = 7;
 		final int newLocationRowID = 4;
 		final int newCustomerUserRowID = 12;
-
+		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, LOGIN_USER_ROW_ID);   
 
@@ -289,8 +293,63 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		manageUsersPageAction.open(EMPTY, NOTSET);
 		manageUsersPageAction.createNewCustomerUser(EMPTY, newCustomerUserRowID /*userRowID*/);
 
-		// Generate survey for newly created customer user.
-		TestEnvironmentActions.generateSurveyForUser(newCustomerUserRowID, 
+		// Email ID for the new created user was generated dynamically in this case by using 'GenerateRandomEmail(20)' function.
+		// For such cases, use the overload with username and password for generateSurveyForUser().
+		String newUsername = ManageUsersPageActions.workingDataRow.username;
+		String newUserPass = ManageUsersPageActions.workingDataRow.password;
+		TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass, 
 				DB3_ANALYZER_ROW_ID, SURVEY_ROW_ID, SURVEY_RUNTIME_IN_SECONDS);
 	}
-}
+
+	/**
+	 * Unit test for TestEnvironmentActions.generateSurveyForUser() with new Picarro user.
+	 * @throws Exception 
+	 */
+	@Test
+	public void Test_generateSurveyForNewPicarroUser() throws Exception {
+		Log.info("\nRunning Test_generateSurveyForNewCustomerUser ...");
+	
+		final int LOGIN_USER_ROW_ID = 6;	 	/* LoginRowID. AutomationAdmin */
+		final int DB3_ANALYZER_ROW_ID = 9;	 	/* Analyzer3/Surveyor3. Replay db3 file rowID */
+		final int SURVEY_ROW_ID = 4;	 		/* Survey information  */
+		
+		final int SURVEY_RUNTIME_IN_SECONDS = 60; /* Number of seconds to run the survey for. */
+
+		final int newPicarroUserRowID = 14;
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, LOGIN_USER_ROW_ID);   
+
+		// Create new Picarro user.
+		manageUsersPageAction.open(EMPTY, NOTSET);
+		manageUsersPageAction.createNewPicarroUser(EMPTY, newPicarroUserRowID /*userRowID*/);
+
+		// Email ID for the new created user was generated dynamically in this case by using 'GenerateRandomEmail(20)' function.
+		// For such cases, use the overload with username and password for generateSurveyForUser().
+		String newUsername = ManageUsersPageActions.workingDataRow.username;
+		String newUserPass = ManageUsersPageActions.workingDataRow.password;
+		TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass, 
+				DB3_ANALYZER_ROW_ID, SURVEY_ROW_ID, SURVEY_RUNTIME_IN_SECONDS);
+	}
+
+	/**
+	 * Unit test for DBSeedExecutor.executeGisSeed() with new customer user.
+	 * @throws Exception 
+	 */
+	@Test
+	public void Test_executeGisSeedForNewCustomer() throws Exception {
+		Log.info("\nRunning Test_executeGisSeedForNewCustomer ...");
+
+		final int LOGIN_USER_ROW_ID = 6;	 	/* LoginRowID. AutomationAdmin */
+		final int newCustomerRowID = 7;
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, LOGIN_USER_ROW_ID);   
+
+		// Create new customer/location/user.
+		manageCustomerPageAction.open(EMPTY, NOTSET);
+		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
+
+		Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.name);
+		DbSeedExecutor.executeGisSeed(customer.getId());
+	}}

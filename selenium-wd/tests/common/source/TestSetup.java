@@ -3,8 +3,6 @@
  */
 package common.source;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,6 +15,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -43,7 +42,6 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
 import com.relevantcodes.extentreports.DisplayOrder;
@@ -55,8 +53,8 @@ import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
 import net.lightbody.bmp.core.har.Har;
 import surveyor.dataaccess.source.Survey;
+import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.TestEnvironmentActions;
-import surveyor.scommon.source.LoginPage;
 
 /**
  * This is the initial class to setup up the testing environment and
@@ -82,9 +80,10 @@ public class TestSetup {
 	public static final String REPLAY_DEFN_CURL_FILE = "replay-defn-curl.bat";
 	public static final String STOP_REPLAY_CURL_FILE = "replay-stop.bat";
 	public static final String ANALYZER_EXE_PATH = "C:\\PicarroAnalyzer\\Picarro.Surveyor.Analyzer.exe";
-	public static final String TEST_ANALYZER_SERIAL_NUMBER = "SimAuto-Analyzer3";
+	public static final String TEST_ANALYZER_SERIAL_NUMBER = "SimAuto-Analyzer1";
 
 	public static final String DATA_FOLDER = "data";
+	public static final String SQL_DATA_FOLDER = "data\\sql";
 	public static final String TEST_DATA_XLSX = "TestCaseData.xlsx";
 
 	private static Process analyzerProcess;
@@ -155,11 +154,15 @@ public class TestSetup {
 
 	private boolean logCategorySSRSPdfContentEnabled;
 	private boolean logCategoryComplianceReportActionsEnabled;
+	private boolean logCategoryWebElementEnabled;
 
 	private String surveysToUpload;
 	private boolean uploadSurveyEnabled;
 	private String surveyUploadBaseUrl;
-	
+
+	private boolean pushDBSeedEnabled;
+	private String pushDBSeedBaseUrl;
+
 	private String automationReportingApiEndpoint;
 	private boolean automationReportingApiEnabled;
 
@@ -261,6 +264,7 @@ public class TestSetup {
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("download.default_directory", this.downloadPath);
 		this.capabilities = DesiredCapabilities.chrome();
+		this.capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("start-maximized");
 		options.addArguments(Arrays.asList("--incognito", "test-type"));
@@ -291,6 +295,7 @@ public class TestSetup {
 			this.capabilities.setPlatform(Platform.LINUX);
 		}
 		
+		this.capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("start-maximized");
 		options.addArguments(Arrays.asList("--incognito", "test-type"));
@@ -626,6 +631,13 @@ public class TestSetup {
 		this.logCategoryComplianceReportActionsEnabled = logCategoryComplianceReportActionsEnabled;
 	}
 
+	public boolean isLogCategoryClickWebElementEnabled() {
+		return logCategoryWebElementEnabled;
+	}
+
+	public void setLogCategoryClickWebElementEnabled(boolean logCategoryWebElementEnabled) {
+		this.logCategoryWebElementEnabled = logCategoryWebElementEnabled;
+	}
 	public String getSoftwareVersion() {
 		return this.softwareVersion;
 	}
@@ -675,6 +687,7 @@ public class TestSetup {
 			setComplianceReportBaselineGenerationTestProperties();
 			setPerformanceExecutionTestProperties();
 			setUploadSurveyTestProperties();
+			setPushDBSeedTestProperties();
 
 			this.language = this.testProp.getProperty("language");
 			this.culture = this.testProp.getProperty("culture");
@@ -706,6 +719,8 @@ public class TestSetup {
 			driverSetup();
 			inputStream.close();
 
+			TestContext.INSTANCE.setTestSetup(this);
+
 			// If survey upload is enabled, upload the specified surveys to
 			// environment.
 			// We have a 2nd level of check (ie matching base url provided) to
@@ -714,7 +729,18 @@ public class TestSetup {
 				try {
 					uploadSurveys();
 				} catch (Exception e) {
-					Log.error(e.toString());
+					Log.error(String.format("ERROR when uploading survey. EXCEPTION: %s", e.toString()));
+				}
+			}
+
+			// If pushDBSeed is enabled, push DB seed data to environment.
+			// We have a 2nd level of check (ie matching base url provided) to
+			// prevent accidental upload to unintended environment.
+			if (isPushDBSeedEnabled() && this.getPushDBSeedBaseUrl().equalsIgnoreCase(this.baseURL)) {
+				try {
+					DbSeedExecutor.executeAllDataSeed();
+				} catch (Exception e) {
+					Log.error(String.format("ERROR when pushing DB seed. EXCEPTION: %s", e.toString()));
 				}
 			}
 
@@ -751,6 +777,14 @@ public class TestSetup {
 		}
 		this.setSurveysToUpload(this.testProp.getProperty("surveyUpload.Surveys"));
 		this.setSurveyUploadBaseUrl(this.testProp.getProperty("surveyUpload.BaseUrl"));
+	}
+
+	private void setPushDBSeedTestProperties() {
+		String pushDBSeedEnabledValue = this.testProp.getProperty("pushDBSeed.Enabled");
+		if (pushDBSeedEnabledValue != null && pushDBSeedEnabledValue != "") {
+			this.setPushDBSeedEnabled(Boolean.valueOf(pushDBSeedEnabledValue));
+		}
+		this.setPushDBSeedBaseUrl(this.testProp.getProperty("pushDBSeed.BaseUrl"));
 	}
 
 	private void setPerformanceExecutionTestProperties() {
@@ -792,6 +826,11 @@ public class TestSetup {
 				.getProperty("logCategory.ComplianceReportActions.Enabled");
 		if (logCategoryComplianceReportActions != null && logCategoryComplianceReportActions != "") {
 			this.setLogCategoryComplianceReportActionsEnabled(Boolean.valueOf(logCategoryComplianceReportActions));
+		}
+		String logCategoryClickWebElement = this.testProp
+				.getProperty("logCategory.ClickWebElement.Enabled");
+		if (logCategoryClickWebElement != null && logCategoryClickWebElement != "") {
+			this.setLogCategoryClickWebElementEnabled(Boolean.valueOf(logCategoryClickWebElement));
 		}
 	}
 
@@ -858,7 +897,18 @@ public class TestSetup {
 	public static void restartAnalyzer() throws IOException {
 		Log.info("Restarting Analyzer EXE...");
 		stopAnalyzerIfRunning();
+		deleteAnalyzerLocalDB3();
 		startAnalyzer();
+	}
+
+	public static void deleteAnalyzerLocalDB3() throws UnknownHostException {
+		Log.method("deleteAnalyzerLocalDB3");
+		stopAnalyzerIfRunning();
+		String appDataFolder = SystemUtility.getAppDataFolder();
+		Path surveyorDb3Path = Paths.get(appDataFolder, 
+				"Picarro" + File.separator + "Surveyor" + File.separator + "Data" + File.separator + "Surveyor.db3");
+		Log.info(String.format("Deleting file - '%s'", surveyorDb3Path.toString()));
+		FileUtility.deleteFile(surveyorDb3Path);
 	}
 
 	public static void replayDB3Script(String defnFileName, String db3FileName) {
@@ -976,8 +1026,8 @@ public class TestSetup {
 	}
 
 	public static void stopAnalyzer() {
-		ProcessUtility.killProcess("supervisor.exe", /* killChildProcesses */ true);
 		ProcessUtility.killProcess("Picarro.Surveyor.Analyzer.exe", /* killChildProcesses */ true);
+		ProcessUtility.killProcess("supervisor.exe", /* killChildProcesses */ true);
 	}
 
 	public static String getNetworkProxyHarFileContent() throws Exception {
@@ -1231,6 +1281,14 @@ public class TestSetup {
 		this.uploadSurveyEnabled = uploadSurveyEnabled;
 	}
 
+	public boolean isPushDBSeedEnabled() {
+		return pushDBSeedEnabled;
+	}
+
+	public void setPushDBSeedEnabled(boolean pushDBSeedEnabled) {
+		this.pushDBSeedEnabled = pushDBSeedEnabled;
+	}
+
 	public boolean isAutomationReportingApiEnabled() {
 		return automationReportingApiEnabled;
 	}
@@ -1249,7 +1307,15 @@ public class TestSetup {
 	public void setSurveyUploadBaseUrl(String surveyUploadBaseUrl) {
 		this.surveyUploadBaseUrl = surveyUploadBaseUrl;
 	}
-	
+
+	public String getPushDBSeedBaseUrl() {
+		return pushDBSeedBaseUrl;
+	}
+
+	public void setPushDBSeedBaseUrl(String pushDBSeedBaseUrl) {
+		this.pushDBSeedBaseUrl = pushDBSeedBaseUrl;
+	}	
+
 	/**
 	 * Use value of System property over VM property
 	 * @param key

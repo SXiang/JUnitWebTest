@@ -158,9 +158,6 @@ public class HomePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-calibration']/a")
 	protected WebElement linkPicAdminCalibration;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-user-feedback']/a")
-	protected WebElement linkPicAdminViewUserFeedback;
-
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-release-notes']/a")
 	protected WebElement linkPicAdminManageReleaseNotes;
 	
@@ -213,9 +210,10 @@ public class HomePage extends SurveyorBasePage {
 	}
 	
 	public boolean checkIfAtHomePage() {
-		if (driver.getTitle().equalsIgnoreCase(STRPageTitle))
+		if (driver.getTitle().equalsIgnoreCase(STRPageTitle)) {
+			Log.info("Current page is '"+STRPageTitle+"'");
 			return true;
-		
+		}
 		return false;
 	}
 	
@@ -289,72 +287,102 @@ public class HomePage extends SurveyorBasePage {
 		return returnHomePage;
 	}
 	public boolean checkVisibilityForPicarroSUP(String loginUser) {
-		if (!this.picarroLogo.isDisplayed())
+		if (!this.picarroLogo.isDisplayed()){
+			Log.error("Picarro logo is not visiable");
 			return false;
+		}
 		
 		WebElement userDropDown = this.driver.findElement(By.xpath("//a[contains(text(),'" + loginUser + "')]"));
 		if (!userDropDown.getText().trim().equalsIgnoreCase(loginUser))
 			return false;
 
-		if (!this.linkDashboard.isDisplayed())
+		if (!this.linkDashboard.isDisplayed()){
+			Log.error("Not found - link to dashboard");
 			return false;
+		}
 		
 		if (this.isElementPresent(this.strLinkCusAdminXPath)) {
-			System.out.format("\nlinkCusAdmin\n");
+			Log.error("Found - link to Customer Admin");
 			return false;
 		}
 			
 		if (this.isElementPresent(this.strLinkPicarroAdminXPath)) {
-			System.out.format("\nlinkPicarroAdmin\n");
+			Log.error("Found - link to Picarro Admin");
 			return false;
 		}
 		
-		if (!this.linkDrivingSurveys.isDisplayed())
+		if (!this.linkDrivingSurveys.isDisplayed()){
+			Log.error("Not found - link to Driving Surveys");
 			return false;
+		}
 		
-		if (!this.linkSurveyors.isDisplayed())
+		if (!this.linkSurveyors.isDisplayed()){
+			Log.error("Not found - link to Surveyors");
 			return false;
+		}
 		
-		if (!this.linkFleetMap.isDisplayed())
+		if (!this.linkFleetMap.isDisplayed()){
+			Log.error("Not found - link to FleetMap");
 			return false;
+		}
 		
-		if (!this.linkReports.isDisplayed())
+		if (!this.linkReports.isDisplayed()){
+			Log.error("Not found - link to Reports");
 			return false;
+		}
 		
-		if (!this.labelFooter.isDisplayed())
+		if (!this.labelFooter.isDisplayed()){
+			Log.error("Not found - page footer");
 			return false;
+		}
 		
 		return true;
 	}
 
 	public boolean checkVisibilityForPicarroAdministrator(String loginUser) {
-		if (!this.picarroLogo.isDisplayed())
+		if (!this.picarroLogo.isDisplayed()){
+			Log.error("Not found - picarro logo");
 			return false;
+		}
 		
 		WebElement userDropDown = this.driver.findElement(By.xpath("//a[contains(text(),'" + loginUser + "')]"));
 		if (!userDropDown.getText().trim().equalsIgnoreCase(loginUser))
 			return false;		
 		
-		if (!this.linkDashboard.isDisplayed())
+		if (!this.linkDashboard.isDisplayed()){
+			Log.error("Not found - link to Dashboard");
 			return false;
+		}
 		
-		if (!this.linkPicarroAdmin.isDisplayed())
+		if (!this.linkPicarroAdmin.isDisplayed()){
+			Log.error("Not found - link to Picarro Admin");
 			return false;
+		}
 		
-		if (!this.linkDrivingSurveys.isDisplayed())
+		if (!this.linkDrivingSurveys.isDisplayed()){
+			Log.error("Not found - link to Driving Surveys");
 			return false;
+		}
 		
-		if (!this.linkSurveyors.isDisplayed())
+		if (!this.linkSurveyors.isDisplayed()){
+			Log.error("Not found - link to Surveyors");
 			return false;
+		}
 		
-		if (!this.linkFleetMap.isDisplayed())
+		if (!this.linkFleetMap.isDisplayed()){
+			Log.error("Not found - link to Fleet Map");
 			return false;
+		}
 		
-		if (!this.linkReports.isDisplayed())
+		if (!this.linkReports.isDisplayed()){
+			Log.error("Not found - link to Reports");
 			return false;
+		}
 		
-		if (!this.labelFooter.isDisplayed())
+		if (!this.labelFooter.isDisplayed()){
+			Log.error("Not found - page footer");
 			return false;
+		}
 		
 		return true;		
 	}
@@ -364,34 +392,44 @@ public class HomePage extends SurveyorBasePage {
 		if (!userDropDown.getText().trim().equalsIgnoreCase(loginUser))
 			return false;
 		
-		if (!this.linkDashboard.isDisplayed())
+		if (!this.linkDashboard.isDisplayed()){
+			Log.error("Not found - link to Dashboard");
 			return false;
+		}
 		
 		if (this.isElementPresent(this.strLinkCusAdminXPath)) {
-			System.out.format("\nlinkCusAdmin\n");
+			Log.error("Found - link to Customer Admin");
 			return false;
 		}
 			
 		if (this.isElementPresent(this.strLinkPicarroAdminXPath)) {
-			System.out.format("\nlinkPicarroAdmin\n");
+			Log.error("Found - link to Picarro Admin");
 			return false;
 		}		
 		
-		if (!this.linkDrivingSurveys.isDisplayed())
+		if (!this.linkDrivingSurveys.isDisplayed()){
+			Log.error("Not found - link to Driving Surveys");
 			return false;
+		}
 		
-		if (!this.linkSurveyors.isDisplayed())
+		if (!this.linkSurveyors.isDisplayed()){
+			Log.error("Not found - link to Surveyors");
 			return false;
+		}
 		
 		//Need check with Chris Vale if "Fleet Map" should be invisible to driver?
 //		if (!this.linkFleetMap.isDisplayed())
 //			return false;
 		
-		if (this.isElementPresent(this.strLinkReportsXPath))
+		if (this.isElementPresent(this.strLinkReportsXPath)){
+			Log.error("Found - link to Reports");
 			return false;
+		}
 		
-		if (!this.labelFooter.isDisplayed())
+		if (!this.labelFooter.isDisplayed()){
+			Log.error("Not found - page footer");
 			return false;
+		}
 		
 		return true;
 	}
@@ -401,34 +439,47 @@ public class HomePage extends SurveyorBasePage {
 		if (!userDropDown.getText().trim().equalsIgnoreCase(loginUser))
 			return false;
 		
-		if (!this.linkDashboard.isDisplayed())
+		if (!this.linkDashboard.isDisplayed()){
+			Log.error("Not found - link to Dashboard");
 			return false;
+		}
 		
-		if (!this.linkDrivingSurveys.isDisplayed())
+		if (!this.linkDrivingSurveys.isDisplayed()){
+			Log.error("Not found - link to Driving Surveys");
 			return false;
+		}
 		
-		if (!this.linkSurveyors.isDisplayed())
+		if (!this.linkSurveyors.isDisplayed()){
+			Log.error("Not found - link to Surveyors");
 			return false;
+		}
 		
-		if (!this.linkFleetMap.isDisplayed())
+		if (!this.linkFleetMap.isDisplayed()){
+			Log.error("Not found - link to Fleet Map");
 			return false;
+		}
 		
-		if (!this.linkReports.isDisplayed())
+		if (!this.linkReports.isDisplayed()){
+			Log.error("Not found - link to Reports");
 			return false;
+		}
 		
 		if (this.isElementPresent(this.strLinkCusAdminXPath)) {
-			System.out.format("\nlinkCusAdmin\n");
-			return false;
+			{
+				Log.error("Found - link to Customer Admin");
+				return false;
+			}
 		}
 			
-		if (this.isElementPresent(this.strLinkPicarroAdminXPath)) {
-			System.out.format("\nlinkPicarroAdmin\n");
+		if (this.isElementPresent(this.strLinkPicarroAdminXPath)){
+			Log.error("Found - link to Picarro Admin");
 			return false;
 		}
 		
-		if (!this.labelFooter.isDisplayed())
+		if (!this.labelFooter.isDisplayed()){
+			Log.error("Not found - page footer");
 			return false;
-		
+		}
 		return true;
 	}
 	
@@ -437,86 +488,129 @@ public class HomePage extends SurveyorBasePage {
 		if (!userDropDown.getText().trim().equalsIgnoreCase(loginUser))
 			return false;
 		
-		if (!this.linkDashboard.isDisplayed())
+		if (!this.linkDashboard.isDisplayed()){
+			Log.error("Not found - link to Dashboard");
 			return false;
+		}
 		
-		if (!this.linkDrivingSurveys.isDisplayed())
+		if (!this.linkDrivingSurveys.isDisplayed()){
+			Log.error("Not found - link to Driving Surveys");
 			return false;
+		}
 		
-		if (!this.linkSurveyors.isDisplayed())
+		if (!this.linkSurveyors.isDisplayed()){
+			Log.error("Not found - link to Surveyors");
 			return false;
+		}
 		
-		if (!this.linkFleetMap.isDisplayed())
+		if (!this.linkFleetMap.isDisplayed()){
+			Log.error("Not found - link to Fleet Map");
 			return false;
+		}
 		
-		if (!this.linkReports.isDisplayed())
+		if (!this.linkReports.isDisplayed()){
+			Log.error("Not found - link to Reports");
 			return false;
+		}
 		
-		if (!this.linkCusAdmin.isDisplayed())
+		if (!this.linkCusAdmin.isDisplayed()){
+			Log.error("Not found - link to Customer Admin");
 			return false;
-		
+		}
 		try {
-			if (this.linkPicarroAdmin.isDisplayed())
+			if (this.linkPicarroAdmin.isDisplayed()){
+				Log.error("Found - link to Picarro Admin");
 				return false;
+			}
 		}
 		catch (org.openqa.selenium.NoSuchElementException e) {
 		}
 		
-		if (!this.labelFooter.isDisplayed())
+		if (!this.labelFooter.isDisplayed()){
+			Log.error("Not found - page footer");
 			return false;
-		
+		}
 		return true;
 	}
 	
 	public boolean checkAdministratorHomePage() {
-		if (!this.picarroLogo.isDisplayed())
+		if (!this.picarroLogo.isDisplayed()){
+			Log.error("Not found - Picarro Logo");
 			return false;
+		}
 		
-		if (!this.dropDownAdministrator.isDisplayed())
+		if (!this.dropDownAdministrator.isDisplayed()){
+			Log.error("Not found - link to Admin dropdown");
 			return false;
+		}
 		
-		if (!this.linkDashboard.isDisplayed())
+		if (!this.linkDashboard.isDisplayed()){
+			Log.error("Not found - link to Dashboard");
 			return false;
+		}
 		
-		if (!this.linkDrivingSurveys.isDisplayed())
+		if (!this.linkDrivingSurveys.isDisplayed()){
+			Log.error("Not found - link to Driving Surveys");
 			return false;
+		}
 		
-		if (!this.linkSurveyors.isDisplayed())
+		if (!this.linkSurveyors.isDisplayed()){
+			Log.error("Not found - link to Surveyors");
 			return false;
+		}
 		
-		if (!this.linkFleetMap.isDisplayed())
+		if (!this.linkFleetMap.isDisplayed()){
+			Log.error("Not found - link to Fleet Map");
 			return false;
+		}
 		
-		if (!this.linkReports.isDisplayed())
+		if (!this.linkReports.isDisplayed()){
+			Log.error("Not found - link to Reports");
 			return false;
+		}
 		
-		if (!this.linkPicarroAdmin.isDisplayed())
+		if (!this.linkPicarroAdmin.isDisplayed()){
+			Log.error("Not found - link to Picarro Admin");
 			return false;
+		}
 		
 		return true;	
 	}	
 	
 	public boolean checkAdministratorDashboard() {
+		Log.clickElementInfo("Dashboard",ElementType.LINK);
 		this.linkDashboard.click();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		
-		if (!this.labelSurveyorDashboard.isDisplayed())
+		if (!this.labelSurveyorDashboard.isDisplayed()){
+			Log.error("Not found - Surveyor Dashboard");
 			return false;
+		}
 		
-		if (!this.labelActiveSurveyors.isDisplayed())
+		if (!this.labelActiveSurveyors.isDisplayed()){
+			Log.error("Not found - Active Surveyors");
 			return false;
+		}
 		
-		if (!this.linkViewAllSurveyors.isDisplayed())
+		if (!this.linkViewAllSurveyors.isDisplayed()){
+			Log.error("Not found - link to View All Surveyors");
 			return false;
+		}
 		
-		if (!this.labelRecentDrivingSurveys.isDisplayed())
+		if (!this.labelRecentDrivingSurveys.isDisplayed()){
+			Log.error("Not found - Recent Driving surveys");
 			return false;
+		}
 		
-		if (!this.linkViewAllDrivingSurveys.isDisplayed())
+		if (!this.linkViewAllDrivingSurveys.isDisplayed()){
+			Log.error("Not found - link to View All Driving Surveys");
 			return false;
+		}
 		
-		if (!this.labelFooter.isDisplayed())
+		if (!this.labelFooter.isDisplayed()){
+			Log.error("Not found - page footer");
 			return false;
+		}
 		
 		return true;
 	}	
@@ -543,7 +637,8 @@ public class HomePage extends SurveyorBasePage {
 		// Wait for Home page to load.
 		this.waitForPageLoad();
 
-		// Click on View All Surveyors link present in Active Surveyors section		
+		// Click on View All Surveyors link present in Active Surveyors section
+		Log.clickElementInfo("View All Surveyors",ElementType.LINK);
 		this.linkViewAllSurveyors.click();
 		
 		// 4. Verify User is navigated to Surveyors Page
@@ -566,6 +661,7 @@ public class HomePage extends SurveyorBasePage {
 	
 	public boolean checkDashBoardViewAllDrivingSurveysLink() {
 		// Click on View all driving surveys.
+		Log.clickElementInfo("View All Driving Surveys",ElementType.LINK);
 		this.linkViewAllDrivingSurveys.click();
 
 		// Wait for driving survey page to load.
@@ -611,10 +707,12 @@ public class HomePage extends SurveyorBasePage {
 	}
 	
 	public void clickOnViewAllDrivingSurveysLink() {
+		Log.clickElementInfo("View All Driving Surveys", ElementType.LINK);
 		this.linkViewAllDrivingSurveys.click();
 	}
 
 	public void clickOnFirstOnlineSurveyorLink() {
+		Log.clickElementInfo("first online surveyor", ElementType.LINK);
 		getLinkFirstOnlineSurveyor().click();
 	}
 
@@ -686,8 +784,11 @@ public class HomePage extends SurveyorBasePage {
 	public void setPagination(String str) {
 		List<WebElement> options = this.paginationInputRDS.findElements(By.tagName("option"));
 		for (WebElement option : options) {
-			if(str.equals(option.getText().trim()))
-				option.click();		
+			if(str.equals(option.getText().trim())){
+				Log.info(String.format("Select pagination - '%s'", str));
+				option.click();
+				break;
+			}
 		}
 	}	
 

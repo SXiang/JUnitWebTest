@@ -21,12 +21,12 @@ public class PDFTableUtility extends PDFUtility{
 	// All the pdf tables should be defined in this enum
 	public static enum PDFTable {		
 		LISAINVESTIGATIONTABLE ("Lisa Investigation Table",2),
-		LISAINDICATIONTABLE ("Disposition"+wordSeparator+"Confidence in Disposition (%)"+wordSeparator+"Field Notes",0,"",true),
+		LISAINDICATIONTABLE ("Disposition"+wordSeparator+"Confidence in Disposition (%)"+wordSeparator+"Field Notes",0,"",true,-1,10),
 		COMPLIANCEREPORTSUMMARYTABLE ("Map Height & Width:.*",0,"",false,6),
 		COVERAGEFORECAST(".*Percent Service Coverage with LISAs.*",0,"",false,1),
 		COVERAGEFORECASTTO70(".*Probability to Obtain 70% Coverage",0,"",true,4),
-		DRIVINGSURVEYTABLE("Indication Table",0,"LISA",true,-1),
-		ISOTOPICANALYSISTABLE("Surveyor"+wordSeparator+"Date/Time"+wordSeparator+"Result"+wordSeparator+"Isotopic Value/ Uncertainty(Å"+wordSeparator+"Field Notes",1," Layers",true,-1), 
+		DRIVINGSURVEYTABLE("Indication Table",0,"LISA",true,-1), 
+		ISOTOPICANALYSISTABLE("Surveyor"+wordSeparator+"Date/Time"+wordSeparator+"Result"+wordSeparator+"Isotopic Value/ Uncertainty(Å"+wordSeparator+"Field Notes",1," Layers",true,-1),  
 		VIEWSTABLE (".*\\| (Map|Satellite|None)\\s?",0,"View Table",false);
 		
 		private final String tableID;	          //1. tableID, indicator of start of a table, required
@@ -34,7 +34,8 @@ public class PDFTableUtility extends PDFUtility{
 		private final String tableEndLinePattern; //3. tableEndLinePattern, indicator of end of a table, optional, default to ""
 		private final boolean hasTableHeader;     //4. With table header or without table header
 		private final int numRows;                //5. num of rows within the table if it's positive, otherwise the size of table is unknown.
-
+		private final int numFields;              //6. num of fields within a table row if it's positive, otherwise it's is unknown.
+		
 		// Table from the line matching the tableID to the end of file
 		PDFTable(String tableID){
 			this(tableID,0);
@@ -60,11 +61,15 @@ public class PDFTableUtility extends PDFUtility{
 			this(tableID, startLine, tableEndLinePattern, true,-1);
 		}
 		PDFTable(String tableID,  int startLine, String tableEndLinePattern, boolean hasTableHeader, int numRows){
+			this(tableID, startLine, tableEndLinePattern, hasTableHeader, numRows, 0);
+		}
+		PDFTable(String tableID,  int startLine, String tableEndLinePattern, boolean hasTableHeader, int numRows, int numFields){
 			this.tableID = tableID;
 			this.startLine = startLine;
 			this.tableEndLinePattern = tableEndLinePattern;
 			this.hasTableHeader = hasTableHeader;
 			this.numRows = numRows;
+			this.numFields = numFields;
 		}
 
 		public String gettableID(){
@@ -138,7 +143,7 @@ public class PDFTableUtility extends PDFUtility{
 			String line = trimTableRow(pdfLines[i]);        	
 			int numWords = line.split(wordSeparatorPattern).length;
 			int combinedLine = 0;
-			int validNumFields = 0;
+			int validNumFields = pTable.numFields;
 			while(numWords<numTableNameWords){
 				if(++combinedLine%maxWordNumLine==1){
 					line += wordSeparator;
@@ -151,7 +156,6 @@ public class PDFTableUtility extends PDFUtility{
 			}
 			if(RegexUtility.equalsOrMatches(line,tableID)){     
 				i += combinedLine;
-
 				for(j=i+startLine; j<pdfLines.length ; j++){
 					if(maxNumLines>0&&numLines>=maxNumLines){
 						return pdfTable;
@@ -160,40 +164,51 @@ public class PDFTableUtility extends PDFUtility{
 						line = trimTableRow(pdfLines[j]);
 					}
 					if(numLines==0&&hasTableHeader){
-						header = line;
+						header = line; // Remember the header, it may appear in the next page
 						pdfTable.add(getTableRow(line));
-					}else if(line.equals(header)){
+					}else if(line.equals(header)){ //Ignore header line
 						continue;
-					}else if(isLineIgnorable(line)){
-						if(line.matches(pageFooterPattern)){
+					}else if(isLineIgnorable(line)){ // Ignore others - pageheader, pagefooter and comstom patterns
+						if(line.matches(pageFooterPattern)){ // expecting records from the next page
 							break;
-						}else{
+						}else{ // continue on this page
 							continue;
 						}
 					}else if(line.matches(tableEndLinePattern)){
 						return pdfTable;
 					}else{
 						String[] row = getTableRow(line);
+						if(row.length==validNumFields-1){
+								int lineIndex = j+1;
+								String lastField = "";
+								while(lineIndex < pdfLines.length &&
+										(!pdfLines[lineIndex].startsWith(pdfParagraphEnd+pdfParagraphStart))){
+									lastField += pdfLines[lineIndex++];
+								}
+								j = lineIndex-1;
+								row = getTableRow(line+wordSeparator+lastField);
+						}
 						if(validNumFields==0||row.length==validNumFields){
 							pdfTable.add(row);
 							validNumFields = row.length;
 						}else{
 							continue;
 						}
-
 					}
 					numLines++;
 				}
 				i = j++;
 			}
 		}
-
+		printTableContents(pdfTable);
 		return pdfTable;
 	}
 
 	private String trimTableRow(String line){
 		String nelPattern = "[\\u0085]*";
 		line = line.replaceAll(nelPattern, "");
+		line = line.replaceAll(pdfParagraphEnd, "");
+		line = line.replaceAll(pdfParagraphStart, "");
 		return line;
 	}
 	
@@ -370,6 +385,15 @@ public class PDFTableUtility extends PDFUtility{
 	}
 
 
+	public void printTableContents(List<String[]> table){
+		for(String[] tr:table){
+			String row = "";
+			for(String td:tr){
+			   row += String.format("\t|%1$-10s",td);
+			}
+			Log.info(row);
+		}
+	}
 	/**
 	 * Executes the unit tests for this class.
 	 * @param args
@@ -411,14 +435,13 @@ public class PDFTableUtility extends PDFUtility{
 		});		
 		expectedPDFTableMap.put(fileName, PDFTable.COVERAGEFORECASTTO70);	
 
-		fileName = "TC517Report538320.pdf";
+		fileName = "CR-E6522E.pdf";
 		expectedTableMap.put(fileName, new String[][]{
-			{"","1","Software Car","12/14/2015 3:26 PM PST","12.3","15.56","0+/-","Possible Natural Gas","0%","1. 15.6/12.30"},
-			{"","2","Software Car","12/14/2015 3:28 PM PST","9.44","9.44","0+/-","Possible Natural Gas","0%","1. 9.4/9.44"},
-			{"","3","Software Car","12/14/2015 3:28 PM PST","8.2","13.67","0+/-","Possible Natural Gas","0%","1. 13.7/8.20"},
-			{"","4","Software Car","12/14/2015 3:28 PM PST","7.97","12.95","0+/-","Possible Natural Gas","0%","1. 13.0/7.97"},
-			{"","5","Software Car","12/14/2015 3:28 PM PST","3.02","6.01","0+/-","Possible Natural Gas","0%","1. 6.0/3.02"},
-			{"","6","Software Car","12/14/2015 3:27 PM PST","0.4","2.77","0+/-","Possible Natural Gas","0%",""}
+			{"Disposition", "Confidence in Disposition (%)", "Field Notes"},
+			{"", "1", "Software Car", "12/14/2015 3:26 PM PST", "12.3", "15.56", "N/A", "Possible Natural Gas", "N/A", "1. 15.6/12.30"},
+			{"", "2", "Software Car", "12/14/2015 3:28 PM PST", "9.44", "9.44", "N/A", "Possible Natural Gas", "N/A", "1. 13.7/8.202. 13.0/7.973. 9.4/9.44"},
+			{"", "3", "Software Car", "12/14/2015 3:28 PM PST", "3.02", "6.01", "N/A", "Possible Natural Gas", "N/A", "1. 6.0/3.02"},
+			{"", "4", "Software Car", "12/14/2015 3:27 PM PST", "0.4", "2.77", "N/A", "Possible Natural Gas", "N/A",""},
 		});
 		expectedPDFTableMap.put(fileName,PDFTable.LISAINDICATIONTABLE);	
 
@@ -498,8 +521,11 @@ public class PDFTableUtility extends PDFUtility{
 		}
 
 		if(pTable.equals(PDFTable.LISAINDICATIONTABLE)){
-			Assert.assertTrue(SortHelper.isSortedASC(colValue1, 0));
-			Assert.assertTrue(SortHelper.isSortedASC(colValue2, 0));
+			int index = 0;
+			if(pTable.hasTableHeader)
+				index = 1;
+			Assert.assertTrue(SortHelper.isNumberSortedASC(colValue1, index));
+			Assert.assertTrue(SortHelper.isNumberSortedASC(colValue2, index));
 		}
 		// Retrieve values of a random column, based on name and index
 		colNum = expectedTable[0].length/2;

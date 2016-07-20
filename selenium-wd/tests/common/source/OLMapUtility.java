@@ -35,7 +35,7 @@ public class OLMapUtility {
 
 	private static final String GET_FIRST_INDICATION_NODE_PIXEL_FUNCTION_JS = "function getFirstIndicationNodePixels(){"
 			+ "var pixelX=-1;var pixelY=-1;if(lastConstellation){for(var i=0;i<lastConstellation.nodes.length;i++){"
-			+ "node=lastConstellation.nodes[i];if(node.type=='indication'){"
+			+ "node=lastConstellation.nodes[i];if(node.type=='indication' && node.fixed == false){"
 			+ "var mapExtent=surveyormap.getView().calculateExtent(surveyormap.getSize());"
 			+ "var mapOrigin=surveyormap.getPixelFromCoordinate([mapExtent[0],mapExtent[3]]);"
 			+ "var delta=getOriginDelta(lastExtent,mapOrigin);pixelX=(node.x-(delta[0]*ol.has.DEVICE_PIXEL_RATIO))/(ol.has.DEVICE_PIXEL_RATIO);"
@@ -44,7 +44,7 @@ public class OLMapUtility {
 
 	private static final String GET_FIRST_3300_VISIBLE_INDICATION_NODE_PIXEL_FUNCTION_JS = "function getFirstVisible3300IndicationNodePixels(gasType){"
 			+ "var pixelX=-1;var pixelY=-1;var isIndicationsSwitchOn=showIndications;if(lastConstellation&&isIndicationsSwitchOn){"
-			+ "for(var i=0;i<lastConstellation.nodes.length;i++){node=lastConstellation.nodes[i];if(node&&node.type=='indication'){"
+			+ "for(var i=0;i<lastConstellation.nodes.length;i++){node=lastConstellation.nodes[i];if(node&&node.type=='indication' && node.fixed==false){"
 			+ "if(((gasType=='NaturalGas')&&(node.Disposition==1))||((gasType=='NotNaturalGas')&&(node.Disposition==2))||"
 			+ "((gasType=='PossibleNaturalGas')&&(node.Disposition==3))||((gasType=='VehicleExhaust')&&(node.Disposition==4))){"
 			+ "var mapExtent=surveyormap.getView().calculateExtent(surveyormap.getSize());"
@@ -54,7 +54,7 @@ public class OLMapUtility {
 			+ "if((pixelX>0.0)&&(pixelY>80.0)){return[pixelX,pixelY];}}}}};return[pixelX,pixelY];};";
 	
 	private static final String GET_INDICATION_NODE_PIXEL_FUNCTION_JS = "function getIndicationNodePixels(epoch,lat,lon){"
-			+ "var pixelX=-1;var pixelY=-1;if(lastConstellation){lastConstellation.nodes.forEach(function(node){if(node.type=='indication'){"
+			+ "var pixelX=-1;var pixelY=-1;if(lastConstellation){lastConstellation.nodes.forEach(function(node){if(node.type=='indication' && node.fixed == false){"
 			+ "if((node.epochTime==epoch)&&(node.lat==lat)&&(node.lon==lon)){"
 			+ "var mapExtent=surveyormap.getView().calculateExtent(surveyormap.getSize());"
 			+ "var mapOrigin=surveyormap.getPixelFromCoordinate([mapExtent[0],mapExtent[3]]);"
@@ -626,10 +626,11 @@ public class OLMapUtility {
 	}
 	
 	/*
-	 * Checks whether field notes dialog is shown on the map. 
-	 * Returns true if field dialog notes is shown on the map, false otherwise. 
+	 * Checks whether field notes dialog overlay is shown on the map. 
+	 * Returns true if field dialog notes overlay is shown on the map, false otherwise.
+	 * NOTE: Use this method to check if overlay is present in OLMap layer. 
 	 */
-	public boolean isFieldNotesDialogShown() {
+	public boolean isFieldNotesDialogOverlayPresent() {
 		String jsScript = IS_FIELD_NOTES_DIALOG_SHOWN_FUNCTION + IS_FIELD_NOTES_DIALOG_SHOWN_JS_FUNCTION_CALL;
 		Object fieldNotesDialogShown = ((JavascriptExecutor)this.driver).executeScript(jsScript);
 		if (fieldNotesDialogShown.toString().equalsIgnoreCase("true")) {

@@ -206,9 +206,6 @@ public class ResourceKeys {
 	public static final String SystemHistoryReports_NoteColumn = "SysHistoryReportSSRS_Note";
 	public static final String SystemHistoryReports_UserNameColumn = "SysHistoryReportSSRS_UserName";
 	public static final String SystemHistoryReports_NoRecords = "SysHistoryReportSSRS_NoRecord";
-	public static final String UserFeedback_PageTitle = "UserFeedback_PageTitle";
-	public static final String UserFeedback_PromptTitle = "UserFeedback_PromptTitle";
-	public static final String UserFeedback_ThankYou_PromptText = "UserFeedback_ThankYou_PromptText";
 	public static final String Validation_SummaryTitle = "Validation_SummaryTitle";
 	public static final String Validation_Required = "Validation_Required";
 	public static final String Validation_FixThisField = "Validation_FixThisField";
@@ -248,12 +245,34 @@ public class ResourceKeys {
     public static final String ComplianceReport_CoverageForecastAreaInvalidMessage = "ComplianceReport_CoverageForecastAreaInvalidMessage";
 	public static final String ComplianceReport_CoverageForecastAssetsInvalidMessage = "ComplianceReport_CoverageForecastAssetsInvalidMessage";
 	public static final String ComplianceReport_CoverageForecastBoundaryInvalidMessage = "ComplianceReport_CoverageForecastBoundaryInvalidMessage";
-
+	public static final String Dialog_SelectedArealsTooLarge = "Dialog_SelectedArealsTooLarge";
+	public static final String Dialog_SelectedArealsTooSmall = "Dialog_SelectedArealsTooSmall";
+	
 	// Constants for report SSRS
 	public static final String ReportSSRS_DatePrinted = "ReportSSRS_DatePrinted";
 	public static final String ReportSSRS_ReportAuthor = "ReportSSRS_ReportAuthor";
 	public static final String ReportSSRS_SoftwareVersion = "ReportSSRS_SoftwareVersion";
-	
+
 	// Constants for Data table
 	public static final String Constant_FilteredFromMaxTotalEntries = "Constant_FilteredFromMaxTotalEntries";
+	
+	// Capture Analysis Disposition types.
+	public static final String CaptureAnalysisDispositionTypesPrefix = "CaptureAnalysisDispositionTypes";
+	public static final String CaptureAnalysisDispositionTypes_Delta_Out_Of_Range = "CaptureAnalysisDispositionTypes_Delta_Out_Of_Range";
+	public static final String CaptureAnalysisDispositionTypes_Ethane_Ratio_Out_Of_Range = "CaptureAnalysisDispositionTypes_Ethane_Ratio_Out_Of_Range";
+	public static final String CaptureAnalysisDispositionTypes_Ethane_Ratio_SDev_Out_Of_Range = "CaptureAnalysisDispositionTypes_Ethane_Ratio_SDev_Out_Of_Range";
+	public static final String CaptureAnalysisDispositionTypes_Ethane_Reference_Fail = "CaptureAnalysisDispositionTypes_Ethane_Reference_Fail";
+	public static final String CaptureAnalysisDispositionTypes_Ethane_Reference_Pass = "CaptureAnalysisDispositionTypes_Ethane_Reference_Pass";
+	public static final String CaptureAnalysisDispositionTypes_Isotopic_Reference_Fail = "CaptureAnalysisDispositionTypes_Isotopic_Reference_Fail";
+	public static final String CaptureAnalysisDispositionTypes_Isotopic_Reference_Pass = "CaptureAnalysisDispositionTypes_Isotopic_Reference_Pass";
+	public static final String CaptureAnalysisDispositionTypes_Natural_Gas = "CaptureAnalysisDispositionTypes_Natural_Gas";
+	public static final String CaptureAnalysisDispositionTypes_Not_Natural_Gas = "CaptureAnalysisDispositionTypes_Not_Natural_Gas";
+	public static final String CaptureAnalysisDispositionTypes_Possible_Natural_Gas = "CaptureAnalysisDispositionTypes_Possible_Natural_Gas";
+	public static final String CaptureAnalysisDispositionTypes_Sample_Size_Too_Small = "CaptureAnalysisDispositionTypes_Sample_Size_Too_Small";
+	public static final String CaptureAnalysisDispositionTypes_Uncertainty_Out_Of_Range = "CaptureAnalysisDispositionTypes_Uncertainty_Out_Of_Range";
+	public static final String CaptureAnalysisDispositionTypes_Unknown = "CaptureAnalysisDispositionTypes_Unknown";
+	public static final String CaptureAnalysisDispositionTypes_User_Cancellation = "CaptureAnalysisDispositionTypes_User_Cancellation";
+	
+	// Ref Gas Capture description types.
+	public static final String ReferenceGasCaptureDescription_Isotopic_Reference_Pass = "ReferenceGasCaptureDescription_Isotopic_Reference_Pass";
 }

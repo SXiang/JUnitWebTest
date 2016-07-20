@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.Log;
+import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
 import surveyor.dataaccess.source.ResourceKeys;
@@ -106,6 +107,10 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	@FindBy(id = "btn_cancel_annotation")
 	@CacheLookup
 	private WebElement fieldNotesCancel;
+	
+	@FindBy(id = "btn_close_annotation")
+	@CacheLookup
+	private WebElement fieldNotesClose;
 
 	@FindBy(css = "a[href='http://openlayers.org/']")
 	@CacheLookup
@@ -250,6 +255,25 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	@FindBy(id = "eq_warning_message")
 	@CacheLookup
 	protected WebElement eqModeDialogMessage;
+
+	@FindBy(id = "menu_layer")
+	@CacheLookup
+	protected WebElement modeMenu;
+
+	@FindBy(id = "start_survey_modal")
+	protected WebElement startSurveyModalDialog;
+	
+	@FindBy(xpath = "//*[@id='button_close_survey_modal']/..")
+	protected WebElement closeSurveyModalButton;
+	
+	@FindBy(id = "featureinfo_modal")
+	protected WebElement featureInfoModalDialog;
+	
+	@FindBy(id = "feature_info")
+	protected WebElement featureInfoText;
+
+	@FindBy(id = "btn_addupdate_annotation")
+	protected WebElement addUpdateNoteButton;
 	
 	/**
 	 * @param driver
@@ -258,9 +282,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 */
 	public DriverViewPage(WebDriver driver, TestSetup testSetup, String baseURL) {
 		super(driver, testSetup, baseURL, getPageFullUrl(baseURL));
-
-		this.open();
-		
 		Log.info("\nThe DriverView Page URL is: " + this.strPageURL);
 	}
 
@@ -278,11 +299,12 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	public boolean checkIfAtDriverViewPage() {
 		if (driver.getTitle().equalsIgnoreCase(STRPageTitle))
 			return true;
-		
+		Log.warn("Current  page is not '"+STRPageTitle+"'");
 		return false;
 	}
 
 	public DriverViewPage clickModeButton() {
+		Log.clickElementInfo("Mode");
 		this.modeButton.click();
 		return this;
 	}
@@ -293,20 +315,35 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	public DriverViewPage clickShutdownButton() {
+		Log.clickElementInfo("System Shutdown");
 		this.getSystemShutdownButton().click();
 		return this;
 	}
 
 	public DriverViewPage clickShutdownConfirmButton() {
+		Log.clickElementInfo("Confirm Shutdown");
 		this.getShutdownConfirmButton().click();
 		return this;
 	}
 
 	public DriverViewPage clickShutdownCancelButton() {
+		Log.clickElementInfo("Cancel Shutdown");
 		this.getShutdownCancelButton().click();
 		return this;
 	}
 
+	public boolean isFieldNotesDialogShown() {
+		return !this.fieldNotesModalDialog.getAttribute("class").contains("ng-hide");
+	}
+	
+	public boolean isFeatureInfoDialogShown() {
+		return !this.featureInfoModalDialog.getAttribute("class").contains("ng-hide");
+	}
+	
+	public String getFeatureInfoDialogText() {
+		return this.featureInfoText.getAttribute("value");
+	}
+	
 	public WebElement getStartSurveyButton() {
 		return this.startSurveyButton;
 	}
@@ -407,11 +444,13 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 	
 	public DriverViewPage clickSurveyDurationWarningDialogOkButton() {
+		Log.info("Click Ok in survey duration warning dialog");
 		this.surveyDurationWarningDialogOkButton.click();
 		return this;
 	}
 
 	public DriverViewPage clickFailedToStartSurveyDialogOkButton() {
+		Log.info("Click Ok in failed to start survey dialog");
 		this.failedToStartSurveyDialogOkButton.click();
 		return this;
 	}
@@ -473,18 +512,29 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickCalmButton() {
+		Log.clickElementInfo("Calm");
 		calm.click();
 		return this;
 	}
 
 	/**
-	 * Click on Cancel Button.
+	 * Click on Cancel Button in Field notes.
 	 *
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickFieldNotesCancelButton() {
 		fieldNotesCancel = driver.findElement(By.id("btn_cancel_annotation"));
-		fieldNotesCancel.click();
+		Log.clickElementInfo("Cancel", "in field Notes dialog");
+		return this;
+	}
+
+	/**
+	 * Click on Close Button in Field Notes.
+	 *
+	 * @return the DriverViewPage class instance.
+	 */
+	public DriverViewPage clickFieldNotesCloseButton() {
+		fieldNotesClose.click();
 		return this;
 	}
 
@@ -494,6 +544,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickImageDataLink() {
+		Log.clickElementInfo("Image data");
 		imageData.click();
 		return this;
 	}
@@ -504,6 +555,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickDayButton() {
+		Log.clickElementInfo("Day");
 		day.click();
 		return this;
 	}
@@ -514,6 +566,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickFieldNotesDeleteButton() {
+		Log.clickElementInfo("Delete", "in Field Notes dialog");
 		fieldNotesDelete.click();
 		return this;
 	}
@@ -524,6 +577,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickIButton() {
+		Log.clickElementInfo("I");
 		i.click();
 		return this;
 	}
@@ -534,6 +588,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickLightButton() {
+		Log.clickElementInfo("Light");
 		light.click();
 		return this;
 	}
@@ -553,6 +608,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickManualButton() {
+		Log.clickElementInfo("Manual");
 		manual.click();
 		return this;
 	}
@@ -563,6 +619,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickModerateButton() {
+		Log.clickElementInfo("Moderate");
 		moderate.click();
 		return this;
 	}
@@ -573,6 +630,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickCloudCoverLessThan50Button() {
+		Log.clickElementInfo("Cloud Cover Less Than 50");
 		cloudCoverLessThan50.click();
 		return this;
 	}
@@ -583,6 +641,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickCloudCoverMoreThan50Button() {
+		Log.clickElementInfo("Cloud Cover More Than 50");
 		cloudCoverMoreThan50.click();
 		return this;
 	}
@@ -593,6 +652,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickNightButton() {
+		Log.clickElementInfo("Night");
 		night.click();
 		return this;
 	}
@@ -603,6 +663,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickOk1Button() {
+		Log.clickElementInfo("Ok1");
 		ok1.click();
 		return this;
 	}
@@ -613,6 +674,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickOk2Button() {
+		Log.clickElementInfo("Ok2");
 		ok2.click();
 		return this;
 	}
@@ -623,6 +685,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickOperatorButton() {
+		Log.clickElementInfo("Operator");
 		operator.click();
 		return this;
 	}
@@ -633,6 +696,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickOvercastButton() {
+		Log.clickElementInfo("Overcast");
 		overcast.click();
 		return this;
 	}
@@ -643,6 +707,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickRapidResponseButton() {
+		Log.clickElementInfo("Rapid Response");
 		rapidResponse.click();
 		return this;
 	}
@@ -654,6 +719,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 */
 	public DriverViewPage clickFieldNotesSaveButton() {
 		fieldNotesSave = driver.findElement(By.id("btn_save_annotation")); 
+		Log.clickElementInfo("Save Field Notes");
 		fieldNotesSave.click();
 		return this;
 	}
@@ -664,6 +730,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickStandardButton() {
+		Log.clickElementInfo("Standard");
 		standard.click();
 		return this;
 	}
@@ -674,6 +741,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickAssessmentButton() {
+		Log.clickElementInfo("Assessment");
 		assessment.click();
 		return this;
 	}
@@ -686,7 +754,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	public DriverViewPage clickStartSurvey() {
 		Log.info("Clicking on StartSurvey button..");
 		startSurvey.click();
-		Log.info("Clicked on StartSurvey button..");
 		return this;
 	}
 
@@ -706,16 +773,28 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickStartSurveyButton() {
+		Log.clickElementInfo("Start Survey");
 		this.startSurveyButton.click();
 		return this;
 	}
 
+	/**
+	 * Click on the close survey modal dialog.
+	 *
+	 * @return the DriverViewPage class instance.
+	 */
+	public DriverViewPage closeSurveyModalDialog() {
+		this.closeSurveyModalButton.click();
+		return this;
+	}
+	
 	/**
 	 * Click on Strong Button.
 	 *
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickRadiationStrongButton() {
+		Log.clickElementInfo("Radiation Strong");
 		radiationStrong.click();
 		return this;
 	}
@@ -726,16 +805,28 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickWindStrongButton() {
+		Log.clickElementInfo("Wind Strong");
 		windStrong.click();
 		return this;
 	}
 
+	/**
+	 * Click on Add/Update note button.
+	 *
+	 * @return the DriverViewPage class instance.
+	 */
+	public DriverViewPage clickOnAddUpdateNoteButton() {
+		addUpdateNoteButton.click();
+		return this;
+	}
+	
 	/**
 	 * Click on Terms Of Use Link.
 	 *
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickTermsOfUseLink() {
+		Log.clickElementInfo("Terms of Use");
 		termsOfUse.click();
 		return this;
 	}
@@ -755,6 +846,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage setMinAmpTextField(String minAmpValue) {
+		Log.info("Set Min Amp to '"+minAmpValue+"'");
 		manualModeMinAmp.sendKeys(minAmpValue);
 		return this;
 	}
@@ -767,6 +859,8 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	public DriverViewPage setFieldNotesTextField(String fieldNotes) {
 		Log.info(String.format("Adding fields notes text - %s", fieldNotes));
 		fieldNotesTextField = driver.findElement(By.id("anno_input"));
+		Log.info("Set field notes as '"+fieldNotes+"'");
+		fieldNotesTextField.clear();
 		fieldNotesTextField.sendKeys(fieldNotes);
 		return this;
 	}
@@ -829,8 +923,11 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 */
 	public DriverViewPage startDrivingSurvey(String tag, SurveyTime surveyTime, SolarRadiation solarRadiation,
 			Wind wind, CloudCover cloudCover, SurveyType surveyType, float minAmplitude) {
+		this.waitForSignalRCallsToComplete();
+		this.waitForStartSurveyButtonToBeVisible();
 		openStartSurveyModalDialog();
 
+		this.waitForSignalRCallsToComplete();
 		this.setTagSurveyTextField(tag);
 		
 		selectSurveyTimeAndRadiationInSurveyDialog(surveyTime, solarRadiation, cloudCover);
@@ -874,7 +971,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		// NOTE: This check will NOT always work correctly as this button might be showing when multiple tests are run one after the other. 
 		//assertTrue(this.getStartSurveyButtonFromStartSurveyDialog().isDisplayed() == false);
 		
-		Log.info("Selecting surveyType..");		
+		Log.info("Selecting surveyType - '"+surveyType+"'");		
 		switch (surveyType) {
 		case Manual:
 			this.clickManualButton();
@@ -897,7 +994,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	private void selectWindInSurveyDialog(Wind wind) {
-		Log.info("Selecting wind..");
+		Log.info("Selecting wind - '"+wind+"'");
 		switch (wind) {
 		case Calm:
 			this.clickCalmButton();
@@ -914,7 +1011,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	private void selectSurveyTimeAndRadiationInSurveyDialog(SurveyTime surveyTime, SolarRadiation solarRadiation, CloudCover cloudCover) {
-		Log.info("Selecting surveyTime..");
+		Log.info("Selecting surveyTime - '"+surveyTime+"'");
 		switch (surveyTime) {
 		case Day:
 			selectDayInSurveyDialog(solarRadiation);
@@ -931,6 +1028,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		this.clickNightButton();
 		Log.info("Survey Time: Night selected.");
 		// Cloud Cover option is valid only during Night time.
+		Log.info("Selecting night in survey dialog - '"+cloudCover+"'");
 		switch (cloudCover) {
 		case LessThan50:
 			this.clickCloudCoverLessThan50Button();
@@ -947,6 +1045,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		this.clickDayButton();
 		Log.info("Survey Time: Day selected.");
 		// Solar Radiation is valid only during Day time.
+		Log.info("Selecting day in survey dialog - '" +solarRadiation +"'");
 		switch (solarRadiation) {
 		case Moderate:
 			this.clickModerateButton();
@@ -963,20 +1062,24 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	public void openStartSurveyModalDialog() {
+		this.waitForSignalRCallsToComplete();
 		Log.info("Opening the StartSurvey modal dialog..");
 		this.clickStartSurveyButton();
 		Log.info("Opened the StartSurvey modal dialog..");
-		this.waitForPageToLoad();
+		this.waitForStartSurveyModalDialogToShow();
+		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
 	}
 
 	public void openStartEQSurveyModalDialog() {
 		Log.info("Opening the StartSurvey modal dialog..");
 		this.clickStartEQSurveyButton();
 		Log.info("Opened the StartSurvey modal dialog..");
-		this.waitForPageToLoad();
+		this.waitForStartSurveyModalDialogToShow();
+		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
 	}
 
 	public DriverViewPage stopDrivingSurvey() {
+		Log.clickElementInfo("Stop Driving Survey");
 		this.getStopDrivingSurveyButton().click();
 		this.waitForUIUnBlock();
 		return this;
@@ -986,6 +1089,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * Clicks on the Start EQ Survey button.
 	 */
 	private void clickStartEQSurveyButton() {
+		Log.clickElementInfo("EQ Survey");
 		this.startEQSurveyButton.click();
 	}
 
@@ -1017,6 +1121,10 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		return this.eqModeDialogMessage.getText().equals(message);
 	}
 
+	public boolean isStartSurveyDialogVisible() {
+		return !this.startSurveyModalDialog.getAttribute("class").contains("ng-hide");
+	}
+
 	/**
 	 * Verify that current page URL matches the expected URL.
 	 *
@@ -1043,27 +1151,16 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	/**
-	 * Verifies that the field notes modal dialog popup is shown.
+	 * Waits for the start survey modal dialog to show.
 	 */
-	public void waitForFieldNotesDialogToOpen() {
+	public void waitForStartSurveyModalDialogToShow() {
 		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return fieldNotesModalDialog.getAttribute("class").equalsIgnoreCase("");
+				return isStartSurveyDialogVisible();
 			}
 		});
 	}
 
-	/**
-	 * Verifies that the field notes modal dialog popup is closed.
-	 */
-	public void waitForFieldNotesDialogToClose() {
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return fieldNotesModalDialog.getAttribute("class").equalsIgnoreCase("ng-hide");
-			}
-		});
-	}
-	
 	/**
 	 * Waits for the Start Survey button to be displayed.
 	 */
@@ -1086,6 +1183,36 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		});
 	}
 
+	public boolean isModeMenuOpen() {
+		return this.modeMenu.getAttribute("class").equalsIgnoreCase("");
+	}
+
+	public boolean isModeMenuClosed() {
+		return this.modeMenu.getAttribute("class").equalsIgnoreCase("ng-hide");
+	}
+
+	/**
+	 * Waits for the survey mode menu to open.
+	 */
+	public void waitForModeMenuToOpen() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isModeMenuOpen();
+			}
+		});
+	}
+
+	/**
+	 * Waits for the survey mode menu to close.
+	 */
+	public void waitForModeMenuToClose() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isModeMenuClosed();
+			}
+		});
+	}
+
 	/**
 	 * Waits for the survey duration warning dialog to close.
 	 */
@@ -1104,6 +1231,61 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return divSurveyStartWarning.getAttribute("class").equalsIgnoreCase("cssFade ng-hide");
+			}
+		});
+	}
+
+	/**
+	 * Waits for the Field notes dialog to be shown.
+	 */
+	public void waitForFieldNotesDialogToOpen() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isFieldNotesDialogShown();
+			}
+		});
+	}
+
+	/**
+	 * Waits for the Field notes dialog to be closed.
+	 */
+	public void waitForFieldNotesDialogToClose() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return !isFieldNotesDialogShown();
+			}
+		});
+	}
+
+	/**
+	 * Waits for the Feature info dialog to be shown.
+	 */
+	public void waitForFeatureInfoDialogToOpen() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isFeatureInfoDialogShown();
+			}
+		});
+	}
+
+	/**
+	 * Waits for the Feature info dialog to be closed.
+	 */
+	public void waitForFeatureInfoDialogToClose() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return !isFeatureInfoDialogShown();
+			}
+		});
+	}
+
+	/**
+	 * Waits for StartSurvey button to be visible.
+	 */
+	public void waitForStartSurveyButtonToBeVisible() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isStartSurveyButtonVisible();
 			}
 		});
 	}

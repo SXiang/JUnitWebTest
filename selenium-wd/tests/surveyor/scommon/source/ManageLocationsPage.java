@@ -161,7 +161,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		latLongSelectionControl = new LatLongSelectionControl(driver);
 		PageFactory.initElements(driver, latLongSelectionControl);
 
-		Log.info("\nThe Manager Locations Page URL is: " + this.strPageURL);
+		Log.info("\nThe Manage Locations Page URL is: " + this.strPageURL);
 	}
 
 	public ManageLocationsPage(WebDriver driver, String baseURL, TestSetup testSetup, String urlPath) {
@@ -169,39 +169,41 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 
 	public void addNewLocation(String locationDesc, String customer, String newLocationName) {
+		Log.method("addNewLocation", locationDesc, customer, newLocationName);
 		addNewLocation(locationDesc, customer, newLocationName, false /* UseLatLongSelector */, "1", "2");
 	}
 
 	public void addNewLocationUsingLatLongSelector(String locationDesc, String customer, String newLocationName) {
+		Log.method("addNewLocationUsingLatLongSelector", locationDesc, customer, newLocationName);
 		addNewLocation(locationDesc, customer, newLocationName, true /* UseLatLongSelector */, "1", "2");
 	}
 
-	public void addNewLocation(String locationDesc, String customer, String newLocationName, String ethMthMin,
-			String ethMthMax) {
+	public void addNewLocation(String locationDesc, String customer, String newLocationName, String ethMthMin, String ethMthMax) {
+		Log.method("addNewLocation", locationDesc, customer, newLocationName, ethMthMin, ethMthMax);
 		addNewLocation(locationDesc, customer, newLocationName, false /* UseLatLongSelector */, ethMthMin, ethMthMax);
 	}
 
-	public void addNewLocationUsingLatLongSelector(String locationDesc, String customer, String newLocationName,
-			String ethMthMin, String ethMthMax) {
+	public void addNewLocationUsingLatLongSelector(String locationDesc, String customer, String newLocationName, String ethMthMin, String ethMthMax) {
+		Log.method("addNewLocationUsingLatLongSelector", locationDesc, customer, newLocationName, ethMthMin, ethMthMax);
 		addNewLocation(locationDesc, customer, newLocationName, true /* UseLatLongSelector */, ethMthMin, ethMthMax);
 	}
 
 	private void addNewLocation(String locationDesc, String customer, String newLocationName,
 			boolean useLatLongSelector, String ethMthMin, String ethMthMax) {
-
+		Log.method("addNewLocation", locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin, ethMthMax);
 	    addNewLocation(locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin,ethMthMax,true);
 	}
 
 	public void addNewLocation(String locationDesc, String customer,
 			String newLocationName, boolean useLatLongSelector, String ethMthMin, String ethMthMax, boolean checkForError) {
-		
+		Log.method("addNewLocation", locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin, ethMthMax, checkForError);
 		if (newLocationName.equalsIgnoreCase("Santa Clara")) {
 			setLatitude("37.3971035425739");
 			setLongitude("-121.98343231897");
 		}
 
 		this.btnAddNewLocation.click();
-
+		waitForNewPageLoad();
 		this.inputLocationDesc.sendKeys(locationDesc);
 
 		if (!useLatLongSelector) {
@@ -211,7 +213,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			final int Y_OFFSET = 100;
 			
 			this.clickOnLatLongSelectorBtn();
-                        this.selectOnLatLong(X_OFFSET, Y_OFFSET);            
+            this.selectOnLatLong(X_OFFSET, Y_OFFSET);            
 			this.clickOnLatLongOkBtn();
 			
 			String locationLatitudeText = this.getLocationLatitudeText();
@@ -222,12 +224,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			Log.info("Location Longitude Field value = " + locationLongitudeText);
 			assertTrue(!locationLongitudeText.isEmpty());
 		}
-
-		List<WebElement> options = this.dropDownCustomer.findElements(By.tagName("option"));
-		for (WebElement option : options) {
-			if (customer.equalsIgnoreCase(option.getText().trim()))
-				option.click();
-		}
+		
+		Log.info("Select customer - '"+customer+"'");
+		selectDropdownOption(this.dropDownCustomer, customer);
 
 		this.stdMinAmp.clear();
 		this.stdMinAmp.sendKeys("0.035");
@@ -254,38 +253,34 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.NoUpper.sendKeys("-25");
 
 		if (ethMthMin != null && ethMthMin != "") {
-			List<WebElement> optionsMIN = this.ethMthMinUnit.findElements(By.tagName("option"));
-			for (WebElement option : optionsMIN) {
-				if ((ethMthMin).equalsIgnoreCase(option.getText().trim())) {
-					option.click();
-				}
-			}
+			this.ethMthMinUnit.clear();
+			this.ethMthMinUnit.sendKeys(ethMthMin);
 		}
 
 		if (ethMthMax != null && ethMthMax != "") {
-			List<WebElement> optionsMAX = this.ethMthMaxUnit.findElements(By.tagName("option"));
-			for (WebElement option : optionsMAX) {
-				if ((ethMthMax).equalsIgnoreCase(option.getText().trim())) {
-					option.click();
-				}
-			}
+			this.ethMthMaxUnit.clear();
+			this.ethMthMaxUnit.sendKeys(ethMthMax);
 		}
 
 		JavascriptExecutor js = (JavascriptExecutor) driver;
+		Log.clickElementInfo("Ok");
 		js.executeScript("arguments[0].click();", this.btnOK);
 
 		this.waitForPageToLoad();
         
 		if(checkForError && verifyErrorMessage(null, true /*checkOnlyErrorSummary*/)){
+			Log.clickElementInfo("Cancel");
 			this.btnCancel.click();
 		}
 	}
 	
 	public boolean verifyErrorMessage(String errorMsg){
+		Log.method("verifyErrorMessage", errorMsg);
 		return verifyErrorMessage(errorMsg, false /*checkOnlyErrorSummary*/);
 	}
 	
 	private boolean verifyErrorMessage(String errorMsg, boolean checkOnlyErrorSummary){
+		Log.method("verifyErrorMessage", errorMsg, checkOnlyErrorSummary);
 		boolean found = false;
 		if (isElementPresent(this.summaryErrorsBy)) {			
 			if (this.summaryErrors.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
@@ -295,6 +290,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 					for(WebElement element:this.panelErrors){
 						if(element.getText().equals(errorMsg)){
 							found = true;
+							Log.info("Error message found - '"+errorMsg+"'");
 							break;
 						}
 					}
@@ -305,15 +301,19 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 	
 	public void inputLatLong(String latitude, String longitude){
+		Log.method("inputLatLong", latitude, longitude);
 		this.inputLocationLat.clear();
 		this.inputLocationLong.clear();
 		
+		Log.info("Set latitude - '"+latitude+"'");
 		this.inputLocationLat.sendKeys(latitude);
+		Log.info("Set longitude - '"+longitude+"'");
 		this.inputLocationLong.sendKeys(longitude);
 	}
 	
 
 	public void selectOnLatLong(int xOffset, int yOffset){
+		Log.method("selectOnLatLong", xOffset, yOffset);
 		String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
 		latLongSelectionControl.waitForModalDialogOpen()
 		.switchMode(ControlMode.MapInteraction)
@@ -323,22 +323,31 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 	
 	public void clickOnLatLongCancelBtn(){
+		Log.method("clickOnLatLongCancelBtn");
 		latLongSelectionControl.clickCancelButton()
 		.waitForModalDialogToClose();
 	}
 
 	public void clickOnLatLongOkBtn(){
+		Log.method("clickOnLatLongOkBtn");
 		latLongSelectionControl.clickOkButton()
 		.waitForModalDialogToClose();
 	}
 	
 	public boolean findExistingLocationAndClickEdit(String customerName, String locationName){
+		Log.method("findExistingLocationAndClickEdit", customerName, locationName);
 		return editExistingLocation(customerName, locationName, null,null,null,null,null, true, true);
 	}
+
 	public boolean editExistingLocation(String customerName, String locationName, String newLocationName, boolean checkForError){
+		Log.method("editExistingLocation", customerName, locationName, newLocationName, checkForError);
 		return editExistingLocation(customerName, locationName, newLocationName,null,null,null,null, false, checkForError);
 	}
+	
 	public boolean findExistingLocation(String customerName, String locationName) {
+		Log.method("findExistingLocation", customerName, locationName);
+		Log.info(String.format("Find Location '%s', customer = '%s'",
+				locationName, customerName));
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
@@ -406,27 +415,32 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
     	// revert back search field.
     	this.clearSearchField();
+    	Log.error(String.format("Location not found: '%s', customer = '%s'",
+				locationName, customerName));
 		return false;
 	}
 
 	public boolean editPDExistingLocation(String customerName, String locationName, String newLocationName) {
+		Log.method("editPDExistingLocation", customerName, locationName, newLocationName);
 		return this.editExistingLocation(customerName, locationName, newLocationName, null, null, null, null);
 	}
 
 	public boolean editPDExistingLocation(String customerName, String locationName, String newLocationName,
 			String latValue, String longValue) {
+		Log.method("editPDExistingLocation", customerName, locationName, newLocationName, latValue, longValue);
 		return this.editExistingLocation(customerName, locationName, newLocationName, latValue, longValue, null, null);
 	}
 
 	public boolean editPDExistingLocation(String customerName, String locationName, String newLocationName,
 			String latValue, String longValue, String newEthMthMin, String newEthMthMax) {
+		Log.method("editPDExistingLocation", customerName, locationName, newLocationName, latValue, longValue, newEthMthMin, newEthMthMax);
 		return this.editExistingLocation(customerName, locationName, newLocationName, latValue, longValue, newEthMthMin,
 				newEthMthMax);
 	}
 	public boolean editExistingLocation(String customerName,
 			String locationName, String newLocationName, String latValue,
 			String longValue, String newEthMthMin, String newEthMthMax){
-		
+		Log.method("editExistingLocation", customerName, locationName, newLocationName, latValue, longValue, newEthMthMin, newEthMthMax);
 		return editExistingLocation(customerName, locationName, newLocationName, latValue,
 				longValue, newEthMthMin, newEthMthMax, false,true);
 	}
@@ -434,7 +448,10 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public boolean editExistingLocation(String customerName,
 			String locationName, String newLocationName, String latValue,
 			String longValue, String newEthMthMin, String newEthMthMax , boolean openEditorOnly, boolean checkForError){
-		
+		Log.method("editExistingLocation", customerName, locationName, newLocationName, latValue,
+				longValue, newEthMthMin, newEthMthMax, openEditorOnly, checkForError);
+		Log.info(String.format("Edit Location '%s', customer = '%s'",
+				locationName, customerName));
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();		// clear any previous entries in search.
 
@@ -485,12 +502,14 @@ public class ManageLocationsPage extends SurveyorBasePage {
                 }
                 
 				if (this.inputLocationDesc != null) {
+					Log.info("Set location desc - '"+newLocationName+"'");
 					this.inputLocationDesc.clear();
 					this.inputLocationDesc.sendKeys(newLocationName);
 				}
 
 				if (latValue != null && latValue != "") {
 					if (this.inputLocationLat != null) {
+						Log.info("Set location latitude - '"+latValue+"'");
 						this.inputLocationLat.clear();
 						this.inputLocationLat.sendKeys(latValue);
 					}
@@ -498,6 +517,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 				if (longValue != null && longValue != "") {
 					if (this.inputLocationLong != null) {
+						Log.info("Set location latitude - '"+longValue+"'");
 						this.inputLocationLong.clear();
 						this.inputLocationLong.sendKeys(longValue);
 					}
@@ -507,7 +527,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 					List<WebElement> optionsMIN = this.ethMthMinUnit.findElements(By.tagName("option"));
 					for (WebElement option : optionsMIN) {
 						if ((newEthMthMin).equalsIgnoreCase(option.getText().trim())) {
+							Log.info("Select option - '"+option+"'");
 							option.click();
+							break;
 						}
 					}
 				}
@@ -516,17 +538,25 @@ public class ManageLocationsPage extends SurveyorBasePage {
 					List<WebElement> optionsMAX = this.ethMthMaxUnit.findElements(By.tagName("option"));
 					for (WebElement option : optionsMAX) {
 						if ((newEthMthMax).equalsIgnoreCase(option.getText().trim())) {
+							Log.info("Select option - '"+newEthMthMax+"'");
 							option.click();
+							break;
 						}
 					}
 				}
 
 				String curURL = driver.getCurrentUrl();
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", this.btnOK);
+				this.btnOK.click();
 				Log.info("ok button clicked");
                 if(!checkForError){
-                	// revert back search field.
+                	Log.info("Not checking for errors");
+                	if (isElementPresent(this.panelDuplicationErrorXPath)) {
+                		// We are still on the new locations page. Return.
+                    	Log.info("Error on page. Returning to caller.");
+                    	return true; 
+                	}
+                	
+                	// Redirected to Manage location page. Revert back search field and return.
                 	this.clearSearchField();
                 	return true;
                 }
@@ -571,15 +601,19 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	   	// revert back search field.
     	this.clearSearchField();
+    	Log.error(String.format("Location not found: '%s', customer = '%s'",
+				locationName, customerName));
 		return false;
 
 	}
 
 	public String getSelectedPoint(){
+		Log.method("getSelectedPoint");
 		return getSelectedPoint(SECONDS_10);
 	}
+
 	public String getSelectedPoint(int timeout){
-		
+		Log.method("getSelectedPoint", timeout);
 		latLongSelectionControl.waitForModalDialogOpen()
 		.switchMode(ControlMode.MapInteraction);
 		
@@ -656,23 +690,28 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 
 	public void clickOnAddNewLocationBtn() {
+		Log.clickElementInfo("Add New Location");
 		this.btnAddNewLocation.click();
 		this.waitForNewPageLoad();
 	}
 
 	public void clickOnFirstEditLocationBtn() {
+		Log.clickElementInfo("Edit Location");
 		this.btnEditLocation.click();
 	}
 
 	public void clickOnCancelBtn() {
+		Log.clickElementInfo("Cancel");
 		this.btnCancel.click();
 	}
 
 	public void clickOnOkBtn() {
+		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 	}
 	
 	public void clickOnLatLongSelectorBtn() {
+		Log.clickElementInfo("Lat/Long Selector");
 		this.latLongSelectorBtn.click();
 	}
 
@@ -685,6 +724,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 
 	public List<String> getLocationList(boolean allPages, int paginationSize) {
+		Log.method("getLocationList", allPages, paginationSize);
 		List<String> locationList = new ArrayList<String>();
 
 		String pageSizeStr = String.valueOf(paginationSize);
@@ -727,12 +767,14 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 
 	public boolean searchLocation(String customer, String locationName) {
+		Log.method("searchLocation", customer, locationName);
 		this.searchTable(locationName);
 		return findExistingLocation(customer, locationName);
 	}
 
 	public boolean isDuplicateLocMsgPresent() {
-		return this.liDuplicateMsg.getText().equals(STRDuplicateLocMsg);
+		Log.method("isDuplicateLocMsgPresent");
+		return getElementText(this.liDuplicateMsg).equals(STRDuplicateLocMsg);
 	}
 
 	@Override
@@ -745,7 +787,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public void waitForPageLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return d.getPageSource().contains(STRPageContentText);
+				return isPageTitleMatch(d.getTitle(),STRPageContentText);
 			}
 		});
 	}
@@ -753,7 +795,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public void waitForNewPageLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return d.getPageSource().contains(STRNewPageContentText);
+				return isPageTitleMatch(d.getTitle(),STRNewPageContentText);
 			}
 		});
 	}
@@ -761,7 +803,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public void waitForEditPageLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return d.getPageSource().contains(STREditPageContentText);
+				return isPageTitleMatch(d.getTitle(),STREditPageContentText);
 			}
 		});
 	}

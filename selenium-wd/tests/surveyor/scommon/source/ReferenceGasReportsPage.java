@@ -32,6 +32,7 @@ import common.source.BaseHelper;
 import common.source.DBConnection;
 import common.source.DateUtility;
 import common.source.Log;
+import common.source.LogHelper;
 import common.source.PDFUtility;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.Analyzer;
@@ -73,17 +74,22 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	}
 
 	private void addNewReport(String title, String timeZone, String surUnit, String startDate, String endDate) {
+		Log.method("addNewReport", title, timeZone, surUnit, startDate, endDate);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		Log.clickElementInfo("New RefGas Report");
 		this.btnNewRefGasRpt.click();
 
+		Log.info(String.format("Input title - '%s'", title));
 		this.inputTitle.clear();
 		this.inputTitle.sendKeys(title);
 
 		List<WebElement> optionsTZ = this.cBoxTimezone.findElements(By.tagName("option"));
 		for (WebElement option : optionsTZ) {
-			if ((timeZone).equalsIgnoreCase(option.getText().trim())) {
+			if ((timeZone).equalsIgnoreCase(option.getText().trim())){
+				Log.info(String.format("Select Timezone - '%s'", timeZone));
 				option.click();
+				break;
 			}
 		}
 
@@ -91,7 +97,9 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 			List<WebElement> optionsSU = this.cbSurveyUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsSU) {
 				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
+					Log.info(String.format("Select Surveyor Unit - '%s'", surUnit));
 					option.click();
+					break;
 				}
 			}
 		}
@@ -104,22 +112,26 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 
 		if (testSetup.isRunningDebug())
 			testSetup.slowdownInSeconds(3);
-
+		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 	}
 
 	public void addNewReport(String title, String timeZone, String surUnit, String startDate, String endDate, int noOfPreStartMonth, int noOfPreEndMonth) {
-
+		Log.method("addNewPDReport", title, timeZone, surUnit, startDate, endDate, noOfPreStartMonth, noOfPreEndMonth);
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		Log.clickElementInfo("New RefGas Report");
 		this.btnNewRefGasRpt.click();
 
+		Log.info(String.format("Input title - '%s'", title));
 		this.inputTitle.clear();
 		this.inputTitle.sendKeys(title);
 
 		List<WebElement> optionsTZ = this.cBoxTimezone.findElements(By.tagName("option"));
 		for (WebElement option : optionsTZ) {
 			if ((timeZone).equalsIgnoreCase(option.getText().trim())) {
+				Log.info(String.format("Select Timezone - '%s'", timeZone));
 				option.click();
+				break;
 			}
 		}
 
@@ -127,7 +139,9 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 			List<WebElement> optionsSU = this.cbSurveyUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsSU) {
 				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
+					Log.info(String.format("Select Surveyor Unit - '%s'", surUnit));
 					option.click();
+					break;
 				}
 			}
 		}
@@ -140,19 +154,23 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 
 		if (testSetup.isRunningDebug())
 			testSetup.slowdownInSeconds(3);
-
+		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 	}
 
 	public void addNewPDReport(String reportTitle) {
+		Log.method("addNewPDReport", reportTitle);
 		this.addNewReport(reportTitle, TIMEZONE, SURVEYORUNIT, STARTDATE, ENDDATE);
 	}
 
 	public void addNewPDReport(String reportTitle, String timezone, String surveyor, String startDate, String endDate) {
+		Log.method("addNewPDReport", reportTitle, timezone, surveyor, startDate, endDate);
 		this.addNewReport(reportTitle, timezone, surveyor, startDate, endDate);
 	}
 
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy) {
+		Log.method("checkActionStatus", rptTitle, strCreatedBy);
+		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
 		setPagination(PAGINATIONSETTING_100);
@@ -190,6 +208,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 
 				while (bContinue) {
 					try {
+						Log.clickElementInfo("Download");
 						this.btnDownload.click();
 						testSetup.slowdownInSeconds(15);
 						return true;
@@ -222,6 +241,9 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	}
 
 	public boolean findReport(String rptTitle, String strCreatedBy) {
+		Log.method("findReport", rptTitle, strCreatedBy);
+		
+		Log.info(String.format("Find report with title = '%s', created by = '%s", rptTitle, strCreatedBy ));
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
 		String reportTitleXPath;
@@ -252,6 +274,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
+				Log.clickElementInfo("Next");
 				this.nextBtn.click();
 
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -266,11 +289,13 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 				rowNum = 0;
 			}
 		}
-
+		Log.error(String.format("Report not found: title = '%s', createdBy = '%s'",rptTitle, strCreatedBy));
 		return false;
 	}
 
 	public boolean validatePdfFiles(String reportTitle, String downloadPath) {
+		Log.method("validatePdfFiles", reportTitle, downloadPath);
+		
 		String reportId;
 		String reportName;
 		DBConnection objDbConn = new DBConnection();
@@ -282,7 +307,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 			Log.info(reportId);
 			Log.info(String.valueOf(reportId.length()));
 			reportName = "RG-" + reportId;
-			Log.info(reportName);
+			Log.info("ReportName = " + reportName);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			return false;
@@ -296,6 +321,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyStaticTextInPDF(String downloadPath, String reportTitle) {
+		Log.method("verifyStaticTextInPDF", downloadPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -303,21 +329,27 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 		try {
 			String pdfInText = (pdfUtility.extractPDFText(fullDownloadPath));
 			if (!pdfInText.contains(STRReportTitle)) {
+				Log.error(String.format("Report title not found in pdf - '%s'", STRReportTitle));
 				return false;
 			}
 			if (!pdfInText.contains(STRReportSubTitle)) {
+				Log.error(String.format("Sub-Title not found in pdf - '%s'", STRReportSubTitle));
 				return false;
 			}
 			if (!pdfInText.contains(STRReportTableColumnDate)) {
+				Log.error(String.format("Date not found in pdf - '%s'", STRReportTableColumnDate));
 				return false;
 			}
 			if (!pdfInText.contains(STRReportTableColumnUserName)) {
+				Log.error(String.format("User Name not found in pdf - '%s'", STRReportTableColumnUserName));
 				return false;
 			}
 			if (!pdfInText.contains(STRReportTableColumnLotNumber)) {
+				Log.error(String.format("Lot Number not found in pdf - '%s'", STRReportTableColumnLotNumber));
 				return false;
 			}
 			if (!pdfInText.contains(STRReportTableColumnTestResult)) {
+				Log.error(String.format("Test Result not found in pdf - '%s'", STRReportTableColumnTestResult));
 				return false;
 			}
 		} catch (IOException e) {
@@ -327,6 +359,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyUserInputInPDF(String downloadPath, String reportTitle, ArrayList<String> inputs) {
+		Log.method("verifyUserInputInPDF", downloadPath, reportTitle, LogHelper.strListToString(inputs));
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -335,7 +368,9 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 			String pdfInText = (pdfUtility.extractPDFText(fullDownloadPath));
 			Iterator<String> inputIterator = inputs.iterator();
 			while (inputIterator.hasNext()) {
-				if (!pdfInText.contains(inputIterator.next())) {
+				String userInput = inputIterator.next();
+				if (!pdfInText.contains(userInput)) {
+					Log.error(String.format("User Input not found in pdf - '%s'", userInput));
 					return false;
 				}
 			}
@@ -347,6 +382,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyResultTable(String downloadPath, String reportTitle) {
+		Log.method("verifyResultTable", downloadPath, reportTitle);
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
 		String fullDownloadPath = Paths.get(downloadPath, "RG-" + reportId.substring(0, 6) + ".pdf").toString();
@@ -369,6 +405,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	}
 
 	public ArrayList<StoredProcReferenceGas> tokenizeSystemHistoryNotesTable(String fullPathtoPdf) {
+		Log.method("tokenizeSystemHistoryNotesTable", fullPathtoPdf);
 		PDFUtility pdfUtility = new PDFUtility();
 		String pdfInText;
 		ArrayList<StoredProcReferenceGas> resultsList = new ArrayList<StoredProcReferenceGas>();
@@ -409,6 +446,8 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	}
 
 	public boolean checkPaginationSetting(String numberOfReports) {
+		Log.method("checkPaginationSetting", numberOfReports);
+		
 		setPagination(numberOfReports);
 		testSetup.slowdownInSeconds(3);
 		String msgToVerify = STRPaginationMsg + numberOfReports;
@@ -421,13 +460,16 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyCancelButtonFunctionality() {
+		Log.method("verifyCancelButtonFunctionality");
+				
+		Log.clickElementInfo("New RefGas Report");
 		this.btnNewRefGasRpt.click();
 		this.waitForNewPageLoad();
+		Log.clickElementInfo("Cancel");
 		this.btnCancel.click();
 		this.waitForPageLoad();
 		if (isElementPresent(strNewRefGasRpt))
 			return true;
-
 		return false;
 	}
 	

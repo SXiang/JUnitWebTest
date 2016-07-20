@@ -2,13 +2,15 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+
 import org.junit.Test;
 
 import common.source.Log;
 
-public class SurveyViewPageTest1 extends SurveyViewPageTest {
+public class SurveyViewPageTest1 extends BaseSurveyViewPageTest {
 
-	public SurveyViewPageTest1()  {
+	public SurveyViewPageTest1() throws IOException {
 		super();
 	}
 
@@ -59,7 +61,7 @@ public class SurveyViewPageTest1 extends SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 		
-		// Assets don't have unique IDs in UI. Specific assets checks cannot be currently done from UI.
+		// TODO: Assets don't have unique IDs in UI. Specific assets checks cannot be currently done from UI.
 		// Specific Assets check is tracked as an API test.
 	}
  
@@ -110,7 +112,7 @@ public class SurveyViewPageTest1 extends SurveyViewPageTest {
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 
-		// Assets don't have unique IDs in UI. Specific assets checks cannot be currently done from UI.
+		// TODO: Assets don't have unique IDs in UI. Specific assets checks cannot be currently done from UI.
 		// Specific Assets check is tracked as an API test.
 	}
  
