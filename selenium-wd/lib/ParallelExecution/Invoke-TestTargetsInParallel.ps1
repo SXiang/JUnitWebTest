@@ -37,7 +37,7 @@ $childFolders | % {
 	Remove-Item -Path $fullName -Recurse -Force
 }
 
-Invoke-Parallel -InputObject $targetsToRun -runspaceTimeout 3000 -ScriptBlock { 
+Invoke-Parallel -InputObject $targetsToRun -runspaceTimeout 18000 -ScriptBlock { 
 	$target = $_ 
 	$guid = [guid]::NewGuid().toString()
 	$guid = $guid.replace("-", "")
