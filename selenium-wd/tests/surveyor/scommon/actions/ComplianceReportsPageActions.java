@@ -2375,10 +2375,12 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
 	 */
-	public boolean clickOnComplianceViewerPDF(String data, Integer dataRowID) {
+	public boolean clickOnComplianceViewerPDF(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.clickOnComplianceViewerPDF", data, dataRowID);
-		this.getComplianceReportsPage().clickOnPDFInReportViewer();
+		ComplianceReportsDataRow reportsDataRow = getComplianceReportsDataRow(dataRowID);
+		this.getComplianceReportsPage().invokePDFFileDownload(reportsDataRow.title);
 		return true;
 	}
  
@@ -2387,10 +2389,12 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
 	 */
-	public boolean clickOnComplianceViewerPDFZIP(String data, Integer dataRowID) {
+	public boolean clickOnComplianceViewerPDFZIP(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.clickOnComplianceViewerPDFZIP", data, dataRowID);
-		this.getComplianceReportsPage().clickOnZIPInReportViewer();
+		ComplianceReportsDataRow reportsDataRow = getComplianceReportsDataRow(dataRowID);
+		this.getComplianceReportsPage().invokePDFZipFileDownload(reportsDataRow.title);
 		return true;
 	}
  
@@ -2399,10 +2403,12 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
 	 */
-	public boolean clickOnComplianceViewerMetaZIP(String data, Integer dataRowID) {
+	public boolean clickOnComplianceViewerMetaZIP(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.clickOnComplianceViewerMetaZIP", data, dataRowID);
-		this.getComplianceReportsPage().clickOnMetadataZIPInReportViewer();
+		ComplianceReportsDataRow reportsDataRow = getComplianceReportsDataRow(dataRowID);
+		this.getComplianceReportsPage().invokeMetaZipFileDownload(reportsDataRow.title);
 		return true;
 	}
  
@@ -2411,10 +2417,12 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
 	 */
-	public boolean clickOnComplianceViewerShapeZIP(String data, Integer dataRowID) {
+	public boolean clickOnComplianceViewerShapeZIP(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.clickOnComplianceViewerShapeZIP", data, dataRowID);
-		this.getComplianceReportsPage().clickOnShapeZIPInReportViewer();
+		ComplianceReportsDataRow reportsDataRow = getComplianceReportsDataRow(dataRowID);
+		this.getComplianceReportsPage().invokeShapeZipFileDownload(reportsDataRow.title);
 		return true;
 	}
 
