@@ -249,6 +249,7 @@ public class TestEnvironmentActions extends BaseActions {
 		testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
+		testEnvironmentAction.startReplay(EMPTY, db3AnalyzerRowID); /* workaround to trigger uploading */
 		testEnvironmentAction.idleForSeconds(String.valueOf(60), NOTSET);    /* wait 60 seconds after stop survey for data upload */
 		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 	}

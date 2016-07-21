@@ -142,7 +142,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC210_GenerateReportTryDeleteSurveyUsedWhileGeneratingReport ...");
 
-		TestEnvironmentActions.generateSurveyForUser(6, 9, 51, 20);
+		TestEnvironmentActions.generateSurveyForUser(6, 9, 51, 60);
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
