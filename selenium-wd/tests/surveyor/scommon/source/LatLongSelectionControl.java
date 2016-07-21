@@ -306,7 +306,7 @@ public class LatLongSelectionControl extends BaseControl {
 	public LatLongSelectionControl waitForModalDialogToClose() {
 		Log.info("Wait for map modal dialog to close.");
 		WebDriverWait wait = new WebDriverWait(driver, timeout);
-		WebElement myModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("myModal")));
+		WebElement myModal = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("myModal")));
 		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return myModal.getAttribute("style").contains("display:none") || myModal.getAttribute("style").contains("display: none");

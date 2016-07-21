@@ -6,12 +6,15 @@ package surveyor.scommon.source;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
+import org.junit.rules.ExternalResource;
+import org.junit.rules.TestRule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.openqa.selenium.WebDriver;
@@ -47,6 +50,7 @@ public class SurveyorBaseTest {
 	
 	private static ExtentTest test = null; 
 	private static StringBuilder extentReportFile = null;
+	private static ScreenShotOnFailure screenCapture;
 	protected static final String SQAPICAD_AND_SQAPICSUP = "sqapicad@picarro.com,sqapicsup@picarro.com";
 	
 	// JUnit does NOT give a good way to detect which TestClass is executing.
@@ -69,6 +73,9 @@ public class SurveyorBaseTest {
 
 		@Override
 		protected void failed(Throwable e, Description description) {
+			SurveyorBaseTest.reportTestLogMessage();			
+			screenCapture.takeScreenshot(driver);
+			Log.error("Exception: "+e+" Description: "+description);
 			SurveyorBaseTest.reportTestFailed(e);
 		}
 
@@ -77,11 +84,7 @@ public class SurveyorBaseTest {
 			 SurveyorBaseTest.reportTestSucceeded();
 		}
 	};
-	
-	@Rule
-	public ScreenShotOnFailure failure = new ScreenShotOnFailure(driver, screenShotsSubFolder, 
-			screenShotsDir, testSetup.isRemoteBrowser);
-	
+
 	private static ExtentReports getExtentReport(String className) {
 	   ExtentReports extentReport = TestContext.INSTANCE.getReport();
 	   if (extentReport == null) {
@@ -113,6 +116,13 @@ public class SurveyorBaseTest {
 		report.flush();
 	}
 
+	public static void reportTestLogMessage() {
+		ArrayList<String> testMessage = TestContext.INSTANCE.getTestMessage();
+		for(String message:testMessage){
+			getExtentTest().log(LogStatus.WARNING, "Extra messages before the failure", "Log Message: " + message);
+		}
+	}
+	
 	public static void reportTestFailed(Throwable e) {
 		getExtentTest().log(LogStatus.FAIL, "FAILURE: " + e.getMessage());
 	}
@@ -148,15 +158,13 @@ public class SurveyorBaseTest {
 		driver = testSetup.getDriver();
 		baseURL = testSetup.getBaseUrl();		
 		debug = testSetup.isRunningDebug();
-		TestContext.INSTANCE.setTestSetup(testSetup);
-		if(screenShotsDir==null){
-			screenShotsDir = TestSetup.getExecutionPath() + TestSetup.reportDir + testSetup.getTestReportCategory();
-			Path screenShotsPath = Paths.get(screenShotsDir, screenShotsSubFolder);
-			Log.info(String.format("Create screenshots foler for this test - '%s'", screenShotsPath));
-			FileUtility.deleteFilesInDirectory(screenShotsPath);
-			FileUtility.createDirectoryIfNotExists(screenShotsPath.toString());
-		}		
-		Log.info("debuggug null - driver:***:" +driver);
+
+		screenShotsDir = TestSetup.getExecutionPath() + TestSetup.reportDir + testSetup.getTestReportCategory();
+		Path screenShotsPath = Paths.get(screenShotsDir, screenShotsSubFolder);
+		FileUtility.createDirectoryIfNotExists(screenShotsPath.toString());			
+		screenCapture = new ScreenShotOnFailure(screenShotsSubFolder, 
+				screenShotsDir, testSetup.isRemoteBrowser);
+		
 		driver.manage().deleteAllCookies();
 		
 		loginPage = new LoginPage(driver, baseURL, testSetup);

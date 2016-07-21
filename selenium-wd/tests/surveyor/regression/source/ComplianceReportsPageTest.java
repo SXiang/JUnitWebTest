@@ -42,7 +42,7 @@ import static surveyor.scommon.source.SurveyorConstants.PICADMNMANTAG;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNRRTAG;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG3200;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPTUA;
+import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
 import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
@@ -1176,7 +1176,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(CUSDRVSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEPTUA, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();

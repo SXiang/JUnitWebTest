@@ -322,6 +322,7 @@ public class SurveyorBasePage extends BasePage {
 
 	public void performSearch(String searchTerm) {
 		Log.method("performSearch", searchTerm);
+		this.inputSearch.clear();
 		Log.info(String.format("Input search text - '%s'",searchTerm));
 		this.inputSearch.sendKeys(searchTerm);
 		this.inputSearch.sendKeys(Keys.ENTER);
@@ -411,7 +412,7 @@ public class SurveyorBasePage extends BasePage {
 		List<String> strList = RegexUtility.split(numTextString, RegexUtility.SPACE_SPLIT_REGEX_PATTERN);
 		Integer records = 0;
 		if (strList != null && strList.size() > 3) {
-			records = Integer.parseInt(strList.get(3));
+			records = Integer.parseInt(strList.get(3).replace(",", ""));
 		}
 		return records;
 	}
@@ -635,20 +636,26 @@ public class SurveyorBasePage extends BasePage {
 		});
 	}
 	
-	public void waitForTableDataToLoad() {
+	public boolean waitForTableDataToLoad() {
 		Log.method("waitForTableDataToLoad");
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return (getRecordsShownOnPage(d) > 0);
-			}
-		});
+		try{
+			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+				public Boolean apply(WebDriver d) {
+					return (getRecordsShownOnPage(d) > 0);
+				}
+			});
+		}catch(Exception e){
+			Log.warn("Empty data table!");
+			return false;
+		}
+		return true;
 	}
 
-	public void waitForDropdownToBePopulated(Select dropdownElement) {
+	public void waitForDropdownToBePopulated(WebElement dropdownElement) {
 		Log.method("waitForDropdownToBePopulated", dropdownElement);
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return !dropdownElement.getOptions().isEmpty();
+				return !new Select(dropdownElement).getOptions().isEmpty();
 			}
 		});
 	}

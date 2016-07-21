@@ -33,9 +33,9 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	public static final String STREditPageContentText = Resources.getResource(ResourceKeys.ManageSurveyor_EditSurveyor);
 	public static final String PAGE_PAGINATIONSETTING = "100";
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']//a[@href='/Picarro/ManageSurveyor']")
 	protected WebElement btnAddNewSurveyor;
-	protected String btnAddNewSurveyorXPath = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a";
+	protected String btnAddNewSurveyorXPath = "//*[@id='page-wrapper']//a[@href='/Picarro/ManageSurveyor']";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]")
 	protected WebElement panelDupSurError;
@@ -141,6 +141,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		
 		Log.clickElementInfo("Add New Surveyor");
 		this.btnAddNewSurveyor.click();
+		waitForNewPageLoad();
 		Log.info("Set Surveyor Desc - '"+surveyorDesc+"'");
 		this.inputSurveyorDesc.sendKeys(surveyorDesc);
 		
@@ -171,33 +172,30 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		}
 		Log.clickElementInfo("Add New Surveyor");
 		this.btnAddNewSurveyor.click();
+		waitForNewPageLoad();
 		Log.info("Set Surveyor Desc - '"+surveyorDesc+"'");
 		this.inputSurveyorDesc.sendKeys(surveyorDesc);
 		
 		Log.info("Waiting for Location dropdown to be populated..");
-		this.waitForDropdownToBePopulated(new Select(this.dropDownLocation));
+		this.waitForDropdownToBePopulated(this.dropDownLocation);
 		
-		List<WebElement> options = this.dropDownLocation.findElements(By.tagName("option"));
-		for (WebElement option : options) {
-			if (option.getText().trim().equalsIgnoreCase(customerName + " - " + locationName)){
-				Log.info("Select Location - '"+customerName + " - " + locationName+"'");
-				option.click();
-				break;
-			}
-		}
+		Log.info("Select Location - '"+customerName + " - " + locationName+"'");
+		selectDropdownOption(this.dropDownLocation, customerName + " - " + locationName);
+		
 		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 		
-		if (isElementPresent(this.panelDupSurErrorXPath)){
-			WebElement panelError = driver.findElement(By.xpath(this.panelDupSurErrorXPath));
-			String errMsg = panelError.getText();
-			if (errMsg.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
-				result = false;
-				Log.clickElementInfo("Cancel");
+		if (isElementPresent(summaryErrorsBy)) {
+			String errMsg = getElementText(summaryErrors);
+			if (errMsg.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
+				Log.error("Cancel due to error '"+errMsg+"':");
+				for(WebElement err:panelErrors){
+					Log.error("   - '"+getElementText(err)+"'");
+				}
 				this.btnAddCancel.click();
+				return false;
 			}
 		}
-		
 		return result;
 	}	
 	
@@ -516,7 +514,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	public boolean isDuplicateSurMsgPresent(String locationName){
     	Log.method("isDuplicateSurMsgPresent", locationName);
 		String STRDuplicateSurMsg = "Surveyor name already exists for location " + locationName +", please try another name.";
-		return this.liDuplicateMsg.getText().equals(STRDuplicateSurMsg);
+		return getElementText(this.liDuplicateMsg).equals(STRDuplicateSurMsg);
 	}
 
 	public boolean isAddNewSurveyorBtnPresent() {
@@ -525,30 +523,42 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	}
 
 	@Override
+	public void open(){
+		super.open();
+		waitForPageLoad();
+	}
+	
+	@Override
 	public void waitForPageLoad() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                return d.getPageSource().contains(STRPageContentText);
-            }
-        });
-    }
+		int numOpen = 0;
+		do{
+			try{
+				new WebDriverWait(driver, timeout).until(new ExpectedCondition<Boolean>() {
+					public Boolean apply(WebDriver d) {
+					return isPageTitleMatch(d.getTitle(),STRPageContentText);
+					}
+				});
+			}catch(Exception e){
+				super.open();
+			}				
+		}while(numOpen++ < 3);
+	}
 
 	public void waitForNewPageLoad() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                return d.getPageSource().contains(STRNewPageContentText);
-            }
-        });
-    }
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isPageTitleMatch(d.getTitle(),STRNewPageContentText);
+			}
+		});
+	}
 
-    public void waitForEditPageLoad() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-            	Log.info("Checking for content on EDIT page: " + STREditPageContentText);
-                return d.getPageSource().contains(STREditPageContentText);
-            }
-        });
-    }
+	public void waitForEditPageLoad() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isPageTitleMatch(d.getTitle(),STREditPageContentText);
+			}
+		});
+	}
 
 	public void waitForDataTabletoLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
