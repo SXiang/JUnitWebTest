@@ -242,14 +242,14 @@ public class TestEnvironmentActions extends BaseActions {
 			DriverViewPageActions driverViewPageAction, TestEnvironmentActions testEnvironmentAction) throws Exception {
 		testEnvironmentAction.startAnalyzer(EMPTY, db3AnalyzerRowID); 	
 		driverViewPageAction.open(EMPTY,NOTSET);
-		driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);		
-		testEnvironmentAction.startReplay(EMPTY, db3AnalyzerRowID);
+		driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
+		testEnvironmentAction.startReplay(EMPTY, db3AnalyzerRowID); 		
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-		driverViewPageAction.startDrivingSurvey(EMPTY, surveyRowID);
+		driverViewPageAction.startDrivingSurvey(EMPTY, surveyRowID);	
 		testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
-		testEnvironmentAction.idleForSeconds(String.valueOf(60), NOTSET);	/* wait 60 seconds after stop survey for data upload */
+		testEnvironmentAction.idleForSeconds(String.valueOf(60), NOTSET);    /* wait 60 seconds after stop survey for data upload */
 		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 	}
 }
