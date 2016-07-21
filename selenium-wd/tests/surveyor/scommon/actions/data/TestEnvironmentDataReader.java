@@ -15,6 +15,7 @@ public class TestEnvironmentDataReader extends BaseDataReader {
 	public static final int Excel_TestData__Col_AnalyzerSharedKey = 2;
 	public static final int Excel_TestData__Col_ReplayScriptDB3File = 3;
 	public static final int Excel_TestData__Col_ReplayScriptDefnFile = 4;
+	public static final int Excel_TestData__Col_AnalyzerRowID = 5;
  
 	public class TestEnvironmentDataRow {
 		public String rowID;
@@ -22,13 +23,16 @@ public class TestEnvironmentDataReader extends BaseDataReader {
 		public String analyzerSharedKey;
 		public String replayScriptDB3File;
 		public String replayScriptDefnFile;
+		public String analyzerRowID;
  
-		public TestEnvironmentDataRow(String rowID, String analyzerSerialNumber, String analyzerSharedKey, String replayScriptDB3File, String replayScriptDefnFile) {
+		public TestEnvironmentDataRow(String rowID, String analyzerSerialNumber, String analyzerSharedKey, String replayScriptDB3File, 
+				String replayScriptDefnFile, String analyzerRowID) {
 			this.rowID = rowID;
 			this.analyzerSerialNumber = analyzerSerialNumber;
 			this.analyzerSharedKey = analyzerSharedKey;
 			this.replayScriptDB3File = replayScriptDB3File;
 			this.replayScriptDefnFile = replayScriptDefnFile;
+			this.analyzerRowID = analyzerRowID;
 		}
 	}	
  
@@ -52,9 +56,12 @@ public class TestEnvironmentDataReader extends BaseDataReader {
 		String analyzerSharedKey = excelUtility.getCellData(dataRowID, Excel_TestData__Col_AnalyzerSharedKey, TESTDATA_SHEET_NAME);
 		String replayScriptDB3File = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ReplayScriptDB3File, TESTDATA_SHEET_NAME);
 		String replayScriptDefnFile = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ReplayScriptDefnFile, TESTDATA_SHEET_NAME);
+		String analyzerRowID = excelUtility.getCellData(dataRowID, Excel_TestData__Col_AnalyzerRowID, TESTDATA_SHEET_NAME);
 		
-		Log.info(String.format("Found data row: rowID=[%s], analyzerSerialNumber=[%s], analyzerSharedKey=[%s], replayScriptDB3File=[%s], replayScriptDefnFile=[%s]", rowID, analyzerSerialNumber, analyzerSharedKey, replayScriptDB3File, replayScriptDefnFile));
+		Log.info(String.format("Found data row: rowID=[%s], analyzerSerialNumber=[%s], analyzerSharedKey=[%s], replayScriptDB3File=[%s], replayScriptDefnFile=[%s], analyzerRowID=[%s]", 
+				rowID, analyzerSerialNumber, analyzerSharedKey, replayScriptDB3File, replayScriptDefnFile, analyzerRowID));
 		
-		return new TestEnvironmentDataRow(rowID, analyzerSerialNumber, analyzerSharedKey, replayScriptDB3File, replayScriptDefnFile);
+		return new TestEnvironmentDataRow(rowID, analyzerSerialNumber, analyzerSharedKey, replayScriptDB3File, 
+				replayScriptDefnFile, analyzerRowID);
 	}
 }

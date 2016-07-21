@@ -21,5 +21,8 @@ public enum PageActionsStore {
 		ManageCustomerPageActions.clearStoredObjects();
 		ManageLocationPageActions.clearStoredObjects();
 		ManageUsersPageActions.clearStoredObjects();
+		ManageAnalyzerPageActions.clearStoredObjects();
+		ManageSurveyorPageActions.clearStoredObjects();
+		ManageRefGasBottlesPageActions.clearStoredObjects();
 	}
 }
