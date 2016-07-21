@@ -51,7 +51,12 @@ public class BaseDbSeedBuilder {
 		if (SeedDataFilePath == null) {
 			throw new IllegalStateException("SeedData FilePath NOT set. Ensure SeedDataFilePath is set before calling createCSVFilesWithCustomerData().");
 		}
-		
+
+		boolean customerIDSpecified = false;
+		if (customerID != null && !customerID.isEmpty()) {
+			customerIDSpecified = true;
+		}
+
 		String customerCSVFile = null;
 		CSVUtility csvUtility = new CSVUtility();
 		List<String> headings = csvUtility.getHeadings(SeedDataFilePath);
@@ -67,18 +72,24 @@ public class BaseDbSeedBuilder {
 		for (int i = 0; i < allRows.size(); i++) {
 			List<String> rowLineText = new ArrayList<String>();
 			for (String colName : headings) {
-				if (colName.equalsIgnoreCase("customerid")) {
-					// replace customerID column value.
-					rowLineText.add(customerID);
-				} else if (colName.equalsIgnoreCase(primaryKeyColName)) {
-					// replace primary key column value.
-					// store each replace column value in cache.
-					String oldId = allRows.get(i).get(colName);
-					String newId = UUID.randomUUID().toString();
-					getDbSeedCache().addTablePKIdCacheEntry(tableName, new TablePKCacheItem(oldId, newId));
-					rowLineText.add(newId);
-				} else {						
+				if (!customerIDSpecified) {
+					// If no customerId is specified make no updates.
 					rowLineText.add(allRows.get(i).get(colName));
+				} else {
+					// Customer ID is specified. Make updates to CSV.
+					if (colName.equalsIgnoreCase("customerid")) {
+						// replace customerID column value.
+						rowLineText.add(customerID);
+					} else if (colName.equalsIgnoreCase(primaryKeyColName)) {
+						// replace primary key column value.
+						// store each replace column value in cache.
+						String oldId = allRows.get(i).get(colName);
+						String newId = UUID.randomUUID().toString();
+						getDbSeedCache().addTablePKIdCacheEntry(tableName, new TablePKCacheItem(oldId, newId));
+						rowLineText.add(newId);
+					} else {						
+						rowLineText.add(allRows.get(i).get(colName));
+					}
 				}
 			}
 			filelines.add(CSVUtility.createCsvString(rowLineText));

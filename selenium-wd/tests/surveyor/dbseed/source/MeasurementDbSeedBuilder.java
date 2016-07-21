@@ -10,7 +10,7 @@ import common.source.ExceptionUtility;
 import common.source.Log;
 
 public class MeasurementDbSeedBuilder extends BaseDbSeedBuilder {
-	private static final String TABLE_NAME = "[dbo].[Measurement]";
+	public static final String TABLE_NAME = "[dbo].[Measurement]";
 	private static final String SEED_DATA_FOLDER = SURVEY_SEED_DATA_FOLDER;
 	private static final String SEED_FILE_NAME = "MeasurementSeed.csv";
 	private static final String INSERT_TEMPLATE = "INSERT [dbo].[Measurement] ([AnalyzerId], [EpochTime], [CreateDate], [GpsLatitude], [GpsLongitude], [GpsFit], [Shape], [InstrumentStatus], [ValveMask], [CarSpeedNorth], [CarSpeedEast], [WindSpeedNorth], [WindSpeedEast], [WindDirectionStdDev], [WeatherStationRotation], [WindSpeedLateral], [WindSpeedLongitudinal], [ChemDetect], [Species], [CH4], [CO2], [H2OPercent], [DeltaCH4], [PeripheralStatus], [AnalyzerStatus], [CavityPressure], [WarmBoxTemperature], [HotBoxTemperature], [MobileFlowRate], [AnalyzerMode], [PeakDetectorState], [C2H6], [C2H4], [AnalyzerEthaneConcentrationUncertainty]) VALUES (N'%s', %s, CAST(N'%s' AS DateTime), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)";

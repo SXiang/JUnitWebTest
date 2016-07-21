@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 import static surveyor.scommon.source.SurveyorConstants.ACTIONTIMEOUT;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
+import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -683,7 +684,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 		// 1. Title and Customer
 		inputReportTitle(reports.getRptTitle());
-		if (reports.getCustomer() != null && !reports.getCustomer().equalsIgnoreCase("Picarro")) {
+		if (reports.getCustomer() != null && !reports.getCustomer().equalsIgnoreCase(CUSTOMER_PICARRO)) {
 			Log.info("Select customer '"+reports.getCustomer());
 			selectCustomer(reports.getCustomer());
 			Boolean confirmed = confirmInChangeCustomerDialog();
@@ -1135,7 +1136,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			String strReportMode) throws Exception {
 		openNewReportPage();
 
-		if (customer != null && customer != "Picarro") {
+		if (customer != null && customer != CUSTOMER_PICARRO) {
 			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
 			for (WebElement option : optionsCustomer) {
 				if ((customer).equalsIgnoreCase(option.getText().trim())) {
@@ -1235,7 +1236,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void addNewReportWithMultipleSurveysIncluded(Reports reportsCompliance) {
 		inputReportTitle(reportsCompliance.getRptTitle());
 
-		if (reportsCompliance.getCustomer() != null && reportsCompliance.getCustomer() != "Picarro") {
+		if (reportsCompliance.getCustomer() != null && reportsCompliance.getCustomer() != CUSTOMER_PICARRO) {
 			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
 			for (WebElement option : optionsCustomer) {
 				if ((reportsCompliance.getCustomer()).equalsIgnoreCase(option.getText().trim())) {
@@ -1329,7 +1330,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		this.inputTitle.clear();
 		this.inputTitle.sendKeys(title);
 
-		if (customer != null && customer != "Picarro") {
+		if (customer != null && customer != CUSTOMER_PICARRO) {
 			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
 			for (WebElement option : optionsCustomer) {
 				if ((customer).equalsIgnoreCase(option.getText().trim())) {
@@ -2059,7 +2060,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public boolean verifySurveyAlreadyAdded(String customer, String surveyTag) throws Exception {
 		this.waitForCopyReportPagetoLoad();
 		this.waitForDeleteSurveyButtonToLoad();
-		if (customer != null && customer != "Picarro") {
+		if (customer != null && customer != CUSTOMER_PICARRO) {
 			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
 			for (WebElement option : optionsCustomer) {
 				if ((customer).equalsIgnoreCase(option.getText().trim())){

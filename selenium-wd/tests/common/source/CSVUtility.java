@@ -38,14 +38,14 @@ public class CSVUtility {
 		}
 		return headers;			
 	}
-	
+
 	/*
-	 * This method returns all rows in the csv file except headings
-	 * rows are returned as key(column heading), value pairs
+	 * This method returns the number of rows specified in the csv file (except header row) 
+	 * Rows are returned as key(column heading), value pairs
 	 * @param - absolute path to the csv file
 	 * @return - list of hashmaps, hashmap per record
 	 */
-	public List<HashMap<String,String>> getAllRows(String fileAbsolutePath) throws FileNotFoundException, IOException{
+	public List<HashMap<String,String>> getTopRows(String fileAbsolutePath, Integer rowsToFetch) throws FileNotFoundException, IOException{
 		List<HashMap<String,String>> rowsList=new ArrayList<HashMap<String,String>>();
 		FileReader fileReader = new FileReader(fileAbsolutePath);
 		CSVParser parser = new CSVParser(fileReader,CSVFormat.EXCEL.withHeader());
@@ -53,20 +53,31 @@ public class CSVUtility {
 			Map<String,Integer> headerMap=parser.getHeaderMap();
 			List<CSVRecord> rows=parser.getRecords();
 			Iterator<CSVRecord> rowIterator=rows.iterator();
-			while(rowIterator.hasNext()){
+			int count = 0;
+			while(rowIterator.hasNext() && count<rowsToFetch){
 				CSVRecord currentRow=rowIterator.next();
 				HashMap<String, String> rowMap=new HashMap<String, String>();
 				for(String key:headerMap.keySet()){
 					rowMap.put(key, currentRow.get(key));				
 				}
 				rowsList.add(rowMap);
-				
+				count++;
 			}
 		} finally {
 			fileReader.close();
 			parser.close();
 		}
 		return rowsList;	
+	}
+
+	/*
+	 * This method returns all rows in the csv file except headings
+	 * rows are returned as key(column heading), value pairs
+	 * @param - absolute path to the csv file
+	 * @return - list of hashmaps, hashmap per record
+	 */
+	public List<HashMap<String,String>> getAllRows(String fileAbsolutePath) throws FileNotFoundException, IOException{
+		return getTopRows(fileAbsolutePath, Integer.MAX_VALUE);	
 	}
 	
 	public static String createCsvString(List<String> values) {

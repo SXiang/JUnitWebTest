@@ -1,4 +1,4 @@
-﻿AnalyzerId,EpochTime,WindSpeedLateral,WindSpeedLongitudinal,Status,Index
+AnalyzerId,EpochTime,WindSpeedLateral,WindSpeedLongitudinal,Status,Index
 26F7026D-788B-0413-0D89-39D76AFCAAFE,1461789251.596,-1.22,-1.08,0,0
 26F7026D-788B-0413-0D89-39D76AFCAAFE,1461789252.598,-2.04,-0.62,0,0
 26F7026D-788B-0413-0D89-39D76AFCAAFE,1461789253.593,-1.89,-0.57,0,0

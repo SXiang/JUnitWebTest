@@ -10,7 +10,7 @@ import common.source.ExceptionUtility;
 import common.source.Log;
 
 public class CaptureEventDbSeedBuilder extends BaseDbSeedBuilder {
-	private static final String TABLE_NAME = "[dbo].[CaptureEvent]";
+	public static final String TABLE_NAME = "[dbo].[CaptureEvent]";
 	private static final String SEED_DATA_FOLDER = SURVEY_SEED_DATA_FOLDER;
 	private static final String SEED_FILE_NAME = "CaptureEventSeed.csv";
 	private static final String INSERT_TEMPLATE = "INSERT [dbo].[CaptureEvent] ([Id], [AnalyzerId], [EpochTime], [DateTime], [GpsLatitude], [GpsLongitude], [Shape], [Disposition], [Delta], [Concentration], [Uncertainty], [CaptureType], [Distance], [ReplayMax], [ReplayLMin], [ReplayRMin], [SurveyId], [EthaneRatio], [EthaneRatioSdev], [ClassificationConfidence]) VALUES (N'%s', N'%s', %s, CAST(N'%s' AS DateTime), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, N'%s', %s, %s, %s)";
