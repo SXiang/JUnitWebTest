@@ -149,7 +149,9 @@ public class SurveyorBaseTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		TestSetup.stopChromeProcesses();
+		if (!TestSetup.isParallelBuildEnabled()) {
+			TestSetup.stopChromeProcesses();
+		}
 		initializeTestObjects();
 	}
 
@@ -163,7 +165,7 @@ public class SurveyorBaseTest {
 		Path screenShotsPath = Paths.get(screenShotsDir, screenShotsSubFolder);
 		FileUtility.createDirectoryIfNotExists(screenShotsPath.toString());			
 		screenCapture = new ScreenShotOnFailure(screenShotsSubFolder, 
-				screenShotsDir, testSetup.isRemoteBrowser);
+				screenShotsDir, testSetup.isRemoteBrowser());
 		
 		driver.manage().deleteAllCookies();
 		

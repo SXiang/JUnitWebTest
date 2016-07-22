@@ -61,10 +61,7 @@ import surveyor.scommon.actions.TestEnvironmentActions;
  * configuration
  * 
  * 1. Load the testing property for test setup information.
- * 
- * 2. Setting up the drivers.
- * 
- * 3. It is ongoing and add more code here later when needed
+ * 2. Check and upload DB seed data.
  * 
  * @version 1.0
  * @author zlu
@@ -87,7 +84,6 @@ public class TestSetup {
 	public static final String TEST_DATA_XLSX = "TestCaseData.xlsx";
 
 	private static Process analyzerProcess;
-	private DesiredCapabilities capabilities = null;
 	private BrowserMobProxy networkProxy;
 
 	private Properties testProp;
@@ -102,8 +98,6 @@ public class TestSetup {
 
 	private String loginUser0000;
 	private String loginPwd0000;
-	private String loginUser0001;
-	private String loginPwd0001;
 	private String loginUserDisplayName;
 
 	private String browser;
@@ -125,10 +119,9 @@ public class TestSetup {
 	private Calendar calendar;
 	private String randomNumber;
 
-	private WebDriver driver;
 	private String slowdownInSeconds; // For debugging the code and not
 										// recommended to use in real test case
-	public boolean isRemoteBrowser;
+	private boolean isRemoteBrowser;
 	public static String reportDir = "reports/";
 	
 	private String downloadPath;
@@ -165,8 +158,13 @@ public class TestSetup {
 
 	private String automationReportingApiEndpoint;
 	private boolean automationReportingApiEnabled;
+	
+	private static boolean parallelBuildEnabled;
+	
+	private WebDriverFactory driverFactory;
 
 	public TestSetup() {
+		driverFactory = new WebDriverFactory();
 		initialize();
 	}
 
@@ -197,116 +195,6 @@ public class TestSetup {
 		return extent;
 	}
 
-	private void driverSetup() {
-		try {
-			if (this.runningOnRemoteServer != null && this.runningOnRemoteServer.trim().equalsIgnoreCase("true")
-					&& this.browser != null) {
-				switch (this.browser.trim()) {
-				case "chrome":
-					Log.info("-----Chrome it is ----");
-					setChromeBrowserCapabilitiesForGrid();
-					break;
-				case "ie":
-					driver = new RemoteWebDriver(new URL("http://" + this.remoteServerHost + ":" + this.remoteServerPort + "/wd/hub/"),
-							DesiredCapabilities.internetExplorer());
-					break;
-				case "ff":
-
-					this.capabilities = DesiredCapabilities.firefox();
-					this.capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-					driver = new RemoteWebDriver(new URL("http://" + this.remoteServerHost + ":" + this.remoteServerPort + "/wd/hub/"),
-							this.capabilities);
-					break;
-				}
-				isRemoteBrowser = true;
-				Log.info("\nRunning Selenium Server for use with RemoteDrivers and the server is running on: "
-						+ this.remoteServerHost + "\n");
-			} else if (this.browser != null && (this.ieDriverPath != null || this.chromeDriverPath != null)) {
-				switch (this.browser.trim()) {
-				case "chrome":
-					setChromeBrowserCapabilities();
-					break;
-				case "ie":
-					System.setProperty("webdriver.ie.driver", this.ieDriverPath);
-					System.out.println("\nThe System Propery 'webdriver.ie.driver' is: "
-							+ System.getProperty("webdriver.ie.driver").toString() + "\n");
-					driver = new InternetExplorerDriver();
-					break;
-				case "ff":
-					driver = new FirefoxDriver();
-					break;
-				}
-				Log.info("\nRunning WebDriver API\n");
-			} else {
-				Log.info("\nWebDriver setup failed, please check the config setting in test.properites file.\n");
-				System.exit(1);
-			}
-
-			driver.manage().timeouts().implicitlyWait(Long.parseLong(this.implicitlyWaitTimeOutInSeconds.trim()),
-					TimeUnit.SECONDS);
-			System.out.println("\nThe default implicitlyWaitTimeOut has been set to "
-					+ this.implicitlyWaitTimeOutInSeconds.trim() + " seconds" + "\n");
-
-		} catch (Exception e) {
-
-			Log.error(e.toString());
-			System.exit(1);
-
-		}
-	}
-
-	private void setChromeBrowserCapabilities() {
-		setChromeBrowserCapabilities(null);
-	}
-
-	private void setChromeBrowserCapabilities(Proxy proxy) {
-		Log.info("-----Chrome it is ----");
-		Map<String, Object> prefs = new HashMap<String, Object>();
-		prefs.put("download.default_directory", this.downloadPath);
-		this.capabilities = DesiredCapabilities.chrome();
-		this.capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
-		ChromeOptions options = new ChromeOptions();
-		options.addArguments("start-maximized");
-		options.addArguments(Arrays.asList("--incognito", "test-type"));
-		options.addArguments("chrome.switches", "--disable-extensions");
-		options.setExperimentalOption("prefs", prefs);
-		this.capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-		if (proxy != null) {
-			this.capabilities.setCapability(CapabilityType.PROXY, proxy);
-		}
-		System.setProperty("webdriver.chrome.driver", this.chromeDriverPath);
-		Log.info("\nThe System Propery 'webdriver.chrome.driver' is: "
-				+ System.getProperty("webdriver.chrome.driver").toString() + "\n");
-		driver = new ChromeDriver(this.capabilities);
-	}
-
-	private void setChromeBrowserCapabilitiesForGrid() throws MalformedURLException {
-		setChromeBrowserCapabilitiesForGrid(null);
-	}
-
-	private void setChromeBrowserCapabilitiesForGrid(Proxy proxy) throws MalformedURLException {
-		Map<String, Object> prefs = new HashMap<String, Object>();
-		prefs.put("download.default_directory", this.downloadPath);
-		this.capabilities = DesiredCapabilities.chrome();
-		
-		if (this.platform.equalsIgnoreCase("windows")) {
-			this.capabilities.setPlatform(Platform.WINDOWS);
-		} else if (this.platform.equalsIgnoreCase("linux")) {
-			this.capabilities.setPlatform(Platform.LINUX);
-		}
-		
-		this.capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
-		ChromeOptions options = new ChromeOptions();
-		options.addArguments("start-maximized");
-		options.addArguments(Arrays.asList("--incognito", "test-type"));
-		options.addArguments("chrome.switches", "--disable-extensions");
-		options.setExperimentalOption("prefs", prefs);
-		this.capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-		if (proxy != null) {
-			this.capabilities.setCapability(CapabilityType.PROXY, proxy);
-		}
-		driver = new RemoteWebDriver(new URL("http://" + this.remoteServerHost + ":" + this.remoteServerPort + "/wd/hub/"), this.capabilities);
-	}
 
 	/* NETWORK PROXY related methods */
 	/*
@@ -326,13 +214,13 @@ public class TestSetup {
 
 		// when we start the network proxy we are recycling the driver object.
 		// Quit the driver if present.
-		if (this.driver != null) {
-			this.driver.quit();
+		if (this.driverFactory.getDriver() != null) {
+			this.driverFactory.getDriver().quit();
 		}
 
 		// get the selenium proxy object
 		Proxy seleniumProxy = ClientUtil.createSeleniumProxy(networkProxy);
-		setChromeBrowserCapabilities(seleniumProxy);
+		driverFactory.setChromeBrowserCapabilities(seleniumProxy);
 
 		if (createHarFile) {
 			// create new Har file.
@@ -386,11 +274,11 @@ public class TestSetup {
 		if (networkProxy != null) {
 			// when we stop the network proxy we should recycling the driver
 			// object to remove the Proxy capability.
-			if (this.driver != null) {
-				this.driver.quit();
+			if (this.driverFactory.getDriver() != null) {
+				this.driverFactory.getDriver().quit();
 			}
 
-			setChromeBrowserCapabilities(); // No proxy.
+			driverFactory.setChromeBrowserCapabilities(); // No proxy.
 			this.stopNetworkProxy();
 		}
 	}
@@ -439,7 +327,7 @@ public class TestSetup {
 	}
 
 	public WebDriver getDriver() {
-		return this.driver;
+		return this.driverFactory.getDriver();
 	}
 
 	public String getCulture() {
@@ -658,9 +546,9 @@ public class TestSetup {
 			this.baseURL = this.testProp.getProperty("baseURL");
 			Log.info("\nThe baseURL is: " + this.baseURL + "\n");
 
-			this.runningOnRemoteServer = this.testProp.getProperty("runningOnRemoteServer");
-			this.remoteServerHost = this.testProp.getProperty("remoteServerHost");
-			this.remoteServerPort = this.testProp.getProperty("remoteServerPort");
+			this.setRunningOnRemoteServer(this.testProp.getProperty("runningOnRemoteServer"));
+			this.setRemoteServerHost(this.testProp.getProperty("remoteServerHost"));
+			this.setRemoteServerPort(this.testProp.getProperty("remoteServerPort"));
 			this.loginUser = this.testProp.getProperty("loginUser");
 			this.loginPwd = this.testProp.getProperty("loginPwd");
 			this.loginUser0000 = this.testProp.getProperty("loginUser0000");
@@ -669,16 +557,16 @@ public class TestSetup {
 
 			initializeDBProperties();
 
-			this.browser = this.testProp.getProperty("browser");
-			Log.info("\nThe browser is: " + this.browser + "\n");
+			this.setBrowser(this.testProp.getProperty("browser"));
+			Log.info("\nThe browser is: " + this.getBrowser() + "\n");
 
-			this.ieDriverPath = this.testProp.getProperty("ieDriverPath");
+			this.setIeDriverPath(this.testProp.getProperty("ieDriverPath"));
 
-			this.chromeDriverPath = getExecutionPath(rootPath) + "lib" + File.separator + "chromedriver.exe";
+			this.setChromeDriverPath(getExecutionPath(rootPath) + "lib" + File.separator + "chromedriver.exe");
 			this.implicitlyWaitTimeOutInSeconds = this.testProp.getProperty("implicitlyWaitTimeOutInSeconds");
 			this.implicitlyWaitSpecialTimeOutInSeconds = this.testProp
 					.getProperty("implicitlyWaitSpecialTimeOutInSeconds");
-			this.implicitlyWaitSpecialTimeOutInMS = this.testProp.getProperty("implicitlyWaitSpecialTimeOutInMS");
+			this.setImplicitlyWaitSpecialTimeOutInMS(this.testProp.getProperty("implicitlyWaitSpecialTimeOutInMS"));
 
 			this.runEnvironment = this.testProp.getProperty("runEnvironment");
 			this.testRunCategory = this.testProp.getProperty("testRunCategory");
@@ -688,11 +576,12 @@ public class TestSetup {
 			setPerformanceExecutionTestProperties();
 			setUploadSurveyTestProperties();
 			setPushDBSeedTestProperties();
+			setParallelBuildTestProperties();
 
 			this.language = this.testProp.getProperty("language");
 			this.culture = this.testProp.getProperty("culture");
 			this.softwareVersion = this.testProp.getProperty("softwareVersion");
-			this.platform = this.testProp.getProperty("platform");
+			this.setPlatform(this.testProp.getProperty("platform"));
 			
 			this.automationReportingApiEndpoint = this.testProp.getProperty("automationReporting.ApiEndPoint");
 			String automationReportingApiEnabledValue = this.testProp.getProperty("automationReporting.APIEnabled");
@@ -716,7 +605,6 @@ public class TestSetup {
 			this.randomNumber = Long.toString((new Random()).nextInt(1000000));
 			Log.info("\nThe random number is: " + this.randomNumber + "\n");
 
-			driverSetup();
 			inputStream.close();
 
 			TestContext.INSTANCE.setTestSetup(this);
@@ -751,6 +639,13 @@ public class TestSetup {
 		}
 	}
 
+	private void setParallelBuildTestProperties() {
+		String parallelBuildEnabledValue = this.testProp.getProperty("parallelBuild.Enabled");
+		if (parallelBuildEnabledValue != null && !parallelBuildEnabledValue.isEmpty()) {
+			this.setParallelBuildEnabled(Boolean.valueOf(parallelBuildEnabledValue));
+		}
+	}
+	
 	private void setComplianceReportBaselineGenerationTestProperties() {
 		String collectReportJobPerfMetric = this.testProp.getProperty("complianceReport_collectReportJobPerfMetric");
 		if (collectReportJobPerfMetric != null && collectReportJobPerfMetric != "") {
@@ -1336,5 +1231,85 @@ public class TestSetup {
 			propValue = testProp.getProperty(propKey);
 		}
 		return propValue;
+	}
+
+	public String getRunningOnRemoteServer() {
+		return runningOnRemoteServer;
+	}
+
+	private void setRunningOnRemoteServer(String runningOnRemoteServer) {
+		this.runningOnRemoteServer = runningOnRemoteServer;
+	}
+
+	public String getRemoteServerHost() {
+		return remoteServerHost;
+	}
+
+	private void setRemoteServerHost(String remoteServerHost) {
+		this.remoteServerHost = remoteServerHost;
+	}
+
+	public String getRemoteServerPort() {
+		return remoteServerPort;
+	}
+
+	private void setRemoteServerPort(String remoteServerPort) {
+		this.remoteServerPort = remoteServerPort;
+	}
+
+	public String getChromeDriverPath() {
+		return chromeDriverPath;
+	}
+
+	private void setChromeDriverPath(String chromeDriverPath) {
+		this.chromeDriverPath = chromeDriverPath;
+	}
+
+	public String getIeDriverPath() {
+		return ieDriverPath;
+	}
+
+	private void setIeDriverPath(String ieDriverPath) {
+		this.ieDriverPath = ieDriverPath;
+	}
+
+	public String getImplicitlyWaitSpecialTimeOutInMS() {
+		return implicitlyWaitSpecialTimeOutInMS;
+	}
+
+	private void setImplicitlyWaitSpecialTimeOutInMS(String implicitlyWaitSpecialTimeOutInMS) {
+		this.implicitlyWaitSpecialTimeOutInMS = implicitlyWaitSpecialTimeOutInMS;
+	}
+
+	public String getPlatform() {
+		return platform;
+	}
+
+	private void setPlatform(String platform) {
+		this.platform = platform;
+	}
+
+	public String getBrowser() {
+		return browser;
+	}
+
+	private void setBrowser(String browser) {
+		this.browser = browser;
+	}
+
+	public boolean isRemoteBrowser() {
+		return isRemoteBrowser;
+	}
+
+	private void setRemoteBrowser(boolean isRemoteBrowser) {
+		this.isRemoteBrowser = isRemoteBrowser;
+	}
+	
+	public static boolean isParallelBuildEnabled() {
+		return parallelBuildEnabled;
+	}
+
+	public static void setParallelBuildEnabled(boolean parallelBldEnabled) {
+		parallelBuildEnabled = parallelBldEnabled;
 	}
 }
