@@ -1,10 +1,10 @@
 package surveyor.scommon.actions;
 
-import org.openqa.selenium.WebDriver;
-
 import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
+import surveyor.scommon.actions.data.AnalyzerDataReader;
+import surveyor.scommon.actions.data.AnalyzerDataReader.AnalyzerDataRow;
 import surveyor.scommon.actions.data.TestEnvironmentDataReader;
 import surveyor.scommon.actions.data.TestEnvironmentDataReader.TestEnvironmentDataRow;
 
@@ -33,8 +33,24 @@ public class TestEnvironmentActions extends BaseActions {
 		ActionArguments.verifyGreaterThanZero(CLS_TEST_ENVIRONMENT_ACTIONS + FN_START_SIMULATOR, ARG_DATA_ROW_ID, dataRowID);
 		try {
 			TestEnvironmentDataRow dataRow = getDataReader().getDataRow(dataRowID);
+			String analyzerSerialNumber = null;
+			String analyzerSharedKey = null;
+			if (!ActionArguments.isEmpty(dataRow.analyzerRowID)) {
+				if (ManageAnalyzerPageActions.workingDataRow != null) {
+					analyzerSerialNumber = ManageAnalyzerPageActions.workingDataRow.serialNumber;
+					analyzerSharedKey = ManageAnalyzerPageActions.workingDataRow.sharedKey;
+				} else {
+					AnalyzerDataReader analyzerDataReader = new AnalyzerDataReader(this.excelUtility);
+					AnalyzerDataRow analyzerDataRow = analyzerDataReader.getDataRow(Integer.valueOf(dataRow.analyzerRowID));
+					analyzerSerialNumber = analyzerDataRow.serialNumber;
+					analyzerSharedKey = analyzerDataRow.sharedKey;
+				}
+			} else {
+				analyzerSerialNumber = dataRow.analyzerSerialNumber;
+				analyzerSharedKey = dataRow.analyzerSharedKey;
+			}
 			TestSetup.updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(), 
-					dataRow.analyzerSerialNumber, dataRow.analyzerSharedKey);
+					analyzerSerialNumber, analyzerSharedKey);
 			TestSetup.restartAnalyzer();
 			// When the Analyzer is started store the working data row.
 			workingDataRow = dataRow;
@@ -188,6 +204,23 @@ public class TestEnvironmentActions extends BaseActions {
 		this.dataReader = dataReader;
 	}
 	
+	public String getWorkingAnalyzerSerialNumber() throws NumberFormatException, Exception {
+		if (TestEnvironmentActions.workingDataRow != null) {
+			if (!ActionArguments.isEmpty(TestEnvironmentActions.workingDataRow.analyzerRowID)) {
+				if (ManageAnalyzerPageActions.workingDataRow != null) {
+					return ManageAnalyzerPageActions.workingDataRow.serialNumber;
+				} else {
+					AnalyzerDataReader analyzerDataReader = new AnalyzerDataReader(excelUtility);
+					AnalyzerDataRow analyzerDataRow = analyzerDataReader.getDataRow(Integer.valueOf(TestEnvironmentActions.workingDataRow.analyzerRowID));
+					return analyzerDataRow.serialNumber;
+				}
+			} else {
+				return TestEnvironmentActions.workingDataRow.analyzerSerialNumber;
+			}
+		}
+		return TestSetup.TEST_ANALYZER_SERIAL_NUMBER;
+	}
+
 	/**
 	 * Generates a survey with specified Analyzer/Surveyor/DB3 for the specified user.
 	 * Remarks:
@@ -249,7 +282,6 @@ public class TestEnvironmentActions extends BaseActions {
 		testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
-		testEnvironmentAction.startReplay(EMPTY, db3AnalyzerRowID); /* workaround to trigger uploading */
 		testEnvironmentAction.idleForSeconds(String.valueOf(60), NOTSET);    /* wait 60 seconds after stop survey for data upload */
 		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 	}

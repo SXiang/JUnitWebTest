@@ -1283,13 +1283,6 @@ public class TestSetup {
 		return automationReportingApiEnabled;
 	}
 
-	public static String getWorkingAnalyzerSerialNumber() {
-		if (TestEnvironmentActions.workingDataRow != null) {
-			return TestEnvironmentActions.workingDataRow.analyzerSerialNumber;
-		}
-		return TEST_ANALYZER_SERIAL_NUMBER;
-	}
-
 	public String getSurveyUploadBaseUrl() {
 		return surveyUploadBaseUrl;
 	}

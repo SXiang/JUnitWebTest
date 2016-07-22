@@ -539,7 +539,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 					}
 				});
 			}catch(Exception e){
-				open();
+				super.open();
 			}				
 		}while(numOpen++ < 3);
 	}
