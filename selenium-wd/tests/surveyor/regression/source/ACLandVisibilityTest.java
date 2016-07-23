@@ -23,6 +23,7 @@ import surveyor.scommon.source.PreferencesPage;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.SurveyorSystemsPage;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 import static surveyor.scommon.source.SurveyorConstants.*;
@@ -45,8 +46,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	private static HomePage homePage;
 	private static PreferencesPage preferencesPage;
 	private static FleetMapPage fleetMapPage;
-	private static ManageSurveyorPage surveyorPage;
-
+	private static SurveyorSystemsPage surveyorPage;
+	
 	@BeforeClass
 	public static void setupACLandVisibilityTest() {
 		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
@@ -59,7 +60,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		PageFactory.initElements(driver, preferencesPage);
 		fleetMapPage = new FleetMapPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver, fleetMapPage);
-		surveyorPage = new ManageSurveyorPage(driver, baseURL, testSetup);
+		surveyorPage = new SurveyorSystemsPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver, surveyorPage);
 		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, complianceReportsPage);
