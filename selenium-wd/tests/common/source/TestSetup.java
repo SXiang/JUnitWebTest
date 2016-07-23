@@ -20,6 +20,7 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -698,7 +699,7 @@ public class TestSetup {
 
 			this.language = this.testProp.getProperty("language");
 			this.culture = this.testProp.getProperty("culture");
-			this.softwareVersion = this.testProp.getProperty("softwareVersion");
+			this.setSoftwareVersion(this.testProp.getProperty("softwareVersion"));
 			
 			this.setAutomationReportingApiEndpoint(this.testProp.getProperty("automationReporting.ApiEndPoint"));
 			String automationReportingApiEnabledValue = this.testProp.getProperty("automationReporting.APIEnabled");
@@ -1134,17 +1135,21 @@ public class TestSetup {
 	}
 
 	public void postReportJobPerfStat(String reportTitle, String reportJobTypeId, String reportJobTypeName,
-			 LocalDate reportJobStartTime, LocalDate reportJobEndTime, LocalDate testExecutionStartDate, LocalDate testExecutionEndDate,
-			 String buildNumber, Environment environment) {
+			 LocalDateTime reportJobStartTime, LocalDateTime reportJobEndTime, LocalDateTime testExecutionStartDate, LocalDateTime testExecutionEndDate,
+			 String buildNumber, String testCaseID, Environment environment) {
 		try {
 			String workingFolder = getRootPath();
 			String reportJobStatCmdFolder = getExecutionPath(getRootPath()) + "lib";
 			String reportJobStatCmdFullPath = reportJobStatCmdFolder + File.separator + POST_REPORT_JOB_PERF_STAT_CMD;
 			String command = "cd \"" + reportJobStatCmdFolder + "\" && " + reportJobStatCmdFullPath + 
-					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"", 
+					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"", 
 							workingFolder, getAutomationReportingApiEndpoint(), reportTitle,
-							 reportJobTypeId, reportJobTypeName, reportJobStartTime, reportJobEndTime,
-							 testExecutionStartDate, testExecutionEndDate, buildNumber, environment.getIndex());
+							 reportJobTypeId, reportJobTypeName, 
+							 DateUtility.getLongDateString(reportJobStartTime), 
+							 DateUtility.getLongDateString(reportJobEndTime),
+							 DateUtility.getLongDateString(testExecutionStartDate), 
+							 DateUtility.getLongDateString(testExecutionEndDate), 
+							 buildNumber, testCaseID, environment.getIndex());
 			Log.info("Posting report job perf stat. Command -> " + command);
 			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 		} catch (IOException e) {
@@ -1154,18 +1159,20 @@ public class TestSetup {
 
 	public void postAnalyzerApiPerfStat(String aPIName, String aPIUrl, int numberOfSamples,
 			 float average, float median, float responseTime90Pctl, float responseTime95Pctl, float responsetime99Pctl,
-			 float min, float max, float errorPercent, float throughputPerSec, float kBPerSec,
-			 LocalDate testExecutionStartDate, LocalDate testExecutionEndDate, String buildNumber, Environment environment) {
+			 float min, float max, float errorPercent, float throughputPerSec, float kBPerSec, LocalDateTime testExecutionStartDate, 
+			 LocalDateTime testExecutionEndDate, String buildNumber, String testCaseID, Environment environment) {
 		try {
 			String workingFolder = getRootPath();
 			String analyzerApiCmdFolder = getExecutionPath(getRootPath()) + "lib";
 			String analyzerApiCmdFullPath = analyzerApiCmdFolder + File.separator + POST_ANALYZER_API_PERF_STAT_CMD;
 			String command = "cd \"" + analyzerApiCmdFolder + "\" && " + analyzerApiCmdFullPath + 
 					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\""
-							+ " \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"", workingFolder, getAutomationReportingApiEndpoint(), aPIName,
+							+ " \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"", workingFolder, getAutomationReportingApiEndpoint(), aPIName,
 							 aPIUrl, numberOfSamples, average, median, responseTime90Pctl, responseTime95Pctl, responsetime99Pctl,
-							 min, max, errorPercent, throughputPerSec, kBPerSec, testExecutionStartDate, testExecutionEndDate,
-							 buildNumber, environment.getIndex());
+							 min, max, errorPercent, throughputPerSec, kBPerSec, 
+							 DateUtility.getLongDateString(testExecutionStartDate), 
+							 DateUtility.getLongDateString(testExecutionEndDate),
+							 buildNumber, testCaseID, environment.getIndex());
 			Log.info("Posting analyzer api perf stat. Command -> " + command);
 			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 		} catch (IOException e) {
@@ -1413,5 +1420,9 @@ public class TestSetup {
 
 	public static void setParallelBuildEnabled(boolean parallelBldEnabled) {
 		parallelBuildEnabled = parallelBldEnabled;
+	}
+
+	public void setSoftwareVersion(String softwareVersion) {
+		this.softwareVersion = softwareVersion;
 	}
 }

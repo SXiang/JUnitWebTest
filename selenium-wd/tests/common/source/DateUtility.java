@@ -4,6 +4,7 @@ import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
@@ -15,10 +16,11 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 
 import org.openqa.selenium.WebElement;
-import org.testng.Assert;
+import org.testng.Assert;	
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -49,6 +51,25 @@ public class DateUtility {
 		public String toString() {
 			return this.name;
 		}
+	}
+
+	/**
+	 * Return long date string in yyyy-MM-dd HH:mm:ss.SSS format.
+	 * @param date - date object.
+	 * @return - string format of the date object.
+	 */
+	public static String getLongDateString(LocalDateTime date) {
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+		return date.format(dateTimeFormatter);
+	}
+	
+	/**
+	 * Returns date object from epoch time in milliseconds.
+	 * @param unixTimeInMSec - epoch time in milliseconds.
+	 * @return - Date object for the specified epoch time in milliseconds.
+	 */
+	public static LocalDateTime fromUnixTime(long unixTimeInMSec) {
+		return Instant.ofEpochMilli(unixTimeInMSec).atZone(ZoneId.systemDefault()).toLocalDateTime();
 	}
 	
 	/**
@@ -551,10 +572,6 @@ public class DateUtility {
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 
-		//Log.info(DateUtility.getCurrentDate().toGMTString());
-		//Log.info(DateUtility.getCurrentDate().toLocaleString());
-		//Log.info(DateUtility.getCurrentDate().toString());
-
 		// ** Unit tests for isFirstTimeGreater() method
 
 		String timeString1 = "00:00:00";
@@ -707,6 +724,5 @@ public class DateUtility {
 		Assert.assertTrue(DateUtility.compareDatesWithTZ("12/14/2015 11:26:27 PM GMT", false, "3/7/2016 1:55 PM PST", false)==-1);
 		Assert.assertTrue(DateUtility.compareDatesWithTZ("12/14/2015 3:16:07 PM PST", false, "12/14/2015 11:16:07 PM GMT", false)==0);
 		Assert.assertTrue(DateUtility.compareDatesWithTZ("12/14/2015 3:16:07 PM PST", false, "12/14/2015 12:16:07 PM GMT", false)==1);
-
 	}
 }

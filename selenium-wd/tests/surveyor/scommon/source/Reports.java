@@ -3,18 +3,8 @@
  */
 package surveyor.scommon.source;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.eclipse.jetty.util.log.Log;
-
-import common.source.TestContext;
-import common.source.TestSetup;
-import surveyor.scommon.source.Reports.ReportJobType;
-import surveyor.scommon.source.Reports.ReportModeFilter;
-import surveyor.scommon.source.Reports.SurveyModeFilter;
 
 
 /**

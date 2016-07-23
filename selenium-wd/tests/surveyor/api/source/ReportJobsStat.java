@@ -17,4 +17,19 @@ public class ReportJobsStat {
 	public Long getProcessingCompletedTimeInMs() {
 		return Long.valueOf(ProcessingCompleted.replace("/Date(", "").replace(")/", ""));
 	}
+	
+	public String toString() {
+		StringBuilder reportJobListBuilder = new StringBuilder();
+		if (this.ReportJobs != null && this.ReportJobs.size() > 0) {
+			for (int i = 0; i < this.ReportJobs.size(); i++) {
+				reportJobListBuilder.append(String.format("[%s]", this.ReportJobs.get(i).toString()));
+				if (i != this.ReportJobs.size()-1) {
+					reportJobListBuilder.append(",");
+				}
+			}
+		}
+		
+		return String.format("ReportJobsStat=[ReportTitle=%s, Id=%s, ReportStatus=%s, ProcessingStarted=%s, ProcessingCompleted=%s, List[ReportJob]={%s}]", 
+				ReportTitle, Id, ReportStatus, ProcessingStarted, ProcessingCompleted, reportJobListBuilder.toString());
+	}
 }

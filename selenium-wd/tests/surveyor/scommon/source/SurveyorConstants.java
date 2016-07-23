@@ -480,9 +480,9 @@ public final class SurveyorConstants {
 	};
 	
 	public enum Environment {
-		SQAAuto ("SQAAuto", 1),
-		Staging ("Staging", 2),
-		P3Scale ("P3Scale", 3);
+		SQAAuto ("CI-SQAAuto", 1),
+		Staging ("CI-STG", 2),
+		P3Scale ("CI-P3Scale", 3);
 		
 		private final String name;
 		private final Integer index;
@@ -502,6 +502,18 @@ public final class SurveyorConstants {
 
 		public String toString() {
 			return this.name;
+		}
+		
+		public static Environment getEnvironment(String environmentName) {
+			Environment environment = Environment.P3Scale;
+			Environment[] values = Environment.values();
+			for (Environment env : values) {
+				if (env.toString().equals(environmentName)) {
+					environment = env;
+					break;
+				}
+			}
+			return environment;
 		}
 	}
 	

@@ -19,6 +19,7 @@
 #           -TestExecutionStartDate "2016-07-19T14:48:19.0332528-07:00"  `
 #           -TestExecutionEndDate "2016-07-19T14:48:19.0332528-07:00"  `
 #           -BuildNumber "2.4.0.0"  `
+#			-TestCaseID "TC1841"  `
 #           -EnvironmentID 3  `
 # ---------------------------------------------------------------
 param
@@ -78,6 +79,9 @@ param
   [String] $BuildNumber,
 
   [Parameter(Mandatory=$true)]
+  [String] $TestCaseID,
+  
+  [Parameter(Mandatory=$true)]
   [int] $EnvironmentID
 )
 
@@ -116,6 +120,7 @@ $Body = @{
     TestExecutionStartDate = $TestExecutionStartDate
     TestExecutionEndDate = $TestExecutionEndDate
     BuildNumber = $BuildNumber
+	TestCaseID = $TestCaseID
     EnvironmentID = $EnvironmentID
 }
 

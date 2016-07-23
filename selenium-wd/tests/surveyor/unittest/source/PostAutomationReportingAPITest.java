@@ -4,11 +4,13 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import common.source.DateUtility;
 import common.source.ExceptionUtility;
 import common.source.TestSetup;
 import surveyor.scommon.source.SurveyorConstants.Environment;
@@ -49,13 +51,14 @@ public class PostAutomationReportingAPITest {
 			String reportTitle = "TEST_REPORT_TITLE";
 			String reportJobTypeId = "00000000-0000-0000-0008-000000000000";
 			String reportJobTypeName = "ReportMeta";
-			LocalDate reportJobStartTime = LocalDate.now();
-			LocalDate reportJobEndTime = LocalDate.now();
-			LocalDate testExecutionStartDate = LocalDate.now();
-			LocalDate testExecutionEndDate = LocalDate.now();
+			LocalDateTime reportJobStartTime = DateUtility.fromUnixTime(1465929741383L);
+			LocalDateTime reportJobEndTime = DateUtility.fromUnixTime(1465930655257L);
+			LocalDateTime testExecutionStartDate = DateUtility.fromUnixTime(1465929741383L);
+			LocalDateTime testExecutionEndDate = DateUtility.fromUnixTime(1465930655257L);
 			String buildNumber = "2.4.0.0";
+			String testCaseID = "TC1234";
 			testSetup.postReportJobPerfStat(reportTitle, reportJobTypeId, reportJobTypeName, reportJobStartTime, reportJobEndTime, 
-					testExecutionStartDate, testExecutionEndDate, buildNumber, Environment.P3Scale);
+					testExecutionStartDate, testExecutionEndDate, buildNumber, testCaseID, Environment.P3Scale);
 		} catch (Exception e) {
 			result = false;
 			message = ExceptionUtility.getStackTraceString(e);
@@ -81,12 +84,13 @@ public class PostAutomationReportingAPITest {
 			float errorPercent = 0.0f;
 			float throughputPerSec = 1.0f;
 			float kBPerSec = 2.0f;
-			LocalDate testExecutionStartDate = LocalDate.now();
-			LocalDate testExecutionEndDate = LocalDate.now();
-			String buildNumber = null;
+			LocalDateTime testExecutionStartDate = LocalDateTime.now();
+			LocalDateTime testExecutionEndDate = LocalDateTime.now();
+			String buildNumber = "2.4.0.0";
+			String testCaseID = "TC1234";
 			testSetup.postAnalyzerApiPerfStat(aPIName, aPIUrl, numberOfSamples, average, median, responseTime90Pctl, responseTime95Pctl, 
 					responsetime99Pctl, min, max, errorPercent, throughputPerSec, kBPerSec, 
-					testExecutionStartDate, testExecutionEndDate, buildNumber, Environment.P3Scale);
+					testExecutionStartDate, testExecutionEndDate, buildNumber, testCaseID, Environment.P3Scale);
 		} catch (Exception e) {
 			result = false;
 			message = ExceptionUtility.getStackTraceString(e);

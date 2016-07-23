@@ -182,7 +182,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 				false /*confirmAction*/);  // By default use FALSE confirm action.
 	}
 	
-	private ComplianceReportsDataRow getComplianceReportsDataRow(Integer dataRowID) throws Exception {
+	public ComplianceReportsDataRow getComplianceReportsDataRow(Integer dataRowID) throws Exception {
 		ComplianceReportsDataRow compRptDataRow = null;
 		if (ComplianceReportsPageActions.workingDataRow != null) {
 			compRptDataRow = ComplianceReportsPageActions.workingDataRow;
