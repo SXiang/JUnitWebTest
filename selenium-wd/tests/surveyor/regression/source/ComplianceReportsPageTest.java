@@ -4,6 +4,8 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
@@ -246,7 +248,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	 * @throws Exception
 	 * 
 	 */
-	@Test
+	@Test /* No verification of screen refreshing */
 	public void TC163_ComplianceReportTest_VerifyScreendoesntRefreshwhileSearchingInprogressReport() throws Exception {
 		String rptTitle = "TC163 Report" + testSetup.getRandomNumber();
 
@@ -469,17 +471,16 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
-		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
+		String reportName1 = complianceReportsPage.waitForReportGenerationtoCompleteAndGetReportName(rptTitle, testSetup.getLoginUser());
+		assertNotNull(reportName1);
 
-		String newReportTitle = rptTitle + "COPY";
-		complianceReportsPage.copyReport(rptTitle, testSetup.getLoginUser(), newReportTitle);
+		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID)))
-			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
-		else
-			fail("\nTestcase TC170 failed.\n");
-
+		String reportName2 = complianceReportsPage.waitForReportGenerationtoCompleteAndGetReportName(rptTitle, testSetup.getLoginUser());
+		assertNotNull(reportName2);
+		
+		assertNotEquals(reportName1, reportName2);
 		complianceReportsPage.open();
 		complianceReportsPage.logout();
 	}

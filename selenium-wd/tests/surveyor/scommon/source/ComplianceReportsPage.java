@@ -54,6 +54,7 @@ import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SSRSPdfFooterColumns;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance.EthaneFilter;
+import surveyor.scommon.source.ReportsCompliance.LISAIndicationTableColumns;
 import surveyor.scommon.source.ReportsSurveyInfo.ColumnHeaders;
 
 import java.awt.Rectangle;
@@ -130,6 +131,7 @@ import common.source.PDFUtility;
 import common.source.ProcessUtility;
 import common.source.RegexUtility;
 import common.source.ShapeFileUtility;
+import common.source.SortHelper;
 import common.source.TestContext;
 
 /**
@@ -3019,7 +3021,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
-				Log.info("Indication table static text verification failed");
+				Log.error("Indication table static text verification failed");
 				return false;
 			}
 		}
@@ -3064,10 +3066,19 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Log.info(String.format("Checking in ReportIndications ArrayList, StoredProcConvStringList Values : %s", 
 					LogHelper.strListToString(storedProcConvStringList)));
 		if (!reportIndicationsList.equals(storedProcConvStringList)) {
-				Log.info("Indication data table verification failed");
+				Log.error("Indication data table verification failed");
 				return false;
 		}
 
+		List<String[]> lisasIndicationTblList = getSSRSPDFTableValues(
+				PDFTable.LISAINDICATIONTABLE, reportTitle);
+		LISAIndicationTableColumns tableColumn = LISAIndicationTableColumns.valueOf("LISANum");
+		List<String> tableValuesList = ArrayUtility.getColumnStringList(lisasIndicationTblList, tableColumn.getIndex());
+		if(!SortHelper.isNumberSortedASC(tableValuesList.toArray(new String[tableValuesList.size()]))){
+			Log.error("Lisa numberes present in indications table are not in sequentila order");
+			return false;
+		}
+		
 		Log.info("Indication table verification passed");
 		return true;
 	}
