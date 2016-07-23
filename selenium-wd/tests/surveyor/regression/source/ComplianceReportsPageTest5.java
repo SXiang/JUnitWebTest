@@ -141,8 +141,13 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	public void TC210_GenerateReportTryDeleteSurveyUsedWhileGeneratingReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC210_GenerateReportTryDeleteSurveyUsedWhileGeneratingReport ...");
-
-		TestEnvironmentActions.generateSurveyForUser(6, 9, 51, 20);
+		
+		final int LOGIN_USER_ROW_ID = 6;        /* LoginRowID. AutomationAdmin */
+	    final int DB3_ANALYZER_ROW_ID = 9;      /* Analyzer3/Surveyor3. Replay db3 file rowID */
+	    final int SURVEY_ROW_ID = 51;           /* Survey information rowID */
+	    final int SURVEY_RUNTIME_IN_SECONDS = 20; /* Number of seconds to run the survey for. */
+	    
+		TestEnvironmentActions.generateSurveyForUser(LOGIN_USER_ROW_ID, DB3_ANALYZER_ROW_ID, SURVEY_ROW_ID, SURVEY_RUNTIME_IN_SECONDS);
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
