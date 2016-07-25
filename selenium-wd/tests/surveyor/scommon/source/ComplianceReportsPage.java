@@ -1475,7 +1475,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		List<Map<String, String>> viewList = reportsCompliance.getViewList();
 
 		pdfFile1 = Paths.get(downloadPath, reportName + ".pdf").toString();
-//		pdfFile3 = Paths.get(downloadPath, reportZipName + File.separator + nameBase.replaceAll("_", "") + ".pdf").toString();
 		pdfFile3 = Paths.get(downloadPath, reportZipName + File.separator + nameBase + ".pdf").toString();
 		if (BaseHelper.validatePdfFile(pdfFile1) && BaseHelper.validatePdfFile(pdfFile3)) {
 			try {
