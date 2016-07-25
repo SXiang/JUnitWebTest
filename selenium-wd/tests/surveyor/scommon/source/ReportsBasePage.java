@@ -53,7 +53,7 @@ import net.avh4.util.imagecomparison.ImageComparisonResult;
 import surveyor.api.source.ReportJobsStat;
 import surveyor.dataaccess.source.DBCache;
 import surveyor.dataaccess.source.Report;
-import surveyor.performance.source.ReportJobPerfDBStat;
+import surveyor.scommon.source.ReportJobPerfDBStat;
 import surveyor.scommon.source.Reports.ReportJobType;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.ReportStatusType;

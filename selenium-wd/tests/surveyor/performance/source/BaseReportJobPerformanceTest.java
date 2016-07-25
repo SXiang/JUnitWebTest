@@ -2,31 +2,22 @@ package surveyor.performance.source;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-
-import common.source.DriverFactory;
 import common.source.Log;
 import common.source.TestContext;
-import surveyor.dataprovider.PerformanceReportJobDataProvider;
 import surveyor.dataprovider.PerformanceReportJobDataProvider.ReportJobTestCategory;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.ReportJobPerfDBStat;
 import surveyor.scommon.source.SurveyorConstants.Environment;
 import surveyor.scommon.source.SurveyorTestRunner;
 

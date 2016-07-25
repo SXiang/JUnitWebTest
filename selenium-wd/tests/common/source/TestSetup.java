@@ -419,7 +419,7 @@ public class TestSetup {
 		/* For CI and Eclipse run setup */
 		String executionPath = rootPath + File.separator + "selenium-wd" + File.separator;
 		/* For build.xml run locally */
-		// String executionPath = rootPath+ File.separator;
+		//String executionPath = rootPath+ File.separator;
 		return executionPath;
 	}
 
