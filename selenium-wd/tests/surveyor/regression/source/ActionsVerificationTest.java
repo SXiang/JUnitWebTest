@@ -11,8 +11,11 @@ import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.ManageAnalyzerPageActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.ManageLocationPageActions;
+import surveyor.scommon.actions.ManageRefGasBottlesPageActions;
+import surveyor.scommon.actions.ManageSurveyorPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorBaseTest;
@@ -31,6 +34,9 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 	private static ManageCustomerPageActions manageCustomerPageAction;
 	private static ManageUsersPageActions manageUsersPageAction;
 	private static ManageLocationPageActions manageLocationPageAction;
+	private static ManageAnalyzerPageActions manageAnalyzerPageAction;
+	private static ManageSurveyorPageActions manageSurveyorPageAction;
+	private static ManageRefGasBottlesPageActions manageRefGasBottlesPageAction;
 	
 	private static final String EMPTY = BaseActions.EMPTY;
 	private static final Integer NOTSET = BaseActions.NOTSET;
@@ -42,6 +48,9 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		manageCustomerPageAction = ActionBuilder.createManageCustomerPageAction();
 		manageUsersPageAction = ActionBuilder.createManageUsersPageAction();
 		manageLocationPageAction = ActionBuilder.createManageLocationPageAction();		
+		manageAnalyzerPageAction = ActionBuilder.createManageAnalyzerPageAction();		
+		manageSurveyorPageAction = ActionBuilder.createManageSurveyorPageAction();		
+		manageRefGasBottlesPageAction = ActionBuilder.createManageRefGasBottlePageAction();		
 	}
 	
 	@Test
@@ -324,7 +333,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		Log.info("\nRunning Test_generateSurveyForNewCustomerUser ...");
 	
 		final int LOGIN_USER_ROW_ID = 6;	 	/* LoginRowID. AutomationAdmin */
-		final int DB3_ANALYZER_ROW_ID = 9;	 	/* Analyzer3/Surveyor3. Replay db3 file rowID */
+		final int DB3_ANALYZER_ROW_ID = 31;	 	/* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
 		final int SURVEY_ROW_ID = 4;	 		/* Survey information  */
 		
 		final int SURVEY_RUNTIME_IN_SECONDS = 60; /* Number of seconds to run the survey for. */
@@ -332,19 +341,36 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		final int newCustomerRowID = 7;
 		final int newLocationRowID = 4;
 		final int newCustomerUserRowID = 12;
+		final int newSurveyorRowID = 3;
+		final int newAnalyzerRowID = 3;
+		final int newRefGasBottleRowID = 1;
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, LOGIN_USER_ROW_ID);   
 
-		// Create new customer/location/user.
+		// Create new customer.
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
 
+		// Create new location.
 		manageLocationPageAction.open(EMPTY, NOTSET);
 		manageLocationPageAction.createNewLocation(EMPTY, newLocationRowID /*locationRowID*/);
 
+		// Create new user.
 		manageUsersPageAction.open(EMPTY, NOTSET);
 		manageUsersPageAction.createNewCustomerUser(EMPTY, newCustomerUserRowID /*userRowID*/);
+
+		// Create new surveyor.
+		manageSurveyorPageAction.open(EMPTY, NOTSET);
+		manageSurveyorPageAction.createNewSurveyor(EMPTY, newSurveyorRowID /*surveyorRowID*/);
+
+		// Create new analyzer.
+		manageAnalyzerPageAction.open(EMPTY, NOTSET);
+		manageAnalyzerPageAction.createNewAnalyzer(EMPTY, newAnalyzerRowID /*analyzerRowID*/);
+
+		// Create new ref gas bottle.
+		manageRefGasBottlesPageAction.open(EMPTY, NOTSET);
+		manageRefGasBottlesPageAction.createNewRefGasBottle(EMPTY, newRefGasBottleRowID /*refGasBottleRowID*/);
 
 		// Email ID for the new created user was generated dynamically in this case by using 'GenerateRandomEmail(20)' function.
 		// For such cases, use the overload with username and password for generateSurveyForUser().
