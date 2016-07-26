@@ -1466,7 +1466,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			return false;
 		}
 
-		String nameBase = RegexUtility.replaceSpecialChars(reportsCompliance.getRptTitle().trim());//.replaceAll(" ", "_");
+		String nameBase = RegexUtility.replaceSpecialChars(reportsCompliance.getRptTitle().trim());
 		String viewName;
 		String pdfFile1;
 		String pdfFile2;

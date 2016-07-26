@@ -777,7 +777,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 				}
 			}
 			String downloadPath = TestContext.INSTANCE.getTestSetup().getDownloadPath();
-			assertTrue(complianceReportsPage.verifySSRSImages(downloadPath, rptTitle, testCaseID));
 			assertTrue(complianceReportsPage.verifyViewsImages(downloadPath, rptTitle, testCaseID, "First View"));
 			assertTrue(complianceReportsPage.verifyViewsImages(downloadPath, rptTitle, testCaseID, "Second View"));
 		}else
@@ -850,7 +849,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 				assertTrue(complianceReportsPage.verifyViewsTable(testSetup.getDownloadPath(), rptTitle, viewList1));
 			}
 			String downloadPath = TestContext.INSTANCE.getTestSetup().getDownloadPath();
-			assertTrue(complianceReportsPage.verifySSRSImages(downloadPath, rptTitle, testCaseID));
 			assertTrue(complianceReportsPage.verifyViewsImages(downloadPath, rptTitle, testCaseID, "First View"));
 		}
 		else
@@ -1975,7 +1973,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 				}
 			}
 			String downloadPath = TestContext.INSTANCE.getTestSetup().getDownloadPath();
-			assertTrue(complianceReportsPage.verifySSRSImages(downloadPath, rptTitle, testCaseID));
 			assertTrue(complianceReportsPage.verifyViewsImages(downloadPath, rptTitle, testCaseID, "First View"));
 			assertTrue(complianceReportsPage.verifyViewsImages(downloadPath, rptTitle, testCaseID, "Second View"));
 			assertTrue(complianceReportsPage.verifyViewsImages(downloadPath, rptTitle, testCaseID, "Third View"));

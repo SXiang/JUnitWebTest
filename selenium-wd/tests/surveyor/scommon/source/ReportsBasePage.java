@@ -706,7 +706,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 			addSurveyInformation(reports);
 		}
 		this.clickOnOKButton();
-//		this.clickOnCancelBtn();
 	}
 
 	public void addSurveyInformation(Reports reports) throws Exception {
