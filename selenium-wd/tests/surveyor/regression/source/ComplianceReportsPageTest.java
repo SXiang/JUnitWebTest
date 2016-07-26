@@ -248,7 +248,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	 * @throws Exception
 	 * 
 	 */
-	@Test /* No verification of screen refreshing */
+	@Test
 	public void TC163_ComplianceReportTest_VerifyScreendoesntRefreshwhileSearchingInprogressReport() throws Exception {
 		String rptTitle = "TC163 Report" + testSetup.getRandomNumber();
 
