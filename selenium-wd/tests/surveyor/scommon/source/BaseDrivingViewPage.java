@@ -148,7 +148,7 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 	}
 
 	public boolean isStatusButtonOpen() {
-		return this.statusButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon open");
+		return this.statusButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon");
 	}
 
 	public boolean isStatusButtonRed() {

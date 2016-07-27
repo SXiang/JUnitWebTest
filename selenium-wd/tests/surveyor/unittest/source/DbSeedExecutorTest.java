@@ -87,8 +87,19 @@ public class DbSeedExecutorTest {
 
 	@Test
 	public void execute05_pushAssetBoundariesForSpecificCustomerTest() throws Exception {
-		// By default is no customerId is specified the GIS data is pushed for Picarro customer.
+		// By default if no customerId is specified the GIS data is pushed for Picarro customer.
 		String customerId = "00000000-0000-0000-0000-000000000002";
+		DbSeedExecutor.executeGisSeed(customerId);
+		verifyGisSeedDataIsPresent(customerId);
+	}
+	
+	/**
+	 * NOTES: PGE asset/boundaries seed is required by few Driver view test cases.
+	 * @throws Exception
+	 */
+	@Test
+	public void execute06_pushAssetBoundariesForPGECustomerTest() throws Exception {
+		String customerId = "E871C797-B62D-EF28-0EA7-39CAE44E5C19";
 		DbSeedExecutor.executeGisSeed(customerId);
 		verifyGisSeedDataIsPresent(customerId);
 	}
