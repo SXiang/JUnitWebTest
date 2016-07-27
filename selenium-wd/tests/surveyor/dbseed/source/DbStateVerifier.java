@@ -160,6 +160,80 @@ public class DbStateVerifier {
 	}
 
 	/**
+	 * Verified if CustomerBoundaryType seed is present for the specified customer in database or not.
+	 * 
+	 * @param customerId
+	 *            - Customer Id
+	 * @param expectedCustomerBoundaryTypeCount
+	 *            - Expected rows for Customer Boundary Type for the specified customer.
+	 * @return - True/False. Whether CustomerBoundaryType seed is present in database.
+	 */
+	public boolean isGISCustomerBoundaryTypeSeedPresent(String customerId, Integer expectedCustomerBoundaryTypeCount) {
+		Log.method("DbStateVerifier.isGISCustomerBoundarySeedPresent", customerId, expectedCustomerBoundaryTypeCount);
+		// check if GIS CustomerBoundarySeedPresent seed data is already present in the database.
+		try (Statement stmt = connection.createStatement()) {
+			// check CustomerBoundaryType count.
+			long count = 0;
+			String tableName = CustomerBoundaryTypeDbSeedBuilder.TABLE_NAME;
+			try (ResultSet rsRowCount = stmt
+					.executeQuery(String.format("SELECT COUNT(*) FROM %s WHERE CustomerId='%s';", tableName, customerId))) {
+				rsRowCount.next();
+				count = rsRowCount.getInt(1);
+				Log.info(String.format("%s table row count for Customer[Id=%s] = %d", tableName, customerId,
+						count));
+				Log.info(String.format("Expected %s row count=%d, Actual row count=%d", tableName,
+						expectedCustomerBoundaryTypeCount, count));
+				if (expectedCustomerBoundaryTypeCount > count) {
+					Log.info("isGISCustomerBoundaryTypeSeedPresent = FALSE");
+					return false;
+				}
+			}
+		} catch (Exception e) {
+			Log.error(String.format("EXCEPTION in isGISCustomerBoundaryTypeSeedPresent(). ERROR Message: %s",
+					ExceptionUtility.getStackTraceString(e)));
+		}
+
+		return true;
+	}
+	
+	/**
+	 * Verified if CustomerMaterialType seed is present for the specified customer in database or not.
+	 * 
+	 * @param customerId
+	 *            - Customer Id
+	 * @param expectedCustomerMaterialTypeCount
+	 *            - Expected rows for Customer Material Type for the specified customer.
+	 * @return - True/False. Whether CustomerMaterialType seed is present in database.
+	 */
+	public boolean isGISCustomerMaterialTypeSeedPresent(String customerId, Integer expectedCustomerMaterialTypeCount) {
+		Log.method("DbStateVerifier.isGISCustomerBoundarySeedPresent", customerId, expectedCustomerMaterialTypeCount);
+		// check if GIS CustomerBoundarySeedPresent seed data is already present in the database.
+		try (Statement stmt = connection.createStatement()) {
+			// check CustomerMaterialType count.
+			long count = 0;
+			String tableName = CustomerMaterialTypeDbSeedBuilder.TABLE_NAME;
+			try (ResultSet rsRowCount = stmt
+					.executeQuery(String.format("SELECT COUNT(*) FROM %s WHERE CustomerId='%s';", tableName, customerId))) {
+				rsRowCount.next();
+				count = rsRowCount.getInt(1);
+				Log.info(String.format("%s table row count for Customer[Id=%s] = %d", tableName, customerId,
+						count));
+				Log.info(String.format("Expected %s row count=%d, Actual row count=%d", tableName,
+						expectedCustomerMaterialTypeCount, count));
+				if (expectedCustomerMaterialTypeCount > count) {
+					Log.info("isGISCustomerMaterialTypeSeedPresent = FALSE");
+					return false;
+				}
+			}
+		} catch (Exception e) {
+			Log.error(String.format("EXCEPTION in isGISCustomerMaterialTypeSeedPresent(). ERROR Message: %s",
+					ExceptionUtility.getStackTraceString(e)));
+		}
+
+		return true;
+	}
+	
+	/**
 	 * Verified if Survey seed is present in database or not.
 	 * 
 	 * @param surveyId
