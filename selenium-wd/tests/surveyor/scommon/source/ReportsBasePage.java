@@ -181,6 +181,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='deleteView2']/span")
 	protected WebElement btnDeleteView2;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr")
+	protected List<WebElement> dataTableViews;
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[2]/input")
 	protected WebElement inputViewName;
 
@@ -1510,9 +1513,17 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean waitForReportGenerationtoComplete(String rptTitle, String strCreatedBy) {
+		String reportName = waitForReportGenerationtoCompleteAndGetReportName(rptTitle, strCreatedBy);
+		if(reportName==null){
+			return false;
+		}
+		return true;
+	}
+	
+	public String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy) {
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForPageLoad();
-
+		String reportName;
 		String reportTitleXPath;
 		String createdByXPath;
 
@@ -1553,6 +1564,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 						if (rowSize == 1) {
 							this.btnReportViewer = getTable()
 									.findElement(By.xpath("tr/td[5]/a[3]"));
+							reportName = getElementText(getTable().findElement(By.xpath("tr/td[2]")));
 
 						} else {
 							int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
@@ -1568,12 +1580,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 									maxRows)){
 								continue;
 							}
+							reportName = getElementText(getTable().findElement(By.xpath("tr[" + rowNum + "]/td[2]")));
 						}
-						return true;
+						return reportName;
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
 						if (elapsedTime >= (ACTIONTIMEOUT + 900 * 1000)) {
-							return false;
+							return null;
 						}
 
 						continue;
@@ -1601,7 +1614,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
-		return false;
+		return null;
 	}
 
 	public boolean copyReport(String rptTitle, String strCreatedBy) {
@@ -2031,6 +2044,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return false;
 	}
 
+	public String getEmptyTableMessage(){
+		String msg = dataTableEmpty.getText();
+		return msg.trim();		
+	}
 	public boolean checkPaginationSetting(String numberOfReports) {
 		setPagination(numberOfReports);
 		this.waitForPageLoad();
