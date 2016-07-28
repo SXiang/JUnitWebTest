@@ -437,16 +437,7 @@ public class TestSetup {
 	}
 
 	public WebDriver getDriver() {
-		try {
-			this.driver = DriverFactory.getDriver();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		return this.driver;
-	}
-
-	public void setDriver(WebDriver driver) {
-		this.driver = driver;
 	}
 
 	public String getCulture() {
