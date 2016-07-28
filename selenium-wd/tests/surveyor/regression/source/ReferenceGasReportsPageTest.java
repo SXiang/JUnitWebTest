@@ -260,8 +260,11 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 	}
 
 	private Integer getNumberOfPreMonths() {
+		LocalDate nowDate = LocalDate.now();
+		// Diff in months is computed based on number of days between the 2 dates.
+		// Use the first day of month as the nowDate() to get the number of times the back button on calendar needs to be clicked.
 		return Integer.parseInt(DateUtility.getDateDiff(LocalDate.of(START_DATE_YEAR, START_DATE_MONTH, START_DATE_DAY), 
-				LocalDate.now(), DatePart.Month).toString());
+				LocalDate.of(nowDate.getYear(), nowDate.getMonthValue(), 1 /*first day of month*/), DatePart.Month).toString());
 	}
 	
 	private String getStartDate() {
