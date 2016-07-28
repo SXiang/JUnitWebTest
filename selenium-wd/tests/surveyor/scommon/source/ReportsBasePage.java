@@ -2175,6 +2175,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void clickOnFirstCopyComplianceBtn() {
 		Log.clickElementInfo("Copy",ElementType.ICON);
 		this.btnFirstCopyCompliance.click();
+		this.waitForCopyReportPagetoLoad();
 	}
 
 	@Override

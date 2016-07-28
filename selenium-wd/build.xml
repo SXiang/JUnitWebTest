@@ -169,7 +169,8 @@
 					<include name="**/SurveyViewPageTest3.class" />
 					<include name="**/SurveyViewPageTest4.class" />
 					<include name="**/SurveyViewPageTest5.class" />
-
+					<include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
+					
 				</fileset>
 			</batchtest>
 		</junit>
@@ -433,9 +434,8 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ComplianceReportsPageTest2.class" />
-					<include name="**/ComplianceReportsPageTest3.class" />
 					<include name="**/ComplianceReportsPageTest_Ethane.class" />
+					<include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>

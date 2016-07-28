@@ -257,8 +257,9 @@ public class LatLongSelectionControl extends BaseControl {
 		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				WebElement autoCompleteList = d.findElement(By.id("ui-id-1"));
-				return !autoCompleteList.getAttribute("style").contains("display:none") && 
-						!autoCompleteList.getAttribute("style").contains("display: none");
+				String elementStyle = autoCompleteList.getAttribute("style");
+				return !elementStyle.contains("display:none") && 
+						!elementStyle.contains("display: none");
 			}
 		});
 		return this;
