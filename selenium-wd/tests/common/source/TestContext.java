@@ -36,7 +36,7 @@ public enum TestContext {
 			return;
 		}
 		while(testMessage.size()>=numTestMessagesToRetain){
-			testMessage.remove(0);
+			testMessage.remove(0);	
 		}
 		testMessage.add(new java.util.Date() + ": " + message);
 	}

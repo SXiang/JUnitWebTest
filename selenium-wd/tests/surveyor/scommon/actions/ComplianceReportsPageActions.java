@@ -182,7 +182,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 				false /*confirmAction*/);  // By default use FALSE confirm action.
 	}
 	
-	private ComplianceReportsDataRow getComplianceReportsDataRow(Integer dataRowID) throws Exception {
+	public ComplianceReportsDataRow getComplianceReportsDataRow(Integer dataRowID) throws Exception {
 		ComplianceReportsDataRow compRptDataRow = null;
 		if (ComplianceReportsPageActions.workingDataRow != null) {
 			compRptDataRow = ComplianceReportsPageActions.workingDataRow;
@@ -1581,6 +1581,20 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return true;
 	}
  
+	/**
+	 * Executes setReportGenerationTimeout action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean setReportGenerationTimeout(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.selectViewLayersBoundary", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty("setReportGenerationTimeout", data, ARG_DATA);
+		this.getComplianceReportsPage().setReportGenerationTimeout(Integer.valueOf(data));
+		return true;
+	}	
+	
 	/**
 	 * Executes verifyComplianceViewerButtonIsDisplayed action.
 	 * @param data - specifies the input data passed to the action.
@@ -3470,6 +3484,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("selectTimeZone")) { return this.selectTimeZone(data, dataRowID); }
 		else if (actionName.equals("selectViewLayersAsset")) { return this.selectViewLayersAsset(data, dataRowID); }
 		else if (actionName.equals("selectViewLayersBoundary")) { return this.selectViewLayersBoundary(data, dataRowID); }
+		else if (actionName.equals("setReportGenerationTimeout")) { return this.setReportGenerationTimeout(data, dataRowID); }
 		else if (actionName.equals("sortRecordsBy")) { return this.sortRecordsBy(data, dataRowID); }
 		else if (actionName.equals("verifyAllMetadataFiles")) { return this.verifyAllMetadataFiles(data, dataRowID); }
 		else if (actionName.equals("verifyAllSSRSTableInfos")) { return this.verifyAllSSRSTableInfos(data, dataRowID); }

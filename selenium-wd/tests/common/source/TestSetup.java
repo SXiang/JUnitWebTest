@@ -19,6 +19,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -54,6 +56,7 @@ import net.lightbody.bmp.core.har.Har;
 import surveyor.dataaccess.source.Survey;
 import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.TestEnvironmentActions;
+import surveyor.scommon.source.SurveyorConstants.Environment;
 
 /**
  * This is the initial class to setup up the testing environment and
@@ -73,6 +76,8 @@ public class TestSetup {
 
 	private static final String UPDATE_ANALYZER_CONFIGURATION_CMD = "UpdateAnalyzerConfiguration.cmd";
 	private static final String POST_AUTOMATION_RUN_RESULT_CMD = "Post-AutomationRunResult.cmd";
+	private static final String POST_REPORT_JOB_PERF_STAT_CMD = "Post-ReportJobPerfStat.cmd";
+	private static final String POST_ANALYZER_API_PERF_STAT_CMD = "Post-AnalyzerAPIPerfStat.cmd";
 	private static final String[] CI_MACHINES = { "20.20.20.59", "20.20.10.82", "10.0.2.15", "10.200.2.48"};
 	private static String testPropFileName;
 
@@ -164,6 +169,8 @@ public class TestSetup {
 	private String automationReportingApiEndpoint;
 	private boolean automationReportingApiEnabled;
 
+	private static boolean parallelBuildEnabled;
+	
 	public TestSetup() {
 		initialize();
 	}
@@ -219,7 +226,7 @@ public class TestSetup {
 				isRemoteBrowser = true;
 				Log.info("\nRunning Selenium Server for use with RemoteDrivers and the server is running on: "
 						+ this.remoteServerHost + "\n");
-			} else if (this.browser != null && (this.ieDriverPath != null || this.chromeDriverPath != null)) {
+			} else if (this.browser != null && (this.ieDriverPath != null || this.getChromeDriverPath() != null)) {
 				switch (this.browser.trim()) {
 				case "chrome":
 					setChromeBrowserCapabilities();
@@ -272,7 +279,7 @@ public class TestSetup {
 		if (proxy != null) {
 			this.capabilities.setCapability(CapabilityType.PROXY, proxy);
 		}
-		System.setProperty("webdriver.chrome.driver", this.chromeDriverPath);
+		System.setProperty("webdriver.chrome.driver", this.getChromeDriverPath());
 		Log.info("\nThe System Propery 'webdriver.chrome.driver' is: "
 				+ System.getProperty("webdriver.chrome.driver").toString() + "\n");
 		driver = new ChromeDriver(this.capabilities);
@@ -412,7 +419,7 @@ public class TestSetup {
 		/* For CI and Eclipse run setup */
 		String executionPath = rootPath + File.separator + "selenium-wd" + File.separator;
 		/* For build.xml run locally */
-		// String executionPath = rootPath+ File.separator;
+		//String executionPath = rootPath+ File.separator;
 		return executionPath;
 	}
 
@@ -665,7 +672,7 @@ public class TestSetup {
 
 			this.ieDriverPath = this.testProp.getProperty("ieDriverPath");
 
-			this.chromeDriverPath = getExecutionPath(rootPath) + "lib" + File.separator + "chromedriver.exe";
+			this.setChromeDriverPath(getExecutionPath(rootPath) + "lib" + File.separator + "chromedriver.exe");
 			this.implicitlyWaitTimeOutInSeconds = this.testProp.getProperty("implicitlyWaitTimeOutInSeconds");
 			this.implicitlyWaitSpecialTimeOutInSeconds = this.testProp
 					.getProperty("implicitlyWaitSpecialTimeOutInSeconds");
@@ -679,12 +686,13 @@ public class TestSetup {
 			setPerformanceExecutionTestProperties();
 			setUploadSurveyTestProperties();
 			setPushDBSeedTestProperties();
+			setParallelBuildTestProperties();
 
 			this.language = this.testProp.getProperty("language");
 			this.culture = this.testProp.getProperty("culture");
-			this.softwareVersion = this.testProp.getProperty("softwareVersion");
+			this.setSoftwareVersion(this.testProp.getProperty("softwareVersion"));
 			
-			this.automationReportingApiEndpoint = this.testProp.getProperty("automationReporting.ApiEndPoint");
+			this.setAutomationReportingApiEndpoint(this.testProp.getProperty("automationReporting.ApiEndPoint"));
 			String automationReportingApiEnabledValue = this.testProp.getProperty("automationReporting.APIEnabled");
 			if (automationReportingApiEnabledValue != null && automationReportingApiEnabledValue != "") {
 				this.automationReportingApiEnabled = Boolean.valueOf(automationReportingApiEnabledValue);
@@ -738,6 +746,13 @@ public class TestSetup {
 			Log.error(e.toString());
 		} catch (IOException e) {
 			Log.error(e.toString());
+		}
+	}
+
+	private void setParallelBuildTestProperties() {
+		String parallelBuildEnabledValue = this.testProp.getProperty("parallelBuild.Enabled");
+		if (parallelBuildEnabledValue != null && !parallelBuildEnabledValue.isEmpty()) {
+			this.setParallelBuildEnabled(Boolean.valueOf(parallelBuildEnabledValue));
 		}
 	}
 
@@ -1103,7 +1118,7 @@ public class TestSetup {
 			String postResultCmdFolder = getExecutionPath(getRootPath()) + "lib";
 			String postResultCmdFullPath = postResultCmdFolder + File.separator + POST_AUTOMATION_RUN_RESULT_CMD;
 			String command = "cd \"" + postResultCmdFolder + "\" && " + postResultCmdFullPath + 
-					String.format(" \"%s\" \"%s\" \"%s\"", workingFolder, automationReportingApiEndpoint, htmlResultFilePath);
+					String.format(" \"%s\" \"%s\" \"%s\"", workingFolder, getAutomationReportingApiEndpoint(), htmlResultFilePath);
 			Log.info("Posting automation run result. Command -> " + command);
 			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 		} catch (IOException e) {
@@ -1111,6 +1126,52 @@ public class TestSetup {
 		}
 	}
 
+	public void postReportJobPerfStat(String reportTitle, String reportJobTypeId, String reportJobTypeName,
+			 LocalDateTime reportJobStartTime, LocalDateTime reportJobEndTime, LocalDateTime testExecutionStartDate, LocalDateTime testExecutionEndDate,
+			 String buildNumber, String testCaseID, Environment environment) {
+		try {
+			String workingFolder = getRootPath();
+			String reportJobStatCmdFolder = getExecutionPath(getRootPath()) + "lib";
+			String reportJobStatCmdFullPath = reportJobStatCmdFolder + File.separator + POST_REPORT_JOB_PERF_STAT_CMD;
+			String command = "cd \"" + reportJobStatCmdFolder + "\" && " + reportJobStatCmdFullPath + 
+					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"", 
+							workingFolder, getAutomationReportingApiEndpoint(), reportTitle,
+							 reportJobTypeId, reportJobTypeName, 
+							 DateUtility.getLongDateString(reportJobStartTime), 
+							 DateUtility.getLongDateString(reportJobEndTime),
+							 DateUtility.getLongDateString(testExecutionStartDate), 
+							 DateUtility.getLongDateString(testExecutionEndDate), 
+							 buildNumber, testCaseID, environment.getIndex());
+			Log.info("Posting report job perf stat. Command -> " + command);
+			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
+		} catch (IOException e) {
+			Log.error(e.toString());
+		}
+	}
+
+	public void postAnalyzerApiPerfStat(String aPIName, String aPIUrl, int numberOfSamples,
+			 float average, float median, float responseTime90Pctl, float responseTime95Pctl, float responsetime99Pctl,
+			 float min, float max, float errorPercent, float throughputPerSec, float kBPerSec, LocalDateTime testExecutionStartDate, 
+			 LocalDateTime testExecutionEndDate, String buildNumber, String testCaseID, Environment environment) {
+		try {
+			String workingFolder = getRootPath();
+			String analyzerApiCmdFolder = getExecutionPath(getRootPath()) + "lib";
+			String analyzerApiCmdFullPath = analyzerApiCmdFolder + File.separator + POST_ANALYZER_API_PERF_STAT_CMD;
+			String command = "cd \"" + analyzerApiCmdFolder + "\" && " + analyzerApiCmdFullPath + 
+					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\""
+							+ " \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"", workingFolder, getAutomationReportingApiEndpoint(), aPIName,
+							 aPIUrl, numberOfSamples, average, median, responseTime90Pctl, responseTime95Pctl, responsetime99Pctl,
+							 min, max, errorPercent, throughputPerSec, kBPerSec, 
+							 DateUtility.getLongDateString(testExecutionStartDate), 
+							 DateUtility.getLongDateString(testExecutionEndDate),
+							 buildNumber, testCaseID, environment.getIndex());
+			Log.info("Posting analyzer api perf stat. Command -> " + command);
+			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
+		} catch (IOException e) {
+			Log.error(e.toString());
+		}
+	}
+	
 	public static void main(String[] args) {
 		TestSetup testSetup = new TestSetup(true /* initialization=TRUE */);
 		TestContext.INSTANCE.setTestSetup(testSetup);
@@ -1320,5 +1381,33 @@ public class TestSetup {
 			propValue = testProp.getProperty(propKey);
 		}
 		return propValue;
+	}
+
+	public String getChromeDriverPath() {
+		return chromeDriverPath;
+	}
+
+	public void setChromeDriverPath(String chromeDriverPath) {
+		this.chromeDriverPath = chromeDriverPath;
+	}
+
+	public String getAutomationReportingApiEndpoint() {
+		return automationReportingApiEndpoint;
+	}
+
+	public void setAutomationReportingApiEndpoint(String automationReportingApiEndpoint) {
+		this.automationReportingApiEndpoint = automationReportingApiEndpoint;
+	}
+
+	public static boolean isParallelBuildEnabled() {
+		return parallelBuildEnabled;
+	}
+
+	public static void setParallelBuildEnabled(boolean parallelBldEnabled) {
+		parallelBuildEnabled = parallelBldEnabled;
+	}
+
+	public void setSoftwareVersion(String softwareVersion) {
+		this.softwareVersion = softwareVersion;
 	}
 }

@@ -170,6 +170,13 @@ public class LatLongSelectionControl extends BaseControl {
 
 		return this;
 	}
+	
+	/**
+	 * Returns the Customer Boundary text field web element.
+	 */
+	public WebElement getCustomerBoundaryTextField() {
+		return this.selectByNameTextField;
+	}
 
 	/**
 	 * Click on OK Button.
