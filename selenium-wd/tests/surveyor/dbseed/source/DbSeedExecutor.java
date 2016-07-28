@@ -289,8 +289,12 @@ public class DbSeedExecutor {
         	assetDbSeedBuilder = new AssetDbSeedBuilder();
         	assetDbSeedBuilder.setDbSeedCache(dbSeedBuilderCache);
         	
+			DbSeed custBoundaryTypeDbSeed = customerBoundaryTypeDbSeedBuilder.build(isCustomerSpecified ? customerId : null);
+			DbSeed custMaterialTypeDbSeed = customerMaterialTypeDbSeedBuilder.build(isCustomerSpecified ? customerId : null);
+
 			DbSeed assetDbSeed = assetDbSeedBuilder.build(customerId);
 			DbSeed boundaryDbSeed = boundaryDbSeedBuilder.build(customerId);
+
 			int expectedAssetCount = assetDbSeed.getInsertStatements().size();
 			int expectedBoundaryCount = boundaryDbSeed.getInsertStatements().size();
 			
@@ -300,12 +304,35 @@ public class DbSeedExecutor {
 				Log.info(String.format("GIS DB seed is already present for customer-'%s'. SKIP execution.", customerId));
 				return;
 			}
-			
-			DbSeed custBoundaryTypeDbSeed = customerBoundaryTypeDbSeedBuilder.build(isCustomerSpecified ? customerId : null);
-			DbSeed custMaterialTypeDbSeed = customerMaterialTypeDbSeedBuilder.build(isCustomerSpecified ? customerId : null);
 
-			executeSeed(connection, custBoundaryTypeDbSeed);
-			executeSeed(connection, custMaterialTypeDbSeed);
+			int expectedCustomerBoundaryTypeCount = FileUtility.getLineCountInFile(Paths.get(customerBoundaryTypeDbSeedBuilder.getSeedFilePath())) - 2;
+			int expectedCustomerMaterialTypeCount = FileUtility.getLineCountInFile(Paths.get(customerMaterialTypeDbSeedBuilder.getSeedFilePath())) - 2;
+			
+			// check and push CustomerBoundaryType db seed.
+			boolean customerBoundaryTypeSeedPresent = dbStateVerifier.isGISCustomerBoundaryTypeSeedPresent(customerId, expectedCustomerBoundaryTypeCount);
+			if (!customerBoundaryTypeSeedPresent) {
+				executeSeed(connection, custBoundaryTypeDbSeed);
+			} else {
+				Log.info(String.format("GIS CustomerBoundaryType DB seed is already present for customer-'%s'.", customerId));
+			}
+
+			// check and push CustomerMaterialType db seed.
+			boolean customerMaterialTypeSeedPresent = dbStateVerifier.isGISCustomerMaterialTypeSeedPresent(customerId, expectedCustomerMaterialTypeCount);
+			if (!customerMaterialTypeSeedPresent) {
+				executeSeed(connection, custMaterialTypeDbSeed);
+			} else {
+				Log.info(String.format("GIS CustomerMaterialType DB seed is already present for customer-'%s'.", customerId));
+			}
+
+			// For new customer seed to execute, CustomerBoundaryType and CustomerMaterialType should have been executed.
+			if (isCustomerSpecified && (customerBoundaryTypeSeedPresent || customerMaterialTypeSeedPresent)) {
+				Log.info(String.format("Pushing GIS DB seed for non-default customer-'%s'. "
+						+ "There is currently data in database for this customer in CustomerBoundaryType=[%b], "
+						+ "CustomerMaterialType=[%b] which should be cleared before pushing GIS DB seed for this customer."
+						+ " SKIPPING execution!", customerId, customerBoundaryTypeSeedPresent, customerMaterialTypeSeedPresent));
+				return;
+			}
+
 			executeSeed(connection, boundaryDbSeed);
 			executeSeed(connection, assetDbSeed);
         	

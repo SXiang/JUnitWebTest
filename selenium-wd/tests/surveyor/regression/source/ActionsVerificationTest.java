@@ -11,8 +11,11 @@ import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.ManageAnalyzerPageActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.ManageLocationPageActions;
+import surveyor.scommon.actions.ManageRefGasBottlesPageActions;
+import surveyor.scommon.actions.ManageSurveyorPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorBaseTest;
@@ -31,6 +34,9 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 	private static ManageCustomerPageActions manageCustomerPageAction;
 	private static ManageUsersPageActions manageUsersPageAction;
 	private static ManageLocationPageActions manageLocationPageAction;
+	private static ManageAnalyzerPageActions manageAnalyzerPageAction;
+	private static ManageSurveyorPageActions manageSurveyorPageAction;
+	private static ManageRefGasBottlesPageActions manageRefGasBottlesPageAction;
 	
 	private static final String EMPTY = BaseActions.EMPTY;
 	private static final Integer NOTSET = BaseActions.NOTSET;
@@ -42,15 +48,23 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		manageCustomerPageAction = ActionBuilder.createManageCustomerPageAction();
 		manageUsersPageAction = ActionBuilder.createManageUsersPageAction();
 		manageLocationPageAction = ActionBuilder.createManageLocationPageAction();		
+		manageAnalyzerPageAction = ActionBuilder.createManageAnalyzerPageAction();		
+		manageSurveyorPageAction = ActionBuilder.createManageSurveyorPageAction();		
+		manageRefGasBottlesPageAction = ActionBuilder.createManageRefGasBottlePageAction();		
 	}
 	
 	@Test
 	public void TC_SimulatorTest_DriverViewInstrumentReady() {
 		try {
+			final int analyzerDb3DataRowID = 1;
+			final int surveyDataRowID = 3;
+			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(SurveyorConstants.PICDFADMIN + ":" + SurveyorConstants.PICADMINPSWD, NOTSET);
-			testEnvironmentAction.startAnalyzer(EMPTY, 1);
+			testEnvironmentAction.startAnalyzer(EMPTY, analyzerDb3DataRowID);
 			driverViewPageAction.open(EMPTY,NOTSET);
+			driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+			testEnvironmentAction.startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay db3 file.
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			
 			assertTrue(driverViewPageAction.verifyPositionButtonIsGreen(EMPTY,NOTSET));
@@ -59,7 +73,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 			assertTrue(driverViewPageAction.verifyStartIsotopicCaptureButtonIsEnabled(EMPTY,NOTSET));
 			assertTrue(driverViewPageAction.verifyRefBottleMeasButtonIsEnabled(EMPTY,NOTSET));
 			
-			driverViewPageAction.startDrivingSurvey(EMPTY, 3);
+			driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
 			
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			assertTrue(driverViewPageAction.verifyStartIsotopicCaptureButtonIsEnabled(EMPTY,NOTSET));
@@ -114,16 +128,21 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 	@Test
 	public void TC_SimulatorTest_DriverViewStartDrivingSurvey() {
 		try {
+			final int analyzerDb3DataRowID = 3;
+			final int surveyDataRowID = 3;
+			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(SurveyorConstants.PICDFADMIN + ":" + SurveyorConstants.PICADMINPSWD, NOTSET);
-			testEnvironmentAction.startAnalyzer(EMPTY, 3);
+			testEnvironmentAction.startAnalyzer(EMPTY, analyzerDb3DataRowID);
 			driverViewPageAction.open(EMPTY,NOTSET);
+			driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+			testEnvironmentAction.startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay db3 file.
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			
 			String surveyTag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
-			String surveyArg = String.format("%s,%s,%s,%s,%s,%s", 
-					surveyTag, "Day", "Overcast", "Calm", "LessThan50", "Standard");
-			driverViewPageAction.startDrivingSurvey(surveyArg, 3);
+			String surveyArg = String.format("%s,%s,%s,%s,%s,%s,%s", 
+					surveyTag, "Day", "Overcast", "Calm", "LessThan50", "Standard", "");
+			driverViewPageAction.startDrivingSurvey(surveyArg, surveyDataRowID);
 			driverViewPageAction.clickOnHeaderInfoBox(EMPTY,NOTSET);
 			
 			assertTrue(driverViewPageAction.verifySurveyInfoModeLabelEquals("Mode: Standard",NOTSET));
@@ -133,7 +152,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 			assertTrue(driverViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith("Remaining: 0",NOTSET));
 			assertTrue(driverViewPageAction.verifySurveyInfoSurveyorLabelEquals("Surveyor: " + SURVEYOR_NAME + " - " + ANALYZER_SERIAL_NUMBER,NOTSET));
 			assertTrue(driverViewPageAction.verifySurveyInfoZoomLevelLabelEquals("Zoom Level: 19",NOTSET));
-			assertTrue(driverViewPageAction.verifySurveyInfoTagLabelEquals("Tag: " + surveyTag, NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoTagLabelEquals(surveyTag, NOTSET));
 
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			
@@ -148,12 +167,50 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 	}
 
 	@Test
-	public void TC_SimulatorTest_DriverViewStopDrivingSurvey() {
+	public void TC_SimulatorTest_DriverViewStartDrivingSurvey_ManualSurvey() {
 		try {
+			final int analyzerDb3DataRowID = 3;
+			final int surveyDataRowID = 52;
+
+			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(SurveyorConstants.PICDFADMIN + ":" + SurveyorConstants.PICADMINPSWD, NOTSET);
-			testEnvironmentAction.startAnalyzer(EMPTY, 3);
+
+			testEnvironmentAction.startAnalyzer(EMPTY, analyzerDb3DataRowID);
 			driverViewPageAction.open(EMPTY,NOTSET);
+			driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+			testEnvironmentAction.startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay db3 file.
+			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
+			
+			driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
+			driverViewPageAction.clickOnHeaderInfoBox(EMPTY,NOTSET);
+			
+			assertTrue(driverViewPageAction.verifySurveyInfoModeLabelEquals("Mode: Manual",NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoSurveyStatusLabelEquals("Survey Active",NOTSET));
+
+			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
+			
+			assertTrue(driverViewPageAction.verifyStopDrivingSurveyButtonIsEnabled(EMPTY,NOTSET));
+
+			driverViewPageAction.stopDrivingSurvey(EMPTY,NOTSET);
+
+		} catch (Exception e) {
+			Log.error(e.toString());
+		}
+	}
+
+	@Test
+	public void TC_SimulatorTest_DriverViewStopDrivingSurvey() {
+		try {
+			final int analyzerDb3DataRowID = 3;
+			final int surveyDataRowID = 3;
+			
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(SurveyorConstants.PICDFADMIN + ":" + SurveyorConstants.PICADMINPSWD, NOTSET);
+			testEnvironmentAction.startAnalyzer(EMPTY, analyzerDb3DataRowID);
+			driverViewPageAction.open(EMPTY,NOTSET);
+			driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+			testEnvironmentAction.startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay db3 file.
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			
 			assertTrue(driverViewPageAction.verifyStartSurveyButtonIsEnabled(EMPTY,NOTSET));
@@ -163,7 +220,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 			String surveyArg = String.format("%s,%s,%s,%s,%s,%s", 
 					surveyTag, "Night", "Overcast", "Calm", "MoreThan50", "Standard");
 
-			driverViewPageAction.startDrivingSurvey(surveyArg, 3);
+			driverViewPageAction.startDrivingSurvey(surveyArg, surveyDataRowID);
 			
 			driverViewPageAction.clickOnMapButton(EMPTY,NOTSET);
 			driverViewPageAction.turnOnMapView(EMPTY,NOTSET);
@@ -188,12 +245,17 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 	@Test
 	public void TC_SimulatorTest_TC1147_DriverViewSurveyVerification() {
 		try {
+			final int analyzerDb3DataRowID = 3;
+			final int surveyDataRowID = 3;
+			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(SurveyorConstants.PICDFADMIN + ":" + SurveyorConstants.PICADMINPSWD, NOTSET);
-			testEnvironmentAction.startAnalyzer(EMPTY,3);
+			testEnvironmentAction.startAnalyzer(EMPTY, analyzerDb3DataRowID);
 			driverViewPageAction.open(EMPTY,NOTSET);
+			driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+			testEnvironmentAction.startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay db3 file.
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
-			driverViewPageAction.startDrivingSurvey(EMPTY, 3);
+			driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
 			driverViewPageAction.clickOnMapButton(EMPTY,NOTSET);
 			driverViewPageAction.turnOnMapView(EMPTY,NOTSET);
 			
@@ -225,8 +287,8 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 			assertTrue(driverViewPageAction.verifyFOVIsNotShownOnMap(EMPTY,NOTSET));
 			
 			driverViewPageAction.clickOnHeaderInfoBox(EMPTY,NOTSET);
-			assertTrue(driverViewPageAction.verifySurveyInfoTagLabelEquals("Tag: " + driverViewPageAction.getDataReader().getDataRow(3).surveyTag,NOTSET));
-			assertTrue(driverViewPageAction.verifySurveyInfoModeLabelEquals("Mode: " + driverViewPageAction.getDataReader().getDataRow(3).surveyType,NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag,NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoModeLabelEquals("Mode: " + DriverViewPageActions.workingDataRow.surveyType,NOTSET));
 			assertTrue(driverViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith("Elapsed: 00:",NOTSET));
 			assertTrue(driverViewPageAction.verifySurveyInfoSurveyStatusLabelEquals("Survey Active",NOTSET));
 			assertTrue(driverViewPageAction.verifySurveyInfoDriverLabelEquals("Driver: " + SurveyorConstants.PICDFADMIN,NOTSET));
@@ -271,7 +333,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		Log.info("\nRunning Test_generateSurveyForNewCustomerUser ...");
 	
 		final int LOGIN_USER_ROW_ID = 6;	 	/* LoginRowID. AutomationAdmin */
-		final int DB3_ANALYZER_ROW_ID = 9;	 	/* Analyzer3/Surveyor3. Replay db3 file rowID */
+		final int DB3_ANALYZER_ROW_ID = 31;	 	/* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
 		final int SURVEY_ROW_ID = 4;	 		/* Survey information  */
 		
 		final int SURVEY_RUNTIME_IN_SECONDS = 60; /* Number of seconds to run the survey for. */
@@ -279,19 +341,36 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		final int newCustomerRowID = 7;
 		final int newLocationRowID = 4;
 		final int newCustomerUserRowID = 12;
+		final int newSurveyorRowID = 3;
+		final int newAnalyzerRowID = 3;
+		final int newRefGasBottleRowID = 1;
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, LOGIN_USER_ROW_ID);   
 
-		// Create new customer/location/user.
+		// Create new customer.
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
 
+		// Create new location.
 		manageLocationPageAction.open(EMPTY, NOTSET);
 		manageLocationPageAction.createNewLocation(EMPTY, newLocationRowID /*locationRowID*/);
 
+		// Create new user.
 		manageUsersPageAction.open(EMPTY, NOTSET);
 		manageUsersPageAction.createNewCustomerUser(EMPTY, newCustomerUserRowID /*userRowID*/);
+
+		// Create new surveyor.
+		manageSurveyorPageAction.open(EMPTY, NOTSET);
+		manageSurveyorPageAction.createNewSurveyor(EMPTY, newSurveyorRowID /*surveyorRowID*/);
+
+		// Create new analyzer.
+		manageAnalyzerPageAction.open(EMPTY, NOTSET);
+		manageAnalyzerPageAction.createNewAnalyzer(EMPTY, newAnalyzerRowID /*analyzerRowID*/);
+
+		// Create new ref gas bottle.
+		manageRefGasBottlesPageAction.open(EMPTY, NOTSET);
+		manageRefGasBottlesPageAction.createNewRefGasBottle(EMPTY, newRefGasBottleRowID /*refGasBottleRowID*/);
 
 		// Email ID for the new created user was generated dynamically in this case by using 'GenerateRandomEmail(20)' function.
 		// For such cases, use the overload with username and password for generateSurveyForUser().

@@ -974,6 +974,7 @@ public class TestSetup {
 		if (TestSetup.isExecutingSimulatorTestMethod(description.getMethodName())) {
 			Log.info("Installing simulator pre-reqs. Start Analyzer and Replay DB3 script.");
 			try {
+				TestSetup.stopAnalyzerIfRunning();
 				TestSetup.setupSimulatorPreReqs();
 				TestSetup.startAnalyzer();
 			} catch (IOException e) {
@@ -1351,13 +1352,6 @@ public class TestSetup {
 
 	public boolean isAutomationReportingApiEnabled() {
 		return automationReportingApiEnabled;
-	}
-
-	public static String getWorkingAnalyzerSerialNumber() {
-		if (TestEnvironmentActions.workingDataRow != null) {
-			return TestEnvironmentActions.workingDataRow.analyzerSerialNumber;
-		}
-		return TEST_ANALYZER_SERIAL_NUMBER;
 	}
 
 	public String getSurveyUploadBaseUrl() {

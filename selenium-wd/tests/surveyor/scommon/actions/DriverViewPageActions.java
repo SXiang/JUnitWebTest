@@ -185,12 +185,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		return true;
 	}
 
-	public boolean hideCurtainView(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.hideCurtainView", data, dataRowID);
-		getDriverViewPage().hideCurtainMenu();
-		return true;
-	}
-
 	public boolean showCurtainView(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.showCurtainView", data, dataRowID);
 		getDriverViewPage().clickCurtainButton();
@@ -261,7 +255,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 			wind = getWind(listValues.get(3));
 			cloudCover = getCloudCover(listValues.get(4));
 			type = getSurveyType(listValues.get(5));
-			if (listValues.get(6) != "") {
+			if (listValues.size() > 6 && listValues.get(6) != "") {
 				minAmplitude = Float.valueOf(listValues.get(6));
 			}
 			
@@ -1725,7 +1719,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("clickOnZoomInButton")) { return this.clickOnZoomInButton(data, dataRowID); }
 		else if (actionName.equals("clickOnZoomOutButton")) { return this.clickOnZoomOutButton(data, dataRowID); }
 		else if (actionName.equals("enterFieldNotes")) { return this.enterFieldNotes(data, dataRowID); }
-		else if (actionName.equals("hideCurtainView")) { return this.hideCurtainView(data, dataRowID); }
 		else if (actionName.equals("insertTextById")) { return this.insertTextById(data, dataRowID); }
 		else if (actionName.equals("insertTextByXPath")) { return this.insertTextByXPath(data, dataRowID); }
 		else if (actionName.equals("open")) { return this.open(data, dataRowID); }

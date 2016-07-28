@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import common.source.Log;
+import common.source.TestContext;
 import common.source.WebElementExtender;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -73,6 +74,7 @@ import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
+import surveyor.scommon.source.ComplianceReportsPage.ReportFileType;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 
 @RunWith(SurveyorTestRunner.class)
@@ -448,6 +450,9 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 					assertTrue(complianceReportsPage.verifyGapsTable(testSetup.getDownloadPath(), rptTitle));
 				}
 			}
+			String downloadPath = TestContext.INSTANCE.getTestSetup().getDownloadPath();
+			assertTrue(complianceReportsPage.verifySSRSImages(downloadPath, rptTitle, testCaseID));
+			assertTrue(complianceReportsPage.verifyViewsImages(downloadPath, rptTitle, testCaseID, "First View"));
 		}else
 			fail("\nTestcase TC1041 failed.\n");
 
@@ -472,8 +477,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	 *	- - SSRS Gap table should not show Gaps which are completely covered by FoV and LISA
 	 *	- - Views will not show Gaps
 	 */
-
-	//Using NetLat and NetLong Selector as it needs specific area where peaks are present
 
 	@Test
 	public void TC1091_GenerateComplianceReportWhenGapTableSelectedButGapsPresentViewsSectionNotSelected() throws Exception {
@@ -525,12 +528,16 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		complianceReportsPage.waitForPageLoad();
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYGAPTB).equals("1"))) {
 					assertTrue(complianceReportsPage.verifyGapsTable(testSetup.getDownloadPath(), rptTitle));
 				}
 			}
+			String downloadPath = TestContext.INSTANCE.getTestSetup().getDownloadPath();
+			assertTrue(complianceReportsPage.verifySSRSImages(downloadPath, rptTitle, testCaseID));
+			assertTrue(complianceReportsPage.verifyViewsImages(downloadPath, rptTitle, testCaseID, "First View"));
+			assertTrue(complianceReportsPage.verifyViewsImages(downloadPath, rptTitle, testCaseID, "Second View"));
+			assertTrue(complianceReportsPage.verifyViewsImages(downloadPath, rptTitle, testCaseID, "Third View"));
 		}else
 			fail("\nTestcase TC1091 failed.\n");
 	}
@@ -610,7 +617,11 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		complianceReportsPage.waitForPageLoad();
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
+			String downloadPath = TestContext.INSTANCE.getTestSetup().getDownloadPath();
+			assertTrue(complianceReportsPage.verifySSRSImages(downloadPath, rptTitle, testCaseID));
+			assertTrue(complianceReportsPage.verifyViewsImages(downloadPath, rptTitle, testCaseID, "First View"));
+			assertTrue(complianceReportsPage.verifyViewsImages(downloadPath, rptTitle, testCaseID, "Second View"));
+			assertTrue(complianceReportsPage.verifyViewsImages(downloadPath, rptTitle, testCaseID, "Third View"));
 		}else
 			fail("\nTestcase TC1092 failed.\n");
 	}
@@ -686,8 +697,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
-			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
+			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));			
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYGAPTB).equals("1"))) {
 					assertTrue(complianceReportsPage.verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle));
@@ -695,6 +705,10 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 					assertTrue(complianceReportsPage.verifyGapsTable(testSetup.getDownloadPath(), rptTitle));
 				}
 			}
+			String downloadPath = TestContext.INSTANCE.getTestSetup().getDownloadPath();
+			assertTrue(complianceReportsPage.verifySSRSImages(downloadPath, rptTitle, testCaseID));
+			assertTrue(complianceReportsPage.verifyViewsImages(downloadPath, rptTitle, testCaseID, "First View"));
+			assertTrue(complianceReportsPage.verifyViewsImages(downloadPath, rptTitle, testCaseID, "Second View"));
 		}else
 			fail("\nTestcase TC1237 failed.\n");
 	}
@@ -755,7 +769,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
 			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rpt));
 			if (tablesList != null) {
 				if (tablesList.get(0).get(KEYINDTB).equals("1") || tablesList.get(0).get(KEYISOANA).equals("1")) {
@@ -763,6 +776,9 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 					assertTrue(complianceReportsPage.verifyIsotopicAnalysisTable(testSetup.getDownloadPath(), rptTitle));
 				}
 			}
+			String downloadPath = TestContext.INSTANCE.getTestSetup().getDownloadPath();
+			assertTrue(complianceReportsPage.verifyViewsImages(downloadPath, rptTitle, testCaseID, "First View"));
+			assertTrue(complianceReportsPage.verifyViewsImages(downloadPath, rptTitle, testCaseID, "Second View"));
 		}else
 			fail("\nTestcase TC1257 failed.\n");
 	}
@@ -824,7 +840,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
 			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rpt));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
@@ -833,6 +848,8 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 				}
 				assertTrue(complianceReportsPage.verifyViewsTable(testSetup.getDownloadPath(), rptTitle, viewList1));
 			}
+			String downloadPath = TestContext.INSTANCE.getTestSetup().getDownloadPath();
+			assertTrue(complianceReportsPage.verifyViewsImages(downloadPath, rptTitle, testCaseID, "First View"));
 		}
 		else
 			fail("\nTestcase TC1267 failed.\n");
@@ -1950,12 +1967,15 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		complianceReportsPage.waitForPageLoad();
 		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
 					assertTrue(complianceReportsPage.verifyGapsTable(testSetup.getDownloadPath(), rptTitle));
 				}
 			}
+			String downloadPath = TestContext.INSTANCE.getTestSetup().getDownloadPath();
+			assertTrue(complianceReportsPage.verifyViewsImages(downloadPath, rptTitle, testCaseID, "First View"));
+			assertTrue(complianceReportsPage.verifyViewsImages(downloadPath, rptTitle, testCaseID, "Second View"));
+			assertTrue(complianceReportsPage.verifyViewsImages(downloadPath, rptTitle, testCaseID, "Third View"));
 		}else
 			fail("\nTestcase TC1090 failed.\n");
 

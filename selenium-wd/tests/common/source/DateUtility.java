@@ -194,9 +194,31 @@ public class DateUtility {
 	public static Date getCurrentDate() {
 		return getCalendarForCurrentZone().getTime();
 	}
+	
+	/**
+	 * Returns system hour in 12-hour format.
+	 * 
+	 * @return
+	 */
+	public static Integer getSystemHourIn12HourFormat() {
+		Integer hourOfDay = DateUtility.getCalendarForSystem().get(Calendar.HOUR_OF_DAY);
+		if (hourOfDay > 12) {
+			hourOfDay = hourOfDay - 12;
+		}
+		return hourOfDay;
+	}
+	
+	/**
+	 * Returns the calendar for the system where code is executing.
+	 * 
+	 * @return
+	 */
+	public static Calendar getCalendarForSystem() {
+		return Calendar.getInstance();
+	}
 
 	/**
-	 * Returns the current zone Calendar.
+	 * Returns the current zone Calendar as per the cultures defined in web application.
 	 * 
 	 * @return
 	 */

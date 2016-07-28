@@ -2,6 +2,7 @@ package surveyor.scommon.actions.data;
 
 import common.source.ExcelUtility;
 import common.source.Log;
+import surveyor.scommon.actions.ActionArguments;
 
 public class SurveyorDataReader extends BaseDataReader {
 
@@ -47,6 +48,7 @@ public class SurveyorDataReader extends BaseDataReader {
 	public SurveyorDataRow getDataRow(Integer dataRowID) throws Exception {
 		String rowID = excelUtility.getCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
 		String description = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Description, TESTDATA_SHEET_NAME);
+		description = ActionArguments.evaluateArgForFunction(description);
 		String customerRowID = excelUtility.getCellData(dataRowID, Excel_TestData__Col_CustomerRowID, TESTDATA_SHEET_NAME);
 		String locationRowID = excelUtility.getCellData(dataRowID, Excel_TestData__Col_LocationRowID, TESTDATA_SHEET_NAME);
 		

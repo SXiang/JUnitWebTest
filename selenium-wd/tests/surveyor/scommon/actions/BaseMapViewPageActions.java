@@ -157,12 +157,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return true;
 	}
 
-	public boolean hideCurtainView(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".hideCurtainView", data, dataRowID);
-		getBaseMapViewPageObject().hideCurtainMenu();
-		return true;
-	}
-
 	public boolean showCurtainView(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".showCurtainView", data, dataRowID);
 		getBaseMapViewPageObject().clickCurtainButton();

@@ -741,12 +741,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		// Verify 3.
 		String expectedTagValue = DriverViewPageActions.workingDataRow.surveyTag;
 		String expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType;
-		// Get current hour in 24 hrs format and then convert to 12 hr format
-		int hourOfDay = DateUtility.getCalendarForCurrentZone().get(Calendar.HOUR_OF_DAY);
-		if (hourOfDay > 12) {
-			hourOfDay = hourOfDay - 12;
-		}			
-		String expectedTimeStartsWith = SURVEY_INFO_TIME_PREFIX + String.valueOf(hourOfDay);
+		String expectedTimeStartsWith = SURVEY_INFO_TIME_PREFIX + String.valueOf(DateUtility.getSystemHourIn12HourFormat());
 		String expectedSurveyStatus = SURVEY_INFO_SURVEY_STATUS_ACTIVE;
 		String expectedDriverInfo = SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username;
 		String expectedTimeElapsedStartsWith = SURVEY_INFO_ELAPSED_TIME_00;
@@ -831,12 +826,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		// Verify 1.
 		String expectedTagValue = DriverViewPageActions.workingDataRow.surveyTag;
 		String expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType;
-		// Get current hour in 24 hrs format and then convert to 12 hr format
-		int hourOfDay = DateUtility.getCalendarForCurrentZone().get(Calendar.HOUR_OF_DAY);
-		if (hourOfDay > 12) {
-			hourOfDay = hourOfDay - 12;
-		}			
-		String expectedTimeStartsWith = SURVEY_INFO_TIME_PREFIX + String.valueOf(hourOfDay);
+		String expectedTimeStartsWith = SURVEY_INFO_TIME_PREFIX + String.valueOf(DateUtility.getSystemHourIn12HourFormat());
 		String expectedSurveyStatus = SURVEY_INFO_SURVEY_STATUS_ACTIVE;
 		String expectedDriverInfo = SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username;
 		String expectedTimeElapsedStartsWith = SURVEY_INFO_ELAPSED_TIME_00;
@@ -1112,12 +1102,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		// Verify 
 		String expectedTagValue = DriverViewPageActions.workingDataRow.surveyTag;
 		String expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType;
-		// Get current hour in 24 hrs format and then convert to 12 hr format
-		int hourOfDay = DateUtility.getCalendarForCurrentZone().get(Calendar.HOUR_OF_DAY);
-		if (hourOfDay > 12) {
-			hourOfDay = hourOfDay - 12;
-		}			
-		String expectedTimeStartsWith = SURVEY_INFO_TIME_PREFIX + String.valueOf(hourOfDay);
+		String expectedTimeStartsWith = SURVEY_INFO_TIME_PREFIX + String.valueOf(DateUtility.getSystemHourIn12HourFormat());
 		String expectedSurveyStatus = SURVEY_INFO_SURVEY_STATUS_ACTIVE;
 		String expectedDriverInfo = SURVEY_INFO_DRIVER_PREFIX + userName;
 		String expectedTimeElapsedStartsWith = SURVEY_INFO_ELAPSED_TIME_00;
@@ -1236,19 +1221,18 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		
 		// Refresh the page in browser.
 		driverViewPageAction.refreshPage(EMPTY, NOTSET);
+		Log.info("Page has been refreshed");
 		
 		driverViewPageAction.getDriverViewPage().waitForPageLoad();
+		Log.info("Wait complete for page load");
+
 		driverViewPageAction.getDriverViewPage().waitForConnectionComplete();
-		
+		Log.info("Wait complete for connection complete");
+
 		// Verify Survey properties.
 		String expectedTagValue = DriverViewPageActions.workingDataRow.surveyTag;
 		String expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType;
-		// Get current hour in 24 hrs format and then convert to 12 hr format
-		int hourOfDay = DateUtility.getCalendarForCurrentZone().get(Calendar.HOUR_OF_DAY);
-		if (hourOfDay > 12) {
-			hourOfDay = hourOfDay - 12;
-		}			
-		String expectedTimeStartsWith = SURVEY_INFO_TIME_PREFIX + String.valueOf(hourOfDay);
+		String expectedTimeStartsWith = SURVEY_INFO_TIME_PREFIX + String.valueOf(DateUtility.getSystemHourIn12HourFormat());
 		String expectedSurveyStatus = SURVEY_INFO_SURVEY_STATUS_ACTIVE;
 		String expectedDriverInfo = SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username;
 		String expectedTimeElapsedStartsWith = SURVEY_INFO_ELAPSED_TIME_00;
@@ -1256,7 +1240,9 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		String expectedZoomLevel = String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19);
 		String expectedSurveyorValue = SURVEY_INFO_SURVEYOR1_ANALYZER1;
 		String expectedStabilityClass = SURVEY_INFO_STABILITY_CLASS_D;
-		
+
+		Log.info("Created all the expected strings. Going to click on Header info box.");
+
 		driverViewPageAction.clickOnHeaderInfoBox(EMPTY, NOTSET);
 		String elapsedTimeAfterRefresh = driverViewPageAction.getDriverViewPage().getTimeElapsedLabelText().replace(SURVEY_INFO_ELAPSED_PREFIX, "");
 		String remainingTimeAfterRefresh = driverViewPageAction.getDriverViewPage().getTimeRemainingLabelText().replace(SURVEY_INFO_REMAINING_PREFIX, "");
@@ -1304,21 +1290,26 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1241_ActionTest_DriverViewStartSurveyMultipleTimes() throws Exception {
 		Log.info("\nRunning TC1241_SimulatorTest_DriverViewStartSurveyMultipleTimes");
 
+		final int userDataRowID = 3;
+		final int analyzerDb3DataRowID = 3;
+		final int surveyDataRowID = 22;
+		final int surveyRuntimeInSeconds = 5;
+
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 3);   /* Customer Driver */
+		loginPageAction.login(EMPTY, userDataRowID);   /* Customer Driver */
 		
 		Log.info("Starting Analyzer...");
-		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start analyzer.
+		testEnvironmentAction.startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
 		
 		Log.info("Starting Replay...");
-		testEnvironmentAction.startReplay(EMPTY, 3); 	// start replay db3 file.
+		testEnvironmentAction.startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay db3 file.
 
 		// start survey.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-		driverViewPageAction.startDrivingSurvey(EMPTY, 17);	/* Day, Overcast, Strong, Standard */
-		testEnvironmentAction.idleForSeconds(String.valueOf(5), NOTSET);
+		driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);	/* Day, Overcast, Strong, Standard */
+		testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
 
 		// stop survey.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
@@ -1332,17 +1323,12 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		driverViewPageAction.getDriverViewPage().clickStartSurvey();
 		driverViewPageAction.getDriverViewPage().waitForPageToLoad();
 		
-		testEnvironmentAction.idleForSeconds(String.valueOf(5), NOTSET);
+		testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
 
 		// Verify Survey has started.
 		String expectedTagValue = DriverViewPageActions.workingDataRow.surveyTag;
 		String expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType;
-		// Get current hour in 24 hrs format and then convert to 12 hr format
-		int hourOfDay = DateUtility.getCalendarForCurrentZone().get(Calendar.HOUR_OF_DAY);
-		if (hourOfDay > 12) {
-			hourOfDay = hourOfDay - 12;
-		}			
-		String expectedTimeStartsWith = SURVEY_INFO_TIME_PREFIX + String.valueOf(hourOfDay);
+		String expectedTimeStartsWith = SURVEY_INFO_TIME_PREFIX + String.valueOf(DateUtility.getSystemHourIn12HourFormat());
 		String expectedSurveyStatus = SURVEY_INFO_SURVEY_STATUS_ACTIVE;
 		String expectedDriverInfo = SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username;
 		String expectedTimeElapsedStartsWith = SURVEY_INFO_ELAPSED_TIME_00;
@@ -1378,12 +1364,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 
 		expectedTagValue = DriverViewPageActions.workingDataRow.surveyTag;
 		expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType;
-		// Get current hour in 24 hrs format and then convert to 12 hr format
-		hourOfDay = DateUtility.getCalendarForCurrentZone().get(Calendar.HOUR_OF_DAY);
-		if (hourOfDay > 12) {
-			hourOfDay = hourOfDay - 12;
-		}			
-		expectedTimeStartsWith = SURVEY_INFO_TIME_PREFIX + String.valueOf(hourOfDay);
+		expectedTimeStartsWith = SURVEY_INFO_TIME_PREFIX + String.valueOf(DateUtility.getSystemHourIn12HourFormat());
 		expectedSurveyStatus = SURVEY_INFO_SURVEY_STATUS_ACTIVE;
 		expectedDriverInfo = SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username;
 		expectedTimeElapsedStartsWith = SURVEY_INFO_ELAPSED_TIME_00;

@@ -185,7 +185,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 				if (addCalibration) {
 					Log.clickElementInfo("Add Calibration Record");
 					this.addCalibrationRecordButton.click();
-					this.waitForPageLoad();
+					this.waitForPageToLoad();
 					Log.clickElementInfo("Ok");
 					this.btnOK.click();
 					this.waitForEditPageLoad();
