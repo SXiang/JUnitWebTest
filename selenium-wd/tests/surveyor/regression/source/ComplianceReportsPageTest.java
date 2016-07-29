@@ -212,8 +212,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
 		assertTrue(complianceReportsPage.checkBlankReportErrorTextPresentAndRequiredFieldsHighlighted());
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 
 	/**
@@ -238,9 +236,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		assertTrue(!(complianceReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
 		assertTrue(complianceReportsPage.checkPaginationSetting(paginationSetting100));
 		assertTrue(!(complianceReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting100)));
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 
 	/**
@@ -309,9 +304,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
 		assertTrue(complianceReportsPage.searchReport(rptTitle, PICDFADMIN));
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 
 	/**
@@ -332,9 +324,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		assertTrue(!complianceReportsPage.searchReport(rptTitle, testSetup.getLoginUser()));
 		assertEquals(NOMATCHINGSEARCH, complianceReportsPage.getEmptyTableMessage());
-		
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 
 	/**
@@ -404,9 +393,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 			assertTrue(!(complianceReportsPage.findReportbySearch(rptTitle, testSetup.getLoginUser())));
 		else
 			fail("\nTestcase TC166 failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 
 	/**
@@ -482,8 +468,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		assertNotNull(reportName2);
 		
 		assertNotEquals(reportName1, reportName2);
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 
 	/**
@@ -553,8 +537,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
 		else
 			fail("\n report creation failed.\n");
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 
 		rptTitle = "TC174 Standard Report" + testSetup.getRandomNumber();
 
@@ -570,9 +552,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
 		else
 			fail("\nTestcase TC174 failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 
 	/**
@@ -652,9 +631,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 			assertTrue(complianceReportsPage.findReport(newRptTitle, PICDFADMIN));
 		else
 			fail("\nTestcase TC181 failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 
 	/**
@@ -719,8 +695,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		Assert.assertEquals(complianceReportsPage.getAreaErrorText(), STRReportAreaTooLargeMsg);
 
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 
 	/**
@@ -735,9 +709,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		complianceReportsPage.open();
 
 		assertTrue(complianceReportsPage.verifyCancelButtonFunctionality());
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 
 	/**
@@ -770,9 +741,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
 		assertTrue(complianceReportsPage.verifySurveyNotAdded(rptTitle, "Picarro", RNELAT, RNELON, RSWLAT, RSWLON, viewList));
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 
 	/**
@@ -839,9 +807,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 			assertTrue(!(complianceReportsPage.findReportbySearch(rptTitle, SQACUSUA)));
 		else
 			fail("\nTestcase TC167 failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 
 	/**
@@ -908,9 +873,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 			assertTrue(!(complianceReportsPage.findReportbySearch(rptTitle, SQACUSSU)));
 		else
 			fail("\nTestcase TC168 failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 
 	/**
@@ -988,9 +950,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		} else
 			fail("\nTestcase TC212 failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 
 	/**
@@ -1057,9 +1016,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 			assertTrue((complianceReportsPage.findReportbySearch(rptTitle, SQACUSSU)));
 		else
 			fail("\nTestcase TC797 failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 
 	/**
@@ -1119,9 +1075,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		Assert.assertEquals(complianceReportsPage.getAssetErrorText().getText(), STRReportAssetNotSelectedMsg);
 		Assert.assertEquals(complianceReportsPage.getBoundaryErrorText().getText(), STRReportBoundaryNotSelectedMsg);
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 
 	/**
@@ -1191,7 +1144,5 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		} else
 			fail("\nTestcase TC297 failed.\n");
 
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 	}
 }
