@@ -542,6 +542,7 @@ public class FileUtility {
 	public static void main(String[] args) throws IOException {
 		Path directoryWithFiles = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\shapefileutility-tests");
 		Path emptyDirectory = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\shapefileutility-tests\\empty-dir");
+		createDirectoryIfNotExists(emptyDirectory.toString());
 		
 		Path compareFolder1a = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\fileutility-tests\\folder1a");
 		Path compareFolder1b = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\fileutility-tests\\folder1b");
@@ -576,8 +577,32 @@ public class FileUtility {
 		test_getFilesInDirectory_DirWithFiles_ValidFilterSingleExtWithMatch(directoryWithFiles);
 		Log.info("Executing test -> test_getFilesInDirectory_DirWithNoFiles_ValidFilter() ...");
 		test_getFilesInDirectory_DirWithNoFiles_ValidFilter(emptyDirectory);
+		
+		// Unit Test or -> 
+		Log.info("Executing test -> test_deleteFilesAndSubFoldersInDirectory()......");
+		test_deleteFilesAndSubFoldersInDirectory();
+		Log.info("Executing test -> test_deleteDirectoryAndFiles() ...");
+		test_deleteDirectoryAndFiles();
 	}
 
+	private static void test_deleteFilesAndSubFoldersInDirectory() throws IOException {
+		createDirectoryIfNotExists(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77653");
+		createTextFile(Paths.get(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77653"+File.separator+"test.txt"), "test");
+		createTextFile(Paths.get(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77653.txt"), "test");		
+		deleteFilesAndSubFoldersInDirectory(TestSetup.getSystemTempDirectory(), "CR-D77653");
+		Assert.assertFalse(new File(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77653.txt").exists());
+		Assert.assertFalse(new File(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77653").exists());
+
+	}
+	
+	private static void test_deleteDirectoryAndFiles() throws IOException {
+		createDirectoryIfNotExists(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77654");
+		createTextFile(Paths.get(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77654"+File.separator+"test.txt"), "test");
+		createTextFile(Paths.get(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77654.txt"), "test");		
+		deleteDirectoryAndFiles(Paths.get(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77654"));
+		Assert.assertFalse(new File(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77654").exists());
+
+}
 	private static void test_compareFilesForExactMatchNoFilter_Failure(Path firstFolderPath, Path secondFolderPath) throws IOException {
 		Assert.assertFalse(FileUtility.compareFilesForExactMatch(firstFolderPath.toString(), secondFolderPath.toString(), null /*includeExtensions*/));
 	}
