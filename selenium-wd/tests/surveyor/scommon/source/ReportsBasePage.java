@@ -1462,14 +1462,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 							this.waitForPdfReportIcontoAppear();
 						}
 						return handleFileDownloads(rptTitle, testCaseID);
-						
-
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
 						if (elapsedTime >= (ACTIONTIMEOUT + 800 * 1000)) {
 							return false;
 						}
-
 						continue;
 					} catch (NullPointerException ne) {
 						Log.info("Null Pointer Exception: " + ne);
@@ -1606,7 +1603,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					} catch (NullPointerException ne) {
 						Log.info("Null Pointer Exception: " + ne);
 						fail("Report failed to generate!!");
-					} 
+					}
 				}
 			}
 
