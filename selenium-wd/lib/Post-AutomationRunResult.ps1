@@ -12,43 +12,24 @@ param
   [String] $BuildWorkingDir,                       # Path to working directory (for eg. C:\Repositories\surveyor-qa)
 
   [Parameter(Mandatory=$true)]
-  [String] $AutomationReportingAPIBaseUrl,         # Path to AutomationReporting API Base Url. For eg. 
+  [String] $AutomationReportingAPIBaseUrl,         # Path to AutomationReporting API Base Url. For eg. http://localhost:63087
 
   [Parameter(Mandatory=$true)]
   [String] $HtmlResultFilePath                     # Path to report HTML file
 )
 
-# ------------------------------------------------------------
-# Converts datetime to Unix epoch time
-# ------------------------------------------------------------
-function ToUnixTime([System.DateTime] $dateTime) {
-    $referenceTime = New-Object System.DateTime -ArgumentList (1970,1,1,0,0,0,0)
-    [System.TimeSpan]$timeSpan = $dateTime - $referenceTime;
-    $timeSpan.TotalSeconds
-}
-
-$apiUsername = "api"
-$apiPassword = "AP1_Us3r@#"    
 
 $libFolder = "selenium-wd\lib"
+
+. $BuildWorkingDir\$libFolder\Reporting-CommonFunctions.ps1
+
 [String] $HtmlAgilityDllPath = "$BuildWorkingDir\$libFolder\HtmlAgilityPack.dll"
-[String] $AutomationReportingUtilDllPath = "$BuildWorkingDir\$libFolder\AutomationReporting.Util.dll"
 
 # ------------------------------------------------------------
 # Post run results code starts from here
 # ------------------------------------------------------------
 
-# Get the api authentication token
-[Reflection.Assembly]::LoadFile($AutomationReportingUtilDllPath) | out-null
-$cryptoString = [AutomationReporting.Util.CryptoFunctions]::CreateExpiringUserPassCryptoString($apiUsername, $apiPassword)
-$authenticationTokenUrl = "get/token"
-$basicAuthValue = "Basic $cryptoString"
-$Headers = @{
-    Authorization = $basicAuthValue
-}
-$response = Invoke-WebRequest -Uri "$AutomationReportingAPIBaseUrl/$authenticationTokenUrl" -Headers $Headers -Method POST
-$authToken = $response.Headers["Token"]
-
+$authToken = Get-ReportingAppAuthToken -BuildWorkingDir $BuildWorkingDir -AutomationReportingAPIBaseUrl $AutomationReportingAPIBaseUrl
 
 # Post run result to API/RunResults url
 $runResultPostApiUrl = "api/RunResults"

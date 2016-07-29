@@ -3809,6 +3809,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		latLongSelectionControl.switchMode(ControlMode.MapInteraction);
 		latLongSelectionControl.waitForMapImageLoad();
 		latLongSelectionControl.selectCustomerBoundaryType(customerBoundaryFilterType);
+		latLongSelectionControl.waitForElementToBeEnabled(latLongSelectionControl.getCustomerBoundaryTextField());
 		latLongSelectionControl.setCustomerBoundaryName(customerBoundaryName);
 		latLongSelectionControl.switchMode(ControlMode.Default);
 		latLongSelectionControl.clickOkButton();

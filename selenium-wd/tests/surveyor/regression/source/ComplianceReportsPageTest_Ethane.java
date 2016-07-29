@@ -498,6 +498,8 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		complianceReportsPage.clickOnFirstCopyComplianceBtn();
 
 		complianceReportsPage.verifyIfInDrivingSurvey(KEYINDCLR);
+		
+		/* Need download report and verify */
 
 	}
 }

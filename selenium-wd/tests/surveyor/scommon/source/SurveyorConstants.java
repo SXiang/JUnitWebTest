@@ -462,6 +462,7 @@ public final class SurveyorConstants {
 			return text;
 		}
 	};
+	
 	public static enum UserTimezone {
 		PACIFIC ("Pacific Standard Time"),
 		MOUNTAIN ("Mountain Standard Time"),
@@ -477,6 +478,44 @@ public final class SurveyorConstants {
 			return text;
 		}
 	};
+	
+	public enum Environment {
+		SQAAuto ("CI-SQAAuto", 1),
+		Staging ("CI-STG", 2),
+		P3Scale ("CI-P3Scale", 3);
+		
+		private final String name;
+		private final Integer index;
+
+		Environment(String nm) {
+			this(nm, -1);
+		}
+
+		Environment(String nm, Integer idx) {
+			name = nm;
+			index = idx;
+		}
+
+		public Integer getIndex() {
+			return index;
+		}
+
+		public String toString() {
+			return this.name;
+		}
+		
+		public static Environment getEnvironment(String environmentName) {
+			Environment environment = Environment.P3Scale;
+			Environment[] values = Environment.values();
+			for (Environment env : values) {
+				if (env.toString().equals(environmentName)) {
+					environment = env;
+					break;
+				}
+			}
+			return environment;
+		}
+	}
 	
 	public static List<String> getCustomersWithAssets() {
 		return RegexUtility.split(CUSTOMERS_WITH_ASSETS, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);

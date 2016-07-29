@@ -41,6 +41,7 @@ import com.google.gson.GsonBuilder;
 
 import common.source.ApiUtility;
 import common.source.CSVUtility;
+import common.source.DateUtility;
 import common.source.FileUtility;
 import common.source.ImagingUtility;
 import common.source.Log;
@@ -52,11 +53,13 @@ import net.avh4.util.imagecomparison.ImageComparisonResult;
 import surveyor.api.source.ReportJobsStat;
 import surveyor.dataaccess.source.DBCache;
 import surveyor.dataaccess.source.Report;
+import surveyor.scommon.source.ReportJobPerfDBStat;
 import surveyor.scommon.source.Reports.ReportJobType;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.ReportStatusType;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsSurveyInfo;
+import surveyor.scommon.source.SurveyorConstants.Environment;
 
 /**
  * @author zlu
@@ -426,8 +429,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = SURVEY_GROUP_DIVS_XPATH)
 	private WebElement surveyGroupDivs;
+	
+	private Integer reportGenerationTimeoutInSeconds = SurveyorConstants.ACTIONTIMEOUT + 900;
 
 	private static String surveyTableHeaderColumnBaseXPath = "//*[@id='datatableSurveys']/thead/tr/th[%d]";
+
+	private List<ReportJobPerfDBStat> postDBStatList = null;
 
 	/**
 	 * @param driver
@@ -602,6 +609,16 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return this.inputImgMapHeight.getText();
 	}
 
+	/************ Report Generation Timeout *************/
+
+	public Integer getReportGenerationTimeout() {
+		return reportGenerationTimeoutInSeconds;
+	}
+
+	public void setReportGenerationTimeout(Integer reportGenerationTimeout) {
+		this.reportGenerationTimeoutInSeconds = reportGenerationTimeout;
+	}
+	
 	/************ PDF Output Values *************/
 
 	public boolean isViewLisaSelected() {
@@ -2199,6 +2216,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void clickOnFirstCopyComplianceBtn() {
 		Log.clickElementInfo("Copy",ElementType.ICON);
 		this.btnFirstCopyCompliance.click();
+		this.waitForCopyReportPagetoLoad();
 	}
 
 	@Override
@@ -2486,6 +2504,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		ReportJobsStat reportJobsStatObj = getReportJobStat(reportTitle);
 		validateReportStatus(reportJobsStatObj);
+		setPostDBStatList(new ArrayList<ReportJobPerfDBStat>());
 		List<surveyor.api.source.ReportJob> reportJobs = reportJobsStatObj.ReportJobs;
 		for (surveyor.api.source.ReportJob reportJob : reportJobs) {
 			String reportJobTypeId = Reports.ReportJobTypeReverseGuids
@@ -2498,6 +2517,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 			Integer actualProcessingTimeInMs = (int) (reportJob.getProcessingCompletedTimeInMs()
 					- reportJob.getProcessingStartedTimeInMs());
 
+			addToListReportJobDBStat(reportJob, reportJobTypeId);
+			
 			if (TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
 				// generating baselines. Skip comparison.
 				generateBaselinePerfReportJobFiles(testCaseID, reportJobTypeId,
@@ -2523,9 +2544,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 				// If no report job type in CSV, throw exception.
 				if (!foundInCsv) {
 					throw new Exception(
-							String.format("Entry NOT found in Baseline CSV-[%s], for ReportJobType-[%s], TestCase-[%s]",
+							String.format("Entry NOT found in Baseline CSV-[%s], for ReportJobType-[%s], ReportJobTypeId-[%s], TestCase-[%s]",
 									expectedFilePath.toString(),
-									Reports.ReportJobTypeGuids.get(reportJobTypeId).toString(), testCaseID));
+									Reports.ReportJobTypeGuids.get(reportJobTypeId).toString(), 
+									reportJobTypeId, testCaseID));
 				}
 			}
 		}
@@ -2533,17 +2555,30 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return true;
 	}
 
+	private void addToListReportJobDBStat(surveyor.api.source.ReportJob reportJob, String reportJobTypeId) {
+		Log.method("addToListReportJobDBStat", reportJob, reportJobTypeId);
+		ReportJobPerfDBStat reportJobPerfDBStat = new ReportJobPerfDBStat();
+		reportJobPerfDBStat.setReportJobTypeId(reportJobTypeId);
+		reportJobPerfDBStat.setBuildNumber(TestContext.INSTANCE.getTestSetup().getSoftwareVersion());
+		reportJobPerfDBStat.setEnvironment(Environment.getEnvironment(TestContext.INSTANCE.getRunEnvironment()));
+		reportJobPerfDBStat.setReportJobStartTime(DateUtility.fromUnixTime(reportJob.getProcessingStartedTimeInMs()));
+		reportJobPerfDBStat.setReportJobEndTime(DateUtility.fromUnixTime(reportJob.getProcessingCompletedTimeInMs()));
+		reportJobPerfDBStat.setReportJobTypeName(reportJob.ReportJobType);
+		Log.info(String.format("Adding to postDBStat List : %s", reportJobPerfDBStat.toString()));
+		getPostDBStatList().add(reportJobPerfDBStat);
+	}
+
 	public ReportJobsStat getReportJobStat(String reportTitle) {
 		String apiRelativePath = String.format(ApiUtility.REPORTS_GET_REPORT_STAT_API_RELATIVE_URL, reportTitle);
 		Log.info(String.format("Calling API Utility, URL : %s", apiRelativePath));
 		String apiResponse = ApiUtility.getApiResponse(apiRelativePath);
-		Log.info(String.format("API Response -> ", apiResponse));
+		Log.info(String.format("API Response -> %s", apiResponse));
 		Log.info("Creating gson Builder...");
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		Gson gson = gsonBuilder.create();
-		Log.info("Get ReportJobsStat from gson.fromJson()...");
+		Log.info("Getting ReportJobsStat from gson.fromJson()...");
 		ReportJobsStat reportJobsStatObj = gson.fromJson(apiResponse, ReportJobsStat.class);
-		Log.info("Successfully returned ReportJobsStat object.");
+		Log.info(String.format("Successfully returned ReportJobsStat object -> %s", reportJobsStatObj.toString()));
 		return reportJobsStatObj;
 	}
 
@@ -2745,5 +2780,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 				this.strPageURL);
 
 		return dataTable.hasRecord(filter, false);
+	}
+
+	public List<ReportJobPerfDBStat> getPostDBStatList() {
+		return postDBStatList;
+	}
+
+	private void setPostDBStatList(List<ReportJobPerfDBStat> postDBStatList) {
+		this.postDBStatList = postDBStatList;
 	}
 }
