@@ -86,12 +86,11 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 	@After
 	public void afterTestMethod() {
 		try {
-			reportsPage = getReportsPage();
-			reportsPage.open();
+			getReportsPage().open();
 			cleanUp();
 			reportsPage.logout();
 		} catch (Exception e) {
-			Log.warn("Exception in BaseReportsPageActionTest.afterTestMethod(). Exception message:");
+			Log.warn("Exception in BaseReportsPageTest.afterTestMethod(). Exception message:");
 			Log.warn(ExceptionUtility.getStackTraceString(e));
 		}
 	}
