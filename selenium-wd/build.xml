@@ -13,11 +13,11 @@
 	<target name="init" depends="clean" description="Initialize build environment">
 		<mkdir dir="${build}" />
 		<mkdir dir="${dist}" />
-
-		<mkdir dir="${reports}/sanity/xml" />
+		
+		<mkdir dir="${reports}/sanity/xml" />	
 		<mkdir dir="${reports}/regression/xml" />
 		<mkdir dir="${reports}/performance/xml" />
-
+		
 		<mkdir dir="${basedir}/tests/common/build" />
 		<mkdir dir="${basedir}/tests/common/dist" />
 		<mkdir dir="${basedir}/tests/surveyor/scommon/build" />
@@ -249,12 +249,12 @@
 					<include name="**/SurveyViewPageTest4.class" />
 					<include name="**/SurveyViewPageTest5.class" />
 					<include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
-
+					
 				</fileset>
 			</batchtest>
 		</junit>
 	</target>
-
+	
 	<target name="testobserverview" depends="compileregression" description="Run observer view test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
@@ -393,28 +393,28 @@
 	</target>
 
 	<target name="testsimulatorcases" depends="compileregression" description="Run action execution test cases">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
+			<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "Regression" />
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
+				<sysproperty key = "testReportCategory" value = "Regression" />
+				<classpath>
+					<pathelement path="${build}" />
+					<fileset dir="${basedir}/lib">
+						<include name="**/*.jar" />
+					</fileset>
+				</classpath>
 
-			<batchtest fork="yes" todir="${reports}/regression/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
+				<batchtest fork="yes" todir="${reports}/regression/xml">
+					<formatter type="xml" />
+					<fileset dir="${build}">
 
-					<include name="**/ActionsExecutionDriver.class" />
-					<include name="**/DriverViewPageTest.class" />
-
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
+						<include name="**/ActionsExecutionDriver.class" />
+						<include name="**/DriverViewPageTest.class" />
+						
+					</fileset>
+				</batchtest>
+			</junit>
+		</target>
+	
 	<target name="testregression" depends="compileregression" description="Run regression test suite">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
@@ -450,8 +450,8 @@
 					<include name="**/SurveyViewPageTest3.class" />
 					<include name="**/SurveyViewPageTest4.class" />
 					<include name="**/SurveyViewPageTest5.class" />
-					<include name="**/SystemHistoryReportsPageTest.class" />
-					<include name="**/ReferenceGasReportsPageTest.class" />
+					<include name="**/SystemHistoryReportsPageTest.class" />	
+					<include name="**/ReferenceGasReportsPageTest.class" />	
 					<include name="**/ManageLocationsPageTest_Ethane.class" />
 					<include name="**/ManageRefGasBottlesPageTests_Ethane.class" />
 				</fileset>
@@ -498,7 +498,7 @@
 		</junit>
 		<echo message="junit build : ${build}" />
 	</target>
-
+	
 	<target name="tc_localrun" depends="compileregression" description="Run regression on TC before merge">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
@@ -521,7 +521,7 @@
 		</junit>
 	</target>
 
-
+	
 	<!-- JUnit Test Reports -->
 	<target name="sanityreport" depends="testsanity">
 		<junitreport todir="${reports}/sanity/xml">
@@ -542,7 +542,7 @@
 			</report>
 		</junitreport>
 	</target>
-
+	
 	<target name="compliancereportreport" depends="testcompliancereport">
 		<junitreport todir="${reports}/regression/xml">
 			<fileset dir="${reports}/regression/xml">
@@ -552,7 +552,7 @@
 			</report>
 		</junitreport>
 	</target>
-
+	
 	<target name="debugreport" depends="tc_localrun">
 		<junitreport todir="${reports}/regression/xml">
 			<fileset dir="${reports}/regression/xml">
@@ -562,5 +562,5 @@
 			</report>
 		</junitreport>
 	</target>
-
+	
 </project>
