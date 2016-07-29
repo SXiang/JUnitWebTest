@@ -1882,22 +1882,20 @@ public class ReportsBasePage extends SurveyorBasePage {
 			return false;
 		}		
 		String xpathDelete = "tr/td/a[@title='Delete' and contains(@data-delete,"+"'reportId="+reportId.toLowerCase()+"')]/img";
-		List<WebElement> deleteImages = getTable().findElements(By.xpath(xpathDelete));
-		for(WebElement deleteImg:deleteImages){
-			Log.clickElementInfo("Delete",ElementType.ICON);
-			deleteImg.click();
-			if(waitForDeletePopupLoad()){
-				jsClick(getBtnDeleteConfirm());
-				this.waitForPageLoad();
-				if (this.isElementPresent(errorMsgDeleteCompliacneReportXPath)) {
-					Log.error(getElementText(errorMsgDeleteCompliacneReport));
-					Log.clickElementInfo("Return to home page");
-					this.btnReturnToHomePage.click();
-					return false;
-				}
-			} else {
+		WebElement deleteImg = getTable().findElement(By.xpath(xpathDelete));
+		Log.clickElementInfo("Delete",ElementType.ICON);
+		deleteImg.click();
+		if(waitForDeletePopupLoad()){
+			jsClick(getBtnDeleteConfirm());
+			this.waitForPageLoad();
+			if (this.isElementPresent(errorMsgDeleteCompliacneReportXPath)) {
+				Log.error(getElementText(errorMsgDeleteCompliacneReport));
+				Log.clickElementInfo("Return to home page");
+				this.btnReturnToHomePage.click();
 				return false;
 			}
+		} else {
+			return false;
 		}
 		return true;
 	}
