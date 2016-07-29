@@ -1,6 +1,5 @@
 package surveyor.regression.source;
 
-import common.source.ExceptionUtility;
 import common.source.Log;
 
 import static org.junit.Assert.*;
@@ -34,8 +33,9 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
-		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);		
+		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  complianceReportsPage);
+
 		// Select run mode here.
 		setPropertiesForTestRunMode();
 	}
@@ -44,7 +44,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	public void beforeTest() throws Exception{
 		setPropertiesForTestRunMode();
 	}
-	
+
 	private static void setPropertiesForTestRunMode() throws Exception {
 		setTestRunMode(ReportTestRunMode.FullTestRun);
 		
