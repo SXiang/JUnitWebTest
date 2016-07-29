@@ -21,7 +21,7 @@ public enum TestContext {
 	private ExtentReports report;
 	private ExtentTest extentTest;
 	private ArrayList<String> testMessage;
-	private Set<String> testReportNameSet;
+	private Set<String> testReportIdSet;
 	private String currentTestStatus = "PASS";
 	private int numTestMessagesToRetain = 5;
 
@@ -29,25 +29,25 @@ public enum TestContext {
 		// Every time a context is created set a unique run ID.
 		this.setRunUniqueId(TestSetup.getUUIDString());
 		this.testMessage = new ArrayList<String>(numTestMessagesToRetain);
-		this.testReportNameSet = new HashSet<String>();
+		this.testReportIdSet = new HashSet<String>();
 	}
 
 	public String getTestStatus() {
 		return currentTestStatus;
 	}
 
-	public Set<String> getTestReportNameSet(){
-		return testReportNameSet;
+	public Set<String> getTestReportIdSet(){
+		return testReportIdSet;
 	}
 	public void clearTestReportSet() {
-		testReportNameSet.clear();
+		testReportIdSet.clear();
 	}
 
-	public boolean addReportName(String reportName) {
-		if(reportName==null||reportName.isEmpty()){
+	public boolean addReportId(String reportId) {
+		if(reportId==null||reportId.isEmpty()){
 			return false;
 		}
-		return this.testReportNameSet.add(reportName.trim());
+		return this.testReportIdSet.add(reportId.trim());
 	}
 
 	public void setTestStatus(String testStatus) {

@@ -472,7 +472,6 @@ public class FileUtility {
 	 */
 	public static void deleteDirectoryAndFiles(Path directory) throws IOException {
 		deleteFilesInDirectory(directory);
-	    
 		// Next delete the directory.
 		deleteFile(directory);
 	}

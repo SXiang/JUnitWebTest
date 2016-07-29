@@ -73,7 +73,7 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 
 	public static ReportsBasePage getReportsPage() {
 		if(reportsPage==null){
-			reportsPage= new ReportsBasePage(driver, baseURL, testSetup, "/Reports/ComplianceReports");
+			reportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
 			PageFactory.initElements(driver, reportsPage);
 		}
 		return reportsPage;
@@ -108,11 +108,12 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 		if(keepTestData()){
 			return;
 		}
-		Set<String> reportNameSet = TestContext.INSTANCE.getTestReportNameSet();
+		Set<String> reportIdSet = TestContext.INSTANCE.getTestReportIdSet();
 		String downloadDirectory = TestContext.INSTANCE.getTestSetup().getDownloadPath();
 		//Delete report and related downloads
-		for(String reportName:reportNameSet){			
-			reportsPage.deleteReportByName(reportName);
+		for(String reportId:reportIdSet){		
+			reportsPage.deleteReportById(reportId);
+			String reportName = "CR-" + reportId.substring(0,6).toUpperCase();
 			FileUtility.deleteFilesAndSubFoldersInDirectory(downloadDirectory, reportName);
 		}
 		TestContext.INSTANCE.clearTestReportSet();
