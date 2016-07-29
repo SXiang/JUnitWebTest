@@ -2,6 +2,8 @@ package common.source;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
 
@@ -19,13 +21,39 @@ public enum TestContext {
 	private ExtentReports report;
 	private ExtentTest extentTest;
 	private ArrayList<String> testMessage;
+	private Set<String> testReportNameSet;
+	private String currentTestStatus = "PASS";
 	private int numTestMessagesToRetain = 5;
 
 	private TestContext() {
 		// Every time a context is created set a unique run ID.
 		this.setRunUniqueId(TestSetup.getUUIDString());
 		this.testMessage = new ArrayList<String>(numTestMessagesToRetain);
+		this.testReportNameSet = new HashSet<String>();
 	}
+
+	public String getTestStatus() {
+		return currentTestStatus;
+	}
+
+	public Set<String> getTestReportNameSet(){
+		return testReportNameSet;
+	}
+	public void clearTestReportSet() {
+		testReportNameSet.clear();
+	}
+
+	public boolean addReportName(String reportName) {
+		if(reportName==null||reportName.isEmpty()){
+			return false;
+		}
+		return this.testReportNameSet.add(reportName.trim());
+	}
+
+	public void setTestStatus(String testStatus) {
+		this.currentTestStatus = testStatus;
+	}
+
 
 	public ExtentTest getExtentTest() {
 		return extentTest;

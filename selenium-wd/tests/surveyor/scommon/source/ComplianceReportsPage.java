@@ -3609,14 +3609,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		});
 	}
 
-	public void waitForReportGenerationtoComplete() {
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return btnReportViewer.isDisplayed();
-			}
-		});
-	}
-
 	public void waitForViewFileDownload(String reportName, String viewName) {
 		waitForFileDownload(reportName + "_" + viewName + ".pdf", testSetup.getDownloadPath());
 	}

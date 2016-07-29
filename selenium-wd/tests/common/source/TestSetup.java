@@ -127,6 +127,7 @@ public class TestSetup {
 	private WebDriver driver;
 	private String slowdownInSeconds; // For debugging the code and not
 										// recommended to use in real test case
+	private String testCleanUpMode;
 	public boolean isRemoteBrowser;
 	public static String reportDir = "reports/";
 	
@@ -429,6 +430,9 @@ public class TestSetup {
 		return Integer.parseInt(this.slowdownInSeconds);
 	}
 
+	public int getTestCleanUpMode() {
+		return Integer.parseInt(this.testCleanUpMode);
+	}
 	public WebDriver getDriver() {
 		return this.driver;
 	}
@@ -702,6 +706,7 @@ public class TestSetup {
 				this.debug = false;
 			}
 
+			this.testCleanUpMode = this.testProp.getProperty("testCleanUpMode");
 			this.slowdownInSeconds = this.testProp.getProperty("slowdownInSeconds");
 			this.randomNumber = Long.toString((new Random()).nextInt(1000000));
 			Log.info("\nThe random number is: " + this.randomNumber + "\n");

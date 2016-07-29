@@ -508,7 +508,31 @@ public class FileUtility {
 			}
 	    }
 	}
-
+	/*
+	 * Delete files in the specified directory and files that start with the specified filePrefix.
+	 */
+	public static void deleteFilesAndSubFoldersInDirectory(String directory, String filePrefix) throws IOException {
+		deleteFilesAndSubFoldersInDirectory(directory, filePrefix, "[a-zA-Z]*");
+	}
+	
+	/*
+	 * Delete files in the specified directory and files that start with the specified filePrefix and match the specified extension.
+	 */
+	public static void deleteFilesAndSubFoldersInDirectory(String directory, String filePrefix, String fileExtension) throws IOException {
+		DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(directory));
+		for (Path file: stream) {
+			String fileExt = FileUtility.getFileExtension(file.toString());
+			String fileName = FileUtility.getFileName(file.toString());
+			boolean isDirectory = new File(file.toString()).isDirectory();
+			if (fileExt.matches(fileExtension) && fileName.startsWith(filePrefix)) {
+				if(isDirectory){
+					deleteDirectoryAndFiles(file);
+				}else{
+					deleteFile(file);
+				}
+			}
+	    }
+	}
 	public static void copyFile(String fromFile, String toFile) throws IOException{
 		// Create the directory for test case if it does not exist.
 		 String dirToFile = new File(toFile).getParent();

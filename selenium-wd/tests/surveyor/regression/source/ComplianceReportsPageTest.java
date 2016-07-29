@@ -101,6 +101,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	private static void initializePageObjects() {
 		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, complianceReportsPage);
+		initializePageObjects(complianceReportsPage);
 	}
 
 	/**
