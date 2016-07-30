@@ -47,6 +47,13 @@ public class BaseDbSeedBuilder {
 		this.dbSeedCache = dbSeedCache;
 	}
 
+	public String handleNullGetValue(String value) {
+		if (value == null || value.isEmpty()) {
+			return "NULL";
+		}
+		return value;
+	}
+	
 	protected String createCSVFileWithCustomerData(String customerID, String primaryKeyColName, String tableName) throws FileNotFoundException, IOException {
 		if (SeedDataFilePath == null) {
 			throw new IllegalStateException("SeedData FilePath NOT set. Ensure SeedDataFilePath is set before calling createCSVFilesWithCustomerData().");

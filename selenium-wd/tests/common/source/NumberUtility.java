@@ -1,5 +1,6 @@
 package common.source;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -189,7 +190,44 @@ public class NumberUtility {
 		}
 		return result;
 	}
+	
+	public static String formatString(Double number, Integer maxDecimalsToKeep) {
+		return getDecimalFormat(maxDecimalsToKeep).format(number);
+	}
+
+	public static String formatString(Long number, Integer maxDecimals) {
+		return getDecimalFormat(maxDecimals).format(number);
+	}
+
+	private static DecimalFormat getDecimalFormat(Integer maxDecimalsToKeep) {
+		StringBuilder formatBldr = new StringBuilder();
+		String formatPattern = "#.%s";
+		if (maxDecimalsToKeep < 1) {
+			formatPattern = "#";
+		} else {
+			for (int i = 0; i < maxDecimalsToKeep; i++) {
+				formatBldr.append("#");
+			}
+		}
+		DecimalFormat format = new DecimalFormat(String.format(formatPattern, formatBldr.toString()));
+		return format;
+	}
+	
 	public static void main(String[] args) {
+
+		Log.info("Running test - testFormatString_NoDecimals_InputHasDecimals() ...");
+		testFormatString_NoDecimals_InputHasDecimals();
+		Log.info("Running test - testFormatString_NoDecimals_InputHasNoDecimals() ...");
+		testFormatString_NoDecimals_InputHasNoDecimals();
+		Log.info("Running test - testFormatString_OneDecimal_InputHasMoreThanOneDecimal() ...");
+		testFormatString_OneDecimal_InputHasMoreThanOneDecimal();
+		Log.info("Running test - testFormatString_OneDecimal_InputHasOneDecimal() ...");
+		testFormatString_OneDecimal_InputHasOneDecimal();
+		Log.info("Running test - testFormatString_OneDecimal_InputHasZeroDecimals() ...");
+		testFormatString_OneDecimal_InputHasZeroDecimals();
+		Log.info("Running test - testFormatString_FourDecimals() ...");
+		testFormatString_FourDecimals();
+		
 		Log.info("Running test - testDecimalsInNumber_NoDecimals() ...");
 		testDecimalsInNumber_NoDecimals();
 		Log.info("Running test - testDecimalsInNumber_OneDecimal() ...");
@@ -209,6 +247,48 @@ public class NumberUtility {
 		testMovingAverage_MultipleNumbers_AllSame();
 		Log.info("Running test - testMovingAverage_MultipleNumbers_AllDifferent() ...");
 		testMovingAverage_MultipleNumbers_AllDifferent();
+	}
+
+	private static void testFormatString_NoDecimals_InputHasDecimals() {
+		double number = 23;
+		String numberAsString = NumberUtility.formatString(number, 0);
+		Log.info(String.format("Number=%f; FormatString=%s", number, numberAsString));
+		Assert.assertTrue(numberAsString.equals("23"));
+	}
+
+	private static void testFormatString_NoDecimals_InputHasNoDecimals() {
+		double number = 23D;
+		String numberAsString = NumberUtility.formatString(number, 0);
+		Log.info(String.format("Number=%f; FormatString=%s", number, numberAsString));
+		Assert.assertTrue(numberAsString.equals("23"));
+	}
+
+	private static void testFormatString_OneDecimal_InputHasMoreThanOneDecimal() {
+		double number = 23.1234;
+		String numberAsString = NumberUtility.formatString(number, 1);
+		Log.info(String.format("Number=%f; FormatString=%s", number, numberAsString));
+		Assert.assertTrue(numberAsString.equals("23.1"));
+	}
+
+	private static void testFormatString_OneDecimal_InputHasOneDecimal() {
+		double number = 23.1234;
+		String numberAsString = NumberUtility.formatString(number, 1);
+		Log.info(String.format("Number=%f; FormatString=%s", number, numberAsString));
+		Assert.assertTrue(numberAsString.equals("23.1"));
+	}
+
+	private static void testFormatString_OneDecimal_InputHasZeroDecimals() {
+		double number = 23D;
+		String numberAsString = NumberUtility.formatString(number, 1);
+		Log.info(String.format("Number=%f; FormatString=%s", number, numberAsString));
+		Assert.assertTrue(numberAsString.equals("23"));
+	}
+
+	private static void testFormatString_FourDecimals() {
+		double number = 3.123434;
+		String numberAsString = NumberUtility.formatString(number, 4);
+		Log.info(String.format("Number=%f; FormatString=%s", number, numberAsString));
+		Assert.assertTrue(numberAsString.equals("3.1234"));
 	}
 
 	private static void testDecimalsInNumber_NoDecimals() {

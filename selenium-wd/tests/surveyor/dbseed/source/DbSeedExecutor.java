@@ -13,6 +13,7 @@ import common.source.CSVUtility;
 import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.Log;
+import common.source.NumberUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ConnectionFactory;
@@ -76,6 +77,7 @@ public class DbSeedExecutor {
 
 		// NOTE: "stnd-sqacudr-3","man-pic-2","rr-sqacudr-1","EthaneStnd" survey NOT included. 
 		// SurveyResult entry does NOT get inserted using INSERT statements. Tracked by DE2178.
+
 		final String[] surveyTags = {"stnd-pic","rr-pic","man-pic-1","op-pic",
 				"stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","rr-sqacudr-2","op-sqacudr"};
 
@@ -89,9 +91,9 @@ public class DbSeedExecutor {
 					surveyDbSeedBuilder = new SurveyDbSeedBuilder(String.format("Survey-%s.csv", surveyTag));
 					surveyConditionDbSeedBuilder = new SurveyConditionDbSeedBuilder(String.format("SurveyCondition-%s.csv", surveyTag));
 					surveyResultDbSeedBuilder = new SurveyResultDbSeedBuilder(String.format("SurveyResult-%s.csv", surveyTag));
-					measurementDbSeedBuilder = new MeasurementDbSeedBuilder(String.format("Measurement-%s.csv", surveyTag));
-					gpsRawDbSeedBuilder = new GPSRawDbSeedBuilder(String.format("GPSRaw-%s.csv", surveyTag));
-					anemometerRawDbSeedBuilder = new AnemometerRawDbSeedBuilder(String.format("AnemometerRaw-%s.csv", surveyTag));
+					measurementDbSeedBuilder = new MeasurementDbSeedBuilder(String.format("Measurement-%s.csv", surveyTag), true /*redate*/);
+					gpsRawDbSeedBuilder = new GPSRawDbSeedBuilder(String.format("GPSRaw-%s.csv", surveyTag), true /*redate*/);
+					anemometerRawDbSeedBuilder = new AnemometerRawDbSeedBuilder(String.format("AnemometerRaw-%s.csv", surveyTag), true /*redate*/);
 					captureEventDbSeedBuilder = new CaptureEventDbSeedBuilder(String.format("CaptureEvent-%s.csv", surveyTag));
 					fieldOfViewDbSeedBuilder = new FieldOfViewDbSeedBuilder(String.format("FieldOfView-%s.csv", surveyTag));
 					peakDbSeedBuilder = new PeakDbSeedBuilder(String.format("Peak-%s.csv", surveyTag));
@@ -121,10 +123,14 @@ public class DbSeedExecutor {
 					
 					String startEpoch = firstSurveyRow.get(0).get("StartEpoch");
 					String endEpoch = firstSurveyRow.get(0).get("EndEpoch");
+					
+					Log.info(String.format("First survey row from - '%s' is: StartEpoch=%s, EndEpoch=%s", surveyCsvFilePath,
+							startEpoch, endEpoch));
+					
 					Double startEpochValue = Double.parseDouble(startEpoch) - EPSILON;
 					Double endEpochValue = Double.parseDouble(endEpoch) + EPSILON;
-					startEpoch = startEpochValue.toString(); 
-					endEpoch = endEpochValue.toString(); 
+					startEpoch = NumberUtility.formatString(startEpochValue, 10); 
+					endEpoch = NumberUtility.formatString(endEpochValue, 10); 
 
 					// check and execute Survey DB seed.
 					if (dbStateVerifier.isSurveySeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minSurveyCount)) {

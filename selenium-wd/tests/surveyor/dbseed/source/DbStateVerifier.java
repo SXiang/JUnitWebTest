@@ -388,9 +388,10 @@ public class DbStateVerifier {
 			// check measurement count.
 			long count = 0;
 			String tableName = MeasurementDbSeedBuilder.TABLE_NAME;
-			try (ResultSet rsRowCount = stmt.executeQuery(
-					String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
-							tableName, analyzerId, startEpoch, endEpoch))) {
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
+					tableName, analyzerId, startEpoch, endEpoch);
+			Log.info(String.format("Select query is: %s", selectQuery));
+			try (ResultSet rsRowCount = stmt.executeQuery(selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for Measurement[Id=%s] = %d", tableName, surveyId, count));

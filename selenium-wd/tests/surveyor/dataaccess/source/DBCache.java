@@ -1,6 +1,7 @@
 package surveyor.dataaccess.source;
 
 import java.util.Hashtable;
+import java.util.Set;
 
 public enum DBCache {
 	INSTANCE;
@@ -27,5 +28,18 @@ public enum DBCache {
 
 	public void remove(String key) {
 		cache.remove(key);
+	}
+	
+	/**
+	 * Purges all items from cache for keys starting with specified prefix.
+	 * @param keyPrefix
+	 */
+	public void purgeCache(String keyPrefix) {
+		Set<String> keySet = cache.keySet();
+		for (String key : keySet) {
+			if (key.startsWith(keyPrefix)) {
+				cache.remove(key);
+			}
+		}
 	}
 }
