@@ -83,7 +83,7 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 		BaseReportsPageTest.reportsPage = reportsPage;
 	}
 		
-	@After
+	@Override
 	public void afterTestMethod() {
 		try {
 			getReportsPage().open();

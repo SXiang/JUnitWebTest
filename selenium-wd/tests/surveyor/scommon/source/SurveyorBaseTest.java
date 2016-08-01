@@ -24,6 +24,7 @@ import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 import common.source.DateUtility;
+import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.Log;
 import common.source.RegexUtility;
@@ -77,11 +78,13 @@ public class SurveyorBaseTest {
 			screenCapture.takeScreenshot(driver);
 			Log.error("Exception: "+e+" Description: "+description);
 			SurveyorBaseTest.reportTestFailed(e);
+			afterTestMethod();
 		}
 
 		 @Override
 		 protected void succeeded(Description description) {
 			 SurveyorBaseTest.reportTestSucceeded();
+			 afterTestMethod();
 		}
 	};
 
@@ -205,7 +208,10 @@ public class SurveyorBaseTest {
 			}
 		}
 	}
-
+	
+	public void afterTestMethod() {
+	}
+	
 	/**
 	 * @throws java.lang.Exception
 	 */
