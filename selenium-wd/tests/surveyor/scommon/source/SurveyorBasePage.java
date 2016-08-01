@@ -528,7 +528,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public void refreshPageUntilElementFound(String elementXPath) {
-		Log.method("refreshPageUntilElementFound", elementXPath);
+		//Log.method("refreshPageUntilElementFound", elementXPath);
 		waitForAJAXCallsToComplete();
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -670,7 +670,7 @@ public class SurveyorBasePage extends BasePage {
 	}
   
 	public void waitForAJAXCallsToComplete() {
-		Log.method("waitForAJAXCallsToComplete");
+		//Log.method("waitForAJAXCallsToComplete");
 		ExpectedCondition<Boolean> jQueryActiveComplete = new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				try {

@@ -2,11 +2,17 @@ package common.source;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
 import org.openqa.selenium.WebDriver;
 
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.model.ITest;
+
+import common.source.Log.LogField;
 
 public enum TestContext {
 	INSTANCE;
@@ -18,14 +24,22 @@ public enum TestContext {
 
 	private ExtentReports report;
 	private ExtentTest extentTest;
+	private Map<String,Object> testMap;
 	private ArrayList<String> testMessage;
 	private int numTestMessagesToRetain = 5;
-
+	private static long indexId = System.currentTimeMillis();
+	
 	private TestContext() {
 		// Every time a context is created set a unique run ID.
 		this.setRunUniqueId(TestSetup.getUUIDString());
 		this.testMessage = new ArrayList<String>(numTestMessagesToRetain);
+		this.testMap = new HashMap<String, Object>();
 	}
+
+	public Map<String, Object> getTestMap() {
+		return testMap;
+	}
+
 
 	public ExtentTest getExtentTest() {
 		return extentTest;
@@ -44,7 +58,10 @@ public enum TestContext {
 	public ArrayList<String> getTestMessage(){
 		return testMessage;
 	}
-	public void setExtentTest(ExtentTest extentTest) {
+	public void setExtentTest(ExtentTest extentTest, String className) {
+		ITest test = extentTest.getTest();
+		this.testMap.put(LogField.TEST_METHOD.toString(), test.getName());
+		this.testMap.put(LogField.TEST_CLASS.toString(), className);
 		this.extentTest = extentTest;
 	}
 
@@ -88,8 +105,13 @@ public enum TestContext {
 		return dbPassword;
 	}
 
-	public void setTestSetup(TestSetup testSetup) {
+	public void setTestSetup(TestSetup testSetup) {		
 		this.testSetup = testSetup;
+		Log.setStashLogger();
+		testMap.put(LogField.INDEX_ID.toString(), indexId);
+	    testMap.put(LogField.TEST_ENVIROMENT.toString(), testSetup.getRunEnvironment());
+	    testMap.put(LogField.TEST_URL.toString(), testSetup.getBaseUrl());
+	    testMap.put(LogField.TEST_CATEGORY.toString(), testSetup.getTestReportCategory());
 	}
 
 	public String getLoggedInUser() {

@@ -170,7 +170,7 @@ public class TestSetup {
 	private boolean automationReportingApiEnabled;
 
 	private static boolean parallelBuildEnabled;
-	
+	private static boolean logstashEnabled;
 	public TestSetup() {
 		initialize();
 	}
@@ -687,7 +687,8 @@ public class TestSetup {
 			setUploadSurveyTestProperties();
 			setPushDBSeedTestProperties();
 			setParallelBuildTestProperties();
-
+			setLogstashTestProperties();
+			
 			this.language = this.testProp.getProperty("language");
 			this.culture = this.testProp.getProperty("culture");
 			this.setSoftwareVersion(this.testProp.getProperty("softwareVersion"));
@@ -756,6 +757,12 @@ public class TestSetup {
 		}
 	}
 
+	private void setLogstashTestProperties() {
+		String logstashEnabledValue = this.testProp.getProperty("logstash.Enabled");
+		if (logstashEnabledValue != null && !logstashEnabledValue.isEmpty()) {
+			setLogstashEnabled(Boolean.valueOf(logstashEnabledValue));
+		}
+	}
 	private void setComplianceReportBaselineGenerationTestProperties() {
 		String collectReportJobPerfMetric = this.testProp.getProperty("complianceReport_collectReportJobPerfMetric");
 		if (collectReportJobPerfMetric != null && collectReportJobPerfMetric != "") {
@@ -1405,6 +1412,15 @@ public class TestSetup {
 
 	public static void setParallelBuildEnabled(boolean parallelBldEnabled) {
 		parallelBuildEnabled = parallelBldEnabled;
+	}
+
+	
+	public static boolean isLogstashEnabled() {
+		return logstashEnabled;
+	}
+
+	public static void setLogstashEnabled(boolean logstashEnabled) {
+		TestSetup.logstashEnabled = logstashEnabled;
 	}
 
 	public void setSoftwareVersion(String softwareVersion) {
