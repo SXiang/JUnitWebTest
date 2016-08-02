@@ -67,6 +67,8 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.CryptoUtility;
 import common.source.Log;
+import surveyor.dataaccess.source.DBCache;
+import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.ComplianceReportDataProvider;
@@ -463,7 +465,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
-
+		
+		DBCache.INSTANCE.remove(Report.CACHE_KEY+rptTitle);
 		String reportName2 = complianceReportsPage.waitForReportGenerationtoCompleteAndGetReportName(rptTitle, testSetup.getLoginUser());
 		assertNotNull(reportName2);
 		
