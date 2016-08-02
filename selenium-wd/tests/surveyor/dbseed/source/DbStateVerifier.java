@@ -123,8 +123,11 @@ public class DbStateVerifier {
 			// check assets count.
 			long count = 0;
 			String tableName = AssetDbSeedBuilder.TABLE_NAME;
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE CustomerId='%s';", tableName, customerId);
+			Log.info("Checking Asset seed data ...");
+			Log.info(String.format("Select query is : %s", selectQuery));
 			try (ResultSet rsRowCount = stmt.executeQuery(
-					String.format("SELECT COUNT(*) FROM %s WHERE CustomerId='%s';", tableName, customerId))) {
+					selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for Customer[Id=%s] = %d", tableName, customerId, count));
@@ -139,8 +142,11 @@ public class DbStateVerifier {
 			// check boundaries count.
 			count = 0;
 			tableName = BoundaryDbSeedBuilder.TABLE_NAME;
+			selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE CustomerId='%s';", tableName, customerId);
+			Log.info("Checking Boundary seed data ...");
+			Log.info(String.format("Select query is : %s", selectQuery));
 			try (ResultSet rsRowCount = stmt.executeQuery(
-					String.format("SELECT COUNT(*) FROM %s WHERE CustomerId='%s';", tableName, customerId))) {
+					selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for Customer[Id=%s] = %d", tableName, customerId, count));
@@ -175,8 +181,10 @@ public class DbStateVerifier {
 			// check CustomerBoundaryType count.
 			long count = 0;
 			String tableName = CustomerBoundaryTypeDbSeedBuilder.TABLE_NAME;
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE CustomerId='%s';", tableName, customerId);
+			Log.info(String.format("Select query is : %s", selectQuery));
 			try (ResultSet rsRowCount = stmt
-					.executeQuery(String.format("SELECT COUNT(*) FROM %s WHERE CustomerId='%s';", tableName, customerId))) {
+					.executeQuery(selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for Customer[Id=%s] = %d", tableName, customerId,
@@ -212,8 +220,10 @@ public class DbStateVerifier {
 			// check CustomerMaterialType count.
 			long count = 0;
 			String tableName = CustomerMaterialTypeDbSeedBuilder.TABLE_NAME;
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE CustomerId='%s';", tableName, customerId);
+			Log.info(String.format("Select query is : %s", selectQuery));
 			try (ResultSet rsRowCount = stmt
-					.executeQuery(String.format("SELECT COUNT(*) FROM %s WHERE CustomerId='%s';", tableName, customerId))) {
+					.executeQuery(selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for Customer[Id=%s] = %d", tableName, customerId,
@@ -256,8 +266,10 @@ public class DbStateVerifier {
 			// check survey count.
 			long count = 0;
 			String tableName = SurveyDbSeedBuilder.TABLE_NAME;
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE Id='%s';", tableName, surveyId);
+			Log.info(String.format("Select query is : %s", selectQuery));
 			try (ResultSet rsRowCount = stmt
-					.executeQuery(String.format("SELECT COUNT(*) FROM %s WHERE Id='%s';", tableName, surveyId))) {
+					.executeQuery(selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for Survey[Id=%s] = %d", tableName, surveyId, count));
@@ -300,8 +312,10 @@ public class DbStateVerifier {
 			// check surveyCondition count.
 			long count = 0;
 			String tableName = SurveyConditionDbSeedBuilder.TABLE_NAME;
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE SurveyId='%s';", tableName, surveyId);
+			Log.info(String.format("Select query is : %s", selectQuery));
 			try (ResultSet rsRowCount = stmt
-					.executeQuery(String.format("SELECT COUNT(*) FROM %s WHERE SurveyId='%s';", tableName, surveyId))) {
+					.executeQuery(selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for SurveyCondition[Id=%s] = %d", tableName, surveyId,
@@ -344,8 +358,10 @@ public class DbStateVerifier {
 			// check surveyResult count.
 			long count = 0;
 			String tableName = SurveyResultDbSeedBuilder.TABLE_NAME;
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE SurveyId='%s';", tableName, surveyId);
+			Log.info(String.format("Select query is : %s", selectQuery));
 			try (ResultSet rsRowCount = stmt
-					.executeQuery(String.format("SELECT COUNT(*) FROM %s WHERE SurveyId='%s';", tableName, surveyId))) {
+					.executeQuery(selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(
@@ -433,9 +449,11 @@ public class DbStateVerifier {
 			// check gPSRaw count.
 			long count = 0;
 			String tableName = GPSRawDbSeedBuilder.TABLE_NAME;
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
+					tableName, analyzerId, startEpoch, endEpoch);
+			Log.info(String.format("Select query is : %s", selectQuery));
 			try (ResultSet rsRowCount = stmt.executeQuery(
-					String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
-							tableName, analyzerId, startEpoch, endEpoch))) {
+					selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for GPSRaw[Id=%s] = %d", tableName, surveyId, count));
@@ -477,9 +495,11 @@ public class DbStateVerifier {
 			// check anemometerRaw count.
 			long count = 0;
 			String tableName = AnemometerRawDbSeedBuilder.TABLE_NAME;
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
+					tableName, analyzerId, startEpoch, endEpoch);
+			Log.info(String.format("Select query is : %s", selectQuery));
 			try (ResultSet rsRowCount = stmt.executeQuery(
-					String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
-							tableName, analyzerId, startEpoch, endEpoch))) {
+					selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for AnemometerRaw[Id=%s] = %d", tableName, surveyId,
@@ -522,9 +542,11 @@ public class DbStateVerifier {
 			// check captureEvent count.
 			long count = 0;
 			String tableName = CaptureEventDbSeedBuilder.TABLE_NAME;
-			try (ResultSet rsRowCount = stmt.executeQuery(String.format(
+			String selectQuery = String.format(
 					"SELECT COUNT(*) FROM %s WHERE SurveyId='%s' AND AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
-					tableName, surveyId, analyzerId, startEpoch, endEpoch))) {
+					tableName, surveyId, analyzerId, startEpoch, endEpoch);
+			Log.info(String.format("Select query is : %s", selectQuery));
+			try (ResultSet rsRowCount = stmt.executeQuery(selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(
@@ -567,9 +589,11 @@ public class DbStateVerifier {
 			// check fieldOfView count.
 			long count = 0;
 			String tableName = FieldOfViewDbSeedBuilder.TABLE_NAME;
-			try (ResultSet rsRowCount = stmt.executeQuery(String.format(
+			String selectQuery = String.format(
 					"SELECT COUNT(*) FROM %s WHERE SurveyId='%s' AND AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
-					tableName, surveyId, analyzerId, startEpoch, endEpoch))) {
+					tableName, surveyId, analyzerId, startEpoch, endEpoch);
+			Log.info(String.format("Select query is : %s", selectQuery));
+			try (ResultSet rsRowCount = stmt.executeQuery(selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for FieldOfView[Id=%s] = %d", tableName, surveyId, count));
@@ -611,9 +635,11 @@ public class DbStateVerifier {
 			// check peak count.
 			long count = 0;
 			String tableName = PeakDbSeedBuilder.TABLE_NAME;
-			try (ResultSet rsRowCount = stmt.executeQuery(String.format(
+			String selectQuery = String.format(
 					"SELECT COUNT(*) FROM %s WHERE SurveyId='%s' AND AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
-					tableName, surveyId, analyzerId, startEpoch, endEpoch))) {
+					tableName, surveyId, analyzerId, startEpoch, endEpoch);
+			Log.info(String.format("Select query is : %s", selectQuery));
+			try (ResultSet rsRowCount = stmt.executeQuery(selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for Peak[Id=%s] = %d", tableName, surveyId, count));
@@ -655,8 +681,10 @@ public class DbStateVerifier {
 			// check segment count.
 			long count = 0;
 			String tableName = SegmentDbSeedBuilder.TABLE_NAME;
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE SurveyId='%s';", tableName, surveyId);
+			Log.info(String.format("Select query is : %s", selectQuery));
 			try (ResultSet rsRowCount = stmt
-					.executeQuery(String.format("SELECT COUNT(*) FROM %s WHERE SurveyId='%s';", tableName, surveyId))) {
+					.executeQuery(selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for Segment[Id=%s] = %d", tableName, surveyId, count));
@@ -698,9 +726,11 @@ public class DbStateVerifier {
 			// check note count.
 			long count = 0;
 			String tableName = NoteDbSeedBuilder.TABLE_NAME;
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
+					tableName, analyzerId, startEpoch, endEpoch);
+			Log.info(String.format("Select query is: %s", selectQuery));
 			try (ResultSet rsRowCount = stmt.executeQuery(
-					String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
-							tableName, analyzerId, startEpoch, endEpoch))) {
+					selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for Note[Id=%s] = %d", tableName, surveyId, count));
