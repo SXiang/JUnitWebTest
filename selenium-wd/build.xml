@@ -514,7 +514,6 @@
 				<formatter type="xml" />
 				<fileset dir="${build}">
 					<include name="**/ComplianceReportsPageTest.class" />
-					<include name="**/ComplianceReportsPageTest2.class" />
 					<include name="**/ComplianceReportsPageTest3.class" />
 				</fileset>
 			</batchtest>
