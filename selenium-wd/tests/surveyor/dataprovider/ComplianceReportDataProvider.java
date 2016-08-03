@@ -15,6 +15,9 @@ import static surveyor.scommon.source.SurveyorConstants.TIMEZONECT;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEET;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORDHASH;
+import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG2;
+import static surveyor.scommon.source.SurveyorConstants.CUSDRVOPTAG2;
+import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_SQACUS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +36,7 @@ import surveyor.scommon.source.Reports.SurveyModeFilter;
 
 public class ComplianceReportDataProvider extends ReportDataProvider {
 	public static final String COMPLIANCE_REPORT_PROVIDER = "dataProviderComplianceReport";
+	public static final String COMPLIANCE_REPORT_PROVIDER_SET11= "dataProviderComplianceReport11";
 	
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC231 = "dataProviderPageActionsComplianceReports_TC231";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC235 = "dataProviderPageActionsComplianceReports_TC235";
@@ -473,6 +477,30 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 				{"23", SQACUSSU, USERPASSWORDHASH, "sqacus", TIMEZONEPT, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList23, tablesList23, viewList23, viewLayerList23 }
 		};
 	}
+	
+	@DataProvider
+	public static Object[][] dataProviderComplianceReport11() throws Exception {
+
+		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
+		viewList1.add(createViewsMapTable("First View", "1", "1", "1", "0", "0", "1", "0", "0", "0","0","0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		List<Map<String, String>> tablesList1 = new ArrayList<Map<String, String>>();
+		tablesList1.add(createOptionalTabularPDFContent("0", "0", "0", "0", "0", "0"));
+		/*List<Integer> assetRowIDs1 = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
+		List<Integer> boundaryRowIDs1 = Arrays.asList(3, 4);	*/			 // Boundary RowIDs from TestCaseData xlsx
+		//List<Map<String, String>> viewLayerList1 = new ArrayList<Map<String, String>>();
+		//viewLayerList1.add(createOptionalViewLayersContent(assetRowIDs1, boundaryRowIDs1));
+		List<String> tagList1 = new ArrayList<String>();
+		tagList1.add(CUSDRVOPTAG2);
+		tagList1.add(CUSDRVSTDTAG2);
+
+ 
+
+		return new Object[][] {				
+				{ "1"/*index*/, SQAPICSUP/*strCreatedBy*/, USERPASSWORDHASH/*password(encrypted)*/,CUSTOMER_SQACUS/*customer*/, TIMEZONEPT/*timeZone*/, EXCLUSIONRADIUS/*exclusionRadius*/, null/*surveyorUnit*/, null/*userName*/, null/*startDate*/,
+					null/*endDate*/, null/*fovOpacity*/, null/*lisaOpacity*/, null/*geoFilter*/, null/*reportMode*/, null/*surveyModeFilter*/, null/*ethaneFilter*/, createMapAndBoundaryList()/*listBoundary*/, tagList1/*tagList*/, tablesList1/*tablesList*/, viewList1/*viewList*/, null/*viewLayersList*/ },
+				};
+	}
+	
 	
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC231() {
