@@ -297,7 +297,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 
 		String testCaseID = "TC1038";
-		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		String rptTitle = testCaseID + " Report1" + testSetup.getRandomNumber();
 
 		this.getComplianceReportsPage().open();
 		List<String> listBoundary1 = new ArrayList<String>();
@@ -355,6 +355,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
 		this.getComplianceReportsPage().clickOnCancelBtn();
 
+		rptTitle = testCaseID + " Report2" + testSetup.getRandomNumber();
 		ReportsCompliance rpt2 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary1, tablesList2, "", tagList, "", "", viewList2, SurveyModeFilter.Standard);
 		this.getComplianceReportsPage().addNewReport(rpt2);
 		assertTrue(this.getComplianceReportsPage().getAssetErrorText().getText().equals("Please make sure your selected boundary is less than 1.5 sq km when Gaps are selected"));
@@ -362,6 +363,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
 		this.getComplianceReportsPage().clickOnCancelBtn();
 
+		rptTitle = testCaseID + " Report3" + testSetup.getRandomNumber();
 		ReportsCompliance rpt3 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary2, tablesList1, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
 		this.getComplianceReportsPage().addNewReport(rpt3);
 		this.getComplianceReportsPage().waitForPageLoad();
@@ -372,6 +374,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 			fail("\nTestcase TC1038 failed.\n");
 		}
 		this.getComplianceReportsPage().open();
+		rptTitle = testCaseID + " Report4" + testSetup.getRandomNumber();
 		ReportsCompliance rpt4 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary2, tablesList2, "", tagList, "", "", viewList2, SurveyModeFilter.Standard);
 		this.getComplianceReportsPage().addNewReport(rpt4);
 		this.getComplianceReportsPage().waitForPageLoad();
