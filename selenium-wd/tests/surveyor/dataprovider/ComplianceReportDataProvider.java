@@ -18,6 +18,7 @@ import static surveyor.scommon.source.SurveyorConstants.USERPASSWORDHASH;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG2;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVOPTAG2;
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_SQACUS;
+import static surveyor.scommon.source.SurveyorConstants.EXCLUSIONRADIUS_100;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -496,7 +497,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
  
 
 		return new Object[][] {				
-				{ "1"/*index*/, SQAPICSUP/*strCreatedBy*/, USERPASSWORDHASH/*password(encrypted)*/,CUSTOMER_SQACUS/*customer*/, TIMEZONEPT/*timeZone*/, EXCLUSIONRADIUS/*exclusionRadius*/, null/*surveyorUnit*/, null/*userName*/, null/*startDate*/,
+				{ "1"/*index*/, SQAPICSUP/*strCreatedBy*/, USERPASSWORDHASH/*password(encrypted)*/,CUSTOMER_SQACUS/*customer*/, TIMEZONEPT/*timeZone*/, EXCLUSIONRADIUS_100/*exclusionRadius*/, null/*surveyorUnit*/, null/*userName*/, null/*startDate*/,
 					null/*endDate*/, null/*fovOpacity*/, null/*lisaOpacity*/, null/*geoFilter*/, null/*reportMode*/, null/*surveyModeFilter*/, null/*ethaneFilter*/, createMapAndBoundaryList()/*listBoundary*/, tagList1/*tagList*/, tablesList1/*tablesList*/, viewList1/*viewList*/, null/*viewLayersList*/ },
 				};
 	}

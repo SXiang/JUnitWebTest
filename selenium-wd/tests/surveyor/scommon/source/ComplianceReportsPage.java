@@ -3775,6 +3775,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		// 4. Optional Tabular PDF Content
 		List<Map<String, String>> tablesList = reportsCompliance.getTablesList();
+		
 		if (tablesList.get(0).get(KEYINDTB).equalsIgnoreCase("1")) {
 			selectIndicationsTableCheckBox();
 		}
@@ -3797,6 +3798,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				selectPercentCoverageForecastCheckBox();
 			}
 		}
+		
 
 		// 5. Optional View layers
 		List<Map<String, String>> viewLayersList = reportsCompliance.getViewLayersList();
