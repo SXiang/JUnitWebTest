@@ -30,7 +30,7 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 	
 	protected static void initializePageObjects(ReportsBasePage reportsBasePage) {
 		setReportsPage(reportsBasePage);
-		PageFactory.initElements(driver, getReportsPage());
+		PageFactory.initElements(driver, reportsBasePage);
 	}
 
 	public BaseReportsPageTest() {
@@ -71,30 +71,25 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 		return reportJobProcessingTimeNumberMap;
 	}
 
-	public static ReportsBasePage getReportsPage() {
-		if(reportsPage==null){
-			reportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
-			PageFactory.initElements(driver, reportsPage);
-		}
-		return reportsPage;
-	}
-
 	public static void setReportsPage(ReportsBasePage reportsPage) {
 		BaseReportsPageTest.reportsPage = reportsPage;
 	}
 		
 	@Override
-	public void afterTestMethod() {
+	public void postTestMethodProcessing() {
 		try {
-			getReportsPage().open();
 			cleanUp();
 			reportsPage.logout();
 		} catch (Exception e) {
-			Log.warn("Exception in BaseReportsPageTest.afterTestMethod(). Exception message:");
+			Log.warn("Exception in BaseReportsPageTest.postTestMethodProcessing(). Exception message:");
 			Log.warn(ExceptionUtility.getStackTraceString(e));
 		}
 	}
 
+	public static ReportsBasePage getReportsPage() {
+		return reportsPage;
+	}
+	
 	protected static ReportTestRunMode getTestRunMode() {
 		return testRunMode;
 	}
@@ -104,7 +99,7 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 	}
 	
 	private void cleanUp() throws Exception {
-		if(keepTestData()){
+		if(reportsPage==null||keepTestData()){
 			return;
 		}
 		Set<String> reportIdSet = TestContext.INSTANCE.getTestReportIdSet();

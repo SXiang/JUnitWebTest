@@ -75,13 +75,13 @@ public class SurveyorBaseTest {
 			screenCapture.takeScreenshot(driver);
 			Log.error("Exception: "+e+" Description: "+description);
 			SurveyorBaseTest.reportTestFailed(e);
-			afterTestMethod();
+			postTestMethodProcessing();
 		}
 
 		 @Override
 		 protected void succeeded(Description description) {
 			 SurveyorBaseTest.reportTestSucceeded();
-			 afterTestMethod();
+			 postTestMethodProcessing();
 		}
 	};
 
@@ -206,7 +206,7 @@ public class SurveyorBaseTest {
 		}
 	}
 	
-	public void afterTestMethod() {
+	public void postTestMethodProcessing() {
 	}
 	
 	/**

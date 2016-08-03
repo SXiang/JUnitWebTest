@@ -59,15 +59,15 @@ import surveyor.scommon.source.SurveyorTestRunner;
  */
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPageTest {
-	private static ComplianceReportsPage complianceReportsPage = null;
 
 	@BeforeClass
 	public static void setupComplianceReportsPageTest() {
-		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, complianceReportsPage);
+		initializePageObjects(new ComplianceReportsPage(driver, baseURL, testSetup));
 
 	}
-
+	private ComplianceReportsPage getComplianceReportsPage() {
+		return (ComplianceReportsPage)getReportsPage();
+	}
 	/**
 	 * Test Case ID: TC183 Test Description: Generate report having multiple surveys of Standard, Operator and Rapid Response types in Rapid Response report mode
 	 * @throws Exception 
@@ -80,8 +80,8 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		System.out.format("\nRunning " + testCaseID
 				+ ": Generate report having multiple surveys of Standard, Operator and Rapid Response types in Rapid Response report mode, %s\n", rptTitle);
 
-		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		complianceReportsPage.open();
+		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		this.getComplianceReportsPage().open();
 
 		String surUnit = "";
 		List<String> surTag = new ArrayList<String>();
@@ -91,16 +91,16 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		String reportMode = "Rapid Response";
 		boolean changeMode = true;
 
-		complianceReportsPage.addNewPDReport(rptTitle, "Picarro", surUnit, surTag, changeMode, reportMode);
-		complianceReportsPage.waitForPageLoad();
+		this.getComplianceReportsPage().addNewPDReport(rptTitle, "Picarro", surUnit, surTag, changeMode, reportMode);
+		this.getComplianceReportsPage().waitForPageLoad();
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN, testCaseID)))
-			assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
+		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, PICDFADMIN, testCaseID)))
+			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, PICDFADMIN));
 		else
 			fail("\nTestcase TC183 failed.\n");
 
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
+		this.getComplianceReportsPage().open();
+		this.getComplianceReportsPage().logout();
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		complianceReportsPage.open();
+		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
 		listBoundary.add(IMGMAPHEIGHT);
@@ -165,17 +165,17 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, PICDFADMIN, strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList);
 		rpt.setViewLayersList(viewLayerList);
 		
-		complianceReportsPage.addNewReportWithMultipleSurveysIncluded(rpt);
-		complianceReportsPage.waitForPageLoad();
+		this.getComplianceReportsPage().addNewReportWithMultipleSurveysIncluded(rpt);
+		this.getComplianceReportsPage().waitForPageLoad();
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN, testCaseID))) {
-			assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
+		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, PICDFADMIN, testCaseID))) {
+			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, PICDFADMIN));
 
 		} else
 			fail("\nTestcase TC191 failed.\n");
 
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
+		this.getComplianceReportsPage().open();
+		this.getComplianceReportsPage().logout();
 	}
 
 	/**
@@ -191,7 +191,7 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		complianceReportsPage.open();
+		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
 		listBoundary.add(IMGMAPHEIGHT);
@@ -254,19 +254,19 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, PICDFADMIN, strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList);
 		rpt.setViewLayersList(viewLayerList);
 		
-		complianceReportsPage.addNewReportWithMultipleSurveysIncluded(rpt);
-		complianceReportsPage.waitForPageLoad();
+		this.getComplianceReportsPage().addNewReportWithMultipleSurveysIncluded(rpt);
+		this.getComplianceReportsPage().waitForPageLoad();
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN, testCaseID))) {
-			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
-				assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
+		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, PICDFADMIN, testCaseID))) {
+			if (this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath())) {
+				assertTrue(this.getComplianceReportsPage().findReport(rptTitle, PICDFADMIN));
 			} else
 				fail("\nTestcase TC192 failed.\n");
 		} else
 			fail("\nTestcase TC192 failed.\n");
 
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
+		this.getComplianceReportsPage().open();
+		this.getComplianceReportsPage().logout();
 	}
 
 	/**
@@ -278,22 +278,22 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 	public void TC198_ComplianceReportTest_VerifyAlreadyAddedMessageforCopy() throws Exception {
 		System.out.format("\nRunning TC198: Verify 'Already Added' message is displayed if user tries to add the same survey again using copy functionality\n");
 
-		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		complianceReportsPage.open();
+		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		this.getComplianceReportsPage().open();
 		String rptTitle = "TC198 Report" + testSetup.getRandomNumber();
 		String surUnit = "";
 
-		complianceReportsPage.addNewPDReport(rptTitle, surUnit, PICADMNSTDTAG);
-		complianceReportsPage.waitForPageLoad();
+		this.getComplianceReportsPage().addNewPDReport(rptTitle, surUnit, PICADMNSTDTAG);
+		this.getComplianceReportsPage().waitForPageLoad();
 
-		assertTrue(complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
+		assertTrue(this.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
-		complianceReportsPage.clickOnCopyReport(rptTitle, PICDFADMIN);
+		this.getComplianceReportsPage().clickOnCopyReport(rptTitle, PICDFADMIN);
 
-		assertTrue(complianceReportsPage.verifySurveyAlreadyAdded("Picarro", PICADMNSTDTAG));
+		assertTrue(this.getComplianceReportsPage().verifySurveyAlreadyAdded("Picarro", PICADMNSTDTAG));
 
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
+		this.getComplianceReportsPage().open();
+		this.getComplianceReportsPage().logout();
 	}
 
 	/**
@@ -310,7 +310,7 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		complianceReportsPage.open();
+		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
 		listBoundary.add(IMGMAPHEIGHT);
@@ -358,17 +358,17 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList, ReportModeFilter.RapidResponse);
 		rpt.setViewLayersList(viewLayerList);
 		
-		complianceReportsPage.addNewReportWithMultipleSurveysIncluded(rpt);
-		complianceReportsPage.waitForPageLoad();
+		this.getComplianceReportsPage().addNewReportWithMultipleSurveysIncluded(rpt);
+		this.getComplianceReportsPage().waitForPageLoad();
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
-			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
+		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
+			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 
 		} else
 			fail("\nTestcase TC1321 failed.\n");
 
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
+		this.getComplianceReportsPage().open();
+		this.getComplianceReportsPage().logout();
 	}
 
 	/**
@@ -385,7 +385,7 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		complianceReportsPage.open();
+		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
 		listBoundary.add(IMGMAPHEIGHT);
@@ -433,16 +433,16 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList, ReportModeFilter.RapidResponse);
 		rpt.setViewLayersList(viewLayerList);
 		
-		complianceReportsPage.addNewReportWithMultipleSurveysIncluded(rpt);
-		complianceReportsPage.waitForPageLoad();
+		this.getComplianceReportsPage().addNewReportWithMultipleSurveysIncluded(rpt);
+		this.getComplianceReportsPage().waitForPageLoad();
 
-		if ((complianceReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
-			assertTrue(complianceReportsPage.findReport(rptTitle, testSetup.getLoginUser()));
+		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
+			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 
 		} else
 			fail("\nTestcase TC1351 failed.\n");
 
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
+		this.getComplianceReportsPage().open();
+		this.getComplianceReportsPage().logout();
 	}
 }
