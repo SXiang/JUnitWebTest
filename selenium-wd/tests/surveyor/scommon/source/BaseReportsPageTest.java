@@ -105,10 +105,11 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 		Set<String> reportIdSet = TestContext.INSTANCE.getTestReportIdSet();
 		String downloadDirectory = TestContext.INSTANCE.getTestSetup().getDownloadPath();
 		//Delete report and related downloads
-		for(String reportId:reportIdSet){		
-			reportsPage.deleteReportById(reportId);
+		reportsPage.open();
+		for(String reportId:reportIdSet){	
 			String reportName = "CR-" + reportId.substring(0,6).toUpperCase();
 			FileUtility.deleteFilesAndSubFoldersInDirectory(downloadDirectory, reportName);
+			reportsPage.deleteReportById(reportId);
 		}
 		TestContext.INSTANCE.clearTestReportSet();
 	}	
