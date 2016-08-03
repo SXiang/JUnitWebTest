@@ -75,10 +75,11 @@ public class DbSeedExecutor {
 		SegmentDbSeedBuilder segmentDbSeedBuilder = null;
 		NoteDbSeedBuilder noteDbSeedBuilder = null;
 
+		// <DEPRECATE Comment>
 		// NOTE: "stnd-sqacudr-3","man-pic-2","rr-sqacudr-1","EthaneStnd" survey NOT included. 
 		// SurveyResult entry does NOT get inserted using INSERT statements. Tracked by DE2178.
 
-		final String[] surveyTags = {"stnd-pic","rr-pic","man-pic-1","op-pic",
+		final String[] surveyTags = {"man-pic-2","rr-sqacudr-1","stnd-pic","rr-pic","man-pic-1","op-pic",
 				"stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","rr-sqacudr-2","op-sqacudr"};
 
 		try {

@@ -108,6 +108,20 @@ public class BaseDbSeedBuilder {
 		return customerCSVFile;
 	}
 	
+	/**
+	 * For shape geometry type which cannot be inserted directly as binary using JDBC insert statements,
+	 * we store the data in WKT format and then insert using geometry::STGeomFromText('<WKT>')
+	 * A geom file stores the data for geometry type for all the rows.
+	 * @return
+	 * @throws IOException 
+	 */
+	public List<String> readGeomFile(String geomFilePath) throws IOException {
+		if (!FileUtility.fileExists(geomFilePath)) {
+			return null;
+		}
+		return FileUtility.readFileLinesToList(geomFilePath);
+	}
+	
 	public void close() {
 		DbSeed dbSeedData = this.getDbSeedData();
 		if (dbSeedData != null) {
