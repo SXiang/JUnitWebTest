@@ -780,7 +780,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 
-	private void selectSurveysAndAddToReport(boolean selectAll, Integer numSurveysToSelect) {
+	public void selectSurveysAndAddToReport(boolean selectAll, Integer numSurveysToSelect) {
 		if (selectAll || numSurveysToSelect > 0) {
 			setSurveyRowsPagination(PAGINATIONSETTING);
 			this.waitForSurveyTabletoLoad();

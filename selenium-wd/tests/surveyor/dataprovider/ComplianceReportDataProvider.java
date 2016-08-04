@@ -19,6 +19,7 @@ import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG2;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVOPTAG2;
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.EXCLUSIONRADIUS_100;
+import static surveyor.scommon.source.SurveyorConstants.EXCLUSIONRADIUS_150;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -486,20 +487,31 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		viewList1.add(createViewsMapTable("First View", "1", "1", "1", "0", "0", "1", "0", "0", "0","0","0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList1 = new ArrayList<Map<String, String>>();
 		tablesList1.add(createOptionalTabularPDFContent("0", "0", "0", "0", "0", "0"));
+		List<String> tagList1 = new ArrayList<String>();
+		tagList1.add(CUSDRVOPTAG2);
+		tagList1.add(CUSDRVSTDTAG2);
+		
+		List<Map<String, String>> viewList2 = new ArrayList<Map<String, String>>();
+		viewList2.add(createViewsMapTable("First View", "1", "1", "0", "1", "1", "1", "0", "0", "0","0","0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList2.add(createViewsMapTable("Second View", "1", "1", "0", "1", "1", "1", "0", "0", "0","0","0", Resources.getResource(ResourceKeys.Constant_Map)));
+		List<Map<String, String>> tablesList2 = new ArrayList<Map<String, String>>();
+		tablesList2.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		/*List<Integer> assetRowIDs1 = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
 		List<Integer> boundaryRowIDs1 = Arrays.asList(3, 4);	*/			 // Boundary RowIDs from TestCaseData xlsx
 		//List<Map<String, String>> viewLayerList1 = new ArrayList<Map<String, String>>();
 		//viewLayerList1.add(createOptionalViewLayersContent(assetRowIDs1, boundaryRowIDs1));
-		List<String> tagList1 = new ArrayList<String>();
-		tagList1.add(CUSDRVOPTAG2);
-		tagList1.add(CUSDRVSTDTAG2);
+		List<String> tagList2 = new ArrayList<String>();
+		tagList2.add(CUSDRVOPTAG2);
+		tagList2.add(CUSDRVSTDTAG2);
 
  
 
 		return new Object[][] {				
 				{ "1"/*index*/, SQAPICSUP/*strCreatedBy*/, USERPASSWORDHASH/*password(encrypted)*/,CUSTOMER_SQACUS/*customer*/, TIMEZONEPT/*timeZone*/, EXCLUSIONRADIUS_100/*exclusionRadius*/, null/*surveyorUnit*/, null/*userName*/, null/*startDate*/,
 					null/*endDate*/, null/*fovOpacity*/, null/*lisaOpacity*/, null/*geoFilter*/, null/*reportMode*/, null/*surveyModeFilter*/, null/*ethaneFilter*/, createMapAndBoundaryList()/*listBoundary*/, tagList1/*tagList*/, tablesList1/*tablesList*/, viewList1/*viewList*/, null/*viewLayersList*/ },
-				};
+				{ "2", SQAPICSUP, USERPASSWORDHASH,CUSTOMER_SQACUS, TIMEZONEPT, EXCLUSIONRADIUS_150, null, null, null,
+						null, null, null, null, null, null, null, createMapAndBoundaryList(), tagList2, tablesList2, viewList2, null},
+					};
 	}
 	
 	

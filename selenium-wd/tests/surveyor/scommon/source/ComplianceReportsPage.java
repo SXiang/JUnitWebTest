@@ -1567,6 +1567,16 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return highlighted;
 	}
 	
+	public boolean checkSurveyModeDidNotChange(ReportModeFilter mode, String tag, ReportModeFilter newMode) {
+		openNewReportPage();
+		this.selectReportMode(mode);
+		this.inputSurveyTag(tag);
+		this.clickOnSearchSurveyButton();
+		this.waitForSurveyTabletoLoad();
+		this.selectSurveysAndAddToReport(false , 1 );
+		return false;
+	}
+	
 	@Override
 	public void modifyComplianceViews() {
 
@@ -1718,6 +1728,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@Override
 	public void selectReportMode(ReportModeFilter mode) {
+		selectReportModeNoConfirm(mode);
+		confirmChangeRptMode();
+	}
+	
+	public void selectReportModeNoConfirm(ReportModeFilter mode) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		switch (mode) {
 		case Standard:
@@ -1732,7 +1747,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		default:
 			break;
 		}
-		confirmChangeRptMode();
+	
 	}
 
 	public void confirmChangeRptMode(){

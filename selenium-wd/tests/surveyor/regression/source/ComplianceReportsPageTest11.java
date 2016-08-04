@@ -114,9 +114,9 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws Exception {
 		String rptTitle = null;
 		String testCaseName = getTestCaseName(index);
-			
+
 		Log.info("\nRunning " + testCaseName + " - " + rptTitle);
-		
+
 		rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
 
 		complianceReportsPage.login(strCreatedBy, CryptoUtility.decrypt(password));
@@ -130,16 +130,57 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, strCreatedBy, testCaseName))) {
 			complianceReportsPage.clickOnReportViewerCloseButton();
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			if (tablesList != null) {
-			
-				assertTrue(complianceReportsPage.verifyAllViewsImages(testSetup.getDownloadPath(), rptTitle, testCaseName,viewList.size()));
-			
+			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rpt));
+			assertTrue(complianceReportsPage.verifySSRSImages(testSetup.getDownloadPath(), rptTitle, testCaseName));
+			if (!testCaseName.equals("TC192")) {
+				if (tablesList != null) {
+					if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
+						assertTrue(complianceReportsPage.verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle));
+						assertTrue(complianceReportsPage.verifyCoverageValuesTable(testSetup.getDownloadPath(), rptTitle, tablesList.get(0)));
+					}
+					if (cutomer.equalsIgnoreCase("Picarro")) {
+						assertTrue(complianceReportsPage.verifyLayersTable(testSetup.getDownloadPath(), rptTitle, tablesList.get(0)));
+					}
+					assertTrue(complianceReportsPage.verifyViewsTable(testSetup.getDownloadPath(), rptTitle, viewList));
+					assertTrue(complianceReportsPage.verifyDrivingSurveysTable(testSetup.getDownloadPath(), rptTitle));
+					if (tablesList.get(0).get(KEYISOANA).equals("1")) {
+						assertTrue(complianceReportsPage.verifyIsotopicAnalysisTable(testSetup.getDownloadPath(), rptTitle));
+					}
+					if (tablesList.get(0).get(KEYINDTB).equals("1")) {
+						assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
+					}
+				}
 			}
+			assertTrue(complianceReportsPage.verifyAllViewsImages(testSetup.getDownloadPath(), rptTitle, testCaseName, viewList.size()));
+
 		} else
 			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
 
+	}
+	
+	/**
+	 * Test Case ID: TC517 Test Description: Generate compliance report with all default values/filters selected and download it
+	 * 
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * @throws Exception
+	 * 
+	 */
+	@Test
+	public void ComplianceReportTest_VerifyReportModeNoChange(String index, String strCreatedBy, String password, String cutomer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
+			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws Exception {
+		String testCaseName	="TC207";
+		String rptTitle = testCaseName+" Report" + testSetup.getRandomNumber();
+		Log.info("\nRunning " + testCaseName + " - " + rptTitle);
+		complianceReportsPage.login(strCreatedBy, CryptoUtility.decrypt(password));
+		complianceReportsPage.open();
+		complianceReportsPage.clickOnNewComplianceReportBtn();
+		
+		
+
 
 	}
+
 
 	private static String getTestCaseName(String key) {
 		return testCaseMap.get(key);
@@ -147,8 +188,7 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 
 	private static void createTestCaseMap() {
 		testCaseMap.put("1", "TC192");
-	
+		testCaseMap.put("2", "TC202");
 	}
-
 
 }
