@@ -1,6 +1,7 @@
 package surveyor.dataaccess.source;
 
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Set;
 
 public enum DBCache {
@@ -35,10 +36,11 @@ public enum DBCache {
 	 * @param keyPrefix
 	 */
 	public void purgeCache(String keyPrefix) {
-		Set<String> keySet = cache.keySet();
-		for (String key : keySet) {
+		Iterator<String> iterator = cache.keySet().iterator();
+		while (iterator.hasNext()) {
+			String key = iterator.next();
 			if (key.startsWith(keyPrefix)) {
-				cache.remove(key);
+				iterator.remove();
 			}
 		}
 	}

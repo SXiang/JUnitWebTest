@@ -19,6 +19,8 @@ public class GPSRawDbSeedBuilder extends BaseDbSeedBuilder {
 	private static final String SEED_FILE_NAME = "GPSRawSeed.csv";
 	private static final String INSERT_TEMPLATE = "INSERT [dbo].[GPSRaw] ([AnalyzerId], [EpochTime], [GpsTime], [GpsLatitude], [GpsLongitude], [GpsFit], [GPSLatitudeUncertainty], [GPSLongitudeUncertainty]) VALUES (N'%s', %s, %s, %s, %s, %s, %s, %s)";
 	private boolean redate = false;
+	private double startEpoch;
+	private double endEpoch;
 
 	public GPSRawDbSeedBuilder() {
 		setSeedFilePath(SEED_DATA_FOLDER, SEED_FILE_NAME);
@@ -53,8 +55,16 @@ public class GPSRawDbSeedBuilder extends BaseDbSeedBuilder {
     			String gPSLongitudeUncertainty = handleNullGetValue(rowItem.get("GPSLongitudeUncertainty"));
 
     			seedData.addInsertStatement(String.format(INSERT_TEMPLATE, analyzerId, epochTime, gpsTime, gpsLatitude, gpsLongitude, gpsFit, gPSLatitudeUncertainty, gPSLongitudeUncertainty));
+    			
+    			// DEBUGGING STATEMENTS
+    			if (epochTime.length() < 10) {
+    				Log.info(String.format("Break HERE: Found an incorrect Epoch Time entry!!! EpochTime: %s", epochTime));
+    			}
 			}
     		
+    		this.setStartEpoch(redater.getFirstTime());
+    		this.setEndEpoch(redater.getLastTime());
+
             seedData.setDestinationTableName(TABLE_NAME);
         }
         catch (Exception e)  
@@ -67,15 +77,15 @@ public class GPSRawDbSeedBuilder extends BaseDbSeedBuilder {
 	private Redater checkAndInitializeRedater(List<HashMap<String, String>> allRows, Redater redater, String analyzerId) {
 		GPSRaw firstGPSRaw;
 		if (redater == null) {
-			firstGPSRaw = new GPSRaw().getFirst(analyzerId);
+			GPSRaw gpsRaw = new GPSRaw();
+			gpsRaw.purgeCache();
+			firstGPSRaw = gpsRaw.getFirst(analyzerId);
 			double bufferTime = 1000;
 			double baseUnixTime = DateUtility.getCurrentUnixEpochTime() - allRows.size() - bufferTime;
 			if (firstGPSRaw != null) {
-				baseUnixTime = DateUtility.getCurrentUnixEpochTime() - firstGPSRaw.getEpochTime() - allRows.size() - bufferTime;
-				redater = new Redater(baseUnixTime);
-			} else {
-				redater = new Redater(baseUnixTime);
+				baseUnixTime = firstGPSRaw.getEpochTime() - allRows.size() - bufferTime;
 			}
+			redater = new Redater(baseUnixTime);
 		}
 		return redater;
 	}
@@ -86,5 +96,21 @@ public class GPSRawDbSeedBuilder extends BaseDbSeedBuilder {
 
 	public void setRedate(boolean redate) {
 		this.redate = redate;
+	}
+	
+	public double getStartEpoch() {
+		return startEpoch;
+	}
+
+	public void setStartEpoch(double startEpoch) {
+		this.startEpoch = startEpoch;
+	}
+
+	public double getEndEpoch() {
+		return endEpoch;
+	}
+
+	public void setEndEpoch(double endEpoch) {
+		this.endEpoch = endEpoch;
 	}
 }

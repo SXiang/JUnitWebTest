@@ -19,6 +19,8 @@ public class MeasurementDbSeedBuilder extends BaseDbSeedBuilder {
 	private static final String SEED_FILE_NAME = "MeasurementSeed.csv";
 	private static final String INSERT_TEMPLATE = "INSERT [dbo].[Measurement] ([AnalyzerId], [EpochTime], [CreateDate], [GpsLatitude], [GpsLongitude], [GpsFit], [Shape], [InstrumentStatus], [ValveMask], [CarSpeedNorth], [CarSpeedEast], [WindSpeedNorth], [WindSpeedEast], [WindDirectionStdDev], [WeatherStationRotation], [WindSpeedLateral], [WindSpeedLongitudinal], [ChemDetect], [Species], [CH4], [CO2], [H2OPercent], [DeltaCH4], [PeripheralStatus], [AnalyzerStatus], [CavityPressure], [WarmBoxTemperature], [HotBoxTemperature], [MobileFlowRate], [AnalyzerMode], [PeakDetectorState], [C2H6], [C2H4], [AnalyzerEthaneConcentrationUncertainty]) VALUES (N'%s', %s, CAST(N'%s' AS DateTime), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)";
 	private boolean redate = false;
+	private double startEpoch;
+	private double endEpoch;
 	
 	public MeasurementDbSeedBuilder() {
 		setSeedFilePath(SEED_DATA_FOLDER, SEED_FILE_NAME);
@@ -81,6 +83,9 @@ public class MeasurementDbSeedBuilder extends BaseDbSeedBuilder {
     			seedData.addInsertStatement(String.format(INSERT_TEMPLATE, analyzerId, epochTime, createDate, gpsLatitude, gpsLongitude, gpsFit, shape, instrumentStatus, valveMask, carSpeedNorth, carSpeedEast, windSpeedNorth, windSpeedEast, windDirectionStdDev, weatherStationRotation, windSpeedLateral, windSpeedLongitudinal, chemDetect, species, cH4, cO2, h2OPercent, deltaCH4, peripheralStatus, analyzerStatus, cavityPressure, warmBoxTemperature, hotBoxTemperature, mobileFlowRate, analyzerMode, peakDetectorState, c2H6, c2H4, analyzerEthaneConcentrationUncertainty));
 			}
     		
+    		this.setStartEpoch(redater.getFirstTime());
+    		this.setEndEpoch(redater.getLastTime());
+
             seedData.setDestinationTableName(TABLE_NAME);
         }
         catch (Exception e)  
@@ -93,15 +98,15 @@ public class MeasurementDbSeedBuilder extends BaseDbSeedBuilder {
 	private Redater checkAndInitializeRedater(List<HashMap<String, String>> allRows, Redater redater, String analyzerId) {
 		Measurement firstMeasurement = null;
 		if (redater == null) {
-			firstMeasurement = new Measurement().getFirstMeasurement(analyzerId);
+			Measurement measurement = new Measurement();
+			measurement.purgeCache();
+			firstMeasurement = measurement.getFirstMeasurement(analyzerId);
 			double bufferTime = 1000;
 			double baseUnixTime = DateUtility.getCurrentUnixEpochTime() - allRows.size() - bufferTime;
 			if (firstMeasurement != null) {
-				baseUnixTime = DateUtility.getCurrentUnixEpochTime() - firstMeasurement.getEpochTime() - allRows.size() - bufferTime;
-				redater = new Redater(baseUnixTime);
-			} else {
-				redater = new Redater(baseUnixTime);
-			}
+				baseUnixTime = firstMeasurement.getEpochTime() - allRows.size() - bufferTime;
+			} 			
+			redater = new Redater(baseUnixTime);
 		}
 		return redater;
 	}
@@ -112,5 +117,21 @@ public class MeasurementDbSeedBuilder extends BaseDbSeedBuilder {
 
 	public void setRedate(boolean redate) {
 		this.redate = redate;
+	}
+	
+	public double getStartEpoch() {
+		return startEpoch;
+	}
+
+	public void setStartEpoch(double startEpoch) {
+		this.startEpoch = startEpoch;
+	}
+
+	public double getEndEpoch() {
+		return endEpoch;
+	}
+
+	public void setEndEpoch(double endEpoch) {
+		this.endEpoch = endEpoch;
 	}
 }

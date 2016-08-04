@@ -33,6 +33,7 @@ import common.source.LogHelper;
 import common.source.RegexUtility;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
+import surveyor.dataaccess.source.Location;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.DataTablePage.TableColumnType;
@@ -265,8 +266,16 @@ public class SurveyorBasePage extends BasePage {
 		PageFactory.initElements(driver, loginPage);
 
 		loginPage.open();
-
 		loginPage.loginNormalAs(user, password);
+		
+		// Post login Code first will revert back the default location entry.
+		// This is a workaround to fix the Default location 
+		Location location = Location.getLocation("Default");
+		if (location.getLatitude() < Float.MIN_VALUE + 1) {
+			location.setLatitude(37.4020925705503F);
+			location.setLongitude(-121.984820397399F);
+			location.updateLocation();
+		}
 	}
 
 	public void setPagination(String str) {

@@ -420,6 +420,20 @@ public class Measurement extends BaseEntity {
 		return objMeasurementList;
 	}
 
+	/*
+	@SuppressWarnings("unchecked")
+	public Measurement getFirstMeasurement() {
+		Measurement objMeasurement = null;
+		String SQL = "SELECT TOP 1 * FROM dbo.[Measurement] ORDER BY [EpochTime] ASC";
+		ArrayList<Measurement> objMeasurementList = load(SQL);
+		if (objMeasurementList!=null && objMeasurementList.size()>0)
+		{
+			objMeasurement = objMeasurementList.get(0);
+		}
+		return objMeasurement;
+	}
+	*/
+
 	@SuppressWarnings("unchecked")
 	public Measurement getFirstMeasurement(String analyzerId) {
 		Measurement objMeasurement = null;

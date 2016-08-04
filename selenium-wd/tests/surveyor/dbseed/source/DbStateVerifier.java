@@ -394,10 +394,12 @@ public class DbStateVerifier {
 	 *            - End Epoch
 	 * @param minNoteCount
 	 *            - Minimum number of Measurement rows in database.
+	 * @param checkForAnalyzerOnly
+	 *            - Specifies whether row count for only Analyzer needs to be checked and skip check for Start and End Epoch.
 	 * @return - True/False. Whether Measurement seed is present in database.
 	 */
 	public boolean isMeasurementSeedPresent(String surveyId, String analyzerId, String startEpoch, String endEpoch,
-			Integer minMeasurementCount) {
+			Integer minMeasurementCount, boolean checkForAnalyzerOnly) {
 		Log.method("DbStateVerifier.isMeasurementSeedPresent", surveyId, minMeasurementCount);
 		// check if measurement seed data is already present in the database.
 		try (Statement stmt = connection.createStatement()) {
@@ -406,6 +408,9 @@ public class DbStateVerifier {
 			String tableName = MeasurementDbSeedBuilder.TABLE_NAME;
 			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
 					tableName, analyzerId, startEpoch, endEpoch);
+			if (checkForAnalyzerOnly) {
+				selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s';", tableName, analyzerId);
+			}
 			Log.info(String.format("Select query is: %s", selectQuery));
 			try (ResultSet rsRowCount = stmt.executeQuery(selectQuery)) {
 				rsRowCount.next();
@@ -439,10 +444,12 @@ public class DbStateVerifier {
 	 *            - End Epoch
 	 * @param minNoteCount
 	 *            - Minimum number of GPSRaw rows in database.
+	 * @param checkForAnalyzerOnly
+	 *            - Specifies whether row count for only Analyzer needs to be checked and skip check for Start and End Epoch.
 	 * @return - True/False. Whether GPSRaw seed is present in database.
 	 */
 	public boolean isGPSRawSeedPresent(String surveyId, String analyzerId, String startEpoch, String endEpoch,
-			Integer minGPSRawCount) {
+			Integer minGPSRawCount, boolean checkForAnalyzerOnly) {
 		Log.method("DbStateVerifier.isGPSRawSeedPresent", surveyId, minGPSRawCount);
 		// check if gPSRaw seed data is already present in the database.
 		try (Statement stmt = connection.createStatement()) {
@@ -451,6 +458,9 @@ public class DbStateVerifier {
 			String tableName = GPSRawDbSeedBuilder.TABLE_NAME;
 			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
 					tableName, analyzerId, startEpoch, endEpoch);
+			if (checkForAnalyzerOnly) {
+				selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s';", tableName, analyzerId);
+			}
 			Log.info(String.format("Select query is : %s", selectQuery));
 			try (ResultSet rsRowCount = stmt.executeQuery(
 					selectQuery)) {
@@ -485,10 +495,12 @@ public class DbStateVerifier {
 	 *            - End Epoch
 	 * @param minNoteCount
 	 *            - Minimum number of AnemometerRaw rows in database.
+	 * @param checkForAnalyzerOnly
+	 *            - Specifies whether row count for only Analyzer needs to be checked and skip check for Start and End Epoch.
 	 * @return - True/False. Whether AnemometerRaw seed is present in database.
 	 */
 	public boolean isAnemometerRawSeedPresent(String surveyId, String analyzerId, String startEpoch, String endEpoch,
-			Integer minAnemometerRawCount) {
+			Integer minAnemometerRawCount, boolean checkForAnalyzerOnly) {
 		Log.method("DbStateVerifier.isAnemometerRawSeedPresent", surveyId, minAnemometerRawCount);
 		// check if anemometerRaw seed data is already present in the database.
 		try (Statement stmt = connection.createStatement()) {
@@ -497,6 +509,9 @@ public class DbStateVerifier {
 			String tableName = AnemometerRawDbSeedBuilder.TABLE_NAME;
 			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
 					tableName, analyzerId, startEpoch, endEpoch);
+			if (checkForAnalyzerOnly) {
+				selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s';", tableName, analyzerId);
+			}
 			Log.info(String.format("Select query is : %s", selectQuery));
 			try (ResultSet rsRowCount = stmt.executeQuery(
 					selectQuery)) {

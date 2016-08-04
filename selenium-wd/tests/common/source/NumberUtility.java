@@ -195,7 +195,7 @@ public class NumberUtility {
 		return getDecimalFormat(maxDecimalsToKeep).format(number);
 	}
 
-	public static String formatString(Long number, Integer maxDecimals) {
+	public static String formatString(Float number, Integer maxDecimals) {
 		return getDecimalFormat(maxDecimals).format(number);
 	}
 

@@ -19,6 +19,8 @@ public class AnemometerRawDbSeedBuilder extends BaseDbSeedBuilder {
 	private static final String SEED_FILE_NAME = "AnemometerRawSeed.csv";
 	private static final String INSERT_TEMPLATE = "INSERT [dbo].[AnemometerRaw] ([AnalyzerId], [EpochTime], [WindSpeedLateral], [WindSpeedLongitudinal], [Status], [Index]) VALUES (N'%s', %s, %s, %s, %s, %s)";
 	private boolean redate = false;
+	private double startEpoch;
+	private double endEpoch;
 	
 	public AnemometerRawDbSeedBuilder() {
 		setSeedFilePath(SEED_DATA_FOLDER, SEED_FILE_NAME);
@@ -53,6 +55,9 @@ public class AnemometerRawDbSeedBuilder extends BaseDbSeedBuilder {
     			seedData.addInsertStatement(String.format(INSERT_TEMPLATE, analyzerId, epochTime, windSpeedLateral, windSpeedLongitudinal, status, index));
 			}
     		
+    		this.setStartEpoch(redater.getFirstTime());
+    		this.setEndEpoch(redater.getLastTime());
+    		
             seedData.setDestinationTableName(TABLE_NAME);
         }
         catch (Exception e)  
@@ -65,15 +70,15 @@ public class AnemometerRawDbSeedBuilder extends BaseDbSeedBuilder {
 	private Redater checkAndInitializeRedater(List<HashMap<String, String>> allRows, Redater redater, String analyzerId) {
 		AnemometerRaw firstAnemometerRaw;
 		if (redater == null) {
-			firstAnemometerRaw = new AnemometerRaw().getFirst(analyzerId);
+			AnemometerRaw anemometerRaw = new AnemometerRaw();
+			anemometerRaw.purgeCache();
+			firstAnemometerRaw = anemometerRaw.getFirst(analyzerId);
 			double bufferTime = 1000;
 			double baseUnixTime = DateUtility.getCurrentUnixEpochTime() - allRows.size() - bufferTime;
 			if (firstAnemometerRaw != null) {
-				baseUnixTime = DateUtility.getCurrentUnixEpochTime() - firstAnemometerRaw.getEpochTime() - allRows.size() - bufferTime;
-				redater = new Redater(baseUnixTime);
-			} else {
-				redater = new Redater(baseUnixTime);
-			}
+				baseUnixTime = firstAnemometerRaw.getEpochTime() - allRows.size() - bufferTime;
+			}			
+			redater = new Redater(baseUnixTime);
 		}
 		return redater;
 	}
@@ -84,5 +89,21 @@ public class AnemometerRawDbSeedBuilder extends BaseDbSeedBuilder {
 
 	public void setRedate(boolean redate) {
 		this.redate = redate;
+	}
+
+	public double getStartEpoch() {
+		return startEpoch;
+	}
+
+	public void setStartEpoch(double startEpoch) {
+		this.startEpoch = startEpoch;
+	}
+
+	public double getEndEpoch() {
+		return endEpoch;
+	}
+
+	public void setEndEpoch(double endEpoch) {
+		this.endEpoch = endEpoch;
 	}
 }
