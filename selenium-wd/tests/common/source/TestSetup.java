@@ -269,6 +269,8 @@ public class TestSetup {
 		Log.info("-----Chrome it is ----");
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("download.default_directory", this.downloadPath);
+		prefs.put("profile.default_content_settings.popups", 0);
+		prefs.put("profile.default_content_setting_values.automatic_downloads", 1);
 		this.capabilities = DesiredCapabilities.chrome();
 		this.capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 		ChromeOptions options = new ChromeOptions();
@@ -293,6 +295,8 @@ public class TestSetup {
 	private void setChromeBrowserCapabilitiesForGrid(Proxy proxy) throws MalformedURLException {
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("download.default_directory", this.downloadPath);
+		prefs.put("profile.default_content_settings.popups", 0);
+		prefs.put("profile.default_content_setting_values.automatic_downloads", 1);
 		this.capabilities = DesiredCapabilities.chrome();
 		this.capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 		ChromeOptions options = new ChromeOptions();
