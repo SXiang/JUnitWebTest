@@ -100,6 +100,7 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 	
 	private void cleanUp() throws Exception {
 		if(reportsPage==null||keepTestData()){
+			TestContext.INSTANCE.clearTestReportSet();
 			return;
 		}
 		Set<String> reportIdSet = TestContext.INSTANCE.getTestReportIdSet();
@@ -111,6 +112,7 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 			FileUtility.deleteFilesAndSubFoldersInDirectory(downloadDirectory, reportName);
 			reportsPage.deleteReportById(reportId);
 		}
+		reportsPage.open();
 		TestContext.INSTANCE.clearTestReportSet();
 	}	
 	
