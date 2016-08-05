@@ -98,9 +98,6 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, PICDFADMIN));
 		else
 			fail("\nTestcase TC183 failed.\n");
-
-		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().logout();
 	}
 
 	/**
@@ -173,9 +170,6 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 		} else
 			fail("\nTestcase TC191 failed.\n");
-
-		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().logout();
 	}
 
 	/**
@@ -264,9 +258,6 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 				fail("\nTestcase TC192 failed.\n");
 		} else
 			fail("\nTestcase TC192 failed.\n");
-
-		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().logout();
 	}
 
 	/**
@@ -291,9 +282,6 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		this.getComplianceReportsPage().clickOnCopyReport(rptTitle, PICDFADMIN);
 
 		assertTrue(this.getComplianceReportsPage().verifySurveyAlreadyAdded("Picarro", PICADMNSTDTAG));
-
-		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().logout();
 	}
 
 	/**
@@ -366,9 +354,6 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 		} else
 			fail("\nTestcase TC1321 failed.\n");
-
-		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().logout();
 	}
 
 	/**
@@ -441,8 +426,5 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 		} else
 			fail("\nTestcase TC1351 failed.\n");
-
-		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().logout();
 	}
 }
