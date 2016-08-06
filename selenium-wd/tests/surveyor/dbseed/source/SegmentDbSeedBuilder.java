@@ -51,7 +51,7 @@ public class SegmentDbSeedBuilder extends BaseDbSeedBuilder {
     			// Special handling for Geom type in SurveyResult table to handle issue described in DE2178.
     			// Convert Geom type to WKT and convert back to Geom again when executing INSERT statements.
     			if (geomFileExists) {
-    				shape = String.format("geometry::STGeomFromText('%s', 0)", geomRows.get(rowIdx));
+    				shape = String.format("geometry::STGeomFromText('%s', %d)", geomRows.get(rowIdx), SRID);
     			} 
 
     			seedData.addInsertStatement(String.format(INSERT_TEMPLATE, surveyId, order, mode, shape));

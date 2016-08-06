@@ -18,6 +18,7 @@ import common.source.TestSetup;
 public class BaseDbSeedBuilder {
 	
 	public static final String SURVEY_SEED_DATA_FOLDER = "SurveySeedData";
+	public static final Integer	SRID = 4326;
 
 	protected String SeedDataFilePath;
 	private DbSeedBuilderCache dbSeedCache;
