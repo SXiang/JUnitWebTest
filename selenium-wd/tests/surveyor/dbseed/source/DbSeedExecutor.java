@@ -84,8 +84,7 @@ public class DbSeedExecutor {
 
 		surveySeedBuilderCache = new DbSeedBuilderCache();
 
-		// <DEPRECATE Comment>
-		// NOTE: "EthaneStnd" survey NOT included. SurveyResult entry does NOT get inserted. Tracked by DE2178.
+		// Push 'Ethane-*' survey tags. Tracked by US3279.
 		final String[] surveyTags = {"man-pic-1","man-pic-2","op-pic","op-sqacudr","rr-pic","rr-sqacudr-1","rr-sqacudr-2","stnd-pic",
 				"stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3"};
 

@@ -269,7 +269,7 @@ public class SurveyorBasePage extends BasePage {
 		loginPage.loginNormalAs(user, password);
 		
 		// Post login Code first will revert back the default location entry.
-		// This is a workaround to fix the Default location 
+		// This is a workaround to fix the Default location if lat/long is NULL.
 		Location location = Location.getLocation("Default");
 		if (location.getLatitude() < Float.MIN_VALUE + 1) {
 			location.setLatitude(37.4020925705503F);
