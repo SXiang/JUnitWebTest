@@ -28,6 +28,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 import common.source.BasePage;
+import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.RegexUtility;
@@ -251,10 +252,23 @@ public class SurveyorBasePage extends BasePage {
 	
 	public LoginPage logout() {
 		Log.method("logout");
-		openTopDropdownMenu();
-		Log.clickElementInfo("Log Out",ElementType.LINK);
-		this.linkLogOut.click();
+		return logout(false);
+	}
 
+	private LoginPage logout(boolean failOnError) {
+		Log.method("logout", failOnError);
+		try {
+			openTopDropdownMenu();
+			Log.clickElementInfo("Log Out",ElementType.LINK);
+			this.linkLogOut.click();
+		} catch (Exception e) {
+			if (failOnError) {
+				throw e;
+			} else {
+				Log.warn(String.format("Exception when calling logout : %s", ExceptionUtility.getStackTraceString(e)));
+			}
+		}
+		
 		LoginPage loginPage = new LoginPage(this.driver, this.strBaseURL, this.testSetup);
 		PageFactory.initElements(driver, loginPage);
 		return loginPage;
