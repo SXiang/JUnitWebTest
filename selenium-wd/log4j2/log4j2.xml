@@ -4,7 +4,7 @@
     <!-- Time and size based triggering policies. Create upto 7 archives on same day (1-7), stored in directory based on  current year and month, compress each archive using zip -->
 	<RollingRandomAccessFile name="RollingRandomAccessFile" fileName=".\logs\log.log" append="true" filePattern=".\logs\$${date:yyyy-MM}\log-%d{yyyy-MM-dd}-%i.log.zip">
 	  <PatternLayout header="JAVA_HOME:- ${env:JAVA_HOME}; PATH:- ${env:Path}; JAVA_TOOL_OPTIONS:- ${env:JAVA_TOOL_OPTIONS}; Java Runtime:- ${java:runtime}; Java VM:- ${java:vm}; OS:- ${java:os}; Locale:- ${java:locale}; ${sys:line.separator}">
-		<Pattern>%d{dd MMM yyyy HH\:mm\:ss,SSS} - %p %m%n</Pattern>
+		<Pattern>%d{dd MMM yyyy HH:mm:ss,SSS} - %p %m%n</Pattern>
 	  </PatternLayout>
 	  <Policies>
 		<TimeBasedTriggeringPolicy />
@@ -16,13 +16,25 @@
 	</RollingRandomAccessFile>
 	<Console name="STDOUT" target="SYSTEM_OUT">
 		<PatternLayout header="JAVA_HOME:- ${env:JAVA_HOME}; PATH:- ${env:Path}; JAVA_TOOL_OPTIONS:- ${env:JAVA_TOOL_OPTIONS}; Java Runtime:- ${java:runtime}; Java VM:- ${java:vm}; OS:- ${java:os}; Locale:- ${java:locale}; ${sys:line.separator}">
-			<Pattern>%d{dd MMM yyyy HH\:mm\:ss,SSS} - %p %m%n</Pattern>
+			<Pattern>%d{dd MMM yyyy HH:mm:ss,SSS} - %p %m%n</Pattern>
 		</PatternLayout>
 	</Console>
-	
-	<File name="LOGSTASHFILE" fileName=".\logs\logstash.log" append="false">
+
+	<RollingRandomAccessFile name="LOGSTASHFILE" fileName=".\selenium-wd\reports\logstash\logstash.log"
+						append="true" filePattern=".\selenium-wd\reports\logstash\$${date:yyyy-MM}\log-%d{yyyy-MM-dd}-%i.log.zip">
 		<PatternLayout>
-			<Pattern>%d{dd MMM yyyy HH\:mm\:ss,SSS} - %p %m%n</Pattern>
+			<Pattern>%d{dd MMM yyyy HH:mm:ss,SSS} - %p %m%n</Pattern>
+		</PatternLayout>
+		<Policies>
+			<TimeBasedTriggeringPolicy />
+			<SizeBasedTriggeringPolicy size="10 MB"/>
+			<DefaultRolloverStrategy max="500"/>
+		</Policies>
+	</RollingRandomAccessFile>
+	
+	<File name="LOGSTASHFILE" fileName=".\selenium-wd\reports\logstash\logstash.log" append="true">
+		<PatternLayout>
+			<Pattern>%d{dd MMM yyyy HH:mm:ss,SSS} - %p %m%n</Pattern>
 		</PatternLayout>
 	</File>
 	

@@ -1,11 +1,13 @@
 package common.source;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
 import org.openqa.selenium.WebDriver;
 
 import com.relevantcodes.extentreports.ExtentReports;
@@ -27,7 +29,7 @@ public enum TestContext {
 	private Map<String,Object> testMap;
 	private ArrayList<String> testMessage;
 	private int numTestMessagesToRetain = 5;
-	private static long indexId = System.currentTimeMillis();
+	private static String indexId = getIndexIdForTestRun(); //System.currentTimeMillis();
 	
 	private TestContext() {
 		// Every time a context is created set a unique run ID.
@@ -60,7 +62,14 @@ public enum TestContext {
 	}
 	public void setExtentTest(ExtentTest extentTest, String className) {
 		ITest test = extentTest.getTest();
-		this.testMap.put(LogField.TEST_METHOD.toString(), test.getName());
+	    String methodReplacePattern = "[\\s]*\\[[\\s]*([\\d]*)[\\s]*:[\\s]*([\\d]*).+";
+	    String methodName = test.getName();
+	    try{
+	    	methodName = methodName.replaceAll(methodReplacePattern, "[$1:$2]");
+	    }catch(Exception e){
+	    	Log.warn(e.toString());
+	    }
+		this.testMap.put(LogField.TEST_METHOD.toString(), methodName);
 		this.testMap.put(LogField.TEST_CLASS.toString(), className);
 		this.extentTest = extentTest;
 	}
@@ -213,4 +222,12 @@ public enum TestContext {
 	public void setReport(ExtentReports report) {
 		this.report = report;
 	}
+	
+	public static String getIndexIdForTestRun(){
+		String pattern = "yyyy.MM.dd.H.mm.ss.SSS";
+		SimpleDateFormat formater = new SimpleDateFormat(pattern,Locale.getDefault());
+		String indexId = formater.format(new Date());
+		return indexId;
+	}
+	
 }
