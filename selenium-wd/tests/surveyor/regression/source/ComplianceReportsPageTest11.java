@@ -48,6 +48,9 @@ import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
 import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSDRTAG;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSMNTAG;
+
 import static surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 
 import java.io.IOException;
@@ -73,7 +76,9 @@ import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.dataprovider.ReportDataProvider;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
+import surveyor.scommon.source.MeasurementSessionsPage.DrivingSurveyButtonType;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
@@ -155,11 +160,23 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 
 		} else
 			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
+		
+		if(testCaseName.equals("TC210")){
+			String tagName=tagList.get(0);
+			MeasurementSessionsPage msp = new MeasurementSessionsPage(driver, testSetup, baseURL);
+			PageFactory.initElements(driver, msp);
+			msp.open();
+			assertTrue(msp.actionOnDrivingSurvey(tagName, null, null, null, DrivingSurveyButtonType.DeleteSurvey));
+			msp.open();
+			tagList = msp.getTagNameList();
+			assertTrue(tagList.contains(tagName));
+			
+		}
 
 	}
 	
 	/**
-	 * Test Case ID: TC517 Test Description: Generate compliance report with all default values/filters selected and download it
+	 * Test Case ID: TC207 Test Description: Verify report and survey modes are not modified if user clicks on NO change report mode button
 	 * 
 	 * @throws IOException
 	 * @throws InterruptedException
@@ -167,19 +184,20 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 	 * 
 	 */
 	@Test
-	public void ComplianceReportTest_VerifyReportModeNoChange(String index, String strCreatedBy, String password, String cutomer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
-			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws Exception {
+	public void TC207_ComplianceReportTest_VerifyReportModeNoChange() {
 		String testCaseName	="TC207";
 		String rptTitle = testCaseName+" Report" + testSetup.getRandomNumber();
 		Log.info("\nRunning " + testCaseName + " - " + rptTitle);
-		complianceReportsPage.login(strCreatedBy, CryptoUtility.decrypt(password));
+		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
 		complianceReportsPage.clickOnNewComplianceReportBtn();
-		
-		
-
-
+		assertTrue(complianceReportsPage.checkSurveyModeDidNotChange(ReportModeFilter.Standard, SQACUSDRTAG, ReportModeFilter.Manual) );
+		complianceReportsPage.waitForAddSurveyButtonToLoad();
+		assertTrue(complianceReportsPage.checkSurveyModeDidNotChange(ReportModeFilter.Manual, SQACUSMNTAG,ReportModeFilter.Standard ) );
 	}
+	
+	
+	
 
 
 	private static String getTestCaseName(String key) {
@@ -189,6 +207,7 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 	private static void createTestCaseMap() {
 		testCaseMap.put("1", "TC192");
 		testCaseMap.put("2", "TC202");
+		testCaseMap.put("3", "TC210");
 	}
 
 }

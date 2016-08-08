@@ -139,6 +139,7 @@ public final class SurveyorConstants {
 	public static final String TITLENAMEBASE = "sqacrpt";
 	public static final String TIMEZONE = "Pacific Standard Time";
 	public static final String EXCLUSIONRADIUS = "50";
+	public static final String EXCLUSIONRADIUS_0 = "0";
 	public static final String EXCLUSIONRADIUS_100 = "100";
 	public static final String EXCLUSIONRADIUS_150 = "150";
 	public static final String REPORTMODES1 = "S1";
