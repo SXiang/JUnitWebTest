@@ -194,7 +194,8 @@ public class Log {
 			String currentClass = elements[i].getClassName();
 			if(!currentClass.equals(logClass)
 					&& !currentClass.contains("$")
-					&& !currentClass.contains("TestWatcher")){
+					&& !currentClass.contains("TestWatcher")
+					&& !currentClass.contains("RunRules")){
 				return elements[i];
 			}
 		}

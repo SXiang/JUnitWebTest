@@ -20,8 +20,8 @@
 		</PatternLayout>
 	</Console>
 
-	<RollingRandomAccessFile name="LOGSTASHFILE" fileName=".\selenium-wd\reports\logstash\qaauto.log"
-						append="true" filePattern=".\selenium-wd\reports\logstash\$${date:yyyy-MM}\log-%d{yyyy-MM-dd}-%i.log.zip">
+	<RollingRandomAccessFile name="LOGSTASHFILE" fileName=".\logs\logstash\qaauto.log"
+						append="true" filePattern=".\logs\logstash\$${date:yyyy-MM}\qaauto-%d{yyyy-MM-dd}-%i.log.zip">
 		<PatternLayout>
 			<Pattern>%d{dd MMM yyyy HH:mm:ss,SSS} - %p %m%n</Pattern>
 		</PatternLayout>
@@ -31,13 +31,7 @@
 			<DefaultRolloverStrategy max="500"/>
 		</Policies>
 	</RollingRandomAccessFile>
-	
-	<File name="LOGSTASHFILE" fileName=".\selenium-wd\reports\logstash\logstash.log" append="true">
-		<PatternLayout>
-			<Pattern>%d{dd MMM yyyy HH:mm:ss,SSS} - %p %m%n</Pattern>
-		</PatternLayout>
-	</File>
-	
+
 	<Socket name="LOGSTASH" 
 			host="localhost" port="5999">
 		<SerializedLayout/>
