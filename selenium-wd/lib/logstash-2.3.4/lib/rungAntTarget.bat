@@ -7,8 +7,8 @@ SET compliancereportreport=compliancereportreport
 SET debugreport=debugreport
 
 
-REM ant -f selenium-wd\build.xml %sanityreport%
+ ant -f selenium-wd\build.xml %sanityreport%
 REM ant -f selenium-wd\build.xml %regressionreport%
 REM ant -f selenium-wd\build.xml %compliancereportreport%
-ant -f selenium-wd\build.xml %debugreport%
+REM ant -f selenium-wd\build.xml %debugreport%
 pause
