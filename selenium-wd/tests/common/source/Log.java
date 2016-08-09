@@ -192,7 +192,9 @@ public class Log {
 		String logClass = elements[1].getClassName();
 		for(int i=1; i<elements.length; i++){
 			String currentClass = elements[i].getClassName();
-			if(!currentClass.equals(logClass)){
+			if(!currentClass.equals(logClass)
+					&& !currentClass.contains("$")
+					&& !currentClass.contains("TestWatcher")){
 				return elements[i];
 			}
 		}
