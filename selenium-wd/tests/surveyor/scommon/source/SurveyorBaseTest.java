@@ -75,13 +75,13 @@ public class SurveyorBaseTest {
 		protected void failed(Throwable e, Description description) {
 			SurveyorBaseTest.reportTestLogMessage();			
 			screenCapture.takeScreenshot(driver);
-			Log.error("_FAIL_ Exception: "+e+" Description: "+description);
+			Log.error("_FAIL_ Exception: "+e);
 			SurveyorBaseTest.reportTestFailed(e);
 		}
 
 		 @Override
 		 protected void succeeded(Description description) {
-			 Log.info("_PASS_ Description: "+description);
+			 Log.info("_PASS_ ");
 			 SurveyorBaseTest.reportTestSucceeded();
 		}
 	};
