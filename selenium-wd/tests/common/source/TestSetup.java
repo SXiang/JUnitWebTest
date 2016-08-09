@@ -269,10 +269,20 @@ public class TestSetup {
 		Log.info("-----Chrome it is ----");
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("download.default_directory", this.downloadPath);
+
 		prefs.put("profile.default_content_settings.popups", 0);
 		prefs.put("profile.default_content_setting_values.automatic_downloads", 1);
+		
 		this.capabilities = DesiredCapabilities.chrome();
 		this.capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
+		
+		//Been said that this is for version 46 and newer
+		Map<String, Object> content_setting = new HashMap <>();
+		content_setting.put("multiple-automatic-downloads",1);
+		prefs.put("download.prompt_for_download", "false");
+		prefs.put("profile.default_content_settings", content_setting);
+		//-------------------------------------------------------------
+		
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("start-maximized");
 		options.addArguments(Arrays.asList("--incognito", "test-type"));
