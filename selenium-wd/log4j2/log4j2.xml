@@ -20,7 +20,7 @@
 		</PatternLayout>
 	</Console>
 
-	<RollingRandomAccessFile name="LOGSTASHFILE" fileName=".\selenium-wd\reports\logstash\logstash.log"
+	<RollingRandomAccessFile name="LOGSTASHFILE" fileName=".\selenium-wd\reports\logstash\qaauto.log"
 						append="true" filePattern=".\selenium-wd\reports\logstash\$${date:yyyy-MM}\log-%d{yyyy-MM-dd}-%i.log.zip">
 		<PatternLayout>
 			<Pattern>%d{dd MMM yyyy HH:mm:ss,SSS} - %p %m%n</Pattern>
