@@ -56,7 +56,10 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 		try {
 			// TODO: Turn off report deletion for debugging.
 			//deleteComplianceReport();
-			homePage.logout();
+			if (!driver.getTitle().equalsIgnoreCase("Login")) {
+				homePage.open();
+				homePage.logout();
+			}
 		} catch (Exception e) {
 			Log.warn("Exception in BaseReportsPageActionTest.afterTestMethod(). Exception message:");
 			Log.warn(ExceptionUtility.getStackTraceString(e));

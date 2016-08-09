@@ -86,7 +86,7 @@ public final class SurveyorConstants {
 	public static final String SQAPGEUA = "sqapgeua@email.com";
 	public static final String SQAPGESU = "sqapgesu@email.com";
 	public static final String SQAPGEDR = "sqapgedr1@email.com";
-	
+	public static final String DRIVER1PIC = "driver1@picarro.com";
 
 	public static final String SQAPICLOCSUR = "sqapiclocsur";
 	public static final String SQAPICLOC0SUR = "sqapicloc0sur";
@@ -104,6 +104,8 @@ public final class SurveyorConstants {
 	public static final String SQACUSLOC3SUR = "sqacusloc3sur";
 
 	public static final String FEDS2015ANZ = "FEDS2015";
+	public static final String FEDS2050ANZ = "FEDS2050";
+	public static final String FEDS2055ANZ = "FEDS2055";
 	
 	public static final String SQAETHCUST= CUSTOMER_PGE;
 	public static final String SQAETHSUR="Black Dodge-P3300";
@@ -322,6 +324,9 @@ public final class SurveyorConstants {
 	public static final String SURVEYOR_SOFTWARECAR2037CUST = "SoftwareCar_2037_cust";
 	public static final String SURVEYOR_SOFTWARECAR2037TESTCUST = "SoftwareCar_2037_Testcust";
 	public static final String SURVEYOR_PGEFEDS2015 = "PGE-FEDS2015";
+	public static final String SURVEYOR_SILVERNISSANROGUE = "Silver Nissan Rogue";
+	public static final String SURVEYOR_PICPROD10 = "Picarro Production #10";
+	public static final String SURVEYOR_LIGHTBLUEESC = "Light Blue Escape";
 
 
 	/*
