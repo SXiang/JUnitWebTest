@@ -276,13 +276,6 @@ public class TestSetup {
 		this.capabilities = DesiredCapabilities.chrome();
 		this.capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 		
-		//Been said that this is for version 46 and newer
-		Map<String, Object> content_setting = new HashMap <>();
-		content_setting.put("multiple-automatic-downloads",1);
-		prefs.put("download.prompt_for_download", "false");
-		prefs.put("profile.default_content_settings", content_setting);
-		//-------------------------------------------------------------
-		
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("start-maximized");
 		options.addArguments(Arrays.asList("--incognito", "test-type"));
