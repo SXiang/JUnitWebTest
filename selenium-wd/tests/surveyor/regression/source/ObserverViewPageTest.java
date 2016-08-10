@@ -1264,4 +1264,30 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		homePage.open();
 		assertTrue(!homePage.getFirstOfflineSurveyLink().isEnabled());
 	}
+	
+	/**
+	 * Test Case ID: TC428_LargeNumberOfConcurrentObserversObservingTheMap
+	 * Test Description: Large number of concurrent observers observing the map
+	 * Script:
+	 * 	- create 5 or 10 or 15 observers
+	 * 	- login as observer and observe the survey in map/satellite view  (check how far we can stretch)
+	 * Results:
+	 * 	- Observers can successfully observe the survey
+	 */
+	@Test
+	public void TC428_LargeNumberOfConcurrentObserversObservingTheMap() throws Exception {
+		Log.info("\nRunning TC428_LargeNumberOfConcurrentObserversObservingTheMap ...");
+
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
+
+		startDrivingSurvey(ANALYZER3_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND);
+
+		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
+
+		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
+		assertTrue(observerViewPageAction.verifyObserverViewPageIsOpened(EMPTY, NOTSET));
+		homePage.open();
+		assertTrue(!homePage.getFirstOfflineSurveyLink().isEnabled());
+	}	
 }
