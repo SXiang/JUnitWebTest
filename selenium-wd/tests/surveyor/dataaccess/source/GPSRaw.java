@@ -126,19 +126,6 @@ public class GPSRaw extends BaseEntity {
 		}
 		return objGPSRawList;
 	}
-	
-	/*
-	public GPSRaw getFirst() {
-		GPSRaw objGPSRaw = null;
-		String SQL = "SELECT TOP 1 * FROM dbo.[GPSRaw] ORDER BY EpochTime ASC";
-		ArrayList<GPSRaw> objGPSRawList = load(SQL);
-		if (objGPSRawList!=null && objGPSRawList.size()>0) {
-			objGPSRaw = objGPSRawList.get(0);
-		}
-
-		return objGPSRaw;
-	}
-	*/
 
 	public GPSRaw getFirst(String analyzerId) {
 		GPSRaw objGPSRaw = null;
