@@ -331,6 +331,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(how = How.XPATH, using = "//a[@onclick='cancelSurveyModal()']")
 	protected WebElement btnChangeModeCancel;
+	
+
+	@FindBy(id = "buttonInvestigator")
+	protected WebElement btnAssignInvestigators;
 
 	public WebElement getNewComplianceReportBtn() {
 		return this.newComplianceReportBtn;
@@ -1478,6 +1482,24 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 		return done;
+	}
+	
+	public boolean checkPaginationSettingInvestogation(String numberOfReports) {
+		setPagination(numberOfReports);
+		this.waitForInvestigationPageLoad();
+
+		String msgToVerify = STRPaginationMsg + numberOfReports;
+		this.waitForNumberOfRecords(msgToVerify);
+
+		if (msgToVerify.equals(this.paginationMsg.getText().substring(0, 16).trim()))
+			return true;
+
+		return false;
+	}
+
+	private void waitForInvestigationPageLoad() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public boolean isHighlightedInRed(WebElement element) {
@@ -3887,5 +3909,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@Override
 	public String getSurveyMissingMessage() {
 		return ComplianceReport_SurveyMissingMessage;
+	}
+
+	public WebElement getBtnAssignInvestigators() {
+		return btnAssignInvestigators;
 	}
 }
