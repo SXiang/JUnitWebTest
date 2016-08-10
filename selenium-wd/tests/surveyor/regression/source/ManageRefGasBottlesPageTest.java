@@ -36,7 +36,7 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 	
 	@BeforeClass
 	public static void setupManageRefGasBottlesPageTest() {
-		manageRefGasBottlesPage = new ManageRefGasBottlesPage(driver, testSetup, baseURL);
+		manageRefGasBottlesPage = new ManageRefGasBottlesPage(driver, getTestSetup(), getBaseURL());
 		PageFactory.initElements(driver,  manageRefGasBottlesPage);
 	}
 	
@@ -47,13 +47,13 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC135_AddRefGasBottle_PicAdmin() {
-		String strLotNumber = testSetup.getFixedSizeRandomNumber(5) + "TC135";
+		String strLotNumber = getTestSetup().getFixedSizeRandomNumber(5) + "TC135";
 		
 		Log.info("\nRunning TC135_AddRefGasBottle_PicAdmin - Test Description: Adding a Ref Gas Bottle to a customer surveyor by "
 				+ "Picarro Default Administrator");
 		
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		
 		manageRefGasBottlesPage.open();
 		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", SQACUS, SQACUSLOC, SQACUSLOCSUR);
@@ -68,12 +68,12 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC1250_AddRefGasBottle_PicSU() {
-		String strLotNumber = testSetup.getRandomNumber() + "TC1250";
+		String strLotNumber = getTestSetup().getRandomNumber() + "TC1250";
 		
 		Log.info("\nRunning TC1250_AddRefGasBottle_PicSU - Test Description: Add Reference Gas Bottles as Picarro Support user");
 		
-		loginPage.open();
-		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
 		
 		manageRefGasBottlesPage.open();
 		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", SQACUS, SQACUSLOC, SQACUSLOCSUR);
@@ -97,8 +97,8 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC1251_AddLocationBlankFields_PicSupport - "+
 		         "Test Description: Add reference gas bottle - blank required fields");
 		
-		loginPage.open();
-		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
 		manageRefGasBottlesPage.open();
 		manageRefGasBottlesPage.addRefGasBottle("", "", null, SQACUS, SQACUSLOC, SQACUSLOCSUR, false);
 		
@@ -127,8 +127,8 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 		String isoValue = "-32";
 		String ethaneMethaneRatio = "1";
 		String tcID = getTestCaseName(ManageRefGasBottleTestCaseType.MaxCharsLimit, user);
-		String lotNum50Chars = testSetup.getFixedSizeRandomNumber(16) + str34chars;
-		String lotNum51Chars = testSetup.getFixedSizeRandomNumber(16) + str35chars;
+		String lotNum50Chars = getTestSetup().getFixedSizeRandomNumber(16) + str34chars;
+		String lotNum51Chars = getTestSetup().getFixedSizeRandomNumber(16) + str35chars;
 		String password = CryptoUtility.decrypt(pwd);
 		
 		Log.info("\nRunning "
@@ -136,8 +136,8 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 				+ "_AddRefGasBottleLotNumber50CharLimit_PicarroAdminSupport - Test Description: More than 50 characters not allowed "
 				+ "in Lot Number field present on Add Reference Gas Bottle screens");
 
-		loginPage.open();
-		loginPage.loginNormalAs(user, password);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(user, password);
 		
 		manageRefGasBottlesPage.open();
 		manageRefGasBottlesPage.addNewRefGasBottle(lotNum50Chars, isoValue, ethaneMethaneRatio, SQACUS, SQACUSLOC, SQACUSLOCSUR, true);
@@ -158,20 +158,20 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC500_ManageRefGasBottle_PicSup() {
-		String strLotNumber1 = testSetup.getFixedSizeRandomNumber(5) + "_PicAdmin_TC500";
-		String strLotNumber2 = testSetup.getFixedSizeRandomNumber(5) + "_PicSup_TC500";
+		String strLotNumber1 = getTestSetup().getFixedSizeRandomNumber(5) + "_PicAdmin_TC500";
+		String strLotNumber2 = getTestSetup().getFixedSizeRandomNumber(5) + "_PicSup_TC500";
 		
 		Log.info("\nRunning TC500_ManageRefGasBottle_PicSup");
 		
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		
 		manageRefGasBottlesPage.open();
 		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber1, "-32", SQACUS, SQACUSLOC, SQACUSLOCSUR);
 		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber1, SQACUSLOCSUR));
 		
-		loginPage.open();
-		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
 		manageRefGasBottlesPage.open();
 		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber1, SQACUSLOCSUR));
 		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber2, "-32", SQACUS, SQACUSLOC, SQACUSLOCSUR);

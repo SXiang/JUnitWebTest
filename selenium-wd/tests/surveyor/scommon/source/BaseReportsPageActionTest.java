@@ -56,7 +56,7 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 		try {
 			// TODO: Turn off report deletion for debugging.
 			//deleteComplianceReport();
-			homePage.logout();
+			getHomePage().logout();
 		} catch (Exception e) {
 			Log.warn("Exception in BaseReportsPageActionTest.afterTestMethod(). Exception message:");
 			Log.warn(ExceptionUtility.getStackTraceString(e));

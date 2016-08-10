@@ -63,22 +63,22 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	private static PreferencesPage preferencesPage;
 
 	public PageObjectVerificationTest() {
-		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
+		complianceReportsPage = new ComplianceReportsPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver, complianceReportsPage);
 
-		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
+		manageLocationsPage = new ManageLocationsPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver, manageLocationsPage);
 
-		driverViewPage = new DriverViewPage(driver, testSetup, baseURL);
+		driverViewPage = new DriverViewPage(driver, getTestSetup(), getBaseURL());
 		PageFactory.initElements(driver, driverViewPage);
 
 		latLongSelectionControl = new LatLongSelectionControl(driver);
 		PageFactory.initElements(driver, latLongSelectionControl);
 
-		eqReportsPage = new EqReportsPage(driver, baseURL, testSetup);
+		eqReportsPage = new EqReportsPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver, eqReportsPage);
 
-		preferencesPage = new PreferencesPage(driver, baseURL, testSetup);
+		preferencesPage = new PreferencesPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver, preferencesPage);
 	}
 
@@ -91,7 +91,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	public void ReferenceOnly_LatLongSelectorControl_LatLongAreaSelectorTest() {
 		System.out.format("\nRunning ReferenceOnly_LatLongSelectorControl_LatLongAreaSelectorTest... \n");
 
-		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		complianceReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		complianceReportsPage.open();
 		complianceReportsPage.waitForPageLoad();
 
@@ -115,7 +115,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	public void ReferenceOnly_LatLongSelectorControl_CustomerLatLongSelectorTest() {
 		System.out.format("\nRunning ReferenceOnly_LatLongSelectorControl_CustomerLatLongSelectorTest... \n");
 
-		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		complianceReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		complianceReportsPage.open();
 		complianceReportsPage.waitForPageLoad();
 
@@ -143,7 +143,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	public void ReferenceOnly_LatLongSelectorControl_LatLongSelectorTest() {
 		System.out.format("\nRunning ReferenceOnly_LatLongSelectorControl_LatLongSelectorTest... \n");
 
-		manageLocationsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		manageLocationsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageLocationsPage.open();
 		manageLocationsPage.waitForPageLoad();
 		manageLocationsPage.clickOnAddNewLocationBtn();
@@ -176,8 +176,8 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	public void ReferenceOnly_SimulatorTest_TestEQMethods() {
 		Log.info("Running ReferenceOnly_SimulatorTest_TestEQMethods");
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
@@ -187,24 +187,24 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		assertTrue(driverViewPage.isStartEQSurveyButtonEnabled());
 		assertTrue(driverViewPage.isStartEQSurveyButtonVisible());
 
 		// Start EQ Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm
-		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
+		String tag = getTestSetup().getFixedSizePseudoRandomString(13) + "_TEST";
 		driverViewPage.startEQDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50);
 
 		// Let the survey run for a few seconds.
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		assertTrue(driverViewPage.isEQModeDialogShown());
 		assertTrue(driverViewPage.verifyEQModeDialogMessageEquals(Resources.getResource(ResourceKeys.Dialog_EQModeActive)));
 		
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		assertTrue(!driverViewPage.isStartEQSurveyButtonVisible());
 		assertTrue(driverViewPage.isStopDrivingSurveyButtonVisible());
@@ -220,8 +220,8 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	public void ReferenceOnly_SimulatorTest_ButtonsVisibleVerification() {
 		Log.info("Running ReferenceOnly_SimulatorTest_CarIconColorVerification");
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
@@ -231,21 +231,21 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		assertTrue(driverViewPage.isStartSurveyButtonVisible());
 		assertTrue(driverViewPage.isSystemShutdownButtonVisible());
 
 		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
-		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
+		String tag = getTestSetup().getFixedSizePseudoRandomString(13) + "_TEST";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
 
 		// Let the survey run for a few seconds.
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		assertTrue(!driverViewPage.isStartSurveyButtonVisible());
 		assertTrue(driverViewPage.isStopDrivingSurveyButtonVisible());
@@ -261,8 +261,8 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	public void ReferenceOnly_SimulatorTest_CarIconColorVerification() {
 		Log.info("Running ReferenceOnly_SimulatorTest_CarIconColorVerification");
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
@@ -272,25 +272,25 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
-		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
+		String tag = getTestSetup().getFixedSizePseudoRandomString(13) + "_TEST";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
 
 		// Let the survey run for a few seconds.
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		// check car icon shown is RED
 		OLMapUtility mapUtility = new OLMapUtility(this.driver);
 		assertTrue(mapUtility.isCrossHairIconShownOnMap(IconColor.Red));
 
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		driverViewPage.stopDrivingSurvey();
 
 		// Wait for a few seconds.
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		// check car icon shown is GRAY
 		assertTrue(mapUtility.isCrossHairIconShownOnMap(IconColor.Gray));
 
@@ -305,8 +305,8 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	public void ReferenceOnly_SimulatorTest_BreadcrumbColorVerification() {
 		Log.info("Running ReferenceOnly_SimulatorTest_BreadcrumbColorVerification");
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
@@ -316,25 +316,25 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
-		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
+		String tag = getTestSetup().getFixedSizePseudoRandomString(13) + "_TEST";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
 
 		// Let the survey run for a few seconds.
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		// check breadcrumb color shown is BLUE
 		OLMapUtility mapUtility = new OLMapUtility(this.driver);
 		assertTrue(mapUtility.isBreadcrumbShownOnMap(BreadcrumbColor.Blue));
 
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		driverViewPage.stopDrivingSurvey();
 
 		// Wait for a few seconds.
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		// check breadcrumb color shown is GRAY
 		assertTrue(mapUtility.isBreadcrumbShownOnMap(BreadcrumbColor.Gray));
 
@@ -350,8 +350,8 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	public void ReferenceOnly_SimulatorTest_DatetimeTicksTest() throws InterruptedException {
 		Log.info("Running ReferenceOnly_SimulatorTest_DatetimeTicksTest");
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
@@ -361,15 +361,15 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
-		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
+		String tag = getTestSetup().getFixedSizePseudoRandomString(13) + "_TEST";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
 
 		// Open Header box and check the survey information.
 		driverViewPage.clickHeaderInfoBox();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		Log.info("ELAPSED:[" + driverViewPage.getTimeElapsedLabelText() + "]");
 		assertTrue(DateUtility.isTimeTickingForward(driverViewPage.getTimeElapsedLabel()));
@@ -382,7 +382,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		driverViewPage.stopDrivingSurvey();
 
 		TestSetup.stopAnalyzer();
@@ -398,8 +398,8 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	public void ReferenceOnly_SimulatorTest_OLMapFunctionality() {
 		Log.info("Running ReferenceOnly_SimulatorTest_OLMapFunctionality");
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
@@ -409,10 +409,10 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
-		String tag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
+		String tag = getTestSetup().getFixedSizePseudoRandomString(13) + "_TEST";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
 
 		// Zoom out twice so that the indications will still keep showing in the view.
@@ -420,7 +420,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		driverViewPage.clickZoomOutButton();
 
 		// Let the test run for a few seconds.
-		testSetup.slowdownInSeconds(5 * testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(5 * getTestSetup().getSlowdownInSeconds());
 
 		// Stopping the replay before capturing OLMapUtility objects.
 		// This is necessary to click on correct co-ordinates.
@@ -550,7 +550,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		driverViewPage.stopDrivingSurvey();
 
@@ -566,7 +566,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	public void ReferenceOnly_EQSegmentSelectorTest() {
 		System.out.format("\nRunning ReferenceOnly_EQSegmentSelectorTest... \n");
 
-		eqReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		eqReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		eqReportsPage.open();
 
 		eqReportsPage.clickOnNewEQReportBtn();
@@ -606,16 +606,16 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		
 		password = CryptoUtility.decrypt(password);
 		
-		loginPage.open();
-		loginPage.loginNormalAs(username, password);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(username, password);
 
-		homePage.waitForPageLoad();
-		homePage.getDropDownLoginUser().click();
-		homePage.getLinkPreference().click();
+		getHomePage().waitForPageLoad();
+		getHomePage().getDropDownLoginUser().click();
+		getHomePage().getLinkPreference().click();
 
 		preferencesPage.waitForPageLoad();
 		preferencesPage.setSelectedCulture(cultureString);
 		preferencesPage.getBtnOk().click();
-		homePage.waitForPageLoad();
+		getHomePage().waitForPageLoad();
 	}
 }

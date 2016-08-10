@@ -60,19 +60,19 @@ public class ManageCusLocSurAnaUserTest extends SurveyorBaseTest {
 	private static ManageUsersPage manageUsersPage;
 	
 	public ManageCusLocSurAnaUserTest() {
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
+		manageCustomersPage = new ManageCustomersPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver,  manageCustomersPage);
 		
-		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
+		manageLocationsPage = new ManageLocationsPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver,  manageLocationsPage);
 		
-		manageSurveyorPage = new ManageSurveyorPage(driver, baseURL, testSetup);
+		manageSurveyorPage = new ManageSurveyorPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver,  manageSurveyorPage);		
 		
-		manageAnalyzersPage = new ManageAnalyzersPage(driver, baseURL, testSetup);
+		manageAnalyzersPage = new ManageAnalyzersPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver,  manageAnalyzersPage);
 		
-		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
+		manageUsersPage = new ManageUsersPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver,  manageUsersPage);		
 	}
 

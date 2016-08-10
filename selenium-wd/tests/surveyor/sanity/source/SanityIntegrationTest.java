@@ -81,72 +81,72 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 
 	@BeforeClass
 	public static void SetupSanityIntegrationTest() {
-		complianceReportsPage = new ComplianceReportsPage(driver, baseURL,
-				testSetup);
+		complianceReportsPage = new ComplianceReportsPage(driver, getBaseURL(),
+				getTestSetup());
 		PageFactory.initElements(driver, complianceReportsPage);
 
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL,
-				testSetup);
+		manageCustomersPage = new ManageCustomersPage(driver, getBaseURL(),
+				getTestSetup());
 		PageFactory.initElements(driver, manageCustomersPage);
 
-		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
+		manageUsersPage = new ManageUsersPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver, manageUsersPage);
 
-		manageLocationsPage = new ManageLocationsPage(driver, baseURL,
-				testSetup);
+		manageLocationsPage = new ManageLocationsPage(driver, getBaseURL(),
+				getTestSetup());
 		PageFactory.initElements(driver, manageLocationsPage);
 
-		manageSurveyorsPage = new ManageSurveyorPage(driver, baseURL, testSetup);
+		manageSurveyorsPage = new ManageSurveyorPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver, manageSurveyorsPage);
 
-		manageAnalyzersPage = new ManageAnalyzersPage(driver, baseURL,
-				testSetup);
+		manageAnalyzersPage = new ManageAnalyzersPage(driver, getBaseURL(),
+				getTestSetup());
 		PageFactory.initElements(driver, manageAnalyzersPage);
 
 		manageRefGasBottlesPage = new ManageRefGasBottlesPage(driver,
-				testSetup, baseURL);
+				getTestSetup(), getBaseURL());
 		PageFactory.initElements(driver, manageRefGasBottlesPage);
 
 		manageSurveyorHistoriesPage = new ManageSurveyorHistoriesPage(driver,
-				baseURL, testSetup);
+				getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver, manageSurveyorHistoriesPage);
 
-		manageReleaseNotesPage = new ManageReleaseNotesPage(driver, baseURL,
-				testSetup);
+		manageReleaseNotesPage = new ManageReleaseNotesPage(driver, getBaseURL(),
+				getTestSetup());
 		PageFactory.initElements(driver, manageReleaseNotesPage);
 	}
 
 	@Test
 	public void TC25_LoginTest_PicarroAdmin() {
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		homePage.open();
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		getHomePage().open();
 	
 		assertTrue(PICDFADMIN + " user login unsuccessful!",
-				homePage.checkIfAtHomePage());
-		loginPage = homePage.logout();
+				getHomePage().checkIfAtHomePage());
+		setLoginPage(getHomePage().logout());
 	}
 
 	@Test
 	public void TC25_LoginTest_CustomerAdmin() {
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
 
-		homePage.open();
+		getHomePage().open();
 		assertTrue(SQACUSUAUSER + " user login unsuccessful!",
-				homePage.checkIfAtHomePage());
-		loginPage = homePage.logout();
+				getHomePage().checkIfAtHomePage());
+		setLoginPage(getHomePage().logout());
 	}
 
 	@Test
 	public void TC25_LoginTest_CustomerDriver() {
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSDR, USERPASSWORD);
 
-		homePage.open();
+		getHomePage().open();
 		assertTrue(SQACUSDRUSER + " user login unsuccessful!",
-				homePage.checkIfAtHomePage());
-		loginPage = homePage.logout();
+				getHomePage().checkIfAtHomePage());
+		setLoginPage(getHomePage().logout());
 	}
 
 	/**
@@ -159,7 +159,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 	public void TC739_GenerateComplianceReport_CustomerSupervisor() throws Exception {
 		String testCaseID = "TC739";
 		String rptTitle = "Customer Supervisor Report " + testCaseID + " "
-				+ testSetup.getRandomNumber();
+				+ getTestSetup().getRandomNumber();
 		System.out
 				.format("\nRunning " + testCaseID
 						+ ": Generate compliance report as customer supervisor user by selecting report area using custom boundary, %s\n",
@@ -247,11 +247,11 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		
 		complianceReportsPage.addNewReport(rpt);
 
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSSU, testCaseID))) {
 			assertTrue(complianceReportsPage.findReport(rptTitle, SQACUSSU));
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt,
-					testSetup.getDownloadPath()));
+					getTestSetup().getDownloadPath()));
 		} else
 			fail("\nTestcase TC739 failed." + rptTitle
 					+ " report failed to generate by " + SQACUSSU + " user!!\n");
@@ -267,41 +267,41 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC519_CheckBrokenPages() {
-		loginPage.open();
-		assertTrue(loginPage.isLinkBroken());
+		getLoginPage().open();
+		assertTrue(getLoginPage().isLinkBroken());
 
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		assertTrue(homePage.isLinkBroken());
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		assertTrue(getHomePage().isLinkBroken());
 
-		homePage.clickOnDrivingSurveyLink();
-		assertTrue(homePage.isLinkBroken());
+		getHomePage().clickOnDrivingSurveyLink();
+		assertTrue(getHomePage().isLinkBroken());
 
-		homePage.clickOnSurveyorsLink();
-		assertTrue(homePage.isLinkBroken());
+		getHomePage().clickOnSurveyorsLink();
+		assertTrue(getHomePage().isLinkBroken());
 
-		homePage.clickOnFleetMapLink();
-		assertTrue(homePage.isLinkBroken());
+		getHomePage().clickOnFleetMapLink();
+		assertTrue(getHomePage().isLinkBroken());
 
-		homePage.clickOnReportsLink();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		homePage.clickOnComplianceReportLink();
+		getHomePage().clickOnReportsLink();
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
+		getHomePage().clickOnComplianceReportLink();
 		assertTrue(complianceReportsPage.isLinkBroken());
 
-		// homePage.clickOnEQReportLink();
-		// assertTrue(homePage.isLinkBroken());
+		// getHomePage().clickOnEQReportLink();
+		// assertTrue(getHomePage().isLinkBroken());
 
-		homePage.clickOnReferenceGasReportLink();
-		assertTrue(homePage.isLinkBroken());
+		getHomePage().clickOnReferenceGasReportLink();
+		assertTrue(getHomePage().isLinkBroken());
 
-		homePage.clickOnSystemHistoryReportLink();
-		assertTrue(homePage.isLinkBroken());
+		getHomePage().clickOnSystemHistoryReportLink();
+		assertTrue(getHomePage().isLinkBroken());
 
-		homePage.clickOnPicarroAdminLink();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		homePage.clickOnCalibrationLink();
-		assertTrue(homePage.isLinkBroken());
+		getHomePage().clickOnPicarroAdminLink();
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
+		getHomePage().clickOnCalibrationLink();
+		assertTrue(getHomePage().isLinkBroken());
 
-		homePage.clickOnManageCustomersLink();
+		getHomePage().clickOnManageCustomersLink();
 		assertTrue(manageCustomersPage.isLinkBroken());
 		manageCustomersPage.clickOnAddNewCustomerBtn();
 		manageCustomersPage.waitForNewPageLoad();
@@ -315,7 +315,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		
 		manageCustomersPage.waitForPageToLoad();
 
-		homePage.clickOnManageUsersLink();
+		getHomePage().clickOnManageUsersLink();
 		assertTrue(manageUsersPage.isLinkBroken());
 		manageUsersPage.clickOnAddNewPicarroUserBtn();
 		manageUsersPage.waitForNewPageLoad();
@@ -336,7 +336,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 
 		manageUsersPage.waitForPageToLoad();
 		
-		homePage.clickOnManageLocationsLink();
+		getHomePage().clickOnManageLocationsLink();
 		assertTrue(manageLocationsPage.isLinkBroken());
 		manageLocationsPage.clickOnAddNewLocationBtn();
 		manageLocationsPage.waitForNewPageLoad();
@@ -350,7 +350,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		
 		manageLocationsPage.waitForPageToLoad();
 		
-		homePage.clickOnManageSurveyorsLink();
+		getHomePage().clickOnManageSurveyorsLink();
 		assertTrue(manageSurveyorsPage.isLinkBroken());
 		manageSurveyorsPage.clickOnAddNewSurveyorBtn();
 		manageSurveyorsPage.waitForNewPageLoad();
@@ -364,7 +364,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		
 		manageSurveyorsPage.waitForPageToLoad();
 
-		homePage.clickOnManageAnalyzersLink();
+		getHomePage().clickOnManageAnalyzersLink();
 		assertTrue(manageAnalyzersPage.isLinkBroken());
 		manageAnalyzersPage.clickOnAddNewAnalyzerBtn();
 		manageAnalyzersPage.waitForNewPageLoad();
@@ -378,7 +378,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		
 		manageAnalyzersPage.waitForPageToLoad();
 
-		homePage.clickOnManageRefGasBottlesLink();
+		getHomePage().clickOnManageRefGasBottlesLink();
 		assertTrue(manageRefGasBottlesPage.isLinkBroken());
 		manageRefGasBottlesPage.clickOnAddNewRefGasBottleBtn();
 		manageRefGasBottlesPage.waitForNewPageLoad();
@@ -387,7 +387,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		
 		manageRefGasBottlesPage.waitForPageToLoad();
 
-		homePage.clickOnManageSurveyorHistoriesLink();
+		getHomePage().clickOnManageSurveyorHistoriesLink();
 		assertTrue(manageSurveyorHistoriesPage.isLinkBroken());
 		manageSurveyorHistoriesPage.clickOnAddNewHistoryEntryBtn();
 		manageSurveyorHistoriesPage.waitForNewPageLoad();
@@ -397,17 +397,17 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageSurveyorHistoriesPage.waitForPageToLoad();
 
 		/* Commenting, while change is being deployed to P3SQA.
-		homePage.clickOnManageReleaseNotesLink();
+		getHomePage().clickOnManageReleaseNotesLink();
 		assertTrue(manageReleaseNotesPage.isLinkBroken());
 		manageReleaseNotesPage.clickOnAddNewReleaseNoteBtn();
 		assertTrue(manageReleaseNotesPage.isLinkBroken());
 		manageReleaseNotesPage.clickOnCancelBtn();
 		*/
 		
-		homePage.clickOnViewAnalyzerLogsLink(baseURL);
-		assertTrue(homePage.isLinkBroken());
+		getHomePage().clickOnViewAnalyzerLogsLink(getBaseURL());
+		assertTrue(getHomePage().isLinkBroken());
 
-		homePage.clickOnViewServerlogsLink(baseURL);
-		assertTrue(homePage.isLinkBroken());
+		getHomePage().clickOnViewServerlogsLink(getBaseURL());
+		assertTrue(getHomePage().isLinkBroken());
 	}
 }

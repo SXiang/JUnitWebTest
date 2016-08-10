@@ -27,7 +27,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	private static ManageCustomersPage manageCustomersPage;
 	
 	public ManageCustomersPageTest() {
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
+		manageCustomersPage = new ManageCustomersPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver,  manageCustomersPage);		
 	}
 
@@ -41,8 +41,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		try {
 			manageCustomersPage.open();
 			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
+			if (isDebug())
+				getTestSetup().slowdownInSeconds(3);
 			
 			String strCustomerName = "";
 			

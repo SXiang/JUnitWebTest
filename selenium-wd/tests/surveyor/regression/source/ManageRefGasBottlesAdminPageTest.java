@@ -47,7 +47,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	
 	@BeforeClass
 	public static void setupManageRefGasBottlesAdminPageTest () {
-		manageRefGasBottlesAdminPage = new ManageRefGasBottlesAdminPage(driver, testSetup, baseURL);
+		manageRefGasBottlesAdminPage = new ManageRefGasBottlesAdminPage(driver, getTestSetup(), getBaseURL());
 		PageFactory.initElements(driver,  manageRefGasBottlesAdminPage);
 	}
 
@@ -63,13 +63,13 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	 */	
 	@Test
 	public void TC463_AddRefGasBottle_CustUA() {
-		String lotNum = testSetup.getRandomNumber() + "_TC463";
+		String lotNum = getTestSetup().getRandomNumber() + "_TC463";
 		String isoValue = "-32.7";
 		
 		Log.info("\nRunning TC463_AddRefGasBottle_CustUA - Test Description: Add Reference Gas Bottles");
 		
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
 		
 		manageRefGasBottlesAdminPage.open();
 		manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR);
@@ -95,8 +95,8 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC464_AddRefGasBottleBlankRequiredFields_CustUA - Test Description: add reference gas bottle - "
 				+ "blank required fields");
 		
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
 		
 		manageRefGasBottlesAdminPage.open();
 		assertFalse(manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum, isoValue, ethaneMethaneRatio, SQACUS, SQACUSLOC, SQACUSLOCSUR, false));
@@ -118,8 +118,8 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		String str34chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcd";
 		String str35chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcde";
 		
-		String lotNum50Chars = testSetup.getFixedSizeRandomNumber(11) + "TC465" + str34chars;
-		String lotNum51Chars = testSetup.getFixedSizeRandomNumber(11) + "TC465" + str35chars;
+		String lotNum50Chars = getTestSetup().getFixedSizeRandomNumber(11) + "TC465" + str34chars;
+		String lotNum51Chars = getTestSetup().getFixedSizeRandomNumber(11) + "TC465" + str35chars;
 		
 		String isoValue = "-32";
 		String ethMthRto = "1";
@@ -127,8 +127,8 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC465_AddRefGasBottleLotNumber50CharLimit_CustUA - Test Description: More than 50 characters not allowed "
 				+ "in Lot Number field present on Add Reference Gas Bottle screens");
 		
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
 		
 		manageRefGasBottlesAdminPage.open();
 		manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum50Chars, isoValue, ethMthRto, SQACUS, SQACUSLOC, SQACUSLOCSUR, true);
@@ -150,8 +150,8 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		List<String> lotNumberList;
 		Log.info("\nRunning - TC450_ManageRefGasBottlesAdminPagination - Test Description: Pagination (Manage Ref Gas Bottles Customer Admin)\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
 		manageRefGasBottlesAdminPage.open();
 		manageRefGasBottlesAdminPage.setPagination(PAGINATIONSETTING);
 
@@ -195,12 +195,12 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC451_SearchValidRefGasBottle() {
-		String lotNumber = "TC451_" + testSetup.getRandomNumber();
+		String lotNumber = "TC451_" + getTestSetup().getRandomNumber();
 		String isoValue = "-32.7";
 		Log.info("\nRunning - TC451 - Test Description: Search ref gas bottle record\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageRefGasBottlesAdminPage.open();
 		manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNumber, isoValue,
@@ -214,11 +214,11 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC452_SearchInvalidRefGasBottle() {
-		String lotNumber = "Invalid_TC452_" + testSetup.getRandomNumber();
+		String lotNumber = "Invalid_TC452_" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning - TC452 - Test Description: Search invalid Ref Gas Bottle record\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
 		manageRefGasBottlesAdminPage.open();
 		manageRefGasBottlesAdminPage.waitForPageLoad();
 		manageRefGasBottlesAdminPage.getInputSearch().sendKeys(lotNumber);
@@ -237,8 +237,8 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		List<String> list = new ArrayList<String>();
 		Log.info("\nRunning - TC453 - Test Description: Sort Ref Gas Bottle records based on attributes present\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
 		manageRefGasBottlesAdminPage.open();
 		
 		manageRefGasBottlesAdminPage.getTheadSurveyor().click();
@@ -275,8 +275,8 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC132_ManageRefGas_SortColumns() {
 		Log.info("\nRunning TC132_ManageRefGas_SortColumns");
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageRefGasBottlesAdminPage.open();		
 		assertTrue(manageRefGasBottlesAdminPage.areTableColumnsSorted());
 	}

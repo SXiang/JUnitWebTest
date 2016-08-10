@@ -5,6 +5,7 @@
 	<property name="build" location="build" />
 	<property name="reports" location="reports" />
 	<property name="sanity_jar" value="sanity.jar" />
+	<property name="gridpoc_jar" value="gridpoc.jar" />
 	<property name="regression_jar" value="regression.jar" />
 	<property name="performance_jar" value="performance.jar" />
 	<property name="common_jar" value="common.jar" />
@@ -14,7 +15,8 @@
 		<mkdir dir="${build}" />
 		<mkdir dir="${dist}" />
 		
-		<mkdir dir="${reports}/sanity/xml" />	
+		<mkdir dir="${reports}/sanity/xml" />
+		<mkdir dir="${reports}/gridpoc/xml" />
 		<mkdir dir="${reports}/regression/xml" />
 		<mkdir dir="${reports}/performance/xml" />
 		
@@ -104,6 +106,19 @@
 		</javac>
 
 		<jar jarfile="${dist}/${sanity_jar}" basedir="${build}" />
+
+	</target>
+
+	<target name="compileGridPOC" depends="compile_scommon" description="Compile grid POC source code">
+		<javac srcdir="${basedir}/tests/surveyor/grid/poc/source" includeantruntime="false" destdir="${build}" debug="true">
+			<classpath>
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+
+		<jar jarfile="${dist}/${gridpoc_jar}" basedir="${build}" />
 
 	</target>
 
@@ -418,7 +433,29 @@
 		</junit>
 		<echo message="junit build : ${build}" />
 	</target>
-	
+
+	<target name="testgridpoc" depends="compileGridPOC" description="Run grid POC test suite">
+		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
+					showoutput="yes">
+			<sysproperty key="testReportCategory" value="GridPOC" />
+			<sysproperty key="maxParallelTestThreads" value="8" />
+			<classpath>
+				<pathelement path="${build}" />
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+
+			<batchtest fork="yes" todir="${reports}/gridpoc/xml">
+				<formatter type="xml" />
+				<fileset dir="${build}">
+					<include name="**/GridPOCTestSuite.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<echo message="junit build : ${build}" />
+	</target>
+
 	<target name="tc_localrun" depends="compileregression" description="Run regression on TC before merge">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
@@ -438,7 +475,6 @@
 			</batchtest>
 		</junit>
 	</target>
-
 	
 	<!-- JUnit Test Reports -->
 	<target name="sanityreport" depends="testsanity">
@@ -451,6 +487,16 @@
 		</junitreport>
 	</target>
 
+	<target name="gridpocreport" depends="testgridpoc">
+		<junitreport todir="${reports}/gridpoc/xml">
+			<fileset dir="${reports}/gridpoc/xml">
+				<include name="*TEST-*.xml" />
+			</fileset>
+			<report styledir="./tests" format="noframes" todir="${reports}/gridpoc">
+			</report>
+		</junitreport>
+	</target>
+	
 	<target name="regressionreport" depends="testregression">
 		<junitreport todir="${reports}/regression/xml">
 			<fileset dir="${reports}/regression/xml">

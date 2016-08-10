@@ -39,10 +39,10 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 
 	@BeforeClass
 	public static void setupManageLocationsPageTest() {
-		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
+		manageLocationsPage = new ManageLocationsPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver,  manageLocationsPage);
 
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
+		manageCustomersPage = new ManageCustomersPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver,  manageCustomersPage);
 	}
 
@@ -56,8 +56,8 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 	public void TC1695_Manage_Locations_Ethane_Methane_Ratio_Column() {
 		Log.info("\nRunning - TC1695 - Test Description: Ethane: Verify Manage Locations page appears when logged in as Picarro Admin");
 
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageLocationsPage.open();
 
@@ -74,12 +74,12 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC1696_Manage_Locations_Edit_Ethane_Methane_Ratio_Column() {
-		String locationName = "TC1696 Ethane "+ testSetup.getRandomNumber();
+		String locationName = "TC1696 Ethane "+ getTestSetup().getRandomNumber();
 		String locationNewName= locationName + "_New";
 		Log.info("\nRunning - TC1696 - Test Description: Ethane: Verify setting the Ethane/Methane ratio for the first time");
 
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageLocationsPage.open();
 
@@ -99,11 +99,11 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC1697_Manage_Locations_Add_Ethane_Methane_Ratio_Column() {
-		String locationName = "TC1697 Ethane "+ testSetup.getRandomNumber();
+		String locationName = "TC1697 Ethane "+ getTestSetup().getRandomNumber();
 		Log.info("\nRunning - TC1697 - Test Description: Ethane: Verify setting the Ethane/Methane ratio for the first time");
 
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageLocationsPage.open();
 
@@ -122,8 +122,8 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 	public void TC1698_Manage_Locations_Ethane_Methane_Ratio_Column() {
 		Log.info("\nRunning - TC1698 - Test Description: Verify Manage Locations page appears when logged in as Customer Admin");
 
-		loginPage.open();
-		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
 
 		manageLocationsPage.open();
 

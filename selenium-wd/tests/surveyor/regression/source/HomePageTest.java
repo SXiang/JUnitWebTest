@@ -52,26 +52,26 @@ public class HomePageTest extends SurveyorBaseTest {
 	private static LoginPageActions loginPageAction;
 
 	public HomePageTest() {
-		homePage = new HomePage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, homePage);
+		setHomePage(new HomePage(driver, getBaseURL(), getTestSetup()));
+		PageFactory.initElements(driver, getHomePage());
 
-		measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
+		measurementSessionsPage = new MeasurementSessionsPage(driver, getTestSetup(), getBaseURL());
 		PageFactory.initElements(driver, measurementSessionsPage);
 
-		fleetMapPage = new FleetMapPage(driver, testSetup, baseURL);
+		fleetMapPage = new FleetMapPage(driver, getTestSetup(), getBaseURL());
 		PageFactory.initElements(driver, fleetMapPage);
 
-		surveyorSystemsPage = new SurveyorSystemsPage(driver, testSetup, baseURL);
+		surveyorSystemsPage = new SurveyorSystemsPage(driver, getTestSetup(), getBaseURL());
 		PageFactory.initElements(driver, surveyorSystemsPage);
 
-		preferencesPage = new PreferencesPage(driver, baseURL, testSetup);
+		preferencesPage = new PreferencesPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver, preferencesPage);
 
-		surveyViewPage = new SurveyViewPage(driver, testSetup, baseURL);
+		surveyViewPage = new SurveyViewPage(driver, getTestSetup(), getBaseURL());
 		PageFactory.initElements(driver, surveyViewPage);
 		
-		manageUsersPageAction = new ManageUsersPageActions(driver, baseURL, testSetup);
-		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
+		manageUsersPageAction = new ManageUsersPageActions(driver, getBaseURL(), getTestSetup());
+		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());
 	}
 
 	/**
@@ -82,15 +82,15 @@ public class HomePageTest extends SurveyorBaseTest {
 
 		Log.info("\nTC1308_ReleaseNotesLinkNotPresent_PicAdminRole - " + "Test Description: Picarro Admin cannot see Manage Release Notes page");
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
-		homePage.open();
+		getHomePage().open();
 
-		homePage.getLinkPicarroAdmin().click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getHomePage().getLinkPicarroAdmin().click();
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		homePage.getLinkPicAdminManageReleaseNotes().isDisplayed();
+		getHomePage().getLinkPicAdminManageReleaseNotes().isDisplayed();
 	}
 
 	/**
@@ -101,16 +101,16 @@ public class HomePageTest extends SurveyorBaseTest {
 	public void TC44_VerifySurveyorLink_PicAdminRole() {
 		Log.info("\nRunning - TC44_VerifySurveyorLink_PicAdminRole - Test Description: Picarro Surveyors link working\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
-		homePage.open();
+		getHomePage().open();
 
-		homePage.getLinkSurveyors().click();
+		getHomePage().getLinkSurveyors().click();
 		surveyorSystemsPage.waitForPageLoad();
 
-		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(testSetup.getBaseUrl() + SURVEYORS));
-		assertTrue(homePage.getSubTitleSurveyors().isDisplayed() && homePage.getSubTitleSurveyors().getText().trim().equalsIgnoreCase(Resources.getResource(ResourceKeys.Constant_Surveyors)));
+		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(getTestSetup().getBaseUrl() + SURVEYORS));
+		assertTrue(getHomePage().getSubTitleSurveyors().isDisplayed() && getHomePage().getSubTitleSurveyors().getText().trim().equalsIgnoreCase(Resources.getResource(ResourceKeys.Constant_Surveyors)));
 	}
 
 	/**
@@ -121,25 +121,25 @@ public class HomePageTest extends SurveyorBaseTest {
 	public void TC45_VerifyAdministratorMenu_PicAdminRole() {
 		Log.info("\nRunning - TC45_VerifyAdministratorMenu_PicAdminRole - Test Description: Picarro Administrator link working\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
-		homePage.open();
-		homePage.waitForPageLoad();
+		getHomePage().open();
+		getHomePage().waitForPageLoad();
 
-		homePage.getLinkPicarroAdmin().click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getHomePage().getLinkPicarroAdmin().click();
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		assertTrue(homePage.getLinkPicAdminCalibration().isDisplayed());
-		assertTrue(homePage.getLinkPicAdminManageCus().isDisplayed());
-		assertTrue(homePage.getLinkPicAdminManageUsers().isDisplayed());
-		assertTrue(homePage.getLinkPicAdminManageLoc().isDisplayed());
-		assertTrue(homePage.getLinkPicAdminManageSur().isDisplayed());
-		assertTrue(homePage.getLinkPicAdminManageAnl().isDisplayed());
-		assertTrue(homePage.getLinkPicAdminManageRefGasBottles().isDisplayed());
-		assertTrue(homePage.getLinkPicAdminManageSurHistories().isDisplayed());
-		assertTrue(homePage.getLinkPicAdminViewAnlLogs().isDisplayed());
-		assertTrue(homePage.getLinkPicAdminViewSurLogs().isDisplayed());
+		assertTrue(getHomePage().getLinkPicAdminCalibration().isDisplayed());
+		assertTrue(getHomePage().getLinkPicAdminManageCus().isDisplayed());
+		assertTrue(getHomePage().getLinkPicAdminManageUsers().isDisplayed());
+		assertTrue(getHomePage().getLinkPicAdminManageLoc().isDisplayed());
+		assertTrue(getHomePage().getLinkPicAdminManageSur().isDisplayed());
+		assertTrue(getHomePage().getLinkPicAdminManageAnl().isDisplayed());
+		assertTrue(getHomePage().getLinkPicAdminManageRefGasBottles().isDisplayed());
+		assertTrue(getHomePage().getLinkPicAdminManageSurHistories().isDisplayed());
+		assertTrue(getHomePage().getLinkPicAdminViewAnlLogs().isDisplayed());
+		assertTrue(getHomePage().getLinkPicAdminViewSurLogs().isDisplayed());
 	}
 
 	/**
@@ -150,17 +150,17 @@ public class HomePageTest extends SurveyorBaseTest {
 	public void TC47_VerifyReportMenu_PicarroSURole() {
 		Log.info("\nRunning - TC47_VerifyReportMenu_PicarroSURole - Test Description: Reports link working and user is able to see the report menu\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(SQAPICSU, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQAPICSU, USERPASSWORD);
 
-		homePage.open();
+		getHomePage().open();
 
-		homePage.getLinkReports().click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getHomePage().getLinkReports().click();
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		assertTrue(homePage.getLinkCompliance().isDisplayed());
-		assertTrue(homePage.getLinkReferenceGas().isDisplayed());
-		assertTrue(homePage.getLinkSystemHistory().isDisplayed());
+		assertTrue(getHomePage().getLinkCompliance().isDisplayed());
+		assertTrue(getHomePage().getLinkReferenceGas().isDisplayed());
+		assertTrue(getHomePage().getLinkSystemHistory().isDisplayed());
 	}
 
 	/**
@@ -171,16 +171,16 @@ public class HomePageTest extends SurveyorBaseTest {
 	public void TC48_VerifyDrivingSurveysLink_CustDriverRole() {
 		Log.info("\nRunning - TC48_VerifyDrivingSurveysLink_CustDriverRole - Test Description: Driving Surveys link working\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSDR, USERPASSWORD);
 
-		homePage.open();
+		getHomePage().open();
 
-		homePage.getLinkDrivingSurveys().click();
+		getHomePage().getLinkDrivingSurveys().click();
 		measurementSessionsPage.waitForPageLoad();
 
-		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(testSetup.getBaseUrl() + DRIVINGSURVEYS));
-		assertTrue(homePage.getSubTitleDrivingSurveys().isDisplayed() && homePage.getSubTitleDrivingSurveys().getText().trim().equalsIgnoreCase("Driving Surveys"));
+		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(getTestSetup().getBaseUrl() + DRIVINGSURVEYS));
+		assertTrue(getHomePage().getSubTitleDrivingSurveys().isDisplayed() && getHomePage().getSubTitleDrivingSurveys().getText().trim().equalsIgnoreCase("Driving Surveys"));
 	}
 
 	/**
@@ -190,15 +190,15 @@ public class HomePageTest extends SurveyorBaseTest {
 	public void TC50_VerifyFleetMapLink_CustSURole() {
 		Log.info("\nRunning - TC50_VerifyFleetMapLink_CustSURole - Test Description: Fleet Map link working\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSSU, USERPASSWORD);
 
-		homePage.open();
+		getHomePage().open();
 
-		homePage.getLinkFleetMap().click();
+		getHomePage().getLinkFleetMap().click();
 		fleetMapPage.waitForPageLoad();
 
-		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(testSetup.getBaseUrl() + FLEETMAP));
+		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(getTestSetup().getBaseUrl() + FLEETMAP));
 	}
 
 	/**
@@ -210,8 +210,8 @@ public class HomePageTest extends SurveyorBaseTest {
 		Log.info("\nRunning - TC54_VerifyEditUserPreferences Test Description: Modify timezone of user in Preferences\n");
 		
 		/* Login as automation admin and create new Picarro admin user. Do NOT alter existing user. */
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageUsersPageAction.open(BaseActions.EMPTY, BaseActions.NOTSET);
 		manageUsersPageAction.createNewPicarroUser(BaseActions.EMPTY, 14 /*userRowID*/);
@@ -221,15 +221,15 @@ public class HomePageTest extends SurveyorBaseTest {
 		loginPageAction.open(BaseActions.EMPTY, BaseActions.NOTSET);
 		loginPageAction.login(usernameColonPassword, BaseActions.NOTSET);   /* login using newly created user */
 
-		homePage.waitForPageLoad();
-		homePage.getDropDownLoginUser().click();
-		homePage.getLinkPreference().click();
+		getHomePage().waitForPageLoad();
+		getHomePage().getDropDownLoginUser().click();
+		getHomePage().getLinkPreference().click();
 
 		preferencesPage.waitForPageLoad();
 		preferencesPage.setSelectedTimeZone(TIMEZONECT);
 		preferencesPage.getBtnOk().click();
-		homePage.waitForPageLoad();
-		assertTrue(homePage.getDropDownTimeZone().getText().equals(TIMEZONECT));
+		getHomePage().waitForPageLoad();
+		assertTrue(getHomePage().getDropDownTimeZone().getText().equals(TIMEZONECT));
 	}
 
 	/**
@@ -241,8 +241,8 @@ public class HomePageTest extends SurveyorBaseTest {
 		Log.info("\nRunning - TC55_VerifyEditUserPreferences Test Description: Modify timezone of user from drop-down\n");
 
 		/* Login as automation admin and create new Picarro admin user. Do NOT alter existing user. */
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageUsersPageAction.open(BaseActions.EMPTY, BaseActions.NOTSET);
 		manageUsersPageAction.createNewPicarroUser(BaseActions.EMPTY, 14 /*userRowID*/);
@@ -252,13 +252,13 @@ public class HomePageTest extends SurveyorBaseTest {
 		loginPageAction.open(BaseActions.EMPTY, BaseActions.NOTSET);
 		loginPageAction.login(usernameColonPassword, BaseActions.NOTSET);   /* login using newly created user */
 
-		homePage.waitForPageLoad();
-		homePage.getDropDownTimeZone().click();
-		homePage.waitForPageLoad();
-		homePage.setTimeZoneToPST();
-		homePage.waitForPageLoad();
-		homePage.getDropDownLoginUser().click();
-		homePage.getLinkPreference().click();
+		getHomePage().waitForPageLoad();
+		getHomePage().getDropDownTimeZone().click();
+		getHomePage().waitForPageLoad();
+		getHomePage().setTimeZoneToPST();
+		getHomePage().waitForPageLoad();
+		getHomePage().getDropDownLoginUser().click();
+		getHomePage().getLinkPreference().click();
 		preferencesPage.waitForPageLoad();
 		assertTrue(preferencesPage.getSelectedTimeZone().getText().equals(TIMEZONEPT));
 
@@ -270,17 +270,17 @@ public class HomePageTest extends SurveyorBaseTest {
 	@Test
 	public void TC140_VerifyUserCanClickViewAllSurveysAndViewSurvey() {
 		Log.info("\nRunning - TC140_VerifyUserCanClickViewAllSurveysAndViewSurvey\n");
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		homePage.waitForPageLoad();
-		homePage.getFirstSurvey().click();
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		getHomePage().waitForPageLoad();
+		getHomePage().getFirstSurvey().click();
 		surveyViewPage.waitForPageLoad();
 		surveyViewPage.waitForAJAXCallsToComplete();
 		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());
 		surveyViewPage.clickPicarroLogoButton();
-		homePage.waitForPageLoad();
-		assertTrue(homePage.checkIfAtHomePage());
-		homePage.getLinkDrivingSurveys().click();
+		getHomePage().waitForPageLoad();
+		assertTrue(getHomePage().checkIfAtHomePage());
+		getHomePage().getLinkDrivingSurveys().click();
 		measurementSessionsPage.waitForPageLoad();
 		try {
 			measurementSessionsPage.actionOnDrivingSurvey(PICADMNSTDTAG2, ADMINISTRATORUSER, SQAPICLOC4SUR, SQAPICLOC4SURANA, DrivingSurveyButtonType.ViewSurvey);

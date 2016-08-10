@@ -38,10 +38,10 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 	 * @throws Exception 
 	 */
 	protected static void initializePageActions() throws Exception {
-		homePageAction = new HomePageActions(driver, baseURL, testSetup);
-		manageCustomerPageAction = new ManageCustomerPageActions(driver, baseURL, testSetup);
-		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
+		homePageAction = new HomePageActions(driver, getBaseURL(), getTestSetup());
+		manageCustomerPageAction = new ManageCustomerPageActions(driver, getBaseURL(), getTestSetup());
+		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());
+		complianceReportsPageAction = new ComplianceReportsPageActions(driver, getBaseURL(), getTestSetup());
 		testEnvironmentAction = new TestEnvironmentActions();
 
 		// Select run mode here.

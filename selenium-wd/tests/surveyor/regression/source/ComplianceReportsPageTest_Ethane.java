@@ -89,7 +89,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	@BeforeClass
 	public static void setupComplianceReportsPageTest() {
-		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
+		complianceReportsPage = new ComplianceReportsPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver, complianceReportsPage);
 		createTestCaseMap();
 
@@ -103,7 +103,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 */
 	@Test
 	public void TC1634_Ethane_VerifyCheckBoxes() {
-		String rptTitle = "TC1634 Ethane" + testSetup.getRandomNumber();
+		String rptTitle = "TC1634 Ethane" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC1634: Ethane: Compliance Report UI: Verify Ethane Filter is available - New Compliance Report, " + rptTitle);
 
 		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
@@ -125,10 +125,10 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 */
 	@Test
 	public void TC1637_Ethane_Copy_Report_VerifyCheckBoxes() throws Exception {
-		String rptTitle = "TC1637 Ethane" + testSetup.getRandomNumber();
+		String rptTitle = "TC1637 Ethane" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC1637: Ethane: Compliance Report UI: Verify Ethane Filter is available in Copy Report Page, " + rptTitle);
 
-		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		complianceReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		complianceReportsPage.open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -173,15 +173,15 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(CUSDRVETHSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
 
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
-		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, getTestSetup().getLoginUser());
 
-		complianceReportsPage.clickOnCopyReport(rptTitle, testSetup.getLoginUser());
+		complianceReportsPage.clickOnCopyReport(rptTitle, getTestSetup().getLoginUser());
 
 		if (complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed())
 			assertTrue(complianceReportsPage.getCheckBoxVehicleExhaust().isDisplayed());
@@ -204,7 +204,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 */
 	@Test
 	public void TC1654_Ethane_Verify_Analyses_Column_View_Table() throws IOException {
-		String rptTitle = "TC1654 Ethane" + testSetup.getRandomNumber();
+		String rptTitle = "TC1654 Ethane" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC1654: Ethane: Compliance Report UI: Verify Analysis column in Views table, " + rptTitle);
 
 		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
@@ -222,7 +222,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 */
 	@Test
 	public void TC1636_Ethane_Verify_NONEthane_Survey() throws Exception {
-		String rptTitle = "TC1636 Ethane" + testSetup.getRandomNumber();
+		String rptTitle = "TC1636 Ethane" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC1636: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane Standard mode surveys are displayed" + rptTitle);
 
 		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
@@ -251,7 +251,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 */
 	@Test
 	public void TC1725_Ethane_Verify_Analysis_Column_Tubular_Content() throws IOException {
-		String rptTitle = "TC1725 Ethane" + testSetup.getRandomNumber();
+		String rptTitle = "TC1725 Ethane" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC1725: Ethane: Compliance Report UI: Verify Analysis column in Optional Tabular PDF Content table" + rptTitle);
 
 		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
@@ -272,7 +272,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 */
 	@Test
 	public void TC1639_Ethane_Verify_Ethane_NONEthane_Survey_Via_Operator_SurveyMode() throws IOException, InterruptedException {
-		String rptTitle = "TC1639 Ethane" + testSetup.getRandomNumber();
+		String rptTitle = "TC1639 Ethane" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC1639: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane operator mode surveys are displayed" + rptTitle);
 
 		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
@@ -295,7 +295,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 */
 	@Test
 	public void TC1653_Ethane_Verify_Ethane_NONEthane_Survey_Via_RapidResponse_SurveyMode() throws IOException, InterruptedException {
-		String rptTitle = "TC1653 Ethane" + testSetup.getRandomNumber();
+		String rptTitle = "TC1653 Ethane" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC1653: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane Rapid response mode surveys are displayed" + rptTitle);
 
 		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
@@ -319,7 +319,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 */
 	@Test
 	public void TC1640_Ethane_Verify_Ethane_NONEthane_Survey_Via_Manual_SurveyMode() throws IOException, InterruptedException {
-		String rptTitle = "TC1640 Ethane" + testSetup.getRandomNumber();
+		String rptTitle = "TC1640 Ethane" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC1640: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane manual mode surveys are displayed" + rptTitle);
 
 		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
@@ -340,7 +340,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		String rptTitle = null;
 		String testCaseName = getTestCaseName(index);
 
-		rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
+		rptTitle = testCaseName + " " + "Report" + getTestSetup().getRandomNumber();
 
 		Log.info("\nRunning " + testCaseName + " - " + rptTitle);
 
@@ -356,28 +356,28 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		complianceReportsPage.waitForPageLoad();
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, strCreatedBy, testCaseName))) {
-			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
+			assertTrue(complianceReportsPage.validatePdfFiles(rpt, getTestSetup().getDownloadPath()));
 			assertTrue(complianceReportsPage.findReport(rptTitle, strCreatedBy));
 			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rpt));
 			// SSRS image baseline creation tracked by DE2023.
-			 assertTrue(complianceReportsPage.verifySSRSImages(testSetup.getDownloadPath(), rptTitle, testCaseName));
+			 assertTrue(complianceReportsPage.verifySSRSImages(getTestSetup().getDownloadPath(), rptTitle, testCaseName));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
-					assertTrue(complianceReportsPage.verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle));
-					assertTrue(complianceReportsPage.verifyCoverageValuesTable(testSetup.getDownloadPath(), rptTitle, tablesList.get(0)));
+					assertTrue(complianceReportsPage.verifyShowCoverageTable(getTestSetup().getDownloadPath(), rptTitle));
+					assertTrue(complianceReportsPage.verifyCoverageValuesTable(getTestSetup().getDownloadPath(), rptTitle, tablesList.get(0)));
 				}
 				if (cutomer.equalsIgnoreCase("Picarro")) {
-					assertTrue(complianceReportsPage.verifyLayersTable(testSetup.getDownloadPath(), rptTitle, tablesList.get(0)));
+					assertTrue(complianceReportsPage.verifyLayersTable(getTestSetup().getDownloadPath(), rptTitle, tablesList.get(0)));
 				}
-				assertTrue(complianceReportsPage.verifyViewsTable(testSetup.getDownloadPath(), rptTitle, viewList));
-				assertTrue(complianceReportsPage.verifyDrivingSurveysTable(testSetup.getDownloadPath(), rptTitle));
+				assertTrue(complianceReportsPage.verifyViewsTable(getTestSetup().getDownloadPath(), rptTitle, viewList));
+				assertTrue(complianceReportsPage.verifyDrivingSurveysTable(getTestSetup().getDownloadPath(), rptTitle));
 				// View images baseline creation tracked by DE2023.
-				 assertTrue(complianceReportsPage.verifyAllViewsImages(testSetup.getDownloadPath(), rptTitle, testCaseName,viewList.size()));
+				 assertTrue(complianceReportsPage.verifyAllViewsImages(getTestSetup().getDownloadPath(), rptTitle, testCaseName,viewList.size()));
 				if (tablesList.get(0).get(KEYISOANA).equals("1")) {
-					assertTrue(complianceReportsPage.verifyEthaneAnalysisTable(testSetup.getDownloadPath(), rptTitle));
+					assertTrue(complianceReportsPage.verifyEthaneAnalysisTable(getTestSetup().getDownloadPath(), rptTitle));
 				}
 				if (tablesList.get(0).get(KEYINDTB).equals("1")) {
-					assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
+					assertTrue(complianceReportsPage.verifyIndicationTable(getTestSetup().getDownloadPath(), rptTitle));
 				}
 			}
 		} else
@@ -414,7 +414,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 */
 	@Test
 	public void TC1717_Ethane_Verify_Indication_Table_Color_Selection_Removal() throws IOException, InterruptedException {
-		String rptTitle = "TC1717 Ethane" + testSetup.getRandomNumber();
+		String rptTitle = "TC1717 Ethane" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC1717: Compliance Report Generation : Remove user selection color for Indications" + rptTitle);
 
 		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
@@ -440,10 +440,10 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 */
 	@Test
 	public void TC1719_Ethane_Copy_Report_Verify_Indication_Table_Color() throws Exception {
-		String rptTitle = "TC1719 Ethane" + testSetup.getRandomNumber();
+		String rptTitle = "TC1719 Ethane" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC1719: Compliance Report Generation : COPY generated report should show default color only for Indication" + rptTitle);
 
-		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		complianceReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		complianceReportsPage.open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -488,13 +488,13 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(CUSDRVETHSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
 
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 
-		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
+		complianceReportsPage.waitForReportGenerationtoComplete(rptTitle, getTestSetup().getLoginUser());
 
 		complianceReportsPage.getInputSearch().sendKeys(rptTitle);
 		complianceReportsPage.clickOnFirstCopyComplianceBtn();

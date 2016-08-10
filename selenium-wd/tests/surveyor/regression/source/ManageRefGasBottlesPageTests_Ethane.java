@@ -31,7 +31,7 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 
 	@BeforeClass
 	public static void setupManageRefGasBottlesPageTest() {
-		manageRefGasBottlesPage = new ManageRefGasBottlesPage(driver, testSetup, baseURL);
+		manageRefGasBottlesPage = new ManageRefGasBottlesPage(driver, getTestSetup(), getBaseURL());
 		PageFactory.initElements(driver,  manageRefGasBottlesPage);
 	}
 
@@ -59,12 +59,12 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC1735_AddValueEthMthClmn_RefGasBottles() {
-		String strLotNumber = "TC1735_Ethane"+ testSetup.getFixedSizeRandomNumber(5);
+		String strLotNumber = "TC1735_Ethane"+ getTestSetup().getFixedSizeRandomNumber(5);
 
 		Log.info("\nRunning TC1735 - Test Description: Ethane - Verify that user can add value to Ethane To Methane Ratio column to ReferenceGasBottle Page");
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageRefGasBottlesPage.open();
 		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", "15", SQACUS, SQACUSLOC, SQACUSLOCSUR);
@@ -80,14 +80,14 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC1738_MinMAxValueEthMthClmn_RefGasBottles() {
-		String strLotNumber1 = "TC138_Ethane_1"+ testSetup.getFixedSizeRandomNumber(5);
-		String strLotNumber2 = "TC138_Ethane_2"+ testSetup.getFixedSizeRandomNumber(5);
+		String strLotNumber1 = "TC138_Ethane_1"+ getTestSetup().getFixedSizeRandomNumber(5);
+		String strLotNumber2 = "TC138_Ethane_2"+ getTestSetup().getFixedSizeRandomNumber(5);
 		String ethMthRtoZero = "0";
 		String ethMthRtoHund = "100";
 
 		Log.info("\nRunning TC1738 - Test Description: Ethane- Verify min/max value (%) from drop down/up to Ethane To Methane Ratio column to ReferenceGasBottle Page");
 
-		manageRefGasBottlesPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		manageRefGasBottlesPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageRefGasBottlesPage.open();
 
@@ -165,7 +165,7 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 
 		Log.info("\nRunning TC1739 - Test Description: Ethane - Ethane To Methane Ratio to ReferenceGasBottle Page should not take negative value");
 
-		manageRefGasBottlesPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		manageRefGasBottlesPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageRefGasBottlesPage.open();
 

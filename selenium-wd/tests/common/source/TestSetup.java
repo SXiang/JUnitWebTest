@@ -161,10 +161,7 @@ public class TestSetup {
 	
 	private static boolean parallelBuildEnabled;
 	
-	private WebDriverFactory driverFactory;
-
 	public TestSetup() {
-		driverFactory = new WebDriverFactory();
 		initialize();
 	}
 
@@ -214,13 +211,13 @@ public class TestSetup {
 
 		// when we start the network proxy we are recycling the driver object.
 		// Quit the driver if present.
-		if (this.driverFactory.getDriver() != null) {
-			this.driverFactory.getDriver().quit();
+		if (WebDriverFactory.getDriver() != null) {
+			WebDriverFactory.getDriver().quit();
 		}
 
 		// get the selenium proxy object
 		Proxy seleniumProxy = ClientUtil.createSeleniumProxy(networkProxy);
-		driverFactory.setChromeBrowserCapabilities(seleniumProxy);
+		WebDriverFactory.setChromeBrowserCapabilities(seleniumProxy);
 
 		if (createHarFile) {
 			// create new Har file.
@@ -274,11 +271,11 @@ public class TestSetup {
 		if (networkProxy != null) {
 			// when we stop the network proxy we should recycling the driver
 			// object to remove the Proxy capability.
-			if (this.driverFactory.getDriver() != null) {
-				this.driverFactory.getDriver().quit();
+			if (WebDriverFactory.getDriver() != null) {
+				WebDriverFactory.getDriver().quit();
 			}
 
-			driverFactory.setChromeBrowserCapabilities(); // No proxy.
+			WebDriverFactory.setChromeBrowserCapabilities(); // No proxy.
 			this.stopNetworkProxy();
 		}
 	}
@@ -327,7 +324,7 @@ public class TestSetup {
 	}
 
 	public WebDriver getDriver() {
-		return this.driverFactory.getDriver();
+		return WebDriverFactory.getDriver();
 	}
 
 	public String getCulture() {

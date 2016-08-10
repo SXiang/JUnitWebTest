@@ -48,9 +48,9 @@ public class ReportJobPerformanceTest extends BasePerformanceTest {
 	 * Initializes the page action objects.
 	 */
 	protected static void initializePageActions() {
-		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-		homePageAction = new HomePageActions(driver, baseURL, testSetup);
-		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
+		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());
+		homePageAction = new HomePageActions(driver, getBaseURL(), getTestSetup());
+		complianceReportsPageAction = new ComplianceReportsPageActions(driver, getBaseURL(), getTestSetup());
 		testEnvironmentAction = new TestEnvironmentActions();
 	}
 
@@ -98,7 +98,7 @@ public class ReportJobPerformanceTest extends BasePerformanceTest {
 	 */
 	@Ignore
 	public void UnitTest_compareReportJobPerfBaseline() throws Exception {
-		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
+		complianceReportsPage = new ComplianceReportsPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver, complianceReportsPage);
 		
 		String testCaseID = "PerfTest3";

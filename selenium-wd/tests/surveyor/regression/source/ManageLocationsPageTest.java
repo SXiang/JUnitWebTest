@@ -48,10 +48,10 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	}
 	@BeforeClass
 	public static void setupManageLocationsPageTest() {
-		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
+		manageLocationsPage = new ManageLocationsPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver,  manageLocationsPage);
 		
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
+		manageCustomersPage = new ManageCustomersPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver,  manageCustomersPage);
 	}
 	// TODO [GENERIC]: Utilize data driven approach for Username/Password.
@@ -75,15 +75,15 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	public void TC16_TC18_AddLocationUsingLatLongSelector_PicAdminSupport(String user, String pswd ) {
 		String tcID = getTestCaseName(ManageLocationTestCaseType.AddLocUsingSelector, user);
 		String password = CryptoUtility.decrypt(pswd);
-		String locationName = testSetup.getFixedSizeRandomNumber(8) + tcID;
+		String locationName = getTestSetup().getFixedSizeRandomNumber(8) + tcID;
 		String cityName = "Santa Clara";
 		Log.info("user: "+user);
 		Log.info("pswd: "+pswd);
 		Log.info("------------------------");
 		Log.info("\nRunning -"+ tcID+"_AddLocationUsingLatLongSelector_PicAdmin - Test Description: Add new location\n");
 		// Add Location as Picarro admin.
-		loginPage.open();
-		loginPage.loginNormalAs(user, password);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(user, password);
 
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocationUsingLatLongSelector(locationName, SQACUS, cityName);
@@ -114,8 +114,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	public void TC17_TC19_EditLocationAddedUsingLatLongSelector_PicAdmin_PicSupport(String user, String pwd) {
 		String tcID = getTestCaseName(ManageLocationTestCaseType.EditLocUsingSelector, user);
 		String password = CryptoUtility.decrypt(pwd);
-		String locationName = testSetup.getFixedSizeRandomNumber(8) + tcID;
-		String locationNameNew = testSetup.getFixedSizeRandomNumber(8) + tcID
+		String locationName = getTestSetup().getFixedSizeRandomNumber(8) + tcID;
+		String locationNameNew = getTestSetup().getFixedSizeRandomNumber(8) + tcID
 				+ "_New";
 		String cityName = "Santa Clara";
 
@@ -124,8 +124,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 				+ "_EditLocationAddedUsingLatLongSelector - Test Description: Add new location\n");
 
 		// Add Location as Picarro admin.	
-		loginPage.open();
-		loginPage.loginNormalAs(user, password);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(user, password);
 
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocationUsingLatLongSelector(locationName, SQACUS, cityName);
@@ -149,13 +149,13 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		String password = CryptoUtility.decrypt(pwd);
 		String customerName = SQACUS;
 		String eula = customerName + ": " + EULASTRING;
-		String locationName = customerName + testSetup.getRandomNumber() + "Loc";
+		String locationName = customerName + getTestSetup().getRandomNumber() + "Loc";
 		String cityName="Santa Clara";	
 		
 		Log.info("\nRunning TC60_TC489_AddLocation_PicAdmin_PicSupport - Test Description: Adding Location");
 		
-		loginPage.open();
-		loginPage.loginNormalAs(user, password);		
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(user, password);		
 	
 		manageLocationsPage.open();			
 		manageLocationsPage.addNewLocation(locationName,  customerName, cityName );
@@ -177,16 +177,16 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		String customerName = SQACUS;
 		String eula = customerName + ": " + EULASTRING;
 		String locationName = customerName + "Loc"
-				+ testSetup.getFixedSizeRandomNumber(8) + tcID;
+				+ getTestSetup().getFixedSizeRandomNumber(8) + tcID;
 		String newLocationName = locationName + "NEW"
-				+ testSetup.getFixedSizeRandomNumber(8) + tcID;
+				+ getTestSetup().getFixedSizeRandomNumber(8) + tcID;
 		String cityName = "Santa Clara";
 
 		Log.info("\nRunning " + tcID
 				+ "_EditLocation - Test Description: Editing Location");
 		
-		loginPage.open();
-		loginPage.loginNormalAs(user, password);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(user, password);
 
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName,  customerName, cityName);
@@ -205,7 +205,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC62_EditLocationCustomerCannotBeChanged_PicAdmin() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC62";
+		String customerName = CUSTOMERNAMEPREFIX + getTestSetup().getRandomNumber() + "TC62";
 		String eula = customerName + ": " + EULASTRING;
 		String locationName = customerName + "Loc";
 		String newLocationName = locationName + "NEW";
@@ -213,8 +213,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		
 		Log.info("\nRunning TC61_EditLocation_PicAdmin - Test Description: Editing Location");
 		
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);
@@ -246,21 +246,21 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		String tcID = getTestCaseName(ManageLocationTestCaseType.MaxLocChar, user);
 		String password = CryptoUtility.decrypt(pwd);
 
-		String locationName50Chars = testSetup.getFixedSizeRandomNumber(11)
+		String locationName50Chars = getTestSetup().getFixedSizeRandomNumber(11)
 				+ tcID + str34chars;
-		String locationName51Chars = testSetup.getFixedSizeRandomNumber(11)
+		String locationName51Chars = getTestSetup().getFixedSizeRandomNumber(11)
 				+ tcID + str35chars;
 		String newLocationName50Chars = "New"
-				+ testSetup.getFixedSizeRandomNumber(8) + tcID + str34chars;
+				+ getTestSetup().getFixedSizeRandomNumber(8) + tcID + str34chars;
 		String newLocationName51Chars = "New"
-				+ testSetup.getFixedSizeRandomNumber(8) + tcID + str35chars;
+				+ getTestSetup().getFixedSizeRandomNumber(8) + tcID + str35chars;
 
 		Log.info("\nRunning - "
 				+ tcID
 				+ "_EditLoc50CharLimit - Test Description: More than 50 characters not allowed in Location Description field\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(user, password);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(user, password);
 
 		manageLocationsPage.open();
 
@@ -299,8 +299,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	public void TC496_SearchValidLocation() {
 		Log.info("\nRunning - TC451 - Test Description: Search valid location record\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
 
 		manageLocationsPage.open();
 		assertTrue(manageLocationsPage.searchLocation(SQACUS, SQACUSLOC));
@@ -374,7 +374,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		String testCaseID = getTestCaseName(ManageUserTestCaseType.AddDuplicateLocation, username);		
 		password = CryptoUtility.decrypt(password);
 
-		String locationName = testSetup.getFixedSizeRandomNumber(8) + testCaseID;
+		String locationName = getTestSetup().getFixedSizeRandomNumber(8) + testCaseID;
 		String cityName = "Santa Clara";
 		String errorMsg = "Location name already exists for customer, please try another name.";
 
@@ -382,8 +382,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 				"Test Description: Picarro user not allowed to create duplicate location\n");
 
 		// *** Adding a location for this test 
-		loginPage.open();
-		loginPage.loginNormalAs(username, password);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(username, password);
 		manageLocationsPage.open();
 		Log.info("Adding location: " + locationName);
 		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, "1","2",false);    
@@ -391,7 +391,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 
 		// *** Starting test
 
-		loginPage.loginNormalAs(username, password);
+		getLoginPage().loginNormalAs(username, password);
 		manageLocationsPage.open();
 		Log.info("Adding location: " + locationName);
 		manageLocationsPage.performSearch(locationName);
@@ -422,7 +422,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		String testCaseID = getTestCaseName(ManageUserTestCaseType.EditDuplicateLocation, username);		
 		password = CryptoUtility.decrypt(password);
 
-		String locationName = testSetup.getFixedSizeRandomNumber(8) + testCaseID;
+		String locationName = getTestSetup().getFixedSizeRandomNumber(8) + testCaseID;
 		String cityName = "Santa Clara";
 		String errorMsg = "Location name already exists for customer, please try another name.";
 
@@ -430,8 +430,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 				"Test Description: Picarro user not allowed to edit duplicate location details same as existing location details\n");
 
 		// *** Adding a location for this test 
-		loginPage.open();
-		loginPage.loginNormalAs(username, password);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(username, password);
 		manageLocationsPage.open();
 		Log.info("Adding location: " + locationName);
 		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, "1","2",false);    
@@ -441,7 +441,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 
 		String newLocationName = SQAPICLOC;
 
-		loginPage.loginNormalAs(username, password);
+		getLoginPage().loginNormalAs(username, password);
 		manageLocationsPage.open();
 		Log.info("Editing location: " + locationName + " -> " + newLocationName);
 		manageLocationsPage.performSearch(locationName);
@@ -466,14 +466,14 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
     @Test
 	public void TC493_AddLocationBlankFields_PicSupport(){
 		
-		String locationName = testSetup.getRandomNumber() + "TC493";
+		String locationName = getTestSetup().getRandomNumber() + "TC493";
 		String cityName = "Santa Clara";
         		
 		Log.info("\nRunning - TC493_AddLocationBlankFields_PicSupport - "+
 				"Test Description: Add location- blank required fields\n");
 	
-		loginPage.open();
-		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
 		manageLocationsPage.open();
 		Log.info("Adding location empty description: required field" + locationName);
 		manageLocationsPage.addNewLocation("", SQACUS, cityName, false, "1","2",false);  
@@ -497,14 +497,14 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
     @Test
 	public void TC494_EditLocationBlankFields_PicSupport(){
 		
-		String locationName = testSetup.getRandomNumber() + "TC494";
+		String locationName = getTestSetup().getRandomNumber() + "TC494";
 		String cityName = "Santa Clara";
         		
 		Log.info("\nRunning - TC494_EditLocationBlankFields_PicSupport - "+
 				"Test Description:  - Edit location- blank required fields\n");
 	
-		loginPage.open();
-		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, "1","2",false);  
 		
@@ -534,8 +534,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning - TC497_NoMatchingLocationFound_PicSupport - "+
 				"Test Description: Search invalid location record\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs( SQAPICSUP,USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs( SQAPICSUP,USERPASSWORD);
 		manageLocationsPage.open();
 
 		manageLocationsPage.performSearch(invalidKey);
@@ -574,13 +574,13 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC1409_AddLocation_PicAdmin() {
 		String customerName = SQACUS;
-		String locationName = testSetup.getRandomNumber() + "TC1409";
+		String locationName = getTestSetup().getRandomNumber() + "TC1409";
 		String cityName="Santa Clara";	
 		
 		Log.info("\nRunning TC1409_AddLocation_PicAdmin- Test Description: Adding Location");
 		
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 	
 		manageLocationsPage.open();			
 		manageLocationsPage.addNewLocation(locationName,  customerName, cityName );

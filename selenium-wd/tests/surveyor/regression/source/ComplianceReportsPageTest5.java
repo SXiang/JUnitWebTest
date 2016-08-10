@@ -49,10 +49,10 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
 
-		homePageAction = new HomePageActions(driver, baseURL, testSetup);
-		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
+		homePageAction = new HomePageActions(driver, getBaseURL(), getTestSetup());
+		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());
 		testEnvironmentAction = new TestEnvironmentActions();
-		measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
+		measurementSessionsPage = new MeasurementSessionsPage(driver, getTestSetup(), getBaseURL());
 		PageFactory.initElements(driver,  measurementSessionsPage);
 
 		// Select run mode here.
@@ -77,9 +77,9 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 * @throws Exception 
 	 */
 	protected static void initializePageActions() throws Exception {
-		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-		homePageAction = new HomePageActions(driver, baseURL, testSetup);
-		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
+		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());
+		homePageAction = new HomePageActions(driver, getBaseURL(), getTestSetup());
+		complianceReportsPageAction = new ComplianceReportsPageActions(driver, getBaseURL(), getTestSetup());
 		testEnvironmentAction = new TestEnvironmentActions();
 	}
 
@@ -158,9 +158,9 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		measurementSessionsPage.open();
 		measurementSessionsPage.performSearch(PICADMNSTDTAG2);
 		measurementSessionsPage.clickOnFirstSurveyDeleteLink();
-		assertTrue(homePage.getReturnHomePage().isEnabled());
-		assertTrue(homePage.getReturnHomePage().isDisplayed());
-		homePage.getReturnHomePage().click();
+		assertTrue(getHomePage().getReturnHomePage().isEnabled());
+		assertTrue(getHomePage().getReturnHomePage().isDisplayed());
+		getHomePage().getReturnHomePage().click();
 	}	
 
 	/**

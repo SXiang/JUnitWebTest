@@ -40,69 +40,69 @@ public class LoginPageTest extends SurveyorBaseTest {
 
 	@BeforeClass
 	public static void setupACLandVisibilityTest() {
-		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
+		manageUsersPage = new ManageUsersPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver, manageUsersPage);
-		homePage = new HomePage(driver, baseURL, testSetup);
+		homePage = new HomePage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver, homePage);
-		eulaPage = new EULAPage(driver, baseURL, testSetup);
+		eulaPage = new EULAPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver, eulaPage);
 	}
 
 	@Test
 	public void loginTest_TC11_VerifySecureConnection() {
-		loginPage.open();
-		loginPage.waitForPageToLoad();
-		assertTrue(loginPage.getStrPageURL().contains("Account/Login"));
+		getLoginPage().open();
+		getLoginPage().waitForPageToLoad();
+		assertTrue(getLoginPage().getStrPageURL().contains("Account/Login"));
 	}
 
 	@Test
 	public void loginTest_TC25_PicarroAdmin() {
-		loginPage.open();
-		loginPage.waitForPageToLoad();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().waitForPageToLoad();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		homePage.open();
 		homePage.waitForPageLoad();
 		assertTrue(PICDFADMIN + " user login unsuccessful!", homePage.checkIfAtHomePage());
-		loginPage = homePage.logout();
+		setLoginPage(homePage.logout());
 	}
 
 	@Test
 	public void loginTest_TC25_CustomerAdmin() {
-		loginPage.open();
-		loginPage.waitForPageToLoad();
-		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().waitForPageToLoad();
+		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		homePage.open();
 		homePage.waitForPageLoad();
 		assertTrue(SQACUSUAUSER + " user login unsuccessful!", homePage.checkIfAtHomePage());
-		loginPage = homePage.logout();
+		setLoginPage(homePage.logout());
 	}
 
 	@Test
 	public void loginTest_TC25_CustomerDriver() {
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSDR, USERPASSWORD);
 
 		homePage.open();
 		homePage.waitForPageLoad();
 		assertTrue(SQACUSDRUSER + " user login unsuccessful!", homePage.checkIfAtHomePage());
-		loginPage = homePage.logout();
+		setLoginPage(homePage.logout());
 	}
 
 	@Test
 	public void loginTest_TC26_AcceptEUCLA() {
 		String customerName = SQACUS;
-		String userName = customerName + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
+		String userName = customerName + getTestSetup().getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
 		String location = customerName + " - " + SQACUSLOC;
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		homePage.waitForPageLoad();
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
 		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEDR, location);
-		loginPage.open();
-		loginPage.loginNormalAs(userName, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, USERPASSWORD);
 		homePage.waitForPageLoad();
 		assertTrue(homePage.checkIfAtHomePage());
 	}
@@ -110,16 +110,16 @@ public class LoginPageTest extends SurveyorBaseTest {
 	@Test
 	public void loginTest_TC29_DriverLogin() {
 		String customerName = SQACUS;
-		String userName = customerName + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
+		String userName = customerName + getTestSetup().getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
 		String location = customerName + " - " + SQACUSLOC;
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		homePage.waitForPageLoad();
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
 		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEDR, location);
-		loginPage.open();
-		loginPage.loginNormalAs(userName, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, USERPASSWORD);
 		assertTrue(homePage.checkIfAtHomePage());
 	}
 

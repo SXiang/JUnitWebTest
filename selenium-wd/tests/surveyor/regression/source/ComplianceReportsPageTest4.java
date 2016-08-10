@@ -52,9 +52,9 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 	 * @throws Exception 
 	 */
 	protected static void initializePageActions() throws Exception {
-		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-		homePageAction = new HomePageActions(driver, baseURL, testSetup);
-		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
+		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());
+		homePageAction = new HomePageActions(driver, getBaseURL(), getTestSetup());
+		complianceReportsPageAction = new ComplianceReportsPageActions(driver, getBaseURL(), getTestSetup());
 		testEnvironmentAction = new TestEnvironmentActions();
 	}
 

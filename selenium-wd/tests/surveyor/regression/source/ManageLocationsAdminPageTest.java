@@ -67,34 +67,34 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 	@BeforeClass
 	public static void setupManageLocationsAdminPageTest() {
-		homePage = new HomePage(driver, baseURL, testSetup);
+		homePage = new HomePage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver, homePage);
 
-		manageLocationsPage = new ManageLocationsPage(driver, baseURL,
-				testSetup);
+		manageLocationsPage = new ManageLocationsPage(driver, getBaseURL(),
+				getTestSetup());
 		PageFactory.initElements(driver, manageLocationsPage);
 
 		manageLocationsAdminPage = new ManageLocationsAdminPage(driver,
-				baseURL, testSetup);
+				getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver, manageLocationsAdminPage);
 
-		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
+		manageUsersPage = new ManageUsersPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver, manageUsersPage);
 
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL,
-				testSetup);
+		manageCustomersPage = new ManageCustomersPage(driver, getBaseURL(),
+				getTestSetup());
 		PageFactory.initElements(driver, manageCustomersPage);
 
-		manageUsersAdminPage = new ManageUsersAdminPage(driver, baseURL,
-				testSetup);
+		manageUsersAdminPage = new ManageUsersAdminPage(driver, getBaseURL(),
+				getTestSetup());
 		PageFactory.initElements(driver, manageUsersAdminPage);
 
 		manageRefGasBottlesAdminPage = new ManageRefGasBottlesAdminPage(driver,
-				testSetup, baseURL);
+				getTestSetup(), getBaseURL());
 		PageFactory.initElements(driver, manageRefGasBottlesAdminPage);
 
-		manageSurveyorAdminPage = new ManageSurveyorAdminPage(driver, baseURL,
-				testSetup);
+		manageSurveyorAdminPage = new ManageSurveyorAdminPage(driver, getBaseURL(),
+				getTestSetup());
 		PageFactory.initElements(driver, manageSurveyorAdminPage);
 	}
 
@@ -119,8 +119,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning - TC21_CancelLatLongSelector_PicAdmin - "+
 				"Test Description: Verify Cancel button of adding Lat/Long on map screen\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageLocationsPage.open();
 		manageLocationsPage.clickOnAddNewLocationBtn();
@@ -154,7 +154,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		final int xOffset = 101;
 		final int yOffset = 111;
 
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getFixedSizeRandomNumber(12) + "TC22";
+		String customerName = CUSTOMERNAMEPREFIX + getTestSetup().getFixedSizeRandomNumber(12) + "TC22";
 		String eula = customerName + ": " + EULASTRING;
 		String location = "Santa Clara";
 		
@@ -162,16 +162,16 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 				"Test Description: Verify Cancel button of editing Lat/Long on map screen\n");		
 		
 		// *** Add a new location/customer for this test ***
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);
 		
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(location, customerName, location);
 
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageLocationsPage.open();
 		manageLocationsPage.performSearch(location);
@@ -213,8 +213,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning - TC23_ConfirmLatLongSelector_PicAdmin - "+
 				"Test Description: Confirm that map accurately locates manually entered Latitude and Longitude values\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageLocationsPage.open();
 		manageLocationsPage.clickOnAddNewLocationBtn();
@@ -252,8 +252,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning - TC24_NotificationLatLongValueMissing_PicAdmin - "+
 				"Test Description: Notification should appear if Latitude is entered but Longitude is not, or vice versa\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageLocationsPage.open();
 		manageLocationsPage.clickOnAddNewLocationBtn();
@@ -288,7 +288,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 	@Test
 	public void TC1236_CheckTimeZone_PicAdmin(){
-		String userName = PICNAMEPREFIX + "ad" + testSetup.getRandomNumber() + REGBASEPICUSERNAME;
+		String userName = PICNAMEPREFIX + "ad" + getTestSetup().getRandomNumber() + REGBASEPICUSERNAME;
 		String customer = "Picarro";
 		String location = "Santa Clara";
 		String locationDesc = customer + " - " + location;
@@ -297,8 +297,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 				"Test Description: Check Timezone change\n");
 
 		// *** Add a new admin user for this test ***
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageUsersPage.open();
 		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, USERROLEADMIN, locationDesc, TIMEZONECT);
 		manageUsersAdminPage.logout();
@@ -308,8 +308,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		UserTimezone[] uts = UserTimezone.values();
 		UserTimezone ut = uts[0];
 
-		loginPage.open();
-		loginPage.loginNormalAs(userName, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, USERPASSWORD);
 
 		manageLocationsPage.open();
 		manageLocationsPage.clickOnAddNewLocationBtn();
@@ -319,9 +319,9 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 		assertTrue("Dropdown menu item(s) are missing", 
 				manageLocationsPage.verifyDropdownMenuItems());
-		loginPage = manageUsersPage.logout();
+		setLoginPage(manageUsersPage.logout());
 
-		loginPage.loginNormalAs(userName, USERPASSWORD);
+		getLoginPage().loginNormalAs(userName, USERPASSWORD);
 		assertEquals("User timezone has not retained after relogin - '"+ ut+"'",
 				ut.toString(),manageLocationsPage.getUserTimezone());
 
@@ -338,22 +338,22 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC459_EditLocation_CustUA() {
-		String locationName = testSetup.getRandomNumber() + "TC459";
-		String locationNameNew = testSetup.getRandomNumber() + "TC459" + "_New";
+		String locationName = getTestSetup().getRandomNumber() + "TC459";
+		String locationNameNew = getTestSetup().getRandomNumber() + "TC459" + "_New";
 		String cityName = "Santa Clara";
 
 		Log.info("\nRunning - TC459_EditLocation_CustUA - Test Description: Edit existing location\n");
 
 		// Add Location as Picarro admin.
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName);
 
 		// Edit Location as Utility admin.
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageLocationsAdminPage.open();
 		manageLocationsAdminPage.editPDExistingLocation(SQACUS, locationName,
@@ -372,23 +372,23 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC460_DuplicateLocationNotAllowed_CustUA() {
-		String locationName1 = testSetup.getRandomNumber() + "TC460_1";
-		String locationName2 = testSetup.getRandomNumber() + "TC460_2";
+		String locationName1 = getTestSetup().getRandomNumber() + "TC460_1";
+		String locationName2 = getTestSetup().getRandomNumber() + "TC460_2";
 		String cityName = "Santa Clara";
 
 		Log.info("\nRunning - TC460_DuplicateLocationNotAllowed_CustUA - Test Description: Customer Admin not allowed to edit location name same as existing one\n");
 
 		// Add Location as Picarro admin.
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName1, SQACUS, cityName);
 		manageLocationsPage.addNewLocation(locationName2, SQACUS, cityName);
 
 		// Edit Location as Utility admin.
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
 		manageLocationsAdminPage.open();
 
 		assertFalse(manageLocationsAdminPage.editPDExistingLocation(SQACUS,
@@ -407,21 +407,21 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC461_EditLocBlankRequiredFields_CustUA() {
-		String locationName = testSetup.getRandomNumber() + "TC461";
+		String locationName = getTestSetup().getRandomNumber() + "TC461";
 		String cityName = "Santa Clara";
 
 		Log.info("\nRunning - TC461_EditLocBlankRequiredFields_CustUA - Test Description: edit location- blank required fields\n");
 
 		// Add Location as Picarro admin.
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName);
 
 		// Edit Location as Utility user. Enter empty description field.
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		// NOTE: The check for required field message is done in edit method.
 		manageLocationsAdminPage.open();
@@ -444,16 +444,16 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		String str35chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcde";
 		String cityName = "Santa Clara";
 
-		String locationName50Chars = testSetup.getFixedSizeRandomNumber(11)
+		String locationName50Chars = getTestSetup().getFixedSizeRandomNumber(11)
 				+ "TC462" + str34chars;
-		String locationName51Chars = testSetup.getFixedSizeRandomNumber(11)
+		String locationName51Chars = getTestSetup().getFixedSizeRandomNumber(11)
 				+ "TC462" + str35chars;
 
 		Log.info("\nRunning - TC462_EditLoc50CharLimit_CustUA - Test Description: More than 50 characters not allowed in Location Description field\n");
 
 		// Add Location as Picarro admin.
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageLocationsPage.open();
 
@@ -465,8 +465,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		// Edit location as Utility admin. 50 characters works. 51 characters
 		// doesn't work.
 		homePage.logout();
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageLocationsAdminPage.open();
 		assertTrue(manageLocationsAdminPage.findExistingLocation(SQACUS,
@@ -489,8 +489,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning - TC466_VerifyCancelButtonAllScreens_CustAdmin - Test Description: Verify Cancel button for all customer admin screens\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageSurveyorAdminPage.open();
 		curURL = driver.getCurrentUrl();
@@ -542,8 +542,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning - TC450_ManageLocationsAdminPagination - Test Description: Pagination (Manage Locations Customer Admin)\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageLocationsAdminPage.open();
 		manageLocationsAdminPage.setPagination(PAGINATIONSETTING);
@@ -590,8 +590,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	public void TC451_SearchValidLocation() {
 		Log.info("\nRunning - TC451 - Test Description: Search valid location record\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageLocationsAdminPage.open();
 		assertTrue(manageLocationsAdminPage.searchLocation(SQACUS, SQACUSLOC));
@@ -602,12 +602,12 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC452_SearchInvalidLocation() {
-		String location = SQACUSLOC + testSetup.getRandomNumber();
+		String location = SQACUSLOC + getTestSetup().getRandomNumber();
 
 		Log.info("\nRunning - TC452 - Test Description: Search invalid location record\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
 		manageLocationsAdminPage.open();
 		manageLocationsAdminPage.waitForPageLoad();
 		manageLocationsAdminPage.getInputSearch().sendKeys(location);
@@ -626,8 +626,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		List<String> list = new ArrayList<String>();
 		Log.info("\nRunning - TC453 - Test Description: Sort location records based on attributes present\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
 		manageLocationsAdminPage.open();
 
 		manageLocationsAdminPage.getTheadLocation().click();

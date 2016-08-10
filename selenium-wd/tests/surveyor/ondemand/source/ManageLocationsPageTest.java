@@ -28,7 +28,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	private static ManageLocationsPage manageLocationsPage;
 	
 	public ManageLocationsPageTest() {
-		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
+		manageLocationsPage = new ManageLocationsPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver,  manageLocationsPage);		
 	}
 	
@@ -42,8 +42,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		try {
 			manageLocationsPage.open();
 			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
+			if (isDebug())
+				getTestSetup().slowdownInSeconds(3);
 			
 			String strCustomerName = "";
 			String strLocation = "";

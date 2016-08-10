@@ -50,10 +50,10 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	
 	@BeforeClass
 	public static void setupSystemHistoryReportsPageTest() {
-		systemHistoryReportsPage = new SystemHistoryReportsPage(driver, baseURL, testSetup);
+		systemHistoryReportsPage = new SystemHistoryReportsPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver, systemHistoryReportsPage);
 
-		manageSurveyorHistoriesPage = new ManageSurveyorHistoriesPage(driver, baseURL, testSetup);
+		manageSurveyorHistoriesPage = new ManageSurveyorHistoriesPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver, manageSurveyorHistoriesPage);
 	}
 
@@ -63,7 +63,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	 */
 	@Ignore
 	public void TC158_SysHisRpt_PicarroAdmin() {
-		String rptTitle = "TC158 Report" + testSetup.getRandomNumber();
+		String rptTitle = "TC158 Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC158 Test Description: Generate system history report as Administrator, %s\n" + rptTitle);
 
 		DateFormat dateFormat = new SimpleDateFormat("dd");
@@ -74,11 +74,11 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		if (startDate.startsWith("0")) {
 			startDate = startDate.replaceFirst("0*", "");
 		}
-		manageSurveyorHistoriesPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		manageSurveyorHistoriesPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageSurveyorHistoriesPage.open();
 
 		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
-		String note = "Automation Test Note " + testSetup.getRandomNumber();
+		String note = "Automation Test Note " + getTestSetup().getRandomNumber();
 
 		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, note);
 		assertTrue("Administrator not able to add new history note!", manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS, SQACUSLOC, SQACUSLOCSUR, note));
@@ -99,10 +99,10 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 
 		if ((systemHistoryReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
 			assertTrue(systemHistoryReportsPage.findExistingReport(rptTitle, PICDFADMIN));
-			assertTrue(systemHistoryReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
-			assertTrue(systemHistoryReportsPage.verifyStaticTextinPDF(testSetup.getDownloadPath(), rptTitle));
-			assertTrue(systemHistoryReportsPage.verifyUserInputInPDF(testSetup.getDownloadPath(), rptTitle, inputList));
-			assertTrue(systemHistoryReportsPage.verifyNotesTable(testSetup.getDownloadPath(), rptTitle));
+			assertTrue(systemHistoryReportsPage.validatePdfFiles(rptTitle, getTestSetup().getDownloadPath()));
+			assertTrue(systemHistoryReportsPage.verifyStaticTextinPDF(getTestSetup().getDownloadPath(), rptTitle));
+			assertTrue(systemHistoryReportsPage.verifyUserInputInPDF(getTestSetup().getDownloadPath(), rptTitle, inputList));
+			assertTrue(systemHistoryReportsPage.verifyNotesTable(getTestSetup().getDownloadPath(), rptTitle));
 
 		} else
 			fail("\nTestcase TC158 failed.\n");
@@ -119,7 +119,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	public void TC161_SysHisRpt_Pagination() {
 		Log.info("\nRunning TC161: Pagination - 10,25,50 and 100 Reports selection on system history report screen");
 
-		systemHistoryReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		systemHistoryReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		systemHistoryReportsPage.open();
 		String paginationSetting25 = "25";
 		String paginationSetting50 = "50";
@@ -138,7 +138,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC178_SysHisRpt_CustAdmin() {
-		String rptTitle = "TC178 Report" + testSetup.getRandomNumber();
+		String rptTitle = "TC178 Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC178 Test Description: Generate system history report as Customer Administrator, %s\n" + rptTitle);
 
 		Date date = new Date();
@@ -149,11 +149,11 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 			startDate = startDate.replaceFirst("0*", "");
 		}
 
-		manageSurveyorHistoriesPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		manageSurveyorHistoriesPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageSurveyorHistoriesPage.open();
 
 		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
-		String note = "Automation Test Note " + testSetup.getRandomNumber();
+		String note = "Automation Test Note " + getTestSetup().getRandomNumber();
 
 		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, note);
 		assertTrue("Administrator not able to add new history note!", manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS, SQACUSLOC, SQACUSLOCSUR, note));
@@ -176,14 +176,14 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 
 		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONEET, surveyorUnit, startDate, endDate);
 
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		if ((systemHistoryReportsPage.checkActionStatus(rptTitle, SQACUSUA))) {
 			assertTrue(systemHistoryReportsPage.findExistingReport(rptTitle, SQACUSUA));
-			assertTrue(systemHistoryReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
-			assertTrue(systemHistoryReportsPage.verifyStaticTextinPDF(testSetup.getDownloadPath(), rptTitle));
-			assertTrue(systemHistoryReportsPage.verifyUserInputInPDF(testSetup.getDownloadPath(), rptTitle, inputList));
-			assertTrue(systemHistoryReportsPage.verifyNotesTable(testSetup.getDownloadPath(), rptTitle));
+			assertTrue(systemHistoryReportsPage.validatePdfFiles(rptTitle, getTestSetup().getDownloadPath()));
+			assertTrue(systemHistoryReportsPage.verifyStaticTextinPDF(getTestSetup().getDownloadPath(), rptTitle));
+			assertTrue(systemHistoryReportsPage.verifyUserInputInPDF(getTestSetup().getDownloadPath(), rptTitle, inputList));
+			assertTrue(systemHistoryReportsPage.verifyNotesTable(getTestSetup().getDownloadPath(), rptTitle));
 		}
 
 		else
@@ -198,7 +198,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	public void TC186_SysHisRpt_CancelBtn() {
 		Log.info("\nRunning TC186: Click on Cancel button present on system history report screen\n");
 
-		systemHistoryReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		systemHistoryReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		systemHistoryReportsPage.open();
 
 		assertTrue(systemHistoryReportsPage.verifyCancelButtonFunctionality());
@@ -213,7 +213,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC195_SysHisRpt_SingleDay() {
-		String rptTitle = "TC195 Report" + testSetup.getRandomNumber();
+		String rptTitle = "TC195 Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC195 Test Description: Generate system history report for single day, %s\n" + rptTitle);
 
 		DateFormat dateFormat = new SimpleDateFormat("dd");
@@ -226,9 +226,9 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		}
 
 		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
-		String note = "Automation Test Note " + testSetup.getRandomNumber();
+		String note = "Automation Test Note " + getTestSetup().getRandomNumber();
 
-		manageSurveyorHistoriesPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		manageSurveyorHistoriesPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageSurveyorHistoriesPage.open();
 
 		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, note);
@@ -250,17 +250,17 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 
 		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONEMT, surveyorUnit, startDate, endDate);
 
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		if ((systemHistoryReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
 			assertTrue(systemHistoryReportsPage.findExistingReport(rptTitle, PICDFADMIN));
-			assertTrue(systemHistoryReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
-			assertTrue(systemHistoryReportsPage.verifyStaticTextinPDF(testSetup.getDownloadPath(), rptTitle));
-			assertTrue(systemHistoryReportsPage.verifyUserInputInPDF(testSetup.getDownloadPath(), rptTitle, inputList));
-			assertTrue(systemHistoryReportsPage.verifyNotesTable(testSetup.getDownloadPath(), rptTitle));			
+			assertTrue(systemHistoryReportsPage.validatePdfFiles(rptTitle, getTestSetup().getDownloadPath()));
+			assertTrue(systemHistoryReportsPage.verifyStaticTextinPDF(getTestSetup().getDownloadPath(), rptTitle));
+			assertTrue(systemHistoryReportsPage.verifyUserInputInPDF(getTestSetup().getDownloadPath(), rptTitle, inputList));
+			assertTrue(systemHistoryReportsPage.verifyNotesTable(getTestSetup().getDownloadPath(), rptTitle));			
 		} else
 			fail("\nTestcase TC195 failed.\n");
 
-		assertTrue(systemHistoryReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
+		assertTrue(systemHistoryReportsPage.validatePdfFiles(rptTitle, getTestSetup().getDownloadPath()));
 
 		systemHistoryReportsPage.open();
 		systemHistoryReportsPage.logout();
@@ -272,11 +272,11 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	 */
 	@Ignore
 	public void TC516_SysHisRpt_CustSupervisor() {
-		String rptTitle = "TC516 Report" + testSetup.getRandomNumber();
+		String rptTitle = "TC516 Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC516 Test Description: Generate system history report as Customer Supervisor, %s\n" + rptTitle);
 
 		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
-		String note = "Automation Test Note " + testSetup.getRandomNumber();
+		String note = "Automation Test Note " + getTestSetup().getRandomNumber();
 
 		DateFormat dateFormat = new SimpleDateFormat("dd");
 		Date date = new Date();
@@ -287,7 +287,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 			startDate = startDate.replaceFirst("0*", "");
 		}
 
-		manageSurveyorHistoriesPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		manageSurveyorHistoriesPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageSurveyorHistoriesPage.open();
 
 		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, note);
@@ -310,14 +310,14 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 
 		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONECT, surveyorUnit, startDate, endDate);
 
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		if ((systemHistoryReportsPage.checkActionStatus(rptTitle, SQACUSSU))) {
 			assertTrue(systemHistoryReportsPage.findExistingReport(rptTitle, SQACUSSU));
-			assertTrue("Defect DE695!", systemHistoryReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
-			assertTrue(systemHistoryReportsPage.verifyStaticTextinPDF(testSetup.getDownloadPath(), rptTitle));
-			assertTrue(systemHistoryReportsPage.verifyUserInputInPDF(testSetup.getDownloadPath(), rptTitle, inputList));
-			assertTrue(systemHistoryReportsPage.verifyNotesTable(testSetup.getDownloadPath(), rptTitle));
+			assertTrue("Defect DE695!", systemHistoryReportsPage.validatePdfFiles(rptTitle, getTestSetup().getDownloadPath()));
+			assertTrue(systemHistoryReportsPage.verifyStaticTextinPDF(getTestSetup().getDownloadPath(), rptTitle));
+			assertTrue(systemHistoryReportsPage.verifyUserInputInPDF(getTestSetup().getDownloadPath(), rptTitle, inputList));
+			assertTrue(systemHistoryReportsPage.verifyNotesTable(getTestSetup().getDownloadPath(), rptTitle));
 		} else
 			fail("\nTestcase TC516 failed.\n");
 	}

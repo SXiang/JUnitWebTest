@@ -120,7 +120,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			
-			String surveyTag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
+			String surveyTag = getTestSetup().getFixedSizePseudoRandomString(13) + "_TEST";
 			String surveyArg = String.format("%s,%s,%s,%s,%s,%s", 
 					surveyTag, "Day", "Overcast", "Calm", "LessThan50", "Standard");
 			driverViewPageAction.startDrivingSurvey(surveyArg, 3);
@@ -159,7 +159,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 			assertTrue(driverViewPageAction.verifyStartSurveyButtonIsEnabled(EMPTY,NOTSET));
 			assertTrue(driverViewPageAction.verifySystemShutdownButtonIsEnabled(EMPTY,NOTSET));
 
-			String surveyTag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
+			String surveyTag = getTestSetup().getFixedSizePseudoRandomString(13) + "_TEST";
 			String surveyArg = String.format("%s,%s,%s,%s,%s,%s", 
 					surveyTag, "Night", "Overcast", "Calm", "MoreThan50", "Standard");
 

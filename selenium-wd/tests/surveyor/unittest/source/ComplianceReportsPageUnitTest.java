@@ -43,7 +43,7 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 	
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
-		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
+		complianceReportsPage = new ComplianceReportsPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver,  complianceReportsPage);
 		initializePageActions();
 	}
@@ -53,12 +53,12 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 	 * @throws Exception 
 	 */
 	protected static void initializePageActions() throws Exception {
-		homePageAction = new HomePageActions(driver, baseURL, testSetup);
-		manageCustomerPageAction = new ManageCustomerPageActions(driver, baseURL, testSetup);
-		manageUsersPageAction = new ManageUsersPageActions(driver, baseURL, testSetup);
-		manageLocationPageAction = new ManageLocationPageActions(driver, baseURL, testSetup);
-		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
+		homePageAction = new HomePageActions(driver, getBaseURL(), getTestSetup());
+		manageCustomerPageAction = new ManageCustomerPageActions(driver, getBaseURL(), getTestSetup());
+		manageUsersPageAction = new ManageUsersPageActions(driver, getBaseURL(), getTestSetup());
+		manageLocationPageAction = new ManageLocationPageActions(driver, getBaseURL(), getTestSetup());
+		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());
+		complianceReportsPageAction = new ComplianceReportsPageActions(driver, getBaseURL(), getTestSetup());
 		testEnvironmentAction = new TestEnvironmentActions();
 
 		// Select run mode here.
@@ -79,7 +79,7 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
         complianceReportsPageAction.workingDataRow.tCID = "UnitTest-US2774";
         
         
-        complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+        complianceReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		complianceReportsPage.open();
 		complianceReportsPage.performSearch(complianceReportsPageAction.workingDataRow.title);
 		LoginPageActions.workingDataRow = new UserDataReader(null).new UserDataRow(null,null,null,null,null,null,null,null,null,null,null,null);
@@ -104,7 +104,7 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 		
 		Log.info("\nTA862 - Searched Surveys should be filtered by selected report mode");
 		
-		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		complianceReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		complianceReportsPage.open();
 		complianceReportsPage.openNewReportPage();
 		

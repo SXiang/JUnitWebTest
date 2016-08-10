@@ -29,7 +29,7 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 	private static ManageSurveyorPage manageSurveyorPage;	
 
 	public ManageSurveyorPageTest() {
-		manageSurveyorPage = new ManageSurveyorPage(driver, baseURL, testSetup);
+		manageSurveyorPage = new ManageSurveyorPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver,  manageSurveyorPage);		
 	}
 
@@ -43,8 +43,8 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		try {
 			manageSurveyorPage.open();
 			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
+			if (isDebug())
+				getTestSetup().slowdownInSeconds(3);
 			
 			String strSurveyorDesc = "";
 			String strCustomerName = "";

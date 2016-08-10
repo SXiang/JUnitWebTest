@@ -35,7 +35,7 @@ public class ManageSurveyorHistoriesPageTest extends SurveyorBaseTest {
 
 	@BeforeClass
 	public static void setupManageRefGasBottlesPageTest() {
-		manageSurveyorHistoriesPage = new ManageSurveyorHistoriesPage(driver, baseURL, testSetup);
+		manageSurveyorHistoriesPage = new ManageSurveyorHistoriesPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver, manageSurveyorHistoriesPage);
 	}
 
@@ -45,13 +45,13 @@ public class ManageSurveyorHistoriesPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC76_AddSurveyorHistoryNote_PicarroAdmin() {
-		String strNote = "TC76 Automation Note " + testSetup.getRandomNumber();
+		String strNote = "TC76 Automation Note " + getTestSetup().getRandomNumber();
 		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
 
 		System.out.format("\nRunning TC76 Test Description: Add Surveyor History Note as Picarro Administrator\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageSurveyorHistoriesPage.open();
 		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, strNote);
@@ -74,12 +74,12 @@ public class ManageSurveyorHistoriesPageTest extends SurveyorBaseTest {
 		String tcID;
 		if (user.equalsIgnoreCase("administrator")) {
 			tcID = "TC134";
-			strNote = tcID + " Automation Note " + testSetup.getFixedSizeRandomNumber(9);
+			strNote = tcID + " Automation Note " + getTestSetup().getFixedSizeRandomNumber(9);
 			strNote1500chars = strNote + str1468chars;
 			strNote1501chars = strNote + str1469chars;
 		} else {
 			tcID = "TC1254";
-			strNote = tcID + " Automation Note " + testSetup.getFixedSizeRandomNumber(9);
+			strNote = tcID + " Automation Note " + getTestSetup().getFixedSizeRandomNumber(9);
 			strNote1500chars = strNote + str1467chars;
 			strNote1501chars = strNote + str1468chars;
 		}
@@ -87,8 +87,8 @@ public class ManageSurveyorHistoriesPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning - " + tcID + "_AddNoteMaxCharLimit - Test Description: More than 1500 characters not allowed in Note field present on Manage Add Surveyor History screen\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(user, password);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(user, password);
 
 		manageSurveyorHistoriesPage.open();
 		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, strNote1500chars);
@@ -104,13 +104,13 @@ public class ManageSurveyorHistoriesPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC1249_AddSurveyorHistoryNote_PicarroSupport() {
-		String strNote = "TC1249 Automation Note " + testSetup.getRandomNumber();
+		String strNote = "TC1249 Automation Note " + getTestSetup().getRandomNumber();
 		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
 
 		System.out.format("\nRunning TC1249 Test Description: Add Surveyor History Note as Picarro Support user\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
 
 		manageSurveyorHistoriesPage.open();
 		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, strNote);
@@ -124,14 +124,14 @@ public class ManageSurveyorHistoriesPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC501_Manage_Surveyor_History() {
 		Log.info("\nRunning TC501_Manage_Surveyor_History\n");
-		String strNote = "TC501 Automation Note " + testSetup.getRandomNumber();
+		String strNote = "TC501 Automation Note " + getTestSetup().getRandomNumber();
 		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
-		loginPage.open();
-		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
 		manageSurveyorHistoriesPage.open();
 		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, strNote);
-		loginPage.open();
-		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
 		manageSurveyorHistoriesPage.open();
 		assertTrue(manageSurveyorHistoriesPage.getBtnAddNewHistoryEntry().isDisplayed());
 		manageSurveyorHistoriesPage.searchTable(SQACUSLOCSUR);

@@ -54,7 +54,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 
 	@BeforeClass
 	public static void setupReferenceGasReportsPageTest() {
-		referenceGasReportsPage = new ReferenceGasReportsPage(driver, baseURL, testSetup);
+		referenceGasReportsPage = new ReferenceGasReportsPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver, referenceGasReportsPage);
 	}
 
@@ -64,7 +64,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC159_GenerateRefGasRpt_PicarroAdmin() {
-		String rptTitle = "TC159 Report" + testSetup.getRandomNumber();
+		String rptTitle = "TC159 Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC159 Test Description: Generate Reference Gas Capture Report as Administrator. Report title - " + rptTitle);
 
 		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR + "-" + SQACUSLOCANZ;
@@ -79,18 +79,18 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		inputList.add(startDate);
 		inputList.add(endDate);
 
-		referenceGasReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		referenceGasReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		referenceGasReportsPage.open();
 
 		referenceGasReportsPage.addNewReport(rptTitle, TIMEZONEET, surveyorUnit, startDate, endDate, monthDiff, 0);
 
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		if ((referenceGasReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
 			assertTrue(referenceGasReportsPage.findReport(rptTitle, PICDFADMIN));
-			assertTrue(referenceGasReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
-			assertTrue(referenceGasReportsPage.verifyStaticTextInPDF(testSetup.getDownloadPath(), rptTitle));
-			assertTrue(referenceGasReportsPage.verifyUserInputInPDF(testSetup.getDownloadPath(), rptTitle,inputList));
-			assertTrue(referenceGasReportsPage.verifyResultTable(testSetup.getDownloadPath(), rptTitle));
+			assertTrue(referenceGasReportsPage.validatePdfFiles(rptTitle, getTestSetup().getDownloadPath()));
+			assertTrue(referenceGasReportsPage.verifyStaticTextInPDF(getTestSetup().getDownloadPath(), rptTitle));
+			assertTrue(referenceGasReportsPage.verifyUserInputInPDF(getTestSetup().getDownloadPath(), rptTitle,inputList));
+			assertTrue(referenceGasReportsPage.verifyResultTable(getTestSetup().getDownloadPath(), rptTitle));
 		} else
 			fail("\nTestcase TC159 failed.\n");
 
@@ -106,7 +106,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 	public void TC162_RefGasRpt_Pagination() {
 		Log.info("\nRunning RPT015A: Pagination - 10,25,50 and 100 Reports selection on reference gas report screen");
 
-		referenceGasReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		referenceGasReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		referenceGasReportsPage.open();
 		String paginationSetting25 = "25";
 		String paginationSetting50 = "50";
@@ -125,7 +125,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC179_GenerateRefGasRpt_CustAdmin() {
-		String rptTitle = "TC179 Report" + testSetup.getRandomNumber();
+		String rptTitle = "TC179 Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC179 Test Description: Generate Reference Gas Capture Report as customer admin. Report title - " + rptTitle);
 
 		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR + "-" + SQACUSLOCANZ;
@@ -145,14 +145,14 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 
 		referenceGasReportsPage.addNewReport(rptTitle, TIMEZONEMT, surveyorUnit, startDate, endDate, monthDiff, 0);
 
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		if ((referenceGasReportsPage.checkActionStatus(rptTitle, SQACUSUA))) {
 			assertTrue(referenceGasReportsPage.findReport(rptTitle, SQACUSUA));
-			assertTrue(referenceGasReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
-			assertTrue(referenceGasReportsPage.verifyStaticTextInPDF(testSetup.getDownloadPath(), rptTitle));
-			assertTrue(referenceGasReportsPage.verifyUserInputInPDF(testSetup.getDownloadPath(), rptTitle,inputList));
-			assertTrue(referenceGasReportsPage.verifyResultTable(testSetup.getDownloadPath(), rptTitle));
+			assertTrue(referenceGasReportsPage.validatePdfFiles(rptTitle, getTestSetup().getDownloadPath()));
+			assertTrue(referenceGasReportsPage.verifyStaticTextInPDF(getTestSetup().getDownloadPath(), rptTitle));
+			assertTrue(referenceGasReportsPage.verifyUserInputInPDF(getTestSetup().getDownloadPath(), rptTitle,inputList));
+			assertTrue(referenceGasReportsPage.verifyResultTable(getTestSetup().getDownloadPath(), rptTitle));
 		} else
 			fail("\nTestcase TC179 failed. Report not downloaded successfully!\n");
 
@@ -168,7 +168,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 	public void TC187_RefGasRptScreen_CancelBtn() {
 		Log.info("\nRunning TC187: Click on Cancel button present on reference gas report screen\n");
 
-		referenceGasReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		referenceGasReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		referenceGasReportsPage.open();
 
 		assertTrue(referenceGasReportsPage.verifyCancelButtonFunctionality());
@@ -182,7 +182,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC196_GenerateRefGasRpt_SingleDay() {
-		String rptTitle = "TC196 Report" + testSetup.getRandomNumber();
+		String rptTitle = "TC196 Report" + getTestSetup().getRandomNumber();
 		String startDate = getSingleDayStartDate();
 		String endDate = startDate;
 		Integer monthDiff = getNumberOfPreMonths() + 1;
@@ -191,17 +191,17 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 
 		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR + "-" + SQACUSLOCANZ;
 
-		referenceGasReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		referenceGasReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		referenceGasReportsPage.open();
 
 		referenceGasReportsPage.addNewReport(rptTitle, TIMEZONEPT, surveyorUnit, startDate, endDate, monthDiff, monthDiff);
 
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		if ((referenceGasReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
 			assertTrue(referenceGasReportsPage.findReport(rptTitle, PICDFADMIN));
-			assertTrue(referenceGasReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
-			assertTrue(referenceGasReportsPage.verifyResultTable(testSetup.getDownloadPath(), rptTitle));
+			assertTrue(referenceGasReportsPage.validatePdfFiles(rptTitle, getTestSetup().getDownloadPath()));
+			assertTrue(referenceGasReportsPage.verifyResultTable(getTestSetup().getDownloadPath(), rptTitle));
 		} else
 			fail("\nTestcase TC196 failed.\n");
 
@@ -215,7 +215,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC515_GenerateRefGasRpt_CustSupervisor() {
-		String rptTitle = "TC515 Report" + testSetup.getRandomNumber();
+		String rptTitle = "TC515 Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC515 Test Description: Generate Reference Gas Capture Report as customer supervisor. Report Title - " + rptTitle);
 
 		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR + "-" + SQACUSLOCANZ;
@@ -235,14 +235,14 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 
 		referenceGasReportsPage.addNewReport(rptTitle, TIMEZONECT, surveyorUnit, startDate, endDate, monthDiff, 0);
 
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		if ((referenceGasReportsPage.checkActionStatus(rptTitle, SQACUSSU))) {
 			assertTrue(referenceGasReportsPage.findReport(rptTitle, SQACUSSU));
-			assertTrue(referenceGasReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
-			assertTrue(referenceGasReportsPage.verifyStaticTextInPDF(testSetup.getDownloadPath(), rptTitle));
-			assertTrue(referenceGasReportsPage.verifyUserInputInPDF(testSetup.getDownloadPath(), rptTitle,inputList));
-			assertTrue(referenceGasReportsPage.verifyResultTable(testSetup.getDownloadPath(), rptTitle));
+			assertTrue(referenceGasReportsPage.validatePdfFiles(rptTitle, getTestSetup().getDownloadPath()));
+			assertTrue(referenceGasReportsPage.verifyStaticTextInPDF(getTestSetup().getDownloadPath(), rptTitle));
+			assertTrue(referenceGasReportsPage.verifyUserInputInPDF(getTestSetup().getDownloadPath(), rptTitle,inputList));
+			assertTrue(referenceGasReportsPage.verifyResultTable(getTestSetup().getDownloadPath(), rptTitle));
 		} else
 			fail("\nTestcase RPT515 failed. Either Report failed to generate or download!\n");
 

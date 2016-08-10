@@ -36,7 +36,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
-		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
+		complianceReportsPage = new ComplianceReportsPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver,  complianceReportsPage);
 
 		// Select run mode here.
@@ -61,8 +61,8 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 * @throws Exception 
 	 */
 	protected static void initializePageActions() throws Exception {
-  		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
+  		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());
+		complianceReportsPageAction = new ComplianceReportsPageActions(driver, getBaseURL(), getTestSetup());
 	}
 
 	/**

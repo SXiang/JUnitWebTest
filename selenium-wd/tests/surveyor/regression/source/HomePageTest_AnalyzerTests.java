@@ -37,13 +37,13 @@ public class HomePageTest_AnalyzerTests extends SurveyorBaseTest {
 	private static DriverViewPage driverViewPage;
 
 	public HomePageTest_AnalyzerTests() {
-		homePage = new HomePage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, homePage);
+		setHomePage(new HomePage(driver, getBaseURL(), getTestSetup()));
+		PageFactory.initElements(driver, getHomePage());
 
-		measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
+		measurementSessionsPage = new MeasurementSessionsPage(driver, getTestSetup(), getBaseURL());
 		PageFactory.initElements(driver, measurementSessionsPage);
 
-		driverViewPage = new DriverViewPage(driver, testSetup, baseURL);
+		driverViewPage = new DriverViewPage(driver, getTestSetup(), getBaseURL());
 		PageFactory.initElements(driver, driverViewPage);
 	}
 
@@ -56,8 +56,8 @@ public class HomePageTest_AnalyzerTests extends SurveyorBaseTest {
 	public void TC140_SimulatorTest_VerifyAllDrivingSurveysLink_PicAdminRole() {
 		Log.info("\nTestcase - TC140_SimulatorTest_VerifyAllDrivingSurveysLink_PicAdminRole: Sanity check on home page DashBoard/View All Driving Surveys " + "Link with Picarro Admin login\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		// Create a driving survey.
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
@@ -66,25 +66,25 @@ public class HomePageTest_AnalyzerTests extends SurveyorBaseTest {
 		driverViewPage.waitForConnectionComplete();
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		String tag = testSetup.getFixedSizePseudoRandomString(10) + "_TC1097";
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
+		String tag = getTestSetup().getFixedSizePseudoRandomString(10) + "_TC1097";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		Log.info("Clicking on STOP SURVEY");
 		driverViewPage.getStopDrivingSurveyButton().click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		Log.info("Waiting on UI unblock.");
 		driverViewPage.waitForUIUnBlock();		
 		
 		// wait for data upload.
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		
 		// Run the verifications.
-		homePage.open();
-		assertTrue(homePage.checkDashBoardViewAllDrivingSurveysLink());
+		getHomePage().open();
+		assertTrue(getHomePage().checkDashBoardViewAllDrivingSurveysLink());
 
 		TestSetup.stopAnalyzer();
 	}
@@ -97,8 +97,8 @@ public class HomePageTest_AnalyzerTests extends SurveyorBaseTest {
 	public void TC141_SimulatorTest_VerifyAllSurveyorsLink_PicAdminRole() {
 		Log.info("\nTestcase - TC141_SimulatorTest_VerifyAllSurveyorsLink_PicAdminRole: Sanity check on home page DashBoard/View All Surveyors Link with Picarro Admin login\n");
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		// Start Driving Survey to get the Surveyor online.
 		TestSetup.replayDB3Script(INSTR_READY_DEFN_FILE);
@@ -107,11 +107,11 @@ public class HomePageTest_AnalyzerTests extends SurveyorBaseTest {
 		driverViewPage.waitForConnectionComplete();
 		
 		// Keep the replay running for a few seconds.
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		
 		// Run the verifications.
-		homePage.open();
-		assertTrue(homePage.checkDashBoardViewAllSurveyorsLink());
+		getHomePage().open();
+		assertTrue(getHomePage().checkDashBoardViewAllSurveyorsLink());
 		
 		TestSetup.stopAnalyzer();
 	}
