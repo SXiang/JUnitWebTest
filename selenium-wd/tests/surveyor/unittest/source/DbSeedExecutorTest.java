@@ -144,8 +144,8 @@ public class DbSeedExecutorTest {
 	
 	private void verifySurveySeedDataIsPresent() throws IOException, FileNotFoundException, SQLException {
 		// Verify seed data pushed correctly for each survey tag.
-		final String[] surveyTags = {"man-pic-1","man-pic-2","op-pic","op-sqacudr","rr-pic","rr-sqacudr-1","rr-sqacudr-2","stnd-pic",
-				"stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3"};
+		final String[] surveyTags = {"assessment-1", "assessment-2", "Ethane1MinSurvey", "iso-cap-1", "iso-cap-2", "man-pic-1","man-pic-2","op-pic","op-sqacudr","rr-pic","rr-sqacudr-1","rr-sqacudr-2","stnd-pic",
+				"standard_test-1", "standard_test-2", "standard_test-3", "stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3"};
 		
 		boolean isRedate = true;
 		Connection connection = null;

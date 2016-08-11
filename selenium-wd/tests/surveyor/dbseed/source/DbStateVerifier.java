@@ -43,13 +43,15 @@ public class DbStateVerifier {
 		User sqapicad = User.getUser(SQAPICAD);
 		User sqapicdr = User.getUser(SQAPICDR);
 		User sqapicsu = User.getUser(SQAPICSU);
+		User sqapicsu1 = User.getUser(SQAPICSU1);
 		User sqapicsup = User.getUser(SQAPICSUP);
 		User sqapicua = User.getUser(SQAPICUA);
 		User driver1pic = User.getUser(DRIVER1PIC);
+		User picDr = User.getUser(PICDR);
 
 		if (automationAdmin == null || sqacusdr == null || sqacussu == null || sqacusua == null || sqapgedr == null
-				|| sqapicad == null || sqapicdr == null || sqapicsu == null || sqapicsup == null || sqapicua == null
-				|| driver1pic == null) {
+				|| sqapicad == null || sqapicdr == null || sqapicsu == null || sqapicsu1 == null || sqapicsup == null || sqapicua == null
+				|| driver1pic == null || picDr == null) {
 			return false;
 		}
 
@@ -80,13 +82,14 @@ public class DbStateVerifier {
 		Analyzer feds2015 = Analyzer.getAnalyzerBySerialNumber(FEDS2015ANZ);
 		Analyzer feds2050 = Analyzer.getAnalyzerBySerialNumber(FEDS2050ANZ);
 		Analyzer feds2055 = Analyzer.getAnalyzerBySerialNumber(FEDS2055ANZ);
+		Analyzer rfads2004 = Analyzer.getAnalyzerBySerialNumber(RFADS2004ANZ);
 		Analyzer fdds2037_1 = Analyzer.getAnalyzerBySerialNumber(SQACUSLOCANZ1);
 		Analyzer simautoAnalyzer1 = Analyzer.getAnalyzerBySerialNumber(SIMAUTO_ANALYZER1);
 		Analyzer simautoAnalyzer2 = Analyzer.getAnalyzerBySerialNumber(SIMAUTO_ANALYZER2);
 		Analyzer simautoAnalyzer3 = Analyzer.getAnalyzerBySerialNumber(SIMAUTO_ANALYZER3);
 
 		if (fdds2037 == null || fdds2038 == null || fdds2037_2 == null || feds2015 == null || feds2050 == null || feds2055 == null 
-				|| fdds2037_1 == null || simautoAnalyzer1 == null || simautoAnalyzer2 == null || simautoAnalyzer3 == null) {
+				|| fdds2037_1 == null || rfads2004 == null || simautoAnalyzer1 == null || simautoAnalyzer2 == null || simautoAnalyzer3 == null) {
 			return false;
 		}
 
@@ -97,6 +100,7 @@ public class DbStateVerifier {
 		SurveyorUnit silverNissanRogue = SurveyorUnit.getSurveyorUnit(SURVEYOR_SILVERNISSANROGUE);
 		SurveyorUnit picProd10 = SurveyorUnit.getSurveyorUnit(SURVEYOR_PICPROD10);
 		SurveyorUnit lightBlueEsc = SurveyorUnit.getSurveyorUnit(SURVEYOR_LIGHTBLUEESC);
+		SurveyorUnit blackDodge3300 = SurveyorUnit.getSurveyorUnit(SURVEYOR_BLACKDODGE3300);		
 		SurveyorUnit softwarecar_2037_testcust = SurveyorUnit.getSurveyorUnit(SURVEYOR_SOFTWARECAR2037TESTCUST);
 		SurveyorUnit softwareCar = SurveyorUnit.getSurveyorUnit(SQAPICLOC4SUR);
 		SurveyorUnit simautoSurveyor1 = SurveyorUnit.getSurveyorUnit(SIMAUTO_SURVEYOR1);
@@ -105,7 +109,7 @@ public class DbStateVerifier {
 		SurveyorUnit whiteDodge = SurveyorUnit.getSurveyorUnit(SQACUSLOCSUR);
 
 		if (softwarecar_2037_picarro == null || softwarecar_2037_cust == null || pgefeds2015 == null 
-				|| silverNissanRogue == null || picProd10 == null || lightBlueEsc == null 
+				|| silverNissanRogue == null || picProd10 == null || lightBlueEsc == null || blackDodge3300 == null 
 				|| softwarecar_2037_testcust == null || softwareCar == null || simautoSurveyor1 == null
 				|| simautoSurveyor2 == null || simautoSurveyor3 == null || whiteDodge == null) {
 			return false;
