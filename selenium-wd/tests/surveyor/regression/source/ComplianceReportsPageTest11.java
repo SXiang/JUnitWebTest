@@ -138,7 +138,7 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 	
 
 	/**
-	 * Test Case ID: TC192 Test Description: Generate report having multiple surveys and provide exclusion radius
+	 * Test Case ID: TC217, TC223,TC225,TC226
 	 * 
 	 * @throws IOException
 	 * @throws InterruptedException
