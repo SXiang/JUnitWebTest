@@ -522,7 +522,7 @@
 	<target name="tc_localrun" depends="compileregression" description="Run regression on TC before merge">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "testReportCategory" value = "ELK-Demo" />
 			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
@@ -534,9 +534,11 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ManageAnalyzersPageTest_debug.class" />
-					<include name="**/ManageCustomersPageTest_debug.class" />
-					<include name="**/ManageLocationsPageTest_debug.class" />
+					<include name="**/ACLandVisibilityTest.class" />
+					<include name="**/ManageAnalyzersPageTest.class" />
+					<include name="**/ManageCustomersPageTest.class" />
+					<include name="**/ManageLocationsPageTest.class" />
+					<include name="**/ComplianceReportsPageTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
