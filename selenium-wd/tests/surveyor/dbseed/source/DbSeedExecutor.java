@@ -28,6 +28,7 @@ import static surveyor.scommon.source.SurveyorConstants.EPSILON;
 public class DbSeedExecutor {
 
 	private static final boolean ENABLE_VERBOSE_LOGGING = false;
+	private static final boolean DEFAULT_REDATE_SETTING = false;
 	private static final String MEASUREMENT_PREFIX = "Measurement-";
 	private static final String GPSRAW_PREFIX = "GPSRaw-";
 	private static final String ANEMOMETERRAW_PREFIX = "AnemometerRaw-";
@@ -110,9 +111,9 @@ public class DbSeedExecutor {
 					surveyDbSeedBuilder = new SurveyDbSeedBuilder(surveySeedKey);
 					surveyConditionDbSeedBuilder = new SurveyConditionDbSeedBuilder(surveyConditionSeedKey);
 					surveyResultDbSeedBuilder = new SurveyResultDbSeedBuilder(surveyResultSeedKey);
-					measurementDbSeedBuilder = new MeasurementDbSeedBuilder(measurementSeedKey, true /*redate*/);
-					gpsRawDbSeedBuilder = new GPSRawDbSeedBuilder(gpsRawSeedKey, true /*redate*/);
-					anemometerRawDbSeedBuilder = new AnemometerRawDbSeedBuilder(anemometerRawSeedKey, true /*redate*/);
+					measurementDbSeedBuilder = new MeasurementDbSeedBuilder(measurementSeedKey, DEFAULT_REDATE_SETTING);
+					gpsRawDbSeedBuilder = new GPSRawDbSeedBuilder(gpsRawSeedKey, DEFAULT_REDATE_SETTING);
+					anemometerRawDbSeedBuilder = new AnemometerRawDbSeedBuilder(anemometerRawSeedKey, DEFAULT_REDATE_SETTING);
 					captureEventDbSeedBuilder = new CaptureEventDbSeedBuilder(captureEventSeedKey);
 					fieldOfViewDbSeedBuilder = new FieldOfViewDbSeedBuilder(fieldOfViewSeedKey);
 					peakDbSeedBuilder = new PeakDbSeedBuilder(peakSeedKey);
