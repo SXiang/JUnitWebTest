@@ -90,7 +90,7 @@ public class Log {
 
 	public static void setStashLogger() {
 		if(TestSetup.isLogstashEnabled()){
-			stashLog = LogManager.getLogger("logstash.json");
+				stashLog = LogManager.getLogger("logstash.json");
 		}
 	}
 	
@@ -173,7 +173,7 @@ public class Log {
 	
 	   private static Map<String, ?> getMessageMap(String msg) {
 	        Map<String, Object> map = new HashMap<>();
-		    StackTraceElement caller = getStackTraceElement();       
+		    StackTraceElement caller = getStackTraceElement();
 	        map.put(LogField.MSG_CLASS.toString(), caller.getClassName());
 	        map.put(LogField.MSG_METHOD.toString(), caller.getMethodName());
 	        map.put(LogField.MSG_LINE.toString(), caller.getLineNumber());

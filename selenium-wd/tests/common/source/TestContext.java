@@ -224,9 +224,13 @@ public enum TestContext {
 	}
 	
 	public static String getIndexIdForTestRun(){
+		String indexId = System.getProperty("test_run_id");
+		if(indexId != null){
+			return indexId;
+		}
 		String pattern = "yyyy.MM.dd.H.mm.ss.SSS";
 		SimpleDateFormat formater = new SimpleDateFormat(pattern,Locale.getDefault());
-		String indexId = formater.format(new Date());
+		indexId = formater.format(new Date());
 		return indexId;
 	}
 	
