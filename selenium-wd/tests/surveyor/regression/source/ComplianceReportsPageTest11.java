@@ -3,6 +3,7 @@
  */
 package surveyor.regression.source;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -10,6 +11,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
+import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSDRTAG;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSMNTAG;
@@ -171,26 +173,25 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 			if(testCaseName.equals("TC223")){
 				checkPagination();				
 			}
+			if(testCaseName.equals("TC225")){
+				searchInvalidLISA();				
+			}
+			if(testCaseName.equals("TC226")){
+				assertTrue(complianceReportsPage.areInvestigationTableColumnsSorted());	
+			}
 		} else
 			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
 	}
 	
 	private void checkPagination(){
-		String paginationSetting25 = "25";
-		String paginationSetting50 = "50";
-		String paginationSetting100 = "100";
-		assertTrue(complianceReportsPage.checkPaginationSetting(PAGINATIONSETTING));
+		assertTrue(complianceReportsPage.checkPaginationSettingInvestogation(PAGINATIONSETTING));
 		assertTrue(!(complianceReportsPage.getNumberofRecords() > Integer.parseInt(PAGINATIONSETTING)));
-		assertTrue(complianceReportsPage.checkPaginationSetting(paginationSetting25));
-		assertTrue(!(complianceReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
-		assertTrue(complianceReportsPage.checkPaginationSetting(paginationSetting50));
-		assertTrue(!(complianceReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
-		assertTrue(complianceReportsPage.checkPaginationSetting(paginationSetting100));
-		assertTrue(!(complianceReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting100)));
 	}
 	
-	private void checkInvaliLISA(){
-		//complianceReportsPage.
+	private void searchInvalidLISA(){
+		
+		assertTrue(!complianceReportsPage.searchInvestigationReport("ZZZ", testSetup.getLoginUser()));
+		assertEquals(NOMATCHINGSEARCH, complianceReportsPage.getEmptyTableMessage());
 	}
 	
 	/**
@@ -214,8 +215,6 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 		assertTrue(complianceReportsPage.checkSurveyModeDidNotChange(ReportModeFilter.Manual, SQACUSMNTAG,ReportModeFilter.Standard ) );
 	}
 	
-	
-	
 
 
 	private static String getTestCaseName(String key) {
@@ -228,6 +227,8 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 		testCaseMap.put("3", "TC210");
 		testCaseMap.put("4", "TC217");
 		testCaseMap.put("5", "TC223");
+		testCaseMap.put("6", "TC225");
+		testCaseMap.put("7", "TC226");
 
 	}
 

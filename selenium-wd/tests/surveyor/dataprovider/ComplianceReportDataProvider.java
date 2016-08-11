@@ -547,7 +547,11 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 				{ "4", SQAPICSUP, USERPASSWORDHASH, CUSTOMER_SQACUS, TIMEZONEPT, EXCLUSIONRADIUS_150, null, null, null, null, null, 
 									null, null, null, null, EthaneFilter.All, createMapAndBoundaryList(), tagList4, tablesList4, viewList4, null },
 				{ "5", SQAPICSUP, USERPASSWORDHASH, CUSTOMER_SQACUS, TIMEZONEPT, EXCLUSIONRADIUS_0, null, null, null, null, null, 
-										null, null, null, null, null, createMapAndBoundaryList(), tagList5, tablesList5, viewList5, null }, };
+										null, null, null, null, null, createMapAndBoundaryList(), tagList5, tablesList5, viewList5, null }, 
+				{ "6", SQAPICSUP, USERPASSWORDHASH, CUSTOMER_SQACUS, TIMEZONEPT, EXCLUSIONRADIUS_0, null, null, null, null, null, 
+											null, null, null, null, null, createMapAndBoundaryList(), tagList5, tablesList5, viewList5, null },
+				{ "7", SQAPICSUP, USERPASSWORDHASH, CUSTOMER_SQACUS, TIMEZONEPT, EXCLUSIONRADIUS_0, null, null, null, null, null, 
+												null, null, null, null, null, createMapAndBoundaryList(), tagList5, tablesList5, viewList5, null },};
 								}
 
 	@DataProvider

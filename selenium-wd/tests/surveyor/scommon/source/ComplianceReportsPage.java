@@ -49,6 +49,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYASSETPEPLASTIC;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
 
+import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SSRSPdfFooterColumns;
@@ -196,6 +197,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String Constant_Status = Resources.getResource(ResourceKeys.Constant_Status);
 	public static final String LisaInvestigationReportSSRS_Investigator = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_Investigator);
 	public static final String LisaInvestigationReportSSRS_InvestigationReport = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_InvestigationReport);
+	public static final String LisaInvestigations_PageTitle = Resources.getResource(ResourceKeys.LisaInvestigations_PageTitle);
+	
+	public static final String ComplianceReportSSRS_LISA_Number = Resources.getResource(ResourceKeys.ComplianceReportSSRS_LISA_Number);
+	public static final String ComplianceReportSSRS_Amplitude = Resources.getResource(ResourceKeys.ComplianceReportSSRS_Amplitude);
+	public static final String Constant_Analyzer = Resources.getResource(ResourceKeys.Constant_Analyzer);
+	public static final String Constant_AnalyzerType = Resources.getResource(ResourceKeys.Constant_AnalyzerType);	
+	public static final String Constant_Investigator = Resources.getResource(ResourceKeys.Constant_Investigator);	
+	public static final String Constant_Date = Resources.getResource(ResourceKeys.Constant_Date);	
+
 
 	private static final String DELETE_POPUP_CONFIRM_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[1]";
 	private static final String DELETE_POPUP_CANCEL_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[2]";
@@ -331,11 +341,23 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(how = How.XPATH, using = "//a[@onclick='cancelSurveyModal()']")
 	protected WebElement btnChangeModeCancel;
-	
 
 	@FindBy(id = "buttonInvestigator")
 	protected WebElement btnAssignInvestigators;
+	
+	@FindBy(how = How.XPATH, using = "//div[@id='datatablePeaks_info']")
+	protected WebElement paginationInvestigationMsg;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatablePeaks_filter']/label/input")
+	protected WebElement inputInvestigationSearchReport;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatablePeaks']/tbody/tr/td[1]")
+	protected WebElement tdInvReportTitle;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatablePeaks']/tbody/tr/td[3]")
+	protected WebElement tdInvReportCreatedBy;
+
+	
 	public WebElement getNewComplianceReportBtn() {
 		return this.newComplianceReportBtn;
 	}
@@ -361,6 +383,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	private static LatLongSelectionControl latLongSelectionControl = null;
+	
+	protected String pagination = "100";
 
 	public enum CustomerBoundaryType {
 		District, DistrictPlat
@@ -1489,18 +1513,47 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.waitForInvestigationPageLoad();
 
 		String msgToVerify = STRPaginationMsg + numberOfReports;
-		this.waitForNumberOfRecords(msgToVerify);
+		this.waitForNumberOfInvestigationRecords(msgToVerify);
 
-		if (msgToVerify.equals(this.paginationMsg.getText().substring(0, 16).trim()))
+		if (msgToVerify.equals(this.paginationInvestigationMsg.getText().substring(0, 16).trim()))
 			return true;
 
 		return false;
 	}
+	
+	public boolean searchInvestigationReport(String reportTitle, String reportCreatedBy) {
+		
+		this.inputInvestigationSearchReport.sendKeys(reportTitle);
+		if (this.tdInvReportTitle.getText().contentEquals(reportTitle)) {
+			if (this.tdInvReportCreatedBy.getText().contentEquals(reportCreatedBy))
+				return true;
+		}
+		return false;
+	}
+
+	
+	
+	public void waitForNumberOfInvestigationRecords(String actualMessage) {
+		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return paginationInvestigationMsg.getText().substring(0, 16).trim().equals(actualMessage);
+			}
+		});
+	}
+
 
 	private void waitForInvestigationPageLoad() {
-		// TODO Auto-generated method stub
 		
-	}
+			waitForAJAXCallsToComplete();
+			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+				public Boolean apply(WebDriver d) {
+					return d.getPageSource().contains(LisaInvestigations_PageTitle);
+					
+				}
+			});
+		}
+		
+	
 
 	public boolean isHighlightedInRed(WebElement element) {
 		String background = "background: rgb(255, 206, 206)";
@@ -3863,6 +3916,41 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.checkBoxPCRA.click();
 
 		selectViewLayerAssets(ReportDataProvider.getAllViewLayerAssetsForCustomer(customer));
+	}
+	
+	public boolean areInvestigationTableColumnsSorted(){
+		Log.method("areInvestigationTableColumnsSorted");
+		if(!isAmplitudeColumnSorted()){
+			return false;
+		}
+		if(!isStatusColumnSorted()){
+			return false;
+		}
+		if(!isInvestigatorColumnSorted()){
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean isAmplitudeColumnSorted(){
+		Log.method("isAmplitudeColumnSorted");
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(ComplianceReportSSRS_Amplitude, TableColumnType.String);
+		return checkTableSort("datatablePeaks_wrapper", columnMap, pagination, getPaginationOption());
+	}
+	
+	public boolean isStatusColumnSorted(){
+		Log.method("isStatusColumnSorted");
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_Status, TableColumnType.String);
+		return checkTableSort("datatablePeaks_wrapper", columnMap, pagination, getPaginationOption());
+	}
+	
+	public boolean isInvestigatorColumnSorted(){
+		Log.method("isInvestigatorColumnSorted");
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_Investigator, TableColumnType.String);
+		return checkTableSort("datatablePeaks_wrapper", columnMap, pagination, getPaginationOption());
 	}
 
 	@Override
