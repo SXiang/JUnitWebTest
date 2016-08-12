@@ -72,6 +72,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	protected static void initializePageActions() throws Exception {
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
+		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 	}
 
 	/**

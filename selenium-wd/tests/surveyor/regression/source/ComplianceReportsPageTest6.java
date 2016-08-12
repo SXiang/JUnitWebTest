@@ -26,6 +26,7 @@ import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
+import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.ReportsCompliance.IsotopicAnalysisTableColumns;
 import surveyor.scommon.source.ReportsCompliance.LISAIndicationTableColumns;
@@ -73,6 +74,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		manageLocationPageAction = new ManageLocationPageActions(driver, baseURL, testSetup);
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
+		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 		testEnvironmentAction = new TestEnvironmentActions();
 	}
 
