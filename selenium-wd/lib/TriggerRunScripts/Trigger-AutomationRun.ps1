@@ -8,6 +8,8 @@
 		.\Trigger-AutomationRun.ps1 -GridHost 10.100.3.51 -GridPort 4444 -GridPlatform LINUX -Nodes 10 -TestTarget testgridpoc
 #>
 
+#### ADDITIONS: Take in-parameter RunId and update TriggerAutomationRun and TriggerAutomationRunResult tables with correct values. Incorporate TRY-CATCH.
+
 param
 (
   [Parameter(Mandatory=$true)]
@@ -50,14 +52,14 @@ if ($PSBoundParameters.ContainsKey("TargetToRun")) {
 
 # If run is for Grid POC spin up build to match the number of nodes.
 if ($target -eq "testgridpoc") {
-    $NUM_ITERATIONS = $Nodes / 8
+    $NUM_ITERATIONS = $Nodes / 7
 }
 
 $start = Get-Date 
 Write-Host "Starting execution of specified target - [$target] ..."
 
 if ($PSBoundParameters.ContainsKey("CleanBuildEnabled")) {
-    if ($CleanBuildEnabled) {
+    if ($CleanBuildEnabled -eq "true") {
         # delete all previous directories from build root.
         $childFolders = Get-ChildItem -Path $buildRoot | where {$_.Attributes -eq 'Directory'} 
         $childFolders | % { 

@@ -1447,6 +1447,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
 						if (elapsedTime >= (ACTIONTIMEOUT + 800 * 1000)) {
+							Log.info(String.format("wait action timed out in checkActionsStatus() method call. Elapsed time = %d", elapsedTime));
 							return false;
 						}
 
