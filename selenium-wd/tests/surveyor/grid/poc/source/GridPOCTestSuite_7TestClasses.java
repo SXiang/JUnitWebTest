@@ -17,15 +17,15 @@ import surveyor.scommon.source.SurveyorParallelSuite;
 	,GridPOCTestClass5.class
 	,GridPOCTestClass7.class
 	,GridPOCTestClass8.class})
-public class GridPOCTestSuite {
+public class GridPOCTestSuite_7TestClasses {
 	
 	@BeforeClass 
     public static void setUpClass() {      
-        Log.info("Setup for GridPOCTestSuite executing...");
+        Log.info("Setup for GridPOCTestSuite_7Tests executing...");
     }
 
     @AfterClass 
     public static void tearDownClass() { 
-    	Log.info("Teardown for GridPOCTestSuite executing...");
+    	Log.info("Teardown for GridPOCTestSuite_7Tests executing...");
     }
 }

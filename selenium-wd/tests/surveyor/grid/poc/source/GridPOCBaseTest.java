@@ -65,31 +65,26 @@ public class GridPOCBaseTest {
 	public TestWatcher watcher = new TestWatcher() {
 		@Override
 		public void starting(Description description) {
-			//Disabled in Prototype.
-			GridPOCBaseTest.reportTestStarting(description);
-			TestSetup.simulatorTestStarting(description);
+			//Disabled in Prototype (ExtentReport).
+			Log.info(String.format("Test-'%s.%s' is STARTING..", description.getClassName(), description.getMethodName()));
 		}
 
 		@Override
 		public void finished(Description description) {
-			//Disabled in Prototype.
-			GridPOCBaseTest.reportTestFinished(description.getClassName());
-			TestSetup.simulatorTestFinishing(description);
+			//Disabled in Prototype (ExtentReport).
+			Log.info(String.format("Test-'%s.%s' FINISHED", description.getClassName(), description.getMethodName()));
 		}
 
 		@Override
 		protected void failed(Throwable e, Description description) {
-			//Disabled in Prototype.
-			GridPOCBaseTest.reportTestLogMessage();			
-			GridPOCBaseTest.getScreenCapture().takeScreenshot(getDriver());
-			Log.error("Exception: "+e+" Description: "+description);
-			GridPOCBaseTest.reportTestFailed(e);
+			//Disabled in Prototype (ExtentReport).
+			Log.error(String.format("Test-'%s.%s' FAILED!", description.getClassName(), description.getMethodName()));
 		}
 
 		 @Override
 		 protected void succeeded(Description description) {
-			 //Disabled in Prototype.
-			 GridPOCBaseTest.reportTestSucceeded();
+			//Disabled in Prototype (ExtentReport).
+			Log.info(String.format("Test-'%s.%s' SUCCEEDED!", description.getClassName(), description.getMethodName()));
 		}
 	};
 

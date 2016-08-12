@@ -8,6 +8,7 @@ import org.junit.runner.notification.RunListener;
 import com.relevantcodes.extentreports.LogStatus;
 
 import common.source.ExceptionUtility;
+import common.source.Log;
 
 public class RunExecutionListener extends RunListener {
     /**
@@ -59,6 +60,7 @@ public class RunExecutionListener extends RunListener {
 	    		exceptionMessage.append(String.format("EXCEPTION: %s", stackTraceString));
 	    	}
     	}
+    	Log.error(exceptionMessage.toString());
 		SurveyorBaseTest.getExtentTest().log(LogStatus.FAIL, exceptionMessage.toString());
     }
     

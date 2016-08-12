@@ -434,11 +434,11 @@
 		<echo message="junit build : ${build}" />
 	</target>
 
-	<target name="testgridpoc" depends="compileGridPOC" description="Run grid POC test suite">
+	<target name="testgridpoc5tests" depends="compileGridPOC" description="Run grid POC test suite with 5 tests in parallel">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
 			<sysproperty key="testReportCategory" value="GridPOC" />
-			<sysproperty key="maxParallelTestThreads" value="8" />
+			<sysproperty key="maxParallelTestThreads" value="5" />
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -449,7 +449,29 @@
 			<batchtest fork="yes" todir="${reports}/gridpoc/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/GridPOCTestSuite.class" />
+					<include name="**/GridPOCTestSuite_5TestClasses.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<echo message="junit build : ${build}" />
+	</target>
+
+	<target name="testgridpoc7tests" depends="compileGridPOC" description="Run grid POC test suite with 7 tests in parallel">
+		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
+					showoutput="yes">
+			<sysproperty key="testReportCategory" value="GridPOC" />
+			<sysproperty key="maxParallelTestThreads" value="7" />
+			<classpath>
+				<pathelement path="${build}" />
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+
+			<batchtest fork="yes" todir="${reports}/gridpoc/xml">
+				<formatter type="xml" />
+				<fileset dir="${build}">
+					<include name="**/GridPOCTestSuite_7TestClasses.class" />
 				</fileset>
 			</batchtest>
 		</junit>
@@ -487,7 +509,17 @@
 		</junitreport>
 	</target>
 
-	<target name="gridpocreport" depends="testgridpoc">
+	<target name="gridpocreport_5" depends="testgridpoc5tests">
+		<junitreport todir="${reports}/gridpoc/xml">
+			<fileset dir="${reports}/gridpoc/xml">
+				<include name="*TEST-*.xml" />
+			</fileset>
+			<report styledir="./tests" format="noframes" todir="${reports}/gridpoc">
+			</report>
+		</junitreport>
+	</target>
+
+	<target name="gridpocreport_7" depends="testgridpoc7tests">
 		<junitreport todir="${reports}/gridpoc/xml">
 			<fileset dir="${reports}/gridpoc/xml">
 				<include name="*TEST-*.xml" />

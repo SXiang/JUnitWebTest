@@ -28,8 +28,8 @@ public class BasePageTest {
 	private static String baseURL;
 	private static Boolean debug;
 	
-	private static ThreadLocal<ExtentTest> extentTestThreadLocal = new ThreadLocal<ExtentTest>(); 
-	private static ThreadLocal<StringBuilder> extentReportFilePathThreadLocal = new ThreadLocal<StringBuilder>();
+	private static ExtentTest extentTest; 
+	private static StringBuilder extentReportFilePath;
 	
 	public static void initializeTestObjects() throws IOException {
 		setTestSetup(TestSetupFactory.getTestSetup());
@@ -84,7 +84,7 @@ public class BasePageTest {
 	}
 
 	public static StringBuilder getExtentReportFilePath() {
-		return extentReportFilePathThreadLocal.get();
+		return extentReportFilePath;
 	}
 	
 	public static ScreenShotOnFailure getScreenCapture() {
@@ -96,11 +96,11 @@ public class BasePageTest {
 	}
 	
 	public static ExtentTest getExtentTest() {
-		return extentTestThreadLocal.get();
+		return extentTest;
 	}
 
 	private static void setExtentTest(ExtentTest test) {
-		BasePageTest.extentTestThreadLocal.set(test);
+		BasePageTest.extentTest = test;
 		TestContext.INSTANCE.setExtentTest(test);
 	}
 
@@ -109,7 +109,7 @@ public class BasePageTest {
 	   if (extentReport == null) {
 		   StringBuilder outReportFilePath = new StringBuilder();
 		   extentReport = TestSetup.createExtentReport(className, outReportFilePath);
-		   extentReportFilePathThreadLocal.set(outReportFilePath);
+		   extentReportFilePath = outReportFilePath;
 		   TestContext.INSTANCE.setReport(extentReport);
 	   }
 	   return extentReport;
