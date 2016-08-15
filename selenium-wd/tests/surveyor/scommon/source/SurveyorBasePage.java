@@ -625,7 +625,7 @@ public class SurveyorBasePage extends BasePage {
 	
 	public void waitForNumberOfRecords(String actualMessage) {
 		Log.method("waitForNumberOfRecords", actualMessage);
-		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_XPATH)));
+		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.presenceOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_XPATH)));
 		WebElement tableInfoElement = driver.findElement(By.id(DATATABLE_RECORDS_ELEMENT_XPATH));
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -647,14 +647,12 @@ public class SurveyorBasePage extends BasePage {
 	 */
 	public void waitForSearchResultsToLoad() {
 		Log.method("waitForSearchResultsToLoad");
-		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_XPATH)));
-		String dataTableFilterText = Resources.getResource(ResourceKeys.Constant_FilteredFromMaxTotalEntries);
-		Integer index = dataTableFilterText.indexOf("_MAX_");
-		String dataTableFilterTextPrefix = dataTableFilterText.substring(0, index-1);
+		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.presenceOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_XPATH)));
 		WebElement tableInfoElement = driver.findElement(By.id(DATATABLE_RECORDS_ELEMENT_XPATH));
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return (tableInfoElement.getText().contains(dataTableFilterTextPrefix));
+				List<String> splitArgs = RegexUtility.split(tableInfoElement.getText(), RegexUtility.SPACE_SPLIT_REGEX_PATTERN);
+				return (splitArgs.size()>0 && splitArgs.get(1)!="0");
 			}
 		});
 	}

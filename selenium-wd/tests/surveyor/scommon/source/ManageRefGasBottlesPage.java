@@ -491,7 +491,15 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 
 	public boolean searchRefGasBottle(String locationName, String surveyorName,
 			String analyzerName, String lotNum, String isoValue) {
+		Log.method("searchRefGasBottle", locationName, surveyorName, analyzerName, lotNum, isoValue);
 		this.getInputSearch().sendKeys(lotNum);
+		this.waitForSearchResultsToLoad();
+		Log.info(String.format("EXPECTED: lotNum=[%s], locationName=[%s], surveyorName=[%s], analyzerName=[%s], isoValue=[%s]",
+				lotNum, locationName, surveyorName, analyzerName, isoValue));
+		Log.info(String.format("ACTUAL: this.tdLotNumValue.getText()=[%s], this.tdLocationValue.getText()=[%s], "
+				+ "this.tdSurveyorValue.getText()=[%s], this.tdAnalyzerValue.getText()=[%s], this.tdIsoValue.getText()=[%s]", 
+					this.tdLotNumValue.getText(), this.tdLocationValue.getText(), this.tdSurveyorValue.getText(), 
+					this.tdAnalyzerValue.getText(), this.tdIsoValue.getText()));		
 		try {
 			if (this.tdLotNumValue.getText().contentEquals(lotNum)) {
 				if (this.tdLocationValue.getText().contentEquals(locationName)) {
