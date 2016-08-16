@@ -40,6 +40,8 @@ public class DbStateVerifier {
 		User sqacussu = User.getUser(SQACUSSU);
 		User sqacusua = User.getUser(SQACUSUA);
 		User sqapgedr = User.getUser(SQAPGEDR);
+		User sqapgeua = User.getUser(SQAPGEUA);
+		User sqapgesu = User.getUser(SQAPGESU);
 		User sqapicad = User.getUser(SQAPICAD);
 		User sqapicdr = User.getUser(SQAPICDR);
 		User sqapicsu = User.getUser(SQAPICSU);
@@ -49,9 +51,9 @@ public class DbStateVerifier {
 		User driver1pic = User.getUser(DRIVER1PIC);
 		User picDr = User.getUser(PICDR);
 
-		if (automationAdmin == null || sqacusdr == null || sqacussu == null || sqacusua == null || sqapgedr == null
-				|| sqapicad == null || sqapicdr == null || sqapicsu == null || sqapicsu1 == null || sqapicsup == null || sqapicua == null
-				|| driver1pic == null || picDr == null) {
+		if (automationAdmin == null || sqacusdr == null || sqacussu == null || sqacusua == null || sqapgedr == null || sqapgeua == null
+				|| sqapgesu == null || sqapicad == null || sqapicdr == null || sqapicsu == null || sqapicsu1 == null || sqapicsup == null 
+				|| sqapicua == null || driver1pic == null || picDr == null) {
 			return false;
 		}
 
