@@ -128,8 +128,6 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 		testReportFilters(rmode);
 		smode = SurveyModeFilter.Manual;
 		testSurveyFilters(smode);
-	
-		complianceReportsPage.logout();
 	}
 	
 	private void testReportFilters(ReportModeFilter rmode){

@@ -1,13 +1,20 @@
 package surveyor.scommon.source;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
+import org.junit.After;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.ExceptionUtility;
+import common.source.FileUtility;
+import common.source.Log;
 import common.source.NumberUtility;
 import common.source.TestContext;
 import surveyor.scommon.source.Reports.ReportJobType;
 import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 
 public class BaseReportsPageTest extends SurveyorBaseTest {
 
@@ -19,10 +26,11 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 	private boolean isGenerateBaselineShapeFiles;
 	
 	private static HashMap<ReportJobType, NumberUtility> reportJobProcessingTimeNumberMap;
-
+	private static ReportTestRunMode testRunMode = ReportTestRunMode.FullTestRun;
+	
 	protected static void initializePageObjects(ReportsBasePage reportsBasePage) {
 		setReportsPage(reportsBasePage);
-		PageFactory.initElements(driver, getReportsPage());
+		PageFactory.initElements(driver, reportsBasePage);
 	}
 
 	public BaseReportsPageTest() {
@@ -30,7 +38,6 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 		this.isGenerateBaselineSSRSImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
 		this.isGenerateBaselineViewImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
 		this.isGenerateBaselineShapeFiles = TestContext.INSTANCE.getTestSetup().isGenerateBaselineShapeFiles();
-		
 		initializeProperties();
 	}
 
@@ -64,11 +71,64 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 		return reportJobProcessingTimeNumberMap;
 	}
 
+	public static void setReportsPage(ReportsBasePage reportsPage) {
+		BaseReportsPageTest.reportsPage = reportsPage;
+	}
+		
+	@Override
+	public void postTestMethodProcessing() {
+		try {
+			cleanUp();
+			reportsPage.logout();
+		} catch (Exception e) {
+			Log.warn("Exception in BaseReportsPageTest.postTestMethodProcessing(). Exception message:");
+			Log.warn(ExceptionUtility.getStackTraceString(e));
+		}
+	}
+
 	public static ReportsBasePage getReportsPage() {
 		return reportsPage;
 	}
+	
+	protected static ReportTestRunMode getTestRunMode() {
+		return testRunMode;
+	}
 
-	public static void setReportsPage(ReportsBasePage reportsPage) {
-		BaseReportsPageTest.reportsPage = reportsPage;
+	protected static void setTestRunMode(ReportTestRunMode testRunModeValue) {
+		testRunMode = testRunModeValue;
+	}
+	
+	private void cleanUp() throws Exception {
+		if(reportsPage==null||keepTestData()){
+			TestContext.INSTANCE.clearTestReportSet();
+			return;
+		}
+		Set<String> reportIdSet = TestContext.INSTANCE.getTestReportIdSet();
+		String downloadDirectory = TestContext.INSTANCE.getTestSetup().getDownloadPath();
+		//Delete report and related downloads
+		reportsPage.open();
+		for(String reportId:reportIdSet){	
+			String reportName = "CR-" + reportId.substring(0,6).toUpperCase();
+			FileUtility.deleteFilesAndSubFoldersInDirectory(downloadDirectory, reportName);
+			reportsPage.deleteReportById(reportId);
+		}
+		reportsPage.open();
+		TestContext.INSTANCE.clearTestReportSet();
+	}	
+	
+	private boolean keepTestData(){
+		if(getTestRunMode() != ReportTestRunMode.FullTestRun){
+			return true;
+		}
+		int testCleanUpMode = TestContext.INSTANCE.getTestSetup().getTestCleanUpMode();
+		if(testCleanUpMode == 2){//# 2: keep all the test data in place
+			return true;
+		}else if(testCleanUpMode == 0){//# 0: clean up test data after each test			
+			return false;
+		}else if(testCleanUpMode == 1){//# 1: clean up test data if test passed
+			String testStatus = TestContext.INSTANCE.getTestStatus();
+			return testStatus.equalsIgnoreCase("FAIL");
+		}
+		return false;
 	}
 }

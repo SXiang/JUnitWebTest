@@ -41,8 +41,6 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static TestEnvironmentActions testEnvironmentAction;
 	private static ManageCustomerPageActions manageCustomerPageAction;
-
-	private static ComplianceReportsPage complianceReportsPage;
 	private static MeasurementSessionsPage measurementSessionsPage;
 
 	@BeforeClass
@@ -80,6 +78,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		homePageAction = new HomePageActions(driver, baseURL, testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
+		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 		testEnvironmentAction = new TestEnvironmentActions();
 	}
 
