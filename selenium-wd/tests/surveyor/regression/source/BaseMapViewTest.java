@@ -1,6 +1,7 @@
 package surveyor.regression.source;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.junit.AfterClass;
@@ -95,17 +96,17 @@ public class BaseMapViewTest {
 	protected static WebDriver driver = null;
 	protected static String baseURL = null;
 
-	// Instance 2 actions and page objects. 
-	// 2nd instance can be used for tests running on multiple windows (for eg. DriverView and ObserverView windows). 
-	protected static HomePageActions homePageAction2;
-	protected static LoginPageActions loginPageAction2;
+	// Extra instance actions and page objects. 
+	// Extra instance can be used for tests running on multiple windows (for eg. DriverView and ObserverView windows). 
+	protected static ArrayList<HomePageActions> homePageActionList = new ArrayList<HomePageActions>();
+	protected static  ArrayList<LoginPageActions> loginPageActionList = new ArrayList<LoginPageActions>();
 
-	protected static HomePage homePage2 = null;
-	protected static LoginPage loginPage2 = null;
+	protected static  ArrayList<HomePage> homePageList = new ArrayList<HomePage>();
+	protected static  ArrayList<LoginPage> loginPageList = new ArrayList<LoginPage>();
 
-	protected static TestSetup testSetup2 = null;
-	protected static WebDriver driver2 = null;
-	protected static String baseURL2 = null;
+	protected static  ArrayList<TestSetup> testSetupList = new ArrayList<TestSetup>();
+	protected static  ArrayList<WebDriver> driverList = new ArrayList<WebDriver>();
+	protected static  ArrayList<String> baseURLList = new ArrayList<String>(); 
 
 	protected static DateUtility dateUtility = new DateUtility();
 
@@ -172,22 +173,28 @@ public class BaseMapViewTest {
 	/**
 	 * Initializes the page action objects.
 	 */
-	protected static void initializePageActions2() {
-		testSetup2 = new TestSetup();
-		driver2 = testSetup2.getDriver();
-		baseURL2 = testSetup2.getBaseUrl();
-		Log.info("Deleting all cookies...***:" + driver2);
-		driver2.manage().deleteAllCookies();
-		TestContext.INSTANCE.setTestSetup(testSetup2);
-		loginPageAction2 = new LoginPageActions(driver2, baseURL2, testSetup2);
-		homePageAction2 = new HomePageActions(driver, baseURL, testSetup);
-		testEnvironmentAction = new TestEnvironmentActions();
+	protected static void initializePageActionsList() {
+		addPageActionsForNewDrivers(1);
+	}
+	protected static void addPageActionsForNewDrivers(int num) {
+		int currentSize = testSetupList.size();
+		for(int index = currentSize; index < num + currentSize; index++ ){
+			TestSetup setup= new TestSetup();
+			testSetupList.add(setup);
+			driverList.add(setup.getDriver());
+			baseURLList.add(setup.getBaseUrl());
+			Log.info("Deleting all cookies...***:" + setup.getDriver());
+			setup.getDriver().manage().deleteAllCookies();
+			//TestContext.INSTANCE.setTestSetup(setup);
+			loginPageActionList.add(new LoginPageActions(setup.getDriver(), setup.getBaseUrl(), setup));
+			homePageActionList.add(new HomePageActions(setup.getDriver(), setup.getBaseUrl(), setup));
+			
+			loginPageList.add(new LoginPage(setup.getDriver(), setup.getBaseUrl(), setup));
+			PageFactory.initElements(setup.getDriver(), loginPageList.get(index));
 
-		loginPage2 = new LoginPage(driver2, baseURL2, testSetup2);
-		PageFactory.initElements(driver, loginPage2);
-
-		homePage2 = new HomePage(driver2, baseURL2, testSetup2);
-		PageFactory.initElements(driver2, homePage2);
+			homePageList.add(new HomePage(setup.getDriver(), setup.getBaseUrl(), setup));
+			PageFactory.initElements(setup.getDriver(), homePageList.get(index));
+		}
 	}
 
 	@AfterClass
@@ -203,15 +210,15 @@ public class BaseMapViewTest {
 			homePage.logout();
 		
 		driver.quit();
-	}
-
-	protected void afterTest2() {
-		homePage2.open();
 		
-		if (!driver2.getTitle().equalsIgnoreCase("Login"))
-			homePage2.logout();
-		
-		driver2.quit();
+		// clean up - extra web drivers 
+		for(int index=0;index<testSetupList.size(); index++){
+			homePageList.get(index).open();
+			if (!driverList.get(index).getTitle().equalsIgnoreCase("Login"))
+				homePageList.get(index).logout();
+			
+			driverList.get(index).quit();
+		}
 	}
 
 	protected static void disposeProcesses() {
