@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import common.source.AssertHelper;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.WebElementExtender;
@@ -350,7 +351,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		ReportsCompliance rpt1 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary1, tablesList1, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
 		this.getComplianceReportsPage().addNewReport(rpt1);
-		assertTrue(this.getComplianceReportsPage().getAssetErrorText().getText().equals("Please make sure your selected boundary is less than 1.5 sq km when Gaps are selected"));
+		AssertHelper.equals("Please make sure your selected boundary is less than 1.5 sq km when Gaps are selected", this.getComplianceReportsPage().getAssetErrorText().getText());
 
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
 		this.getComplianceReportsPage().clickOnCancelBtn();
@@ -358,7 +359,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		rptTitle = testCaseID + " Report2" + testSetup.getRandomNumber();
 		ReportsCompliance rpt2 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary1, tablesList2, "", tagList, "", "", viewList2, SurveyModeFilter.Standard);
 		this.getComplianceReportsPage().addNewReport(rpt2);
-		assertTrue(this.getComplianceReportsPage().getAssetErrorText().getText().equals("Please make sure your selected boundary is less than 1.5 sq km when Gaps are selected"));
+		AssertHelper.equals("Please make sure your selected boundary is less than 1.5 sq km when Gaps are selected", this.getComplianceReportsPage().getAssetErrorText().getText());
 
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
 		this.getComplianceReportsPage().clickOnCancelBtn();
@@ -938,8 +939,9 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		ReportsCompliance rpt1 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList1, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
 		rpt1.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.BigBoundary, bigBoundary);
+
 		this.getComplianceReportsPage().addNewReport(rpt1);
-		assertTrue(this.getComplianceReportsPage().getAssetErrorText().getText().equals("Please make sure your selected boundary is less than 1.5 sq km when Gaps are selected"));
+		AssertHelper.equals("Please make sure your selected boundary is less than 1.5 sq km when Gaps are selected", this.getComplianceReportsPage().getAssetErrorText().getText());
 
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
 		this.getComplianceReportsPage().clickOnCancelBtn();
@@ -947,8 +949,9 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		ReportsCompliance rpt2 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList2, "", tagList, "", "", viewList2, SurveyModeFilter.Standard);
 		rpt2.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.BigBoundary, bigBoundary);
+		
 		this.getComplianceReportsPage().addNewReport(rpt2);
-		assertTrue(this.getComplianceReportsPage().getAssetErrorText().getText().equals("Please make sure your selected boundary is less than 1.5 sq km when Gaps are selected"));
+		AssertHelper.equals("Please make sure your selected boundary is less than 1.5 sq km when Gaps are selected", this.getComplianceReportsPage().getAssetErrorText().getText());
 
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
 		this.getComplianceReportsPage().clickOnCancelBtn();
@@ -1106,8 +1109,8 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		rpt.setViewLayersList(viewLayerList);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
-		assertTrue(this.getComplianceReportsPage().getAssetErrorText().getText().equals("Selected Asset Layer(s), Please select at least one view with Assets"));
-		assertTrue(this.getComplianceReportsPage().getBoundaryErrorText().getText().equals("Selected Boundary Layer(s), Please select at least one view with Boundaries"));
+		AssertHelper.equals("Selected Asset Layer(s), Please select at least one view with Assets", this.getComplianceReportsPage().getAssetErrorText().getText());
+		AssertHelper.equals("Selected Boundary Layer(s), Please select at least one view with Boundaries", this.getComplianceReportsPage().getBoundaryErrorText().getText());
 	}
 
 	/**
@@ -1254,10 +1257,11 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		this.getComplianceReportsPage().clickOnCopyReport(rptTitle, testSetup.getLoginUser());
 		this.getComplianceReportsPage().waitForCopyReportPagetoLoad();
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
+
 		this.getComplianceReportsPage().addViews(testSetup.getLoginUser(), viewList2);
 		this.getComplianceReportsPage().clickOnOKButton();
-		assertTrue(this.getComplianceReportsPage().getAssetErrorText().getText().equals("View(s) with Assets, Please select at least one Asset Layer"));
-		assertTrue(this.getComplianceReportsPage().getBoundaryErrorText().getText().equals("View(s) with Boundaries, Please select at least one Boundary Layer"));
+		AssertHelper.equals("View(s) with Assets, Please select at least one Asset Layer", this.getComplianceReportsPage().getAssetErrorText().getText());
+		AssertHelper.equals("View(s) with Boundaries, Please select at least one Boundary Layer", this.getComplianceReportsPage().getBoundaryErrorText().getText());
 	}
 
 	/**
@@ -1320,11 +1324,13 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		this.getComplianceReportsPage().clickOnCopyReport(rptTitle, testSetup.getLoginUser());
 		this.getComplianceReportsPage().waitForCopyReportPagetoLoad();
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
+
 		this.getComplianceReportsPage().getRptFirstAsset().click();
 		this.getComplianceReportsPage().getRptSmallBoundary().click();
 		this.getComplianceReportsPage().clickOnOKButton();
-		assertTrue(this.getComplianceReportsPage().getAssetErrorText().getText().equals("Selected Asset Layer(s), Please select at least one view with Assets"));
-		assertTrue(this.getComplianceReportsPage().getBoundaryErrorText().getText().equals("Selected Boundary Layer(s), Please select at least one view with Boundaries"));
+		
+		AssertHelper.equals("Selected Asset Layer(s), Please select at least one view with Assets", this.getComplianceReportsPage().getAssetErrorText().getText());
+		AssertHelper.equals("Selected Boundary Layer(s), Please select at least one view with Boundaries", this.getComplianceReportsPage().getBoundaryErrorText().getText());
 	}
 
 	/**
@@ -1651,9 +1657,9 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
-		this.getComplianceReportsPage().addNewReport(rpt);
-		assertTrue(this.getComplianceReportsPage().getAssetErrorText().getText().equals("Selected Percent Coverage Forecast, Please select Customer Boundary"));
 
+		this.getComplianceReportsPage().addNewReport(rpt);
+		AssertHelper.equals("Selected Percent Coverage Forecast, Please select Customer Boundary", this.getComplianceReportsPage().getAssetErrorText().getText());
 	}
 
 	/**
@@ -1735,9 +1741,11 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList1, "", "", viewList1, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
+
 		this.getComplianceReportsPage().addNewReport(rpt);
-		assertTrue(this.getComplianceReportsPage().getAssetErrorText().getText().equals("Selected Percent Coverage Forecast, Please select Customer Boundary"));
-		assertTrue(this.getComplianceReportsPage().getBoundaryErrorText().getText().equals("Selected Percent Coverage Forecast, Please select at least two surveys with different tags"));
+		AssertHelper.equals("Selected Percent Coverage Forecast, Please select Customer Boundary", this.getComplianceReportsPage().getAssetErrorText().getText());
+		AssertHelper.equals("Selected Percent Coverage Forecast, Please select at least two surveys with different tags", this.getComplianceReportsPage().getBoundaryErrorText().getText());
+
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
 		this.getComplianceReportsPage().clickOnCancelBtn();
 		
@@ -1748,9 +1756,11 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		ReportsCompliance rpt2 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList1, "", "", viewList1, SurveyModeFilter.Standard);
 		rpt2.setViewLayersList(viewLayerList);
 		rpt2.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
+
 		this.getComplianceReportsPage().addNewReport(rpt2);
 		Log.info("!!!!!" + this.getComplianceReportsPage().getAssetErrorText().getText()+ "!!!!!");
-		assertTrue(this.getComplianceReportsPage().getAssetErrorText().getText().equals("Selected Percent Coverage Forecast, Please select at least two surveys with different tags"));
+		AssertHelper.equals("Selected Percent Coverage Forecast, Please select at least two surveys with different tags", this.getComplianceReportsPage().getAssetErrorText().getText());
+
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
 		this.getComplianceReportsPage().clickOnCancelBtn();
 		
@@ -1758,7 +1768,8 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		rpt3.setViewLayersList(viewLayerList);
 		
 		this.getComplianceReportsPage().addNewReport(rpt3);
-		assertTrue(this.getComplianceReportsPage().getAssetErrorText().getText().equals("Selected Percent Coverage Forecast, Please select Customer Boundary"));
+		AssertHelper.equals("Selected Percent Coverage Forecast, Please select Customer Boundary", this.getComplianceReportsPage().getAssetErrorText().getText());
+
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
 		this.getComplianceReportsPage().clickOnCancelBtn();
 	}

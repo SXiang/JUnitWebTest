@@ -29,6 +29,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BaseHelper;
 import common.source.DBConnection;
@@ -49,6 +51,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 	public static final String STRURLPath = "/Reports/SystemHistoryReports";
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.SystemHistoryReports_PageTitle);
 	public static final String STRReportTitle = Resources.getResource(ResourceKeys.SystemHistoryReports_ReportTitle);
+	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.SystemHistoryReport_PageTitle);
 	public static final String STRPaginationMsg = "Showing 1 to ";
 	public static final String STRRptSubHeading = Resources.getResource(ResourceKeys.SystemHistoryReports_PageSubTitle);
 	public static final String STRRptColumnDate = Resources.getResource(ResourceKeys.SystemHistoryReports_DateColumn);
@@ -281,6 +284,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 	public boolean verifyCancelButtonFunctionality() {
 		Log.clickElementInfo("New SysHistory Report");
 		this.btnNewSysHistoryRpt.click();
+		this.waitForNewPageLoad();
 		Log.clickElementInfo("Cancel");
 		this.btnCancel.click();
 		testSetup.slowdownInSeconds(3);
@@ -403,10 +407,20 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
+	@Override
+	public void waitForPageLoad() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isPageTitleMatch(d.getTitle(),STRPageTitle);
+			}
+		});
+	}
 
+	public void waitForNewPageLoad() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isPageTitleMatch(d.getTitle(),STRNewPageContentText);
+			}
+		});
 	}
 }

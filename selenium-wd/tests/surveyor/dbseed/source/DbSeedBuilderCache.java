@@ -5,12 +5,17 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import common.source.Log;
 
 public class DbSeedBuilderCache {
 	public static Map<String, List<TablePKCacheItem>> tablePKIdCache;
+	public static Map<String, BaseDbSeedBuilder> dbSeedBuilderCache;
 	
 	public DbSeedBuilderCache() {
 		tablePKIdCache = Collections.synchronizedMap(new HashMap<String, List<TablePKCacheItem>>());
+		dbSeedBuilderCache = Collections.synchronizedMap(new HashMap<String, BaseDbSeedBuilder>());
 	}
 	
 	public void addTablePKIdCacheEntry(String tableName, TablePKCacheItem cacheItem) {
@@ -38,5 +43,22 @@ public class DbSeedBuilderCache {
 			}
 		}
 		return id;
+	}
+	
+	public void addDbSeedBuilder(String key, BaseDbSeedBuilder dbSeedBuilder) {
+		Log.method("addDbSeedBuilder", key, dbSeedBuilder);
+		if (!dbSeedBuilderCache.containsKey(key)) {
+			dbSeedBuilderCache.put(key, dbSeedBuilder);
+		} else {
+			dbSeedBuilderCache.replace(key, dbSeedBuilder);
+		}
+	}
+
+	public BaseDbSeedBuilder getDbSeedBuilder(String key) {
+		return dbSeedBuilderCache.get(key);
+	}
+	
+	public Set<String> getDbSeedBuilderCacheKeys() {
+		return dbSeedBuilderCache.keySet();
 	}
 }
