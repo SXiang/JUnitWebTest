@@ -29,7 +29,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.runner.Description;
 import org.openqa.selenium.Platform;
@@ -162,6 +164,9 @@ public class TestSetup {
 	private static boolean parallelBuildEnabled;
 	private String parallelBuildRunUUID;
 	private Integer parallelBuildRequiredNodes;
+	
+	private static final AtomicBoolean singleExecutionUnitProcessed = new AtomicBoolean();
+	private static final CountDownLatch singleExecutionCountDown = new CountDownLatch(1);
 	
 	public TestSetup() {
 		initialize();
@@ -608,58 +613,83 @@ public class TestSetup {
 
 			TestContext.INSTANCE.setTestSetup(this);
 
-			// If survey upload is enabled, upload the specified surveys to
-			// environment.
-			// We have a 2nd level of check (ie matching base url provided) to
-			// prevent accidental upload to unintended environment.
-			if (isUploadSurveyEnabled() && this.getSurveyUploadBaseUrl().equalsIgnoreCase(this.baseURL)) {
-				try {
-					uploadSurveys();
-				} catch (Exception e) {
-					Log.error(String.format("ERROR when uploading survey. EXCEPTION: %s", e.toString()));
-				}
-			}
-
-			// If pushDBSeed is enabled, push DB seed data to environment.
-			// We have a 2nd level of check (ie matching base url provided) to
-			// prevent accidental upload to unintended environment.
-			if (isPushDBSeedEnabled() && this.getPushDBSeedBaseUrl().equalsIgnoreCase(this.baseURL)) {
-				try {
-					DbSeedExecutor.executeAllDataSeed();
-				} catch (Exception e) {
-					Log.error(String.format("ERROR when pushing DB seed. EXCEPTION: %s", e.toString()));
-				}
-			}
-			
-			// If running against GRID wait for nodes to become available. If necessary spin up more nodes.
-			if (TestSetup.isParallelBuildEnabled()) {
-				Log.info("Parallel Build enabled. Checking for available nodes");
-				Integer availableNodes = GridNodesManager.getAvailableNodes(getParallelBuildRunUUID(), TestSetup.getRootPath(), getPlatform());
-				Integer requiredNodes = getParallelBuildRequiredNodes();
-				Log.info(String.format("%d nodes are required for test run. Available nodes = %d", requiredNodes, availableNodes));
-				if (availableNodes < requiredNodes) {
-					Integer nodesToSpin = requiredNodes - availableNodes;
-					Log.info(String.format("Short of %d grid nodes. Spinning %d EXTRA grid nodes...", nodesToSpin));
-					GridNodesManager.requestGridNodes(nodesToSpin, getParallelBuildRunUUID(), getBrowser(), getPlatform());
-					Log.info(String.format("Waiting for %d grid nodes to become available..", requiredNodes));
-					do {
-						try {
-							Thread.sleep(5000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-						availableNodes = GridNodesManager.getAvailableNodes(getParallelBuildRunUUID(), TestSetup.getRootPath(), getPlatform());
-					} while (availableNodes < requiredNodes);
-					
-				} else {
-					Log.info(String.format("%d grid nodes are available for running the tests!", requiredNodes));
-				}				
+			// process the single execution method only once for all threads of execution.
+			if (singleExecutionUnitProcessed.compareAndSet(false, true)) {
+				Log.info(String.format("[Thread - '%s'] Processing Single execution unit method...", 
+						Thread.currentThread().getName()));
+				processSingleExecutionUnit();
+				singleExecutionCountDown.countDown();
+			} else {
+				Log.info(String.format("[Thread - '%s'] Waiting for Single execution unit method processing to complete", 
+						Thread.currentThread().getName()));
+				singleExecutionCountDown.await();
 			}
 			
 		} catch (FileNotFoundException e) {
 			Log.error(e.toString());
 		} catch (IOException e) {
 			Log.error(e.toString());
+		} catch (InterruptedException e) {
+			Log.error(e.toString());
+		}
+	}
+
+	private void processSingleExecutionUnit() throws IOException {
+		// If survey upload is enabled, upload the specified surveys to
+		// environment.
+		// We have a 2nd level of check (ie matching base url provided) to
+		// prevent accidental upload to unintended environment.
+		if (isUploadSurveyEnabled() && this.getSurveyUploadBaseUrl().equalsIgnoreCase(this.baseURL)) {
+			try {
+				uploadSurveys();
+			} catch (Exception e) {
+				Log.error(String.format("ERROR when uploading survey. EXCEPTION: %s", e.toString()));
+			}
+		}
+
+		// If pushDBSeed is enabled, push DB seed data to environment.
+		// We have a 2nd level of check (ie matching base url provided) to
+		// prevent accidental upload to unintended environment.
+		if (isPushDBSeedEnabled() && this.getPushDBSeedBaseUrl().equalsIgnoreCase(this.baseURL)) {
+			try {
+				DbSeedExecutor.executeAllDataSeed();
+			} catch (Exception e) {
+				Log.error(String.format("ERROR when pushing DB seed. EXCEPTION: %s", e.toString()));
+			}
+		}
+		
+		// If running against GRID wait for nodes to become available. If necessary spin up more nodes.
+		boolean isRunningOnGrid = this.getRunningOnRemoteServer() != null && this.getRunningOnRemoteServer().trim().equalsIgnoreCase("true");
+		if (isRunningOnGrid) {
+			Log.info("Automation Run Triggered on Grid. Checking for available grid nodes");
+			Integer availableNodes = GridNodesManager.getAvailableNodes(getParallelBuildRunUUID(), getBrowser(), getPlatform());
+			// If parallel is not specified run on Single node. Else get specified number of nodes.
+			Integer requiredNodes = 1;
+			if (isParallelBuildEnabled()) {
+				requiredNodes = getParallelBuildRequiredNodes();
+			}
+			Log.info(String.format("%d nodes are required for test run. Available nodes = %d", requiredNodes, availableNodes));
+			if (availableNodes < requiredNodes) {
+				Integer nodesToSpin = requiredNodes - availableNodes;
+				Log.info(String.format("Short of %d grid nodes. Spinning %d EXTRA grid nodes...", nodesToSpin, nodesToSpin));
+				GridNodesManager.requestGridNodes(nodesToSpin, getParallelBuildRunUUID(), getBrowser(), getPlatform());
+				Log.info(String.format("Waiting for %d grid nodes to become available..", requiredNodes));
+				final Integer WAIT_BETWEEN_POLL_IN_MSEC = 6000;
+				final Integer MAX_RETRIES = 100;   // timeout = 600 seconds = 10 mins.
+				Integer retryAttempt = 0;
+				do {
+					try {
+						retryAttempt++;
+						Thread.sleep(WAIT_BETWEEN_POLL_IN_MSEC);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					availableNodes = GridNodesManager.getAvailableNodes(getParallelBuildRunUUID(), getBrowser(), getPlatform());
+				} while ((availableNodes < requiredNodes) && (retryAttempt < MAX_RETRIES));
+				
+			} else {
+				Log.info(String.format("%d grid nodes are available for running the tests!", requiredNodes));
+			}				
 		}
 	}
 
