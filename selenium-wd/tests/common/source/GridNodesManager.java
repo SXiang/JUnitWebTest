@@ -7,7 +7,7 @@ public class GridNodesManager {
 	private static final String GET_GRID_NODES_AVAILABILITY_CMD = "GetGridNodesAvailability.cmd";
 	private static final String REQUEST_GRID_NODES_CMD = "RequestGridNodes.cmd";
 
-	private static final Boolean isGridServletAlive = false;  // Disable this flag to test when Grid Servlet is down.
+	private static final Boolean isGridServletAlive = true;  // Disable this flag to test when Grid Servlet is down.
 	
 	public static boolean requestGridNodes(Integer nodesToSpin, String runUUID, String browser, String os) {
 		Log.method("GridNodesManager.requestGridNodes", nodesToSpin, runUUID, browser, os);
