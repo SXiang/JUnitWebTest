@@ -178,7 +178,7 @@ public class BaseMapViewTest {
 	}
 
 	/**
-	 * Initializes the page action objects.
+	 * Initializes extra page action objects.
 	 */
 	protected static void initializePageActionsList() {
 		addPageActionsForNewDrivers(1);
