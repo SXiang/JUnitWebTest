@@ -260,7 +260,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public void login(String user, String password) {
-		Log.method("login", user, password);
+		Log.method("login", user, "<HIDDEN>");
 		LoginPage loginPage = new LoginPage(driver, strBaseURL, testSetup);
 		PageFactory.initElements(driver, loginPage);
 

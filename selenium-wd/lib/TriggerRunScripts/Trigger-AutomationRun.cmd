@@ -1,0 +1,1 @@
+Powershell -command "& {Set-ExecutionPolicy Unrestricted -Force;Unblock-File -Path C:\Repositories\surveyor-qa\selenium-wd\lib\TriggerRunScripts\Trigger-AutomationRun.ps1;C:\Repositories\surveyor-qa\selenium-wd\lib\TriggerRunScripts\Trigger-AutomationRun.ps1 -GridHost '%~1' -GridPlatform '%~2' -GridPort %~3 -Nodes %~4 -CleanBuildEnabled '%~5' -TargetToRun '%~6'; exit;}"

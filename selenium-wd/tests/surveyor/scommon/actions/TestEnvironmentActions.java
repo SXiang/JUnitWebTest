@@ -233,7 +233,7 @@ public class TestEnvironmentActions extends BaseActions {
 		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
 
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(String.format("%s:%s", username, password), NOTSET);  
+		loginPageAction.login(String.format("%s:%s", username, "<password_hidden>"), NOTSET);  
 
 		generateSurveyForUser(db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, driverViewPageAction, testEnvironmentAction);
 	}

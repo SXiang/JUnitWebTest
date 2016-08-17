@@ -160,6 +160,8 @@ public class TestSetup {
 	private boolean automationReportingApiEnabled;
 	
 	private static boolean parallelBuildEnabled;
+	private String parallelBuildRunUUID;
+	private Integer parallelBuildRequiredNodes;
 	
 	public TestSetup() {
 		initialize();
@@ -628,7 +630,32 @@ public class TestSetup {
 					Log.error(String.format("ERROR when pushing DB seed. EXCEPTION: %s", e.toString()));
 				}
 			}
-
+			
+			// If running against GRID wait for nodes to become available. If necessary spin up more nodes.
+			if (TestSetup.isParallelBuildEnabled()) {
+				Log.info("Parallel Build enabled. Checking for available nodes");
+				Integer availableNodes = GridNodesManager.getAvailableNodes(getParallelBuildRunUUID(), TestSetup.getRootPath(), getPlatform());
+				Integer requiredNodes = getParallelBuildRequiredNodes();
+				Log.info(String.format("%d nodes are required for test run. Available nodes = %d", requiredNodes, availableNodes));
+				if (availableNodes < requiredNodes) {
+					Integer nodesToSpin = requiredNodes - availableNodes;
+					Log.info(String.format("Short of %d grid nodes. Spinning %d EXTRA grid nodes...", nodesToSpin));
+					GridNodesManager.requestGridNodes(nodesToSpin, getParallelBuildRunUUID(), getBrowser(), getPlatform());
+					Log.info(String.format("Waiting for %d grid nodes to become available..", requiredNodes));
+					do {
+						try {
+							Thread.sleep(5000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						availableNodes = GridNodesManager.getAvailableNodes(getParallelBuildRunUUID(), TestSetup.getRootPath(), getPlatform());
+					} while (availableNodes < requiredNodes);
+					
+				} else {
+					Log.info(String.format("%d grid nodes are available for running the tests!", requiredNodes));
+				}				
+			}
+			
 		} catch (FileNotFoundException e) {
 			Log.error(e.toString());
 		} catch (IOException e) {
@@ -639,8 +666,13 @@ public class TestSetup {
 	private void setParallelBuildTestProperties() {
 		String parallelBuildEnabledValue = this.testProp.getProperty("parallelBuild.Enabled");
 		if (parallelBuildEnabledValue != null && !parallelBuildEnabledValue.isEmpty()) {
-			this.setParallelBuildEnabled(Boolean.valueOf(parallelBuildEnabledValue));
+			TestSetup.setParallelBuildEnabled(Boolean.valueOf(parallelBuildEnabledValue));
 		}
+		String requiredNodes = this.testProp.getProperty("parallelBuild.RequiredNodes");
+		if (requiredNodes != null && requiredNodes != "") {
+			this.setParallelBuildRequiredNodes(Integer.valueOf(requiredNodes));
+		}
+		this.setParallelBuildRunUUID(this.testProp.getProperty("parallelBuild.UUID"));
 	}
 	
 	private void setComplianceReportBaselineGenerationTestProperties() {
@@ -1308,5 +1340,21 @@ public class TestSetup {
 
 	public static void setParallelBuildEnabled(boolean parallelBldEnabled) {
 		parallelBuildEnabled = parallelBldEnabled;
+	}
+
+	public String getParallelBuildRunUUID() {
+		return parallelBuildRunUUID;
+	}
+
+	public void setParallelBuildRunUUID(String parallelBuildRunUUID) {
+		this.parallelBuildRunUUID = parallelBuildRunUUID;
+	}
+
+	public Integer getParallelBuildRequiredNodes() {
+		return parallelBuildRequiredNodes;
+	}
+
+	public void setParallelBuildRequiredNodes(Integer parallelBuildRequiredNodes) {
+		this.parallelBuildRequiredNodes = parallelBuildRequiredNodes;
 	}
 }

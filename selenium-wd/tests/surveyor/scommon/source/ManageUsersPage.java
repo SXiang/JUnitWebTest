@@ -165,7 +165,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public void addNewPicarroUser(String email, String password, boolean enabled) {
-		Log.method("addNewPicarroUser", email, password, enabled);
+		Log.method("addNewPicarroUser", email, "<PASSWORD_HIDDEN>", enabled);
 		Log.clickElementInfo("Add New Picarro User");
 		this.btnAddNewPicarroUser.click();
 		this.waitForNewPageLoad();
@@ -202,13 +202,13 @@ public class ManageUsersPage extends SurveyorBasePage {
 	 */
 	public void addNewPicarroUser(String email, String password, String role,
 			String location, String timeZone) {
-		Log.method("addNewPicarroUser", email, password, role, location, timeZone);
+		Log.method("addNewPicarroUser", email, "<PASSWORD_HIDDEN>", role, location, timeZone);
 		addNewPicarroUser(email,password,password,role,location,timeZone);
 	}
 	
 	public void addNewPicarroUser(String email, String password, String passwordConfirm, String role,
 			String location, String timeZone) {
-		Log.method("addNewPicarroUser", email, password, passwordConfirm, role, location, timeZone);
+		Log.method("addNewPicarroUser", email, "<PASSWORD_HIDDEN>", "<PASSWORDCONFIRM_HIDDEN>", role, location, timeZone);
 		Log.clickElementInfo("Add New Picarro User");
 		this.btnAddNewPicarroUser.click();
 		this.waitForNewPageLoad();
@@ -270,7 +270,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 	public void addNewCustomerUser(String customerName, String email,
 			String password, String passwordConfirm, String role, String location, boolean enabled) {
-		Log.method("addNewCustomerUser", customerName, email, password, passwordConfirm, role, location, enabled);
+		Log.method("addNewCustomerUser", customerName, email, "<PASSWORD_HIDDEN>", "<PASSWORDCONFIRM_HIDDEN>", role, location, enabled);
 
 		Log.info(String.format("Adding new Customer user. Name=%s, Email=%s, Password=[HIDDEN], Role=%s, Location=%s", customerName, 
 				email, role, location));
@@ -314,7 +314,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 	
 	public void addNewCustomerUser(String customerName, String email, String password, String role, String timeZone, String location) {
-		Log.method("addNewCustomerUser", customerName, email, password, role, timeZone, location);
+		Log.method("addNewCustomerUser", customerName, email, "<PASSWORD_HIDDEN>", role, timeZone, location);
 		Log.info(String.format("Adding new Customer user. CustomerName=%s, Email=%s, Password=[HIDDEN], Role=%s, TimeZone=%s, Location=%s", 
 				customerName, email, role, timeZone, location));
 		Log.clickElementInfo("Add New Customer User");
@@ -365,7 +365,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public String addTestUser(String email, String password1, String password2) {
-		Log.method("addTestUser", email, password1, password2);
+		Log.method("addTestUser", email, "<PASSWORD_HIDDEN>", "<PASSWORDCONFIRM_HIDDEN>");
 		String rtnMsg = "";
 		waitForPageToLoad();
 		Log.clickElementInfo("Add New Customer User");
@@ -919,7 +919,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	}
 
 	public boolean resetUserPassword(String userName, String newPassword, boolean isCustomerUser) {
-		Log.method("resetUserPassword", userName, newPassword, isCustomerUser);
+		Log.method("resetUserPassword", userName, "<PASSWORD_HIDDEN>", isCustomerUser);
 		setPagination(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
@@ -957,7 +957,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				actionResetPWDCell.click();
 				waitForPageToLoad();
 
-				Log.info("Set new password - '"+newPassword+"'");
+				Log.info("Set new password - '<HIDDEN>'");
 				inputNewPassword.sendKeys(newPassword);
 				inputNewPasswordConfirm.sendKeys(newPassword);
 				Log.clickElementInfo("Ok");
@@ -1532,11 +1532,11 @@ public class ManageUsersPage extends SurveyorBasePage {
 		this.linkChangePwd.click();
 		waitForPageToLoad();
 
-		Log.info("Input old password - '"+oldPassword+"'");
+		Log.info("Input old password - '<HIDDEN>'");
 		this.inputOldPassword.sendKeys(oldPassword);
-		Log.info("Set new password - '"+newPassword+"'");
+		Log.info("Set new password - '<HIDDEN>'");
 		this.inputNewPassword.sendKeys(newPassword);
-		Log.info("Confirm new password - '"+newPassword+"'");
+		Log.info("Confirm new password - '<HIDDEN>'");
 		this.inputNewPasswordConfirm.sendKeys(newPassword);
 		Log.clickElementInfo("Ok");
 		btnOk.click();
