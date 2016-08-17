@@ -31,6 +31,7 @@ public class BaseMapViewTest {
 	protected static final int ANALYZER1_INSTRUMENT_WARMING_ROW_ID = 2;
 	protected static final int ANALYZER1_REPLAY_ROW_ID = 3;
 	protected static final int ANALYZER3_REPLAY_ROW_ID = 9;
+	protected static final int ANALYZER3_REPLAY_LONG_ROW_ID = 32;
 	protected static final int ANALYZER3_REPLAY_ASSESSMENT_ROW_ID = 14;
 	protected static final int ANALYZER3_REPLAY_OPERATOR_ROW_ID = 17;
 	protected static final int ONE_SECOND = 5;
@@ -38,8 +39,14 @@ public class BaseMapViewTest {
 	protected static final int SURVEY_OPERATOR1_ROW_ID = 5;
 	protected static final int SURVEY_ASSESSMENT1_ROW_ID = 30;
 	protected static final int SURVEY_MANUAL1_ROW_ID = 31;
-	protected static final int USER_ROW_ID_PICARRO_ADMIN = 6;
-	protected static final int USER_ROW_ID_PICARRO_DRIVER = 3;
+	protected static final int USER_ROW_ID_AUTOMATION_ADMIN = 6;
+	protected static final int USER_ROW_ID_PICARRO_DRIVER = 16;
+	protected static final int USER_ROW_ID_PICARRO_UTILITYADMIN = 17;
+	protected static final int USER_ROW_ID_PICARRO_SUPERVISOR = 18;
+	protected static final int USER_ROW_ID_PICARRO_SUPPORT = 11;
+	protected static final int USER_ROW_ID_PICARRO_ADMIN = 4;
+	
+	protected static final int USER_ROW_ID_SQACUS_DRIVER = 3;
 	protected static final String SAMPLE_FIELD_NOTES1 = "Test Notes";
 	protected static final String SURVEY_INFO_SURVEYOR1_ANALYZER1 = "Surveyor: SimAuto-Surveyor1 - SimAuto-Analyzer1";
 	protected static final String SURVEY_INFO_SURVEYOR2_ANALYZER2 = "Surveyor: SimAuto-Surveyor2 - SimAuto-Analyzer2";
