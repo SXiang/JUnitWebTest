@@ -117,8 +117,8 @@ public class ObserverViewPageStressTest extends BaseMapViewTest {
 	 * 	- Observers can successfully observe the survey
 	 */
 	@Test /* Need a DB3 running longer time for more observers to be enabled in this test */
-	public void TC428_LargeNumberOfConcurrentObserversObservingTheMap() throws Exception {
-		Log.info("\nRunning TC428_LargeNumberOfConcurrentObserversObservingTheMap ...");
+	public void TC242_LargeNumberOfConcurrentObserversObservingTheMap() throws Exception {
+		Log.info("\nRunning TC242_LargeNumberOfConcurrentObserversObservingTheMap ...");
 		int[] observers = {
 				 USER_ROW_ID_PICARRO_ADMIN
 //				,USER_ROW_ID_PICARRO_UTILITYADMIN
