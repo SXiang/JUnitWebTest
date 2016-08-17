@@ -192,7 +192,6 @@ public class BaseMapViewTest {
 			baseURLList.add(setup.getBaseUrl());
 			Log.info("Deleting all cookies...***:" + setup.getDriver());
 			setup.getDriver().manage().deleteAllCookies();
-			//TestContext.INSTANCE.setTestSetup(setup);
 			loginPageActionList.add(new LoginPageActions(setup.getDriver(), setup.getBaseUrl(), setup));
 			homePageActionList.add(new HomePageActions(setup.getDriver(), setup.getBaseUrl(), setup));
 			
