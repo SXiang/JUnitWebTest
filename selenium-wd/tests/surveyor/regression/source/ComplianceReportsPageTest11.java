@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -202,7 +203,7 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 	 * @throws Exception
 	 * 
 	 */
-	@Test
+	@Ignore
 	public void TC207_ComplianceReportTest_VerifyReportModeNoChange() {
 		String testCaseName	="TC207";
 		String rptTitle = testCaseName+" Report" + testSetup.getRandomNumber();
