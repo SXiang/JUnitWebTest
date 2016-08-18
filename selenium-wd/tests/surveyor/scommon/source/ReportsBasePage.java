@@ -42,6 +42,7 @@ import com.google.gson.GsonBuilder;
 import common.source.ApiUtility;
 import common.source.CSVUtility;
 import common.source.DateUtility;
+import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.ImagingUtility;
 import common.source.Log;
@@ -1398,6 +1399,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy, String testCaseID) throws Exception {
+		Log.method("ReportsBasePage.checkActionStatus", rptTitle, strCreatedBy, testCaseID);
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForPageLoad();
 		String reportTitleXPath;
@@ -1433,6 +1435,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 				long startTime = System.currentTimeMillis();
 				long elapsedTime = 0;
 				boolean bContinue = true;
+				final int MAX_RETRIES_FOR_NULL_ERROR = 5;
+				int numRetriesForNullError = 0; 
 
 				while (bContinue) {
 					try {
@@ -1473,7 +1477,18 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 						continue;
 					} catch (NullPointerException ne) {
-						Log.info("Null Pointer Exception: " + ne);
+						numRetriesForNullError++;
+						if (numRetriesForNullError < MAX_RETRIES_FOR_NULL_ERROR) {
+							Log.warn(String.format("RETRY attempt-[%d]. Null Pointer Exception Encountered : %s", 
+									numRetriesForNullError, ExceptionUtility.getStackTraceString(ne)));
+							if (elapsedTime >= (ACTIONTIMEOUT + 800 * 1000)) {
+								return false;
+							}
+							continue;
+						}
+						
+						Log.error(String.format("MAX Retry attempts exceeded. Null Pointer Exception Encountered again: %s", 
+								ExceptionUtility.getStackTraceString(ne)));
 						fail("Report failed to be generated!!");
 					}
 				}

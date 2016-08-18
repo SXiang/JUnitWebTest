@@ -1,9 +1,9 @@
 package common.source;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class LogHelper {
 
@@ -45,7 +45,7 @@ public class LogHelper {
 	public static String strListToString(List<String> values) {
 		return listToString(values);
 	}
-
+	
 	public static String intListToString(List<Integer> values) {
 		return listToString(values);
 	}
@@ -54,7 +54,7 @@ public class LogHelper {
 		return listToString(values);
 	}
 
-	public static <K,V> String mapToString(HashMap<K, V> values) {
+	public static <K,V> String mapToString(Map<K, V> values) {
 		StringBuilder builder = new StringBuilder();
 		if (values != null && values.size() > 0) {
 			Iterator<K> iterator = values.keySet().iterator();
@@ -65,5 +65,19 @@ public class LogHelper {
 			}
 		}
 		return builder.toString();
+	}
+
+	public static <K,V> String mapListToString(List<Map<K, V>> values) {
+		StringBuilder builder = new StringBuilder();
+		if (values != null && values.size() > 0) {
+			builder.append(mapToString(values.get(0)));
+			if (values.size() > 1) {
+				for (int i = 1; i < values.size(); i++) {
+					builder.append(",");
+					builder.append(mapToString(values.get(i)));
+				}
+			}
+		}
+		return String.format("[List<Map> values] -> [%s]", builder.toString());
 	}
 }

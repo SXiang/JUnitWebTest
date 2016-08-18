@@ -448,6 +448,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@Override
 	public void reportSpecificAddNewReport(String customer, String exclusionRadius, String boundary, String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong) throws Exception {
+		Log.method("ComplianceReportsPage.reportSpecificAddNewReport", customer, exclusionRadius, boundary, imageMapHeight, imageMapWidth, NELat, NELong, SWLat, SWLong);
+
 		inputExclusionRadius(exclusionRadius);
 
 		this.inputNELat.sendKeys(NELat);
@@ -502,6 +504,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void addViews(String customer, List<Map<String, String>> viewList) {
+		Log.method("ComplianceReportsPage.addViews", customer, LogHelper.mapListToString(viewList));
 		int rowNum;
 		int colNum;
 		String strBaseXPath;
@@ -739,6 +742,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@Override
 	public boolean handleFileDownloads(String rptTitle, String testCaseID) throws Exception {
+		Log.method("ComplianceReportsPage.handleFileDownloads", rptTitle, testCaseID);
 		String reportName = "CR-" + getReportName(rptTitle);
 		clickOnPDFInReportViewer();
 		waitForPDFFileDownload(reportName);
@@ -857,6 +861,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean checkAndGenerateBaselineShapeFiles(String unzipFolder, String testCaseID) throws Exception {
+		Log.method("ComplianceReportsPage.checkAndGenerateBaselineShapeFiles", unzipFolder, testCaseID);
 		boolean isGenerateBaselineShapeFiles = TestContext.INSTANCE.getTestSetup().isGenerateBaselineShapeFiles();
 		Path unzipDirectory = Paths.get(unzipFolder);
 		List<String> filesInDirectory = FileUtility.getFilesInDirectory(unzipDirectory, "*.shp,*.dbf,*.prj,*.shx");
@@ -871,6 +876,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean checkAndGenerateBaselineSSRSImage(String reportName, String testCaseID) throws Exception {
+		Log.method("ComplianceReportsPage.checkAndGenerateBaselineSSRSImage", reportName, testCaseID);
 		boolean isGenerateBaselineSSRSImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
 		if (isGenerateBaselineSSRSImages) {
 			String htmlReportName = reportName + ".html";
@@ -896,6 +902,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean checkAndGenerateBaselineViewImages(String unzipFolder, String testCaseID) throws Exception {
+		Log.method("ComplianceReportsPage.checkAndGenerateBaselineViewImages", unzipFolder, testCaseID);
 		PDFUtility pdfUtility = new PDFUtility();
 		boolean isGenerateBaselineViewImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
 		if (isGenerateBaselineViewImages) {
@@ -1012,6 +1019,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 
 	public boolean checkComplianceReportButtonPresenceAndClick(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType, boolean clickButton, boolean confirmAction) throws Exception {
+		Log.method("ComplianceReportsPage.checkComplianceReportButtonPresenceAndClick", rptTitle, strCreatedBy, buttonType.name(), clickButton, confirmAction);
+
 		setPagination(PAGINATIONSETTING);
 		this.waitForPageLoad();
 
@@ -1248,6 +1257,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean investigateReport(String rptTitle, String strCreatedBy) {
+		Log.method("ComplianceReportsPage.investigateReport", rptTitle, strCreatedBy);
 		setPagination(PAGINATIONSETTING);
 
 		this.waitForPageLoad();
@@ -1306,6 +1316,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean resubmitReport(String rptTitle, String strCreatedBy) {
+		Log.method("ComplianceReportsPage.resubmitReport", rptTitle, strCreatedBy);
 		setPagination(PAGINATIONSETTING);
 
 		this.waitForPageLoad();
@@ -1373,6 +1384,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean validatePdfFiles(String reportTitle, String downloadPath) {
+		Log.method("ComplianceReportsPage.validatePdfFiles", reportTitle, downloadPath);
 		String reportName;
 		String reportZipName;
 		try {
@@ -1413,6 +1425,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean validatePdfFiles(ReportsCompliance reportsCompliance, String downloadPath) {
+		Log.method("ComplianceReportsBasePage.validatePdfFiles", reportsCompliance, downloadPath);
 		String reportName;
 		String reportZipName;
 		try {
@@ -1468,6 +1481,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 
 	public boolean validateReportCreationDate(String actualPath) throws IOException {
+		Log.method("ComplianceReportsPage.validateReportCreationDate", actualPath);
 		String reportDate = null;
 		String actualReport = actualPath + getReportName().trim() + ".pdf";
 		PDFUtility pdfUtility = new PDFUtility();
@@ -1779,6 +1793,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifySurveysTableViaSurveyMode(boolean changeMode, ReportModeFilter strReportMode, SurveyModeFilter surveyModeFilter) throws IOException {
+		Log.method("ComplianceReportsPage.verifySurveysTableViaSurveyMode", changeMode, strReportMode.name(), surveyModeFilter.name());
 		boolean result = false;
 
 		if (strReportMode != null && changeMode) {
@@ -1917,6 +1932,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyComplianceReportButton(String rptTitle, String strCreatedBy, ComplianceReportButtonType buttonType) throws Exception {
+		Log.method("ComplianceReportsPage.verifyComplianceReportButton", rptTitle, strCreatedBy, buttonType.name());
 		return checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, buttonType, false, false /* confirmAction */);
 	}
 
@@ -1924,6 +1940,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * Verifies that the customer boundary name auto-complete list contains the specified entries.
 	 */
 	public boolean verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains(String boundaryFilterType, String customerBoundaryName, List<String> autocompleteListEntries) {
+		Log.method("ComplianceReportsPage.verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains", boundaryFilterType, customerBoundaryName, LogHelper.listToString(autocompleteListEntries));
 		openCustomerBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen().switchMode(ControlMode.MapInteraction).waitForMapImageLoad();
 		latLongSelectionControl.selectCustomerBoundaryType(boundaryFilterType);
@@ -1948,6 +1965,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyComplianceReportStaticText(ReportsCompliance reportsCompliance) throws IOException {
+		Log.method("ComplianceReportsPage.verifyComplianceReportStaticText", reportsCompliance);
 		return verifyComplianceReportStaticText(reportsCompliance, testSetup.getDownloadPath());
 	}
 
@@ -1960,7 +1978,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyComplianceReportStaticText(ReportsCompliance reportsCompliance, String actualPath) throws IOException {
-		Log.info("Calling verifyComplianceReportStaticText()...");
+		Log.method("ComplianceReportsBasePage.verifyComplianceReportStaticText", reportsCompliance, actualPath);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportsCompliance.rptTitle);
 		String reportId = reportObj.getId();
@@ -2009,6 +2027,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyComplianceReportContainsText(String reportTitle, List<String> expectedReportString) throws IOException {
+		Log.method("ComplianceReportsPage.verifyComplianceReportContainsText", reportTitle, LogHelper.listToString(expectedReportString));
 		String actualPath = testSetup.getDownloadPath();
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
@@ -2036,7 +2055,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyShowCoverageTable(String actualPath, String reportTitle) throws IOException {
-		Log.info("Verifying Show Coverage Table");
+		Log.method("ComplianceReportsBasePage.verifyShowCoverageTable", actualPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2062,8 +2081,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyCoverageForecastValuesTableWithPreviousResult(String actualPath, String reportTitle) throws IOException {
-		Log.info("Verifying Coverage Forecast Values Table");
-
+		Log.method("ComplianceReportsPage.verifyCoverageForecastValuesTableWithPreviousResult", actualPath, reportTitle);
 		PDFTableUtility pdfTableUtility = new PDFTableUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2088,11 +2106,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyCoverageForecastValuesTable(String actualPath, String reportTitle) throws IOException {
+		Log.method("ComplianceReportsPage.verifyCoverageForecastValuesTable", actualPath, reportTitle);
 		return verifyCoverageForecastValuesTable(actualPath, reportTitle, true);
 	}
 
 	public boolean verifyCoverageForecastValuesTable(String actualPath, String reportTitle, boolean withPrediction) throws IOException {
-		Log.info("Verifying Coverage Forecast Values Table");
+		Log.method("ComplianceReportsPage.verifyCoverageForecastValuesTable", actualPath, reportTitle, withPrediction);
 		PDFTableUtility pdfTableUtility = new PDFTableUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2156,7 +2175,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 
 	public boolean verifyCoverageValuesTable(String actualPath, String reportTitle, Map<String, String> userSelection) throws IOException {
-		Log.info("Verifying Coverage Values Table");
+		Log.method("ComplianceReportsBasePage.verifyCoverageValuesTable", actualPath, reportTitle, LogHelper.mapToString(userSelection));
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2218,7 +2237,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyLayersTable(String actualPath, String reportTitle, Map<String, String> userInput) throws IOException {
-		Log.info("Verifying Layers Table");
+		Log.method("ComplianceReportsPage.verifyLayersTable", actualPath, reportTitle, LogHelper.mapToString(userInput));
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2259,7 +2278,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 
 	public boolean verifyViewsTable(String actualPath, String reportTitle, List<Map<String, String>> userInput) throws IOException {
-		Log.info("Verifying Report Views Table");
+		Log.method("ComplianceReportsPage.verifyViewsTable", actualPath, reportTitle, LogHelper.mapListToString(userInput));
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2321,7 +2340,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyDrivingSurveysTable(String actualPath, String reportTitle) throws IOException {
-		Log.info("Verifying Driving Surveys Table");
+		Log.method("ComplianceReportsPage.verifyDrivingSurveysTable", actualPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2386,7 +2405,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyEthaneCaptureTable(String actualPath, String reportTitle) throws IOException {
-		Log.info("Verifying Ethane Capture Table");
+		Log.method("ComplianceReportsPage.verifyEthaneCaptureTable", actualPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2445,7 +2464,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyInvestigationResultTable(String actualPath, String reportTitle) throws IOException {
-		Log.info("Verifying Investigation Result Table");
+		Log.method("ComplianceReportsPage.verifyInvestigationResultTable", actualPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2514,7 +2533,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyReportSurveyMetaDataFile(String actualPath, String reportTitle) throws FileNotFoundException, IOException {
-		Log.info("Verifying Report survey meta data file");
+		Log.method("ComplianceReportsPage.verifyReportSurveyMetaDataFile", actualPath, reportTitle);
 		CSVUtility csvUtility = new CSVUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2567,7 +2586,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyIsotopicMetaDataFile(String actualPath, String reportTitle) throws FileNotFoundException, IOException {
-		Log.info("Verifying Report Isotopic meta data file");
+		Log.method("ComplianceReportsPage.verifyIsotopicMetaDataFile", actualPath, reportTitle);
 		CSVUtility csvUtility = new CSVUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2616,10 +2635,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyEthaneCaptureMetaDataFile(String actualPath, String reportTitle) throws FileNotFoundException, IOException {
+		Log.method("ComplianceReportsPage.verifyEthaneCaptureMetaDataFile", actualPath, reportTitle);
 		return verifyEthaneCaptureMetaDataFile(actualPath, reportTitle, Report.getReport(reportTitle).getId());
 	}
 
 	public boolean verifyEthaneCaptureMetaDataFile(String actualPath, String reportTitle, String reportId) throws FileNotFoundException, IOException {
+		Log.method("ComplianceReportsPage.verifyEthaneCaptureMetaDataFile", actualPath, reportTitle, reportId);
+
 		CSVUtility csvUtility = new CSVUtility();
 		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /* includeExtension */);
 		String pathToMetaDataUnZip = actualPath + File.separator + metaDataZipFileName;
@@ -2668,11 +2690,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle) throws FileNotFoundException, IOException {
-		Log.info("Verifying LISA Meta data file");
+		Log.method("ComplianceReportsPage.verifyLISASMetaDataFile", actualPath, reportTitle);
 		return verifyLISASMetaDataFile(actualPath, reportTitle, Report.getReport(reportTitle).getId());
 	}
 
 	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId) throws FileNotFoundException, IOException {
+		Log.method("ComplianceReportsPage.verifyLISASMetaDataFile", actualPath, reportTitle, reportId);
+
 		CSVUtility csvUtility = new CSVUtility();
 		String pathToMetaDataUnZip = actualPath;
 		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /* includeExtension */);
@@ -2771,6 +2795,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyIsotopicValueIsFormattedCorrectly(String isotopicUncertaintyValue) {
+		Log.method("ComplianceReportsPage.verifyIsotopicValueIsFormattedCorrectly", isotopicUncertaintyValue);
+
 		String isotopicValue = getIsotopicValue(isotopicUncertaintyValue);
 
 		// Valid values:
@@ -2795,6 +2821,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyUncertaintyValueIsFormattedCorrectly(String isotopicUncertaintyValue) {
+		Log.method("ComplianceReportsPage.verifyUncertaintyValueIsFormattedCorrectly", isotopicUncertaintyValue);
 		String uncertaintyValue = getUncertaintyPercent(isotopicUncertaintyValue);
 
 		// Value values:
@@ -2826,7 +2853,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyEthaneAnalysisTable(String actualPath, String reportTitle) throws IOException {
-		Log.info("Calling verifyEthaneAnalysisTable() ...");
+		Log.method("ComplianceReportsPage.verifyEthaneAnalysisTable", actualPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2894,7 +2921,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyIsotopicAnalysisTable(String actualPath, String reportTitle) throws IOException {
-		Log.info("Calling verifyIsotopicAnalysisTable() ...");
+		Log.method("ComplianceReportsPage.verifyIsotopicAnalysisTable", actualPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2966,7 +2993,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifySSRSPDFContainsText(String actualPath, String reportTitle, List<String> expectedReportString) throws IOException {
-		Log.info("Verifying SSRS PDF contains expected strings...");
+		Log.method("ComplianceReportsPage.verifySSRSPDFContainsText", actualPath, reportTitle, LogHelper.listToString(expectedReportString));
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2994,7 +3021,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyIndicationTable(String actualPath, String reportTitle) throws IOException {
-		Log.info("Verifying Indication Table");
+		Log.method("ComplianceReportsPage.verifyIndicationTable", actualPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -3077,7 +3104,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyGapsTable(String actualPath, String reportTitle) throws IOException {
-		Log.info("Verifying Gaps Table");
+		Log.method("ComplianceReportsPage.verifyGapsTable", actualPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -3139,12 +3166,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws Exception
 	 */
 	public boolean verifySSRSPDFFooter(String actualPath, String reportTitle, String expectedSoftwareVersion, String expectedReportAuthor) throws Exception {
-		Log.info("Verifying SSRS PDF footer...");
+		Log.method("ComplianceReportsPage.verifySSRSPDFFooter", actualPath, reportTitle, expectedSoftwareVersion, expectedReportAuthor);
 		String reportPDFFilename = getReportPDFFileName(reportTitle, true /* includeExtension */);
 		return verifyPDFFooter(actualPath, reportPDFFilename, expectedSoftwareVersion, expectedReportAuthor);
 	}
 
 	public boolean verifyPDFFooter(String actualPath, String pdfFilename, String expectedSoftwareVersion, String expectedReportAuthor) throws Exception {
+		Log.method("ComplianceReportsPage.verifyPDFFooter", actualPath, pdfFilename, expectedSoftwareVersion, expectedReportAuthor);
 		String actualReport = Paths.get(actualPath, pdfFilename).toString();
 		PDFUtility pdfUtility = new PDFUtility();
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
@@ -3204,7 +3232,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 			String actualReportDate = map.get(SSRSPdfFooterColumns.ReportDate);
 			Log.info(String.format("Comparing item-%d, actual Date value-'%s' with today's date", idx, actualReportDate));
-			if (!(new DateUtility()).verifyDateMatchesToday(actualReportDate)) {
+			if (!DateUtility.verifyDateMatchesToday(actualReportDate)) {
 				Log.info("Match=FALSE");
 				return false;
 			}
@@ -3223,7 +3251,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifySSRSImages(String actualPath, String reportTitle, String testCase) throws IOException, InterruptedException {
-		Log.info("Verifying Images in SSRS");
+		Log.method("ComplianceReportsBasePage.verifySSRSImages", actualPath, reportTitle, testCase);
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
 		String reportNameWithoutExt = "CR-" + reportId.substring(0, 6);
@@ -3297,6 +3325,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	// (DE1973) tracks the issue of order in compliance viewer is NOT the same as the input order by user.
 	// Once (DE1973) is fixed we could utilize this method for checking correct order in compliance viewer.
 	public boolean verifyViewsInComplianceViewerAreInCorrectSequence(List<String> viewNamesList) {
+		Log.method("ComplianceReportsPage.verifyViewsInComplianceViewerAreInCorrectSequence", LogHelper.listToString(viewNamesList));
 		List<WebElement> thumbnailImages = driver.findElements(By.xpath("//*[@id='ImageList']/li"));
 		if (viewNamesList != null && viewNamesList.size() > 0) {
 			Integer numViews = viewNamesList.size();
@@ -3319,6 +3348,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public boolean verifyViewsInSSRSPDFAreInCorrectSequence(List<String> expectedViewNamesList, String reportTitle) throws IOException {
+		Log.method("ComplianceReportsPage.verifyViewsInSSRSPDFAreInCorrectSequence", LogHelper.listToString(expectedViewNamesList), reportTitle);
 		Log.info(String.format("Expected views are: %s", LogHelper.strListToString(expectedViewNamesList)));
 
 		List<String> actualViewNamesList = getViewNamesFromSSRSPdfViewTable(reportTitle);
@@ -3330,6 +3360,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public List<String> getViewNamesFromSSRSPdfViewTable(String reportTitle) throws IOException {
+		Log.method("ComplianceReportsPage.getViewNamesFromSSRSPdfViewTable", reportTitle);
 		String pdfFilename = this.getReportPDFFileName(reportTitle, true /* includeExtension */);
 		String pdfFilePath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), pdfFilename).toString();
 
@@ -3368,6 +3399,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 */
 
 	public boolean verifyAllViewsImages(String actualPath, String reportTitle, String testCase, int numberOfViews) throws IOException {
+		Log.method("ComplianceReportsPage.verifyAllViewsImages", actualPath, reportTitle, testCase, numberOfViews);
 		for (int numberViews = 1; numberViews <= numberOfViews; numberViews++) {
 			if (!verifyViewsImages(actualPath, reportTitle, testCase, new NumberUtility().getOrdinalNumberString(numberViews) + " View")) {
 				return false;
@@ -3386,10 +3418,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyViewsImages(String actualPath, String reportTitle, String testCase, String viewName) throws IOException {
+		Log.method("ComplianceReportsPage.verifyViewsImages", actualPath, reportTitle, testCase, viewName);
 		return verifyViewsImages(actualPath, reportTitle, testCase, viewName, true);
 	}
 
 	public boolean verifyViewsImages(String actualPath, String reportTitle, String testCase, String viewName, boolean inZipFolder) throws IOException {
+		Log.method("ComplianceReportsPage.verifyViewsImages", actualPath, reportTitle, testCase, viewName, inZipFolder);
 		PDFUtility pdfUtility = new PDFUtility();
 		String reportName = getReportPDFFileName(reportTitle, false /* includeExtension */);
 		String reportZipName = getReportPDFZipFileName(reportTitle, false /* includeExtension */);
