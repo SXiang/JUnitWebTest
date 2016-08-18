@@ -18,6 +18,7 @@ import common.source.TestSetup;
 public class BaseDbSeedBuilder {
 	
 	public static final String SURVEY_SEED_DATA_FOLDER = "SurveySeedData";
+	public static final Integer	SRID = 4326;
 
 	protected String SeedDataFilePath;
 	private DbSeedBuilderCache dbSeedCache;
@@ -47,6 +48,13 @@ public class BaseDbSeedBuilder {
 		this.dbSeedCache = dbSeedCache;
 	}
 
+	public String handleNullGetValue(String value) {
+		if (value == null || value.isEmpty()) {
+			return "NULL";
+		}
+		return value;
+	}
+	
 	protected String createCSVFileWithCustomerData(String customerID, String primaryKeyColName, String tableName) throws FileNotFoundException, IOException {
 		if (SeedDataFilePath == null) {
 			throw new IllegalStateException("SeedData FilePath NOT set. Ensure SeedDataFilePath is set before calling createCSVFilesWithCustomerData().");
@@ -99,6 +107,20 @@ public class BaseDbSeedBuilder {
 		customerCSVFile = custSeedFilePath;
 
 		return customerCSVFile;
+	}
+	
+	/**
+	 * For shape geometry type which cannot be inserted directly as binary using JDBC insert statements,
+	 * we store the data in WKT format and then insert using geometry::STGeomFromText('<WKT>')
+	 * A geom file stores the data for geometry type for all the rows.
+	 * @return
+	 * @throws IOException 
+	 */
+	public List<String> readGeomFile(String geomFilePath) throws IOException {
+		if (!FileUtility.fileExists(geomFilePath)) {
+			return null;
+		}
+		return FileUtility.readFileLinesToList(geomFilePath);
 	}
 	
 	public void close() {

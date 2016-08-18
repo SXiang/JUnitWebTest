@@ -221,7 +221,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		this.inputEmail.sendKeys(email);
 		Log.info("Set password - '<HIDDEN>'");
 		this.inputPassword.sendKeys(password);
-		this.inputPasswordConfirm.sendKeys(password);
+		this.inputPasswordConfirm.sendKeys(passwordConfirm);
 
 		List<WebElement> roleOptions = this.dropDownRole.findElements(By
 				.tagName("option"));

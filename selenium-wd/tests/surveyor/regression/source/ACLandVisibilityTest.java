@@ -847,7 +847,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		preferencesPage.waitForPageLoad();
 
 		assertTrue(preferencesPage.getSelectedTimeZone().getText().equalsIgnoreCase(TIMEZONE));
-		assertTrue(preferencesPage.getSelectedLocation().getText().equalsIgnoreCase(DEFAULTLOC));
+		assertTrue(preferencesPage.getSelectedLocation().getText().equalsIgnoreCase(PICARROLOC));
 		homePage.getLinkFleetMap().click();
 
 		fleetMapPage.waitForPageLoad();

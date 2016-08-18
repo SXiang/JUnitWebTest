@@ -203,6 +203,7 @@ public class ResourceKeys {
 	public static final String Survey_EthaneRatio = "Survey_EthaneRatio";
 	public static final String Survey_amplitude = "Survey_amplitude";
 	
+	public static final String SystemHistoryReport_PageTitle = "SystemHistoryReport_PageTitle";
 	public static final String SystemHistoryReports_PageTitle = "SystemHistoryReports_PageTitle";
 	public static final String SystemHistoryReports_ReportTitle = "SysHistoryReportSSRS_SystemHistoryReport";
 	public static final String SystemHistoryReports_PageSubTitle = "SysHistoryReportSSRS_SurveyorHistoryNotesTable";

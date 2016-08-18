@@ -276,6 +276,7 @@ public class HomePageTest extends SurveyorBaseTest {
 		homePage.getFirstSurvey().click();
 		surveyViewPage.waitForPageLoad();
 		surveyViewPage.waitForAJAXCallsToComplete();
+		surveyViewPage.waitForUIUnBlock();
 		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());
 		surveyViewPage.clickPicarroLogoButton();
 		homePage.waitForPageLoad();

@@ -1076,22 +1076,27 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		Log.info(String.format("Looking for rptTitle=[%s], strCreatedBy=[%s]", rptTitle, strCreatedBy));
 
-		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+		for (int rowNum = 1,numRetry = 0; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
 			createdByXPath = "tr[" + rowNum + "]/td[3]";
 
 			try {
 				rptTitleCellText = getTable().findElement(By.xpath(reportTitleXPath)).getText().trim();
 				createdByCellText = getTable().findElement(By.xpath(createdByXPath)).getText().trim();
-			} catch (Exception e) {
-				Log.error("Failed to get text of report title/createdBy cells on row '" + rowNum + "' and will try again: " + e);
-				rowNum--;
-				continue;
+			}catch(Exception e){
+				if(numRetry++ < 10){
+					Log.error("Failed to get text of report title/createdBy cells on row '"+rowNum+"' and will try again: "+e);
+					rowNum--;
+					continue;
+				}else{
+					Log.error("Failed to get text of report title/createdBy cells on row '"+rowNum+"': "+e);
+					return false;
+				}
 			}
 			Log.info(String.format("Found rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]", rptTitleCellText, createdByCellText));
 			if (rptTitleCellText.equalsIgnoreCase(rptTitle) && createdByCellText.equalsIgnoreCase(strCreatedBy)) {
 				try {
-					buttonXPath = "tr[" + rowNum + "]/" + buttonXPath;
+					buttonXPath = "tr[" + rowNum + "]/"+ buttonXPath;
 					buttonImg = getTable().findElement(By.xpath(buttonXPath));
 					if (buttonImg.isDisplayed()) {
 						if (clickButton) {
@@ -1125,8 +1130,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					Log.error("Button image is not visible '" + buttonXPath + "'");
 					return false;
 				} catch (org.openqa.selenium.NoSuchElementException e) {
-					Log.error("Button image not found '" + buttonXPath + "': " + e);
-					return false;
+					Log.error("Button image not found '"+buttonXPath+"': "+e);
+					continue;
 				}
 			}
 
@@ -3610,14 +3615,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return d.getPageSource().contains(STRPageContentText);
-			}
-		});
-	}
-
-	public void waitForReportGenerationtoComplete() {
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return btnReportViewer.isDisplayed();
 			}
 		});
 	}
