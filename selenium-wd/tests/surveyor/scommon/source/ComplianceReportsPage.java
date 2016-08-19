@@ -2730,7 +2730,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				Log.info("LISA Meta data file verification failed");
 				return false;
 			}
-			reportIndObj.setPeakNumber(csvRow.get("LisaNumber").trim());
+			reportIndObj.setPeakNumber(csvRow.get("LISANumber").trim());
 			reportIndObj.setSurveyorUnitName(csvRow.get("Surveyor").trim());
 			reportIndObj.setDateTime(csvRow.get("LISADateTime").trim());
 
