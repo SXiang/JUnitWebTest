@@ -90,6 +90,7 @@ public class BaseMapViewTest {
 	protected static final String COLOR_RED = "Red";
 	protected static final String COLOR_GRAY = "Gray";
 	protected static final String COLOR_WHITE = "White";
+	protected static final String Live_Obvserver_Pattern = "/Live/Observer?serialNumber=%s";
 	
 	// Instance 1 actions and page objects.
 	protected static HomePageActions homePageAction;
@@ -105,15 +106,15 @@ public class BaseMapViewTest {
 
 	// Extra instance actions and page objects. 
 	// Extra instance can be used for tests running on multiple windows (for eg. DriverView and ObserverView windows). 
-	protected static ArrayList<HomePageActions> homePageActionList = new ArrayList<HomePageActions>();
-	protected static  ArrayList<LoginPageActions> loginPageActionList = new ArrayList<LoginPageActions>();
+	protected ArrayList<HomePageActions> homePageActionList = new ArrayList<HomePageActions>();
+	protected ArrayList<LoginPageActions> loginPageActionList = new ArrayList<LoginPageActions>();
 
-	protected static  ArrayList<HomePage> homePageList = new ArrayList<HomePage>();
-	protected static  ArrayList<LoginPage> loginPageList = new ArrayList<LoginPage>();
+	protected ArrayList<HomePage> homePageList = new ArrayList<HomePage>();
+	protected ArrayList<LoginPage> loginPageList = new ArrayList<LoginPage>();
 
-	protected static  ArrayList<TestSetup> testSetupList = new ArrayList<TestSetup>();
-	protected static  ArrayList<WebDriver> driverList = new ArrayList<WebDriver>();
-	protected static  ArrayList<String> baseURLList = new ArrayList<String>(); 
+	protected ArrayList<TestSetup> testSetupList = new ArrayList<TestSetup>();
+	protected ArrayList<WebDriver> driverList = new ArrayList<WebDriver>();
+	protected ArrayList<String> baseURLList = new ArrayList<String>(); 
 
 	protected static DateUtility dateUtility = new DateUtility();
 
@@ -160,7 +161,9 @@ public class BaseMapViewTest {
 	 * Initializes the page action objects.
 	 */
 	protected static void initializePageActions() {
-		testSetup = new TestSetup();
+		if(testSetup == null || testSetup.getDriver() == null){
+			testSetup = new TestSetup();
+		}
 		driver = testSetup.getDriver();
 		baseURL = testSetup.getBaseUrl();
 		Log.info("Deleting all cookies...***:" +driver);
@@ -180,10 +183,10 @@ public class BaseMapViewTest {
 	/**
 	 * Initializes extra page action objects.
 	 */
-	protected static void initializePageActionsList() {
+	protected void initializePageActionsList() {
 		addPageActionsForNewDrivers(1);
 	}
-	protected static void addPageActionsForNewDrivers(int num) {
+	protected void addPageActionsForNewDrivers(int num) {
 		int currentSize = testSetupList.size();
 		for(int index = currentSize; index < num + currentSize; index++ ){
 			TestSetup setup= new TestSetup();
@@ -216,6 +219,7 @@ public class BaseMapViewTest {
 			homePage.logout();
 		
 		driver.quit();
+		testSetup = null;
 		
 		// clean up - extra web drivers 
 		for(int index=0;index<testSetupList.size(); index++){
@@ -273,5 +277,11 @@ public class BaseMapViewTest {
 			hourOfDay = hourOfDay - 12;
 		}
 		return hourOfDay;
+	}
+	
+	protected String getLiveObservePath(){
+		String serialNumber = TestEnvironmentActions.workingDataRow.analyzerSerialNumber;
+		String path = String.format(Live_Obvserver_Pattern, serialNumber);
+		return path;
 	}
 }

@@ -48,8 +48,6 @@ public class ObserverViewPageStressTest extends BaseMapViewTest {
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		disposeProcesses();
-		// Initialize needed at Class level for automation reports.
-		initializePageActions();
 	}
 
 	@Before
@@ -121,7 +119,7 @@ public class ObserverViewPageStressTest extends BaseMapViewTest {
 		Log.info("\nRunning TC242_LargeNumberOfConcurrentObserversObservingTheMap ...");
 		int[] observers = {
 				 USER_ROW_ID_PICARRO_ADMIN
-//				,USER_ROW_ID_PICARRO_UTILITYADMIN
+				,USER_ROW_ID_PICARRO_UTILITYADMIN
 //				,USER_ROW_ID_PICARRO_SUPERVISOR
 //				,USER_ROW_ID_PICARRO_SUPPORT
 //				,USER_ROW_ID_AUTOMATION_ADMIN
@@ -129,27 +127,26 @@ public class ObserverViewPageStressTest extends BaseMapViewTest {
 
 		addPageActionsForNewDrivers(observers.length - 1);
 		initializeObserverViewPageActionList();
-		
+
+		for(int index = 0; index<observers.length; index++){
+			loginAsObserver(observers[index], index);
+		}
 		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
 		startDrivingSurvey(ANALYZER3_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND);
 		
 		for(int index = 0; index<observers.length; index++){
-			loginAsObserver(observers[index], index);
+			homePageList.get(index).open(getLiveObservePath());
 		}
 		
 		for(int index = 0; index<observers.length; index++){
-			homePageActionList.get(index).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 			observerViewPageActionList.get(index).waitForConnectionToComplete(EMPTY, NOTSET);
-		}
-		
-		for(int index = 0; index<observers.length; index++){
 			observerViewPageActionList.get(index).clickOnMapButton(EMPTY, NOTSET);
 			observerViewPageActionList.get(index).turnOnMapView(EMPTY, NOTSET);
 			observerViewPageActionList.get(index).showCurtainView(EMPTY, NOTSET);
 			observerViewPageActionList.get(index).clickOnCurtainReturnButton(EMPTY, NOTSET);
 			assertTrue(observerViewPageActionList.get(index).verifyMapViewIsShown(EMPTY, NOTSET));
 		}
-		
+
 		for(int index = 0; index<observers.length; index++){
 			observerViewPageActionList.get(index).clickOnMapButton(EMPTY, NOTSET);
 			observerViewPageActionList.get(index).turnOnSatelliteView(EMPTY, NOTSET);
