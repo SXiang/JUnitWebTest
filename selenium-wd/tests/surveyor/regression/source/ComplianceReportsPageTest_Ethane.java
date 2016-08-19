@@ -5,10 +5,9 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static surveyor.scommon.source.SurveyorConstants.CUSDRVRRTAG;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVETHSTDTAG;
-import static surveyor.scommon.source.SurveyorConstants.CUSDRVETHRRTAG;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
-import static surveyor.scommon.source.SurveyorConstants.CUSDRVRAPIDTAG;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVETHOPTAG;
 import static surveyor.scommon.source.SurveyorConstants.ETHRNELAT;
 import static surveyor.scommon.source.SurveyorConstants.ETHRNELON;
@@ -33,7 +32,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
-import static surveyor.scommon.source.SurveyorConstants.KEYCPSAMPLRPT;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
@@ -52,11 +50,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.support.PageFactory;
-
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.CryptoUtility;
@@ -67,7 +62,6 @@ import surveyor.dataprovider.ComplianceReportEthaneDataProvider;
 import surveyor.dataprovider.ReportDataProvider;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
 import surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
@@ -237,10 +231,13 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaTag(true, ReportModeFilter.Standard, CUSDRVETHSTDTAG));
 
 		driver.navigate().refresh();
-		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVRAPIDTAG));
-
-		driver.navigate().refresh();
 		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVETHOPTAG));
+
+		this.getComplianceReportsPage().login(SQAPICSUP, USERPASSWORD);
+		this.getComplianceReportsPage().open();
+		this.getComplianceReportsPage().openNewComplianceReportPage();
+
+		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVRRTAG));
 	}
 
 	/**
