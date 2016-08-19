@@ -269,10 +269,8 @@ public class TestSetup {
 		Log.info("-----Chrome it is ----");
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("download.default_directory", this.downloadPath);
-
 		prefs.put("profile.default_content_settings.popups", 0);
 		prefs.put("profile.default_content_setting_values.automatic_downloads", 1);
-		
 		this.capabilities = DesiredCapabilities.chrome();
 		this.capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 		
@@ -313,7 +311,7 @@ public class TestSetup {
 		}
 		driver = new RemoteWebDriver(new URL("http://" + this.remoteServerHost + ":4444/wd/hub/"), this.capabilities);
 	}
-
+	
 	/* NETWORK PROXY related methods */
 	/*
 	 * EXAMPLE USAGE: 1. Using Proxy to limit Upstream/Downstream KBPS.

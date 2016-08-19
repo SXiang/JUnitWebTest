@@ -1199,7 +1199,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	 *	2. None of the values should be missing. Elapsed and Remaining Times should not reset after the refresh.
 	 * @throws Exception 
  	 **/
-	@Test
+	@Ignore // NOTES: Connection does NOT complete in Product after refresh when used w/ simulator. Checked by Kamini not repro on car. Disabled w/ simulator.
 	public void TC1232_ActionTest_DriverViewRefreshBrowser() throws Exception {
 		Log.info("\nRunning TC1232_SimulatorTest_DriverViewRefreshBrowser");
 
@@ -1286,7 +1286,9 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	 *	- Once the Start Survey button is clicked on the third survey, the dialog should disappear and the survey should start (car icon turns red, Elapsed Time begins to advance, etc.)
 	 * @throws Exception 
  	 **/
-	@Test
+	@Ignore 
+	// NOTES: When run with simulator we see the following behavior:
+	// After Start -> Stop -> Start -> Stop -> Start, Elapsed and Remaining time labels are BLANK. Checked by Kamini NOT repro in CAR. Disabled w/ simulator. 
 	public void TC1241_ActionTest_DriverViewStartSurveyMultipleTimes() throws Exception {
 		Log.info("\nRunning TC1241_SimulatorTest_DriverViewStartSurveyMultipleTimes");
 

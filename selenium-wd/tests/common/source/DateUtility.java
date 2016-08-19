@@ -194,7 +194,15 @@ public class DateUtility {
 	public static Date getCurrentDate() {
 		return getCalendarForCurrentZone().getTime();
 	}
-	
+
+	/**
+	 * Returns the current time in milliseconds since January 1, 1970 UTC (unix time).
+	 * 
+	 */
+	public static double getCurrentUnixEpochTime() {
+		return (System.currentTimeMillis() / 1000D);
+	}
+
 	/**
 	 * Returns system hour in 12-hour format.
 	 * 
@@ -596,6 +604,8 @@ public class DateUtility {
 
 		// ** Unit tests for isFirstTimeGreater() method
 
+		Log.info(NumberUtility.formatString(DateUtility.getCurrentUnixEpochTime(), 3));
+		
 		String timeString1 = "00:00:00";
 		String timeString2 = "00:00:00";
 		Log.info(String.format("Comparing Time1 - '%s' with Time2 - '%s'", timeString1, timeString2));
