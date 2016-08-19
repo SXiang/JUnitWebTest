@@ -1,1 +1,0 @@
-This is 2.4.0.0 surveyor-qa test branch for release-2.4.0.0 surveyor branch.
