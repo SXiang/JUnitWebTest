@@ -231,13 +231,10 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaTag(true, ReportModeFilter.Standard, CUSDRVETHSTDTAG));
 
 		driver.navigate().refresh();
-		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVETHOPTAG));
-
-		this.getComplianceReportsPage().login(SQAPICSUP, USERPASSWORD);
-		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().openNewComplianceReportPage();
-
 		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVRRTAG));
+
+		driver.navigate().refresh();
+		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVETHOPTAG));
 	}
 
 	/**
