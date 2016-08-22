@@ -661,13 +661,14 @@ public class TestSetup {
 		// If running against GRID wait for nodes to become available. If necessary spin up more nodes.
 		boolean isRunningOnGrid = this.getRunningOnRemoteServer() != null && this.getRunningOnRemoteServer().trim().equalsIgnoreCase("true");
 		if (isRunningOnGrid) {
-			Log.info("Automation Run Triggered on Grid. Checking for available grid nodes");
-			Integer availableNodes = GridNodesManager.getAvailableNodes(getParallelBuildRunUUID(), getBrowser(), getPlatform());
 			// If parallel is not specified run on Single node. Else get specified number of nodes.
 			Integer requiredNodes = 1;
 			if (isParallelBuildEnabled()) {
 				requiredNodes = getParallelBuildRequiredNodes();
 			}
+
+			Log.info("Automation Run Triggered on Grid. Checking for available grid nodes");
+			Integer availableNodes = GridNodesManager.getAvailableNodes(requiredNodes, getParallelBuildRunUUID(), getBrowser(), getPlatform());
 			Log.info(String.format("%d nodes are required for test run. Available nodes = %d", requiredNodes, availableNodes));
 			if (availableNodes < requiredNodes) {
 				Integer nodesToSpin = requiredNodes - availableNodes;
@@ -684,7 +685,7 @@ public class TestSetup {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					availableNodes = GridNodesManager.getAvailableNodes(getParallelBuildRunUUID(), getBrowser(), getPlatform());
+					availableNodes = GridNodesManager.getAvailableNodes(requiredNodes, getParallelBuildRunUUID(), getBrowser(), getPlatform());
 				} while ((availableNodes < requiredNodes) && (retryAttempt < MAX_RETRIES));
 				
 			} else {

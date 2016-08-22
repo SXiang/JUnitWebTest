@@ -37,23 +37,22 @@ public class GridNodesManager {
 	 * Returns available Grid nodes matching specified run UUID, browser and OS
 	 * @return
 	 */
-	public static Integer getAvailableNodes(String runUUID, String browser, String os) {
+	public static Integer getAvailableNodes(Integer nodesToSpin, String runUUID, String browser, String os) {
 		Log.method("GridNodesManager.getAvailableNodes", runUUID, browser, os);
-		return getAvailableGridNodes(runUUID, browser, os);
+		return getAvailableGridNodes(nodesToSpin, runUUID, browser, os);
 	}
 	
-	private static Integer getAvailableGridNodes(String runUUID, String browser, String os) {
+	private static Integer getAvailableGridNodes(Integer nodesToSpin, String runUUID, String browser, String os) {
 		Integer nodesCount = 0;
 		try {
 			String gridHost = TestContext.INSTANCE.getTestSetup().getRemoteServerHost();
 			String gridPort = TestContext.INSTANCE.getTestSetup().getRemoteServerPort();
-			String workingFolder = TestSetup.getRootPath();
 			
 			String invokeCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
 			String invokeCmdFullPath = invokeCmdFolder + File.separator + GET_GRID_NODES_AVAILABILITY_CMD;
 			String command = "cd \"" + invokeCmdFolder + "\" && " + invokeCmdFullPath + 
-					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"", 
-							workingFolder, gridHost, gridPort, runUUID, browser, os);
+					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%d\" \"%s\" \"%s\"", 
+							gridHost, gridPort, runUUID,  nodesToSpin, browser, os);
 			Log.info("Executing Grid Nodes Availability Check Command -> " + command);
 			ProcessOutputInfo processOutputInfo = ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 			String responseText = processOutputInfo.getOutput();
