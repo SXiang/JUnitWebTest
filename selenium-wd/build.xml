@@ -434,6 +434,28 @@
 		<echo message="junit build : ${build}" />
 	</target>
 
+	<target name="testgridpocdemotests" depends="compileGridPOC" description="Run grid POC demo test suite in parallel">
+		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
+					showoutput="yes">
+			<sysproperty key="testReportCategory" value="GridPOC" />
+			<sysproperty key="maxParallelTestThreads" value="5" />
+			<classpath>
+				<pathelement path="${build}" />
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+
+			<batchtest fork="yes" todir="${reports}/gridpoc/xml">
+				<formatter type="xml" />
+				<fileset dir="${build}">
+					<include name="**/GridPOCTestSuiteDemoTestClasses.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<echo message="junit build : ${build}" />
+	</target>
+
 	<target name="testgridpoc5tests" depends="compileGridPOC" description="Run grid POC test suite with 5 tests in parallel">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
@@ -505,6 +527,16 @@
 				<include name="*TEST-*.xml" />
 			</fileset>
 			<report styledir="./tests" format="noframes" todir="${reports}/sanity">
+			</report>
+		</junitreport>
+	</target>
+
+	<target name="gridpocreport_demo" depends="testgridpocdemotests">
+		<junitreport todir="${reports}/gridpoc/xml">
+			<fileset dir="${reports}/gridpoc/xml">
+				<include name="*TEST-*.xml" />
+			</fileset>
+			<report styledir="./tests" format="noframes" todir="${reports}/gridpoc">
 			</report>
 		</junitreport>
 	</target>
