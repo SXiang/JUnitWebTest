@@ -150,6 +150,7 @@ public class TestSetup {
 	private boolean logCategorySSRSPdfContentEnabled;
 	private boolean logCategoryComplianceReportActionsEnabled;
 	private boolean logCategoryWebElementEnabled;
+	private boolean logCategoryVerboseLoggingEnabled;
 
 	private String surveysToUpload;
 	private boolean uploadSurveyEnabled;
@@ -530,6 +531,15 @@ public class TestSetup {
 	public void setLogCategoryClickWebElementEnabled(boolean logCategoryWebElementEnabled) {
 		this.logCategoryWebElementEnabled = logCategoryWebElementEnabled;
 	}
+
+	public boolean isLogCategoryVerboseLoggingEnabled() {
+		return logCategoryVerboseLoggingEnabled;
+	}
+
+	public void setLogCategoryVerboseLoggingEnabled(boolean logCategoryVerboseEnabled) {
+		this.logCategoryVerboseLoggingEnabled = logCategoryVerboseEnabled;
+	}
+
 	public String getSoftwareVersion() {
 		return this.softwareVersion;
 	}
@@ -779,6 +789,11 @@ public class TestSetup {
 				.getProperty("logCategory.ClickWebElement.Enabled");
 		if (logCategoryClickWebElement != null && logCategoryClickWebElement != "") {
 			this.setLogCategoryClickWebElementEnabled(Boolean.valueOf(logCategoryClickWebElement));
+		}
+		String logCategoryVerboseLogging = this.testProp
+				.getProperty("logCategory.VerboseLogging.Enabled");
+		if (logCategoryVerboseLogging != null && logCategoryVerboseLogging != "") {
+			this.setLogCategoryVerboseLoggingEnabled(Boolean.valueOf(logCategoryVerboseLogging));
 		}
 	}
 

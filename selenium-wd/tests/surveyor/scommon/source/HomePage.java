@@ -19,6 +19,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BrowserCommands;
 import common.source.Log;
+import common.source.LogCategory;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
@@ -899,7 +900,11 @@ public class HomePage extends SurveyorBasePage {
 	public void waitForPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
-                return d.getPageSource().contains(STRPageContentText);
+            	String pageSource = d.getPageSource();
+            	Log.info(String.format("waitForPageLoad() -> Expected to find '%s' in PageSource. Match = [%b]", 
+            			STRPageContentText, pageSource.contains(STRPageContentText)), LogCategory.VerboseLogging);
+            	Log.info(String.format("DEBUGGING Log :-> %s", pageSource), LogCategory.VerboseLogging);
+                return pageSource.contains(STRPageContentText);
             }
         });
     }
