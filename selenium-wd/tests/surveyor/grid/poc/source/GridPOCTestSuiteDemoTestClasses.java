@@ -11,10 +11,10 @@ import surveyor.scommon.source.SurveyorParallelSuite;
 @RunWith(SurveyorParallelSuite.class)
 @SuiteClasses({ 
 	GridPOCTestClass1.class
-	,GridPOCTestClass3.class
 	,GridPOCTestClass4.class
+	,GridPOCTestClass3.class
 	,GridPOCTestClass5.class
-	,GridPOCTestClass8.class})
+	,GridPOCTestClass7.class})
 public class GridPOCTestSuiteDemoTestClasses {
 	
 	@BeforeClass 

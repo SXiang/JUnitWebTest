@@ -10,7 +10,7 @@
 param
 (
   [Parameter(Mandatory=$true)]
-  [String] $gridHost = "selenium-grid-hub.qa.aws.picarro.com",      # for eg. selenium-grid-hub.qa.aws.picarro.com
+  [String] $gridHost,      # for eg. selenium-grid-hub.qa.aws.picarro.com
 
   [Parameter(Mandatory=$true)]
   [String] $gridPort = "4444",       # for eg. 4444 
@@ -27,6 +27,7 @@ param
   [Parameter(Mandatory=$false)]
   [String] $os = "WIN8"              # OS Type. Eg. "WIN8", "LINUX"
 )
+
 
 $automationServletURL = "http://${gridHost}:${gridPort}/grid/admin/AutomationTestRunServlet?uuid=${testRunUUID}&threadCount=${requestedThreadCount}&browser=${browser}&os=${os}"
 
@@ -59,4 +60,3 @@ Write-Host "Free Nodes Count=[$countOfFreeNodes], HTTP Status Code=($statusCode)
 if ($exception -ne $NULL -and $exeption -ne "") {
     Write-Host "Exception: $exception"
 }
-

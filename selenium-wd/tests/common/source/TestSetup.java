@@ -662,11 +662,13 @@ public class TestSetup {
 		boolean isRunningOnGrid = this.getRunningOnRemoteServer() != null && this.getRunningOnRemoteServer().trim().equalsIgnoreCase("true");
 		if (isRunningOnGrid) {
 			// If parallel is not specified run on Single node. Else get specified number of nodes.
-			Integer requiredNodes = 1;
+			Integer parallelNodes = 1;
 			if (isParallelBuildEnabled()) {
-				requiredNodes = getParallelBuildRequiredNodes();
+				parallelNodes = getParallelBuildRequiredNodes();
 			}
 
+			// Final local variable as in-arg to PollManager PollCondition.
+			final Integer requiredNodes = parallelNodes;			
 			Log.info("Automation Run Triggered on Grid. Checking for available grid nodes");
 			Integer availableNodes = GridNodesManager.getAvailableNodes(requiredNodes, getParallelBuildRunUUID(), getBrowser(), getPlatform());
 			Log.info(String.format("%d nodes are required for test run. Available nodes = %d", requiredNodes, availableNodes));
@@ -675,18 +677,9 @@ public class TestSetup {
 				Log.info(String.format("Short of %d grid nodes. Spinning %d EXTRA grid nodes...", nodesToSpin, nodesToSpin));
 				GridNodesManager.requestGridNodes(nodesToSpin, getParallelBuildRunUUID(), getBrowser(), getPlatform());
 				Log.info(String.format("Waiting for %d grid nodes to become available..", requiredNodes));
-				final Integer WAIT_BETWEEN_POLL_IN_MSEC = 6000;
-				final Integer MAX_RETRIES = 100;   // timeout = 600 seconds = 10 mins.
-				Integer retryAttempt = 0;
-				do {
-					try {
-						retryAttempt++;
-						Thread.sleep(WAIT_BETWEEN_POLL_IN_MSEC);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					availableNodes = GridNodesManager.getAvailableNodes(requiredNodes, getParallelBuildRunUUID(), getBrowser(), getPlatform());
-				} while ((availableNodes < requiredNodes) && (retryAttempt < MAX_RETRIES));
+				
+				PollManager.poll(() -> (GridNodesManager.getAvailableNodes(requiredNodes, getParallelBuildRunUUID(), getBrowser(), getPlatform()) < requiredNodes), 
+						Constants.DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC, Constants.DEFAULT_MAX_RETRIES);
 				
 			} else {
 				Log.info(String.format("%d grid nodes are available for running the tests!", requiredNodes));
