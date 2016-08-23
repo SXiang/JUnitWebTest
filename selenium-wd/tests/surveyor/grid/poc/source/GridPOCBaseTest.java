@@ -198,10 +198,12 @@ public class GridPOCBaseTest {
 	protected static void logoutQuitDriver() {
 		Log.method("GridPOCBaseTest.logoutQuitDriver");
 		// Logout after each test method.
-		if (!getDriver().getTitle().equalsIgnoreCase("Login")) {
-			Log.info(String.format("getDriver().getTitle()=%s", getDriver().getTitle()), LogCategory.VerboseLogging);
-			Log.info(String.format("getDriver().getTitle().equalsIgnoreCase('Login')=%b", getDriver().getTitle().equalsIgnoreCase("Login")), 
+		String pageTitle = getDriver().getTitle();
+		if (pageTitle != null && !pageTitle.trim().equals("") && !pageTitle.trim().equalsIgnoreCase("Login")) {
+			Log.info(String.format("getDriver().getTitle()=%s", pageTitle), LogCategory.VerboseLogging);
+			Log.info(String.format("getDriver().getTitle().equalsIgnoreCase('Login')=%b", pageTitle.equalsIgnoreCase("Login")), 
 					LogCategory.VerboseLogging);
+			Log.info("NOT at Login page. Navigating to Home page...");
 			getHomePage().open();
 			getHomePage().logout();
 		}
