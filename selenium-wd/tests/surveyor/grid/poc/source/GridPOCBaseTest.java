@@ -22,6 +22,7 @@ import com.relevantcodes.extentreports.LogStatus;
 
 import common.source.DateUtility;
 import common.source.Log;
+import common.source.LogCategory;
 import common.source.RegexUtility;
 import common.source.ScreenShotOnFailure;
 import common.source.TestContext;
@@ -195,8 +196,12 @@ public class GridPOCBaseTest {
 	}
 
 	protected static void logoutQuitDriver() {
+		Log.method("GridPOCBaseTest.logoutQuitDriver");
 		// Logout after each test method.
 		if (!getDriver().getTitle().equalsIgnoreCase("Login")) {
+			Log.info(String.format("getDriver().getTitle()=%s", getDriver().getTitle()), LogCategory.VerboseLogging);
+			Log.info(String.format("getDriver().getTitle().equalsIgnoreCase('Login')=%b", getDriver().getTitle().equalsIgnoreCase("Login")), 
+					LogCategory.VerboseLogging);
 			getHomePage().open();
 			getHomePage().logout();
 		}
