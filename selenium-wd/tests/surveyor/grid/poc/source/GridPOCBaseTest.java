@@ -332,7 +332,7 @@ public class GridPOCBaseTest {
 
 	protected static void reportTestLogMessage() {
 		Log.info("[THREAD Debug Log] - calling reportTestLogMessage()");
-		ArrayList<String> testMessage = TestContext.INSTANCE.getTestMessage();
+		List<String> testMessage = TestContext.INSTANCE.getTestMessage();
 		for(String message:testMessage){
 			getExtentTest().log(LogStatus.WARNING, "Extra messages before the failure", "Log Message: " + message);
 		}

@@ -6,7 +6,6 @@ package surveyor.scommon.source;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -117,7 +116,7 @@ public class SurveyorBaseTest {
 	}
 
 	public static void reportTestLogMessage() {
-		ArrayList<String> testMessage = TestContext.INSTANCE.getTestMessage();
+		List<String> testMessage = TestContext.INSTANCE.getTestMessage();
 		for(String message:testMessage){
 			getExtentTest().log(LogStatus.WARNING, "Extra messages before the failure", "Log Message: " + message);
 		}

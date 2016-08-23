@@ -1,7 +1,7 @@
 package surveyor.scommon.source;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.runner.Description;
 import org.openqa.selenium.WebDriver;
@@ -137,7 +137,7 @@ public class BasePageTest {
 	}
 
 	public static void reportTestLogMessage() {
-		ArrayList<String> testMessage = TestContext.INSTANCE.getTestMessage();
+		List<String> testMessage = TestContext.INSTANCE.getTestMessage();
 		for(String message:testMessage){
 			getExtentTest().log(LogStatus.WARNING, "Extra messages before the failure", "Log Message: " + message);
 		}
