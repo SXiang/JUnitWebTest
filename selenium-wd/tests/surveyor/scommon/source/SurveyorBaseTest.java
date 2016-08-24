@@ -13,8 +13,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
-import org.junit.rules.ExternalResource;
-import org.junit.rules.TestRule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.openqa.selenium.WebDriver;
@@ -77,12 +75,14 @@ public class SurveyorBaseTest {
 			screenCapture.takeScreenshot(driver);
 			Log.error("_FAIL_ Exception: "+e);
 			SurveyorBaseTest.reportTestFailed(e);
+			postTestMethodProcessing();
 		}
 
 		 @Override
 		 protected void succeeded(Description description) {
 			 Log.info("_PASS_ ");
 			 SurveyorBaseTest.reportTestSucceeded();
+			 postTestMethodProcessing();
 		}
 	};
 
@@ -125,6 +125,7 @@ public class SurveyorBaseTest {
 	}
 	
 	public static void reportTestFailed(Throwable e) {
+		TestContext.INSTANCE.setTestStatus("FAIL");
 		getExtentTest().log(LogStatus.FAIL, "FAILURE: " + e.getMessage());
 	}
 
@@ -205,7 +206,10 @@ public class SurveyorBaseTest {
 			}
 		}
 	}
-
+	
+	public void postTestMethodProcessing() {
+	}
+	
 	/**
 	 * @throws java.lang.Exception
 	 */

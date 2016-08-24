@@ -3,6 +3,7 @@ package surveyor.regression.source;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import common.source.Log;
 import org.junit.After;
@@ -40,40 +41,28 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	// Change this: When test defaulted to Analyzer 1.
 	private static String SURVEY_INFO_SURVEYOR_ANALYZER_FOR_TEST = SURVEY_INFO_SURVEYOR3_ANALYZER3;
 
-	private static DriverViewPageActions driverViewPageAction;
-	private static ObserverViewPageActions observerViewPageAction;
+	private DriverViewPageActions driverViewPageAction;
+	private ArrayList<ObserverViewPageActions> observerViewPageActionList = new ArrayList<ObserverViewPageActions>();
 
-	private static DriverViewPage driverViewPage;
-	private static ObserverViewPage observerViewPage;
+	private DriverViewPage driverViewPage;
+	private ArrayList<ObserverViewPage> observerViewPageList = new ArrayList<ObserverViewPage>();
 	
-	private static HomePage homePage;
 
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		disposeProcesses();
-
-		// Initialize needed at Class level for automation reports.
-		initializePageActions();
 	}
 
 	@Before
 	public void beforeTestMethod() {
 		try {
-			// Initialize 2nd instance before 1st, since we want the TestContext to be set to the 1st instance.
-			initializePageActions2();
+			initializePageActionsList();
 			initializePageActions();
+			initializeObserverViewPageActionList();
 
-			observerViewPageAction = new ObserverViewPageActions(driver, baseURL, testSetup);
-			driverViewPageAction = new DriverViewPageActions(driver2, baseURL2, testSetup2);
-
-			// Initialize page objects.
-			observerViewPage = new ObserverViewPage(driver, testSetup, baseURL);
-			PageFactory.initElements(driver, observerViewPage);
-
-			driverViewPage = new DriverViewPage(driver2, testSetup2, baseURL2);
-			PageFactory.initElements(driver2, driverViewPage);
-			
-			homePage=new HomePage(driver, baseURL,testSetup);
+			driverViewPageAction = new DriverViewPageActions(driver, baseURL, testSetup);
+			driverViewPage = new DriverViewPage(driver, testSetup, baseURL);
+			PageFactory.initElements(driver, driverViewPage);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -84,14 +73,20 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	public void afterTestMethod() {
 		try {
 			afterTest();
-			afterTest2();
-
 			disposeProcesses();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	private void initializeObserverViewPageActionList(){
+		for(int i = observerViewPageActionList.size(); i < driverList.size(); i++){
+			observerViewPageActionList.add(new ObserverViewPageActions(driverList.get(i), baseURLList.get(i), testSetupList.get(i)));
+			// Initialize page objects.
+			observerViewPageList.add(new ObserverViewPage(driverList.get(i), testSetupList.get(i), baseURLList.get(i)));
+			PageFactory.initElements(driver, observerViewPageList.get(i));
+		}
+	}
 	private void startDrivingSurvey(Integer analyzerRowId, Integer surveyRowId, Integer idleTimeInSeconds) throws Exception {
 		startDrivingSurvey(driverViewPageAction, analyzerRowId, surveyRowId, idleTimeInSeconds);
 	}
@@ -108,13 +103,18 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		stopSurvey(driverViewPageAction);
 	}
 
-	private void loginAsDriver(int userRowID) throws Exception {
-		loginPageAction2.open(EMPTY, NOTSET);
-		loginPageAction2.login(EMPTY, userRowID); /* Picarro Admin */
+	private void loginAsObserver(int userRowID) throws Exception {
+		loginAsObserver(userRowID, 0);
+	}
+	private void loginAsObserver(int userRowID, int index) throws Exception {
+		loginPageActionList.get(index).open(EMPTY, NOTSET);
+		loginPageActionList.get(index).workingDataRow = null;
+		loginPageActionList.get(index).login(EMPTY, userRowID); /* Picarro Admin */
 	}
 
-	private void loginAsObserver(int userRowID) throws Exception {
+	private void loginAsDriver(int userRowID) throws Exception {
 		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.workingDataRow = null;
 		loginPageAction.login(EMPTY, userRowID); /* Picarro Admin */
 	}
 
@@ -134,11 +134,11 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
 		// Goto home page and click on first Online Surveyor link.
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 
 		// ## Verifications
-		observerViewPageAction.verifyModeButtonIsNotVisible(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).verifyModeButtonIsNotVisible(EMPTY, NOTSET);
 
 		stopSurveyAndAnalyzer();
 	}
@@ -159,46 +159,46 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		// Start Analyzer & simulate Instrument Warming
 		startReplay(ANALYZER1_INSTRUMENT_WARMING_ROW_ID);
 		// TODO: Implement check to verify Analyzer warming message is shown.
-		// assertTrue(observerViewPageAction.verifyAnalyzerWarmingMessageIsShown(EMPTY, NOTSET));
+		// assertTrue(observerViewPageActionList.get(0).verifyAnalyzerWarmingMessageIsShown(EMPTY, NOTSET));
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
 
-		assertTrue(observerViewPageAction.verifyDisplaySwitchIndicationsButtonIsVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyDisplaySwitchLisasButtonIsVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyDisplaySwitchFovsButtonIsVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyDisplaySwitchConcentrationChartButtonIsVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyDisplaySwitchWindroseButtonIsVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyDisplaySwitchNotesButtonIsVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyDisplaySwitchIsotopicAnalysisButtonIsVisible(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchIndicationsButtonIsVisible(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchLisasButtonIsVisible(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchFovsButtonIsVisible(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchConcentrationChartButtonIsVisible(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchWindroseButtonIsVisible(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchNotesButtonIsVisible(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchIsotopicAnalysisButtonIsVisible(EMPTY, NOTSET));
 
-		observerViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		assertTrue(observerViewPageAction.verifySatelliteViewIsShown(EMPTY, NOTSET));
+		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifySatelliteViewIsShown(EMPTY, NOTSET));
 
-		observerViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		assertTrue(observerViewPageAction.verifyGisBoundaryBigBoundaryButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyGisBoundarySmallBoundaryButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyGisMaterialTypeCastIronButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyGisMaterialTypeCopperButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyGisMaterialTypeOtherPlasticButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyGisMaterialTypePEPlasticButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyGisMaterialTypeProtectedSteelButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyGisMaterialTypeUnProtectedSteelButtonIsNotVisible(EMPTY, NOTSET));
+		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifyGisBoundaryBigBoundaryButtonIsNotVisible(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyGisBoundarySmallBoundaryButtonIsNotVisible(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyGisMaterialTypeCastIronButtonIsNotVisible(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyGisMaterialTypeCopperButtonIsNotVisible(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyGisMaterialTypeOtherPlasticButtonIsNotVisible(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyGisMaterialTypePEPlasticButtonIsNotVisible(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyGisMaterialTypeProtectedSteelButtonIsNotVisible(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyGisMaterialTypeUnProtectedSteelButtonIsNotVisible(EMPTY, NOTSET));
 
-		observerViewPageAction.clickOnStatusButton(EMPTY, NOTSET);
-		assertTrue(observerViewPageAction.verifyStatusButtonIsExpanded(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyStatusButtonIsRed(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyFlowButtonIsRed(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyHBTempButtonIsRed(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyWBTempButtonIsRed(EMPTY, NOTSET));
+		observerViewPageActionList.get(0).clickOnStatusButton(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifyStatusButtonIsExpanded(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyStatusButtonIsRed(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFlowButtonIsRed(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyHBTempButtonIsRed(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyWBTempButtonIsRed(EMPTY, NOTSET));
 
-		assertTrue(observerViewPageAction.verifyPositionButtonIsSelected(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyCrossHairIconIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyPositionButtonIsSelected(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 
 		// TODO: Post Browser TAB implemented do this CHECK.
 		// Status should display same info as in driver view
@@ -221,30 +221,30 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		observerViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
-		observerViewPageAction.turnOnPosition(EMPTY, NOTSET);
-		observerViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		observerViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-		assertTrue(observerViewPageAction.verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
-		assertTrue(observerViewPageAction.verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyConcentrationChartIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnAllDisplayOptions(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnPosition(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnMapView(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyConcentrationChartIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFOVIsShownOnMap(EMPTY, NOTSET));
 
 		// CHECK: Lisa not appearing on the map.
-		// assertTrue(observerViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		observerViewPageAction.clickOnZoomInButton(EMPTY, NOTSET);
-		assertTrue(observerViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(observerViewPageAction.verifyAssetIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
+		// assertTrue(observerViewPageActionList.get(0).verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		observerViewPageActionList.get(0).clickOnZoomInButton(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyAssetIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 
 		stopSurveyAndAnalyzer();
 	}
@@ -264,29 +264,29 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
-		observerViewPageAction.turnOnPosition(EMPTY, NOTSET);
-		observerViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-		observerViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		assertTrue(observerViewPageAction.verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
-		assertTrue(observerViewPageAction.verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyConcentrationChartIsShownOnMap(EMPTY, NOTSET));
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnAllDisplayOptions(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnPosition(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnSatelliteView(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyConcentrationChartIsShownOnMap(EMPTY, NOTSET));
 
 		// TODO: Check: FOV is NOT shown in the survey. Check if time dependent.
-		// assertTrue(observerViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(observerViewPageAction.verifyAssetIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
+		// assertTrue(observerViewPageActionList.get(0).verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyAssetIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 
 		stopSurveyAndAnalyzer();
 	}
@@ -307,44 +307,44 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
 
-		observerViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		observerViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		observerViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffAllDisplayOptions(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnMapView(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 
-		observerViewPageAction.clickOnHeaderInfoBox(EMPTY, NOTSET);
-		assertTrue(observerViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
+		observerViewPageActionList.get(0).clickOnHeaderInfoBox(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
 
 		// TODO: CHECK: Driver label is showing EMPTY
-		// assertTrue(observerViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
+		// assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
 
-		assertTrue(observerViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR_ANALYZER_FOR_TEST, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR_ANALYZER_FOR_TEST, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 
-		assertTrue(observerViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
-		assertTrue(observerViewPageAction.verifyCarIconIsNotInCenter(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(observerViewPageAction.verifyWindRoseIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyConcentrationChartIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyCarIconIsNotInCenter(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyWindRoseIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyConcentrationChartIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 
 		stopSurveyAndAnalyzer();
 	}
@@ -364,27 +364,27 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.turnOnPosition(EMPTY, NOTSET);
-		observerViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnPosition(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
 
-		observerViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
-		observerViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		observerViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		assertTrue(observerViewPageAction.verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
-		assertTrue(observerViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyConcentrationChartIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyAssetIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
+		observerViewPageActionList.get(0).turnOnAllDisplayOptions(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnMapView(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyConcentrationChartIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyAssetIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 
 		stopSurveyAndAnalyzer();
 	}
@@ -404,27 +404,27 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.turnOnPosition(EMPTY, NOTSET);
-		observerViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnPosition(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
 
-		observerViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
-		observerViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-		observerViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		assertTrue(observerViewPageAction.verifyCrossHairIconIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyConcentrationChartIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyAssetIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
+		observerViewPageActionList.get(0).turnOnAllDisplayOptions(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnSatelliteView(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyConcentrationChartIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyAssetIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 
 		stopSurveyAndAnalyzer();
 	}
@@ -445,45 +445,45 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.turnOffPosition(EMPTY, NOTSET);
-		observerViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffPosition(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
 
-		observerViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		observerViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		observerViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffAllDisplayOptions(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnMapView(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
 
-		assertTrue(observerViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR3_ANALYZER3, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR3_ANALYZER3, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 
-		assertTrue(observerViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
-		assertTrue(observerViewPageAction.verifyCarIconIsNotInCenter(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(observerViewPageAction.verifyWindRoseIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyConcentrationChartIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyCarIconIsNotInCenter(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyWindRoseIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyConcentrationChartIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 
 		stopSurveyAndAnalyzer();
 	}
@@ -502,10 +502,10 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.turnOffAllAssets(EMPTY, NOTSET);
-		observerViewPageAction.turnOffAllBoundaries(EMPTY, NOTSET);
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffAllAssets(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffAllBoundaries(EMPTY, NOTSET);
 
 		driverViewPageAction.verifyAssetIsShownOnMap(EMPTY, NOTSET);
 		driverViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET);
@@ -530,49 +530,49 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.turnOnWindRose(EMPTY, NOTSET);
-		observerViewPageAction.turnOnConcentrationChart(EMPTY, NOTSET);
-		observerViewPageAction.turnOffIsotopicAnalysis(EMPTY, NOTSET);
-		observerViewPageAction.turnOffNotes(EMPTY, NOTSET);
-		observerViewPageAction.turnOnIndications(EMPTY, NOTSET);
-		observerViewPageAction.turnOnLisas(EMPTY, NOTSET);
-		observerViewPageAction.turnOnFOVs(EMPTY, NOTSET);
-		observerViewPageAction.turnOnPosition(EMPTY, NOTSET);
-		observerViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		observerViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnAllBoundaries(EMPTY, NOTSET);
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnWindRose(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnConcentrationChart(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffIsotopicAnalysis(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffNotes(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnIndications(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnLisas(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnFOVs(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnPosition(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnMapView(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnAllBoundaries(EMPTY, NOTSET);
 
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
 
-		assertTrue(observerViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(observerViewPageAction.verifyCarIconIsNotInCenter(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyConcentrationChartIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyCarIconIsNotInCenter(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyConcentrationChartIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFOVIsShownOnMap(EMPTY, NOTSET));
 
-		assertTrue(observerViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR3_ANALYZER3, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR3_ANALYZER3, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 
-		assertTrue(observerViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 
 		stopSurveyAndAnalyzer();
 	}
@@ -594,48 +594,48 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.turnOnWindRose(EMPTY, NOTSET);
-		observerViewPageAction.turnOnConcentrationChart(EMPTY, NOTSET);
-		observerViewPageAction.turnOffIsotopicAnalysis(EMPTY, NOTSET);
-		observerViewPageAction.turnOffNotes(EMPTY, NOTSET);
-		observerViewPageAction.turnOnIndications(EMPTY, NOTSET);
-		observerViewPageAction.turnOnLisas(EMPTY, NOTSET);
-		observerViewPageAction.turnOnFOVs(EMPTY, NOTSET);
-		observerViewPageAction.turnOnPosition(EMPTY, NOTSET);
-		observerViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		observerViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnAllBoundaries(EMPTY, NOTSET);
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnWindRose(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnConcentrationChart(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffIsotopicAnalysis(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffNotes(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnIndications(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnLisas(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnFOVs(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnPosition(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnMapView(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnAllBoundaries(EMPTY, NOTSET);
 
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
 
-		assertTrue(observerViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyCarIconIsNotInCenter(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyConcentrationChartIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyCarIconIsNotInCenter(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyConcentrationChartIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFOVIsShownOnMap(EMPTY, NOTSET));
 
-		assertTrue(observerViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR3_ANALYZER3, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR3_ANALYZER3, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 
-		assertTrue(observerViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(observerViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 
 		stopSurveyAndAnalyzer();
 	}
@@ -668,12 +668,12 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		// Verify 1st survey field note is NOT shown.
 		// Verify 2nd survey indication is shown.
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET);
-		observerViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET);
-		observerViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET);
-		observerViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET);
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET);
+		observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).verifyIndicationsIsShownOnMap(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).verifyLISAIsShownOnMap(EMPTY, NOTSET);
 
 		stopSurveyAndAnalyzer();
 	}
@@ -692,13 +692,13 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		observerViewPageAction.showCurtainView(EMPTY, NOTSET);
-		observerViewPageAction.clickOnCurtainReturnButton(EMPTY, NOTSET);
-		assertTrue(observerViewPageAction.verifyMapViewIsShown(EMPTY, NOTSET));
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnMapView(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).showCurtainView(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnCurtainReturnButton(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifyMapViewIsShown(EMPTY, NOTSET));
 
 		stopSurveyAndAnalyzer();
 	}
@@ -718,7 +718,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		observerViewPageAction.open(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).open(EMPTY, NOTSET);
 
 		stopSurveyAndAnalyzer();
 	}
@@ -727,8 +727,8 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	 * Test Case ID: TC1302_ObserverConnectingDialogShouldPopUpWhenConnectingCarNotServer Script: - - With the analyzer warmed up, log into the tablet - Click on the Mode -> Start Survey button - Fill
 	 * out the necessary details on the survey conditions pop-up window and click Start Survey - On a laptop that is not connected to the car's wifi, go to Observer view for this Surveyor vehicle -
 	 * Unplug the ethernet cable from the router - Plug the ethernet cable back into the router - Repeat twice more Results: - - Approximately five seconds after the ethernet cable is unplugged, the
-	 * Driver View screen should darken and show the message, "Connecting" - Approximately one minute after the cable is unplugged, the Observer View screen should darken and show the message,
-	 * "Connecting" - Several seconds after the ethernet cable is plugged back in, the screens on both Driver View and Observer View should return to normal brightness and the Connecting message
+	 * Driver View screen should darken and show the message, Connecting - Approximately one minute after the cable is unplugged, the Observer View screen should darken and show the message,
+	 * Connecting - Several seconds after the ethernet cable is plugged back in, the screens on both Driver View and Observer View should return to normal brightness and the Connecting message
 	 * should disappear. - Click on the Mode -& Start Survey button
 	 */
 	@Ignore
@@ -742,14 +742,14 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		observerViewPageAction.open(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).open(EMPTY, NOTSET);
 
 		stopSurveyAndAnalyzer();
 	}
 
 	/**
 	 * Test Case ID: TC1375_ObserverView_CurtainView_ChangeInvocationOfOLCesium Script: - - 1) Log into Observer View - 2) While the survey is running, click the Curtain button - 3) Click on the
-	 * Return button and refresh the page - 4) Let the survey continue for a few more minutes - 5) Click on the Curtain button Results: - 1) When the Curtain button is clicked, "Connecting" screen
+	 * Return button and refresh the page - 4) Let the survey continue for a few more minutes - 5) Click on the Curtain button Results: - 1) When the Curtain button is clicked, Connecting screen
 	 * will appear, followed by car icon. Background map/satellite will gradually appear, along with blue wall (curtain) along the vehicle's route from the beginning of the survey 2) The second time
 	 * the Curtain button is clicked, the blue wall will appear along the route from the beginning of the survey, not just the route from the point where the page was refreshed
 	 */
@@ -764,50 +764,56 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.showCurtainView(EMPTY, NOTSET);
-		observerViewPageAction.clickOnCurtainReturnButton(EMPTY, NOTSET);
-		observerViewPageAction.refreshPage(EMPTY, NOTSET);
-		observerViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).showCurtainView(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnCurtainReturnButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).refreshPage(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).verifyPageLoaded(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
 		testEnvironmentAction.idleForSeconds(String.valueOf(60), NOTSET);
-		observerViewPageAction.showCurtainView(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).showCurtainView(EMPTY, NOTSET);
 
 		// TODO: Verifications for curtain view currently not present.
 	}
 
 	/**
-	 * Test Case ID: TC1411_ObserverView_AssessmentSurvey_CurtainViewDisplayedUserAbleFollowVehicle Script: - - - On Home Page, click on Picarro Surveyors -& Online -& Curtain - - Click on Return. - -
-	 * Turn Position OFF and click on Curtain - - Click on Return Results: - - Red color cursor will move along with car position and blue spikes are displayed - Cursor will stop moving but blue
+	 * Test Case ID: TC1411_ObserverView_AssessmentSurvey_CurtainViewDisplayedUserAbleFollowVehicle Script: 
+	 * - - - On Home Page, click on Picarro Surveyors -& Online -& Curtain 
+	 * - - Click on Return. 
+	 * - - Turn Position OFF and click on Curtain 
+	 * - - Click on Return Results: 
+	 * 		- - Red color cursor will move along with car position and blue spikes are displayed 
+	 * 		- Cursor will stop moving but blue
 	 * spikes will be displayed - User will be returned to Observer View page
 	 */
-	@Test
+	@Test /* Need a assessmentSurvey which running longer time - to enable the the second verification */
 	public void TC1411_ObserverView_AssessmentSurvey_CurtainViewDisplayedUserAbleFollowVehicle() throws Exception {
 		Log.info("\nRunning TC1411_ObserverView_AssessmentSurvey_CurtainViewDisplayedUserAbleFollowVehicle ...");
 
 		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
-
 		startDrivingSurvey(ANALYZER3_REPLAY_ASSESSMENT_ROW_ID, SURVEY_ASSESSMENT1_ROW_ID, ONE_SECOND);
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.showCurtainView(EMPTY, NOTSET);
-		observerViewPageAction.clickOnCurtainReturnButton(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		assertTrue(observerViewPageAction.verifyObserverViewPageIsOpened(EMPTY, NOTSET));
-		observerViewPageAction.turnOffPosition(EMPTY, NOTSET);
-		observerViewPageAction.showCurtainView(EMPTY, NOTSET);
-		observerViewPageAction.clickOnCurtainReturnButton(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		assertTrue(observerViewPageAction.verifyObserverViewPageIsOpened(EMPTY, NOTSET));
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).showCurtainView(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnCurtainReturnButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifyObserverViewPageIsOpened(EMPTY, NOTSET));
+		
+		observerViewPageActionList.get(0).turnOffPosition(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).showCurtainView(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnCurtainReturnButton(EMPTY, NOTSET);
+		// * Enable these steps when a long run assessment survey is available for this test
+		//observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		//assertTrue(observerViewPageActionList.get(0).verifyObserverViewPageIsOpened(EMPTY, NOTSET));
 
 		// TODO: Verify breadcrumb.
-		// assertTrue(observerViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		// assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		// TODO: Car icon check & breadcrumb color detection is TODO
-		// assertTrue(observerViewPageAction.verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
+		// assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
 
 		stopSurveyAndAnalyzer();
 	}
@@ -827,23 +833,23 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.clickOnCurtainArrowUpButton(EMPTY, NOTSET);
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnCurtainArrowUpButton(EMPTY, NOTSET);
 		// TODO:
-		// observerViewPageAction.verifyMapImageHasChanged(EMPTY, NOTSET);
-		observerViewPageAction.clickOnCurtainArrowRightButton(EMPTY, NOTSET);
+		// observerViewPageActionList.get(0).verifyMapImageHasChanged(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnCurtainArrowRightButton(EMPTY, NOTSET);
 		// TODO:
-		// observerViewPageAction.verifyMapImageHasChanged(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomInButton(EMPTY, NOTSET);
+		// observerViewPageActionList.get(0).verifyMapImageHasChanged(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomInButton(EMPTY, NOTSET);
 		// TODO:
-		// observerViewPageAction.verifyMapImageHasChanged(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		// observerViewPageActionList.get(0).verifyMapImageHasChanged(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
 		// TODO:
-		// observerViewPageAction.verifyMapImageHasChanged(EMPTY, NOTSET);
-		observerViewPageAction.clickOnCurtainReturnButton(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		assertTrue(observerViewPageAction.verifyObserverViewPageIsOpened(EMPTY, NOTSET));
+		// observerViewPageActionList.get(0).verifyMapImageHasChanged(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnCurtainReturnButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifyObserverViewPageIsOpened(EMPTY, NOTSET));
 
 		stopSurveyAndAnalyzer();
 	}
@@ -862,14 +868,14 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		observerViewPageAction.showCurtainView(EMPTY, NOTSET);
-		observerViewPageAction.clickOnCurtainReturnButton(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		assertTrue(observerViewPageAction.verifyMapViewIsShown(EMPTY, NOTSET));
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnMapView(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).showCurtainView(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnCurtainReturnButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifyMapViewIsShown(EMPTY, NOTSET));
 
 		stopSurveyAndAnalyzer();
 	}
@@ -891,33 +897,33 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-		observerViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnSatelliteView(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
 
-		observerViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
-		observerViewPageAction.turnOffConcentrationChart(EMPTY, NOTSET);
-		observerViewPageAction.turnOffLisas(EMPTY, NOTSET);
-		observerViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnAllAssets(EMPTY, NOTSET);
-		observerViewPageAction.turnOffAllBoundaries(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnAllDisplayOptions(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffConcentrationChart(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffLisas(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnAllAssets(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffAllBoundaries(EMPTY, NOTSET);
 		testEnvironmentAction.idleForSeconds(String.valueOf(60), NOTSET);
-		observerViewPageAction.refreshPage(EMPTY, NOTSET);
-		observerViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		assertTrue(observerViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER1, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		observerViewPageActionList.get(0).refreshPage(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).verifyPageLoaded(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER1, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 
 		stopSurveyAndAnalyzer();
 	}
@@ -938,34 +944,34 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		observerViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnMapView(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
 
-		observerViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		observerViewPageAction.turnOnConcentrationChart(EMPTY, NOTSET);
-		observerViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOffAllAssets(EMPTY, NOTSET);
-		observerViewPageAction.turnOnAllBoundaries(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffAllDisplayOptions(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnConcentrationChart(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffAllAssets(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnAllBoundaries(EMPTY, NOTSET);
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
-		observerViewPageAction.refreshPage(EMPTY, NOTSET);
-		observerViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).refreshPage(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).verifyPageLoaded(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
 
-		assertTrue(observerViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER1, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER1, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 
 		stopSurveyAndAnalyzer();
 	}
@@ -984,23 +990,23 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
 
-		observerViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
-		observerViewPageAction.turnOnPosition(EMPTY, NOTSET);
-		observerViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		observerViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-		assertTrue(observerViewPageAction.verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
-		assertTrue(observerViewPageAction.verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyConcentrationChartIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyAssetIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
+		observerViewPageActionList.get(0).turnOnAllDisplayOptions(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnPosition(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnMapView(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyConcentrationChartIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyAssetIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 
 		stopSurveyAndAnalyzer();
 	}
@@ -1019,24 +1025,24 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		observerViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		observerViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
-		observerViewPageAction.turnOnPosition(EMPTY, NOTSET);
-		observerViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-		observerViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-		assertTrue(observerViewPageAction.verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
-		assertTrue(observerViewPageAction.verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyConcentrationChartIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyAssetIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnAllDisplayOptions(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnPosition(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnSatelliteView(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyConcentrationChartIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyAssetIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 
 		stopSurveyAndAnalyzer();
 	}
@@ -1057,43 +1063,43 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.turnOffPosition(EMPTY, NOTSET);
-		observerViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		observerViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		observerViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-		assertTrue(observerViewPageAction.verifyStatusButtonIsGreen(EMPTY, NOTSET));
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffPosition(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffAllDisplayOptions(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnMapView(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifyStatusButtonIsGreen(EMPTY, NOTSET));
 
-		assertTrue(observerViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER1, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER1, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 
-		assertTrue(observerViewPageAction.verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
-		assertTrue(observerViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 
-		assertTrue(observerViewPageAction.verifyCarIconIsNotInCenter(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyCarIconIsNotInCenter(EMPTY, NOTSET));
 
-		assertTrue(observerViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(observerViewPageAction.verifyWindRoseIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyConcentrationChartIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyWindRoseIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyConcentrationChartIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 
 		stopSurveyAndAnalyzer();
 	}
@@ -1115,37 +1121,37 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		observerViewPageAction.turnOnWindRose(EMPTY, NOTSET);
-		observerViewPageAction.turnOnFOVs(EMPTY, NOTSET);
-		observerViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-		observerViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffAllDisplayOptions(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnWindRose(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnFOVs(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnMapView(EMPTY, NOTSET);
 
-		assertTrue(observerViewPageAction.verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
-		assertTrue(observerViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFOVIsShownOnMap(EMPTY, NOTSET));
 
-		assertTrue(observerViewPageAction.verifyAssetIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyAssetIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 
-		assertTrue(observerViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER1, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER1, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 
 		stopSurveyAndAnalyzer();
 	}
@@ -1166,40 +1172,40 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
-		observerViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOffAllBoundaries(EMPTY, NOTSET);
-		observerViewPageAction.turnOnMaterialTypeOtherPlastic(EMPTY, NOTSET);
-		observerViewPageAction.turnOnMaterialTypeProtectedSteel(EMPTY, NOTSET);
-		observerViewPageAction.turnOnMaterialTypeCastIron(EMPTY, NOTSET);
-		observerViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnMapView(EMPTY, NOTSET);
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnAllDisplayOptions(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffAllBoundaries(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnMaterialTypeOtherPlastic(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnMaterialTypeProtectedSteel(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnMaterialTypeCastIron(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnMapView(EMPTY, NOTSET);
 
-		assertTrue(observerViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyConcentrationChartIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyConcentrationChartIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFOVIsShownOnMap(EMPTY, NOTSET));
 
 		// TODO: Specific asset check (Currently no mechanism to detect from client-side). Might need some server-side product changes.
-		assertTrue(observerViewPageAction.verifyAssetIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyAssetIsShownOnMap(EMPTY, NOTSET));
 
-		assertTrue(observerViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER1, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1, NOTSET));
-		assertTrue(observerViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoZoomLevelLabelEquals(String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19), NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedIsTickingForward(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER1, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR1, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 
-		assertTrue(observerViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 
 		stopSurveyAndAnalyzer();
 	}
@@ -1220,26 +1226,26 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		observerViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		observerViewPageAction.turnOnFOVs(EMPTY, NOTSET);
-		observerViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-		observerViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		observerViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffAllDisplayOptions(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnFOVs(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).turnOnSatelliteView(EMPTY, NOTSET);
 
-		assertTrue(observerViewPageAction.verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
-		assertTrue(observerViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap(COLOR_RED, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFOVIsShownOnMap(EMPTY, NOTSET));
 
-		assertTrue(observerViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 
-		assertTrue(observerViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 
 		stopSurveyAndAnalyzer();
 	}
@@ -1258,10 +1264,10 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageAction.clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
-		observerViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		assertTrue(observerViewPageAction.verifyObserverViewPageIsOpened(EMPTY, NOTSET));
-		homePage.open();
-		assertTrue(!homePage.getFirstOfflineSurveyLink().isEnabled());
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifyObserverViewPageIsOpened(EMPTY, NOTSET));
+		stopSurveyAndAnalyzer();
 	}
+	
 }

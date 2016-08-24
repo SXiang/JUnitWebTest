@@ -11,6 +11,8 @@ import common.source.Log;
 
 public class Measurement extends BaseEntity {
 	private static final String CACHE_KEY = "MEASUREMENT.";
+	private static final String CACHE_KEY_FIRST = "MEASUREMENT.FIRST";
+	private static final String CACHE_KEY_ALL = "MEASUREMENT.ALL";
 
 	private Float windSpeedLongitudinal;
 	private Short gpsFit;
@@ -60,6 +62,11 @@ public class Measurement extends BaseEntity {
 				.concat("GpsLatitude=" + this.getGpsLatitude().toString()).concat("|")
 				.concat("getGpsLongitude=" + this.getGpsLongitude().toString()).concat("|")
 				.concat("getEpochTime=" + this.getEpochTime().toString()));
+	}
+
+	public void purgeCache() {
+		DBCache.INSTANCE.purgeCache(CACHE_KEY_FIRST);
+		DBCache.INSTANCE.purgeCache(CACHE_KEY_ALL);
 	}
 
 	public Float getWindSpeedLongitudinal() {
@@ -398,8 +405,8 @@ public class Measurement extends BaseEntity {
 		String analyzerId = objAnalyzer.getId().toString();
 
 		// Get from cache if present. Else fetch from Database.
-		if (DBCache.INSTANCE.containsKey(CACHE_KEY + analyzerId)) {
-			objMeasurementList = (List<Measurement>)DBCache.INSTANCE.get(CACHE_KEY + analyzerId);
+		if (DBCache.INSTANCE.containsKey(CACHE_KEY_ALL + analyzerId)) {
+			objMeasurementList = (List<Measurement>)DBCache.INSTANCE.get(CACHE_KEY_ALL + analyzerId);
 		} 
 		else {
 			String SQL = "SELECT * FROM dbo.[Measurement] WHERE AnalyzerId='" + analyzerId  + "'";
@@ -407,12 +414,33 @@ public class Measurement extends BaseEntity {
 			objMeasurementList = objMeasurement.load(SQL);
 			if (objMeasurementList!=null && objMeasurementList.size()>0)
 			{
-				DBCache.INSTANCE.set(CACHE_KEY + analyzerId , objMeasurementList);
+				DBCache.INSTANCE.set(CACHE_KEY_ALL + analyzerId , objMeasurementList);
 			}
 		}
 		return objMeasurementList;
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	public Measurement getFirstMeasurement(String analyzerId) {
+		Measurement objMeasurement = null;
+
+		// Get from cache if present. Else fetch from Database.
+		if (DBCache.INSTANCE.containsKey(CACHE_KEY_FIRST + analyzerId)) {
+			objMeasurement = (Measurement)DBCache.INSTANCE.get(CACHE_KEY_FIRST + analyzerId);
+		} 
+		else {
+			String SQL = "SELECT TOP 1 * FROM dbo.[Measurement] WHERE AnalyzerId='" + analyzerId  + "' ORDER BY [EpochTime] ASC";
+
+			ArrayList<Measurement> objMeasurementList = load(SQL);
+			if (objMeasurementList!=null && objMeasurementList.size()>0)
+			{
+				objMeasurement = objMeasurementList.get(0);
+				DBCache.INSTANCE.set(CACHE_KEY_FIRST + analyzerId, objMeasurement);
+			}
+		}
+		return objMeasurement;
+	}
+
 	public boolean equalsTo(Map<String, String> map) {
 		float epochTime = Float.valueOf(map.get("EPOCH_TIME"));
 		float ch4 = Float.valueOf(map.get("CH4"));				

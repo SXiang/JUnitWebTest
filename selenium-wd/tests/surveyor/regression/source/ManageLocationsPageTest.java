@@ -297,7 +297,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC496_SearchValidLocation() {
-		Log.info("\nRunning - TC451 - Test Description: Search valid location record\n");
+		Log.info("\nRunning - TC496 - Test Description: Search valid location record\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);

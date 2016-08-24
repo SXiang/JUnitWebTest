@@ -51,7 +51,7 @@ public class CaptureEventDbSeedBuilder extends BaseDbSeedBuilder {
     			String surveyId = rowItem.get("SurveyId");
     			String ethaneRatio = rowItem.get("EthaneRatio");
     			String ethaneRatioSdev = rowItem.get("EthaneRatioSdev");
-    			String classificationConfidence = rowItem.get("ClassificationConfidence");
+    			String classificationConfidence = handleNullGetValue(rowItem.get("ClassificationConfidence"));
 
     			seedData.addInsertStatement(String.format(INSERT_TEMPLATE, id, analyzerId, epochTime, dateTime, gpsLatitude, gpsLongitude, shape, disposition, delta, concentration, uncertainty, captureType, distance, replayMax, replayLMin, replayRMin, surveyId, ethaneRatio, ethaneRatioSdev, classificationConfidence));
 			}

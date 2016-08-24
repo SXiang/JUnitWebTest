@@ -24,8 +24,6 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static TestEnvironmentActions testEnvironmentAction;
-
-	private static ComplianceReportsPage complianceReportsPage;
 	
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
@@ -55,6 +53,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		homePageAction = new HomePageActions(driver, baseURL, testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
+		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 		testEnvironmentAction = new TestEnvironmentActions();
 	}
 

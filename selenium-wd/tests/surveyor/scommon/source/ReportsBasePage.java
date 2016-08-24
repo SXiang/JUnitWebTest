@@ -42,6 +42,7 @@ import com.google.gson.GsonBuilder;
 import common.source.ApiUtility;
 import common.source.CSVUtility;
 import common.source.DateUtility;
+import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.ImagingUtility;
 import common.source.Log;
@@ -407,7 +408,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public static final String STRPaginationMsg = "Showing 1 to ";
 
 	private String reportName;
-
+	private String reportId;
 	@FindBy(name = "survey-mode-type")
 	private List<WebElement> surveyModeTypeRadiobuttonList;
 
@@ -780,7 +781,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 
-	private void selectSurveysAndAddToReport(boolean selectAll, Integer numSurveysToSelect) {
+	public void selectSurveysAndAddToReport(boolean selectAll, Integer numSurveysToSelect) {
 		if (selectAll || numSurveysToSelect > 0) {
 			setSurveyRowsPagination(PAGINATIONSETTING);
 			this.waitForSurveyTabletoLoad();
@@ -1398,6 +1399,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy, String testCaseID) throws Exception {
+		Log.method("ReportsBasePage.checkActionStatus", rptTitle, strCreatedBy, testCaseID);
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForPageLoad();
 		String reportTitleXPath;
@@ -1429,51 +1431,60 @@ public class ReportsBasePage extends SurveyorBasePage {
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy.trim())) {
 				lastSeenTitleCellText = rptTitleCellText.trim();
 				lastSeenCreatedByCellText = createdByCellText.trim();
-
+				
+				reportId = Report.getReport(rptTitle).getId();
+				TestContext.INSTANCE.addReportId(reportId);
+				
 				long startTime = System.currentTimeMillis();
 				long elapsedTime = 0;
 				boolean bContinue = true;
-
+				final int MAX_RETRIES_FOR_NULL_ERROR = 5;
+				int numRetriesForNullError = 0; 
+				WebElement reportViewer;
 				while (bContinue) {
 					try {
 						if (rowSize == 1) {
-							this.btnReportViewer = getTable().findElement(By.xpath("tr/td[5]/a[3]"));
+							reportViewer = getTable().findElement(By.xpath("tr/td[5]/a[3]"));
 							Log.clickElementInfo("Report Viewer");
-							this.btnReportViewer.click();
+							reportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						} else {
-
 							int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
 							rowNum = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
 									maxRows);
 							if (rowNum > maxRows) {
 								break;
 							}
-
-							this.btnReportViewer = getTable().findElement(
+							reportViewer = getTable().findElement(
 									By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
-							
 							if(rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
 									maxRows)){
 								continue;
-							}
-							
+							}							
 							Log.clickElementInfo("Report Viewer");
-							this.btnReportViewer.click();
+							reportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						}
 						return handleFileDownloads(rptTitle, testCaseID);
-						
-
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
 						if (elapsedTime >= (ACTIONTIMEOUT + 800 * 1000)) {
 							return false;
 						}
-
 						continue;
 					} catch (NullPointerException ne) {
-						Log.info("Null Pointer Exception: " + ne);
+						numRetriesForNullError++;
+						if (numRetriesForNullError < MAX_RETRIES_FOR_NULL_ERROR) {
+							Log.warn(String.format("RETRY attempt-[%d]. Null Pointer Exception Encountered : %s", 
+									numRetriesForNullError, ExceptionUtility.getStackTraceString(ne)));
+							if (elapsedTime >= (ACTIONTIMEOUT + 800 * 1000)) {
+								return false;
+							}
+							continue;
+						}
+						
+						Log.error(String.format("MAX Retry attempts exceeded. Null Pointer Exception Encountered again: %s", 
+								ExceptionUtility.getStackTraceString(ne)));
 						fail("Report failed to be generated!!");
 					}
 				}
@@ -1540,7 +1551,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy) {
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForPageLoad();
-		String reportName;
 		String reportTitleXPath;
 		String createdByXPath;
 
@@ -1571,18 +1581,18 @@ public class ReportsBasePage extends SurveyorBasePage {
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				lastSeenTitleCellText = rptTitleCellText.trim();
 				lastSeenCreatedByCellText = createdByCellText.trim();
-
+				
+				reportId = Report.getReport(rptTitle).getId();
+				TestContext.INSTANCE.addReportId(reportId);
+				
 				long startTime = System.currentTimeMillis();
 				long elapsedTime = 0;
 				boolean bContinue = true;
-
+				WebElement reportViewer;
 				while (bContinue) {
 					try {
 						if (rowSize == 1) {
-							this.btnReportViewer = getTable()
-									.findElement(By.xpath("tr/td[5]/a[3]"));
-							reportName = getElementText(getTable().findElement(By.xpath("tr/td[2]")));
-
+							reportViewer = getTable().findElement(By.xpath("tr/td[5]/a[3]"));
 						} else {
 							int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
 							rowNum = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
@@ -1590,22 +1600,20 @@ public class ReportsBasePage extends SurveyorBasePage {
 							if (rowNum > maxRows) {
 								break;
 							}
-							this.btnReportViewer = getTable().findElement(
+							reportViewer = getTable().findElement(
 									By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
 							//* Double check the correctness of the rowNum
 							if(rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
 									maxRows)){
 								continue;
 							}
-							reportName = getElementText(getTable().findElement(By.xpath("tr[" + rowNum + "]/td[2]")));
 						}
-						return reportName;
+						return reportId;
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
 						if (elapsedTime >= (ACTIONTIMEOUT + 900 * 1000)) {
 							return null;
 						}
-
 						continue;
 					} catch (NullPointerException ne) {
 						Log.info("Null Pointer Exception: " + ne);
@@ -1631,6 +1639,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
+
 		return null;
 	}
 
@@ -1880,7 +1889,32 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		return false;
 	}
-
+	public boolean deleteReportById(String reportId) throws Exception {
+		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
+		this.waitForPageLoad();
+		this.performSearch(reportName);
+		if(!this.waitForTableDataToLoad()){
+			return false;
+		}		
+		String xpathDelete = "tr/td/a[@title='Delete' and contains(@data-delete,"+"'reportId="+reportId.toLowerCase()+"')]/img";
+		WebElement deleteImg = getTable().findElement(By.xpath(xpathDelete));
+		Log.clickElementInfo("Delete",ElementType.ICON);
+		deleteImg.click();
+		if(waitForDeletePopupLoad()){
+			jsClick(getBtnDeleteConfirm());
+			this.waitForPageLoad();
+			if (this.isElementPresent(errorMsgDeleteCompliacneReportXPath)) {
+				Log.error(getElementText(errorMsgDeleteCompliacneReport));
+				Log.clickElementInfo("Return to home page");
+				this.btnReturnToHomePage.click();
+				return false;
+			}
+		} else {
+			return false;
+		}
+		return true;
+	}
+	
 	public boolean copyReport(String rptTitle, String strCreatedBy, String rptTitleNew) {
 		setPagination(PAGINATIONSETTING);
 
@@ -2228,8 +2262,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 		});
 	}
 
-	public void waitForDeletePopupLoad() {
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+	public boolean waitForDeletePopupLoad() {
+		return (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				boolean isDisplayed = false;
 				try {

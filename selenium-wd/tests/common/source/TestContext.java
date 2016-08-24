@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
 
@@ -28,8 +29,10 @@ public enum TestContext {
 	private ExtentTest extentTest;
 	private Map<String,Object> testMap;
 	private ArrayList<String> testMessage;
+	private Set<String> testReportIdSet;
+	private String currentTestStatus = "PASS";
 	private int numTestMessagesToRetain = 5;
-	private static String indexId = getIndexIdForTestRun(); //System.currentTimeMillis();
+	private static String indexId = getIndexIdForTestRun();
 	
 	private TestContext() {
 		// Every time a context is created set a unique run ID.
@@ -37,6 +40,29 @@ public enum TestContext {
 		this.testMessage = new ArrayList<String>(numTestMessagesToRetain);
 		this.testMap = new HashMap<String, Object>();
 	}
+
+	public String getTestStatus() {
+		return currentTestStatus;
+	}
+
+	public Set<String> getTestReportIdSet(){
+		return testReportIdSet;
+	}
+	public void clearTestReportSet() {
+		testReportIdSet.clear();
+	}
+
+	public boolean addReportId(String reportId) {
+		if(reportId==null||reportId.isEmpty()){
+			return false;
+		}
+		return this.testReportIdSet.add(reportId.trim());
+	}
+
+	public void setTestStatus(String testStatus) {
+		this.currentTestStatus = testStatus;
+	}
+
 
 	public Map<String, Object> getTestMap() {
 		return testMap;
