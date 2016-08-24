@@ -5,9 +5,6 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
-import java.util.Map;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,8 +14,6 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.CryptoUtility;
 import common.source.Log;
-import surveyor.dataaccess.source.ResourceKeys;
-import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.RunAs;
 import surveyor.dataprovider.UserDataProvider;
 import surveyor.scommon.source.ManageCustomersPage;
