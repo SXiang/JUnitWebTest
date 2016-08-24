@@ -17,6 +17,8 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.CryptoUtility;
 import common.source.Log;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.RunAs;
 import surveyor.dataprovider.UserDataProvider;
 import surveyor.scommon.source.ManageCustomersPage;
@@ -376,7 +378,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 
 		String locationName = testSetup.getFixedSizeRandomNumber(8) + testCaseID;
 		String cityName = "Santa Clara";
-		String errorMsg = "Location name already exists for customer, please try another name.";
+		String errorMsg = ManageLocationsPage.STRDuplicateLocMsg;
 
 		Log.info("\nRunning - "+testCaseID+"_DuplicateLocationNotAllowed_["+role+"] - "+
 				"Test Description: Picarro user not allowed to create duplicate location\n");
@@ -424,7 +426,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 
 		String locationName = testSetup.getFixedSizeRandomNumber(8) + testCaseID;
 		String cityName = "Santa Clara";
-		String errorMsg = "Location name already exists for customer, please try another name.";
+		String errorMsg = ManageLocationsPage.STRDuplicateLocMsg;
 
 		Log.info("\nRunning - "+testCaseID+"_DuplicateLocationNotAllowed_["+role+"] - "+
 				"Test Description: Picarro user not allowed to edit duplicate location details same as existing location details\n");

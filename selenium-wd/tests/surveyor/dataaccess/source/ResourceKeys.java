@@ -145,6 +145,7 @@ public class ResourceKeys {
 	public static final String ManageCustomers_PageTitle = "ManageCustomers_PageTitle";
 	public static final String ManageLocation_EditLocation = "ManageLocation_EditLocation";
 	public static final String ManageLocation_NewLocation = "ManageLocation_NewLocation";
+	public static final String ManageLocation_DuplicateNameError = "ManageLocation_DuplicateNameError";
 	public static final String ManageLocation_RapidResponse = "ManageLocation_RapidResponse";
 	public static final String ManageLocations_AddNew = "ManageLocations_AddNew";
 	public static final String ManageLocations_PageTitle = "ManageLocations_PageTitle";
