@@ -182,7 +182,8 @@ public class Log {
 			if(!currentClass.equals(logClass)
 					&& !currentClass.contains("$")
 					&& !currentClass.contains("TestWatcher")
-					&& !currentClass.contains("org.junit")){
+					&& !currentClass.contains("org.junit")
+					){
 				return elements[i];
 			}
 		}
