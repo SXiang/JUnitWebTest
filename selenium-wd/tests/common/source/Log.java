@@ -26,6 +26,7 @@ public class Log {
 			TestContext.INSTANCE.getTestSetup();
 			System.setProperty("log4j.configurationFile", TestSetup.getExecutionPath(TestSetup.getRootPath()) + "log4j2" + File.separator + "log4j2.xml");
 			log = LogManager.getLogger(Log.class.getName());
+			stashLog = LogManager.getLogger("logstash.json");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -59,41 +60,27 @@ public class Log {
 	public static void info(String message) {
 		log.info(formatLogMessage(message));
 		TestContext.INSTANCE.updateTestMessage(message);
-		if(stashLog!=null){
-			stashLog.info(formatLogstashMessage(message));
-		}
+		stashLog.info(formatLogstashMessage(message));
 	}
 	
 	public static void warn(String message) {
 		log.warn(formatLogMessage(message));
 		TestContext.INSTANCE.updateTestMessage(message);
-		if(stashLog!=null){
-			stashLog.warn(formatLogstashMessage(message));
-		}
+		stashLog.warn(formatLogstashMessage(message));
 	}
 
 	public static void debug(String message) {
 		log.debug(formatLogMessage(message));
 		TestContext.INSTANCE.updateTestMessage(message);
-		if(stashLog!=null){
-			stashLog.debug(formatLogstashMessage(message));
-		}
+		stashLog.debug(formatLogstashMessage(message));
 	}
 
 	public static void error(String message) {
 		log.error(formatLogMessage(message));
 		TestContext.INSTANCE.updateTestMessage(message);
-		if(stashLog!=null){
-			stashLog.error(formatLogstashMessage(message));
-		}
+		stashLog.error(formatLogstashMessage(message));
 	}
 
-	public static void setStashLogger() {
-		if(TestSetup.isLogstashEnabled()){
-				stashLog = LogManager.getLogger("logstash.json");
-		}
-	}
-	
 	public static void info(String message, LogCategory logCategory) {
 		if (LogSwitches.INSTANCE.isEnabled(logCategory)) {
 			info(message);
@@ -195,7 +182,7 @@ public class Log {
 			if(!currentClass.equals(logClass)
 					&& !currentClass.contains("$")
 					&& !currentClass.contains("TestWatcher")
-					&& !currentClass.contains("RunRules")){
+					&& !currentClass.contains("org.junit")){
 				return elements[i];
 			}
 		}

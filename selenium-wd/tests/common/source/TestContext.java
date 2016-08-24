@@ -116,7 +116,6 @@ public enum TestContext {
 
 	public void setTestSetup(TestSetup testSetup) {		
 		this.testSetup = testSetup;
-		Log.setStashLogger();
 		testMap.put(LogField.INDEX_ID.toString(), indexId);
 	    testMap.put(LogField.TEST_ENVIROMENT.toString(), testSetup.getRunEnvironment());
 	    testMap.put(LogField.TEST_URL.toString(), testSetup.getBaseUrl());
