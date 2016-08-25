@@ -32,13 +32,13 @@ public enum TestContext {
 	private Set<String> testReportIdSet;
 	private String currentTestStatus = "PASS";
 	private int numTestMessagesToRetain = 5;
-	private static String indexId = getIndexIdForTestRun();
 	
 	private TestContext() {
 		// Every time a context is created set a unique run ID.
 		this.setRunUniqueId(TestSetup.getUUIDString());
 		this.testMessage = new ArrayList<String>(numTestMessagesToRetain);
 		this.testMap = new HashMap<String, Object>();
+		testMap.put(LogField.INDEX_ID.toString(), getIndexIdForTestRun());
 	}
 
 	public String getTestStatus() {
@@ -142,7 +142,6 @@ public enum TestContext {
 
 	public void setTestSetup(TestSetup testSetup) {		
 		this.testSetup = testSetup;
-		testMap.put(LogField.INDEX_ID.toString(), indexId);
 	    testMap.put(LogField.TEST_ENVIROMENT.toString(), testSetup.getRunEnvironment());
 	    testMap.put(LogField.TEST_URL.toString(), testSetup.getBaseUrl());
 	    testMap.put(LogField.TEST_CATEGORY.toString(), testSetup.getTestReportCategory());
