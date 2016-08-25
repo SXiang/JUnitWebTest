@@ -513,6 +513,9 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
+					<include name="**/ComplianceReportsPageTest6.class" />
+					<include name="**/ComplianceReportsPageTest3.class" />
+					<include name="**/ComplianceReportsPageTest5.class" />
 					<include name="**/ComplianceReportsPageTest11.class" />
 				</fileset>
 			</batchtest>
