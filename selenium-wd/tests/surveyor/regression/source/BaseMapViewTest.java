@@ -154,7 +154,7 @@ public class BaseMapViewTest {
 
 		 @Override
 		 protected void succeeded(Description description) {
-			 Log.error("_PASS_ Description: "+description);
+			 Log.info("_PASS_ Description: "+description);
 			 SurveyorBaseTest.reportTestSucceeded();
 		}
 	};
