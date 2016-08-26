@@ -900,11 +900,7 @@ public class HomePage extends SurveyorBasePage {
 	public void waitForPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
-            	String pageSource = d.getPageSource();
-            	Log.info(String.format("waitForPageLoad() -> Expected to find '%s' in PageSource. Match = [%b]", 
-            			STRPageContentText, pageSource.contains(STRPageContentText)), LogCategory.VerboseLogging);
-            	Log.info(String.format("DEBUGGING Log :-> %s", pageSource), LogCategory.VerboseLogging);
-                return pageSource.contains(STRPageContentText);
+                return d.getPageSource().contains(STRPageContentText);
             }
         });
     }

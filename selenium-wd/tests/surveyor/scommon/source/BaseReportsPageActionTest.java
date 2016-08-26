@@ -47,19 +47,21 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 	
 	private HashMap<Integer, ComplianceReportsPageActions> newReportsMap = null;
 
+	private boolean cleanUpPerformed = false;
+	
 	public BaseReportsPageActionTest() {
 		super();
 	}
 
 	@After
 	public void afterTestMethod() {
-		try {
-			// TODO: Turn off report deletion for debugging.
-			//deleteComplianceReport();
-			getHomePage().logout();
-		} catch (Exception e) {
-			Log.warn("Exception in BaseReportsPageActionTest.afterTestMethod(). Exception message:");
-			Log.warn(ExceptionUtility.getStackTraceString(e));
+		if (!isCleanUpPerformed()) {
+			try {
+				getHomePage().logout();
+			} catch (Exception e) {
+				Log.warn("Exception in BaseReportsPageActionTest.afterTestMethod(). Exception message:");
+				Log.warn(ExceptionUtility.getStackTraceString(e));
+			}
 		}
 	}
 
@@ -161,5 +163,13 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 				}
 			}
 		}
+	}
+
+	public boolean isCleanUpPerformed() {
+		return cleanUpPerformed;
+	}
+
+	public void setCleanUpPerformed(boolean cleanUpPerformed) {
+		this.cleanUpPerformed = cleanUpPerformed;
 	}
 }

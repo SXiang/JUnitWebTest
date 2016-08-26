@@ -1252,7 +1252,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void inputExclusionRadius(String exclusionRadius) {
-		Log.info("Set exclusion redius to '" + exclusionRadius + "'");
+		Log.info("Set exclusion radius to '" + exclusionRadius + "'");
 		this.inputExclusionRadius.clear();
 		this.inputExclusionRadius.sendKeys(exclusionRadius);
 	}
