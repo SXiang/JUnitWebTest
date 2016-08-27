@@ -583,6 +583,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key="maxParallelTestThreads" value="5" />
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
