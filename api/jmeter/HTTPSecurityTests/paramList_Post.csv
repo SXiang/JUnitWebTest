@@ -1,0 +1,67 @@
+Controller,ActionName,PostData,Description,PicarroDriver,CustomerDriver,CustomerSupervisor,CustomerAdmin,PicarroSupervisor,PicarroAdmin,Support,Admin
+Reports,ComplianceReports,"{  
+   ""ReportTitle"":""APISecurityTest_Report002"",
+   ""TimeZoneId"":""00000000-0000-0000-0001-000000000000"",
+   ""SelectedCustomerId"":""b1252204-04fb-4a67-82d4-3f4666fd855c"",
+   ""MapHeight"":""11"",
+   ""MapWidth"":""8.5"",
+   ""ReportModel"":{  
+      ""SurveyModeTypeId"":""b310238a-a5ae-4e94-927b-f0f165e24522"",
+      ""MinimumAmplitude"":"""",
+      ""ExclusionRadius"":""0"",
+      ""ShowIndications"":true,
+      ""ShowIsotopicAnalysis"":false,
+      ""ShowGaps"":false,
+      ""ShowPercentCoverageAssets"":false,
+      ""ShowPercentCoverageReportArea"":false,
+      ""ShowPercentCoverageForecast"":false,
+      ""FovOpacity"":""0.5"",
+      ""LisaOpacity"":""0.5"",
+      ""ReportAreaModel"":{  
+         ""ReportAreaModeTypeDesc"":""Custom Boundary"",
+         ""StartLat"":""37.41922165375503"",
+         ""StartLong"":""-121.96578744222937"",
+         ""EndLat"":""37.40517779908774"",
+         ""EndLong"":""-122.01230767538367"",
+         ""BoundaryId"":null
+      },
+      ""ReportViewModels"":[  
+         {  
+            ""ViewName"":""View 1"",
+            ""ShowLisa"":true,
+            ""ShowFov"":true,
+            ""ShowVehiclePath"":false,
+            ""ShowIndications"":false,
+            ""ShowIsotopicCaptures"":false,
+            ""ShowAnnotations"":false,
+            ""ShowGaps"":false,
+            ""ShowAssets"":false,
+            ""ShowBoundaries"":false,
+            ""BaseMapId"":""00000000-0000-0000-0001-000000000000"",
+            ""ViewNameOrder"":1
+         }
+      ],
+      ""ReportBoundaryLayerModels"":[  
+
+      ],
+      ""ReportAssetLayerModels"":[  
+
+      ],
+      ""ReportDrivingSurveyModels"":[  
+         {  
+            ""SurveyId"":""4ce925c5-a081-319d-220a-39d83a6b8751"",
+            ""PeakColor"":""00000000-0000-0000-0001-000000000000"",
+            ""LisaColor"":""00000000-0000-0000-0007-000000000000"",
+            ""IsotopicColor"":""00000000-0000-0000-0006-000000000000"",
+            ""FovColor"":""00000000-0000-0000-0002-000000000000"",
+            ""FovOpacity"":""0.4"",
+            ""LisaOpacity"":""0.5""
+         }
+      ]
+   }
+}",,NO,NO,NO,NO,YES,YES,YES,YES
+Reports,AssessmentReport,{},,NO,NO,NO,NO,YES,YES,YES,YES
+Reports,EQReport,{},,NO,NO,NO,NO,YES,YES,YES,YES
+,AssignBoxes,{},,,,,,,,,
+,ReferenceGasReport,{},,,,,,,,,
+,SystemHistoryReport,,,,,,,,,,
